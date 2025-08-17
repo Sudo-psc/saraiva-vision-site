@@ -18,7 +18,7 @@ export const clinicInfo = {
   email: 'saraivavision@gmail.com',
   // Responsible physician (CFM compliance)
   responsiblePhysician: 'Dr. Philipe Saraiva',
-  responsiblePhysicianCRM: 'CRM-MG 12345', // TODO: replace with real CRM
+  responsiblePhysicianCRM: 'CRM-MG 69.870',
   // Data Protection Officer contact (LGPD Art.41)
   dpoEmail: 'dpo@saraivavision.com.br', // TODO: set real DPO email
   latitude: -19.78935,
