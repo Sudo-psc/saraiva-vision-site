@@ -1,0 +1,462 @@
+{
+  "navbar": {
+    "home": "Início",
+    "services": "Serviços",
+    "about": "Sobre Nós",
+    "testimonials": "Depoimentos",
+    "contact": "Contato",
+    "blog": "Blog",
+    "schedule": "Agendar",
+    "close_menu": "Fechar Menu",
+    "open_menu": "Abrir Menu",
+    "schedule_consultation": "Agendar Consulta"
+  },
+  "hero": {
+    "partner": "Parceiro Oficial Amor e Saúde",
+    "title": "Cuidando da sua <1>visão</1> com excelência",
+    "subtitle": "Na Saraiva Vision, combinamos tecnologia de ponta com um atendimento humanizado para oferecer o melhor em saúde ocular. Sua visão é a nossa prioridade.",
+    "schedule_button": "Agendar Consulta",
+    "services_button": "Nossos Serviços",
+    "patients_served": "<0>Mais de 5.000 pacientes</0> atendidos com satisfação",
+    "advanced_tech_title": "Tecnologia Avançada",
+    "advanced_tech_desc": "Equipamentos de última geração para diagnósticos precisos."
+  },
+  "accessibility": {
+    "toggle": "Abrir menu de acessibilidade",
+    "title": "Acessibilidade",
+    "close": "Fechar",
+    "fontSize": {
+      "label": "Tamanho da Fonte",
+      "normal": "Normal",
+      "large": "Grande",
+      "extra-large": "Extra Grande"
+    },
+    "contrast": {
+      "label": "Contraste",
+      "normal": "Normal",
+      "high": "Alto",
+      "dark": "Escuro"
+    },
+    "readingMode": {
+      "on": "Modo Leitura",
+      "off": "Sair do Modo Leitura"
+    }
+  },
+  "trust": {
+    "badge": "Confiança e Qualidade",
+    "title": "Por que escolher a Saraiva Vision?",
+    "subtitle": "Nossa reputação é construída sobre anos de excelência, tecnologia avançada e cuidado genuíno com nossos pacientes.",
+    "certifications": {
+      "title": "Certificações",
+      "description": "Reconhecidos pelos principais órgãos de saúde",
+      "sectionTitle": "Nossas Certificações"
+    },
+    "awards": {
+      "title": "Prêmios",
+      "description": "Reconhecimento pela excelência em oftalmologia"
+    },
+    "patients": {
+      "title": "5.000+ Pacientes",
+      "description": "Atendidos com satisfação e qualidade"
+    },
+    "experience": {
+      "title": "15+ Anos",
+      "description": "De experiência em saúde ocular"
+    },
+    "crm": {
+      "description": "Conselho Regional de Medicina"
+    },
+    "cbo": {
+      "description": "Conselho Brasileiro de Oftalmologia"
+    },
+    "iso": {
+      "description": "Certificação de Qualidade"
+    },
+    "anvisa": {
+      "description": "Agência Nacional de Vigilância Sanitária"
+    },
+    "partnerships": {
+      "sectionTitle": "Nossos Parceiros"
+    },
+    "stats": {
+      "satisfaction": "Taxa de Satisfação",
+      "patients": "Pacientes Atendidos",
+      "years": "Anos de Experiência"
+    }
+  },
+  "faq": {
+    "badge": "Dúvidas Frequentes",
+    "title": "Perguntas Frequentes",
+    "subtitle": "Encontre respostas para as principais dúvidas sobre nossos serviços e tratamentos oftalmológicos.",
+    "search": {
+      "placeholder": "Buscar pergunta...",
+      "noResults": "Nenhuma pergunta encontrada para sua busca."
+    },
+    "cta": {
+      "text": "Não encontrou sua resposta?",
+      "button": "Fale Conosco"
+    },
+    "questions": {
+      "consultation": {
+        "question": "Como agendar uma consulta?",
+        "answer": "Você pode agendar pelo WhatsApp, telefone ou através do nosso site. Atendemos de segunda a sexta das 8h às 18h e sábados das 8h às 12h."
+      },
+      "services": {
+        "question": "Quais serviços vocês oferecem?",
+        "answer": "Oferecemos consultas oftalmológicas completas, exames de refração, tratamentos especializados, cirurgias, acompanhamento pediátrico e laudos especializados."
+      },
+      "insurance": {
+        "question": "Aceitam convênios médicos?",
+        "answer": "Sim, trabalhamos com diversos convênios. Entre em contato para verificar se o seu plano está credenciado conosco."
+      },
+      "preparation": {
+        "question": "Como me preparar para a consulta?",
+        "answer": "Traga seus óculos atuais, relatórios de exames anteriores e lista de medicamentos em uso. Alguns exames podem requerer dilatação da pupila."
+      },
+      "location": {
+        "question": "Onde vocês estão localizados?",
+        "answer": "Estamos localizados no centro de Governador Valadares, com fácil acesso e estacionamento disponível."
+      },
+      "emergency": {
+        "question": "Atendem emergências oftalmológicas?",
+        "answer": "Sim, atendemos emergências oftalmológicas. Entre em contato pelo WhatsApp ou telefone para atendimento prioritário."
+      },
+      "technology": {
+        "question": "Que tecnologias utilizam?",
+        "answer": "Utilizamos equipamentos de última geração para diagnósticos precisos e tratamentos eficazes, incluindo OCT, campimetria e microscópio cirúrgico."
+      },
+      "followup": {
+        "question": "Como funciona o acompanhamento pós-consulta?",
+        "answer": "Oferecemos acompanhamento contínuo com retornos programados e suporte via WhatsApp para dúvidas sobre tratamentos."
+      }
+    }
+  },
+  "blog": {
+    "badge": "Educação em Saúde",
+    "title": "Blog Saraiva Vision",
+    "subtitle": "Artigos educativos sobre saúde ocular, tratamentos e novidades da oftalmologia para manter você bem informado.",
+    "featured": "Destaque",
+    "readMore": "Ler Artigo",
+    "categories": {
+      "all": "Todos",
+      "prevention": "Prevenção",
+      "treatments": "Tratamentos",
+      "pediatric": "Pediatria",
+      "technology": "Tecnologia"
+    },
+    "posts": {
+      "dryEyes": {
+        "title": "Síndrome do Olho Seco: Sintomas e Tratamentos",
+        "excerpt": "Entenda as causas da síndrome do olho seco e conheça as opções de tratamento mais eficazes para aliviar os sintomas."
+      },
+      "cataract": {
+        "title": "Cirurgia de Catarata: Guia Completo",
+        "excerpt": "Tudo que você precisa saber sobre a cirurgia de catarata, desde a preparação até o pós-operatório."
+      },
+      "childEyes": {
+        "title": "Cuidados com a Visão Infantil",
+        "excerpt": "Como identificar problemas visuais em crianças e a importância do acompanhamento oftalmológico desde cedo."
+      },
+      "technology": {
+        "title": "Novas Tecnologias em Oftalmologia",
+        "excerpt": "Conheça as mais recentes inovações tecnológicas que estão revolucionando os tratamentos oftalmológicos."
+      }
+    },
+    "newsletter": {
+      "title": "Receba conteúdo exclusivo",
+      "description": "Assine nossa newsletter e receba artigos sobre saúde ocular direto no seu e-mail.",
+      "emailPlaceholder": "Digite seu e-mail",
+      "subscribe": "Assinar",
+      "privacy": "Respeitamos sua privacidade. Sem spam."
+    },
+    "visitBlog": "Visitar Blog Completo"
+  },
+  "testimonials": {
+    "badge": "Depoimentos",
+    "title": "O que nossos pacientes dizem",
+    "subtitle": "Experiências reais de pessoas que confiaram na Saraiva Vision para cuidar da sua visão.",
+    "patient": "Paciente",
+    "previous": "Anterior",
+    "next": "Próximo",
+    "avgRating": "Nota Média",
+    "totalReviews": "Avaliações",
+    "satisfaction": "Satisfação",
+    "reviews": [
+      {
+        "name": "Maria Silva",
+        "content": "Excelente atendimento! Dr. Saraiva foi muito atencioso e explicou tudo detalhadamente. Recomendo!"
+      },
+      {
+        "name": "João Santos",
+        "content": "Clínica moderna com equipamentos de última geração. Me senti muito seguro durante todo o procedimento."
+      },
+      {
+        "name": "Ana Costa",
+        "content": "Ótimo profissional, consulta muito completa. Resolveu meu problema de visão com muita competência."
+      }
+    ]
+  },
+  "services": {
+    "title": "Nossos Serviços",
+    "subtitle": "Oferecemos uma gama completa de serviços oftalmológicos para cuidar da sua visão com a máxima qualidade e tecnologia.",
+    "learn_more": "Saiba Mais",
+    "schedule_button": "Agende Sua Consulta Agora",
+    "items": {
+      "consultations": {
+        "title": "Consultas Oftalmológicas",
+        "description": "Avaliação completa da saúde dos seus olhos, com diagnóstico e tratamento preciso."
+      },
+      "refraction": {
+        "title": "Exames de Refração",
+        "description": "Determinação do grau para óculos e lentes de contato com alta precisão."
+      },
+      "specialized": {
+        "title": "Tratamentos Especializados",
+        "description": "Tratamento para glaucoma, catarata, doenças da retina e outras condições oculares."
+      },
+      "surgeries": {
+        "title": "Cirurgias Oftalmológicas",
+        "description": "Procedimentos cirúrgicos avançados para correção de problemas de visão."
+      },
+      "pediatric": {
+        "title": "Acompanhamento Pediátrico",
+        "description": "Cuidado especializado para a saúde ocular das crianças, desde o nascimento."
+      },
+      "reports": {
+        "title": "Laudos Especializados",
+        "description": "Emissão de laudos oftalmológicos para concursos, perícias e outras finalidades."
+      }
+    }
+  },
+  "contactLenses": {
+    "title": "Especializados em Lentes de Contato",
+    "description": "Oferecemos uma solução completa para usuários de lentes de contato, desde a prescrição até a adaptação.",
+    "button": "Saiba Mais",
+    "types": {
+      "soft": {
+        "title": "Lentes Gelatinosas",
+        "features": [
+          "Confortáveis para uso diário",
+          "Grande variedade de opções",
+          "Fácil adaptação"
+        ]
+      },
+      "rigid": {
+        "title": "Lentes Rígidas Gás Permeáveis",
+        "features": [
+          "Excelente acuidade visual",
+          "Corrigem alto astigmatismo",
+          "Mais duráveis"
+        ]
+      },
+      "multifocal": {
+        "title": "Lentes Multifocais",
+        "features": [
+          "Visão para todas as distâncias",
+          "Praticidade e liberdade",
+          "Adaptação personalizada"
+        ]
+      }
+    },
+    "bioview_alt": "Embalagem de lentes de contato Bioview"
+  },
+  "about": {
+    "tag": "Sobre Nós",
+    "title": "Dedicados à Excelência em Cada Detalhe",
+    "p1": "A Saraiva Vision nasceu do sonho de oferecer um atendimento oftalmológico de alta qualidade, unindo tecnologia avançada a uma abordagem humana e personalizada.",
+    "p2": "Nossa missão é proporcionar diagnósticos precisos e tratamentos eficazes, priorizando sempre o bem-estar e a satisfação dos nossos pacientes.",
+    "features": [
+      "Infraestrutura Moderna",
+      "Profissionais Qualificados",
+      "Atendimento Humanizado",
+      "Compromisso com Resultados"
+    ],
+    "alt1": "Consultório oftalmológico moderno",
+    "alt2": "Médico oftalmologista realizando exame de vista",
+    "alt3": "Paciente sorrindo satisfeito após consulta",
+    "alt4": "Equipamento oftalmológico avançado"
+  },
+  "contact": {
+    "title": "Entre em Contato",
+    "subtitle": "Estamos à disposição para tirar suas dúvidas e agendar sua consulta. Sua visão é nossa prioridade.",
+    "form_title": "Envie uma Mensagem",
+    "name_label": "Nome",
+    "name_placeholder": "Seu nome completo",
+    "phone_label": "Telefone",
+    "phone_placeholder": "(XX) XXXXX-XXXX",
+    "email_label": "E-mail",
+    "email_placeholder": "Seu melhor e-mail",
+    "message_label": "Mensagem",
+    "message_placeholder": "Escreva sua mensagem aqui...",
+    "send_button": "Enviar Mensagem",
+    "chatbot_title": "Fale com nossa Assistente de IA!",
+    "chatbot_desc": "Obtenha respostas instantâneas para perguntas comuns sobre nossos serviços e agendamentos.",
+    "chatbot_availability": "Disponível 24/7",
+    "info": {
+      "address_title": "Endereço",
+      "address_details": "R. Cel. Antônio da Silva, 645",
+      "address_sub": "Centro, Caratinga - MG, 35300-039",
+      "phone_title": "Telefone",
+      "phone_whatsapp": "Falar no WhatsApp",
+      "email_title": "E-mail",
+      "email_sub": "Respondemos em até 24 horas",
+      "hours_title": "Horário de Atendimento",
+      "hours_details": "Seg - Sex: 8h às 18h",
+      "hours_sub": "Finais de semana: Fechado"
+    },
+    "map_alt": "Mapa mostrando a localização da Saraiva Vision em Caratinga",
+    "clinic_alt": "Fachada da Clínica Saraiva Vision",
+    "toast_success_title": "Mensagem Enviada!",
+    "toast_success_desc": "Sua mensagem foi enviada com sucesso. Em breve entraremos em contato!"
+  },
+  "footer": {
+    "slogan": "Excelência no cuidado com a visão, perto de você.",
+    "partner_of": "Parceiro da",
+    "amor_saude_alt": "Logo da Clínica Amor e Saúde",
+    "quick_links": "Links Rápidos",
+    "services": "Serviços",
+    "contact": "Contato",
+    "address_line1": "R. Cel. Antônio da Silva, 645",
+    "address_line2": "Centro, Caratinga - MG",
+    "hours": "Seg - Sex: 8h às 18h",
+    "copyright": "© {{year}} Saraiva Vision. Todos os direitos reservados.",
+    "back_to_top": "Voltar ao topo",
+    "service_links": {
+      "consultations": "Consultas",
+      "refraction": "Exames de Refração",
+      "treatments": "Tratamentos",
+      "surgeries": "Cirurgias",
+      "pediatric": "Acompanhamento Pediátrico",
+      "reports": "Laudos"
+    }
+  },
+  "homeMeta": {
+    "title": "Saraiva Vision - Clínica Oftalmológica de Excelência",
+    "description": "Clínica oftalmológica de ponta em Caratinga. Oferecemos consultas, exames e cirurgias com tecnologia avançada e atendimento humanizado. Agende sua consulta!",
+    "keywords": "oftalmologista, clínica oftalmológica, saúde ocular, exames de vista, cirurgia ocular, oftalmologia, Caratinga"
+  },
+  "serviceMeta": {
+    "title": "{{serviceTitle}} | Saraiva Vision",
+    "description": "Saiba mais sobre {{serviceTitleLowercase}} na Saraiva Vision. Oferecemos tratamentos e diagnósticos avançados para sua saúde ocular.",
+    "keywords": "{{serviceTitleLowercase}}, oftalmologia, saúde ocular, clínica de olhos"
+  },
+  "serviceDetail": {
+    "back_link": "Voltar para Serviços",
+    "advantages_title": "Vantagens e Benefícios",
+    "video_title": "Assista ao Vídeo",
+    "cta_title": "Pronto para Cuidar da Sua Visão?",
+    "cta_desc": "Entre em contato conosco para agendar sua consulta ou tirar suas dúvidas. Estamos prontos para te atender!",
+    "schedule_button": "Agendar Consulta",
+    "whatsapp_button": "Falar no WhatsApp",
+    "services": {
+      "consultas-oftalmologicas": {
+        "title": "Consultas Oftalmológicas Completas",
+        "description": "Nossas consultas abrangem uma avaliação detalhada da sua saúde ocular, identificando e tratando diversas condições para garantir a melhor visão possível.",
+        "details": [
+          {
+            "title": "Avaliação Abrangente",
+            "text": "Exame completo da visão, pressão intraocular e fundo de olho."
+          },
+          {
+            "title": "Diagnóstico Preciso",
+            "text": "Identificação precoce de doenças como glaucoma, catarata e retinopatias."
+          },
+          {
+            "title": "Plano de Tratamento Personalizado",
+            "text": "Recomendações e tratamentos adaptados às suas necessidades."
+          }
+        ]
+      },
+      "exames-de-refracao": {
+        "title": "Exames de Refração e Prescrição de Óculos",
+        "description": "Realizamos exames de refração precisos para determinar o grau exato dos seus óculos ou lentes de contato, garantindo uma visão nítida e confortável.",
+        "details": [
+          {
+            "title": "Precisão no Diagnóstico",
+            "text": "Utilizamos equipamentos modernos para uma medição exata do seu grau."
+          },
+          {
+            "title": "Conforto Visual",
+            "text": "Prescrição personalizada para óculos e lentes que se adaptam ao seu estilo de vida."
+          },
+          {
+            "title": "Acompanhamento Contínuo",
+            "text": "Reavaliações periódicas para garantir a saúde e o conforto da sua visão."
+          }
+        ]
+      },
+      "tratamentos-especializados": {
+        "title": "Tratamentos Especializados para Doenças Oculares",
+        "description": "Oferecemos tratamentos avançados para uma vasta gama de doenças oculares, desde condições comuns até as mais complexas, com foco na recuperação e manutenção da sua visão.",
+        "details": [
+          {
+            "title": "Glaucoma",
+            "text": "Manejo clínico e cirúrgico para controle da pressão intraocular e preservação do nervo óptico."
+          },
+          {
+            "title": "Catarata",
+            "text": "Diagnóstico e indicação cirúrgica para restauração da transparência do cristalino."
+          },
+          {
+            "title": "Retinopatias",
+            "text": "Tratamentos para doenças da retina, incluindo retinopatia diabética e degeneração macular."
+          }
+        ]
+      },
+      "cirurgias-oftalmologicas": {
+        "title": "Cirurgias Oftalmológicas Avançadas",
+        "description": "Nossa equipe realiza cirurgias oftalmológicas com as técnicas mais modernas e seguras, visando a recuperação da sua visão e a melhoria da sua qualidade de vida.",
+        "details": [
+          {
+            "title": "Cirurgia de Catarata",
+            "text": "Procedimento rápido e seguro para remover a catarata e implantar lentes intraoculares."
+          },
+          {
+            "title": "Cirurgia Refrativa (LASIK/PRK)",
+            "text": "Correção de miopia, hipermetropia e astigmatismo para reduzir ou eliminar a dependência de óculos."
+          },
+          {
+            "title": "Cirurgias de Glaucoma",
+            "text": "Intervenções para controlar a pressão ocular e prevenir a progressão da doença."
+          }
+        ]
+      },
+      "acompanhamento-pediatrico": {
+        "title": "Acompanhamento Oftalmológico Pediátrico",
+        "description": "Cuidamos da saúde ocular das crianças com atenção especial, diagnosticando e tratando problemas visuais desde cedo para garantir um desenvolvimento saudável.",
+        "details": [
+          {
+            "title": "Exames Lúdicos",
+            "text": "Abordagem amigável para crianças, tornando o exame uma experiência positiva."
+          },
+          {
+            "title": "Detecção Precoce",
+            "text": "Identificação de estrabismo, ambliopia e erros refrativos em idade precoce."
+          },
+          {
+            "title": "Tratamento Personalizado",
+            "text": "Planos de tratamento adaptados às necessidades de cada criança."
+          }
+        ]
+      },
+      "laudos-especializados": {
+        "title": "Laudos e Pareceres Especializados",
+        "description": "Oferecemos laudos e pareceres oftalmológicos detalhados para diversas finalidades, como concursos públicos, perícias e avaliações de saúde ocupacional.",
+        "details": [
+          {
+            "title": "Documentação Completa",
+            "text": "Laudos detalhados e precisos para atender às exigências legais e profissionais."
+          },
+          {
+            "title": "Avaliação Profissional",
+            "text": "Pareceres emitidos por oftalmologistas experientes e qualificados."
+          },
+          {
+            "title": "Agilidade na Entrega",
+            "text": "Compromisso com prazos para que você tenha seus documentos em tempo hábil."
+          }
+        ]
+      }
+    }
+  }
+}

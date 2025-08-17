@@ -1,0 +1,280 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 210 100% 46%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 210 100% 46%;
+    --radius: 0.75rem;
+
+    /* Improved Medical Color Palette */
+    --medical-primary: 207 89% 54%;  /* Professional medical blue */
+    --medical-secondary: 145 63% 42%; /* Trust green */
+    --medical-accent: 39 84% 56%;     /* Warm accent */
+    --soft-gray: 220 14% 96%;         /* Soft backgrounds */
+    --text-primary: 217 33% 17%;      /* High contrast text */
+    --text-secondary: 215 16% 47%;    /* Secondary text */
+
+    /* Icon colors with better accessibility */
+    --icon-consultas: 207 89% 54%;
+    --icon-refracao: 178 84% 47%;
+    --icon-tratamentos: 269 78% 62%;
+    --icon-cirurgias: 339 82% 62%;
+    --icon-pediatrico: 39 84% 56%;
+    --icon-laudos: 231 78% 62%;
+
+    --icon-bg-consultas: 207 89% 95%;
+    --icon-bg-refracao: 178 84% 95%;
+    --icon-bg-tratamentos: 269 78% 95%;
+    --icon-bg-cirurgias: 339 82% 95%;
+    --icon-bg-pediatrico: 39 84% 95%;
+    --icon-bg-laudos: 231 78% 95%;
+
+    --card-border-consultas: 207 89% 60%;
+    --card-border-refracao: 178 84% 53%;
+    --card-border-tratamentos: 269 78% 68%;
+    --card-border-cirurgias: 339 82% 68%;
+    --card-border-pediatrico: 39 84% 62%;
+    --card-border-laudos: 231 78% 68%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+
+  /* High Contrast Mode */
+  .high-contrast {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    --primary: 220 100% 30%;
+    --secondary: 0 0% 95%;
+    --text-primary: 0 0% 0%;
+    --text-secondary: 0 0% 20%;
+    filter: contrast(150%) brightness(110%);
+  }
+
+  /* Dark Mode */
+  .dark-mode {
+    --background: 220 27% 18%;
+    --foreground: 0 0% 98%;
+    --primary: 207 89% 54%;
+    --secondary: 217 33% 25%;
+    filter: none;
+  }
+
+  /* Reading Mode */
+  .reading-mode {
+    --background: 48 100% 99%;
+    --text-primary: 0 0% 5%;
+    --text-secondary: 0 0% 15%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-base font-normal;
+    font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.7;
+    color: hsl(var(--text-primary));
+    scroll-behavior: smooth;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-weight: 600;
+    line-height: 1.2;
+    color: hsl(var(--text-primary));
+    letter-spacing: -0.025em;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold leading-tight;
+    letter-spacing: -0.04em;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-semibold leading-snug;
+    letter-spacing: -0.03em;
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl font-semibold leading-normal;
+    letter-spacing: -0.025em;
+  }
+  
+  h4 {
+    @apply text-xl md:text-2xl font-semibold;
+  }
+  
+  p {
+    @apply text-base md:text-lg leading-relaxed;
+    color: hsl(var(--text-secondary));
+    margin-bottom: 1rem;
+  }
+  
+  section {
+    @apply py-20 md:py-32;
+  }
+  
+  input[type="text"], 
+  input[type="email"], 
+  input[type="tel"], 
+  textarea, 
+  select {
+    @apply rounded-xl border-2 transition-all duration-300;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  input:focus, 
+  textarea:focus, 
+  select:focus {
+    @apply ring-2 ring-blue-500/20 border-blue-500 outline-none;
+  }
+  
+  /* Improved button styles */
+  button {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
+  button:focus-visible {
+    @apply outline-2 outline-blue-500 outline-offset-2;
+  }
+  
+  /* Smooth scrolling for anchor links */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Better text selection */
+  ::selection {
+    background-color: hsl(207 89% 54% / 0.2);
+    color: hsl(var(--text-primary));
+  }
+}
+
+@layer components {
+  .modern-card {
+    @apply bg-white rounded-2xl p-6 shadow-soft-light transition-all duration-300 ease-in-out;
+  }
+  .modern-card:hover {
+    @apply shadow-soft-medium-hover;
+    transform: translateY(-8px);
+  }
+  .modern-card:nth-child(1):hover { border-top-color: var(--card-border-consultas); }
+  .modern-card:nth-child(2):hover { border-top-color: var(--card-border-refracao); }
+  .modern-card:nth-child(3):hover { border-top-color: var(--card-border-tratamentos); }
+  .modern-card:nth-child(4):hover { border-top-color: var(--card-border-cirurgias); }
+  .modern-card:nth-child(5):hover { border-top-color: var(--card-border-pediatrico); }
+  .modern-card:nth-child(6):hover { border-top-color: var(--card-border-laudos); }
+
+  .modern-card-alt {
+    @apply bg-white rounded-2xl shadow-soft-light hover:shadow-soft-medium-hover border-t-4 border-transparent hover:border-green-400 transition-all duration-300 ease-in-out;
+  }
+  .icon-container {
+    @apply p-3 rounded-xl inline-flex items-center justify-center transition-all duration-300;
+  }
+  .icon-container svg {
+    @apply transition-transform duration-300 group-hover:scale-110;
+  }
+  .icon-container-0 { background-color: var(--icon-bg-consultas); }
+  .icon-container-1 { background-color: var(--icon-bg-refracao); }
+  .icon-container-2 { background-color: var(--icon-bg-tratamentos); }
+  .icon-container-3 { background-color: var(--icon-bg-cirurgias); }
+  .icon-container-4 { background-color: var(--icon-bg-pediatrico); }
+  .icon-container-5 { background-color: var(--icon-bg-laudos); }
+
+  .form-input {
+    @apply w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300;
+  }
+  .form-input:hover {
+    background: linear-gradient(to right, theme('colors.blue.50') 0%, theme('colors.blue.100') 100%);
+    @apply border-blue-400;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(90deg, #0052D4, #4364F7, #6FB1FC);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .shadow-soft-light {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  }
+  .shadow-soft-medium {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+  .shadow-soft-medium-hover {
+    box-shadow: 0 12px 32px rgba(67, 100, 247, 0.15);
+  }
+  .bg-subtle-gradient {
+    background-image: linear-gradient(to bottom, theme('colors.white') 0%, theme('colors.blue.50') 100%);
+  }
+  .bg-hero-gradient {
+    background-image: linear-gradient(135deg, theme('colors.cyan.50') 0%, theme('colors.blue.100') 100%);
+  }
+  .bg-header-gradient {
+    background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    @apply rounded-2xl shadow-soft-light;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,325 @@
+{
+  "navbar": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About Us",
+    "testimonials": "Testimonials",
+    "contact": "Contact",
+    "blog": "Blog",
+    "schedule": "Schedule",
+    "close_menu": "Close Menu",
+    "open_menu": "Open Menu",
+    "schedule_consultation": "Schedule Consultation"
+  },
+  "hero": {
+    "partner": "Official Amor e Saúde Partner",
+    "title": "Caring for your <1>vision</1> with excellence",
+    "subtitle": "At Saraiva Vision, we combine cutting-edge technology with humanized care to offer the best in eye health. Your vision is our priority.",
+    "schedule_button": "Schedule Appointment",
+    "services_button": "Our Services",
+    "patients_served": "<0>Over 5,000 patients</0> served with satisfaction",
+    "advanced_tech_title": "Advanced Technology",
+    "advanced_tech_desc": "State-of-the-art equipment for accurate diagnoses."
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "We offer a full range of ophthalmological services to care for your vision with the highest quality and technology.",
+    "learn_more": "Learn More",
+    "schedule_button": "Schedule Your Appointment Now",
+    "items": {
+      "consultations": {
+        "title": "Ophthalmological Consultations",
+        "description": "Complete assessment of your eye health, with accurate diagnosis and treatment."
+      },
+      "refraction": {
+        "title": "Refraction Exams",
+        "description": "High-precision determination of prescription for glasses and contact lenses."
+      },
+      "specialized": {
+        "title": "Specialized Treatments",
+        "description": "Treatment for glaucoma, cataracts, retinal diseases, and other eye conditions."
+      },
+      "surgeries": {
+        "title": "Ophthalmological Surgeries",
+        "description": "Advanced surgical procedures to correct vision problems."
+      },
+      "pediatric": {
+        "title": "Pediatric Follow-up",
+        "description": "Specialized care for children's eye health, from birth."
+      },
+      "reports": {
+        "title": "Specialized Reports",
+        "description": "Issuance of ophthalmological reports for exams, expert opinions, and other purposes."
+      }
+    }
+  },
+  "contactLenses": {
+    "title": "Specialized in Contact Lenses",
+    "description": "We offer a complete solution for contact lens users, from prescription to adaptation.",
+    "button": "Learn More",
+    "types": {
+      "soft": {
+        "title": "Soft Lenses",
+        "features": [
+          "Comfortable for daily use",
+          "Wide variety of options",
+          "Easy adaptation"
+        ]
+      },
+      "rigid": {
+        "title": "Rigid Gas Permeable Lenses",
+        "features": [
+          "Excellent visual acuity",
+          "Correct high astigmatism",
+          "More durable"
+        ]
+      },
+      "multifocal": {
+        "title": "Multifocal Lenses",
+        "features": [
+          "Vision for all distances",
+          "Convenience and freedom",
+          "Personalized adaptation"
+        ]
+      }
+    },
+    "bioview_alt": "Bioview contact lens packaging"
+  },
+  "about": {
+    "tag": "About Us",
+    "title": "Dedicated to Excellence in Every Detail",
+    "p1": "Saraiva Vision was born from the dream of offering high-quality ophthalmological care, combining advanced technology with a human and personalized approach.",
+    "p2": "Our mission is to provide accurate diagnoses and effective treatments, always prioritizing the well-being and satisfaction of our patients.",
+    "features": [
+      "Modern Infrastructure",
+      "Qualified Professionals",
+      "Humanized Care",
+      "Commitment to Results"
+    ],
+    "alt1": "Modern ophthalmology office",
+    "alt2": "Ophthalmologist performing an eye exam",
+    "alt3": "Patient smiling satisfied after consultation",
+    "alt4": "Advanced ophthalmological equipment"
+  },
+  "testimonials": {
+    "title": "What Our Patients Say",
+    "subtitle": "The trust and satisfaction of our patients are our greatest achievements.",
+    "patient": "Patient",
+    "reviews": [
+      {
+        "name": "Maria S.",
+        "content": "Excellent service! Dr. Philipe is very attentive and competent. I felt very safe during the entire process.",
+        "image_alt": "Photo of patient Maria S."
+      },
+      {
+        "name": "João P.",
+        "content": "The clinic has state-of-the-art equipment. I was very impressed with the quality of the exams and the detailed explanation.",
+        "image_alt": "Photo of patient João P."
+      },
+      {
+        "name": "Ana L.",
+        "content": "I highly recommend Saraiva Vision. The entire team is very friendly and professional. My cataract surgery was a success!",
+        "image_alt": "Photo of patient Ana L."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "We are available to answer your questions and schedule your appointment. Your vision is our priority.",
+    "form_title": "Send a Message",
+    "name_label": "Name",
+    "name_placeholder": "Your full name",
+    "phone_label": "Phone",
+    "phone_placeholder": "(XX) XXXXX-XXXX",
+    "email_label": "Email",
+    "email_placeholder": "Your best email",
+    "message_label": "Message",
+    "message_placeholder": "Write your message here...",
+    "send_button": "Send Message",
+    "chatbot_title": "Chat with our AI Assistant!",
+    "chatbot_desc": "Get instant answers to common questions about our services and scheduling.",
+    "chatbot_availability": "Available 24/7",
+    "info": {
+      "address_title": "Address",
+      "address_details": "R. Cel. Antônio da Silva, 645",
+      "address_sub": "Centro, Caratinga - MG, 35300-039",
+      "phone_title": "Phone",
+      "phone_whatsapp": "Chat on WhatsApp",
+      "email_title": "Email",
+      "email_sub": "We respond within 24 hours",
+      "hours_title": "Opening Hours",
+      "hours_details": "Mon - Fri: 8am - 6pm",
+      "hours_sub": "Weekends: Closed"
+    },
+    "map_alt": "Map showing the location of Saraiva Vision in Caratinga",
+    "clinic_alt": "Facade of Saraiva Vision Clinic",
+    "toast_success_title": "Message Sent!",
+    "toast_success_desc": "Your message has been sent successfully. We will get back to you soon!"
+  },
+  "footer": {
+    "slogan": "Excellence in eye care, close to you.",
+    "partner_of": "Partner of",
+    "amor_saude_alt": "Amor e Saúde Clinic Logo",
+    "quick_links": "Quick Links",
+    "services": "Services",
+    "contact": "Contact",
+    "address_line1": "R. Cel. Antônio da Silva, 645",
+    "address_line2": "Centro, Caratinga - MG",
+    "hours": "Mon - Fri: 8am - 6pm",
+    "copyright": "© {{year}} Saraiva Vision. All rights reserved.",
+    "back_to_top": "Back to top",
+    "service_links": {
+      "consultations": "Consultations",
+      "refraction": "Refraction Exams",
+      "treatments": "Treatments",
+      "surgeries": "Surgeries",
+      "pediatric": "Pediatric Care",
+      "reports": "Reports"
+    }
+  },
+  "homeMeta": {
+    "title": "Saraiva Vision - Excellence in Ophthalmology Clinic",
+    "description": "Leading ophthalmology clinic in Caratinga. We offer consultations, exams, and surgeries with advanced technology and humanized care. Schedule your appointment!",
+    "keywords": "ophthalmologist, ophthalmology clinic, eye health, eye exams, eye surgery, ophthalmology, Caratinga"
+  },
+  "serviceMeta": {
+    "title": "{{serviceTitle}} | Saraiva Vision",
+    "description": "Learn more about {{serviceTitleLowercase}} at Saraiva Vision. We offer advanced treatments and diagnoses for your eye health.",
+    "keywords": "{{serviceTitleLowercase}}, ophthalmology, eye health, eye clinic"
+  },
+  "serviceDetail": {
+    "back_link": "Back to Services",
+    "advantages_title": "Advantages and Benefits",
+    "video_title": "Watch the Video",
+    "cta_title": "Ready to Take Care of Your Vision?",
+    "cta_desc": "Contact us to schedule your appointment or ask your questions. We are ready to assist you!",
+    "schedule_button": "Schedule Appointment",
+    "whatsapp_button": "Chat on WhatsApp",
+    "services": {
+      "consultas-oftalmologicas": {
+        "title": "Complete Ophthalmological Consultations",
+        "description": "Our consultations include a detailed assessment of your eye health, identifying and treating various conditions to ensure the best possible vision.",
+        "details": [
+          {
+            "title": "Comprehensive Evaluation",
+            "text": "Complete eye exam, intraocular pressure, and fundus examination."
+          },
+          {
+            "title": "Accurate Diagnosis",
+            "text": "Early identification of diseases such as glaucoma, cataracts, and retinopathies."
+          },
+          {
+            "title": "Personalized Treatment Plan",
+            "text": "Recommendations and treatments tailored to your needs."
+          }
+        ]
+      },
+      "exames-de-refracao": {
+        "title": "Refraction Exams and Glasses Prescription",
+        "description": "We perform precise refraction exams to determine the exact prescription for your glasses or contact lenses, ensuring clear and comfortable vision.",
+        "details": [
+          {
+            "title": "Precision in Diagnosis",
+            "text": "We use modern equipment for an accurate measurement of your prescription."
+          },
+          {
+            "title": "Visual Comfort",
+            "text": "Personalized prescription for glasses and lenses that adapt to your lifestyle."
+          },
+          {
+            "title": "Continuous Monitoring",
+            "text": "Periodic re-evaluations to ensure the health and comfort of your vision."
+          }
+        ]
+      },
+      "tratamentos-especializados": {
+        "title": "Specialized Treatments for Eye Diseases",
+        "description": "We offer advanced treatments for a wide range of eye diseases, from common conditions to the most complex, focusing on the recovery and maintenance of your vision.",
+        "details": [
+          {
+            "title": "Glaucoma",
+            "text": "Clinical and surgical management to control intraocular pressure and preserve the optic nerve."
+          },
+          {
+            "title": "Cataract",
+            "text": "Diagnosis and surgical indication for restoring lens transparency."
+          },
+          {
+            "title": "Retinopathies",
+            "text": "Treatments for retinal diseases, including diabetic retinopathy and macular degeneration."
+          }
+        ]
+      },
+      "cirurgias-oftalmologicas": {
+        "title": "Advanced Ophthalmological Surgeries",
+        "description": "Our team performs ophthalmological surgeries using the most modern and safest techniques, aiming to restore your vision and improve your quality of life.",
+        "details": [
+          {
+            "title": "Cataract Surgery",
+            "text": "Quick and safe procedure to remove cataracts and implant intraocular lenses."
+          },
+          {
+            "title": "Refractive Surgery (LASIK/PRK)",
+            "text": "Correction of myopia, hyperopia, and astigmatism to reduce or eliminate dependence on glasses."
+          },
+          {
+            "title": "Glaucoma Surgeries",
+            "text": "Interventions to control eye pressure and prevent disease progression."
+          }
+        ]
+      },
+      "acompanhamento-pediatrico": {
+        "title": "Pediatric Ophthalmological Follow-up",
+        "description": "We take special care of children's eye health, diagnosing and treating visual problems early to ensure healthy development.",
+        "details": [
+          {
+            "title": "Playful Exams",
+            "text": "Child-friendly approach, making the exam a positive experience."
+          },
+          {
+            "title": "Early Detection",
+            "text": "Identification of strabismus, amblyopia, and refractive errors at an early age."
+          },
+          {
+            "title": "Personalized Treatment",
+            "text": "Treatment plans adapted to each child's needs."
+          }
+        ]
+      },
+      "laudos-especializados": {
+        "title": "Specialized Reports and Opinions",
+        "description": "We offer detailed ophthalmological reports and opinions for various purposes, such as public tenders, expert appraisals, and occupational health assessments.",
+        "details": [
+          {
+            "title": "Complete Documentation",
+            "text": "Detailed and accurate reports to meet legal and professional requirements."
+          },
+          {
+            "title": "Professional Evaluation",
+            "text": "Opinions issued by experienced and qualified ophthalmologists."
+          },
+          {
+            "title": "Timely Delivery",
+            "text": "Commitment to deadlines so you have your documents in a timely manner."
+          }
+        ]
+      }
+    }
+  },
+  "blog": {
+    "tag": "Our Blog",
+    "title": "News and Tips",
+    "subtitle": "Stay up-to-date with the latest news and tips on eye health.",
+    "read_more": "Read More",
+    "view_all": "View All Posts",
+    "placeholder_title": "Blog Content Coming Soon!",
+    "placeholder_desc": "We are preparing amazing articles about eye health for you. Check back soon!",
+    "page_title": "Our Blog",
+    "page_subtitle": "Stay up-to-date with the latest news and tips on eye health.",
+    "page_description": "Blog Saraiva Vision: Articles, news, and tips about ophthalmology and eye care.",
+    "placeholder_desc_page": "We are preparing amazing articles about eye health for you. Check back soon for updates!",
+    "post_error_title": "Oops! Article not found.",
+    "post_error_desc": "It seems the article you are looking for does not exist or has been removed. Please check the address or return to the blog page.",
+    "back_to_blog": "Back to Blog"
+  }
+}
