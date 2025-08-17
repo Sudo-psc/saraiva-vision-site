@@ -12,7 +12,8 @@ const Contact = () => {
     name: '',
     email: '',
     phone: '',
-    message: ''
+  message: '',
+  consent: false
   });
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
@@ -22,7 +23,8 @@ const Contact = () => {
     name: (v) => v.trim().length >= 3 || 'Informe pelo menos 3 caracteres.',
     email: (v) => /.+@.+\..+/.test(v) || 'E-mail inválido.',
     phone: (v) => /^(\+?55)?\d{10,13}$/.test(v.replace(/\D/g, '')) || 'Use apenas números com DDD (ex: 33998601427).',
-    message: (v) => v.trim().length >= 10 || 'Mensagem muito curta (mín. 10 caracteres).'
+    message: (v) => v.trim().length >= 10 || 'Mensagem muito curta (mín. 10 caracteres).',
+    consent: (v) => v === true || 'É necessário consentir com o tratamento dos dados.'
   };
 
   // Validate all when data changes on touched fields
@@ -44,8 +46,8 @@ const Contact = () => {
   const chatbotLink = "https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica";
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+  const { name, type, value, checked } = e.target;
+  setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
     if (!touched[name]) setTouched(prev => ({ ...prev, [name]: true }));
   };
 
@@ -76,7 +78,7 @@ const Contact = () => {
         description: t('contact.toast_success_desc'),
         duration: 5000,
       });
-      setFormData({ name: '', email: '', phone: '', message: '' });
+  setFormData({ name: '', email: '', phone: '', message: '', consent: false });
       setTouched({});
       setErrors({});
       setIsSubmitting(false);
@@ -212,6 +214,23 @@ const Contact = () => {
                     aria-describedby={errors.message ? 'error-message' : undefined}
                   ></textarea>
                   {errors.message && <p id="error-message" className="mt-1 text-xs text-red-600">{errors.message}</p>}
+                </div>
+
+                <div className="pt-2">
+                  <label className="inline-flex items-start gap-2 text-xs text-slate-600 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      name="consent"
+                      checked={formData.consent}
+                      onChange={handleChange}
+                      aria-invalid={!!errors.consent}
+                      aria-describedby={errors.consent ? 'error-consent' : undefined}
+                      className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                      required
+                    />
+                    <span dangerouslySetInnerHTML={{ __html: t('privacy.form_consent_html') }} />
+                  </label>
+                  {errors.consent && <p id="error-consent" className="mt-1 text-xs text-red-600">{errors.consent}</p>}
                 </div>
                 
                 <Button disabled={isSubmitting} type="submit" size="lg" className="w-full flex items-center justify-center gap-2 disabled:opacity-60">

@@ -16,6 +16,11 @@ export const clinicInfo = {
   phone: '+5533998601427',
   whatsapp: '+5533998601427',
   email: 'saraivavision@gmail.com',
+  // Responsible physician (CFM compliance)
+  responsiblePhysician: 'Dr. Philipe Saraiva',
+  responsiblePhysicianCRM: 'CRM-MG 12345', // TODO: replace with real CRM
+  // Data Protection Officer contact (LGPD Art.41)
+  dpoEmail: 'dpo@saraivavision.com.br', // TODO: set real DPO email
   latitude: -19.78935,
   longitude: -42.13991,
   servicesKeywords: [
