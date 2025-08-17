@@ -15,7 +15,12 @@ export const clinicInfo = {
   phoneDisplay: '+55 33 99860-1427',
   phone: '+5533998601427',
   whatsapp: '+5533998601427',
-  email: 'saraivavision@gmail.com',
+  email: 'drphilipe.saraiva.oftalmo@gmail.com',
+  // Responsible physician (CFM compliance)
+  responsiblePhysician: 'Dr. Philipe Saraiva',
+  responsiblePhysicianCRM: 'CRM-MG 69.870',
+  // Data Protection Officer contact (LGPD Art.41)
+  dpoEmail: 'drphilipe.saraiva.oftalmo@gmail.com',
   latitude: -19.78935,
   longitude: -42.13991,
   servicesKeywords: [

@@ -192,40 +192,12 @@ logger.error = (msg, options) => {
 // Simple in-memory cache for reviews
 let __reviewsCache;
 
-const reviewsProxyPlugin = () => ({
-	name: 'reviews-proxy',
-	apply: 'serve',
-	configureServer(server) {
-		server.middlewares.use('/api/reviews', async (req, res) => {
-			try {
-				const { VITE_GOOGLE_MAPS_API_KEY: apiKey, VITE_GOOGLE_PLACE_ID: placeId } = server.config.env;
-				res.setHeader('Content-Type', 'application/json');
-				if (!apiKey || !placeId) {
-					res.statusCode = 500;
-					return res.end(JSON.stringify({ error: 'Chave ou Place ID ausente' }));
-				}
-				const now = Date.now();
-				if (__reviewsCache && (now - __reviewsCache.timestamp) < 1000 * 60 * 30) {
-					return res.end(JSON.stringify({ source: 'cache', reviews: __reviewsCache.data }));
-				}
-				const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews&key=${apiKey}`;
-				const response = await fetch(url);
-				const json = await response.json();
-				const reviews = json?.result?.reviews?.slice(0,6).map((r,i)=>({ id:i, author:r.author_name, rating:r.rating, text:r.text })) || [];
-				__reviewsCache = { timestamp: now, data: reviews };
-				return res.end(JSON.stringify({ source: 'live', reviews }));
-			} catch (e) {
-				res.statusCode = 500;
-				return res.end(JSON.stringify({ error: e.message }));
-			}
-		});
-	}
-});
+// Nota: /api/reviews agora servido por função serverless (ver api/reviews.js).
 
 export default defineConfig({
 	customLogger: logger,
 	plugins: [
-		...(isDev ? [inlineEditPlugin(), editModeDevPlugin(), reviewsProxyPlugin()] : []),
+		...(isDev ? [inlineEditPlugin(), editModeDevPlugin()] : []),
 		react(),
 		addTransformIndexHtml
 	],

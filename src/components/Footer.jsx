@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Facebook, Instagram, Linkedin, ArrowUp, MessageCircle } from 'lucide-react';
 import Logo from '@/components/Logo';
+import { clinicInfo } from '@/lib/clinicInfo';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -88,12 +89,23 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-slate-400 text-sm mb-4 md:mb-0">
-            {t('footer.copyright', { year: new Date().getFullYear() })}
-          </p>
-          
-          <div className="flex items-center space-x-4">
+        <div className="border-t border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-start gap-6">
+          <div className="flex-1 space-y-2">
+            <p className="text-slate-400 text-xs leading-snug">
+              <span className="block font-medium text-slate-300">{clinicInfo.responsiblePhysician} • {clinicInfo.responsiblePhysicianCRM}</span>
+              <span className="block">DPO: <a href={`mailto:${clinicInfo.dpoEmail}`} className="underline hover:text-white">{clinicInfo.dpoEmail}</a></span>
+              <span className="block">
+                <a href="/privacy" className="underline hover:text-white mr-3">{t('privacy.link_label')}</a>
+                <button onClick={() => window.dispatchEvent(new Event('open-privacy-settings'))} className="underline hover:text-white">
+                  {t('privacy.manage_cookies')}
+                </button>
+              </span>
+            </p>
+            <p className="text-slate-500 text-xs">{t('privacy.disclaimer')}</p>
+            <p className="text-slate-500 text-xs">{t('cfm.disclaimer')}</p>
+            <p className="text-slate-400 text-xs mt-2">{t('footer.copyright', { year: new Date().getFullYear() })}</p>
+          </div>
+          <div className="flex items-center space-x-4 self-end md:self-auto">
             {socialLinks.map((link, index) => (
               <a key={index} href={link.href} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors">
                 {link.icon}

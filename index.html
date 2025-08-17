@@ -63,25 +63,29 @@
       }
     </script>
 
-  <!-- Google Ads tag -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11120453144"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'AW-11120453144');
-    </script>
-
-  <!-- Google Analytics tag -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LXWRK8ELS6"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-LXWRK8ELS6');
-    </script>
+  <!-- Consent-gated tracking scripts will be injected dynamically after user opt-in -->
+  <script>
+    window.__SV_PENDING_TAGS__ = [
+      { src: 'https://www.googletagmanager.com/gtag/js?id=G-LXWRK8ELS6', type: 'analytics' },
+      { inline: "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config','G-LXWRK8ELS6');", type: 'analytics' },
+      { src: 'https://www.googletagmanager.com/gtag/js?id=AW-11120453144', type: 'marketing' },
+      { inline: "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config','AW-11120453144');", type: 'marketing' }
+    ];
+    window.addEventListener('consent-updated', (e) => {
+      const consent = e.detail;
+      const head = document.head;
+      (window.__SV_PENDING_TAGS__||[]).forEach(tag => {
+        if ((tag.type==='analytics' && consent.analytics) || (tag.type==='marketing' && consent.marketing)) {
+          if (tag.src && !document.querySelector(`script[src='${tag.src}']`)) {
+            const s=document.createElement('script'); s.async=true; s.src=tag.src; head.appendChild(s);
+          }
+          if (tag.inline) {
+            const s=document.createElement('script'); s.text=tag.inline; head.appendChild(s);
+          }
+        }
+      });
+    });
+  </script>
   </head>
   <body>
     <div id="root"></div>

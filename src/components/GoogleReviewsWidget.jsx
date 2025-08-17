@@ -51,7 +51,7 @@ const GoogleReviewsWidget = () => {
       </div>
       {error && <p className="text-xs text-red-600 bg-red-50 border border-red-100 p-2 rounded">{error}</p>}
       {loading && <p className="text-xs text-slate-500">Carregando avaliações...</p>}
-      <ul className="space-y-4">
+  <ul className="space-y-4" aria-live="polite">
         {reviews.map(r => (
           <li key={r.id} className="border border-slate-100 rounded-xl p-4 bg-slate-50">
             <div className="flex items-center gap-2 mb-2">
@@ -62,12 +62,12 @@ const GoogleReviewsWidget = () => {
           </li>
         ))}
       </ul>
-      <div className="text-center">
+    <div className="text-center">
         <a href={googleReviewUrl} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 px-5 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition">
           Avalie-nos no Google
         </a>
       </div>
-  <p className="text-[10px] text-slate-400 text-center mt-2">{error ? 'Mock exibido.' : 'Dados via proxy com cache 30min.'}</p>
+  <p className="text-[10px] text-slate-400 text-center mt-2 leading-snug px-2">{error ? 'Mock exibido.' : 'Avaliações públicas anonimizadas (LGPD / CFM): nomes parcializados e remoção de termos clínicos sensíveis.'}</p>
     </div>
   );
 };

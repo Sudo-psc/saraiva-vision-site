@@ -322,4 +322,37 @@
     "post_error_desc": "It seems the article you are looking for does not exist or has been removed. Please check the address or return to the blog page.",
     "back_to_blog": "Back to Blog"
   }
+  ,
+  "privacy": {
+    "title": "Privacy Policy",
+    "link_label": "Privacy",
+    "manage_cookies": "Manage Cookies",
+    "last_updated": "Updated on {{date}}",
+    "intro": "This policy explains how we process your personal data under the Brazilian LGPD (Law 13.709/2018).",
+    "data_collected_title": "Data Collected",
+    "data_item_contact": "Contact data submitted via forms (name, email, phone).",
+    "data_item_usage": "Technical & usage data (browser, visited pages).",
+    "data_item_cookies": "Consent preferences and functional/analytics/marketing cookies (only if authorized).",
+    "purposes_title": "Purposes of Processing",
+    "purposes_desc": "Customer support, scheduling, service improvement, aggregate metrics, and legitimate communications.",
+    "rights_title": "Your Rights",
+    "rights_desc": "You may request access, correction, anonymization, portability, consent revocation and deletion: contact the DPO.",
+    "consent_title": "Consent",
+    "consent_desc": "We process data based on your explicit consent when required. You can revoke anytime via 'Manage Cookies'.",
+    "dpo_title": "DPO Contact",
+    "dpo_desc": "For rights requests or privacy questions email {{email}}.",
+    "security_title": "Security",
+    "security_desc": "We apply reasonable technical and organizational controls (in‑transit encryption, access restriction).",
+    "retention_title": "Retention",
+    "retention_desc": "We retain data only as long as needed for stated purposes or legal obligations, then delete or anonymize.",
+    "third_parties_title": "Third Parties",
+    "third_parties_desc": "Hosting, analytics and communication providers – only as per disclosed purposes & legal bases.",
+    "updates_title": "Updates",
+    "updates_desc": "We may update this policy; the revision date will always be shown.",
+    "form_consent_html": "I agree with the <a href='/privacy' class='underline'>processing of my data</a> for contact and scheduling.",
+    "disclaimer": "Information provided does not replace individual medical evaluation." 
+  },
+  "cfm": {
+    "disclaimer": "Informational content without promise of outcomes. Consult the responsible physician for personalized assessment."
+  }
 }
