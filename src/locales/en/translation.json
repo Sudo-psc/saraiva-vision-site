@@ -109,8 +109,8 @@
     "chatbot_availability": "Available 24/7",
     "info": {
       "address_title": "Address",
-  "address_details": "Rua Catarina Maria Passos, 97",
-  "address_sub": "Santa Zita, Caratinga - MG (Amor e Saúde Clinic)",
+      "address_details": "Rua Catarina Maria Passos, 97 – Santa Zita",
+      "address_sub": "Caratinga - MG, CEP 35300-299 (Amor e Saúde Clinic)",
       "phone_title": "Phone",
       "phone_whatsapp": "Chat on WhatsApp",
       "email_title": "Email",
@@ -131,8 +131,8 @@
     "quick_links": "Quick Links",
     "services": "Services",
     "contact": "Contact",
-  "address_line1": "Rua Catarina Maria Passos, 97",
-  "address_line2": "Santa Zita, Caratinga - MG",
+  "address_line1": "Rua Catarina Maria Passos, 97 – Santa Zita",
+  "address_line2": "Caratinga - MG, CEP 35300-299 (Amor e Saúde Clinic)",
     "hours": "Mon - Fri: 8am - 6pm",
     "copyright": "© {{year}} Saraiva Vision. All rights reserved.",
     "back_to_top": "Back to top",
@@ -146,17 +146,17 @@
     }
   },
   "homeMeta": {
-    "title": "Saraiva Vision - Excellence in Ophthalmology Clinic",
+    "title": "Saraiva Vision Clinic - Excellence in Ophthalmology",
     "description": "Leading ophthalmology clinic in Caratinga. We offer consultations, exams, and surgeries with advanced technology and humanized care. Schedule your appointment!",
     "keywords": "ophthalmologist, ophthalmology clinic, eye health, eye exams, eye surgery, ophthalmology, Caratinga"
   },
   "serviceMeta": {
-    "title": "{{serviceTitle}} | Saraiva Vision",
+    "title": "{{serviceTitle}} | Saraiva Vision Clinic",
     "description": "Learn more about {{serviceTitleLowercase}} at Saraiva Vision. We offer advanced treatments and diagnoses for your eye health.",
     "keywords": "{{serviceTitleLowercase}}, ophthalmology, eye health, eye clinic"
   },
   "faqMeta": {
-    "title": "FAQ | Saraiva Vision",
+    "title": "FAQ | Saraiva Vision Clinic",
     "description": "Answers to common questions about eye consultations, exams, surgeries and contact lenses.",
     "keywords": "ophthalmology faq, eye exam questions, eye clinic faq, contact lens questions"
   },

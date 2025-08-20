@@ -296,8 +296,8 @@
     "chatbot_availability": "Disponível 24/7",
     "info": {
       "address_title": "Endereço",
-      "address_details": "R. Cel. Antônio da Silva, 645",
-      "address_sub": "Centro, Caratinga - MG, 35300-039",
+      "address_details": "Rua Catarina Maria Passos, 97 – Santa Zita",
+      "address_sub": "Caratinga/MG – CEP 35300-299 (Clínica Amor e Saúde)",
       "phone_title": "Telefone",
       "phone_whatsapp": "Falar no WhatsApp",
       "email_title": "E-mail",
@@ -318,8 +318,8 @@
     "quick_links": "Links Rápidos",
     "services": "Serviços",
     "contact": "Contato",
-    "address_line1": "R. Cel. Antônio da Silva, 645",
-    "address_line2": "Centro, Caratinga - MG",
+    "address_line1": "Rua Catarina Maria Passos, 97 – Santa Zita",
+    "address_line2": "Caratinga/MG – CEP 35300-299 (Clínica Amor e Saúde)",
     "hours": "Seg - Sex: 8h às 18h",
     "copyright": "© {{year}} Saraiva Vision. Todos os direitos reservados.",
     "back_to_top": "Voltar ao topo",
@@ -333,12 +333,12 @@
     }
   },
   "homeMeta": {
-    "title": "Saraiva Vision - Clínica Oftalmológica de Excelência",
+    "title": "Clínica Saraiva Vision - Clínica Oftalmológica de Excelência",
     "description": "Clínica oftalmológica de ponta em Caratinga. Oferecemos consultas, exames e cirurgias com tecnologia avançada e atendimento humanizado. Agende sua consulta!",
     "keywords": "oftalmologista, clínica oftalmológica, saúde ocular, exames de vista, cirurgia ocular, oftalmologia, Caratinga"
   },
   "serviceMeta": {
-    "title": "{{serviceTitle}} | Saraiva Vision",
+    "title": "{{serviceTitle}} | Clínica Saraiva Vision",
     "description": "Saiba mais sobre {{serviceTitleLowercase}} na Saraiva Vision. Oferecemos tratamentos e diagnósticos avançados para sua saúde ocular.",
     "keywords": "{{serviceTitleLowercase}}, oftalmologia, saúde ocular, clínica de olhos"
   },

@@ -4,29 +4,45 @@
 export const CLINIC_PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID || 'PLACE_ID_AQUI';
 
 export const clinicInfo = {
-  name: 'Saraiva Vision Oftalmologia',
-  legalName: 'Saraiva Vision Oftalmologia',
-  streetAddress: 'Av. Moacir de Matos, 150',
-  neighborhood: 'Centro',
+  name: 'Clínica Saraiva Vision',
+  legalName: 'Saraiva Vision Care LTDA',
+  streetAddress: 'Rua Catarina Maria Passos, 97',
+  neighborhood: 'Santa Zita',
   city: 'Caratinga',
   state: 'MG',
-  postalCode: '35300-048',
+  postalCode: '35300-299',
   country: 'BR',
   phoneDisplay: '+55 33 99860-1427',
   phone: '+5533998601427',
   whatsapp: '+5533998601427',
-  email: 'drphilipe.saraiva.oftalmo@gmail.com',
+  email: 'saraivavision@gmail.com',
+  instagram: 'https://www.instagram.com/saraiva_vision/',
+  chatbotUrl: 'https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica',
   // Responsible physician (CFM compliance)
-  responsiblePhysician: 'Dr. Philipe Saraiva',
+  responsiblePhysician: 'Dr. Philipe Saraiva Cruz',
   responsiblePhysicianCRM: 'CRM-MG 69.870',
+  responsibleNurse: 'Ana Lúcia',
+  responsibleNursePhone: '+55 33 98420-7437',
   // Data Protection Officer contact (LGPD Art.41)
-  dpoEmail: 'drphilipe.saraiva.oftalmo@gmail.com',
-  latitude: -19.78935,
-  longitude: -42.13991,
+  dpoEmail: 'saraivavision@gmail.com',
+  taxId: '53.864.119/0001-79',
+  foundingDate: '2024-02-08',
+  latitude: -19.7868,
+  longitude: -42.1392,
   servicesKeywords: [
-    'Oftalmologista em Caratinga',
-    'Clínica oftalmológica Caratinga',
-    'Exame de vista Caratinga MG'
+    'consultas oftalmológicas',
+    'exames de refração',
+    'adaptação de lentes de contato',
+    'exames de campo visual',
+    'paquimetria',
+    'mapeamento de retina',
+    'biometria',
+    'gonioscopia',
+    'retinografia',
+    'topografia corneana',
+    'meibografia',
+    'teste de Jones',
+    'teste de Schirmer'
   ]
 };
 
