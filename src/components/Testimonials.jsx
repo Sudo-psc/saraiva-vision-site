@@ -137,17 +137,17 @@ const Testimonials = ({ limit }) => {
                   variant="ghost"
                   size="icon"
                   onClick={prevSlide}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white shadow-md"
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white hover:bg-blue-700 shadow-md"
                   aria-label={t('testimonials.previous')}
                 >
                   <ChevronLeft size={20} />
                 </Button>
-                
+
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={nextSlide}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white shadow-md"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white hover:bg-blue-700 shadow-md"
                   aria-label={t('testimonials.next')}
                 >
                   <ChevronRight size={20} />

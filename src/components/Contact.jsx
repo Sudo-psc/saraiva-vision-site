@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -160,7 +160,7 @@ const Contact = () => {
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1.5">
-                    {t('contact.name_label')}
+                    {t('contact.name_label')} <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
                   <input
                     type="text" id="name" name="name" value={formData.name} onChange={handleChange} required
@@ -175,7 +175,7 @@ const Contact = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">
-                      {t('contact.email_label')}
+                      {t('contact.email_label')} <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <input
                       type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
@@ -189,7 +189,7 @@ const Contact = () => {
                   
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-1.5">
-                      {t('contact.phone_label')}
+                      {t('contact.phone_label')} <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <input
                       type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required
@@ -204,7 +204,7 @@ const Contact = () => {
                 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-1.5">
-                    {t('contact.message_label')}
+                    {t('contact.message_label')} <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
                   <textarea
                     id="message" name="message" value={formData.message} onChange={handleChange} required rows="4"
@@ -217,7 +217,7 @@ const Contact = () => {
                 </div>
 
                 <div className="pt-2">
-                  <label className="inline-flex items-start gap-2 text-xs text-slate-600 cursor-pointer">
+                  <label className="inline-flex items-start gap-2 text-xs text-blue-800 bg-blue-50 border border-blue-200 p-3 rounded-md cursor-pointer">
                     <input
                       type="checkbox"
                       name="consent"
@@ -228,6 +228,7 @@ const Contact = () => {
                       className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                       required
                     />
+                    <Lock size={14} className="mt-0.5 text-blue-600" />
                     <span dangerouslySetInnerHTML={{ __html: t('privacy.form_consent_html') }} />
                   </label>
                   {errors.consent && <p id="error-consent" className="mt-1 text-xs text-red-600">{errors.consent}</p>}
