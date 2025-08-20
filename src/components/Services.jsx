@@ -122,17 +122,7 @@ const Services = () => {
           ))}
         </motion.div>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-16 text-center"
-        >
-          <Button size="lg" variant="cta" onClick={handleAgendarClick}>
-            {t('services.schedule_button')}
-          </Button>
-        </motion.div>
+        {/* Consolidated CTA moved to Navbar/FloatingCTA to reduce repetition */}
       </div>
     </section>
   );
