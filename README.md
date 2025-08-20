@@ -1,2 +1,2 @@
 # saraiva-vision-site
-Site institucional Saraiva Vision Oftalmologia (React + Vite + Tailwind)
+Site institucional da Clínica Saraiva Vision (React + Vite + Tailwind)

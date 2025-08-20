@@ -93,6 +93,8 @@ const Footer = () => {
           <div className="flex-1 space-y-2">
             <p className="text-slate-400 text-xs leading-snug">
               <span className="block font-medium text-slate-300">{clinicInfo.responsiblePhysician} • {clinicInfo.responsiblePhysicianCRM}</span>
+              <span className="block">{clinicInfo.responsibleNurse} • {clinicInfo.responsibleNursePhone}</span>
+              <span className="block">CNPJ: {clinicInfo.taxId}</span>
               <span className="block">DPO: <a href={`mailto:${clinicInfo.dpoEmail}`} className="underline hover:text-white">{clinicInfo.dpoEmail}</a></span>
               <span className="block">
                 <a href="/privacy" className="underline hover:text-white mr-3">{t('privacy.link_label')}</a>
