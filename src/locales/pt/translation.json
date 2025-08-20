@@ -230,7 +230,9 @@
   },
   "contactLenses": {
     "title": "Especializados em Lentes de Contato",
-    "description": "Oferecemos uma solução completa para usuários de lentes de contato, desde a prescrição até a adaptação.",
+    "description": "Oferecemos uma solução completa para usuários de lentes de contato, desde a prescrição até a adaptação personalizada.",
+    "adaptation": "Realizamos o processo de adaptação de lentes de forma segura e personalizada, garantindo conforto e saúde ocular.",
+    "brands": "Trabalhamos com lentes gelatinosas e rígidas gás permeáveis da Sólotica, além das lentes gelatinosas Bioview.",
     "button": "Saiba Mais",
     "types": {
       "soft": {

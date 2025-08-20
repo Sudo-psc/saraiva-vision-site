@@ -44,6 +44,14 @@ const ContactLenses = () => {
               {t('contactLenses.description')}
             </p>
 
+            <p>
+              {t('contactLenses.adaptation')}
+            </p>
+
+            <p>
+              {t('contactLenses.brands')}
+            </p>
+
             <div className="mb-8">
               <a href="https://lentesdecontato.saraivavision.com.br/" target="_blank" rel="noopener noreferrer">
                 <Button size="lg" className="gap-2">
