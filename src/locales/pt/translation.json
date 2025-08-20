@@ -459,4 +459,37 @@
       }
     }
   }
+  ,
+  "privacy": {
+    "title": "Política de Privacidade",
+    "link_label": "Privacidade",
+    "manage_cookies": "Gerenciar Cookies",
+    "last_updated": "Atualizada em {{date}}",
+    "intro": "Esta política descreve como tratamos seus dados pessoais conforme a LGPD (Lei 13.709/2018).",
+    "data_collected_title": "Dados Coletados",
+    "data_item_contact": "Dados de contato enviados via formulários (nome, e-mail, telefone).",
+    "data_item_usage": "Dados técnicos e de uso (navegador, páginas visitadas).",
+    "data_item_cookies": "Preferências de consentimento e cookies funcionais/analíticos/marketing (apenas se autorizados).",
+    "purposes_title": "Finalidades do Tratamento",
+    "purposes_desc": "Atendimento, agendamento, melhoria dos serviços, métricas agregadas e comunicações legitimadas.",
+    "rights_title": "Seus Direitos",
+    "rights_desc": "Você pode solicitar acesso, correção, anonimização, portabilidade, revogação de consentimento e exclusão: contate o Encarregado (DPO).",
+    "consent_title": "Consentimento",
+    "consent_desc": "Processamos dados com base no seu consentimento explícito quando necessário. Você pode revogar a qualquer momento em 'Gerenciar Cookies'.",
+    "dpo_title": "Contato do Encarregado (DPO)",
+    "dpo_desc": "Para exercer direitos ou dúvidas de privacidade, escreva para {{email}}.",
+    "security_title": "Segurança",
+    "security_desc": "Adotamos controles técnicos e organizacionais razoáveis (criptografia em trânsito, restrição de acesso).",
+    "retention_title": "Retenção",
+    "retention_desc": "Mantemos dados apenas pelo tempo necessário às finalidades ou exigências legais e então descartamos ou anonimizamos.",
+    "third_parties_title": "Compartilhamento com Terceiros",
+    "third_parties_desc": "Serviços de hospedagem, provedores analíticos e comunicação – somente conforme finalidades e bases legais informadas.",
+    "updates_title": "Atualizações",
+    "updates_desc": "Podemos atualizar esta política. A data de revisão estará sempre indicada.",
+    "form_consent_html": "Eu concordo com o <a href='/privacy' class='underline'>tratamento dos meus dados</a> para contato e agendamento.",
+    "disclaimer": "As informações aqui não substituem avaliação médica individual." 
+  },
+  "cfm": {
+    "disclaimer": "Conteúdo informativo sem promessa de resultados. Consulte o médico responsável para avaliação personalizada."
+  }
 }

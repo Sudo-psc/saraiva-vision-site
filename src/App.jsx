@@ -6,8 +6,10 @@ const HomePage = lazy(() => import('@/pages/HomePage'));
 const ServiceDetailPage = lazy(() => import('@/pages/ServiceDetailPage'));
 const TestimonialsPage = lazy(() => import('@/pages/TestimonialsPage'));
 const LensesPage = lazy(() => import('@/pages/LensesPage'));
+const PrivacyPolicyPage = lazy(() => import('@/pages/PrivacyPolicyPage'));
 import ScrollToTop from '@/components/ScrollToTop';
 import { Toaster } from '@/components/ui/toaster';
+import ConsentManager from '@/components/ConsentManager';
 
 function App() {
   const { i18n } = useTranslation();
@@ -25,9 +27,11 @@ function App() {
           <Route path="/servico/:serviceId" element={<ServiceDetailPage />} />
           <Route path="/depoimentos" element={<TestimonialsPage />} />
           <Route path="/lentes" element={<LensesPage />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
         </Routes>
       </Suspense>
       <Toaster />
+  <ConsentManager />
     </>
   );
 }

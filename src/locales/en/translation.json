@@ -5,7 +5,8 @@
     "about": "About Us",
     "testimonials": "Testimonials",
     "contact": "Contact",
-    "blog": "Blog",
+    "faq": "FAQ",
+    "lenses": "Lenses",
     "schedule": "Schedule",
     "close_menu": "Close Menu",
     "open_menu": "Open Menu",
@@ -20,6 +21,27 @@
     "patients_served": "<0>Over 5,000 patients</0> served with satisfaction",
     "advanced_tech_title": "Advanced Technology",
     "advanced_tech_desc": "State-of-the-art equipment for accurate diagnoses."
+  },
+  "accessibility": {
+    "toggle": "Open accessibility menu",
+    "title": "Accessibility",
+    "close": "Close",
+    "fontSize": {
+      "label": "Font Size",
+      "normal": "Normal",
+      "large": "Large",
+      "extra-large": "Extra Large"
+    },
+    "contrast": {
+      "label": "Contrast",
+      "normal": "Normal",
+      "high": "High",
+      "dark": "Dark"
+    },
+    "readingMode": {
+      "on": "Reading Mode",
+      "off": "Exit Reading Mode"
+    }
   },
   "services": {
     "title": "Our Services",
@@ -62,66 +84,10 @@
         "title": "Soft Lenses",
         "features": [
           "Comfortable for daily use",
-          "Wide variety of options",
-          "Easy adaptation"
-        ]
-      },
-      "rigid": {
-        "title": "Rigid Gas Permeable Lenses",
-        "features": [
-          "Excellent visual acuity",
-          "Correct high astigmatism",
-          "More durable"
-        ]
-      },
-      "multifocal": {
-        "title": "Multifocal Lenses",
-        "features": [
-          "Vision for all distances",
-          "Convenience and freedom",
-          "Personalized adaptation"
+          "Wide variety of options"
         ]
       }
-    },
-    "bioview_alt": "Bioview contact lens packaging"
-  },
-  "about": {
-    "tag": "About Us",
-    "title": "Dedicated to Excellence in Every Detail",
-    "p1": "Saraiva Vision was born from the dream of offering high-quality ophthalmological care, combining advanced technology with a human and personalized approach.",
-    "p2": "Our mission is to provide accurate diagnoses and effective treatments, always prioritizing the well-being and satisfaction of our patients.",
-    "features": [
-      "Modern Infrastructure",
-      "Qualified Professionals",
-      "Humanized Care",
-      "Commitment to Results"
-    ],
-    "alt1": "Modern ophthalmology office",
-    "alt2": "Ophthalmologist performing an eye exam",
-    "alt3": "Patient smiling satisfied after consultation",
-    "alt4": "Advanced ophthalmological equipment"
-  },
-  "testimonials": {
-    "title": "What Our Patients Say",
-    "subtitle": "The trust and satisfaction of our patients are our greatest achievements.",
-    "patient": "Patient",
-    "reviews": [
-      {
-        "name": "Maria S.",
-        "content": "Excellent service! Dr. Philipe is very attentive and competent. I felt very safe during the entire process.",
-        "image_alt": "Photo of patient Maria S."
-      },
-      {
-        "name": "João P.",
-        "content": "The clinic has state-of-the-art equipment. I was very impressed with the quality of the exams and the detailed explanation.",
-        "image_alt": "Photo of patient João P."
-      },
-      {
-        "name": "Ana L.",
-        "content": "I highly recommend Saraiva Vision. The entire team is very friendly and professional. My cataract surgery was a success!",
-        "image_alt": "Photo of patient Ana L."
-      }
-    ]
+    }
   },
   "contact": {
     "title": "Get in Touch",
@@ -141,8 +107,8 @@
     "chatbot_availability": "Available 24/7",
     "info": {
       "address_title": "Address",
-      "address_details": "R. Cel. Antônio da Silva, 645",
-      "address_sub": "Centro, Caratinga - MG, 35300-039",
+  "address_details": "Rua Catarina Maria Passos, 97",
+  "address_sub": "Santa Zita, Caratinga - MG (Amor e Saúde Clinic)",
       "phone_title": "Phone",
       "phone_whatsapp": "Chat on WhatsApp",
       "email_title": "Email",
@@ -163,8 +129,8 @@
     "quick_links": "Quick Links",
     "services": "Services",
     "contact": "Contact",
-    "address_line1": "R. Cel. Antônio da Silva, 645",
-    "address_line2": "Centro, Caratinga - MG",
+  "address_line1": "Rua Catarina Maria Passos, 97",
+  "address_line2": "Santa Zita, Caratinga - MG",
     "hours": "Mon - Fri: 8am - 6pm",
     "copyright": "© {{year}} Saraiva Vision. All rights reserved.",
     "back_to_top": "Back to top",
@@ -186,6 +152,16 @@
     "title": "{{serviceTitle}} | Saraiva Vision",
     "description": "Learn more about {{serviceTitleLowercase}} at Saraiva Vision. We offer advanced treatments and diagnoses for your eye health.",
     "keywords": "{{serviceTitleLowercase}}, ophthalmology, eye health, eye clinic"
+  },
+  "faqMeta": {
+    "title": "FAQ | Saraiva Vision",
+    "description": "Answers to common questions about eye consultations, exams, surgeries and contact lenses.",
+    "keywords": "ophthalmology faq, eye exam questions, eye clinic faq, contact lens questions"
+  },
+  "lensesMeta": {
+    "title": "Contact Lenses | Safe Adaptation | Saraiva Vision",
+    "description": "Types, adaptation guidance and care best practices for safe contact lens use.",
+    "keywords": "contact lenses adaptation, contact lens care, eye clinic lenses"
   },
   "serviceDetail": {
     "back_link": "Back to Services",
@@ -306,20 +282,36 @@
       }
     }
   },
-  "blog": {
-    "tag": "Our Blog",
-    "title": "News and Tips",
-    "subtitle": "Stay up-to-date with the latest news and tips on eye health.",
-    "read_more": "Read More",
-    "view_all": "View All Posts",
-    "placeholder_title": "Blog Content Coming Soon!",
-    "placeholder_desc": "We are preparing amazing articles about eye health for you. Check back soon!",
-    "page_title": "Our Blog",
-    "page_subtitle": "Stay up-to-date with the latest news and tips on eye health.",
-    "page_description": "Blog Saraiva Vision: Articles, news, and tips about ophthalmology and eye care.",
-    "placeholder_desc_page": "We are preparing amazing articles about eye health for you. Check back soon for updates!",
-    "post_error_title": "Oops! Article not found.",
-    "post_error_desc": "It seems the article you are looking for does not exist or has been removed. Please check the address or return to the blog page.",
-    "back_to_blog": "Back to Blog"
+  "privacy": {
+    "title": "Privacy Policy",
+    "link_label": "Privacy",
+    "manage_cookies": "Manage Cookies",
+    "last_updated": "Updated on {{date}}",
+    "intro": "This policy explains how we process your personal data under the Brazilian LGPD (Law 13.709/2018).",
+    "data_collected_title": "Data Collected",
+    "data_item_contact": "Contact data submitted via forms (name, email, phone).",
+    "data_item_usage": "Technical & usage data (browser, visited pages).",
+    "data_item_cookies": "Consent preferences and functional/analytics/marketing cookies (only if authorized).",
+    "purposes_title": "Purposes of Processing",
+    "purposes_desc": "Customer support, scheduling, service improvement, aggregate metrics, and legitimate communications.",
+    "rights_title": "Your Rights",
+    "rights_desc": "You may request access, correction, anonymization, portability, consent revocation and deletion: contact the DPO.",
+    "consent_title": "Consent",
+    "consent_desc": "We process data based on your explicit consent when required. You can revoke anytime via 'Manage Cookies'.",
+    "dpo_title": "DPO Contact",
+    "dpo_desc": "For rights requests or privacy questions email {{email}}.",
+    "security_title": "Security",
+    "security_desc": "We apply reasonable technical and organizational controls (in‑transit encryption, access restriction).",
+    "retention_title": "Retention",
+    "retention_desc": "We retain data only as long as needed for stated purposes or legal obligations, then delete or anonymize.",
+    "third_parties_title": "Third Parties",
+    "third_parties_desc": "Hosting, analytics and communication providers – only as per disclosed purposes & legal bases.",
+    "updates_title": "Updates",
+    "updates_desc": "We may update this policy; the revision date will always be shown.",
+    "form_consent_html": "I agree with the <a href='/privacy' class='underline'>processing of my data</a> for contact and scheduling.",
+    "disclaimer": "Information provided does not replace individual medical evaluation." 
+  },
+  "cfm": {
+    "disclaimer": "Informational content without promise of outcomes. Consult the responsible physician for personalized assessment."
   }
 }
