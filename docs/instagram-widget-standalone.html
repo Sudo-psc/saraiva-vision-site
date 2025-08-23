@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget Instagram - Saraiva Vision</title>
+    <link rel="preconnect" href="https://cdn.lightwidget.com" crossorigin>
+    <link rel="preconnect" href="https://lightwidget.com" crossorigin>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8fafc;
+        }
+        
+        /* Instagram Widget Styles */
+        .instagram-widget {
+            padding: 4rem 0;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .instagram-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 3rem;
+            color: #1e293b;
+        }
+
+        .instagram-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+            max-width: 800px;
+        }
+
+        /* Skeleton Loading */
+        .skeleton-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .skeleton-item {
+            aspect-ratio: 1;
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Fallback Grid */
+        .fallback-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .fallback-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s;
+            display: block;
+            text-decoration: none;
+        }
+
+        .fallback-item:hover {
+            transform: scale(1.05);
+        }
+
+        .fallback-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .fallback-item:hover .overlay {
+            opacity: 1;
+        }
+
+        /* CTAs */
+        .fallback-cta {
+            text-align: center;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .instagram-button, .whatsapp-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .instagram-button {
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            color: white;
+        }
+
+        .whatsapp-button {
+            background: #25d366;
+            color: white;
+        }
+
+        .instagram-button:hover, .whatsapp-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Compliance */
+        .compliance-text {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Consentimento */
+        .consent-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1e293b;
+            color: white;
+            padding: 1rem;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .consent-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        
+        .consent-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .instagram-widget {
+                padding: 2rem 0;
+            }
+            
+            .instagram-title {
+                font-size: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            .instagram-container {
+                padding: 1rem;
+            }
+            
+            .fallback-cta {
+                flex-direction: column;
+            }
+            
+            .consent-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner de Consentimento Demo -->
+    <div class="consent-banner" id="consent-banner">
+        <div class="consent-content">
+            <div>
+                <p><strong>Cookies e Privacidade:</strong> Usamos cookies para melhorar sua experiência. Para ver nosso Instagram, aceite cookies de marketing.</p>
+            </div>
+            <div class="consent-buttons">
+                <button class="btn btn-secondary" onclick="setConsent(false)">Apenas Essenciais</button>
+                <button class="btn btn-primary" onclick="setConsent(true)">Aceitar Todos</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instagram Widget -->
+    <section class="instagram-widget" id="instagram-section" aria-label="Instagram institucional – Saraiva Vision">
+        <div class="container">
+            <h2 class="instagram-title">Instagram institucional – Saraiva Vision</h2>
+            
+            <!-- Container com altura fixa para evitar CLS -->
+            <div class="instagram-container" style="min-height: 400px;">
+                <!-- Skeleton loading -->
+                <div class="instagram-skeleton" id="instagram-skeleton">
+                    <div class="skeleton-grid">
+                        <div class="skeleton-item"></div>
+                        <div class="skeleton-item"></div>
+                        <div class="skeleton-item"></div>
+                        <div class="skeleton-item"></div>
+                        <div class="skeleton-item"></div>
+                        <div class="skeleton-item"></div>
+                        <div class="skeleton-item"></div>
+                        <div class="skeleton-item"></div>
+                        <div class="skeleton-item"></div>
+                    </div>
+                </div>
+                
+                <!-- Widget placeholder -->
+                <div class="lightwidget-widget" 
+                     data-username="saraiva_vision"
+                     data-items="9"
+                     data-layout="grid"
+                     data-columns="3"
+                     data-spacing="8"
+                     data-border-radius="8"
+                     data-show-captions="true"
+                     data-caption-length="120"
+                     style="display: none;">
+                </div>
+                
+                <!-- Fallback estático -->
+                <div class="instagram-fallback" id="instagram-fallback" style="display: none;">
+                    <div class="fallback-grid">
+                        <a href="https://www.instagram.com/saraiva_vision/?utm_source=site&utm_medium=widget_instagram&utm_campaign=institucional" 
+                           target="_blank" rel="noopener noreferrer" class="fallback-item">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDMwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjE1MCIgcj0iNDAiIGZpbGw9IiNlMTE5ODciIGZpbGwtb3BhY2l0eT0iMC4yIi8+Cjx0ZXh0IHg9IjE1MCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2MzYzNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIwLjNlbSI+U2FyYWl2YSBWaXNpb248L3RleHQ+Cjwvc3ZnPgo=" 
+                                 alt="Publicação do Instagram – Saraiva Vision" loading="lazy" decoding="async">
+                            <div class="overlay">
+                                <span>Ver no Instagram</span>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.instagram.com/saraiva_vision/?utm_source=site&utm_medium=widget_instagram&utm_campaign=institucional" 
+                           target="_blank" rel="noopener noreferrer" class="fallback-item">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDMwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjE1MCIgcj0iNDAiIGZpbGw9IiMzZjgzZjQiIGZpbGwtb3BhY2l0eT0iMC4yIi8+Cjx0ZXh0IHg9IjE1MCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2MzYzNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIwLjNlbSI+VGVjbm9sb2dpYSBBdmFuw6dhZGE8L3RleHQ+Cjwvc3ZnPgo=" 
+                                 alt="Publicação do Instagram – Tecnologia" loading="lazy" decoding="async">
+                            <div class="overlay">
+                                <span>Ver no Instagram</span>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.instagram.com/saraiva_vision/?utm_source=site&utm_medium=widget_instagram&utm_campaign=institucional" 
+                           target="_blank" rel="noopener noreferrer" class="fallback-item">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDMwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjE1MCIgcj0iNDAiIGZpbGw9IiMxMGI5ODEiIGZpbGwtb3BhY2l0eT0iMC4yIi8+Cjx0ZXh0IHg9IjE1MCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2MzYzNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIwLjNlbSI+QXRlbmRpbWVudG8gSHVtYW5pemFkbzwvdGV4dD4KPC9zdmc+Cg==" 
+                                 alt="Publicação do Instagram – Atendimento" loading="lazy" decoding="async">
+                            <div class="overlay">
+                                <span>Ver no Instagram</span>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.instagram.com/saraiva_vision/?utm_source=site&utm_medium=widget_instagram&utm_campaign=institucional" 
+                           target="_blank" rel="noopener noreferrer" class="fallback-item">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDMwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjE1MCIgcj0iNDAiIGZpbGw9IiNmNTllMGIiIGZpbGwtb3BhY2l0eT0iMC4yIi8+Cjx0ZXh0IHg9IjE1MCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2MzYzNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIwLjNlbSI+RXhhbWVzIEVzcGVjaWFsaXphZG9zPC90ZXh0Pgo8L3N2Zz4K" 
+                                 alt="Publicação do Instagram – Exames" loading="lazy" decoding="async">
+                            <div class="overlay">
+                                <span>Ver no Instagram</span>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.instagram.com/saraiva_vision/?utm_source=site&utm_medium=widget_instagram&utm_campaign=institucional" 
+                           target="_blank" rel="noopener noreferrer" class="fallback-item">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDMwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjE1MCIgcj0iNDAiIGZpbGw9IiM4YjVjZjYiIGZpbGwtb3BhY2l0eT0iMC4yIi8+Cjx0ZXh0IHg9IjE1MCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2MzYzNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIwLjNlbSI+Q2lydXJnaWFzIEF2YW7Dp2FkYXM8L3RleHQ+Cjwvc3ZnPgo=" 
+                                 alt="Publicação do Instagram – Cirurgias" loading="lazy" decoding="async">
+                            <div class="overlay">
+                                <span>Ver no Instagram</span>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.instagram.com/saraiva_vision/?utm_source=site&utm_medium=widget_instagram&utm_campaign=institucional" 
+                           target="_blank" rel="noopener noreferrer" class="fallback-item">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDMwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjE1MCIgcj0iNDAiIGZpbGw9IiNlZjQ0NDQiIGZpbGwtb3BhY2l0eT0iMC4yIi8+Cjx0ZXh0IHg9IjE1MCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2MzYzNzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIwLjNlbSI+TGVudGVzIGRlIENvbnRhdG88L3RleHQ+Cjwvc3ZnPgo=" 
+                                 alt="Publicação do Instagram – Lentes" loading="lazy" decoding="async">
+                            <div class="overlay">
+                                <span>Ver no Instagram</span>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="fallback-cta">
+                        <a href="https://www.instagram.com/saraiva_vision/?utm_source=site&utm_medium=widget_instagram&utm_campaign=institucional" 
+                           target="_blank" rel="noopener noreferrer" class="instagram-button">
+                            📷 Ver no Instagram
+                        </a>
+                        <a href="https://wa.me/5533998601427?text=Olá!%20Vi%20o%20Instagram%20de%20vocês%20e%20gostaria%20de%20agendar%20uma%20consulta.&utm_source=site&utm_medium=widget_instagram&utm_campaign=institucional" 
+                           target="_blank" rel="noopener noreferrer" class="whatsapp-button">
+                            💬 Agendar consulta
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Compliance CFM/LGPD -->
+            <p class="compliance-text">
+                Conteúdo informativo. Consulte um MÉDICO (CRM-MG 69.870) para avaliação individualizada.
+            </p>
+        </div>
+        
+        <!-- Noscript fallback -->
+        <noscript>
+            <div class="container">
+                <p>Para ver nosso feed do Instagram, habilite o JavaScript ou 
+                   <a href="https://www.instagram.com/saraiva_vision/" target="_blank" rel="noopener noreferrer">visite nosso perfil</a>.
+                </p>
+            </div>
+        </noscript>
+    </section>
+
+    <script>
+        // Sistema de consentimento demo
+        function hasConsent(type) {
+            try {
+                const consent = localStorage.getItem('cookie-consent');
+                if (!consent) return false;
+                const parsed = JSON.parse(consent);
+                return parsed[type] === true;
+            } catch {
+                return false;
+            }
+        }
+        
+        function setConsent(marketing) {
+            const consent = {
+                necessary: true,
+                marketing: marketing,
+                analytics: marketing
+            };
+            localStorage.setItem('cookie-consent', JSON.stringify(consent));
+            document.getElementById('consent-banner').style.display = 'none';
+            
+            if (marketing) {
+                // Recarregar widget se consentimento for dado
+                location.reload();
+            }
+        }
+        
+        // Mostrar banner se não houver consentimento
+        if (!localStorage.getItem('cookie-consent')) {
+            document.getElementById('consent-banner').style.display = 'block';
+        }
+        
+        // Instagram Widget JavaScript
+        (function() {
+            'use strict';
+            
+            // Preconnect para domínios do LightWidget
+            function addPreconnects() {
+                const domains = [
+                    'https://cdn.lightwidget.com',
+                    'https://lightwidget.com'
+                ];
+                
+                domains.forEach(href => {
+                    const link = document.createElement('link');
+                    link.rel = 'preconnect';
+                    link.href = href;
+                    link.crossOrigin = 'anonymous';
+                    document.head.appendChild(link);
+                });
+            }
+            
+            // Carregar LightWidget
+            function loadLightWidget() {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.lightwidget.com/widgets/lightwidget.js';
+                script.async = true;
+                script.defer = true;
+                
+                script.onload = function() {
+                    const skeleton = document.getElementById('instagram-skeleton');
+                    const widget = document.querySelector('.lightwidget-widget');
+                    
+                    if (skeleton) skeleton.style.display = 'none';
+                    if (widget) widget.style.display = 'block';
+                    
+                    // Inicializar LightWidget
+                    if (window.lightwidget) {
+                        window.lightwidget.init();
+                    }
+                };
+                
+                script.onerror = function() {
+                    console.warn('Instagram widget: Falha ao carregar LightWidget');
+                    showFallback();
+                };
+                
+                document.head.appendChild(script);
+            }
+            
+            // Mostrar fallback
+            function showFallback() {
+                const skeleton = document.getElementById('instagram-skeleton');
+                const fallback = document.getElementById('instagram-fallback');
+                
+                if (skeleton) skeleton.style.display = 'none';
+                if (fallback) fallback.style.display = 'block';
+            }
+            
+            // IntersectionObserver para lazy loading
+            function initLazyLoading() {
+                const section = document.getElementById('instagram-section');
+                if (!section) return;
+                
+                const observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            // Verificar consentimento
+                            if (!hasConsent('marketing')) {
+                                console.warn('Instagram widget: Consentimento de marketing necessário');
+                                showFallback();
+                                return;
+                            }
+                            
+                            addPreconnects();
+                            
+                            // Carregar widget após delay para performance
+                            setTimeout(function() {
+                                loadLightWidget();
+                            }, 100);
+                            
+                            // Fallback após 3 segundos
+                            setTimeout(function() {
+                                const skeleton = document.getElementById('instagram-skeleton');
+                                if (skeleton && skeleton.style.display !== 'none') {
+                                    showFallback();
+                                }
+                            }, 3000);
+                            
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                
+                observer.observe(section);
+            }
+            
+            // Inicializar quando DOM estiver pronto
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initLazyLoading);
+            } else {
+                initLazyLoading();
+            }
+        })();
+    </script>
+</body>
+</html>

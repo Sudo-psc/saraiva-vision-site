@@ -10,6 +10,8 @@ const PrivacyPolicyPage = lazy(() => import('@/pages/PrivacyPolicyPage'));
 import ScrollToTop from '@/components/ScrollToTop';
 import { Toaster } from '@/components/ui/toaster';
 import ConsentManager from '@/components/ConsentManager';
+import ExitIntentPopup from '@/components/ExitIntentPopup';
+// import ExitPopupTester from '@/components/ExitPopupTester';
 
 function App() {
   const { i18n } = useTranslation();
@@ -31,7 +33,8 @@ function App() {
         </Routes>
       </Suspense>
       <Toaster />
-  <ConsentManager />
+      <ConsentManager />
+      <ExitIntentPopup />
     </>
   );
 }

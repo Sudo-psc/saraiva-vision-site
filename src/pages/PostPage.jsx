@@ -100,7 +100,7 @@ const PostPage = ({ wordpressUrl }) => {
             </Link>
 
             <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
-            
+
             <div className="flex items-center text-gray-500 space-x-6 mb-10 pb-10 border-b">
               <div className="flex items-center">
                 <Calendar className="w-5 h-5 mr-2" />

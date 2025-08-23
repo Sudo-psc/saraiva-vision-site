@@ -1,0 +1,28 @@
+{
+  "name": "Saraiva Vision - Clínica Oftalmológica",
+  "short_name": "Saraiva Vision",
+  "description": "Clínica oftalmológica especializada em Caratinga/MG. Consultas, exames e lentes de contato.",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "theme_color": "#0057B7",
+  "background_color": "#ffffff",
+  "display": "minimal-ui",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/?source=pwa",
+  "categories": ["medical", "health", "business"],
+  "lang": "pt-BR",
+  "dir": "ltr"
+}

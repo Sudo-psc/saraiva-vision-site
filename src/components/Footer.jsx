@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Facebook, Instagram, Linkedin, ArrowUp, MessageCircle } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, ArrowUp, MessageCircle, Bot } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { clinicInfo } from '@/lib/clinicInfo';
 
@@ -16,6 +16,7 @@ const Footer = () => {
 
   const phoneNumber = "5533998601427";
   const whatsappLink = `https://wa.me/${phoneNumber}`;
+  const chatbotUrl = "https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica?model=gpt-4o";
   const amorSaudeLogo = "https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/66c6d707b457395f0aaf159d826531ef.png";
 
   const navLinks = [
@@ -65,7 +66,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {Object.values(serviceLinks).map((serviceName, index) => (
                 <li key={index}>
-                  <a href="#" className="hover:text-white transition-colors">{serviceName}</a>
+                  <a href="#services" className="hover:text-white transition-colors">{serviceName}</a>
                 </li>
               ))}
             </ul>
@@ -82,6 +83,11 @@ const Footer = () => {
               <li>
                 <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
                   <MessageCircle size={16} /> +55 33 99860-1427
+                </a>
+              </li>
+              <li>
+                <a href={chatbotUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
+                  <Bot size={16} /> {t('contact.chatbot_title')}
                 </a>
               </li>
               <li>{t('footer.hours')}</li>

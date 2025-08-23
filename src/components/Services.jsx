@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 const Services = () => {
   const { t } = useTranslation();
 
-  const serviceItems = [
+  const serviceItems = useMemo(() => [
     {
       id: 'consultas-oftalmologicas',
       icon: <Eye className="h-8 w-8 text-icon-consultas" />,
@@ -45,7 +45,7 @@ const Services = () => {
       title: t('services.items.reports.title'),
       description: t('services.items.reports.description')
     }
-  ];
+  ], [t]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -66,9 +66,9 @@ const Services = () => {
     }
   };
 
-  const handleAgendarClick = () => {
+  const handleAgendarClick = useCallback(() => {
     window.dispatchEvent(new Event('open-floating-cta'));
-  };
+  }, []);
 
   return (
     <section id="services" className="bg-subtle-gradient">

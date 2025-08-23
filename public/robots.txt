@@ -1,0 +1,43 @@
+# robots.txt otimizado para Saraiva Vision
+# Permitindo acesso aos recursos essenciais para renderização
+
+User-agent: *
+Allow: /
+
+# Permitir explicitamente recursos críticos
+Allow: /assets/
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.webp
+Allow: /*.svg
+Allow: /*.woff
+Allow: /*.woff2
+
+# Bloquear áreas administrativas e arquivos sensíveis
+Disallow: /admin/
+Disallow: /api/
+Disallow: /.env
+Disallow: /logs/
+Disallow: /tmp/
+Disallow: /*?*
+Disallow: /busca
+Disallow: /search
+Disallow: /*?whatsapp=*
+
+# Permitir bots de redes sociais
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Localização do sitemap
+Sitemap: https://saraivavision.com.br/sitemap.xml
+
+# Crawl-delay para preservar performance
+Crawl-delay: 1

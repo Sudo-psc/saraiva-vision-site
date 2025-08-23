@@ -1,7 +1,7 @@
 // Centralized clinic information to keep consistency with Google Business Profile.
 // TODO: Replace placeholder values with exact data from Google Business dashboard.
 
-export const CLINIC_PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID || 'PLACE_ID_AQUI';
+export const CLINIC_PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID || 'ChIJVUKww7WRugARF7u2lAe7BeE';
 
 export const clinicInfo = {
   name: 'Clínica Saraiva Vision',
@@ -18,6 +18,7 @@ export const clinicInfo = {
   email: 'saraivavision@gmail.com',
   instagram: 'https://www.instagram.com/saraiva_vision/',
   chatbotUrl: 'https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica',
+  onlineSchedulingUrl: 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613',
   // Responsible physician (CFM compliance)
   responsiblePhysician: 'Dr. Philipe Saraiva Cruz',
   responsiblePhysicianCRM: 'CRM-MG 69.870',
@@ -30,19 +31,7 @@ export const clinicInfo = {
   latitude: -19.7868,
   longitude: -42.1392,
   servicesKeywords: [
-    'consultas oftalmológicas',
-    'exames de refração',
-    'adaptação de lentes de contato',
-    'exames de campo visual',
-    'paquimetria',
-    'mapeamento de retina',
-    'biometria',
-    'gonioscopia',
-    'retinografia',
-    'topografia corneana',
-    'meibografia',
-    'teste de Jones',
-    'teste de Schirmer'
+    // Services list has been cleared as requested
   ]
 };
 

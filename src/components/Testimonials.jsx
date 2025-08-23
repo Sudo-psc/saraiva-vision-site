@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { PERFORMANCE } from '@/lib/constants';
 
 const Testimonials = ({ limit }) => {
   const { t } = useTranslation();
@@ -11,49 +12,52 @@ const Testimonials = ({ limit }) => {
   
   const testimonialsData = t('testimonials.reviews', { returnObjects: true });
 
-  const images = [
+  const images = useMemo(() => [
     'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
     'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
     'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
     'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
     'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
-  ];
+  ], []);
 
-  const testimonials = Array.isArray(testimonialsData) 
-    ? testimonialsData.map((testimonial, index) => ({
-        ...testimonial,
-        image: images[index % images.length],
-        rating: 5,
-        role: t('testimonials.patient'),
-        id: index
-      }))
-    : [];
+  const testimonials = useMemo(() => 
+    Array.isArray(testimonialsData) 
+      ? testimonialsData.map((testimonial, index) => ({
+          ...testimonial,
+          image: images[index % images.length],
+          rating: 5,
+          role: t('testimonials.patient'),
+          id: index
+        }))
+      : [],
+    [testimonialsData, images, t]
+  );
 
   // Auto-play functionality
   useEffect(() => {
     if (isAutoPlaying && testimonials.length > 1) {
       const interval = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % testimonials.length);
-      }, 5000);
+      }, PERFORMANCE.AUTO_SLIDE_INTERVAL);
       return () => clearInterval(interval);
     }
   }, [isAutoPlaying, testimonials.length]);
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % testimonials.length);
     setIsAutoPlaying(false);
-  };
+  }, [testimonials.length]);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev - 1 + testimonials.length) % testimonials.length);
     setIsAutoPlaying(false);
-  };
+  }, [testimonials.length]);
 
-  const goToSlide = (index) => {
+  const goToSlide = useCallback((index) => {
     setCurrentSlide(index);
     setIsAutoPlaying(false);
-  };
+  }, []);
 
   if (testimonials.length === 0) return null;
 

@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
-import { useTranslation } from 'react-i18next';
+import SEOHead from '@/components/SEOHead';
+import { useHomeSEO } from '@/hooks/useSEO';
 import { Toaster } from '@/components/ui/toaster';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
 import ContactLenses from '@/components/ContactLenses';
 import About from '@/components/About';
-import TrustSignals from '@/components/TrustSignals';
 import Testimonials from '@/components/Testimonials';
 import BlogSection from '@/components/BlogSection';
 import FAQ from '@/components/FAQ';
@@ -21,7 +20,7 @@ import GoogleLocalSection from '@/components/GoogleLocalSection';
 
 function HomePage() {
   const location = useLocation();
-  const { t } = useTranslation();
+  const seoData = useHomeSEO();
 
   useEffect(() => {
     if (location.hash) {
@@ -34,43 +33,30 @@ function HomePage() {
     }
   }, [location]);
 
-  const pageTitle = t('homeMeta.title');
-  const metaDescription = t('homeMeta.description');
-  const metaKeywords = t('homeMeta.keywords');
-
   return (
     <div className="min-h-screen bg-white">
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={metaDescription} />
-        <meta name="keywords" content={metaKeywords} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={metaDescription} />
-        <meta property="twitter:title" content={pageTitle} />
-        <meta property="twitter:description" content={metaDescription} />
-      </Helmet>
+      <SEOHead {...seoData} />
       <Toaster />
       <Navbar />
       
       <main>
         <Hero />
         <Services />
+        {/* Testimonials moved up to build trust early */}
+        <Testimonials limit={3} />
+        <About />
         {/* Teaser: move detailed lenses to /lentes to reduce scroll depth */}
-        <section id="lentes-teaser" className="bg-white py-12">
+        <section id="lentes-teaser" className="bg-white py-12 md:py-16">
           <div className="container mx-auto px-4 md:px-6 text-center">
-            <h2 className="text-3xl font-bold mb-4">Lentes de Contato</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto mb-6">Descubra os tipos ideais para seu conforto e saúde ocular.</p>
-            <a href="/lentes" className="text-blue-600 font-medium hover:underline">Ver detalhes</a>
+            <h2 className="text-3xl font-bold mb-6">Lentes de Contato</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto mb-8">Descubra os tipos ideais para seu conforto e saúde ocular.</p>
+            <a href="/lentes" className="text-blue-600 font-medium hover:underline text-lg">Ver detalhes</a>
           </div>
         </section>
-        <About />
-        <TrustSignals />
-        {/* Testimonials limited to 3 on homepage */}
-        <Testimonials limit={3} />
-        <BlogSection />
         <FAQ />
-  <Contact />
-  <GoogleLocalSection />
+        <Contact />
+        <GoogleLocalSection />
+        <BlogSection />
       </main>
       
   <Footer />

@@ -1,13 +1,19 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { clinicInfo } from '@/lib/clinicInfo';
+import SEOHead from '@/components/SEOHead';
+import { usePrivacyPolicySEO } from '@/hooks/useSEO';
 
 // Placeholder privacy policy (expand via legal review)
 const PrivacyPolicyPage = () => {
   const { t } = useTranslation();
+  const seoData = usePrivacyPolicySEO();
+  
   return (
-    <main className="container mx-auto px-4 md:px-6 py-16 prose max-w-3xl">
-      <h1>{t('privacy.title')}</h1>
+    <>
+      <SEOHead {...seoData} />
+      <main className="container mx-auto px-4 md:px-6 py-16 prose max-w-3xl">
+        <h1>{t('privacy.title')}</h1>
       <p className="text-sm text-slate-500">{t('privacy.last_updated', { date: new Date().toISOString().slice(0,10) })}</p>
       <p>{t('privacy.intro')}</p>
       <h2>{t('privacy.data_collected_title')}</h2>
@@ -32,7 +38,8 @@ const PrivacyPolicyPage = () => {
       <p>{t('privacy.third_parties_desc')}</p>
       <h2>{t('privacy.updates_title')}</h2>
       <p>{t('privacy.updates_desc')}</p>
-    </main>
+      </main>
+    </>
   );
 };
 

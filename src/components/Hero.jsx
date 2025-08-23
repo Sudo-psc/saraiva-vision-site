@@ -2,17 +2,21 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Calendar, ArrowRight, Eye } from 'lucide-react';
+import { Calendar, ArrowRight, Eye, Globe } from 'lucide-react';
+import { clinicInfo } from '@/lib/clinicInfo';
+import SafeImage from '@/components/ui/SafeImage';
+import { useWhatsApp } from '@/hooks/useWhatsApp';
 
 const Hero = () => {
   const { t } = useTranslation();
-  const whatsappNumber = "5533998601427";
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Olá! Gostaria de agendar uma consulta.")}`;
+  const { openFloatingCTA } = useWhatsApp();
 
   const handleAgendarClick = () => {
-    // Dispatch custom event so FloatingCTA modal opens (single funnel)
-    window.dispatchEvent(new Event('open-floating-cta'));
+    // Open online scheduling directly
+    window.open(clinicInfo.onlineSchedulingUrl, '_blank', 'noopener,noreferrer');
   };
+
+  const handleAgendarContato = openFloatingCTA;
 
   const handleNossosServicosClick = () => {
     document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
@@ -62,12 +66,13 @@ const Hero = () => {
             {/* Micro-roadmap copy below hero primary actions */}
             <p className="text-sm text-slate-500 mt-2 font-medium" aria-live="polite">
               Preencha seus dados e receba confirmação em 1 minuto. 100% seguro.
+              <button onClick={handleAgendarContato} className="ml-2 text-blue-600 hover:underline">Outras formas de contato</button>
             </p>
             
             <div className="flex items-center gap-4 pt-6 justify-center lg:justify-start">
               <div className="flex -space-x-4">
-                <img className="w-12 h-12 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" width="48" height="48" alt="Paciente satisfeito 1" />
-                <img className="w-12 h-12 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" width="48" height="48" alt="Paciente satisfeito 2" />
+                <SafeImage className="w-12 h-12 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" width="48" height="48" alt="Paciente satisfeito 1" />
+                <SafeImage className="w-12 h-12 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" width="48" height="48" alt="Paciente satisfeito 2" />
                 <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold border-2 border-white">
                   +5k
                 </div>
@@ -87,19 +92,17 @@ const Hero = () => {
             className="relative"
           >
             <div className="relative z-10 rounded-3xl overflow-hidden shadow-soft-medium">
-              <picture>
-                <source type="image/webp" srcSet="https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png?format=webp" />
-                <img
-                  loading="eager"
-                  fetchpriority="high"
-                  decoding="async"
-                  width="800"
-                  height="640"
-                  className="w-full h-auto"
-                  alt="Médico oftalmologista sorrindo para a câmera em uma clínica moderna"
-                  src="https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png"
-                />
-              </picture>
+              <SafeImage
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+                width="800"
+                height="640"
+                className="w-full h-auto"
+                alt="Médico oftalmologista sorrindo para a câmera em uma clínica moderna"
+                src="https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png?format=webp"
+                fallbackSrc="https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png"
+              />
             </div>
             
             <motion.div

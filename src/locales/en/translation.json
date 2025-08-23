@@ -8,6 +8,7 @@
     "faq": "FAQ",
     "lenses": "Lenses",
     "schedule": "Schedule",
+    "schedule_online": "Schedule Online",
     "close_menu": "Close Menu",
     "open_menu": "Open Menu",
     "schedule_consultation": "Schedule Consultation"
@@ -76,20 +77,136 @@
     }
   },
   "contactLenses": {
-    "title": "Specialized in Contact Lenses",
-    "description": "We offer a complete solution for contact lens users, from prescription to personalized adaptation.",
-    "adaptation": "We carry out the lens adaptation process safely and personally, ensuring comfort and eye health.",
-    "brands": "We work with soft and rigid gas permeable lenses from Sólotica, as well as soft lenses from Bioview.",
+    "main_title": "Contact Lenses",
+    "main_subtitle": "Specialists in contact lens fitting with advanced technology and personalized care for your perfect vision.",
+    "title": "Contact Lens Adaptation Specialists",
+    "subtitle": "Complete solutions from prescription to personalized fitting",
+    "description": "We offer comprehensive contact lens services, from initial consultation to ongoing follow-up care, ensuring optimal comfort and eye health.",
+    "adaptation": "Our personalized fitting process prioritizes safety and comfort, with thorough evaluations and gradual adaptation protocols.",
+    "brands": "We work with premium brands including Sólotica (soft and rigid gas permeable lenses) and Bioview (soft lenses).",
+    "safety_title": "Safety & Hygiene Protocol",
+    "safety_desc": "All fittings follow strict hygiene protocols with sterilized equipment and comprehensive eye health evaluations.",
+    "process_title": "Our Adaptation Process",
     "button": "Learn More",
+    "schedule_button": "Schedule Lens Consultation",
+    "whatsapp_button": "Ask Questions on WhatsApp",
+    "process_steps": [
+      {
+        "title": "Initial Evaluation",
+        "description": "Complete eye exam and lifestyle assessment to determine the best lens type for you."
+      },
+      {
+        "title": "Lens Fitting",
+        "description": "Precise measurements and trial fitting with different lens options."
+      },
+      {
+        "title": "Adaptation Training",
+        "description": "Comprehensive training on insertion, removal, and proper care techniques."
+      },
+      {
+        "title": "Follow-up Care",
+        "description": "Regular check-ups to ensure optimal comfort and eye health."
+      }
+    ],
     "types": {
       "soft": {
         "title": "Soft Lenses",
+        "subtitle": "Comfortable daily wear",
         "features": [
-          "Comfortable for daily use",
-          "Wide variety of options"
+          "Immediate comfort for daily use",
+          "Wide variety of prescriptions",
+          "Easy adaptation process",
+          "Suitable for active lifestyles"
+        ]
+      },
+      "rigid": {
+        "title": "Rigid Gas Permeable",
+        "subtitle": "Superior vision quality",
+        "features": [
+          "Excellent visual acuity",
+          "Corrects high astigmatism",
+          "Longer lasting and durable",
+          "Better oxygen transmission"
+        ]
+      },
+      "multifocal": {
+        "title": "Multifocal Lenses",
+        "subtitle": "Freedom at all distances",
+        "features": [
+          "Clear vision at all distances",
+          "Convenience and freedom",
+          "Personalized adaptation",
+          "Reduces dependence on reading glasses"
         ]
       }
-    }
+    },
+    "faq_title": "Frequently Asked Questions",
+    "faq_items": [
+      {
+        "question": "How long does the adaptation process take?",
+        "answer": "Most patients adapt within 1-2 weeks with gradual daily wear increase."
+      },
+      {
+        "question": "Are contact lenses safe for daily use?",
+        "answer": "Yes, when properly fitted and cared for, contact lenses are very safe."
+      },
+      {
+        "question": "Can I wear lenses if I have astigmatism?",
+        "answer": "Absolutely! We offer specialized toric and rigid lenses for astigmatism correction."
+      }
+    ],
+    "bioview_alt": "Bioview contact lens package",
+    "trust_badges": {
+      "experience": "15+ Years Experience",
+      "patients": "1000+ Successful Adaptations",
+      "safety": "100% Sterile Procedures",
+      "brands": "Authorized Premium Brands"
+    },
+    "brands_section": {
+      "title": "Premium Brands Available",
+      "subtitle": "We work only with the most reliable and innovative brands in the market"
+    },
+    "brands": {
+      "acuvue": {
+        "description": "World leader in contact lenses, offering advanced technology for maximum comfort.",
+        "specialty": "Daily and bi-weekly lenses",
+        "features": [
+          "UV Protection",
+          "Natural Hydration",
+          "HYDRACLEAR Technology"
+        ]
+      },
+      "solotica": {
+        "description": "Award-winning Brazilian brand specialized in high-quality colored lenses.",
+        "specialty": "Colored and prescription lenses",
+        "features": [
+          "Natural Colors",
+          "Extended Comfort",
+          "Variety of Tones"
+        ]
+      },
+      "bioview": {
+        "description": "Innovative Brazilian technology focused on biocompatibility and comfort.",
+        "specialty": "Premium soft lenses",
+        "features": [
+          "Hydrophilic Material",
+          "Deposit Resistance",
+          "Easy Handling"
+        ]
+      }
+    },
+    "hero_badge": "Adaptation Specialists",
+    "types_section": {
+      "title": "Available Lens Types",
+      "subtitle": "Each type meets specific needs to provide the best visual experience"
+    },
+    "process_subtitle": "A careful and personalized process to ensure the best results",
+    "safety_features": [
+      "Sterilized equipment",
+      "Complete eye health evaluation",
+      "Personalized follow-up",
+      "Detailed usage instructions"
+    ]
   },
   "contact": {
     "title": "Get in Touch",
@@ -104,9 +221,13 @@
     "message_label": "Message",
     "message_placeholder": "Write your message here...",
     "send_button": "Send Message",
-    "chatbot_title": "Chat with our AI Assistant!",
-    "chatbot_desc": "Get instant answers to common questions about our services and scheduling.",
-    "chatbot_availability": "Available 24/7",
+    "online_scheduling_title": "Online Scheduling",
+    "online_scheduling_desc": "Schedule your appointment directly through the web platform",
+    "online_scheduling_benefit": "Automatic confirmation",
+    "chatbot_title": "AI Assistant 24/7",
+    "chatbot_desc": "Ask questions about ophthalmology and procedures instantly",
+    "chatbot_availability": "Available 24 hours a day",
+    "chatbot_cta": "Chat with AI Assistant",
     "info": {
       "address_title": "Address",
       "address_details": "Rua Catarina Maria Passos, 97 – Santa Zita",
@@ -131,8 +252,8 @@
     "quick_links": "Quick Links",
     "services": "Services",
     "contact": "Contact",
-  "address_line1": "Rua Catarina Maria Passos, 97 – Santa Zita",
-  "address_line2": "Caratinga - MG, CEP 35300-299 (Amor e Saúde Clinic)",
+    "address_line1": "Rua Catarina Maria Passos, 97 – Santa Zita",
+    "address_line2": "Caratinga - MG, CEP 35300-299 (Amor e Saúde Clinic)",
     "hours": "Mon - Fri: 8am - 6pm",
     "copyright": "© {{year}} Saraiva Vision. All rights reserved.",
     "back_to_top": "Back to top",
@@ -146,14 +267,81 @@
     }
   },
   "homeMeta": {
-    "title": "Saraiva Vision Clinic - Excellence in Ophthalmology",
-    "description": "Leading ophthalmology clinic in Caratinga. We offer consultations, exams, and surgeries with advanced technology and humanized care. Schedule your appointment!",
-    "keywords": "ophthalmologist, ophthalmology clinic, eye health, eye exams, eye surgery, ophthalmology, Caratinga"
+    "title": "🏥 Ophthalmologist Caratinga | Saraiva Vision Clinic | CRM-MG 69.870",
+    "description": "🔹 Saraiva Vision Ophthalmology Clinic in Caratinga/MG: 🔍 eye exams, 👁️ contact lens fitting, 🏥 specialized consultations. 📞 Schedule now!",
+    "keywords": "ophthalmologist Caratinga Brazil, eye clinic Caratinga MG, eye exam Caratinga, contact lenses Caratinga, Dr Philipe Saraiva, CRM-MG 69870, ophthalmology consultation"
   },
   "serviceMeta": {
     "title": "{{serviceTitle}} | Saraiva Vision Clinic",
     "description": "Learn more about {{serviceTitleLowercase}} at Saraiva Vision. We offer advanced treatments and diagnoses for your eye health.",
     "keywords": "{{serviceTitleLowercase}}, ophthalmology, eye health, eye clinic"
+  },
+  "faq": {
+    "badge": "Frequently Asked Questions",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Get answers about eye health in Caratinga: contact lenses, ophthalmological reports, glaucoma, insurance coverage and pediatric consultations.",
+    "search": {
+      "placeholder": "Search question...",
+      "noResults": "No questions found for your search."
+    },
+    "cta": {
+      "text": "Didn't find your answer?",
+      "button": "Contact Us"
+    },
+    "questions": {
+      "consultation": {
+        "question": "How to schedule an appointment?",
+        "answer": "You can schedule via WhatsApp, phone or through our website. We operate Monday to Friday from 8am to 6pm and Saturdays from 8am to 12pm."
+      },
+      "services": {
+        "question": "What services do you offer?",
+        "answer": "We offer complete ophthalmological consultations, refraction exams, specialized treatments, surgeries, pediatric follow-up and specialized reports."
+      },
+      "insurance": {
+        "question": "Does Saraiva Vision accept health insurance?",
+        "answer": "Yes. Saraiva Vision Ophthalmology in Caratinga accepts various health insurance plans, in addition to private consultations. Patients can confirm with the administrative team which health plans have coverage for consultations, exams and ophthalmological procedures. Insurance coverage facilitates access to preventive exams and treatments, reducing costs for patients. If your plan doesn't cover certain procedures, the clinic also offers accessible options for private care, always maintaining the standard of quality and safety in vision care."
+      },
+      "preparation": {
+        "question": "How to prepare for the consultation?",
+        "answer": "Bring your current glasses, previous exam reports and list of medications in use. Some exams may require pupil dilation."
+      },
+      "location": {
+        "question": "Where are you located?",
+        "answer": "We are located in downtown Caratinga, with easy access and parking available."
+      },
+      "emergency": {
+        "question": "Do you handle ophthalmological emergencies?",
+        "answer": "Yes, we handle ophthalmological emergencies. Contact us via WhatsApp or phone for priority care."
+      },
+      "technology": {
+        "question": "What technologies do you use?",
+        "answer": "We use state-of-the-art equipment for precise diagnoses and effective treatments, including OCT, perimetry and surgical microscope."
+      },
+      "followup": {
+        "question": "How does post-consultation follow-up work?",
+        "answer": "We offer continuous follow-up with scheduled returns and WhatsApp support for treatment-related questions."
+      },
+      "lenses_cost": {
+        "question": "How much does contact lens fitting cost in Caratinga?",
+        "answer": "The cost of contact lens fitting in Caratinga varies according to the type of lens (soft, rigid or special for keratoconus), case complexity and included exams. At Saraiva Vision, the process involves ophthalmological consultation, fitting tests and initial follow-up to ensure comfort and clear vision. The cost is affordable and proportional to the safety offered, as proper fitting prevents complications like infections or eye discomfort. Investing in adequate fitting ensures visual health and long-term well-being."
+      },
+      "pediatric_age": {
+        "question": "What's the ideal age to take a child to an ophthalmologist?",
+        "answer": "The first ophthalmological consultation should occur in the first year of life, around 6 months. Then, a new evaluation is recommended at 3 years and before literacy. In Caratinga, many parents seek Saraiva Vision to ensure their children don't have vision problems that could harm learning. Symptoms like getting too close to TV, frequently rubbing eyes or having difficulty seeing the blackboard are warning signs. Early detection prevents strabismus, amblyopia and refractive errors."
+      },
+      "medical_report": {
+        "question": "How does the ophthalmological report exam work?",
+        "answer": "The ophthalmological report exam in Caratinga performed by Saraiva Vision follows rigorous technical criteria. It includes visual acuity, ocular motility assessment, color vision test, tonometry and fundus examination when necessary. The report is issued the same day, with legal validity and medical signature (CRM), being accepted by agencies like DETRAN, public tenders and admission processes. This document provides legal and clinical safety, confirming the patient's visual fitness for professional or licensing activities."
+      },
+      "glaucoma_treatment": {
+        "question": "How long does glaucoma treatment take?",
+        "answer": "Glaucoma treatment is continuous, as there is no definitive cure. The goal is to control intraocular pressure and preserve the optic nerve, preventing vision loss. Follow-up time depends on disease stage and treatment response, which may include eye drops, laser or surgery. At Saraiva Vision, each patient receives an individualized protocol with periodic consultations and optic nerve monitoring. Success depends on discipline in medication use and regular medical follow-up throughout life."
+      },
+      "vision_symptoms": {
+        "question": "What symptoms indicate vision problems?",
+        "answer": "Main symptoms of vision problems include: blurred vision, eye pain, difficulty reading up close or seeing far, redness, light sensitivity and frequent headaches. In children, signs include poor school performance, constant stumbling and excessive screen proximity. At Saraiva Vision, complete exams can identify from myopia, hyperopia and astigmatism to more serious diseases like glaucoma and cataracts. Seeking early care is fundamental to preserve vision and ensure quality of life."
+      }
+    }
   },
   "faqMeta": {
     "title": "FAQ | Saraiva Vision Clinic",
@@ -161,9 +349,9 @@
     "keywords": "ophthalmology faq, eye exam questions, eye clinic faq, contact lens questions"
   },
   "lensesMeta": {
-    "title": "Contact Lenses | Safe Adaptation | Saraiva Vision",
-    "description": "Types, adaptation guidance and care best practices for safe contact lens use.",
-    "keywords": "contact lenses adaptation, contact lens care, eye clinic lenses"
+    "title": "👁️ Contact Lenses Caratinga | Professional Fitting | Saraiva Vision",
+    "description": "🔍 Professional contact lens fitting in Caratinga: Sólotica, Bioview, rigid lenses. ⭐ Specialized consultation CRM-MG 69.870. 📞 Schedule!",
+    "keywords": "contact lenses Caratinga Brazil, contact lens fitting Caratinga MG, Solotica lenses Caratinga, Bioview lenses, ophthalmologist contact lenses, rigid lenses Caratinga, lens consultation"
   },
   "serviceDetail": {
     "back_link": "Back to Services",
@@ -311,9 +499,61 @@
     "updates_title": "Updates",
     "updates_desc": "We may update this policy; the revision date will always be shown.",
     "form_consent_html": "I agree with the <a href='/privacy' class='underline'>processing of my data</a> for contact and scheduling.",
-    "disclaimer": "Information provided does not replace individual medical evaluation." 
+    "disclaimer": "Information provided does not replace individual medical evaluation."
   },
   "cfm": {
     "disclaimer": "Informational content without promise of outcomes. Consult the responsible physician for personalized assessment."
+  },
+  "testimonialsMeta": {
+    "title": "⭐ Patient Testimonials | Saraiva Vision Clinic Caratinga",
+    "description": "📝 Read real testimonials from Saraiva Vision Clinic patients in Caratinga. ⭐ Verified reviews about our ophthalmology services. 👁️ CRM-MG 69.870",
+    "keywords": "Saraiva Vision testimonials, ophthalmology clinic reviews Caratinga, patient testimonials ophthalmology, Dr Philipe Saraiva reviews, patient satisfaction Caratinga Brazil"
+  },
+  "privacyMeta": {
+    "title": "📋 Privacy Policy | Saraiva Vision | LGPD Compliance",
+    "description": "📄 Saraiva Vision Clinic Privacy Policy according to LGPD. 🔒 How we protect your personal data and medical information in Caratinga/MG Brazil.",
+    "keywords": "Saraiva Vision privacy policy, LGPD ophthalmology clinic, medical data protection, patient privacy Caratinga Brazil"
+  },
+  "reviews": {
+    "title": "Google Reviews",
+    "refresh": "Refresh",
+    "writeReview": "Review",
+    "rateUs": "Rate us on Google",
+    "loading": "Loading reviews...",
+    "apiError": "API error - showing sample reviews",
+    "noData": "No data - showing sample reviews",
+    "networkError": "Connection error - showing sample reviews",
+    "rating": "Rating: {{rating}} stars",
+    "mockDisclaimer": "Sample reviews displayed.",
+    "privacyDisclaimer": "Public reviews anonymized (LGPD / CFM): partial names and removal of sensitive clinical terms.",
+    "mockAuthor1": "Patient A",
+    "mockAuthor2": "Patient B",
+    "mockAuthor3": "Patient C",
+    "mockText1": "Excellent and fast service!",
+    "mockText2": "Very attentive staff and modern facilities.",
+    "mockText3": "Great experience, highly recommend."
+  },
+  "exitPopup": {
+    "title": "Don't Leave Yet!",
+    "subtitle": "Exclusive offer for you",
+    "timeLeft": "Time remaining",
+    "exclusive": "🎁 Exclusive Offer",
+    "discount": "Discount",
+    "description": "On your first ophthalmology consultation at Saraiva Vision! Take advantage of this unique opportunity.",
+    "codeLabel": "Your exclusive discount code:",
+    "revealCode": "🎯 Reveal My Code",
+    "codeInstructions": "Write down this code and use it when booking",
+    "benefits": {
+      "title": "What's included",
+      "list": [
+        "Complete consultation with ophthalmologist",
+        "Detailed refraction exam",
+        "Assessment with modern equipment",
+        "Personalized guidance"
+      ]
+    },
+    "whatsappButton": "📱 Schedule on WhatsApp",
+    "phoneButton": "📞 Call Now",
+    "disclaimer": "Offer valid only for new patients. Not cumulative with other promotions. Subject to appointment availability."
   }
 }

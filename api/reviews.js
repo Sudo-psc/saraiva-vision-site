@@ -56,31 +56,64 @@ export default async function handler(req, res) {
     res.setHeader('Allow', 'GET');
     return res.status(405).json({ error: 'Method not allowed' });
   }
-  const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+  
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY || process.env.GOOGLE_PLACES_API_KEY;
   const placeId = process.env.GOOGLE_PLACE_ID || process.env.VITE_GOOGLE_PLACE_ID; // fallback
+  
+  // More detailed logging for debugging
+  console.log('Google Reviews API - Environment check:');
+  console.log('- API Key exists:', !!apiKey);
+  console.log('- Place ID exists:', !!placeId);
+  console.log('- Place ID value:', placeId);
+  
   if (!apiKey || !placeId) {
-    return res.status(500).json({ error: 'Missing server credentials' });
+    console.error('Missing Google Places API configuration');
+    return res.status(500).json({ 
+      error: 'Missing server credentials',
+      details: {
+        hasApiKey: !!apiKey,
+        hasPlaceId: !!placeId
+      }
+    });
   }
   try {
     const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews,rating,user_ratings_total&key=${apiKey}`;
+    console.log('Fetching Google Places data...');
+    
     const response = await fetch(url);
     const json = await response.json();
+    
+    console.log('Google Places API response status:', json.status);
+    
     if (json.status !== 'OK') {
-      return res.status(502).json({ error: 'Upstream error', status: json.status });
+      console.error('Google Places API error:', json.status, json.error_message);
+      return res.status(502).json({ 
+        error: 'Google Places API error', 
+        status: json.status,
+        message: json.error_message
+      });
     }
-    const rawReviews = (json.result.reviews || []).slice(0, 6);
+    const rawReviews = (json.result?.reviews || []).slice(0, 6);
     const reviews = rawReviews.map(sanitizeReview);
+    
+    console.log(`Successfully processed ${reviews.length} reviews`);
 
     res.setHeader('Cache-Control', 'public, max-age=900'); // 15 min
     res.setHeader('X-Data-Policy', 'anonymized');
     res.status(200).json({
       source: 'google-places',
-      total: json.result.user_ratings_total || reviews.length,
-      rating: json.result.rating || null,
+      total: json.result?.user_ratings_total || reviews.length,
+      rating: json.result?.rating || null,
       reviews,
-      disclaimer: 'Avaliações públicas do Google, nomes parcialmente anonimizados e conteúdos filtrados para privacidade.'
+      disclaimer: 'Avaliações públicas do Google, nomes parcialmente anonimizados e conteúdos filtrados para privacidade.',
+      timestamp: new Date().toISOString()
     });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    console.error('Google Reviews API error:', e.message);
+    res.status(500).json({ 
+      error: 'Internal server error',
+      message: e.message,
+      timestamp: new Date().toISOString()
+    });
   }
 }

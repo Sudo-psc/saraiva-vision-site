@@ -2,11 +2,13 @@
   "navbar": {
     "home": "Início",
     "services": "Serviços",
+    "lenses": "Lentes",
     "about": "Sobre Nós",
     "testimonials": "Depoimentos",
     "contact": "Contato",
     "blog": "Blog",
     "schedule": "Agendar",
+    "schedule_online": "Agendar Online",
     "close_menu": "Fechar Menu",
     "open_menu": "Abrir Menu",
     "schedule_consultation": "Agendar Consulta"
@@ -46,11 +48,6 @@
     "badge": "Confiança e Qualidade",
     "title": "Por que escolher a Saraiva Vision?",
     "subtitle": "Nossa reputação é construída sobre anos de excelência, tecnologia avançada e cuidado genuíno com nossos pacientes.",
-    "certifications": {
-      "title": "Certificações",
-      "description": "Reconhecidos pelos principais órgãos de saúde",
-      "sectionTitle": "Nossas Certificações"
-    },
     "awards": {
       "title": "Prêmios",
       "description": "Reconhecimento pela excelência em oftalmologia"
@@ -62,18 +59,6 @@
     "experience": {
       "title": "15+ Anos",
       "description": "De experiência em saúde ocular"
-    },
-    "crm": {
-      "description": "Conselho Regional de Medicina"
-    },
-    "cbo": {
-      "description": "Conselho Brasileiro de Oftalmologia"
-    },
-    "iso": {
-      "description": "Certificação de Qualidade"
-    },
-    "anvisa": {
-      "description": "Agência Nacional de Vigilância Sanitária"
     },
     "partnerships": {
       "sectionTitle": "Nossos Parceiros"
@@ -87,7 +72,7 @@
   "faq": {
     "badge": "Dúvidas Frequentes",
     "title": "Perguntas Frequentes",
-    "subtitle": "Encontre respostas para as principais dúvidas sobre nossos serviços e tratamentos oftalmológicos.",
+    "subtitle": "Tire suas dúvidas sobre saúde ocular em Caratinga: lentes de contato, laudo oftalmológico, glaucoma, convênios e consultas infantis.",
     "search": {
       "placeholder": "Buscar pergunta...",
       "noResults": "Nenhuma pergunta encontrada para sua busca."
@@ -106,8 +91,8 @@
         "answer": "Oferecemos consultas oftalmológicas completas, exames de refração, tratamentos especializados, cirurgias, acompanhamento pediátrico e laudos especializados."
       },
       "insurance": {
-        "question": "Aceitam convênios médicos?",
-        "answer": "Sim, trabalhamos com diversos convênios. Entre em contato para verificar se o seu plano está credenciado conosco."
+        "question": "A Saraiva Vision atende convênios?",
+        "answer": "Sim. A Saraiva Vision Oftalmologia em Caratinga atende diversos convênios médicos, além de consultas particulares. O paciente pode confirmar com a equipe administrativa quais planos de saúde possuem cobertura para consultas, exames e procedimentos oftalmológicos. O atendimento via convênio facilita o acesso a exames preventivos e tratamentos, reduzindo custos para o paciente. Caso seu plano não cubra determinados procedimentos, a clínica também oferece opções acessíveis em atendimento particular, mantendo sempre o padrão de qualidade e segurança no cuidado com a visão."
       },
       "preparation": {
         "question": "Como me preparar para a consulta?",
@@ -115,7 +100,7 @@
       },
       "location": {
         "question": "Onde vocês estão localizados?",
-        "answer": "Estamos localizados no centro de Governador Valadares, com fácil acesso e estacionamento disponível."
+        "answer": "Estamos localizados no centro de Caratinga, com fácil acesso e estacionamento disponível."
       },
       "emergency": {
         "question": "Atendem emergências oftalmológicas?",
@@ -128,6 +113,26 @@
       "followup": {
         "question": "Como funciona o acompanhamento pós-consulta?",
         "answer": "Oferecemos acompanhamento contínuo com retornos programados e suporte via WhatsApp para dúvidas sobre tratamentos."
+      },
+      "lenses_cost": {
+        "question": "Quanto custa uma adaptação de lentes de contato em Caratinga?",
+        "answer": "O valor da adaptação de lentes de contato em Caratinga varia de acordo com o tipo de lente (gelatinosa, rígida ou especial para ceratocone), a complexidade do caso e os exames incluídos. Na Saraiva Vision, o processo envolve consulta oftalmológica, testes de adaptação e acompanhamento inicial para garantir conforto e visão nítida. O custo é acessível e proporcional à segurança oferecida, já que a adaptação correta evita complicações como infecções ou desconforto ocular. Investir na adaptação adequada garante saúde visual e bem-estar a longo prazo."
+      },
+      "pediatric_age": {
+        "question": "Qual a idade ideal para levar a criança ao oftalmologista?",
+        "answer": "A primeira consulta oftalmológica deve ocorrer ainda no primeiro ano de vida, por volta dos 6 meses. Depois, recomenda-se nova avaliação aos 3 anos e antes da alfabetização. Em Caratinga, muitos pais procuram a Saraiva Vision para garantir que seus filhos não apresentem problemas de visão que prejudiquem o aprendizado. Sintomas como aproximar-se demais da TV, coçar os olhos com frequência ou ter dificuldade para enxergar a lousa são sinais de alerta. A detecção precoce previne estrabismo, ambliopia e erros refrativos."
+      },
+      "medical_report": {
+        "question": "Como funciona o exame para laudo oftalmológico?",
+        "answer": "O exame para laudo oftalmológico em Caratinga realizado pela Saraiva Vision segue rigorosos critérios técnicos. Inclui acuidade visual, avaliação da motilidade ocular, teste de visão de cores, tonometria e exame de fundo de olho quando necessário. O laudo é emitido no mesmo dia, com validade legal e assinatura médica (CRM), sendo aceito em órgãos como DETRAN, concursos públicos e processos de admissão. Esse documento garante segurança jurídica e clínica, confirmando a aptidão visual do paciente para atividades profissionais ou de habilitação."
+      },
+      "glaucoma_treatment": {
+        "question": "Quanto tempo demora para tratar glaucoma?",
+        "answer": "O tratamento do glaucoma é contínuo, pois não existe cura definitiva. O objetivo é controlar a pressão intraocular e preservar o nervo óptico, evitando perda de visão. O tempo de acompanhamento depende do estágio da doença e da resposta ao tratamento, que pode incluir colírios, laser ou cirurgia. Na Saraiva Vision, cada paciente recebe um protocolo individualizado com consultas periódicas e monitoramento do nervo óptico. O sucesso depende da disciplina no uso das medicações e do acompanhamento médico regular ao longo da vida."
+      },
+      "vision_symptoms": {
+        "question": "Quais os sintomas que indicam problema de visão?",
+        "answer": "Entre os principais sintomas de problemas de visão estão: visão borrada, dor ocular, dificuldade para ler de perto ou enxergar de longe, vermelhidão, sensibilidade à luz e dores de cabeça frequentes. Em crianças, sinais incluem baixo rendimento escolar, tropeços constantes e aproximação excessiva de telas. Na Saraiva Vision, exames completos permitem identificar desde miopia, hipermetropia e astigmatismo até doenças mais graves, como glaucoma e catarata. Procurar atendimento precoce é fundamental para preservar a visão e garantir qualidade de vida."
       }
     }
   },
@@ -187,12 +192,20 @@
         "content": "Excelente atendimento! Dr. Saraiva foi muito atencioso e explicou tudo detalhadamente. Recomendo!"
       },
       {
-        "name": "João Santos",
+        "name": "Carlos Ferreira",
         "content": "Clínica moderna com equipamentos de última geração. Me senti muito seguro durante todo o procedimento."
       },
       {
         "name": "Ana Costa",
         "content": "Ótimo profissional, consulta muito completa. Resolveu meu problema de visão com muita competência."
+      },
+      {
+        "name": "Roberto Mendes",
+        "content": "Adaptação de lentes de contato foi perfeita. Equipe muito profissional e resultado excepcional."
+      },
+      {
+        "name": "Fernanda Oliveira",
+        "content": "Ambiente acolhedor e tecnologia de ponta. Finalmente encontrei uma clínica de confiança em Caratinga."
       }
     ]
   },
@@ -229,38 +242,136 @@
     }
   },
   "contactLenses": {
-    "title": "Especializados em Lentes de Contato",
-    "description": "Oferecemos uma solução completa para usuários de lentes de contato, desde a prescrição até a adaptação personalizada.",
-    "adaptation": "Realizamos o processo de adaptação de lentes de forma segura e personalizada, garantindo conforto e saúde ocular.",
-    "brands": "Trabalhamos com lentes gelatinosas e rígidas gás permeáveis da Sólotica, além das lentes gelatinosas Bioview.",
+    "main_title": "Lentes de Contato",
+    "main_subtitle": "Especialistas em adaptação de lentes de contato com tecnologia avançada e acompanhamento personalizado para sua visão perfeita.",
+    "title": "Especialistas em Adaptação de Lentes de Contato",
+    "subtitle": "Soluções completas da prescrição ao acompanhamento personalizado",
+    "description": "Oferecemos serviços completos de lentes de contato, desde a consulta inicial até o acompanhamento contínuo, garantindo conforto ideal e saúde ocular.",
+    "adaptation": "Nosso processo de adaptação personalizado prioriza segurança e conforto, com avaliações minuciosas e protocolos de adaptação gradual.",
+    "brands": "Trabalhamos com marcas premium incluindo Sólotica (lentes gelatinosas e rígidas gás permeáveis) e Bioview (lentes gelatinosas).",
+    "safety_title": "Protocolo de Segurança e Higiene",
+    "safety_desc": "Todas as adaptações seguem protocolos rigorosos de higiene com equipamentos esterilizados e avaliações completas de saúde ocular.",
+    "process_title": "Nosso Processo de Adaptação",
     "button": "Saiba Mais",
+    "schedule_button": "Agendar Consulta para Lentes",
+    "whatsapp_button": "Tirar Dúvidas no WhatsApp",
+    "process_steps": [
+      {
+        "title": "Avaliação Inicial",
+        "description": "Exame completo dos olhos e avaliação do estilo de vida para determinar o melhor tipo de lente para você."
+      },
+      {
+        "title": "Adaptação de Lentes",
+        "description": "Medições precisas e teste de adaptação com diferentes opções de lentes."
+      },
+      {
+        "title": "Treinamento de Adaptação",
+        "description": "Treinamento completo sobre inserção, remoção e técnicas adequadas de cuidado."
+      },
+      {
+        "title": "Acompanhamento",
+        "description": "Consultas regulares para garantir conforto ideal e saúde ocular."
+      }
+    ],
     "types": {
       "soft": {
         "title": "Lentes Gelatinosas",
+        "subtitle": "Conforto para uso diário",
         "features": [
-          "Confortáveis para uso diário",
-          "Grande variedade de opções",
-          "Fácil adaptação"
+          "Conforto imediato para uso diário",
+          "Grande variedade de graus",
+          "Processo de adaptação fácil",
+          "Adequadas para estilos de vida ativos"
         ]
       },
       "rigid": {
         "title": "Lentes Rígidas Gás Permeáveis",
+        "subtitle": "Qualidade de visão superior",
         "features": [
           "Excelente acuidade visual",
           "Corrigem alto astigmatismo",
-          "Mais duráveis"
+          "Mais duráveis e resistentes",
+          "Melhor transmissão de oxigênio"
         ]
       },
       "multifocal": {
         "title": "Lentes Multifocais",
+        "subtitle": "Liberdade em todas as distâncias",
         "features": [
-          "Visão para todas as distâncias",
+          "Visão clara em todas as distâncias",
           "Praticidade e liberdade",
-          "Adaptação personalizada"
+          "Adaptação personalizada",
+          "Reduz dependência de óculos de leitura"
         ]
       }
     },
-    "bioview_alt": "Embalagem de lentes de contato Bioview"
+    "faq_title": "Perguntas Frequentes",
+    "faq_items": [
+      {
+        "question": "Quanto tempo leva o processo de adaptação?",
+        "answer": "A maioria dos pacientes se adapta em 1-2 semanas com aumento gradual do uso diário."
+      },
+      {
+        "question": "Lentes de contato são seguras para uso diário?",
+        "answer": "Sim, quando adequadamente adaptadas e cuidadas, as lentes de contato são muito seguras."
+      },
+      {
+        "question": "Posso usar lentes se tenho astigmatismo?",
+        "answer": "Absolutamente! Oferecemos lentes tóricas especializadas e rígidas para correção do astigmatismo."
+      }
+    ],
+    "bioview_alt": "Embalagem de lentes de contato Bioview",
+    "trust_badges": {
+      "experience": "15+ Anos de Experiência",
+      "patients": "1000+ Adaptações Bem-sucedidas",
+      "safety": "100% Procedimentos Estéreis",
+      "brands": "Marcas Premium Autorizadas"
+    },
+    "brands_section": {
+      "title": "Marcas Premium Disponíveis",
+      "subtitle": "Trabalhamos apenas com as marcas mais confiáveis e inovadoras do mercado"
+    },
+    "brands": {
+      "acuvue": {
+        "description": "Líder mundial em lentes de contato, oferecendo tecnologia avançada para máximo conforto.",
+        "specialty": "Lentes diárias e quinzenais",
+        "features": [
+          "Proteção UV",
+          "Hidratação Natural",
+          "Tecnologia HYDRACLEAR"
+        ]
+      },
+      "solotica": {
+        "description": "Marca brasileira premiada, especializada em lentes coloridas de alta qualidade.",
+        "specialty": "Lentes coloridas e de grau",
+        "features": [
+          "Cores Naturais",
+          "Conforto Prolongado",
+          "Variedade de Tons"
+        ]
+      },
+      "bioview": {
+        "description": "Tecnologia brasileira inovadora com foco em biocompatibilidade e conforto.",
+        "specialty": "Lentes gelatinosas premium",
+        "features": [
+          "Material Hidrofílico",
+          "Resistência a Depósitos",
+          "Fácil Manuseio"
+        ]
+      }
+    },
+    "hero_badge": "Especialistas em Adaptação",
+    "types_section": {
+      "title": "Tipos de Lentes Disponíveis",
+      "subtitle": "Cada tipo atende necessidades específicas para proporcionar a melhor experiência visual"
+    },
+    "process_subtitle": "Um processo cuidadoso e personalizado para garantir o melhor resultado",
+    "safety_features": [
+      "Equipamentos esterilizados",
+      "Avaliação completa da saúde ocular",
+      "Acompanhamento personalizado",
+      "Orientações detalhadas de uso"
+    ]
   },
   "about": {
     "tag": "Sobre Nós",
@@ -291,9 +402,13 @@
     "message_label": "Mensagem",
     "message_placeholder": "Escreva sua mensagem aqui...",
     "send_button": "Enviar Mensagem",
-    "chatbot_title": "Fale com nossa Assistente de IA!",
-    "chatbot_desc": "Obtenha respostas instantâneas para perguntas comuns sobre nossos serviços e agendamentos.",
-    "chatbot_availability": "Disponível 24/7",
+    "online_scheduling_title": "Agendamento Online",
+    "online_scheduling_desc": "Agende sua consulta diretamente pela plataforma web",
+    "online_scheduling_benefit": "Confirmação automática",
+    "chatbot_title": "Assistente IA 24h",
+    "chatbot_desc": "Tire dúvidas sobre oftalmologia e procedimentos instantaneamente",
+    "chatbot_availability": "Disponível 24 horas por dia",
+    "chatbot_cta": "Falar com Assistente IA",
     "info": {
       "address_title": "Endereço",
       "address_details": "Rua Catarina Maria Passos, 97 – Santa Zita",
@@ -333,14 +448,19 @@
     }
   },
   "homeMeta": {
-    "title": "Clínica Saraiva Vision - Clínica Oftalmológica de Excelência",
-    "description": "Clínica oftalmológica de ponta em Caratinga. Oferecemos consultas, exames e cirurgias com tecnologia avançada e atendimento humanizado. Agende sua consulta!",
-    "keywords": "oftalmologista, clínica oftalmológica, saúde ocular, exames de vista, cirurgia ocular, oftalmologia, Caratinga"
+    "title": "🏥 Oftalmologista em Caratinga | Clínica Saraiva Vision | CRM-MG 69.870",
+    "description": "🔹 Clínica Oftalmológica Saraiva Vision em Caratinga/MG: 🔍 exames de vista, 👁️ adaptação de lentes de contato, 🏥 consultas especializadas. 📞 Agende já!",
+    "keywords": "oftalmologista Caratinga, clínica oftalmológica Caratinga MG, exame de vista Caratinga, lentes de contato Caratinga, Dr Philipe Saraiva, CRM-MG 69870, consulta oftalmologista, Clínica Amor e Saúde, convênios Caratinga, convênio oftalmologista"
   },
   "serviceMeta": {
     "title": "{{serviceTitle}} | Clínica Saraiva Vision",
     "description": "Saiba mais sobre {{serviceTitleLowercase}} na Saraiva Vision. Oferecemos tratamentos e diagnósticos avançados para sua saúde ocular.",
     "keywords": "{{serviceTitleLowercase}}, oftalmologia, saúde ocular, clínica de olhos"
+  },
+  "lensesMeta": {
+    "title": "👁️ Lentes de Contato Caratinga | Adaptação Profissional | Saraiva Vision",
+    "description": "🔍 Adaptação profissional de lentes de contato em Caratinga: Sólotica, Bioview, lentes rígidas. ⭐ Consulta especializada com CRM-MG 69.870. 📞 Agende!",
+    "keywords": "lentes de contato Caratinga, adaptação lentes Caratinga MG, lentes Sólotica Caratinga, lentes Bioview, oftalmologista lentes contato, lentes rígidas Caratinga, consulta lentes"
   },
   "serviceDetail": {
     "back_link": "Voltar para Serviços",
@@ -460,8 +580,7 @@
         ]
       }
     }
-  }
-  ,
+  },
   "privacy": {
     "title": "Política de Privacidade",
     "link_label": "Privacidade",
@@ -489,9 +608,61 @@
     "updates_title": "Atualizações",
     "updates_desc": "Podemos atualizar esta política. A data de revisão estará sempre indicada.",
     "form_consent_html": "Eu concordo com o <a href='/privacy' class='underline'>tratamento dos meus dados</a> para contato e agendamento.",
-    "disclaimer": "As informações aqui não substituem avaliação médica individual." 
+    "disclaimer": "As informações aqui não substituem avaliação médica individual."
   },
   "cfm": {
     "disclaimer": "Conteúdo informativo sem promessa de resultados. Consulte o médico responsável para avaliação personalizada."
+  },
+  "testimonialsMeta": {
+    "title": "⭐ Depoimentos de Pacientes | Clínica Saraiva Vision Caratinga",
+    "description": "📝 Leia os depoimentos reais de pacientes da Clínica Saraiva Vision em Caratinga. ⭐ Avaliações verificadas sobre nossos serviços oftalmológicos. 👁️ CRM-MG 69.870",
+    "keywords": "depoimentos Saraiva Vision, avaliações clínica oftalmológica Caratinga, testemunhos pacientes oftalmologia, reviews Dr Philipe Saraiva, satisfação clientes Caratinga MG"
+  },
+  "privacyMeta": {
+    "title": "📋 Política de Privacidade | Saraiva Vision | LGPD Compliance",
+    "description": "📄 Política de Privacidade da Clínica Saraiva Vision conforme LGPD. 🔒 Como protegemos seus dados pessoais e informações médicas em Caratinga/MG.",
+    "keywords": "política privacidade Saraiva Vision, LGPD clínica oftalmológica, proteção dados médicos, privacidade pacientes Caratinga"
+  },
+  "reviews": {
+    "title": "Avaliações Google",
+    "refresh": "Recarregar",
+    "writeReview": "Avaliar",
+    "rateUs": "Avalie-nos no Google",
+    "loading": "Carregando avaliações...",
+    "apiError": "Erro na API - exibindo avaliações de exemplo",
+    "noData": "Sem dados - exibindo avaliações de exemplo",
+    "networkError": "Erro de conexão - exibindo avaliações de exemplo",
+    "rating": "Avaliação: {{rating}} estrelas",
+    "mockDisclaimer": "Avaliações de exemplo exibidas.",
+    "privacyDisclaimer": "Avaliações públicas anonimizadas (LGPD / CFM): nomes parcializados e remoção de termos clínicos sensíveis.",
+    "mockAuthor1": "Paciente A",
+    "mockAuthor2": "Paciente B",
+    "mockAuthor3": "Paciente C",
+    "mockText1": "Atendimento excelente e rápido!",
+    "mockText2": "Equipe muito atenciosa e estrutura moderna.",
+    "mockText3": "Ótima experiência, recomendo."
+  },
+  "exitPopup": {
+    "title": "Não Vá Embora!",
+    "subtitle": "Oferta exclusiva para você",
+    "timeLeft": "Tempo restante",
+    "exclusive": "🎁 Oferta Exclusiva",
+    "discount": "de Desconto",
+    "description": "Em sua primeira consulta oftalmológica na Saraiva Vision! Aproveite esta oportunidade única.",
+    "codeLabel": "Seu código de desconto exclusivo:",
+    "revealCode": "🎯 Revelar Meu Código",
+    "codeInstructions": "Anote este código e use no agendamento",
+    "benefits": {
+      "title": "O que está incluído",
+      "list": [
+        "Consulta completa com oftalmologista",
+        "Exame de refração detalhado",
+        "Avaliação com equipamentos modernos",
+        "Orientações personalizadas"
+      ]
+    },
+    "whatsappButton": "📱 Agendar no WhatsApp",
+    "phoneButton": "📞 Ligar Agora",
+    "disclaimer": "Oferta válida apenas para novos pacientes. Não cumulativa com outras promoções. Sujeita à disponibilidade de horários."
   }
 }

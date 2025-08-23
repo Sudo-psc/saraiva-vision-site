@@ -4,13 +4,27 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png" />
     <meta name="generator" content="Hostinger Horizons" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet" importance="high">
+  
+  <!-- Resource hints para performance -->
+  <link rel="dns-prefetch" href="//storage.googleapis.com">
+  <link rel="dns-prefetch" href="//www.google.com">
+  <link rel="dns-prefetch" href="//maps.googleapis.com">
+  
+  <!-- Manifest e ícones otimizados -->
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="preload" as="image" href="https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png" imagesrcset="https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png 1x" fetchpriority="high" />
 
-    <meta name="description" content="Clínica Saraiva Vision em Caratinga/MG: consultas oftalmológicas, exames de refração, adaptação de lentes de contato e tecnologia diagnóstica de ponta." />
+    <meta name="description" content="🔹 Clínica Saraiva Vision em Caratinga/MG: consultas oftalmológicas, exames de refração, adaptação de lentes de contato e tecnologia diagnóstica de ponta. CRM-MG 69.870" />
     <meta name="keywords" content="Oftalmologista em Caratinga, Clínica oftalmológica Caratinga, Exame de vista Caratinga MG, Clínica Saraiva Vision" />
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://saraivavision.com.br/">
@@ -34,14 +48,18 @@
         "@id": "https://saraivavision.com.br/#clinic",
         "name": "Clínica Saraiva Vision",
         "legalName": "Saraiva Vision Care LTDA",
-        "image": "https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png",
+        "description": "Clínica oftalmológica especializada em consultas, exames e procedimentos oftalmológicos com tecnologia avançada em Caratinga/MG.",
+        "image": [
+          "https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png"
+        ],
+        "logo": "https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png",
         "url": "https://saraivavision.com.br/",
         "telephone": "+55 33 99860-1427",
         "email": "saraivavision@gmail.com",
         "priceRange": "R$",
         "taxID": "53.864.119/0001-79",
         "foundingDate": "2024-02-08",
-        "medicalSpecialty": ["Ophthalmologic"],
+        "medicalSpecialty": ["Ophthalmology"],
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "Rua Catarina Maria Passos, 97 – Santa Zita",
@@ -61,12 +79,36 @@
           "opens": "08:00",
           "closes": "18:00"
         }],
+        "areaServed": {
+          "@type": "State",
+          "name": "Minas Gerais",
+          "containsPlace": [
+            { "@type": "City", "name": "Caratinga" },
+            { "@type": "City", "name": "Ipanema" },
+            { "@type": "City", "name": "Ubaporanga" },
+            { "@type": "City", "name": "Entre Folhas" }
+          ]
+        },
         "employee": [
           {
-            "@type": "Person",
+            "@type": "Physician",
+            "@id": "https://saraivavision.com.br/#physician",
             "name": "Dr. Philipe Saraiva Cruz",
-            "jobTitle": "Responsável Técnico",
-            "medicalLicense": "CRM-MG 69.870"
+            "jobTitle": "Oftalmologista",
+            "medicalSpecialty": "Ophthalmology",
+            "identifier": {
+              "@type": "PropertyValue",
+              "propertyID": "CRM",
+              "value": "CRM-MG 69.870"
+            },
+            "knowsAbout": [
+              "Ophthalmology",
+              "Contact Lens Fitting",
+              "Retinal Diseases",
+              "Glaucoma",
+              "Cataract Surgery",
+              "Refractive Surgery"
+            ]
           },
           {
             "@type": "Person",
@@ -76,28 +118,74 @@
           }
         ],
         "availableService": [
-          "Consultas oftalmológicas",
-          "Exames de refração",
-          "Adaptação de lentes de contato",
-          "Exames de campo visual",
-          "Paquimetria",
-          "Mapeamento de retina",
-          "Biometria",
-          "Gonioscopia",
-          "Retinografia",
-          "Topografia corneana",
-          "Meibografia",
-          "Teste de Jones",
-          "Teste de Schirmer"
+          // Services removed as requested
+        ],
+        "medicalConditionTreated": [
+          "Myopia",
+          "Hyperopia", 
+          "Astigmatism",
+          "Presbyopia",
+          "Glaucoma",
+          "Cataract",
+          "Diabetic Retinopathy",
+          "Macular Degeneration",
+          "Dry Eye Syndrome",
+          "Strabismus"
+        ],
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+55 33 99860-1427",
+            "contactType": "customer service",
+            "availableLanguage": ["Portuguese", "English"],
+            "hoursAvailable": {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              "opens": "08:00",
+              "closes": "18:00"
+            }
+          },
+          {
+            "@type": "ContactPoint",
+            "telephone": "+55 33 99860-1427",
+            "contactType": "appointment booking",
+            "contactOption": "TollFree"
+          }
+        ],
+        "amenityFeature": [
+          {
+            "@type": "LocationFeatureSpecification",
+            "name": "Equipamentos médicos avançados",
+            "value": true
+          },
+          {
+            "@type": "LocationFeatureSpecification", 
+            "name": "Atendimento multilíngue",
+            "value": true
+          }
+        ],
+        "accreditation": [
+          {
+            "@type": "EducationalOrganization",
+            "name": "Conselho Federal de Medicina",
+            "url": "https://portal.cfm.org.br/"
+          },
+          {
+            "@type": "EducationalOrganization",
+            "name": "Conselho Brasileiro de Oftalmologia",
+            "url": "https://www.cbo.com.br/"
+          }
         ],
         "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": "4.9",
-          "reviewCount": "500"
+          "reviewCount": "500",
+          "bestRating": "5",
+          "worstRating": "1"
         },
         "sameAs": [
           "https://www.instagram.com/saraiva_vision/",
-          "https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica"
+          "https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica?model=gpt-4o"
         ]
       }
     </script>

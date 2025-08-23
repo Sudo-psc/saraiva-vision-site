@@ -33,28 +33,28 @@ const About = () => {
             className="relative"
           >
             <div className="absolute -top-10 -left-10 w-64 h-64 bg-blue-200 rounded-full filter blur-3xl opacity-30"></div>
-            
+
             <div className="grid grid-cols-2 gap-4 relative z-10">
               <div className="space-y-4">
                 <div className="rounded-2xl overflow-hidden shadow-soft-medium h-64">
-                  <img  className="w-full h-full object-cover" alt={imageAlts[0]} src={imageUrls[0]} />
+                  <img className="w-full h-full object-cover" alt={imageAlts[0]} src={imageUrls[0]} />
                 </div>
                 <div className="rounded-2xl overflow-hidden shadow-soft-medium h-40">
-                  <img  className="w-full h-full object-cover" alt={imageAlts[1]} src={imageUrls[1]} />
+                  <img className="w-full h-full object-cover" alt={imageAlts[1]} src={imageUrls[1]} />
                 </div>
               </div>
-              
+
               <div className="space-y-4 mt-8">
                 <div className="rounded-2xl overflow-hidden shadow-soft-medium h-40">
-                  <img  className="w-full h-full object-cover" alt={imageAlts[2]} src={imageUrls[2]} />
+                  <img className="w-full h-full object-cover" alt={imageAlts[2]} src={imageUrls[2]} />
                 </div>
                 <div className="rounded-2xl overflow-hidden shadow-soft-medium h-64">
-                  <img  className="w-full h-full object-cover" alt={imageAlts[3]} src={imageUrls[3]} />
+                  <img className="w-full h-full object-cover" alt={imageAlts[3]} src={imageUrls[3]} />
                 </div>
               </div>
             </div>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -65,22 +65,22 @@ const About = () => {
             <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-2 w-fit">
               <span className="mr-2">✦</span> {t('about.tag')}
             </div>
-            
+
             <h2 className="leading-tight">
               {t('about.title')}
             </h2>
-            
+
             <p>
               {t('about.p1')}
             </p>
-            
+
             <p>
               {t('about.p2')}
             </p>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
               {Array.isArray(features) && features.map((feature, index) => (
-                <motion.div 
+                <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}

@@ -1,45 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, MessageCircle } from 'lucide-react';
+import { Menu, X, MessageCircle, Globe, ChevronDown, Calendar } from 'lucide-react';
+import { clinicInfo } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/Logo';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useWhatsApp } from '@/hooks/useWhatsApp';
+import { PERFORMANCE } from '@/lib/constants';
 
 const Navbar = () => {
   const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const whatsappNumber = "5533998601427";
-  const whatsappLink = `https://wa.me/${whatsappNumber}`;
+  const [scheduleDropdownOpen, setScheduleDropdownOpen] = useState(false);
+  const { generateWhatsAppUrl, openFloatingCTA } = useWhatsApp();
+  const whatsappLink = generateWhatsAppUrl();
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > PERFORMANCE.SCROLL_THRESHOLD);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
+  const navLinks = useMemo(() => [
     { name: t('navbar.home'), href: '#home', internal: true },
     { name: t('navbar.services'), href: '#services', internal: true },
+    { name: t('navbar.lenses'), href: '/lentes', internal: true, isRoute: true },
     { name: t('navbar.about'), href: '#about', internal: true },
     { name: t('navbar.testimonials'), href: '#testimonials', internal: true },
     { name: t('navbar.contact'), href: '#contact', internal: true },
-    { name: t('navbar.blog'), href: 'https://blog.saraivavision.com.br', internal: false },
-  ];
+    { name: 'Instagram', href: 'https://www.instagram.com/saraiva_vision/', internal: false },
+  ], [t]);
 
-  const handleNavClick = (e, link) => {
+  const handleNavClick = useCallback((e, link) => {
     setMobileMenuOpen(false);
     if (link.internal) {
       e.preventDefault();
-      if (isHomePage) {
+      if (link.isRoute) {
+        navigate(link.href);
+      } else if (isHomePage) {
         const element = document.querySelector(link.href);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
@@ -48,21 +55,26 @@ const Navbar = () => {
         navigate('/' + link.href);
       }
     }
-  };
+  }, [isHomePage, navigate]);
 
-  const handleAgendarClick = () => {
+  const handleAgendarOnlineClick = useCallback(() => {
+    window.open(clinicInfo.onlineSchedulingUrl, '_blank', 'noopener,noreferrer');
+  }, []);
+
+  const handleAgendarWhatsappClick = useCallback(() => {
     window.open(whatsappLink, '_blank', 'noopener,noreferrer');
-  };
+  }, [whatsappLink]);
+
+  const handleAgendarContatoClick = openFloatingCTA;
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-header-gradient shadow-md py-2' : 'bg-transparent py-4'
-      }`}
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-header-gradient shadow-md py-2' : 'bg-transparent py-4'
+        }`}
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
@@ -100,19 +112,62 @@ const Navbar = () => {
               )
             ))}
           </nav>
-          
+
           <div className="hidden md:flex items-center gap-4">
             <LanguageSwitcher />
-            <Button onClick={handleAgendarClick} className="flex items-center gap-2">
-              <MessageCircle size={18} />
-              <span>{t('navbar.schedule')}</span>
-            </Button>
+            <div className="relative">
+              <Button
+                onClick={() => setScheduleDropdownOpen(!scheduleDropdownOpen)}
+                className="flex items-center gap-2"
+                onBlur={() => setTimeout(() => setScheduleDropdownOpen(false), 150)}
+              >
+                <Calendar size={18} />
+                <span>{t('navbar.schedule')}</span>
+                <ChevronDown size={16} />
+              </Button>
+              {scheduleDropdownOpen && (
+                <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                  <div className="p-2">
+                    <button
+                      onClick={handleAgendarOnlineClick}
+                      className="w-full flex items-center gap-3 p-3 hover:bg-blue-50 rounded-lg transition-colors text-left"
+                    >
+                      <Globe size={20} className="text-blue-600" />
+                      <div>
+                        <div className="font-medium text-gray-900">{t('contact.online_scheduling_title')}</div>
+                        <div className="text-xs text-gray-500">{t('contact.online_scheduling_desc')}</div>
+                      </div>
+                    </button>
+                    <button
+                      onClick={handleAgendarWhatsappClick}
+                      className="w-full flex items-center gap-3 p-3 hover:bg-green-50 rounded-lg transition-colors text-left"
+                    >
+                      <MessageCircle size={20} className="text-green-600" />
+                      <div>
+                        <div className="font-medium text-gray-900">WhatsApp</div>
+                        <div className="text-xs text-gray-500">Conversa direta com a equipe</div>
+                      </div>
+                    </button>
+                    <button
+                      onClick={handleAgendarContatoClick}
+                      className="w-full flex items-center gap-3 p-3 hover:bg-purple-50 rounded-lg transition-colors text-left"
+                    >
+                      <Calendar size={20} className="text-purple-600" />
+                      <div>
+                        <div className="font-medium text-gray-900">Mais Opções</div>
+                        <div className="text-xs text-gray-500">Telefone, e-mail e outras formas</div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="md:hidden flex items-center gap-2">
             <LanguageSwitcher />
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? t('navbar.close_menu') : t('navbar.open_menu')}
@@ -155,13 +210,22 @@ const Navbar = () => {
                   </a>
                 )
               ))}
-              <Button onClick={() => {
-                handleAgendarClick();
-                setMobileMenuOpen(false);
-              }} className="flex items-center gap-2 w-full justify-center mt-4" size="lg">
-                <MessageCircle size={18} />
-                <span>{t('navbar.schedule_consultation')}</span>
-              </Button>
+              <div className="space-y-2 mt-4">
+                <Button onClick={() => {
+                  handleAgendarOnlineClick();
+                  setMobileMenuOpen(false);
+                }} className="flex items-center gap-2 w-full justify-center" size="lg">
+                  <Globe size={18} />
+                  <span>{t('contact.online_scheduling_title')}</span>
+                </Button>
+                <Button onClick={() => {
+                  handleAgendarWhatsappClick();
+                  setMobileMenuOpen(false);
+                }} variant="outline" className="flex items-center gap-2 w-full justify-center">
+                  <MessageCircle size={18} />
+                  <span>WhatsApp</span>
+                </Button>
+              </div>
             </div>
           </motion.div>
         )}

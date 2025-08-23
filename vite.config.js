@@ -1,6 +1,7 @@
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
 import { createLogger, defineConfig } from 'vite';
+import { writeSitemapFile } from './src/utils/sitemapGenerator.js';
 
 const isDev = process.env.NODE_ENV !== 'production';
 let inlineEditPlugin, editModeDevPlugin;
@@ -199,9 +200,20 @@ export default defineConfig({
 	plugins: [
 		...(isDev ? [inlineEditPlugin(), editModeDevPlugin()] : []),
 		react(),
-		addTransformIndexHtml
+		addTransformIndexHtml,
+		// Plugin para gerar sitemap durante o build
+		{
+			name: 'generate-sitemap',
+			async writeBundle(options) {
+				if (options.dir && process.env.NODE_ENV === 'production') {
+					await writeSitemapFile(options.dir);
+				}
+			}
+		}
 	],
 	server: {
+		host: '0.0.0.0',
+		port: 5173,
 		cors: true,
 		headers: {
 			'Cross-Origin-Embedder-Policy': 'credentialless',

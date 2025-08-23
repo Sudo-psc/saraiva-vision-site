@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock, Globe } from 'lucide-react';
+import { clinicInfo } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -43,7 +44,7 @@ const Contact = () => {
 
   const phoneNumber = "5533998601427";
   const whatsappLink = `https://wa.me/${phoneNumber}`;
-  const chatbotLink = "https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica";
+  const chatbotLink = "https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica?model=gpt-4o";
 
   const handleChange = (e) => {
   const { name, type, value, checked } = e.target;
@@ -249,6 +250,18 @@ const Contact = () => {
             transition={{ duration: 0.6 }}
             className="flex flex-col space-y-6"
           >
+            <a href={clinicInfo.onlineSchedulingUrl} target="_blank" rel="noopener noreferrer" className="block modern-card-alt p-6 group mb-4">
+              <div className="flex items-start gap-4">
+                  <div className="p-3 bg-blue-100 rounded-xl">
+                      <Globe className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div>
+                      <h4 className="font-bold text-slate-800 group-hover:text-blue-700">{t('contact.online_scheduling_title')}</h4>
+                      <div className="mt-1">{t('contact.online_scheduling_desc')}</div>
+                      <div className="text-blue-600 text-sm mt-1 font-semibold">{t('contact.online_scheduling_benefit')}</div>
+                  </div>
+              </div>
+            </a>
             <a href={chatbotLink} target="_blank" rel="noopener noreferrer" className="block modern-card-alt p-6 group">
               <div className="flex items-start gap-4">
                   <div className="p-3 bg-green-100 rounded-xl">

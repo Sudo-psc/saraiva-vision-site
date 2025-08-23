@@ -8,6 +8,8 @@ import { Eye, Glasses, Microscope, Stethoscope, Calendar as CalendarIcon, Clipbo
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
+import SchemaMarkup from '@/components/SchemaMarkup';
+import { generateMedicalProcedureSchema } from '@/lib/schemaMarkup';
 
 const icons = {
   'consultas-oftalmologicas': <Eye className="h-10 w-10 text-blue-500" />,
@@ -32,13 +34,40 @@ const ServiceDetailPage = () => {
     icon: icons[serviceId] || icons['consultas-oftalmologicas'],
     videoUrl: videoUrls[serviceId] || null,
   };
-
   const pageTitle = t('serviceMeta.title', { serviceTitle: service.title });
   const metaDescription = t('serviceMeta.description', { serviceTitleLowercase: service.title.toLowerCase() });
   const metaKeywords = t('serviceMeta.keywords', { serviceTitleLowercase: service.title.toLowerCase() });
 
+  // Schema para procedimento médico específico
+  const procedureSchema = generateMedicalProcedureSchema({
+    id: serviceId,
+    title: service.title,
+    description: service.description
+  });
+
+  // Schema para breadcrumbs
+  const breadcrumbs = [
+    { name: 'Início', url: '/' },
+    { name: 'Serviços', url: '/#services' },
+    { name: service.title, url: `/servico/${serviceId}` }
+  ];
+
+  // Schema para página médica
+  const pageInfo = {
+    title: service.title,
+    description: service.description,
+    url: `/servico/${serviceId}`
+  };
+
+
   return (
     <div className="min-h-screen bg-white">
+      <SchemaMarkup 
+        type="webpage" 
+        pageInfo={pageInfo}
+        breadcrumbs={breadcrumbs}
+        additionalSchemas={[procedureSchema]}
+      />
        <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={metaDescription} />
@@ -75,7 +104,7 @@ const ServiceDetailPage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
               <div className="lg:col-span-3">
                 <section className="mb-12">
-                  <h2 className="mb-6 flex items-center"><CheckCircle className="w-6 h-6 mr-3 text-green-500" /> {t('serviceDetail.advantages_title')}</h2>
+                  <h3 className="mb-6 flex items-center text-xl font-semibold"><CheckCircle className="w-6 h-6 mr-3 text-green-500" /> {t('serviceDetail.advantages_title')}</h3>
                   <ul className="space-y-4">
                     {service.details.map((detail, index) => (
                       <motion.li 
@@ -85,7 +114,7 @@ const ServiceDetailPage = () => {
                         transition={{ duration: 0.5, delay: index * 0.1 }}
                         className="p-5 bg-gray-50 rounded-xl border border-gray-200"
                       >
-                        <h3 className="text-lg font-semibold text-slate-800">{detail.title}</h3>
+                        <h4 className="text-lg font-semibold text-slate-800">{detail.title}</h4>
                         <p>{detail.text}</p>
                       </motion.li>
                     ))}
@@ -94,7 +123,7 @@ const ServiceDetailPage = () => {
                 
                 {service.videoUrl && (
                   <section>
-                      <h2 className="mb-6 flex items-center"><Video className="w-6 h-6 mr-3 text-red-500" /> {t('serviceDetail.video_title')}</h2>
+                      <h3 className="mb-6 flex items-center text-xl font-semibold"><Video className="w-6 h-6 mr-3 text-red-500" /> {t('serviceDetail.video_title')}</h3>
                       <motion.div 
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
@@ -121,7 +150,7 @@ const ServiceDetailPage = () => {
                   transition={{ duration: 0.5, delay: 0.2 }}
                   className="bg-blue-50 p-8 rounded-2xl border border-blue-200 sticky top-28"
                 >
-                  <h3 className="mb-4 flex items-center"><MessageCircle className="w-6 h-6 mr-3 text-blue-600"/>{t('serviceDetail.cta_title')}</h3>
+                  <h4 className="mb-4 flex items-center text-lg font-semibold"><MessageCircle className="w-6 h-6 mr-3 text-blue-600"/>{t('serviceDetail.cta_title')}</h4>
                   <p className="text-slate-700 mb-6">{t('serviceDetail.cta_desc')}</p>
                   <Button size="lg" className="w-full">{t('serviceDetail.schedule_button')}</Button>
                   <Button variant="outline" size="lg" className="w-full mt-3">{t('serviceDetail.whatsapp_button')}</Button>

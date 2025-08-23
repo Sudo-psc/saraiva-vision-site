@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Ensure white background as fallback */
+html, body {
+  background-color: white !important;
+  color: #1a1a1a !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -155,7 +161,7 @@
   }
   
   section {
-    @apply py-20 md:py-32;
+    @apply py-12 md:py-16;
   }
   
   input[type="text"], 
