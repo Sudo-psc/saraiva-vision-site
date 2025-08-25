@@ -11,7 +11,21 @@
     "schedule_online": "Schedule Online",
     "close_menu": "Close Menu",
     "open_menu": "Open Menu",
-    "schedule_consultation": "Schedule Consultation"
+    "schedule_consultation": "Schedule Consultation",
+    "primary_navigation": "Primary navigation",
+    "mobile_navigation": "Mobile navigation",
+    "home_link_label": "Go to homepage",
+    "podcast": "Podcast",
+    "whatsapp": "WhatsApp",
+    "whatsapp_direct": "Direct chat with the team",
+    "more_options": "More Options",
+    "more_options_desc": "Phone, email and other methods",
+    "scheduling_error": "Service unavailable. Use WhatsApp or call (33) 99860-1427",
+    "external_link_warning": "You will be redirected to {serviceName}. Continue?",
+    "external_link_title": "Opens in new tab: {serviceName}"
+  },
+  "common": {
+    "logo_alt": "Saraiva Vision Logo"
   },
   "hero": {
     "partner": "Official Amor e Saúde Partner",
@@ -21,7 +35,9 @@
     "services_button": "Our Services",
     "patients_served": "<0>Over 5,000 patients</0> served with satisfaction",
     "advanced_tech_title": "Advanced Technology",
-    "advanced_tech_desc": "State-of-the-art equipment for accurate diagnoses."
+    "advanced_tech_desc": "State-of-the-art equipment for accurate diagnoses.",
+    "microcopy_fast_confirmation": "Fill your details and get confirmation in 1 minute. 100% secure.",
+    "more_contact_options": "Other contact options"
   },
   "accessibility": {
     "toggle": "Open accessibility menu",
@@ -243,7 +259,22 @@
     "map_alt": "Map showing the location of Saraiva Vision in Caratinga",
     "clinic_alt": "Facade of Saraiva Vision Clinic",
     "toast_success_title": "Message Sent!",
-    "toast_success_desc": "Your message has been sent successfully. We will get back to you soon!"
+    "toast_success_desc": "Your message has been sent successfully. We will get back to you soon!",
+    "toast_error_title": "Please check the fields",
+    "toast_error_desc": "Some information needs correction.",
+    "sending_label": "Sending...",
+    "validation": {
+      "name_min": "Please enter at least 3 characters.",
+      "email_invalid": "Invalid email.",
+      "phone_invalid": "Use digits with area code (e.g., 33998601427).",
+      "message_min": "Message too short (min. 10 characters).",
+      "consent_required": "You must consent to data processing."
+    },
+    "external_redirect_warning": "You will be redirected to {serviceName}. Continue?",
+    "phone_call_error": "Error initiating call. Call manually: {phoneDisplay}",
+    "email_error": "Error opening email client. Send to: {email}",
+    "rate_limit_title": "Please wait",
+    "rate_limit_desc": "Wait 30 seconds before sending again."
   },
   "footer": {
     "slogan": "Excellence in eye care, close to you.",
@@ -264,6 +295,27 @@
       "surgeries": "Surgeries",
       "pediatric": "Pediatric Care",
       "reports": "Reports"
+    }
+  },
+  "podcast": {
+    "title": "Saraiva Vision Podcast",
+    "subtitle": "Eye Health in Focus - Specialized content on eye health to keep your eyes always healthy.",
+    "listen_spotify": "Listen on Spotify",
+    "open_episode": "Open episode",
+    "cover_alt": "Podcast cover",
+    "episodes": {
+      "glaucoma": {
+        "title": "Eye Health in Focus: Glaucoma",
+        "description": "Understand what glaucoma is, how to spot warning signs, and the treatment options to protect your vision. An essential episode for those who want to prevent this silent disease."
+      },
+      "catarata": {
+        "title": "Eye Health in Focus: Cataract",
+        "description": "Discover everything about cataracts: causes, symptoms, treatments and how surgery can restore your quality of life. Accurate information for a conscious decision."
+      },
+      "ptergio": {
+        "title": "Eye Health in Focus: Pterygium",
+        "description": "Learn about pterygium, its causes related to sun exposure and the available treatments. Know how to protect your eyes and when to seek medical help."
+      }
     }
   },
   "homeMeta": {
@@ -537,11 +589,11 @@
     "title": "Don't Leave Yet!",
     "subtitle": "Exclusive offer for you",
     "timeLeft": "Time remaining",
-    "exclusive": "🎁 Exclusive Offer",
+    "exclusive": "Exclusive Offer",
     "discount": "Discount",
     "description": "On your first ophthalmology consultation at Saraiva Vision! Take advantage of this unique opportunity.",
     "codeLabel": "Your exclusive discount code:",
-    "revealCode": "🎯 Reveal My Code",
+    "revealCode": "Reveal My Code",
     "codeInstructions": "Write down this code and use it when booking",
     "benefits": {
       "title": "What's included",
@@ -552,8 +604,39 @@
         "Personalized guidance"
       ]
     },
-    "whatsappButton": "📱 Schedule on WhatsApp",
-    "phoneButton": "📞 Call Now",
+    "whatsappButton": "Schedule on WhatsApp",
+    "phoneButton": "Call Now",
     "disclaimer": "Offer valid only for new patients. Not cumulative with other promotions. Subject to appointment availability."
+  },
+  "ui": {
+    "details": "View details",
+    "close": "Close",
+    "close_menu": "Close menu", 
+    "close_player": "Close player",
+    "close_tip": "Close tip",
+    "restart_episode": "Restart episode",
+    "download_episode": "Download episode",
+    "accessibility_menu": "Accessibility Menu",
+    "external_link": "external link",
+    "language_portuguese": "Mudar para Português",
+    "language_english": "Switch to English",
+    "readability_control": "Readability Control",
+    "reading_support": "Reading Support", 
+    "alternative_communication": "Alternative Communication",
+    "navigation_input": "Navigation and Input",
+    "decrease_font": "Decrease font",
+    "increase_font": "Increase font",
+    "your_name": "Your name",
+    "alt": {
+      "consultations": "Ophthalmological Consultations",
+      "refraction": "Refraction Exams", 
+      "specialized": "Specialized Treatments",
+      "surgeries": "Ophthalmological Surgeries",
+      "pediatric": "Pediatric Follow-up",
+      "reports": "Specialized Reports",
+      "satisfied_patient_1": "Satisfied patient 1",
+      "satisfied_patient_2": "Satisfied patient 2",
+      "doctor": "Ophthalmologist smiling at the camera in a modern clinic"
+    }
   }
 }

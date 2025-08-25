@@ -11,40 +11,87 @@ const GoogleMap = ({ height = 340 }) => {
   useEffect(() => {
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     if (!apiKey) {
-      setError('Chave Google Maps ausente');
+      console.error('❌ Google Maps API Key não encontrada nas variáveis de ambiente');
+      setError('Chave Google Maps ausente - verifique .env');
       setLoading(false);
       return;
     }
+    console.log('🗺️ Iniciando carregamento Google Maps API...');
     let mapInstance;
+
     loadGoogleMaps(apiKey)
-      .then((gmaps) => {
+      .then(() => {
         if (!containerRef.current) return;
-        mapInstance = new gmaps.Map(containerRef.current, {
+        mapInstance = new google.maps.Map(containerRef.current, {
           zoom: 17,
           center: { lat: -19.7868, lng: -42.1392 }, // fallback center
           mapTypeControl: false,
           streetViewControl: false,
           fullscreenControl: false,
         });
-        if (CLINIC_PLACE_ID && gmaps.places) {
-          const service = new gmaps.places.PlacesService(mapInstance);
-            service.getDetails({ placeId: CLINIC_PLACE_ID, fields: ['name','geometry','formatted_address','rating','user_ratings_total','url'] }, (res, status) => {
-              if (status === gmaps.places.PlacesServiceStatus.OK && res) {
-                setPlace(res);
-                if (res.geometry?.location) {
-                  mapInstance.setCenter(res.geometry.location);
-                  new gmaps.Marker({ map: mapInstance, position: res.geometry.location, title: res.name });
+
+        // Modern Google Maps with Places API and AdvancedMarkerElement
+        if (CLINIC_PLACE_ID && google.maps.places && google.maps.places.Place) {
+          try {
+            // Use modern Place class - recommended API
+            const { Place } = google.maps.places;
+            const place = new Place({
+              id: CLINIC_PLACE_ID,
+              requestedLanguage: 'pt-BR',
+            });
+
+            // Request place details with modern API
+            const request = {
+              fields: ['displayName', 'location', 'formattedAddress', 'rating', 'userRatingCount', 'googleMapsURI']
+            };
+
+            place.fetchFields(request).then(() => {
+              const placeData = {
+                name: place.displayName,
+                geometry: { location: place.location },
+                formatted_address: place.formattedAddress,
+                rating: place.rating,
+                user_ratings_total: place.userRatingCount,
+                url: place.googleMapsURI
+              };
+
+              setPlace(placeData);
+
+              if (place.location) {
+                mapInstance.setCenter(place.location);
+
+                // Use modern AdvancedMarkerElement - prevents deprecation warnings
+                if (google.maps.marker && google.maps.marker.AdvancedMarkerElement) {
+                  new google.maps.marker.AdvancedMarkerElement({
+                    map: mapInstance,
+                    position: place.location,
+                    title: place.displayName
+                  });
                 }
-              } else {
-                setError('Não foi possível obter detalhes do local');
               }
               setLoading(false);
+            }).catch((error) => {
+              console.error('Error fetching place details:', error);
+              setError('Não foi possível obter detalhes do local');
+              setLoading(false);
             });
+
+          } catch (error) {
+            console.error('Modern Places API not available:', error);
+            setError('API Google Places não disponível');
+            setLoading(false);
+          }
         } else {
+          console.warn('Google Places API or Place class not available');
           setLoading(false);
         }
       })
-      .catch((e) => { setError(e.message); setLoading(false); });
+      .catch((e) => {
+        console.error('❌ Erro ao carregar Google Maps:', e.message);
+        setError(`Erro Google Maps: ${e.message}`);
+        setLoading(false);
+      });
+
     return () => { /* cleanup */ };
   }, []);
 

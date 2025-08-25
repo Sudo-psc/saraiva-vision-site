@@ -119,10 +119,6 @@ const SEOHead = ({
       )}
       {process.env.NODE_ENV === 'development' && structuredData && 
         logSchemaValidation(structuredData, `SEOHead - ${title}`)}
-      
-      {/* Performance hints */}
-      <link rel="preload" as="style" href="/src/index.css" />
-      <link rel="modulepreload" href="/src/main.jsx" />
     </Helmet>
   );
 };

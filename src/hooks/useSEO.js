@@ -39,8 +39,8 @@ export const useSEO = ({
     // Gerar structured data baseado no tipo de página
     let structuredData = [];
     
-    // Sempre incluir o schema da clínica
-    structuredData.push(generateMedicalClinicSchema(currentLang));
+    // Sempre incluir o schema da clínica (para @graph)
+    structuredData.push(generateMedicalClinicSchema(currentLang, true));
     
     // Schema da página específica
     if (pageType === 'service' && serviceId) {
@@ -50,19 +50,19 @@ export const useSEO = ({
         description: description,
         url: location.pathname
       };
-      structuredData.push(generateMedicalWebPageSchema(serviceInfo, currentLang));
+      structuredData.push(generateMedicalWebPageSchema(serviceInfo, currentLang, true));
     } else if (pageType === 'page') {
       const pageInfo = {
         title: title,
         description: description,
         url: location.pathname
       };
-      structuredData.push(generateMedicalWebPageSchema(pageInfo, currentLang));
+      structuredData.push(generateMedicalWebPageSchema(pageInfo, currentLang, true));
     }
     
-    // Breadcrumbs schema se fornecido
+    // Breadcrumbs schema se fornecido (para @graph)
     if (breadcrumbs.length > 0) {
-      structuredData.push(generateBreadcrumbSchema(breadcrumbs));
+      structuredData.push(generateBreadcrumbSchema(breadcrumbs, true));
     }
     
     // Configurar como @graph para múltiplos schemas

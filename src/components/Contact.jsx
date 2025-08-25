@@ -13,19 +13,54 @@ const Contact = () => {
     name: '',
     email: '',
     phone: '',
-  message: '',
-  consent: false
+    message: '',
+    consent: false,
+    // Honeypot field for spam protection
+    website: ''
   });
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Input sanitization helper
+  const sanitizeInput = (input) => {
+    return input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+                .replace(/javascript:/gi, '')
+                .replace(/on\w+\s*=/gi, '')
+                .trim();
+  };
+
   const validators = {
-    name: (v) => v.trim().length >= 3 || 'Informe pelo menos 3 caracteres.',
-    email: (v) => /.+@.+\..+/.test(v) || 'E-mail inválido.',
-    phone: (v) => /^(\+?55)?\d{10,13}$/.test(v.replace(/\D/g, '')) || 'Use apenas números com DDD (ex: 33998601427).',
-    message: (v) => v.trim().length >= 10 || 'Mensagem muito curta (mín. 10 caracteres).',
-    consent: (v) => v === true || 'É necessário consentir com o tratamento dos dados.'
+    name: (v) => {
+      const sanitized = sanitizeInput(v);
+      if (sanitized.length < 3) return t('contact.validation.name_min', 'Nome deve ter pelo menos 3 caracteres');
+      if (sanitized.length > 50) return t('contact.validation.name_max', 'Nome muito longo (máximo 50 caracteres)');
+      if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(sanitized)) return t('contact.validation.name_invalid', 'Nome deve conter apenas letras');
+      return true;
+    },
+    email: (v) => {
+      const sanitized = sanitizeInput(v);
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(sanitized)) return t('contact.validation.email_invalid', 'Email inválido');
+      if (sanitized.length > 100) return t('contact.validation.email_max', 'Email muito longo');
+      return true;
+    },
+    phone: (v) => {
+      const cleaned = v.replace(/\D/g, '');
+      if (cleaned.length < 10 || cleaned.length > 13) return t('contact.validation.phone_invalid', 'Telefone inválido');
+      return true;
+    },
+    message: (v) => {
+      const sanitized = sanitizeInput(v);
+      if (sanitized.length < 10) return t('contact.validation.message_min', 'Mensagem deve ter pelo menos 10 caracteres');
+      if (sanitized.length > 1000) return t('contact.validation.message_max', 'Mensagem muito longa (máximo 1000 caracteres)');
+      // Check for suspicious patterns
+      if (/(https?:\/\/|www\.|\.com|\.org|\.net)/gi.test(sanitized)) {
+        return t('contact.validation.no_links', 'Links não são permitidos na mensagem');
+      }
+      return true;
+    },
+    consent: (v) => v === true || t('contact.validation.consent_required', 'É necessário aceitar os termos')
   };
 
   // Validate all when data changes on touched fields
@@ -67,12 +102,36 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validateAll()) {
-      setTouched({ name: true, email: true, phone: true, message: true });
-      toast({ title: 'Verifique os campos', description: 'Alguns dados precisam de ajuste.', variant: 'destructive' });
+    
+    // Honeypot spam protection
+    if (formData.website && formData.website.trim() !== '') {
+      // This is likely a bot submission, fail silently
+      console.warn('Spam attempt detected via honeypot field');
+      setIsSubmitting(true);
+      setTimeout(() => setIsSubmitting(false), 2000);
       return;
     }
+    
+    // Rate limiting check (simple client-side)
+    const lastSubmission = localStorage.getItem('lastContactSubmission');
+    const now = Date.now();
+    if (lastSubmission && (now - parseInt(lastSubmission)) < 30000) { // 30 seconds
+      toast({ 
+        title: t('contact.rate_limit_title', 'Aguarde um momento'), 
+        description: t('contact.rate_limit_desc', 'Aguarde 30 segundos antes de enviar novamente.'), 
+        variant: 'destructive' 
+      });
+      return;
+    }
+    
+    if (!validateAll()) {
+      setTouched({ name: true, email: true, phone: true, message: true });
+      toast({ title: t('contact.toast_error_title'), description: t('contact.toast_error_desc'), variant: 'destructive' });
+      return;
+    }
+    
     setIsSubmitting(true);
+    localStorage.setItem('lastContactSubmission', now.toString());
     setTimeout(() => {
       toast({
         title: t('contact.toast_success_title'),
@@ -159,62 +218,83 @@ const Contact = () => {
               <h3 className="mb-6">{t('contact.form_title')}</h3>
               
               <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Mobile-First Touch-Optimized Form Fields */}
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1.5">
+                  <label htmlFor="name" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
                     {t('contact.name_label')} <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
                   <input
                     type="text" id="name" name="name" value={formData.name} onChange={handleChange} required
-                    className={`form-input ${errors.name ? 'border-red-400 focus:ring-red-300' : touched.name ? 'border-green-400' : ''}`}
+                    className={`form-input mobile-touch-input ${errors.name ? 'border-red-400 focus:ring-red-300' : touched.name ? 'border-green-400' : ''}`}
                     placeholder={t('contact.name_placeholder')}
                     aria-invalid={!!errors.name}
                     aria-describedby={errors.name ? 'error-name' : undefined}
+                    style={{ fontSize: '16px', minHeight: '48px', padding: '12px 16px' }}
                   />
-                  {errors.name && <p id="error-name" className="mt-1 text-xs text-red-600">{errors.name}</p>}
+                  {errors.name && <p id="error-name" className="mt-2 text-sm text-red-600 font-medium">{errors.name}</p>}
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* Mobile: Stack vertically, Desktop: Side by side */}
+                <div className="space-y-5 md:space-y-0 md:grid md:grid-cols-2 md:gap-5">
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">
+                    <label htmlFor="email" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
                       {t('contact.email_label')} <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <input
                       type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
-                      className={`form-input ${errors.email ? 'border-red-400 focus:ring-red-300' : touched.email ? 'border-green-400' : ''}`}
+                      className={`form-input mobile-touch-input ${errors.email ? 'border-red-400 focus:ring-red-300' : touched.email ? 'border-green-400' : ''}`}
                       placeholder={t('contact.email_placeholder')}
                       aria-invalid={!!errors.email}
                       aria-describedby={errors.email ? 'error-email' : undefined}
+                      inputMode="email"
+                      style={{ fontSize: '16px', minHeight: '48px', padding: '12px 16px' }}
                     />
-                    {errors.email && <p id="error-email" className="mt-1 text-xs text-red-600">{errors.email}</p>}
+                    {errors.email && <p id="error-email" className="mt-2 text-sm text-red-600 font-medium">{errors.email}</p>}
                   </div>
                   
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-1.5">
+                    <label htmlFor="phone" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
                       {t('contact.phone_label')} <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <input
                       type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required
-                      className={`form-input ${errors.phone ? 'border-red-400 focus:ring-red-300' : touched.phone ? 'border-green-400' : ''}`}
+                      className={`form-input mobile-touch-input ${errors.phone ? 'border-red-400 focus:ring-red-300' : touched.phone ? 'border-green-400' : ''}`}
                       placeholder={t('contact.phone_placeholder')}
                       aria-invalid={!!errors.phone}
                       aria-describedby={errors.phone ? 'error-phone' : undefined}
+                      inputMode="tel"
+                      style={{ fontSize: '16px', minHeight: '48px', padding: '12px 16px' }}
                     />
-                    {errors.phone && <p id="error-phone" className="mt-1 text-xs text-red-600">{errors.phone}</p>}
+                    {errors.phone && <p id="error-phone" className="mt-2 text-sm text-red-600 font-medium">{errors.phone}</p>}
                   </div>
                 </div>
                 
+                {/* Honeypot field - hidden from users, only bots will fill it */}
+                <input
+                  type="text"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  style={{ display: 'none' }}
+                  tabIndex="-1"
+                  autoComplete="off"
+                  aria-hidden="true"
+                />
+                
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-1.5">
+                  <label htmlFor="message" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
                     {t('contact.message_label')} <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
                   <textarea
-                    id="message" name="message" value={formData.message} onChange={handleChange} required rows="4"
-                    className={`form-input ${errors.message ? 'border-red-400 focus:ring-red-300' : touched.message ? 'border-green-400' : ''}`}
+                    id="message" name="message" value={formData.message} onChange={handleChange} required 
+                    rows="4"
+                    className={`form-input mobile-touch-input ${errors.message ? 'border-red-400 focus:ring-red-300' : touched.message ? 'border-green-400' : ''}`}
                     placeholder={t('contact.message_placeholder')}
                     aria-invalid={!!errors.message}
                     aria-describedby={errors.message ? 'error-message' : undefined}
+                    style={{ fontSize: '16px', minHeight: '120px', padding: '12px 16px', resize: 'vertical' }}
                   ></textarea>
-                  {errors.message && <p id="error-message" className="mt-1 text-xs text-red-600">{errors.message}</p>}
+                  {errors.message && <p id="error-message" className="mt-2 text-sm text-red-600 font-medium">{errors.message}</p>}
                 </div>
 
                 <div className="pt-2">
@@ -235,9 +315,9 @@ const Contact = () => {
                   {errors.consent && <p id="error-consent" className="mt-1 text-xs text-red-600">{errors.consent}</p>}
                 </div>
                 
-                <Button disabled={isSubmitting} type="submit" size="lg" className="w-full flex items-center justify-center gap-2 disabled:opacity-60">
+                <Button disabled={isSubmitting} type="submit" size="lg" className="w-full flex items-center justify-center gap-2 disabled:opacity-60" aria-busy={isSubmitting}>
                   <Send className="h-5 w-5" />
-                  {isSubmitting ? 'Enviando...' : t('contact.send_button')}
+                  {isSubmitting ? t('contact.sending_label') : t('contact.send_button')}
                 </Button>
               </form>
             </div>

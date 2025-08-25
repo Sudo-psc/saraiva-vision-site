@@ -2,10 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Floating Widgets - Ensure proper positioning and responsiveness */
+@layer utilities {
+  .floating-widget {
+    position: fixed !important;
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  .floating-widget-bottom-right {
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .floating-widget-bottom-left {
+    bottom: 1rem;
+    left: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .floating-widget-bottom-right {
+      bottom: 1.5rem;
+      right: 1.5rem;
+    }
+
+    .floating-widget-bottom-left {
+      bottom: 1.5rem;
+      left: 1.5rem;
+    }
+  }
+
+  /* Ensure accessibility widget doesn't overlap with other widgets */
+  .accessibility-widget {
+    bottom: 6rem;
+    right: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .accessibility-widget {
+      bottom: 7rem;
+      right: 1.5rem;
+    }
+  }
+
+  /* Smooth scrolling behavior for floating elements */
+  .floating-smooth {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
 /* Ensure white background as fallback */
-html, body {
+html,
+body {
   background-color: white !important;
   color: #1a1a1a !important;
+  /* Enhanced font fallback stack */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 }
 
 @layer base {
@@ -32,12 +85,18 @@ html, body {
     --radius: 0.75rem;
 
     /* Improved Medical Color Palette */
-    --medical-primary: 207 89% 54%;  /* Professional medical blue */
-    --medical-secondary: 145 63% 42%; /* Trust green */
-    --medical-accent: 39 84% 56%;     /* Warm accent */
-    --soft-gray: 220 14% 96%;         /* Soft backgrounds */
-    --text-primary: 217 33% 17%;      /* High contrast text */
-    --text-secondary: 215 16% 47%;    /* Secondary text */
+    --medical-primary: 207 89% 54%;
+    /* Professional medical blue */
+    --medical-secondary: 145 63% 42%;
+    /* Trust green */
+    --medical-accent: 39 84% 56%;
+    /* Warm accent */
+    --soft-gray: 220 14% 96%;
+    /* Soft backgrounds */
+    --text-primary: 217 33% 17%;
+    /* High contrast text */
+    --text-secondary: 215 16% 47%;
+    /* Secondary text */
 
     /* Icon colors with better accessibility */
     --icon-consultas: 207 89% 54%;
@@ -116,7 +175,7 @@ html, body {
   * {
     @apply border-border;
   }
-  
+
   body {
     @apply bg-background text-base font-normal;
     font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
@@ -126,73 +185,79 @@ html, body {
     color: hsl(var(--text-primary));
     scroll-behavior: smooth;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     font-weight: 600;
     line-height: 1.2;
     color: hsl(var(--text-primary));
     letter-spacing: -0.025em;
   }
-  
+
   h1 {
     @apply text-4xl md:text-5xl lg:text-6xl font-bold leading-tight;
     letter-spacing: -0.04em;
   }
-  
+
   h2 {
     @apply text-3xl md:text-4xl lg:text-5xl font-semibold leading-snug;
     letter-spacing: -0.03em;
   }
-  
+
   h3 {
     @apply text-2xl md:text-3xl font-semibold leading-normal;
     letter-spacing: -0.025em;
   }
-  
+
   h4 {
     @apply text-xl md:text-2xl font-semibold;
   }
-  
+
   p {
     @apply text-base md:text-lg leading-relaxed;
     color: hsl(var(--text-secondary));
     margin-bottom: 1rem;
   }
-  
+
   section {
     @apply py-12 md:py-16;
   }
-  
-  input[type="text"], 
-  input[type="email"], 
-  input[type="tel"], 
-  textarea, 
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea,
   select {
     @apply rounded-xl border-2 transition-all duration-300;
-    font-size: 16px; /* Prevents zoom on iOS */
+    font-size: 16px;
+    /* Prevents zoom on iOS */
   }
-  
-  input:focus, 
-  textarea:focus, 
+
+  input:focus,
+  textarea:focus,
   select:focus {
     @apply ring-2 ring-blue-500/20 border-blue-500 outline-none;
   }
-  
+
   /* Improved button styles */
   button {
     @apply transition-all duration-300 ease-in-out;
   }
-  
+
   button:focus-visible {
     @apply outline-2 outline-blue-500 outline-offset-2;
   }
-  
+
   /* Smooth scrolling for anchor links */
   html {
     scroll-behavior: smooth;
   }
-  
+
   /* Better text selection */
   ::selection {
     background-color: hsl(207 89% 54% / 0.2);
@@ -204,36 +269,76 @@ html, body {
   .modern-card {
     @apply bg-white rounded-2xl p-6 shadow-soft-light transition-all duration-300 ease-in-out;
   }
+
   .modern-card:hover {
     @apply shadow-soft-medium-hover;
     transform: translateY(-8px);
   }
-  .modern-card:nth-child(1):hover { border-top-color: var(--card-border-consultas); }
-  .modern-card:nth-child(2):hover { border-top-color: var(--card-border-refracao); }
-  .modern-card:nth-child(3):hover { border-top-color: var(--card-border-tratamentos); }
-  .modern-card:nth-child(4):hover { border-top-color: var(--card-border-cirurgias); }
-  .modern-card:nth-child(5):hover { border-top-color: var(--card-border-pediatrico); }
-  .modern-card:nth-child(6):hover { border-top-color: var(--card-border-laudos); }
+
+  .modern-card:nth-child(1):hover {
+    border-top-color: var(--card-border-consultas);
+  }
+
+  .modern-card:nth-child(2):hover {
+    border-top-color: var(--card-border-refracao);
+  }
+
+  .modern-card:nth-child(3):hover {
+    border-top-color: var(--card-border-tratamentos);
+  }
+
+  .modern-card:nth-child(4):hover {
+    border-top-color: var(--card-border-cirurgias);
+  }
+
+  .modern-card:nth-child(5):hover {
+    border-top-color: var(--card-border-pediatrico);
+  }
+
+  .modern-card:nth-child(6):hover {
+    border-top-color: var(--card-border-laudos);
+  }
 
   .modern-card-alt {
     @apply bg-white rounded-2xl shadow-soft-light hover:shadow-soft-medium-hover border-t-4 border-transparent hover:border-green-400 transition-all duration-300 ease-in-out;
   }
+
   .icon-container {
     @apply p-3 rounded-xl inline-flex items-center justify-center transition-all duration-300;
   }
+
   .icon-container svg {
     @apply transition-transform duration-300 group-hover:scale-110;
   }
-  .icon-container-0 { background-color: var(--icon-bg-consultas); }
-  .icon-container-1 { background-color: var(--icon-bg-refracao); }
-  .icon-container-2 { background-color: var(--icon-bg-tratamentos); }
-  .icon-container-3 { background-color: var(--icon-bg-cirurgias); }
-  .icon-container-4 { background-color: var(--icon-bg-pediatrico); }
-  .icon-container-5 { background-color: var(--icon-bg-laudos); }
+
+  .icon-container-0 {
+    background-color: var(--icon-bg-consultas);
+  }
+
+  .icon-container-1 {
+    background-color: var(--icon-bg-refracao);
+  }
+
+  .icon-container-2 {
+    background-color: var(--icon-bg-tratamentos);
+  }
+
+  .icon-container-3 {
+    background-color: var(--icon-bg-cirurgias);
+  }
+
+  .icon-container-4 {
+    background-color: var(--icon-bg-pediatrico);
+  }
+
+  .icon-container-5 {
+    background-color: var(--icon-bg-laudos);
+  }
 
   .form-input {
     @apply w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300;
   }
+
   .form-input:hover {
     background: linear-gradient(to right, theme('colors.blue.50') 0%, theme('colors.blue.100') 100%);
     @apply border-blue-400;
@@ -246,32 +351,228 @@ html, body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
   .shadow-soft-light {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   }
+
   .shadow-soft-medium {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   }
+
   .shadow-soft-medium-hover {
     box-shadow: 0 12px 32px rgba(67, 100, 247, 0.15);
   }
+
   .bg-subtle-gradient {
     background-image: linear-gradient(to bottom, theme('colors.white') 0%, theme('colors.blue.50') 100%);
   }
+
   .bg-hero-gradient {
     background-image: linear-gradient(135deg, theme('colors.cyan.50') 0%, theme('colors.blue.100') 100%);
   }
+
   .bg-header-gradient {
-    background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
+
   .glass-card {
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     @apply rounded-2xl shadow-soft-light;
+  }
+}
+
+/* Enhanced 3D and Glassmorphism Styles */
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .transform-gpu {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .glass-morphism {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  }
+
+  .glass-morphism-hover {
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.3),
+      0 0 20px rgba(147, 51, 234, 0.2),
+      0 0 30px rgba(236, 72, 153, 0.1);
+  }
+
+  .shadow-3d {
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.12),
+      0 1px 2px rgba(0, 0, 0, 0.24),
+      0 4px 8px rgba(0, 0, 0, 0.1),
+      0 8px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-3d-hover {
+    box-shadow:
+      0 4px 8px rgba(0, 0, 0, 0.12),
+      0 8px 16px rgba(0, 0, 0, 0.16),
+      0 12px 24px rgba(0, 0, 0, 0.12),
+      0 16px 32px rgba(59, 130, 246, 0.15);
+  }
+
+  .gradient-border {
+    position: relative;
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(147, 51, 234, 0.5));
+    border-radius: inherit;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+  }
+
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent);
+    transition: left 0.8s ease-in-out;
+  }
+
+  .shimmer:hover::before {
+    left: 100%;
+  }
+
+  .floating-animation {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float 3s ease-in-out infinite 1.5s;
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .glow-pulse {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.3));
+    }
+
+    to {
+      filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.6)) drop-shadow(0 0 30px rgba(147, 51, 234, 0.4));
+    }
+  }
+
+  /* Floating animations for podcast hero */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float 3s ease-in-out infinite;
+    animation-delay: 1.5s;
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .card-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+  }
+
+  .card-3d:hover {
+    transform: rotateY(5deg) rotateX(5deg) scale(1.02);
+  }
+
+  /* Advanced Glassmorphism Variants */
+  .glass-blue {
+    background: linear-gradient(135deg,
+        rgba(59, 130, 246, 0.1) 0%,
+        rgba(147, 51, 234, 0.1) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+
+  .glass-purple {
+    background: linear-gradient(135deg,
+        rgba(147, 51, 234, 0.1) 0%,
+        rgba(236, 72, 153, 0.1) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(147, 51, 234, 0.2);
   }
 }
 
@@ -282,5 +583,14 @@ html, body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .floating-animation,
+  .glow-pulse {
+    animation: none;
+  }
+
+  .card-3d:hover {
+    transform: none;
   }
 }

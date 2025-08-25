@@ -22,22 +22,22 @@ const SchemaMarkup = ({
   const generateSchemas = () => {
     const schemas = [];
     
-    // Schema principal da clínica (sempre incluído)
-    schemas.push(generateMedicalClinicSchema(language));
+    // Schema principal da clínica (para @graph)
+    schemas.push(generateMedicalClinicSchema(language, true));
     
     // Schema específico da página
     if (type === 'webpage' && pageInfo) {
-      schemas.push(generateMedicalWebPageSchema(pageInfo, language));
+      schemas.push(generateMedicalWebPageSchema(pageInfo, language, true));
     }
     
     // Schema FAQ se houver itens
     if (faqItems && faqItems.length > 0) {
-      schemas.push(generateFAQSchema(faqItems, language));
+      schemas.push(generateFAQSchema(faqItems, language, true));
     }
     
     // Schema de breadcrumbs se houver
     if (breadcrumbs && breadcrumbs.length > 0) {
-      schemas.push(generateBreadcrumbSchema(breadcrumbs));
+      schemas.push(generateBreadcrumbSchema(breadcrumbs, true));
     }
     
     // Schemas adicionais
@@ -48,17 +48,20 @@ const SchemaMarkup = ({
   
   const schemas = generateSchemas();
   
+  // Configurar como @graph para múltiplos schemas
+  const finalStructuredData = {
+    '@context': 'https://schema.org',
+    '@graph': schemas
+  };
+
   return (
     <Helmet>
-      {schemas.map((schema, index) => (
-        <script 
-          key={index}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(schema, null, 2)
-          }}
-        />
-      ))}
+      <script 
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(finalStructuredData, null, 2)
+        }}
+      />
     </Helmet>
   );
 };

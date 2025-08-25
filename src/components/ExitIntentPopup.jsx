@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { X, Gift, Clock, Star, Phone, MessageCircle } from 'lucide-react';
@@ -14,6 +14,7 @@ const ExitIntentPopup = () => {
     const [discountCode, setDiscountCode] = useState('');
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutos em segundos
     const [isCodeRevealed, setIsCodeRevealed] = useState(false);
+    const inactivityTimerRef = useRef(null);
 
     // Gerar código único de desconto
     const generateDiscountCode = () => {
@@ -41,70 +42,153 @@ const ExitIntentPopup = () => {
         }
     }, [isVisible, timeLeft, analytics, isCodeRevealed]);
 
-    // Detectar intenção de saída
+    // Travamento da rolagem da página quando popup estiver visível
     useEffect(() => {
-        // Verificar se já foi exibido hoje
-        if (storage.hasShownToday()) {
+        if (isVisible) {
+            // Salvar a posição atual da rolagem
+            const scrollY = window.scrollY;
+            
+            // Aplicar estilos para travar a rolagem
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.width = '100%';
+            document.documentElement.style.overflow = 'hidden';
+            
+            return () => {
+                // Restaurar rolagem quando popup fechar
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                document.documentElement.style.overflow = '';
+                
+                // Restaurar posição da rolagem
+                window.scrollTo(0, scrollY);
+            };
+        }
+    }, [isVisible]);
+
+    // Detectar intenção de saída + inatividade real (desktop only)
+    useEffect(() => {
+        // Debug mode: forçar ativação em desenvolvimento
+        const isDevelopment = process.env.NODE_ENV === 'development';
+        
+        if (isDevelopment) {
+            console.log('Exit Popup Debug:', {
+                hasShownToday: storage.hasShownToday(),
+                isInCooldown: storage.isInCooldown(),
+                hasDismissedInSession: storage.hasDismissedInSession(),
+                hasShown: hasShown,
+                isVisible: isVisible,
+                isDevelopment: isDevelopment
+            });
+        }
+
+        // Verificar se já foi exibido hoje ou se está em cooldown ou sessão dispensada
+        if (!isDevelopment && (storage.hasShownToday() || storage.isInCooldown() || storage.hasDismissedInSession())) {
             setHasShown(true);
             return;
         }
 
-        let timeoutId;
+        // Evitar em dispositivos touch (exit-intent não faz sentido em mobile) - exceto em desenvolvimento
+        const isTouch = !isDevelopment && typeof window !== 'undefined' && (
+            'ontouchstart' in window || (navigator && navigator.maxTouchPoints > 0)
+        );
 
-        const handleMouseLeave = (e) => {
-            // Detecta quando o mouse sai pela parte superior da página
-            if (e.clientY <= 0 && !hasShown && !isVisible) {
-                timeoutId = setTimeout(() => {
-                    const code = generateDiscountCode();
-                    setIsVisible(true);
-                    setHasShown(true);
-                    setDiscountCode(code);
-                    setTimeLeft(600); // Reset timer
+        let exitTimeoutId;
 
-                    // Analytics e storage
-                    analytics.trackPopupShown('exit_intent');
-                    storage.markAsShown(code);
-                }, 100);
+        const showPopup = (trigger) => {
+            if (isDevelopment) {
+                console.log('Tentando mostrar popup:', { trigger, hasShown, isVisible });
             }
-        };
-
-        const handleMouseEnter = () => {
-            if (timeoutId) {
-                clearTimeout(timeoutId);
+            if (hasShown || isVisible) {
+                if (isDevelopment) console.log('Popup bloqueado:', { hasShown, isVisible });
+                return;
             }
-        };
-
-        // Também mostrar após 30 segundos de inatividade
-        const handleInactivity = () => {
-            if (!hasShown && !isVisible) {
-                const code = generateDiscountCode();
-                setIsVisible(true);
-                setHasShown(true);
-                setDiscountCode(code);
-
-                // Analytics e storage
-                analytics.trackPopupShown('inactivity_timer');
+            const code = generateDiscountCode();
+            if (isDevelopment) console.log('Mostrando popup com código:', code);
+            setIsVisible(true);
+            setHasShown(true);
+            setDiscountCode(code);
+            setTimeLeft(600); // Reset timer
+            analytics.trackPopupShown(trigger);
+            // Em desenvolvimento, não salvar no storage para permitir testes repetidos
+            if (!isDevelopment) {
                 storage.markAsShown(code);
             }
         };
 
-        document.addEventListener('mouseleave', handleMouseLeave);
-        document.addEventListener('mouseenter', handleMouseEnter);
+        const handleMouseLeave = (e) => {
+            if (isTouch) return; // ignore on touch devices
+            // Detecta quando o mouse sai pela parte superior da página
+            if (e.clientY <= 0 && !hasShown && !isVisible) {
+                exitTimeoutId = setTimeout(() => showPopup('exit_intent'), 100);
+            }
+        };
 
-        // Timer de inatividade (30 segundos)
-        const inactivityTimer = setTimeout(handleInactivity, 30000);
+        const handleMouseEnter = () => {
+            if (exitTimeoutId) clearTimeout(exitTimeoutId);
+        };
+
+        // Inatividade real: reseta o timer em eventos de atividade
+        const resetInactivityTimer = () => {
+            if (inactivityTimerRef.current) clearTimeout(inactivityTimerRef.current);
+            // Em desenvolvimento, reduzir tempo para 5 segundos para facilitar testes
+            const inactivityTime = isDevelopment ? 5000 : 30000;
+            inactivityTimerRef.current = setTimeout(() => showPopup('inactivity_timer'), inactivityTime);
+        };
+
+        // Listeners de atividade
+        const activityEvents = ['mousemove', 'keydown', 'scroll', 'touchstart'];
+        activityEvents.forEach((evt) => document.addEventListener(evt, resetInactivityTimer, { passive: true }));
+
+        // Listeners de saída (apenas desktop ou desenvolvimento)
+        if (!isTouch) {
+            document.addEventListener('mouseleave', handleMouseLeave);
+            document.addEventListener('mouseenter', handleMouseEnter);
+        }
+        
+        // Em desenvolvimento, adicionar listener de tecla para teste
+        if (isDevelopment) {
+            const handleKeyPress = (e) => {
+                // Pressionar Ctrl+Shift+E para forçar popup
+                if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+                    console.log('Forçando exit popup via tecla de atalho');
+                    showPopup('debug_trigger');
+                }
+            };
+            document.addEventListener('keydown', handleKeyPress);
+            
+            return () => {
+                if (!isTouch) {
+                    document.removeEventListener('mouseleave', handleMouseLeave);
+                    document.removeEventListener('mouseenter', handleMouseEnter);
+                }
+                activityEvents.forEach((evt) => document.removeEventListener(evt, resetInactivityTimer));
+                document.removeEventListener('keydown', handleKeyPress);
+                if (exitTimeoutId) clearTimeout(exitTimeoutId);
+                if (inactivityTimerRef.current) clearTimeout(inactivityTimerRef.current);
+            };
+        }
+
+        // Inicializa o timer de inatividade
+        resetInactivityTimer();
 
         return () => {
-            document.removeEventListener('mouseleave', handleMouseLeave);
-            document.removeEventListener('mouseenter', handleMouseEnter);
-            clearTimeout(timeoutId);
-            clearTimeout(inactivityTimer);
+            if (!isTouch) {
+                document.removeEventListener('mouseleave', handleMouseLeave);
+                document.removeEventListener('mouseenter', handleMouseEnter);
+            }
+            activityEvents.forEach((evt) => document.removeEventListener(evt, resetInactivityTimer));
+            if (exitTimeoutId) clearTimeout(exitTimeoutId);
+            if (inactivityTimerRef.current) clearTimeout(inactivityTimerRef.current);
         };
     }, [hasShown, isVisible, analytics, storage]);
 
     const handleClose = () => {
         analytics.trackPopupClosed(timeLeft, isCodeRevealed);
         setIsVisible(false);
+        storage.markDismissedInSession();
+        storage.startCooldown(4); // 4-hour cooldown
     };
 
     const handleRevealCode = () => {
@@ -115,15 +199,19 @@ const ExitIntentPopup = () => {
     const handleWhatsAppContact = () => {
         const phone = '5533998601427';
         const message = encodeURIComponent(
-            `🎯 Olá! Vi a oferta especial de 20% de desconto no site da Saraiva Vision!\n\n💳 Meu código: ${discountCode}\n\n👁️ Gostaria de agendar minha consulta oftalmológica com desconto.`
+            `Olá! Vi a oferta especial de 20% de desconto no site da Saraiva Vision!\n\nMeu código: ${discountCode}\n\nGostaria de agendar minha consulta oftalmológica com desconto.`
         );
         window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
         analytics.trackWhatsAppContact(discountCode);
+        storage.markDismissedInSession();
+        storage.startCooldown(4);
     };
 
     const handlePhoneCall = () => {
-        window.location.href = 'tel:+553399860142';
+        window.location.href = 'tel:+5533998601427';
         analytics.trackPhoneContact(discountCode);
+        storage.markDismissedInSession();
+        storage.startCooldown(4);
     };
 
     const formatTime = (seconds) => {
@@ -132,16 +220,37 @@ const ExitIntentPopup = () => {
         return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
 
+    // Debug indicator para desenvolvimento
+    const isDevelopment = process.env.NODE_ENV === 'development';
+
     return (
-        <AnimatePresence>
-            {isVisible && (
+        <>
+            {/* Debug Indicator - apenas em desenvolvimento */}
+            {isDevelopment && !hasShown && (
+                <div className="fixed top-4 left-4 z-[199] bg-blue-600 text-white px-3 py-2 rounded-lg shadow-lg text-sm font-medium">
+                    Exit Popup Ready - Ctrl+Shift+E para testar
+                </div>
+            )}
+            
+            <AnimatePresence>
+                {isVisible && (
                 <>
                     {/* Overlay */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200]"
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            width: '100vw',
+                            height: '100vh',
+                            touchAction: 'none'
+                        }}
                         onClick={handleClose}
                     />
 
@@ -151,9 +260,19 @@ const ExitIntentPopup = () => {
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.9, opacity: 0, y: 20 }}
                         transition={{ duration: 0.3, ease: "easeOut" }}
-                        className="fixed inset-0 flex items-center justify-center z-50 p-4"
+                        className="fixed inset-0 flex items-center justify-center z-[200] p-4"
+                        style={{ 
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            minHeight: '100vh',
+                            minWidth: '100vw'
+                        }}
                     >
-                        <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-auto overflow-hidden border-4 border-blue-100">
+                        <div 
+                            className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-auto overflow-hidden border-4 border-blue-100 relative max-h-[90vh] overflow-y-auto"
+                            onClick={(e) => e.stopPropagation()}
+                        >
 
                             {/* Header com Close Button */}
                             <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 text-center">
@@ -272,8 +391,9 @@ const ExitIntentPopup = () => {
                         </div>
                     </motion.div>
                 </>
-            )}
-        </AnimatePresence>
+                )}
+            </AnimatePresence>
+        </>
     );
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Star, RefreshCw, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { googleReviewUrl } from '@/lib/clinicInfo';
@@ -78,87 +78,50 @@ const anonymizeAuthor = (name = '') => {
 const GoogleReviewsWidget = () => {
   const { t } = useTranslation();
   const mockReviews = getEnhancedMockReviews();
-  const [reviews, setReviews] = useState(mockReviews);
-  const [loading, setLoading] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isRealData, setIsRealData] = useState(false);
+  const pollRef = useRef(null);
+  const etagRef = useRef(null);
+  const sseRef = useRef(null);
 
   const fetchReviews = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-      const placeId = import.meta.env.VITE_GOOGLE_PLACE_ID;
+      // Always try serverless API first
+      console.log('Fetching reviews from serverless API...');
+      const response = await fetch('/api/reviews', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
 
-      if (!apiKey || !placeId) {
-        console.log('Google Reviews: Missing API credentials - using enhanced mock data');
-        setReviews(mockReviews);
-        setIsRealData(false);
-        setLoading(false);
-        return;
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data.reviews && data.reviews.length > 0) {
+          console.log(`Successfully loaded ${data.reviews.length} real reviews`);
+          setReviews(data.reviews);
+          setIsRealData(true);
+          setError(null);
+          setLoading(false);
+          return;
+        }
       }
 
-      // Try serverless API endpoint first
-      try {
-        console.log('Fetching reviews from serverless API...');
-        const response = await fetch('/api/reviews', {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-
-          if (data.reviews && data.reviews.length > 0) {
-            console.log(`Successfully loaded ${data.reviews.length} real reviews`);
-            setReviews(data.reviews);
-            setIsRealData(true);
-            setError(null);
-            return;
-          }
-        }
-
-        throw new Error('Serverless API not available');
-
-      } catch (apiError) {
-        console.log('Serverless API failed, trying CORS proxy...');
-
-        // Fallback: Direct Google Places API with CORS proxy
-        const corsProxy = 'https://api.allorigins.win/raw?url=';
-        const googleUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews,rating,user_ratings_total&key=${apiKey}`;
-        const proxyUrl = `${corsProxy}${encodeURIComponent(googleUrl)}`;
-
-        const proxyResponse = await fetch(proxyUrl);
-
-        if (proxyResponse.ok) {
-          const data = await proxyResponse.json();
-
-          if (data.status === 'OK' && data.result?.reviews) {
-            const sanitizedReviews = data.result.reviews.slice(0, 5).map((review, idx) => ({
-              id: idx + 1,
-              author: anonymizeAuthor(review.author_name),
-              rating: review.rating,
-              text: sanitizeText(review.text),
-              relativeTime: review.relative_time_description || ''
-            }));
-
-            console.log(`Successfully loaded ${sanitizedReviews.length} reviews via CORS proxy`);
-            setReviews(sanitizedReviews);
-            setIsRealData(true);
-            setError(null);
-            return;
-          }
-        }
-
-        throw new Error('CORS proxy also failed');
-      }
+      // If API fails, fallback to mock data
+      console.log('API not available - using enhanced mock data');
+      setReviews(mockReviews);
+      setIsRealData(false);
+      setError(null);
 
     } catch (err) {
-      console.log('All API methods failed, using enhanced mock data:', err.message);
+      console.log('API error, using enhanced mock data:', err.message);
       setReviews(mockReviews);
       setIsRealData(false);
 
@@ -174,7 +137,14 @@ const GoogleReviewsWidget = () => {
   };
 
   useEffect(() => {
+    // Single fetch on component mount
     fetchReviews();
+
+    // Cleanup polling/SSE if any
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+      if (sseRef.current) sseRef.current.close();
+    };
   }, []);
 
   const averageRating = reviews.length > 0

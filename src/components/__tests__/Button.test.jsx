@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
+import { createRef } from 'react'
 import { Button } from '../ui/button'
 
 describe('Button Component', () => {
@@ -49,5 +50,63 @@ describe('Button Component', () => {
     const button = screen.getByRole('button')
     expect(button).toBeDisabled()
     expect(button).toHaveClass('disabled:pointer-events-none')
+  })
+
+  it('renders as different HTML elements when asChild is used', () => {
+    const { container } = render(
+      <Button asChild>
+        <a href="/test">Link Button</a>
+      </Button>
+    )
+    
+    const link = container.querySelector('a')
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '/test')
+    expect(link).toHaveTextContent('Link Button')
+  })
+
+  it('applies custom className alongside default classes', () => {
+    render(<Button className="custom-class">Custom</Button>)
+    
+    const button = screen.getByRole('button')
+    expect(button).toHaveClass('custom-class')
+    expect(button).toHaveClass('inline-flex', 'items-center', 'justify-center')
+  })
+
+  it('handles loading state', () => {
+    render(<Button disabled>Loading...</Button>)
+    
+    const button = screen.getByRole('button')
+    expect(button).toBeDisabled()
+    expect(button).toHaveTextContent('Loading...')
+  })
+
+  it('supports all variant combinations', () => {
+    const variants = ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link']
+    
+    variants.forEach(variant => {
+      const { unmount } = render(<Button variant={variant}>{variant}</Button>)
+      const button = screen.getByRole('button')
+      expect(button).toBeInTheDocument()
+      unmount()
+    })
+  })
+
+  it('supports all size combinations', () => {
+    const sizes = ['default', 'sm', 'lg', 'icon']
+    
+    sizes.forEach(size => {
+      const { unmount } = render(<Button size={size}>{size}</Button>)
+      const button = screen.getByRole('button')
+      expect(button).toBeInTheDocument()
+      unmount()
+    })
+  })
+
+  it('forwards ref correctly', () => {
+    const ref = createRef()
+    render(<Button ref={ref}>Ref Test</Button>)
+    
+    expect(ref.current).toBeInstanceOf(HTMLButtonElement)
   })
 })

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, MessageCircle, Globe, ChevronDown, Calendar } from 'lucide-react';
+import { Menu, X, MessageCircle, Globe, ChevronDown, Calendar, Headphones } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/Logo';
@@ -17,9 +17,7 @@ const Navbar = () => {
   const [scheduleDropdownOpen, setScheduleDropdownOpen] = useState(false);
   const { generateWhatsAppUrl, openFloatingCTA } = useWhatsApp();
   const whatsappLink = generateWhatsAppUrl();
-  const location = useLocation();
   const navigate = useNavigate();
-  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,12 +29,12 @@ const Navbar = () => {
   }, []);
 
   const navLinks = useMemo(() => [
-    { name: t('navbar.home'), href: '#home', internal: true },
-    { name: t('navbar.services'), href: '#services', internal: true },
+    { name: t('navbar.home'), href: '/', internal: true, isRoute: true },
+    { name: t('navbar.services'), href: '/servicos', internal: true, isRoute: true },
     { name: t('navbar.lenses'), href: '/lentes', internal: true, isRoute: true },
-    { name: t('navbar.about'), href: '#about', internal: true },
-    { name: t('navbar.testimonials'), href: '#testimonials', internal: true },
-    { name: t('navbar.contact'), href: '#contact', internal: true },
+    { name: t('navbar.about'), href: '/sobre', internal: true, isRoute: true },
+    { name: t('navbar.testimonials'), href: '/depoimentos', internal: true, isRoute: true },
+    { name: t('navbar.contact'), href: '/contato', internal: true, isRoute: true },
     { name: 'Instagram', href: 'https://www.instagram.com/saraiva_vision/', internal: false },
   ], [t]);
 
@@ -44,26 +42,52 @@ const Navbar = () => {
     setMobileMenuOpen(false);
     if (link.internal) {
       e.preventDefault();
-      if (link.isRoute) {
-        navigate(link.href);
-      } else if (isHomePage) {
-        const element = document.querySelector(link.href);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      } else {
-        navigate('/' + link.href);
+      navigate(link.href);
+    }
+  }, [navigate]);
+
+  const safeOpen = useCallback((url) => {
+    // Validate URL before opening
+    if (!url || url.trim() === '') {
+      console.error('Invalid URL provided to safeOpen:', url);
+      return;
+    }
+
+    try {
+      // Ensure URL is properly formatted
+      const validUrl = url.startsWith('http') ? url : `https://${url}`;
+      const win = window.open(validUrl, '_blank', 'noopener,noreferrer');
+
+      // Check if popup was blocked
+      if (!win || win.closed || typeof win.closed === 'undefined') {
+        // Fallback: redirect in same tab
+        window.location.href = validUrl;
+      }
+    } catch (e) {
+      console.error('Error opening URL:', url, e);
+      // Final fallback: try direct navigation
+      try {
+        window.location.href = url.startsWith('http') ? url : `https://${url}`;
+      } catch (fallbackError) {
+        console.error('Fallback navigation also failed:', fallbackError);
       }
     }
-  }, [isHomePage, navigate]);
-
-  const handleAgendarOnlineClick = useCallback(() => {
-    window.open(clinicInfo.onlineSchedulingUrl, '_blank', 'noopener,noreferrer');
   }, []);
 
+  const handleAgendarOnlineClick = useCallback(() => {
+    // Validate the scheduling URL exists
+    if (!clinicInfo.onlineSchedulingUrl) {
+      console.error('Online scheduling URL not configured');
+      alert(t('navbar.scheduling_error', 'Serviço indisponível. Use WhatsApp ou ligue para (33) 99860-1427'));
+      return;
+    }
+
+    safeOpen(clinicInfo.onlineSchedulingUrl);
+  }, [safeOpen, t]);
+
   const handleAgendarWhatsappClick = useCallback(() => {
-    window.open(whatsappLink, '_blank', 'noopener,noreferrer');
-  }, [whatsappLink]);
+    safeOpen(whatsappLink);
+  }, [whatsappLink, safeOpen]);
 
   const handleAgendarContatoClick = openFloatingCTA;
 
@@ -79,10 +103,10 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Link to="/"><Logo /></Link>
+            <Link to="/" aria-label={t('navbar.home_link_label', 'Ir para a página inicial')}><Logo /></Link>
           </motion.div>
 
-          <nav className="hidden md:flex items-center space-x-1">
+          <nav className="hidden md:flex items-center space-x-1" aria-label={t('navbar.primary_navigation', 'Navegação principal')}>
             {navLinks.map((link, index) => (
               link.internal ? (
                 <motion.a
@@ -92,7 +116,14 @@ const Navbar = () => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="text-slate-700 hover:text-blue-600 font-medium transition-colors cursor-pointer px-4 py-2 rounded-lg hover:bg-slate-100"
+                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors cursor-pointer px-4 py-2 rounded-lg hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+                  tabIndex="0"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleNavClick(e, link);
+                    }
+                  }}
                 >
                   {link.name}
                 </motion.a>
@@ -100,14 +131,24 @@ const Navbar = () => {
                 <motion.a
                   key={link.name}
                   href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const confirmed = window.confirm(
+                      t('navbar.external_link_warning', `Você será redirecionado para ${link.name}. Continuar?`)
+                    );
+                    if (confirmed) {
+                      safeOpen(link.href);
+                    }
+                  }}
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="text-slate-700 hover:text-blue-600 font-medium transition-colors cursor-pointer px-4 py-2 rounded-lg hover:bg-slate-100"
+                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors cursor-pointer px-4 py-2 rounded-lg hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+                  tabIndex="0"
+                  title={t('navbar.external_link_title', `Abre em nova aba: ${link.name}`)}
                 >
                   {link.name}
+                  <span className="ml-1 text-xs text-gray-500" aria-label="link externo">↗</span>
                 </motion.a>
               )
             ))}
@@ -115,22 +156,38 @@ const Navbar = () => {
 
           <div className="hidden md:flex items-center gap-4">
             <LanguageSwitcher />
+
+            {/* Podcast Icon - Link externo */}
+            <a
+              href="https://shorturl.at/X0S4m"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 text-slate-700 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+              aria-label={t('navbar.podcast', 'Podcast')}
+            >
+              <Headphones size={20} />
+            </a>
+
             <div className="relative">
               <Button
                 onClick={() => setScheduleDropdownOpen(!scheduleDropdownOpen)}
                 className="flex items-center gap-2"
                 onBlur={() => setTimeout(() => setScheduleDropdownOpen(false), 150)}
+                aria-haspopup="menu"
+                aria-expanded={scheduleDropdownOpen}
+                aria-controls="navbar-schedule-menu"
               >
                 <Calendar size={18} />
                 <span>{t('navbar.schedule')}</span>
                 <ChevronDown size={16} />
               </Button>
               {scheduleDropdownOpen && (
-                <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                <div id="navbar-schedule-menu" className="absolute top-full right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                   <div className="p-2">
                     <button
                       onClick={handleAgendarOnlineClick}
-                      className="w-full flex items-center gap-3 p-3 hover:bg-blue-50 rounded-lg transition-colors text-left"
+                      className="w-full flex items-center gap-3 p-3 hover:bg-blue-50 rounded-lg transition-colors text-left focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-inset"
+                      tabIndex="0"
                     >
                       <Globe size={20} className="text-blue-600" />
                       <div>
@@ -140,22 +197,24 @@ const Navbar = () => {
                     </button>
                     <button
                       onClick={handleAgendarWhatsappClick}
-                      className="w-full flex items-center gap-3 p-3 hover:bg-green-50 rounded-lg transition-colors text-left"
+                      className="w-full flex items-center gap-3 p-3 hover:bg-green-50 rounded-lg transition-colors text-left focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-inset"
+                      tabIndex="0"
                     >
                       <MessageCircle size={20} className="text-green-600" />
                       <div>
-                        <div className="font-medium text-gray-900">WhatsApp</div>
-                        <div className="text-xs text-gray-500">Conversa direta com a equipe</div>
+                        <div className="font-medium text-gray-900">{t('navbar.whatsapp')}</div>
+                        <div className="text-xs text-gray-500">{t('navbar.whatsapp_direct')}</div>
                       </div>
                     </button>
                     <button
                       onClick={handleAgendarContatoClick}
-                      className="w-full flex items-center gap-3 p-3 hover:bg-purple-50 rounded-lg transition-colors text-left"
+                      className="w-full flex items-center gap-3 p-3 hover:bg-purple-50 rounded-lg transition-colors text-left focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-inset"
+                      tabIndex="0"
                     >
                       <Calendar size={20} className="text-purple-600" />
                       <div>
-                        <div className="font-medium text-gray-900">Mais Opções</div>
-                        <div className="text-xs text-gray-500">Telefone, e-mail e outras formas</div>
+                        <div className="font-medium text-gray-900">{t('navbar.more_options')}</div>
+                        <div className="text-xs text-gray-500">{t('navbar.more_options_desc')}</div>
                       </div>
                     </button>
                   </div>
@@ -187,14 +246,14 @@ const Navbar = () => {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="md:hidden bg-white/95 backdrop-blur-lg border-t"
           >
-            <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
+            <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4" aria-label={t('navbar.mobile_navigation', 'Navegação móvel')}>
               {navLinks.map((link) => (
                 link.internal ? (
                   <a
                     key={link.name}
                     href={link.href}
                     onClick={(e) => handleNavClick(e, link)}
-                    className="text-gray-700 hover:text-blue-600 py-2 font-medium cursor-pointer text-lg"
+                    className="text-slate-800 hover:text-blue-700 py-2 font-medium cursor-pointer text-lg"
                   >
                     {link.name}
                   </a>
@@ -204,7 +263,7 @@ const Navbar = () => {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-700 hover:text-blue-600 py-2 font-medium cursor-pointer text-lg"
+                    className="text-slate-800 hover:text-blue-700 py-2 font-medium cursor-pointer text-lg"
                   >
                     {link.name}
                   </a>
@@ -223,10 +282,10 @@ const Navbar = () => {
                   setMobileMenuOpen(false);
                 }} variant="outline" className="flex items-center gap-2 w-full justify-center">
                   <MessageCircle size={18} />
-                  <span>WhatsApp</span>
+                  <span>{t('navbar.whatsapp')}</span>
                 </Button>
               </div>
-            </div>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>

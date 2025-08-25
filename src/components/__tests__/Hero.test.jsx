@@ -42,7 +42,7 @@ vi.mock('framer-motion', () => ({
 
 const renderWithRouter = (component) => {
   return render(
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       {component}
     </BrowserRouter>
   )

@@ -19,6 +19,23 @@ export const clinicInfo = {
   instagram: 'https://www.instagram.com/saraiva_vision/',
   chatbotUrl: 'https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica',
   onlineSchedulingUrl: 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613',
+  // Security validation for external integrations
+  validateSchedulingUrl: () => {
+    const url = 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613';
+    try {
+      const urlObj = new URL(url);
+      if (urlObj.protocol !== 'https:') {
+        throw new Error('URL must use HTTPS');
+      }
+      if (!urlObj.hostname.includes('agendarconsulta.com')) {
+        throw new Error('URL must be from agendarconsulta.com domain');
+      }
+      return url;
+    } catch (error) {
+      console.error('Invalid scheduling URL:', error);
+      return null;
+    }
+  },
   // Responsible physician (CFM compliance)
   responsiblePhysician: 'Dr. Philipe Saraiva Cruz',
   responsiblePhysicianCRM: 'CRM-MG 69.870',

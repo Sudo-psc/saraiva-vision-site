@@ -2,18 +2,29 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Calendar, ArrowRight, Eye, Globe } from 'lucide-react';
+import { Calendar, ArrowRight, Eye } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
 import SafeImage from '@/components/ui/SafeImage';
 import { useWhatsApp } from '@/hooks/useWhatsApp';
+import { safeOpenUrl } from '@/utils/safeNavigation';
+import { useHeroImagePreload } from '@/hooks/useResourcePreload';
 
 const Hero = () => {
   const { t } = useTranslation();
   const { openFloatingCTA } = useWhatsApp();
+  
+  // Preload hero image only on homepage
+  useHeroImagePreload();
 
   const handleAgendarClick = () => {
-    // Open online scheduling directly
-    window.open(clinicInfo.onlineSchedulingUrl, '_blank', 'noopener,noreferrer');
+    // Use validated scheduling URL with enhanced error handling
+    const validUrl = clinicInfo.validateSchedulingUrl();
+    if (validUrl) {
+      safeOpenUrl(validUrl);
+    } else {
+      console.error('Scheduling URL validation failed, falling back to contact modal');
+      openFloatingCTA();
+    }
   };
 
   const handleAgendarContato = openFloatingCTA;
@@ -64,9 +75,9 @@ const Hero = () => {
             </div>
 
             {/* Micro-roadmap copy below hero primary actions */}
-            <p className="text-sm text-slate-500 mt-2 font-medium" aria-live="polite">
-              Preencha seus dados e receba confirmação em 1 minuto. 100% seguro.
-              <button onClick={handleAgendarContato} className="ml-2 text-blue-600 hover:underline">Outras formas de contato</button>
+            <p className="text-sm text-slate-700 mt-2 font-medium" aria-live="polite">
+              {t('hero.microcopy_fast_confirmation')}
+              <button onClick={handleAgendarContato} className="ml-2 text-blue-700 hover:underline">{t('hero.more_contact_options')}</button>
             </p>
             
             <div className="flex items-center gap-4 pt-6 justify-center lg:justify-start">
@@ -98,6 +109,7 @@ const Hero = () => {
                 decoding="async"
                 width="800"
                 height="640"
+                sizes="(min-width: 1024px) 800px, 100vw"
                 className="w-full h-auto"
                 alt="Médico oftalmologista sorrindo para a câmera em uma clínica moderna"
                 src="https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png?format=webp"

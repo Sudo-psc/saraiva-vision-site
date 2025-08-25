@@ -5,7 +5,6 @@ import { useLensesSEO } from '@/hooks/useSEO';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ContactLenses from '@/components/ContactLenses';
-import FloatingCTA from '@/components/FloatingCTA';
 
 const LensesPage = () => {
   const { t } = useTranslation();
@@ -19,7 +18,6 @@ const LensesPage = () => {
         <ContactLenses />
       </main>
       <Footer />
-      <FloatingCTA />
     </div>
   );
 };

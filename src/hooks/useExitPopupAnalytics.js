@@ -101,6 +101,8 @@ export const useExitPopupAnalytics = () => {
 export const useExitPopupStorage = () => {
 
     const STORAGE_KEY = 'saraiva_vision_exit_popup';
+    const SESSION_KEY = 'saraiva_vision_exit_popup_dismissed_session';
+    const COOLDOWN_KEY = 'saraiva_vision_exit_popup_cooldown_until';
 
     // Verificar se popup já foi exibido hoje
     const hasShownToday = useCallback(() => {
@@ -133,6 +135,32 @@ export const useExitPopupStorage = () => {
         }
     }, []);
 
+    // Sessão atual: verificar se foi dispensado (não mostrar novamente)
+    const hasDismissedInSession = useCallback(() => {
+        try {
+            return sessionStorage.getItem(SESSION_KEY) === 'true';
+        } catch (error) {
+            console.error('Error checking session dismissal:', error);
+            return false;
+        }
+    }, []);
+
+    const markDismissedInSession = useCallback(() => {
+        try {
+            sessionStorage.setItem(SESSION_KEY, 'true');
+        } catch (error) {
+            console.error('Error setting session dismissal:', error);
+        }
+    }, []);
+
+    const clearDismissedInSession = useCallback(() => {
+        try {
+            sessionStorage.removeItem(SESSION_KEY);
+        } catch (error) {
+            console.error('Error clearing session dismissal:', error);
+        }
+    }, []);
+
     // Obter último código gerado (se existir)
     const getLastDiscountCode = useCallback(() => {
         try {
@@ -159,10 +187,49 @@ export const useExitPopupStorage = () => {
         }
     }, []);
 
+    // Cooldown persistente (ex.: 4 horas)
+    const isInCooldown = useCallback(() => {
+        try {
+            const untilStr = localStorage.getItem(COOLDOWN_KEY);
+            if (!untilStr) return false;
+            const until = parseInt(untilStr, 10);
+            if (Number.isNaN(until)) return false;
+            return Date.now() < until;
+        } catch (error) {
+            console.error('Error reading cooldown:', error);
+            return false;
+        }
+    }, []);
+
+    const startCooldown = useCallback((hours = 4) => {
+        try {
+            const until = Date.now() + hours * 60 * 60 * 1000;
+            localStorage.setItem(COOLDOWN_KEY, String(until));
+        } catch (error) {
+            console.error('Error setting cooldown:', error);
+        }
+    }, []);
+
+    const clearCooldown = useCallback(() => {
+        try {
+            localStorage.removeItem(COOLDOWN_KEY);
+        } catch (error) {
+            console.error('Error clearing cooldown:', error);
+        }
+    }, []);
+
     return {
         hasShownToday,
         markAsShown,
         getLastDiscountCode,
-        clearStorage
+        clearStorage,
+        // session-level helpers
+        hasDismissedInSession,
+        markDismissedInSession,
+        clearDismissedInSession,
+        // cooldown helpers
+        isInCooldown,
+        startCooldown,
+        clearCooldown
     };
 };

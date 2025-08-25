@@ -37,19 +37,19 @@ const About = () => {
             <div className="grid grid-cols-2 gap-4 relative z-10">
               <div className="space-y-4">
                 <div className="rounded-2xl overflow-hidden shadow-soft-medium h-64">
-                  <img className="w-full h-full object-cover" alt={imageAlts[0]} src={imageUrls[0]} />
+                  <img loading="lazy" decoding="async" className="w-full h-full object-cover" alt={imageAlts[0]} src={imageUrls[0]} sizes="(min-width: 1024px) 33vw, 50vw" />
                 </div>
                 <div className="rounded-2xl overflow-hidden shadow-soft-medium h-40">
-                  <img className="w-full h-full object-cover" alt={imageAlts[1]} src={imageUrls[1]} />
+                  <img loading="lazy" decoding="async" className="w-full h-full object-cover" alt={imageAlts[1]} src={imageUrls[1]} sizes="(min-width: 1024px) 33vw, 50vw" />
                 </div>
               </div>
 
               <div className="space-y-4 mt-8">
                 <div className="rounded-2xl overflow-hidden shadow-soft-medium h-40">
-                  <img className="w-full h-full object-cover" alt={imageAlts[2]} src={imageUrls[2]} />
+                  <img loading="lazy" decoding="async" className="w-full h-full object-cover" alt={imageAlts[2]} src={imageUrls[2]} sizes="(min-width: 1024px) 33vw, 50vw" />
                 </div>
                 <div className="rounded-2xl overflow-hidden shadow-soft-medium h-64">
-                  <img className="w-full h-full object-cover" alt={imageAlts[3]} src={imageUrls[3]} />
+                  <img loading="lazy" decoding="async" className="w-full h-full object-cover" alt={imageAlts[3]} src={imageUrls[3]} sizes="(min-width: 1024px) 33vw, 50vw" />
                 </div>
               </div>
             </div>

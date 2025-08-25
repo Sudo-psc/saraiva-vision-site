@@ -1,9 +1,8 @@
 import { clinicInfo } from './clinicInfo.js';
 
 // Gera schema markup para MedicalClinic seguindo as melhores práticas
-export const generateMedicalClinicSchema = (language = 'pt') => {
+export const generateMedicalClinicSchema = (language = 'pt', forGraph = false) => {
   const baseSchema = {
-    '@context': 'https://schema.org',
     '@type': 'MedicalClinic',
     '@id': 'https://saraivavision.com.br/#clinic',
     name: clinicInfo.name,
@@ -177,13 +176,17 @@ export const generateMedicalClinicSchema = (language = 'pt') => {
     ]
   };
   
+  // Se não for para @graph, adicionar @context
+  if (!forGraph) {
+    baseSchema['@context'] = 'https://schema.org';
+  }
+  
   return baseSchema;
 };
 
 // Gera schema para FAQ
-export const generateFAQSchema = (faqItems, language = 'pt') => {
-  return {
-    '@context': 'https://schema.org',
+export const generateFAQSchema = (faqItems, language = 'pt', forGraph = false) => {
+  const schema = {
     '@type': 'FAQPage',
     '@id': 'https://saraivavision.com.br/#faq',
     mainEntity: faqItems.map(item => ({
@@ -195,12 +198,18 @@ export const generateFAQSchema = (faqItems, language = 'pt') => {
       }
     }))
   };
+  
+  // Se não for para @graph, adicionar @context
+  if (!forGraph) {
+    schema['@context'] = 'https://schema.org';
+  }
+  
+  return schema;
 };
 
 // Gera schema para páginas de serviços específicos
-export const generateMedicalProcedureSchema = (service, language = 'pt') => {
-  return {
-    '@context': 'https://schema.org',
+export const generateMedicalProcedureSchema = (service, language = 'pt', forGraph = false) => {
+  const schema = {
     '@type': 'MedicalProcedure',
     '@id': `https://saraivavision.com.br/servico/${service.id}#procedure`,
     name: service.title,
@@ -213,12 +222,18 @@ export const generateMedicalProcedureSchema = (service, language = 'pt') => {
       '@id': 'https://saraivavision.com.br/#clinic'
     }
   };
+  
+  // Se não for para @graph, adicionar @context
+  if (!forGraph) {
+    schema['@context'] = 'https://schema.org';
+  }
+  
+  return schema;
 };
 
 // Gera schema para WebPage médica
-export const generateMedicalWebPageSchema = (pageInfo, language = 'pt') => {
-  return {
-    '@context': 'https://schema.org',
+export const generateMedicalWebPageSchema = (pageInfo, language = 'pt', forGraph = false) => {
+  const schema = {
     '@type': 'MedicalWebPage',
     '@id': `https://saraivavision.com.br${pageInfo.url}#webpage`,
     name: pageInfo.title,
@@ -242,12 +257,18 @@ export const generateMedicalWebPageSchema = (pageInfo, language = 'pt') => {
       '@type': 'Patient'
     }
   };
+  
+  // Se não for para @graph, adicionar @context
+  if (!forGraph) {
+    schema['@context'] = 'https://schema.org';
+  }
+  
+  return schema;
 };
 
 // Gera schema para breadcrumbs
-export const generateBreadcrumbSchema = (breadcrumbs) => {
-  return {
-    '@context': 'https://schema.org',
+export const generateBreadcrumbSchema = (breadcrumbs, forGraph = false) => {
+  const schema = {
     '@type': 'BreadcrumbList',
     itemListElement: breadcrumbs.map((crumb, index) => ({
       '@type': 'ListItem',
@@ -256,6 +277,13 @@ export const generateBreadcrumbSchema = (breadcrumbs) => {
       item: `https://saraivavision.com.br${crumb.url}`
     }))
   };
+  
+  // Se não for para @graph, adicionar @context
+  if (!forGraph) {
+    schema['@context'] = 'https://schema.org';
+  }
+  
+  return schema;
 };
 
 // Utilitário para injetar schema no head

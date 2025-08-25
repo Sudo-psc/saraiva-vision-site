@@ -5,10 +5,17 @@
 - **Tech Stack**: React + Vite + Tailwind CSS + i18next
 - **Language**: Bilingual (Portuguese/English) with i18next
 
-## Development
-- **Dev Server**: `npm run dev` (runs on localhost:5173)
-- **Build**: `npm run build` for production
-- **Preview**: `npm run preview` for production preview
+## Deploy e Infraestrutura ✅ ATUALIZADO
+- **Modo Deploy**: Local nginx + Vite (migrado do Docker)  
+- **HTTPS/SSL**: ✅ Configurado com Let's Encrypt (válido até Nov 2025)
+- **Domínios**: saraivavision.com.br + www (ambos com SSL)
+- **Firewall**: UFW ativo com regras nginx + SSH
+- **Portas**: 80 (redirect), 443 (HTTPS), 3001 (API proxy)
+- **Headers Segurança**: HSTS, CSP, X-Frame-Options, X-Content-Type-Options
+- **Scripts**: deploy.sh (SSL), dev.sh (desenvolvimento), test-ssl.sh (verificação)
+- **Performance**: HTTP/2, gzip, cache de assets, API proxy otimizado
+- **Certificados**: Auto-renovação certbot, backup automático
+- **Logs**: /var/log/nginx/, monitoramento SSL integrado
 
 ## Key Features
 - Responsive design with Tailwind CSS

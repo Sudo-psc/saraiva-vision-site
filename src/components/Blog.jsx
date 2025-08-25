@@ -72,8 +72,11 @@ const Blog = ({ wordpressUrl }) => {
           >
             <Link to={`/blog/${post.slug}`} className="block overflow-hidden">
               <img
+                loading="lazy"
+                decoding="async"
                 src={post._embedded?.['wp:featuredmedia']?.[0]?.source_url || 'https://placehold.co/600x400/e2e8f0/64748b?text=Image'}
                 alt={post.title.rendered}
+                sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                 className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
               />
             </Link>

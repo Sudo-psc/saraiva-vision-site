@@ -10,6 +10,12 @@ i18n
   .init({
     debug: true,
     fallbackLng: 'pt',
+    supportedLngs: ['pt', 'en'],
+    detection: {
+      // Avoid unexpected browser-language switching; prefer explicit user choice
+      order: ['localStorage', 'cookie', 'htmlTag'],
+      caches: ['localStorage']
+    },
     interpolation: {
       escapeValue: false,
     },

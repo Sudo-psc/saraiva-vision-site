@@ -51,6 +51,40 @@ function sanitizeReview(r, idx) {
   };
 }
 
+import { createHash } from 'node:crypto';
+
+// Interval configuration (shorter in non-production for demos)
+const IS_PROD = process.env.NODE_ENV === 'production';
+const FETCH_INTERVAL_MS = Number(process.env.REVIEWS_POLL_INTERVAL_MS || (IS_PROD ? 60000 : 10000));
+const HEARTBEAT_INTERVAL_MS = Number(process.env.REVIEWS_HEARTBEAT_MS || (IS_PROD ? 25000 : 10000));
+
+async function fetchAndSanitize({ apiKey, placeId }) {
+  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews,rating,user_ratings_total&key=${apiKey}`;
+  const response = await fetch(url);
+  const json = await response.json();
+  if (json.status !== 'OK') {
+    const err = new Error(json.error_message || json.status || 'Google Places API error');
+    err.status = json.status || 502;
+    throw err;
+  }
+  const rawReviews = (json.result?.reviews || []).slice(0, 6);
+  const reviews = rawReviews.map(sanitizeReview);
+  const payload = {
+    source: 'google-places',
+    total: json.result?.user_ratings_total || reviews.length,
+    rating: json.result?.rating || null,
+    reviews,
+    disclaimer: 'Avaliações públicas do Google, nomes parcialmente anonimizados e conteúdos filtrados para privacidade.',
+    timestamp: new Date().toISOString()
+  };
+  return payload;
+}
+
+function hashPayload(payload) {
+  const body = JSON.stringify(payload);
+  return 'W/"' + createHash('sha1').update(body).digest('hex') + '"';
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
@@ -77,37 +111,68 @@ export default async function handler(req, res) {
     });
   }
   try {
-    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews,rating,user_ratings_total&key=${apiKey}`;
-    console.log('Fetching Google Places data...');
-    
-    const response = await fetch(url);
-    const json = await response.json();
-    
-    console.log('Google Places API response status:', json.status);
-    
-    if (json.status !== 'OK') {
-      console.error('Google Places API error:', json.status, json.error_message);
-      return res.status(502).json({ 
-        error: 'Google Places API error', 
-        status: json.status,
-        message: json.error_message
+    // SSE support when requested
+    const wantsStream = (req.headers.accept || '').includes('text/event-stream') || (req.url || '').includes('stream=1');
+    if (wantsStream) {
+      res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache, no-transform',
+        Connection: 'keep-alive',
+        'X-Accel-Buffering': 'no'
       });
-    }
-    const rawReviews = (json.result?.reviews || []).slice(0, 6);
-    const reviews = rawReviews.map(sanitizeReview);
-    
-    console.log(`Successfully processed ${reviews.length} reviews`);
 
-    res.setHeader('Cache-Control', 'public, max-age=900'); // 15 min
+      let lastEtag = null;
+      let heartbeatInterval = null;
+      let fetchInterval = null;
+
+      const sendEvent = (event, data) => {
+        if (event) res.write(`event: ${event}\n`);
+        res.write(`data: ${JSON.stringify(data)}\n\n`);
+      };
+
+      const sendHeartbeat = () => res.write(': ping\n\n');
+
+      const tick = async () => {
+        try {
+          const payload = await fetchAndSanitize({ apiKey, placeId });
+          const etag = hashPayload(payload);
+          if (etag !== lastEtag) {
+            lastEtag = etag;
+            sendEvent('update', payload);
+          }
+        } catch (e) {
+          sendEvent('error', { message: e.message || 'fetch failed' });
+        }
+      };
+
+      // Initial push and intervals
+      await tick();
+      heartbeatInterval = setInterval(sendHeartbeat, HEARTBEAT_INTERVAL_MS);
+      fetchInterval = setInterval(tick, FETCH_INTERVAL_MS);
+
+      // Clean up on client disconnect
+      req.on('close', () => {
+        clearInterval(heartbeatInterval);
+        clearInterval(fetchInterval);
+        res.end();
+      });
+      return; // keep connection open
+    }
+
+    // Regular JSON snapshot with ETag/304 support
+    console.log('Fetching Google Places data (snapshot)...');
+    const payload = await fetchAndSanitize({ apiKey, placeId });
+    const etag = hashPayload(payload);
+
+    res.setHeader('ETag', etag);
     res.setHeader('X-Data-Policy', 'anonymized');
-    res.status(200).json({
-      source: 'google-places',
-      total: json.result?.user_ratings_total || reviews.length,
-      rating: json.result?.rating || null,
-      reviews,
-      disclaimer: 'Avaliações públicas do Google, nomes parcialmente anonimizados e conteúdos filtrados para privacidade.',
-      timestamp: new Date().toISOString()
-    });
+    res.setHeader('Cache-Control', 'public, max-age=300');
+
+    if ((req.headers['if-none-match'] || '') === etag) {
+      return res.status(304).end();
+    }
+
+    res.status(200).json(payload);
   } catch (e) {
     console.error('Google Reviews API error:', e.message);
     res.status(500).json({ 

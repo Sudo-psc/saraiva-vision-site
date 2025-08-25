@@ -35,8 +35,7 @@ export const lazyLoadImages = () => {
 export const preloadCriticalResources = () => {
   const criticalResources = [
     'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2',
-    '/images/hero-bg.webp',
-    '/images/logo.svg'
+    '/img/hero-bg.webp'
   ];
   
   criticalResources.forEach(resource => {

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Check, ExternalLink, Shield, Users, Award, Eye, ChevronDown, MessageCircle, Star, Clock, Heart, Zap, Globe, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ContactLensesHeroImage from './ContactLensesHeroImage';
 
 const ContactLenses = () => {
   const { t } = useTranslation();
@@ -115,6 +116,55 @@ const ContactLenses = () => {
             {t('contactLenses.subtitle')}
           </motion.p>
 
+          {/* Hero Image with Enhanced Design */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15 }}
+            className="mb-10 flex justify-center relative"
+          >
+            <div className="relative group">
+              {/* Background gradient */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
+
+              {/* Custom SVG Hero Image */}
+              <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-4 border border-white/60 shadow-2xl">
+                <ContactLensesHeroImage
+                  alt={t('contactLenses.main_title')}
+                  className="rounded-2xl w-full max-w-2xl h-auto shadow-lg"
+                />
+
+                {/* Floating decorative elements */}
+                <div className="absolute -top-6 -right-6 w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center animate-float">
+                  <Eye className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="absolute -bottom-6 -left-6 w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center animate-float-delayed">
+                  <Sparkles className="w-5 h-5 text-purple-600" />
+                </div>
+                <div className="absolute top-1/2 -right-8 w-8 h-8 bg-green-500/20 rounded-full animate-pulse"></div>
+              </div>
+
+              {/* Trust indicators */}
+              <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-lg">
+                <div className="flex items-center gap-1 text-sm text-gray-600">
+                  <Shield className="w-4 h-4 text-green-600" />
+                  <span className="font-medium">Seguro</span>
+                </div>
+                <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                <div className="flex items-center gap-1 text-sm text-gray-600">
+                  <Award className="w-4 h-4 text-blue-600" />
+                  <span className="font-medium">Qualidade</span>
+                </div>
+                <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                <div className="flex items-center gap-1 text-sm text-gray-600">
+                  <Users className="w-4 h-4 text-purple-600" />
+                  <span className="font-medium">1000+ clientes</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
           {/* Primary CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -192,9 +242,10 @@ const ContactLenses = () => {
                 className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100"
               >
                 <div className="relative h-48 overflow-hidden">
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={brand.image}
                     alt={`Lentes ${brand.name}`}
+                    sizes="(min-width: 1024px) 33vw, 100vw"
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                   />
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">

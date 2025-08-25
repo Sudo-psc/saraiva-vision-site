@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
 import { createLogger, defineConfig } from 'vite';
@@ -201,6 +202,25 @@ export default defineConfig({
 		...(isDev ? [inlineEditPlugin(), editModeDevPlugin()] : []),
 		react(),
 		addTransformIndexHtml,
+		// Dev-only debug endpoint
+		{
+			name: 'dev-env-debug',
+			apply: 'serve',
+			configureServer(server) {
+				server.middlewares.use('/api/env-debug', (req, res) => {
+					res.setHeader('Content-Type', 'application/json');
+					const envStatus = {
+						NODE_ENV: process.env.NODE_ENV,
+						hasGoogleMapsKey: !!process.env.VITE_GOOGLE_MAPS_API_KEY,
+						hasGooglePlaceId: !!process.env.VITE_GOOGLE_PLACE_ID,
+						hasSupabaseUrl: !!process.env.VITE_SUPABASE_URL,
+						hasSupabaseKey: !!process.env.VITE_SUPABASE_ANON_KEY,
+						preview: process.env.VITE_GOOGLE_MAPS_API_KEY?.substring(0, 10) + '...' || 'undefined'
+					};
+					res.end(JSON.stringify(envStatus, null, 2));
+				});
+			}
+		},
 		// Plugin para gerar sitemap durante o build
 		{
 			name: 'generate-sitemap',

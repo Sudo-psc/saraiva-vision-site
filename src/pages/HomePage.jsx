@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import SEOHead from '@/components/SEOHead';
 import { useHomeSEO } from '@/hooks/useSEO';
-import { Toaster } from '@/components/ui/toaster';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
@@ -13,14 +13,13 @@ import BlogSection from '@/components/BlogSection';
 import FAQ from '@/components/FAQ';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
-// Removed WhatsappWidget in favor of unified FloatingCTA modal
-import FloatingCTA from '@/components/FloatingCTA';
-import Accessibility from '@/components/Accessibility';
 import GoogleLocalSection from '@/components/GoogleLocalSection';
+import LatestEpisodes from '@/components/LatestEpisodes';
 
 function HomePage() {
   const location = useLocation();
   const seoData = useHomeSEO();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (location.hash) {
@@ -36,15 +35,20 @@ function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       <SEOHead {...seoData} />
-      <Toaster />
+      {/* Toaster e Accessibility removidos aqui para evitar duplicação; já presentes em App.jsx */}
+      {/* <Toaster /> */}
       <Navbar />
-      
+
       <main>
         <Hero />
         <Services />
         {/* Testimonials moved up to build trust early */}
         <Testimonials limit={3} />
         <About />
+
+        {/* Latest Podcast Episodes Section */}
+        <LatestEpisodes />
+
         {/* Teaser: move detailed lenses to /lentes to reduce scroll depth */}
         <section id="lentes-teaser" className="bg-white py-12 md:py-16">
           <div className="container mx-auto px-4 md:px-6 text-center">
@@ -58,10 +62,9 @@ function HomePage() {
         <GoogleLocalSection />
         <BlogSection />
       </main>
-      
-  <Footer />
-  <FloatingCTA />
-      <Accessibility />
+
+      <Footer />
+      {/* <Accessibility /> duplicado removido */}
     </div>
   );
 }

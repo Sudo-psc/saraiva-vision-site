@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Linkedin, ArrowUp, MessageCircle, Bot } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { clinicInfo } from '@/lib/clinicInfo';
@@ -20,19 +21,19 @@ const Footer = () => {
   const amorSaudeLogo = "https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/66c6d707b457395f0aaf159d826531ef.png";
 
   const navLinks = [
-    { name: t('navbar.home'), href: '#home' },
-    { name: t('navbar.services'), href: '#services' },
-    { name: t('navbar.about'), href: '#about' },
-    { name: t('navbar.testimonials'), href: '#testimonials' },
-    { name: t('navbar.contact'), href: '#contact' },
+    { name: t('navbar.home'), href: '/' },
+    { name: t('navbar.services'), href: '/servicos' },
+    { name: t('navbar.about'), href: '/sobre' },
+    { name: t('navbar.testimonials'), href: '/depoimentos' },
+    { name: t('navbar.contact'), href: '/contato' },
   ];
 
   const serviceLinks = t('footer.service_links', { returnObjects: true });
 
   const socialLinks = [
-    { href: "https://web.facebook.com/profile.php?id=61559488419531", icon: <Facebook size={20} /> },
-    { href: "https://www.instagram.com/saraiva_vision/", icon: <Instagram size={20} /> },
-    { href: "https://www.linkedin.com/in/dr-philipe-saraiva", icon: <Linkedin size={20} /> },
+    { href: "https://web.facebook.com/profile.php?id=61559488419531", icon: <Facebook size={20} />, label: 'Facebook' },
+    { href: "https://www.instagram.com/saraiva_vision/", icon: <Instagram size={20} />, label: 'Instagram' },
+    { href: "https://www.linkedin.com/in/dr-philipe-saraiva", icon: <Linkedin size={20} />, label: 'LinkedIn' },
   ];
 
   return (
@@ -46,7 +47,7 @@ const Footer = () => {
             </p>
             <p className="text-slate-400 mb-2 text-sm">{t('footer.partner_of')}</p>
             <a href="https://www.amorsaude.com.br/clinica/caratinga-mg/" target="_blank" rel="noopener noreferrer">
-              <img src={amorSaudeLogo} alt={t('footer.amor_saude_alt')} className="h-16 w-auto mb-6" />
+              <img src={amorSaudeLogo} alt={t('footer.amor_saude_alt')} className="h-16 w-auto mb-6" width="160" height="64" sizes="(min-width: 768px) 160px, 128px" />
             </a>
           </div>
           
@@ -55,7 +56,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {navLinks.map(link => (
                 <li key={link.name}>
-                  <a href={link.href} className="hover:text-white transition-colors">{link.name}</a>
+                  <Link to={link.href} className="hover:text-white transition-colors">{link.name}</Link>
                 </li>
               ))}
             </ul>
@@ -66,7 +67,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {Object.values(serviceLinks).map((serviceName, index) => (
                 <li key={index}>
-                  <a href="#services" className="hover:text-white transition-colors">{serviceName}</a>
+                  <Link to="/servicos" className="hover:text-white transition-colors">{serviceName}</Link>
                 </li>
               ))}
             </ul>
@@ -115,7 +116,15 @@ const Footer = () => {
           </div>
           <div className="flex items-center space-x-4 self-end md:self-auto">
             {socialLinks.map((link, index) => (
-              <a key={index} href={link.href} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors">
+              <a
+                key={index}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-400 hover:text-white transition-colors"
+                aria-label={link.label}
+                title={link.label}
+              >
                 {link.icon}
               </a>
             ))}
