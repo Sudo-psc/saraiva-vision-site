@@ -10,6 +10,7 @@ const TestimonialsPage = lazy(() => import('@/pages/TestimonialsPage'));
 const PrivacyPolicyPage = lazy(() => import('@/pages/PrivacyPolicyPage'));
 const ServiceDetailPage = lazy(() => import('@/pages/ServiceDetailPage'));
 const LensesPage = lazy(() => import('@/pages/LensesPage'));
+const FAQPage = lazy(() => import('@/pages/FAQPage'));
 // EpisodePage removido junto com PodcastPage
 import ScrollToTop from '@/components/ScrollToTop';
 import { Toaster } from '@/components/ui/toaster';
@@ -37,6 +38,7 @@ function App() {
           <Route path="/contato" element={<ContactPage />} />
           <Route path="/lentes" element={<LensesPage />} />
           {/* Rotas de podcast removidas - redirecionamento será feito no componente */}
+          <Route path="/faq" element={<FAQPage />} />
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
         </Routes>
       </Suspense>
