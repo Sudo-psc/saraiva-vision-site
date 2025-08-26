@@ -307,6 +307,11 @@
     "description": "Learn more about {{serviceTitleLowercase}} at Saraiva Vision. We offer advanced treatments and diagnoses for your eye health.",
     "keywords": "{{serviceTitleLowercase}}, ophthalmology, eye health, eye clinic"
   },
+  "faqPreview": {
+    "badge": "Quick Answers",
+    "title": "Frequently Asked Questions",
+    "link": "See all questions"
+  },
   "faq": {
     "badge": "Frequently Asked Questions",
     "title": "Frequently Asked Questions",
