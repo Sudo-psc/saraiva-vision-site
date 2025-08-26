@@ -39,27 +39,6 @@
     "microcopy_fast_confirmation": "Fill your details and get confirmation in 1 minute. 100% secure.",
     "more_contact_options": "Other contact options"
   },
-  "accessibility": {
-    "toggle": "Open accessibility menu",
-    "title": "Accessibility",
-    "close": "Close",
-    "fontSize": {
-      "label": "Font Size",
-      "normal": "Normal",
-      "large": "Large",
-      "extra-large": "Extra Large"
-    },
-    "contrast": {
-      "label": "Contrast",
-      "normal": "Normal",
-      "high": "High",
-      "dark": "Dark"
-    },
-    "readingMode": {
-      "on": "Reading Mode",
-      "off": "Exit Reading Mode"
-    }
-  },
   "services": {
     "title": "Our Services",
     "subtitle": "We offer a full range of ophthalmological services to care for your vision with the highest quality and technology.",
@@ -585,29 +564,6 @@
     "mockText2": "Very attentive staff and modern facilities.",
     "mockText3": "Great experience, highly recommend."
   },
-  "exitPopup": {
-    "title": "Don't Leave Yet!",
-    "subtitle": "Exclusive offer for you",
-    "timeLeft": "Time remaining",
-    "exclusive": "Exclusive Offer",
-    "discount": "Discount",
-    "description": "On your first ophthalmology consultation at Saraiva Vision! Take advantage of this unique opportunity.",
-    "codeLabel": "Your exclusive discount code:",
-    "revealCode": "Reveal My Code",
-    "codeInstructions": "Write down this code and use it when booking",
-    "benefits": {
-      "title": "What's included",
-      "list": [
-        "Complete consultation with ophthalmologist",
-        "Detailed refraction exam",
-        "Assessment with modern equipment",
-        "Personalized guidance"
-      ]
-    },
-    "whatsappButton": "Schedule on WhatsApp",
-    "phoneButton": "Call Now",
-    "disclaimer": "Offer valid only for new patients. Not cumulative with other promotions. Subject to appointment availability."
-  },
   "ui": {
     "details": "View details",
     "close": "Close",
@@ -616,7 +572,6 @@
     "close_tip": "Close tip",
     "restart_episode": "Restart episode",
     "download_episode": "Download episode",
-    "accessibility_menu": "Accessibility Menu",
     "external_link": "external link",
     "language_portuguese": "Mudar para Português",
     "language_english": "Switch to English",
