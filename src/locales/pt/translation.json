@@ -64,6 +64,11 @@
       "years": "Anos de Experiência"
     }
   },
+  "faqPreview": {
+    "badge": "Perguntas rápidas",
+    "title": "Dúvidas frequentes",
+    "link": "Ver todas as perguntas"
+  },
   "faq": {
     "badge": "Dúvidas Frequentes",
     "title": "Perguntas Frequentes",
@@ -493,6 +498,11 @@
     "title": "{{serviceTitle}} | Clínica Saraiva Vision",
     "description": "Saiba mais sobre {{serviceTitleLowercase}} na Saraiva Vision. Oferecemos tratamentos e diagnósticos avançados para sua saúde ocular.",
     "keywords": "{{serviceTitleLowercase}}, oftalmologia, saúde ocular, clínica de olhos"
+  },
+  "faqMeta": {
+    "title": "FAQ | Clínica Saraiva Vision",
+    "description": "Respostas para dúvidas comuns sobre consultas, exames, cirurgias e lentes de contato.",
+    "keywords": "faq oftalmologia, perguntas exame de vista, clinica de olhos faq, perguntas lentes de contato"
   },
   "lensesMeta": {
     "title": "👁️ Lentes de Contato Caratinga | Adaptação Profissional | Saraiva Vision",
