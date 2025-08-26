@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import { Calendar, Loader2, AlertTriangle, ArrowRight } from 'lucide-react';

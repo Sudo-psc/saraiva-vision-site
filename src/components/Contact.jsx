@@ -186,13 +186,13 @@ const Contact = () => {
   return (
     <section id="contact" className="bg-subtle-gradient">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 md:mb-24">
           <motion.h2 
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-4"
+            className="text-heading-xl md:text-display-sm font-bold mb-6"
           >
             {t('contact.title')}
           </motion.h2>
@@ -201,7 +201,7 @@ const Contact = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="max-w-2xl mx-auto"
+            className="text-body-xl leading-loose max-w-prose mx-auto"
           >
             {t('contact.subtitle')}
           </motion.p>

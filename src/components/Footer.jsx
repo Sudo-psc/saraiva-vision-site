@@ -112,7 +112,7 @@ const Footer = () => {
             </p>
             <p className="text-slate-500 text-xs">{t('privacy.disclaimer')}</p>
             <p className="text-slate-500 text-xs">{t('cfm.disclaimer')}</p>
-            <p className="text-slate-400 text-xs mt-2">{t('footer.copyright', { year: new Date().getFullYear() })}</p>
+            <p className="text-slate-400 text-xs mt-2">{t('footer.copyright', { year: String(new Date().getFullYear()) })}</p>
           </div>
           <div className="flex items-center space-x-4 self-end md:self-auto">
             {socialLinks.map((link, index) => (

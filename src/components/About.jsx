@@ -24,7 +24,7 @@ const About = () => {
   return (
     <section id="about" className="bg-subtle-gradient">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -60,22 +60,18 @@ const About = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col space-y-6"
+            className="flex flex-col space-y-6 md:space-y-8"
           >
             <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-2 w-fit">
               <span className="mr-2">✦</span> {t('about.tag')}
             </div>
 
-            <h2 className="leading-tight">
+            <h2 className="text-heading-lg md:text-heading-xl font-semibold leading-tight">
               {t('about.title')}
             </h2>
 
-            <p>
+            <p className="text-body-xl leading-loose max-w-prose">
               {t('about.p1')}
-            </p>
-
-            <p>
-              {t('about.p2')}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">

@@ -240,7 +240,7 @@ const Accessibility = () => {
   return (
     <>
       {/* Floating Button - Positioned to avoid overlap with CTA buttons */}
-      <div className="fixed z-[90] bottom-24 right-4 sm:bottom-28 sm:right-6 flex flex-col items-end gap-2">
+      <div className="fixed z-[90] bottom-32 right-4 sm:bottom-40 sm:right-6 flex flex-col items-end gap-2">
         <div className="relative group">
           <motion.button
             initial={{ scale: 0 }}

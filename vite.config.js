@@ -202,11 +202,12 @@ export default defineConfig({
 		...(isDev ? [inlineEditPlugin(), editModeDevPlugin()] : []),
 		react(),
 		addTransformIndexHtml,
-		// Dev-only debug endpoint
+		// Dev-only debug and API endpoints
 		{
-			name: 'dev-env-debug',
+			name: 'dev-api-endpoints',
 			apply: 'serve',
 			configureServer(server) {
+				// Debug endpoint
 				server.middlewares.use('/api/env-debug', (req, res) => {
 					res.setHeader('Content-Type', 'application/json');
 					const envStatus = {
@@ -218,6 +219,53 @@ export default defineConfig({
 						preview: process.env.VITE_GOOGLE_MAPS_API_KEY?.substring(0, 10) + '...' || 'undefined'
 					};
 					res.end(JSON.stringify(envStatus, null, 2));
+				});
+
+				// Reviews API endpoint for development
+				server.middlewares.use('/api/reviews', async (req, res) => {
+					if (req.method !== 'GET') {
+						res.writeHead(405, { 'Content-Type': 'application/json' });
+						res.end(JSON.stringify({ error: 'Method not allowed' }));
+						return;
+					}
+
+					try {
+						// Import and execute the reviews handler
+						const { default: handler } = await import('./api/reviews.js');
+						
+						// Create mock req/res objects compatible with the handler
+						const mockReq = {
+							method: 'GET',
+							headers: req.headers,
+							url: req.url
+						};
+
+						const mockRes = {
+							status: (code) => ({
+								json: (data) => {
+									res.writeHead(code, { 'Content-Type': 'application/json' });
+									res.end(JSON.stringify(data));
+								},
+								end: (data) => {
+									res.writeHead(code);
+									res.end(data);
+								}
+							}),
+							setHeader: (name, value) => res.setHeader(name, value),
+							writeHead: (code, headers) => res.writeHead(code, headers),
+							write: (data) => res.write(data),
+							end: (data) => res.end(data)
+						};
+
+						await handler(mockReq, mockRes);
+					} catch (error) {
+						console.error('Reviews API error in dev:', error);
+						res.writeHead(500, { 'Content-Type': 'application/json' });
+						res.end(JSON.stringify({ 
+							error: 'Internal server error', 
+							message: error.message 
+						}));
+					}
 				});
 			}
 		},

@@ -20,7 +20,7 @@ const WhatsappWidget = ({ phoneNumber }) => {
     <>
       {/* Enhanced Mobile-First WhatsApp Widget */}
       <motion.div
-        className="fixed bottom-20 right-4 z-[80] sm:bottom-24 sm:right-6"
+        className="fixed bottom-20 right-4 z-[80] sm:bottom-28 sm:right-6"
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 1.5 }}

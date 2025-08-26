@@ -1,6 +1,15 @@
+import React from 'react';
 import { renderHook } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { BrowserRouter } from 'react-router-dom';
 import { useSEO, useHomeSEO, useServiceSEO, useContactSEO } from '../useSEO';
+
+// Wrapper component for tests that need Router context
+const TestWrapper = ({ children }) => (
+  <BrowserRouter>
+    {children}
+  </BrowserRouter>
+);
 
 // Mock react-i18next
 vi.mock('react-i18next', () => ({
@@ -74,7 +83,7 @@ describe('useSEO Hook', () => {
         title: 'Test Page',
         description: 'Test description',
         keywords: 'test, page'
-      })
+      }), { wrapper: TestWrapper }
     );
 
     expect(result.current.title).toBe('Test Page');
@@ -87,7 +96,7 @@ describe('useSEO Hook', () => {
       useSEO({
         title: 'Test Page',
         description: 'Test description'
-      })
+      }), { wrapper: TestWrapper }
     );
 
     expect(result.current.canonical).toBe('https://example.com');
@@ -99,7 +108,7 @@ describe('useSEO Hook', () => {
         title: 'Test Page',
         description: 'Test description',
         image: 'https://example.com/image.jpg'
-      })
+      }), { wrapper: TestWrapper }
     );
 
     expect(result.current.ogTitle).toBe('Test Page');
@@ -114,7 +123,7 @@ describe('useSEO Hook', () => {
         title: 'Test Page',
         description: 'Test description',
         image: 'https://example.com/image.jpg'
-      })
+      }), { wrapper: TestWrapper }
     );
 
     expect(result.current.twitterCard).toBe('summary_large_image');
@@ -141,7 +150,7 @@ describe('useSEO Hook', () => {
       useSEO({
         title: 'Test Page',
         description: 'Test description'
-      })
+      }), { wrapper: TestWrapper }
     );
 
     expect(result.current.twitterCard).toBe('summary');
@@ -152,7 +161,7 @@ describe('useSEO Hook', () => {
 
 describe('useHomeSEO Hook', () => {
   it('generates home page SEO metadata', () => {
-    const { result } = renderHook(() => useHomeSEO());
+    const { result } = renderHook(() => useHomeSEO(), { wrapper: TestWrapper });
 
     expect(result.current.title).toContain('Saraiva Vision');
     expect(result.current.description).toBeTruthy();
@@ -161,7 +170,7 @@ describe('useHomeSEO Hook', () => {
   });
 
   it('includes medical clinic schema', () => {
-    const { result } = renderHook(() => useHomeSEO());
+    const { result } = renderHook(() => useHomeSEO(), { wrapper: TestWrapper });
 
     expect(result.current.schema).toEqual(
       expect.objectContaining({
@@ -172,7 +181,7 @@ describe('useHomeSEO Hook', () => {
   });
 
   it('sets correct page type for Open Graph', () => {
-    const { result } = renderHook(() => useHomeSEO());
+    const { result } = renderHook(() => useHomeSEO(), { wrapper: TestWrapper });
 
     expect(result.current.ogType).toBe('website');
   });
@@ -186,7 +195,7 @@ describe('useServiceSEO Hook', () => {
   };
 
   it('generates service page SEO metadata', () => {
-    const { result } = renderHook(() => useServiceSEO(mockService));
+    const { result } = renderHook(() => useServiceSEO(mockService), { wrapper: TestWrapper });
 
     expect(result.current.title).toContain(mockService.title);
     expect(result.current.description).toContain(mockService.description);
@@ -194,7 +203,7 @@ describe('useServiceSEO Hook', () => {
   });
 
   it('includes service schema when available', () => {
-    const { result } = renderHook(() => useServiceSEO(mockService));
+    const { result } = renderHook(() => useServiceSEO(mockService), { wrapper: TestWrapper });
 
     expect(result.current.schema).toEqual(
       expect.objectContaining({
@@ -205,7 +214,7 @@ describe('useServiceSEO Hook', () => {
   });
 
   it('handles missing service gracefully', () => {
-    const { result } = renderHook(() => useServiceSEO(null));
+    const { result } = renderHook(() => useServiceSEO(null), { wrapper: TestWrapper });
 
     expect(result.current.title).toContain('Serviços');
     expect(result.current.description).toBeTruthy();
@@ -214,7 +223,7 @@ describe('useServiceSEO Hook', () => {
   it('sets correct canonical URL for service', () => {
     window.location.pathname = `/servico/${mockService.slug}`;
     
-    const { result } = renderHook(() => useServiceSEO(mockService));
+    const { result } = renderHook(() => useServiceSEO(mockService), { wrapper: TestWrapper });
 
     expect(result.current.canonical).toContain(mockService.slug);
   });
@@ -251,7 +260,7 @@ describe('SEO Hook Error Handling', () => {
       i18n: { language: 'pt' }
     });
 
-    const { result } = renderHook(() => useHomeSEO());
+    const { result } = renderHook(() => useHomeSEO(), { wrapper: TestWrapper });
 
     // Should still return some metadata even if translations fail
     expect(result.current.title).toBeTruthy();
@@ -264,7 +273,7 @@ describe('SEO Hook Error Handling', () => {
       throw new Error('Schema generation error');
     });
 
-    const { result } = renderHook(() => useHomeSEO());
+    const { result } = renderHook(() => useHomeSEO(), { wrapper: TestWrapper });
 
     // Should still return metadata even if schema generation fails
     expect(result.current.title).toBeTruthy();

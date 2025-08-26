@@ -19,8 +19,17 @@ vi.mock('@/lib/clinicInfo', () => ({
     phoneDisplay: '+55 33 99860-1427',
     email: 'saraivavision@gmail.com',
     onlineSchedulingUrl: 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613',
-    validateSchedulingUrl: vi.fn(() => 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613')
-  }
+    validateSchedulingUrl: vi.fn(() => 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613'),
+    streetAddress: 'Rua Catarina Maria Passos, 97',
+    city: 'Caratinga',
+    state: 'MG',
+    postalCode: '35300-299',
+    country: 'BR',
+    servicesKeywords: []
+  },
+  googleMapsProfileUrl: 'https://www.google.com/maps/place/?q=place_id:test_place_id',
+  googleReviewUrl: 'https://search.google.com/local/writereview?placeid=test_place_id',
+  CLINIC_PLACE_ID: 'test_place_id'
 }))
 
 vi.mock('@/hooks/useWhatsApp', () => ({
@@ -56,16 +65,28 @@ vi.mock('@/lib/constants', () => ({
 // Mock react-i18next globally
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key, defaultValue) => {
+    t: (key, params) => {
       const translations = {
         'contact.send_button': 'Enviar Mensagem',
         'contact.sending_label': 'Enviando...',
         'services.learn_more': 'Saiba Mais',
         'hero.schedule_button': 'Agendar Consulta',
         'hero.services_button': 'Nossos Serviços',
-        'navbar.schedule': 'Agendar'
+        'navbar.schedule': 'Agendar',
+        'footer.copyright': '© {{year}} Saraiva Vision. Todos os direitos reservados.',
+        'about.p1': 'Nossa missão é cuidar da sua visão',
+        'about.tag': 'Sobre Nós'
       };
-      return translations[key] || defaultValue || key;
+      let translation = translations[key] || key;
+      
+      // Handle parameter substitution
+      if (params && typeof translation === 'string') {
+        Object.keys(params).forEach(param => {
+          translation = translation.replace(new RegExp(`{{${param}}}`, 'g'), params[param]);
+        });
+      }
+      
+      return translation;
     },
     i18n: { 
       language: 'pt',

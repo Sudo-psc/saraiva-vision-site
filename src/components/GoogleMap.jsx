@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { loadGoogleMaps } from '@/lib/loadGoogleMaps';
-import { CLINIC_PLACE_ID } from '@/lib/clinicInfo';
+import { CLINIC_PLACE_ID, clinicInfo } from '@/lib/clinicInfo';
 
 const GoogleMap = ({ height = 340 }) => {
   const containerRef = useRef(null);
@@ -11,87 +11,60 @@ const GoogleMap = ({ height = 340 }) => {
   useEffect(() => {
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     if (!apiKey) {
-      console.error('❌ Google Maps API Key não encontrada nas variáveis de ambiente');
-      setError('Chave Google Maps ausente - verifique .env');
+      setError('Chave Google Maps ausente');
       setLoading(false);
       return;
     }
-    console.log('🗺️ Iniciando carregamento Google Maps API...');
     let mapInstance;
-
     loadGoogleMaps(apiKey)
-      .then(() => {
+      .then((gmaps) => {
         if (!containerRef.current) return;
-        mapInstance = new google.maps.Map(containerRef.current, {
+        const centerCoords = { lat: clinicInfo.latitude, lng: clinicInfo.longitude };
+        mapInstance = new gmaps.Map(containerRef.current, {
           zoom: 17,
-          center: { lat: -19.7868, lng: -42.1392 }, // fallback center
+          center: centerCoords, // Caratinga-MG coordinates
           mapTypeControl: false,
           streetViewControl: false,
           fullscreenControl: false,
         });
-
-        // Modern Google Maps with Places API and AdvancedMarkerElement
-        if (CLINIC_PLACE_ID && google.maps.places && google.maps.places.Place) {
-          try {
-            // Use modern Place class - recommended API
-            const { Place } = google.maps.places;
-            const place = new Place({
-              id: CLINIC_PLACE_ID,
-              requestedLanguage: 'pt-BR',
-            });
-
-            // Request place details with modern API
-            const request = {
-              fields: ['displayName', 'location', 'formattedAddress', 'rating', 'userRatingCount', 'googleMapsURI']
-            };
-
-            place.fetchFields(request).then(() => {
-              const placeData = {
-                name: place.displayName,
-                geometry: { location: place.location },
-                formatted_address: place.formattedAddress,
-                rating: place.rating,
-                user_ratings_total: place.userRatingCount,
-                url: place.googleMapsURI
-              };
-
-              setPlace(placeData);
-
-              if (place.location) {
-                mapInstance.setCenter(place.location);
-
-                // Use modern AdvancedMarkerElement - prevents deprecation warnings
-                if (google.maps.marker && google.maps.marker.AdvancedMarkerElement) {
-                  new google.maps.marker.AdvancedMarkerElement({
-                    map: mapInstance,
-                    position: place.location,
-                    title: place.displayName
-                  });
-                }
+        if (CLINIC_PLACE_ID && gmaps.places) {
+          const service = new gmaps.places.PlacesService(mapInstance);
+          service.getDetails({ placeId: CLINIC_PLACE_ID, fields: ['name', 'geometry', 'formatted_address', 'rating', 'user_ratings_total', 'url'] }, (res, status) => {
+            if (status === gmaps.places.PlacesServiceStatus.OK && res) {
+              setPlace(res);
+              if (res.geometry?.location) {
+                mapInstance.setCenter(res.geometry.location);
+                new gmaps.Marker({ map: mapInstance, position: res.geometry.location, title: res.name });
               }
-              setLoading(false);
-            }).catch((error) => {
-              console.error('Error fetching place details:', error);
-              setError('Não foi possível obter detalhes do local');
-              setLoading(false);
-            });
-
-          } catch (error) {
-            console.error('Modern Places API not available:', error);
-            setError('API Google Places não disponível');
+            } else {
+              // Fallback: Use clinic coordinates and add marker with clinic info
+              new gmaps.Marker({ 
+                map: mapInstance, 
+                position: centerCoords, 
+                title: clinicInfo.name 
+              });
+              setPlace({
+                name: clinicInfo.name,
+                formatted_address: `${clinicInfo.streetAddress}, ${clinicInfo.neighborhood}, ${clinicInfo.city}-${clinicInfo.state}`
+              });
+            }
             setLoading(false);
-          }
+          });
         } else {
-          console.warn('Google Places API or Place class not available');
+          // No Place ID: Use clinic coordinates and add marker
+          new gmaps.Marker({ 
+            map: mapInstance, 
+            position: centerCoords, 
+            title: clinicInfo.name 
+          });
+          setPlace({
+            name: clinicInfo.name,
+            formatted_address: `${clinicInfo.streetAddress}, ${clinicInfo.neighborhood}, ${clinicInfo.city}-${clinicInfo.state}`
+          });
           setLoading(false);
         }
       })
-      .catch((e) => {
-        console.error('❌ Erro ao carregar Google Maps:', e.message);
-        setError(`Erro Google Maps: ${e.message}`);
-        setLoading(false);
-      });
-
+      .catch((e) => { setError(e.message); setLoading(false); });
     return () => { /* cleanup */ };
   }, []);
 

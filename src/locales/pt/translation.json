@@ -6,6 +6,7 @@
     "about": "Sobre Nós",
     "testimonials": "Depoimentos",
     "contact": "Contato",
+    "faq": "FAQ",
     "blog": "Blog",
     "schedule": "Agendar",
     "schedule_online": "Agendar Online",
@@ -22,17 +23,20 @@
     "more_options_desc": "Telefone, e-mail e outras formas",
     "scheduling_error": "Serviço indisponível. Use WhatsApp ou ligue para (33) 99860-1427",
     "external_link_warning": "Você será redirecionado para {serviceName}. Continuar?",
-    "external_link_title": "Abre em nova aba: {serviceName}"
+    "external_link_title": "Abre em nova aba: {serviceName}",
+    "services_link": "Ver todos os serviços"
   },
   "common": {
     "logo_alt": "Saraiva Vision Logo"
   },
   "hero": {
     "partner": "Parceiro Oficial Amor e Saúde",
-    "title": "Cuidando da sua <1>visão</1> com excelência",
-    "subtitle": "Na Saraiva Vision, combinamos tecnologia de ponta com um atendimento humanizado para oferecer o melhor em saúde ocular. Sua visão é a nossa prioridade.",
+    "title": "Cuidando da sua <1>visão</1> com excelência em Caratinga",
+    "subtitle": "Tecnologia de ponta e atendimento humanizado com o Dr. Philipe Saraiva (CRM-MG 69.870).",
     "schedule_button": "Agendar Consulta",
+    "whatsapp_button": "Falar no WhatsApp",
     "services_button": "Nossos Serviços",
+    "trust_stats": "+5k pacientes • 4,9/5 avaliação • Parceiro Amor e Saúde",
     "patients_served": "<0>Mais de 5.000 pacientes</0> atendidos com satisfação",
     "advanced_tech_title": "Tecnologia Avançada",
     "advanced_tech_desc": "Equipamentos de última geração para diagnósticos precisos.",
@@ -202,6 +206,7 @@
     "avgRating": "Nota Média",
     "totalReviews": "Avaliações",
     "satisfaction": "Satisfação",
+    "viewAll": "Ver todos depoimentos",
     "reviews": [
       {
         "name": "Maria Silva",
@@ -520,6 +525,11 @@
     "description": "🔍 Adaptação profissional de lentes de contato em Caratinga: Sólotica, Bioview, lentes rígidas. ⭐ Consulta especializada com CRM-MG 69.870. 📞 Agende!",
     "keywords": "lentes de contato Caratinga, adaptação lentes Caratinga MG, lentes Sólotica Caratinga, lentes Bioview, oftalmologista lentes contato, lentes rígidas Caratinga, consulta lentes"
   },
+  "faqMeta": {
+    "title": "❓ Perguntas Frequentes | Clínica Oftalmológica Saraiva Vision",
+    "description": "🔍 Tire suas dúvidas sobre oftalmologia, tratamentos oculares, consultas e serviços da Clínica Saraiva Vision em Caratinga/MG. ✅ Respostas completas!",
+    "keywords": "perguntas frequentes oftalmologia, FAQ clínica olhos, dúvidas consulta oftalmologista, oftalmologia Caratinga dúvidas, FAQ Saraiva Vision, perguntas tratamento ocular"
+  },
   "serviceDetail": {
     "back_link": "Voltar para Serviços",
     "advantages_title": "Vantagens e Benefícios",
@@ -699,29 +709,6 @@
     "mockText1": "Atendimento excelente e rápido!",
     "mockText2": "Equipe muito atenciosa e estrutura moderna.",
     "mockText3": "Ótima experiência, recomendo."
-  },
-  "exitPopup": {
-    "title": "Não Vá Embora!",
-    "subtitle": "Oferta exclusiva para você",
-    "timeLeft": "Tempo restante",
-    "exclusive": "Oferta Exclusiva",
-    "discount": "de Desconto",
-    "description": "Em sua primeira consulta oftalmológica na Saraiva Vision! Aproveite esta oportunidade única.",
-    "codeLabel": "Seu código de desconto exclusivo:",
-    "revealCode": "Revelar Meu Código",
-    "codeInstructions": "Anote este código e use no agendamento",
-    "benefits": {
-      "title": "O que está incluído",
-      "list": [
-        "Consulta completa com oftalmologista",
-        "Exame de refração detalhado",
-        "Avaliação com equipamentos modernos",
-        "Orientações personalizadas"
-      ]
-    },
-    "whatsappButton": "Agendar no WhatsApp",
-    "phoneButton": "Ligar Agora",
-    "disclaimer": "Oferta válida apenas para novos pacientes. Não cumulativa com outras promoções. Sujeita à disponibilidade de horários."
   },
   "ui": {
     "details": "Ver detalhes",

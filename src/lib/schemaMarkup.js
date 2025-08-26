@@ -90,7 +90,7 @@ export const generateMedicalClinicSchema = (language = 'pt', forGraph = false) =
     ],
     
     // Serviços disponíveis (detalhados)
-    availableService: clinicInfo.servicesKeywords.map(service => ({
+    availableService: (clinicInfo.servicesKeywords || []).map(service => ({
       '@type': 'MedicalProcedure',
       name: service,
       category: 'Ophthalmology'

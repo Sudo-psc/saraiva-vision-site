@@ -1,7 +1,7 @@
 // Centralized clinic information to keep consistency with Google Business Profile.
 // TODO: Replace placeholder values with exact data from Google Business dashboard.
 
-export const CLINIC_PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID || 'ChIJVUKww7WRugARF7u2lAe7BeE';
+export const CLINIC_PLACE_ID = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GOOGLE_PLACE_ID) || 'ChIJVUKww7WRugARF7u2lAe7BeE';
 
 export const clinicInfo = {
   name: 'Clínica Saraiva Vision',
@@ -45,7 +45,7 @@ export const clinicInfo = {
   dpoEmail: 'saraivavision@gmail.com',
   taxId: '53.864.119/0001-79',
   foundingDate: '2024-02-08',
-  latitude: -19.7868,
+  latitude: -19.7897,
   longitude: -42.1392,
   servicesKeywords: [
     // Services list has been cleared as requested

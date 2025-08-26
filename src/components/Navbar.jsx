@@ -34,6 +34,7 @@ const Navbar = () => {
     { name: t('navbar.lenses'), href: '/lentes', internal: true, isRoute: true },
     { name: t('navbar.about'), href: '/sobre', internal: true, isRoute: true },
     { name: t('navbar.testimonials'), href: '/depoimentos', internal: true, isRoute: true },
+    { name: t('navbar.faq'), href: '/faq', internal: true, isRoute: true },
     { name: t('navbar.contact'), href: '/contato', internal: true, isRoute: true },
     { name: 'Instagram', href: 'https://www.instagram.com/saraiva_vision/', internal: false },
   ], [t]);

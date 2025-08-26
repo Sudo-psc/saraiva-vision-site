@@ -22,17 +22,20 @@
     "more_options_desc": "Phone, email and other methods",
     "scheduling_error": "Service unavailable. Use WhatsApp or call (33) 99860-1427",
     "external_link_warning": "You will be redirected to {serviceName}. Continue?",
-    "external_link_title": "Opens in new tab: {serviceName}"
+    "external_link_title": "Opens in new tab: {serviceName}",
+    "services_link": "View all services"
   },
   "common": {
     "logo_alt": "Saraiva Vision Logo"
   },
   "hero": {
     "partner": "Official Amor e Saúde Partner",
-    "title": "Caring for your <1>vision</1> with excellence",
-    "subtitle": "At Saraiva Vision, we combine cutting-edge technology with humanized care to offer the best in eye health. Your vision is our priority.",
-    "schedule_button": "Schedule Appointment",
+    "title": "Caring for your <1>vision</1> with excellence in Caratinga",
+    "subtitle": "Cutting-edge technology and humanized care with Dr. Philipe Saraiva (CRM-MG 69.870).",
+    "schedule_button": "Schedule Consultation",
+    "whatsapp_button": "Contact via WhatsApp",
     "services_button": "Our Services",
+    "trust_stats": "+5k patients • 4.9/5 rating • Amor e Saúde partner",
     "patients_served": "<0>Over 5,000 patients</0> served with satisfaction",
     "advanced_tech_title": "Advanced Technology",
     "advanced_tech_desc": "State-of-the-art equipment for accurate diagnoses.",
@@ -556,6 +559,18 @@
   "cfm": {
     "disclaimer": "Informational content without promise of outcomes. Consult the responsible physician for personalized assessment."
   },
+  "testimonials": {
+    "badge": "Testimonials",
+    "title": "What our patients say",
+    "subtitle": "Real experiences from people who trusted Saraiva Vision to take care of their vision.",
+    "patient": "Patient",
+    "previous": "Previous",
+    "next": "Next",
+    "avgRating": "Average Rating",
+    "totalReviews": "Reviews",
+    "satisfaction": "Satisfaction",
+    "viewAll": "View all testimonials"
+  },
   "testimonialsMeta": {
     "title": "⭐ Patient Testimonials | Saraiva Vision Clinic Caratinga",
     "description": "📝 Read real testimonials from Saraiva Vision Clinic patients in Caratinga. ⭐ Verified reviews about our ophthalmology services. 👁️ CRM-MG 69.870",
@@ -584,29 +599,6 @@
     "mockText1": "Excellent and fast service!",
     "mockText2": "Very attentive staff and modern facilities.",
     "mockText3": "Great experience, highly recommend."
-  },
-  "exitPopup": {
-    "title": "Don't Leave Yet!",
-    "subtitle": "Exclusive offer for you",
-    "timeLeft": "Time remaining",
-    "exclusive": "Exclusive Offer",
-    "discount": "Discount",
-    "description": "On your first ophthalmology consultation at Saraiva Vision! Take advantage of this unique opportunity.",
-    "codeLabel": "Your exclusive discount code:",
-    "revealCode": "Reveal My Code",
-    "codeInstructions": "Write down this code and use it when booking",
-    "benefits": {
-      "title": "What's included",
-      "list": [
-        "Complete consultation with ophthalmologist",
-        "Detailed refraction exam",
-        "Assessment with modern equipment",
-        "Personalized guidance"
-      ]
-    },
-    "whatsappButton": "Schedule on WhatsApp",
-    "phoneButton": "Call Now",
-    "disclaimer": "Offer valid only for new patients. Not cumulative with other promotions. Subject to appointment availability."
   },
   "ui": {
     "details": "View details",

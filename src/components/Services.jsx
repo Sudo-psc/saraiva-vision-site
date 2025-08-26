@@ -32,7 +32,7 @@ const ServiceCard = ({ service, index }) => (
 
     {/* Title */}
     <motion.h3
-      className="text-xl font-semibold mb-3 text-slate-800 tracking-tight"
+      className="text-heading-xs font-semibold mb-3 text-slate-800 tracking-normal"
       whileHover={{ scale: 1.06 }}
     >
       <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-900 to-slate-700 group-hover:from-blue-700 group-hover:via-purple-700 group-hover:to-pink-700 transition-colors duration-500">
@@ -41,7 +41,7 @@ const ServiceCard = ({ service, index }) => (
     </motion.h3>
 
     {/* Description */}
-    <p className="text-slate-600 text-sm leading-relaxed mb-6 max-w-xs transition-colors group-hover:text-slate-700">
+    <p className="text-slate-600 text-body leading-loose mb-6 max-w-prose transition-colors group-hover:text-slate-700">
       {service.description}
     </p>
 
@@ -104,7 +104,7 @@ const Services = () => {
   ], [t]);
 
   return (
-    <section id="services" className="py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
+    <section id="services" className="py-section-lg md:py-section-xl bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-400/5 to-purple-400/5" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse" />
@@ -112,13 +112,13 @@ const Services = () => {
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Enhanced Header Section */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-16 md:mb-24">
           <motion.h2
             initial={{ opacity: 0, y: -30, scale: 0.9 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 drop-shadow-sm"
+            className="text-heading-xl md:text-display-sm font-bold text-slate-900 mb-6 drop-shadow-sm"
           >
             {t('services.title')}
           </motion.h2>
@@ -127,7 +127,7 @@ const Services = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed drop-shadow-sm"
+            className="text-body-xl text-slate-600 max-w-prose mx-auto leading-loose drop-shadow-sm"
           >
             {t('services.subtitle')}
           </motion.p>

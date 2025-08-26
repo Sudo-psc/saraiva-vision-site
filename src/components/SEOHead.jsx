@@ -1,124 +1,120 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { validateMedicalSchema, logSchemaValidation } from '@/utils/schemaValidator';
+import { useLocation } from 'react-router-dom';
 
-const SEOHead = ({
-  title,
-  description,
-  keywords,
-  canonicalUrl,
-  ogImage,
-  ogType = 'website',
-  structuredData,
+const SEOHead = ({ 
+  title, 
+  description, 
+  image,
   noindex = false,
-  alternateUrls = {},
-  author = 'Dr. Philipe Saraiva Cruz'
+  canonicalPath = null 
 }) => {
   const { i18n } = useTranslation();
-  const currentLang = i18n.language;
-  const baseUrl = 'https://saraivavision.com.br';
+  const location = useLocation();
   
-  // Meta tags otimizadas para clínicas médicas
-  const metaTags = [
-    { name: 'description', content: description },
-    { name: 'keywords', content: keywords },
-    { name: 'author', content: author },
-    { name: 'robots', content: noindex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' },
-    
-    // Meta tags médicas específicas
-    { name: 'medical-specialty', content: 'Ophthalmology' },
-    { name: 'medical-location', content: 'Caratinga, MG, Brazil' },
-    { name: 'medical-certification', content: 'CRM-MG 69.870' },
-    
-    // Geo tags para SEO local
-    { name: 'geo.region', content: 'BR-MG' },
-    { name: 'geo.placename', content: 'Caratinga' },
-    { name: 'geo.position', content: '-19.7868;-42.1392' },
-    { name: 'ICBM', content: '-19.7868, -42.1392' },
-    
-    // Open Graph otimizado
-    { property: 'og:title', content: title },
-    { property: 'og:description', content: description },
-    { property: 'og:type', content: ogType },
-    { property: 'og:url', content: canonicalUrl || baseUrl },
-    { property: 'og:image', content: ogImage || `${baseUrl}/og-image.jpg` },
-    { property: 'og:image:width', content: '1200' },
-    { property: 'og:image:height', content: '630' },
-    { property: 'og:image:alt', content: 'Clínica Saraiva Vision - Oftalmologia em Caratinga' },
-    { property: 'og:site_name', content: 'Saraiva Vision' },
-    { property: 'og:locale', content: currentLang === 'pt' ? 'pt_BR' : 'en_US' },
-    
-    // Twitter Cards
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: title },
-    { name: 'twitter:description', content: description },
-    { name: 'twitter:image', content: ogImage || `${baseUrl}/og-image.jpg` },
-    { name: 'twitter:image:alt', content: 'Clínica Saraiva Vision - Oftalmologia em Caratinga' },
-    
-    // Meta tags para apps
-    { name: 'apple-mobile-web-app-title', content: 'Saraiva Vision' },
-    { name: 'application-name', content: 'Saraiva Vision' },
-    { name: 'msapplication-TileColor', content: '#0057B7' },
-    { name: 'theme-color', content: '#0057B7' }
-  ];
+  const currentLang = i18n.language || 'pt';
+  const baseUrl = 'https://saraivavisao.com.br'; // Replace with your domain
+  const currentPath = location.pathname;
   
-  // Links otimizados
-  const linkTags = [
-    { rel: 'canonical', href: canonicalUrl || baseUrl },
+  // Generate hreflang URLs
+  const generateHreflangs = () => {
+    const hreflangs = [];
     
-    // Preconnect para performance
-    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
-    { rel: 'preconnect', href: 'https://www.google.com' },
-    { rel: 'preconnect', href: 'https://maps.googleapis.com' },
-    
-    // DNS prefetch para recursos externos
-    { rel: 'dns-prefetch', href: 'https://storage.googleapis.com' },
-    { rel: 'dns-prefetch', href: 'https://www.googletagmanager.com' },
-    
-    // Favicon otimizado
-    { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
-    { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
-    { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
-    { rel: 'manifest', href: '/site.webmanifest' }
-  ];
-  
-  // Adicionar links alternativos para idiomas
-  Object.entries(alternateUrls).forEach(([lang, url]) => {
-    linkTags.push({
-      rel: 'alternate',
-      hreflang: lang,
-      href: url
+    // Portuguese (default)
+    const ptPath = currentPath.startsWith('/en') 
+      ? currentPath.replace('/en', '') || '/'
+      : currentPath;
+    hreflangs.push({
+      hreflang: 'pt-BR',
+      href: `${baseUrl}${ptPath}`
     });
-  });
+    hreflangs.push({
+      hreflang: 'pt',
+      href: `${baseUrl}${ptPath}`
+    });
+    
+    // English
+    const enPath = currentPath.startsWith('/en') 
+      ? currentPath 
+      : `/en${currentPath}`;
+    hreflangs.push({
+      hreflang: 'en',
+      href: `${baseUrl}${enPath}`
+    });
+    
+    // Default hreflang
+    hreflangs.push({
+      hreflang: 'x-default',
+      href: `${baseUrl}${ptPath}`
+    });
+    
+    return hreflangs;
+  };
   
+  const hreflangs = generateHreflangs();
+  const canonicalUrl = canonicalPath 
+    ? `${baseUrl}${canonicalPath}`
+    : `${baseUrl}${currentPath}`;
+
   return (
     <Helmet>
-      <html lang={currentLang === 'pt' ? 'pt-BR' : 'en-US'} />
+      {/* Basic Meta Tags */}
+      <html lang={currentLang} />
       <title>{title}</title>
+      <meta name="description" content={description} />
       
-      {/* Meta tags */}
-      {metaTags.map((tag, index) => {
-        if (tag.property) {
-          return <meta key={index} property={tag.property} content={tag.content} />;
-        }
-        return <meta key={index} name={tag.name} content={tag.content} />;
-      })}
+      {/* Canonical URL */}
+      <link rel="canonical" href={canonicalUrl} />
       
-      {/* Link tags */}
-      {linkTags.map((tag, index) => (
-        <link key={index} {...tag} />
+      {/* Hreflang Tags */}
+      {hreflangs.map(({ hreflang, href }) => (
+        <link
+          key={hreflang}
+          rel="alternate"
+          hrefLang={hreflang}
+          href={href}
+        />
       ))}
       
-      {/* Structured Data */}
-      {structuredData && validateMedicalSchema(structuredData) && (
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData, null, 2)}
-        </script>
-      )}
-      {process.env.NODE_ENV === 'development' && structuredData && 
-        logSchemaValidation(structuredData, `SEOHead - ${title}`)}
+      {/* Open Graph */}
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={canonicalUrl} />
+      <meta property="og:locale" content={currentLang === 'pt' ? 'pt_BR' : 'en_US'} />
+      <meta property="og:type" content="website" />
+      {image && <meta property="og:image" content={image} />}
+      
+      {/* Twitter Card */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      {image && <meta name="twitter:image" content={image} />}
+      
+      {/* Robots */}
+      {noindex && <meta name="robots" content="noindex, nofollow" />}
+      
+      {/* Language-specific structured data */}
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "MedicalClinic",
+          "name": currentLang === 'pt' ? "Saraiva Vision - Oftalmologia" : "Saraiva Vision - Ophthalmology",
+          "description": description,
+          "url": canonicalUrl,
+          "inLanguage": currentLang === 'pt' ? 'pt-BR' : 'en',
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Rua Dr. Camilo Soares, 159",
+            "addressLocality": "Caratinga",
+            "addressRegion": "MG",
+            "postalCode": "35300-047",
+            "addressCountry": "BR"
+          },
+          "telephone": "+55-33-99860-1427",
+          "medicalSpecialty": currentLang === 'pt' ? "Oftalmologia" : "Ophthalmology"
+        })}
+      </script>
     </Helmet>
   );
 };

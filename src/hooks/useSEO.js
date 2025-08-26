@@ -151,6 +151,24 @@ export const useTestimonialsSEO = () => {
   });
 };
 
+// Hook específico para página FAQ
+export const useFAQSEO = () => {
+  const { t } = useTranslation();
+  
+  const breadcrumbs = [
+    { name: t('navbar.home'), url: '/' },
+    { name: t('faq.title'), url: '/faq' }
+  ];
+  
+  return useSEO({
+    titleKey: 'faqMeta.title',
+    descriptionKey: 'faqMeta.description', 
+    keywordsKey: 'faqMeta.keywords',
+    pageType: 'faq',
+    breadcrumbs
+  });
+};
+
 // Hook específico para página de política de privacidade
 export const usePrivacyPolicySEO = () => {
   const { t } = useTranslation();

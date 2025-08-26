@@ -8,9 +8,7 @@ import Hero from '@/components/Hero';
 import Services from '@/components/Services';
 import ContactLenses from '@/components/ContactLenses';
 import About from '@/components/About';
-import Testimonials from '@/components/Testimonials';
 import BlogSection from '@/components/BlogSection';
-import FAQ from '@/components/FAQ';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import GoogleLocalSection from '@/components/GoogleLocalSection';
@@ -42,8 +40,6 @@ function HomePage() {
       <main>
         <Hero />
         <Services />
-        {/* Testimonials moved up to build trust early */}
-        <Testimonials limit={3} />
         <About />
 
         {/* Latest Podcast Episodes Section */}
@@ -57,7 +53,6 @@ function HomePage() {
             <a href="/lentes" className="text-blue-600 font-medium hover:underline text-lg">Ver detalhes</a>
           </div>
         </section>
-        <FAQ />
         <Contact />
         <GoogleLocalSection />
         <BlogSection />
