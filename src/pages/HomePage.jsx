@@ -35,8 +35,7 @@ function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       <SEOHead {...seoData} />
-      {/* Toaster e Accessibility removidos aqui para evitar duplicação; já presentes em App.jsx */}
-      {/* <Toaster /> */}
+      {/* Toaster removido aqui para evitar duplicação; já presente em App.jsx */}
       <Navbar />
 
       <main>
@@ -64,7 +63,6 @@ function HomePage() {
       </main>
 
       <Footer />
-      {/* <Accessibility /> duplicado removido */}
     </div>
   );
 }

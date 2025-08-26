@@ -39,27 +39,6 @@
     "microcopy_fast_confirmation": "Preencha seus dados e receba confirmação em 1 minuto. 100% seguro.",
     "more_contact_options": "Outras formas de contato"
   },
-  "accessibility": {
-    "toggle": "Abrir menu de acessibilidade",
-    "title": "Acessibilidade",
-    "close": "Fechar",
-    "fontSize": {
-      "label": "Tamanho da Fonte",
-      "normal": "Normal",
-      "large": "Grande",
-      "extra-large": "Extra Grande"
-    },
-    "contrast": {
-      "label": "Contraste",
-      "normal": "Normal",
-      "high": "Alto",
-      "dark": "Escuro"
-    },
-    "readingMode": {
-      "on": "Modo Leitura",
-      "off": "Sair do Modo Leitura"
-    }
-  },
   "trust": {
     "badge": "Confiança e Qualidade",
     "title": "Por que escolher a Saraiva Vision?",
@@ -700,29 +679,6 @@
     "mockText2": "Equipe muito atenciosa e estrutura moderna.",
     "mockText3": "Ótima experiência, recomendo."
   },
-  "exitPopup": {
-    "title": "Não Vá Embora!",
-    "subtitle": "Oferta exclusiva para você",
-    "timeLeft": "Tempo restante",
-    "exclusive": "Oferta Exclusiva",
-    "discount": "de Desconto",
-    "description": "Em sua primeira consulta oftalmológica na Saraiva Vision! Aproveite esta oportunidade única.",
-    "codeLabel": "Seu código de desconto exclusivo:",
-    "revealCode": "Revelar Meu Código",
-    "codeInstructions": "Anote este código e use no agendamento",
-    "benefits": {
-      "title": "O que está incluído",
-      "list": [
-        "Consulta completa com oftalmologista",
-        "Exame de refração detalhado",
-        "Avaliação com equipamentos modernos",
-        "Orientações personalizadas"
-      ]
-    },
-    "whatsappButton": "Agendar no WhatsApp",
-    "phoneButton": "Ligar Agora",
-    "disclaimer": "Oferta válida apenas para novos pacientes. Não cumulativa com outras promoções. Sujeita à disponibilidade de horários."
-  },
   "ui": {
     "details": "Ver detalhes",
     "close": "Fechar",
@@ -731,7 +687,6 @@
     "close_tip": "Fechar dica",
     "restart_episode": "Reiniciar episódio",
     "download_episode": "Baixar episódio",
-    "accessibility_menu": "Menu de Acessibilidade",
     "external_link": "link externo",
     "language_portuguese": "Mudar para Português",
     "language_english": "Switch to English",

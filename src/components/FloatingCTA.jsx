@@ -160,7 +160,7 @@ const FloatingCTA = () => {
 
   return (
     <>
-      {/* Mobile-First Prominent CTA Button - Positioned to avoid overlap with Accessibility Widget */}
+      {/* Mobile-First Prominent CTA Button */}
       <button
         onClick={handleOpenModal}
         className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[85] shadow-2xl rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 active:from-blue-800 active:to-blue-900 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 text-white font-bold flex items-center gap-3 px-4 py-4 sm:px-6 sm:py-5 text-sm sm:text-base transform hover:scale-105 active:scale-95 transition-all duration-200 max-w-[calc(100vw-2rem)] overflow-hidden"
