@@ -414,7 +414,13 @@
     "alt1": "Consultório oftalmológico moderno",
     "alt2": "Médico oftalmologista realizando exame de vista",
     "alt3": "Paciente sorrindo satisfeito após consulta",
-    "alt4": "Equipamento oftalmológico avançado"
+    "alt4": "Equipamento oftalmológico avançado",
+    "doctor": {
+      "name": "Dr. Philipe Saraiva",
+      "title": "Oftalmologista CRM/MG",
+      "description": "Especialista em saúde ocular com formação sólida e experiência em diagnósticos precisos e tratamentos personalizados.",
+      "alt": "Dr. Philipe Saraiva - Oftalmologista especialista em saúde ocular"
+    }
   },
   "contact": {
     "title": "Entre em Contato",

@@ -37,7 +37,7 @@ const LatestEpisodes = () => {
     const episode = LATEST_EPISODES[0];
 
     return (
-        <section className="py-16 lg:py-20 bg-gradient-to-br from-slate-50 via-blue-50/20 to-indigo-50/30 relative overflow-hidden">
+        <section className="py-16 lg:py-20 bg-gradient-to-br from-slate-50 via-blue-50/20 to-indigo-50/30 relative overflow-hidden no-scrollbar-x">
             {/* Background Elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/8 to-purple-400/8 rounded-full blur-3xl animate-pulse" />
@@ -66,15 +66,23 @@ const LatestEpisodes = () => {
                 </svg>
             </div>
 
-            <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="container mx-auto px-4 md:px-6 relative z-10 no-scrollbar-x">
                 {/* Header */}
                 <div className="text-center mb-12">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 mb-6"
+                        className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-100 text-blue-700 mb-6"
                     >
+                        <div className="relative">
+                            <img
+                                src="/img/drphilipe_perfil.png"
+                                alt="Dr. Philipe Saraiva"
+                                className="w-8 h-8 rounded-full object-cover border-2 border-blue-200 shadow-sm"
+                            />
+                            <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full animate-pulse"></div>
+                        </div>
                         <Mic2 className="w-4 h-4" />
                         <span className="text-sm font-semibold">Podcast Saraiva Vision</span>
                     </motion.div>
@@ -95,9 +103,33 @@ const LatestEpisodes = () => {
                         transition={{ delay: 0.1 }}
                         className="text-lg text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed"
                     >
-                        Conteúdo especializado em oftalmologia com Dr. Saraiva.
+                        Conteúdo especializado em oftalmologia com Dr. Philipe Saraiva.
                         Aprenda sobre cuidados, prevenção e tratamentos para manter seus olhos saudáveis.
                     </motion.p>
+
+                    {/* Host Info Card */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="inline-flex items-center gap-4 bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-blue-100 shadow-soft-light mb-8"
+                    >
+                        <div className="relative">
+                            <img
+                                src="/img/drphilipe_perfil.png"
+                                alt="Dr. Philipe Saraiva"
+                                className="w-12 h-12 rounded-full object-cover border-3 border-white shadow-md"
+                            />
+                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full flex items-center justify-center">
+                                <Mic2 className="w-2 h-2 text-white" />
+                            </div>
+                        </div>
+                        <div className="text-left">
+                            <h4 className="text-sm font-bold text-slate-900">Dr. Philipe Saraiva</h4>
+                            <p className="text-xs text-slate-600">Oftalmologista • CRM-MG 69.870</p>
+                        </div>
+                    </motion.div>
                 </div>
 
                 {/* Episódio único */}

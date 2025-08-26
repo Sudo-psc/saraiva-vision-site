@@ -40,8 +40,8 @@ const Hero = () => {
         <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom_left,rgba(0,82,212,0.1),transparent_60%)]"></div>
       </div>
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
+      <div className="container mx-auto px-4 md:px-6 relative z-10 no-scrollbar-x">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 lg:gap-24 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -58,7 +58,7 @@ const Hero = () => {
               </Trans>
             </h1>
 
-            <p className="text-body-xl leading-loose max-w-prose md:pr-10">
+            <p className="text-body-xl leading-loose max-w-prose text-wrap">
               {t('hero.subtitle')}
             </p>
 
@@ -158,7 +158,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
-              className="absolute -bottom-8 -left-8 md:-bottom-4 md:-left-12 glass-card p-4 max-w-xs"
+              className="absolute -bottom-4 -left-4 md:-bottom-8 md:-left-8 lg:-bottom-4 lg:-left-12 glass-card p-3 md:p-4 max-w-xs w-64 md:w-auto"
             >
               <div className="flex items-start gap-4">
                 <div className="icon-container bg-blue-100">

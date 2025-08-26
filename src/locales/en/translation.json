@@ -227,6 +227,28 @@
       "Detailed usage instructions"
     ]
   },
+  "about": {
+    "tag": "About Us",
+    "title": "Dedicated to Excellence in Every Detail",
+    "p1": "Saraiva Vision was born from the dream of offering high-quality ophthalmological care, combining advanced technology with a human and personalized approach.",
+    "p2": "Our mission is to provide accurate diagnoses and effective treatments, always prioritizing the well-being and satisfaction of our patients.",
+    "features": [
+      "Modern Infrastructure",
+      "Qualified Professionals",
+      "Humanized Care",
+      "Commitment to Results"
+    ],
+    "alt1": "Modern ophthalmological office",
+    "alt2": "Ophthalmologist performing eye exam",
+    "alt3": "Satisfied patient smiling after consultation",
+    "alt4": "Advanced ophthalmological equipment",
+    "doctor": {
+      "name": "Dr. Philipe Saraiva",
+      "title": "Ophthalmologist CRM/MG",
+      "description": "Eye health specialist with solid training and experience in precise diagnoses and personalized treatments.",
+      "alt": "Dr. Philipe Saraiva - Ophthalmologist specialized in eye health"
+    }
+  },
   "contact": {
     "title": "Get in Touch",
     "subtitle": "We are available to answer your questions and schedule your appointment. Your vision is our priority.",

@@ -52,13 +52,24 @@
   }
 }
 
-/* Ensure white background as fallback */
+/* Ensure white background as fallback and prevent horizontal scroll */
 html,
 body {
   background-color: white !important;
   color: #1a1a1a !important;
   /* Enhanced font fallback stack */
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  /* Prevent horizontal scrolling */
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Ensure root element doesn't overflow */
+#root {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 @layer base {
@@ -247,6 +258,29 @@ body {
     line-height: 1.6;
     color: hsl(var(--text-primary));
     scroll-behavior: smooth;
+    /* Enhanced mobile responsiveness */
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Ensure all containers respect screen boundaries */
+  .container {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Fix potential overflow from large elements */
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Prevent images from overflowing */
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
   }
 
   h1,
@@ -480,6 +514,49 @@ body {
 }
 
 @layer utilities {
+  /* Mobile-first responsive utilities */
+  .mobile-container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-x: hidden;
+  }
+
+  @media (min-width: 640px) {
+    .mobile-container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .mobile-container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  /* Prevent horizontal scrolling */
+  .no-scrollbar-x {
+    overflow-x: hidden;
+  }
+
+  /* Responsive text wrapping */
+  .text-wrap {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Safe area for mobile devices */
+  .safe-area-x {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+
   .text-gradient {
     background: linear-gradient(90deg, #0052D4, #4364F7, #6FB1FC);
     -webkit-background-clip: text;

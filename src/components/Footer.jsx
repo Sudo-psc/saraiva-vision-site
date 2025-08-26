@@ -26,6 +26,8 @@ const Footer = () => {
     { name: t('navbar.about'), href: '/sobre' },
     { name: t('navbar.testimonials'), href: '/depoimentos' },
     { name: t('navbar.contact'), href: '/contato' },
+    { name: t('navbar.lenses'), href: '/lentes' },
+    { name: t('navbar.faq'), href: '/faq' },
   ];
 
   const serviceLinks = t('footer.service_links', { returnObjects: true });
@@ -37,9 +39,9 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-slate-800 text-slate-300 pt-16 pb-8">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+    <footer className="bg-slate-800 text-slate-300 pt-16 pb-8 no-scrollbar-x">
+      <div className="container mx-auto px-4 md:px-6 no-scrollbar-x">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10 mb-12">
           <div>
             <Logo isWhite />
             <p className="mt-4 mb-6 text-slate-400">
@@ -96,8 +98,8 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-start gap-6">
-          <div className="flex-1 space-y-2">
+        <div className="border-t border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-start gap-4 md:gap-6">
+          <div className="flex-1 space-y-2 text-wrap">
             <p className="text-slate-400 text-xs leading-snug">
               <span className="block font-medium text-slate-300">{clinicInfo.responsiblePhysician} • {clinicInfo.responsiblePhysicianCRM}</span>
               <span className="block">{clinicInfo.responsibleNurse} • {clinicInfo.responsibleNursePhone}</span>

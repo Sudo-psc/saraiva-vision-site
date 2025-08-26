@@ -97,8 +97,8 @@ const Navbar = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-header-gradient shadow-md py-2' : 'bg-transparent py-4'
         }`}
     >
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4 md:px-6 no-scrollbar-x">
+        <div className="flex items-center justify-between w-full">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -247,7 +247,7 @@ const Navbar = () => {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="md:hidden bg-white/95 backdrop-blur-lg border-t"
           >
-            <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4" aria-label={t('navbar.mobile_navigation', 'Navegação móvel')}>
+            <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4 no-scrollbar-x" aria-label={t('navbar.mobile_navigation', 'Navegação móvel')}>
               {navLinks.map((link) => (
                 link.internal ? (
                   <a

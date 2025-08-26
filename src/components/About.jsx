@@ -22,9 +22,9 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="bg-subtle-gradient">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
+    <section id="about" className="bg-subtle-gradient no-scrollbar-x">
+      <div className="container mx-auto px-4 md:px-6 no-scrollbar-x">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 lg:gap-24 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -32,9 +32,9 @@ const About = () => {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="absolute -top-10 -left-10 w-64 h-64 bg-blue-200 rounded-full filter blur-3xl opacity-30"></div>
+            <div className="absolute -top-6 -left-6 md:-top-10 md:-left-10 w-32 h-32 md:w-64 md:h-64 bg-blue-200 rounded-full filter blur-3xl opacity-30"></div>
 
-            <div className="grid grid-cols-2 gap-4 relative z-10">
+            <div className="grid grid-cols-2 gap-3 md:gap-4 relative z-10">
               <div className="space-y-4">
                 <div className="rounded-2xl overflow-hidden shadow-soft-medium h-64">
                   <img loading="lazy" decoding="async" className="w-full h-full object-cover" alt={imageAlts[0]} src={imageUrls[0]} sizes="(min-width: 1024px) 33vw, 50vw" />
@@ -70,9 +70,41 @@ const About = () => {
               {t('about.title')}
             </h2>
 
-            <p className="text-body-xl leading-loose max-w-prose">
+            <p className="text-body-xl leading-loose max-w-prose text-wrap">
               {t('about.p1')}
             </p>
+
+            {/* Dr. Philipe Profile Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex items-center gap-4 md:gap-6 p-4 md:p-6 bg-white rounded-2xl shadow-soft-medium border border-slate-100"
+            >
+              <div className="flex-shrink-0">
+                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden ring-4 ring-blue-100 shadow-soft-medium">
+                  <img 
+                    src="/img/drphilipe_perfil.png" 
+                    alt={t('about.doctor.alt')}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-xl md:text-2xl font-semibold text-slate-900 mb-1">
+                  {t('about.doctor.name')}
+                </h3>
+                <p className="text-blue-600 font-medium mb-2">
+                  {t('about.doctor.title')}
+                </p>
+                <p className="text-slate-600 text-sm md:text-base leading-relaxed">
+                  {t('about.doctor.description')}
+                </p>
+              </div>
+            </motion.div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
               {Array.isArray(features) && features.map((feature, index) => (
