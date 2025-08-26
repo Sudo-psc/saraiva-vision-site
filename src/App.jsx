@@ -14,8 +14,6 @@ const LensesPage = lazy(() => import('@/pages/LensesPage'));
 import ScrollToTop from '@/components/ScrollToTop';
 import { Toaster } from '@/components/ui/toaster';
 import ConsentManager from '@/components/ConsentManager';
-import ExitIntentPopup from '@/components/ExitIntentPopup';
-import Accessibility from '@/components/Accessibility';
 import FloatingCTA from '@/components/FloatingCTA';
 // import ExitPopupTester from '@/components/ExitPopupTester';
 
@@ -44,9 +42,7 @@ function App() {
       </Suspense>
       <Toaster />
       <ConsentManager />
-      <ExitIntentPopup />
       <FloatingCTA />
-      <Accessibility />
     </>
   );
 }
