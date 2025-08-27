@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock, Globe } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock, Globe, Shield } from 'lucide-react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { useRecaptcha } from '@/hooks/useRecaptcha';
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -21,6 +23,8 @@ const Contact = () => {
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const { executeRecaptcha, resetRecaptcha, setRecaptchaRef, error: recaptchaError } = useRecaptcha();
 
   // Input sanitization helper
   const sanitizeInput = (input) => {
@@ -60,7 +64,8 @@ const Contact = () => {
       }
       return true;
     },
-    consent: (v) => v === true || t('contact.validation.consent_required', 'É necessário aceitar os termos')
+    consent: (v) => v === true || t('contact.validation.consent_required', 'É necessário aceitar os termos'),
+    recaptcha: (v) => v !== null || t('contact.validation.recaptcha_required', 'Por favor, complete a verificação reCAPTCHA')
   };
 
   // Validate all when data changes on touched fields
@@ -96,11 +101,17 @@ const Contact = () => {
         if (result !== true) newErrors[field] = result;
       }
     });
+    
+    // Validate reCAPTCHA
+    if (!recaptchaToken) {
+      newErrors.recaptcha = t('contact.validation.recaptcha_required', 'Por favor, complete a verificação reCAPTCHA');
+    }
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Honeypot spam protection
@@ -125,24 +136,88 @@ const Contact = () => {
     }
     
     if (!validateAll()) {
-      setTouched({ name: true, email: true, phone: true, message: true });
+      setTouched({ name: true, email: true, phone: true, message: true, recaptcha: true });
       toast({ title: t('contact.toast_error_title'), description: t('contact.toast_error_desc'), variant: 'destructive' });
       return;
     }
     
     setIsSubmitting(true);
-    localStorage.setItem('lastContactSubmission', now.toString());
-    setTimeout(() => {
+    
+    try {
+      // Execute reCAPTCHA if not already done
+      let token = recaptchaToken;
+      if (!token) {
+        token = await executeRecaptcha();
+        if (!token) {
+          toast({ 
+            title: t('contact.recaptcha_error_title', 'Erro de Verificação'), 
+            description: t('contact.recaptcha_error_desc', 'Falha na verificação reCAPTCHA. Tente novamente.'), 
+            variant: 'destructive' 
+          });
+          setIsSubmitting(false);
+          return;
+        }
+      }
+      
+      // Send form data to backend API with reCAPTCHA token
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          consent: formData.consent,
+          recaptchaToken: token
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to send message');
+      }
+      
+      localStorage.setItem('lastContactSubmission', now.toString());
+      
       toast({
         title: t('contact.toast_success_title'),
         description: t('contact.toast_success_desc'),
         duration: 5000,
       });
-  setFormData({ name: '', email: '', phone: '', message: '', consent: false });
+      
+      // Reset form
+      setFormData({ name: '', email: '', phone: '', message: '', consent: false, website: '' });
       setTouched({});
       setErrors({});
+      setRecaptchaToken(null);
+      resetRecaptcha();
+      
+    } catch (error) {
+      console.error('Form submission error:', error);
+      toast({
+        title: t('contact.submission_error_title', 'Erro no Envio'),
+        description: t('contact.submission_error_desc', 'Ocorreu um erro ao enviar a mensagem. Tente novamente.'),
+        variant: 'destructive'
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 800);
+    }
+  };
+
+  const handleRecaptchaChange = (token) => {
+    setRecaptchaToken(token);
+    if (errors.recaptcha) {
+      setErrors(prev => ({ ...prev, recaptcha: null }));
+    }
+  };
+
+  const handleRecaptchaExpired = () => {
+    setRecaptchaToken(null);
+    setErrors(prev => ({ ...prev, recaptcha: t('contact.validation.recaptcha_expired', 'reCAPTCHA expirado. Por favor, complete novamente.') }));
   };
 
   const contactInfo = [
@@ -313,6 +388,33 @@ const Contact = () => {
                     <span dangerouslySetInnerHTML={{ __html: t('privacy.form_consent_html') }} />
                   </label>
                   {errors.consent && <p id="error-consent" className="mt-1 text-xs text-red-600">{errors.consent}</p>}
+                </div>
+                
+                {/* reCAPTCHA */}
+                <div className="pt-2">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Shield className="h-4 w-4 text-blue-600" />
+                    <span className="text-sm font-medium text-slate-700">
+                      {t('contact.recaptcha_label', 'Verificação de Segurança')}
+                    </span>
+                  </div>
+                  <div className="flex justify-center">
+                    <ReCAPTCHA
+                      ref={setRecaptchaRef}
+                      sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                      onChange={handleRecaptchaChange}
+                      onExpired={handleRecaptchaExpired}
+                      onError={() => setErrors(prev => ({ ...prev, recaptcha: t('contact.validation.recaptcha_error', 'Erro no reCAPTCHA. Recarregue a página.') }))}
+                      theme="light"
+                      size="normal"
+                      hl={t('language_code', 'pt')}
+                    />
+                  </div>
+                  {(errors.recaptcha || recaptchaError) && (
+                    <p className="mt-2 text-sm text-red-600 font-medium text-center">
+                      {errors.recaptcha || recaptchaError}
+                    </p>
+                  )}
                 </div>
                 
                 <Button disabled={isSubmitting} type="submit" size="lg" className="w-full flex items-center justify-center gap-2 disabled:opacity-60" aria-busy={isSubmitting}>

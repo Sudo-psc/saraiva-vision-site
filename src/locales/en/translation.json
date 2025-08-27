@@ -215,6 +215,11 @@
     "email_placeholder": "Your best email",
     "message_label": "Message",
     "message_placeholder": "Write your message here...",
+    "recaptcha_label": "Security Verification",
+    "recaptcha_error_title": "Verification Error",
+    "recaptcha_error_desc": "reCAPTCHA verification failed. Please try again.",
+    "submission_error_title": "Submission Error",
+    "submission_error_desc": "An error occurred while sending the message. Please try again.",
     "send_button": "Send Message",
     "online_scheduling_title": "Online Scheduling",
     "online_scheduling_desc": "Schedule your appointment directly through the web platform",
@@ -247,7 +252,10 @@
       "email_invalid": "Invalid email.",
       "phone_invalid": "Use digits with area code (e.g., 33998601427).",
       "message_min": "Message too short (min. 10 characters).",
-      "consent_required": "You must consent to data processing."
+      "consent_required": "You must consent to data processing.",
+      "recaptcha_required": "Please complete the reCAPTCHA verification.",
+      "recaptcha_expired": "reCAPTCHA expired. Please complete again.",
+      "recaptcha_error": "reCAPTCHA error. Please reload the page."
     },
     "external_redirect_warning": "You will be redirected to {serviceName}. Continue?",
     "phone_call_error": "Error initiating call. Call manually: {phoneDisplay}",

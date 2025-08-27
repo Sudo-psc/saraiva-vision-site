@@ -407,6 +407,11 @@
     "email_placeholder": "Seu melhor e-mail",
     "message_label": "Mensagem",
     "message_placeholder": "Escreva sua mensagem aqui...",
+    "recaptcha_label": "Verificação de Segurança",
+    "recaptcha_error_title": "Erro de Verificação",
+    "recaptcha_error_desc": "Falha na verificação reCAPTCHA. Tente novamente.",
+    "submission_error_title": "Erro no Envio",
+    "submission_error_desc": "Ocorreu um erro ao enviar a mensagem. Tente novamente.",
     "send_button": "Enviar Mensagem",
     "online_scheduling_title": "Agendamento Online",
     "online_scheduling_desc": "Agende sua consulta diretamente pela plataforma web",
@@ -439,7 +444,10 @@
       "email_invalid": "E-mail inválido.",
       "phone_invalid": "Use apenas números com DDD (ex: 33998601427).",
       "message_min": "Mensagem muito curta (mín. 10 caracteres).",
-      "consent_required": "É necessário consentir com o tratamento dos dados."
+      "consent_required": "É necessário consentir com o tratamento dos dados.",
+      "recaptcha_required": "Por favor, complete a verificação reCAPTCHA.",
+      "recaptcha_expired": "reCAPTCHA expirado. Por favor, complete novamente.",
+      "recaptcha_error": "Erro no reCAPTCHA. Recarregue a página."
     },
     "external_redirect_warning": "Você será redirecionado para {serviceName}. Continuar?",
     "phone_call_error": "Erro ao iniciar chamada. Ligue manualmente: {phoneDisplay}",
