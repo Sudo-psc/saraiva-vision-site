@@ -5,6 +5,7 @@
     "about": "About Us",
     "testimonials": "Testimonials",
     "contact": "Contact",
+    "blog": "Blog",
     "faq": "FAQ",
     "lenses": "Lenses",
     "schedule": "Schedule",
@@ -557,6 +558,22 @@
     "title": "📋 Privacy Policy | Saraiva Vision | LGPD Compliance",
     "description": "📄 Saraiva Vision Clinic Privacy Policy according to LGPD. 🔒 How we protect your personal data and medical information in Caratinga/MG Brazil.",
     "keywords": "Saraiva Vision privacy policy, LGPD ophthalmology clinic, medical data protection, patient privacy Caratinga Brazil"
+  },
+  "blog": {
+    "tag": "Health Education",
+    "title": "Saraiva Vision Blog in Caratinga",
+    "subtitle": "Articles about eye health, treatments and news in Caratinga, Brazil.",
+    "view_all": "View all articles",
+    "read_more": "Read more",
+    "placeholder_title": "Content coming soon",
+    "placeholder_desc": "Soon you'll read tips and news about eye care.",
+    "placeholder_desc_page": "We're preparing articles focused on Caratinga, Brazil.",
+    "page_title": "Eye Health Blog in Caratinga",
+    "page_description": "Ophthalmology tips and local news for Caratinga and nearby cities.",
+    "page_subtitle": "Learn more about eye care in our city.",
+    "post_error_title": "Post not found",
+    "post_error_desc": "We couldn't load this content.",
+    "back_to_blog": "Back to blog"
   },
   "reviews": {
     "title": "Google Reviews",
