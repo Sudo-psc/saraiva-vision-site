@@ -358,7 +358,7 @@
       "title": "Marcas Premium Disponíveis",
       "subtitle": "Trabalhamos apenas com as marcas mais confiáveis e inovadoras do mercado"
     },
-    "brands": {
+    "brand_details": {
       "acuvue": {
         "description": "Líder mundial em lentes de contato, oferecendo tecnologia avançada para máximo conforto.",
         "specialty": "Lentes diárias e quinzenais",
@@ -420,6 +420,13 @@
       "title": "Oftalmologista CRM/MG",
       "description": "Especialista em saúde ocular com formação sólida e experiência em diagnósticos precisos e tratamentos personalizados.",
       "alt": "Dr. Philipe Saraiva - Oftalmologista especialista em saúde ocular"
+    },
+    "team_title": "Nossa Equipe",
+    "nurse": {
+      "name": "Ana Lúcia",
+      "title": "Enfermeira responsável",
+      "description": "Suporte dedicado ao cuidado com os pacientes e apoio a procedimentos clínicos.",
+      "alt": "Enfermeira Ana Lúcia"
     }
   },
   "contact": {
@@ -461,6 +468,9 @@
     "toast_error_title": "Verifique os campos",
     "toast_error_desc": "Alguns dados precisam de ajuste.",
     "sending_label": "Enviando...",
+    "recaptcha_not_ready": "Verificação de segurança indisponível. Tente novamente.",
+    "recaptcha_error": "Falha na verificação de segurança. Tente novamente.",
+    "server_error": "Não foi possível enviar. Tente novamente mais tarde.",
     "validation": {
       "name_min": "Informe pelo menos 3 caracteres.",
       "email_invalid": "E-mail inválido.",
@@ -507,7 +517,7 @@
         "description": "Entenda o que é o glaucoma, como identificar sinais de alerta e as opções de tratamento para preservar sua visão. Um episódio essencial para quem quer prevenir esta doença silenciosa."
       },
       "catarata": {
-        "title": "Saúde Ocular em Foco: Catarata", 
+        "title": "Saúde Ocular em Foco: Catarata",
         "description": "Descubra tudo sobre catarata: causas, sintomas, tratamentos e como a cirurgia pode devolver sua qualidade de vida. Informações precisas para uma decisão consciente."
       },
       "ptergio": {
@@ -719,7 +729,7 @@
   "ui": {
     "details": "Ver detalhes",
     "close": "Fechar",
-    "close_menu": "Fechar menu", 
+    "close_menu": "Fechar menu",
     "close_player": "Fechar player",
     "close_tip": "Fechar dica",
     "restart_episode": "Reiniciar episódio",
@@ -729,7 +739,7 @@
     "language_portuguese": "Mudar para Português",
     "language_english": "Switch to English",
     "readability_control": "Controle de Legibilidade",
-    "reading_support": "Apoio à Leitura", 
+    "reading_support": "Apoio à Leitura",
     "alternative_communication": "Comunicação Alternativa",
     "navigation_input": "Navegação e Entrada",
     "decrease_font": "Diminuir fonte",
@@ -737,7 +747,7 @@
     "your_name": "Seu nome",
     "alt": {
       "consultations": "Consultas Oftalmológicas",
-      "refraction": "Exames de Refração", 
+      "refraction": "Exames de Refração",
       "specialized": "Tratamentos Especializados",
       "surgeries": "Cirurgias Oftalmológicas",
       "pediatric": "Acompanhamento Pediátrico",
@@ -746,5 +756,12 @@
       "satisfied_patient_2": "Paciente satisfeito 2",
       "doctor": "Médico oftalmologista sorrindo para a câmera em uma clínica moderna"
     }
+  },
+  "location": {
+    "title": "Encontre-nos",
+    "subtitle": "Localização verificada no Google. Facilite sua rota e avalie nosso atendimento.",
+    "reviews_realtime": "Avaliações em tempo real",
+    "google_maps_button": "Ver no Google Maps",
+    "review_button": "Avalie-nos no Google"
   }
 }

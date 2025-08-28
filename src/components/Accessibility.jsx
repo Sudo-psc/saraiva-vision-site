@@ -314,7 +314,7 @@ const Accessibility = () => {
                   <ToggleButton active={state.readingRuler} ariaLabel="Régua de leitura" onClick={() => updateState({ readingRuler: !state.readingRuler })}>Régua</ToggleButton>
                   <ToggleButton active={state.highlightHeadings} ariaLabel="Destacar títulos" onClick={() => updateState({ highlightHeadings: !state.highlightHeadings })}><Highlighter size={14} /> Títulos</ToggleButton>
                   <ToggleButton active={state.highlightLinks} ariaLabel="Destacar links" onClick={() => updateState({ highlightLinks: !state.highlightLinks })}>Links</ToggleButton>
-                  <ToggleButton active={state.pauseAnimations} ariaLabel="Pausar animações" onClick={() => updateState({ pauseAnimations: !state.pauseAnimations })}>Animaçõ{state.pauseAnimations ? 'es ✔' : 'es'}</ToggleButton>
+                  <ToggleButton active={state.pauseAnimations} ariaLabel="Pausar animações" onClick={() => updateState({ pauseAnimations: !state.pauseAnimations })}>Animações</ToggleButton>
                 </div>
               </Section>
 

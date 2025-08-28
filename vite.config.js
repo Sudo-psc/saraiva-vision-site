@@ -267,6 +267,55 @@ export default defineConfig({
 						}));
 					}
 				});
+
+				// Contact API endpoint for development
+				server.middlewares.use('/api/contact', async (req, res) => {
+					try {
+						const { default: handler } = await import('./api/contact.js');
+
+						// Collect JSON body for POST
+						let body = {};
+						if (req.method === 'POST') {
+							const buffers = [];
+							for await (const chunk of req) buffers.push(chunk);
+							const raw = Buffer.concat(buffers).toString('utf8');
+							try { body = raw ? JSON.parse(raw) : {}; } catch { body = {}; }
+						}
+
+						const mockReq = {
+							method: req.method,
+							headers: req.headers,
+							url: req.url,
+							body
+						};
+
+						const mockRes = {
+							status: (code) => ({
+								json: (data) => {
+									res.writeHead(code, { 'Content-Type': 'application/json' });
+									res.end(JSON.stringify(data));
+								},
+								end: (data) => {
+									res.writeHead(code);
+									res.end(data);
+								}
+							}),
+							setHeader: (name, value) => res.setHeader(name, value),
+							writeHead: (code, headers) => res.writeHead(code, headers),
+							write: (data) => res.write(data),
+							end: (data) => res.end(data)
+						};
+
+						await handler(mockReq, mockRes);
+					} catch (error) {
+						console.error('Contact API error in dev:', error);
+						res.writeHead(500, { 'Content-Type': 'application/json' });
+						res.end(JSON.stringify({ 
+							error: 'Internal server error', 
+							message: error.message 
+						}));
+					}
+				});
 			}
 		},
 		// Plugin para gerar sitemap durante o build
@@ -295,13 +344,43 @@ export default defineConfig({
 		},
 	},
 	build: {
+		cssMinify: 'esbuild',
+		minify: 'terser',
+		terserOptions: {
+			compress: {
+				drop_console: true,
+				drop_debugger: true
+			}
+		},
 		rollupOptions: {
 			external: [
 				'@babel/parser',
 				'@babel/traverse',
 				'@babel/generator',
 				'@babel/types'
-			]
+			],
+			output: {
+				manualChunks: {
+					// Core vendor chunks
+					react: ['react', 'react-dom'],
+					motion: ['framer-motion'],
+					i18n: ['react-i18next', 'i18next'],
+					ui: ['lucide-react'],
+					// App chunks by functionality
+					components: [
+						'./src/components/Hero.jsx',
+						'./src/components/Services.jsx',
+						'./src/components/About.jsx'
+					],
+					utils: [
+						'./src/utils/safeNavigation.js',
+						'./src/utils/analytics.js'
+					]
+				},
+				chunkFileNames: 'assets/[name]-[hash].js',
+				entryFileNames: 'assets/[name]-[hash].js',
+				assetFileNames: 'assets/[name]-[hash].[ext]'
+			}
 		}
 	}
 });

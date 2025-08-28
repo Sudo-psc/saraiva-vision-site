@@ -129,7 +129,7 @@ const ContactLenses = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
 
               {/* Custom SVG Hero Image */}
-              <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-4 border border-white/60 shadow-2xl">
+              <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-4 border border-slate-200/80 shadow-2xl">
                 <ContactLensesHeroImage
                   alt={t('contactLenses.main_title')}
                   className="rounded-2xl w-full max-w-2xl h-auto shadow-lg"
@@ -348,7 +348,7 @@ const ContactLenses = () => {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
                   <div className="text-center mb-6">
-                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-slate-200">
                       <Icon className="h-6 w-6 text-blue-600" />
                     </div>
                     <h3 className="text-xl font-bold text-slate-900 mb-2">

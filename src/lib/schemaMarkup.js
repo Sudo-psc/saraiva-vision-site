@@ -122,6 +122,9 @@ export const generateMedicalClinicSchema = (language = 'pt', forGraph = false) =
     // Redes sociais e links relacionados
     sameAs: [
       clinicInfo.instagram,
+      clinicInfo.facebook,
+      clinicInfo.linkedin,
+      'https://saraivavision.com.br/',
       clinicInfo.chatbotUrl
     ],
     
@@ -276,6 +279,82 @@ export const generateBreadcrumbSchema = (breadcrumbs, forGraph = false) => {
       name: crumb.name,
       item: `https://saraivavision.com.br${crumb.url}`
     }))
+  };
+  
+  // Se não for para @graph, adicionar @context
+  if (!forGraph) {
+    schema['@context'] = 'https://schema.org';
+  }
+  
+  return schema;
+};
+
+// Gera schema para WebSite
+export const generateWebSiteSchema = (language = 'pt', forGraph = false) => {
+  const schema = {
+    '@type': 'WebSite',
+    '@id': 'https://saraivavision.com.br/#website',
+    name: 'Saraiva Vision - Clínica Oftalmológica',
+    alternateName: 'Saraiva Vision',
+    description: language === 'pt' 
+      ? 'Clínica oftalmológica especializada em consultas, exames e procedimentos oftalmológicos com tecnologia avançada em Caratinga/MG.'
+      : 'Ophthalmology clinic specialized in consultations, exams and ophthalmological procedures with advanced technology in Caratinga/MG.',
+    url: 'https://saraivavision.com.br/',
+    inLanguage: language === 'pt' ? 'pt-BR' : 'en-US',
+    publisher: {
+      '@id': 'https://saraivavision.com.br/#clinic'
+    },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: 'https://saraivavision.com.br/?s={search_term_string}'
+      },
+      'query-input': 'required name=search_term_string'
+    }
+  };
+  
+  // Se não for para @graph, adicionar @context
+  if (!forGraph) {
+    schema['@context'] = 'https://schema.org';
+  }
+  
+  return schema;
+};
+
+// Gera schema para Organization (parent type)
+export const generateOrganizationSchema = (language = 'pt', forGraph = false) => {
+  const schema = {
+    '@type': 'Organization',
+    '@id': 'https://saraivavision.com.br/#organization',
+    name: clinicInfo.name,
+    legalName: clinicInfo.legalName,
+    url: 'https://saraivavision.com.br/',
+    logo: {
+      '@type': 'ImageObject',
+      '@id': 'https://saraivavision.com.br/#logo',
+      url: 'https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png',
+      contentUrl: 'https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png',
+      width: 300,
+      height: 300,
+      caption: 'Saraiva Vision Logo'
+    },
+    image: 'https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png',
+    telephone: clinicInfo.phoneDisplay,
+    email: clinicInfo.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: `${clinicInfo.streetAddress} – ${clinicInfo.neighborhood}`,
+      addressLocality: clinicInfo.city,
+      addressRegion: clinicInfo.state,
+      postalCode: clinicInfo.postalCode,
+      addressCountry: clinicInfo.country
+    },
+    sameAs: [
+      clinicInfo.instagram,
+      clinicInfo.facebook,
+      clinicInfo.linkedin
+    ]
   };
   
   // Se não for para @graph, adicionar @context

@@ -16,7 +16,10 @@ const FAQPage = lazy(() => import('@/pages/FAQPage'));
 import ScrollToTop from '@/components/ScrollToTop';
 import { Toaster } from '@/components/ui/toaster';
 import ConsentManager from '@/components/ConsentManager';
-import FloatingCTA from '@/components/FloatingCTA';
+import CTAModal from '@/components/CTAModal';
+import WhatsappWidget from '@/components/WhatsappWidget';
+import { clinicInfo } from '@/lib/clinicInfo';
+import { safePhoneFormat } from '@/utils/phoneFormatter';
 // import ExitPopupTester from '@/components/ExitPopupTester';
 
 function App() {
@@ -29,7 +32,7 @@ function App() {
   return (
     <HelmetProvider>
       <ScrollToTop />
-      <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-500">Carregando...</div>}>
+      <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/servicos" element={<ServicesPage />} />
@@ -45,7 +48,8 @@ function App() {
       </Suspense>
       <Toaster />
       <ConsentManager />
-      <FloatingCTA />
+      <CTAModal />
+      <WhatsappWidget phoneNumber={safePhoneFormat(clinicInfo.whatsapp || clinicInfo.phone)} />
     </HelmetProvider>
   );
 }

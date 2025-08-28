@@ -29,8 +29,8 @@ vi.mock('react-i18next', () => ({
   })
 }));
 
-// Mock react-helmet
-vi.mock('react-helmet', () => ({
+// Mock react-helmet-async
+vi.mock('react-helmet-async', () => ({
   Helmet: ({ children }) => children
 }));
 
@@ -222,7 +222,7 @@ describe('useServiceSEO Hook', () => {
 
   it('sets correct canonical URL for service', () => {
     window.location.pathname = `/servico/${mockService.slug}`;
-    
+
     const { result } = renderHook(() => useServiceSEO(mockService), { wrapper: TestWrapper });
 
     expect(result.current.canonical).toContain(mockService.slug);

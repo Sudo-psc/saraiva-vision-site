@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,7 @@ import { clinicInfo } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/Logo';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import ScheduleDropdown from '@/components/ScheduleDropdown';
 import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { PERFORMANCE } from '@/lib/constants';
 
@@ -15,6 +16,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scheduleDropdownOpen, setScheduleDropdownOpen] = useState(false);
+  const scheduleButtonRef = useRef(null);
   const { generateWhatsAppUrl, openFloatingCTA } = useWhatsApp();
   const whatsappLink = generateWhatsAppUrl();
   const navigate = useNavigate();
@@ -46,51 +48,6 @@ const Navbar = () => {
       navigate(link.href);
     }
   }, [navigate]);
-
-  const safeOpen = useCallback((url) => {
-    // Validate URL before opening
-    if (!url || url.trim() === '') {
-      console.error('Invalid URL provided to safeOpen:', url);
-      return;
-    }
-
-    try {
-      // Ensure URL is properly formatted
-      const validUrl = url.startsWith('http') ? url : `https://${url}`;
-      const win = window.open(validUrl, '_blank', 'noopener,noreferrer');
-
-      // Check if popup was blocked
-      if (!win || win.closed || typeof win.closed === 'undefined') {
-        // Fallback: redirect in same tab
-        window.location.href = validUrl;
-      }
-    } catch (e) {
-      console.error('Error opening URL:', url, e);
-      // Final fallback: try direct navigation
-      try {
-        window.location.href = url.startsWith('http') ? url : `https://${url}`;
-      } catch (fallbackError) {
-        console.error('Fallback navigation also failed:', fallbackError);
-      }
-    }
-  }, []);
-
-  const handleAgendarOnlineClick = useCallback(() => {
-    // Validate the scheduling URL exists
-    if (!clinicInfo.onlineSchedulingUrl) {
-      console.error('Online scheduling URL not configured');
-      alert(t('navbar.scheduling_error', 'Serviço indisponível. Use WhatsApp ou ligue para (33) 99860-1427'));
-      return;
-    }
-
-    safeOpen(clinicInfo.onlineSchedulingUrl);
-  }, [safeOpen, t]);
-
-  const handleAgendarWhatsappClick = useCallback(() => {
-    safeOpen(whatsappLink);
-  }, [whatsappLink, safeOpen]);
-
-  const handleAgendarContatoClick = openFloatingCTA;
 
   return (
     <header
@@ -169,59 +126,24 @@ const Navbar = () => {
               <Headphones size={20} />
             </a>
 
-            <div className="relative">
-              <Button
-                onClick={() => setScheduleDropdownOpen(!scheduleDropdownOpen)}
-                className="flex items-center gap-2"
-                onBlur={() => setTimeout(() => setScheduleDropdownOpen(false), 150)}
-                aria-haspopup="menu"
-                aria-expanded={scheduleDropdownOpen}
-                aria-controls="navbar-schedule-menu"
-              >
-                <Calendar size={18} />
-                <span>{t('navbar.schedule')}</span>
-                <ChevronDown size={16} />
-              </Button>
-              {scheduleDropdownOpen && (
-                <div id="navbar-schedule-menu" className="absolute top-full right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-                  <div className="p-2">
-                    <button
-                      onClick={handleAgendarOnlineClick}
-                      className="w-full flex items-center gap-3 p-3 hover:bg-blue-50 rounded-lg transition-colors text-left focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-inset"
-                      tabIndex="0"
-                    >
-                      <Globe size={20} className="text-blue-600" />
-                      <div>
-                        <div className="font-medium text-gray-900">{t('contact.online_scheduling_title')}</div>
-                        <div className="text-xs text-gray-500">{t('contact.online_scheduling_desc')}</div>
-                      </div>
-                    </button>
-                    <button
-                      onClick={handleAgendarWhatsappClick}
-                      className="w-full flex items-center gap-3 p-3 hover:bg-green-50 rounded-lg transition-colors text-left focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-inset"
-                      tabIndex="0"
-                    >
-                      <MessageCircle size={20} className="text-green-600" />
-                      <div>
-                        <div className="font-medium text-gray-900">{t('navbar.whatsapp')}</div>
-                        <div className="text-xs text-gray-500">{t('navbar.whatsapp_direct')}</div>
-                      </div>
-                    </button>
-                    <button
-                      onClick={handleAgendarContatoClick}
-                      className="w-full flex items-center gap-3 p-3 hover:bg-purple-50 rounded-lg transition-colors text-left focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-inset"
-                      tabIndex="0"
-                    >
-                      <Calendar size={20} className="text-purple-600" />
-                      <div>
-                        <div className="font-medium text-gray-900">{t('navbar.more_options')}</div>
-                        <div className="text-xs text-gray-500">{t('navbar.more_options_desc')}</div>
-                      </div>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+            <Button
+              ref={scheduleButtonRef}
+              onClick={() => setScheduleDropdownOpen(!scheduleDropdownOpen)}
+              className="flex items-center gap-2"
+              aria-haspopup="menu"
+              aria-expanded={scheduleDropdownOpen}
+              aria-controls="navbar-schedule-menu"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setScheduleDropdownOpen(!scheduleDropdownOpen);
+                }
+              }}
+            >
+              <Calendar size={18} />
+              <span>{t('navbar.schedule')}</span>
+              <ChevronDown size={16} className={`transition-transform duration-200 ${scheduleDropdownOpen ? 'rotate-180' : ''}`} />
+            </Button>
           </div>
 
           <div className="md:hidden flex items-center gap-2">
@@ -272,24 +194,26 @@ const Navbar = () => {
               ))}
               <div className="space-y-2 mt-4">
                 <Button onClick={() => {
-                  handleAgendarOnlineClick();
+                  // Temporary placeholder - will be handled by floating dropdown
                   setMobileMenuOpen(false);
+                  // Open floating dropdown for mobile as well
+                  setScheduleDropdownOpen(true);
                 }} className="flex items-center gap-2 w-full justify-center" size="lg">
                   <Globe size={18} />
                   <span>{t('contact.online_scheduling_title')}</span>
-                </Button>
-                <Button onClick={() => {
-                  handleAgendarWhatsappClick();
-                  setMobileMenuOpen(false);
-                }} variant="outline" className="flex items-center gap-2 w-full justify-center">
-                  <MessageCircle size={18} />
-                  <span>{t('navbar.whatsapp')}</span>
                 </Button>
               </div>
             </nav>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Floating Schedule Dropdown */}
+      <ScheduleDropdown
+        isOpen={scheduleDropdownOpen}
+        onClose={() => setScheduleDropdownOpen(false)}
+        triggerRef={scheduleButtonRef}
+      />
     </header>
   );
 };

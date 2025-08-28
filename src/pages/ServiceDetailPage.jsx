@@ -161,7 +161,7 @@ const ServiceDetailPage = () => {
 
 
   const handleScheduleClick = () => {
-    window.dispatchEvent(new Event('open-floating-cta'));
+    window.dispatchEvent(new Event('open-cta-modal'));
   };
 
   const seoData = {

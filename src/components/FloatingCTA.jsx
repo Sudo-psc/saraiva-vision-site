@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { CONTACT } from '@/lib/constants';
+import { trackConversion } from '@/utils/analytics';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 // Sticky CTA with modal offering multiple contact channels
 const FloatingCTA = () => {
@@ -12,6 +14,13 @@ const FloatingCTA = () => {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { generateWhatsAppUrl, whatsappNumber } = useWhatsApp();
+
+  // Focus trap for modal accessibility
+  const modalRef = useFocusTrap(open, {
+    onEscape: () => setOpen(false),
+    autoFocus: true,
+    returnFocus: true
+  });
 
   const whatsappUrl = generateWhatsAppUrl(CONTACT.DEFAULT_MESSAGES.WHATSAPP);
   const phoneDisplay = CONTACT.PHONE.DISPLAY;
@@ -46,7 +55,10 @@ const FloatingCTA = () => {
     return () => window.removeEventListener('open-floating-cta', handler);
   }, []);
 
-  const handleOpenModal = useCallback(() => setOpen(true), []);
+  const handleOpenModal = useCallback(() => {
+    try { trackConversion('cta_open_modal'); } catch (_) {}
+    setOpen(true);
+  }, []);
   const handleCloseModal = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
@@ -64,20 +76,30 @@ const FloatingCTA = () => {
   }, [open]);
 
   const Modal = (
-    <div aria-modal="true" role="dialog" aria-labelledby="cta-modal-title" className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center">
+    <div 
+      aria-modal="true" 
+      role="dialog" 
+      aria-labelledby="cta-modal-title"
+      aria-describedby="cta-modal-description"
+      className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center"
+    >
       <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onClick={handleCloseModal} />
-      <div className="relative w-full sm:max-w-md mx-auto bg-white rounded-t-3xl sm:rounded-3xl shadow-xl p-6 sm:p-8 animate-in fade-in zoom-in-95">
+      <div 
+        ref={modalRef}
+        className="relative w-full sm:max-w-md mx-auto bg-white rounded-t-3xl sm:rounded-3xl shadow-xl p-6 sm:p-8 animate-in fade-in zoom-in-95"
+      >
         <button className="absolute top-3 right-3 p-2 rounded-full hover:bg-slate-100" aria-label="Fechar" onClick={handleCloseModal}>
           <X size={18} />
         </button>
         <h3 id="cta-modal-title" className="text-xl font-semibold mb-1 text-slate-800">{t('contact.schedule_consultation', 'Agendar Consulta')}</h3>
-        <p className="text-sm text-slate-500 mb-6">{t('contact.modal_description', 'Escolha sua forma preferida de contato. Resposta em até 1 minuto no horário comercial.')}</p>
+        <p id="cta-modal-description" className="text-sm text-slate-500 mb-6">{t('contact.modal_description', 'Escolha sua forma preferida de contato. Resposta em até 1 minuto no horário comercial.')}</p>
 
         {/* Mobile-First: Most Popular Option First */}
         <div className="space-y-4">
           {/* Priority #1: Online Scheduling - Most convenient for mobile */}
           <button
-            onClick={() => safeOpenExternal(clinicInfo.onlineSchedulingUrl, 'Agendamento Online')}
+            onClick={() => { try { trackConversion('schedule_start', { method: 'online' }); } catch(_) {};
+              safeOpenExternal(clinicInfo.onlineSchedulingUrl, 'Agendamento Online'); }}
             className="flex items-center gap-4 p-5 rounded-2xl border-2 border-blue-300 bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 transition-all duration-200 transform hover:scale-[1.02] shadow-lg w-full text-left"
           >
             <div className="p-4 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-md">
@@ -89,20 +111,20 @@ const FloatingCTA = () => {
                 <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full font-bold">RECOMENDADO</span>
               </div>
               <div className="text-sm text-blue-700 font-medium">{t('contact.online_scheduling_desc')}</div>
-              <div className="text-xs text-slate-500 mt-1">📅 Disponível 24h • Confirmação instantânea</div>
+              <div className="text-xs text-slate-500 mt-1">Disponível 24h • Confirmação instantânea</div>
             </div>
           </button>
           <button
-            onClick={() => safeOpenExternal(whatsappUrl, 'WhatsApp')}
+            onClick={() => { try { trackConversion('whatsapp_click'); } catch(_) {}; safeOpenExternal(whatsappUrl, 'WhatsApp'); }}
             className="flex items-center gap-4 p-5 rounded-2xl border-2 border-green-300 bg-gradient-to-r from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 transition-all duration-200 transform hover:scale-[1.02] shadow-lg w-full text-left"
           >
             <div className="p-4 rounded-xl bg-gradient-to-br from-green-500 to-green-600 text-white shadow-md">
               <MessageCircle size={24} className="animate-pulse" />
             </div>
             <div>
-              <div className="font-bold text-slate-800 text-lg">{t('contact.whatsapp_title', 'WhatsApp')} ⚡</div>
+              <div className="font-bold text-slate-800 text-lg">{t('contact.whatsapp_title', 'WhatsApp')}</div>
               <div className="text-sm text-green-700 font-medium">{t('contact.whatsapp_fast_response', 'Resposta em até 1 minuto • Mais rápido')}</div>
-              <div className="text-xs text-slate-500 mt-1">📱 {phoneDisplay}</div>
+              <div className="text-xs text-slate-500 mt-1">{phoneDisplay}</div>
             </div>
           </button>
           <button
@@ -117,6 +139,7 @@ const FloatingCTA = () => {
           </button>
           <button
             onClick={() => {
+              try { trackConversion('phone_click'); } catch(_) {}
               try {
                 window.location.href = phoneHref;
               } catch (e) {
@@ -134,6 +157,7 @@ const FloatingCTA = () => {
           </button>
           <button
             onClick={() => {
+              try { trackConversion('email_click'); } catch(_) {}
               try {
                 const mailtoUrl = `mailto:${email}?subject=${encodeURIComponent(CONTACT.DEFAULT_MESSAGES.EMAIL_SUBJECT)}`;
                 window.location.href = mailtoUrl;
@@ -160,25 +184,8 @@ const FloatingCTA = () => {
 
   return (
     <>
-      {/* Mobile-First Prominent CTA Button - Positioned to avoid overlap with Accessibility Widget */}
-      <button
-        onClick={handleOpenModal}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[85] shadow-2xl rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 active:from-blue-800 active:to-blue-900 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 text-white font-bold flex items-center gap-3 px-4 py-4 sm:px-6 sm:py-5 text-sm sm:text-base transform hover:scale-105 active:scale-95 transition-all duration-200 max-w-[calc(100vw-2rem)] overflow-hidden"
-        style={{
-          minHeight: '56px',
-          maxHeight: '64px',
-          // Ensure it floats above content and adjusts on scroll
-          transform: 'translateZ(0)',
-          willChange: 'transform'
-        }}
-        aria-label="Agendar Consulta - Clique para ver opções de contato"
-        tabIndex="0"
-      >
-        <Calendar size={20} className="sm:w-6 sm:h-6 flex-shrink-0" />
-        <span className="hidden sm:inline whitespace-nowrap">Agendar Consulta</span>
-        <span className="sm:hidden text-xs font-bold whitespace-nowrap">Agendar</span>
-      </button>
-
+      {/* Botão flutuante de agendar removido por solicitação */}
+      {/* Botão de ligação móvel permanece ativo */}
       {/* Additional Mobile Call Button for Direct Phone Contact */}
       <a
         href={phoneHref}

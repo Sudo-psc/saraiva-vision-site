@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import {
@@ -33,15 +33,43 @@ const EXTERNAL_PODCAST_URL = 'https://shorturl.at/X0S4m';
 
 const LatestEpisodes = () => {
     const { t } = useTranslation();
-    // Apenas 1 episódio será mostrado
     const episode = LATEST_EPISODES[0];
+    const sectionRef = useRef(null);
+    const bgAudioRef = useRef(null);
+
+    useEffect(() => {
+        const section = sectionRef.current;
+        const audio = bgAudioRef.current;
+        if (!section || !audio) return;
+
+        let played = false;
+        const observer = new window.IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting && !played) {
+                    audio.volume = 0.25;
+                    audio.play();
+                    played = true;
+                } else if (!entry.isIntersecting && played) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    played = false;
+                }
+            },
+            { threshold: 0.5 }
+        );
+        observer.observe(section);
+        return () => observer.disconnect();
+    }, []);
 
     return (
-        <section className="py-16 lg:py-20 bg-gradient-to-br from-slate-50 via-blue-50/20 to-indigo-50/30 relative overflow-hidden no-scrollbar-x">
+        <section ref={sectionRef} className="py-16 lg:py-20 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 relative overflow-hidden no-scrollbar-x">
+            {/* Áudio de fundo oculto */}
+            <audio ref={bgAudioRef} src="/Podcasts/podcast.mp3" preload="auto" style={{ display: 'none' }} />
+
             {/* Background Elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/8 to-purple-400/8 rounded-full blur-3xl animate-pulse" />
-                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-purple-400/8 to-pink-400/8 rounded-full blur-3xl animate-pulse delay-1000" />
+                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/12 to-sky-400/10 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-sky-400/12 to-cyan-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
             </div>
 
             {/* Curved Top Divider */}
@@ -113,7 +141,7 @@ const LatestEpisodes = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        className="inline-flex items-center gap-4 bg-white/60 backdrop-blur-sm rounded-2xl p-4 border border-blue-100 shadow-soft-light mb-8"
+                        className="inline-flex items-center gap-4 bg-white/60 backdrop-blur-sm rounded-2xl p-4 border-2 border-blue-300 shadow-soft-light mb-8"
                     >
                         <div className="relative">
                             <img
@@ -141,7 +169,7 @@ const LatestEpisodes = () => {
                         transition={{ delay: 0.2 }}
                         className="mb-12"
                     >
-                        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-light border border-gray-100 p-8 lg:p-12">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-light border-2 border-slate-300 p-8 lg:p-12">
                             <div className="flex flex-col lg:flex-row items-center gap-8">
                                 <div className="flex-shrink-0">
                                     <div className="relative">

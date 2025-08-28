@@ -84,11 +84,11 @@ const DesignSystemDemo = () => {
             {/* Good Example */}
             <div className="border-2 border-green-200 rounded-lg p-6 bg-green-50">
               <div className="mb-4">
-                <span className="text-body font-medium text-green-700">✅ Good Example</span>
+                <span className="text-body font-medium text-green-700">Good Example</span>
               </div>
               <div className="text-center">
                 <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-overline font-medium mb-6">
-                  <span className="mr-2">✦</span> Our Services
+                  Our Services
                 </div>
                 <h2 className="text-heading-xl font-bold mb-6 max-w-prose mx-auto">
                   Comprehensive Eye Care Solutions
@@ -102,7 +102,7 @@ const DesignSystemDemo = () => {
             {/* Bad Example */}
             <div className="border-2 border-red-200 rounded-lg p-6 bg-red-50">
               <div className="mb-4">
-                <span className="text-body font-medium text-red-700">❌ Bad Example</span>
+                <span className="text-body font-medium text-red-700">Bad Example</span>
               </div>
               <div className="text-center">
                 <h2 className="text-4xl font-bold mb-4">Our Comprehensive Eye Care Solutions</h2>

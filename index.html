@@ -91,6 +91,27 @@
   <meta name="geo.placename" content="Caratinga" />
   <meta name="geo.position" content="-19.7868;-42.1392" />
   <meta name="ICBM" content="-19.7868, -42.1392" />
+  
+  <!-- Google Consent Mode v2: default denied (privacy-first) -->
+  <script>
+    (function initConsentModeDefaults(){
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = window.gtag || gtag;
+      // Default: deny analytics/ads until opt-in
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        analytics_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        functionality_storage: 'granted',
+        security_storage: 'granted'
+      });
+      // Recommended safeguards for EEA
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
+    })();
+  </script>
   <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -285,28 +306,69 @@
       }
     </script>
 
-  <!-- Consent-gated tracking scripts will be injected dynamically after user opt-in -->
-  <script>
-    window.__SV_PENDING_TAGS__ = [
-      { src: 'https://www.googletagmanager.com/gtag/js?id=G-LXWRK8ELS6', type: 'analytics' },
-      { inline: "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config','G-LXWRK8ELS6');", type: 'analytics' },
-      { src: 'https://www.googletagmanager.com/gtag/js?id=AW-11120453144', type: 'marketing' },
-      { inline: "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config','AW-11120453144');", type: 'marketing' }
-    ];
+  <!-- Consent-gated GTM container (configure GA4/Meta inside GTM). ID from env. -->
+  <script type="module">
+    const GTM_ID = import.meta.env.VITE_GTM_ID; // e.g., GTM-XXXXXXX
+
+    // Helper: load GTM once
+    function loadGTM(id) {
+      if (!id) return;
+      if (window.__GTM_LOADED__) return;
+      window.__GTM_LOADED__ = true;
+      (function(w,d,s,l,i){
+        w[l]=w[l]||[]; w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+        const f=d.getElementsByTagName(s)[0];
+        const j=d.createElement(s); const dl=l!='dataLayer'?'&l='+l:'';
+        j.async=true; j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+        f.parentNode.insertBefore(j,f);
+      })(window, document, 'script', 'dataLayer', GTM_ID);
+
+      // Optional: noscript iframe (added dynamically for SPA)
+      const ns = document.createElement('noscript');
+      ns.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+      document.body && document.body.appendChild(ns);
+    }
+
+    function updateConsentForVendors(consent){
+      // Keep Consent Mode in sync (GTM/GA4 will read this)
+      if (window.gtag) {
+        window.gtag('consent','update',{
+          ad_storage: consent.marketing ? 'granted' : 'denied',
+          analytics_storage: consent.analytics ? 'granted' : 'denied',
+          ad_user_data: consent.marketing ? 'granted' : 'denied',
+          ad_personalization: consent.marketing ? 'granted' : 'denied'
+        });
+      } else {
+        // Push to dataLayer so GTM reads the update even if gtag not present yet
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'consent_update',
+          'ad_storage': consent.marketing ? 'granted' : 'denied',
+          'analytics_storage': consent.analytics ? 'granted' : 'denied',
+          'ad_user_data': consent.marketing ? 'granted' : 'denied',
+          'ad_personalization': consent.marketing ? 'granted' : 'denied'
+        });
+      }
+    }
+
+    // Load GTM only when at least one non-essential category is granted
     window.addEventListener('consent-updated', (e) => {
-      const consent = e.detail;
-      const head = document.head;
-      (window.__SV_PENDING_TAGS__ || []).forEach(tag => {
-        if ((tag.type === 'analytics' && consent.analytics) || (tag.type === 'marketing' && consent.marketing)) {
-          if (tag.src && !document.querySelector(`script[src='${tag.src}']`)) {
-            const s = document.createElement('script'); s.async = true; s.src = tag.src; head.appendChild(s);
-          }
-          if (tag.inline) {
-            const s = document.createElement('script'); s.text = tag.inline; head.appendChild(s);
-          }
-        }
-      });
+      const consent = e.detail || {};
+      if ((consent.analytics || consent.marketing) && !window.__GTM_LOADED__) {
+        loadGTM(GTM_ID);
+      }
+      updateConsentForVendors(consent);
     });
+
+    // Auto-apply stored consent and load GTM on returning visitors
+    try {
+      const saved = JSON.parse(localStorage.getItem('sv_consent_v1'));
+      if (saved) {
+        if ((saved.analytics || saved.marketing) && !window.__GTM_LOADED__) loadGTM(GTM_ID);
+        window.dispatchEvent(new CustomEvent('consent-updated', { detail: saved }));
+      }
+    } catch (_) {}
   </script>
 </head>
 

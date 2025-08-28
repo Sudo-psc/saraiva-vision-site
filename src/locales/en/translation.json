@@ -247,6 +247,13 @@
       "title": "Ophthalmologist CRM/MG",
       "description": "Eye health specialist with solid training and experience in precise diagnoses and personalized treatments.",
       "alt": "Dr. Philipe Saraiva - Ophthalmologist specialized in eye health"
+    },
+    "team_title": "Our Team",
+    "nurse": {
+      "name": "Ana Lúcia",
+      "title": "Head Nurse",
+      "description": "Dedicated patient care and support for clinical procedures.",
+      "alt": "Nurse Ana Lúcia"
     }
   },
   "contact": {
@@ -288,6 +295,9 @@
     "toast_error_title": "Please check the fields",
     "toast_error_desc": "Some information needs correction.",
     "sending_label": "Sending...",
+    "recaptcha_not_ready": "Security verification unavailable. Please try again.",
+    "recaptcha_error": "Security verification failed. Please try again.",
+    "server_error": "Could not send right now. Please try again later.",
     "validation": {
       "name_min": "Please enter at least 3 characters.",
       "email_invalid": "Invalid email.",

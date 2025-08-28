@@ -5,10 +5,12 @@ import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock, Globe } fro
 import { clinicInfo } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import { useRecaptcha } from '@/hooks/useRecaptcha';
 
 const Contact = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const { ready: recaptchaReady, execute: executeRecaptcha, enabled: recaptchaEnabled } = useRecaptcha();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -25,9 +27,9 @@ const Contact = () => {
   // Input sanitization helper
   const sanitizeInput = (input) => {
     return input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-                .replace(/javascript:/gi, '')
-                .replace(/on\w+\s*=/gi, '')
-                .trim();
+      .replace(/javascript:/gi, '')
+      .replace(/on\w+\s*=/gi, '')
+      .trim();
   };
 
   const validators = {
@@ -82,8 +84,8 @@ const Contact = () => {
   const chatbotLink = "https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica?model=gpt-4o";
 
   const handleChange = (e) => {
-  const { name, type, value, checked } = e.target;
-  setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    const { name, type, value, checked } = e.target;
+    setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
     if (!touched[name]) setTouched(prev => ({ ...prev, [name]: true }));
   };
 
@@ -100,9 +102,9 @@ const Contact = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Honeypot spam protection
     if (formData.website && formData.website.trim() !== '') {
       // This is likely a bot submission, fail silently
@@ -111,38 +113,82 @@ const Contact = () => {
       setTimeout(() => setIsSubmitting(false), 2000);
       return;
     }
-    
+
     // Rate limiting check (simple client-side)
     const lastSubmission = localStorage.getItem('lastContactSubmission');
     const now = Date.now();
     if (lastSubmission && (now - parseInt(lastSubmission)) < 30000) { // 30 seconds
-      toast({ 
-        title: t('contact.rate_limit_title', 'Aguarde um momento'), 
-        description: t('contact.rate_limit_desc', 'Aguarde 30 segundos antes de enviar novamente.'), 
-        variant: 'destructive' 
+      toast({
+        title: t('contact.rate_limit_title', 'Aguarde um momento'),
+        description: t('contact.rate_limit_desc', 'Aguarde 30 segundos antes de enviar novamente.'),
+        variant: 'destructive'
       });
       return;
     }
-    
+
     if (!validateAll()) {
       setTouched({ name: true, email: true, phone: true, message: true });
       toast({ title: t('contact.toast_error_title'), description: t('contact.toast_error_desc'), variant: 'destructive' });
       return;
     }
-    
+
     setIsSubmitting(true);
     localStorage.setItem('lastContactSubmission', now.toString());
-    setTimeout(() => {
+
+    let token = null;
+    let action = 'contact';
+    if (recaptchaEnabled) {
+      if (!recaptchaReady) {
+        setIsSubmitting(false);
+        toast({
+          title: t('contact.toast_error_title'),
+          description: t('contact.recaptcha_not_ready', 'Verificação de segurança indisponível. Tente novamente.'),
+          variant: 'destructive'
+        });
+        return;
+      }
+      token = await executeRecaptcha(action);
+      if (!token) {
+        setIsSubmitting(false);
+        toast({
+          title: t('contact.toast_error_title'),
+          description: t('contact.recaptcha_error', 'Falha na verificação reCAPTCHA. Tente novamente.'),
+          variant: 'destructive'
+        });
+        return;
+      }
+    }
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, token, action })
+      });
+      const data = await res.json();
+      if (!res.ok || !data?.ok) {
+        throw new Error(data?.details?.message || data?.error || 'server_error');
+      }
+
       toast({
         title: t('contact.toast_success_title'),
         description: t('contact.toast_success_desc'),
         duration: 5000,
       });
-  setFormData({ name: '', email: '', phone: '', message: '', consent: false });
+      setFormData({ name: '', email: '', phone: '', message: '', consent: false, website: '' });
       setTouched({});
       setErrors({});
+    } catch (err) {
+      toast({
+        title: t('contact.toast_error_title'),
+        description: t('contact.server_error', 'Não foi possível enviar. Tente novamente mais tarde.'),
+        variant: 'destructive'
+      });
+      // Allow retry sooner when server failed
+      localStorage.removeItem('lastContactSubmission');
+    } finally {
       setIsSubmitting(false);
-    }, 800);
+    }
   };
 
   const contactInfo = [
@@ -156,12 +202,12 @@ const Contact = () => {
       icon: <Phone className="h-6 w-6 text-blue-600" />,
       title: t('contact.info.phone_title'),
       details: (
-        <button onClick={() => window.dispatchEvent(new Event('open-floating-cta'))} className="hover:underline font-medium text-left">
+        <button onClick={() => window.dispatchEvent(new Event('open-cta-modal'))} className="hover:underline font-medium text-left">
           +55 33 99860-1427
         </button>
       ),
       subDetails: (
-        <button onClick={() => window.dispatchEvent(new Event('open-floating-cta'))} className="text-blue-600 hover:underline flex items-center gap-1 text-sm font-semibold">
+        <button onClick={() => window.dispatchEvent(new Event('open-cta-modal'))} className="text-blue-600 hover:underline flex items-center gap-1 text-sm font-semibold">
           <MessageCircle size={14} /> {t('contact.info.phone_whatsapp')}
         </button>
       )
@@ -184,10 +230,10 @@ const Contact = () => {
 
 
   return (
-    <section id="contact" className="bg-subtle-gradient">
+    <section id="contact" className="bg-transparent relative">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-16 md:mb-24">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -196,7 +242,7 @@ const Contact = () => {
           >
             {t('contact.title')}
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -214,9 +260,9 @@ const Contact = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="bg-white rounded-2xl p-8 shadow-soft-light">
+            <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-8 shadow-3d border-2 border-slate-300/80">
               <h3 className="mb-6">{t('contact.form_title')}</h3>
-              
+
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Mobile-First Touch-Optimized Form Fields */}
                 <div>
@@ -233,7 +279,7 @@ const Contact = () => {
                   />
                   {errors.name && <p id="error-name" className="mt-2 text-sm text-red-600 font-medium">{errors.name}</p>}
                 </div>
-                
+
                 {/* Mobile: Stack vertically, Desktop: Side by side */}
                 <div className="space-y-5 md:space-y-0 md:grid md:grid-cols-2 md:gap-5">
                   <div>
@@ -251,7 +297,7 @@ const Contact = () => {
                     />
                     {errors.email && <p id="error-email" className="mt-2 text-sm text-red-600 font-medium">{errors.email}</p>}
                   </div>
-                  
+
                   <div>
                     <label htmlFor="phone" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
                       {t('contact.phone_label')} <span className="text-red-500" aria-hidden="true">*</span>
@@ -268,7 +314,7 @@ const Contact = () => {
                     {errors.phone && <p id="error-phone" className="mt-2 text-sm text-red-600 font-medium">{errors.phone}</p>}
                   </div>
                 </div>
-                
+
                 {/* Honeypot field - hidden from users, only bots will fill it */}
                 <input
                   type="text"
@@ -280,13 +326,13 @@ const Contact = () => {
                   autoComplete="off"
                   aria-hidden="true"
                 />
-                
+
                 <div>
                   <label htmlFor="message" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
                     {t('contact.message_label')} <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
                   <textarea
-                    id="message" name="message" value={formData.message} onChange={handleChange} required 
+                    id="message" name="message" value={formData.message} onChange={handleChange} required
                     rows="4"
                     className={`form-input mobile-touch-input ${errors.message ? 'border-red-400 focus:ring-red-300' : touched.message ? 'border-green-400' : ''}`}
                     placeholder={t('contact.message_placeholder')}
@@ -314,7 +360,7 @@ const Contact = () => {
                   </label>
                   {errors.consent && <p id="error-consent" className="mt-1 text-xs text-red-600">{errors.consent}</p>}
                 </div>
-                
+
                 <Button disabled={isSubmitting} type="submit" size="lg" className="w-full flex items-center justify-center gap-2 disabled:opacity-60" aria-busy={isSubmitting}>
                   <Send className="h-5 w-5" />
                   {isSubmitting ? t('contact.sending_label') : t('contact.send_button')}
@@ -322,7 +368,7 @@ const Contact = () => {
               </form>
             </div>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -330,28 +376,28 @@ const Contact = () => {
             transition={{ duration: 0.6 }}
             className="flex flex-col space-y-6"
           >
-            <a href={clinicInfo.onlineSchedulingUrl} target="_blank" rel="noopener noreferrer" className="block modern-card-alt p-6 group mb-4">
+            <a href={clinicInfo.onlineSchedulingUrl} target="_blank" rel="noopener noreferrer" className="block p-6 group mb-4 bg-white/70 backdrop-blur-xl rounded-2xl border border-white/40 shadow-3d hover:shadow-3d-hover transition">
               <div className="flex items-start gap-4">
-                  <div className="p-3 bg-blue-100 rounded-xl">
-                      <Globe className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <div>
-                      <h4 className="font-bold text-slate-800 group-hover:text-blue-700">{t('contact.online_scheduling_title')}</h4>
-                      <div className="mt-1">{t('contact.online_scheduling_desc')}</div>
-                      <div className="text-blue-600 text-sm mt-1 font-semibold">{t('contact.online_scheduling_benefit')}</div>
-                  </div>
+                <div className="p-3 bg-blue-100 rounded-xl">
+                  <Globe className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-800 group-hover:text-blue-700">{t('contact.online_scheduling_title')}</h4>
+                  <div className="mt-1">{t('contact.online_scheduling_desc')}</div>
+                  <div className="text-blue-600 text-sm mt-1 font-semibold">{t('contact.online_scheduling_benefit')}</div>
+                </div>
               </div>
             </a>
-            <a href={chatbotLink} target="_blank" rel="noopener noreferrer" className="block modern-card-alt p-6 group">
+            <a href={chatbotLink} target="_blank" rel="noopener noreferrer" className="block p-6 group bg-white/70 backdrop-blur-xl rounded-2xl border border-white/40 shadow-3d hover:shadow-3d-hover transition">
               <div className="flex items-start gap-4">
-                  <div className="p-3 bg-green-100 rounded-xl">
-                      <Bot className="h-6 w-6 text-green-600" />
-                  </div>
-                  <div>
-                      <h4 className="font-bold text-slate-800 group-hover:text-green-700">{t('contact.chatbot_title')}</h4>
-                      <div className="mt-1">{t('contact.chatbot_desc')}</div>
-                      <div className="text-green-600 text-sm mt-1 font-semibold">{t('contact.chatbot_availability')}</div>
-                  </div>
+                <div className="p-3 bg-green-100 rounded-xl">
+                  <Bot className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-800 group-hover:text-green-700">{t('contact.chatbot_title')}</h4>
+                  <div className="mt-1">{t('contact.chatbot_desc')}</div>
+                  <div className="text-green-600 text-sm mt-1 font-semibold">{t('contact.chatbot_availability')}</div>
+                </div>
               </div>
             </a>
 
@@ -363,7 +409,7 @@ const Contact = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="modern-card p-6"
+                  className="p-6 bg-white/70 backdrop-blur-xl rounded-2xl border border-white/40 shadow-3d hover:shadow-3d-hover transition"
                 >
                   <div className="flex items-start gap-4">
                     <div className="icon-container">
@@ -372,13 +418,13 @@ const Contact = () => {
                     <div>
                       <h4 className="font-bold text-slate-800">{info.title}</h4>
                       <div className="mt-1 text-sm">{info.details}</div>
-                      <div className="text-slate-500 text-sm mt-0.5">{info.subDetails}</div>
+                      <div className="text-slate-700 text-sm mt-0.5">{info.subDetails}</div>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
-            
+
             {/* Blocos de mapa e imagem removidos conforme solicitação. */}
 
           </motion.div>

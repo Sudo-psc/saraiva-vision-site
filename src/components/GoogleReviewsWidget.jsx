@@ -7,7 +7,7 @@ const realGoogleReviews = [
   { id: 0, author: 'Lorrayne V.', rating: 4, text: '', relativeTime: 'há uma semana' },
   { id: 1, author: 'Junia B.', rating: 5, text: '', relativeTime: 'há uma semana' },
   { id: 2, author: 'Lais S.', rating: 5, text: 'Ótimo atendimento, excelente espaço. Obrigada', relativeTime: 'há uma semana' },
-  { id: 3, author: 'Elis R.', rating: 5, text: 'Que atendimento maravilhoso! Tem pessoa que realmente nasce para exalar gentileza... Minha avó foi extremamente bem atendida, da chegada a saída da clínica. Muito obrigada, Ana e Samara, por nos tratar com tanta humanidade! 🥰', relativeTime: 'há uma semana' },
+  { id: 3, author: 'Elis R.', rating: 5, text: 'Que atendimento maravilhoso! Tem pessoa que realmente nasce para exalar gentileza... Minha avó foi extremamente bem atendida, da chegada a saída da clínica. Muito obrigada, Ana e Samara, por nos tratar com tanta humanidade!', relativeTime: 'há uma semana' },
   { id: 4, author: 'Alessandra G.', rating: 5, text: '', relativeTime: 'há uma semana' }
 ];
 
@@ -111,7 +111,7 @@ const GoogleReviewsWidget = () => {
           Avaliações Google 
           {avg && (
             <span className="text-sm font-normal text-slate-500">
-              ({avg}★ • {summary?.total || reviews.length} avaliações)
+              ({avg} • {summary?.total || reviews.length} avaliações)
             </span>
           )}
         </h3>

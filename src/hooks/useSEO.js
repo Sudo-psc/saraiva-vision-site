@@ -78,8 +78,8 @@ export const useSEO = ({
       canonicalUrl,
       alternateUrls,
       structuredData: finalStructuredData,
-      ogImage: `${baseUrl}/og-image-${currentLang}.jpg`,
-      ogType: pageType === 'service' ? 'article' : 'website',
+      image: `${baseUrl}/og-image-${currentLang}.jpg`,
+      ogType: pageType === 'service' ? 'article' : pageType === 'faq' ? 'article' : 'website',
       noindex
     };
   }, [t, i18n.language, location.pathname, titleKey, descriptionKey, keywordsKey, customTitle, customDescription, customKeywords, pageType, serviceId, breadcrumbs, noindex]);
@@ -165,6 +165,42 @@ export const useFAQSEO = () => {
     descriptionKey: 'faqMeta.description', 
     keywordsKey: 'faqMeta.keywords',
     pageType: 'faq',
+    breadcrumbs
+  });
+};
+
+// Hook específico para página de contato
+export const useContactSEO = () => {
+  const { t } = useTranslation();
+  
+  const breadcrumbs = [
+    { name: t('navbar.home'), url: '/' },
+    { name: t('navbar.contact'), url: '/contato' }
+  ];
+  
+  return useSEO({
+    customTitle: t('navbar.contact') + ' | Clínica Saraiva Vision',
+    customDescription: 'Entre em contato com a Clínica Saraiva Vision em Caratinga/MG. Agende sua consulta oftalmológica pelo WhatsApp, telefone ou presencialmente.',
+    customKeywords: 'contato Saraiva Vision, agendar consulta oftalmologista Caratinga, telefone clínica olhos, WhatsApp oftalmologia, endereço Saraiva Vision',
+    pageType: 'page',
+    breadcrumbs
+  });
+};
+
+// Hook específico para página sobre
+export const useAboutSEO = () => {
+  const { t } = useTranslation();
+  
+  const breadcrumbs = [
+    { name: t('navbar.home'), url: '/' },
+    { name: t('navbar.about'), url: '/sobre' }
+  ];
+  
+  return useSEO({
+    customTitle: t('navbar.about') + ' | Dr. Philipe Saraiva | CRM-MG 69.870',
+    customDescription: 'Conheça o Dr. Philipe Saraiva (CRM-MG 69.870) e a Clínica Saraiva Vision. Oftalmologista especializado em Caratinga/MG com tecnologia avançada e atendimento humanizado.',
+    customKeywords: 'Dr Philipe Saraiva, CRM-MG 69870, oftalmologista Caratinga, sobre Saraiva Vision, médico oftalmologista especialista, clínica oftalmológica histórico',
+    pageType: 'page',
     breadcrumbs
   });
 };

@@ -96,24 +96,39 @@ body {
     --radius: 0.75rem;
 
     /* Design System Typography Tokens */
-    --font-size-display-xl: 3.5rem;    /* 56px */
-    --font-size-display-lg: 3rem;      /* 48px */
-    --font-size-display-md: 2.5rem;    /* 40px */
-    --font-size-display-sm: 2.25rem;   /* 36px */
-    
-    --font-size-heading-xl: 2rem;      /* 32px */
-    --font-size-heading-lg: 1.75rem;   /* 28px */
-    --font-size-heading-md: 1.5rem;    /* 24px */
-    --font-size-heading-sm: 1.375rem;  /* 22px */
-    --font-size-heading-xs: 1.25rem;   /* 20px */
-    
-    --font-size-body-xl: 1.125rem;     /* 18px */
-    --font-size-body-lg: 1rem;         /* 16px */
-    --font-size-body: 0.875rem;        /* 14px */
-    --font-size-body-sm: 0.8125rem;    /* 13px */
-    
-    --font-size-caption: 0.75rem;      /* 12px */
-    --font-size-overline: 0.6875rem;   /* 11px */
+    --font-size-display-xl: 3.5rem;
+    /* 56px */
+    --font-size-display-lg: 3rem;
+    /* 48px */
+    --font-size-display-md: 2.5rem;
+    /* 40px */
+    --font-size-display-sm: 2.25rem;
+    /* 36px */
+
+    --font-size-heading-xl: 2rem;
+    /* 32px */
+    --font-size-heading-lg: 1.75rem;
+    /* 28px */
+    --font-size-heading-md: 1.5rem;
+    /* 24px */
+    --font-size-heading-sm: 1.375rem;
+    /* 22px */
+    --font-size-heading-xs: 1.25rem;
+    /* 20px */
+
+    --font-size-body-xl: 1.125rem;
+    /* 18px */
+    --font-size-body-lg: 1rem;
+    /* 16px */
+    --font-size-body: 0.875rem;
+    /* 14px */
+    --font-size-body-sm: 0.8125rem;
+    /* 13px */
+
+    --font-size-caption: 0.75rem;
+    /* 12px */
+    --font-size-overline: 0.6875rem;
+    /* 11px */
 
     /* Line Heights */
     --line-height-tight: 1.1;
@@ -132,30 +147,52 @@ body {
     /* Spacing System (8pt grid) */
     --space-px: 1px;
     --space-0: 0;
-    --space-0-5: 0.125rem;    /* 2px */
-    --space-1: 0.25rem;       /* 4px */
-    --space-1-5: 0.375rem;    /* 6px */
-    --space-2: 0.5rem;        /* 8px */
-    --space-3: 0.75rem;       /* 12px */
-    --space-4: 1rem;          /* 16px */
-    --space-5: 1.25rem;       /* 20px */
-    --space-6: 1.5rem;        /* 24px */
-    --space-8: 2rem;          /* 32px */
-    --space-10: 2.5rem;       /* 40px */
-    --space-12: 3rem;         /* 48px */
-    --space-16: 4rem;         /* 64px */
-    --space-20: 5rem;         /* 80px */
-    --space-24: 6rem;         /* 96px */
-    --space-28: 7rem;         /* 112px */
-    --space-32: 8rem;         /* 128px */
-    --space-40: 10rem;        /* 160px */
+    --space-0-5: 0.125rem;
+    /* 2px */
+    --space-1: 0.25rem;
+    /* 4px */
+    --space-1-5: 0.375rem;
+    /* 6px */
+    --space-2: 0.5rem;
+    /* 8px */
+    --space-3: 0.75rem;
+    /* 12px */
+    --space-4: 1rem;
+    /* 16px */
+    --space-5: 1.25rem;
+    /* 20px */
+    --space-6: 1.5rem;
+    /* 24px */
+    --space-8: 2rem;
+    /* 32px */
+    --space-10: 2.5rem;
+    /* 40px */
+    --space-12: 3rem;
+    /* 48px */
+    --space-16: 4rem;
+    /* 64px */
+    --space-20: 5rem;
+    /* 80px */
+    --space-24: 6rem;
+    /* 96px */
+    --space-28: 7rem;
+    /* 112px */
+    --space-32: 8rem;
+    /* 128px */
+    --space-40: 10rem;
+    /* 160px */
 
     /* Section-specific spacing */
-    --space-section-sm: var(--space-16);   /* 64px */
-    --space-section: var(--space-20);      /* 80px */
-    --space-section-lg: var(--space-24);   /* 96px */
-    --space-section-xl: var(--space-32);   /* 128px */
-    --space-section-2xl: var(--space-40);  /* 160px */
+    --space-section-sm: var(--space-16);
+    /* 64px */
+    --space-section: var(--space-20);
+    /* 80px */
+    --space-section-lg: var(--space-24);
+    /* 96px */
+    --space-section-xl: var(--space-32);
+    /* 128px */
+    --space-section-2xl: var(--space-40);
+    /* 160px */
 
     /* Improved Medical Color Palette */
     --medical-primary: 207 89% 54%;
@@ -225,6 +262,23 @@ body {
     --text-primary: 0 0% 0%;
     --text-secondary: 0 0% 20%;
     filter: contrast(150%) brightness(110%);
+  }
+
+  /* WCAG 2.1 AA Compliant Colors */
+  :root {
+    /* Text colors with minimum 4.5:1 contrast ratio on white background */
+    --text-high-contrast: 0 0% 20%;
+    /* #333333 - 12.6:1 contrast */
+    --text-medium-contrast: 0 0% 30%;
+    /* #4d4d4d - 9.0:1 contrast */
+    --text-accessible-gray: 210 11% 43%;
+    /* #6b7280 equivalent but darker - 4.58:1 contrast */
+
+    /* Background colors for text contrast */
+    --bg-light-accessible: 220 14% 98%;
+    /* Very light gray with good contrast */
+    --bg-medium-accessible: 220 14% 95%;
+    /* Light gray maintaining contrast */
   }
 
   /* Dark Mode */
@@ -417,8 +471,40 @@ body {
     @apply transition-all duration-300 ease-in-out;
   }
 
+  /* Enhanced focus styles for all interactive elements */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  summary:focus-visible,
+  [tabindex]:focus-visible {
+    @apply outline-2 outline-blue-600 outline-offset-2 outline;
+    border-radius: 4px;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+
+  /* Specific focus styles for buttons */
   button:focus-visible {
-    @apply outline-2 outline-blue-500 outline-offset-2;
+    outline-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2), 0 0 0 4px rgba(37, 99, 235, 0.1);
+  }
+
+  /* Focus styles for CTA buttons */
+  .cta-primary:focus-visible,
+  .bg-gradient-to-r:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #10b981, 0 0 0 5px rgba(16, 185, 129, 0.3);
+  }
+
+  /* Focus styles for WhatsApp and phone buttons */
+  [aria-label*="WhatsApp"]:focus-visible,
+  [aria-label*="Ligar"]:focus-visible,
+  [aria-label*="Telefone"]:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #059669, 0 0 0 5px rgba(5, 150, 105, 0.3);
   }
 
   /* Smooth scrolling for anchor links */
@@ -435,11 +521,11 @@ body {
 
 @layer components {
   .modern-card {
-    @apply bg-white rounded-2xl p-6 shadow-soft-light transition-all duration-300 ease-in-out;
+    @apply bg-white rounded-2xl p-6 shadow-soft-light border-2 border-slate-300 transition-all duration-300 ease-in-out;
   }
 
   .modern-card:hover {
-    @apply shadow-soft-medium-hover;
+    @apply shadow-soft-medium-hover border-slate-400;
     transform: translateY(-8px);
   }
 
@@ -468,7 +554,7 @@ body {
   }
 
   .modern-card-alt {
-    @apply bg-white rounded-2xl shadow-soft-light hover:shadow-soft-medium-hover border-t-4 border-transparent hover:border-green-400 transition-all duration-300 ease-in-out;
+    @apply bg-white rounded-2xl shadow-soft-light hover:shadow-soft-medium-hover border-t-4 border-slate-400 hover:border-green-500 border-x-2 border-b-2 border-x-slate-300 border-b-slate-300 transition-all duration-300 ease-in-out;
   }
 
   .icon-container {
@@ -514,6 +600,7 @@ body {
 }
 
 @layer utilities {
+
   /* Mobile-first responsive utilities */
   .mobile-container {
     width: 100%;
@@ -581,6 +668,18 @@ body {
 
   .bg-hero-gradient {
     background-image: linear-gradient(135deg, theme('colors.cyan.50') 0%, theme('colors.blue.100') 100%);
+  }
+
+  /* Page-wide soft gradient background */
+  .bg-page-gradient {
+    /* lighter, more blue-forward background */
+    background-image: linear-gradient(180deg, #e0f2fe 0%, #ffffff 55%, #dbeafe 100%);
+  }
+
+  /* Divider for smooth transitions between sections */
+  .section-divider {
+    height: 3.5rem;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(59, 130, 246, 0.08) 50%, rgba(0, 0, 0, 0) 100%);
   }
 
   .bg-header-gradient {

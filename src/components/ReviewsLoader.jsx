@@ -94,7 +94,7 @@ const ReviewsLoader = () => {
     return (
       <div className="bg-red-50 border border-red-200 rounded-lg p-4">
         <div className="text-red-800 font-medium">
-          ⚠️ Erro ao carregar avaliações
+          Erro ao carregar avaliações
         </div>
         <div className="text-red-600 text-sm mt-1">
           {error}
@@ -114,7 +114,6 @@ const ReviewsLoader = () => {
         </h3>
         {reviews.rating && (
           <div className="flex items-center space-x-1">
-            <span className="text-yellow-500">⭐</span>
             <span className="font-medium">{reviews.rating}</span>
           </div>
         )}
@@ -134,18 +133,14 @@ const ReviewsLoader = () => {
                   {review.author}
                 </span>
               </div>
-              <div className="flex items-center space-x-1">
-                {[...Array(review.rating)].map((_, i) => (
-                  <span key={i} className="text-yellow-500">★</span>
-                ))}
-              </div>
+              <div className="flex items-center space-x-1" aria-label={`Nota ${review.rating}`} />
             </div>
             
             <p className="text-gray-700 text-sm leading-relaxed mb-2">
               {review.text}
             </p>
             
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-gray-700">
               {review.relativeTime}
             </div>
           </div>
@@ -153,7 +148,7 @@ const ReviewsLoader = () => {
       </div>
 
       {reviews.disclaimer && (
-        <div className="text-xs text-gray-500 text-center">
+        <div className="text-xs text-gray-700 text-center">
           {reviews.disclaimer}
         </div>
       )}

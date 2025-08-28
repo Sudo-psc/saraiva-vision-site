@@ -2,17 +2,16 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import SEOHead from '@/components/SEOHead';
+import SchemaMarkup from '@/components/SchemaMarkup';
 import { useHomeSEO } from '@/hooks/useSEO';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import Services from '@/components/Services';
-import ContactLenses from '@/components/ContactLenses';
+import CompactServices from '@/components/CompactServices';
 import About from '@/components/About';
-import BlogSection from '@/components/BlogSection';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
-import GoogleLocalSection from '@/components/GoogleLocalSection';
-import LatestEpisodes from '@/components/LatestEpisodes';
+import CompactGoogleReviews from '@/components/CompactGoogleReviews';
+import FAQ from '@/components/FAQ';
 
 function HomePage() {
   const location = useLocation();
@@ -31,35 +30,57 @@ function HomePage() {
   }, [location]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-page-gradient relative overflow-hidden">
+      {/* Decorative global background accents (more blue) */}
+      <div className="pointer-events-none absolute -top-24 -right-24 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-blue-400/15 via-sky-400/10 to-cyan-400/10 blur-3xl" aria-hidden="true" />
+      <div className="pointer-events-none absolute -bottom-24 -left-24 w-[26rem] h-[26rem] rounded-full bg-gradient-to-br from-blue-300/15 via-sky-300/10 to-indigo-300/10 blur-3xl" aria-hidden="true" />
       <SEOHead {...seoData} />
+      <SchemaMarkup type="clinic" />
       {/* Toaster e Accessibility removidos aqui para evitar duplicação; já presentes em App.jsx */}
       {/* <Toaster /> */}
       <Navbar />
 
       <main>
         <Hero />
-        <Services />
+
+
+        <CompactServices />
+
+        {/* Section Divider */}
+        <div className="py-8">
+          <div className="w-32 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent mx-auto"></div>
+        </div>
+
         <About />
 
-        {/* Latest Podcast Episodes Section */}
-        <LatestEpisodes />
+        {/* Section Divider */}
+        <div className="py-8">
+          <div className="w-32 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent mx-auto"></div>
+        </div>
 
-        {/* Teaser: move detailed lenses to /lentes to reduce scroll depth */}
-        <section id="lentes-teaser" className="bg-white py-12 md:py-16">
-          <div className="container mx-auto px-4 md:px-6 text-center">
-            <h2 className="text-3xl font-bold mb-6">Lentes de Contato</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto mb-8">Descubra os tipos ideais para seu conforto e saúde ocular.</p>
-            <a href="/lentes" className="text-blue-600 font-medium hover:underline text-lg">Ver detalhes</a>
-          </div>
-        </section>
+        <CompactGoogleReviews />
+
+        {/* Section Divider */}
+        <div className="py-8">
+          <div className="w-32 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent mx-auto"></div>
+        </div>
+
         <Contact />
-        <GoogleLocalSection />
-        <BlogSection />
+
+        {/* Section Divider */}
+        <div className="py-8">
+          <div className="w-32 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent mx-auto"></div>
+        </div>
+
+        <FAQ />
+
+        {/* Section Divider */}
+        <div className="py-8">
+          <div className="w-32 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent mx-auto"></div>
+        </div>
       </main>
 
       <Footer />
-      {/* <Accessibility /> duplicado removido */}
     </div>
   );
 }

@@ -235,7 +235,7 @@ const GoogleMap = ({ height = 340 }) => {
         return (
             <div className="w-full h-full flex flex-col items-center justify-center text-center p-4 bg-red-50 border border-red-200 rounded">
                 <div className="text-red-600 mb-4">
-                    <h3 className="font-semibold text-sm mb-2">❌ Erro no Google Maps</h3>
+                    <h3 className="font-semibold text-sm mb-2">Erro no Google Maps</h3>
                     <p className="text-xs mb-2">{error}</p>
 
                     {retryCount < maxRetries && (
@@ -243,14 +243,14 @@ const GoogleMap = ({ height = 340 }) => {
                             onClick={retryMapLoading}
                             className="px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
                         >
-                            🔄 Tentar Novamente ({retryCount}/{maxRetries})
+                            Tentar Novamente ({retryCount}/{maxRetries})
                         </button>
                     )}
                 </div>
 
                 {debugInfo.length > 0 && (
                     <details className="text-xs text-gray-600 max-w-full">
-                        <summary className="cursor-pointer mb-2">🔍 Debug Info</summary>
+                        <summary className="cursor-pointer mb-2">Debug Info</summary>
                         <div className="text-left bg-gray-100 p-2 rounded max-h-32 overflow-y-auto">
                             {debugInfo.map((log, index) => (
                                 <div key={index} className="font-mono text-xs whitespace-nowrap">
@@ -268,7 +268,7 @@ const GoogleMap = ({ height = 340 }) => {
         <div className="relative w-full" style={{ height }}>
             {loading && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-sm text-slate-500 bg-gray-50">
-                    <div className="mb-2">🗺️ Carregando mapa...</div>
+                    <div className="mb-2">Carregando mapa...</div>
                     {retryCount > 0 && (
                         <div className="text-xs text-gray-400">
                             Tentativa {retryCount}/{maxRetries}
@@ -289,7 +289,7 @@ const GoogleMap = ({ height = 340 }) => {
                     <div className="font-semibold text-slate-800 truncate">{place.name}</div>
                     {place.rating && (
                         <div className="text-yellow-600 flex items-center">
-                            ⭐ {place.rating} ({place.user_ratings_total})
+                            {place.rating} ({place.user_ratings_total})
                         </div>
                     )}
                 </div>
@@ -298,7 +298,7 @@ const GoogleMap = ({ height = 340 }) => {
             {/* Debug panel for development */}
             {process.env.NODE_ENV === 'development' && debugInfo.length > 0 && (
                 <details className="absolute bottom-2 right-2 bg-black/80 text-white text-xs p-2 rounded max-w-sm">
-                    <summary className="cursor-pointer">🔍 Debug</summary>
+                    <summary className="cursor-pointer">Debug</summary>
                     <div className="mt-2 max-h-32 overflow-y-auto">
                         {debugInfo.map((log, index) => (
                             <div key={index} className="font-mono text-xs">

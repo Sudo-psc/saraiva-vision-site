@@ -3,7 +3,9 @@ import http from 'node:http';
 import url from 'node:url';
 
 // Import the serverless-style handler
-import apiHandler from './api/reviews.js';
+import reviewsHandler from './api/reviews.js';
+import webVitalsHandler from './api/web-vitals.js';
+import contactHandler from './api/contact.js';
 
 function wrapRes(res) {
   res.status = (code) => {
@@ -23,10 +25,40 @@ function wrapRes(res) {
 
 const server = http.createServer(async (req, res) => {
   const parsed = url.parse(req.url, true);
-  // Only route our API; return 404 for others
-  if (parsed.pathname && parsed.pathname.startsWith('/api/reviews')) {
+  // Route API endpoints
+  if (parsed.pathname && parsed.pathname.startsWith('/api/')) {
     try {
-      await apiHandler(req, wrapRes(res));
+      if (parsed.pathname.startsWith('/api/reviews')) {
+        await reviewsHandler(req, wrapRes(res));
+        return;
+      }
+      if (parsed.pathname.startsWith('/api/web-vitals')) {
+        // Collect JSON body for POST/OPTIONS
+        if (req.method === 'POST') {
+          const chunks = [];
+          for await (const chunk of req) chunks.push(chunk);
+          const raw = Buffer.concat(chunks).toString('utf8');
+          try { req.body = raw ? JSON.parse(raw) : {}; } catch { req.body = {}; }
+        }
+        await webVitalsHandler(req, wrapRes(res));
+        return;
+      }
+      if (parsed.pathname.startsWith('/api/contact')) {
+        // Collect JSON body for POST/OPTIONS
+        if (req.method === 'POST') {
+          const chunks = [];
+          for await (const chunk of req) chunks.push(chunk);
+          const raw = Buffer.concat(chunks).toString('utf8');
+          try { req.body = raw ? JSON.parse(raw) : {}; } catch { req.body = {}; }
+        }
+        await contactHandler(req, wrapRes(res));
+        return;
+      }
+      // Unknown API route
+      res.statusCode = 404;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ error: 'Not found' }));
+      return;
     } catch (e) {
       console.error('API handler error:', e);
       if (!res.headersSent) {
@@ -34,8 +66,8 @@ const server = http.createServer(async (req, res) => {
         res.setHeader('Content-Type', 'application/json');
       }
       res.end(JSON.stringify({ error: 'Internal server error' }));
+      return;
     }
-    return;
   }
 
   res.statusCode = 404;
@@ -47,4 +79,3 @@ const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`API server listening on http://localhost:${PORT}`);
 });
-

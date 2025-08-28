@@ -42,7 +42,6 @@ const WhatsappWidget = ({ phoneNumber }) => {
                 <X size={12} />
               </button>
               <div className="flex items-center gap-2">
-                <span className="text-green-600">💬</span>
                 <span>Fale conosco agora!</span>
               </div>
               <div className="absolute bottom-[-6px] right-4 w-3 h-3 bg-white border-r border-b border-green-200 transform rotate-45"></div>

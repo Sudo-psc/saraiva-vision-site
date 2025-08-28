@@ -9,7 +9,7 @@ const Testimonials = ({ limit }) => {
   const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  
+
   const testimonialsData = t('testimonials.reviews', { returnObjects: true });
 
   const images = useMemo(() => [
@@ -21,15 +21,15 @@ const Testimonials = ({ limit }) => {
     'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
   ], []);
 
-  const testimonials = useMemo(() => 
-    Array.isArray(testimonialsData) 
+  const testimonials = useMemo(() =>
+    Array.isArray(testimonialsData)
       ? testimonialsData.map((testimonial, index) => ({
-          ...testimonial,
-          image: images[index % images.length],
-          rating: 5,
-          role: t('testimonials.patient'),
-          id: index
-        }))
+        ...testimonial,
+        image: images[index % images.length],
+        rating: 5,
+        role: t('testimonials.patient'),
+        id: index
+      }))
       : [],
     [testimonialsData, images, t]
   );
@@ -65,7 +65,7 @@ const Testimonials = ({ limit }) => {
     <section id="testimonials" className="py-24 bg-gradient-to-br from-blue-50 to-slate-50">
       <div className="container mx-auto px-4 md:px-6">
         {/* Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -86,11 +86,11 @@ const Testimonials = ({ limit }) => {
 
         {/* Featured Testimonial (Carousel) */}
         <div className="max-w-4xl mx-auto mb-16">
-          <div className="relative bg-white rounded-3xl shadow-soft-medium p-8 md:p-12">
+          <div className="relative bg-white rounded-3xl shadow-soft-medium border-2 border-slate-300 p-8 md:p-12">
             <div className="absolute top-8 left-8 text-blue-200">
               <Quote size={48} />
             </div>
-            
+
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
@@ -115,10 +115,10 @@ const Testimonials = ({ limit }) => {
                 {/* Author */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <div className="w-16 h-16 rounded-full overflow-hidden bg-slate-200 ring-4 ring-blue-100">
-                    <img 
-                      className="w-full h-full object-cover" 
+                    <img
+                      className="w-full h-full object-cover"
                       alt={`Foto de ${testimonials[currentSlide].name}`}
-                      src={testimonials[currentSlide].image} 
+                      src={testimonials[currentSlide].image}
                       loading="lazy" decoding="async"
                     />
                   </div>
@@ -168,16 +168,15 @@ const Testimonials = ({ limit }) => {
                   <button
                     key={index}
                     onClick={() => goToSlide(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentSlide 
-                        ? 'bg-blue-600 w-8' 
-                        : 'bg-slate-300 hover:bg-slate-400'
-                    }`}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide
+                      ? 'bg-blue-600 w-8'
+                      : 'bg-slate-300 hover:bg-slate-400'
+                      }`}
                     aria-label={`Ir para depoimento ${index + 1}`}
                   />
                 ))}
               </div>
-              <div className="text-xs font-medium text-slate-500" aria-live="polite">
+              <div className="text-xs font-medium text-slate-700" aria-live="polite">
                 {currentSlide + 1} / {testimonials.length}
               </div>
             </div>
@@ -193,7 +192,7 @@ const Testimonials = ({ limit }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white rounded-2xl p-6 shadow-soft-light hover:shadow-soft-medium transition-all duration-300 group cursor-pointer"
+              className="bg-white rounded-2xl p-6 shadow-soft-light hover:shadow-soft-medium border-2 border-slate-300 transition-all duration-300 group cursor-pointer"
               onClick={() => goToSlide(index)}
             >
               {/* Rating */}
@@ -202,19 +201,19 @@ const Testimonials = ({ limit }) => {
                   <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-              
+
               {/* Testimonial Text */}
               <p className="text-slate-600 mb-6 italic group-hover:text-slate-700 transition-colors">
                 "{testimonial.content}"
               </p>
-              
+
               {/* Author */}
               <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
                 <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-200">
-                  <img 
-                    className="w-full h-full object-cover" 
+                  <img
+                    className="w-full h-full object-cover"
                     alt={`Foto de ${testimonial.name}`}
-                    src={testimonial.image} 
+                    src={testimonial.image}
                     loading="lazy" decoding="async"
                   />
                 </div>
@@ -222,7 +221,7 @@ const Testimonials = ({ limit }) => {
                   <h4 className="font-semibold text-slate-900 text-sm">
                     {testimonial.name}
                   </h4>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-700">
                     {testimonial.role}
                   </p>
                 </div>
@@ -248,7 +247,7 @@ const Testimonials = ({ limit }) => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="text-center mt-16"
         >
-          <div className="inline-flex items-center gap-8 bg-white rounded-2xl p-6 shadow-soft-light">
+          <div className="inline-flex items-center gap-8 bg-white rounded-2xl p-6 shadow-soft-light border-2 border-slate-300">
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600">4.9/5</div>
               <p className="text-sm text-slate-600">{t('testimonials.avgRating')}</p>

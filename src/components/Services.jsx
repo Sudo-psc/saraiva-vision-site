@@ -12,7 +12,7 @@ const ServiceCard = ({ service, index }) => (
     whileInView={{ y: 0, opacity: 1 }}
     viewport={{ once: true }}
     transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.07 }}
-    className="group relative flex flex-col items-center text-center p-8 rounded-3xl bg-white/70 backdrop-blur-md shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08),0_4px_12px_-2px_rgba(0,0,0,0.05)] border border-white/50 overflow-hidden will-change-transform"
+    className="group relative flex flex-col items-center text-center p-8 rounded-3xl bg-white/70 backdrop-blur-md shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08),0_4px_12px_-2px_rgba(0,0,0,0.05)] border-2 border-slate-300/90 hover:border-blue-400 will-change-transform"
     whileHover={{ y: -6, rotateX: 4, rotateY: -4 }}
   >
     {/* Ambient gradient halo */}
@@ -21,11 +21,11 @@ const ServiceCard = ({ service, index }) => (
 
     {/* Icon */}
     <motion.div
-      className="relative mb-6 w-32 h-32 flex items-center justify-center"
-      whileHover={{ scale: 1.1, rotate: 3 }}
+      className="relative mb-6 w-48 h-48 flex items-center justify-center"
+      whileHover={{ scale: 1.12, rotate: 4 }}
     >
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-      <div className="relative w-28 h-28 drop-shadow-lg select-none">
+      <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div className="relative w-44 h-44 drop-shadow-lg select-none rounded-2xl ring-0 group-hover:ring-2 ring-blue-300/40 transition-all duration-300 ease-out">
         {service.icon}
       </div>
     </motion.div>
@@ -41,7 +41,7 @@ const ServiceCard = ({ service, index }) => (
     </motion.h3>
 
     {/* Description */}
-    <p className="text-slate-600 text-body leading-loose mb-6 max-w-prose transition-colors group-hover:text-slate-700">
+    <p className="text-slate-600 text-body leading-loose mb-6 max-w-prose transition-all duration-300 group-hover:text-slate-700 group-hover:scale-105 cursor-default">
       {service.description}
     </p>
 
@@ -67,48 +67,48 @@ const Services = () => {
   const serviceItems = useMemo(() => [
     {
       id: 'consultas-oftalmologicas',
-      icon: getServiceIcon('consultas-oftalmologicas', { className: "w-full h-full object-contain" }),
+      icon: getServiceIcon('consultas-oftalmologicas', { className: "w-full h-full object-contain transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]" }),
       title: t('services.items.consultations.title'),
       description: t('services.items.consultations.description')
     },
     {
       id: 'exames-de-refracao',
-      icon: getServiceIcon('exames-de-refracao', { className: "w-full h-full object-contain" }),
+      icon: getServiceIcon('exames-de-refracao', { className: "w-full h-full object-contain transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]" }),
       title: t('services.items.refraction.title'),
       description: t('services.items.refraction.description')
     },
     {
       id: 'tratamentos-especializados',
-      icon: getServiceIcon('tratamentos-especializados', { className: "w-full h-full object-contain" }),
+      icon: getServiceIcon('tratamentos-especializados', { className: "w-full h-full object-contain transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]" }),
       title: t('services.items.specialized.title'),
       description: t('services.items.specialized.description')
     },
     {
       id: 'cirurgias-oftalmologicas',
-      icon: getServiceIcon('cirurgias-oftalmologicas', { className: "w-full h-full object-contain" }),
+      icon: getServiceIcon('cirurgias-oftalmologicas', { className: "w-full h-full object-contain transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]" }),
       title: t('services.items.surgeries.title'),
       description: t('services.items.surgeries.description')
     },
     {
       id: 'acompanhamento-pediatrico',
-      icon: getServiceIcon('acompanhamento-pediatrico', { className: "w-full h-full object-contain" }),
+      icon: getServiceIcon('acompanhamento-pediatrico', { className: "w-full h-full object-contain transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]" }),
       title: t('services.items.pediatric.title'),
       description: t('services.items.pediatric.description')
     },
     {
       id: 'laudos-especializados',
-      icon: getServiceIcon('laudos-especializados', { className: "w-full h-full object-contain" }),
+      icon: getServiceIcon('laudos-especializados', { className: "w-full h-full object-contain transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]" }),
       title: t('services.items.reports.title'),
       description: t('services.items.reports.description')
     }
   ], [t]);
 
   return (
-    <section id="services" className="py-section-lg md:py-section-xl bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
+    <section id="services" className="py-section-lg md:py-section-xl bg-gradient-to-br from-slate-50 via-blue-50/35 to-indigo-50/50 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/5 to-purple-400/5" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-purple-400/10 to-pink-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/7 to-sky-400/7" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/12 to-sky-400/12 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-sky-400/12 to-cyan-400/12 rounded-full blur-3xl animate-pulse delay-1000" />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Enhanced Header Section */}

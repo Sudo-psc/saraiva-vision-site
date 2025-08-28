@@ -10,84 +10,55 @@ const FAQ = () => {
   const [openFAQ, setOpenFAQ] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
+  // High-volume FAQ questions optimized for rich snippets
   const faqs = [
     {
       id: 1,
-      question: t('faq.questions.lenses_cost.question'),
-      answer: t('faq.questions.lenses_cost.answer'),
-      category: 'lenses'
+      question: "Vocês atendem convênio ou particular?",
+      answer: "Atendemos tanto convênio quanto particular. Trabalhamos com os principais convênios de Caratinga e região, incluindo Unimed, Cassi, Geap, entre outros. Para consultas particulares, oferecemos valores acessíveis e facilidades de pagamento. Entre em contato conosco para verificar se o seu convênio está credenciado.",
+      category: 'convenio'
     },
     {
       id: 2,
-      question: t('faq.questions.pediatric_age.question'),
-      answer: t('faq.questions.pediatric_age.answer'),
-      category: 'pediatric'
+      question: "Que tipos de exames oftalmológicos vocês realizam?",
+      answer: "Realizamos uma ampla gama de exames oftalmológicos, incluindo: exame de refração, exame de fundo de olho, tonometria (pressão ocular), biomicroscopia, campimetria visual, retinografia, OCT (tomografia de coerência óptica), ecobiometria, paquimetria, e outros exames especializados conforme a necessidade de cada paciente.",
+      category: 'exames'
     },
     {
       id: 3,
-      question: t('faq.questions.medical_report.question'),
-      answer: t('faq.questions.medical_report.answer'),
-      category: 'reports'
+      question: "Atendem crianças e fazem exames pediátricos?",
+      answer: "Sim, temos especialização em oftalmologia pediátrica. Realizamos exames oftalmológicos em bebês, crianças e adolescentes utilizando técnicas específicas para cada idade. Nosso consultório é preparado para receber os pequenos pacientes de forma acolhedora, e nossa equipe tem experiência em detectar e tratar problemas visuais infantis precocemente.",
+      category: 'pediatrico'
     },
     {
       id: 4,
-      question: t('faq.questions.glaucoma_treatment.question'),
-      answer: t('faq.questions.glaucoma_treatment.answer'),
-      category: 'treatments'
+      question: "Fazem cirurgias oftalmológicas?",
+      answer: "Sim, realizamos diversos tipos de cirurgias oftalmológicas, incluindo cirurgia de catarata, cirurgia de pterígio, cirurgias de pálpebras, e outros procedimentos. Utilizamos equipamentos modernos e técnicas minimamente invasivas para garantir os melhores resultados e uma recuperação mais rápida para nossos pacientes.",
+      category: 'cirurgias'
     },
     {
       id: 5,
-      question: t('faq.questions.insurance.question'),
-      answer: t('faq.questions.insurance.answer'),
-      category: 'insurance'
+      question: "Como funciona o agendamento online?",
+      answer: "Nosso sistema de agendamento online está disponível 24 horas por dia. Você pode escolher o tipo de consulta, selecionar data e horário disponíveis, e receber confirmação instantânea. Também enviamos lembretes por WhatsApp. É a forma mais rápida e conveniente de agendar sua consulta conosco.",
+      category: 'agendamento'
     },
     {
       id: 6,
-      question: t('faq.questions.vision_symptoms.question'),
-      answer: t('faq.questions.vision_symptoms.answer'),
-      category: 'symptoms'
+      question: "Qual o tempo de espera para conseguir uma consulta?",
+      answer: "Trabalhamos para oferecer consultas com agilidade. Para casos de rotina, normalmente temos disponibilidade na mesma semana. Para urgências, priorizamos o atendimento no mesmo dia ou no próximo dia útil. Recomendamos usar nosso agendamento online para visualizar as opções disponíveis em tempo real.",
+      category: 'agendamento'
     },
     {
       id: 7,
-      question: t('faq.questions.consultation.question'),
-      answer: t('faq.questions.consultation.answer'),
-      category: 'consultation'
+      question: "Vocês fazem teste de lentes de contato?",
+      answer: "Sim, oferecemos adaptação completa de lentes de contato. Realizamos teste de tolerância, ensino sobre o uso correto, higienização e cuidados necessários. Trabalhamos com lentes das principais marcas do mercado, incluindo lentes para correção de miopia, hipermetropia, astigmatismo e presbiopia.",
+      category: 'lentes'
     },
     {
       id: 8,
-      question: t('faq.questions.services.question'),
-      answer: t('faq.questions.services.answer'),
-      category: 'services'
-    },
-    {
-      id: 9,
-      question: t('faq.questions.preparation.question'),
-      answer: t('faq.questions.preparation.answer'),
-      category: 'consultation'
-    },
-    {
-      id: 10,
-      question: t('faq.questions.location.question'),
-      answer: t('faq.questions.location.answer'),
-      category: 'location'
-    },
-    {
-      id: 11,
-      question: t('faq.questions.emergency.question'),
-      answer: t('faq.questions.emergency.answer'),
-      category: 'emergency'
-    },
-    {
-      id: 12,
-      question: t('faq.questions.technology.question'),
-      answer: t('faq.questions.technology.answer'),
-      category: 'services'
-    },
-    {
-      id: 13,
-      question: t('faq.questions.followup.question'),
-      answer: t('faq.questions.followup.answer'),
-      category: 'consultation'
+      question: "Onde fica localizada a clínica?",
+      answer: "Nossa clínica fica localizada na Rua Coronel Celestino, 07, no centro de Caratinga-MG. Estamos em uma localização de fácil acesso, próximo ao comércio central da cidade, com estacionamento disponível nas proximidades.",
+      category: 'localizacao'
     }
   ];
 
@@ -133,7 +104,7 @@ const FAQ = () => {
           className="max-w-2xl mx-auto mb-12"
         >
           <div className="relative">
-            <Search size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" />
+            <Search size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-600" />
             <input
               type="text"
               placeholder={t('faq.search.placeholder')}
@@ -179,7 +150,7 @@ const FAQ = () => {
                       animate={{ rotate: openFAQ === faq.id ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <ChevronDown size={24} className="text-slate-400 flex-shrink-0" />
+                      <ChevronDown size={24} className="text-slate-600 flex-shrink-0" />
                     </motion.div>
                   </button>
                   

@@ -81,7 +81,7 @@ const Blog = ({ wordpressUrl }) => {
               />
             </Link>
             <div className="p-6 flex flex-col flex-grow">
-              <div className="flex items-center text-sm text-gray-500 mb-3">
+              <div className="flex items-center text-sm text-gray-700 mb-3">
                 <Calendar className="w-4 h-4 mr-2" />
                 <span>{format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })}</span>
               </div>

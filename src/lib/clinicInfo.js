@@ -12,11 +12,21 @@ export const clinicInfo = {
   state: 'MG',
   postalCode: '35300-299',
   country: 'BR',
+  // Structured address for easy access in components
+  address: {
+    street: 'Rua Catarina Maria Passos, 97',
+    city: 'Caratinga',
+    state: 'MG',
+    zip: '35300-299',
+    country: 'BR'
+  },
   phoneDisplay: '+55 33 99860-1427',
   phone: '+5533998601427',
   whatsapp: '+5533998601427',
   email: 'saraivavision@gmail.com',
   instagram: 'https://www.instagram.com/saraiva_vision/',
+  facebook: 'https://www.facebook.com/saraivavision',
+  linkedin: 'https://www.linkedin.com/company/saraiva-vision',
   chatbotUrl: 'https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica',
   onlineSchedulingUrl: 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613',
   // Security validation for external integrations

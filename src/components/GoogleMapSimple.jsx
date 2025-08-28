@@ -116,7 +116,7 @@ const GoogleMapSimple = ({ height = 340 }) => {
         return (
             <div className="w-full h-full flex flex-col items-center justify-center text-center p-4 bg-red-50 border border-red-200 rounded">
                 <div className="text-red-600 mb-2">
-                    <h3 className="font-semibold text-sm mb-1">❌ Erro no Google Maps</h3>
+                    <h3 className="font-semibold text-sm mb-1">Erro no Google Maps</h3>
                     <p className="text-xs">{error}</p>
                 </div>
             </div>
@@ -127,7 +127,7 @@ const GoogleMapSimple = ({ height = 340 }) => {
         <div className="relative w-full" style={{ height }}>
             {loading && (
                 <div className="absolute inset-0 flex items-center justify-center text-sm text-slate-500 bg-gray-50">
-                    🗺️ Carregando mapa...
+                    Carregando mapa...
                 </div>
             )}
             <div ref={containerRef} className="w-full h-full rounded" />

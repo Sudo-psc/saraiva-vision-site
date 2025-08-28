@@ -23,10 +23,39 @@ const ConsentManager = () => {
   useEffect(() => {
     const saved = getConsentState();
     if (!saved) setShowBanner(true);
+    if (saved) setState(prev => ({ ...prev, ...saved }));
     const handler = () => setOpen(true);
     window.addEventListener('open-privacy-settings', handler);
     return () => window.removeEventListener('open-privacy-settings', handler);
   }, []);
+
+  // Body scroll lock when consent UI (banner or modal) is visible
+  useEffect(() => {
+    const body = document.body;
+    const lock = showBanner || open;
+    if (lock) {
+      const prevOverflow = body.style.overflow;
+      body.dataset.prevOverflow = prevOverflow;
+      body.style.overflow = 'hidden';
+      // Avoid layout shift by compensating scrollbar width
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+      if (scrollBarWidth > 0) {
+        body.style.paddingRight = scrollBarWidth + 'px';
+      }
+    } else {
+      if (body.dataset.prevOverflow !== undefined) {
+        body.style.overflow = body.dataset.prevOverflow;
+        delete body.dataset.prevOverflow;
+      } else {
+        body.style.overflow = '';
+      }
+      body.style.paddingRight = '';
+    }
+    return () => {
+      body.style.overflow = '';
+      body.style.paddingRight = '';
+    };
+  }, [showBanner, open]);
 
   const save = (next) => {
     const payload = { ...next, timestamp: new Date().toISOString() };
@@ -56,13 +85,13 @@ const ConsentManager = () => {
       <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)}></div>
       <div className="relative bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 space-y-5 overflow-y-auto max-h-[90vh]">
         <h2 className="text-lg font-semibold mb-2">{t('privacy.manage_cookies')}</h2>
-        <p className="text-xs text-slate-500 mb-4">{t('privacy.intro')}</p>
-        {['functional','analytics','marketing'].map(cat => (
+        <p className="text-xs text-slate-700 mb-4">{t('privacy.intro')}</p>
+        {['functional', 'analytics', 'marketing'].map(cat => (
           <label key={cat} className="flex items-start gap-3 py-2 border-b last:border-b-0">
             <input type="checkbox" checked={state[cat]} onChange={e => setState(prev => ({ ...prev, [cat]: e.target.checked }))} />
             <span className="text-sm">
               <strong className="block capitalize">{cat}</strong>
-              <span className="text-slate-500 text-xs">
+              <span className="text-slate-700 text-xs">
                 {cat === 'functional' && t('privacy.cat_functional', 'Melhora funcionalidades do site.')}
                 {cat === 'analytics' && t('privacy.cat_analytics', 'Mede uso de forma agregada.')}
                 {cat === 'marketing' && t('privacy.cat_marketing', 'Personaliza anúncios e remarketing.')}
@@ -71,7 +100,7 @@ const ConsentManager = () => {
           </label>
         ))}
         <div className="flex justify-end gap-3 pt-2">
-          <button onClick={() => setOpen(false)} className="px-3 py-1.5 text-slate-600 hover:underline">{t('common.cancel', 'Cancelar')}</button>
+          <button onClick={() => setOpen(false)} className="px-3 py-1.5 text-slate-700 hover:underline">{t('common.cancel', 'Cancelar')}</button>
           <button onClick={() => save(state)} className="px-4 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700">{t('common.save', 'Salvar')}</button>
         </div>
       </div>
