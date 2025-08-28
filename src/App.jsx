@@ -11,6 +11,8 @@ const PrivacyPolicyPage = lazy(() => import('@/pages/PrivacyPolicyPage'));
 const ServiceDetailPage = lazy(() => import('@/pages/ServiceDetailPage'));
 const LensesPage = lazy(() => import('@/pages/LensesPage'));
 const FAQPage = lazy(() => import('@/pages/FAQPage'));
+const BlogPage = lazy(() => import('@/pages/BlogPage'));
+const PostPage = lazy(() => import('@/pages/PostPage'));
 // EpisodePage removido junto com PodcastPage
 import ScrollToTop from '@/components/ScrollToTop';
 import { Toaster } from '@/components/ui/toaster';
@@ -18,8 +20,9 @@ import ConsentManager from '@/components/ConsentManager';
 import FloatingCTA from '@/components/FloatingCTA';
 // import ExitPopupTester from '@/components/ExitPopupTester';
 
-function App() {
+  function App() {
   const { i18n } = useTranslation();
+  const wordpressUrl = import.meta.env.VITE_WORDPRESS_URL;
 
   useEffect(() => {
     document.documentElement.lang = i18n.language;
@@ -40,8 +43,10 @@ function App() {
           {/* Rotas de podcast removidas - redirecionamento será feito no componente */}
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          <Route path="/blog" element={<BlogPage wordpressUrl={wordpressUrl} />} />
+          <Route path="/blog/:slug" element={<PostPage wordpressUrl={wordpressUrl} />} />
         </Routes>
-      </Suspense>
+        </Suspense>
       <Toaster />
       <ConsentManager />
       <FloatingCTA />

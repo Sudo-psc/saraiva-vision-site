@@ -8,6 +8,7 @@ import { ptBR, enUS } from 'date-fns/locale';
 import { Calendar, User, ArrowLeft, Loader2, AlertTriangle } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import blogPosts from '@/lib/blogPosts';
 
 const PostPage = ({ wordpressUrl }) => {
   const { slug } = useParams();
@@ -18,6 +19,12 @@ const PostPage = ({ wordpressUrl }) => {
 
   useEffect(() => {
     if (!wordpressUrl) {
+      const localPost = blogPosts.find((p) => p.slug === slug);
+      if (localPost) {
+        setPost(localPost);
+      } else {
+        setError('Post not found');
+      }
       setLoading(false);
       return;
     }
@@ -56,7 +63,7 @@ const PostPage = ({ wordpressUrl }) => {
     );
   }
 
-  if (error || !wordpressUrl) {
+  if (error || !post) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
@@ -75,15 +82,21 @@ const PostPage = ({ wordpressUrl }) => {
     );
   }
 
-  if (!post) return null;
-
-  const cleanTitle = post.title.rendered.replace(/<[^>]+>/g, '');
+  const isWP = !!post.title?.rendered;
+  const title = isWP ? post.title.rendered : post.translations[i18n.language].title;
+  const content = isWP ? post.content.rendered : post.translations[i18n.language].content;
+  const excerpt = isWP
+    ? post.excerpt.rendered.replace(/<[^>]+>/g, '')
+    : post.translations[i18n.language].excerpt;
+  const image = isWP ? post._embedded?.['wp:featuredmedia']?.[0]?.source_url : post.image;
+  const author = isWP ? post._embedded.author[0].name : post.author;
+  const cleanTitle = isWP ? post.title.rendered.replace(/<[^>]+>/g, '') : post.translations[i18n.language].title;
 
   return (
     <div className="min-h-screen bg-white">
       <Helmet>
         <title>{cleanTitle} | Saraiva Vision</title>
-        <meta name="description" content={post.excerpt.rendered.replace(/<[^>]+>/g, '')} />
+        <meta name="description" content={excerpt} />
       </Helmet>
       <Navbar />
       <main className="py-32 md:py-40">
@@ -99,7 +112,7 @@ const PostPage = ({ wordpressUrl }) => {
               {t('blog.back_to_blog')}
             </Link>
 
-            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
+            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6" dangerouslySetInnerHTML={{ __html: title }} />
 
             <div className="flex items-center text-gray-500 space-x-6 mb-10 pb-10 border-b">
               <div className="flex items-center">
@@ -108,21 +121,21 @@ const PostPage = ({ wordpressUrl }) => {
               </div>
               <div className="flex items-center">
                 <User className="w-5 h-5 mr-2" />
-                <span>{post._embedded.author[0].name}</span>
+                <span>{author}</span>
               </div>
             </div>
 
-            {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
+            {image && (
               <img
-                src={post._embedded['wp:featuredmedia'][0].source_url}
-                alt={post.title.rendered}
+                src={image}
+                alt={title}
                 className="w-full h-auto max-h-[500px] object-cover rounded-2xl shadow-soft-medium mb-12"
               />
             )}
 
             <div
               className="prose lg:prose-xl max-w-none"
-              dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+              dangerouslySetInnerHTML={{ __html: content }}
             />
           </motion.div>
         </div>

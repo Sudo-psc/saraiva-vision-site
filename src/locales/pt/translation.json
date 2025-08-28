@@ -137,44 +137,20 @@
     }
   },
   "blog": {
-    "badge": "Educação em Saúde",
-    "title": "Blog Saraiva Vision",
-    "subtitle": "Artigos educativos sobre saúde ocular, tratamentos e novidades da oftalmologia para manter você bem informado.",
-    "featured": "Destaque",
-    "readMore": "Ler Artigo",
-    "categories": {
-      "all": "Todos",
-      "prevention": "Prevenção",
-      "treatments": "Tratamentos",
-      "pediatric": "Pediatria",
-      "technology": "Tecnologia"
-    },
-    "posts": {
-      "dryEyes": {
-        "title": "Síndrome do Olho Seco: Sintomas e Tratamentos",
-        "excerpt": "Entenda as causas da síndrome do olho seco e conheça as opções de tratamento mais eficazes para aliviar os sintomas."
-      },
-      "cataract": {
-        "title": "Cirurgia de Catarata: Guia Completo",
-        "excerpt": "Tudo que você precisa saber sobre a cirurgia de catarata, desde a preparação até o pós-operatório."
-      },
-      "childEyes": {
-        "title": "Cuidados com a Visão Infantil",
-        "excerpt": "Como identificar problemas visuais em crianças e a importância do acompanhamento oftalmológico desde cedo."
-      },
-      "technology": {
-        "title": "Novas Tecnologias em Oftalmologia",
-        "excerpt": "Conheça as mais recentes inovações tecnológicas que estão revolucionando os tratamentos oftalmológicos."
-      }
-    },
-    "newsletter": {
-      "title": "Receba conteúdo exclusivo",
-      "description": "Assine nossa newsletter e receba artigos sobre saúde ocular direto no seu e-mail.",
-      "emailPlaceholder": "Digite seu e-mail",
-      "subscribe": "Assinar",
-      "privacy": "Respeitamos sua privacidade. Sem spam."
-    },
-    "visitBlog": "Visitar Blog Completo"
+    "tag": "Educação em Saúde",
+    "title": "Blog Saraiva Vision em Caratinga",
+    "subtitle": "Artigos sobre saúde ocular, tratamentos e novidades em Caratinga e região.",
+    "view_all": "Ver todos os artigos",
+    "read_more": "Continuar lendo",
+    "placeholder_title": "Conteúdo em preparação",
+    "placeholder_desc": "Em breve dicas e notícias sobre saúde ocular.",
+    "placeholder_desc_page": "Estamos preparando artigos com foco em Caratinga MG.",
+    "page_title": "Blog de Saúde Visual em Caratinga",
+    "page_description": "Dicas de oftalmologia e notícias locais para Caratinga e região.",
+    "page_subtitle": "Saiba mais sobre cuidados com os olhos na nossa cidade.",
+    "post_error_title": "Publicação não encontrada",
+    "post_error_desc": "Não foi possível carregar este conteúdo.",
+    "back_to_blog": "Voltar para o blog"
   },
   "testimonials": {
     "badge": "Depoimentos",
