@@ -9,6 +9,7 @@ import { Calendar, Loader2, AlertTriangle, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
+import blogPosts from '@/lib/blogPosts';
 
 const BlogPage = ({ wordpressUrl }) => {
   const { t, i18n } = useTranslation();
@@ -18,6 +19,7 @@ const BlogPage = ({ wordpressUrl }) => {
 
   useEffect(() => {
     if (!wordpressUrl) {
+      setPosts(blogPosts);
       setLoading(false);
       return;
     }
@@ -53,7 +55,7 @@ const BlogPage = ({ wordpressUrl }) => {
       );
     }
 
-    if (error || !wordpressUrl) {
+    if (error || posts.length === 0) {
       return (
         <div className="text-center p-12 bg-yellow-50 border border-yellow-200 rounded-2xl max-w-2xl mx-auto">
           <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
@@ -65,39 +67,49 @@ const BlogPage = ({ wordpressUrl }) => {
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {posts.map((post, index) => (
-          <motion.article
-            key={post.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="modern-card overflow-hidden flex flex-col"
-          >
-            <Link to={`/blog/${post.slug}`} className="block overflow-hidden">
-              <img
-                src={post._embedded?.['wp:featuredmedia']?.[0]?.source_url || 'https://placehold.co/600x400/e2e8f0/64748b?text=Image'}
-                alt={post.title.rendered}
-                className="w-full h-56 object-cover transition-transform duration-300 hover:scale-105"
-              />
-            </Link>
-            <div className="p-6 flex flex-col flex-grow">
-              <div className="flex items-center text-sm text-gray-500 mb-3">
-                <Calendar className="w-4 h-4 mr-2" />
-                <span>{format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })}</span>
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900 flex-grow">
-                <Link to={`/blog/${post.slug}`} className="hover:text-blue-600" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
-              </h3>
-              <div className="text-gray-600 mb-4 text-sm" dangerouslySetInnerHTML={{ __html: post.excerpt.rendered.substring(0, 120) + '...' }} />
-              <Link to={`/blog/${post.slug}`} className="mt-auto">
-                <Button variant="link" className="p-0 text-blue-600 font-semibold group">
-                  {t('blog.read_more')}
-                  <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                </Button>
+        {posts.map((post, index) => {
+          const isWP = !!post.title?.rendered;
+          const title = isWP ? post.title.rendered : post.translations[i18n.language].title;
+          const excerpt = isWP
+            ? post.excerpt.rendered.replace(/<[^>]+>/g, '').substring(0, 120) + '...'
+            : post.translations[i18n.language].excerpt;
+          const image = isWP
+            ? post._embedded?.['wp:featuredmedia']?.[0]?.source_url
+            : post.image;
+          return (
+            <motion.article
+              key={post.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="modern-card overflow-hidden flex flex-col"
+            >
+              <Link to={`/blog/${post.slug}`} className="block overflow-hidden">
+                <img
+                  src={image || 'https://placehold.co/600x400/e2e8f0/64748b?text=Image'}
+                  alt={title}
+                  className="w-full h-56 object-cover transition-transform duration-300 hover:scale-105"
+                />
               </Link>
-            </div>
-          </motion.article>
-        ))}
+              <div className="p-6 flex flex-col flex-grow">
+                <div className="flex items-center text-sm text-gray-500 mb-3">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  <span>{format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })}</span>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-gray-900 flex-grow">
+                  <Link to={`/blog/${post.slug}`} className="hover:text-blue-600" dangerouslySetInnerHTML={{ __html: title }} />
+                </h3>
+                <div className="text-gray-600 mb-4 text-sm" dangerouslySetInnerHTML={{ __html: excerpt }} />
+                <Link to={`/blog/${post.slug}`} className="mt-auto">
+                  <Button variant="link" className="p-0 text-blue-600 font-semibold group">
+                    {t('blog.read_more')}
+                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </Link>
+              </div>
+            </motion.article>
+          );
+        })}
       </div>
     );
   };
