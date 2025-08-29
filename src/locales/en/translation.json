@@ -204,6 +204,29 @@
       "Detailed usage instructions"
     ]
   },
+  "about": {
+    "tag": "About Us",
+    "title": "Dedicated to Excellence in Every Detail",
+    "p1": "Saraiva Vision was born from the dream of offering high-quality ophthalmological care, combining advanced technology with a human and personalized approach.",
+    "p2": "Our mission is to provide accurate diagnoses and effective treatments, always prioritizing our patients' well-being and satisfaction.",
+    "features": [
+      "Modern Infrastructure",
+      "Qualified Professionals",
+      "Humanized Care",
+      "Commitment to Results"
+    ],
+    "alt1": "Modern ophthalmology office",
+    "alt2": "Ophthalmologist performing eye exam",
+    "alt3": "Patient smiling after consultation",
+    "alt4": "Advanced ophthalmology equipment",
+    "doctor": {
+      "heading": "Who I Am",
+      "name": "Dr. Philipe Saraiva Cruz",
+      "title": "Ophthalmologist",
+      "description": "I am Dr. Philipe Saraiva Cruz, ophthalmologist (CRM-MG 69.870). I graduated in Medicine in 2016 from the Faculdade de Ciências Médicas e da Saúde de Juiz de Fora. In 2017 I began a residency in Anesthesiology at Hospital Márcio Cunha – Ipatinga, an experience interrupted by my change of specialty. In 2020 I started the Ophthalmology residency at Faculdade de Medicina de Jundiaí, but the COVID-19 pandemic interrupted the program. Remaining committed, I completed in 2023 the Ophthalmology postgraduate program at CADECEU, consolidating my academic and clinical training.",
+      "emotional": "My journey in medicine began in 2016 when I graduated from the Faculdade de Ciências Médicas e da Saúde de Juiz de Fora. I passed through Hospital Márcio Cunha in Ipatinga, where I started an Anesthesiology residency in 2017, and in 2020 I embraced my true vocation by entering the Ophthalmology residency at Faculdade de Medicina de Jundiaí. However, the COVID-19 pandemic interrupted this cycle.\n\nI didn't give up on my purpose: in 2023 I completed the Ophthalmology postgraduate program at CADECEU, crowning years of dedication and effort. Today at Saraiva Vision, I have the honor of caring for my patients' vision with affection, technology and commitment to life."
+    }
+  },
   "contact": {
     "title": "Get in Touch",
     "subtitle": "We are available to answer your questions and schedule your appointment. Your vision is our priority.",
