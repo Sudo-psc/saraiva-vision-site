@@ -72,7 +72,7 @@
   "faq": {
     "badge": "Dúvidas Frequentes",
     "title": "Perguntas Frequentes",
-    "subtitle": "Tire suas dúvidas sobre saúde ocular em Caratinga: lentes de contato, laudo oftalmológico, glaucoma, convênios e consultas infantis.",
+    "subtitle": "Esclareça suas dúvidas sobre saúde ocular em Caratinga: lentes de contato, laudos oftalmológicos, glaucoma, convênios e consultas infantis.",
     "search": {
       "placeholder": "Buscar pergunta...",
       "noResults": "Nenhuma pergunta encontrada para sua busca."
@@ -144,7 +144,7 @@
     "read_more": "Continuar lendo",
     "placeholder_title": "Conteúdo em preparação",
     "placeholder_desc": "Em breve dicas e notícias sobre saúde ocular.",
-    "placeholder_desc_page": "Estamos preparando artigos com foco em Caratinga MG.",
+      "placeholder_desc_page": "Estamos preparando artigos com foco em Caratinga, MG.",
     "page_title": "Blog de Saúde Visual em Caratinga",
     "page_description": "Dicas de oftalmologia e notícias locais para Caratinga e região.",
     "page_subtitle": "Saiba mais sobre cuidados com os olhos na nossa cidade.",
@@ -690,7 +690,7 @@
     "download_episode": "Baixar episódio",
     "external_link": "link externo",
     "language_portuguese": "Mudar para Português",
-    "language_english": "Switch to English",
+    "language_english": "Mudar para Inglês",
     "readability_control": "Controle de Legibilidade",
     "reading_support": "Apoio à Leitura", 
     "alternative_communication": "Comunicação Alternativa",
