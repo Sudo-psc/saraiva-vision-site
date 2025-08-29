@@ -347,7 +347,7 @@
   "faq": {
     "badge": "Frequently Asked Questions",
     "title": "Frequently Asked Questions",
-    "subtitle": "Get answers about eye health in Caratinga: contact lenses, ophthalmological reports, glaucoma, insurance coverage and pediatric consultations.",
+      "subtitle": "Clarify your questions about eye health in Caratinga: contact lenses, ophthalmological reports, glaucoma, insurance coverage and pediatric consultations.",
     "search": {
       "placeholder": "Search question...",
       "noResults": "No questions found for your search."
@@ -590,7 +590,7 @@
     "read_more": "Read more",
     "placeholder_title": "Content coming soon",
     "placeholder_desc": "Soon you'll read tips and news about eye care.",
-    "placeholder_desc_page": "We're preparing articles focused on Caratinga, Brazil.",
+    "placeholder_desc_page": "We're preparing articles focused on Caratinga, MG.",
     "page_title": "Eye Health Blog in Caratinga",
     "page_description": "Ophthalmology tips and local news for Caratinga and nearby cities.",
     "page_subtitle": "Learn more about eye care in our city.",
@@ -626,7 +626,7 @@
     "restart_episode": "Restart episode",
     "download_episode": "Download episode",
     "external_link": "external link",
-    "language_portuguese": "Mudar para Português",
+    "language_portuguese": "Switch to Portuguese",
     "language_english": "Switch to English",
     "readability_control": "Readability Control",
     "reading_support": "Reading Support", 
