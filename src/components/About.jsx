@@ -96,7 +96,17 @@ const About = () => {
               ))}
             </div>
           </motion.div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mt-16 max-w-3xl mx-auto text-center space-y-4"
+        >
+          <h3 className="text-2xl font-bold">{t('about.doctor.heading')}</h3>
+          <p className="font-medium">{t('about.doctor.name')} – {t('about.doctor.title')}</p>
+          <p className="text-slate-700 whitespace-pre-line text-justify">{t('about.doctor.description')}</p>
+        </motion.div>
       </div>
     </section>
   );

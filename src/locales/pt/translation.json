@@ -369,7 +369,14 @@
     "alt1": "Consultório oftalmológico moderno",
     "alt2": "Médico oftalmologista realizando exame de vista",
     "alt3": "Paciente sorrindo satisfeito após consulta",
-    "alt4": "Equipamento oftalmológico avançado"
+    "alt4": "Equipamento oftalmológico avançado",
+    "doctor": {
+      "heading": "Quem sou eu",
+      "name": "Dr. Philipe Saraiva Cruz",
+      "title": "Oftalmologista",
+      "description": "Sou o Dr. Philipe Saraiva Cruz, médico oftalmologista (CRM-MG 69.870). Formei-me em Medicina em 2016 pela Faculdade de Ciências Médicas e da Saúde de Juiz de Fora. Em 2017 iniciei residência em Anestesiologia no Hospital Márcio Cunha – Ipatinga, experiência interrompida pela minha transição de área. Em 2020 iniciei a residência em Oftalmologia na Faculdade de Medicina de Jundiaí, mas a pandemia de COVID-19 levou à interrupção do programa. Mantendo meu compromisso com a especialidade, finalizei em 2023 a Pós-Graduação em Oftalmologia pelo CADECEU, consolidando minha formação acadêmica e prática clínica.",
+      "emotional": "Minha caminhada na Medicina começou em 2016, ao concluir a graduação na Faculdade de Ciências Médicas e da Saúde de Juiz de Fora. Passei pelo Hospital Márcio Cunha, em Ipatinga, onde iniciei residência em Anestesiologia em 2017, e em 2020 abracei minha verdadeira vocação ao ingressar na residência em Oftalmologia na Faculdade de Medicina de Jundiaí. Porém, a pandemia de COVID-19 interrompeu esse ciclo.\n\nNão desisti do meu propósito: em 2023 finalizei a Pós-Graduação em Oftalmologia pelo CADECEU, coroando anos de dedicação e esforço. Hoje, na Saraiva Vision, tenho a honra de cuidar da visão dos meus pacientes com carinho, tecnologia e compromisso com a vida."
+    }
   },
   "contact": {
     "title": "Entre em Contato",
