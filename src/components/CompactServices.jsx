@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -98,6 +98,33 @@ const CompactServices = () => {
     }
   ], [t]);
 
+  // Shuffle services for varied ordering on refresh
+  const shuffledItems = useMemo(() => {
+    const arr = [...serviceItems];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, [serviceItems]);
+
+  // Featured count responsive: 4 on small screens, otherwise 6
+  const computeFeatured = () => {
+    if (typeof window === 'undefined' || !window.matchMedia) return 6;
+    return window.matchMedia('(max-width: 640px)').matches ? 4 : 6;
+  };
+  const [featuredCount, setFeaturedCount] = useState(computeFeatured());
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mq = window.matchMedia('(max-width: 640px)');
+    const onChange = () => setFeaturedCount(mq.matches ? 4 : 6);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  const [showAll, setShowAll] = useState(false);
+  const visibleItems = showAll ? shuffledItems : shuffledItems.slice(0, featuredCount);
+
   return (
     <section id="services" className="py-16 bg-gradient-to-b from-white via-slate-50/30 to-white relative">
       {/* Section Divider */}
@@ -119,9 +146,9 @@ const CompactServices = () => {
           </p>
         </motion.div>
 
-        {/* Compact Services Grid */}
+        {/* Compact Services Grid (randomized, featured subset by default) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {serviceItems.map((service, index) => (
+          {visibleItems.map((service, index) => (
             <CompactServiceCard key={service.id} service={service} index={index} />
           ))}
         </div>
@@ -133,13 +160,21 @@ const CompactServices = () => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <Link
-            to="/servicos"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-          >
-            Ver Todos os Serviços
-            <ArrowRight className="w-5 h-5" />
-          </Link>
+          <div className="flex items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => setShowAll(v => !v)}
+              className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium border transition-colors ${showAll ? 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50' : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'}`}
+            >
+              {showAll ? t('services.show_less', 'Mostrar menos') : t('services.view_all', 'Ver todos os serviços')}
+            </button>
+            <Link
+              to="/servicos"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 transition-colors"
+            >
+              {t('services.learn_more', 'Saiba Mais')} <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </motion.div>
       </div>
     </section>
