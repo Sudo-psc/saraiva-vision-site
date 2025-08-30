@@ -10,10 +10,20 @@ const ServiceDetailPage = () => {
   const { serviceId } = useParams();
   const { t } = useTranslation();
 
+  const serviceImages = {
+    'consultas-oftalmologicas': 'https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&w=800&q=80',
+    'exames-de-refracao': 'https://images.unsplash.com/photo-1601933470664-7956aabc23d0?auto=format&fit=crop&w=800&q=80',
+    'tratamentos-especializados': 'https://images.unsplash.com/photo-1550831107-1553da8c8464?auto=format&fit=crop&w=800&q=80',
+    'cirurgias-oftalmologicas': 'https://images.unsplash.com/photo-1580281657521-4e7b94937d67?auto=format&fit=crop&w=800&q=80',
+    'acompanhamento-pediatrico': 'https://images.unsplash.com/photo-1503455637927-730bce8583f8?auto=format&fit=crop&w=800&q=80',
+    'laudos-especializados': 'https://images.unsplash.com/photo-1581091012184-8a5b5cdd889c?auto=format&fit=crop&w=800&q=80'
+  };
+
   // Service configuration with detailed information
   const serviceConfig = useMemo(() => ({
     'consultas-oftalmologicas': {
       id: 'consultas-oftalmologicas',
+      image: serviceImages['consultas-oftalmologicas'],
       title: t('services.items.consultations.title'),
       description: t('services.items.consultations.description'),
       fullDescription: t('services.items.consultations.fullDescription'),
@@ -37,6 +47,7 @@ const ServiceDetailPage = () => {
     },
     'exames-de-refracao': {
       id: 'exames-de-refracao',
+      image: serviceImages['exames-de-refracao'],
       title: t('services.items.refraction.title'),
       description: t('services.items.refraction.description'),
       fullDescription: t('services.items.refraction.fullDescription'),
@@ -60,6 +71,7 @@ const ServiceDetailPage = () => {
     },
     'tratamentos-especializados': {
       id: 'tratamentos-especializados',
+      image: serviceImages['tratamentos-especializados'],
       title: t('services.items.specialized.title'),
       description: t('services.items.specialized.description'),
       fullDescription: t('services.items.specialized.fullDescription'),
@@ -83,6 +95,7 @@ const ServiceDetailPage = () => {
     },
     'cirurgias-oftalmologicas': {
       id: 'cirurgias-oftalmologicas',
+      image: serviceImages['cirurgias-oftalmologicas'],
       title: t('services.items.surgeries.title'),
       description: t('services.items.surgeries.description'),
       fullDescription: t('services.items.surgeries.fullDescription'),
@@ -106,6 +119,7 @@ const ServiceDetailPage = () => {
     },
     'acompanhamento-pediatrico': {
       id: 'acompanhamento-pediatrico',
+      image: serviceImages['acompanhamento-pediatrico'],
       title: t('services.items.pediatric.title'),
       description: t('services.items.pediatric.description'),
       fullDescription: t('services.items.pediatric.fullDescription'),
@@ -129,6 +143,7 @@ const ServiceDetailPage = () => {
     },
     'laudos-especializados': {
       id: 'laudos-especializados',
+      image: serviceImages['laudos-especializados'],
       title: t('services.items.reports.title'),
       description: t('services.items.reports.description'),
       fullDescription: t('services.items.reports.fullDescription'),
@@ -196,6 +211,13 @@ const ServiceDetailPage = () => {
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                   {service.description}
                 </p>
+                {service.image && (
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-64 object-cover rounded-2xl shadow-soft-medium mt-6"
+                  />
+                )}
               </motion.div>
 
               {/* CTA Section */}
