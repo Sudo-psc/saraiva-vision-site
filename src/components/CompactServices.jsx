@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 
-const CompactServiceCard = ({ service, index }) => {
+const CompactServiceCard = React.forwardRef(({ service, index }, ref) => {
   // Different gradient backgrounds for visual variety
   const gradients = [
     'bg-gradient-to-br from-blue-50 via-white to-indigo-50/50',
@@ -18,6 +18,7 @@ const CompactServiceCard = ({ service, index }) => {
 
   return (
     <motion.div
+      ref={ref}
       layout
       initial={{ y: 20, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
@@ -55,8 +56,8 @@ const CompactServiceCard = ({ service, index }) => {
       <ArrowRight className="w-4 h-4 transition-transform group-hover/button:translate-x-1" />
     </Link>
   </motion.div>
-);
-};
+  );
+});
 
 const CompactServices = () => {
   const { t } = useTranslation();
