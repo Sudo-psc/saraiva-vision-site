@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 
 const ServiceCard = ({ service, index }) => (
@@ -64,44 +63,49 @@ const ServiceCard = ({ service, index }) => (
 const Services = () => {
   const { t } = useTranslation();
 
-  const serviceItems = useMemo(() => [
-    {
-      id: 'consultas-oftalmologicas',
-      icon: getServiceIcon('consultas-oftalmologicas', { className: "w-full h-full object-contain" }),
-      title: t('services.items.consultations.title'),
-      description: t('services.items.consultations.description')
-    },
-    {
-      id: 'exames-de-refracao',
-      icon: getServiceIcon('exames-de-refracao', { className: "w-full h-full object-contain" }),
-      title: t('services.items.refraction.title'),
-      description: t('services.items.refraction.description')
-    },
-    {
-      id: 'tratamentos-especializados',
-      icon: getServiceIcon('tratamentos-especializados', { className: "w-full h-full object-contain" }),
-      title: t('services.items.specialized.title'),
-      description: t('services.items.specialized.description')
-    },
-    {
-      id: 'cirurgias-oftalmologicas',
-      icon: getServiceIcon('cirurgias-oftalmologicas', { className: "w-full h-full object-contain" }),
-      title: t('services.items.surgeries.title'),
-      description: t('services.items.surgeries.description')
-    },
-    {
-      id: 'acompanhamento-pediatrico',
-      icon: getServiceIcon('acompanhamento-pediatrico', { className: "w-full h-full object-contain" }),
-      title: t('services.items.pediatric.title'),
-      description: t('services.items.pediatric.description')
-    },
-    {
-      id: 'laudos-especializados',
-      icon: getServiceIcon('laudos-especializados', { className: "w-full h-full object-contain" }),
-      title: t('services.items.reports.title'),
-      description: t('services.items.reports.description')
-    }
-  ], [t]);
+  const serviceItems = useMemo(() => {
+    const items = [
+      {
+        id: 'consultas-oftalmologicas',
+        icon: getServiceIcon('consultas-oftalmologicas', { className: "w-full h-full object-contain" }),
+        title: t('services.items.consultations.title'),
+        description: t('services.items.consultations.description')
+      },
+      {
+        id: 'exames-de-refracao',
+        icon: getServiceIcon('exames-de-refracao', { className: "w-full h-full object-contain" }),
+        title: t('services.items.refraction.title'),
+        description: t('services.items.refraction.description')
+      },
+      {
+        id: 'tratamentos-especializados',
+        icon: getServiceIcon('tratamentos-especializados', { className: "w-full h-full object-contain" }),
+        title: t('services.items.specialized.title'),
+        description: t('services.items.specialized.description')
+      },
+      {
+        id: 'cirurgias-oftalmologicas',
+        icon: getServiceIcon('cirurgias-oftalmologicas', { className: "w-full h-full object-contain" }),
+        title: t('services.items.surgeries.title'),
+        description: t('services.items.surgeries.description')
+      },
+      {
+        id: 'acompanhamento-pediatrico',
+        icon: getServiceIcon('acompanhamento-pediatrico', { className: "w-full h-full object-contain" }),
+        title: t('services.items.pediatric.title'),
+        description: t('services.items.pediatric.description')
+      },
+      {
+        id: 'laudos-especializados',
+        icon: getServiceIcon('laudos-especializados', { className: "w-full h-full object-contain" }),
+        title: t('services.items.reports.title'),
+        description: t('services.items.reports.description')
+      }
+    ];
+
+    // Randomize order so different services appear on each page load
+    return items.sort(() => Math.random() - 0.5);
+  }, [t]);
 
   return (
     <section id="services" className="py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
