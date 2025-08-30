@@ -185,145 +185,45 @@ interface ContactResponse {
 #### Implementation
 ```javascript
 // /api/contact.js
-import { validateInput, sanitizeInput } from '../lib/validation';
-import { sendToWhatsApp } from '../lib/whatsapp';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req, res) {
-  // CORS and method validation
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 
   try {
-    const {
-      name,
-      email, 
-      phone,
-      message,
-      serviceType,
-      preferredDate,
-      gdprConsent,
-      honeypot
-    } = req.body;
+    const { name, email, phone, message, consent, recaptchaToken } = req.body;
 
-    // Honeypot spam protection
-    if (honeypot) {
-      return res.status(400).json({ success: false, error: 'Spam detected' });
+    // Basic validation
+    if (!name || !email || !phone || !message || !consent || !recaptchaToken) {
+      return res.status(400).json({ success: false, error: 'Missing required fields' });
     }
 
-    // GDPR consent validation
-    if (!gdprConsent) {
-      return res.status(400).json({
-        success: false,
-        error: 'GDPR consent required',
-        validation: { gdprConsent: 'Consent required' }
-      });
-    }
-
-    // Input validation
-    const validation = validateContactForm({
-      name, email, phone, message
-    });
-
-    if (!validation.valid) {
-      return res.status(400).json({
-        success: false,
-        error: 'Validation failed',
-        validation: validation.errors
-      });
-    }
-
-    // Sanitize inputs
-    const sanitizedData = {
-      name: sanitizeInput(name),
-      email: sanitizeInput(email),
-      phone: sanitizeInput(phone),
-      message: sanitizeInput(message),
-      serviceType: serviceType ? sanitizeInput(serviceType) : null,
-      preferredDate: preferredDate ? sanitizeInput(preferredDate) : null
+    // Sanitize and validate input
+    const cleaned = {
+      name: name.trim().slice(0, 100),
+      email: email.trim().toLowerCase(),
+      phone: phone.replace(/\D/g, '').slice(0, 15),
+      message: message.trim().slice(0, 1000)
     };
 
-    // Generate submission ID
-    const submissionId = `contact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-    // Create WhatsApp message
-    const whatsappMessage = formatWhatsAppMessage(sanitizedData);
-    const whatsappUrl = `https://wa.me/5533998601427?text=${encodeURIComponent(whatsappMessage)}`;
-
-    // Log submission (optional - could save to database)
-    console.log('Contact submission:', {
-      id: submissionId,
-      timestamp: new Date().toISOString(),
-      data: sanitizedData
+    // Send email via Resend
+    await resend.emails.send({
+      from: process.env.CONTACT_FROM_EMAIL,
+      to: process.env.CONTACT_TO_EMAIL,
+      reply_to: cleaned.email,
+      subject: `Novo contato de ${cleaned.name}`,
+      html: `<p>${cleaned.message}</p>`
     });
 
-    // Response
-    res.status(200).json({
-      success: true,
-      data: {
-        id: submissionId,
-        timestamp: new Date().toISOString(),
-        whatsappUrl
-      }
-    });
-
+    res.status(200).json({ success: true, data: { timestamp: new Date().toISOString() } });
   } catch (error) {
     console.error('Contact API Error:', error);
-    
-    res.status(500).json({
-      success: false,
-      error: 'Internal server error'
-    });
+    res.status(500).json({ success: false, error: 'Internal server error' });
   }
-}
-
-// Validation helper
-function validateContactForm(data) {
-  const errors = {};
-  
-  if (!data.name || data.name.trim().length < 2) {
-    errors.name = 'Nome deve ter pelo menos 2 caracteres';
-  }
-  
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!data.email || !emailRegex.test(data.email)) {
-    errors.email = 'Email deve ter formato válido';
-  }
-  
-  const phoneRegex = /^\+?[\d\s\-\(\)]{10,}$/;
-  if (!data.phone || !phoneRegex.test(data.phone)) {
-    errors.phone = 'Telefone deve ter formato válido';
-  }
-  
-  if (!data.message || data.message.trim().length < 10) {
-    errors.message = 'Mensagem deve ter pelo menos 10 caracteres';
-  }
-  
-  return {
-    valid: Object.keys(errors).length === 0,
-    errors
-  };
-}
-
-// WhatsApp message formatter
-function formatWhatsAppMessage(data) {
-  let message = `🏥 *Nova Mensagem do Site*\n\n`;
-  message += `👤 *Nome:* ${data.name}\n`;
-  message += `📧 *Email:* ${data.email}\n`;
-  message += `📱 *Telefone:* ${data.phone}\n`;
-  
-  if (data.serviceType) {
-    message += `🔍 *Serviço:* ${data.serviceType}\n`;
-  }
-  
-  if (data.preferredDate) {
-    message += `📅 *Data Preferida:* ${data.preferredDate}\n`;
-  }
-  
-  message += `\n💬 *Mensagem:*\n${data.message}`;
-  message += `\n\n⏰ Enviado em: ${new Date().toLocaleString('pt-BR')}`;
-  
-  return message;
 }
 ```
 
