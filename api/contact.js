@@ -1,5 +1,17 @@
-// Contact form submission with reCAPTCHA validation
-// This endpoint handles form submissions and validates reCAPTCHA tokens
+// Contact form submission with reCAPTCHA validation and email notification
+// Uses Resend API to deliver form submissions securely
+
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+const escapeHtml = (str = '') =>
+  str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 
 export default async function handler(req, res) {
   // Only allow POST requests
@@ -62,6 +74,13 @@ export default async function handler(req, res) {
       ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
     };
 
+    // Security checks
+    const linkPattern = /(https?:\/\/|www\.)/i;
+    const scriptPattern = /<\/?script/gi;
+    if (linkPattern.test(sanitizedData.message) || scriptPattern.test(sanitizedData.message)) {
+      return res.status(400).json({ error: 'Suspicious content in message' });
+    }
+
     // Additional validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(sanitizedData.email)) {
@@ -93,21 +112,34 @@ export default async function handler(req, res) {
     
     global.rateLimitStore.set(rateLimitKey, now);
 
-    // Here you would typically:
-    // 1. Save to database
-    // 2. Send email notification
-    // 3. Send confirmation email to user
-    // 4. Log the submission
+    const safeData = {
+      name: escapeHtml(sanitizedData.name),
+      email: escapeHtml(sanitizedData.email),
+      phone: escapeHtml(sanitizedData.phone),
+      message: escapeHtml(sanitizedData.message)
+    };
+
+    try {
+      await resend.emails.send({
+        from: process.env.CONTACT_FROM_EMAIL || 'no-reply@example.com',
+        to: process.env.CONTACT_TO_EMAIL || 'contact@example.com',
+        reply_to: safeData.email,
+        subject: `Novo contato de ${safeData.name}`,
+        html: `<p><strong>Nome:</strong> ${safeData.name}</p>
+               <p><strong>Email:</strong> ${safeData.email}</p>
+               <p><strong>Telefone:</strong> ${safeData.phone}</p>
+               <p><strong>Mensagem:</strong><br/>${safeData.message}</p>`
+      });
+    } catch (err) {
+      console.error('Resend API error:', err);
+      return res.status(502).json({ error: 'Email service failure' });
+    }
 
     console.log('Valid form submission received:', {
       ...sanitizedData,
       recaptchaScore: recaptchaData.score || 'v2'
     });
 
-    // Simulate processing time
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    // Success response
     return res.status(200).json({
       success: true,
       message: 'Message sent successfully',
