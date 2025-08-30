@@ -68,6 +68,20 @@
       "years": "Anos de Experiência"
     }
   },
+  "certificates": {
+    "badge": "Certificações e Afiliações",
+    "title": "Nossas Credenciais",
+    "items": {
+      "iso9001": {
+        "title": "Certificação ISO 9001",
+        "description": "Padrão internacional de gestão de qualidade"
+      },
+      "abo": {
+        "title": "Membro da ABO",
+        "description": "Associação Brasileira de Oftalmologia"
+      }
+    }
+  },
   "faqPreview": {
     "badge": "Perguntas rápidas",
     "title": "Dúvidas frequentes",
