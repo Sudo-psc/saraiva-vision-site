@@ -43,3 +43,12 @@
 - Secrets: Never commit; use `.env`/`.env.local` (Vite requires `VITE_` prefix)
 - Node: Use `.nvmrc` (Node `20.19.1`); `nvm use`
 - Consent: Keep analytics/marketing behind consent (see `index.html`/ConsentManager)
+
+## CI/CD & Deployment
+- GitHub Actions: Lint, test, and build on each pull request. Protect `main` with required checks.
+- Secrets: Store API keys and tokens in GitHub Secrets; never hardcode.
+- Nginx Configs: `nginx.conf`, `nginx.staging.conf`, and `nginx.local.conf` serve static builds.
+  - Validate configuration with `nginx -t` during CI before deploy.
+  - Enable HTTPS, HTTP/2, and gzip or brotli compression.
+  - Use long-term caching for `/dist` assets; set `Cache-Control` and `ETag` headers.
+- SSL: Obtain certificates via `ssl-setup.sh` (Let's Encrypt) and renew regularly.
