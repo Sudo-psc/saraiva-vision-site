@@ -122,7 +122,22 @@ const CompactServices = () => {
     return () => mq.removeEventListener('change', onChange);
   }, []);
 
-  const [showAll, setShowAll] = useState(false);
+  // Persisted toggle for show all
+  const storageKey = 'sv_showAllCompactServices';
+  const getInitialShowAll = () => {
+    if (typeof window === 'undefined') return false;
+    try {
+      const raw = window.localStorage.getItem(storageKey);
+      return raw === '1';
+    } catch (_) { return false; }
+  };
+  const [showAll, setShowAll] = useState(getInitialShowAll());
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(storageKey, showAll ? '1' : '0');
+    } catch (_) {}
+  }, [showAll]);
   const visibleItems = showAll ? shuffledItems : shuffledItems.slice(0, featuredCount);
 
   return (
