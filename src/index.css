@@ -59,6 +59,8 @@ body {
   color: #1a1a1a !important;
   /* Enhanced font fallback stack */
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
 }
 
 @layer base {
@@ -141,6 +143,21 @@ body {
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+  }
+
+  @media (prefers-contrast: more) {
+    :root {
+      --foreground: 0 0% 0%;
+      --background: 0 0% 100%;
+      --primary: 220 100% 30%;
+      --primary-foreground: 0 0% 100%;
+      --text-primary: 0 0% 0%;
+      --text-secondary: 0 0% 25%;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
   }
 
   /* High Contrast Mode */
@@ -250,6 +267,10 @@ body {
   }
 
   button:focus-visible {
+    @apply outline-2 outline-blue-500 outline-offset-2;
+  }
+
+  a:focus-visible {
     @apply outline-2 outline-blue-500 outline-offset-2;
   }
 
