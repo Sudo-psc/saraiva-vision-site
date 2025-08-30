@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
 import About from '@/components/About';
+import Certificates from '@/components/Certificates';
 import Testimonials from '@/components/Testimonials';
 import BlogSection from '@/components/BlogSection';
 import FAQPreview from '@/components/FAQPreview';
@@ -43,6 +44,7 @@ function HomePage() {
         {/* Testimonials moved up to build trust early */}
         <Testimonials limit={3} />
         <About />
+        <Certificates />
 
         {/* Latest Podcast Episodes Section */}
         <LatestEpisodes />
