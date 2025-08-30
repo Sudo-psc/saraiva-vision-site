@@ -21,7 +21,33 @@ function wrapRes(res) {
   return res;
 }
 
+// Simple in-memory rate limiter to mitigate local DDoS attempts
+const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
+const RATE_LIMIT_MAX_REQUESTS = 100;
+if (!global.requestCounts) {
+  global.requestCounts = new Map();
+}
+
 const server = http.createServer(async (req, res) => {
+  const now = Date.now();
+  const ip = req.socket.remoteAddress || 'unknown';
+  const entry = global.requestCounts.get(ip) || { count: 0, start: now };
+
+  if (now - entry.start > RATE_LIMIT_WINDOW_MS) {
+    entry.count = 1;
+    entry.start = now;
+  } else {
+    entry.count += 1;
+  }
+
+  global.requestCounts.set(ip, entry);
+  if (entry.count > RATE_LIMIT_MAX_REQUESTS) {
+    res.statusCode = 429;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ error: 'Too many requests' }));
+    return;
+  }
+
   const parsed = url.parse(req.url, true);
   // Only route our API; return 404 for others
   if (parsed.pathname && parsed.pathname.startsWith('/api/reviews')) {

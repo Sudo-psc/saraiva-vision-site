@@ -60,7 +60,7 @@ describe('contact API handler', () => {
       name: '<b>Ana</b>',
       email: 'ana@example.com',
       phone: '(33) 99999-9999',
-      message: 'Ola<script>alert(1)</script>',
+      message: 'Ola mundo',
       consent: true,
       recaptchaToken: 'token'
     });
@@ -71,7 +71,22 @@ describe('contact API handler', () => {
     const resendInstance = Resend.mock.instances[0];
     expect(resendInstance.emails.send).toHaveBeenCalled();
     const args = resendInstance.emails.send.mock.calls[0][0];
-    expect(args.html).not.toContain('<script>');
+    expect(args.html).not.toContain('<b>');
+  });
+
+  it('rejects injection attempts', async () => {
+    const { req, res } = mockReqRes({
+      name: "Ana",
+      email: 'ana@example.com',
+      phone: '(33) 99999-9999',
+      message: 'DROP TABLE users;--',
+      consent: true,
+      recaptchaToken: 'token'
+    });
+
+    await handler(req, res);
+    expect(res.statusCode).toBe(400);
+    expect(res.payload.error).toBe('Potential injection attack detected');
   });
 });
 
