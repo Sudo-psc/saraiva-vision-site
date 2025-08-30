@@ -1,12 +1,16 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // Mock Node.js crypto module
-vi.mock('node:crypto', () => ({
-  createHash: vi.fn(() => ({
+vi.mock('node:crypto', () => {
+  const createHash = vi.fn(() => ({
     update: vi.fn().mockReturnThis(),
     digest: vi.fn().mockReturnValue('mockedhash123')
-  }))
-}));
+  }));
+  return {
+    createHash,
+    default: { createHash }
+  };
+});
 
 // Import the handler after mocking
 const { default: handler } = await import('../reviews.js');
@@ -190,7 +194,7 @@ describe('Reviews API Handler', () => {
           source: 'google-places',
           total: 100,
           rating: 4.5,
-          reviews: expect.arrayContaining([
+          reviews: [
             expect.objectContaining({
               id: 0,
               author: 'João S.',
@@ -200,12 +204,12 @@ describe('Reviews API Handler', () => {
             }),
             expect.objectContaining({
               id: 1,
-              author: 'Maria Oliveira',
+              author: 'Maria O.',
               rating: 4,
               text: 'Muito bom serviço, recomendo.',
               relativeTime: '1 month ago'
             })
-          ]),
+          ],
           disclaimer: expect.stringContaining('Avaliações públicas'),
           timestamp: expect.any(String)
         })
