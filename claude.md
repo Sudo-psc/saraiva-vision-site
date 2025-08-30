@@ -9,6 +9,16 @@ the guidelines below when contributing:
 - Keep UI strings in `src/locales/en/translation.json` and
   `src/locales/pt/translation.json`.
 
+## Custom Slash Commands
+- `/dev` — run `npm run dev` to start the development server.
+- `/lint` — run `npx eslint src` to check code style.
+- `/test` — run `npm test` to execute unit tests.
+- `/build` — run `npm run build` for a production build.
+- `/preview` — run `npm run preview` to serve the build locally.
+- `/coverage` — run `npm run test:coverage` to generate a coverage report.
+- `/ci` — run `npx eslint src && npm test && npm run build` to mimic the CI pipeline.
+- `/deploy` — run `./deploy.sh` to deploy the built app with Nginx.
+
 ## CI/CD
 - GitHub Actions should lint, test, and build the app on every pull request.
 - Protect the `main` branch with required status checks.
