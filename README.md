@@ -248,7 +248,8 @@ Para contribuir com o projeto, siga as diretrizes de desenvolvimento e abra um P
 ## 📚 Documentação Adicional
 
 - [Guia de Implementação](./IMPLEMENTATION_GUIDE.md)
-- [Manual de Deploy](./README-DEPLOY.md)
+- [Manual de Deploy](./README-LOCAL-DEPLOY.md)
+- [Requisitos Funcionais](./docs/FUNCTIONAL_REQUIREMENTS.md)
 - [Relatório SEO](./SEO_AUDIT_REPORT.md)
 - [Plano de Design SEO](./docs/SEO_DESIGN_PLAN.md)
 
