@@ -599,6 +599,13 @@
     "post_error_desc": "We couldn't load this content.",
     "back_to_blog": "Back to blog"
   },
+  "comments": {
+    "title": "Comments",
+    "no_comments": "No comments yet",
+    "name_label": "Name",
+    "message_label": "Comment",
+    "submit": "Add Comment"
+  },
   "reviews": {
     "title": "Google Reviews",
     "refresh": "Refresh",

@@ -9,6 +9,7 @@ import { Calendar, User, ArrowLeft, Loader2, AlertTriangle } from 'lucide-react'
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import blogPosts from '@/lib/blogPosts';
+import CommentSection from '@/components/CommentSection';
 
 const PostPage = ({ wordpressUrl }) => {
   const { slug } = useParams();
@@ -137,6 +138,7 @@ const PostPage = ({ wordpressUrl }) => {
               className="prose lg:prose-xl max-w-none"
               dangerouslySetInnerHTML={{ __html: content }}
             />
+            <CommentSection postSlug={slug} />
           </motion.div>
         </div>
       </main>
