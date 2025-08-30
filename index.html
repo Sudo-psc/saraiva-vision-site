@@ -33,7 +33,7 @@
 
 
   <!-- Mobile Performance Optimizations -->
-  <style>
+  <style nonce="2724b7pNRx1X">
     /* Critical CSS for mobile-first loading */
     body {
       margin: 0;
@@ -91,7 +91,7 @@
   <meta name="geo.placename" content="Caratinga" />
   <meta name="geo.position" content="-19.7868;-42.1392" />
   <meta name="ICBM" content="-19.7868, -42.1392" />
-  <script type="application/ld+json">
+  <script type="application/ld+json" nonce="2724b7pNRx1X">
       {
         "@context": "https://schema.org",
         "@type": ["MedicalClinic", "LocalBusiness", "MedicalOrganization"],
@@ -286,7 +286,8 @@
     </script>
 
   <!-- Consent-gated tracking scripts will be injected dynamically after user opt-in -->
-  <script>
+  <script nonce="2724b7pNRx1X">
+    const cspNonce = '2724b7pNRx1X';
     window.__SV_PENDING_TAGS__ = [
       { src: 'https://www.googletagmanager.com/gtag/js?id=G-LXWRK8ELS6', type: 'analytics' },
       { inline: "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config','G-LXWRK8ELS6');", type: 'analytics' },
@@ -299,10 +300,10 @@
       (window.__SV_PENDING_TAGS__ || []).forEach(tag => {
         if ((tag.type === 'analytics' && consent.analytics) || (tag.type === 'marketing' && consent.marketing)) {
           if (tag.src && !document.querySelector(`script[src='${tag.src}']`)) {
-            const s = document.createElement('script'); s.async = true; s.src = tag.src; head.appendChild(s);
+            const s = document.createElement('script'); s.async = true; s.src = tag.src; s.setAttribute('nonce', cspNonce); head.appendChild(s);
           }
           if (tag.inline) {
-            const s = document.createElement('script'); s.text = tag.inline; head.appendChild(s);
+            const s = document.createElement('script'); s.setAttribute('nonce', cspNonce); s.text = tag.inline; head.appendChild(s);
           }
         }
       });
@@ -312,7 +313,7 @@
 
 <body>
   <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
+  <script type="module" nonce="2724b7pNRx1X" src="/src/main.jsx"></script>
 </body>
 
 </html>
