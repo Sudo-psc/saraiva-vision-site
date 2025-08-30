@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
@@ -18,12 +18,14 @@ const CompactServiceCard = ({ service, index }) => {
 
   return (
     <motion.div
+      layout
       initial={{ y: 20, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       className={`group p-6 ${gradients[index % gradients.length]} backdrop-blur-sm rounded-2xl border border-slate-200/60 hover:border-blue-300 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden`}
       whileHover={{ y: -6, scale: 1.02 }}
+      exit={{ opacity: 0, y: 8, scale: 0.98 }}
     >
       {/* Subtle decorative element */}
       <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-white/40 to-transparent rounded-full blur-xl"></div>
@@ -162,11 +164,13 @@ const CompactServices = () => {
         </motion.div>
 
         {/* Compact Services Grid (randomized, featured subset by default) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {visibleItems.map((service, index) => (
-            <CompactServiceCard key={service.id} service={service} index={index} />
-          ))}
-        </div>
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <AnimatePresence mode="popLayout">
+            {visibleItems.map((service, index) => (
+              <CompactServiceCard key={service.id} service={service} index={index} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
 
         {/* View All Services CTA */}
         <motion.div

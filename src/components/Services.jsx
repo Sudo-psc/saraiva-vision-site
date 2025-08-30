@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
@@ -11,12 +11,14 @@ const ServiceCard = ({ service, index }) => {
 
   return (
     <motion.div
+      layout
       initial={{ y: 40, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.07 }}
       className="group relative flex flex-col items-center text-center p-8 rounded-3xl bg-white/70 backdrop-blur-md shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08),0_4px_12px_-2px_rgba(0,0,0,0.05)] border border-white/50 overflow-hidden will-change-transform"
       whileHover={prefersReducedMotion ? {} : { y: -6, rotateX: 4, rotateY: -4 }}
+      exit={{ opacity: 0, y: 10, scale: 0.98 }}
     >
       {/* Ambient gradient halo */}
       <div className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ background: 'radial-gradient(circle at 30% 20%, rgba(96,165,250,0.35), transparent 60%)' }} />
@@ -186,11 +188,13 @@ const Services = () => {
         </div>
 
         {/* Services Grid (randomized, featured subset by default) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-          {visibleItems.map((service, index) => (
-            <ServiceCard key={service.id} service={service} index={index} />
-          ))}
-        </div>
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+          <AnimatePresence mode="popLayout">
+            {visibleItems.map((service, index) => (
+              <ServiceCard key={service.id} service={service} index={index} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
 
         {/* Reveal all / collapse toggle */}
         <div className="text-center mt-8">
