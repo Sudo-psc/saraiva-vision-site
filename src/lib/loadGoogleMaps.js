@@ -3,7 +3,14 @@ let loadCount = 0;
 
 // Google Maps API v3 loader with official callback pattern - eliminates warnings
 export function loadGoogleMaps(apiKey) {
-  if (typeof window === 'undefined') return Promise.reject(new Error('Window not available'));
+  if (typeof window === 'undefined') {
+    return Promise.reject(new Error('Window not available'));
+  }
+
+  if (!navigator.onLine) {
+    return Promise.reject(new Error('Sem conexão com a internet'));
+  }
+
   if (window.google && window.google.maps) return Promise.resolve(window.google.maps);
   if (mapsPromise) return mapsPromise;
   if (!apiKey) return Promise.reject(new Error('Google Maps API key ausente'));
@@ -57,4 +64,10 @@ export function loadGoogleMaps(apiKey) {
   });
 
   return mapsPromise;
+}
+
+// For tests or hard resets
+export function resetGoogleMapsLoader() {
+  mapsPromise = null;
+  loadCount = 0;
 }
