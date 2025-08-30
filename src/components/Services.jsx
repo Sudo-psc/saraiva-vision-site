@@ -1,20 +1,23 @@
 import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 
-const ServiceCard = ({ service, index }) => (
-  <motion.div
-    initial={{ y: 40, opacity: 0 }}
-    whileInView={{ y: 0, opacity: 1 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.07 }}
-    className="group relative flex flex-col items-center text-center p-8 rounded-3xl bg-white/70 backdrop-blur-md shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08),0_4px_12px_-2px_rgba(0,0,0,0.05)] border border-white/50 overflow-hidden will-change-transform"
-    whileHover={{ y: -6, rotateX: 4, rotateY: -4 }}
-  >
+const ServiceCard = ({ service, index }) => {
+  const { t } = useTranslation();
+  const prefersReducedMotion = useReducedMotion();
+
+  return (
+    <motion.div
+      initial={{ y: 40, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.07 }}
+      className="group relative flex flex-col items-center text-center p-8 rounded-3xl bg-white/70 backdrop-blur-md shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08),0_4px_12px_-2px_rgba(0,0,0,0.05)] border border-white/50 overflow-hidden will-change-transform"
+      whileHover={prefersReducedMotion ? {} : { y: -6, rotateX: 4, rotateY: -4 }}
+    >
     {/* Ambient gradient halo */}
     <div className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ background: 'radial-gradient(circle at 30% 20%, rgba(96,165,250,0.35), transparent 60%)' }} />
     <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 mix-blend-overlay" style={{ background: 'linear-gradient(140deg, rgba(147,51,234,0.15), rgba(236,72,153,0.12), rgba(59,130,246,0.12))' }} />
@@ -22,7 +25,7 @@ const ServiceCard = ({ service, index }) => (
     {/* Icon */}
     <motion.div
       className="relative mb-6 w-32 h-32 flex items-center justify-center"
-      whileHover={{ scale: 1.1, rotate: 3 }}
+      whileHover={prefersReducedMotion ? {} : { scale: 1.1, rotate: 3 }}
     >
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
       <div className="relative w-28 h-28 drop-shadow-lg select-none">
@@ -48,9 +51,9 @@ const ServiceCard = ({ service, index }) => (
     {/* Saiba mais link styled as button */}
     <Link
       to={`/servico/${service.id}`}
-      className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-slate-700 bg-gradient-to-r from-slate-100 to-slate-50 hover:from-blue-50 hover:to-pink-50 border border-slate-200/70 hover:border-blue-300/60 shadow-sm hover:shadow-md transition-all group/button overflow-hidden"
+      className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-slate-700 bg-gradient-to-r from-slate-100 to-slate-50 hover:from-blue-50 hover:to-pink-50 border border-slate-200/70 hover:border-blue-300/60 shadow-sm hover:shadow-md transition-all group/button overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
     >
-      <span className="relative z-10 group-hover/button:text-blue-700 transition-colors">Saiba mais</span>
+      <span className="relative z-10 group-hover/button:text-blue-700 transition-colors">{t('services.learn_more')}</span>
       <ArrowRight className="w-4 h-4 relative z-10 transition-transform group-hover/button:translate-x-1" />
       <span className="absolute inset-0 opacity-0 group-hover/button:opacity-100 bg-gradient-to-r from-blue-200/30 via-purple-200/30 to-pink-200/30 transition-opacity" />
       <span className="absolute -inset-px rounded-full border border-transparent group-hover/button:border-blue-400/40 transition-colors" />
@@ -59,7 +62,8 @@ const ServiceCard = ({ service, index }) => (
     {/* Subtle bottom gradient edge */}
     <div className="pointer-events-none absolute bottom-0 inset-x-0 h-1.5 bg-gradient-to-r from-blue-400/0 via-purple-500/40 to-pink-400/0 opacity-0 group-hover:opacity-100 transition-opacity" />
   </motion.div>
-);
+  );
+};
 
 const Services = () => {
   const { t } = useTranslation();
