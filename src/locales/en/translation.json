@@ -48,27 +48,33 @@
     "items": {
       "consultations": {
         "title": "Ophthalmological Consultations",
-        "description": "Complete assessment of your eye health, with accurate diagnosis and treatment."
+        "description": "Complete assessment of your eye health, with accurate diagnosis and treatment.",
+        "fullDescription": "Our consultation covers detailed medical history and a comprehensive exam with advanced equipment. Preventive guidance and continuous follow-up help maintain long-term visual health."
       },
       "refraction": {
         "title": "Refraction Exams",
-        "description": "High-precision determination of prescription for glasses and contact lenses."
+        "description": "High-precision determination of prescription for glasses and contact lenses.",
+        "fullDescription": "We use cutting-edge technology to measure myopia, hyperopia, astigmatism and presbyopia with millimetric precision. After the exam, we review correction options and provide personalized recommendations."
       },
       "specialized": {
         "title": "Specialized Treatments",
-        "description": "Treatment for glaucoma, cataracts, retinal diseases, and other eye conditions."
+        "description": "Treatment for glaucoma, cataracts, retinal diseases, and other eye conditions.",
+        "fullDescription": "Saraiva Vision delivers advanced care for major eye diseases using modern medical protocols and technology. Personalized plans address glaucoma, cataracts, retinal disorders and more, following international standards for safety and efficacy."
       },
       "surgeries": {
         "title": "Ophthalmological Surgeries",
-        "description": "Advanced surgical procedures to correct vision problems."
+        "description": "Advanced surgical procedures to correct vision problems.",
+        "fullDescription": "Our surgical center performs cataract, refractive, pterygium and eyelid surgeries with state-of-the-art equipment. Procedures occur in a hospital-grade environment with rigorous postoperative care, ensuring smooth recovery and superior visual results."
       },
       "pediatric": {
         "title": "Pediatric Follow-up",
-        "description": "Specialized care for children's eye health, from birth."
+        "description": "Specialized care for children's eye health, from birth.",
+        "fullDescription": "We monitor children's vision from the first days of life, performing red reflex tests and age-appropriate assessments. Parents receive detailed reports and tips for visual stimulation at home."
       },
       "reports": {
         "title": "Specialized Reports",
-        "description": "Issuance of ophthalmological reports for exams, expert opinions, and other purposes."
+        "description": "Issuance of ophthalmological reports for exams, expert opinions, and other purposes.",
+        "fullDescription": "We provide official ophthalmological reports for driver's licenses, public exams, occupational evaluations and insurance. The process is fast and fully digital, ensuring easy access to your documents."
       }
     }
   },
