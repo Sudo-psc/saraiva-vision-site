@@ -121,7 +121,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
-              className="absolute -bottom-8 -left-8 md:-bottom-4 md:-left-12 glass-card p-4 max-w-xs"
+              className="absolute -bottom-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:-left-12 md:-bottom-4 glass-card p-4 max-w-xs"
             >
               <div className="flex items-start gap-4">
                 <div className="icon-container bg-blue-100">
