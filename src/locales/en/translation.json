@@ -69,6 +69,20 @@
       "years": "Years of Experience"
     }
   },
+  "certificates": {
+    "badge": "Certifications & Memberships",
+    "title": "Our Credentials",
+    "items": {
+      "iso9001": {
+        "title": "ISO 9001 Certified",
+        "description": "International quality management standard"
+      },
+      "abo": {
+        "title": "ABO Member",
+        "description": "Brazilian Ophthalmology Association"
+      }
+    }
+  },
   "services": {
     "title": "Our Services",
     "subtitle": "We offer a full range of ophthalmological services to care for your vision with the highest quality and technology.",
