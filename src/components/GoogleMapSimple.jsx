@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { clinicInfo } from '@/lib/clinicInfo';
 
 const GoogleMapSimple = ({ height = 340 }) => {
     const containerRef = useRef(null);
@@ -80,7 +81,7 @@ const GoogleMapSimple = ({ height = 340 }) => {
                 console.log('🗺️ Criando mapa...');
                 const map = new google.maps.Map(containerRef.current, {
                     zoom: 17,
-                    center: { lat: -19.7868, lng: -42.1392 },
+                    center: { lat: clinicInfo.latitude, lng: clinicInfo.longitude },
                     mapId: 'DEMO_MAP_ID', // Map ID necessário para Advanced Markers
                     mapTypeControl: false,
                     streetViewControl: false,
@@ -89,9 +90,9 @@ const GoogleMapSimple = ({ height = 340 }) => {
 
                 // Add marker
                 new google.maps.Marker({
-                    position: { lat: -19.7868, lng: -42.1392 },
+                    position: { lat: clinicInfo.latitude, lng: clinicInfo.longitude },
                     map: map,
-                    title: 'Clínica Saraiva Vision'
+                    title: clinicInfo.name
                 });
 
                 console.log('✅ Mapa criado com sucesso');

@@ -13,6 +13,7 @@ import Footer from '@/components/Footer';
 import CompactGoogleReviews from '@/components/CompactGoogleReviews';
 import GoogleLocalSection from '@/components/GoogleLocalSection';
 import FAQ from '@/components/FAQ';
+import LatestEpisodes from '@/components/LatestEpisodes';
 
 function HomePage() {
   const location = useLocation();
@@ -70,6 +71,20 @@ function HomePage() {
         </div>
 
         <About />
+
+        {/* Podcast Section */}
+        <div className="py-12 relative">
+          <div className="container mx-auto px-4">
+            <div className="relative flex items-center justify-center">
+              <div className="w-24 h-24 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center border border-slate-200/50">
+                <div className="w-3 h-3 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full"></div>
+              </div>
+              <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent -z-10"></div>
+            </div>
+          </div>
+        </div>
+
+        <LatestEpisodes />
 
         {/* Enhanced section divider with modern design */}
         <div className="py-12 relative">

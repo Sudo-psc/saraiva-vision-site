@@ -366,6 +366,79 @@ export const generateOrganizationSchema = (language = 'pt', forGraph = false) =>
 };
 
 // Utilitário para injetar schema no head
+export const generatePodcastSchema = (podcastData, language = 'pt', forGraph = false) => {
+  const { episodes = [] } = podcastData;
+  
+  const podcastSchema = {
+    '@type': 'PodcastSeries',
+    '@id': 'https://saraivavision.com.br/podcast#podcast',
+    name: language === 'pt' ? 'Podcast Saraiva Vision' : 'Saraiva Vision Podcast',
+    description: language === 'pt' 
+      ? 'Conteúdo especializado sobre saúde ocular para manter seus olhos sempre saudáveis com o Dr. Philipe Saraiva.'
+      : 'Specialized content on eye health to keep your eyes always healthy with Dr. Philipe Saraiva.',
+    url: 'https://saraivavision.com.br/podcast',
+    image: episodes[0]?.cover || 'https://saraivavision.com.br/images/podcast-cover.jpg',
+    author: {
+      '@type': 'Person',
+      name: 'Dr. Philipe Saraiva',
+      sameAs: 'https://saraivavision.com.br/sobre',
+      jobTitle: language === 'pt' ? 'Oftalmologista' : 'Ophthalmologist',
+      worksFor: {
+        '@type': 'MedicalClinic',
+        name: 'Clínica Saraiva Vision',
+        url: 'https://saraivavision.com.br'
+      }
+    },
+    genre: language === 'pt' ? 'Saúde e Medicina' : 'Health & Medicine',
+    inLanguage: language === 'pt' ? 'pt-BR' : 'en-US',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Clínica Saraiva Vision',
+      url: 'https://saraivavision.com.br',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png'
+      }
+    },
+    webFeed: 'https://saraivavision.com.br/podcast/rss'
+  };
+
+  // Add podcast episodes
+  if (episodes.length > 0) {
+    podcastSchema.episode = episodes.map((episode, index) => ({
+      '@type': 'PodcastEpisode',
+      '@id': `https://saraivavision.com.br/podcast/${episode.slug}#episode`,
+      name: episode.title,
+      description: episode.description,
+      url: `https://saraivavision.com.br/podcast/${episode.slug}`,
+      episodeNumber: episodes.length - index, // Reverse order for latest first
+      datePublished: episode.date,
+      duration: episode.duration,
+      image: episode.cover,
+      audio: episode.src ? {
+        '@type': 'AudioObject',
+        contentUrl: episode.src,
+        encodingFormat: 'audio/mpeg'
+      } : undefined,
+      partOfSeries: {
+        '@id': 'https://saraivavision.com.br/podcast#podcast'
+      },
+      keywords: episode.tags?.join(', '),
+      genre: episode.category,
+      transcript: episode.transcript
+    }));
+  }
+
+  if (forGraph) {
+    return podcastSchema;
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    ...podcastSchema
+  };
+};
+
 export const injectSchema = (schema) => {
   if (typeof window === 'undefined') return;
   

@@ -223,3 +223,21 @@ export const usePrivacyPolicySEO = () => {
     noindex: true // Política de privacidade não deve ser indexada
   });
 };
+
+// Hook específico para página de podcast
+export const usePodcastSEO = () => {
+  const { t } = useTranslation();
+  
+  const breadcrumbs = [
+    { name: t('navbar.home'), url: '/' },
+    { name: t('navbar.podcast'), url: '/podcast' }
+  ];
+  
+  return useSEO({
+    titleKey: 'podcastMeta.title',
+    descriptionKey: 'podcastMeta.description',
+    keywordsKey: 'podcastMeta.keywords',
+    pageType: 'podcast',
+    breadcrumbs
+  });
+};

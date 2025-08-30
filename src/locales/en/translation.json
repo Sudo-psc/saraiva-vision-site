@@ -883,5 +883,10 @@
       "satisfied_patient_2": "Satisfied patient 2",
       "doctor": "Ophthalmologist smiling at the camera in a modern clinic"
     }
+  },
+  "podcastMeta": {
+    "title": "Saraiva Vision Podcast | Eye Health Audio | Caratinga/MG",
+    "description": "Listen to specialized ophthalmology episodes with Dr. Philipe Saraiva. Tips, prevention and treatments to keep your eyes healthy.",
+    "keywords": "ophthalmology podcast, eye health audio, Dr Philipe Saraiva podcast, vision tips, eye prevention, eye treatment, medical podcast Caratinga"
   }
 }

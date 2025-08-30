@@ -978,5 +978,10 @@
   },
   "navigation": {
     "backToServices": "Voltar aos Serviços"
+  },
+  "podcastMeta": {
+    "title": "Podcast Saraiva Vision | Saúde Ocular em Áudio | Caratinga/MG",
+    "description": "Ouça episódios especializados sobre oftalmologia com Dr. Philipe Saraiva. Dicas, prevenção e tratamentos para manter seus olhos saudáveis.",
+    "keywords": "podcast oftalmologia, saúde ocular áudio, Dr Philipe Saraiva podcast, dicas visão, prevenção ocular, tratamento olhos, podcast médico Caratinga"
   }
 }

@@ -7,7 +7,8 @@ import {
   generateMedicalWebPageSchema,
   generateBreadcrumbSchema,
   generateWebSiteSchema,
-  generateOrganizationSchema
+  generateOrganizationSchema,
+  generatePodcastSchema
 } from '@/lib/schemaMarkup.js';
 
 const SchemaMarkup = ({
@@ -15,6 +16,7 @@ const SchemaMarkup = ({
   pageInfo = null,
   faqItems = null,
   breadcrumbs = null,
+  data = null,
   additionalSchemas = []
 }) => {
   const { i18n } = useTranslation();
@@ -36,6 +38,11 @@ const SchemaMarkup = ({
     // Schema específico da página
     if (type === 'webpage' && pageInfo) {
       schemas.push(generateMedicalWebPageSchema(pageInfo, language, true));
+    }
+
+    // Schema de podcast se for página de podcast
+    if (type === 'podcast' && data) {
+      schemas.push(generatePodcastSchema(data, language, true));
     }
 
     // Schema FAQ se houver itens

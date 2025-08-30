@@ -55,8 +55,8 @@ export const clinicInfo = {
   dpoEmail: 'saraivavision@gmail.com',
   taxId: '53.864.119/0001-79',
   foundingDate: '2024-02-08',
-  latitude: -19.7897,
-  longitude: -42.1392,
+  latitude: -19.7890206,
+  longitude: -42.1347583,
   servicesKeywords: [
     // Services list has been cleared as requested
   ]
