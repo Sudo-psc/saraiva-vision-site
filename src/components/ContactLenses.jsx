@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Check, ExternalLink, Shield, Users, Award, Eye, ChevronDown, MessageCircle, Star, Clock, Heart, Zap, Globe, Sparkles } from 'lucide-react';
+import { Check, ExternalLink, Shield, Users, Award, Eye, ChevronDown, MessageCircle, Star, Clock, Heart, Zap, Globe, Sparkles, Leaf } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ContactLensesHeroImage from './ContactLensesHeroImage';
 
@@ -194,14 +194,15 @@ const ContactLenses = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
+            className="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-4xl mx-auto"
           >
             {Object.entries(trustBadges).map(([key, value], index) => {
               const icons = {
                 experience: Clock,
                 patients: Users,
                 safety: Shield,
-                brands: Award
+                brands: Award,
+                environment: Leaf
               };
               const Icon = icons[key] || Shield;
 
