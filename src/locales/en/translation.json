@@ -40,6 +40,35 @@
     "microcopy_fast_confirmation": "Fill your details and get confirmation in 1 minute. 100% secure.",
     "more_contact_options": "Other contact options"
   },
+  "trust": {
+    "badge": "Trust & Quality",
+    "title": "Why choose Saraiva Vision?",
+    "subtitle": "Our reputation is built on years of excellence, advanced technology and genuine care.",
+    "awards": {
+      "title": "Awards",
+      "description": "Recognition for excellence in ophthalmology"
+    },
+    "patients": {
+      "title": "5,000+ Patients",
+      "description": "Served with satisfaction and quality"
+    },
+    "experience": {
+      "title": "15+ Years",
+      "description": "Of experience in eye care"
+    },
+    "iso": {
+      "title": "ISO 9001 Certified",
+      "description": "Recognized quality management system"
+    },
+    "partnerships": {
+      "sectionTitle": "Our Partners"
+    },
+    "stats": {
+      "satisfaction": "Satisfaction Rate",
+      "patients": "Patients Served",
+      "years": "Years of Experience"
+    }
+  },
   "services": {
     "title": "Our Services",
     "subtitle": "We offer a full range of ophthalmological services to care for your vision with the highest quality and technology.",
