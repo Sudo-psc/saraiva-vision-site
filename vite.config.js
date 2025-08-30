@@ -346,6 +346,7 @@ export default defineConfig({
 	build: {
 		cssMinify: 'esbuild',
 		minify: 'terser',
+		sourcemap: false,
 		terserOptions: {
 			compress: {
 				drop_console: true,
@@ -360,26 +361,77 @@ export default defineConfig({
 				'@babel/types'
 			],
 			output: {
-				manualChunks: {
-					// Core vendor chunks
-					react: ['react', 'react-dom'],
-					motion: ['framer-motion'],
-					i18n: ['react-i18next', 'i18next'],
-					ui: ['lucide-react'],
-					// App chunks by functionality
-					components: [
-						'./src/components/Hero.jsx',
-						'./src/components/Services.jsx',
-						'./src/components/About.jsx'
-					],
-					utils: [
-						'./src/utils/safeNavigation.js',
-						'./src/utils/analytics.js'
-					]
+				manualChunks: (id) => {
+					// Vendor libraries
+					if (id.includes('node_modules')) {
+						if (id.includes('react')) return 'vendor-react';
+						if (id.includes('framer-motion')) return 'vendor-motion';
+						if (id.includes('i18next')) return 'vendor-i18n';
+						if (id.includes('lucide-react')) return 'vendor-ui';
+						if (id.includes('@supabase')) return 'vendor-db';
+						return 'vendor-misc';
+					}
+					
+					// App components by route/feature
+					if (id.includes('/components/')) {
+						if (id.includes('Hero') || id.includes('Services') || id.includes('About')) {
+							return 'components-main';
+						}
+						if (id.includes('Contact') || id.includes('GoogleMap')) {
+							return 'components-contact';
+						}
+						if (id.includes('ServiceDetail') || id.includes('LatestEpisodes')) {
+							return 'components-secondary';
+						}
+						return 'components-ui';
+					}
+					
+					// Utilities and helpers
+					if (id.includes('/utils/') || id.includes('/hooks/')) {
+						return 'app-utils';
+					}
+					
+					// Locales
+					if (id.includes('/locales/')) {
+						return 'app-i18n';
+					}
 				},
-				chunkFileNames: 'assets/[name]-[hash].js',
-				entryFileNames: 'assets/[name]-[hash].js',
-				assetFileNames: 'assets/[name]-[hash].[ext]'
+				chunkFileNames: (chunkInfo) => {
+					const name = chunkInfo.name;
+					if (name.startsWith('vendor-')) {
+						return 'assets/vendor/[name]-[hash].js';
+					}
+					if (name.startsWith('components-')) {
+						return 'assets/components/[name]-[hash].js';
+					}
+					if (name.startsWith('app-')) {
+						return 'assets/app/[name]-[hash].js';
+					}
+					return 'assets/[name]-[hash].js';
+				},
+				entryFileNames: 'assets/entry/[name]-[hash].js',
+				assetFileNames: (assetInfo) => {
+					const name = assetInfo.name;
+					if (name.endsWith('.css')) {
+						return 'assets/styles/[name]-[hash].[ext]';
+					}
+					if (/\.(png|jpe?g|svg|gif|webp|avif)$/i.test(name)) {
+						return 'assets/images/[name]-[hash].[ext]';
+					}
+					if (/\.(woff2?|eot|ttf|otf)$/i.test(name)) {
+						return 'assets/fonts/[name]-[hash].[ext]';
+					}
+					return 'assets/[name]-[hash].[ext]';
+				}
+			}
+		}
+	},
+	experimental: {
+		renderBuiltUrl(filename, { hostType }) {
+			if (hostType === 'js') {
+				return { js: `./${filename}` };
+			} else {
+				return `./${filename}`;
 			}
 		}
 	}
