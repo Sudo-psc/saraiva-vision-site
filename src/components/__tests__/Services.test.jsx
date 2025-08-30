@@ -8,21 +8,20 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key) => {
       const mockTranslations = {
-        'services.badge': 'Nossos Serviços',
-        'services.title': 'Cuidados Oftalmológicos Completos',
-        'services.subtitle': 'Oferecemos uma gama abrangente de serviços especializados em saúde ocular, utilizando tecnologia de ponta e expertise médica.',
-        'services.consultation.title': 'Consultas Especializadas',
-        'services.consultation.description': 'Avaliação completa da saúde ocular com equipamentos modernos.',
-        'services.exams.title': 'Exames Diagnósticos',
-        'services.exams.description': 'Exames precisos para diagnóstico precoce de doenças oculares.',
-        'services.treatments.title': 'Tratamentos Avançados',
-        'services.treatments.description': 'Tratamentos modernos e eficazes para diversas condições oculares.',
-        'services.surgery.title': 'Cirurgias Especializadas',
-        'services.surgery.description': 'Procedimentos cirúrgicos com tecnologia de última geração.',
-        'services.pediatric.title': 'Oftalmologia Pediátrica',
-        'services.pediatric.description': 'Cuidados especializados para a saúde ocular infantil.',
-        'services.reports.title': 'Laudos Especializados',
-        'services.reports.description': 'Relatórios médicos detalhados e precisos.'
+        'services.title': 'Nossos Serviços',
+        'services.subtitle': 'Oferecemos uma gama completa de serviços oftalmológicos para cuidar da sua visão com a máxima qualidade e tecnologia.',
+        'services.items.consultations.title': 'Consultas Oftalmológicas Completas',
+        'services.items.consultations.description': 'Exame oftalmológico abrangente com tecnologia de ponta.',
+        'services.items.refraction.title': 'Exames de Refração',
+        'services.items.refraction.description': 'Determinação precisa do grau e adaptação de lentes.',
+        'services.items.specialized.title': 'Tratamentos Especializados',
+        'services.items.specialized.description': 'Tratamentos modernos para diversas condições oculares.',
+        'services.items.surgeries.title': 'Cirurgias Oftalmológicas',
+        'services.items.surgeries.description': 'Procedimentos cirúrgicos com tecnologia de última geração.',
+        'services.items.pediatric.title': 'Oftalmologia Pediátrica',
+        'services.items.pediatric.description': 'Cuidados especializados para a saúde ocular infantil.',
+        'services.items.reports.title': 'Laudos Especializados',
+        'services.items.reports.description': 'Relatórios médicos detalhados e precisos.'
       };
       return mockTranslations[key] || key;
     },
@@ -41,8 +40,8 @@ vi.mock('../icons/ServiceIcons', () => ({
   getServiceIcon: (serviceId, props = {}) => {
     const iconMap = {
       'consultas-oftalmologicas': 'consultation-icon',
-      'exames-diagnosticos': 'refraction-icon',
-      'tratamentos-avancados': 'treatment-icon',
+      'exames-de-refracao': 'refraction-icon',
+      'tratamentos-especializados': 'treatment-icon',
       'cirurgias-oftalmologicas': 'surgery-icon',
       'acompanhamento-pediatrico': 'pediatric-icon',
       'laudos-especializados': 'reports-icon'
@@ -82,10 +81,10 @@ describe('Services Component', () => {
   it('displays main title and subtitle', () => {
     renderWithRouter(<Services />)
     
-    const title = screen.getByText('Cuidados Oftalmológicos Completos')
+    const title = screen.getByText('Nossos Serviços')
     expect(title).toBeInTheDocument()
     
-    const subtitle = screen.getByText(/Oferecemos uma gama abrangente de serviços/i)
+    const subtitle = screen.getByText(/Oferecemos uma gama completa de serviços/i)
     expect(subtitle).toBeInTheDocument()
   })
 
@@ -93,10 +92,10 @@ describe('Services Component', () => {
     renderWithRouter(<Services />)
     
     // Check for service titles
-    expect(screen.getByText('Consultas Especializadas')).toBeInTheDocument()
-    expect(screen.getByText('Exames Diagnósticos')).toBeInTheDocument()
-    expect(screen.getByText('Tratamentos Avançados')).toBeInTheDocument()
-    expect(screen.getByText('Cirurgias Especializadas')).toBeInTheDocument()
+    expect(screen.getByText('Consultas Oftalmológicas Completas')).toBeInTheDocument()
+    expect(screen.getByText('Exames de Refração')).toBeInTheDocument()
+    expect(screen.getByText('Tratamentos Especializados')).toBeInTheDocument()
+    expect(screen.getByText('Cirurgias Oftalmológicas')).toBeInTheDocument()
     expect(screen.getByText('Oftalmologia Pediátrica')).toBeInTheDocument()
     expect(screen.getByText('Laudos Especializados')).toBeInTheDocument()
   })
@@ -104,9 +103,9 @@ describe('Services Component', () => {
   it('displays service descriptions', () => {
     renderWithRouter(<Services />)
     
-    expect(screen.getByText(/Avaliação completa da saúde ocular/i)).toBeInTheDocument()
-    expect(screen.getByText(/Exames precisos para diagnóstico precoce/i)).toBeInTheDocument()
-    expect(screen.getByText(/Tratamentos modernos e eficazes/i)).toBeInTheDocument()
+    expect(screen.getByText(/Exame oftalmológico abrangente/i)).toBeInTheDocument()
+    expect(screen.getByText(/Determinação precisa do grau/i)).toBeInTheDocument()
+    expect(screen.getByText(/Tratamentos modernos para diversas/i)).toBeInTheDocument()
     expect(screen.getByText(/Procedimentos cirúrgicos com tecnologia/i)).toBeInTheDocument()
     expect(screen.getByText(/Cuidados especializados para a saúde ocular infantil/i)).toBeInTheDocument()
     expect(screen.getByText(/Relatórios médicos detalhados/i)).toBeInTheDocument()
@@ -116,18 +115,18 @@ describe('Services Component', () => {
     renderWithRouter(<Services />)
     
     expect(screen.getByTestId('consultation-icon')).toBeInTheDocument()
-    expect(screen.getByTestId('exam-icon')).toBeInTheDocument()
+    expect(screen.getByTestId('refraction-icon')).toBeInTheDocument()
     expect(screen.getByTestId('treatment-icon')).toBeInTheDocument()
     expect(screen.getByTestId('surgery-icon')).toBeInTheDocument()
     expect(screen.getByTestId('pediatric-icon')).toBeInTheDocument()
-    expect(screen.getByTestId('report-icon')).toBeInTheDocument()
+    expect(screen.getByTestId('reports-icon')).toBeInTheDocument()
   })
 
   it('has proper semantic structure', () => {
     renderWithRouter(<Services />)
     
     // Check for main heading
-    const mainHeading = screen.getByRole('heading', { level: 2, name: /Cuidados Oftalmológicos Completos/i })
+    const mainHeading = screen.getByRole('heading', { level: 2, name: /Nossos Serviços/i })
     expect(mainHeading).toBeInTheDocument()
     
     // Check for service headings
@@ -151,7 +150,7 @@ describe('Services Component', () => {
     renderWithRouter(<Services />)
     
     const section = screen.getByText(/Nossos Serviços/i).closest('section')
-    expect(section).toHaveClass('py-16')
+    expect(section).toHaveClass('py-20')
     
     // Check for responsive grid layout
     const container = section?.querySelector('.container')
@@ -162,9 +161,8 @@ describe('Services Component', () => {
     renderWithRouter(<Services />)
     
     // Look for any button or link elements that might be CTAs
-    const buttons = screen.queryAllByRole('button')
     const links = screen.getAllByRole('link')
-    
+
     // Services should have interactive elements
     expect(links.length).toBeGreaterThan(0)
   })
