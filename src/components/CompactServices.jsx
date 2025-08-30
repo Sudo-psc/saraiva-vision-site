@@ -5,17 +5,30 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 
-const CompactServiceCard = ({ service, index }) => (
-  <motion.div
-    initial={{ y: 20, opacity: 0 }}
-    whileInView={{ y: 0, opacity: 1 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.4, delay: index * 0.1 }}
-    className="group p-6 bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-slate-300 hover:border-blue-400 shadow-sm hover:shadow-md transition-all duration-300"
-    whileHover={{ y: -4 }}
-  >
-    {/* Icon */}
-    <div className="w-20 h-20 mb-4 mx-auto flex items-center justify-center rounded-2xl ring-0 group-hover:ring-2 ring-blue-300/40 transition-all duration-300 ease-out">
+const CompactServiceCard = ({ service, index }) => {
+  // Different gradient backgrounds for visual variety
+  const gradients = [
+    'bg-gradient-to-br from-blue-50 via-white to-indigo-50/50',
+    'bg-gradient-to-br from-green-50 via-white to-emerald-50/50', 
+    'bg-gradient-to-br from-purple-50 via-white to-violet-50/50',
+    'bg-gradient-to-br from-orange-50 via-white to-amber-50/50',
+    'bg-gradient-to-br from-teal-50 via-white to-cyan-50/50',
+    'bg-gradient-to-br from-rose-50 via-white to-pink-50/50'
+  ];
+
+  return (
+    <motion.div
+      initial={{ y: 20, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+      className={`group p-6 ${gradients[index % gradients.length]} backdrop-blur-sm rounded-2xl border border-slate-200/60 hover:border-blue-300 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden`}
+      whileHover={{ y: -6, scale: 1.02 }}
+    >
+      {/* Subtle decorative element */}
+      <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-white/40 to-transparent rounded-full blur-xl"></div>
+    {/* Enhanced icon with gradient background */}
+    <div className="w-20 h-20 mb-4 mx-auto flex items-center justify-center rounded-2xl bg-gradient-to-br from-white/80 to-slate-50/80 ring-0 group-hover:ring-2 ring-blue-300/40 transition-all duration-300 ease-out shadow-sm group-hover:shadow-md backdrop-blur-sm relative z-10">
       <div className="w-18 h-18 transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]">
         {service.icon}
       </div>

@@ -1,17 +1,22 @@
-# Test Report & Quality Analysis
+# Test Report - Saraiva Vision Project
 
-**Generated**: 2025-08-26  
+**Date**: August 30, 2024  
 **Test Framework**: Vitest + React Testing Library  
-**Total Test Files**: 13 project files  
+**Environment**: jsdom  
+**Total Test Files**: 23 (15 failed | 8 passed)  
+**Total Tests**: 169 (82 failed | 87 passed)  
+**Execution Time**: 27.09s  
 
 ## Executive Summary
 
-| Category | Total | Passed | Failed | Pass Rate |
-|----------|--------|--------|--------|-----------|
-| **Unit Tests** | 64 | 27 | 37 | 42% |
-| **Integration Tests** | 17 | 0 | 17 | 0% |
-| **Utility/Lib Tests** | 77 | 39 | 38 | 51% |
-| **Overall** | 158 | 66 | 92 | **42%** |
+The test suite execution revealed significant issues requiring immediate attention. While 51.5% of tests pass, critical failures in component integration, mock configuration, and data dependency injection need resolution for production readiness.
+
+### Overall Test Results
+
+- **Pass Rate**: 51.5% (87/169 tests)
+- **Failure Rate**: 48.5% (82/169 tests)
+- **Critical Issues**: 15 test files with failures
+- **Test Coverage**: Coverage data truncated due to test failures
 
 ## Test Structure Analysis
 

@@ -8,17 +8,17 @@ const About = () => {
   const features = t('about.features', { returnObjects: true });
 
   const imageUrls = [
-    "https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/40e4988427ac137c3d141857468774d6.jpg",
-    "https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/b8f2dd956e713d7bae5d7fb1e55e4f4f.png",
-    "https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/741591d60d9f0ced10bd2364aee36a66.jpg",
-    "https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/368a0fa9cfaf91a0bad44aca45721439.png"
+    "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Modern ophthalmology equipment
+    "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Eye examination equipment
+    "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Medical consultation room
+    "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"  // Advanced diagnostic equipment
   ];
 
   const imageAlts = [
-    t('about.alt1'),
-    t('about.alt2'),
-    t('about.alt3'),
-    t('about.alt4')
+    t('about.alt1') || 'Equipamento moderno de oftalmologia para diagnósticos precisos',
+    t('about.alt2') || 'Consulta oftalmológica com equipamento de última geração',
+    t('about.alt3') || 'Sala de consulta médica moderna e acolhedora',
+    t('about.alt4') || 'Equipamentos avançados para diagnóstico ocular'
   ];
 
   return (

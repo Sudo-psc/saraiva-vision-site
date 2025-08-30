@@ -1,6 +1,8 @@
+import React, { Suspense } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import App from '../../App';
 import HomePage from '../../pages/HomePage';
 import ContactPage from '../../pages/ContactPage';
@@ -39,9 +41,13 @@ global.open = vi.fn();
 
 const renderWithRouter = (component, initialRoute = '/') => {
   return render(
-    <MemoryRouter initialEntries={[initialRoute]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      {component}
-    </MemoryRouter>
+    <HelmetProvider>
+      <MemoryRouter initialEntries={[initialRoute]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <Suspense fallback={<div>Loading...</div>}>
+          {component}
+        </Suspense>
+      </MemoryRouter>
+    </HelmetProvider>
   );
 };
 

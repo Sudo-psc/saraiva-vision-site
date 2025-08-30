@@ -25,7 +25,15 @@ vi.mock('@/lib/clinicInfo', () => ({
     state: 'MG',
     postalCode: '35300-299',
     country: 'BR',
-    servicesKeywords: []
+    servicesKeywords: [],
+    // Add missing address object required by SEOHead component
+    address: {
+      street: 'Rua Catarina Maria Passos, 97',
+      city: 'Caratinga',
+      state: 'MG',
+      zip: '35300-299',
+      country: 'BR'
+    }
   },
   googleMapsProfileUrl: 'https://www.google.com/maps/place/?q=place_id:test_place_id',
   googleReviewUrl: 'https://search.google.com/local/writereview?placeid=test_place_id',
@@ -116,7 +124,7 @@ vi.mock('framer-motion', () => ({
       return <h1 {...rest}>{children}</h1>;
     },
     h2: ({ children, ...props }) => {
-      const { whileHover, initial, animate, transition, ...rest } = props;
+      const { whileHover, whileInView, initial, animate, transition, viewport, ...rest } = props;
       return <h2 {...rest}>{children}</h2>;
     },
     h3: ({ children, ...props }) => {
@@ -124,7 +132,7 @@ vi.mock('framer-motion', () => ({
       return <h3 {...rest}>{children}</h3>;
     },
     p: ({ children, ...props }) => {
-      const { whileHover, initial, animate, transition, ...rest } = props;
+      const { whileHover, whileInView, initial, animate, transition, viewport, ...rest } = props;
       return <p {...rest}>{children}</p>;
     },
     button: ({ children, ...props }) => {
@@ -211,3 +219,28 @@ vi.mock('@/hooks/usePerformanceMonitor', () => ({
     trackInteraction: vi.fn()
   })
 }))
+
+// Mock analytics consent system
+vi.mock('@/utils/consentMode', () => ({
+  hasConsent: vi.fn(() => false),
+  onConsentChange: vi.fn(),
+  getConsentState: vi.fn(() => ({ analytics: false, marketing: false })),
+  updateConsent: vi.fn(),
+  acceptAll: vi.fn(),
+  acceptNecessaryOnly: vi.fn(),
+  shouldShowConsentBanner: vi.fn(() => true),
+}))
+
+vi.mock('@/utils/analyticsConsent', () => ({
+  trackGA: vi.fn(),
+  trackMeta: vi.fn(),
+  bindConsentUpdates: vi.fn(),
+  trackEnhancedConversion: vi.fn(),
+}))
+
+// Mock global analytics functions
+global.gtag = vi.fn()
+global.fbq = vi.fn()
+
+// Mock scrollIntoView for JSDOM
+Element.prototype.scrollIntoView = vi.fn()

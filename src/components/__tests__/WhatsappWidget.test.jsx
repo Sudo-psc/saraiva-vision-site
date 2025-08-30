@@ -13,13 +13,7 @@ vi.mock('@/hooks/useWhatsApp', () => ({
   })
 }));
 
-// Mock framer-motion
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }) => <div {...props}>{children}</div>,
-    button: ({ children, ...props }) => <button {...props}>{children}</button>
-  }
-}));
+// Remove local framer-motion mock since global mock now includes AnimatePresence
 
 describe('WhatsappWidget Component', () => {
   it('renders WhatsApp widget', () => {

@@ -30,14 +30,21 @@ const Hero = () => {
   const handleAgendarContato = openFloatingCTA;
 
   const handleNossosServicosClick = () => {
-    document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+    const servicesElement = document.getElementById('services');
+    if (servicesElement && typeof servicesElement.scrollIntoView === 'function') {
+      servicesElement.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
-    <section id="home" className="relative py-section-lg md:py-section-xl overflow-hidden bg-hero-gradient" style={{ paddingTop: 'calc(var(--space-section-lg) + var(--space-32))' }}>
-      <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(67,100,247,0.1),transparent_60%)]"></div>
-        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom_left,rgba(0,82,212,0.1),transparent_60%)]"></div>
+    <section id="home" className="relative py-section-lg md:py-section-xl overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/30" style={{ paddingTop: 'calc(var(--space-section-lg) + var(--space-32))' }}>
+      {/* Enhanced background with modern gradients and shapes */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-gradient-to-bl from-blue-100/40 via-sky-50/30 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-[70%] h-[70%] bg-gradient-to-tr from-indigo-100/40 via-blue-50/30 to-transparent rounded-full blur-3xl"></div>
+        {/* Geometric background elements */}
+        <div className="absolute top-20 right-20 w-32 h-32 bg-gradient-to-br from-blue-200/20 to-indigo-200/20 rounded-2xl rotate-12 blur-sm"></div>
+        <div className="absolute bottom-40 left-16 w-24 h-24 bg-gradient-to-tr from-sky-200/20 to-blue-200/20 rounded-full blur-sm"></div>
       </div>
 
       <div className="container mx-auto px-4 md:px-6 relative z-10 no-scrollbar-x">
@@ -48,13 +55,15 @@ const Hero = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex flex-col space-y-6 md:space-y-8 text-center lg:text-left"
           >
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-2 w-fit mx-auto lg:mx-0">
-              <span className="mr-2">✦</span> {t('hero.partner')}
+            {/* Enhanced badge with better styling */}
+            <div className="inline-flex items-center px-6 py-2 rounded-full bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 text-sm font-semibold mb-6 w-fit mx-auto lg:mx-0 border border-blue-200/50 shadow-sm">
+              <span className="mr-2 text-blue-600">✦</span> {t('hero.partner')}
             </div>
 
-            <h1 className="text-display-sm md:text-display-md lg:text-display-lg font-bold leading-tight tracking-tight">
+            {/* Enhanced heading with improved gradient text */}
+            <h1 className="text-display-sm md:text-display-md lg:text-display-lg font-bold leading-tight tracking-tight mb-6">
               <Trans i18nKey="hero.title">
-                Cuidando da sua <span className="text-gradient">visão</span> com excelência
+                Cuidando da sua <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800 bg-clip-text text-transparent">visão</span> com excelência
               </Trans>
             </h1>
 
@@ -62,31 +71,44 @@ const Hero = () => {
               {t('hero.subtitle')}
             </p>
 
-            {/* Inline trust signals with icons */}
-            <div className="flex flex-wrap items-center gap-4 text-sm text-slate-700 justify-center lg:justify-start">
-              <div className="flex items-center gap-1">
+            {/* Enhanced trust signals with better visual design */}
+            <div className="flex flex-wrap items-center gap-6 text-sm justify-center lg:justify-start">
+              <div className="flex items-center gap-2 px-3 py-2 bg-white/60 backdrop-blur-sm rounded-lg border border-slate-200/50 shadow-sm">
                 <Users className="w-4 h-4 text-blue-600" />
-                <span className="font-medium">+5k pacientes</span>
+                <span className="font-semibold text-slate-800">+5k</span>
+                <span className="text-slate-600">pacientes</span>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-2 px-3 py-2 bg-white/60 backdrop-blur-sm rounded-lg border border-slate-200/50 shadow-sm">
                 <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                <span className="font-medium">4,9/5 • 102+ avaliações</span>
+                <span className="font-semibold text-slate-800">4,9/5</span>
+                <span className="text-slate-600">• 102+ avaliações</span>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-2 px-3 py-2 bg-white/60 backdrop-blur-sm rounded-lg border border-slate-200/50 shadow-sm">
                 <Shield className="w-4 h-4 text-green-600" />
-                <span className="font-medium">Parceiro Amor e Saúde</span>
+                <span className="font-semibold text-slate-800">Parceiro Amor e Saúde</span>
               </div>
             </div>
 
-            {/* Primary CTA focused layout */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-6 justify-center lg:justify-start">
-              <Button size="xl" variant="cta" className="gap-2 shadow-2xl font-semibold" onClick={handleAgendarClick}>
+            {/* Enhanced CTA section with better visual hierarchy */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-8 justify-center lg:justify-start">
+              <Button 
+                size="xl" 
+                variant="cta" 
+                className="gap-3 shadow-xl hover:shadow-2xl font-bold px-8 py-4 transform hover:scale-105 transition-all duration-300" 
+                onClick={handleAgendarClick}
+              >
                 <Calendar size={20} />
                 {t('hero.schedule_button')}
               </Button>
 
-              <Button variant="outline" size="xl" className="gap-2 border-2" onClick={handleNossosServicosClick}>
-                {t('hero.services_button')} <ArrowRight size={16} />
+              <Button 
+                variant="outline" 
+                size="xl" 
+                className="gap-2 border-2 border-slate-300 hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 font-semibold" 
+                onClick={handleNossosServicosClick}
+              >
+                {t('hero.services_button')} 
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
 
@@ -100,17 +122,17 @@ const Hero = () => {
                 <div className="flex -space-x-2">
                   <SafeImage
                     className="w-8 h-8 rounded-full border-2 border-white object-cover shadow-sm"
-                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop"
+                    src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=64&h=64&fit=crop&crop=face"
                     width="32"
                     height="32"
-                    alt="Paciente satisfeito"
+                    alt="Paciente satisfeita após consulta oftalmológica"
                   />
                   <SafeImage
                     className="w-8 h-8 rounded-full border-2 border-white object-cover shadow-sm"
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop"
+                    src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=64&h=64&fit=crop&crop=face"
                     width="32"
                     height="32"
-                    alt="Paciente satisfeito"
+                    alt="Paciente satisfeito com óculos novos"
                   />
                   <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold border-2 border-white shadow-sm">
                     +5k
@@ -139,34 +161,42 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative lg:order-first"
           >
-            <div className="relative z-10 rounded-3xl overflow-hidden shadow-soft-medium">
-              <SafeImage
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-                width="800"
-                height="640"
-                sizes="(min-width: 1024px) 800px, 100vw"
-                className="w-full h-auto"
-                alt="Médico oftalmologista sorrindo para a câmera em uma clínica moderna"
-                src="https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png?format=webp"
-                fallbackSrc="https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png"
-              />
+            {/* Enhanced image container with modern design elements */}
+            <div className="relative z-10 group">
+              {/* Background glow effect */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-blue-200/40 via-indigo-200/40 to-sky-200/40 rounded-3xl blur-xl opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
+              {/* Main image container */}
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl ring-1 ring-slate-200/50">
+                <SafeImage
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                  width="800"
+                  height="640"
+                  sizes="(min-width: 1024px) 800px, 100vw"
+                  className="w-full h-auto transform group-hover:scale-105 transition-transform duration-700"
+                  alt="Médico oftalmologista sorrindo para a câmera em uma clínica moderna"
+                  src="https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png?format=webp"
+                  fallbackSrc="https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png"
+                />
+              </div>
             </div>
 
+            {/* Enhanced floating card with modern design */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
-              className="absolute -bottom-4 -left-4 md:-bottom-8 md:-left-8 lg:-bottom-4 lg:-left-12 glass-card p-3 md:p-4 max-w-xs w-64 md:w-auto"
+              className="absolute -bottom-6 -left-6 md:-bottom-10 md:-left-10 lg:-bottom-6 lg:-left-14 bg-white/95 backdrop-blur-md border border-white/50 shadow-2xl rounded-2xl p-4 md:p-6 max-w-xs w-72 md:w-auto"
             >
               <div className="flex items-start gap-4">
-                <div className="icon-container bg-blue-100">
-                  <Eye size={24} />
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center shadow-sm">
+                  <Eye size={24} className="text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-slate-900">{t('hero.advanced_tech_title')}</h3>
-                  <p className="text-sm">{t('hero.advanced_tech_desc')}</p>
+                  <h3 className="text-base font-bold text-slate-900 mb-1">{t('hero.advanced_tech_title')}</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{t('hero.advanced_tech_desc')}</p>
                 </div>
               </div>
             </motion.div>

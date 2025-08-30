@@ -10,6 +10,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher';
 import ScheduleDropdown from '@/components/ScheduleDropdown';
 import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { PERFORMANCE } from '@/lib/constants';
+import { safeOpenUrl } from '@/utils/safeNavigation';
 
 const Navbar = () => {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ const Navbar = () => {
     { name: t('navbar.services'), href: '/servicos', internal: true, isRoute: true },
     { name: t('navbar.lenses'), href: '/lentes', internal: true, isRoute: true },
     { name: t('navbar.about'), href: '/sobre', internal: true, isRoute: true },
+    { name: t('navbar.podcast', 'Podcast'), href: '/podcast', internal: true, isRoute: true },
     { name: t('navbar.testimonials'), href: '/depoimentos', internal: true, isRoute: true },
     { name: t('navbar.faq'), href: '/faq', internal: true, isRoute: true },
     { name: t('navbar.contact'), href: '/contato', internal: true, isRoute: true },
@@ -95,7 +97,7 @@ const Navbar = () => {
                       t('navbar.external_link_warning', `Você será redirecionado para ${link.name}. Continuar?`)
                     );
                     if (confirmed) {
-                      safeOpen(link.href);
+                      safeOpenUrl(link.href);
                     }
                   }}
                   initial={{ opacity: 0, y: -10 }}
@@ -115,16 +117,14 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-4">
             <LanguageSwitcher />
 
-            {/* Podcast Icon - Link externo */}
-            <a
-              href="https://shorturl.at/X0S4m"
-              target="_blank"
-              rel="noopener noreferrer"
+            {/* Podcast Icon - rota interna */}
+            <button
+              onClick={() => navigate('/podcast')}
               className="p-2 text-slate-700 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
               aria-label={t('navbar.podcast', 'Podcast')}
             >
               <Headphones size={20} />
-            </a>
+            </button>
 
             <Button
               ref={scheduleButtonRef}

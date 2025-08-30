@@ -78,11 +78,11 @@ export const safeOpenWithConfirmation = (url, serviceName, confirmMessage) => {
  * @returns {string} - Formatted tel: link
  */
 export const createTelLink = (phoneNumber) => {
-  if (!phoneNumber) return '';
+  if (!phoneNumber || phoneNumber.trim() === '') return '';
   
   // Remove all non-digit characters except +
   const cleaned = phoneNumber.replace(/[^\d+]/g, '');
-  return `tel:${cleaned}`;
+  return cleaned ? `tel:${cleaned}` : '';
 };
 
 /**
@@ -93,7 +93,7 @@ export const createTelLink = (phoneNumber) => {
  * @returns {string} - Formatted mailto link
  */
 export const createMailtoLink = (email, subject = '', body = '') => {
-  if (!email) return '';
+  if (!email || email.trim() === '') return '';
   
   const params = new URLSearchParams();
   if (subject) params.append('subject', subject);
@@ -109,7 +109,12 @@ export const createMailtoLink = (email, subject = '', body = '') => {
  * @returns {boolean} - Whether the URL is safe
  */
 export const isUrlSafe = (url) => {
-  if (!url || typeof url !== 'string') return false;
+  if (!url || typeof url !== 'string' || url.trim() === '') return false;
+  
+  // Check for dangerous protocols first (before URL parsing)
+  if (url.includes('javascript:') || url.includes('data:') || url.includes('vbscript:') || url.includes('file:')) {
+    return false;
+  }
   
   try {
     const urlObj = new URL(url.startsWith('http') ? url : `https://${url}`);
@@ -136,6 +141,10 @@ export const isUrlSafe = (url) => {
     
     return true;
   } catch (error) {
+    // Invalid URL - check if it's a simple domain that could be made valid
+    if (url && !url.includes(' ') && url.includes('.') && !url.includes('://')) {
+      return true; // Simple domain like 'example.com'
+    }
     return false;
   }
 };
