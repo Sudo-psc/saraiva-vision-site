@@ -85,23 +85,36 @@
 }
 
 /* Ensure white background as fallback and prevent horizontal scroll */
-html,
-body {
+html {
   background-color: white !important;
   color: #1a1a1a !important;
   /* Enhanced font fallback stack */
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  /* Prevent horizontal scrolling */
-  overflow-x: hidden !important;
-  width: 100% !important;
-  max-width: 100% !important;
+  /* Prevent horizontal scrolling but allow vertical */
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  /* Allow normal scrolling behavior */
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
 }
 
 /* Ensure root element doesn't overflow */
 #root {
-  overflow-x: hidden !important;
-  width: 100% !important;
-  max-width: 100% !important;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  position: relative;
 }
 
 @layer base {
@@ -344,10 +357,12 @@ body {
     line-height: 1.6;
     color: hsl(var(--text-primary));
     scroll-behavior: smooth;
-    /* Enhanced mobile responsiveness */
+    /* Enhanced mobile responsiveness with proper scroll management */
     overflow-x: hidden;
+    overflow-y: auto;
     width: 100%;
     max-width: 100%;
+    position: relative;
   }
 
   /* Ensure all containers respect screen boundaries */
@@ -355,6 +370,7 @@ body {
     overflow-x: hidden;
     width: 100%;
     max-width: 100%;
+    position: relative;
   }
 
   /* Fix potential overflow from large elements */

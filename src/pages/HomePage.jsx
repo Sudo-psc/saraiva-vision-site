@@ -32,16 +32,16 @@ function HomePage() {
   }, [location]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-blue-50/20 relative overflow-hidden">
-      {/* Enhanced decorative background with modern gradients and shapes */}
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-blue-50/20 relative overflow-x-hidden">
+      {/* Enhanced decorative background with contained gradients and shapes */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        {/* Main background orbs */}
-        <div className="absolute -top-40 -right-40 w-[40rem] h-[40rem] rounded-full bg-gradient-to-br from-blue-200/20 via-indigo-200/15 to-sky-200/10 blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-[35rem] h-[35rem] rounded-full bg-gradient-to-tr from-purple-200/15 via-blue-200/10 to-indigo-200/10 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        {/* Main background orbs - contained within viewport */}
+        <div className="absolute -top-20 -right-20 w-80 h-80 max-w-[50vw] max-h-[50vh] rounded-full bg-gradient-to-br from-blue-200/20 via-indigo-200/15 to-sky-200/10 blur-3xl animate-pulse" />
+        <div className="absolute -bottom-20 -left-20 w-72 h-72 max-w-[45vw] max-h-[45vh] rounded-full bg-gradient-to-tr from-purple-200/15 via-blue-200/10 to-indigo-200/10 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
         
-        {/* Geometric decoration elements */}
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-gradient-to-br from-blue-100/30 to-indigo-100/20 rounded-full blur-2xl animate-float" />
-        <div className="absolute bottom-1/4 left-1/4 w-48 h-48 bg-gradient-to-tr from-green-100/25 to-emerald-100/15 rounded-full blur-2xl animate-float" style={{ animationDelay: '2s' }} />
+        {/* Geometric decoration elements - properly contained */}
+        <div className="absolute top-1/4 right-1/4 w-48 h-48 max-w-[30vw] max-h-[30vh] bg-gradient-to-br from-blue-100/30 to-indigo-100/20 rounded-full blur-2xl animate-float" />
+        <div className="absolute bottom-1/4 left-1/4 w-36 h-36 max-w-[25vw] max-h-[25vh] bg-gradient-to-tr from-green-100/25 to-emerald-100/15 rounded-full blur-2xl animate-float" style={{ animationDelay: '2s' }} />
         
         {/* Subtle grid pattern overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-50/30 to-transparent opacity-50"></div>
