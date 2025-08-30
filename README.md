@@ -253,6 +253,8 @@ Para contribuir com o projeto, siga as diretrizes de desenvolvimento e abra um P
 - [Manual de Deploy](./README-DEPLOY.md)
 - [Relatório SEO](./SEO_AUDIT_REPORT.md)
 - [Plano de Design SEO](./docs/SEO_DESIGN_PLAN.md)
+- [Guia de Marca e Identidade Visual](./docs/BRAND_GUIDE.md)
+- [Estratégia de Conteúdo Médico](./docs/MEDICAL_CONTENT_STRATEGY.md)
 
 ---
 

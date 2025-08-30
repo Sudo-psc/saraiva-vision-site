@@ -71,29 +71,250 @@
     "items": {
       "consultations": {
         "title": "Ophthalmological Consultations",
-        "description": "Complete assessment of your eye health, with accurate diagnosis and treatment."
+        "description": "Complete assessment of your eye health, with accurate diagnosis and treatment.",
+        "fullDescription": "Our ophthalmological consultations provide comprehensive eye health assessment, combining clinical experience with state-of-the-art technology. Each consultation includes detailed medical history, complete eye examination, intraocular pressure measurement, and fundus evaluation to ensure accurate diagnosis and personalized treatment."
       },
       "refraction": {
         "title": "Refraction Exams",
-        "description": "High-precision determination of prescription for glasses and contact lenses."
+        "description": "High-precision determination of prescription for glasses and contact lenses.",
+        "fullDescription": "Refraction exams utilize advanced technology to determine precise prescription for glasses and contact lenses. Our process includes computerized and subjective refraction, contact lens fitting with different materials and designs, and comprehensive adaptation training to ensure visual comfort and eye health."
       },
       "specialized": {
         "title": "Specialized Treatments",
-        "description": "Treatment for glaucoma, cataracts, retinal diseases, and other eye conditions."
+        "description": "Treatment for glaucoma, cataracts, retinal diseases, and other eye conditions.",
+        "fullDescription": "We offer advanced specialized treatments for various eye conditions, including clinical and surgical glaucoma management, diabetic retinopathy treatment, dry eye syndrome therapy, and macular degeneration follow-up. Each treatment plan is individualized based on patient needs and disease stage."
       },
       "surgeries": {
         "title": "Ophthalmological Surgeries",
-        "description": "Advanced surgical procedures to correct vision problems."
+        "description": "Advanced surgical procedures to correct vision problems.",
+        "fullDescription": "Our surgical procedures employ microinvasive techniques and modern technology to ensure safety and effectiveness. We perform cataract surgery with intraocular lens implantation, refractive procedures, and glaucoma surgeries in an equipped surgical center with comprehensive pre and post-operative care."
       },
       "pediatric": {
         "title": "Pediatric Follow-up",
-        "description": "Specialized care for children's eye health, from birth."
+        "description": "Specialized care for children's eye health, from birth.",
+        "fullDescription": "Pediatric ophthalmology requires specialized approach adapted to each child's age and development. Our service includes red reflex testing, visual development assessment, strabismus evaluation, and infant refraction in a playful and welcoming environment, ensuring early detection and treatment of visual problems."
       },
       "reports": {
         "title": "Specialized Reports",
-        "description": "Issuance of ophthalmological reports for exams, expert opinions, and other purposes."
+        "description": "Issuance of ophthalmological reports for exams, expert opinions, and other purposes.",
+        "fullDescription": "We provide specialized ophthalmological reports for various purposes including driver's license exams, public contests, occupational health assessments, and expert opinions. Each report follows rigorous technical criteria and includes digital signature for legal validity and professional acceptance."
+      },
+      "gonioscopy": {
+        "title": "Gonioscopy",
+        "description": "Specialized exam to assess the drainage angle of the eye, essential for glaucoma diagnosis.",
+        "fullDescription": "Gonioscopy is a comprehensive examination that allows detailed visualization of the drainage angle structures of the eye. This exam is fundamental for glaucoma classification and treatment guidance, providing crucial information for therapeutic decision-making."
+      },
+      "retinaMapping": {
+        "title": "Retina Mapping",
+        "description": "Complete evaluation of the retina, including the peripheral region, to detect lesions and diseases.",
+        "fullDescription": "Retina mapping is a detailed examination that evaluates the entire retinal surface, from the central region to the periphery. This exam is essential for early detection of retinal detachment, diabetic retinopathy, and other conditions that may compromise vision."
+      },
+      "cornealTopography": {
+        "title": "Corneal Topography",
+        "description": "Detailed mapping of corneal curvature to diagnose keratoconus and plan refractive surgeries.",
+        "fullDescription": "Corneal topography is a precise examination that creates detailed maps of corneal curvature and elevation. This exam is essential for early diagnosis of keratoconus, refractive surgery planning, and specialized contact lens fitting."
+      },
+      "pachymetry": {
+        "title": "Pachymetry",
+        "description": "Precise measurement of corneal thickness, important for glaucoma diagnosis and refractive surgery evaluation.",
+        "fullDescription": "Pachymetry is a quick and painless exam that measures corneal thickness at multiple points. This measurement is crucial for accurate interpretation of intraocular pressure and evaluation of candidacy for refractive surgeries."
+      },
+      "retinography": {
+        "title": "Retinography",
+        "description": "High-resolution digital photography of the retina for documentation and follow-up of eye diseases.",
+        "fullDescription": "Retinography allows high-quality photographic documentation of the retina, enabling comparison over time and detailed monitoring of retinal diseases. It's essential for diabetic retinopathy follow-up and macular disease documentation."
+      },
+      "visualField": {
+        "title": "Visual Field",
+        "description": "Computerized exam that maps the field of vision to detect glaucoma and optic neuropathies.",
+        "fullDescription": "Visual field testing is a comprehensive computerized examination that maps peripheral vision and detects visual defects. It's fundamental for glaucoma diagnosis and monitoring, as well as evaluation of optic neuropathies and neurological conditions."
       }
+    },
+    "benefits": {
+      "comprehensiveExam": "Complete eye health examination",
+      "earlyDiagnosis": "Early disease diagnosis",
+      "personalizedCare": "Personalized follow-up care",
+      "modernEquipment": "State-of-the-art equipment",
+      "preventiveGuidance": "Detailed preventive guidance",
+      "preciseGrade": "Precise prescription determination",
+      "contactAdaptation": "Complete contact lens adaptation",
+      "lensTypes": "Testing of different lens types",
+      "specializedFollowup": "Specialized follow-up",
+      "careGuidance": "Guidance on use and care",
+      "glaucomaTreatment": "Advanced glaucoma treatment",
+      "diabetesControl": "Ocular diabetes control",
+      "dryEyeTherapy": "Dry eye therapy",
+      "macularDegeneration": "Macular degeneration follow-up",
+      "individualProtocol": "Individualized protocol",
+      "microinvasiveTechniques": "Microinvasive techniques",
+      "quickRecovery": "Quick recovery",
+      "equippedCenter": "Equipped surgical center",
+      "safeAnesthesia": "Safe local anesthesia",
+      "postOpFollowup": "Post-operative follow-up",
+      "friendlyEnvironment": "Playful and welcoming environment",
+      "earlyDetection": "Early problem detection",
+      "adaptedTechniques": "Child-adapted techniques",
+      "parentGuidance": "Parent guidance",
+      "developmentFollowup": "Development follow-up",
+      "licenseReports": "Driver's license reports for all categories",
+      "publicContests": "Public and military contests",
+      "occupationalEvals": "Occupational evaluations",
+      "digitalSignature": "Digital signature",
+      "fastDelivery": "Fast and secure delivery",
+      "preciseDiagnosis": "Precise glaucoma diagnosis",
+      "glaucomaClassification": "Glaucoma type classification",
+      "angleEvaluation": "Iridocorneal angle evaluation",
+      "directedGuidance": "Directed therapeutic guidance",
+      "precisionEquipment": "High precision equipment",
+      "earlyLesionDetection": "Early retinal lesion detection",
+      "peripheralEvaluation": "Peripheral retina evaluation",
+      "detachmentDiagnosis": "Retinal detachment diagnosis",
+      "diabeticMonitoring": "Diabetic retinopathy monitoring",
+      "painlessExam": "Painless and safe exam",
+      "keratoconeDiagnosis": "Early keratoconus diagnosis",
+      "refractivePlanning": "Refractive surgery planning",
+      "specialLensAdaptation": "Special lens adaptation",
+      "ectasiaFollowup": "Ectasia follow-up",
+      "coloredMaps": "Detailed colored maps",
+      "preciseThickness": "Precise corneal thickness measurement",
+      "glaucomaAid": "Aid in glaucoma diagnosis",
+      "refractiveSurgeryEval": "Refractive surgery evaluation",
+      "keratoconeMonitoring": "Keratoconus monitoring",
+      "quickPainless": "Quick and painless exam",
+      "photographicDocumentation": "Photographic documentation of the retina",
+      "diseaseFollowup": "Eye disease follow-up",
+      "diabeticRetinaMonitoring": "Diabetic retinopathy monitoring",
+      "maculatLesionDetection": "Macular lesion detection",
+      "temporalComparison": "Temporal evolution comparison",
+      "earlyGlaucomaDiagnosis": "Early glaucoma diagnosis",
+      "opticNeuropathyEval": "Optic neuropathy evaluation",
+      "progressionMonitoring": "Progression monitoring",
+      "scotomaDetection": "Scotoma detection",
+      "reliableProtocol": "Reliable automated protocol"
+    },
+    "duration": {
+      "consultation": "45-60 minutes",
+      "refraction": "30-45 minutes",
+      "specialized": "60-90 minutes",
+      "surgeries": "45-90 minutes",
+      "pediatric": "30-45 minutes",
+      "reports": "20-30 minutes",
+      "gonioscopy": "15-20 minutes",
+      "retinaMapping": "20-30 minutes",
+      "cornealTopography": "10-15 minutes",
+      "pachymetry": "5-10 minutes",
+      "retinography": "10-15 minutes",
+      "visualField": "20-30 minutes per eye"
+    },
+    "preparation": {
+      "consultation": "Bring your current glasses and previous exams",
+      "refraction": "Avoid using contact lenses 24h before the exam",
+      "specialized": "Bring all exams and medications in use",
+      "surgeries": "8-hour fasting and mandatory companion",
+      "pediatric": "Rested and fed child",
+      "reports": "Bring ID document and requisition",
+      "gonioscopy": "Avoid using contact lenses on the day of the exam",
+      "retinaMapping": "Pupil dilation necessary - avoid driving after the exam",
+      "cornealTopography": "Suspend contact lens use as per medical guidance",
+      "pachymetry": "Suspend contact lenses 24h before the exam",
+      "retinography": "Pupil dilation may be necessary",
+      "visualField": "Use your regular glasses and avoid visual fatigue before the exam"
+    },
+    "included": {
+      "anamnesis": "Detailed medical history",
+      "acuityTest": "Visual acuity test",
+      "biomicroscopy": "Biomicroscopy",
+      "tonometry": "Tonometry (eye pressure)",
+      "retinaMapping": "Retina mapping",
+      "orientations": "Guidance and prescriptions",
+      "computerizedRefraction": "Computerized refraction",
+      "subjectiveRefraction": "Subjective refraction",
+      "contactTest": "Contact lens test",
+      "personalizedAdaptation": "Personalized adaptation",
+      "usageTraining": "Usage training",
+      "cleaningKit": "Initial cleaning kit",
+      "specializedEvaluation": "Specialized evaluation",
+      "complementaryExams": "Complementary exams",
+      "therapeuticPlan": "Therapeutic plan",
+      "medicationPrescription": "Medication prescription",
+      "followupScheduling": "Follow-up scheduling",
+      "familyOrientation": "Family guidance",
+      "preOpConsultation": "Pre-operative consultation",
+      "preOpExams": "Pre-surgical exams",
+      "surgicalProcedure": "Surgical procedure",
+      "postOpMedication": "Post-operative medication",
+      "includedReturns": "Included returns",
+      "emergencySupport": "24h emergency support",
+      "redReflexTest": "Red reflex test",
+      "visualDevelopment": "Visual development assessment",
+      "strabismusTest": "Strabismus test",
+      "infantRefraction": "Infant refraction",
+      "familyGuidance": "Family guidance",
+      "returnSchedule": "Return schedule",
+      "completeExam": "Complete ophthalmological exam",
+      "specificEvaluation": "Specific requested evaluation",
+      "technicalReport": "Detailed technical report",
+      "digitalSig": "Digital signature",
+      "emailDelivery": "Email delivery",
+      "printedCopy": "Printed copy when necessary",
+      "topicalAnesthesia": "Topical anesthesia",
+      "bilateralExam": "Bilateral gonioscopic exam",
+      "angleClassification": "Detailed angle classification",
+      "specializedReport": "Specialized technical report",
+      "diagnosisGuidance": "Guidance on diagnosis",
+      "referralWhenNeeded": "Referral when necessary",
+      "pupilDilation": "Pupil dilation with eye drops",
+      "binocularOphthalmoscopy": "Binocular indirect ophthalmoscopy",
+      "peripheralMapping": "Peripheral retina mapping",
+      "photographicDocumentation": "Photographic documentation when indicated",
+      "detailedReport": "Detailed report",
+      "postExamGuidance": "Post-exam guidance",
+      "computerizedTopography": "Computerized topography",
+      "elevationMaps": "Elevation and curvature maps",
+      "aberrationAnalysis": "Corneal aberration analysis",
+      "completeReport": "Complete technical report",
+      "coloredImages": "Printed colored images",
+      "resultGuidance": "Guidance on results",
+      "ultrasonicPachymetry": "Bilateral ultrasonic pachymetry",
+      "multiplePoints": "Measurements at multiple points",
+      "normalValues": "Normal reference values",
+      "clinicalInterpretation": "Clinical interpretation",
+      "techReport": "Technical report",
+      "resultOrientation": "Guidance on results",
+      "highResPhotos": "High-resolution digital photographs",
+      "posteriorPole": "Posterior pole images",
+      "colorDocumentation": "Colored documentation",
+      "digitalArchive": "Permanent digital archive",
+      "previousComparison": "Comparison with previous exams",
+      "photoReport": "Photographic report",
+      "computerizedField": "Bilateral computerized visual field",
+      "sitaProtocol": "SITA Standard or Fast protocol",
+      "progressionAnalysis": "Progression analysis when available",
+      "reliabilityIndexes": "Reliability indices",
+      "specializedInterpretation": "Specialized interpretation",
+      "resultGuidance": "Guidance on results"
     }
+  },
+  "service": {
+    "about": "About the Service",
+    "benefits": "Main Benefits",
+    "included": "What's Included",
+    "quickInfo": "Quick Information",
+    "duration": "Duration",
+    "location": "Location",
+    "preparation": "Preparation",
+    "directContact": "Direct Contact"
+  },
+  "clinic": {
+    "name": "Saraiva Vision Clinic",
+    "location": "Caratinga/MG"
+  },
+  "cta": {
+    "scheduleConsultation": "Schedule Consultation",
+    "scheduleNow": "Schedule Now"
+  },
+  "navigation": {
+    "backToServices": "Back to Services"
   },
   "contactLenses": {
     "main_title": "Contact Lenses",

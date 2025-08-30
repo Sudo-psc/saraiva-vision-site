@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { loadGoogleMaps, isGoogleMapsReady, resetGoogleMapsLoader } from '@/lib/loadGoogleMaps';
-import { CLINIC_PLACE_ID } from '@/lib/clinicInfo';
+import { CLINIC_PLACE_ID, clinicInfo } from '@/lib/clinicInfo';
 
 const GoogleMap = ({ height = 340 }) => {
     const containerRef = useRef(null);
@@ -10,6 +10,168 @@ const GoogleMap = ({ height = 340 }) => {
     const [debugInfo, setDebugInfo] = useState([]);
     const [retryCount, setRetryCount] = useState(0);
     const maxRetries = 3;
+
+    // Create custom marker element with clinic icon
+    const createCustomMarkerElement = () => {
+        const markerElement = document.createElement('div');
+        markerElement.style.cssText = `
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        `;
+        
+        const iconElement = document.createElement('div');
+        iconElement.innerHTML = '👁️';
+        iconElement.style.cssText = `
+            transform: rotate(45deg);
+            font-size: 16px;
+            color: white;
+        `;
+        
+        markerElement.appendChild(iconElement);
+        return markerElement;
+    };
+
+    // Create business profile content for InfoWindow
+    const createBusinessProfileContent = (placeData) => {
+        const formatRating = (rating, total) => {
+            const stars = '★'.repeat(Math.floor(rating)) + '☆'.repeat(5 - Math.floor(rating));
+            return `${stars} ${rating} (${total} avaliações)`;
+        };
+
+        const formatOpeningHours = (hours) => {
+            if (!hours || !hours.weekdayDescriptions) return 'Horário não disponível';
+            const today = new Date().getDay();
+            const todayHours = hours.weekdayDescriptions[today === 0 ? 6 : today - 1]; // Adjust for Sunday
+            return todayHours || 'Horário não disponível';
+        };
+
+        const businessStatus = placeData.business_status === 'OPERATIONAL' ? 
+            '<span style="color: #22c55e; font-weight: 600;">● Aberto</span>' : 
+            '<span style="color: #ef4444; font-weight: 600;">● Status não disponível</span>';
+
+        return `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 320px; padding: 4px;">
+                ${placeData.photos && placeData.photos.length > 0 ? `
+                    <div style="margin-bottom: 12px; border-radius: 8px; overflow: hidden;">
+                        <img src="${placeData.photos[0].getURI({ maxWidth: 320, maxHeight: 160 })}" 
+                             style="width: 100%; height: 160px; object-fit: cover; display: block;" 
+                             alt="Foto da clínica" />
+                    </div>
+                ` : ''}
+                
+                <div style="margin-bottom: 12px;">
+                    <h3 style="margin: 0 0 6px 0; font-size: 18px; font-weight: 700; color: #1f2937; line-height: 1.2;">
+                        ${placeData.name}
+                    </h3>
+                    <div style="margin-bottom: 4px;">
+                        ${businessStatus}
+                    </div>
+                    ${placeData.primary_type ? `
+                        <div style="color: #6b7280; font-size: 14px; margin-bottom: 8px;">
+                            ${placeData.primary_type}
+                        </div>
+                    ` : ''}
+                </div>
+
+                ${placeData.rating ? `
+                    <div style="margin-bottom: 12px; padding: 8px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #fbbf24;">
+                        <div style="font-size: 14px; color: #f59e0b; font-weight: 600;">
+                            ${formatRating(placeData.rating, placeData.user_ratings_total)}
+                        </div>
+                    </div>
+                ` : ''}
+
+                <div style="margin-bottom: 12px;">
+                    ${placeData.short_address ? `
+                        <div style="display: flex; align-items: flex-start; margin-bottom: 6px;">
+                            <span style="color: #2563eb; margin-right: 6px; font-size: 14px;">📍</span>
+                            <span style="font-size: 13px; color: #4b5563; line-height: 1.4;">
+                                ${placeData.short_address}
+                            </span>
+                        </div>
+                    ` : ''}
+                    
+                    ${placeData.phone ? `
+                        <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                            <span style="color: #2563eb; margin-right: 6px; font-size: 14px;">📞</span>
+                            <a href="tel:${placeData.phone}" style="font-size: 13px; color: #2563eb; text-decoration: none; font-weight: 500;">
+                                ${placeData.phone}
+                            </a>
+                        </div>
+                    ` : ''}
+
+                    ${placeData.opening_hours ? `
+                        <div style="display: flex; align-items: flex-start; margin-bottom: 8px;">
+                            <span style="color: #2563eb; margin-right: 6px; font-size: 14px;">🕐</span>
+                            <span style="font-size: 13px; color: #4b5563; line-height: 1.4;">
+                                ${formatOpeningHours(placeData.opening_hours)}
+                            </span>
+                        </div>
+                    ` : ''}
+                </div>
+
+                ${placeData.editorial_summary ? `
+                    <div style="margin-bottom: 12px; padding: 8px; background: #eff6ff; border-radius: 6px; border-left: 3px solid #2563eb;">
+                        <div style="font-size: 13px; color: #1e40af; line-height: 1.4;">
+                            ${placeData.editorial_summary.text}
+                        </div>
+                    </div>
+                ` : ''}
+
+                ${placeData.reviews && placeData.reviews.length > 0 ? `
+                    <div style="margin-bottom: 12px;">
+                        <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 600; color: #374151;">
+                            Avaliações Recentes:
+                        </h4>
+                        ${placeData.reviews.slice(0, 2).map(review => `
+                            <div style="margin-bottom: 8px; padding: 6px; background: #f9fafb; border-radius: 4px; border-left: 2px solid #e5e7eb;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                                    <span style="font-weight: 600; font-size: 12px; color: #374151;">
+                                        ${review.authorAttribution?.displayName || 'Cliente'}
+                                    </span>
+                                    <span style="color: #f59e0b; font-size: 11px;">
+                                        ${'★'.repeat(review.rating)}
+                                    </span>
+                                </div>
+                                <div style="font-size: 11px; color: #6b7280; line-height: 1.3;">
+                                    ${review.text?.text ? (review.text.text.length > 80 ? review.text.text.substring(0, 80) + '...' : review.text.text) : 'Sem comentário'}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+
+                <div style="display: flex; gap: 8px; margin-top: 12px;">
+                    ${placeData.url ? `
+                        <a href="${placeData.url}" target="_blank" rel="noopener noreferrer" 
+                           style="flex: 1; padding: 8px 12px; background: #2563eb; color: white; text-decoration: none; 
+                                  border-radius: 6px; font-size: 12px; font-weight: 600; text-align: center; 
+                                  transition: background-color 0.2s;">
+                            Ver no Google Maps
+                        </a>
+                    ` : ''}
+                    
+                    ${placeData.website ? `
+                        <a href="${placeData.website}" target="_blank" rel="noopener noreferrer" 
+                           style="flex: 1; padding: 8px 12px; background: #059669; color: white; text-decoration: none; 
+                                  border-radius: 6px; font-size: 12px; font-weight: 600; text-align: center; 
+                                  transition: background-color 0.2s;">
+                            Site Oficial
+                        </a>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    };
 
     // Debug logging function
     const addDebugLog = useCallback((message) => {
@@ -84,7 +246,8 @@ const GoogleMap = ({ height = 340 }) => {
                 addDebugLog('🗺️ Criando instância do mapa...');
                 mapInstance = new google.maps.Map(containerRef.current, {
                     zoom: 17,
-                    center: { lat: -19.7868, lng: -42.1392 },
+                    center: { lat: clinicInfo.latitude, lng: clinicInfo.longitude },
+                    mapId: 'DEMO_MAP_ID', // Map ID necessário para Advanced Markers
                     mapTypeControl: false,
                     streetViewControl: false,
                     fullscreenControl: false,
@@ -111,19 +274,35 @@ const GoogleMap = ({ height = 340 }) => {
                             requestedLanguage: 'pt-BR',
                         });
 
-                        addDebugLog('🔍 Buscando detalhes do local...');
+                        addDebugLog('🔍 Buscando detalhes completos do perfil Google Business...');
                         await place.fetchFields({
-                            fields: ['displayName', 'location', 'formattedAddress', 'rating', 'userRatingCount', 'googleMapsURI']
+                            fields: [
+                                'displayName', 'location', 'formattedAddress', 'rating', 'userRatingCount', 
+                                'googleMapsURI', 'businessStatus', 'priceLevel', 'photos', 'reviews',
+                                'regularOpeningHours', 'websiteURI', 'nationalPhoneNumber', 'types',
+                                'editorialSummary', 'primaryType', 'shortFormattedAddress'
+                            ]
                         });
-                        addDebugLog('✅ Detalhes do local obtidos');
+                        addDebugLog('✅ Detalhes completos do perfil Google Business obtidos');
 
                         const placeData = {
                             name: place.displayName,
                             geometry: { location: place.location },
                             formatted_address: place.formattedAddress,
+                            short_address: place.shortFormattedAddress,
                             rating: place.rating,
                             user_ratings_total: place.userRatingCount,
-                            url: place.googleMapsURI
+                            url: place.googleMapsURI,
+                            website: place.websiteURI,
+                            phone: place.nationalPhoneNumber,
+                            business_status: place.businessStatus,
+                            price_level: place.priceLevel,
+                            types: place.types,
+                            primary_type: place.primaryType,
+                            editorial_summary: place.editorialSummary,
+                            opening_hours: place.regularOpeningHours,
+                            photos: place.photos ? place.photos.slice(0, 3) : [], // First 3 photos
+                            reviews: place.reviews ? place.reviews.slice(0, 3) : [] // First 3 reviews
                         };
 
                         if (isComponentMounted) {
@@ -135,17 +314,33 @@ const GoogleMap = ({ height = 340 }) => {
                             mapInstance.setCenter(place.location);
                             addDebugLog('🎯 Centro do mapa definido');
 
-                            // Load marker library
+                            // Load marker library and create enhanced InfoWindow
                             addDebugLog('📍 Carregando biblioteca Marker...');
                             const markerLib = await google.maps.importLibrary("marker");
                             addDebugLog('✅ Biblioteca Marker carregada');
 
-                            new markerLib.AdvancedMarkerElement({
+                            // Create custom marker with clinic icon
+                            const marker = new markerLib.AdvancedMarkerElement({
                                 map: mapInstance,
                                 position: place.location,
-                                title: place.displayName
+                                title: place.displayName,
+                                content: createCustomMarkerElement()
                             });
-                            addDebugLog('✅ Marcador adicionado ao mapa');
+
+                            // Create rich InfoWindow with Google Business profile
+                            const infoWindow = new google.maps.InfoWindow({
+                                content: createBusinessProfileContent(placeData),
+                                maxWidth: 350
+                            });
+
+                            // Auto-open InfoWindow and add click listener
+                            infoWindow.open(mapInstance, marker);
+                            
+                            marker.addListener('click', () => {
+                                infoWindow.open(mapInstance, marker);
+                            });
+
+                            addDebugLog('✅ Marcador aprimorado com perfil do negócio adicionado ao mapa');
                         }
 
                     } catch (placesError) {
@@ -153,6 +348,23 @@ const GoogleMap = ({ height = 340 }) => {
                         // Continue without places data
                         addDebugLog('⚠️ Continuando sem dados do Places API');
                     }
+                }
+
+                // Fallback: se não houver Place ID ou a busca falhar, garantir um marcador nas coordenadas da clínica
+                try {
+                    if (mapInstance && (!CLINIC_PLACE_ID || !place?.geometry?.location)) {
+                        addDebugLog('📍 Aplicando marcador de fallback com coordenadas da clínica');
+                        const markerLib = await google.maps.importLibrary("marker");
+                        const fallbackPosition = { lat: clinicInfo.latitude, lng: clinicInfo.longitude };
+                        mapInstance.setCenter(fallbackPosition);
+                        new markerLib.AdvancedMarkerElement({
+                            map: mapInstance,
+                            position: fallbackPosition,
+                            title: clinicInfo.name,
+                        });
+                    }
+                } catch (fallbackErr) {
+                    addDebugLog(`⚠️ Erro ao aplicar marcador de fallback: ${fallbackErr.message}`);
                 }
 
                 if (isComponentMounted) {

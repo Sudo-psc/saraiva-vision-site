@@ -79,7 +79,7 @@ Every Page:
   - Navbar (consistent navigation)
   - Main Content (page-specific)
   - Footer (contact & links)
-  - FloatingCTA (WhatsApp widget)
+  - CTAModal (scheduling modal)
 
 Component Pattern:
   - Responsive design (mobile-first)

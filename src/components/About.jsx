@@ -22,13 +22,51 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="bg-transparent no-scrollbar-x relative">
-      {/* Ambient gradient accents */}
-      <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden="true">
-        <div className="absolute -top-24 -right-16 w-80 h-80 bg-gradient-to-br from-blue-400/12 to-sky-400/10 rounded-full blur-3xl" />
+    <section
+      id="about"
+      className="relative no-scrollbar-x bg-white"
+    >
+      {/* 3D background accents (non-intrusive) */}
+      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+        {/* Soft radial glow */}
+        <div
+          className="absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full blur-3xl opacity-60"
+          style={{
+            background: 'radial-gradient(circle at 30% 30%, rgba(59,130,246,0.12), rgba(147,51,234,0.10), rgba(236,72,153,0.08), transparent 60%)'
+          }}
+        />
+        <div
+          className="absolute -bottom-28 -right-24 w-[26rem] h-[26rem] rounded-full blur-3xl opacity-60"
+          style={{
+            background: 'radial-gradient(circle at 70% 70%, rgba(59,130,246,0.10), rgba(99,102,241,0.10), rgba(14,165,233,0.08), transparent 60%)'
+          }}
+        />
+
+        {/* Tilted 3D plates */}
+        <div
+          className="absolute -top-10 right-[-4rem] w-[34rem] h-[18rem] rounded-[2rem] opacity-30 shadow-3d animate-float"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.85), rgba(241,245,249,0.85))',
+            border: '1px solid rgba(226,232,240,0.8)',
+            transform: 'perspective(1200px) rotateX(18deg) rotateY(-24deg) rotateZ(-6deg)',
+            boxShadow: '0 40px 120px rgba(2,6,23,0.10), inset 0 1px 0 rgba(255,255,255,0.5)'
+          }}
+        />
+        <div
+          className="absolute bottom-[-3rem] left-[-4rem] w-[28rem] h-[16rem] rounded-[2rem] opacity-30 shadow-3d animate-float-delayed"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,250,252,0.9))',
+            border: '1px solid rgba(226,232,240,0.8)',
+            transform: 'perspective(1200px) rotateX(16deg) rotateY(22deg) rotateZ(4deg)',
+            boxShadow: '0 36px 100px rgba(2,6,23,0.08), inset 0 1px 0 rgba(255,255,255,0.5)'
+          }}
+        />
       </div>
+
       <div className="container mx-auto px-4 md:px-6 no-scrollbar-x">
-        <div className="relative glass-blue bg-[#FFFAFA] backdrop-blur-2xl rounded-3xl gradient-border shimmer shadow-3d p-6 md:p-10">
+        <div
+          className="relative bg-white rounded-3xl shadow-3d p-6 md:p-10 border-2 border-slate-200/80"
+        >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 lg:gap-24 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -37,7 +75,7 @@ const About = () => {
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              <div className="absolute -top-6 -left-6 md:-top-10 md:-left-10 w-32 h-32 md:w-64 md:h-64 bg-blue-200 rounded-full filter blur-3xl opacity-30"></div>
+
 
               <div className="grid grid-cols-2 gap-3 md:gap-4 relative z-10">
                 <div className="space-y-4">
@@ -71,7 +109,7 @@ const About = () => {
                 {t('about.tag')}
               </div>
 
-              <h2 className="text-heading-lg md:text-heading-xl font-semibold leading-tight">
+              <h2 className="text-heading-xl md:text-display-sm lg:text-display-md font-bold leading-tight tracking-tight">
                 {t('about.title')}
               </h2>
 
@@ -83,7 +121,20 @@ const About = () => {
                 {t('about.p2')}
               </p>
 
-              {/* Dr. Philipe Profile Section */}
+              {/* Clinic facade image */}
+              <div className="w-full">
+                <div className="rounded-2xl overflow-hidden shadow-soft-medium h-48 md:h-64 mb-4">
+                  <img
+                    src="/img/clinic_facade.png"
+                    alt={t('about.facade_alt') || 'Fachada da clínica'}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Dr. Philipe Profile Section (photo removed) */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -91,17 +142,6 @@ const About = () => {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="flex items-center gap-4 md:gap-6 p-4 md:p-6 bg-white/70 backdrop-blur-md rounded-2xl shadow-soft-medium border-2 border-slate-300 hover:border-blue-300 transition-colors"
               >
-                <div className="flex-shrink-0">
-                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden ring-4 ring-blue-100 shadow-soft-medium">
-                    <img
-                      src="/img/drphilipe_perfil.png"
-                      alt={t('about.doctor.alt')}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-xl md:text-2xl font-semibold text-slate-900 mb-1">
                     {t('about.doctor.name')}
@@ -123,7 +163,7 @@ const About = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Doctor Card */}
                   <div className="group flex items-center gap-4 p-4 bg-white/60 backdrop-blur-md rounded-2xl border-2 border-slate-300 hover:border-blue-300 transition-all shadow-soft-medium hover:shadow-3d-hover">
-                    <div className="w-16 h-16 rounded-full overflow-hidden ring-4 ring-blue-100">
+                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden ring-4 ring-blue-100">
                       <img src="/img/drphilipe_perfil.png" alt={t('about.doctor.alt')} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                     </div>
                     <div>
@@ -134,8 +174,8 @@ const About = () => {
 
                   {/* Nurse Card */}
                   <div className="group flex items-center gap-4 p-4 bg-white/60 backdrop-blur-md rounded-2xl border-2 border-slate-300 hover:border-blue-300 transition-all shadow-soft-medium hover:shadow-3d-hover">
-                    <div className="w-16 h-16 rounded-full overflow-hidden ring-4 ring-blue-100">
-                      <img src="/img/nurse_ana_lucia.png" alt={t('about.nurse.alt')} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden ring-4 ring-blue-100">
+                      <img src="/img/eng.ana.jpeg" alt={t('about.nurse.alt')} className="w-full h-full object-cover" loading="lazy" decoding="async" width="96" height="96" />
                     </div>
                     <div>
                       <div className="font-semibold text-slate-900">{t('about.nurse.name')}</div>

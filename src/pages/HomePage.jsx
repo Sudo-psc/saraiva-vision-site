@@ -11,6 +11,7 @@ import About from '@/components/About';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import CompactGoogleReviews from '@/components/CompactGoogleReviews';
+import GoogleLocalSection from '@/components/GoogleLocalSection';
 import FAQ from '@/components/FAQ';
 
 function HomePage() {
@@ -59,6 +60,14 @@ function HomePage() {
         </div>
 
         <CompactGoogleReviews />
+
+        {/* Section Divider */}
+        <div className="py-8">
+          <div className="w-32 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent mx-auto"></div>
+        </div>
+
+        {/* Local / Mapa (Google Places) */}
+        <GoogleLocalSection />
 
         {/* Section Divider */}
         <div className="py-8">

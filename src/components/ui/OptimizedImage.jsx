@@ -13,6 +13,7 @@ const OptimizedImage = ({
     webpSrc,
     avifSrc,
     fallbackSrc,
+    objectFit = 'cover',
     ...props
 }) => {
     const [hasLoaded, setHasLoaded] = useState(false);
@@ -147,7 +148,7 @@ const OptimizedImage = ({
                         sizes={sizes}
                         onLoad={handleLoad}
                         onError={handleError}
-                        className={`w-full h-full object-cover transition-opacity duration-300 ${hasLoaded ? 'opacity-100' : 'opacity-0'
+                        className={`w-full h-full object-${objectFit} transition-opacity duration-300 ${hasLoaded ? 'opacity-100' : 'opacity-0'
                             }`}
                         {...props}
                     />

@@ -6,7 +6,7 @@ Date: 2025-08-16
 This document summarizes code changes applied to focus the primary conversion (Agendar Consulta), reduce cognitive load, improve perceived performance, and strengthen robustness. It also outlines the remaining steps for design (Figma), asset optimization, and Lighthouse validation. Added later: route-level code splitting (React.lazy + Suspense) and a development proxy `/api/reviews` with 30‑minute cache to securely fetch Google Places reviews without exposing the API key in the browser.
 
 ## Objectives & Status
-1. Persistent primary CTA – Implemented via `FloatingCTA` modal (single funnel) replacing scattered WhatsApp links.
+1. Standalone scheduling CTA – Implemented via `CTAModal` (modal único) acionado globalmente; botão flutuante removido.
 2. Scroll depth reduction – Homepage now uses teasers (lentes + limited testimonials). Full content moved to new pages `/lentes` and `/depoimentos`. Further pruning suggestions below.
 3. Micro-copy reassurance – Added roadmap line under hero: “Preencha seus dados e receba confirmação em 1 minuto. 100% seguro.”
 4. Progress indicators – Testimonials carousel now shows dots + numeric slide counter.
@@ -16,9 +16,9 @@ This document summarizes code changes applied to focus the primary conversion (A
 ## Code Changes (Key Files)
 | Area | File | Change |
 |------|------|--------|
-| Floating CTA modal | `src/components/FloatingCTA.jsx` | New component (sticky bottom-right) with modal + custom event listener. |
-| Remove legacy WhatsApp widget | `HomePage.jsx` | Replaced `<WhatsappWidget/>` with `<FloatingCTA/>`. |
-| Unified CTA triggers | `Hero.jsx`, `Services.jsx`, `Contact.jsx` | Dispatch `open-floating-cta` event instead of opening WhatsApp directly. |
+| Scheduling CTA modal | `src/components/CTAModal.jsx` | Novo componente somente modal; abre via evento global `open-cta-modal`. |
+| Global mount | `App.jsx` | `CTAModal` montado globalmente após `ConsentManager`. |
+| Unified CTA triggers | `Hero.jsx`, `Services.jsx`, `Contact.jsx` | Disparam evento `open-cta-modal` ao invés de abrir WhatsApp direto. |
 | Micro-roadmap copy | `Hero.jsx` | Added reassurance line below buttons. |
 | Testimonials progress | `Testimonials.jsx` | Numeric counter + optional `limit` prop + lazy-loaded images + “view all” link. |
 | Homepage scroll reduction | `HomePage.jsx` | Added lenses teaser section + limited testimonials (3). |
@@ -82,10 +82,10 @@ ARIA attributes (`aria-invalid`, `aria-describedby`) added for accessibility. `E
 
 ## Event Contract
 
-Dispatch `open-floating-cta` on `window` to open the scheduling modal universally:
+Dispare `open-cta-modal` no `window` para abrir o modal de agendamento de qualquer lugar:
 
 ```js
-window.dispatchEvent(new Event('open-floating-cta'));
+window.dispatchEvent(new Event('open-cta-modal'));
 ```
 
 ## Remaining Deliverables

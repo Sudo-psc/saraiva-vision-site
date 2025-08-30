@@ -81,6 +81,7 @@ const GoogleMapSimple = ({ height = 340 }) => {
                 const map = new google.maps.Map(containerRef.current, {
                     zoom: 17,
                     center: { lat: -19.7868, lng: -42.1392 },
+                    mapId: 'DEMO_MAP_ID', // Map ID necessário para Advanced Markers
                     mapTypeControl: false,
                     streetViewControl: false,
                     fullscreenControl: false,

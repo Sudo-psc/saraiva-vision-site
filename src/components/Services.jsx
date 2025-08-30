@@ -8,56 +8,40 @@ import { getServiceIcon } from '@/components/icons/ServiceIcons';
 
 const ServiceCard = ({ service, index }) => (
   <motion.div
-    initial={{ y: 40, opacity: 0 }}
+    initial={{ y: 30, opacity: 0 }}
     whileInView={{ y: 0, opacity: 1 }}
     viewport={{ once: true }}
-    transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.07 }}
-    className="group relative flex flex-col items-center text-center p-8 rounded-3xl bg-white/70 backdrop-blur-md shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08),0_4px_12px_-2px_rgba(0,0,0,0.05)] border-2 border-slate-300/90 hover:border-blue-400 will-change-transform"
-    whileHover={{ y: -6, rotateX: 4, rotateY: -4 }}
+    transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.04 }}
+    className="group relative flex flex-col items-center text-center p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-transform duration-300"
+    whileHover={{ y: -8 }}
   >
-    {/* Ambient gradient halo */}
-    <div className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ background: 'radial-gradient(circle at 30% 20%, rgba(96,165,250,0.35), transparent 60%)' }} />
-    <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 mix-blend-overlay" style={{ background: 'linear-gradient(140deg, rgba(147,51,234,0.15), rgba(236,72,153,0.12), rgba(59,130,246,0.12))' }} />
-
-    {/* Icon */}
-    <motion.div
-      className="relative mb-6 w-48 h-48 flex items-center justify-center"
-      whileHover={{ scale: 1.12, rotate: 4 }}
-    >
-      <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-      <div className="relative w-44 h-44 drop-shadow-lg select-none rounded-2xl ring-0 group-hover:ring-2 ring-blue-300/40 transition-all duration-300 ease-out">
-        {service.icon}
+    {/* Icon (responsive, centered) */}
+    <div className="mb-4 sm:mb-6 flex items-center justify-center">
+      <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 bg-white rounded-xl sm:rounded-2xl flex items-center justify-center shadow-soft-md">
+        <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 select-none">
+          {service.icon}
+        </div>
       </div>
-    </motion.div>
+    </div>
 
     {/* Title */}
-    <motion.h3
-      className="text-heading-xs font-semibold mb-3 text-slate-800 tracking-normal"
-      whileHover={{ scale: 1.06 }}
-    >
-      <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-900 to-slate-700 group-hover:from-blue-700 group-hover:via-purple-700 group-hover:to-pink-700 transition-colors duration-500">
-        {service.title}
-      </span>
-    </motion.h3>
+    <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 text-[hsl(var(--medical-primary))] px-2 sm:px-0">
+      {service.title}
+    </h3>
 
     {/* Description */}
-    <p className="text-slate-600 text-body leading-loose mb-6 max-w-prose transition-all duration-300 group-hover:text-slate-700 group-hover:scale-105 cursor-default">
+    <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed mb-4 max-w-prose px-2 sm:px-0">
       {service.description}
     </p>
 
-    {/* Saiba mais link styled as button */}
+    {/* Saiba mais button */}
     <Link
       to={`/servico/${service.id}`}
-      className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-slate-700 bg-gradient-to-r from-slate-100 to-slate-50 hover:from-blue-50 hover:to-pink-50 border border-slate-200/70 hover:border-blue-300/60 shadow-sm hover:shadow-md transition-all group/button overflow-hidden"
+      className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-white border border-slate-200 hover:bg-slate-50 transition-colors"
     >
-      <span className="relative z-10 group-hover/button:text-blue-700 transition-colors">Saiba mais</span>
-      <ArrowRight className="w-4 h-4 relative z-10 transition-transform group-hover/button:translate-x-1" />
-      <span className="absolute inset-0 opacity-0 group-hover/button:opacity-100 bg-gradient-to-r from-blue-200/30 via-purple-200/30 to-pink-200/30 transition-opacity" />
-      <span className="absolute -inset-px rounded-full border border-transparent group-hover/button:border-blue-400/40 transition-colors" />
+      <span>Saiba mais</span>
+      <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
     </Link>
-
-    {/* Subtle bottom gradient edge */}
-    <div className="pointer-events-none absolute bottom-0 inset-x-0 h-1.5 bg-gradient-to-r from-blue-400/0 via-purple-500/40 to-pink-400/0 opacity-0 group-hover:opacity-100 transition-opacity" />
   </motion.div>
 );
 
@@ -100,6 +84,43 @@ const Services = () => {
       icon: getServiceIcon('laudos-especializados', { className: "w-full h-full object-contain transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]" }),
       title: t('services.items.reports.title'),
       description: t('services.items.reports.description')
+    },
+    // Novos exames específicos
+    {
+      id: 'gonioscopia',
+      icon: getServiceIcon('gonioscopia', { className: "w-full h-full object-contain transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]" }),
+      title: t('services.items.gonioscopy.title'),
+      description: t('services.items.gonioscopy.description')
+    },
+    {
+      id: 'mapeamento-de-retina',
+      icon: getServiceIcon('mapeamento-de-retina', { className: "w-full h-full object-contain transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]" }),
+      title: t('services.items.retinaMapping.title'),
+      description: t('services.items.retinaMapping.description')
+    },
+    {
+      id: 'topografia-corneana',
+      icon: getServiceIcon('topografia-corneana', { className: "w-full h-full object-contain transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]" }),
+      title: t('services.items.cornealTopography.title'),
+      description: t('services.items.cornealTopography.description')
+    },
+    {
+      id: 'paquimetria',
+      icon: getServiceIcon('paquimetria', { className: "w-full h-full object-contain transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]" }),
+      title: t('services.items.pachymetry.title'),
+      description: t('services.items.pachymetry.description')
+    },
+    {
+      id: 'retinografia',
+      icon: getServiceIcon('retinografia', { className: "w-full h-full object-contain transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]" }),
+      title: t('services.items.retinography.title'),
+      description: t('services.items.retinography.description')
+    },
+    {
+      id: 'campo-visual',
+      icon: getServiceIcon('campo-visual', { className: "w-full h-full object-contain transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 drop-shadow-[0_6px_12px_rgba(59,130,246,0.25)]" }),
+      title: t('services.items.visualField.title'),
+      description: t('services.items.visualField.description')
     }
   ], [t]);
 

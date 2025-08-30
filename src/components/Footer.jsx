@@ -42,37 +42,37 @@ const Footer = () => {
   return (
     <footer className="bg-slate-800 text-slate-300 no-scrollbar-x">
       {/* WhatsApp Footer Banner */}
-      <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 py-8">
-        <div className="container mx-auto px-4 md:px-6">
+      <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 py-6 sm:py-8">
+        <div className="container mx-auto px-4 sm:px-6 md:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col md:flex-row items-center justify-between gap-6 text-white"
+            className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 text-white"
           >
             <div className="text-center md:text-left">
-              <h3 className="text-2xl font-bold mb-2 text-white">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 text-white">
                 Ainda tem dúvidas?
               </h3>
-              <p className="text-blue-100">
+              <p className="text-sm sm:text-base text-blue-100">
                 Fale conosco agora mesmo e tire todas as suas dúvidas com nossa equipe!
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
               <a
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 min-w-[180px]"
+                className="bg-green-600 hover:bg-green-700 text-white font-bold px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 text-sm sm:text-base min-w-[140px] sm:min-w-[180px]"
               >
-                <MessageCircle size={20} />
+                <MessageCircle size={16} className="sm:w-5 sm:h-5" />
                 WhatsApp
               </a>
               <a
                 href={`tel:${phoneNumber}`}
-                className="bg-white/20 backdrop-blur-sm text-white font-semibold px-6 py-3 rounded-xl border border-white/30 hover:bg-white/30 transition-all duration-300 flex items-center justify-center gap-2"
+                className="bg-white/20 backdrop-blur-sm text-white font-semibold px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border border-white/30 hover:bg-white/30 transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base"
               >
-                <Phone size={20} />
+                <Phone size={16} className="sm:w-5 sm:h-5" />
                 Ligar
               </a>
             </div>
@@ -81,9 +81,9 @@ const Footer = () => {
       </div>
 
       {/* Main Footer Content */}
-      <div className="pt-16 pb-8">
-        <div className="container mx-auto px-4 md:px-6 no-scrollbar-x">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10 mb-12">
+      <div className="pt-8 sm:pt-12 md:pt-16 pb-6 sm:pb-8">
+        <div className="container mx-auto px-4 sm:px-6 md:px-8 no-scrollbar-x">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 mb-8 sm:mb-12">
             <div>
               <Logo isWhite />
               <p className="mt-4 mb-6 text-slate-400">

@@ -2,9 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Calendar, Star, Users, Shield, ArrowRight, Eye } from 'lucide-react';
-import OptimizedImage from '@/components/ui/OptimizedImage';
+import { Calendar, MessageCircle, Star, Users, Shield, ArrowRight, Eye } from 'lucide-react';
+import { clinicInfo } from '@/lib/clinicInfo';
+import SafeImage from '@/components/ui/SafeImage';
 import { useWhatsApp } from '@/hooks/useWhatsApp';
+import { safeOpenUrl } from '@/utils/safeNavigation';
 import { useHeroImagePreload } from '@/hooks/useResourcePreload';
 
 const Hero = () => {
@@ -15,8 +17,14 @@ const Hero = () => {
   useHeroImagePreload();
 
   const handleAgendarClick = () => {
-    // Open popup modal for scheduling options
-    openFloatingCTA();
+    // Use validated scheduling URL with enhanced error handling
+    const validUrl = clinicInfo.validateSchedulingUrl();
+    if (validUrl) {
+      safeOpenUrl(validUrl);
+    } else {
+      console.error('Scheduling URL validation failed, falling back to contact modal');
+      openFloatingCTA();
+    }
   };
 
   const handleAgendarContato = openFloatingCTA;
@@ -41,7 +49,7 @@ const Hero = () => {
             className="flex flex-col space-y-6 md:space-y-8 text-center lg:text-left"
           >
             <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-2 w-fit mx-auto lg:mx-0">
-              {t('hero.partner')}
+              <span className="mr-2">✦</span> {t('hero.partner')}
             </div>
 
             <h1 className="text-display-sm md:text-display-md lg:text-display-lg font-bold leading-tight tracking-tight">
@@ -70,37 +78,16 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* CTA Actions */}
-            <div className="space-y-6 pt-8">
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button size="xl" variant="medical" className="gap-3" onClick={handleAgendarClick}>
-                  <Calendar size={20} />
-                  Agendar Consulta
-                </Button>
-                <Button variant="outline" size="xl" className="gap-3 border-2" onClick={handleNossosServicosClick}>
-                  Ver Serviços <ArrowRight size={18} />
-                </Button>
-              </div>
+            {/* Primary CTA focused layout */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-6 justify-center lg:justify-start">
+              <Button size="xl" variant="cta" className="gap-2 shadow-2xl font-semibold" onClick={handleAgendarClick}>
+                <Calendar size={20} />
+                {t('hero.schedule_button')}
+              </Button>
 
-              {/* Trust reinforcement */}
-              <div className="text-center lg:text-left">
-                <p className="text-sm text-slate-600 mb-2">
-                  Confirmação instantânea  •  Sem filas  •  Atendimento humanizado
-                </p>
-              </div>
-
-              {/* Secondary contact options */}
-              <details className="group">
-                <summary className="cursor-pointer text-blue-600 hover:text-blue-700 font-medium text-sm text-center lg:text-left list-none flex items-center justify-center lg:justify-start gap-2 py-2">
-                  <span>Outras opções de contato</span>
-                  <ArrowRight className="w-4 h-4 transition-transform group-open:rotate-90" />
-                </summary>
-                <div className="mt-4 flex flex-col sm:flex-row gap-2 justify-center lg:justify-start">
-                  <Button variant="cta" size="lg" className="gap-2" onClick={handleAgendarContato}>
-                    Contato via WhatsApp
-                  </Button>
-                </div>
-              </details>
+              <Button variant="outline" size="xl" className="gap-2 border-2" onClick={handleNossosServicosClick}>
+                {t('hero.services_button')} <ArrowRight size={16} />
+              </Button>
             </div>
 
             {/* Microcopy and trust indicators directly below CTAs */}
@@ -111,20 +98,18 @@ const Hero = () => {
 
               <div className="flex items-center gap-3 justify-center lg:justify-start">
                 <div className="flex -space-x-2">
-                  <OptimizedImage
+                  <SafeImage
                     className="w-8 h-8 rounded-full border-2 border-white object-cover shadow-sm"
                     src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop"
-                    width={32}
-                    height={32}
-                    sizes="32px"
+                    width="32"
+                    height="32"
                     alt="Paciente satisfeito"
                   />
-                  <OptimizedImage
+                  <SafeImage
                     className="w-8 h-8 rounded-full border-2 border-white object-cover shadow-sm"
                     src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop"
-                    width={32}
-                    height={32}
-                    sizes="32px"
+                    width="32"
+                    height="32"
                     alt="Paciente satisfeito"
                   />
                   <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold border-2 border-white shadow-sm">
@@ -155,28 +140,18 @@ const Hero = () => {
             className="relative lg:order-first"
           >
             <div className="relative z-10 rounded-3xl overflow-hidden shadow-soft-medium">
-              <div className="relative group">
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 rounded-3xl overflow-hidden blur-xl scale-110 opacity-40 group-hover:opacity-50 transition-opacity"
-                  style={{
-                    backgroundImage: 'url(/img/doctor_hero_blur_placeholder.jpg)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                  }}
-                />
-                <OptimizedImage
-                  priority={true}
-                  loading="eager"
-                  width={800}
-                  height={640}
-                  sizes="(min-width: 1024px) 800px, 100vw"
-                  className="w-full h-auto relative rounded-3xl"
-                  alt="Dr. Philipe Saraiva - Oftalmologista"
-                  src="/img/doctor_hero_original.jpeg"
-                  fallbackSrc="/img/drphilipe_perfil.png"
-                />
-              </div>
+              <SafeImage
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+                width="800"
+                height="640"
+                sizes="(min-width: 1024px) 800px, 100vw"
+                className="w-full h-auto"
+                alt="Médico oftalmologista sorrindo para a câmera em uma clínica moderna"
+                src="https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png?format=webp"
+                fallbackSrc="https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png"
+              />
             </div>
 
             <motion.div
@@ -203,3 +178,4 @@ const Hero = () => {
 };
 
 export default Hero;
+

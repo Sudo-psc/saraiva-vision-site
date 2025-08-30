@@ -7,6 +7,7 @@ export const generateSitemap = (blogPosts = []) => {
   const staticUrls = [
     { url: '', priority: '1.0', changefreq: 'weekly', lastmod: currentDate },
     { url: '/lentes', priority: '0.9', changefreq: 'monthly', lastmod: currentDate },
+    { url: '/artigos/catarata', priority: '0.7', changefreq: 'monthly', lastmod: currentDate },
     { url: '/privacy', priority: '0.3', changefreq: 'yearly', lastmod: currentDate }
   ];
   

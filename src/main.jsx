@@ -36,3 +36,21 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </Router>
   </React.StrictMode>
 );
+
+// Registrar Service Worker para PWA (somente em produção e quando suportado)
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((registration) => {
+        if (registration?.update) {
+          // Verifica atualizações periodicamente
+          setInterval(() => registration.update(), 60 * 60 * 1000);
+        }
+      })
+      .catch((err) => {
+        // Silencia erros em produção para evitar ruído no console
+        // console.debug('SW registration failed:', err);
+      });
+  });
+}

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import {
@@ -33,43 +33,15 @@ const EXTERNAL_PODCAST_URL = 'https://shorturl.at/X0S4m';
 
 const LatestEpisodes = () => {
     const { t } = useTranslation();
+    // Apenas 1 episódio será mostrado
     const episode = LATEST_EPISODES[0];
-    const sectionRef = useRef(null);
-    const bgAudioRef = useRef(null);
-
-    useEffect(() => {
-        const section = sectionRef.current;
-        const audio = bgAudioRef.current;
-        if (!section || !audio) return;
-
-        let played = false;
-        const observer = new window.IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting && !played) {
-                    audio.volume = 0.25;
-                    audio.play();
-                    played = true;
-                } else if (!entry.isIntersecting && played) {
-                    audio.pause();
-                    audio.currentTime = 0;
-                    played = false;
-                }
-            },
-            { threshold: 0.5 }
-        );
-        observer.observe(section);
-        return () => observer.disconnect();
-    }, []);
 
     return (
-        <section ref={sectionRef} className="py-16 lg:py-20 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 relative overflow-hidden no-scrollbar-x">
-            {/* Áudio de fundo oculto */}
-            <audio ref={bgAudioRef} src="/Podcasts/podcast.mp3" preload="auto" style={{ display: 'none' }} />
-
+        <section className="py-16 lg:py-20 bg-gradient-to-br from-slate-50 via-blue-50/20 to-indigo-50/30 relative overflow-hidden">
             {/* Background Elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/12 to-sky-400/10 rounded-full blur-3xl animate-pulse" />
-                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-sky-400/12 to-cyan-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
+                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/8 to-purple-400/8 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-purple-400/8 to-pink-400/8 rounded-full blur-3xl animate-pulse delay-1000" />
             </div>
 
             {/* Curved Top Divider */}
@@ -88,29 +60,22 @@ const LatestEpisodes = () => {
                         </linearGradient>
                     </defs>
                     <path
-                        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,
+214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
                         fill="url(#waveGradient)"
                     />
                 </svg>
             </div>
 
-            <div className="container mx-auto px-4 md:px-6 relative z-10 no-scrollbar-x">
+            <div className="container mx-auto px-4 md:px-6 relative z-10">
                 {/* Header */}
                 <div className="text-center mb-12">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-100 text-blue-700 mb-6"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 mb-6"
                     >
-                        <div className="relative">
-                            <img
-                                src="/img/drphilipe_perfil.png"
-                                alt="Dr. Philipe Saraiva"
-                                className="w-8 h-8 rounded-full object-cover border-2 border-blue-200 shadow-sm"
-                            />
-                            <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full animate-pulse"></div>
-                        </div>
                         <Mic2 className="w-4 h-4" />
                         <span className="text-sm font-semibold">Podcast Saraiva Vision</span>
                     </motion.div>
@@ -131,33 +96,9 @@ const LatestEpisodes = () => {
                         transition={{ delay: 0.1 }}
                         className="text-lg text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed"
                     >
-                        Conteúdo especializado em oftalmologia com Dr. Philipe Saraiva.
+                        Conteúdo especializado em oftalmologia com Dr. Saraiva.
                         Aprenda sobre cuidados, prevenção e tratamentos para manter seus olhos saudáveis.
                     </motion.p>
-
-                    {/* Host Info Card */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                        className="inline-flex items-center gap-4 bg-white/60 backdrop-blur-sm rounded-2xl p-4 border-2 border-blue-300 shadow-soft-light mb-8"
-                    >
-                        <div className="relative">
-                            <img
-                                src="/img/drphilipe_perfil.png"
-                                alt="Dr. Philipe Saraiva"
-                                className="w-12 h-12 rounded-full object-cover border-3 border-white shadow-md"
-                            />
-                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full flex items-center justify-center">
-                                <Mic2 className="w-2 h-2 text-white" />
-                            </div>
-                        </div>
-                        <div className="text-left">
-                            <h4 className="text-sm font-bold text-slate-900">Dr. Philipe Saraiva</h4>
-                            <p className="text-xs text-slate-600">Oftalmologista • CRM-MG 69.870</p>
-                        </div>
-                    </motion.div>
                 </div>
 
                 {/* Episódio único */}
@@ -169,7 +110,7 @@ const LatestEpisodes = () => {
                         transition={{ delay: 0.2 }}
                         className="mb-12"
                     >
-                        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-light border-2 border-slate-300 p-8 lg:p-12">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-light border border-gray-100 p-8 lg:p-12">
                             <div className="flex flex-col lg:flex-row items-center gap-8">
                                 <div className="flex-shrink-0">
                                     <div className="relative">
@@ -297,7 +238,8 @@ const LatestEpisodes = () => {
                         </linearGradient>
                     </defs>
                     <path
-                        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,
+214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
                         fill="url(#waveGradientBottom)"
                     />
                 </svg>
@@ -307,3 +249,4 @@ const LatestEpisodes = () => {
 };
 
 export default LatestEpisodes;
+

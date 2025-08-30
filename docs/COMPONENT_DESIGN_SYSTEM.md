@@ -271,7 +271,7 @@ interface PageLayoutProps {
     {children}
   </main>
   <Footer />
-  <FloatingCTA />
+  <CTAModal />
 </PageLayout>
 ```
 

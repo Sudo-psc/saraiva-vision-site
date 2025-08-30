@@ -80,6 +80,79 @@ export const ReportsIcon = ({ className = "h-8 w-8" }) => (
   />
 );
 
+// Novos ícones de exames específicos (usar imagens adicionadas em /public/img/)
+export const GonioscopyIcon = ({ className = "h-8 w-8" }) => (
+  <img
+    src="/img/icon_gonioscopia.png"
+    alt="Gonioscopia"
+    className={className}
+    loading="lazy"
+    decoding="async"
+    width="64"
+    height="64"
+  />
+);
+
+export const RetinaMappingIcon = ({ className = "h-8 w-8" }) => (
+  <img
+    src="/img/icon_mapeamento_retina.png"
+    alt="Mapeamento de Retina"
+    className={className}
+    loading="lazy"
+    decoding="async"
+    width="64"
+    height="64"
+  />
+);
+
+export const CornealTopographyIcon = ({ className = "h-8 w-8" }) => (
+  <img
+    src="/img/icon_topografia_corneana.png"
+    alt="Topografia Corneana"
+    className={className}
+    loading="lazy"
+    decoding="async"
+    width="64"
+    height="64"
+  />
+);
+
+export const PachymetryIcon = ({ className = "h-8 w-8" }) => (
+  <img
+    src="/img/icon_paquimetria.png"
+    alt="Paquimetria"
+    className={className}
+    loading="lazy"
+    decoding="async"
+    width="64"
+    height="64"
+  />
+);
+
+export const RetinographyIcon = ({ className = "h-8 w-8" }) => (
+  <img
+    src="/img/icon_retinografia.png"
+    alt="Retinografia"
+    className={className}
+    loading="lazy"
+    decoding="async"
+    width="64"
+    height="64"
+  />
+);
+
+export const VisualFieldIcon = ({ className = "h-8 w-8" }) => (
+  <img
+    src="/img/icon_campo_visual.png"
+    alt="Campo Visual"
+    className={className}
+    loading="lazy"
+    decoding="async"
+    width="64"
+    height="64"
+  />
+);
+
 // Service icon mapping
 export const serviceIconMap = {
   'consultas-oftalmologicas': ConsultationIcon,
@@ -88,6 +161,12 @@ export const serviceIconMap = {
   'cirurgias-oftalmologicas': SurgeryIcon,
   'acompanhamento-pediatrico': PediatricIcon,
   'laudos-especializados': ReportsIcon,
+  'gonioscopia': GonioscopyIcon,
+  'mapeamento-de-retina': RetinaMappingIcon,
+  'topografia-corneana': CornealTopographyIcon,
+  'paquimetria': PachymetryIcon,
+  'retinografia': RetinographyIcon,
+  'campo-visual': VisualFieldIcon,
 };
 
 export const getServiceIcon = (serviceId, props = {}) => {
