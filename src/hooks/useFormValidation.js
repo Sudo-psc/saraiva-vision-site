@@ -52,16 +52,17 @@ export const useFormValidation = (initialValues, validators) => {
     // Validate field if it's been touched
     if (touched[name]) {
       const error = validateField(name, newValue);
-      setErrors(prev => ({
-        ...prev,
-        [name]: error
-      }));
+      setErrors(prev => {
+        const next = { ...prev };
+        if (error) next[name] = error; else delete next[name];
+        return next;
+      });
     }
   }, [touched, validateField]);
 
   // Handle field blur
   const handleBlur = useCallback((e) => {
-    const { name } = e.target;
+    const { name, value } = e.target;
     
     setTouched(prev => ({
       ...prev,
@@ -69,11 +70,13 @@ export const useFormValidation = (initialValues, validators) => {
     }));
 
     // Validate field on blur
-    const error = validateField(name, values[name]);
-    setErrors(prev => ({
-      ...prev,
-      [name]: error
-    }));
+    const fieldValue = value !== undefined ? (e.target.type === 'checkbox' ? e.target.checked : value) : values[name];
+    const error = validateField(name, fieldValue);
+    setErrors(prev => {
+      const next = { ...prev };
+      if (error) next[name] = error; else delete next[name];
+      return next;
+    });
   }, [validateField, values]);
 
   // Reset form
@@ -97,7 +100,7 @@ export const useFormValidation = (initialValues, validators) => {
     error: errors[name],
     touched: touched[name],
     hasError: Boolean(errors[name]),
-    isValid: touched[name] && !errors[name]
+    isValid: Boolean(touched[name]) && !errors[name]
   }), [errors, touched]);
 
   return {
