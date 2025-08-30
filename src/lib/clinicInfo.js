@@ -1,5 +1,4 @@
 // Centralized clinic information to keep consistency with Google Business Profile.
-// TODO: Replace placeholder values with exact data from Google Business dashboard.
 
 export const CLINIC_PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID || 'ChIJVUKww7WRugARF7u2lAe7BeE';
 
@@ -48,7 +47,12 @@ export const clinicInfo = {
   latitude: -19.7868,
   longitude: -42.1392,
   servicesKeywords: [
-    // Services list has been cleared as requested
+    'Consultas oftalmológicas',
+    'Exames de refração',
+    'Tratamentos especializados',
+    'Cirurgias oftalmológicas',
+    'Oftalmologia pediátrica',
+    'Laudos especializados'
   ]
 };
 
