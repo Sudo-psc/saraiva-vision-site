@@ -81,6 +81,12 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Suspicious content in message' });
     }
 
+    // Detect common injection patterns
+    const injectionPattern = /(\b(select|insert|update|delete|drop|union|create|alter|truncate|exec)\b|;|--)/i;
+    if (injectionPattern.test(`${sanitizedData.name} ${sanitizedData.email} ${sanitizedData.message}`)) {
+      return res.status(400).json({ error: 'Potential injection attack detected' });
+    }
+
     // Additional validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(sanitizedData.email)) {
