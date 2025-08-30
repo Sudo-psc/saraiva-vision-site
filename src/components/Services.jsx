@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -48,6 +48,7 @@ const ServiceCard = ({ service, index }) => (
 const Services = () => {
   const { t } = useTranslation();
 
+  // Full catalog of services (types)
   const serviceItems = useMemo(() => [
     {
       id: 'consultas-oftalmologicas',
@@ -124,6 +125,21 @@ const Services = () => {
     }
   ], [t]);
 
+  // Utility: shuffle array on each render (changes on refresh)
+  const shuffledItems = useMemo(() => {
+    const arr = [...serviceItems];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, [serviceItems]);
+
+  // Show all vs a random featured subset
+  const [showAll, setShowAll] = useState(false);
+  const featuredCount = 6;
+  const visibleItems = showAll ? shuffledItems : shuffledItems.slice(0, featuredCount);
+
   return (
     <section id="services" className="py-section-lg md:py-section-xl bg-gradient-to-br from-slate-50 via-blue-50/35 to-indigo-50/50 relative overflow-hidden">
       {/* Background Elements */}
@@ -165,11 +181,22 @@ const Services = () => {
           </motion.div>
         </div>
 
-        {/* Services Grid */}
+        {/* Services Grid (randomized each refresh) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-          {serviceItems.map((service, index) => (
+          {visibleItems.map((service, index) => (
             <ServiceCard key={service.id} service={service} index={index} />
           ))}
+        </div>
+
+        {/* Toggle to reveal all service types */}
+        <div className="text-center mt-8">
+          <Button
+            variant={showAll ? 'outline' : 'medical'}
+            onClick={() => setShowAll(v => !v)}
+            className="px-6"
+          >
+            {showAll ? t('services.show_less', 'Mostrar menos') : t('services.view_all', 'Ver todos os serviços')}
+          </Button>
         </div>
       </div>
     </section>
