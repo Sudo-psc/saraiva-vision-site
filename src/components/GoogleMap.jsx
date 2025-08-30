@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { loadGoogleMaps } from '@/lib/loadGoogleMaps';
 import { CLINIC_PLACE_ID } from '@/lib/clinicInfo';
+import { fetchPlaceDetails } from '@/lib/fetchPlaceDetails';
 
 const GoogleMap = ({ height = 340 }) => {
   const containerRef = useRef(null);
@@ -11,88 +12,64 @@ const GoogleMap = ({ height = 340 }) => {
   useEffect(() => {
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     if (!apiKey) {
-      console.error('❌ Google Maps API Key não encontrada nas variáveis de ambiente');
       setError('Chave Google Maps ausente - verifique .env');
       setLoading(false);
       return;
     }
-    console.log('🗺️ Iniciando carregamento Google Maps API...');
-    let mapInstance;
 
-    loadGoogleMaps(apiKey)
-      .then(() => {
-        if (!containerRef.current) return;
+    let mapInstance;
+    let mounted = true;
+
+    (async () => {
+      try {
+        await loadGoogleMaps(apiKey);
+        if (!mounted || !containerRef.current) return;
+
         mapInstance = new google.maps.Map(containerRef.current, {
           zoom: 17,
-          center: { lat: -19.7868, lng: -42.1392 }, // fallback center
+          center: { lat: -19.7868, lng: -42.1392 },
           mapTypeControl: false,
           streetViewControl: false,
           fullscreenControl: false,
         });
 
-        // Modern Google Maps with Places API and AdvancedMarkerElement
-        if (CLINIC_PLACE_ID && google.maps.places && google.maps.places.Place) {
-          try {
-            // Use modern Place class - recommended API
-            const { Place } = google.maps.places;
-            const place = new Place({
-              id: CLINIC_PLACE_ID,
-              requestedLanguage: 'pt-BR',
-            });
+        try {
+          const placeData = await fetchPlaceDetails(CLINIC_PLACE_ID);
+          if (!mounted) return;
+          setPlace({
+            name: placeData.name,
+            geometry: { location: placeData.location },
+            formatted_address: placeData.formattedAddress,
+            rating: placeData.rating,
+            user_ratings_total: placeData.userRatingCount,
+            url: placeData.url
+          });
 
-            // Request place details with modern API
-            const request = {
-              fields: ['displayName', 'location', 'formattedAddress', 'rating', 'userRatingCount', 'googleMapsURI']
-            };
-
-            place.fetchFields(request).then(() => {
-              const placeData = {
-                name: place.displayName,
-                geometry: { location: place.location },
-                formatted_address: place.formattedAddress,
-                rating: place.rating,
-                user_ratings_total: place.userRatingCount,
-                url: place.googleMapsURI
-              };
-
-              setPlace(placeData);
-
-              if (place.location) {
-                mapInstance.setCenter(place.location);
-
-                // Use modern AdvancedMarkerElement - prevents deprecation warnings
-                if (google.maps.marker && google.maps.marker.AdvancedMarkerElement) {
-                  new google.maps.marker.AdvancedMarkerElement({
-                    map: mapInstance,
-                    position: place.location,
-                    title: place.displayName
-                  });
-                }
-              }
-              setLoading(false);
-            }).catch((error) => {
-              console.error('Error fetching place details:', error);
-              setError('Não foi possível obter detalhes do local');
-              setLoading(false);
-            });
-
-          } catch (error) {
-            console.error('Modern Places API not available:', error);
-            setError('API Google Places não disponível');
-            setLoading(false);
+          if (placeData.location) {
+            mapInstance.setCenter(placeData.location);
+            if (google.maps.marker && google.maps.marker.AdvancedMarkerElement) {
+              new google.maps.marker.AdvancedMarkerElement({
+                map: mapInstance,
+                position: placeData.location,
+                title: placeData.name
+              });
+            }
           }
-        } else {
-          console.warn('Google Places API or Place class not available');
-          setLoading(false);
+        } catch (err) {
+          if (import.meta.env.DEV) console.error('Error fetching place details:', err);
+          if (mounted) setError('Não foi possível obter detalhes do local');
         }
-      })
-      .catch((e) => {
-        console.error('❌ Erro ao carregar Google Maps:', e.message);
-        setError(`Erro Google Maps: ${e.message}`);
-        setLoading(false);
-      });
+      } catch (err) {
+        if (import.meta.env.DEV) console.error('Erro ao carregar Google Maps:', err);
+        if (mounted) setError(`Erro Google Maps: ${err.message}`);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
 
-    return () => { /* cleanup */ };
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   if (error) {
