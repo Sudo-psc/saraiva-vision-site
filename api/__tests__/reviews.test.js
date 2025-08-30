@@ -1,12 +1,16 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-// Mock Node.js crypto module
-vi.mock('node:crypto', () => ({
-  createHash: vi.fn(() => ({
+// Mock Node.js crypto module (provide both named and default for ESM interop)
+vi.mock('node:crypto', () => {
+  const createHash = vi.fn(() => ({
     update: vi.fn().mockReturnThis(),
-    digest: vi.fn().mockReturnValue('mockedhash123')
-  }))
-}));
+    digest: vi.fn().mockReturnValue('mockedhash123'),
+  }));
+  return {
+    default: { createHash },
+    createHash,
+  };
+});
 
 // Import the handler after mocking
 const { default: handler } = await import('../reviews.js');

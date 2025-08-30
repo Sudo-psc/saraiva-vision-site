@@ -71,38 +71,48 @@ vi.mock('@/lib/constants', () => ({
 }))
 
 // Mock react-i18next globally
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key, params) => {
-      const translations = {
-        'contact.send_button': 'Enviar Mensagem',
-        'contact.sending_label': 'Enviando...',
-        'services.learn_more': 'Saiba Mais',
-        'hero.schedule_button': 'Agendar Consulta',
-        'hero.services_button': 'Nossos Serviços',
-        'navbar.schedule': 'Agendar',
-        'footer.copyright': '© {{year}} Saraiva Vision. Todos os direitos reservados.',
-        'about.p1': 'Nossa missão é cuidar da sua visão',
-        'about.tag': 'Sobre Nós'
-      };
-      let translation = translations[key] || key;
-      
-      // Handle parameter substitution
-      if (params && typeof translation === 'string') {
-        Object.keys(params).forEach(param => {
-          translation = translation.replace(new RegExp(`{{${param}}}`, 'g'), params[param]);
-        });
-      }
-      
-      return translation;
-    },
-    i18n: { 
-      language: 'pt',
-      changeLanguage: vi.fn()
+vi.mock('react-i18next', () => {
+  const translations = {
+    'contact.send_button': 'Enviar Mensagem',
+    'contact.sending_label': 'Enviando...',
+    'contact.title': 'Entre em Contato',
+    'contact.subtitle': 'Estamos prontos para cuidar da sua visão. Entre em contato conosco para agendar sua consulta.',
+    'services.learn_more': 'Saiba Mais',
+    'services.title': 'Nossos Serviços',
+    'hero.schedule_button': 'Agendar Consulta',
+    'hero.services_button': 'Nossos Serviços',
+    'navbar.schedule': 'Agendar',
+    'about.p1': 'Nossa missão é cuidar da sua visão',
+    'about.tag': 'Sobre Nós',
+    'privacy.form_consent_html': 'Aceito a Política de Privacidade',
+    'contact.info.phone_whatsapp': 'Falar no WhatsApp',
+  };
+
+  const t = (key, params) => {
+    let translation = translations[key] || key;
+    if (params && typeof translation === 'string') {
+      Object.keys(params).forEach(param => {
+        translation = translation.replace(new RegExp(`{{${param}}}`, 'g'), params[param]);
+      });
     }
-  }),
-  Trans: ({ children, i18nKey }) => children || i18nKey
-}))
+    return translation;
+  };
+
+  return {
+    useTranslation: () => ({
+      t,
+      i18n: {
+        language: 'pt',
+        changeLanguage: vi.fn(),
+      },
+    }),
+    Trans: ({ i18nKey, values, children }) => {
+      // Prefer provided children if present to match react-i18next behavior
+      if (children) return children;
+      return t(i18nKey, values);
+    },
+  };
+})
 
 // Mock framer-motion globally
 vi.mock('framer-motion', () => ({
@@ -144,7 +154,8 @@ vi.mock('framer-motion', () => ({
       return <a {...rest}>{children}</a>;
     }
   },
-  AnimatePresence: ({ children }) => <>{children}</>
+  AnimatePresence: ({ children }) => <>{children}</>,
+  useInView: () => true
 }))
 
 // Mock window.matchMedia

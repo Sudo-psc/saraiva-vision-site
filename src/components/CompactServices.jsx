@@ -54,6 +54,7 @@ const CompactServiceCard = ({ service, index }) => {
     </Link>
   </motion.div>
 );
+};
 
 const CompactServices = () => {
   const { t } = useTranslation();

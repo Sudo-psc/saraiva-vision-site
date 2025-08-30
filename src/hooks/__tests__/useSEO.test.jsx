@@ -71,6 +71,7 @@ Object.defineProperty(window, 'location', {
     hash: ''
   }
 });
+// file renamed to .jsx to allow JSX parsing under Vite/Vitest
 
 describe('useSEO Hook', () => {
   beforeEach(() => {
