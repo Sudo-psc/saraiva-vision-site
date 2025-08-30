@@ -152,6 +152,13 @@
     "post_error_desc": "Não foi possível carregar este conteúdo.",
     "back_to_blog": "Voltar para o blog"
   },
+  "comments": {
+    "title": "Comentários",
+    "no_comments": "Ainda não há comentários",
+    "name_label": "Nome",
+    "message_label": "Comentário",
+    "submit": "Adicionar Comentário"
+  },
   "testimonials": {
     "badge": "Depoimentos",
     "title": "O que nossos pacientes dizem",
