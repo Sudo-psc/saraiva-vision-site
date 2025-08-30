@@ -14,6 +14,8 @@ const OptimizedImage = ({
     avifSrc,
     fallbackSrc,
     objectFit = 'cover',
+    // Optional styles for the container if explicit sizing is needed
+    containerStyle,
     ...props
 }) => {
     const [hasLoaded, setHasLoaded] = useState(false);
@@ -116,7 +118,8 @@ const OptimizedImage = ({
         <div
             ref={imgRef}
             className={`relative overflow-hidden ${className}`}
-            style={{ width, height }}
+            // Let parent control layout; only apply explicit containerStyle when provided
+            style={containerStyle}
         >
             {/* Loading placeholder */}
             {!hasLoaded && shouldLoad && (
@@ -148,8 +151,7 @@ const OptimizedImage = ({
                         sizes={sizes}
                         onLoad={handleLoad}
                         onError={handleError}
-                        className={`w-full h-full object-${objectFit} transition-opacity duration-300 ${hasLoaded ? 'opacity-100' : 'opacity-0'
-                            }`}
+                        className={`w-full h-full object-${objectFit} transition-opacity duration-300 ${hasLoaded ? 'opacity-100' : 'opacity-0'}`}
                         {...props}
                     />
                 </picture>
