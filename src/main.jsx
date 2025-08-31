@@ -8,6 +8,8 @@ import { initPerformanceOptimizations } from '@/utils/performanceOptimizer';
 import { initWebVitals } from '@/utils/webVitalsMonitoring';
 import { bindConsentUpdates, persistUTMParameters } from '@/utils/analytics';
 import { inlineCriticalCSS } from '@/utils/criticalCSS';
+import { setupGlobalErrorHandlers } from '@/utils/setupGlobalErrorHandlers';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 // Inicializar CSS crítico antes de tudo (desabilitado temporariamente)
 // inlineCriticalCSS();
@@ -27,11 +29,17 @@ bindConsentUpdates();
 // Persistir parâmetros UTM para tracking
 persistUTMParameters();
 
+// Reduz ruído no console oriundo de extensões/ad blockers,
+// sem mascarar erros reais da aplicação
+setupGlobalErrorHandlers();
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Router>
       <Suspense fallback="loading...">
-        <App />
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
       </Suspense>
     </Router>
   </React.StrictMode>

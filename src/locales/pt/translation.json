@@ -742,6 +742,14 @@
       "ceratocone": {
         "title": "Saúde Ocular em Foco: Ceratocone",
         "description": "O que é ceratocone, sintomas, diagnóstico e opções de tratamento e adaptação de lentes para melhorar a qualidade visual."
+      },
+      "dmri": {
+        "title": "Saúde Ocular em Foco: DMRI — Quando a Mácula Decide se Aposentar",
+        "description": "Entenda a Degeneração Macular Relacionada à Idade (DMRI): sintomas, fatores de risco, formas de prevenção e quando procurar avaliação com o oftalmologista."
+      },
+      "lentes_contato": {
+        "title": "Saúde Ocular em Foco: Lentes de Contato — Rígidas vs Gelatinosas",
+        "description": "Diferenças, indicações e cuidados entre lentes rígidas e gelatinosas. Quando cada uma é indicada e como manter a adaptação com segurança."
       }
     }
   },

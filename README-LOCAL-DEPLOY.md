@@ -28,7 +28,7 @@ sudo ./deploy.sh
 ## 📁 Estrutura de Deploy
 
 - **Código fonte**: `/home/saraiva-vision-site/`
-- **Build de produção**: `/var/www/saraivavisao/dist/`
+- **Build de produção**: `/var/www/saraivavisao/saraivavision/`
 - **Configuração nginx**: `/etc/nginx/sites-available/saraivavisao`
 - **Logs nginx**: `/var/log/nginx/`
 - **Backups**: `/var/backups/saraivavisao/`
@@ -139,12 +139,12 @@ npm run deploy:local
 
 ### Backup manual:
 ```bash
-sudo cp -r /var/www/saraivavisao/dist /var/backups/saraivavisao/dist_$(date +%Y%m%d_%H%M%S)
+sudo cp -r /var/www/saraivavisao/saraivavision /var/backups/saraivavisao/saraivavision_$(date +%Y%m%d_%H%M%S)
 ```
 
 ### Limpar backups antigos:
 ```bash
-sudo find /var/backups/saraivavisao -name "dist_*" -mtime +30 -exec rm -rf {} \;
+sudo find /var/backups/saraivavisao -name "saraivavision_*" -mtime +30 -exec rm -rf {} \;
 ```
 
 ## 📊 Monitoramento

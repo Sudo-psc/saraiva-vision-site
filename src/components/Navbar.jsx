@@ -36,7 +36,6 @@ const Navbar = () => {
     { name: t('navbar.services'), href: '/servicos', internal: true, isRoute: true },
     { name: t('navbar.lenses'), href: '/lentes', internal: true, isRoute: true },
     { name: t('navbar.about'), href: '/sobre', internal: true, isRoute: true },
-    { name: t('navbar.podcast', 'Podcast'), href: '/podcast', internal: true, isRoute: true },
     { name: t('navbar.testimonials'), href: '/depoimentos', internal: true, isRoute: true },
     { name: t('navbar.faq'), href: '/faq', internal: true, isRoute: true },
     { name: t('navbar.contact'), href: '/contato', internal: true, isRoute: true },

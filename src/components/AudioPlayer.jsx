@@ -185,7 +185,7 @@ const AudioPlayer = ({
                             <p className="text-sm text-gray-600 mb-3 max-w-md mx-auto leading-relaxed">{episode.description}</p>
                         )}
                         <div className="flex items-center justify-center gap-3 text-sm text-gray-500">
-                            <span>{episode.duration}</span>
+                            {episode.duration && <span>{episode.duration}</span>}
                             {episode.category && (
                                 <>
                                     <span>•</span>
@@ -413,7 +413,7 @@ const AudioPlayer = ({
                     <div className="mt-3">
                         <h4 className="font-bold text-gray-900 mb-1 line-clamp-2">{episode.title}</h4>
                         <div className="flex items-center gap-3 text-xs text-gray-500">
-                            <span>{episode.duration}</span>
+                            {episode.duration && <span>{episode.duration}</span>}
                             {episode.category && (
                                 <>
                                     <span>•</span>
@@ -442,7 +442,7 @@ const AudioPlayer = ({
                             <p className="text-sm text-gray-600 mb-2 line-clamp-2 leading-relaxed">{episode.description}</p>
                         )}
                         <div className="flex items-center gap-3 text-xs text-gray-500">
-                            <span>{episode.duration}</span>
+                            {episode.duration && <span>{episode.duration}</span>}
                             {episode.category && (
                                 <>
                                     <span>•</span>

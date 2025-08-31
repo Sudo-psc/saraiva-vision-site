@@ -593,6 +593,10 @@
       "ceratocone": {
         "title": "Eye Health in Focus: Keratoconus",
         "description": "What keratoconus is, symptoms, diagnosis, and treatment options including specialty contact lenses."
+      },
+      "dmri": {
+        "title": "Eye Health in Focus: AMD — When the Macula Decides to Retire",
+        "description": "Understand Age-related Macular Degeneration (AMD): main symptoms, risk factors, prevention tips and when to seek evaluation with your ophthalmologist."
       }
     }
   },

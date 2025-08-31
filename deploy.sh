@@ -26,10 +26,10 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Fazer backup da versão atual
-if [ -d "$PROJECT_DIR/dist" ]; then
+if [ -d "$PROJECT_DIR/saraivavision" ]; then
     echo "💾 Fazendo backup da versão atual..."
     mkdir -p $BACKUP_DIR
-    cp -r $PROJECT_DIR/dist $BACKUP_DIR/dist_$TIMESTAMP
+    cp -r $PROJECT_DIR/saraivavision $BACKUP_DIR/saraivavision_$TIMESTAMP
 fi
 
 # Instalar dependências
@@ -52,12 +52,12 @@ mkdir -p $PROJECT_DIR
 
 # Copiar arquivos para o diretório de produção
 echo "📋 Copiando arquivos para produção..."
-rsync -av --delete dist/ $PROJECT_DIR/dist/
+rsync -av --delete dist/ $PROJECT_DIR/saraivavision/
 
 # Definir permissões corretas
 echo "🔐 Configurando permissões..."
-chown -R www-data:www-data $PROJECT_DIR/dist
-chmod -R 755 $PROJECT_DIR/dist
+chown -R www-data:www-data $PROJECT_DIR/saraivavision
+chmod -R 755 $PROJECT_DIR/saraivavision
 
 # Configurar nginx
 echo "⚙️ Configurando nginx..."
@@ -109,7 +109,7 @@ echo "🌐 Site disponível em:"
 echo "   - https://saraivavision.com.br (SSL habilitado)"
 echo "   - https://www.saraivavision.com.br (SSL habilitado)" 
 echo "   - http://localhost (desenvolvimento local)"
-echo "💾 Backup salvo em: $BACKUP_DIR/dist_$TIMESTAMP"
+echo "💾 Backup salvo em: $BACKUP_DIR/saraivavision_$TIMESTAMP"
 echo ""
 echo "🔒 SSL/HTTPS configurado e funcionando!"
 echo "📋 Próximos passos opcionais:"

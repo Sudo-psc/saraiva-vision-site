@@ -35,6 +35,34 @@ function PodcastPage() {
   // Build episodes with i18n
   const episodes = React.useMemo(() => ([
     {
+      id: 'lentes-ep1',
+      slug: 'lentes-de-contato-rigidas-vs-gelatinosas',
+      src: '',
+      title: t('podcast.episodes.lentes_contato.title'),
+      description: t('podcast.episodes.lentes_contato.description'),
+      cover: '/Podcasts/Covers/podcast.png',
+      duration: '—',
+      date: '2025-08-31',
+      category: 'Lentes de Contato',
+      tags: ['lentes', 'rígidas', 'gelatinosas', 'adaptação'],
+      featured: false,
+      spotifyUrl: 'https://creators.spotify.com/pod/profile/philipe-cruz/episodes/Sade-Ocular-em-Foco---Lentes-de-Contato-Rgidas-vs-Gelatinosas-e37iag0',
+    },
+    {
+      id: 'dmri-ep1',
+      slug: 'dmri-quando-a-macula-decide-se-aposentar',
+      src: '/Podcasts/Saúde Ocular em Foco - DMRI_ Quando a Mácula Decide se Aposentar_2025_08_31.mp3',
+      title: t('podcast.episodes.dmri.title'),
+      description: t('podcast.episodes.dmri.description'),
+      cover: '/Podcasts/Covers/dmri.png',
+      duration: '—',
+      date: '2025-08-31',
+      category: 'Doenças Oculares',
+      tags: ['dmri', 'mácula', 'degeneração macular', 'retina'],
+      featured: false,
+      spotifyUrl: 'https://creators.spotify.com/pod/profile/philipe-cruz/episodes/Sade-Ocular-em-Foco---DMRI-Quando-a-Mcula-Decide-se-Aposentar-e37i9pk',
+    },
+    {
       id: 'glaucoma-ep1',
       slug: 'glaucoma-prevencao-tratamento',
       src: '/Podcasts/glaucoma.mp3',
@@ -276,15 +304,23 @@ function PodcastPage() {
                           <Calendar className="w-4 h-4" />
                           <span>{new Date(featuredEpisode.date).toLocaleDateString('pt-BR')}</span>
                         </div>
-                        <span className="text-gray-300">•</span>
-                        <div className="flex items-center gap-1 text-sm text-gray-500">
-                          <Clock className="w-4 h-4" />
-                          <span>{featuredEpisode.duration}</span>
-                        </div>
-                        <span className="text-gray-300">•</span>
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
-                          {featuredEpisode.category}
-                        </span>
+                        {featuredEpisode.duration && (
+                          <>
+                            <span className="text-gray-300">•</span>
+                            <div className="flex items-center gap-1 text-sm text-gray-500">
+                              <Clock className="w-4 h-4" />
+                              <span>{featuredEpisode.duration}</span>
+                            </div>
+                          </>
+                        )}
+                        {featuredEpisode.category && (
+                          <>
+                            <span className="text-gray-300">•</span>
+                            <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
+                              {featuredEpisode.category}
+                            </span>
+                          </>
+                        )}
                       </div>
 
                       <div className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start">
@@ -401,10 +437,12 @@ function PodcastPage() {
                             <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
                               {episode.category}
                             </span>
-                            <div className="flex items-center gap-1 text-xs text-gray-500">
-                              <Clock className="w-3 h-3" />
-                              <span>{episode.duration}</span>
-                            </div>
+                            {episode.duration && (
+                              <div className="flex items-center gap-1 text-xs text-gray-500">
+                                <Clock className="w-3 h-3" />
+                                <span>{episode.duration}</span>
+                              </div>
+                            )}
                           </div>
 
                           <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">

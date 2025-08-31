@@ -54,7 +54,7 @@ npm run serve            # Serve na porta 3000
 └── dist/                           # ✅ Build Vite
 
 /var/www/saraivavisao/             # Deploy produção
-└── dist/                           # ✅ Arquivos servidos
+└── saraivavision/                  # ✅ Arquivos servidos
 
 /etc/nginx/sites-available/         # Config nginx
 └── saraivavisao                    # ✅ Nossa config
@@ -69,7 +69,7 @@ npm run serve            # Serve na porta 3000
 
 ### Nginx
 - **Porta HTTP**: 80
-- **Root**: `/var/www/saraivavisao/dist`
+- **Root**: `/var/www/saraivavisao/saraivavision`
 - **API Proxy**: `localhost:3001 → /api/*`
 - **SPA Support**: `try_files` configurado
 - **Assets Cache**: 1 ano para arquivos com hash

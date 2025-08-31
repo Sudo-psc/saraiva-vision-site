@@ -119,39 +119,39 @@ vi.mock('react-i18next', () => {
 vi.mock('framer-motion', () => ({
   motion: {
     div: ({ children, ...props }) => {
-      const { whileInView, initial, viewport, transition, whileHover, ...rest } = props;
+      const { whileInView, initial, viewport, transition, whileHover, layout, animate, exit, ...rest } = props;
       return <div {...rest}>{children}</div>;
     },
     form: ({ children, ...props }) => {
-      const { whileInView, initial, viewport, transition, ...rest } = props;
+      const { whileInView, initial, viewport, transition, layout, animate, exit, ...rest } = props;
       return <form {...rest}>{children}</form>;
     },
     section: ({ children, ...props }) => {
-      const { whileInView, initial, viewport, transition, ...rest } = props;
+      const { whileInView, initial, viewport, transition, layout, animate, exit, ...rest } = props;
       return <section {...rest}>{children}</section>;
     },
     h1: ({ children, ...props }) => {
-      const { whileHover, initial, animate, transition, ...rest } = props;
+      const { whileHover, initial, animate, transition, layout, exit, ...rest } = props;
       return <h1 {...rest}>{children}</h1>;
     },
     h2: ({ children, ...props }) => {
-      const { whileHover, whileInView, initial, animate, transition, viewport, ...rest } = props;
+      const { whileHover, whileInView, initial, animate, transition, viewport, layout, exit, ...rest } = props;
       return <h2 {...rest}>{children}</h2>;
     },
     h3: ({ children, ...props }) => {
-      const { whileHover, initial, animate, transition, ...rest } = props;
+      const { whileHover, initial, animate, transition, layout, exit, ...rest } = props;
       return <h3 {...rest}>{children}</h3>;
     },
     p: ({ children, ...props }) => {
-      const { whileHover, whileInView, initial, animate, transition, viewport, ...rest } = props;
+      const { whileHover, whileInView, initial, animate, transition, viewport, layout, exit, ...rest } = props;
       return <p {...rest}>{children}</p>;
     },
     button: ({ children, ...props }) => {
-      const { whileHover, whileTap, initial, animate, transition, ...rest } = props;
+      const { whileHover, whileTap, initial, animate, transition, layout, exit, ...rest } = props;
       return <button {...rest}>{children}</button>;
     },
     a: ({ children, ...props }) => {
-      const { whileHover, whileTap, initial, animate, transition, ...rest } = props;
+      const { whileHover, whileTap, initial, animate, transition, layout, exit, ...rest } = props;
       return <a {...rest}>{children}</a>;
     }
   },
@@ -238,12 +238,11 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   disconnect: vi.fn(),
 }))
 
-// Mock UI components
-vi.mock('@/components/ui/button', () => ({
-  Button: React.forwardRef(({ children, className, variant, size, ...props }, ref) => 
-    <button ref={ref} className={className} {...props}>{children}</button>
-  )
-}))
+// Mock UI components - use actual Button implementation to preserve styling
+vi.mock('@/components/ui/button', async (importOriginal) => {
+  const actual = await importOriginal();
+  return actual;
+})
 
 vi.mock('@/components/ui/use-toast', () => ({
   useToast: () => ({

@@ -14,6 +14,28 @@ const LatestEpisodes = () => {
 
     const episodes = [
         {
+            id: 'lentes-ep1',
+            src: '',
+            title: t('podcast.episodes.lentes_contato.title'),
+            description: t('podcast.episodes.lentes_contato.description'),
+            duration: '—',
+            cover: '/Podcasts/Covers/podcast.png',
+            category: 'Lentes de Contato',
+            date: '2025-08-31',
+            spotifyUrl: 'https://creators.spotify.com/pod/profile/philipe-cruz/episodes/Sade-Ocular-em-Foco---Lentes-de-Contato-Rgidas-vs-Gelatinosas-e37iag0'
+        },
+        {
+            id: 'dmri-ep1',
+            src: '/Podcasts/Saúde Ocular em Foco - DMRI_ Quando a Mácula Decide se Aposentar_2025_08_31.mp3',
+            title: t('podcast.episodes.dmri.title'),
+            description: t('podcast.episodes.dmri.description'),
+            duration: '—',
+            cover: '/Podcasts/Covers/dmri.png',
+            category: 'Doenças Oculares',
+            date: '2025-08-31',
+            spotifyUrl: 'https://creators.spotify.com/pod/profile/philipe-cruz/episodes/Sade-Ocular-em-Foco---DMRI-Quando-a-Mcula-Decide-se-Aposentar-e37i9pk'
+        },
+        {
             id: 'glaucoma-ep1',
             src: '/Podcasts/glaucoma.mp3',
             title: t('podcast.episodes.glaucoma.title'),
