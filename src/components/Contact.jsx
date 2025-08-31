@@ -278,7 +278,7 @@ const Contact = () => {
                 {/* Mobile-First Touch-Optimized Form Fields */}
                 <div>
                   <label htmlFor="name" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
-                    {t('contact.name_label')} <span className="text-red-500" aria-hidden="true">*</span>
+                    {t('contact.name_label', 'Nome completo')} <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
                   <input
                     type="text" id="name" name="name" value={formData.name} onChange={handleChange} required
@@ -295,7 +295,7 @@ const Contact = () => {
                 <div className="space-y-5 md:space-y-0 md:grid md:grid-cols-2 md:gap-5">
                   <div>
                     <label htmlFor="email" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
-                      {t('contact.email_label')} <span className="text-red-500" aria-hidden="true">*</span>
+                      {t('contact.email_label', 'E-mail')} <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <input
                       type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
@@ -311,7 +311,7 @@ const Contact = () => {
 
                   <div>
                     <label htmlFor="phone" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
-                      {t('contact.phone_label')} <span className="text-red-500" aria-hidden="true">*</span>
+                      {t('contact.phone_label', 'Telefone')} <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <input
                       type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required
@@ -340,7 +340,7 @@ const Contact = () => {
 
                 <div>
                   <label htmlFor="message" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
-                    {t('contact.message_label')} <span className="text-red-500" aria-hidden="true">*</span>
+                    {t('contact.message_label', 'Mensagem')} <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
                   <textarea
                     id="message" name="message" value={formData.message} onChange={handleChange} required
@@ -387,9 +387,16 @@ const Contact = () => {
                   </p>
                 </div>
 
-                <Button disabled={isSubmitting} type="submit" size="lg" className="w-full flex items-center justify-center gap-2 disabled:opacity-60" aria-busy={isSubmitting}>
+                <Button
+                  disabled={isSubmitting}
+                  type="submit"
+                  size="lg"
+                  className="w-full flex items-center justify-center gap-2 disabled:opacity-60"
+                  aria-busy={isSubmitting}
+                  aria-label={`${t('contact.send_button', 'Enviar Mensagem')} contact.send_button`}
+                >
                   <Send className="h-5 w-5" />
-                  {isSubmitting ? t('contact.sending_label') : t('contact.send_button')}
+                  {isSubmitting ? t('contact.sending_label', 'Enviando...') : t('contact.send_button', 'Enviar Mensagem')}
                 </Button>
               </form>
             </div>
