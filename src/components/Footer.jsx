@@ -1,10 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Linkedin, ArrowUp, MessageCircle, Bot, Phone } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, ArrowUp, MessageCircle, Bot } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { clinicInfo } from '@/lib/clinicInfo';
-import { motion } from 'framer-motion';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -27,8 +26,6 @@ const Footer = () => {
     { name: t('navbar.about'), href: '/sobre' },
     { name: t('navbar.testimonials'), href: '/depoimentos' },
     { name: t('navbar.contact'), href: '/contato' },
-    { name: t('navbar.lenses'), href: '/lentes' },
-    { name: t('navbar.faq'), href: '/faq' },
   ];
 
   const serviceLinks = t('footer.service_links', { returnObjects: true });
@@ -40,125 +37,118 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-slate-800 text-slate-300 no-scrollbar-x">
-      {/* WhatsApp Footer Banner */}
-      <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 py-6 sm:py-8">
-        <div className="container mx-auto px-4 sm:px-6 md:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 text-white"
-          >
-            <div className="text-center md:text-left">
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 text-white">
-                Ainda tem dúvidas?
-              </h3>
-              <p className="text-sm sm:text-base text-blue-100">
-                Fale conosco agora mesmo e tire todas as suas dúvidas com nossa equipe!
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
-              <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-green-600 hover:bg-green-700 text-white font-bold px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 text-sm sm:text-base min-w-[140px] sm:min-w-[180px]"
-              >
-                <MessageCircle size={16} className="sm:w-5 sm:h-5" />
-                WhatsApp
-              </a>
-              <a
-                href={`tel:${phoneNumber}`}
-                className="bg-white/20 backdrop-blur-sm text-white font-semibold px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border border-white/30 hover:bg-white/30 transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base"
-              >
-                <Phone size={16} className="sm:w-5 sm:h-5" />
-                Ligar
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Main Footer Content */}
-      <div className="pt-8 sm:pt-12 md:pt-16 pb-6 sm:pb-8">
-        <div className="container mx-auto px-4 sm:px-6 md:px-8 no-scrollbar-x">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 mb-8 sm:mb-12">
-            <div>
-              <Logo isWhite />
-              <p className="mt-4 mb-6 text-slate-400">
-                {t('footer.slogan')}
-              </p>
-              <p className="text-slate-400 mb-2 text-sm">{t('footer.partner_of')}</p>
-              <a href="https://www.amorsaude.com.br/clinica/caratinga-mg/" target="_blank" rel="noopener noreferrer">
-                <img src={amorSaudeLogo} alt={t('footer.amor_saude_alt')} className="h-16 w-auto mb-6" width="160" height="64" sizes="(min-width: 768px) 160px, 128px" />
-              </a>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-6 text-white">{t('footer.quick_links')}</h3>
-              <ul className="space-y-3">
-                {navLinks.map(link => (
-                  <li key={link.name}>
-                    <Link to={link.href} className="hover:text-white transition-colors">{link.name}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-6 text-white">{t('footer.services')}</h3>
-              <ul className="space-y-3">
-                {Object.values(serviceLinks).map((serviceName, index) => (
-                  <li key={index}>
-                    <Link to="/servicos" className="hover:text-white transition-colors">{serviceName}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-6 text-white">{t('footer.contact')}</h3>
-              <ul className="space-y-3">
-                <li>{t('footer.address_line1')}</li>
-                <li>{t('footer.address_line2')}</li>
-                <li>
-                  <a href="mailto:saraivavision@gmail.com" className="hover:text-white transition-colors">saraivavision@gmail.com</a>
-                </li>
-                <li>
-                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
-                    <MessageCircle size={16} /> +55 33 99860-1427
-                  </a>
-                </li>
-                <li>
-                  <a href={chatbotUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
-                    <Bot size={16} /> {t('contact.chatbot_title')}
-                  </a>
-                </li>
-                <li>{t('footer.hours')}</li>
-              </ul>
-            </div>
+    <footer className="bg-slate-800 text-slate-300 pt-16 pb-8">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+          <div>
+            <Logo isWhite />
+            <p className="mt-4 mb-6 text-slate-400">
+              {t('footer.slogan')}
+            </p>
+            <p className="text-slate-400 mb-2 text-sm">{t('footer.partner_of')}</p>
+            <a href="https://www.amorsaude.com.br/clinica/caratinga-mg/" target="_blank" rel="noopener noreferrer">
+              <img src={amorSaudeLogo} alt={t('footer.amor_saude_alt')} className="h-16 w-auto mb-6" width="160" height="64" sizes="(min-width: 768px) 160px, 128px" />
+            </a>
           </div>
 
-          <div className="border-t border-slate-700 pt-8 flex flex-col md:flex-row justify-between items-start gap-4 md:gap-6">
-            <div className="flex-1 space-y-2 text-wrap">
-              <p className="text-slate-400 text-xs leading-snug">
-                <span className="block font-medium text-slate-300">{clinicInfo.responsiblePhysician} • {clinicInfo.responsiblePhysicianCRM}</span>
-                <span className="block">{clinicInfo.responsibleNurse} • {clinicInfo.responsibleNursePhone}</span>
-                <span className="block">CNPJ: {clinicInfo.taxId}</span>
-                <span className="block">DPO: <a href={`mailto:${clinicInfo.dpoEmail}`} className="underline hover:text-white">{clinicInfo.dpoEmail}</a></span>
-                <span className="block">
-                  <a href="/privacy" className="underline hover:text-white mr-3">{t('privacy.link_label')}</a>
-                  <button onClick={() => window.dispatchEvent(new Event('open-privacy-settings'))} className="underline hover:text-white">
-                    {t('privacy.manage_cookies')}
-                  </button>
-                </span>
+          <div>
+            <h3 className="text-lg font-semibold mb-6 text-white">{t('footer.quick_links')}</h3>
+            <ul className="space-y-3">
+              {navLinks.map(link => (
+                <li key={link.name}>
+                  <Link to={link.href} className="hover:text-white transition-colors">{link.name}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-6 text-white">{t('footer.services')}</h3>
+            <ul className="space-y-3">
+              {Object.values(serviceLinks).map((serviceName, index) => (
+                <li key={index}>
+                  <Link to="/servicos" className="hover:text-white transition-colors">{serviceName}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-6 text-white">{t('footer.contact')}</h3>
+            <ul className="space-y-3">
+              <li>{t('footer.address_line1')}</li>
+              <li>{t('footer.address_line2')}</li>
+              <li>
+                <a href="mailto:saraivavision@gmail.com" className="hover:text-white transition-colors">saraivavision@gmail.com</a>
+              </li>
+              <li>
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
+                  <MessageCircle size={16} /> +55 33 99860-1427
+                </a>
+              </li>
+              <li>
+                <a href={chatbotUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
+                  <Bot size={16} /> {t('contact.chatbot_title')}
+                </a>
+              </li>
+              <li>{t('footer.hours')}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-slate-700 pt-8 flex flex-col lg:flex-row justify-between items-start gap-6 lg:gap-8">
+          <div className="flex-1 space-y-2">
+            <p className="text-slate-400 text-xs leading-snug">
+              <span className="block font-medium text-slate-300">{clinicInfo.responsiblePhysician} • {clinicInfo.responsiblePhysicianCRM}</span>
+              <span className="block">{clinicInfo.responsibleNurse} • {clinicInfo.responsibleNursePhone}</span>
+              <span className="block">CNPJ: {clinicInfo.taxId}</span>
+              <span className="block">DPO: <a href={`mailto:${clinicInfo.dpoEmail}`} className="underline hover:text-white">{clinicInfo.dpoEmail}</a></span>
+              <span className="block">
+                <a href="/privacy" className="underline hover:text-white mr-3">{t('privacy.link_label')}</a>
+                <button onClick={() => window.dispatchEvent(new Event('open-privacy-settings'))} className="underline hover:text-white">
+                  {t('privacy.manage_cookies')}
+                </button>
+              </span>
+            </p>
+            <p className="text-slate-500 text-xs">{t('privacy.disclaimer')}</p>
+            <p className="text-slate-500 text-xs">{t('cfm.disclaimer')}</p>
+            <p className="text-slate-400 text-xs mt-2">{t('footer.copyright', { year: new Date().getFullYear() })}</p>
+          </div>
+
+          {/* Certification Badges */}
+          <div className="flex flex-col items-center gap-4 lg:items-end">
+            <div className="text-center lg:text-right">
+              <p className="text-slate-300 text-sm font-medium mb-3">Certificações e Selos</p>
+              <div className="flex gap-4 items-center justify-center lg:justify-end">
+                {/* ISO 9001 Badge */}
+                <div className="group cursor-pointer" title="Certificação ISO 9001 - Sistema de Gestão da Qualidade">
+                  <img
+                    src="/home/saraiva-vision-site/dist/img/iso9001-icon.png"
+                    alt="Certificação ISO 9001"
+                    className="w-16 h-16 sm:w-20 sm:h-20 hover:scale-105 transition-transform duration-300 filter drop-shadow-lg object-contain"
+                    width="80"
+                    height="80"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+
+                {/* Accessibility Badge */}
+                <div className="group cursor-pointer" title="Site Acessível - WCAG 2.1 AA">
+                  <img
+                    src="/home/saraiva-vision-site/dist/img/Acessib_icon.png"
+                    alt="Selo de Acessibilidade WCAG 2.1 AA"
+                    className="w-16 h-16 sm:w-20 sm:h-20 hover:scale-105 transition-transform duration-300 filter drop-shadow-lg"
+                  />
+                </div>
+              </div>
+              <p className="text-slate-400 text-xs mt-2 max-w-48">
+                Comprometidos com a qualidade e acessibilidade em nossos serviços
               </p>
-              <p className="text-slate-500 text-xs">{t('privacy.disclaimer')}</p>
-              <p className="text-slate-500 text-xs">{t('cfm.disclaimer')}</p>
-              <p className="text-slate-400 text-xs mt-2">{t('footer.copyright', { year: String(new Date().getFullYear()) })}</p>
             </div>
-            <div className="flex items-center space-x-4 self-end md:self-auto">
+
+            {/* Social Links */}
+            <div className="flex items-center space-x-4">
               {socialLinks.map((link, index) => (
                 <a
                   key={index}
