@@ -1,252 +1,267 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import {
-    Play,
-    Clock,
-    Calendar,
-    Mic2,
-    ArrowRight,
-    Headphones
-} from 'lucide-react';
+import { Mic2, ArrowRight, Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import AudioPlayer from '@/components/AudioPlayer';
+import { Link } from 'react-router-dom';
+import SpotifyEmbed from '@/components/SpotifyEmbed';
 
-// Apenas 1 episódio para reprodução na homepage
-const LATEST_EPISODES = [
-    {
-        id: 'glaucoma-ep1',
-        slug: 'glaucoma-prevencao-tratamento',
-        src: 'https://cdn1.genspark.ai/user-upload-image/8/eaa7521e-e00b-41e0-a643-713c5f83a601.mp3',
-        title: 'Glaucoma: Prevenção e Tratamento',
-        description: 'Um guia completo sobre o glaucoma, seus sintomas, métodos de prevenção e opções de tratamento disponíveis.',
-        cover: 'https://cdn1.genspark.ai/user-upload-image/gpt_image_generated/17f1077e-d5c3-4c43-bda8-638546161372',
-        duration: '12:30',
-        date: '2024-08-20',
-        category: 'Doenças Oculares',
-        featured: true,
-        spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
-        applePodcastsUrl: 'https://podcasts.apple.com/episode/glaucoma',
-    }
-];
-
-const EXTERNAL_PODCAST_URL = 'https://shorturl.at/X0S4m';
+const PODCAST_ROUTE = '/podcast';
 
 const LatestEpisodes = () => {
     const { t } = useTranslation();
-    // Apenas 1 episódio será mostrado
-    const episode = LATEST_EPISODES[0];
+
+    const episodes = [
+        {
+            id: 'glaucoma-ep1',
+            src: '/Podcasts/glaucoma.mp3',
+            title: t('podcast.episodes.glaucoma.title'),
+            description: t('podcast.episodes.glaucoma.description'),
+            duration: '12:30',
+            cover: '/Podcasts/Covers/glaucoma.avif',
+            category: 'Doenças Oculares',
+            date: '2024-08-20',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
+        },
+        {
+            id: 'ceratocone-ep1',
+            src: '/Podcasts/ceratocone.mp3',
+            title: t('podcast.episodes.ceratocone.title'),
+            description: t('podcast.episodes.ceratocone.description'),
+            duration: '11:40',
+            cover: '/Podcasts/Covers/ceratocone_cover.png',
+            category: 'Doenças Oculares',
+            date: '2025-08-30',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
+        },
+        {
+            id: 'pterigio-ep2',
+            src: '/Podcasts/pterigio.mp3',
+            title: t('podcast.episodes.ptergio.title'),
+            description: t('podcast.episodes.ptergio.description'),
+            duration: '10:45',
+            cover: '/Podcasts/Covers/ptigio.jpeg',
+            category: 'Doenças Oculares',
+            date: '2024-08-15',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
+        },
+        {
+            id: 'catarata-ep2',
+            src: '/Podcasts/catarata.mp3',
+            title: t('podcast.episodes.catarata.title'),
+            description: t('podcast.episodes.catarata.description'),
+            duration: '13:15',
+            cover: '/Podcasts/Covers/catarata.jpeg',
+            category: 'Cirurgias',
+            date: '2024-08-25',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
+        },
+        {
+            id: 'retina-ep3',
+            src: '/Podcasts/retina.mp3',
+            title: t('podcast.episodes.retina.title'),
+            description: t('podcast.episodes.retina.description'),
+            duration: '14:20',
+            cover: '/Podcasts/Covers/retina.jpeg',
+            category: 'Prevenção',
+            date: '2024-08-10',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
+        },
+        {
+            id: 'olho-seco-ep5',
+            src: '/Podcasts/olho-seco.mp3',
+            title: t('podcast.episodes.olho_seco.title'),
+            description: t('podcast.episodes.olho_seco.description'),
+            duration: '09:50',
+            cover: '/Podcasts/Covers/podcast.png',
+            category: 'Sintomas',
+            date: '2024-08-28',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
+        },
+        {
+            id: 'duvidas-ep6',
+            src: '/Podcasts/Especial-dúvidas.mp3',
+            title: t('podcast.episodes.duvidas.title'),
+            description: t('podcast.episodes.duvidas.description'),
+            duration: '11:05',
+            cover: '/Podcasts/Covers/duvidas_cover.jpeg',
+            category: 'FAQ',
+            date: '2024-08-01',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
+        }
+    ];
 
     return (
-        <section className="py-16 lg:py-20 bg-gradient-to-br from-slate-50 via-blue-50/20 to-indigo-50/30 relative overflow-hidden">
-            {/* Background Elements */}
+        <section className="py-10 md:py-12 lg:py-16 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 relative overflow-hidden">
+            {/* Enhanced Background Elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/8 to-purple-400/8 rounded-full blur-3xl animate-pulse" />
-                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-purple-400/8 to-pink-400/8 rounded-full blur-3xl animate-pulse delay-1000" />
-            </div>
+                {/* Main gradient orbs */}
+                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/12 to-purple-400/12 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-purple-400/12 to-pink-400/12 rounded-full blur-3xl animate-pulse delay-1000" />
 
-            {/* Curved Top Divider */}
-            <div className="absolute top-0 left-0 w-full overflow-hidden leading-none">
-                <svg
-                    className="relative block w-full h-16 transform rotate-180"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 1200 120"
-                    preserveAspectRatio="none"
-                >
-                    <defs>
-                        <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#F5F9FC" stopOpacity="1" />
-                            <stop offset="50%" stopColor="#EBF4FF" stopOpacity="1" />
-                            <stop offset="100%" stopColor="#F5F9FC" stopOpacity="1" />
-                        </linearGradient>
-                    </defs>
-                    <path
-                        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,
-214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-                        fill="url(#waveGradient)"
-                    />
-                </svg>
+                {/* Additional floating elements */}
+                <div className="absolute top-10 right-10 w-32 h-32 bg-gradient-to-br from-cyan-300/8 to-blue-400/8 rounded-full blur-2xl animate-bounce" style={{ animationDuration: '6s' }} />
+                <div className="absolute bottom-16 left-16 w-40 h-40 bg-gradient-to-br from-indigo-300/6 to-purple-300/6 rounded-full blur-2xl animate-bounce delay-500" style={{ animationDuration: '8s' }} />
+
+                {/* Subtle grid pattern */}
+                <div className="absolute inset-0 opacity-[0.02]" style={{
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.5) 1px, transparent 0)`,
+                    backgroundSize: '40px 40px'
+                }} />
             </div>
 
             <div className="container mx-auto px-4 md:px-6 relative z-10">
-                {/* Header */}
-                <div className="text-center mb-12">
+                {/* Enhanced Header */}
+                <div className="text-center mb-10 md:mb-12">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 mb-6"
+                        className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-blue-100 via-indigo-50 to-purple-100 text-blue-700 mb-8 border border-blue-200/50 shadow-lg backdrop-blur-sm"
                     >
-                        <Mic2 className="w-4 h-4" />
-                        <span className="text-sm font-semibold">Podcast Saraiva Vision</span>
+                        <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                            <Mic2 className="w-4 h-4 text-white" />
+                        </div>
+                        <span className="text-sm font-bold tracking-wide uppercase">{t('navbar.podcast', 'Podcast')}</span>
+                        <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
                     </motion.div>
 
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
+                        transition={{ delay: 0.1 }}
+                        className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6 leading-tight"
                     >
-                        Podcast em Destaque
+                        <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                            {t('podcast.title')}
+                        </span>
                     </motion.h2>
 
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="text-lg text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed"
+                        transition={{ delay: 0.2 }}
+                        className="text-lg md:text-xl text-slate-600 mb-10 max-w-4xl mx-auto leading-relaxed font-medium"
                     >
-                        Conteúdo especializado em oftalmologia com Dr. Saraiva.
-                        Aprenda sobre cuidados, prevenção e tratamentos para manter seus olhos saudáveis.
+                        {t('podcast.subtitle')}
                     </motion.p>
-                </div>
 
-                {/* Episódio único */}
-                {episode && (
+                    {/* Statistics badges */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                        className="mb-12"
+                        transition={{ delay: 0.3 }}
+                        className="flex flex-wrap items-center justify-center gap-4 mb-8"
                     >
-                        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-light border border-gray-100 p-8 lg:p-12">
-                            <div className="flex flex-col lg:flex-row items-center gap-8">
-                                <div className="flex-shrink-0">
-                                    <div className="relative">
-                                        <img
-                                            src={episode.cover}
-                                            alt={episode.title}
-                                            className="w-48 h-48 lg:w-56 lg:h-56 rounded-3xl object-cover shadow-2xl"
-                                        />
-                                        <div className="absolute inset-0 bg-black/20 rounded-3xl flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer group">
-                                            <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                <Play className="w-8 h-8 text-blue-600 ml-1" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="flex-grow text-center lg:text-left">
-                                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-4">
-                                        <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                                        Episódio em Destaque
-                                    </div>
-
-                                    <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
-                                        {episode.title}
-                                    </h3>
-
-                                    <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                                        {episode.description}
-                                    </p>
-
-                                    <div className="flex flex-col sm:flex-row items-center gap-4 mb-8 justify-center lg:justify-start">
-                                        <div className="flex items-center gap-4 text-sm text-gray-500">
-                                            <div className="flex items-center gap-1">
-                                                <Calendar className="w-4 h-4" />
-                                                <span>{new Date(episode.date).toLocaleDateString('pt-BR')}</span>
-                                            </div>
-                                            <span>•</span>
-                                            <div className="flex items-center gap-1">
-                                                <Clock className="w-4 h-4" />
-                                                <span>{episode.duration}</span>
-                                            </div>
-                                            <span>•</span>
-                                            <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
-                                                {episode.category}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    {/* Embedded audio player */}
-                                    <div className="mb-6">
-                                        <audio
-                                            controls
-                                            className="w-full"
-                                            preload="metadata"
-                                        >
-                                            <source src={episode.src} type="audio/mpeg" />
-                                            Seu navegador não suporta o elemento de áudio.
-                                        </audio>
-                                    </div>
-
-                                    <div className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start">
-                                        <a
-                                            href={episode.spotifyUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            <Button
-                                                size="lg"
-                                                className="bg-green-600 hover:bg-green-700 text-white gap-2 px-8"
-                                            >
-                                                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                                                    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.84-.54 0-.36.179-.66.479-.78 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02v-.12h.002zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.48.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3L19.081 10.68z" />
-                                                </svg>
-                                                Ouvir no Spotify
-                                            </Button>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-slate-200/50 shadow-sm">
+                            <Headphones className="w-4 h-4 text-blue-600" />
+                            <span className="text-sm font-semibold text-slate-700">{episodes.length} Episódios</span>
+                        </div>
+                        <div className="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-slate-200/50 shadow-sm">
+                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                            <span className="text-sm font-semibold text-slate-700">Episódios Semanais</span>
                         </div>
                     </motion.div>
-                )}
+                </div>
 
-                {/* Remover seção de episódios adicionais */}
+                {/* Enhanced playlist carousel */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4 }}
+                    className="mb-6 md:mb-8 lg:mb-10"
+                >
+                    <div className="relative">
+                        {/* Gradient fade edges */}
+                        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none" />
+                        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none" />
 
-                {/* CTA para mais podcasts */}
+                        <div
+                            data-testid="podcast-scroll"
+                            className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-3 md:pb-4 px-1 md:px-2"
+                            style={{
+                                scrollbarWidth: 'none',
+                                msOverflowStyle: 'none',
+                                WebkitScrollbar: { display: 'none' }
+                            }}
+                        >
+                            {episodes.map((episode, index) => (
+                                <motion.div
+                                    key={episode.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.1 * index }}
+                                    className="snap-start min-w-[320px] max-w-[320px] md:min-w-[380px] md:max-w-[380px]"
+                                >
+                                    <div className="relative group perspective-1000">
+                                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
+                                        <AudioPlayer
+                                            episode={episode}
+                                            mode="inline"
+                                            className="h-full relative glass-blue card-3d shadow-xl rounded-xl hover:shadow-2xl transition-all duration-300 group-hover:transform group-hover:scale-[1.02] border border-blue-200/40"
+                                        />
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        {/* Scroll indicator */}
+                        <div className="flex justify-center mt-6 space-x-2">
+                            {episodes.map((_, index) => (
+                                <div key={index} className="w-2 h-2 rounded-full bg-slate-300 opacity-50" />
+                            ))}
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* Spotify embed (show) */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.4 }}
+                    transition={{ delay: 0.3 }}
+                    className="mb-8"
+                >
+                    <SpotifyEmbed type="show" className="max-w-3xl mx-auto" />
+                </motion.div>
+
+                {/* Enhanced CTA to full podcast page */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.6 }}
                     className="text-center"
                 >
-                    <a
-                        href={EXTERNAL_PODCAST_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        <Button
-                            size="lg"
-                            variant="outline"
-                            className="bg-white/70 backdrop-blur-sm border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white gap-2 px-8 py-3"
-                        >
-                            <Headphones className="w-5 h-5" />
-                            Ouvir Mais Podcasts
-                            <ArrowRight className="w-5 h-5" />
-                        </Button>
-                    </a>
-                </motion.div>
-            </div>
+                    <div className="relative inline-block">
+                        {/* Glow effect */}
+                        <div className="absolute -inset-2 bg-gradient-to-r from-blue-400/30 via-purple-400/30 to-indigo-400/30 rounded-2xl blur-lg opacity-70" />
 
-            {/* Curved Bottom Divider */}
-            <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
-                <svg
-                    className="relative block w-full h-16"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 1200 120"
-                    preserveAspectRatio="none"
-                >
-                    <defs>
-                        <linearGradient id="waveGradientBottom" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
-                            <stop offset="50%" stopColor="#F8FAFC" stopOpacity="1" />
-                            <stop offset="100%" stopColor="#FFFFFF" stopOpacity="1" />
-                        </linearGradient>
-                    </defs>
-                    <path
-                        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,
-214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-                        fill="url(#waveGradientBottom)"
-                    />
-                </svg>
+                        <Link to={PODCAST_ROUTE} aria-label={t('podcast.visit_podcast', 'Ver todos os episódios')}>
+                            <Button
+                                size="lg"
+                                className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 gap-3 px-10 py-4 text-lg font-bold rounded-2xl shadow-2xl border-0 transform hover:scale-105 transition-all duration-300"
+                            >
+                                <Headphones className="w-6 h-6" />
+                                {t('podcast.visit_podcast', 'Ver todos os episódios')}
+                                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                            </Button>
+                        </Link>
+                    </div>
+
+                    <p className="mt-4 text-slate-500 text-sm font-medium">
+                        Disponível também no Spotify e outras plataformas
+                    </p>
+                </motion.div>
             </div>
         </section>
     );
 };
 
 export default LatestEpisodes;
-
