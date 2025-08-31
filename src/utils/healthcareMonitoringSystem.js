@@ -14,6 +14,8 @@ class HealthcareMonitoringSystem {
     this.monitoringActive = false;
     this.errorQueue = [];
     this.performanceMetrics = new Map();
+    // Controla alertas críticos já exibidos (deduplicação)
+    this.activeAlerts = new Map(); // key => { element, count }
     this.alertThresholds = {
       criticalErrorCount: 5,      // 5 critical errors in monitoring window
       sessionFailureRate: 0.3,    // 30% session failure rate
@@ -21,7 +23,7 @@ class HealthcareMonitoringSystem {
       responseTimeThreshold: 5000, // 5 seconds
       memoryUsageThreshold: 200   // 200MB
     };
-    
+
     // Healthcare-specific monitoring categories
     this.monitoringCategories = {
       patient_safety: { priority: 'CRITICAL', alerts: true },
@@ -36,34 +38,34 @@ class HealthcareMonitoringSystem {
 
   async init() {
     if (this.isInitialized) return;
-    
+
     console.log('🏥 Initializing Healthcare Monitoring System...');
-    
+
     try {
       // Initialize all subsystems
       await this.initializeSubsystems();
-      
+
       // Set up global error handlers
       this.setupGlobalErrorHandling();
-      
+
       // Set up system monitoring
       this.startSystemMonitoring();
-      
+
       // Set up periodic health checks
       this.startHealthChecks();
-      
+
       this.isInitialized = true;
       this.monitoringActive = true;
-      
+
       console.log('✅ Healthcare Monitoring System initialized successfully');
-      
+
       // Send initialization event
       this.recordEvent('system_initialized', {
         category: 'system_availability',
         level: 'info',
         details: 'Healthcare monitoring system started'
       });
-      
+
     } catch (error) {
       console.error('❌ Healthcare Monitoring System initialization failed:', error);
       this.recordEvent('system_init_failed', {
@@ -77,7 +79,7 @@ class HealthcareMonitoringSystem {
   // Initialize all subsystems
   async initializeSubsystems() {
     console.log('🔧 Initializing healthcare subsystems...');
-    
+
     const subsystems = [
       { name: 'session_manager', instance: healthcareSessionManager },
       { name: 'token_manager', instance: healthcareTokenManager },
@@ -202,7 +204,7 @@ class HealthcareMonitoringSystem {
   // Handle global errors
   handleGlobalError(errorInfo) {
     const categorizedError = this.categorizeError(errorInfo);
-    
+
     // Add to error queue
     this.errorQueue.push({
       ...categorizedError,
@@ -300,10 +302,10 @@ class HealthcareMonitoringSystem {
     if (event.category === 'patient_safety' && event.level === 'critical') {
       return false;
     }
-    
+
     // Don't send if ad blocker is detected and this is a low priority event
-    if (adBlockerCompatibility.isAdBlockerDetected() && 
-        this.monitoringCategories[event.category]?.priority === 'LOW') {
+    if (adBlockerCompatibility.isAdBlockerDetected() &&
+      this.monitoringCategories[event.category]?.priority === 'LOW') {
       return false;
     }
 
@@ -331,14 +333,14 @@ class HealthcareMonitoringSystem {
     try {
       const storageKey = 'healthcare_events';
       const existingEvents = JSON.parse(localStorage.getItem(storageKey) || '[]');
-      
+
       existingEvents.push(event);
-      
+
       // Keep only last 500 events
       if (existingEvents.length > 500) {
         existingEvents.splice(0, existingEvents.length - 500);
       }
-      
+
       localStorage.setItem(storageKey, JSON.stringify(existingEvents));
     } catch (error) {
       console.warn('⚠️ Failed to store event locally:', error);
@@ -348,57 +350,111 @@ class HealthcareMonitoringSystem {
   // Send immediate alert for critical events
   sendImmediateAlert(event) {
     console.error('🚨 CRITICAL HEALTHCARE ALERT:', event);
-    
+
     // Create visual alert for clinic staff
     this.showCriticalAlert(event);
-    
+
     // Try to send to monitoring service
     this.sendToMonitoringService(event);
   }
 
   // Show visual alert to clinic staff
   showCriticalAlert(event) {
-    // Create alert element
-    const alertElement = document.createElement('div');
-    alertElement.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #dc2626;
-      color: white;
-      padding: 16px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      z-index: 10000;
-      max-width: 400px;
-      font-family: system-ui, sans-serif;
-    `;
-    
-    alertElement.innerHTML = `
-      <div style="font-weight: bold; margin-bottom: 8px;">
-        🚨 ALERTA CRÍTICO DO SISTEMA
-      </div>
-      <div style="font-size: 14px; margin-bottom: 8px;">
-        ${event.name}: ${event.details || event.message || 'Erro crítico detectado'}
-      </div>
-      <div style="font-size: 12px; opacity: 0.9;">
-        Categoria: ${event.category} | ${new Date().toLocaleTimeString()}
-      </div>
-      <button onclick="this.parentElement.remove()" style="
-        position: absolute; top: 8px; right: 8px; 
-        background: transparent; border: none; color: white; 
-        font-size: 18px; cursor: pointer;
-      ">×</button>
-    `;
-    
-    document.body.appendChild(alertElement);
-    
-    // Auto-remove after 30 seconds
-    setTimeout(() => {
-      if (alertElement.parentElement) {
-        alertElement.remove();
+    try {
+      // Gera uma chave única para deduplicação (mesmo tipo + serviço + categoria)
+      const key = [event.name, event.service || 'generic', event.category || ''].join(':');
+
+      // Se já existe, apenas incrementa contador e evita recriar
+      if (this.activeAlerts.has(key)) {
+        const alertData = this.activeAlerts.get(key);
+        alertData.count += 1;
+        const countBadge = alertData.element.querySelector('[data-alert-count]');
+        if (countBadge) {
+          countBadge.textContent = `x${alertData.count}`;
+          countBadge.style.display = 'inline-block';
+        }
+        // Atualiza timestamp leve (sem poluir interface)
+        const timeEl = alertData.element.querySelector('[data-alert-time]');
+        if (timeEl) timeEl.textContent = new Date().toLocaleTimeString();
+        console.info(`🔁 Alerta crítico duplicado suprimido (${key}) – total: ${alertData.count}`);
+        return; // Não recria
       }
-    }, 30000);
+
+      // Cria container acessível
+      const alertElement = document.createElement('div');
+      alertElement.setAttribute('role', 'alert');
+      alertElement.setAttribute('aria-live', 'assertive');
+      alertElement.setAttribute('aria-atomic', 'true');
+      alertElement.tabIndex = -1;
+      alertElement.dataset.alertKey = key;
+      alertElement.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #b91c1c; /* contraste melhor (#dc2626 é mantido em gradiente) */
+        background: linear-gradient(135deg,#dc2626,#991b1b);
+        color: #fff;
+        padding: 16px 18px 14px 16px;
+        border-radius: 10px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+        z-index: 10000;
+        max-width: 420px;
+        font-family: system-ui, sans-serif;
+        outline: none;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      `;
+
+      const safeMessage = (event.details || event.message || 'Erro crítico detectado').toString().slice(0, 160);
+
+      alertElement.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <strong style="font-size:14px;letter-spacing:.5px;display:flex;align-items:center;gap:6px;">🚨 ALERTA CRÍTICO</strong>
+          <span data-alert-count style="display:none;background:#fff1;padding:2px 6px;border-radius:12px;font-size:11px;font-weight:600;border:1px solid #ffffff33;">x1</span>
+          <button type="button" aria-label="Fechar alerta" data-alert-close style="background:transparent;border:none;color:#fff;font-size:18px;line-height:1;cursor:pointer;padding:2px 4px;border-radius:4px;">×</button>
+        </div>
+        <div style="font-size:13px;line-height:1.4;">${event.name.replace(/_/g, ' ')}: ${safeMessage}</div>
+        <div style="font-size:11px;opacity:.85;display:flex;justify-content:space-between;align-items:center;">
+          <span>Categoria: ${event.category}</span>
+          <time data-alert-time>${new Date().toLocaleTimeString()}</time>
+        </div>
+      `;
+
+      // Botão fechar funcional
+      const closeBtn = alertElement.querySelector('[data-alert-close]');
+      closeBtn.addEventListener('click', () => {
+        this.removeAlert(key);
+      });
+
+      document.body.appendChild(alertElement);
+      // Foco para acessibilidade sem scroll
+      try { alertElement.focus({ preventScroll: true }); } catch (_) { }
+
+      // Armazena em activeAlerts
+      this.activeAlerts.set(key, { element: alertElement, count: 1 });
+
+      // Timeout opcional (15s — pode ajustar conforme necessidade)
+      const AUTO_DISMISS_MS = 15000;
+      const timeoutId = setTimeout(() => {
+        this.removeAlert(key);
+      }, AUTO_DISMISS_MS);
+      alertElement.dataset.timeoutId = timeoutId;
+    } catch (e) {
+      console.warn('⚠️ Falha ao exibir alerta crítico:', e);
+    }
+  }
+
+  // Remove alerta e limpa estrutura
+  removeAlert(key) {
+    const data = this.activeAlerts.get(key);
+    if (!data) return;
+    try {
+      const tId = data.element.dataset.timeoutId;
+      if (tId) clearTimeout(Number(tId));
+      if (data.element.parentElement) data.element.parentElement.removeChild(data.element);
+    } catch (_) { }
+    this.activeAlerts.delete(key);
   }
 
   // Send to external monitoring service
@@ -410,7 +466,7 @@ class HealthcareMonitoringSystem {
           clinic_id: 'saraiva-vision',
           alert_type: 'critical'
         });
-        
+
         navigator.sendBeacon('/api/monitoring/alert', payload);
       }
     } catch (error) {
@@ -503,7 +559,7 @@ class HealthcareMonitoringSystem {
   async monitorCriticalServices() {
     try {
       const servicesStatus = await adBlockerCompatibility.recheckServices();
-      
+
       Object.entries(servicesStatus).forEach(([service, isWorking]) => {
         if (!isWorking) {
           this.recordEvent('critical_service_down', {
@@ -529,7 +585,7 @@ class HealthcareMonitoringSystem {
   // Perform comprehensive system health check
   async performSystemHealthCheck() {
     console.log('🔍 Performing healthcare system health check...');
-    
+
     const healthReport = {
       timestamp: new Date().toISOString(),
       overall: 'healthy',
@@ -563,7 +619,7 @@ class HealthcareMonitoringSystem {
 
       // Determine overall health
       if (healthReport.issues.length > 0) {
-        healthReport.overall = healthReport.issues.some(issue => 
+        healthReport.overall = healthReport.issues.some(issue =>
           issue.includes('session') || issue.includes('token')
         ) ? 'critical' : 'degraded';
       }
@@ -591,7 +647,7 @@ class HealthcareMonitoringSystem {
     try {
       // Check if critical tokens are available and not expired
       const criticalTokenTypes = ['clinic_api', 'google_analytics'];
-      
+
       return criticalTokenTypes.every(tokenType => {
         const token = healthcareTokenManager.getStoredToken(tokenType);
         return token && (!token.expires_at || Date.now() < token.expires_at);
@@ -604,7 +660,7 @@ class HealthcareMonitoringSystem {
   // Get recent errors for analysis
   getRecentErrors(timeWindow = 5 * 60 * 1000) { // 5 minutes
     const cutoff = Date.now() - timeWindow;
-    return this.errorQueue.filter(error => 
+    return this.errorQueue.filter(error =>
       new Date(error.timestamp).getTime() > cutoff
     );
   }
@@ -613,7 +669,7 @@ class HealthcareMonitoringSystem {
   checkAlertThresholds() {
     const recentErrors = this.getRecentErrors();
     const criticalErrors = recentErrors.filter(error => error.level === 'critical');
-    
+
     if (criticalErrors.length >= this.alertThresholds.criticalErrorCount) {
       this.recordEvent('critical_error_threshold_exceeded', {
         category: 'system_availability',
@@ -650,7 +706,7 @@ class HealthcareMonitoringSystem {
   generateHealthReport() {
     const status = this.getSystemStatus();
     const recentErrors = this.getRecentErrors(15 * 60 * 1000); // 15 minutes
-    
+
     return {
       timestamp: new Date().toISOString(),
       clinic: 'saraiva-vision',
@@ -688,7 +744,7 @@ class HealthcareMonitoringSystem {
 
     const criticalServices = Object.entries(status.criticalServices || {});
     const failingServices = criticalServices.filter(([service, working]) => !working);
-    
+
     if (failingServices.length > 0) {
       recommendations.push(`Serviços críticos fora do ar: ${failingServices.map(([s]) => s).join(', ')}`);
     }

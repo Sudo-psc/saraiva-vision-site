@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Mic2, ArrowRight, Headphones } from 'lucide-react';
+import { Mic2, ArrowRight } from 'lucide-react';
+import podcastIcon from '../../podcast_icon.png';
 import { Button } from '@/components/ui/button';
 import AudioPlayer from '@/components/AudioPlayer';
 import { Link } from 'react-router-dom';
@@ -15,11 +16,11 @@ const LatestEpisodes = () => {
     const episodes = [
         {
             id: 'lentes-ep1',
-            src: '',
+            src: '/Podcasts/Saúde Ocular em Foco - Lentes de Contato_ Rígidas vs Gelatinosas_2025_08_31.mp3',
             title: t('podcast.episodes.lentes_contato.title'),
             description: t('podcast.episodes.lentes_contato.description'),
-            duration: '—',
-            cover: '/Podcasts/Covers/podcast.png',
+            duration: '05:30',
+            cover: '/Podcasts/Genspark 2025-08-31 11.54.38.png',
             category: 'Lentes de Contato',
             date: '2025-08-31',
             spotifyUrl: 'https://creators.spotify.com/pod/profile/philipe-cruz/episodes/Sade-Ocular-em-Foco---Lentes-de-Contato-Rgidas-vs-Gelatinosas-e37iag0'
@@ -29,7 +30,7 @@ const LatestEpisodes = () => {
             src: '/Podcasts/Saúde Ocular em Foco - DMRI_ Quando a Mácula Decide se Aposentar_2025_08_31.mp3',
             title: t('podcast.episodes.dmri.title'),
             description: t('podcast.episodes.dmri.description'),
-            duration: '—',
+            duration: '06:13',
             cover: '/Podcasts/Covers/dmri.png',
             category: 'Doenças Oculares',
             date: '2025-08-31',
@@ -142,8 +143,15 @@ const LatestEpisodes = () => {
                         viewport={{ once: true }}
                         className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-blue-100 via-indigo-50 to-purple-100 text-blue-700 mb-8 border border-blue-200/50 shadow-lg backdrop-blur-sm"
                     >
-                        <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
-                            <Mic2 className="w-4 h-4 text-white" />
+                        {/* Ícone de podcast sem círculo de fundo */}
+                        <div className="flex items-center justify-center">
+                            <img
+                                src={podcastIcon}
+                                alt={t('navbar.podcast', 'Podcast')}
+                                className="w-[80px] h-[80px] object-contain drop-shadow"
+                                loading="lazy"
+                                decoding="async"
+                            />
                         </div>
                         <span className="text-sm font-bold tracking-wide uppercase">{t('navbar.podcast', 'Podcast')}</span>
                         <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
@@ -180,7 +188,7 @@ const LatestEpisodes = () => {
                         className="flex flex-wrap items-center justify-center gap-4 mb-8"
                     >
                         <div className="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-slate-200/50 shadow-sm">
-                            <Headphones className="w-4 h-4 text-blue-600" />
+                            <img src={podcastIcon} alt={t('navbar.podcast', 'Podcast')} className="w-12 h-12" />
                             <span className="text-sm font-semibold text-slate-700">{episodes.length} Episódios</span>
                         </div>
                         <div className="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-slate-200/50 shadow-sm">
@@ -270,7 +278,7 @@ const LatestEpisodes = () => {
                                 size="lg"
                                 className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 gap-3 px-10 py-4 text-lg font-bold rounded-2xl shadow-2xl border-0 transform hover:scale-105 transition-all duration-300"
                             >
-                                <Headphones className="w-6 h-6" />
+                                <img src={podcastIcon} alt="Podcast" className="w-[72px] h-[72px]" />
                                 {t('podcast.visit_podcast', 'Ver todos os episódios')}
                                 <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                             </Button>
