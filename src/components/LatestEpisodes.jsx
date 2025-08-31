@@ -5,6 +5,7 @@ import { Mic2, ArrowRight, Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AudioPlayer from '@/components/AudioPlayer';
 import { Link } from 'react-router-dom';
+import SpotifyEmbed from '@/components/SpotifyEmbed';
 
 const PODCAST_ROUTE = '/podcast';
 
@@ -21,6 +22,7 @@ const LatestEpisodes = () => {
             cover: '/Podcasts/Covers/glaucoma.avif',
             category: 'Doenças Oculares',
             date: '2024-08-20',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
         },
         {
             id: 'ceratocone-ep1',
@@ -31,6 +33,7 @@ const LatestEpisodes = () => {
             cover: '/Podcasts/Covers/ceratocone_cover.png',
             category: 'Doenças Oculares',
             date: '2025-08-30',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
         },
         {
             id: 'pterigio-ep2',
@@ -41,6 +44,7 @@ const LatestEpisodes = () => {
             cover: '/Podcasts/Covers/ptigio.jpeg',
             category: 'Doenças Oculares',
             date: '2024-08-15',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
         },
         {
             id: 'catarata-ep2',
@@ -51,6 +55,7 @@ const LatestEpisodes = () => {
             cover: '/Podcasts/Covers/catarata.jpeg',
             category: 'Cirurgias',
             date: '2024-08-25',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
         },
         {
             id: 'retina-ep3',
@@ -61,6 +66,7 @@ const LatestEpisodes = () => {
             cover: '/Podcasts/Covers/retina.jpeg',
             category: 'Prevenção',
             date: '2024-08-10',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
         },
         {
             id: 'olho-seco-ep5',
@@ -71,6 +77,7 @@ const LatestEpisodes = () => {
             cover: '/Podcasts/Covers/podcast.png',
             category: 'Sintomas',
             date: '2024-08-28',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
         },
         {
             id: 'duvidas-ep6',
@@ -81,6 +88,7 @@ const LatestEpisodes = () => {
             cover: '/Podcasts/Covers/duvidas_cover.jpeg',
             category: 'FAQ',
             date: '2024-08-01',
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
         }
     ];
 
@@ -212,6 +220,16 @@ const LatestEpisodes = () => {
                     </div>
                 </motion.div>
 
+                {/* Spotify embed (show) */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 }}
+                    className="mb-4"
+                >
+                    <SpotifyEmbed type="show" className="max-w-3xl mx-auto" />
+                </motion.div>
 
                 {/* Enhanced CTA to full podcast page */}
                 <motion.div
@@ -238,7 +256,7 @@ const LatestEpisodes = () => {
                     </div>
 
                     <p className="mt-4 text-slate-500 text-sm font-medium">
-                        Episódios disponíveis para reprodução
+                        Disponível também no Spotify e outras plataformas
                     </p>
                 </motion.div>
             </div>

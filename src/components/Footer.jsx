@@ -124,7 +124,7 @@ const Footer = () => {
                 {/* ISO 9001 Badge */}
                 <div className="group cursor-pointer" title="Certificação ISO 9001 - Sistema de Gestão da Qualidade">
                   <img
-                    src="/img/iso9001-icon.png"
+                    src="/home/saraiva-vision-site/dist/img/iso9001-icon.png"
                     alt="Certificação ISO 9001"
                     className="w-16 h-16 sm:w-20 sm:h-20 hover:scale-105 transition-transform duration-300 filter drop-shadow-lg object-contain"
                     width="80"
@@ -137,7 +137,7 @@ const Footer = () => {
                 {/* Accessibility Badge */}
                 <div className="group cursor-pointer" title="Site Acessível - WCAG 2.1 AA">
                   <img
-                    src="/img/Acessib_icon.png"
+                    src="/home/saraiva-vision-site/dist/img/Acessib_icon.png"
                     alt="Selo de Acessibilidade WCAG 2.1 AA"
                     className="w-16 h-16 sm:w-20 sm:h-20 hover:scale-105 transition-transform duration-300 filter drop-shadow-lg"
                   />
