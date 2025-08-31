@@ -1,22 +1,40 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 
-const ServiceCard = ({ service, index }) => {
+const ServiceCard = ({ service, index, lazy = true }) => {
   const { t } = useTranslation();
   const prefersReducedMotion = useReducedMotion();
+  const [visible, setVisible] = useState(!lazy);
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    if (!lazy || visible || !cardRef.current) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      });
+    }, { rootMargin: '120px' });
+    observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, [lazy, visible]);
 
   return (
     <motion.div
+      ref={cardRef}
+      data-card
       layout
       initial={{ y: 40, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.07 }}
-      className="group relative flex flex-col items-center text-center p-8 rounded-3xl bg-white/70 backdrop-blur-md shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08),0_4px_12px_-2px_rgba(0,0,0,0.05)] border border-white/50 overflow-hidden will-change-transform"
+      transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.05 }}
+      className="group relative flex flex-col items-center text-center p-8 rounded-3xl bg-white/70 backdrop-blur-md shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08),0_4px_12px_-2px_rgba(0,0,0,0.05)] border border-white/50 overflow-hidden will-change-transform flex-shrink-0 snap-start min-w-[260px] max-w-[300px] md:min-w-[280px] md:max-w-[320px]"
       whileHover={prefersReducedMotion ? {} : { y: -6, rotateX: 4, rotateY: -4 }}
       exit={{ opacity: 0, y: 10, scale: 0.98 }}
     >
@@ -30,8 +48,10 @@ const ServiceCard = ({ service, index }) => {
         whileHover={prefersReducedMotion ? {} : { scale: 1.1, rotate: 3 }}
       >
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-        <div className="relative w-28 h-28 drop-shadow-lg select-none">
-          {service.icon}
+        <div className="relative w-28 h-28 drop-shadow-lg select-none flex items-center justify-center">
+          {visible ? service.icon : (
+            <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-slate-200 to-slate-100 animate-pulse" aria-hidden="true" />
+          )}
         </div>
       </motion.div>
 
@@ -67,11 +87,13 @@ const ServiceCard = ({ service, index }) => {
   );
 };
 
-const Services = ({ full = false }) => {
+const Services = () => {
   const { t } = useTranslation();
 
-  const serviceItems = useMemo(() => {
-    const items = [
+  // Lista base dos serviços
+  const baseItemsRef = useRef(null);
+  if (!baseItemsRef.current) {
+    baseItemsRef.current = [
       {
         id: 'consultas-oftalmologicas',
         icon: getServiceIcon('consultas-oftalmologicas', { className: "w-full h-full object-contain" }),
@@ -145,55 +167,126 @@ const Services = ({ full = false }) => {
         description: t('services.items.visualField.description')
       }
     ];
+    // Embaralhar uma vez (Fisher-Yates) para ordem aleatória estável até reload
+    for (let i = baseItemsRef.current.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [baseItemsRef.current[i], baseItemsRef.current[j]] = [baseItemsRef.current[j], baseItemsRef.current[i]];
+    }
+  }
 
-    // Keep stable order on full page; randomize only in compact/featured mode
-    return full ? items : items.sort(() => Math.random() - 0.5);
-  }, [t, full]);
+  const serviceItems = baseItemsRef.current;
+  const scrollerRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const cardWidthRef = useRef(320); // width + gap
+  const prefersReducedMotion = useReducedMotion();
+  const pauseRef = useRef(false);
+  const rafRef = useRef(null);
 
-  // Responsive featured count (6 on mobile, 9 on tablet, 12 on desktop)
-  const computeFeatured = () => {
-    if (typeof window === 'undefined' || !window.matchMedia) return 9;
-
-    if (window.matchMedia('(max-width: 640px)').matches) return 6; // Mobile: 6 services
-    if (window.matchMedia('(max-width: 1024px)').matches) return 9; // Tablet: 9 services
-    return 12; // Desktop: all 12 services
-  };
-  const [featuredCount, setFeaturedCount] = useState(full ? 12 : computeFeatured());
-  useEffect(() => {
-    if (full || typeof window === 'undefined' || !window.matchMedia) return;
-
-    const updateFeatured = () => setFeaturedCount(computeFeatured());
-
-    const mq1 = window.matchMedia('(max-width: 640px)');
-    const mq2 = window.matchMedia('(max-width: 1024px)');
-
-    mq1.addEventListener('change', updateFeatured);
-    mq2.addEventListener('change', updateFeatured);
-
-    return () => {
-      mq1.removeEventListener('change', updateFeatured);
-      mq2.removeEventListener('change', updateFeatured);
-    };
+  const measure = useCallback(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const first = el.querySelector('[data-card]');
+    if (first) {
+      const style = window.getComputedStyle(first);
+      const width = first.getBoundingClientRect().width;
+      const marginRight = parseFloat(style.marginRight) || 24;
+      cardWidthRef.current = width + marginRight;
+    }
   }, []);
 
-  // Toggle to show all services (persisted)
-  const storageKey = 'sv_showAllServices';
-  const getInitialShowAll = () => {
-    if (full || typeof window === 'undefined') return true;
-    try {
-      const raw = window.localStorage.getItem(storageKey);
-      return raw === '1';
-    } catch (_) { return false; }
-  };
-  const [showAll, setShowAll] = useState(() => getInitialShowAll());
-  
   useEffect(() => {
-    if (full || typeof window === 'undefined') return;
-    try {
-      window.localStorage.setItem(storageKey, showAll ? '1' : '0');
-    } catch (_) { }
-  }, [showAll, full]);
-  const visibleItems = full ? serviceItems : (showAll ? serviceItems : serviceItems.slice(0, featuredCount));
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [measure]);
+
+  const scrollByAmount = (dir = 1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const delta = el.clientWidth * 0.8 * dir; // 80% da largura visível
+    el.scrollBy({ left: delta, behavior: 'smooth' });
+  };
+
+  const updateIndex = useCallback(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const idx = Math.round(el.scrollLeft / cardWidthRef.current) % serviceItems.length;
+    setCurrentIndex(idx);
+  }, [serviceItems.length]);
+
+  const scrollToIndex = useCallback((i) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    pauseRef.current = true;
+    el.scrollTo({ left: i * cardWidthRef.current, behavior: 'smooth' });
+    setTimeout(() => { pauseRef.current = false; }, 3000);
+  }, []);
+
+  // Acessibilidade: setas do teclado quando focado
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const handler = (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); scrollByAmount(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); scrollByAmount(-1); }
+    };
+    el.addEventListener('keydown', handler);
+    return () => el.removeEventListener('keydown', handler);
+  }, []);
+
+  // Atualiza índice e looping suave
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      updateIndex();
+      const loopWidth = cardWidthRef.current * serviceItems.length;
+      if (el.scrollLeft >= loopWidth * 1.5) {
+        el.scrollLeft -= loopWidth;
+      }
+    };
+    el.addEventListener('scroll', handleScroll, { passive: true });
+    return () => el.removeEventListener('scroll', handleScroll);
+  }, [serviceItems.length, updateIndex]);
+
+  // Autoplay contínuo
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    const el = scrollerRef.current;
+    if (!el) return;
+    let last = performance.now();
+    const speed = 0.18; // px/ms
+    const tick = (now) => {
+      const dt = now - last; last = now;
+      if (!pauseRef.current) {
+        el.scrollLeft += dt * speed;
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [prefersReducedMotion, serviceItems.length]);
+
+  // Pausa ao interagir
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const pause = () => { pauseRef.current = true; };
+    const resume = () => { pauseRef.current = false; };
+    el.addEventListener('mouseenter', pause);
+    el.addEventListener('mouseleave', resume);
+    el.addEventListener('focusin', pause);
+    el.addEventListener('focusout', resume);
+    el.addEventListener('pointerdown', pause);
+    window.addEventListener('mouseup', () => setTimeout(resume, 1200));
+    return () => {
+      el.removeEventListener('mouseenter', pause);
+      el.removeEventListener('mouseleave', resume);
+      el.removeEventListener('focusin', pause);
+      el.removeEventListener('focusout', resume);
+      el.removeEventListener('pointerdown', pause);
+    };
+  }, []);
 
   return (
     <section id="services" className="py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
@@ -236,67 +329,58 @@ const Services = ({ full = false }) => {
           </motion.div>
         </div>
 
-        {/* Services Grid (randomized, featured subset by default) */}
-        <motion.div layout="position" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
-          <AnimatePresence mode="popLayout">
-            {visibleItems.map((service, index) => (
-              <ServiceCard key={service.id} service={service} index={index} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* Carrossel Horizontal */}
+        <div className="relative" aria-label={t('services.title')}>
+          {/* Botão Prev */}
+          <button
+            type="button"
+            aria-label={t('ui.prev', 'Anterior')}
+            onClick={() => scrollByAmount(-1)}
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/80 hover:bg-white shadow-lg ring-1 ring-slate-200 backdrop-blur justify-center items-center transition focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <svg className="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+          </button>
 
-        {/* Reveal all / collapse toggle (hidden on full page) */}
-        {!full && visibleItems.length < serviceItems.length && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="text-center mt-12"
+          {/* Botão Next */}
+          <button
+            type="button"
+            aria-label={t('ui.next', 'Próximo')}
+            onClick={() => scrollByAmount(1)}
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/80 hover:bg-white shadow-lg ring-1 ring-slate-200 backdrop-blur justify-center items-center transition focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                setShowAll(v => !v);
-              }}
-              className={`inline-flex items-center gap-2 px-8 py-3 rounded-full text-sm font-semibold border-2 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                showAll 
-                  ? 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50 focus:ring-slate-500' 
-                  : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700 hover:border-blue-700 focus:ring-blue-500'
-              }`}
-            >
-              {showAll ? t('services.show_less', 'Mostrar menos') : t('services.view_all', 'Ver todos os 12 serviços')}
-              <motion.div
-                animate={{ rotate: showAll ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <ArrowRight className={`w-4 h-4 ${showAll ? 'rotate-90' : ''}`} />
-              </motion.div>
-            </button>
-          </motion.div>
-        )}
-        
-        {!full && showAll && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-center mt-6"
+            <svg className="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </button>
+
+          {/* Fade edges */}
+          <div className="pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent z-10" />
+          <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-slate-50 via-slate-50/80 to-transparent z-10" />
+
+          <motion.div
+            ref={scrollerRef}
+            tabIndex={0}
+            className="flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent scroll-smooth"
+            layout="position"
           >
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                setShowAll(false);
-              }}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium bg-white text-slate-700 border-2 border-slate-300 hover:bg-slate-50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
-            >
-              {t('services.show_less', 'Mostrar menos')}
-              <ArrowRight className="w-4 h-4 rotate-90" />
-            </button>
+            <AnimatePresence mode="popLayout">
+              {[...serviceItems, ...serviceItems].map((service, index) => (
+                <ServiceCard key={service.id + '-' + index} service={service} index={index % serviceItems.length} />
+              ))}
+            </AnimatePresence>
           </motion.div>
-        )}
+
+          {/* Indicadores */}
+          <div className="flex justify-center gap-2 mt-8" aria-label={t('services.carousel_navigation', 'Navegação do carrossel de serviços')}>
+            {serviceItems.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                aria-label={t('services.go_to', { index: i + 1, defaultValue: `Ir para serviço ${i + 1}` })}
+                onClick={() => scrollToIndex(i)}
+                className={`w-3 h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 ${i === currentIndex ? 'bg-blue-600 scale-110 shadow' : 'bg-slate-300 hover:bg-slate-400'}`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
