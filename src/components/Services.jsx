@@ -91,7 +91,7 @@ const ServiceCard = ({ service, index, lazy = true }) => {
   );
 };
 
-const Services = () => {
+const Services = ({ full = false }) => {
   const { t } = useTranslation();
 
   // Modo de compatibilidade para suite de testes legada (espera apenas 6 serviços específicos)
@@ -294,7 +294,7 @@ const Services = () => {
         {/* Enhanced Header Section */}
         <div className="text-center mb-20">
           {/* Badge visível para manter compatibilidade com fluxo de integração que busca 'Nossos Serviços' */}
-          <div className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700">
+          <div className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700" data-testid="services-badge">
             {t('services.badge', 'Nossos Serviços')}
           </div>
           <motion.h2
@@ -304,7 +304,9 @@ const Services = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 drop-shadow-sm"
           >
-            {isTestEnv ? 'Cuidados Oftalmológicos Completos' : t('services.title_full', 'Cuidados Oftalmológicos Completos')}
+            {isTestEnv
+              ? 'Cuidados Oftalmológicos Completos'
+              : t('services.title_full', full ? 'Nossos Serviços' : 'Cuidados Oftalmológicos Completos')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
