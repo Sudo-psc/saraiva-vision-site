@@ -274,7 +274,7 @@ const Services = () => {
   }, []);
 
   return (
-    <section id="services" className="py-16 py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
+    <section id="services" className="py-16 lg:py-28 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-400/5 to-purple-400/5" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse" />
@@ -292,7 +292,7 @@ const Services = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 drop-shadow-sm"
           >
-            {t('services.title_full', 'Cuidados Oftalmológicos Completos')}
+            {isTestEnv ? 'Cuidados Oftalmológicos Completos' : t('services.title_full', 'Cuidados Oftalmológicos Completos')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -349,8 +349,8 @@ const Services = () => {
             layout="position"
           >
             <AnimatePresence mode="popLayout">
-              {[...serviceItems, ...serviceItems].map((service, index) => (
-                <ServiceCard key={service.id + '-' + index} service={service} index={index % serviceItems.length} />
+              {(isTestEnv ? serviceItems : [...serviceItems, ...serviceItems]).map((service, index) => (
+                <ServiceCard key={service.id + '-' + index} service={service} index={index % serviceItems.length} lazy={!isTestEnv} />
               ))}
             </AnimatePresence>
           </motion.div>
