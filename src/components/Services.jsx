@@ -67,7 +67,7 @@ const ServiceCard = ({ service, index }) => {
   );
 };
 
-const Services = () => {
+const Services = ({ full = false }) => {
   const { t } = useTranslation();
 
   const serviceItems = useMemo(() => {
@@ -107,44 +107,93 @@ const Services = () => {
         icon: getServiceIcon('laudos-especializados', { className: "w-full h-full object-contain" }),
         title: t('services.items.reports.title'),
         description: t('services.items.reports.description')
+      },
+      {
+        id: 'gonioscopia',
+        icon: getServiceIcon('gonioscopia', { className: "w-full h-full object-contain" }),
+        title: t('services.items.gonioscopy.title'),
+        description: t('services.items.gonioscopy.description')
+      },
+      {
+        id: 'mapeamento-de-retina',
+        icon: getServiceIcon('mapeamento-de-retina', { className: "w-full h-full object-contain" }),
+        title: t('services.items.retinaMapping.title'),
+        description: t('services.items.retinaMapping.description')
+      },
+      {
+        id: 'topografia-corneana',
+        icon: getServiceIcon('topografia-corneana', { className: "w-full h-full object-contain" }),
+        title: t('services.items.cornealTopography.title'),
+        description: t('services.items.cornealTopography.description')
+      },
+      {
+        id: 'paquimetria',
+        icon: getServiceIcon('paquimetria', { className: "w-full h-full object-contain" }),
+        title: t('services.items.pachymetry.title'),
+        description: t('services.items.pachymetry.description')
+      },
+      {
+        id: 'retinografia',
+        icon: getServiceIcon('retinografia', { className: "w-full h-full object-contain" }),
+        title: t('services.items.retinography.title'),
+        description: t('services.items.retinography.description')
+      },
+      {
+        id: 'campo-visual',
+        icon: getServiceIcon('campo-visual', { className: "w-full h-full object-contain" }),
+        title: t('services.items.visualField.title'),
+        description: t('services.items.visualField.description')
       }
     ];
 
-    // Randomize order so different services appear on each page load
-    return items.sort(() => Math.random() - 0.5);
-  }, [t]);
+    // Keep stable order on full page; randomize only in compact/featured mode
+    return full ? items : items.sort(() => Math.random() - 0.5);
+  }, [t, full]);
 
-  // Responsive featured count (4 on small screens, 6 otherwise)
+  // Responsive featured count (6 on mobile, 9 on tablet, 12 on desktop)
   const computeFeatured = () => {
-    if (typeof window === 'undefined' || !window.matchMedia) return 6;
-    return window.matchMedia('(max-width: 640px)').matches ? 4 : 6;
+    if (typeof window === 'undefined' || !window.matchMedia) return 9;
+
+    if (window.matchMedia('(max-width: 640px)').matches) return 6; // Mobile: 6 services
+    if (window.matchMedia('(max-width: 1024px)').matches) return 9; // Tablet: 9 services
+    return 12; // Desktop: all 12 services
   };
-  const [featuredCount, setFeaturedCount] = useState(computeFeatured());
+  const [featuredCount, setFeaturedCount] = useState(full ? 12 : computeFeatured());
   useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return;
-    const mq = window.matchMedia('(max-width: 640px)');
-    const onChange = () => setFeaturedCount(mq.matches ? 4 : 6);
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
+    if (full || typeof window === 'undefined' || !window.matchMedia) return;
+
+    const updateFeatured = () => setFeaturedCount(computeFeatured());
+
+    const mq1 = window.matchMedia('(max-width: 640px)');
+    const mq2 = window.matchMedia('(max-width: 1024px)');
+
+    mq1.addEventListener('change', updateFeatured);
+    mq2.addEventListener('change', updateFeatured);
+
+    return () => {
+      mq1.removeEventListener('change', updateFeatured);
+      mq2.removeEventListener('change', updateFeatured);
+    };
   }, []);
 
   // Toggle to show all services (persisted)
   const storageKey = 'sv_showAllServices';
   const getInitialShowAll = () => {
-    if (typeof window === 'undefined') return false;
+    if (full || typeof window === 'undefined') return true;
     try {
       const raw = window.localStorage.getItem(storageKey);
       return raw === '1';
     } catch (_) { return false; }
   };
-  const [showAll, setShowAll] = useState(getInitialShowAll());
+  const [showAll, setShowAll] = useState(() => getInitialShowAll());
+  
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (full || typeof window === 'undefined') return;
     try {
       window.localStorage.setItem(storageKey, showAll ? '1' : '0');
-    } catch (_) {}
-  }, [showAll]);
-  const visibleItems = showAll ? serviceItems : serviceItems.slice(0, featuredCount);
+    } catch (_) { }
+  }, [showAll, full]);
+  const visibleItems = full ? serviceItems : (showAll ? serviceItems : serviceItems.slice(0, featuredCount));
 
   return (
     <section id="services" className="py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
@@ -188,7 +237,7 @@ const Services = () => {
         </div>
 
         {/* Services Grid (randomized, featured subset by default) */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+        <motion.div layout="position" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
           <AnimatePresence mode="popLayout">
             {visibleItems.map((service, index) => (
               <ServiceCard key={service.id} service={service} index={index} />
@@ -196,16 +245,58 @@ const Services = () => {
           </AnimatePresence>
         </motion.div>
 
-        {/* Reveal all / collapse toggle */}
-        <div className="text-center mt-8">
-          <button
-            type="button"
-            onClick={() => setShowAll(v => !v)}
-            className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium border transition-colors ${showAll ? 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50' : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'}`}
+        {/* Reveal all / collapse toggle (hidden on full page) */}
+        {!full && visibleItems.length < serviceItems.length && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="text-center mt-12"
           >
-            {showAll ? t('services.show_less', 'Mostrar menos') : t('services.view_all', 'Ver todos os serviços')}
-          </button>
-        </div>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                setShowAll(v => !v);
+              }}
+              className={`inline-flex items-center gap-2 px-8 py-3 rounded-full text-sm font-semibold border-2 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                showAll 
+                  ? 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50 focus:ring-slate-500' 
+                  : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700 hover:border-blue-700 focus:ring-blue-500'
+              }`}
+            >
+              {showAll ? t('services.show_less', 'Mostrar menos') : t('services.view_all', 'Ver todos os 12 serviços')}
+              <motion.div
+                animate={{ rotate: showAll ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ArrowRight className={`w-4 h-4 ${showAll ? 'rotate-90' : ''}`} />
+              </motion.div>
+            </button>
+          </motion.div>
+        )}
+        
+        {!full && showAll && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-center mt-6"
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                setShowAll(false);
+              }}
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium bg-white text-slate-700 border-2 border-slate-300 hover:bg-slate-50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
+            >
+              {t('services.show_less', 'Mostrar menos')}
+              <ArrowRight className="w-4 h-4 rotate-90" />
+            </button>
+          </motion.div>
+        )}
       </div>
     </section>
   );

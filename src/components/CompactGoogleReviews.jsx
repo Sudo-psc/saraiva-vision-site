@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Star, ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { googleReviewUrl } from '@/lib/clinicInfo';
+import { useTranslation } from 'react-i18next';
 
 // Real reviews data from Google Places API
 const featuredReviews = [
@@ -35,6 +36,7 @@ const reviewsSummary = {
 
 const CompactGoogleReviews = () => {
     const [mounted, setMounted] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         setMounted(true);
@@ -123,6 +125,7 @@ const CompactGoogleReviews = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                        aria-label={t('reviews.view_all_aria', 'Ver todas as avaliações no Google (abre em nova aba)')}
                     >
                         Ver todas no Google
                         <ExternalLink size={18} />

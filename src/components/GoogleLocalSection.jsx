@@ -26,10 +26,10 @@ const GoogleLocalSection = () => {
               <div className="flex items-center gap-3"><Star size={18} className="text-amber-300" /> <span className="text-blue-50">{t('location.reviews_realtime', 'Avaliações em tempo real')}</span></div>
             </div>
             <div className="flex flex-wrap gap-4">
-              <a href={googleMapsProfileUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-6 py-3 rounded-2xl shadow-xl hover:shadow-2xl backdrop-blur-sm border border-blue-400/30 transition-all transform hover:scale-105">
+              <a href={googleMapsProfileUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-6 py-3 rounded-2xl shadow-xl hover:shadow-2xl backdrop-blur-sm border border-blue-400/30 transition-all transform hover:scale-105" aria-label={t('location.google_maps_button_aria', 'Abrir perfil da clínica no Google Maps (nova aba)')}>
                 {t('location.google_maps_button', 'Ver no Google Maps')} <ExternalLink size={16} />
               </a>
-              <a href={googleReviewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 border-2 border-blue-300/40 text-blue-100 hover:text-white font-semibold px-6 py-3 rounded-2xl bg-white/5 hover:bg-white/10 backdrop-blur-xl transition-all transform hover:scale-105 shadow-lg">
+              <a href={googleReviewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 border-2 border-blue-300/40 text-blue-100 hover:text-white font-semibold px-6 py-3 rounded-2xl bg-white/5 hover:bg-white/10 backdrop-blur-xl transition-all transform hover:scale-105 shadow-lg" aria-label={t('location.review_button_aria', 'Abrir página de avaliações no Google (nova aba)')}>
                 {t('location.review_button', 'Avalie-nos no Google')} <Star size={16} className="text-amber-300" />
               </a>
             </div>

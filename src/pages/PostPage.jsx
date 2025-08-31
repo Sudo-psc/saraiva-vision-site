@@ -115,7 +115,7 @@ const PostPage = ({ wordpressUrl }) => {
             {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
               <img
                 src={post._embedded['wp:featuredmedia'][0].source_url}
-                alt={post.title.rendered}
+                alt={cleanTitle}
                 className="w-full h-auto max-h-[500px] object-cover rounded-2xl shadow-soft-medium mb-12"
               />
             )}

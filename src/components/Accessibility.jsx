@@ -257,7 +257,13 @@ const Accessibility = () => {
               willChange: 'transform'
             }}
           >
-            <AccessibilityIcon size={28} strokeWidth={1.5} className="sm:w-8 sm:h-8" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center">
+              <img 
+                src="/img/Acessib_icon.png" 
+                alt="Acessibilidade" 
+                className="w-full h-full object-contain" 
+              />
+            </div>
           </motion.button>
           <div className="pointer-events-none absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
             Acessibilidade

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Linkedin, ArrowUp, MessageCircle, Bot } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, ArrowUp, MessageCircle, Bot, Twitter } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { clinicInfo } from '@/lib/clinicInfo';
 
@@ -34,6 +34,7 @@ const Footer = () => {
     { href: "https://web.facebook.com/profile.php?id=61559488419531", icon: <Facebook size={20} />, label: 'Facebook' },
     { href: "https://www.instagram.com/saraiva_vision/", icon: <Instagram size={20} />, label: 'Instagram' },
     { href: "https://www.linkedin.com/in/dr-philipe-saraiva", icon: <Linkedin size={20} />, label: 'LinkedIn' },
+    { href: "https://x.com/philipe_saraiva", icon: <Twitter size={20} />, label: 'Twitter' },
   ];
 
   return (
@@ -46,7 +47,7 @@ const Footer = () => {
               {t('footer.slogan')}
             </p>
             <p className="text-slate-400 mb-2 text-sm">{t('footer.partner_of')}</p>
-            <a href="https://www.amorsaude.com.br/clinica/caratinga-mg/" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.amorsaude.com.br/clinica/caratinga-mg/" target="_blank" rel="noopener noreferrer" aria-label={t('footer.partner_link_aria', 'Abrir site do parceiro Amor e Saúde (nova aba)')}>
               <img src={amorSaudeLogo} alt={t('footer.amor_saude_alt')} className="h-16 w-auto mb-6" width="160" height="64" sizes="(min-width: 768px) 160px, 128px" />
             </a>
           </div>
@@ -123,7 +124,7 @@ const Footer = () => {
                 {/* ISO 9001 Badge */}
                 <div className="group cursor-pointer" title="Certificação ISO 9001 - Sistema de Gestão da Qualidade">
                   <img
-                    src="/home/saraiva-vision-site/dist/img/iso9001-icon.png"
+                    src="/img/iso9001-icon.png"
                     alt="Certificação ISO 9001"
                     className="w-16 h-16 sm:w-20 sm:h-20 hover:scale-105 transition-transform duration-300 filter drop-shadow-lg object-contain"
                     width="80"
@@ -136,7 +137,7 @@ const Footer = () => {
                 {/* Accessibility Badge */}
                 <div className="group cursor-pointer" title="Site Acessível - WCAG 2.1 AA">
                   <img
-                    src="/home/saraiva-vision-site/dist/img/Acessib_icon.png"
+                    src="/img/Acessib_icon.png"
                     alt="Selo de Acessibilidade WCAG 2.1 AA"
                     className="w-16 h-16 sm:w-20 sm:h-20 hover:scale-105 transition-transform duration-300 filter drop-shadow-lg"
                   />

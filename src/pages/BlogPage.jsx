@@ -76,7 +76,7 @@ const BlogPage = ({ wordpressUrl }) => {
             <Link to={`/blog/${post.slug}`} className="block overflow-hidden">
               <img
                 src={post._embedded?.['wp:featuredmedia']?.[0]?.source_url || 'https://placehold.co/600x400/e2e8f0/64748b?text=Image'}
-                alt={post.title.rendered}
+                alt={(post.title?.rendered || '').replace(/<[^>]+>/g, '')}
                 className="w-full h-56 object-cover transition-transform duration-300 hover:scale-105"
               />
             </Link>

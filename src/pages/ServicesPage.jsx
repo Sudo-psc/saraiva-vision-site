@@ -18,7 +18,7 @@ const ServicesPage = () => {
       <SEOHead {...seo} />
       <Navbar />
       <main className="flex-1 pt-28">
-        <Services />
+        <Services full />
       </main>
       <Footer />
     </div>
@@ -26,4 +26,3 @@ const ServicesPage = () => {
 };
 
 export default ServicesPage;
-

@@ -51,7 +51,7 @@ export const useHeroImagePreload = () => {
     (window.location.pathname === '/' || window.location.pathname === '/index.html');
   
   useCriticalImagePreload(
-    'https://storage.googleapis.com/hostinger-horizons-assets-prod/843bf487-a1d7-4507-b4b0-b823fd326fe0/27e39bc93bb60b968be31edae30bad21.png',
+    '/img/hero.png',
     isHomePage
   );
 };

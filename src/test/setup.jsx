@@ -98,14 +98,15 @@ vi.mock('react-i18next', () => {
     return translation;
   };
 
-  return {
-    useTranslation: () => ({
+  const useTranslation = vi.fn(() => ({
       t,
       i18n: {
         language: 'pt',
         changeLanguage: vi.fn(),
       },
-    }),
+    }));
+  return {
+    useTranslation,
     Trans: ({ i18nKey, values, children }) => {
       // Prefer provided children if present to match react-i18next behavior
       if (children) return children;
@@ -155,8 +156,58 @@ vi.mock('framer-motion', () => ({
     }
   },
   AnimatePresence: ({ children }) => <>{children}</>,
-  useInView: () => true
+  useInView: () => true,
+  useReducedMotion: () => false
 }))
+
+// Provide a minimal require shim for specific aliased modules used in tests
+// This helps when tests call require('@/lib/schemaMarkup') directly.
+// We resolve to the mocked ESM module via dynamic import at setup time.
+let __schemaMarkupModule;
+let __reactI18nextModule;
+try {
+  __schemaMarkupModule = await import('@/lib/schemaMarkup');
+} catch {}
+try {
+  // Provide a CommonJS-like module for require('react-i18next') in tests
+  const translations = {
+    'contact.send_button': 'Enviar Mensagem',
+    'contact.sending_label': 'Enviando...',
+    'contact.title': 'Entre em Contato',
+    'contact.subtitle': 'Estamos prontos para cuidar da sua visão. Entre em contato conosco para agendar sua consulta.',
+    'services.learn_more': 'Saiba Mais',
+    'services.title': 'Nossos Serviços',
+    'hero.schedule_button': 'Agendar Consulta',
+    'hero.services_button': 'Nossos Serviços',
+    'navbar.schedule': 'Agendar',
+    'about.p1': 'Nossa missão é cuidar da sua visão',
+    'about.tag': 'Sobre Nós',
+    'privacy.form_consent_html': 'Aceito a Política de Privacidade',
+    'contact.info.phone_whatsapp': 'Falar no WhatsApp',
+  };
+  const t = (key, params) => {
+    let translation = translations[key] || key;
+    if (params && typeof translation === 'string') {
+      Object.keys(params).forEach(param => {
+        translation = translation.replace(new RegExp(`{{${param}}}`, 'g'), params[param]);
+      });
+    }
+    return translation;
+  };
+  const useTranslationMock = vi.fn(() => ({
+    t,
+    i18n: { language: 'pt', changeLanguage: vi.fn() }
+  }));
+  __reactI18nextModule = { useTranslation: useTranslationMock, Trans: ({ i18nKey, values, children }) => children || t(i18nKey, values) };
+} catch {}
+if (typeof globalThis.require !== 'function') {
+  // eslint-disable-next-line no-global-assign
+  globalThis.require = (id) => {
+    if (id === '@/lib/schemaMarkup' && __schemaMarkupModule) return __schemaMarkupModule;
+    if (id === 'react-i18next' && __reactI18nextModule) return __reactI18nextModule;
+    throw new Error(`Cannot find module '${id}'`);
+  };
+}
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -189,8 +240,9 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
 
 // Mock UI components
 vi.mock('@/components/ui/button', () => ({
-  Button: ({ children, className, variant, size, ...props }) => 
-    <button className={className} {...props}>{children}</button>
+  Button: React.forwardRef(({ children, className, variant, size, ...props }, ref) => 
+    <button ref={ref} className={className} {...props}>{children}</button>
+  )
 }))
 
 vi.mock('@/components/ui/use-toast', () => ({
@@ -199,15 +251,11 @@ vi.mock('@/components/ui/use-toast', () => ({
   })
 }))
 
-// Mock safe navigation utilities
-vi.mock('@/utils/safeNavigation', () => ({
-  safeOpenUrl: vi.fn(),
-  safeOpenWithConfirmation: vi.fn(),
-  createTelLink: vi.fn((phone) => `tel:${phone}`),
-  createMailtoLink: vi.fn((email) => `mailto:${email}`),
-  isUrlSafe: vi.fn(() => true),
-  debounce: vi.fn((fn) => fn)
-}))
+// Use real safeNavigation implementation to ensure util tests validate actual behavior
+vi.mock('@/utils/safeNavigation', async () => {
+  const actual = await vi.importActual('@/utils/safeNavigation');
+  return { ...actual };
+})
 
 // Mock performance hooks
 vi.mock('@/hooks/useDebounce', () => ({

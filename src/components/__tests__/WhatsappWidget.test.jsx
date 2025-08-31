@@ -2,83 +2,64 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import WhatsappWidget from '../WhatsappWidget';
 
-// Mock WhatsApp hook
-vi.mock('@/hooks/useWhatsApp', () => ({
-  useWhatsApp: () => ({
-    generateWhatsAppUrl: vi.fn(() => 'https://wa.me/5533998601427'),
-    defaultWhatsAppUrl: 'https://wa.me/5533998601427',
-    openFloatingCTA: vi.fn(),
-    openWhatsApp: vi.fn(),
-    whatsappNumber: '5533998601427'
-  })
-}));
-
-// Remove local framer-motion mock since global mock now includes AnimatePresence
+const TEST_PHONE = '5533998601427';
 
 describe('WhatsappWidget Component', () => {
   it('renders WhatsApp widget', () => {
-    render(<WhatsappWidget />);
+    render(<WhatsappWidget phoneNumber={TEST_PHONE} />);
     
-    // Check if widget is rendered
-    const widget = screen.getByRole('button');
+    // Check if widget is rendered (it's a link, not button)
+    const widget = screen.getByRole('link');
     expect(widget).toBeInTheDocument();
   });
 
   it('has proper accessibility attributes', () => {
-    render(<WhatsappWidget />);
+    render(<WhatsappWidget phoneNumber={TEST_PHONE} />);
     
-    const widget = screen.getByRole('button');
+    const widget = screen.getByRole('link');
     expect(widget).toHaveAttribute('aria-label');
-    expect(widget).toHaveAttribute('title');
+    expect(widget.getAttribute('aria-label')).toContain('WhatsApp');
   });
 
   it('opens WhatsApp when clicked', () => {
-    const mockOpenWhatsApp = vi.fn();
-    vi.mocked(require('@/hooks/useWhatsApp').useWhatsApp).mockReturnValue({
-      generateWhatsAppUrl: vi.fn(() => 'https://wa.me/5533998601427'),
-      defaultWhatsAppUrl: 'https://wa.me/5533998601427',
-      openFloatingCTA: vi.fn(),
-      openWhatsApp: mockOpenWhatsApp,
-      whatsappNumber: '5533998601427'
-    });
-
-    render(<WhatsappWidget />);
+    render(<WhatsappWidget phoneNumber={TEST_PHONE} />);
     
-    const widget = screen.getByRole('button');
-    fireEvent.click(widget);
-    
-    expect(mockOpenWhatsApp).toHaveBeenCalled();
+    const widget = screen.getByRole('link');
+    expect(widget).toHaveAttribute('href', `https://wa.me/${TEST_PHONE}`);
+    expect(widget).toHaveAttribute('target', '_blank');
+    expect(widget).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
   it('has proper styling for fixed positioning', () => {
-    render(<WhatsappWidget />);
+    render(<WhatsappWidget phoneNumber={TEST_PHONE} />);
     
-    const widget = screen.getByRole('button');
-    expect(widget).toHaveClass('fixed');
-    expect(widget).toHaveClass('bottom-6');
-    expect(widget).toHaveClass('right-6');
+    // Check the container div (not the link itself)
+    const container = screen.getByRole('link').parentElement;
+    expect(container).toHaveClass('fixed');
+    expect(container.className).toMatch(/bottom-(20|28)/); // bottom-20 on mobile, bottom-28 on desktop
+    expect(container.className).toMatch(/right-(4|6)/); // right-4 on mobile, right-6 on desktop
   });
 
   it('displays WhatsApp icon', () => {
-    render(<WhatsappWidget />);
+    render(<WhatsappWidget phoneNumber={TEST_PHONE} />);
     
-    // Check for WhatsApp icon (SVG or image)
-    const widget = screen.getByRole('button');
-    const icon = widget.querySelector('svg, img');
+    // Check for MessageCircle icon (SVG)
+    const widget = screen.getByRole('link');
+    const icon = widget.querySelector('svg');
     expect(icon).toBeInTheDocument();
   });
 
   it('has proper z-index for overlay', () => {
-    render(<WhatsappWidget />);
+    render(<WhatsappWidget phoneNumber={TEST_PHONE} />);
     
-    const widget = screen.getByRole('button');
-    expect(widget).toHaveClass('z-50');
+    const container = screen.getByRole('link').parentElement;
+    expect(container.className).toContain('z-[80]');
   });
 
   it('provides visual feedback on hover', () => {
-    render(<WhatsappWidget />);
+    render(<WhatsappWidget phoneNumber={TEST_PHONE} />);
     
-    const widget = screen.getByRole('button');
+    const widget = screen.getByRole('link');
     expect(widget.className).toContain('hover:');
   });
 });

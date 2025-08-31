@@ -1,7 +1,12 @@
 <!doctype html>
 <html lang="pt-BR">
 
-<head>
+  <head>
+    <!--
+      CSP is delivered via HTTP headers by the reverse proxy (see nginx.conf).
+      Avoid meta http-equiv for directives like frame-ancestors; browsers ignore it there.
+      Keep this document free of CSP meta to prevent conflicts with header policy.
+    -->
   <meta charset="UTF-8" />
   <title>Dr. Philipe Saraiva - Oftalmologista em Caratinga/MG | Consultas e Cirurgias</title>
   <link rel="icon" type="image/png"
@@ -326,6 +331,8 @@
       // Optional: noscript iframe (added dynamically for SPA)
       const ns = document.createElement('noscript');
       ns.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}"
+        title="Google Tag Manager"
+        referrerpolicy="no-referrer-when-downgrade"
         height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
       document.body && document.body.appendChild(ns);
     }

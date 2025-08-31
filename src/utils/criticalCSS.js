@@ -94,12 +94,15 @@ export function inlineCriticalCSS() {
 // Function to preload non-critical CSS
 export function preloadNonCriticalCSS() {
   if (typeof document === 'undefined') return;
+  // In production, Vite injects final CSS links with hashed filenames (assets/styles/*).
+  // Preloading a hardcoded '/assets/index.css' causes a 404. Skip in PROD.
+  if (import.meta && import.meta.env && import.meta.env.PROD) return;
   
   // Preload main stylesheet after critical CSS
   const link = document.createElement('link');
   link.rel = 'preload';
   link.as = 'style';
-  link.href = import.meta.env.DEV ? '/src/index.css' : '/assets/index.css';
+  link.href = '/src/index.css';
   link.onload = () => {
     link.rel = 'stylesheet';
   };
@@ -110,7 +113,7 @@ export function preloadNonCriticalCSS() {
   const noscript = document.createElement('noscript');
   const fallbackLink = document.createElement('link');
   fallbackLink.rel = 'stylesheet';
-  fallbackLink.href = import.meta.env.DEV ? '/src/index.css' : '/assets/index.css';
+  fallbackLink.href = '/src/index.css';
   noscript.appendChild(fallbackLink);
   document.head.appendChild(noscript);
 }

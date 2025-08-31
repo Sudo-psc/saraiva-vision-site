@@ -8,5 +8,18 @@
       "stdoutFile": "logs/dev.log"
     }
   ],
-  "fileChangeHooks": []
+  "fileChangeHooks": [
+    {
+      "name": "typecheck",
+      "command": "npm run build",
+      "filePattern": "**/*.{js,jsx,ts,tsx}",
+      "enabled": true
+    },
+    {
+      "name": "test",
+      "command": "npm run test:run",
+      "filePattern": "**/*.{test,spec}.{js,jsx,ts,tsx}",
+      "enabled": false
+    }
+  ]
 }

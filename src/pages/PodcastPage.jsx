@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Play, 
-  Headphones, 
-  Search, 
-  Filter, 
+import {
+  Play,
+  Headphones,
+  Search,
+  Filter,
   Calendar,
   Clock,
   Tag,
@@ -25,63 +25,111 @@ import SafeImage from '@/components/ui/SafeImage';
 // Hooks and utils
 import { usePodcastSEO } from '@/hooks/useSEO';
 
-// Enhanced podcast data structure
-const PODCAST_EPISODES = [
-  {
-    id: 'glaucoma-ep1',
-    slug: 'glaucoma-prevencao-tratamento',
-    src: '/Podcasts/glaucoma.mp3',
-    title: 'Glaucoma: Prevenção e Tratamento',
-    description: 'Um guia completo sobre o glaucoma, seus sintomas, métodos de prevenção e opções de tratamento disponíveis.',
-    cover: '/Podcasts/Covers/glaucoma.avif',
-    duration: '12:30',
-    date: '2024-08-20',
-    category: 'Doenças Oculares',
-    tags: ['glaucoma', 'prevenção', 'tratamento'],
-    featured: true,
-    spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
-    applePodcastsUrl: 'https://podcasts.apple.com/episode/glaucoma',
-    transcript: 'Transcrição disponível...'
-  },
-  {
-    id: 'pterigio-ep2',
-    slug: 'pterigio-sintomas-tratamento',
-    src: '/Podcasts/pterigio.mp3',
-    title: 'Pterígio: Sintomas e Tratamento',
-    description: 'Entenda o que é pterígio, seus sintomas, causas e as opções de tratamento disponíveis.',
-    cover: '/Podcasts/Covers/ptigio.jpeg',
-    duration: '10:45',
-    date: '2024-08-15',
-    category: 'Doenças Oculares',
-    tags: ['pterígio', 'sintomas', 'tratamento'],
-    featured: false,
-    spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
-    applePodcastsUrl: 'https://podcasts.apple.com/episode/pterigio',
-  },
-  {
-    id: 'retina-ep3',
-    slug: 'retina-cuidados-prevencao',
-    src: '/Podcasts/retina.mp3',
-    title: 'Retina: Cuidados e Prevenção',
-    description: 'Conheça os principais problemas que afetam a retina e como preveni-los para manter a saúde ocular.',
-    cover: '/Podcasts/Covers/retina.jpeg',
-    duration: '14:20',
-    date: '2024-08-10',
-    category: 'Prevenção',
-    tags: ['retina', 'cuidados', 'prevenção'],
-    featured: false,
-    spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
-    applePodcastsUrl: 'https://podcasts.apple.com/episode/retina',
-  }
-];
+// Episodes list will be built inside the component with i18n
 
 function PodcastPage() {
   const { t } = useTranslation();
   const seoData = usePodcastSEO();
-  
+
+  // Build episodes with i18n
+  const episodes = React.useMemo(() => ([
+    {
+      id: 'glaucoma-ep1',
+      slug: 'glaucoma-prevencao-tratamento',
+      src: '/Podcasts/glaucoma.mp3',
+      title: t('podcast.episodes.glaucoma.title'),
+      description: t('podcast.episodes.glaucoma.description'),
+      cover: '/Podcasts/Covers/glaucoma.avif',
+      duration: '12:30',
+      date: '2024-08-20',
+      category: 'Doenças Oculares',
+      tags: ['glaucoma', 'prevenção', 'tratamento'],
+      featured: true,
+      transcript: 'Transcrição disponível...'
+    },
+    {
+      id: 'ceratocone-ep1',
+      slug: 'ceratocone-cuidados-tratamento',
+      src: '/Podcasts/ceratocone.mp3',
+      title: t('podcast.episodes.ceratocone.title'),
+      description: t('podcast.episodes.ceratocone.description'),
+      cover: '/Podcasts/Covers/ceratocone_cover.png',
+      duration: '11:40',
+      date: '2025-08-30',
+      category: 'Doenças Oculares',
+      tags: ['ceratocone', 'córnea', 'astigmatismo'],
+      featured: false,
+    },
+    {
+      id: 'catarata-ep2',
+      slug: 'catarata-sintomas-cirurgia',
+      src: '/Podcasts/catarata.mp3',
+      title: t('podcast.episodes.catarata.title'),
+      description: t('podcast.episodes.catarata.description'),
+      cover: '/Podcasts/Covers/catarata.jpeg',
+      duration: '13:15',
+      date: '2024-08-25',
+      category: 'Cirurgias',
+      tags: ['catarata', 'cirurgia', 'diagnóstico'],
+      featured: true,
+      transcript: 'Transcrição disponível...'
+    },
+    {
+      id: 'pterigio-ep2',
+      slug: 'pterigio-sintomas-tratamento',
+      src: '/Podcasts/pterigio.mp3',
+      title: t('podcast.episodes.ptergio.title'),
+      description: t('podcast.episodes.ptergio.description'),
+      cover: '/Podcasts/Covers/ptigio.jpeg',
+      duration: '10:45',
+      date: '2024-08-15',
+      category: 'Doenças Oculares',
+      tags: ['pterígio', 'sintomas', 'tratamento'],
+      featured: false,
+    },
+    {
+      id: 'retina-ep3',
+      slug: 'retina-cuidados-prevencao',
+      src: '/Podcasts/retina.mp3',
+      title: t('podcast.episodes.retina.title'),
+      description: t('podcast.episodes.retina.description'),
+      cover: '/Podcasts/Covers/retina.jpeg',
+      duration: '14:20',
+      date: '2024-08-10',
+      category: 'Prevenção',
+      tags: ['retina', 'cuidados', 'prevenção'],
+      featured: false,
+    },
+    {
+      id: 'olho-seco-ep5',
+      slug: 'olho-seco-sintomas-tratamentos',
+      src: '/Podcasts/olho-seco.mp3',
+      title: t('podcast.episodes.olho_seco.title'),
+      description: t('podcast.episodes.olho_seco.description'),
+      cover: '/Podcasts/Covers/podcast.png',
+      duration: '09:50',
+      date: '2024-08-05',
+      category: 'Sintomas',
+      tags: ['olho seco', 'inflamação', 'lágrimas'],
+      featured: false,
+    },
+    {
+      id: 'duvidas-ep6',
+      slug: 'duvidas-frequentes-oftalmologia',
+      src: '/Podcasts/Especial-dúvidas.mp3',
+      title: t('podcast.episodes.duvidas.title'),
+      description: t('podcast.episodes.duvidas.description'),
+      cover: '/Podcasts/Covers/cfimages.avif',
+      duration: '11:05',
+      date: '2024-08-01',
+      category: 'FAQ',
+      tags: ['dúvidas', 'orientações', 'exames'],
+      featured: false,
+    },
+  ]), [t]);
+
   // State management
-  const [episodes] = useState(PODCAST_EPISODES);
-  const [filteredEpisodes, setFilteredEpisodes] = useState(PODCAST_EPISODES);
+  const [filteredEpisodes, setFilteredEpisodes] = useState(episodes);
   const [selectedEpisode, setSelectedEpisode] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -89,11 +137,11 @@ function PodcastPage() {
 
   // Get unique categories
   const categories = ['all', ...new Set(episodes.map(ep => ep.category))];
-  
+
   // Filter logic
   useEffect(() => {
     let filtered = episodes;
-    
+
     if (searchQuery) {
       filtered = filtered.filter(episode =>
         episode.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -101,11 +149,11 @@ function PodcastPage() {
         episode.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
       );
     }
-    
+
     if (selectedCategory !== 'all') {
       filtered = filtered.filter(episode => episode.category === selectedCategory);
     }
-    
+
     setFilteredEpisodes(filtered);
   }, [searchQuery, selectedCategory, episodes]);
 
@@ -120,13 +168,13 @@ function PodcastPage() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-blue-50/20 relative">
       {/* SEO and Schema */}
       <SEOHead {...seoData} />
-      <SchemaMarkup type="podcast" data={{ episodes: PODCAST_EPISODES }} />
-      
+      <SchemaMarkup type="podcast" data={{ episodes }} />
+
       <Navbar />
-      
-      <main className="pt-28 md:pt-36 relative">
+
+      <main className="pt-24 md:pt-32 relative">
         {/* Hero Section with Featured Episode */}
-        <section className="py-16 lg:py-20 relative overflow-hidden">
+        <section className="py-6 md:py-8 lg:py-10 relative overflow-hidden">
           {/* Background decorations */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse" />
@@ -149,7 +197,7 @@ function PodcastPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6"
+                className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4"
               >
                 {t('podcast.title')}
               </motion.h1>
@@ -158,11 +206,12 @@ function PodcastPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed"
+                className="text-lg md:text-xl text-slate-600 mb-6 max-w-3xl mx-auto leading-relaxed"
               >
                 {t('podcast.subtitle')}
               </motion.p>
             </div>
+
 
             {/* Featured Episode */}
             {featuredEpisode && (
@@ -170,9 +219,9 @@ function PodcastPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="mb-16"
+                className="mb-8"
               >
-                <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-soft-light border border-gray-100 p-8 lg:p-12">
+                <div className="glass-blue card-3d rounded-3xl shadow-soft-light p-6 md:p-8 lg:p-10 border border-blue-200/40">
                   <div className="flex flex-col lg:flex-row items-center gap-8">
                     <div className="flex-shrink-0 relative group">
                       <SafeImage
@@ -201,7 +250,7 @@ function PodcastPage() {
                         {featuredEpisode.title}
                       </h2>
 
-                      <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                      <p className="text-base md:text-lg text-gray-600 mb-4 leading-relaxed">
                         {featuredEpisode.description}
                       </p>
 
@@ -230,23 +279,7 @@ function PodcastPage() {
                           <Play className="w-5 h-5" />
                           Reproduzir Agora
                         </Button>
-                        
-                        <a
-                          href={featuredEpisode.spotifyUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <Button
-                            size="lg"
-                            variant="outline"
-                            className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white gap-2 px-8"
-                          >
-                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.84-.54 0-.36.179-.66.479-.78 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02v-.12h.002zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.48.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3L19.081 10.68z" />
-                            </svg>
-                            {t('podcast.listen_spotify')}
-                          </Button>
-                        </a>
+
                       </div>
                     </div>
                   </div>
@@ -259,9 +292,9 @@ function PodcastPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="mb-12"
+              className="mb-6"
             >
-              <div className="bg-white/70 backdrop-blur-sm rounded-2xl border border-gray-200 p-6">
+              <div className="glass-blue rounded-2xl border border-blue-200/40 p-6">
                 <div className="flex flex-col lg:flex-row gap-4">
                   {/* Search */}
                   <div className="flex-grow relative">
@@ -301,10 +334,10 @@ function PodcastPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="mb-16"
+              className="mb-6"
             >
               {filteredEpisodes.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
                   <AnimatePresence mode="wait">
                     {filteredEpisodes.map((episode, index) => (
                       <motion.div
@@ -314,7 +347,7 @@ function PodcastPage() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ delay: index * 0.1 }}
-                        className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-soft-light border border-gray-100 overflow-hidden group hover:shadow-lg transition-all cursor-pointer"
+                        className="glass-blue card-3d rounded-2xl shadow-soft-light overflow-hidden group hover:shadow-lg transition-all cursor-pointer border border-blue-200/40"
                         onClick={() => handlePlayEpisode(episode)}
                       >
                         <div className="relative aspect-square">
@@ -329,7 +362,7 @@ function PodcastPage() {
                             </div>
                           </div>
                         </div>
-                        
+
                         <div className="p-6">
                           <div className="flex items-center gap-2 mb-3">
                             <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
@@ -340,20 +373,20 @@ function PodcastPage() {
                               <span>{episode.duration}</span>
                             </div>
                           </div>
-                          
+
                           <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
                             {episode.title}
                           </h3>
-                          
+
                           <p className="text-sm text-gray-600 line-clamp-2 mb-4">
                             {episode.description}
                           </p>
-                          
+
                           <div className="flex items-center justify-between">
                             <span className="text-xs text-gray-500">
                               {new Date(episode.date).toLocaleDateString('pt-BR')}
                             </span>
-                            
+
                             <div className="flex items-center gap-2">
                               {episode.tags.slice(0, 2).map(tag => (
                                 <span key={tag} className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">

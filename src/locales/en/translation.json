@@ -67,6 +67,8 @@
     "title": "Our Services",
     "subtitle": "We offer a full range of ophthalmological services to care for your vision with the highest quality and technology.",
     "learn_more": "Learn More",
+    "view_all": "View all 12 services",
+    "show_less": "Show less",
     "schedule_button": "Schedule Your Appointment Now",
     "items": {
       "consultations": {
@@ -527,6 +529,7 @@
       "consent_required": "You must consent to data processing."
     },
     "external_redirect_warning": "You will be redirected to {serviceName}. Continue?",
+    "call_number_aria": "Call {{number}}",
     "phone_call_error": "Error initiating call. Call manually: {phoneDisplay}",
     "email_error": "Error opening email client. Send to: {email}",
     "rate_limit_title": "Please wait",
@@ -536,6 +539,7 @@
     "slogan": "Excellence in eye care, close to you.",
     "partner_of": "Partner of",
     "amor_saude_alt": "Amor e Saúde Clinic Logo",
+    "partner_link_aria": "Open partner Amor e Saúde website (new tab)",
     "quick_links": "Quick Links",
     "services": "Services",
     "contact": "Contact",
@@ -557,6 +561,8 @@
     "title": "Saraiva Vision Podcast",
     "subtitle": "Eye Health in Focus - Specialized content on eye health to keep your eyes always healthy.",
     "listen_spotify": "Listen on Spotify",
+    "visit_podcast": "View all episodes",
+    "spotify_embed_title": "Spotify player",
     "open_episode": "Open episode",
     "cover_alt": "Podcast cover",
     "episodes": {
@@ -571,6 +577,22 @@
       "ptergio": {
         "title": "Eye Health in Focus: Pterygium",
         "description": "Learn about pterygium, its causes related to sun exposure and the available treatments. Know how to protect your eyes and when to seek medical help."
+      },
+      "retina": {
+        "title": "Eye Health in Focus: Retina",
+        "description": "Main retinal conditions and how to prevent them to maintain healthy vision."
+      },
+      "olho_seco": {
+        "title": "Dry Eye: Symptoms and Treatments",
+        "description": "Causes, symptoms and treatment options to relieve discomfort and improve quality of life."
+      },
+      "duvidas": {
+        "title": "Frequently Asked Questions in Ophthalmology",
+        "description": "Answers to the most common questions about consultations, exams, and treatments."
+      },
+      "ceratocone": {
+        "title": "Eye Health in Focus: Keratoconus",
+        "description": "What keratoconus is, symptoms, diagnosis, and treatment options including specialty contact lenses."
       }
     }
   },
@@ -851,7 +873,8 @@
     "mockAuthor3": "Patient C",
     "mockText1": "Excellent and fast service!",
     "mockText2": "Very attentive staff and modern facilities.",
-    "mockText3": "Great experience, highly recommend."
+    "mockText3": "Great experience, highly recommend.",
+    "view_all_aria": "View all reviews on Google (opens in new tab)"
   },
   "ui": {
     "details": "View details",
@@ -879,10 +902,26 @@
       "surgeries": "Ophthalmological Surgeries",
       "pediatric": "Pediatric Follow-up",
       "reports": "Specialized Reports",
+      "gonioscopy": "Gonioscopy",
+      "retina_mapping": "Retina Mapping",
+      "corneal_topography": "Corneal Topography",
+      "pachymetry": "Pachymetry",
+      "retinography": "Retinography",
+      "visual_field": "Visual Field",
+      "hero_image": "Smiling family - Saraiva Vision",
       "satisfied_patient_1": "Satisfied patient 1",
       "satisfied_patient_2": "Satisfied patient 2",
       "doctor": "Ophthalmologist smiling at the camera in a modern clinic"
     }
+  },
+  "location": {
+    "title": "Find us",
+    "subtitle": "Verified location on Google. Make your route easier and rate our service.",
+    "reviews_realtime": "Real-time reviews",
+    "google_maps_button": "View on Google Maps",
+    "review_button": "Rate us on Google",
+    "google_maps_button_aria": "Open clinic profile on Google Maps (new tab)",
+    "review_button_aria": "Open Google reviews page (new tab)"
   },
   "podcastMeta": {
     "title": "Saraiva Vision Podcast | Eye Health Audio | Caratinga/MG",

@@ -5,12 +5,6 @@ import { createLogger, defineConfig } from 'vite';
 import { writeSitemapFile } from './src/utils/sitemapGenerator.js';
 
 const isDev = process.env.NODE_ENV !== 'production';
-let inlineEditPlugin, editModeDevPlugin;
-
-if (isDev) {
-	inlineEditPlugin = (await import('./plugins/visual-editor/vite-plugin-react-inline-editor.js')).default;
-	editModeDevPlugin = (await import('./plugins/visual-editor/vite-plugin-edit-mode.js')).default;
-}
 
 const configHorizonsViteErrorHandler = `
 const observer = new MutationObserver((mutations) => {
@@ -199,7 +193,6 @@ let __reviewsCache;
 export default defineConfig({
 	customLogger: logger,
 	plugins: [
-		...(isDev ? [inlineEditPlugin(), editModeDevPlugin()] : []),
 		react(),
 		addTransformIndexHtml,
 		// Dev-only debug and API endpoints
@@ -334,6 +327,21 @@ export default defineConfig({
 		cors: true,
 		headers: {
 			'Cross-Origin-Embedder-Policy': 'credentialless',
+			// Lightweight CSP in dev to mirror prod behavior and avoid meta tag issues
+			'Content-Security-Policy': [
+				"default-src 'self'",
+				"base-uri 'self'",
+				"form-action 'self'",
+				"frame-ancestors 'self'",
+				"object-src 'none'",
+				"script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.gstatic.com https://www.google.com https://maps.googleapis.com",
+				"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+				"img-src 'self' data: https:",
+				"font-src 'self' https://fonts.gstatic.com",
+				"connect-src 'self' ws: wss: https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://www.gstatic.com https://www.google.com https://maps.googleapis.com https://places.googleapis.com https://maps.gstatic.com",
+				"frame-src 'self' https://www.googletagmanager.com https://open.spotify.com https://www.google.com",
+				"media-src 'self' https: data:"
+			].join('; '),
 		},
 		allowedHosts: true,
 	},

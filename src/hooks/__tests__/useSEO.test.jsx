@@ -21,7 +21,16 @@ vi.mock('react-i18next', () => ({
         'seo.services.title': 'Nossos Serviços - Saraiva Vision',
         'seo.services.description': 'Conheça todos os serviços oftalmológicos da Saraiva Vision.',
         'seo.contact.title': 'Contato - Saraiva Vision',
-        'seo.contact.description': 'Entre em contato conosco e agende sua consulta oftalmológica.'
+        'seo.contact.description': 'Entre em contato conosco e agende sua consulta oftalmológica.',
+        'homeMeta.title': 'Clínica Saraiva Vision - Oftalmologista em Caratinga/MG',
+        'homeMeta.description': 'Especialista em saúde ocular com tecnologia de ponta e atendimento humanizado.',
+        'homeMeta.keywords': 'oftalmologista Caratinga, clínica oftalmológica, consulta olhos, exame vista',
+        'serviceMeta.title': 'Nossos Serviços - Saraiva Vision',
+        'serviceMeta.description': 'Conheça todos os serviços oftalmológicos da Saraiva Vision.',
+        'serviceMeta.keywords': 'serviços oftalmológicos, exames, tratamentos olhos',
+        'navbar.home': 'Início',
+        'navbar.services': 'Serviços',
+        'navbar.contact': 'Contato'
       };
       return translations[key] || defaultValue || key;
     },

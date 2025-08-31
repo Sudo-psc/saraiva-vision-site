@@ -14,7 +14,6 @@ const LensesPage = lazy(() => import('@/pages/LensesPage'));
 const FAQPage = lazy(() => import('@/pages/FAQPage'));
 const MedicalArticleExample = lazy(() => import('@/pages/MedicalArticleExample'));
 const PodcastPage = lazy(() => import('@/pages/PodcastPage'));
-// EpisodePage removido junto com PodcastPage
 import ScrollToTop from '@/components/ScrollToTop';
 import { Toaster } from '@/components/ui/toaster';
 import ConsentManager from '@/components/ConsentManager';
@@ -22,7 +21,6 @@ import CTAModal from '@/components/CTAModal';
 import WhatsappWidget from '@/components/WhatsappWidget';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { safePhoneFormat } from '@/utils/phoneFormatter';
-// import ExitPopupTester from '@/components/ExitPopupTester';
 
 function App() {
   const { i18n } = useTranslation();
@@ -46,7 +44,6 @@ function App() {
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
           <Route path="/podcast" element={<PodcastPage />} />
-          {/* Rotas de podcast removidas - redirecionamento será feito no componente */}
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
         </Routes>
       </Suspense>

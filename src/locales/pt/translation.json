@@ -234,6 +234,8 @@
     "title": "Nossos Serviços",
     "subtitle": "Oferecemos uma gama completa de serviços oftalmológicos para cuidar da sua visão com a máxima qualidade e tecnologia.",
     "learn_more": "Saiba Mais",
+    "view_all": "Ver todos os 12 serviços",
+    "show_less": "Mostrar menos",
     "schedule_button": "Agende Sua Consulta Agora",
     "items": {
       "consultations": {
@@ -441,7 +443,6 @@
       "aberrationAnalysis": "Análise de aberrações corneanas",
       "completeReport": "Relatório técnico completo",
       "coloredImages": "Imagens coloridas impressas",
-      "resultGuidance": "Orientação sobre resultados",
       "ultrasonicPachymetry": "Paquimetria ultrassônica bilateral",
       "multiplePoints": "Medidas em múltiplos pontos",
       "normalValues": "Valores de referência normais",
@@ -596,31 +597,35 @@
   },
   "about": {
     "tag": "Sobre Nós",
-    "title": "Dedicados à Excelência em Cada Detalhe",
-    "p1": "A Saraiva Vision nasceu do sonho de oferecer um atendimento oftalmológico de alta qualidade, unindo tecnologia avançada a uma abordagem humana e personalizada.",
-    "p2": "Nossa missão é proporcionar diagnósticos precisos e tratamentos eficazes, priorizando sempre o bem-estar e a satisfação dos nossos pacientes.",
+    "title": "Dedicados à Excelência em Cada Detalhe da Sua Visão",
+    "p1": "A Saraiva Vision nasceu do sonho de oferecer um atendimento oftalmológico de alta qualidade em Caratinga e região, unindo tecnologia de ponta a uma abordagem humana e personalizada. Desde nossa fundação, construímos uma reputação sólida baseada na confiança, competência técnica e no compromisso inabalável com a saúde ocular de nossos pacientes.",
+    "p2": "Nossa missão transcende o simples tratamento de doenças oculares. Acreditamos na prevenção como o melhor caminho para preservar a visão, oferecemos diagnósticos precisos utilizando equipamentos de última geração, e desenvolvemos tratamentos eficazes e individualizados. Cada paciente é único, e nosso atendimento reflete essa filosofia, priorizando sempre o bem-estar, a satisfação e os resultados duradouros.",
+    "p3": "Como parceiros oficiais da rede Amor e Saúde, mantemos os mais altos padrões de qualidade e segurança. Nossa infraestrutura moderna, localizada estrategicamente no coração de Caratinga, foi projetada para oferecer conforto e tranquilidade durante todo o processo de cuidado com sua visão.",
     "features": [
-      "Infraestrutura Moderna",
-      "Profissionais Qualificados",
-      "Atendimento Humanizado",
-      "Compromisso com Resultados"
+      "Infraestrutura Moderna e Equipada",
+      "Profissionais Altamente Qualificados",
+      "Atendimento Humanizado e Personalizado",
+      "Compromisso com Resultados Duradouros",
+      "Tecnologia de Ponta em Diagnósticos",
+      "Parceria com Rede Amor e Saúde"
     ],
-    "alt1": "Consultório oftalmológico moderno",
-    "alt2": "Médico oftalmologista realizando exame de vista",
-    "alt3": "Paciente sorrindo satisfeito após consulta",
-    "alt4": "Equipamento oftalmológico avançado",
+    "alt1": "Consultório oftalmológico moderno da Saraiva Vision",
+    "alt2": "Dr. Philipe Saraiva realizando exame oftalmológico detalhado",
+    "alt3": "Paciente satisfeito após consulta na Saraiva Vision",
+    "alt4": "Equipamento oftalmológico de última geração",
     "doctor": {
       "name": "Dr. Philipe Saraiva",
-      "title": "Oftalmologista CRM/MG",
-      "description": "Especialista em saúde ocular com formação sólida e experiência em diagnósticos precisos e tratamentos personalizados.",
-      "alt": "Dr. Philipe Saraiva - Oftalmologista especialista em saúde ocular"
+      "title": "Oftalmologista CRM/MG 69.870",
+      "heading": "Conheça Nosso Especialista",
+      "description": "Médico oftalmologista com sólida formação acadêmica e vasta experiência em diagnósticos precisos, tratamentos personalizados e cirurgias oculares. Especializado em diversas áreas da oftalmologia, incluindo catarata, glaucoma, doenças da retina e refração.\n\nSua abordagem combina conhecimento técnico atualizado com um cuidado genuíno pelos pacientes, garantindo não apenas tratamentos eficazes, mas também uma experiência acolhedora e tranquilizadora durante todo o processo de cuidado com a visão.\n\nComprometido com a educação continuada e sempre atualizado com as mais recentes técnicas e tecnologias em oftalmologia, Dr. Philipe oferece o que há de mais moderno em cuidados oculares para a comunidade de Caratinga e região.",
+      "alt": "Dr. Philipe Saraiva - Oftalmologista especialista em saúde ocular CRM/MG 69.870"
     },
-    "team_title": "Nossa Equipe",
+    "team_title": "Nossa Equipe Especializada",
     "nurse": {
-      "name": "Ana Lúcia",
-      "title": "Enfermeira responsável",
-      "description": "Suporte dedicado ao cuidado com os pacientes e apoio a procedimentos clínicos.",
-      "alt": "Enfermeira Ana Lúcia"
+      "name": "Eng. Ana Lúcia",
+      "title": "Enfermeira Responsável e Coordenadora",
+      "description": "Profissional experiente e dedicada, responsável pela coordenação do atendimento aos pacientes e apoio especializado em todos os procedimentos clínicos. Com ampla experiência em oftalmologia, Ana Lúcia garante que cada etapa do seu atendimento seja conduzida com máximo cuidado, segurança e conforto.\n\nSua atenção aos detalhes e habilidade em criar um ambiente acolhedor fazem dela uma peça fundamental na experiência positiva de nossos pacientes, desde a recepção até o acompanhamento pós-consulta.",
+      "alt": "Enfermeira Ana Lúcia - Coordenadora de atendimento da Saraiva Vision"
     }
   },
   "contact": {
@@ -673,6 +678,7 @@
       "consent_required": "É necessário consentir com o tratamento dos dados."
     },
     "external_redirect_warning": "Você será redirecionado para {serviceName}. Continuar?",
+    "call_number_aria": "Ligar para {{number}}",
     "phone_call_error": "Erro ao iniciar chamada. Ligue manualmente: {phoneDisplay}",
     "email_error": "Erro ao abrir cliente de email. Envie para: {email}",
     "rate_limit_title": "Aguarde um momento",
@@ -682,6 +688,7 @@
     "slogan": "Excelência no cuidado com a visão, perto de você.",
     "partner_of": "Parceiro da",
     "amor_saude_alt": "Logo da Clínica Amor e Saúde",
+    "partner_link_aria": "Abrir site do parceiro Amor e Saúde (nova aba)",
     "quick_links": "Links Rápidos",
     "services": "Serviços",
     "contact": "Contato",
@@ -703,6 +710,8 @@
     "title": "Podcast Saraiva Vision",
     "subtitle": "Saúde Ocular em Foco - Conteúdo especializado sobre saúde ocular para manter seus olhos sempre saudáveis.",
     "listen_spotify": "Ouvir no Spotify",
+    "visit_podcast": "Ver todos os episódios",
+    "spotify_embed_title": "Player do Spotify",
     "open_episode": "Abrir episódio",
     "cover_alt": "Capa do podcast",
     "episodes": {
@@ -717,6 +726,22 @@
       "ptergio": {
         "title": "Saúde Ocular em Foco: Pterígio",
         "description": "Conheça o pterígio, suas causas relacionadas à exposição solar e os tratamentos disponíveis. Saiba como proteger seus olhos e quando procurar ajuda médica."
+      },
+      "retina": {
+        "title": "Saúde Ocular em Foco: Retina",
+        "description": "Principais problemas que afetam a retina e como preveni-los para manter a saúde ocular em dia."
+      },
+      "olho_seco": {
+        "title": "Olho Seco: Sintomas e Tratamentos",
+        "description": "Causas, sintomas e opções de tratamento para aliviar o desconforto e melhorar a qualidade de vida."
+      },
+      "duvidas": {
+        "title": "Dúvidas Frequentes em Oftalmologia",
+        "description": "Respostas às perguntas mais comuns sobre consultas, exames e tratamentos oftalmológicos."
+      },
+      "ceratocone": {
+        "title": "Saúde Ocular em Foco: Ceratocone",
+        "description": "O que é ceratocone, sintomas, diagnóstico e opções de tratamento e adaptação de lentes para melhorar a qualidade visual."
       }
     }
   },
@@ -918,7 +943,8 @@
     "mockAuthor3": "Paciente C",
     "mockText1": "Atendimento excelente e rápido!",
     "mockText2": "Equipe muito atenciosa e estrutura moderna.",
-    "mockText3": "Ótima experiência, recomendo."
+    "mockText3": "Ótima experiência, recomendo.",
+    "view_all_aria": "Ver todas as avaliações no Google (abre em nova aba)"
   },
   "ui": {
     "details": "Ver detalhes",
@@ -946,6 +972,13 @@
       "surgeries": "Cirurgias Oftalmológicas",
       "pediatric": "Acompanhamento Pediátrico",
       "reports": "Laudos Especializados",
+      "gonioscopy": "Gonioscopia",
+      "retina_mapping": "Mapeamento de Retina",
+      "corneal_topography": "Topografia Corneana",
+      "pachymetry": "Paquimetria",
+      "retinography": "Retinografia",
+      "visual_field": "Campo Visual",
+      "hero_image": "Família sorrindo - Saraiva Vision",
       "satisfied_patient_1": "Paciente satisfeito 1",
       "satisfied_patient_2": "Paciente satisfeito 2",
       "doctor": "Médico oftalmologista sorrindo para a câmera em uma clínica moderna"
@@ -956,7 +989,9 @@
     "subtitle": "Localização verificada no Google. Facilite sua rota e avalie nosso atendimento.",
     "reviews_realtime": "Avaliações em tempo real",
     "google_maps_button": "Ver no Google Maps",
-    "review_button": "Avalie-nos no Google"
+    "review_button": "Avalie-nos no Google",
+    "google_maps_button_aria": "Abrir perfil da clínica no Google Maps (nova aba)",
+    "review_button_aria": "Abrir página de avaliações no Google (nova aba)"
   },
   "service": {
     "about": "Sobre o Serviço",

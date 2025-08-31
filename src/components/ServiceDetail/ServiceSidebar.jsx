@@ -53,6 +53,7 @@ const ServiceSidebar = ({ service, onScheduleClick }) => {
           <a
             href="tel:+5533998601427"
             className="flex items-center gap-3 text-blue-600 hover:text-blue-700 transition-colors"
+            aria-label={t('contact.call_number_aria', { number: '+55 33 99860-1427' })}
           >
             <Phone className="w-5 h-5" />
             <span className="font-medium">+55 33 99860-1427</span>

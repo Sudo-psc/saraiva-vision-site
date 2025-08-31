@@ -10,9 +10,11 @@ const OptimizedImage = ({
     loading = 'lazy',
     sizes,
     priority = false,
+    fetchPriority = 'auto',
     webpSrc,
     avifSrc,
     fallbackSrc,
+    placeholderSrc,
     objectFit = 'cover',
     // Optional styles for the container if explicit sizing is needed
     containerStyle,
@@ -46,7 +48,9 @@ const OptimizedImage = ({
             setHasLoaded(false);
             setHasError(false);
         } else {
+            // If no fallback or fallback failed, show error state
             setHasError(true);
+            setHasLoaded(true); // Prevent loading spinner from showing indefinitely
         }
     }, [attemptedFallback, fallbackSrc, displayedSrc]);
 
@@ -55,7 +59,7 @@ const OptimizedImage = ({
         const sources = [];
 
         // Auto-generate AVIF srcset from main src
-        if (src && !avifSrc) {
+        if (src && !avifSrc && !src.startsWith('data:')) {
             const avifSrcSet = generateSrcSet(src, 'avif');
             if (avifSrcSet) {
                 sources.push(
@@ -69,7 +73,7 @@ const OptimizedImage = ({
         }
 
         // Auto-generate WEBP srcset from main src
-        if (src && !webpSrc) {
+        if (src && !webpSrc && !src.startsWith('data:')) {
             const webpSrcSet = generateSrcSet(src, 'webp');
             if (webpSrcSet) {
                 sources.push(
@@ -123,9 +127,21 @@ const OptimizedImage = ({
         >
             {/* Loading placeholder */}
             {!hasLoaded && shouldLoad && (
-                <div className="absolute inset-0 bg-slate-200 animate-pulse">
-                    <div className="w-full h-full bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 animate-pulse" />
-                </div>
+                <>
+                    {placeholderSrc ? (
+                        <img
+                            src={placeholderSrc}
+                            alt=""
+                            aria-hidden="true"
+                            className="absolute inset-0 w-full h-full object-cover blur-md scale-105 opacity-80"
+                            decoding="async"
+                        />
+                    ) : (
+                        <div className="absolute inset-0 bg-slate-200 animate-pulse">
+                            <div className="w-full h-full bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 animate-pulse" />
+                        </div>
+                    )}
+                </>
             )}
 
             {/* Error fallback */}
@@ -147,6 +163,7 @@ const OptimizedImage = ({
                         width={width}
                         height={height}
                         loading={priority ? 'eager' : loading}
+                        fetchpriority={priority ? 'high' : fetchPriority}
                         decoding="async"
                         sizes={sizes}
                         onLoad={handleLoad}

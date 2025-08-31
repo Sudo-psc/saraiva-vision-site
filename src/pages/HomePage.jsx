@@ -38,11 +38,11 @@ function HomePage() {
         {/* Main background orbs - contained within viewport */}
         <div className="absolute -top-20 -right-20 w-80 h-80 max-w-[50vw] max-h-[50vh] rounded-full bg-gradient-to-br from-blue-200/20 via-indigo-200/15 to-sky-200/10 blur-3xl animate-pulse" />
         <div className="absolute -bottom-20 -left-20 w-72 h-72 max-w-[45vw] max-h-[45vh] rounded-full bg-gradient-to-tr from-purple-200/15 via-blue-200/10 to-indigo-200/10 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-        
+
         {/* Geometric decoration elements - properly contained */}
         <div className="absolute top-1/4 right-1/4 w-48 h-48 max-w-[30vw] max-h-[30vh] bg-gradient-to-br from-blue-100/30 to-indigo-100/20 rounded-full blur-2xl animate-float" />
         <div className="absolute bottom-1/4 left-1/4 w-36 h-36 max-w-[25vw] max-h-[25vh] bg-gradient-to-tr from-green-100/25 to-emerald-100/15 rounded-full blur-2xl animate-float" style={{ animationDelay: '2s' }} />
-        
+
         {/* Subtle grid pattern overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-50/30 to-transparent opacity-50"></div>
       </div>
@@ -58,108 +58,18 @@ function HomePage() {
 
         <CompactServices />
 
-        {/* Enhanced section divider with modern design */}
-        <div className="py-12 relative">
-          <div className="container mx-auto px-4">
-            <div className="relative flex items-center justify-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center border border-slate-200/50">
-                <div className="w-3 h-3 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full"></div>
-              </div>
-              <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent -z-10"></div>
-            </div>
-          </div>
-        </div>
-
         <About />
-
-        {/* Podcast Section */}
-        <div className="py-12 relative">
-          <div className="container mx-auto px-4">
-            <div className="relative flex items-center justify-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center border border-slate-200/50">
-                <div className="w-3 h-3 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full"></div>
-              </div>
-              <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent -z-10"></div>
-            </div>
-          </div>
-        </div>
 
         <LatestEpisodes />
 
-        {/* Enhanced section divider with modern design */}
-        <div className="py-12 relative">
-          <div className="container mx-auto px-4">
-            <div className="relative flex items-center justify-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center border border-slate-200/50">
-                <div className="w-3 h-3 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full"></div>
-              </div>
-              <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent -z-10"></div>
-            </div>
-          </div>
-        </div>
-
         <CompactGoogleReviews />
-
-        {/* Geometric section divider */}
-        <div className="py-12 relative">
-          <div className="container mx-auto px-4">
-            <div className="relative flex items-center justify-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg rotate-45 flex items-center justify-center border border-green-200/50">
-                <div className="w-2 h-2 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full -rotate-45"></div>
-              </div>
-              <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-300 to-transparent -z-10"></div>
-            </div>
-          </div>
-        </div>
 
         {/* Local / Mapa (Google Places) */}
         <GoogleLocalSection />
 
-        {/* Enhanced section divider with modern design */}
-        <div className="py-12 relative">
-          <div className="container mx-auto px-4">
-            <div className="relative flex items-center justify-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center border border-slate-200/50">
-                <div className="w-3 h-3 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full"></div>
-              </div>
-              <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent -z-10"></div>
-            </div>
-          </div>
-        </div>
-
         <Contact />
 
-        {/* Wave-like section divider */}
-        <div className="py-12 relative">
-          <div className="container mx-auto px-4">
-            <div className="relative flex items-center justify-center">
-              <div className="w-20 h-8 bg-gradient-to-r from-purple-100 via-indigo-100 to-blue-100 rounded-full flex items-center justify-center border border-purple-200/50">
-                <div className="flex gap-1">
-                  <div className="w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
-                  <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full"></div>
-                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                </div>
-              </div>
-              <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-300 to-transparent -z-10"></div>
-            </div>
-          </div>
-        </div>
-
         <FAQ />
-
-        {/* Final section divider with gradient bars */}
-        <div className="py-12 relative">
-          <div className="container mx-auto px-4">
-            <div className="relative flex items-center justify-center">
-              <div className="flex gap-2">
-                <div className="w-4 h-12 bg-gradient-to-b from-orange-400 to-red-400 rounded-full"></div>
-                <div className="w-4 h-8 bg-gradient-to-b from-yellow-400 to-orange-400 rounded-full mt-2"></div>
-                <div className="w-4 h-12 bg-gradient-to-b from-orange-400 to-red-400 rounded-full"></div>
-              </div>
-              <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-300 to-transparent -z-10"></div>
-            </div>
-          </div>
-        </div>
       </main>
 
       <Footer />

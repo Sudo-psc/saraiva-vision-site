@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import {
     Play,
     Pause,
@@ -20,6 +21,7 @@ const AudioPlayer = ({
     onClose = () => { },
     className = ''
 }) => {
+    const { t } = useTranslation();
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
@@ -57,11 +59,31 @@ const AudioPlayer = ({
         };
     }, []);
 
+    // Prevent simultaneous playback across multiple players
+    useEffect(() => {
+        const onOtherPlay = (e) => {
+            if (!e?.detail) return;
+            if (e.detail.id !== episode.id) {
+                const audio = audioRef.current;
+                if (audio && !audio.paused) {
+                    audio.pause();
+                    setIsPlaying(false);
+                }
+            }
+        };
+        window.addEventListener('sv:audio-play', onOtherPlay);
+        return () => window.removeEventListener('sv:audio-play', onOtherPlay);
+    }, [episode.id]);
+
     const togglePlayPause = () => {
         const audio = audioRef.current;
         if (isPlaying) {
             audio.pause();
         } else {
+            // Notify other players to pause
+            try {
+                window.dispatchEvent(new CustomEvent('sv:audio-play', { detail: { id: episode.id } }));
+            } catch (_) {}
             audio.play();
         }
         setIsPlaying(!isPlaying);
@@ -156,10 +178,23 @@ const AudioPlayer = ({
                         <img
                             src={episode.cover}
                             alt={episode.title}
-                            className="w-32 h-32 rounded-2xl mx-auto mb-4 shadow-lg object-cover"
+                            className="w-40 h-40 rounded-2xl mx-auto mb-4 shadow-lg object-cover"
                         />
                         <h3 className="text-xl font-bold text-gray-900 mb-2">{episode.title}</h3>
-                        <p className="text-sm text-gray-600">{episode.duration}</p>
+                        {episode.description && (
+                            <p className="text-sm text-gray-600 mb-3 max-w-md mx-auto leading-relaxed">{episode.description}</p>
+                        )}
+                        <div className="flex items-center justify-center gap-3 text-sm text-gray-500">
+                            <span>{episode.duration}</span>
+                            {episode.category && (
+                                <>
+                                    <span>•</span>
+                                    <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium text-xs">
+                                        {episode.category}
+                                    </span>
+                                </>
+                            )}
+                        </div>
                     </div>
 
                     <PlayerControls />
@@ -168,8 +203,9 @@ const AudioPlayer = ({
         );
     }
 
-    // Inline variant  
-    const isCompact = mode === 'card';
+    // Variants
+    const isCompact = mode === 'inline';
+    const isCard = mode === 'card';
 
     const PlayerControls = () => (
         <div className="space-y-4">
@@ -290,7 +326,7 @@ const AudioPlayer = ({
                             >
                                 <Settings className="w-4 h-4" />
                             </button>
-                            
+
                             <AnimatePresence>
                                 {showSettings && (
                                     <motion.div
@@ -307,11 +343,10 @@ const AudioPlayer = ({
                                                 <button
                                                     key={rate}
                                                     onClick={() => handlePlaybackRateChange(rate)}
-                                                    className={`w-full text-left px-2 py-1 rounded-lg text-sm transition-colors ${
-                                                        playbackRate === rate
-                                                            ? 'bg-blue-100 text-blue-700 font-medium'
-                                                            : 'text-gray-600 hover:bg-gray-100'
-                                                    }`}
+                                                    className={`w-full text-left px-2 py-1 rounded-lg text-sm transition-colors ${playbackRate === rate
+                                                        ? 'bg-blue-100 text-blue-700 font-medium'
+                                                        : 'text-gray-600 hover:bg-gray-100'
+                                                        }`}
                                                 >
                                                     {rate}x
                                                 </button>
@@ -366,16 +401,57 @@ const AudioPlayer = ({
                 className="hidden"
             />
 
-            {!isCompact && (
-                <div className="flex items-center gap-4 mb-6">
+            {/* Card header with large cover */}
+            {isCard && episode.cover && (
+                <div className="mb-4">
                     <img
                         src={episode.cover}
-                        alt={episode.title}
-                        className="w-16 h-16 rounded-xl object-cover shadow-md"
+                        alt={`${t('podcast.cover_alt', 'Capa do podcast')}: ${episode.title}`}
+                        className="w-full aspect-square rounded-xl object-cover shadow-md"
+                        loading="lazy"
+                    />
+                    <div className="mt-3">
+                        <h4 className="font-bold text-gray-900 mb-1 line-clamp-2">{episode.title}</h4>
+                        <div className="flex items-center gap-3 text-xs text-gray-500">
+                            <span>{episode.duration}</span>
+                            {episode.category && (
+                                <>
+                                    <span>•</span>
+                                    <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                                        {episode.category}
+                                    </span>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Inline header with small cover and description */}
+            {isCompact && (
+                <div className="flex items-start gap-4 mb-6">
+                    <img
+                        src={episode.cover}
+                        alt={`${t('podcast.cover_alt', 'Capa do podcast')}: ${episode.title}`}
+                        className="w-16 h-16 rounded-xl object-cover shadow-md flex-shrink-0"
+                        loading="lazy"
                     />
                     <div className="flex-grow min-w-0">
-                        <h4 className="font-bold text-gray-900 truncate">{episode.title}</h4>
-                        <p className="text-sm text-gray-600">{episode.duration}</p>
+                        <h4 className="font-bold text-gray-900 mb-1 line-clamp-2">{episode.title}</h4>
+                        {episode.description && (
+                            <p className="text-sm text-gray-600 mb-2 line-clamp-2 leading-relaxed">{episode.description}</p>
+                        )}
+                        <div className="flex items-center gap-3 text-xs text-gray-500">
+                            <span>{episode.duration}</span>
+                            {episode.category && (
+                                <>
+                                    <span>•</span>
+                                    <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                                        {episode.category}
+                                    </span>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
             )}

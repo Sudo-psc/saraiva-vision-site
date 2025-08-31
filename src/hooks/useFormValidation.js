@@ -97,7 +97,7 @@ export const useFormValidation = (initialValues, validators) => {
     error: errors[name],
     touched: touched[name],
     hasError: Boolean(errors[name]),
-    isValid: touched[name] && !errors[name]
+    isValid: Boolean(touched[name]) && !errors[name]
   }), [errors, touched]);
 
   return {
@@ -113,7 +113,12 @@ export const useFormValidation = (initialValues, validators) => {
     reset,
     getFieldProps,
     getFieldState,
-    isValid: Object.keys(errors).length === 0 && Object.keys(touched).length > 0
+    isValid:
+      Object.keys(values).every((k) => Boolean(touched[k])) &&
+      Object.keys(values).every((k) => {
+        const validator = validators[k];
+        return validator ? validator(values[k]) === true : true;
+      })
   };
 };
 
