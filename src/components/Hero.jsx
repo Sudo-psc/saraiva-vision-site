@@ -83,32 +83,31 @@ const Hero = () => {
             <div className="flex items-center gap-4 pt-6 justify-center lg:justify-start">
               <div className="flex -space-x-4">
                 <div className="relative group">
-                  <OptimizedImage
-                    className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-md ring-2 ring-blue-100/50 hover:ring-blue-200/70 transition-all duration-300 hover:scale-110 hover:z-10"
-                    src="/img/1006771-5.jpeg"
-                    width={48}
-                    height={48}
-                    alt={t('ui.alt.satisfied_patient_1', 'Paciente satisfeito 1')}
-                    fallbackSrc="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiM2MzY2RjEiLz4KPHBhdGggZD0iTTIwIDIwQzIyLjc2MTQgMjAgMjUgMTcuNzYxNCAyNSAxNUMyNSAyMi4yMzg2IDIyLjIzODYgMjAgMjAgMjBaTTE1IDE1QzE2LjY1NjkgMTUgMTggMTMuNjU2OSAxOCAxMkMxOCA5LjM0MzE1IDE2LjY1NjkgOCA4IDhDOCA2LjM0MzE1IDYuNjU2OSA4IDggOFMxMCA5LjM0MzE1IDEwIDEyQzEwIDEzLjY1NjkgMTEuMzQzMSA4IDE1IDhaIiBmaWxsPSIjOUFBQUFGIi8+Cjxzdmc+Cg=="
-                    placeholderSrc="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiNFNUU3RUIiLz4KPHN2Zz4K"
-                    priority={true}
-                  />
+                  <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
+                    <img
+                      src="/img/patient-avatar-1.svg"
+                      alt={t('ui.alt.satisfied_patient_1', 'Paciente satisfeito 1')}
+                      className="w-12 h-12 object-contain"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
                     <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
                 </div>
-                <div className="relative">
-                  <OptimizedImage
-                    className="w-12 h-12 rounded-full object-cover shadow-lg ring-2 ring-white/50 hover:ring-4 hover:ring-blue-200 transition-all duration-300 hover:scale-110"
-                    src="/img/eng.ana.jpeg"
-                    width={48}
-                    height={48}
-                    alt={t('ui.alt.satisfied_patient_2', 'Enfermeira Ana Lúcia')}
-                    fallbackSrc="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiM2MzY2RjEiLz4KPHBhdGggZD0iTTIwIDIwQzIyLjc2MTQgMjAgMjUgMTcuNzYxNCAyNSAxNUMyNSAyMi4yMzg2IDIyLjIzODYgMjAgMjAgMjBaTTE1IDE1QzE2LjY1NjkgMTUgMTggMTMuNjU2OSAxOCAxMkMxOCA5LjM0MzE1IDE2LjY1NjkgOCA4IDhDOCA2LjM0MzE1IDYuNjU2OSA4IDggOFMxMCA5LjM0MzE1IDEwIDEyQzEwIDEzLjY1NjkgMTEuMzQzMSA4IDE1IDhaIiBmaWxsPSIjOUFBQUFGIi8+Cjwvc3ZnPgo="
-                    placeholderSrc="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMjQiIGZpbGw9IiNFNUU3RUIiLz4KPHN2Zz4K"
-                  />
+                <div className="relative group">
+                  <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
+                    <img
+                      src="/img/patient-avatar-2.svg"
+                      alt={t('ui.alt.satisfied_patient_2', 'Paciente satisfeito 2')}
+                      className="w-12 h-12 object-contain"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
                   <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center ring-2 ring-white">
                     <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
