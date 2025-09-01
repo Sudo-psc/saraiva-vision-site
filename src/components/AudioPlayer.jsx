@@ -171,7 +171,7 @@ const AudioPlayer = ({
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.9, opacity: 0 }}
-                    className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 relative max-h-[90dvh] overflow-y-auto touch-scroll"
+                    className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 relative max-h-[90dvh] overflow-y-auto touch-scroll scroll-container scrollbar-none"
                     onClick={e => e.stopPropagation()}
                 >
                     <button
@@ -187,6 +187,8 @@ const AudioPlayer = ({
                             src={episode.cover}
                             alt={episode.title}
                             className="w-40 h-40 rounded-2xl mx-auto mb-4 shadow-lg object-cover"
+                            width={256}
+                            height={256}
                         />
                         <h3 className="text-xl font-bold text-gray-900 mb-2">{episode.title}</h3>
                         {episode.description && (

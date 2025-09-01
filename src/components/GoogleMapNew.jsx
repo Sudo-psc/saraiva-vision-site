@@ -463,7 +463,7 @@ const GoogleMap = ({ height = 340 }) => {
                 {debugInfo.length > 0 && (
                     <details className="text-xs text-gray-600 max-w-full">
                         <summary className="cursor-pointer mb-2">Debug Info</summary>
-                        <div className="text-left bg-gray-100 p-2 rounded max-h-32 overflow-y-auto">
+                        <div className="text-left bg-gray-100 p-2 rounded max-h-32 overflow-y-auto scroll-container scrollbar-none">
                             {debugInfo.map((log, index) => (
                                 <div key={index} className="font-mono text-xs whitespace-nowrap">
                                     {log}
@@ -511,7 +511,7 @@ const GoogleMap = ({ height = 340 }) => {
             {process.env.NODE_ENV === 'development' && debugInfo.length > 0 && (
                 <details className="absolute bottom-2 right-2 bg-black/80 text-white text-xs p-2 rounded max-w-sm">
                     <summary className="cursor-pointer">Debug</summary>
-                    <div className="mt-2 max-h-32 overflow-y-auto">
+                    <div className="mt-2 max-h-32 overflow-y-auto scroll-container scrollbar-none">
                         {debugInfo.map((log, index) => (
                             <div key={index} className="font-mono text-xs">
                                 {log}

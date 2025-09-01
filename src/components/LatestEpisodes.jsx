@@ -203,11 +203,10 @@ const LatestEpisodes = () => {
 
                         <div
                             data-testid="podcast-scroll"
-                            className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-3 md:pb-4 px-1 md:px-2 scroll-container"
+                            className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-proximity pb-3 md:pb-4 px-1 md:px-2 scroll-container scrollbar-none touch-pan-x"
                             style={{
                                 scrollbarWidth: 'none',
-                                msOverflowStyle: 'none',
-                                WebkitScrollbar: { display: 'none' }
+                                msOverflowStyle: 'none'
                             }}
                         >
                             {episodes.map((episode, index) => (

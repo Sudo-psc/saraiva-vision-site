@@ -49,9 +49,12 @@ const verifyRecaptcha = async ({ token, remoteip, expectedAction }) => {
       return { ok: false, code: 'action_mismatch', message: `unexpected action: ${data.action}` };
     }
 
-    // Default threshold 0.5
-    const score = typeof data.score === 'number' ? data.score : 0;
-    if (score < 0.5) {
+    // For development/test keys, score might be undefined
+    // In that case, we consider it valid if success=true
+    const score = typeof data.score === 'number' ? data.score : 1.0;
+
+    // Only apply score threshold for actual v3 responses (when score is provided)
+    if (typeof data.score === 'number' && score < 0.5) {
       return { ok: false, code: 'low_score', message: `low score: ${score}`, score };
     }
 

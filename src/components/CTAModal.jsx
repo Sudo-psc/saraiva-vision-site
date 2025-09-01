@@ -78,7 +78,7 @@ const CTAModal = () => {
       <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onClick={handleClose} />
       <div
         ref={modalRef}
-        className="relative w-full sm:max-w-md mx-auto bg-white rounded-t-3xl sm:rounded-3xl shadow-xl p-6 sm:p-8 animate-in fade-in zoom-in-95 max-h-[90dvh] overflow-y-auto touch-scroll"
+        className="relative w-full sm:max-w-md mx-auto bg-white rounded-t-3xl sm:rounded-3xl shadow-xl p-6 sm:p-8 animate-in fade-in zoom-in-95 max-h-[90dvh] overflow-y-auto touch-scroll scroll-container scrollbar-none"
       >
         <button className="absolute top-3 right-3 p-2 rounded-full hover:bg-slate-100" aria-label={t('ui.close', 'Fechar')} onClick={handleClose}>
           <X size={18} />

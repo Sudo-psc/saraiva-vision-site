@@ -33,7 +33,7 @@ const CompactServiceCard = React.forwardRef(({ service, index }, ref) => {
       whileInView={{ y: 0, opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-      className={`group relative p-8 ${gradients[index % gradients.length]} ${hoverGradients[index % hoverGradients.length]} backdrop-blur-sm rounded-3xl border border-white/50 hover:border-blue-200/60 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden`}
+      className={`group relative p-8 ${gradients[index % gradients.length]} ${hoverGradients[index % hoverGradients.length]} backdrop-blur-sm rounded-3xl border border-slate-200/80 hover:border-blue-300/60 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden focus-within:ring-2 focus-within:ring-blue-500/20`}
       whileHover={{ y: -8, scale: 1.03 }}
       exit={{ opacity: 0, y: 20, scale: 0.95, transition: { duration: 0.3 } }}
     >
@@ -44,7 +44,7 @@ const CompactServiceCard = React.forwardRef(({ service, index }, ref) => {
       </div>
 
       {/* Enhanced icon container */}
-      <div className="w-24 h-24 mb-6 mx-auto flex items-center justify-center rounded-3xl bg-gradient-to-br from-white/90 to-white/70 ring-2 ring-white/50 group-hover:ring-blue-200/60 transition-all duration-500 ease-out shadow-xl group-hover:shadow-2xl backdrop-blur-sm relative z-10 group-hover:scale-110">
+      <div className="w-24 h-24 mb-6 mx-auto flex items-center justify-center rounded-3xl bg-gradient-to-br from-white/90 to-white/70 ring-1 ring-slate-200/80 group-hover:ring-blue-200/60 transition-all duration-500 ease-out shadow-xl group-hover:shadow-2xl backdrop-blur-sm relative z-10 group-hover:scale-110">
         <div className="w-20 h-20 transition-all duration-500 ease-out group-hover:scale-125 group-hover:rotate-6 drop-shadow-[0_8px_16px_rgba(59,130,246,0.3)]">
           {service.icon}
         </div>
@@ -56,7 +56,7 @@ const CompactServiceCard = React.forwardRef(({ service, index }, ref) => {
       </h3>
 
       {/* Enhanced benefit description */}
-      <p className="text-sm text-slate-600 text-center mb-6 leading-relaxed group-hover:text-slate-700 transition-colors duration-300 font-medium">
+      <p className="text-sm text-slate-600 text-center mb-6 leading-relaxed group-hover:text-slate-700 transition-colors duration-300 font-medium line-clamp-3">
         {service.benefit}
       </p>
 
@@ -65,7 +65,7 @@ const CompactServiceCard = React.forwardRef(({ service, index }, ref) => {
         to={`/servico/${service.id}`}
         className="inline-flex items-center justify-center gap-2 w-full py-3 px-6 text-sm font-bold text-blue-700 bg-white/80 hover:bg-white border border-blue-200/50 hover:border-blue-300 rounded-xl transition-all duration-300 group/button hover:shadow-lg backdrop-blur-sm"
       >
-        <span>Saiba mais</span>
+        <span>{t('services.learn_more')}</span>
         <ArrowRight className="w-4 h-4 transition-transform group-hover/button:translate-x-1" />
       </Link>
     </motion.div>
@@ -177,7 +177,7 @@ const CompactServices = () => {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100/70 text-blue-800 rounded-full text-sm font-semibold mb-6 backdrop-blur-sm">
             <Sparkles className="w-4 h-4" />
-            <span>Nossos Serviços</span>
+            <span>{t('services.badge', 'Nossos Serviços')}</span>
           </div>
 
           <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6 leading-tight">

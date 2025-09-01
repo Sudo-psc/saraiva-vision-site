@@ -18,7 +18,7 @@ const SEOHead = ({
   const location = useLocation();
 
   const currentLang = i18n.language || 'pt';
-  const baseUrl = 'https://saraivavisao.com.br';
+  const baseUrl = 'https://saraivavision.com.br';
   const currentPath = location.pathname;
 
   // Generate optimized image URL for social sharing

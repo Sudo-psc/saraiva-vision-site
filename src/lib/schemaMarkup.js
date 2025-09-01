@@ -260,6 +260,18 @@ export const generateMedicalWebPageSchema = (pageInfo, language = 'pt', forGraph
       '@type': 'Patient'
     }
   };
+
+  if (pageInfo.lastReviewed) {
+    schema.lastReviewed = pageInfo.lastReviewed;
+  }
+
+  if (pageInfo.reviewedBy) {
+    schema.reviewedBy = {
+      '@type': 'Physician',
+      name: pageInfo.reviewedBy.name,
+      identifier: pageInfo.reviewedBy.crm,
+    };
+  }
   
   // Se não for para @graph, adicionar @context
   if (!forGraph) {

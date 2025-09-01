@@ -301,7 +301,7 @@ const Accessibility = () => {
                 <X size={20} />
               </button>
             </div>
-            <div className="overflow-y-auto px-6 py-4 text-slate-700 text-sm" style={{ scrollbarWidth: 'thin' }}>
+            <div className="overflow-y-auto px-6 py-4 text-slate-700 text-sm scroll-container scrollbar-none touch-scroll" style={{ scrollbarWidth: 'none' }}>
               {/* Controle de Legibilidade */}
               <Section title="Controle de Legibilidade" icon={Type}>
                 <div className="flex flex-wrap gap-2">

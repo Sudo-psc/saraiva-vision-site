@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { useSEO } from '@/hooks/useSEO';
 
 function MedicalArticleExample() {
   const title = 'Catarata: sintomas, diagnóstico e tratamento';
@@ -12,27 +13,28 @@ function MedicalArticleExample() {
     crm: 'CRM-MG 69.870'
   };
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'MedicalWebPage',
-    about: {
-      '@type': 'MedicalCondition',
-      name: 'Catarata'
-    },
-    lastReviewed: lastReviewed,
-    reviewedBy: {
-      '@type': 'Physician',
-      name: physician.name,
-      identifier: physician.crm
+  const seoData = {
+    title: title,
+    description: summary,
+    pageType: 'MedicalWebPage',
+    schema: {
+      lastReviewed: lastReviewed,
+      reviewedBy: physician,
+      about: {
+        '@type': 'MedicalCondition',
+        name: 'Catarata'
+      }
     }
   };
+
+  const { structuredData } = useSEO(seoData);
 
   return (
     <div className="min-h-screen bg-white">
       <Helmet>
         <title>{title} | Saraiva Vision</title>
         <meta name="description" content={summary} />
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Helmet>
       <Navbar />
       <main className="py-section lg:py-section-xl">

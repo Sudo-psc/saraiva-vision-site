@@ -35,8 +35,8 @@ const ServiceCard = ({ service, index, lazy = true }) => {
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.05 }}
-      className="group relative flex flex-col items-center text-center p-8 rounded-3xl bg-white/70 backdrop-blur-md shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08),0_4px_12px_-2px_rgba(0,0,0,0.05)] border border-white/50 overflow-hidden will-change-transform flex-shrink-0 snap-start min-w-[260px] max-w-[300px] md:min-w-[280px] md:max-w-[320px]"
-      whileHover={prefersReducedMotion ? {} : { y: -6, rotateX: 4, rotateY: -4 }}
+      className="group relative flex flex-col items-center text-center p-8 rounded-[22px] glass-morphism gradient-border shadow-3d hover:shadow-3d-hover border border-slate-200/80 hover:border-blue-200/70 overflow-hidden will-change-transform transform-gpu preserve-3d flex-shrink-0 snap-start min-w-[260px] max-w-[300px] md:min-w-[280px] md:max-w-[320px] focus-within:ring-2 focus-within:ring-blue-500/20"
+      whileHover={prefersReducedMotion ? {} : { y: -6, rotateX: 6, rotateY: -6 }}
       exit={{ opacity: 0, y: 10, scale: 0.98 }}
     >
       {/* Ambient gradient halo */}
@@ -70,7 +70,7 @@ const ServiceCard = ({ service, index, lazy = true }) => {
       </motion.h3>
 
       {/* Description */}
-      <p className="text-slate-600 text-sm leading-relaxed mb-6 max-w-xs transition-colors group-hover:text-slate-700">
+      <p className="text-slate-600 text-sm leading-relaxed mb-6 max-w-xs transition-colors group-hover:text-slate-700 line-clamp-3">
         {service.description}
       </p>
 
@@ -176,6 +176,9 @@ const Services = ({ full = false }) => {
   const prefersReducedMotion = useReducedMotion();
   const pauseRef = useRef(false);
   const rafRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartXRef = useRef(0);
+  const scrollStartRef = useRef(0);
 
   const measure = useCallback(() => {
     const el = scrollerRef.current;
@@ -199,14 +202,17 @@ const Services = ({ full = false }) => {
     const el = scrollerRef.current;
     if (!el) return;
     const delta = el.clientWidth * 0.8 * dir; // 80% da largura visível
-    el.scrollBy({ left: delta, behavior: 'smooth' });
+    const max = el.scrollWidth - el.clientWidth;
+    const next = Math.max(0, Math.min(el.scrollLeft + delta, max));
+    el.scrollTo({ left: next, behavior: 'smooth' });
   };
 
   const updateIndex = useCallback(() => {
     const el = scrollerRef.current;
     if (!el) return;
-    const idx = Math.round(el.scrollLeft / cardWidthRef.current) % serviceItems.length;
-    setCurrentIndex(idx);
+    const raw = Math.round(el.scrollLeft / cardWidthRef.current);
+    const clamped = Math.max(0, Math.min(serviceItems.length - 1, raw));
+    setCurrentIndex(clamped);
   }, [serviceItems.length]);
 
   const scrollToIndex = useCallback((i) => {
@@ -229,22 +235,62 @@ const Services = ({ full = false }) => {
     return () => el.removeEventListener('keydown', handler);
   }, []);
 
-  // Atualiza índice e looping suave
+  // Drag to scroll for frictionless interaction
+  const onPointerDown = useCallback((e) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    setIsDragging(true);
+    pauseRef.current = true;
+    dragStartXRef.current = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+    scrollStartRef.current = el.scrollLeft;
+    try { el.setPointerCapture && el.setPointerCapture(e.pointerId); } catch (_) {}
+  }, []);
+
+  const onPointerMove = useCallback((e) => {
+    if (!isDragging) return;
+    const el = scrollerRef.current;
+    if (!el) return;
+    const clientX = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+    const dx = clientX - dragStartXRef.current;
+    el.scrollLeft = scrollStartRef.current - dx;
+    if (typeof e.preventDefault === 'function') e.preventDefault();
+  }, [isDragging]);
+
+  const endDrag = useCallback(() => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    // small delay to avoid immediate autoplay jump
+    setTimeout(() => { pauseRef.current = false; }, 800);
+  }, [isDragging]);
+
+  // Convert vertical wheel to horizontal scroll inside the carousel for frictionless navigation
+  const onWheel = useCallback((e) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    // If vertical intent is stronger, scroll horizontally
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      el.scrollLeft += e.deltaY;
+      e.preventDefault();
+    }
+  }, []);
+
+  // Atualiza índice e remove loop infinito
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
     const handleScroll = () => {
       updateIndex();
-      const loopWidth = cardWidthRef.current * serviceItems.length;
-      if (el.scrollLeft >= loopWidth * 1.5) {
-        el.scrollLeft -= loopWidth;
+      // Limita o fim da rolagem sem loop
+      const max = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft >= max) {
+        el.scrollLeft = max;
       }
     };
     el.addEventListener('scroll', handleScroll, { passive: true });
     return () => el.removeEventListener('scroll', handleScroll);
   }, [serviceItems.length, updateIndex]);
 
-  // Autoplay contínuo
+  // Autoplay contínuo (para até o fim, sem loop)
   useEffect(() => {
     if (prefersReducedMotion) return;
     const el = scrollerRef.current;
@@ -254,7 +300,13 @@ const Services = ({ full = false }) => {
     const tick = (now) => {
       const dt = now - last; last = now;
       if (!pauseRef.current) {
-        el.scrollLeft += dt * speed;
+        const max = el.scrollWidth - el.clientWidth;
+        const next = Math.min(max, el.scrollLeft + dt * speed);
+        el.scrollLeft = next;
+        // Pausa quando chegar ao fim (sem loop)
+        if (next >= max) {
+          pauseRef.current = true;
+        }
       }
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -363,12 +415,19 @@ const Services = ({ full = false }) => {
           <motion.div
             ref={scrollerRef}
             tabIndex={0}
-            className="flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-mandatory scroll-smooth scroll-container"
+            className={`perspective-1000 flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-proximity scroll-smooth scroll-container scrollbar-none overscroll-x-contain cursor-grab active:cursor-grabbing select-none touch-pan-x ${isDragging ? 'dragging' : ''}`}
+            style={{ scrollSnapType: isDragging ? 'none' : undefined }}
             layout="position"
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+            onMouseLeave={endDrag}
+            onWheel={onWheel}
           >
             <AnimatePresence mode="popLayout">
-              {(isTestEnv ? serviceItems : [...serviceItems, ...serviceItems]).map((service, index) => (
-                <ServiceCard key={service.id + '-' + index} service={service} index={index % serviceItems.length} lazy={!isTestEnv} />
+              {serviceItems.map((service, index) => (
+                <ServiceCard key={service.id + '-' + index} service={service} index={index} lazy={!isTestEnv} />
               ))}
             </AnimatePresence>
           </motion.div>

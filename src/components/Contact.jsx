@@ -163,7 +163,8 @@ const Contact = () => {
           phone: formData.phone,
           message: formData.message,
           consent: formData.consent,
-          recaptchaToken: token
+          token: token,  // Correção: era recaptchaToken, mas API espera token
+          action: 'contact'  // Adicionar action para validação
         })
       });
 

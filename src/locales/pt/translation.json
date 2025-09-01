@@ -233,9 +233,12 @@
   "services": {
     "title": "Nossos Serviços",
     "subtitle": "Oferecemos uma gama completa de serviços oftalmológicos para cuidar da sua visão com a máxima qualidade e tecnologia.",
+    "badge": "Nossos Serviços",
     "learn_more": "Saiba Mais",
     "view_all": "Ver todos os 12 serviços",
     "show_less": "Mostrar menos",
+    "carousel_navigation": "Navegação do carrossel de serviços",
+    "go_to": "Ir para serviço {{index}}",
     "schedule_button": "Agende Sua Consulta Agora",
     "items": {
       "consultations": {
@@ -957,6 +960,14 @@
   "ui": {
     "details": "Ver detalhes",
     "close": "Fechar",
+    "prev": "Anterior",
+    "previous": "Anterior",
+    "next": "Próximo",
+    "carousel": "Carrossel",
+    "carousel_navigation": "Navegação do carrossel",
+    "go_to_item": "Ir para item {{index}}",
+    "recommended": "RECOMENDADO",
+    "available_24_7": "Disponível 24h • Confirmação instantânea",
     "close_menu": "Fechar menu",
     "close_player": "Fechar player",
     "close_tip": "Fechar dica",

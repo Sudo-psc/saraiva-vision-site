@@ -170,7 +170,7 @@ const Navbar = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="md:hidden bg-white/95 backdrop-blur-lg border-t touch-scroll scroll-container max-h-[calc(100dvh-56px)] overflow-y-auto"
+            className="md:hidden bg-white/95 backdrop-blur-lg border-t touch-scroll scroll-container scrollbar-none max-h-[calc(100dvh-56px)] overflow-y-auto"
           >
             <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4 no-scrollbar-x" aria-label={t('navbar.mobile_navigation', 'Navegação móvel')}>
               {navLinks.map((link) => (

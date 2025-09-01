@@ -29,7 +29,7 @@
 - [ ] Melhorar contraste de cores
 - [ ] Implementar ARIA labels apropriados
 - [ ] Testar com screen readers
-
+- [ ] Design and System archteture docs
 ## Arquitetura e Deploy
 - [ ] Revisar estratégia de deploy atual
 - [ ] Implementar CI/CD pipeline

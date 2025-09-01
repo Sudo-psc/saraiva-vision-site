@@ -18,22 +18,22 @@ class HealthcareSessionManager {
   }
 
   init() {
-    console.log('🏥 Initializing healthcare session manager...');
+    // Initialize healthcare session manager
     
     try {
       // Check if session storage is available
       if (typeof(Storage) === "undefined") {
-        console.error('❌ Session storage not available');
+        // Session storage not available - fallback to memory
         return false;
       }
 
       // Check for existing session
       const existingSession = this.getSession();
       if (existingSession) {
-        console.log('✅ Existing session found');
+        // Existing session found
         this.startSessionMonitoring();
       } else {
-        console.log('ℹ️ No existing session');
+        // No existing session
       }
 
       // Add activity listeners
@@ -67,7 +67,7 @@ class HealthcareSessionManager {
       this.lastActivity = Date.now();
       this.startSessionMonitoring();
       
-      console.log('✅ Healthcare session created successfully');
+      // Healthcare session created successfully
       return sessionData;
     } catch (error) {
       console.error('❌ Failed to create session:', error);
@@ -88,14 +88,14 @@ class HealthcareSessionManager {
       
       // Validate session integrity
       if (!this.validateSession(session)) {
-        console.warn('⚠️ Invalid session detected, clearing...');
+        // Invalid session detected, clearing
         this.clearSession();
         return null;
       }
 
       // Check if session expired
       if (this.isSessionExpired(session)) {
-        console.warn('⚠️ Session expired, clearing...');
+        // Session expired, clearing
         this.clearSession();
         return null;
       }
@@ -146,7 +146,7 @@ class HealthcareSessionManager {
         clearTimeout(this.warningTimeout);
       }
 
-      console.log('🔒 Session cleared securely');
+      // Session cleared securely
       
       // Notify application of session end
       this.dispatchSessionEvent('session-ended');
@@ -196,7 +196,7 @@ class HealthcareSessionManager {
 
       // Auto-logout on expiry
       if (timeUntilExpiry <= 0) {
-        console.warn('⚠️ Session expired due to inactivity');
+        // Session expired due to inactivity
         this.clearSession();
       }
     }, 60000); // Check every minute
@@ -205,7 +205,7 @@ class HealthcareSessionManager {
   // Show expiry warning to user
   showExpiryWarning(timeLeft) {
     const minutes = Math.ceil(timeLeft / 60000);
-    console.warn(`⚠️ Session expiring in ${minutes} minutes`);
+    // Session expiring warning
     
     // Dispatch warning event for UI to handle
     this.dispatchSessionEvent('session-warning', { timeLeft });
@@ -270,7 +270,7 @@ class HealthcareSessionManager {
     if (session) {
       session.lastActivity = Date.now();
       sessionStorage.setItem('healthcare_session', JSON.stringify(session));
-      console.log('✅ Session extended');
+      // Session extended
       return true;
     }
     return false;

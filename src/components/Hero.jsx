@@ -92,6 +92,8 @@ const Hero = () => {
                       src="/img/patient-avatar-1.svg"
                       alt={t('ui.alt.satisfied_patient_1', 'Paciente satisfeito 1')}
                       className="w-12 h-12 object-contain"
+                      width={48}
+                      height={48}
                       loading="lazy"
                       decoding="async"
                     />
@@ -108,6 +110,8 @@ const Hero = () => {
                       src="/img/patient-avatar-2.svg"
                       alt={t('ui.alt.satisfied_patient_2', 'Paciente satisfeito 2')}
                       className="w-12 h-12 object-contain"
+                      width={48}
+                      height={48}
                       loading="lazy"
                       decoding="async"
                     />
