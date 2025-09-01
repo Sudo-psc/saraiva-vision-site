@@ -2,6 +2,7 @@ import React from 'react';
 import { expect, afterEach, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
 import * as matchers from '@testing-library/jest-dom/matchers'
+import i18n from '../i18n';
 
 // Extend Vitest's expect with jest-dom matchers
 expect.extend(matchers)
@@ -70,90 +71,45 @@ vi.mock('@/lib/constants', () => ({
   }
 }))
 
-// Mock react-i18next globally
-vi.mock('react-i18next', () => {
-  const translations = {
-    'contact.send_button': 'Enviar Mensagem',
-    'contact.sending_label': 'Enviando...',
-    'contact.title': 'Entre em Contato',
-    'contact.subtitle': 'Estamos prontos para cuidar da sua visão. Entre em contato conosco para agendar sua consulta.',
-    'services.learn_more': 'Saiba Mais',
-    'services.title': 'Nossos Serviços',
-    'hero.schedule_button': 'Agendar Consulta',
-    'hero.services_button': 'Nossos Serviços',
-    'navbar.schedule': 'Agendar',
-    'about.p1': 'Nossa missão é cuidar da sua visão',
-    'about.tag': 'Sobre Nós',
-    'privacy.form_consent_html': 'Aceito a Política de Privacidade',
-    'contact.info.phone_whatsapp': 'Falar no WhatsApp',
-  };
-
-  const t = (key, params) => {
-    let translation = translations[key] || key;
-    if (params && typeof translation === 'string') {
-      Object.keys(params).forEach(param => {
-        translation = translation.replace(new RegExp(`{{${param}}}`, 'g'), params[param]);
-      });
-    }
-    return translation;
-  };
-
-  const useTranslation = vi.fn(() => ({
-      t,
-      i18n: {
-        language: 'pt',
-        changeLanguage: vi.fn(),
-      },
-    }));
-  return {
-    useTranslation,
-    Trans: ({ i18nKey, values, children }) => {
-      // Prefer provided children if present to match react-i18next behavior
-      if (children) return children;
-      return t(i18nKey, values);
-    },
-  };
-})
-
-// Mock framer-motion globally
+// Mock framer-motion globally with forwardRef support
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }) => {
+    div: React.forwardRef(({ children, ...props }, ref) => {
       const { whileInView, initial, viewport, transition, whileHover, layout, animate, exit, ...rest } = props;
-      return <div {...rest}>{children}</div>;
-    },
-    form: ({ children, ...props }) => {
+      return <div ref={ref} {...rest}>{children}</div>;
+    }),
+    form: React.forwardRef(({ children, ...props }, ref) => {
       const { whileInView, initial, viewport, transition, layout, animate, exit, ...rest } = props;
-      return <form {...rest}>{children}</form>;
-    },
-    section: ({ children, ...props }) => {
+      return <form ref={ref} {...rest}>{children}</form>;
+    }),
+    section: React.forwardRef(({ children, ...props }, ref) => {
       const { whileInView, initial, viewport, transition, layout, animate, exit, ...rest } = props;
-      return <section {...rest}>{children}</section>;
-    },
-    h1: ({ children, ...props }) => {
+      return <section ref={ref} {...rest}>{children}</section>;
+    }),
+    h1: React.forwardRef(({ children, ...props }, ref) => {
       const { whileHover, initial, animate, transition, layout, exit, ...rest } = props;
-      return <h1 {...rest}>{children}</h1>;
-    },
-    h2: ({ children, ...props }) => {
+      return <h1 ref={ref} {...rest}>{children}</h1>;
+    }),
+    h2: React.forwardRef(({ children, ...props }, ref) => {
       const { whileHover, whileInView, initial, animate, transition, viewport, layout, exit, ...rest } = props;
-      return <h2 {...rest}>{children}</h2>;
-    },
-    h3: ({ children, ...props }) => {
+      return <h2 ref={ref} {...rest}>{children}</h2>;
+    }),
+    h3: React.forwardRef(({ children, ...props }, ref) => {
       const { whileHover, initial, animate, transition, layout, exit, ...rest } = props;
-      return <h3 {...rest}>{children}</h3>;
-    },
-    p: ({ children, ...props }) => {
+      return <h3 ref={ref} {...rest}>{children}</h3>;
+    }),
+    p: React.forwardRef(({ children, ...props }, ref) => {
       const { whileHover, whileInView, initial, animate, transition, viewport, layout, exit, ...rest } = props;
-      return <p {...rest}>{children}</p>;
-    },
-    button: ({ children, ...props }) => {
+      return <p ref={ref} {...rest}>{children}</p>;
+    }),
+    button: React.forwardRef(({ children, ...props }, ref) => {
       const { whileHover, whileTap, initial, animate, transition, layout, exit, ...rest } = props;
-      return <button {...rest}>{children}</button>;
-    },
-    a: ({ children, ...props }) => {
+      return <button ref={ref} {...rest}>{children}</button>;
+    }),
+    a: React.forwardRef(({ children, ...props }, ref) => {
       const { whileHover, whileTap, initial, animate, transition, layout, exit, ...rest } = props;
-      return <a {...rest}>{children}</a>;
-    }
+      return <a ref={ref} {...rest}>{children}</a>;
+    })
   },
   AnimatePresence: ({ children }) => <>{children}</>,
   useInView: () => true,
@@ -177,6 +133,8 @@ try {
     'contact.subtitle': 'Estamos prontos para cuidar da sua visão. Entre em contato conosco para agendar sua consulta.',
     'services.learn_more': 'Saiba Mais',
     'services.title': 'Nossos Serviços',
+    'services.section_title': 'Nossos Serviços',
+    'services.subtitle': 'Oferecemos uma gama abrangente de serviços especializados',
     'hero.schedule_button': 'Agendar Consulta',
     'hero.services_button': 'Nossos Serviços',
     'navbar.schedule': 'Agendar',
@@ -184,6 +142,9 @@ try {
     'about.tag': 'Sobre Nós',
     'privacy.form_consent_html': 'Aceito a Política de Privacidade',
     'contact.info.phone_whatsapp': 'Falar no WhatsApp',
+    'homeMeta.title': 'Clínica Saraiva Vision - Oftalmologista em Caratinga/MG',
+    'homeMeta.description': 'Clínica oftalmológica especializada em Caratinga/MG',
+    'homeMeta.keywords': 'oftalmologista Caratinga, clínica oftalmológica, consulta olhos, exame vista',
   };
   const t = (key, params) => {
     let translation = translations[key] || key;

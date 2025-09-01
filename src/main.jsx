@@ -4,34 +4,55 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from '@/App';
 import '@/i18n';
 import '@/index.css';
-import { initPerformanceOptimizations } from '@/utils/performanceOptimizer';
-import { initWebVitals } from '@/utils/webVitalsMonitoring';
-import { bindConsentUpdates, persistUTMParameters } from '@/utils/analytics';
-import { inlineCriticalCSS } from '@/utils/criticalCSS';
+// Non-critical modules will be loaded lazily to avoid unused preloads
 import { setupGlobalErrorHandlers } from '@/utils/setupGlobalErrorHandlers';
+import healthcareMonitoring from '@/utils/healthcareMonitoringSystem';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
-// Inicializar CSS crítico antes de tudo (desabilitado temporariamente)
-// inlineCriticalCSS();
+// Defer costly, non-critical modules to idle (post-load)
+if (typeof window !== 'undefined') {
+  const idle = (cb) => {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(cb, { timeout: 2000 });
+    } else {
+      setTimeout(cb, 1200);
+    }
+  };
 
-// Inicializar otimizações de performance
-initPerformanceOptimizations();
-
-// Inicializar monitoramento Web Vitals
-initWebVitals({
-  debug: import.meta.env.DEV,
-  endpoint: import.meta.env.PROD ? '/api/web-vitals' : null
-});
-
-// Vincular atualizações de consentimento aos vendors (GA/Meta)
-bindConsentUpdates();
-
-// Persistir parâmetros UTM para tracking
-persistUTMParameters();
+  window.addEventListener('load', () => {
+    idle(async () => {
+      try {
+        const [perf, vitals, analytics, criticalCSS] = await Promise.all([
+          import('@/utils/performanceOptimizer'),
+          import('@/utils/webVitalsMonitoring'),
+          import('@/utils/analytics'),
+          import('@/utils/criticalCSS')
+        ]);
+        perf.initPerformanceOptimizations?.();
+        vitals.initWebVitals?.({
+          debug: import.meta.env.DEV,
+          endpoint: import.meta.env.PROD ? '/api/web-vitals' : null
+        });
+        analytics.bindConsentUpdates?.();
+        analytics.persistUTMParameters?.();
+        // optional: inline critical CSS if re-enabled
+        // criticalCSS.inlineCriticalCSS?.();
+      } catch (e) {
+        if (import.meta.env.DEV) console.warn('Deferred init failed:', e);
+      }
+    });
+  });
+}
 
 // Reduz ruído no console oriundo de extensões/ad blockers,
 // sem mascarar erros reais da aplicação
 setupGlobalErrorHandlers();
+
+// Inicializar sistema de monitoramento específico para ambiente médico
+// Inclui gestão de sessões, tokens, compatibilidade com ad blockers e alertas críticos
+healthcareMonitoring.init().catch((error) => {
+  console.warn('⚠️ Healthcare monitoring initialization failed:', error);
+});
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -45,20 +66,23 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </React.StrictMode>
 );
 
-// Registrar Service Worker para PWA (somente em produção e quando suportado)
+// Service Worker Registration com Workbox - DESABILITADO EM DEV
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('/sw.js')
-      .then((registration) => {
-        if (registration?.update) {
-          // Verifica atualizações periodicamente
-          setInterval(() => registration.update(), 60 * 60 * 1000);
-        }
-      })
-      .catch((err) => {
-        // Silencia erros em produção para evitar ruído no console
-        // console.debug('SW registration failed:', err);
-      });
+  // Import the new service worker manager
+  import('./utils/serviceWorkerManager.js').then(({ default: swManager }) => {
+    // Manager automatically registers SW and handles updates
+    console.log('[SW] Workbox service worker manager carregado');
+  }).catch(error => {
+    console.error('[SW] Erro ao carregar service worker manager:', error);
+  });
+}
+
+// Limpar service workers existentes em desenvolvimento
+if (import.meta.env.DEV && 'serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    registrations.forEach(registration => {
+      console.log('[DEV] Removendo service worker:', registration.scope);
+      registration.unregister();
+    });
   });
 }

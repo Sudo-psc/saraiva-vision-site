@@ -597,6 +597,10 @@
       "dmri": {
         "title": "Eye Health in Focus: AMD — When the Macula Decides to Retire",
         "description": "Understand Age-related Macular Degeneration (AMD): main symptoms, risk factors, prevention tips and when to seek evaluation with your ophthalmologist."
+      },
+      "lentes_contato": {
+        "title": "Eye Health in Focus: Contact Lenses — Rigid vs Soft",
+        "description": "Differences, indications and care between rigid and soft contact lenses. When each is recommended and how to maintain a safe, comfortable fit."
       }
     }
   },

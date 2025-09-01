@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CRITICAL: Complete double scroll prevention system */
+html {
+  /* Reset all scroll properties */
+  overflow: hidden !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+}
+
+body {
+  /* Body handles all scrolling */
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+}
+
 /* Performance and UX optimizations */
 @layer utilities {
   .floating-widget {
@@ -11,9 +27,27 @@
     backface-visibility: hidden;
   }
 
+  /* Enhanced touch scrolling for mobile */
   .touch-scroll {
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    overscroll-behavior: contain;
+  }
+
+  /* Improved scroll container behavior */
+  .scroll-container {
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Enhanced scroll snap for better UX */
+  .snap-x {
+    scroll-snap-type: x mandatory;
+  }
+
+  .snap-mandatory>* {
+    scroll-snap-align: center;
   }
 
   /* Mobile-specific optimizations */
@@ -90,31 +124,32 @@ html {
   color: #1a1a1a !important;
   /* Enhanced font fallback stack */
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  /* Prevent horizontal scrolling but allow vertical */
+  /* Fix double scroll: only prevent horizontal overflow */
   overflow-x: hidden;
-  overflow-y: auto;
   width: 100%;
   max-width: 100%;
+  height: 100%;
 }
 
 body {
   margin: 0;
   padding: 0;
-  /* Allow normal scrolling behavior */
+  /* Fix double scroll: only prevent horizontal overflow, let browser handle vertical */
   overflow-x: hidden;
-  overflow-y: auto;
   width: 100%;
   max-width: 100%;
   position: relative;
+  height: 100%;
 }
 
 /* Ensure root element doesn't overflow */
 #root {
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100%;
-  min-height: 100vh;
-  position: relative;
+  /* Root container is scroll-free */
+  overflow: visible !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 100vh !important;
+  position: relative !important;
 }
 
 @layer base {
@@ -972,7 +1007,112 @@ body {
   .line-clamp-3 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  /* CRITICAL FIX: Complete scroll management system */
+  html {
+    overflow: hidden !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+
+  body {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    position: relative !important;
+  }
+
+  #root {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+  }
+
+  /* Ensure no nested scroll contexts for main containers */
+  .min-h-screen {
+    min-height: 100vh !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Prevent any main layout components from creating scroll contexts */
+  main,
+  section,
+  article,
+  .container,
+  .max-w-7xl {
+    overflow: visible !important;
+  }
+
+  /* Only specific scroll containers should have scroll */
+  .scroll-container {
+    overflow: auto !important;
+  }
+
+  /* Transparent/Invisible scrollbars for internal scroll containers */
+  .scroll-container,
+  .overflow-y-auto,
+  .overflow-x-auto,
+  [class*="overflow-"] {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  /* Webkit browsers (Chrome, Safari, Edge) - transparent scrollbars */
+  .scroll-container::-webkit-scrollbar,
+  .overflow-y-auto::-webkit-scrollbar,
+  .overflow-x-auto::-webkit-scrollbar,
+  [class*="overflow-"]::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background: transparent;
+  }
+
+  .scroll-container::-webkit-scrollbar-track,
+  .overflow-y-auto::-webkit-scrollbar-track,
+  .overflow-x-auto::-webkit-scrollbar-track,
+  [class*="overflow-"]::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scroll-container::-webkit-scrollbar-thumb,
+  .overflow-y-auto::-webkit-scrollbar-thumb,
+  .overflow-x-auto::-webkit-scrollbar-thumb,
+  [class*="overflow-"]::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.1);
+    border-radius: 3px;
+    border: none;
+  }
+
+  .scroll-container::-webkit-scrollbar-thumb:hover,
+  .overflow-y-auto::-webkit-scrollbar-thumb:hover,
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover,
+  [class*="overflow-"]::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.2);
+  }
+
+  /* Hide scrollbars on mobile for cleaner experience */
+  @media (max-width: 768px) {
+
+    .scroll-container::-webkit-scrollbar,
+    .overflow-y-auto::-webkit-scrollbar,
+    .overflow-x-auto::-webkit-scrollbar,
+    [class*="overflow-"]::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scroll-container,
+    .overflow-y-auto,
+    .overflow-x-auto,
+    [class*="overflow-"] {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
   }
 }

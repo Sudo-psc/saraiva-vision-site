@@ -19,12 +19,10 @@ class HealthcareTokenManager {
         critical: false // Analytics is not critical for patient care
       },
       'clinic_api': {
-        refreshUrl: '/api/auth/refresh',
         retryable: true,
         critical: true // Clinic API is critical
       },
       'partner_api': {
-        refreshUrl: '/api/partners/auth/refresh',
         retryable: true,
         critical: false // Partner APIs are not critical
       }

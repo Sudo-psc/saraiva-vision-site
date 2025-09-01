@@ -116,38 +116,7 @@ const Footer = () => {
             <p className="text-slate-400 text-xs mt-2">{t('footer.copyright', { year: new Date().getFullYear() })}</p>
           </div>
 
-          {/* Certification Badges */}
           <div className="flex flex-col items-center gap-4 lg:items-end">
-            <div className="text-center lg:text-right">
-              <p className="text-slate-300 text-sm font-medium mb-3">Certificações e Selos</p>
-              <div className="flex gap-4 items-center justify-center lg:justify-end">
-                {/* ISO 9001 Badge */}
-                <div className="group cursor-pointer" title="Certificação ISO 9001 - Sistema de Gestão da Qualidade">
-                  <img
-                    src="/img/iso9001-icon.png"
-                    alt="Certificação ISO 9001"
-                    className="w-16 h-16 sm:w-20 sm:h-20 hover:scale-105 transition-transform duration-300 filter drop-shadow-lg object-contain"
-                    width="80"
-                    height="80"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-
-                {/* Accessibility Badge */}
-                <div className="group cursor-pointer" title="Site Acessível - WCAG 2.1 AA">
-                  <img
-                    src="/img/Acessib_icon.png"
-                    alt="Selo de Acessibilidade WCAG 2.1 AA"
-                    className="w-16 h-16 sm:w-20 sm:h-20 hover:scale-105 transition-transform duration-300 filter drop-shadow-lg"
-                  />
-                </div>
-              </div>
-              <p className="text-slate-400 text-xs mt-2 max-w-48">
-                Comprometidos com a qualidade e acessibilidade em nossos serviços
-              </p>
-            </div>
-
             {/* Social Links */}
             <div className="flex items-center space-x-4">
               {socialLinks.map((link, index) => (

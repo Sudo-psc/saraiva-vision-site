@@ -7,6 +7,7 @@ import App from '../../App';
 import HomePage from '../../pages/HomePage';
 import ContactPage from '../../pages/ContactPage';
 import ServicesPage from '../../pages/ServicesPage';
+import i18n from '../../i18n';
 
 // Mock all external dependencies
 vi.mock('@/components/GoogleMap', () => ({
@@ -54,6 +55,7 @@ const renderWithRouter = (component, initialRoute = '/') => {
 describe('Critical User Flows Integration Tests', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    i18n.changeLanguage('pt');
   });
 
   describe('Homepage Navigation Flow', () => {
@@ -61,14 +63,14 @@ describe('Critical User Flows Integration Tests', () => {
       renderWithRouter(<HomePage />);
       
       // Find and click "Agendar Consulta" button
-      const scheduleButton = screen.getByRole('button', { name: /Agendar Consulta/i });
+      const scheduleButton = screen.getByRole('button', { name: i18n.t('hero.schedule_button') });
       expect(scheduleButton).toBeInTheDocument();
       
       fireEvent.click(scheduleButton);
       
       // Should scroll to contact section or navigate
       await waitFor(() => {
-        const contactSection = screen.queryByText(/Entre em Contato/i);
+        const contactSection = screen.queryByText(i18n.t('contact.title'));
         if (contactSection) {
           expect(contactSection).toBeInTheDocument();
         }
@@ -79,14 +81,14 @@ describe('Critical User Flows Integration Tests', () => {
       renderWithRouter(<HomePage />);
       
       // Find and click "Nossos Serviços" button
-      const servicesButton = screen.getByRole('button', { name: /Nossos Serviços/i });
+      const servicesButton = screen.getByRole('button', { name: i18n.t('hero.services_button') });
       expect(servicesButton).toBeInTheDocument();
       
       fireEvent.click(servicesButton);
       
       // Should scroll to services section
       await waitFor(() => {
-        const servicesSection = screen.queryByText(/Nossos Serviços/i);
+        const servicesSection = screen.queryByTestId('services-literal-text');
         if (servicesSection) {
           expect(servicesSection).toBeInTheDocument();
         }
@@ -127,7 +129,7 @@ describe('Critical User Flows Integration Tests', () => {
       fireEvent.click(consentCheckbox);
       
       // Submit form
-      const submitButton = screen.getByRole('button', { name: /contact.send_button/i });
+      const submitButton = screen.getByRole('button', { name: i18n.t('contact.send_button') });
       fireEvent.click(submitButton);
       
       await waitFor(() => {
@@ -139,7 +141,7 @@ describe('Critical User Flows Integration Tests', () => {
       renderWithRouter(<ContactPage />);
       
       // Try to submit empty form
-      const submitButton = screen.getByRole('button', { name: /contact.send_button/i });
+      const submitButton = screen.getByRole('button', { name: i18n.t('contact.send_button') });
       fireEvent.click(submitButton);
       
       // Check for HTML5 validation
@@ -157,11 +159,11 @@ describe('Critical User Flows Integration Tests', () => {
       renderWithRouter(<ServicesPage />);
       
       // Check that services are displayed
-      const servicesTitle = screen.getByText(/Nossos Serviços/i);
+      const servicesTitle = screen.getByTestId('services-literal-text');
       expect(servicesTitle).toBeInTheDocument();
       
       // Look for service items
-      const learnMoreButtons = screen.getAllByText(/Saiba mais/i);
+      const learnMoreButtons = screen.getAllByText(i18n.t('services.learn_more'));
       expect(learnMoreButtons.length).toBeGreaterThan(0);
       
       // Click on a service to view details
@@ -175,7 +177,7 @@ describe('Critical User Flows Integration Tests', () => {
       renderWithRouter(<ServicesPage />);
       
       // Check for common services
-      expect(screen.getByText(/services.items.consultations.title/i)).toBeInTheDocument();
+      expect(screen.getByText(i18n.t('services.items.consultations.title'))).toBeInTheDocument();
     });
   });
 
@@ -184,7 +186,7 @@ describe('Critical User Flows Integration Tests', () => {
       renderWithRouter(<HomePage />);
       
       // Check that interactive elements are focusable
-      const scheduleButton = screen.getByRole('button', { name: /Agendar Consulta/i });
+      const scheduleButton = screen.getByRole('button', { name: i18n.t('hero.schedule_button') });
       scheduleButton.focus();
       expect(document.activeElement).toBe(scheduleButton);
       
@@ -197,7 +199,7 @@ describe('Critical User Flows Integration Tests', () => {
       renderWithRouter(<HomePage />);
       
       // Check for proper semantic structure
-      const navigation = screen.getByRole('navigation');
+      const navigation = screen.getByRole('navigation', { name: i18n.t('navbar.primary_navigation') });
       expect(navigation).toBeInTheDocument();
       
       // Check for main content area
@@ -218,7 +220,7 @@ describe('Critical User Flows Integration Tests', () => {
       renderWithRouter(<ContactPage />);
       
       // Look for WhatsApp contact buttons
-      const whatsappButton = screen.queryByText(/contact.info.phone_whatsapp/i);
+      const whatsappButton = screen.queryByText(i18n.t('contact.info.phone_whatsapp'));
       if (whatsappButton) {
         expect(whatsappButton).toBeInTheDocument();
       }
@@ -241,7 +243,7 @@ describe('Critical User Flows Integration Tests', () => {
       renderWithRouter(<ContactPage />);
       
       // Check for minimum touch target sizes
-      const submitButton = screen.getByRole('button', { name: /contact.send_button/i });
+      const submitButton = screen.getByRole('button', { name: i18n.t('contact.send_button') });
       const styles = window.getComputedStyle(submitButton);
       
       // Button should have adequate padding for touch
@@ -264,7 +266,7 @@ describe('Critical User Flows Integration Tests', () => {
       fireEvent.change(emailInput, { target: { value: 'joao@email.com' } });
       fireEvent.click(consentCheckbox);
       
-      const submitButton = screen.getByRole('button', { name: /contact.send_button/i });
+      const submitButton = screen.getByRole('button', { name: i18n.t('contact.send_button') });
       fireEvent.click(submitButton);
       
       // Should handle error gracefully without crashing
@@ -296,7 +298,7 @@ describe('Critical User Flows Integration Tests', () => {
       expect(heroSection).toBeInTheDocument();
       
       // Check that key CTAs are visible
-      const scheduleButton = screen.getByRole('button', { name: /Agendar Consulta/i });
+      const scheduleButton = screen.getByRole('button', { name: i18n.t('hero.schedule_button') });
       expect(scheduleButton).toBeInTheDocument();
     });
 

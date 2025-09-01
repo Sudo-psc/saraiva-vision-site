@@ -95,8 +95,9 @@ describe('Reviews API Handler', () => {
   });
 
   describe('Environment Configuration', () => {
-    it('returns 500 when API key is missing', async () => {
+        it('returns 500 when API key is missing', async () => {
       delete process.env.GOOGLE_MAPS_API_KEY;
+      delete process.env.GOOGLE_PLACES_API_KEY;
 
       await handler(mockReq, mockRes);
 

@@ -7,7 +7,7 @@
   - API local (/api/): Network First com fallback ao cache (quando possível)
 */
 
-const SW_VERSION = 'v1.0.0';
+const SW_VERSION = 'v1.0.2';
 const RUNTIME_CACHE = `sv-runtime-${SW_VERSION}`;
 const ASSETS_CACHE = `sv-assets-${SW_VERSION}`;
 const CORE_CACHE = `sv-core-${SW_VERSION}`;
@@ -19,7 +19,9 @@ const CORE_ASSETS = [
   '/site.webmanifest',
   '/favicon-16x16.png',
   '/favicon-32x32.png',
-  '/apple-touch-icon.png'
+  '/apple-touch-icon.png',
+  // Accessibility floating button icon (improves A11y UX offline)
+  '/img/Acessib_icon.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -62,8 +64,14 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Only handle GET
-  if (request.method !== 'GET') return;
+  // Only handle GET requests from same origin
+  if (request.method !== 'GET' || url.origin !== self.location.origin) return;
+
+  // Safari fix: handle errors more gracefully
+  const handleError = (error) => {
+    console.warn('SW fetch error:', error);
+    return Response.error();
+  };
 
   // Navegações (SPA): Network First com fallback ao cache de index.html
   if (isNavigationRequest(request)) {
@@ -71,12 +79,22 @@ self.addEventListener('fetch', (event) => {
       (async () => {
         try {
           const fresh = await fetch(request);
-          const cache = await caches.open(RUNTIME_CACHE);
-          cache.put('/index.html', fresh.clone());
+          // Only cache successful responses
+          if (fresh.status === 200) {
+            const cache = await caches.open(RUNTIME_CACHE);
+            cache.put('/index.html', fresh.clone());
+          }
           return fresh;
-        } catch (_) {
-          const cache = await caches.open(CORE_CACHE);
-          return (await cache.match('/index.html')) || Response.error();
+        } catch (error) {
+          try {
+            const cache = await caches.open(CORE_CACHE);
+            const cached = await cache.match('/index.html');
+            return cached || new Response('<!DOCTYPE html><html><head><title>Offline</title></head><body><h1>Site offline</h1><p>Verifique sua conexão.</p></body></html>', {
+              headers: { 'Content-Type': 'text/html' }
+            });
+          } catch (cacheError) {
+            return handleError(cacheError);
+          }
         }
       })()
     );
@@ -87,18 +105,25 @@ self.addEventListener('fetch', (event) => {
   if (isApiRequest(url)) {
     event.respondWith(
       (async () => {
-        const cache = await caches.open(RUNTIME_CACHE);
         try {
+          const cache = await caches.open(RUNTIME_CACHE);
           const fresh = await fetch(request);
-          cache.put(request, fresh.clone());
+          if (fresh.status === 200) {
+            cache.put(request, fresh.clone());
+          }
           return fresh;
-        } catch (_) {
-          const cached = await cache.match(request);
-          if (cached) return cached;
-          return new Response(JSON.stringify({ error: 'offline' }), {
-            status: 503,
-            headers: { 'Content-Type': 'application/json' }
-          });
+        } catch (error) {
+          try {
+            const cache = await caches.open(RUNTIME_CACHE);
+            const cached = await cache.match(request);
+            if (cached) return cached;
+            return new Response(JSON.stringify({ error: 'offline', message: 'API indisponível offline' }), {
+              status: 503,
+              headers: { 'Content-Type': 'application/json' }
+            });
+          } catch (cacheError) {
+            return handleError(cacheError);
+          }
         }
       })()
     );
@@ -109,36 +134,43 @@ self.addEventListener('fetch', (event) => {
   if (isAssetRequest(url)) {
     event.respondWith(
       (async () => {
-        const cache = await caches.open(ASSETS_CACHE);
-        const cached = await cache.match(request);
-        const fetchAndUpdate = fetch(request)
-          .then((response) => {
-            cache.put(request, response.clone());
-            return response;
-          })
-          .catch(() => undefined);
+        try {
+          const cache = await caches.open(ASSETS_CACHE);
+          const cached = await cache.match(request);
+          const fetchAndUpdate = fetch(request)
+            .then((response) => {
+              if (response.status === 200) {
+                cache.put(request, response.clone());
+              }
+              return response;
+            })
+            .catch(() => null);
 
-        return cached || (await fetchAndUpdate) || fetch(request);
+          return cached || (await fetchAndUpdate) || handleError('Asset not found');
+        } catch (error) {
+          return handleError(error);
+        }
       })()
     );
     return;
   }
 
-  // Demais requests de mesma origem: fallback simples Cache First com atualização em segundo plano
-  if (url.origin === self.location.origin) {
-    event.respondWith(
-      (async () => {
+  // Demais requests de mesma origem: Cache First com fallback
+  event.respondWith(
+    (async () => {
+      try {
         const cache = await caches.open(RUNTIME_CACHE);
         const cached = await cache.match(request);
-        const network = fetch(request)
-          .then((res) => {
-            cache.put(request, res.clone());
-            return res;
-          })
-          .catch(() => undefined);
-        return cached || (await network) || Response.error();
-      })()
-    );
-  }
-});
+        if (cached) return cached;
 
+        const fresh = await fetch(request);
+        if (fresh.status === 200) {
+          cache.put(request, fresh.clone());
+        }
+        return fresh;
+      } catch (error) {
+        return handleError(error);
+      }
+    })()
+  );
+});

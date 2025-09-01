@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Service Workers - Debug</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        .status {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .success { background: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .warning { background: #fff3cd; border-color: #ffeaa7; color: #856404; }
+        .error { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        .info { background: #d1ecf1; border-color: #bee5eb; color: #0c5460; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 8px;
+        }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧹 Service Worker Cleanup Tool</h1>
+    <p>Esta página ajuda a diagnosticar e limpar service workers problemáticos.</p>
+    
+    <div id="results"></div>
+    
+    <button onclick="checkServiceWorkers()">🔍 Verificar Service Workers</button>
+    <button onclick="unregisterAll()">🗑️ Remover Todos Service Workers</button>
+    <button onclick="clearAllCaches()">🧹 Limpar Todos os Caches</button>
+    <button onclick="hardReload()">🔄 Hard Reload</button>
+    
+    <h3>🩺 Diagnóstico Automático</h3>
+    <div id="diagnosis"></div>
+    
+    <script>
+        const results = document.getElementById('results');
+        const diagnosis = document.getElementById('diagnosis');
+        
+        function log(message, type = 'info') {
+            console.log(message);
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = `<strong>${new Date().toLocaleTimeString()}</strong>: ${message}`;
+            results.appendChild(div);
+            results.scrollTop = results.scrollHeight;
+        }
+        
+        async function checkServiceWorkers() {
+            results.innerHTML = '';
+            log('🔍 Verificando service workers registrados...', 'info');
+            
+            if (!('serviceWorker' in navigator)) {
+                log('❌ Service Workers não suportados neste navegador', 'error');
+                return;
+            }
+            
+            try {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                log(`📊 Encontrados ${registrations.length} service workers`, 'info');
+                
+                if (registrations.length === 0) {
+                    log('✅ Nenhum service worker registrado', 'success');
+                } else {
+                    registrations.forEach((reg, index) => {
+                        log(`📝 SW ${index + 1}: ${reg.scope} (State: ${reg.active?.state || 'inactive'})`, 'warning');
+                    });
+                }
+                
+                // Check active controller
+                if (navigator.serviceWorker.controller) {
+                    log(`🎛️ Controller ativo: ${navigator.serviceWorker.controller.scriptURL}`, 'warning');
+                } else {
+                    log('✅ Nenhum controller ativo', 'success');
+                }
+                
+            } catch (error) {
+                log(`❌ Erro ao verificar service workers: ${error.message}`, 'error');
+            }
+        }
+        
+        async function unregisterAll() {
+            log('🗑️ Removendo todos os service workers...', 'info');
+            
+            try {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                
+                if (registrations.length === 0) {
+                    log('✅ Nenhum service worker para remover', 'success');
+                    return;
+                }
+                
+                for (const registration of registrations) {
+                    const success = await registration.unregister();
+                    if (success) {
+                        log(`✅ SW removido: ${registration.scope}`, 'success');
+                    } else {
+                        log(`❌ Falha ao remover SW: ${registration.scope}`, 'error');
+                    }
+                }
+                
+                log('🎉 Remoção concluída! Recarregue a página.', 'success');
+                
+            } catch (error) {
+                log(`❌ Erro ao remover service workers: ${error.message}`, 'error');
+            }
+        }
+        
+        async function clearAllCaches() {
+            log('🧹 Limpando todos os caches...', 'info');
+            
+            if (!('caches' in window)) {
+                log('❌ Cache API não suportada', 'error');
+                return;
+            }
+            
+            try {
+                const cacheNames = await caches.keys();
+                log(`📊 Encontrados ${cacheNames.length} caches`, 'info');
+                
+                if (cacheNames.length === 0) {
+                    log('✅ Nenhum cache encontrado', 'success');
+                    return;
+                }
+                
+                for (const cacheName of cacheNames) {
+                    const success = await caches.delete(cacheName);
+                    if (success) {
+                        log(`✅ Cache removido: ${cacheName}`, 'success');
+                    } else {
+                        log(`❌ Falha ao remover cache: ${cacheName}`, 'error');
+                    }
+                }
+                
+                log('🎉 Limpeza de cache concluída!', 'success');
+                
+            } catch (error) {
+                log(`❌ Erro ao limpar caches: ${error.message}`, 'error');
+            }
+        }
+        
+        function hardReload() {
+            log('🔄 Executando hard reload...', 'info');
+            window.location.reload(true);
+        }
+        
+        async function runDiagnosis() {
+            diagnosis.innerHTML = '<h4>🔄 Executando diagnóstico...</h4>';
+            
+            const issues = [];
+            const fixes = [];
+            
+            // Check service workers
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                if (registrations.length > 0) {
+                    issues.push(`${registrations.length} service worker(s) registrado(s)`);
+                    fixes.push('Clique em "Remover Todos Service Workers"');
+                }
+                
+                if (navigator.serviceWorker.controller) {
+                    issues.push('Service worker ativo controlando a página');
+                    fixes.push('Execute hard reload após remover service workers');
+                }
+            }
+            
+            // Check caches
+            if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                if (cacheNames.length > 0) {
+                    issues.push(`${cacheNames.length} cache(s) armazenado(s)`);
+                    fixes.push('Clique em "Limpar Todos os Caches"');
+                }
+            }
+            
+            // Display results
+            let html = '';
+            
+            if (issues.length === 0) {
+                html = '<div class="status success">✅ Nenhum problema detectado! O site deve carregar normalmente.</div>';
+            } else {
+                html += '<div class="status warning"><strong>⚠️ Problemas encontrados:</strong><ul>';
+                issues.forEach(issue => html += `<li>${issue}</li>`);
+                html += '</ul></div>';
+                
+                html += '<div class="status info"><strong>💡 Soluções recomendadas:</strong><ul>';
+                fixes.forEach(fix => html += `<li>${fix}</li>`);
+                html += '</ul></div>';
+            }
+            
+            diagnosis.innerHTML = html;
+        }
+        
+        // Run diagnosis on load
+        window.addEventListener('load', runDiagnosis);
+        
+        // Auto-check on page load
+        window.addEventListener('load', () => {
+            setTimeout(checkServiceWorkers, 1000);
+        });
+    </script>
+</body>
+</html>

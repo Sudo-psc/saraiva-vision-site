@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 import {
     Play,
     Pause,
@@ -75,7 +76,10 @@ const AudioPlayer = ({
         return () => window.removeEventListener('sv:audio-play', onOtherPlay);
     }, [episode.id]);
 
+    const canPlay = !!(episode && episode.src);
+
     const togglePlayPause = () => {
+        if (!canPlay) return;
         const audio = audioRef.current;
         if (isPlaying) {
             audio.pause();
@@ -149,8 +153,12 @@ const AudioPlayer = ({
 
     const progress = duration ? (currentTime / duration) * 100 : 0;
 
+    // Respect hook rules: call at top level with condition
+    const isModal = mode === 'modal';
+    useBodyScrollLock(isModal);
+
     // Modal variant
-    if (mode === 'modal') {
+    if (isModal) {
         return (
             <motion.div
                 initial={{ opacity: 0 }}
@@ -163,7 +171,7 @@ const AudioPlayer = ({
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.9, opacity: 0 }}
-                    className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 relative"
+                    className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 relative max-h-[90dvh] overflow-y-auto touch-scroll"
                     onClick={e => e.stopPropagation()}
                 >
                     <button
@@ -255,20 +263,20 @@ const AudioPlayer = ({
                         <SkipBack className="w-4 h-4" />
                     </button>
 
-                    <button
-                        onClick={togglePlayPause}
-                        disabled={isLoading}
-                        className="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 text-white rounded-full flex items-center justify-center transition-all shadow-lg"
-                        aria-label={isPlaying ? 'Pausar' : 'Reproduzir'}
-                    >
-                        {isLoading ? (
-                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        ) : isPlaying ? (
-                            <Pause className="w-5 h-5" />
-                        ) : (
-                            <Play className="w-5 h-5 ml-0.5" />
-                        )}
-                    </button>
+                        <button
+                            onClick={togglePlayPause}
+                        disabled={isLoading || !canPlay}
+                            className="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 text-white rounded-full flex items-center justify-center transition-all shadow-lg"
+                            aria-label={canPlay ? (isPlaying ? 'Pausar' : 'Reproduzir') : 'Áudio indisponível'}
+                        >
+                            {isLoading ? (
+                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            ) : isPlaying ? (
+                                <Pause className="w-5 h-5" />
+                            ) : (
+                                <Play className="w-5 h-5 ml-0.5" />
+                            )}
+                        </button>
 
                     <button
                         onClick={() => handleSeek(10)}

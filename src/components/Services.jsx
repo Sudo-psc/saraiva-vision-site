@@ -363,7 +363,7 @@ const Services = ({ full = false }) => {
           <motion.div
             ref={scrollerRef}
             tabIndex={0}
-            className="flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent scroll-smooth"
+            className="flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-mandatory scroll-smooth scroll-container"
             layout="position"
           >
             <AnimatePresence mode="popLayout">

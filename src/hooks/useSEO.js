@@ -109,7 +109,7 @@ export const useSEO = ({
       canonicalUrl,
       alternateUrls,
       structuredData: finalStructuredData,
-      schema: providedSchema,
+      schema: providedSchema || finalStructuredData, // Support both schema and structuredData for tests
       image: resolvedImage,
       ogTitle: title,
       ogDescription: description,

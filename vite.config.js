@@ -3,6 +3,7 @@ import path from 'node:path';
 import react from '@vitejs/plugin-react';
 import { createLogger, defineConfig } from 'vite';
 import { writeSitemapFile } from './src/utils/sitemapGenerator.js';
+import { workboxVitePlugin } from './src/utils/workbox-vite-plugin.js';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -137,6 +138,9 @@ window.fetch = function(...args) {
 };
 `;
 
+// Reload the page if the main entry JS or stylesheet fails to load (post-deploy hash mismatch)
+const assetFallbackScript = `(() => {\n  let retried = false;\n  function retry(){\n    if(retried) return; retried = true;\n    fetch('/', { cache: 'reload' }).then(()=>window.location.reload()).catch(()=>console.warn('Asset fallback reload failed'));\n  }\n  window.addEventListener('error', (e)=> {\n    const el = e.target;\n    if(!el || !el.tagName) return;\n    const tag = el.tagName.toUpperCase();\n    if(tag==='SCRIPT' && /\\\/assets\\\/entry\\\/index-/.test(el.src || '')){ retry(); return; }\n    if(tag==='LINK' && el.rel==='stylesheet' && /\\\/assets\\\/styles\\\/index-/.test(el.href || '')){ retry(); return; }\n  }, true);\n})();`;
+
 const addTransformIndexHtml = {
 	name: 'add-transform-index-html',
 	transformIndexHtml(html) {
@@ -157,7 +161,7 @@ const addTransformIndexHtml = {
 				},
 				{
 					tag: 'script',
-					attrs: {type: 'module'},
+					attrs: { type: 'module' },
 					children: configHorizonsConsoleErrroHandler,
 					injectTo: 'head',
 				},
@@ -167,12 +171,18 @@ const addTransformIndexHtml = {
 					children: configWindowFetchMonkeyPatch,
 					injectTo: 'head',
 				},
+				{
+					tag: 'script',
+					attrs: { type: 'module' },
+					children: assetFallbackScript,
+					injectTo: 'head',
+				},
 			],
 		};
 	},
 };
 
-console.warn = () => {};
+console.warn = () => { };
 
 const logger = createLogger()
 const loggerError = logger.error
@@ -192,9 +202,14 @@ let __reviewsCache;
 
 export default defineConfig({
 	customLogger: logger,
+	define: {
+		__BUILD_ID__: JSON.stringify(Date.now()),
+	},
 	plugins: [
 		react(),
 		addTransformIndexHtml,
+		// Workbox service worker generation (production only)
+		workboxVitePlugin(),
 		// Dev-only debug and API endpoints
 		{
 			name: 'dev-api-endpoints',
@@ -225,7 +240,7 @@ export default defineConfig({
 					try {
 						// Import and execute the reviews handler
 						const { default: handler } = await import('./api/reviews.js');
-						
+
 						// Create mock req/res objects compatible with the handler
 						const mockReq = {
 							method: 'GET',
@@ -254,9 +269,9 @@ export default defineConfig({
 					} catch (error) {
 						console.error('Reviews API error in dev:', error);
 						res.writeHead(500, { 'Content-Type': 'application/json' });
-						res.end(JSON.stringify({ 
-							error: 'Internal server error', 
-							message: error.message 
+						res.end(JSON.stringify({
+							error: 'Internal server error',
+							message: error.message
 						}));
 					}
 				});
@@ -303,9 +318,9 @@ export default defineConfig({
 					} catch (error) {
 						console.error('Contact API error in dev:', error);
 						res.writeHead(500, { 'Content-Type': 'application/json' });
-						res.end(JSON.stringify({ 
-							error: 'Internal server error', 
-							message: error.message 
+						res.end(JSON.stringify({
+							error: 'Internal server error',
+							message: error.message
 						}));
 					}
 				});
@@ -334,7 +349,7 @@ export default defineConfig({
 				"form-action 'self'",
 				"frame-ancestors 'self'",
 				"object-src 'none'",
-				"script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.gstatic.com https://www.google.com https://maps.googleapis.com",
+				"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.gstatic.com https://www.google.com https://maps.googleapis.com",
 				"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
 				"img-src 'self' data: https:",
 				"font-src 'self' https://fonts.gstatic.com",
@@ -346,7 +361,7 @@ export default defineConfig({
 		allowedHosts: true,
 	},
 	resolve: {
-		extensions: ['.jsx', '.js', '.tsx', '.ts', '.json', ],
+		extensions: ['.jsx', '.js', '.tsx', '.ts', '.json',],
 		alias: {
 			'@': path.resolve(__dirname, './src'),
 		},
@@ -370,7 +385,7 @@ export default defineConfig({
 			],
 			output: {
 				manualChunks: (id) => {
-					// Vendor libraries
+					// Keep vendor libraries split; avoid over-splitting app chunks
 					if (id.includes('node_modules')) {
 						if (id.includes('react')) return 'vendor-react';
 						if (id.includes('framer-motion')) return 'vendor-motion';
@@ -379,30 +394,7 @@ export default defineConfig({
 						if (id.includes('@supabase')) return 'vendor-db';
 						return 'vendor-misc';
 					}
-					
-					// App components by route/feature
-					if (id.includes('/components/')) {
-						if (id.includes('Hero') || id.includes('Services') || id.includes('About')) {
-							return 'components-main';
-						}
-						if (id.includes('Contact') || id.includes('GoogleMap')) {
-							return 'components-contact';
-						}
-						if (id.includes('ServiceDetail') || id.includes('LatestEpisodes')) {
-							return 'components-secondary';
-						}
-						return 'components-ui';
-					}
-					
-					// Utilities and helpers
-					if (id.includes('/utils/') || id.includes('/hooks/')) {
-						return 'app-utils';
-					}
-					
-					// Locales
-					if (id.includes('/locales/')) {
-						return 'app-i18n';
-					}
+					// Let Rollup decide app chunking to prevent unnecessary preloads
 				},
 				chunkFileNames: (chunkInfo) => {
 					const name = chunkInfo.name;

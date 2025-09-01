@@ -10,7 +10,8 @@ import {
   Clock,
   Tag,
   ExternalLink,
-  ArrowLeft
+  ArrowLeft,
+  Mic2
 } from 'lucide-react';
 
 // Components
@@ -37,11 +38,11 @@ function PodcastPage() {
     {
       id: 'lentes-ep1',
       slug: 'lentes-de-contato-rigidas-vs-gelatinosas',
-      src: '',
+      src: '/Podcasts/Saúde Ocular em Foco - Lentes de Contato_ Rígidas vs Gelatinosas_2025_08_31.mp3',
       title: t('podcast.episodes.lentes_contato.title'),
       description: t('podcast.episodes.lentes_contato.description'),
-      cover: '/Podcasts/Covers/podcast.png',
-      duration: '—',
+      cover: '/Podcasts/Genspark 2025-08-31 11.54.38.png',
+      duration: '05:30',
       date: '2025-08-31',
       category: 'Lentes de Contato',
       tags: ['lentes', 'rígidas', 'gelatinosas', 'adaptação'],
@@ -55,7 +56,7 @@ function PodcastPage() {
       title: t('podcast.episodes.dmri.title'),
       description: t('podcast.episodes.dmri.description'),
       cover: '/Podcasts/Covers/dmri.png',
-      duration: '—',
+      duration: '06:13',
       date: '2025-08-31',
       category: 'Doenças Oculares',
       tags: ['dmri', 'mácula', 'degeneração macular', 'retina'],
@@ -225,7 +226,7 @@ function PodcastPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 mb-6"
               >
-                <Headphones className="w-4 h-4" />
+                <Mic2 className="w-5 h-5" />
                 <span className="text-sm font-semibold">{t('podcast.title')}</span>
               </motion.div>
 

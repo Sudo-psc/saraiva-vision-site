@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { Check, ExternalLink, Shield, Users, Award, Eye, ChevronDown, MessageCircle, Star, Clock, Heart, Zap, Globe, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ContactLensesHeroImage from './ContactLensesHeroImage';
 
 const ContactLenses = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState(null);
 
   const lensTypes = [
@@ -173,7 +175,7 @@ const ContactLenses = () => {
             transition={{ delay: 0.2 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
           >
-            <Button size="xl" variant="medical" className="w-full sm:w-auto gap-2">
+            <Button size="xl" variant="medical" className="w-full sm:w-auto gap-2" onClick={() => navigate('/contato')}>
               <Eye className="h-5 w-5" />
               {t('contactLenses.schedule_button')}
             </Button>

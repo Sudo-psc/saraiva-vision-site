@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 
 const STORAGE_KEY = 'sv_consent_v1';
 
@@ -29,33 +30,8 @@ const ConsentManager = () => {
     return () => window.removeEventListener('open-privacy-settings', handler);
   }, []);
 
-  // Body scroll lock when consent UI (banner or modal) is visible
-  useEffect(() => {
-    const body = document.body;
-    const lock = showBanner || open;
-    if (lock) {
-      const prevOverflow = body.style.overflow;
-      body.dataset.prevOverflow = prevOverflow;
-      body.style.overflow = 'hidden';
-      // Avoid layout shift by compensating scrollbar width
-      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-      if (scrollBarWidth > 0) {
-        body.style.paddingRight = scrollBarWidth + 'px';
-      }
-    } else {
-      if (body.dataset.prevOverflow !== undefined) {
-        body.style.overflow = body.dataset.prevOverflow;
-        delete body.dataset.prevOverflow;
-      } else {
-        body.style.overflow = '';
-      }
-      body.style.paddingRight = '';
-    }
-    return () => {
-      body.style.overflow = '';
-      body.style.paddingRight = '';
-    };
-  }, [showBanner, open]);
+  // Lock body scroll when banner or modal is visible
+  useBodyScrollLock(showBanner || open);
 
   const save = (next) => {
     const payload = { ...next, timestamp: new Date().toISOString() };

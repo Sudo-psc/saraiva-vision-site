@@ -7,6 +7,7 @@ import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { CONTACT } from '@/lib/constants';
 import { trackConversion } from '@/utils/analytics';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
+import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 
 // Standalone CTA modal (no floating button). Opens via 'open-cta-modal' event.
 const CTAModal = () => {
@@ -36,13 +37,8 @@ const CTAModal = () => {
     return () => document.removeEventListener('keydown', onKey);
   }, [open]);
 
-  useEffect(() => {
-    if (open) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = 'hidden';
-      return () => { document.body.style.overflow = prev; };
-    }
-  }, [open]);
+  // Prevent background scroll when CTA modal is open
+  useBodyScrollLock(open);
 
   const whatsappUrl = generateWhatsAppUrl(CONTACT.DEFAULT_MESSAGES.WHATSAPP);
   const phoneDisplay = CONTACT.PHONE.DISPLAY;
@@ -82,7 +78,7 @@ const CTAModal = () => {
       <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onClick={handleClose} />
       <div
         ref={modalRef}
-        className="relative w-full sm:max-w-md mx-auto bg-white rounded-t-3xl sm:rounded-3xl shadow-xl p-6 sm:p-8 animate-in fade-in zoom-in-95"
+        className="relative w-full sm:max-w-md mx-auto bg-white rounded-t-3xl sm:rounded-3xl shadow-xl p-6 sm:p-8 animate-in fade-in zoom-in-95 max-h-[90dvh] overflow-y-auto touch-scroll"
       >
         <button className="absolute top-3 right-3 p-2 rounded-full hover:bg-slate-100" aria-label={t('ui.close', 'Fechar')} onClick={handleClose}>
           <X size={18} />

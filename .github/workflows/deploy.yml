@@ -1,0 +1,118 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Site URL for smoke test (e.g., https://saraivavision.com.br)"
+        required: true
+        default: "https://saraivavision.com.br"
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: prod-deploy
+  cancel-in-progress: false
+
+jobs:
+  build_and_test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20.19.1
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.1'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Run unit tests
+        run: npm test -- --run
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy to Production
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ inputs.url || 'https://saraivavision.com.br' }}
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Start SSH agent and add key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add host to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Rsync build to server release directory
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_ROOT: ${{ secrets.DEPLOY_ROOT }}
+        run: |
+          set -euo pipefail
+          RELEASE="${GITHUB_SHA::12}-$GITHUB_RUN_NUMBER"
+          REMOTE_RELEASE_DIR="$DEPLOY_ROOT/releases/$RELEASE"
+          echo "Creating remote release dir: $REMOTE_RELEASE_DIR"
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "mkdir -p '$REMOTE_RELEASE_DIR'"
+          echo "Sync dist/ -> remote release"
+          rsync -az --delete -e "ssh -p $SSH_PORT" dist/ "$SSH_USER@$SSH_HOST:$REMOTE_RELEASE_DIR/"
+
+      - name: Activate release and reload nginx
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_ROOT: ${{ secrets.DEPLOY_ROOT }}
+        run: |
+          set -euo pipefail
+          RELEASE="${GITHUB_SHA::12}-$GITHUB_RUN_NUMBER"
+          REMOTE_RELEASE_DIR="$DEPLOY_ROOT/releases/$RELEASE"
+          CURRENT_LINK="$DEPLOY_ROOT/saraivavision"
+          echo "Saving current target and switching symlink atomically"
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "\
+            set -euo pipefail; \
+            mkdir -p /var/backups/saraivavisao; \
+            if [ -L '$CURRENT_LINK' ]; then readlink -f '$CURRENT_LINK' > /var/backups/saraivavisao/last_release.txt || true; fi; \
+            chown -R www-data:www-data '$REMOTE_RELEASE_DIR'; \
+            chmod -R u=rwX,g=rX,o=rX '$REMOTE_RELEASE_DIR'; \
+            ln -sfn '$REMOTE_RELEASE_DIR' '$CURRENT_LINK'; \
+            sudo nginx -t && sudo systemctl reload nginx; \
+          "
+
+      - name: Smoke test (post-deploy)
+        env:
+          URL: ${{ inputs.url || 'https://saraivavision.com.br' }}
+        run: |
+          bash scripts/smoke-test.sh "$URL"
+
+      - name: Deployment summary
+        run: |
+          echo "Deployment completed to ${{ inputs.url || 'https://saraivavision.com.br' }}"
+

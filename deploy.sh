@@ -1,119 +1,182 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Script de deploy local para Saraiva Vision (nginx + Vite)
-# Execute a partir do diretório do projeto
+# Safer, atomic deploy script for Saraiva Vision (Nginx + Vite)
+# - Builds to dist/
+# - Publishes to /var/www/saraivavisao/releases/<timestamp>
+# - Atomically switches symlink /var/www/saraivavisao/saraivavision -> releases/<timestamp>
+# - Conditionally updates Nginx config and reloads only when needed
 
-set -e
+set -Eeuo pipefail
+IFS=$'\n\t'
 
-PROJECT_DIR="/var/www/saraivavisao"
-BACKUP_DIR="/var/backups/saraivavisao"
-TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-NGINX_CONFIG_FILE="/etc/nginx/sites-available/saraivavisao"
-NGINX_SYMLINK="/etc/nginx/sites-enabled/saraivavisao"
+readonly PROJECT_ROOT="$(pwd)"
+readonly DEPLOY_ROOT="/var/www/saraivavisao"
+readonly RELEASES_DIR="$DEPLOY_ROOT/releases"
+readonly CURRENT_LINK="$DEPLOY_ROOT/saraivavision"   # keep nginx root path stable
+readonly BACKUP_DIR="/var/backups/saraivavisao"
+readonly NGINX_CONFIG_SRC="${PROJECT_ROOT}/nginx.local.conf"
+readonly NGINX_CONFIG_DEST="/etc/nginx/sites-available/saraivavisao"
+readonly NGINX_SYMLINK="/etc/nginx/sites-enabled/saraivavisao"
+readonly TIMESTAMP="$(date +"%Y%m%d_%H%M%S")"
+readonly NEW_RELEASE="$RELEASES_DIR/$TIMESTAMP"
 
-echo "🚀 Iniciando deploy local do Saraiva Vision (nginx + Vite)..."
+DRY_RUN=false
+SKIP_NGINX=false
+NO_BUILD=false
 
-# Verificar se estamos no diretório correto
-if [ ! -f "package.json" ]; then
-    echo "❌ Erro: Execute o script a partir do diretório do projeto"
-    exit 1
+usage() {
+  cat << USAGE
+Usage: sudo ./deploy.sh [options]
+  --dry-run       Show actions without changing anything
+  --skip-nginx    Do not copy/reload nginx config
+  --no-build      Skip npm install/build (use existing dist/)
+USAGE
+}
+
+for arg in "$@"; do
+  case "$arg" in
+    --dry-run) DRY_RUN=true; shift ;;
+    --skip-nginx) SKIP_NGINX=true; shift ;;
+    --no-build) NO_BUILD=true; shift ;;
+    -h|--help) usage; exit 0 ;;
+    *) echo "Unknown option: $arg"; usage; exit 1 ;;
+  esac
+done
+
+echo "🚀 Deploy Saraiva Vision (atomic)"
+
+# Preconditions
+if [[ ! -f "$PROJECT_ROOT/package.json" ]]; then
+  echo "❌ Run from project root (package.json not found)"; exit 1
 fi
 
-# Verificar se é root (necessário para configurar nginx)
-if [ "$EUID" -ne 0 ]; then
-    echo "❌ Erro: Execute como root (sudo) para configurar nginx"
-    exit 1
+if [[ "${EUID:-$(id -u)}" -ne 0 ]]; then
+  echo "❌ Run as root (sudo) to manage files under /var and nginx"; exit 1
 fi
 
-# Fazer backup da versão atual
-if [ -d "$PROJECT_DIR/saraivavision" ]; then
-    echo "💾 Fazendo backup da versão atual..."
-    mkdir -p $BACKUP_DIR
-    cp -r $PROJECT_DIR/saraivavision $BACKUP_DIR/saraivavision_$TIMESTAMP
+# Optional: respect .nvmrc if available to ensure correct Node for build
+if [[ "$NO_BUILD" = false ]]; then
+  if [[ -f "$HOME/.nvm/nvm.sh" ]]; then
+    # shellcheck disable=SC1090
+    . "$HOME/.nvm/nvm.sh" || true
+  elif [[ -f "/etc/profile.d/nvm.sh" ]]; then
+    # shellcheck disable=SC1091
+    . "/etc/profile.d/nvm.sh" || true
+  fi
+  if command -v nvm >/dev/null 2>&1 && [[ -f .nvmrc ]]; then
+    echo "🔧 Using Node $(cat .nvmrc) via nvm"; nvm install >/dev/null || true; nvm use || true
+  fi
 fi
 
-# Instalar dependências
-echo "📦 Instalando dependências..."
-npm ci
+run() {
+  if $DRY_RUN; then
+    echo "[dry-run] $*"
+  else
+    eval "$@"
+  fi
+}
 
-# Build da aplicação com Vite
-echo "🔨 Fazendo build da aplicação com Vite..."
-npm run build
+# Build
+if [[ "$NO_BUILD" = false ]]; then
+  echo "📦 Installing dependencies (npm ci)…"
+  run "npm ci --no-audit --no-fund"
 
-# Verificar se o build foi criado
-if [ ! -d "dist" ]; then
-    echo "❌ Erro: Diretório dist não foi criado pelo Vite"
-    exit 1
+  echo "🔨 Building (vite build)…"
+  run "npm run build"
 fi
 
-# Criar diretório de produção se não existir
-echo "📁 Criando diretório de produção..."
-mkdir -p $PROJECT_DIR
-
-# Copiar arquivos para o diretório de produção
-echo "📋 Copiando arquivos para produção..."
-rsync -av --delete dist/ $PROJECT_DIR/saraivavision/
-
-# Definir permissões corretas
-echo "🔐 Configurando permissões..."
-chown -R www-data:www-data $PROJECT_DIR/saraivavision
-chmod -R 755 $PROJECT_DIR/saraivavision
-
-# Configurar nginx
-echo "⚙️ Configurando nginx..."
-cp nginx.local.conf $NGINX_CONFIG_FILE
-
-# Criar symlink se não existir
-if [ ! -L "$NGINX_SYMLINK" ]; then
-    ln -s $NGINX_CONFIG_FILE $NGINX_SYMLINK
+if [[ ! -d "dist" ]]; then
+  echo "❌ dist/ not found. Build first or remove --no-build"; exit 1
 fi
 
-# Remover configuração padrão do nginx se existir
-if [ -L "/etc/nginx/sites-enabled/default" ]; then
-    rm /etc/nginx/sites-enabled/default
+# Prepare release dir
+echo "📁 Preparing release directory: $NEW_RELEASE"
+run "mkdir -p '$NEW_RELEASE'"
+
+echo "📋 Rsync dist/ -> $NEW_RELEASE"
+RSYNC_FLAGS="-a --delete --human-readable --stats --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r"
+run "rsync $RSYNC_FLAGS dist/ '$NEW_RELEASE/'"
+
+echo "🔐 Fix ownership and permissions"
+run "chown -R www-data:www-data '$NEW_RELEASE'"
+run "chmod -R u=rwX,g=rX,o=rX '$NEW_RELEASE'"
+
+# Backup current (symlink target) for quick rollback
+CURRENT_TARGET=""
+if [[ -L "$CURRENT_LINK" ]]; then
+  CURRENT_TARGET="$(readlink -f "$CURRENT_LINK" || true)"
+fi
+if [[ -n "$CURRENT_TARGET" && -d "$CURRENT_TARGET" ]]; then
+  echo "💾 Backing up current to $BACKUP_DIR (metadata only, as releases persist)"
+  run "mkdir -p '$BACKUP_DIR'"
+  # Store a pointer to last release
+  run "echo '$CURRENT_TARGET' > '$BACKUP_DIR/last_release.txt'"
 fi
 
-# Testar configuração nginx
-echo "🔍 Testando configuração nginx..."
-nginx -t
+# Atomic switch
+echo "🔁 Switching current -> $NEW_RELEASE"
+run "ln -sfn '$NEW_RELEASE' '$CURRENT_LINK'"
 
-if [ $? -eq 0 ]; then
-    echo "✅ Configuração nginx válida"
-    
-    # Recarregar nginx
-    echo "🔄 Recarregando nginx..."
-    systemctl reload nginx
-    
-    # Verificar se nginx está rodando
-    if ! systemctl is-active --quiet nginx; then
-        echo "🚀 Iniciando nginx..."
-        systemctl start nginx
+# Nginx configuration (conditional)
+if [[ "$SKIP_NGINX" = false ]]; then
+  echo "⚙️  Ensuring nginx site configuration is linked"
+  # Copy config only if changed
+  COPY_NGINX=false
+  if [[ -f "$NGINX_CONFIG_SRC" ]]; then
+    if [[ ! -f "$NGINX_CONFIG_DEST" ]] || ! cmp -s "$NGINX_CONFIG_SRC" "$NGINX_CONFIG_DEST"; then
+      COPY_NGINX=true
     fi
-    
-    # Habilitar nginx para iniciar no boot
-    systemctl enable nginx
+  fi
+  if $COPY_NGINX; then
+    echo "📝 Updating nginx config"
+    run "cp '$NGINX_CONFIG_SRC' '$NGINX_CONFIG_DEST'"
+  else
+    echo "📝 Nginx config unchanged"
+  fi
+
+  if [[ ! -L "$NGINX_SYMLINK" ]]; then
+    run "ln -s '$NGINX_CONFIG_DEST' '$NGINX_SYMLINK'"
+  fi
+
+  # Remove any conflicting legacy symlink (old name) to avoid duplicate server_name warnings
+  if [[ -L "/etc/nginx/sites-enabled/saraivavision" ]]; then
+    echo "🧹 Removing legacy symlink: /etc/nginx/sites-enabled/saraivavision"
+    run "rm -f /etc/nginx/sites-enabled/saraivavision"
+  fi
+
+  # Remove default site if present
+  if [[ -L "/etc/nginx/sites-enabled/default" ]]; then
+    run "rm -f /etc/nginx/sites-enabled/default"
+  fi
+
+  # Remove legacy/duplicate vhost that conflicts with saraivavisao
+  if [[ -L "/etc/nginx/sites-enabled/saraivavision" ]]; then
+    echo "🧹 Removing conflicting vhost: /etc/nginx/sites-enabled/saraivavision"
+    run "rm -f /etc/nginx/sites-enabled/saraivavision"
+  fi
+
+  echo "🔍 Testing nginx config"
+  run "nginx -t"
+
+  echo "🔄 Reloading nginx (zero-downtime)"
+  run "systemctl reload nginx"
+
+  echo "🧭 Ensuring nginx service is active"
+  if ! $DRY_RUN && ! systemctl is-active --quiet nginx; then
+    echo "🚀 Starting nginx"
+    run "systemctl start nginx"
+  fi
+
+  echo "🧷 Enabling nginx on boot"
+  run "systemctl enable nginx"
 else
-    echo "❌ Erro na configuração nginx"
-    exit 1
+  echo "⏭  Skipping nginx config/reload as requested"
 fi
 
-# Verificar se o servidor de API está rodando
-echo "🔍 Verificando servidor de API..."
-if ! pgrep -f "node.*server.js" > /dev/null; then
-    echo "⚠️  Servidor de API não está rodando. Para iniciar:"
-    echo "   nohup npm run start:api > /var/log/saraivavisao-api.log 2>&1 &"
+echo "✅ Deploy completed"
+echo "➡️  Current release: $NEW_RELEASE"
+echo "🌐 Root serving path (nginx): $CURRENT_LINK"
+if [[ -n "$CURRENT_TARGET" ]]; then
+  echo "↩️  Previous release: $CURRENT_TARGET"
 fi
-
-echo "✅ Deploy local concluído com sucesso!"
-echo "🌐 Site disponível em:"
-echo "   - https://saraivavision.com.br (SSL habilitado)"
-echo "   - https://www.saraivavision.com.br (SSL habilitado)" 
-echo "   - http://localhost (desenvolvimento local)"
-echo "💾 Backup salvo em: $BACKUP_DIR/saraivavision_$TIMESTAMP"
-echo ""
-echo "🔒 SSL/HTTPS configurado e funcionando!"
-echo "📋 Próximos passos opcionais:"
-echo "   1. Testar SSL: ./test-ssl.sh"
-echo "   2. Iniciar API: npm run start:api"
-echo "   3. Verificar logs: sudo tail -f /var/log/nginx/access.log"
-echo "   4. Monitorar certificado: sudo certbot certificates"
+echo "💡 Rollback: sudo ./rollback.sh (switch to previous release)"

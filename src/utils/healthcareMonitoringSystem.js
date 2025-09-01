@@ -459,19 +459,7 @@ class HealthcareMonitoringSystem {
 
   // Send to external monitoring service
   sendToMonitoringService(event) {
-    try {
-      if (navigator.sendBeacon) {
-        const payload = JSON.stringify({
-          ...event,
-          clinic_id: 'saraiva-vision',
-          alert_type: 'critical'
-        });
-
-        navigator.sendBeacon('/api/monitoring/alert', payload);
-      }
-    } catch (error) {
-      console.warn('⚠️ Failed to send to monitoring service:', error);
-    }
+    // This feature has been disabled
   }
 
   // Start system monitoring

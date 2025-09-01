@@ -1,0 +1,38 @@
+/* Fix para rolagem dupla - aplicar via CSS adicional se necessário */
+
+/* Reset completo para elementos que podem causar rolagem dupla */
+html,
+body {
+	overflow-x: hidden !important;
+	overflow-y: visible !important;
+	height: auto !important;
+	max-height: none !important;
+}
+
+/* Garantir que containers não criem scroll próprio */
+#root {
+	overflow: visible !important;
+	height: auto !important;
+	max-height: none !important;
+}
+
+/* Modais e elementos fixos não devem afetar scroll principal */
+.modal-overlay,
+.fixed,
+.sticky {
+	overflow: hidden !important;
+}
+
+/* Containers com scroll interno específico */
+.scroll-container {
+	overflow-y: auto !important;
+	max-height: calc(100vh - 100px) !important;
+}
+
+/* Debug - temporário para identificar elementos com altura fixa */
+[style*="height: 100vh"],
+[style*="min-height: 100vh"],
+.h-screen,
+.min-h-screen {
+	/* border: 2px solid red !important; */
+}

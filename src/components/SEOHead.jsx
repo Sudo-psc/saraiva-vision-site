@@ -78,7 +78,7 @@ const SEOHead = ({
       {/* Basic Meta Tags */}
       <html lang={currentLang} />
       <title>{title}</title>
-  <meta name="description" content={resolvedDescription} />
+      <meta name="description" content={resolvedDescription} />
       {keywords && <meta name="keywords" content={keywords} />}
 
       {/* Viewport and Mobile Optimization */}
@@ -107,13 +107,13 @@ const SEOHead = ({
 
       {/* Open Graph - Enhanced for Medical Clinics */}
       <meta property="og:title" content={title} />
-  <meta property="og:description" content={resolvedDescription} />
+      <meta property="og:description" content={resolvedDescription} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:site_name" content={siteName} />
       <meta property="og:locale" content={currentLang === 'pt' ? 'pt_BR' : 'en_US'} />
       <meta property="og:type" content={ogType} />
       <meta property="og:image" content={ogImage} />
-  <meta property="og:image:alt" content={`${siteName} - ${resolvedDescription.substring(0, 100)}...`} />
+      <meta property="og:image:alt" content={`${siteName} - ${resolvedDescription.substring(0, 100)}...`} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:type" content="image/jpeg" />
@@ -131,7 +131,7 @@ const SEOHead = ({
       <meta name="twitter:site" content="@saraivavisao" />
       <meta name="twitter:creator" content="@saraivavisao" />
       <meta name="twitter:title" content={title} />
-  <meta name="twitter:description" content={resolvedDescription} />
+      <meta name="twitter:description" content={resolvedDescription} />
       <meta name="twitter:image" content={ogImage} />
       <meta name="twitter:image:alt" content={`${siteName} - Oftalmologia em Caratinga`} />
 
