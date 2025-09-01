@@ -87,7 +87,7 @@ const AudioPlayer = ({
             // Notify other players to pause
             try {
                 window.dispatchEvent(new CustomEvent('sv:audio-play', { detail: { id: episode.id } }));
-            } catch (_) {}
+            } catch (_) { }
             audio.play();
         }
         setIsPlaying(!isPlaying);
@@ -265,20 +265,20 @@ const AudioPlayer = ({
                         <SkipBack className="w-4 h-4" />
                     </button>
 
-                        <button
-                            onClick={togglePlayPause}
+                    <button
+                        onClick={togglePlayPause}
                         disabled={isLoading || !canPlay}
-                            className="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 text-white rounded-full flex items-center justify-center transition-all shadow-lg"
-                            aria-label={canPlay ? (isPlaying ? 'Pausar' : 'Reproduzir') : 'Áudio indisponível'}
-                        >
-                            {isLoading ? (
-                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            ) : isPlaying ? (
-                                <Pause className="w-5 h-5" />
-                            ) : (
-                                <Play className="w-5 h-5 ml-0.5" />
-                            )}
-                        </button>
+                        className="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 text-white rounded-full flex items-center justify-center transition-all shadow-lg"
+                        aria-label={canPlay ? (isPlaying ? 'Pausar' : 'Reproduzir') : 'Áudio indisponível'}
+                    >
+                        {isLoading ? (
+                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        ) : isPlaying ? (
+                            <Pause className="w-5 h-5" />
+                        ) : (
+                            <Play className="w-5 h-5 ml-0.5" />
+                        )}
+                    </button>
 
                     <button
                         onClick={() => handleSeek(10)}

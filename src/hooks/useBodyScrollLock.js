@@ -13,17 +13,17 @@ export function useBodyScrollLock(isLocked) {
     if (isLocked === isLockedRef.current) return;
 
     const body = document.body;
-    
+
     if (isLocked && !isLockedRef.current) {
       // BLOQUEAR: Salva posição atual e aplica scroll-locked
       scrollPositionRef.current = window.pageYOffset;
-      
+
       // Aplica classe CSS que trabalha com scroll-fix.css
       body.classList.add('scroll-locked');
       body.style.top = `-${scrollPositionRef.current}px`;
-      
+
       isLockedRef.current = true;
-      
+
     } else if (!isLocked && isLockedRef.current) {
       // DESBLOQUEAR: Remove classe e restaura posição
       body.classList.remove('scroll-locked');
@@ -31,10 +31,10 @@ export function useBodyScrollLock(isLocked) {
       body.style.top = '';
       body.style.width = '';
       body.style.overflow = '';
-      
+
       // Restaura scroll position suavemente
       window.scrollTo(0, scrollPositionRef.current);
-      
+
       isLockedRef.current = false;
     }
 

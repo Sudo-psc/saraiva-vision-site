@@ -11,21 +11,24 @@ const featuredReviews = [
         author: 'Elis R.',
         rating: 5,
         text: 'Que atendimento maravilhoso! Tem pessoa que realmente nasce para exalar gentileza... Minha avó foi extremamente bem atendida, da chegada a saída da clínica.',
-        relativeTime: 'há uma semana'
+        relativeTime: 'há uma semana',
+        avatar: '/img/patient-avatar-1.svg'
     },
     {
         id: 2,
         author: 'Lais S.',
         rating: 5,
         text: 'Ótimo atendimento, excelente espaço. Obrigada',
-        relativeTime: 'há uma semana'
+        relativeTime: 'há uma semana',
+        avatar: '/img/patient-avatar-2.svg'
     },
     {
         id: 1,
         author: 'Junia B.',
         rating: 5,
         text: 'Profissional extremamente competente e atencioso. Recomendo!',
-        relativeTime: 'há uma semana'
+        relativeTime: 'há uma semana',
+        avatar: '/img/patient-avatar-3.svg'
     }
 ];
 
@@ -105,8 +108,13 @@ const CompactGoogleReviews = () => {
                                     <p className="font-semibold text-slate-800 text-sm">{review.author}</p>
                                     <p className="text-slate-500 text-xs">{review.relativeTime}</p>
                                 </div>
-                                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                                    {review.author.charAt(0)}
+                                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
+                                    <img 
+                                        src={review.avatar} 
+                                        alt={`Foto de ${review.author}`}
+                                        className="w-full h-full object-cover"
+                                        loading="lazy"
+                                    />
                                 </div>
                             </div>
                         </motion.div>

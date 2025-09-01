@@ -149,14 +149,14 @@ body.scroll-locked {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: none;
   }
-  
+
   /* Containers de scroll com scrollbars ocultas em mobile */
   .scroll-container::-webkit-scrollbar,
   .overflow-y-auto::-webkit-scrollbar,
   .overflow-x-auto::-webkit-scrollbar {
     display: none;
   }
-  
+
   .scroll-container,
   .overflow-y-auto,
   .overflow-x-auto {
@@ -170,7 +170,7 @@ body.scroll-locked {
   html {
     scroll-behavior: auto !important;
   }
-  
+
   * {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
