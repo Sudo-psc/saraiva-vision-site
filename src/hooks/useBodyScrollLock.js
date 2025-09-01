@@ -1,67 +1,58 @@
 import { useEffect, useRef } from 'react';
 
-// Locks body scroll when `active` is true, preventing double-scroll
-// and layout shifts by preserving the current scroll position.
-export default function useBodyScrollLock(active) {
-  const scrollYRef = useRef(0);
+/**
+ * Hook para bloquear scroll do body de forma confiável
+ * Compatível com o sistema de scroll-fix.css
+ */
+export function useBodyScrollLock(isLocked) {
+  const scrollPositionRef = useRef(0);
+  const isLockedRef = useRef(false);
 
   useEffect(() => {
-    const { body, documentElement } = document;
+    // Se o estado não mudou, não faz nada
+    if (isLocked === isLockedRef.current) return;
 
-    if (active) {
-      // Preserve current scroll position
-      scrollYRef.current = window.scrollY || window.pageYOffset || 0;
-
-      // Apply lock styles
-      body.style.overflow = 'hidden';
-      body.style.position = 'fixed';
-      body.style.top = `-${scrollYRef.current}px`;
-      body.style.left = '0';
-      body.style.right = '0';
-      body.style.width = '100%';
-      body.style.touchAction = 'none';
-      body.style.overscrollBehavior = 'contain';
-
-      // Prevent iOS rubber banding by also updating html
-      if (documentElement) {
-        documentElement.style.overscrollBehaviorY = 'none';
-      }
-    } else {
-      // Unlock styles and restore scroll position
-      const y = scrollYRef.current;
-      body.style.overflow = '';
+    const body = document.body;
+    
+    if (isLocked && !isLockedRef.current) {
+      // BLOQUEAR: Salva posição atual e aplica scroll-locked
+      scrollPositionRef.current = window.pageYOffset;
+      
+      // Aplica classe CSS que trabalha com scroll-fix.css
+      body.classList.add('scroll-locked');
+      body.style.top = `-${scrollPositionRef.current}px`;
+      
+      isLockedRef.current = true;
+      
+    } else if (!isLocked && isLockedRef.current) {
+      // DESBLOQUEAR: Remove classe e restaura posição
+      body.classList.remove('scroll-locked');
       body.style.position = '';
       body.style.top = '';
-      body.style.left = '';
-      body.style.right = '';
       body.style.width = '';
-      body.style.touchAction = '';
-      body.style.overscrollBehavior = '';
-      if (documentElement) {
-        documentElement.style.overscrollBehaviorY = '';
-      }
-      // Restore scroll after styles reset to avoid jump
-      if (y) window.scrollTo(0, y);
+      body.style.overflow = '';
+      
+      // Restaura scroll position suavemente
+      window.scrollTo(0, scrollPositionRef.current);
+      
+      isLockedRef.current = false;
     }
 
+    // Cleanup function
     return () => {
-      // Ensure unlock on unmount
-      if (active) {
-        const y = scrollYRef.current;
-        body.style.overflow = '';
+      if (isLockedRef.current) {
+        body.classList.remove('scroll-locked');
         body.style.position = '';
         body.style.top = '';
-        body.style.left = '';
-        body.style.right = '';
         body.style.width = '';
-        body.style.touchAction = '';
-        body.style.overscrollBehavior = '';
-        if (documentElement) {
-          documentElement.style.overscrollBehaviorY = '';
-        }
-        if (y) window.scrollTo(0, y);
+        body.style.overflow = '';
+        window.scrollTo(0, scrollPositionRef.current);
+        isLockedRef.current = false;
       }
     };
-  }, [active]);
+  }, [isLocked]);
+
+  // Retorna estado atual do bloqueio
+  return isLockedRef.current;
 }
 

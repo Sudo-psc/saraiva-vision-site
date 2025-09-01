@@ -2,21 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* CRITICAL: Complete double scroll prevention system */
-html {
-  /* Reset all scroll properties */
-  overflow: hidden !important;
-  height: 100vh !important;
-  max-height: 100vh !important;
-}
-
-body {
-  /* Body handles all scrolling */
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  height: 100vh !important;
-  max-height: 100vh !important;
-}
+/* IMPORTA SOLUÇÃO DEFINITIVA DE SCROLL */
+@import './styles/scroll-fix.css';
 
 /* Performance and UX optimizations */
 @layer utilities {

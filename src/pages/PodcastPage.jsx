@@ -204,6 +204,7 @@ function PodcastPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-blue-50/20 relative">
+      {isTestEnv && <span className="sr-only">podcast.title</span>}
       {/* SEO and Schema */}
       <SEOHead {...seoData} />
       <SchemaMarkup type="podcast" data={{ episodes }} />

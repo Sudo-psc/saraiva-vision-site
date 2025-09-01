@@ -1,0 +1,193 @@
+/* ==========================================================================
+   SCROLL FIX DEFINITIVO - SOLUÇÃO COMPLETA PARA ROLAGEM DUPLA
+   ========================================================================== */
+
+/* RESET FUNDAMENTAL - Estrutura base limpa */
+html {
+  /* HTML só define altura e overflow base */
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+body {
+  /* Body é responsável pelo scroll principal */
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  /* Previne scroll chaining e bounce em iOS */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Container raiz nunca deve ter scroll próprio */
+#root {
+  min-height: 100vh;
+  overflow: visible !important;
+  position: relative !important;
+}
+
+/* CONTAINERS PRINCIPAIS - Nunca criam scroll próprio */
+main,
+section,
+article,
+.container,
+.max-w-7xl,
+.mx-auto,
+[class*="container"] {
+  overflow: visible !important;
+}
+
+/* CONTAINERS COM SCROLL ESPECÍFICO - Bem controlados */
+.scroll-container,
+.overflow-y-auto,
+.overflow-x-auto {
+  /* Scroll interno bem comportado */
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  /* Scrollbars transparentes para UX limpa */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.1) transparent;
+}
+
+/* Webkit scrollbars discretas */
+.scroll-container::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scroll-container::-webkit-scrollbar-track,
+.overflow-y-auto::-webkit-scrollbar-track,
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-container::-webkit-scrollbar-thumb,
+.overflow-y-auto::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.1);
+  border-radius: 3px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover,
+.overflow-y-auto::-webkit-scrollbar-thumb:hover,
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.2);
+}
+
+/* CLASSES UTILITÁRIAS PARA CONTROLE PRECISO */
+
+/* Remove scroll completamente quando necessário */
+.no-scroll {
+  overflow: hidden !important;
+}
+
+/* Container que pode ter scroll interno */
+.can-scroll {
+  overflow: auto !important;
+  overscroll-behavior: contain !important;
+}
+
+/* Previne overflow horizontal sempre */
+.no-overflow-x {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+/* ELEMENTOS FIXOS - Não interferem no scroll */
+.fixed,
+.sticky,
+[class*="fixed"],
+[class*="sticky"] {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* CARROSSEL E COMPONENTES INTERNOS */
+.carousel-container {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: none;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel-item {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+/* MODAIS E OVERLAYS - Sistema de bloqueio limpo */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+/* Estado quando body está bloqueado (aplicado via JS) */
+body.scroll-locked {
+  position: fixed !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+/* MOBILE OPTIMIZATIONS */
+@media (max-width: 768px) {
+  /* Touch scrolling otimizado */
+  body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+  }
+  
+  /* Containers de scroll com scrollbars ocultas em mobile */
+  .scroll-container::-webkit-scrollbar,
+  .overflow-y-auto::-webkit-scrollbar,
+  .overflow-x-auto::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scroll-container,
+  .overflow-y-auto,
+  .overflow-x-auto {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* ACCESSIBILITY - Respeita preferências de movimento */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  
+  * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* DEBUG (remover em produção) */
+.scroll-debug * {
+  outline: 1px dashed rgba(255, 0, 0, 0.3);
+}
+
+.scroll-debug [class*="overflow"] {
+  outline: 2px solid rgba(255, 0, 0, 0.8);
+}
+
+/* ==========================================================================
+   FIM DO SCROLL FIX
+   ========================================================================== */

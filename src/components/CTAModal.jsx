@@ -7,7 +7,7 @@ import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { CONTACT } from '@/lib/constants';
 import { trackConversion } from '@/utils/analytics';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
-import useBodyScrollLock from '@/hooks/useBodyScrollLock';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 // Standalone CTA modal (no floating button). Opens via 'open-cta-modal' event.
 const CTAModal = () => {

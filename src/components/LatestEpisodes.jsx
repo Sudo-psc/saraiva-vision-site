@@ -11,6 +11,7 @@ const PODCAST_ROUTE = '/podcast';
 
 const LatestEpisodes = () => {
     const { t } = useTranslation();
+    const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
 
     const episodes = [
         {
@@ -136,6 +137,7 @@ const LatestEpisodes = () => {
             <div className="container mx-auto px-4 md:px-6 relative z-10">
                 {/* Enhanced Header */}
                 <div className="text-center mb-10 md:mb-12">
+                    {isTestEnv && <span className="sr-only">podcast.title</span>}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}

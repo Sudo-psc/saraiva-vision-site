@@ -65,6 +65,26 @@ const verifyRecaptcha = async ({ token, remoteip, expectedAction }) => {
 };
 
 export default async function handler(req, res) {
+  // Basic in-memory rate limiting per IP (best-effort; use a shared store in prod)
+  const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
+  const RATE_LIMIT_MAX = 5; // max 5 requests per window
+  if (!global.__contactRateLimiter) {
+    global.__contactRateLimiter = new Map();
+  }
+  const limiter = global.__contactRateLimiter;
+  const now = Date.now();
+  const ip = getClientIp(req);
+  const bucket = limiter.get(ip) || { count: 0, start: now };
+  if (now - bucket.start > RATE_LIMIT_WINDOW_MS) {
+    bucket.count = 0;
+    bucket.start = now;
+  }
+  bucket.count += 1;
+  limiter.set(ip, bucket);
+  if (bucket.count > RATE_LIMIT_MAX) {
+    res.setHeader('Retry-After', Math.ceil((bucket.start + RATE_LIMIT_WINDOW_MS - now) / 1000));
+    return res.status(429).json({ error: 'rate_limited' });
+  }
   // CORS preflight (optional local development)
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -78,7 +98,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const ip = getClientIp(req);
   const body = await parseBody(req);
 
   const { name, email, phone, message, token, action } = body || {};
@@ -107,4 +126,3 @@ export default async function handler(req, res) {
     recaptcha: { score: verification.score, action: verification.action }
   });
 }
-

@@ -483,6 +483,7 @@
     }
   },
   "contact": {
+    "recaptcha_label": "Security Verification",
     "title": "Get in Touch",
     "subtitle": "We are available to answer your questions and schedule your appointment. Your vision is our priority.",
     "form_title": "Send a Message",

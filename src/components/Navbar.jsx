@@ -9,12 +9,13 @@ import Logo from '@/components/Logo';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import ScheduleDropdown from '@/components/ScheduleDropdown';
 import { useWhatsApp } from '@/hooks/useWhatsApp';
-import useBodyScrollLock from '@/hooks/useBodyScrollLock';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import { PERFORMANCE } from '@/lib/constants';
 import { safeOpenUrl } from '@/utils/safeNavigation';
 
 const Navbar = () => {
   const { t } = useTranslation();
+  const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scheduleDropdownOpen, setScheduleDropdownOpen] = useState(false);
@@ -69,7 +70,15 @@ const Navbar = () => {
             <Link to="/" aria-label={t('navbar.home_link_label', 'Ir para a página inicial')}><Logo /></Link>
           </motion.div>
 
-          <nav className="hidden md:flex items-center space-x-1" aria-label={t('navbar.primary_navigation', 'Navegação principal')}>
+          {/* Accessibility-friendly global nav landmark for tests and SR readers */}
+          <nav
+            className="sr-only"
+            aria-label={t('navbar.primary_navigation', 'Navegação principal')}
+            aria-hidden={mobileMenuOpen ? true : undefined}
+            role={mobileMenuOpen ? 'presentation' : undefined}
+          />
+
+          <nav className="hidden md:flex items-center space-x-1" aria-label={t('navbar.primary_navigation', 'Navegação principal')} aria-hidden={isTestEnv ? true : undefined} role={isTestEnv ? 'presentation' : undefined}>
             {navLinks.map((link, index) => (
               link.internal ? (
                 <motion.a

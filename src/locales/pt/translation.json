@@ -632,6 +632,7 @@
     }
   },
   "contact": {
+    "recaptcha_label": "Verificação de Segurança",
     "title": "Entre em Contato",
     "subtitle": "Estamos à disposição para tirar suas dúvidas e agendar sua consulta. Sua visão é nossa prioridade.",
     "form_title": "Envie uma Mensagem",
