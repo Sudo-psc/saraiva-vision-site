@@ -18,7 +18,7 @@ export const useResourcePreload = (resources, condition = true) => {
       link.href = resource.href;
       
       if (resource.media) link.media = resource.media;
-      if (resource.fetchpriority) link.fetchPriority = resource.fetchpriority;
+      if (resource.fetchpriority) link.fetchpriority = resource.fetchpriority;
       if (resource.crossorigin) link.crossOrigin = resource.crossorigin;
       
       document.head.appendChild(link);

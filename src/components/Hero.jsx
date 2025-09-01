@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Calendar, ArrowRight, Eye } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
-import OptimizedImage from '@/components/ui/OptimizedImage';
 import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { safeOpenUrl } from '@/utils/safeNavigation';
 import { useHeroImagePreload } from '@/hooks/useResourcePreload';
@@ -32,6 +31,11 @@ const Hero = () => {
   const handleNossosServicosClick = () => {
     document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const [heroSrc, setHeroSrc] = useState('/img/hero.png');
+  const handleHeroError = useCallback(() => {
+    if (heroSrc !== '/img/drphilipe_perfil.png') setHeroSrc('/img/drphilipe_perfil.png');
+  }, [heroSrc]);
 
   return (
     <section id="home" className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-hero-gradient">
@@ -149,17 +153,17 @@ const Hero = () => {
             className="relative"
           >
             <div className="relative z-10 rounded-3xl overflow-hidden shadow-soft-medium">
-              <OptimizedImage
-                loading="eager"
-                fetchPriority="high"
+              <img
+                src={heroSrc}
+                alt={t('ui.alt.hero_image', 'Família sorrindo - Saraiva Vision')}
                 width={800}
                 height={640}
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
                 sizes="(min-width: 1024px) 800px, 100vw"
-                className="w-full h-auto aspect-[4/3] object-cover object-center"
-                alt={t('ui.alt.hero_image', 'Família sorrindo - Saraiva Vision')}
-                src="/img/hero.png"
-                fallbackSrc="/img/drphilipe_perfil.png"
-                priority={true}
+                onError={handleHeroError}
+                className="block w-full h-auto aspect-[4/3] object-cover object-center"
               />
             </div>
 

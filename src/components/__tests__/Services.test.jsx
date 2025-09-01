@@ -9,7 +9,7 @@ vi.mock('react-i18next', () => ({
     t: (key) => {
       const mockTranslations = {
         'services.badge': 'Nossos Serviços',
-        'services.title': 'Cuidados Oftalmológicos Completos',
+        'services.title': 'Nossos Serviços',
         'services.subtitle': 'Oferecemos uma gama abrangente de serviços especializados em saúde ocular, utilizando tecnologia de ponta e expertise médica.',
         'services.consultation.title': 'Consultas Especializadas',
         'services.consultation.description': 'Avaliação completa da saúde ocular com equipamentos modernos.',
@@ -65,7 +65,7 @@ describe('Services Component', () => {
   it('renders services section', () => {
     renderWithRouter(<Services />)
     
-    const section = screen.getByText(/Nossos Serviços/i).closest('section')
+    const section = screen.getByTestId('services-badge').closest('section')
     expect(section).toBeInTheDocument()
     expect(section).toHaveAttribute('id', 'services')
   })
@@ -141,7 +141,7 @@ describe('Services Component', () => {
   it('has proper styling classes', () => {
     renderWithRouter(<Services />)
     
-    const section = screen.getByText(/Nossos Serviços/i).closest('section')
+    const section = screen.getByTestId('services-badge').closest('section')
     expect(section).toHaveClass('py-16')
     
     // Check for responsive grid layout
@@ -163,7 +163,7 @@ describe('Services Component', () => {
   it('has accessible markup', () => {
     renderWithRouter(<Services />)
     
-    const section = screen.getByText(/Nossos Serviços/i).closest('section')
+    const section = screen.getByTestId('services-badge').closest('section')
     expect(section).toBeInTheDocument()
     
     // Check for proper heading hierarchy

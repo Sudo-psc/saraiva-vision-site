@@ -6,7 +6,7 @@ import { useSEO, useHomeSEO, useServiceSEO, useContactSEO } from '../useSEO';
 
 // Wrapper component for tests that need Router context
 const TestWrapper = ({ children }) => (
-  <BrowserRouter>
+  <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
     {children}
   </BrowserRouter>
 );
@@ -184,7 +184,12 @@ describe('useHomeSEO Hook', () => {
 
     expect(result.current.schema).toEqual(
       expect.objectContaining({
-        '@type': 'MedicalClinic'
+        '@context': 'https://schema.org',
+        '@graph': expect.arrayContaining([
+          expect.objectContaining({
+            '@type': 'MedicalClinic'
+          })
+        ])
       })
     );
   });
