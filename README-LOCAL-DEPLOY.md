@@ -28,8 +28,9 @@ sudo ./deploy.sh
 ## 📁 Estrutura de Deploy
 
 - **Código fonte**: `/home/saraiva-vision-site/`
-- **Build de produção**: `/var/www/saraivavisao/saraivavision/`
-- **Configuração nginx**: `/etc/nginx/sites-available/saraivavisao`
+- **Build de produção (symlink)**: `/var/www/saraivavision/current/`
+- **Releases**: `/var/www/saraivavision/releases/<timestamp>/`
+- **Configuração nginx**: `/etc/nginx/sites-available/saraivavision`
 - **Logs nginx**: `/var/log/nginx/`
 - **Backups**: `/var/backups/saraivavisao/`
 
@@ -87,7 +88,7 @@ curl -I http://localhost/api/health
 ps aux | grep "node.*server.js"
 
 # Iniciar API se não estiver rodando
-nohup npm run start:api > /var/log/saraivavisao-api.log 2>&1 &
+nohup npm run start:api > /var/log/saraivavision-api.log 2>&1 &
 ```
 
 ## 🌐 URLs de Acesso
@@ -122,7 +123,7 @@ npm run build
 ### API não responde:
 ```bash
 # Verificar logs da API
-tail -f /var/log/saraivavisao-api.log
+tail -f /var/log/saraivavision-api.log
 
 # Verificar se porta está livre
 sudo netstat -tlnp | grep :3001
@@ -139,12 +140,12 @@ npm run deploy:local
 
 ### Backup manual:
 ```bash
-sudo cp -r /var/www/saraivavisao/saraivavision /var/backups/saraivavisao/saraivavision_$(date +%Y%m%d_%H%M%S)
+sudo cp -r /var/www/saraivavision/current /var/backups/saraivavision/saraivavision_$(date +%Y%m%d_%H%M%S)
 ```
 
 ### Limpar backups antigos:
 ```bash
-sudo find /var/backups/saraivavisao -name "saraivavision_*" -mtime +30 -exec rm -rf {} \;
+sudo find /var/backups/saraivavision -name "saraivavision_*" -mtime +30 -exec rm -rf {} \;
 ```
 
 ## 📊 Monitoramento
@@ -152,13 +153,13 @@ sudo find /var/backups/saraivavisao -name "saraivavision_*" -mtime +30 -exec rm 
 ### Logs importantes:
 - Nginx access: `/var/log/nginx/access.log`
 - Nginx errors: `/var/log/nginx/error.log`
-- API logs: `/var/log/saraivavisao-api.log`
+- API logs: `/var/log/saraivavision-api.log`
 - Sistema: `journalctl -u nginx -f`
 
 ### Métricas:
 ```bash
 # Uso de disco
-df -h /var/www/saraivavisao/
+df -h /var/www/saraivavision/
 
 # Processos
 ps aux | grep -E "(nginx|node)"

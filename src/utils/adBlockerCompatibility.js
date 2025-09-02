@@ -4,6 +4,8 @@
  * Ensures critical medical website functionality works despite content blocking
  */
 
+import adsConfig from '../config/ads.config.js';
+
 class AdBlockerCompatibilityManager {
   constructor() {
     this.adBlockerDetected = false;
@@ -37,8 +39,20 @@ class AdBlockerCompatibilityManager {
         this.marketingConsent = !!detail.marketing;
       });
 
-      // Run multiple detection methods
-      await this.detectAdBlockers();
+      // Check if ad detection is enabled based on configuration
+      const enableAdDetection = adsConfig.enableDetection && 
+                               window.enableAdDetection !== false && 
+                               !window.location.search.includes('disable-ads=true');
+
+      if (enableAdDetection) {
+        // Run multiple detection methods
+        await this.detectAdBlockers();
+      } else {
+        if (adsConfig.logLevel === 'debug') {
+          console.log('🔕 Ad blocker detection disabled by configuration');
+        }
+        this.adBlockerDetected = false;
+      }
       
       // Initialize fallbacks if needed
       if (this.adBlockerDetected) {
@@ -59,8 +73,10 @@ class AdBlockerCompatibilityManager {
   async detectAdBlockers() {
     const methods = [
       this.detectByElementBlocking(),
-      // Only probe ad-network endpoints if marketing consent is granted
-      (this.marketingConsent ? this.detectByNetworkBlocking() : Promise.resolve(false)),
+      // Only probe ad-network endpoints if explicitly enabled and marketing consent is granted
+      ((adsConfig.enableNetworkProbe && this.marketingConsent)
+        ? this.detectByNetworkBlocking()
+        : Promise.resolve(false)),
       this.detectByScriptBlocking(),
       this.detectByFilterLists()
     ];
@@ -142,14 +158,14 @@ class AdBlockerCompatibilityManager {
     });
   }
 
-  // Method 2: Detect by network blocking
+  // Method 2: Detect by network blocking (improved error handling)
   detectByNetworkBlocking() {
     return new Promise((resolve) => {
       try {
         // Test requests that ad blockers typically block
-        // NOTE: Use fetch(HEAD, no-cors) to avoid noisy console 400/401s
+        // Using 1x1 tracking pixel format to avoid 400 errors
         const testUrls = [
-          'https://googleads.g.doubleclick.net/pagead/ads',
+          'https://www.google-analytics.com/collect?v=1&tid=UA-test&cid=test&t=pageview&dh=test.com&dp=/test',
           'https://www.googletagservices.com/tag/js/gpt.js',
           'https://static.ads-twitter.com/uwt.js'
         ];
@@ -157,32 +173,43 @@ class AdBlockerCompatibilityManager {
         let blockedCount = 0;
         let completedTests = 0;
 
-        testUrls.forEach((baseUrl) => {
-          const url = baseUrl + '?probe=' + Date.now();
+        testUrls.forEach((url, index) => {
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 2500);
+          const timeoutId = setTimeout(() => controller.abort(), adsConfig.requestTimeout);
 
-          fetch(url, { method: 'HEAD', mode: 'no-cors', signal: controller.signal })
-            .then(() => {
-              // Opaque/no-cors responses won’t reveal status; treat as not blocked
+          // Using different strategies for different URLs
+          const fetchOptions = {
+            method: index === 0 ? 'POST' : 'HEAD', // Analytics uses POST
+            mode: 'no-cors',
+            signal: controller.signal,
+            cache: 'no-cache'
+          };
+
+          fetch(url, fetchOptions)
+            .then(response => {
+              // For no-cors requests, we can't check status but lack of error means not blocked
               completedTests++;
               clearTimeout(timeoutId);
               if (completedTests === testUrls.length) resolve(blockedCount > 0);
             })
-            .catch(() => {
-              blockedCount++;
+            .catch(error => {
+              // Expected behavior for blocked requests
+              if (error.name !== 'AbortError') {
+                blockedCount++;
+              }
               completedTests++;
               clearTimeout(timeoutId);
               if (completedTests === testUrls.length) resolve(blockedCount > 0);
             });
         });
 
-        // Timeout after 3 seconds
+        // Faster timeout for better UX
         setTimeout(() => {
           resolve(blockedCount > 0);
-        }, 3000);
+        }, 2500);
         
       } catch (error) {
+        console.debug('🔍 Network detection method failed gracefully:', error.message);
         resolve(false);
       }
     });
@@ -298,13 +325,42 @@ class AdBlockerCompatibilityManager {
       // Proactively probe the fallback endpoint once to avoid 404 spam
       this.checkAnalyticsEndpointAvailability();
     } catch (error) {
-      console.error('❌ Analytics fallback failed:', error);
+      console.debug('🔍 Analytics fallback initialization failed gracefully:', error.message);
     }
   }
 
   async checkAnalyticsEndpointAvailability() {
+    if (this.analyticsEndpointChecked) {
+      return this.analyticsEndpointOk;
+    }
+
     this.analyticsEndpointChecked = true;
-    this.analyticsEndpointOk = false;
+    
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 1500);
+      
+      // Test basic analytics endpoint without triggering 400 errors
+      const testUrl = 'https://www.google-analytics.com/debug/collect';
+      const response = await fetch(testUrl, {
+        method: 'HEAD',
+        mode: 'no-cors',
+        signal: controller.signal,
+        cache: 'no-cache'
+      });
+      
+      clearTimeout(timeoutId);
+      this.analyticsEndpointOk = true;
+      console.log('📊 Analytics endpoint is available');
+      
+    } catch (error) {
+      // Expected behavior if analytics is blocked
+      if (error.name !== 'AbortError') {
+        console.debug('🔍 Analytics endpoint unavailable (likely blocked):', error.message);
+      }
+      this.analyticsEndpointOk = false;
+    }
+    
     return this.analyticsEndpointOk;
   }
 
@@ -333,7 +389,7 @@ class AdBlockerCompatibilityManager {
         this.fallbacksActivated.push('performance');
       }
     } catch (error) {
-      console.error('❌ Performance fallback failed:', error);
+      console.debug('🔍 Performance fallback failed gracefully:', error.message);
     }
   }
 
@@ -351,7 +407,7 @@ class AdBlockerCompatibilityManager {
 
       this.fallbacksActivated.push('error_tracking');
     } catch (error) {
-      console.error('❌ Error tracking fallback failed:', error);
+      console.debug('🔍 Error tracking fallback failed gracefully:', error.message);
     }
   }
 

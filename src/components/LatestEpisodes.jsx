@@ -1,9 +1,10 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Mic2, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AudioPlayer from '@/components/AudioPlayer';
+import PodcastEpisodeCard from '@/components/PodcastEpisodeCard';
 import { Link } from 'react-router-dom';
 import SpotifyEmbed from '@/components/SpotifyEmbed';
 
@@ -12,6 +13,15 @@ const PODCAST_ROUTE = '/podcast';
 const LatestEpisodes = () => {
     const { t } = useTranslation();
     const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
+    
+    // State for modal player
+    const [selectedEpisode, setSelectedEpisode] = React.useState(null);
+    const [isPlayerModalOpen, setIsPlayerModalOpen] = React.useState(false);
+
+    const handlePlayEpisode = (episode) => {
+        setSelectedEpisode(episode);
+        setIsPlayerModalOpen(true);
+    };
 
     const episodes = [
         {
@@ -20,10 +30,10 @@ const LatestEpisodes = () => {
             title: t('podcast.episodes.lentes_contato.title'),
             description: t('podcast.episodes.lentes_contato.description'),
             duration: '05:30',
-            cover: '/Podcasts/Genspark 2025-08-31 11.54.38.png',
+            cover: '/Podcasts/Covers/podcast.png',
             category: 'Lentes de Contato',
             date: '2025-08-31',
-            spotifyUrl: 'https://creators.spotify.com/pod/profile/philipe-cruz/episodes/Sade-Ocular-em-Foco---Lentes-de-Contato-Rgidas-vs-Gelatinosas-e37iag0'
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
         },
         {
             id: 'dmri-ep1',
@@ -34,7 +44,7 @@ const LatestEpisodes = () => {
             cover: '/Podcasts/Covers/dmri.png',
             category: 'Doenças Oculares',
             date: '2025-08-31',
-            spotifyUrl: 'https://creators.spotify.com/pod/profile/philipe-cruz/episodes/Sade-Ocular-em-Foco---DMRI-Quando-a-Mcula-Decide-se-Aposentar-e37i9pk'
+            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
         },
         {
             id: 'glaucoma-ep1',
@@ -104,7 +114,7 @@ const LatestEpisodes = () => {
         },
         {
             id: 'duvidas-ep6',
-            src: '/Podcasts/Especial-dúvidas.mp3',
+            src: '/Podcasts/duvidas.mp3',
             title: t('podcast.episodes.duvidas.title'),
             description: t('podcast.episodes.duvidas.description'),
             duration: '11:05',
@@ -222,9 +232,10 @@ const LatestEpisodes = () => {
                                 >
                                     <div className="relative group perspective-1000">
                                         <div className="absolute -inset-1 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
-                                        <AudioPlayer
+                                        <PodcastEpisodeCard
                                             episode={episode}
-                                            mode="inline"
+                                            index={index}
+                                            onPlay={handlePlayEpisode}
                                             className="h-full relative glass-blue card-3d shadow-xl rounded-xl hover:shadow-2xl transition-all duration-300 group-hover:transform group-hover:scale-[1.02] border border-blue-200/40"
                                         />
                                     </div>
@@ -281,6 +292,20 @@ const LatestEpisodes = () => {
                     </p>
                 </motion.div>
             </div>
+
+            {/* Audio Player Modal */}
+            <AnimatePresence>
+                {isPlayerModalOpen && selectedEpisode && (
+                    <AudioPlayer
+                        episode={selectedEpisode}
+                        mode="modal"
+                        onClose={() => {
+                            setIsPlayerModalOpen(false);
+                            setSelectedEpisode(null);
+                        }}
+                    />
+                )}
+            </AnimatePresence>
         </section>
     );
 };

@@ -209,7 +209,7 @@ const Contact = () => {
       title: t('contact.info.address_title'),
       details: (
         <>
-          <span>{clinicInfo.address || t('contact.info.address_details')}</span>
+          <span>{typeof clinicInfo.address === 'string' ? clinicInfo.address : t('contact.info.address_details')}</span>
         </>
       ),
       subDetails: t('contact.info.address_sub')

@@ -31,30 +31,14 @@ export const lazyLoadImages = () => {
   images.forEach(img => imageObserver.observe(img));
 };
 
-// Preload de recursos críticos
+// Preload de recursos críticos (desativado para evitar warnings de preloads não utilizados)
+// Justificativa:
+//  - Fontes Google: o CSS já usa `display=swap` e o navegador seleciona o melhor arquivo.
+//    Precarregar um .woff2 específico do gstatic pode não ser utilizado e gerar warning.
+//  - Hero background: o projeto usa gradiente (`bg-hero-gradient`) e imagem principal /img/hero.png
+//    já é carregada com `loading="eager"` e `fetchpriority="high"` no componente Hero.
 export const preloadCriticalResources = () => {
-  const criticalResources = [
-    'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2',
-    '/img/hero-bg.webp'
-  ];
-  
-  criticalResources.forEach(resource => {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    
-    if (resource.includes('.woff')) {
-      link.as = 'font';
-      link.type = 'font/woff2';
-      link.crossOrigin = 'anonymous';
-    } else if (resource.includes('.webp') || resource.includes('.jpg')) {
-      link.as = 'image';
-    } else if (resource.includes('.css')) {
-      link.as = 'style';
-    }
-    
-    link.href = resource;
-    document.head.appendChild(link);
-  });
+  // Intencionalmente vazio para não criar preloads desnecessários.
 };
 
 // Otimizador de layout shift (CLS)
@@ -235,6 +219,6 @@ export const initPerformanceOptimizations = () => {
     optimizeCriticalRenderingPath();
   }
   
-  // Preload recursos críticos imediatamente
+  // Preload de recursos críticos desativado (ver função acima)
   preloadCriticalResources();
 };

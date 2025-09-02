@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-readonly DEPLOY_ROOT="/var/www/saraivavisao"
-readonly CURRENT_LINK="$DEPLOY_ROOT/saraivavision"
-readonly BACKUP_DIR="/var/backups/saraivavisao"
+readonly DEPLOY_ROOT="/var/www/saraivavision"
+readonly CURRENT_LINK="$DEPLOY_ROOT/current"
+readonly BACKUP_DIR="/var/backups/saraivavision"
 
 if [[ "${EUID:-$(id -u)}" -ne 0 ]]; then
   echo "❌ Run as root (sudo)"; exit 1
@@ -25,4 +25,3 @@ echo "🔄 Reloading nginx"
 nginx -t && systemctl reload nginx
 
 echo "✅ Rollback complete"
-

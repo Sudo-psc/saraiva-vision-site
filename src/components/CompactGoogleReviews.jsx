@@ -109,8 +109,8 @@ const CompactGoogleReviews = () => {
                                     <p className="text-slate-500 text-xs">{review.relativeTime}</p>
                                 </div>
                                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
-                                    <img 
-                                        src={review.avatar} 
+                                    <img
+                                        src={review.avatar}
                                         alt={`Foto de ${review.author}`}
                                         className="w-full h-full object-cover"
                                         loading="lazy"

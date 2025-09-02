@@ -31,6 +31,7 @@ const AudioPlayer = ({
     const [isLoading, setIsLoading] = useState(false);
     const [playbackRate, setPlaybackRate] = useState(1);
     const [showSettings, setShowSettings] = useState(false);
+    const [error, setError] = useState(null);
 
     const audioRef = useRef(null);
     const progressRef = useRef(null);
@@ -44,12 +45,18 @@ const AudioPlayer = ({
         const handleLoadStart = () => setIsLoading(true);
         const handleCanPlay = () => setIsLoading(false);
         const handleEnded = () => setIsPlaying(false);
+        const handleError = () => {
+            setIsLoading(false);
+            setIsPlaying(false);
+            setError('Falha ao carregar o áudio. Tente novamente mais tarde.');
+        };
 
         audio.addEventListener('timeupdate', updateTime);
         audio.addEventListener('loadedmetadata', updateDuration);
         audio.addEventListener('loadstart', handleLoadStart);
         audio.addEventListener('canplay', handleCanPlay);
         audio.addEventListener('ended', handleEnded);
+        audio.addEventListener('error', handleError);
 
         return () => {
             audio.removeEventListener('timeupdate', updateTime);
@@ -57,6 +64,7 @@ const AudioPlayer = ({
             audio.removeEventListener('loadstart', handleLoadStart);
             audio.removeEventListener('canplay', handleCanPlay);
             audio.removeEventListener('ended', handleEnded);
+            audio.removeEventListener('error', handleError);
         };
     }, []);
 
@@ -83,14 +91,28 @@ const AudioPlayer = ({
         const audio = audioRef.current;
         if (isPlaying) {
             audio.pause();
+            setIsPlaying(false);
         } else {
             // Notify other players to pause
             try {
                 window.dispatchEvent(new CustomEvent('sv:audio-play', { detail: { id: episode.id } }));
             } catch (_) { }
-            audio.play();
+            // Ensure inline playback on iOS + unmute before play
+            audio.playsInline = true;
+            try { audio.muted = false; } catch (_) {}
+            const playPromise = audio.play();
+            if (playPromise && typeof playPromise.then === 'function') {
+                playPromise
+                    .then(() => setIsPlaying(true))
+                    .catch(() => {
+                        // Retry once for Safari quirks
+                        try { audio.muted = false; } catch (_) {}
+                        audio.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+                    });
+            } else {
+                setIsPlaying(true);
+            }
         }
-        setIsPlaying(!isPlaying);
     };
 
     const handleSeek = (seconds) => {
@@ -153,65 +175,22 @@ const AudioPlayer = ({
 
     const progress = duration ? (currentTime / duration) * 100 : 0;
 
+    // Pause audio on unmount to avoid background playback
+    useEffect(() => {
+        return () => {
+            try {
+                if (audioRef.current) {
+                    audioRef.current.pause();
+                }
+            } catch (_) { }
+        };
+    }, []);
+
     // Respect hook rules: call at top level with condition
     const isModal = mode === 'modal';
     useBodyScrollLock(isModal);
 
-    // Modal variant
-    if (isModal) {
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-                onClick={onClose}
-            >
-                <motion.div
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.9, opacity: 0 }}
-                    className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 relative max-h-[90dvh] overflow-y-auto touch-scroll scroll-container scrollbar-none"
-                    onClick={e => e.stopPropagation()}
-                >
-                    <button
-                        onClick={onClose}
-                        className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
-                        aria-label="Fechar player"
-                    >
-                        <X className="w-5 h-5" />
-                    </button>
-
-                    <div className="text-center mb-6">
-                        <img
-                            src={episode.cover}
-                            alt={episode.title}
-                            className="w-40 h-40 rounded-2xl mx-auto mb-4 shadow-lg object-cover"
-                            width={256}
-                            height={256}
-                        />
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">{episode.title}</h3>
-                        {episode.description && (
-                            <p className="text-sm text-gray-600 mb-3 max-w-md mx-auto leading-relaxed">{episode.description}</p>
-                        )}
-                        <div className="flex items-center justify-center gap-3 text-sm text-gray-500">
-                            {episode.duration && <span>{episode.duration}</span>}
-                            {episode.category && (
-                                <>
-                                    <span>•</span>
-                                    <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium text-xs">
-                                        {episode.category}
-                                    </span>
-                                </>
-                            )}
-                        </div>
-                    </div>
-
-                    <PlayerControls />
-                </motion.div>
-            </motion.div>
-        );
-    }
+    // Modal variant moved below PlayerControls to avoid TDZ
 
     // Variants
     const isCompact = mode === 'inline';
@@ -402,12 +381,85 @@ const AudioPlayer = ({
         </div>
     );
 
+    // Modal variant (placed after PlayerControls so it's defined)
+    if (isModal) {
+        return (
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+                onClick={onClose}
+            >
+                <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 relative max-h-[90dvh] overflow-y-auto touch-scroll scroll-container scrollbar-none"
+                    onClick={e => e.stopPropagation()}
+                >
+                    <button
+                        onClick={onClose}
+                        className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+                        aria-label="Fechar player"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+
+                    <div className="text-center mb-6">
+                        <img
+                            src={episode.cover}
+                            alt={episode.title}
+                            className="w-40 h-40 rounded-2xl mx-auto mb-4 shadow-lg object-cover"
+                            width={256}
+                            height={256}
+                            onError={(e) => { try { e.currentTarget.src = '/Podcasts/Covers/podcast.png'; } catch (_) {} }}
+                        />
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">{episode.title}</h3>
+                        {episode.description && (
+                            <p className="text-sm text-gray-600 mb-3 max-w-md mx-auto leading-relaxed">{episode.description}</p>
+                        )}
+                        <div className="flex items-center justify-center gap-3 text-sm text-gray-500">
+                            {episode.duration && <span>{episode.duration}</span>}
+                            {episode.category && (
+                                <>
+                                    <span>•</span>
+                                    <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium text-xs">
+                                        {episode.category}
+                                    </span>
+                                </>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Hidden audio element used by controls (modal mode) */}
+                    <audio
+                        ref={audioRef}
+                        src={episode.src}
+                        preload="metadata"
+                        playsInline
+                        className="hidden"
+                    />
+
+                    {error ? (
+                        <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
+                            {error}
+                        </div>
+                    ) : (
+                        <PlayerControls />
+                    )}
+                </motion.div>
+            </motion.div>
+        );
+    }
+
     return (
         <div className={`bg-white rounded-2xl shadow-soft-light border border-gray-100 ${isCompact ? 'p-4' : 'p-6'} ${className}`}>
             <audio
                 ref={audioRef}
                 src={episode.src}
-                preload="none"
+                preload="metadata"
+                playsInline
                 className="hidden"
             />
 
@@ -419,6 +471,7 @@ const AudioPlayer = ({
                         alt={`${t('podcast.cover_alt', 'Capa do podcast')}: ${episode.title}`}
                         className="w-full aspect-square rounded-xl object-cover shadow-md"
                         loading="lazy"
+                        onError={(e) => { try { e.currentTarget.src = '/Podcasts/Covers/podcast.png'; } catch (_) {} }}
                     />
                     <div className="mt-3">
                         <h4 className="font-bold text-gray-900 mb-1 line-clamp-2">{episode.title}</h4>
@@ -445,6 +498,7 @@ const AudioPlayer = ({
                         alt={`${t('podcast.cover_alt', 'Capa do podcast')}: ${episode.title}`}
                         className="w-16 h-16 rounded-xl object-cover shadow-md flex-shrink-0"
                         loading="lazy"
+                        onError={(e) => { try { e.currentTarget.src = '/Podcasts/Covers/podcast.png'; } catch (_) {} }}
                     />
                     <div className="flex-grow min-w-0">
                         <h4 className="font-bold text-gray-900 mb-1 line-clamp-2">{episode.title}</h4>

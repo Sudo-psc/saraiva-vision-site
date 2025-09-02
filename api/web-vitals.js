@@ -61,17 +61,17 @@ export default async function handler(req, res) {
     // await storeWebVital(vitalsData);
 
     // Send success response
-    res.status(200).json({ 
-      success: true, 
+    res.status(200).json({
+      success: true,
       message: 'Web vital recorded',
       data: vitalsData
     });
 
   } catch (error) {
     console.error('Web Vitals API error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Internal server error',
-      message: error.message 
+      message: error.message
     });
   }
 }

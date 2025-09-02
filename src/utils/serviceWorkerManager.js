@@ -36,6 +36,7 @@ export class ServiceWorkerManager {
 
 			this.registration = await navigator.serviceWorker.register('/sw.js', {
 				scope: '/',
+				type: 'module', // Necessário para imports ES6
 				updateViaCache: 'none' // Força verificação de updates
 			});
 
@@ -54,6 +55,32 @@ export class ServiceWorkerManager {
 
 		} catch (error) {
 			console.error('[SW] ❌ Erro ao registrar service worker:', error);
+			// Migração: se houver SW clássico antigo registrado, desinstalar e tentar novamente como módulo
+			const msg = String(error?.message || '');
+			const isClassicVsModuleMismatch = /import statement outside a module/i.test(msg) || /Unexpected token 'import'/.test(msg);
+			if (isClassicVsModuleMismatch) {
+				try {
+					const regs = await navigator.serviceWorker.getRegistrations();
+					for (const reg of regs) {
+						await reg.unregister();
+					}
+					// Pequeno atraso para garantir liberação
+					await new Promise(r => setTimeout(r, 300));
+					console.warn('[SW] Realizando migração de classic -> module. Tentando novo registro...');
+					this.registration = await navigator.serviceWorker.register('/sw.js', {
+						scope: '/',
+						type: 'module',
+						updateViaCache: 'none'
+					});
+					console.log('[SW] ✅ Re-registro bem-sucedido após migração');
+					this.setupEventListeners();
+					this.checkForUpdates();
+					return this.registration;
+				} catch (re) {
+					console.error('[SW] Falha ao migrar SW:', re);
+				}
+			}
+
 			this.triggerCallback('error', error);
 			return null;
 		}

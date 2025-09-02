@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
+import { debounce } from '@/utils/componentUtils';
 
 const ServiceCard = ({ service, index, lazy = true }) => {
   const { t } = useTranslation();
@@ -35,8 +36,8 @@ const ServiceCard = ({ service, index, lazy = true }) => {
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.05 }}
-      className="group relative flex flex-col items-center text-center p-8 rounded-[22px] glass-morphism gradient-border shadow-3d hover:shadow-3d-hover border border-slate-200/80 hover:border-blue-200/70 overflow-hidden will-change-transform transform-gpu preserve-3d flex-shrink-0 snap-start min-w-[260px] max-w-[300px] md:min-w-[280px] md:max-w-[320px] focus-within:ring-2 focus-within:ring-blue-500/20"
-      whileHover={prefersReducedMotion ? {} : { y: -6, rotateX: 6, rotateY: -6 }}
+      className="group relative flex flex-col items-center text-center p-8 rounded-3xl glass-morphism gradient-border shadow-3d hover:shadow-3d-hover border border-slate-200/80 hover:border-blue-300/80 overflow-hidden will-change-transform transform-gpu preserve-3d flex-shrink-0 snap-start min-w-[260px] max-w-[300px] md:min-w-[280px] md:max-w-[320px] focus-within:ring-2 focus-within:ring-blue-500/20 transition-transform duration-500"
+      whileHover={prefersReducedMotion ? {} : { y: -8 }}
       exit={{ opacity: 0, y: 10, scale: 0.98 }}
     >
       {/* Ambient gradient halo */}
@@ -48,8 +49,8 @@ const ServiceCard = ({ service, index, lazy = true }) => {
         className="relative mb-6 w-32 h-32 flex items-center justify-center"
         whileHover={prefersReducedMotion ? {} : { scale: 1.1, rotate: 3 }}
       >
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-        <div className="relative w-28 h-28 drop-shadow-lg select-none flex items-center justify-center">
+        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/15 via-purple-500/15 to-pink-500/15 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="relative w-28 h-28 drop-shadow-xl select-none flex items-center justify-center rounded-3xl">
           {visible ? service.icon : (
             <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-slate-200 to-slate-100 animate-pulse" aria-hidden="true" />
           )}
@@ -173,6 +174,8 @@ const Services = ({ full = false }) => {
   const scrollerRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const cardWidthRef = useRef(320); // width + gap
+  const itemsPerViewRef = useRef(1);
+  const [itemsPerView, setItemsPerView] = useState(1);
   const prefersReducedMotion = useReducedMotion();
   const pauseRef = useRef(false);
   const rafRef = useRef(null);
@@ -185,10 +188,25 @@ const Services = ({ full = false }) => {
     if (!el) return;
     const first = el.querySelector('[data-card]');
     if (first) {
-      const style = window.getComputedStyle(first);
       const width = first.getBoundingClientRect().width;
-      const marginRight = parseFloat(style.marginRight) || 24;
-      cardWidthRef.current = width + marginRight;
+      // Tenta calcular o gap real entre os cards
+      const second = first.nextElementSibling;
+      let gap = 24;
+      if (second) {
+        const r1 = first.getBoundingClientRect();
+        const r2 = second.getBoundingClientRect();
+        gap = Math.max(0, r2.left - r1.right);
+      } else {
+        const style = window.getComputedStyle(el);
+        const styleGap = parseFloat(style.columnGap || style.gap);
+        if (!Number.isNaN(styleGap)) gap = styleGap;
+      }
+      cardWidthRef.current = width + gap;
+
+      // Atualiza itens por tela para navegação por página
+      const perView = Math.max(1, Math.round(el.clientWidth / cardWidthRef.current));
+      itemsPerViewRef.current = perView;
+      setItemsPerView(perView);
     }
   }, []);
 
@@ -201,10 +219,10 @@ const Services = ({ full = false }) => {
   const scrollByAmount = (dir = 1) => {
     const el = scrollerRef.current;
     if (!el) return;
-    const delta = el.clientWidth * 0.8 * dir; // 80% da largura visível
-    const max = el.scrollWidth - el.clientWidth;
-    const next = Math.max(0, Math.min(el.scrollLeft + delta, max));
-    el.scrollTo({ left: next, behavior: 'smooth' });
+    const per = Math.max(1, itemsPerViewRef.current);
+    const rawIndex = Math.round(el.scrollLeft / cardWidthRef.current);
+    const targetIndex = Math.max(0, Math.min(serviceItems.length - 1, rawIndex + dir * per));
+    scrollToIndex(targetIndex);
   };
 
   const updateIndex = useCallback(() => {
@@ -222,6 +240,16 @@ const Services = ({ full = false }) => {
     el.scrollTo({ left: i * cardWidthRef.current, behavior: 'smooth' });
     setTimeout(() => { pauseRef.current = false; }, 3000);
   }, []);
+
+  // Snap automático para o card mais próximo após rolagem
+  const snapToNearest = useCallback(() => {
+    const el = scrollerRef.current;
+    if (!el || isDragging) return;
+    const nearest = Math.round(el.scrollLeft / cardWidthRef.current);
+    scrollToIndex(nearest);
+  }, [isDragging, scrollToIndex]);
+
+  const debouncedSnap = useMemo(() => debounce(snapToNearest, 180), [snapToNearest]);
 
   // Acessibilidade: setas do teclado quando focado
   useEffect(() => {
@@ -260,17 +288,29 @@ const Services = ({ full = false }) => {
     if (!isDragging) return;
     setIsDragging(false);
     // small delay to avoid immediate autoplay jump
-    setTimeout(() => { pauseRef.current = false; }, 800);
+    setTimeout(() => { pauseRef.current = false; snapToNearest(); }, 200);
   }, [isDragging]);
 
   // Convert vertical wheel to horizontal scroll inside the carousel for frictionless navigation
   const onWheel = useCallback((e) => {
     const el = scrollerRef.current;
     if (!el) return;
-    // If vertical intent is stronger, scroll horizontally
+    
+    // Only intercept vertical scrolling if there's horizontal scroll available
     if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      el.scrollLeft += e.deltaY;
-      e.preventDefault();
+      const maxScrollLeft = el.scrollWidth - el.clientWidth;
+      const canScrollLeft = el.scrollLeft > 0;
+      const canScrollRight = el.scrollLeft < maxScrollLeft;
+      
+      // Only prevent page scroll if we can actually scroll horizontally in the intended direction
+      const scrollingLeft = e.deltaY < 0;
+      const scrollingRight = e.deltaY > 0;
+      
+      if ((scrollingLeft && canScrollLeft) || (scrollingRight && canScrollRight)) {
+        el.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+      // If we can't scroll horizontally, let the page scroll normally
     }
   }, []);
 
@@ -285,10 +325,12 @@ const Services = ({ full = false }) => {
       if (el.scrollLeft >= max) {
         el.scrollLeft = max;
       }
+      // Após pausa da interação, faz snap para o card mais próximo
+      debouncedSnap();
     };
     el.addEventListener('scroll', handleScroll, { passive: true });
     return () => el.removeEventListener('scroll', handleScroll);
-  }, [serviceItems.length, updateIndex]);
+  }, [serviceItems.length, updateIndex, debouncedSnap]);
 
   // Autoplay contínuo (para até o fim, sem loop)
   useEffect(() => {
@@ -334,6 +376,10 @@ const Services = ({ full = false }) => {
       el.removeEventListener('pointerdown', pause);
     };
   }, []);
+
+  // Métricas de paginação para indicadores
+  const pageCount = Math.max(1, Math.ceil(serviceItems.length / Math.max(1, itemsPerView)));
+  const currentPage = Math.floor(currentIndex / Math.max(1, itemsPerView));
 
   return (
     <section id="services" className="py-16 lg:py-28 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
@@ -432,15 +478,17 @@ const Services = ({ full = false }) => {
             </AnimatePresence>
           </motion.div>
 
-          {/* Indicadores */}
-          <div className="flex justify-center gap-2 mt-8" aria-label={t('services.carousel_navigation', 'Navegação do carrossel de serviços')}>
-            {serviceItems.map((_, i) => (
+          {/* Indicadores (por página) */}
+          <div className="flex justify-center gap-2 mt-8" aria-label={t('services.carousel_navigation', 'Navegação do carrossel de serviços')} role="tablist">
+            {Array.from({ length: pageCount }).map((_, i) => (
               <button
                 key={i}
                 type="button"
-                aria-label={t('services.go_to', { index: i + 1, defaultValue: `Ir para serviço ${i + 1}` })}
-                onClick={() => scrollToIndex(i)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 ${i === currentIndex ? 'bg-blue-600 scale-110 shadow' : 'bg-slate-300 hover:bg-slate-400'}`}
+                role="tab"
+                aria-label={t('services.go_to_page', { index: i + 1, defaultValue: `Ir para página ${i + 1}` })}
+                aria-selected={i === currentPage}
+                onClick={() => scrollToIndex(i * Math.max(1, itemsPerView))}
+                className={`h-2.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 ${i === currentPage ? 'bg-blue-600 w-6 shadow' : 'bg-slate-300 hover:bg-slate-400 w-2.5'}`}
               />
             ))}
           </div>

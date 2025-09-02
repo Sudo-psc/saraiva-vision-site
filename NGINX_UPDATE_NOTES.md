@@ -61,10 +61,13 @@
    - Real IP detection com fallback
    - Headers de servidor ocultos
 
-2. **CORS Mais Restritivo**:
-   - Origin-based ao invés de wildcard
-   - Credentials suportado quando necessário
-   - Métodos HTTP expandidos (PUT, DELETE)
+2. **CORS Mais Restritivo (Whitelist)**:
+   - `map $http_origin $cors_origin` definido no contexto `http`
+   - Domínios permitidos: `https://saraivavision.com.br`, `https://www.saraivavision.com.br`, `https://saraivavision.vercel.app`, `http://localhost[:porta]`
+   - Cabeçalhos:
+     - `Access-Control-Allow-Origin: $cors_origin`
+     - `Vary: Origin`
+   - Mantido `Access-Control-Allow-Credentials: true`
 
 3. **Timeouts e Buffers**:
    - Timeouts de conexão otimizados
@@ -82,9 +85,13 @@
 
 ## 🔧 **Arquivos Atualizados**
 
-- ✅ `nginx.conf` - Configuração principal
-- ✅ `nginx.local.conf` - Configuração para deploy local
-- 🔄 `nginx.staging.conf` - Preparado para atualização
+- ✅ `nginx.conf` - ÚNICA configuração de Nginx (canônica)
+- 🗑️ Removidos para evitar conflitos: `nginx.local.conf`, `nginx.staging.conf`, `nginx-fixed.conf`, `saraivavision*.conf`
+
+### Migração de caminho raiz (prod)
+- Novo caminho canônico: `/var/www/saraivavision/current` (symlink mantido pelo deploy)
+- Layout: `/var/www/saraivavision/releases/<timestamp>` + symlink `current`
+- Deploy script atualizado para publicar e alternar releases nesse caminho
 
 ## 📝 **Comandos de Deploy**
 
@@ -125,6 +132,16 @@ sudo nginx -t && sudo systemctl reload nginx
 2. **CSP**: Pode precisar de ajustes se novos recursos externos forem adicionados
 3. **Rate Limiting**: Monitorar logs para ajustar limites se necessário
 4. **Cache**: HTML com no-cache garante atualizações imediatas do SPA
+
+### Habilitar Brotli (opcional)
+1. Verificar módulos:
+   - `nginx -V 2>&1 | grep -i brotli` ou `ls /etc/nginx/modules-enabled | grep brotli`
+2. Se disponível, habilitar no `server` HTTPS (nginx.conf):
+   - Descomentar:
+     - `brotli on;`
+     - `brotli_comp_level 6;`
+     - `brotli_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml;`
+3. Testar e recarregar: `sudo nginx -t && sudo systemctl reload nginx`
 
 ## 📈 **Benefícios Esperados**
 

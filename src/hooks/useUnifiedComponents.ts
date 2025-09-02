@@ -177,9 +177,21 @@ export const useCarousel = <T>(
     const el = scrollerRef.current;
     if (!el) return;
     
+    // Only intercept vertical scrolling if there's horizontal scroll available
     if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      el.scrollLeft += e.deltaY;
-      e.preventDefault();
+      const maxScrollLeft = el.scrollWidth - el.clientWidth;
+      const canScrollLeft = el.scrollLeft > 0;
+      const canScrollRight = el.scrollLeft < maxScrollLeft;
+      
+      // Only prevent page scroll if we can actually scroll horizontally in the intended direction
+      const scrollingLeft = e.deltaY < 0;
+      const scrollingRight = e.deltaY > 0;
+      
+      if ((scrollingLeft && canScrollLeft) || (scrollingRight && canScrollRight)) {
+        el.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+      // If we can't scroll horizontally, let the page scroll normally
     }
   }, [options.wheelToScroll]);
 

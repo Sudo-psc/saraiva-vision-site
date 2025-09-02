@@ -7,12 +7,12 @@ import MedicalCard from '@/components/ui/MedicalCard';
  * Podcast Episode Card component using unified MedicalCard interface
  * Optimized for podcast content with media controls and metadata
  */
-const PodcastEpisodeCard = ({ 
-  episode, 
+const PodcastEpisodeCard = ({
+  episode,
   index = 0,
   onPlay,
   onClick,
-  className 
+  className
 }) => {
   const { t } = useTranslation();
 
@@ -56,7 +56,7 @@ const PodcastEpisodeCard = ({
           <Calendar className="w-3 h-3" />
           <span>{new Date(episode.date).toLocaleDateString('pt-BR')}</span>
         </div>
-        
+
         {episode.duration && (
           <div className="flex items-center gap-1">
             <Clock className="w-3 h-3" />
@@ -67,9 +67,9 @@ const PodcastEpisodeCard = ({
 
       {/* Tags */}
       <div className="flex items-center gap-2 flex-wrap">
-        {episode.tags.slice(0, 2).map(tag => (
-          <span 
-            key={tag} 
+        {episode.tags && episode.tags.length > 0 && episode.tags.slice(0, 2).map(tag => (
+          <span
+            key={tag}
             className="flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs"
           >
             <Tag className="w-2 h-2" />
@@ -133,30 +133,41 @@ const PodcastEpisodeCard = ({
       hoverEffects="pronounced"
       aria-label={`Episódio: ${episode.title}`}
       data-testid={`episode-card-${episode.id}`}
-      
+
       // Media with play overlay
       media={{
         type: 'image',
         src: episode.cover,
         alt: episode.title,
         aspectRatio: '1:1',
-        lazy: true,
-        className: 'group-hover:scale-105 transition-transform'
+        // Lazy desativado para capas de podcast: poucas imagens e havia relatos de não carregarem
+        // Possível causa: IntersectionObserver não acionando dentro de carrossel horizontal em alguns navegadores.
+        lazy: false,
+        className: 'group-hover:scale-105 transition-transform',
+        onError: (e) => {
+          try {
+            if (e.currentTarget.src !== '/Podcasts/Covers/podcast.png') {
+              e.currentTarget.src = '/Podcasts/Covers/podcast.png';
+            }
+          } catch (_) {
+            console.warn('Failed to load podcast cover image:', episode.title);
+          }
+        }
       }}
-      
+
       // Content structure
       header={cardHeader}
       body={cardBody}
       actions={cardActions}
-      
+
       // Animation
       animationDelay={index * 0.1}
       motionPreset="entrance"
       stagger
-      
+
       // Event handlers
       onClick={onClick}
-      
+
       // Additional props
       className={className}
     >

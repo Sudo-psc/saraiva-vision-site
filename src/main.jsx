@@ -6,7 +6,7 @@ import '@/i18n';
 import '@/index.css';
 // Non-critical modules will be loaded lazily to avoid unused preloads
 import { setupGlobalErrorHandlers } from '@/utils/setupGlobalErrorHandlers';
-import healthcareMonitoring from '@/utils/healthcareMonitoringSystem';
+// import healthcareMonitoring from '@/utils/healthcareMonitoringSystem'; // DESABILITADO
 import ErrorBoundary from '@/components/ErrorBoundary';
 
 // Defer costly, non-critical modules to idle (post-load)
@@ -50,9 +50,12 @@ setupGlobalErrorHandlers();
 
 // Inicializar sistema de monitoramento específico para ambiente médico
 // Inclui gestão de sessões, tokens, compatibilidade com ad blockers e alertas críticos
+// TEMPORARIAMENTE DESABILITADO PARA DEBUG
+/*
 healthcareMonitoring.init().catch((error) => {
   console.warn('⚠️ Healthcare monitoring initialization failed:', error);
 });
+*/
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

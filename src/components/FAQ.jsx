@@ -15,13 +15,13 @@ const FAQ = () => {
     {
       id: 1,
       question: "Vocês atendem convênio ou particular?",
-      answer: "Atendemos tanto convênio quanto particular. Trabalhamos com os principais convênios de Caratinga e região, incluindo Unimed, Cassi, Geap, entre outros. Para consultas particulares, oferecemos valores acessíveis e facilidades de pagamento. Entre em contato conosco para verificar se o seu convênio está credenciado.",
+      answer: "Atendemos os convênios Amor e Saúde e Sindicato, além de atendimento particular. Caso não possua um desses convênios, o atendimento é realizado de forma particular com valores acessíveis. Fale com nossa equipe para confirmar a cobertura do seu atendimento.",
       category: 'convenio'
     },
     {
       id: 2,
       question: "Que tipos de exames oftalmológicos vocês realizam?",
-      answer: "Realizamos uma ampla gama de exames oftalmológicos, incluindo: exame de refração, exame de fundo de olho, tonometria (pressão ocular), biomicroscopia, campimetria visual, retinografia, OCT (tomografia de coerência óptica), ecobiometria, paquimetria, e outros exames especializados conforme a necessidade de cada paciente.",
+      answer: "Realizamos uma ampla gama de exames oftalmológicos, incluindo: exame de refração, exame de fundo de olho, tonometria (pressão ocular), biomicroscopia, campimetria visual, retinografia, ecobiometria, paquimetria e outros exames especializados conforme a necessidade de cada paciente.",
       category: 'exames'
     },
     {

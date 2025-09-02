@@ -41,24 +41,24 @@ const ContactLenses = () => {
   const brands = [
     {
       name: 'Acuvue',
-      description: t('contactLenses.brands.acuvue.description'),
+      description: t('contactLenses.brand_details.acuvue.description'),
       image: '/img/acuvue2.jpeg',
-      features: t('contactLenses.brands.acuvue.features', { returnObjects: true }),
-      specialty: t('contactLenses.brands.acuvue.specialty')
+      features: t('contactLenses.brand_details.acuvue.features', { returnObjects: true }),
+      specialty: t('contactLenses.brand_details.acuvue.specialty')
     },
     {
       name: 'Sólotica',
-      description: t('contactLenses.brands.solotica.description'),
+      description: t('contactLenses.brand_details.solotica.description'),
       image: '/img/solotica-hidrocor.jpeg',
-      features: t('contactLenses.brands.solotica.features', { returnObjects: true }),
-      specialty: t('contactLenses.brands.solotica.specialty')
+      features: t('contactLenses.brand_details.solotica.features', { returnObjects: true }),
+      specialty: t('contactLenses.brand_details.solotica.specialty')
     },
     {
       name: 'Bioview',
-      description: t('contactLenses.brands.bioview.description'),
+      description: t('contactLenses.brand_details.bioview.description'),
       image: '/img/bivoview.png',
-      features: t('contactLenses.brands.bioview.features', { returnObjects: true }),
-      specialty: t('contactLenses.brands.bioview.specialty')
+      features: t('contactLenses.brand_details.bioview.features', { returnObjects: true }),
+      specialty: t('contactLenses.brand_details.bioview.specialty')
     }
   ];
 

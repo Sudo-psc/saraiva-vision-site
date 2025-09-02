@@ -20,11 +20,12 @@ fi
 echo "✅ Build concluído"
 
 # Criar/atualizar diretório web
-echo "📁 Copiando arquivos para /var/www/saraiva-vision-site..."
-sudo mkdir -p /var/www/saraiva-vision-site
-sudo rm -rf /var/www/saraiva-vision-site/*
-sudo cp -r dist/* /var/www/saraiva-vision-site/
-sudo chown -R www-data:www-data /var/www/saraiva-vision-site
+echo "📁 Publicando build em /var/www/saraivavision/current (sem releases)"
+sudo mkdir -p /var/www/saraivavision
+sudo rm -rf /var/www/saraivavision/current
+sudo mkdir -p /var/www/saraivavision/current
+sudo cp -r dist/* /var/www/saraivavision/current/
+sudo chown -R www-data:www-data /var/www/saraivavision
 echo "✅ Arquivos copiados"
 
 # Deploy nginx se necessário

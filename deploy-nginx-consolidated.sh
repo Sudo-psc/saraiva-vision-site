@@ -30,7 +30,6 @@ fi
 # Ajustar caminhos nos arquivos principais para usar /etc/nginx/includes
 echo "🔄 Ajustando caminhos dos includes..."
 sed -i 's|/home/saraiva-vision-site/nginx-includes/|/etc/nginx/includes/|g' nginx.conf
-sed -i 's|/home/saraiva-vision-site/nginx-includes/|/etc/nginx/includes/|g' nginx.local.conf
 
 # Fazer backup da configuração atual se existir
 SITE_CONF="/etc/nginx/sites-available/saraivavision"
@@ -48,6 +47,20 @@ ENABLED_CONF="/etc/nginx/sites-enabled/saraivavision"
 if [ ! -L "$ENABLED_CONF" ]; then
     echo "🔗 Criando symlink..."
     ln -s "$SITE_CONF" "$ENABLED_CONF"
+fi
+
+# Remover configs legadas que possam conflitar
+if [ -L "/etc/nginx/sites-enabled/saraivavisao" ]; then
+    echo "🧹 Removendo vhost legado: /etc/nginx/sites-enabled/saraivavisao"
+    rm -f "/etc/nginx/sites-enabled/saraivavisao"
+fi
+if [ -f "/etc/nginx/sites-available/saraivavisao" ]; then
+    echo "🧹 Removendo vhost legado: /etc/nginx/sites-available/saraivavisao"
+    rm -f "/etc/nginx/sites-available/saraivavisao"
+fi
+if [ -L "/etc/nginx/sites-enabled/default" ]; then
+    echo "🧹 Removendo default site"
+    rm -f "/etc/nginx/sites-enabled/default"
 fi
 
 # Testar configuração

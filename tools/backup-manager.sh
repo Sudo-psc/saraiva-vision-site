@@ -4,8 +4,8 @@
 #
 # Visualiza e restaura versões de forma rápida.
 # Suporta:
-#  - Backups do build (saraivavision_YYYYmmdd_HHMMSS) em /var/backups/saraivavisao
-#  - Snapshots de config Nginx (nginx.conf.backup.* no repo e /etc/nginx/sites-available/saraivavisao.backup.*)
+#  - Backups do build (saraivavision_YYYYmmdd_HHMMSS) em /var/backups/saraivavision
+#  - Snapshots de config Nginx (nginx.conf.backup.* no repo e /etc/nginx/sites-available/saraivavision.backup.*)
 #
 # Uso:
 #   backup-manager.sh list [all|dist|nginx]
@@ -19,14 +19,14 @@
 # Ex.: Restaurar o último build (dist) para produção
 #   sudo tools/backup-manager.sh restore dist latest --yes
 #
-# Ex.: Restaurar um snapshot local do nginx para nginx.local.conf
+# Ex.: Restaurar um snapshot local do nginx para nginx.conf
 #   tools/backup-manager.sh restore nginx-local 20240830_235959
 #
 set -euo pipefail
 
-BACKUP_DIR=${BACKUP_DIR:-/var/backups/saraivavisao}
-PROD_DIST=${PROD_DIST:-/var/www/saraivavisao/saraivavision}
-NGINX_AVAIL=${NGINX_AVAIL:-/etc/nginx/sites-available/saraivavisao}
+BACKUP_DIR=${BACKUP_DIR:-/var/backups/saraivavision}
+PROD_DIST=${PROD_DIST:-/var/www/saraivavision/current}
+NGINX_AVAIL=${NGINX_AVAIL:-/etc/nginx/sites-available/saraivavision}
 
 # Descobre diretório do repositório (volta 1 nível a partir de tools/)
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
@@ -107,7 +107,7 @@ list_nginx() {
   local sys_any=0
   local tmp_s
   tmp_s=$(mktemp)
-  for f in /etc/nginx/sites-available/saraivavisao.backup.*; do
+  for f in /etc/nginx/sites-available/saraivavision.backup.*; do
     [[ -f "$f" ]] || continue
     sys_any=1
     local name size mtime
@@ -175,7 +175,7 @@ restore_nginx_local() {
   local ts=${1:-}
   if [[ -z "$ts" ]]; then echo "Uso: $0 restore nginx-local <timestamp> [--yes] [--dry-run]"; exit 1; fi
   local src="$REPO_DIR/nginx.conf.backup.$ts"
-  local dst="$REPO_DIR/nginx.local.conf"
+  local dst="$REPO_DIR/nginx.conf"
   if [[ ! -f "$src" ]]; then echo "❌ Snapshot local não encontrado: $src"; exit 1; fi
   echo "Vai restaurar arquivo local:"; echo "  $src -> $dst"
   if [[ "${ASSUME_YES:-0}" != "1" ]]; then confirm "Continuar?" || { echo "Cancelado."; exit 0; }; fi
@@ -187,7 +187,7 @@ restore_nginx_system() {
   local ts=${1:-}
   if [[ -z "$ts" ]]; then echo "Uso: $0 restore nginx-system <timestamp> [--yes] [--dry-run]"; exit 1; fi
   if [[ "$EUID" -ne 0 ]]; then echo "❌ É necessário sudo para restaurar em /etc/nginx"; exit 1; fi
-  local src="/etc/nginx/sites-available/saraivavisao.backup.$ts"
+  local src="/etc/nginx/sites-available/saraivavision.backup.$ts"
   local dst="$NGINX_AVAIL"
   if [[ ! -f "$src" ]]; then echo "❌ Snapshot de sistema não encontrado: $src"; exit 1; fi
   echo "Vai restaurar Nginx:"; echo "  $src -> $dst"

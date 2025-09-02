@@ -7,7 +7,7 @@
   - API local (/api/): Network First com fallback ao cache (quando possível)
 */
 
-const SW_VERSION = 'v1.0.2';
+const SW_VERSION = 'v1.0.3';
 const RUNTIME_CACHE = `sv-runtime-${SW_VERSION}`;
 const ASSETS_CACHE = `sv-assets-${SW_VERSION}`;
 const CORE_CACHE = `sv-core-${SW_VERSION}`;
@@ -21,7 +21,10 @@ const CORE_ASSETS = [
   '/favicon-32x32.png',
   '/apple-touch-icon.png',
   // Accessibility floating button icon (improves A11y UX offline)
-  '/img/Acessib_icon.png'
+  '/img/Acessib_icon.png',
+  // Fontes essenciais
+  '/assets/fonts/Inter-roman.var.woff2',
+  '/assets/fonts/Inter-italic.var.woff2'
 ];
 
 self.addEventListener('install', (event) => {
@@ -44,6 +47,11 @@ self.addEventListener('activate', (event) => {
         })
       );
       await self.clients.claim();
+      // Notifica clientes sobre atualização
+      const clients = await self.clients.matchAll({ includeUncontrolled: true });
+      clients.forEach(client => {
+        client.postMessage({ type: 'SW_UPDATED', version: SW_VERSION });
+      });
     })()
   );
 });
@@ -53,7 +61,10 @@ function isNavigationRequest(request) {
 }
 
 function isAssetRequest(url) {
-  return url.origin === self.location.origin && (/\/assets\//.test(url.pathname) || /\.(css|js|png|jpg|jpeg|gif|svg|webp|avif|woff2?)$/i.test(url.pathname));
+  return url.origin === self.location.origin && (
+    /\/assets\//.test(url.pathname) ||
+    /\.(css|js|png|jpg|jpeg|gif|svg|webp|avif|woff2?|ttf|otf)$/i.test(url.pathname)
+  );
 }
 
 function isApiRequest(url) {
@@ -66,6 +77,12 @@ self.addEventListener('fetch', (event) => {
 
   // Only handle GET requests from same origin
   if (request.method !== 'GET' || url.origin !== self.location.origin) return;
+
+  // Always fetch network for ads/web-vitals endpoints
+  if (url.pathname.startsWith('/ads') || url.pathname.startsWith('/web-vitals')) {
+    event.respondWith(fetch(request));
+    return;
+  }
 
   // Safari fix: handle errors more gracefully
   const handleError = (error) => {
@@ -89,7 +106,7 @@ self.addEventListener('fetch', (event) => {
           try {
             const cache = await caches.open(CORE_CACHE);
             const cached = await cache.match('/index.html');
-            return cached || new Response('<!DOCTYPE html><html><head><title>Offline</title></head><body><h1>Site offline</h1><p>Verifique sua conexão.</p></body></html>', {
+            return cached || new Response('<!DOCTYPE html><html lang="pt-BR"><head><title>Offline</title><style>body{font-family:sans-serif;text-align:center;padding:2em;}h1{color:#2563eb;}p{color:#64748b;}</style></head><body><h1>Você está offline</h1><p>O site Saraiva Vision está sem conexão.<br>Tente novamente mais tarde.</p></body></html>', {
               headers: { 'Content-Type': 'text/html' }
             });
           } catch (cacheError) {
