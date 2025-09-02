@@ -80,7 +80,7 @@ const CTAModal = () => {
         ref={modalRef}
         className="relative w-full sm:max-w-md mx-auto bg-white rounded-t-3xl sm:rounded-3xl shadow-xl p-6 sm:p-8 animate-in fade-in zoom-in-95 max-h-[90dvh] overflow-y-auto touch-scroll scroll-container scrollbar-none"
       >
-        <button className="absolute top-3 right-3 p-2 rounded-full hover:bg-slate-100" aria-label={t('ui.close', 'Fechar')} onClick={handleClose}>
+        <button type="button" className="absolute top-3 right-3 p-2 rounded-full hover:bg-slate-100" aria-label={t('ui.close', 'Fechar')} onClick={handleClose}>
           <X size={18} />
         </button>
         <h3 id="cta-modal-title" className="text-xl font-semibold mb-1 text-slate-800">{t('contact.schedule_consultation', 'Agendar Consulta')}</h3>
@@ -89,6 +89,7 @@ const CTAModal = () => {
         <div className="space-y-4">
           {/* Online Scheduling */}
           <button
+            type="button"
             onClick={() => { try { trackConversion('schedule_start', { method: 'online' }); } catch (_) { }; safeOpenExternal(clinicInfo.onlineSchedulingUrl, 'Agendamento Online'); }}
             className="flex items-center gap-4 p-5 rounded-2xl border-2 border-blue-300 bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 transition-all duration-200 transform hover:scale-[1.02] shadow-lg w-full text-left"
           >
@@ -107,6 +108,7 @@ const CTAModal = () => {
 
           {/* WhatsApp */}
           <button
+            type="button"
             onClick={() => { try { trackConversion('whatsapp_click'); } catch (_) { }; safeOpenExternal(whatsappUrl, 'WhatsApp'); }}
             className="flex items-center gap-4 p-5 rounded-2xl border-2 border-green-300 bg-gradient-to-r from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 transition-all duration-200 transform hover:scale-[1.02] shadow-lg w-full text-left"
           >
@@ -122,6 +124,7 @@ const CTAModal = () => {
 
           {/* Chatbot */}
           <button
+            type="button"
             onClick={() => safeOpenExternal(chatbotUrl, 'Chatbot AI')}
             className="flex items-center gap-4 p-4 rounded-2xl border border-teal-200 bg-teal-50 hover:bg-teal-100 transition w-full text-left"
           >
@@ -134,6 +137,7 @@ const CTAModal = () => {
 
           {/* Phone */}
           <button
+            type="button"
             onClick={() => {
               try { trackConversion('phone_click'); } catch (_) { }
               try { window.location.href = phoneHref; } catch (e) { console.error('Error initiating phone call:', e); alert(t('contact.phone_call_error', `Erro ao iniciar chamada. Ligue manualmente: ${phoneDisplay}`)); }

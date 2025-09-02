@@ -144,6 +144,7 @@ const PodcastEpisodeCard = ({
         // Possível causa: IntersectionObserver não acionando dentro de carrossel horizontal em alguns navegadores.
         lazy: false,
         className: 'group-hover:scale-105 transition-transform',
+        fallbackSrc: '/Podcasts/Covers/podcast.png',
         onError: (e) => {
           try {
             if (e.currentTarget.src !== '/Podcasts/Covers/podcast.png') {

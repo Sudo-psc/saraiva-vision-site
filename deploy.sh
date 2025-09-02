@@ -16,8 +16,8 @@ readonly CURRENT_LINK="$DEPLOY_ROOT/current"   # nginx root points here
 readonly BACKUP_DIR="/var/backups/saraivavision"
 readonly NGINX_CONFIG_SRC="${PROJECT_ROOT}/nginx.conf"  # configuração canônica completa
 # Preferir um site.conf minimal correto, senão cair para nginx.conf canônico.
-if [[ -f "${PROJECT_ROOT}/nginx-site-minimal.conf" ]]; then
-  NGINX_SITE_CONFIG_SRC="${PROJECT_ROOT}/nginx-site-minimal.conf"
+if [[ -f "${PROJECT_ROOT}/nginx.repaired.conf" ]]; then
+  NGINX_SITE_CONFIG_SRC="${PROJECT_ROOT}/nginx.repaired.conf"
 elif [[ -f "${PROJECT_ROOT}/nginx.conf" ]]; then
   NGINX_SITE_CONFIG_SRC="${PROJECT_ROOT}/nginx.conf"
 elif [[ -f "${PROJECT_ROOT}/nginx-site.conf" ]]; then

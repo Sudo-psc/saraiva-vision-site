@@ -116,7 +116,7 @@ const GoogleReviewsWidget = () => {
           )}
         </h3>
         <div className="flex items-center gap-3">
-          <button onClick={fetchReviews} disabled={loading} className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 transition disabled:opacity-40" title="Recarregar">
+          <button type="button" onClick={fetchReviews} disabled={loading} className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 transition disabled:opacity-40" title="Recarregar">
             <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
           </button>
           <a href={googleReviewUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline">Avaliar</a>
@@ -176,11 +176,11 @@ const GoogleReviewsWidget = () => {
       {!loading && reviews.length > 5 && (
         <div className="flex justify-center">
           {hasMore ? (
-            <button onClick={() => setVisibleCount(c => c + 3)} className="mt-1 text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">
+            <button type="button" onClick={() => setVisibleCount(c => c + 3)} className="mt-1 text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">
               Ver mais avaliações
             </button>
           ) : (
-            <button onClick={() => setVisibleCount(5)} className="mt-1 text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">
+            <button type="button" onClick={() => setVisibleCount(5)} className="mt-1 text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">
               Mostrar menos
             </button>
           )}

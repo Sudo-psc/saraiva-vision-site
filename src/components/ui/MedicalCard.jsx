@@ -177,8 +177,12 @@ const MedicalCard = forwardRef(({
                 'w-full h-full object-cover transition-transform group-hover:scale-105',
                 media.className
               )}
+              fallbackSrc={media.fallbackSrc}
               onLoad={handleLoad}
-              onError={handleError}
+              onError={(e) => {
+                try { media.onError && media.onError(e); } catch (_) {}
+                try { handleError(e); } catch (_) {}
+              }}
             />
             {isLoading && (
               <div className="absolute inset-0 bg-gradient-to-br from-slate-200 to-slate-100 animate-pulse" />

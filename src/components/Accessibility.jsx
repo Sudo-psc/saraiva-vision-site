@@ -386,11 +386,11 @@ const Accessibility = () => {
             }}
           >
             {'1234567890qwertyuiopasdfghjklçzxcvbnm'.split('').map(k => (
-              <button key={k} className="px-2 py-2 rounded bg-purple-100 hover:bg-purple-200 text-slate-700 font-medium" onClick={() => {
+              <button type="button" key={k} className="px-2 py-2 rounded bg-purple-100 hover:bg-purple-200 text-slate-700 font-medium" onClick={() => {
                 const a = document.activeElement; if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) { a.value += k; a.dispatchEvent(new Event('input', { bubbles: true })); }
               }}>{k}</button>
             ))}
-            <button className="col-span-2 px-2 py-2 rounded bg-pink-500 text-white font-semibold" onClick={() => { const a = document.activeElement; if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) { a.value += ' '; a.dispatchEvent(new Event('input', { bubbles: true })); } }}>Espaço</button>
+            <button type="button" className="col-span-2 px-2 py-2 rounded bg-pink-500 text-white font-semibold" onClick={() => { const a = document.activeElement; if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) { a.value += ' '; a.dispatchEvent(new Event('input', { bubbles: true })); } }}>Espaço</button>
           </motion.div>
         )}
       </AnimatePresence>

@@ -11,11 +11,15 @@ describe('Contact API Handler (reCAPTCHA v3)', () => {
     originalEnv = process.env;
     process.env = { ...originalEnv, NODE_ENV: 'test' };
 
+    // Reset rate limiter for each test
+    global.__contactRateLimiter = new Map();
+
     mockReq = {
       method: 'POST',
       headers: {},
       url: '/api/contact',
-      body: {}
+      body: {},
+      socket: { remoteAddress: '127.0.0.1' }
     };
 
     mockRes = {

@@ -605,6 +605,10 @@
       "lentes_contato": {
         "title": "Eye Health in Focus: Contact Lenses — Rigid vs Soft",
         "description": "Differences, indications and care between rigid and soft contact lenses. When each is recommended and how to maintain a safe, comfortable fit."
+      },
+      "cirurgia_refrativa": {
+        "title": "Eye Health in Focus: Refractive Surgery — Freedom from Glasses",
+        "description": "Everything you need to know about refractive surgery: LASIK, PRK and other modern techniques to correct myopia, hyperopia and astigmatism. When it's indicated and what to expect from the procedure."
       }
     }
   },
@@ -899,7 +903,7 @@
     "go_to_item": "Go to item {{index}}",
     "recommended": "RECOMMENDED",
     "available_24_7": "Available 24/7 • Instant confirmation",
-    "close_menu": "Close menu", 
+    "close_menu": "Close menu",
     "close_player": "Close player",
     "close_tip": "Close tip",
     "restart_episode": "Restart episode",
@@ -909,7 +913,7 @@
     "language_portuguese": "Mudar para Português",
     "language_english": "Switch to English",
     "readability_control": "Readability Control",
-    "reading_support": "Reading Support", 
+    "reading_support": "Reading Support",
     "alternative_communication": "Alternative Communication",
     "navigation_input": "Navigation and Input",
     "decrease_font": "Decrease font",
@@ -917,7 +921,7 @@
     "your_name": "Your name",
     "alt": {
       "consultations": "Ophthalmological Consultations",
-      "refraction": "Refraction Exams", 
+      "refraction": "Refraction Exams",
       "specialized": "Specialized Treatments",
       "surgeries": "Ophthalmological Surgeries",
       "pediatric": "Pediatric Follow-up",

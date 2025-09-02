@@ -34,7 +34,7 @@ const WhatsappWidget = ({ phoneNumber }) => {
               exit={{ opacity: 0, y: 10, scale: 0.9 }}
               className="absolute bottom-full right-0 mb-3 bg-white text-slate-800 px-4 py-3 rounded-2xl shadow-xl border border-green-200 max-w-xs text-sm font-medium whitespace-nowrap"
             >
-              <button 
+              <button type="button"
                 onClick={hideTooltip}
                 className="absolute -top-1 -right-1 p-1 bg-slate-100 rounded-full text-slate-400 hover:text-slate-600"
                 aria-label="Fechar dica"

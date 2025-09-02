@@ -49,9 +49,9 @@ const ConsentManager = () => {
     <div className="fixed bottom-4 left-4 right-4 md:right-auto md:max-w-md z-50 bg-white border border-slate-200 shadow-xl rounded-lg p-4 text-sm space-y-3">
       <p className="text-slate-700">{t('privacy.intro')}</p>
       <div className="flex flex-wrap gap-2 justify-end">
-        <button onClick={rejectAll} className="px-3 py-1.5 rounded border text-slate-600 hover:bg-slate-50">{t('common.reject_all', 'Rejeitar')}</button>
-        <button onClick={() => setOpen(true)} className="px-3 py-1.5 rounded border text-slate-600 hover:bg-slate-50">{t('common.customize', 'Personalizar')}</button>
-        <button onClick={acceptAll} className="px-3 py-1.5 rounded bg-blue-600 text-white hover:bg-blue-700">{t('common.accept_all', 'Aceitar')}</button>
+        <button type="button" onClick={rejectAll} className="px-3 py-1.5 rounded border text-slate-600 hover:bg-slate-50">{t('common.reject_all', 'Rejeitar')}</button>
+        <button type="button" onClick={() => setOpen(true)} className="px-3 py-1.5 rounded border text-slate-600 hover:bg-slate-50">{t('common.customize', 'Personalizar')}</button>
+        <button type="button" onClick={acceptAll} className="px-3 py-1.5 rounded bg-blue-600 text-white hover:bg-blue-700">{t('common.accept_all', 'Aceitar')}</button>
       </div>
     </div>
   );
@@ -76,8 +76,8 @@ const ConsentManager = () => {
           </label>
         ))}
         <div className="flex justify-end gap-3 pt-2">
-          <button onClick={() => setOpen(false)} className="px-3 py-1.5 text-slate-700 hover:underline">{t('common.cancel', 'Cancelar')}</button>
-          <button onClick={() => save(state)} className="px-4 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700">{t('common.save', 'Salvar')}</button>
+          <button type="button" onClick={() => setOpen(false)} className="px-3 py-1.5 text-slate-700 hover:underline">{t('common.cancel', 'Cancelar')}</button>
+          <button type="button" onClick={() => save(state)} className="px-4 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700">{t('common.save', 'Salvar')}</button>
         </div>
       </div>
     </div>

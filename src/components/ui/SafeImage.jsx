@@ -53,6 +53,35 @@ const SafeImage = ({
     return exts.map(e => base + e);
   };
 
+  const pathCaseAlternatives = (original) => {
+    try {
+      if (!original || typeof original !== 'string') return [];
+      const clean = original.split(/[?#]/)[0];
+      // Toggle common case variants for known folders
+      const variants = new Set();
+      const toggles = [
+        { from: '/Podcasts/', to: '/podcasts/' },
+        { from: '/podcasts/', to: '/Podcasts/' },
+        { from: '/Covers/', to: '/covers/' },
+        { from: '/covers/', to: '/Covers/' },
+      ];
+      let current = clean;
+      // Apply each toggle independently to produce candidates
+      toggles.forEach(({ from, to }) => {
+        if (current.includes(from)) variants.add(current.replace(from, to));
+        // Also try applying on already toggled variants
+        variants.forEach(v => {
+          if (v.includes(from)) variants.add(v.replace(from, to));
+        });
+      });
+      // A fully lowercased path variant as last resort
+      variants.add(clean.split('?')[0].toLowerCase());
+      return Array.from(variants);
+    } catch {
+      return [];
+    }
+  };
+
   const attemptNextAlternative = () => {
     if (!tryAlternatives) return false;
     const attempted = triedRef.current;
@@ -67,6 +96,12 @@ const SafeImage = ({
     // 3. Different extensions for slug
     if (slug && slug !== src) {
       extensionAlternatives(slug).forEach(c => candidates.push(c));
+    }
+
+    // 4. Path case alternatives for common folders
+    pathCaseAlternatives(src).forEach(c => candidates.push(c));
+    if (slug && slug !== src) {
+      pathCaseAlternatives(slug).forEach(c => candidates.push(c));
     }
 
     for (const c of candidates) {

@@ -81,7 +81,7 @@ const Hero = () => {
             {/* Micro-roadmap copy below hero primary actions */}
             <p className="text-sm text-slate-700 mt-2 font-medium" aria-live="polite">
               {t('hero.microcopy_fast_confirmation')}
-              <button onClick={handleAgendarContato} className="ml-2 text-blue-700 hover:underline">{t('hero.more_contact_options')}</button>
+              <button type="button" onClick={handleAgendarContato} className="ml-2 text-blue-700 hover:underline">{t('hero.more_contact_options')}</button>
             </p>
 
             <div className="flex items-center gap-4 pt-6 justify-center lg:justify-start">

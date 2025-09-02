@@ -219,14 +219,14 @@ const Contact = () => {
       title: t('contact.info.phone_title'),
       details: (
         <div className="flex items-center gap-2">
-          <button onClick={() => window.dispatchEvent(new Event('open-floating-cta'))} className="hover:underline font-medium text-left">
+                <button type="button" onClick={() => window.dispatchEvent(new Event('open-floating-cta'))} className="hover:underline font-medium text-left">
             +55 33 99860-1427
           </button>
           <span className="sr-only">+55 33 99860-1427</span>
         </div>
       ),
       subDetails: (
-        <button onClick={() => window.dispatchEvent(new Event('open-floating-cta'))} className="text-blue-600 hover:underline flex items-center gap-1 text-sm font-semibold">
+        <button type="button" onClick={() => window.dispatchEvent(new Event('open-floating-cta'))} className="text-blue-600 hover:underline flex items-center gap-1 text-sm font-semibold">
           <MessageCircle size={14} /> {t('contact.info.phone_whatsapp')}
         </button>
       )

@@ -754,6 +754,10 @@
       "lentes_contato": {
         "title": "Saúde Ocular em Foco: Lentes de Contato — Rígidas vs Gelatinosas",
         "description": "Diferenças, indicações e cuidados entre lentes rígidas e gelatinosas. Quando cada uma é indicada e como manter a adaptação com segurança."
+      },
+      "cirurgia_refrativa": {
+        "title": "Saúde Ocular em Foco: Cirurgia Refrativa — Liberdade dos Óculos",
+        "description": "Entenda tudo sobre cirurgia refrativa: LASIK, PRK e outras técnicas modernas para correção de miopia, hipermetropia e astigmatismo. Quando é indicada e o que esperar do procedimento."
       }
     }
   },

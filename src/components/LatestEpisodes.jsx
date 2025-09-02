@@ -1,10 +1,9 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Mic2, ArrowRight } from 'lucide-react';
+import { Mic2, ArrowRight, Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AudioPlayer from '@/components/AudioPlayer';
-import PodcastEpisodeCard from '@/components/PodcastEpisodeCard';
 import { Link } from 'react-router-dom';
 import SpotifyEmbed from '@/components/SpotifyEmbed';
 
@@ -12,39 +11,40 @@ const PODCAST_ROUTE = '/podcast';
 
 const LatestEpisodes = () => {
     const { t } = useTranslation();
-    const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
-    
-    // State for modal player
-    const [selectedEpisode, setSelectedEpisode] = React.useState(null);
-    const [isPlayerModalOpen, setIsPlayerModalOpen] = React.useState(false);
-
-    const handlePlayEpisode = (episode) => {
-        setSelectedEpisode(episode);
-        setIsPlayerModalOpen(true);
-    };
 
     const episodes = [
         {
-            id: 'lentes-ep1',
-            src: '/Podcasts/Saúde Ocular em Foco - Lentes de Contato_ Rígidas vs Gelatinosas_2025_08_31.mp3',
-            title: t('podcast.episodes.lentes_contato.title'),
-            description: t('podcast.episodes.lentes_contato.description'),
-            duration: '05:30',
-            cover: '/Podcasts/Covers/podcast.png',
-            category: 'Lentes de Contato',
-            date: '2025-08-31',
+            id: 'cirurgia-refrativa-ep1',
+            src: '/Podcasts/saude-ocular-cirurgia-refrativa.mp3',
+            title: t('podcast.episodes.cirurgia_refrativa.title'),
+            description: t('podcast.episodes.cirurgia_refrativa.description'),
+            duration: '08:15',
+            cover: '/Podcasts/Covers/refrativa.png',
+            category: 'Cirurgias',
+            date: '2025-09-01',
             spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
         },
         {
+            id: 'lentes-ep1',
+            src: '/Podcasts/saude-ocular-lentes.mp3',
+            title: t('podcast.episodes.lentes_contato.title'),
+            description: t('podcast.episodes.lentes_contato.description'),
+            duration: '05:30',
+            cover: '/Podcasts/Covers/lentes_contato_cover.png',
+            category: 'Lentes de Contato',
+            date: '2025-08-31',
+            spotifyUrl: 'https://creators.spotify.com/pod/profile/philipe-cruz/episodes/Sade-Ocular-em-Foco---Lentes-de-Contato-Rgidas-vs-Gelatinosas-e37iag0'
+        },
+        {
             id: 'dmri-ep1',
-            src: '/Podcasts/Saúde Ocular em Foco - DMRI_ Quando a Mácula Decide se Aposentar_2025_08_31.mp3',
+            src: '/Podcasts/saude-ocular-dmri.mp3',
             title: t('podcast.episodes.dmri.title'),
             description: t('podcast.episodes.dmri.description'),
             duration: '06:13',
             cover: '/Podcasts/Covers/dmri.png',
             category: 'Doenças Oculares',
             date: '2025-08-31',
-            spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
+            spotifyUrl: 'https://creators.spotify.com/pod/profile/philipe-cruz/episodes/Sade-Ocular-em-Foco---DMRI-Quando-a-Mcula-Decide-se-Aposentar-e37i9pk'
         },
         {
             id: 'glaucoma-ep1',
@@ -103,7 +103,7 @@ const LatestEpisodes = () => {
         },
         {
             id: 'olho-seco-ep5',
-            src: '/Podcasts/olho-seco.mp3',
+            src: '/Podcasts/olho_seco.mp3',
             title: t('podcast.episodes.olho_seco.title'),
             description: t('podcast.episodes.olho_seco.description'),
             duration: '09:50',
@@ -114,13 +114,13 @@ const LatestEpisodes = () => {
         },
         {
             id: 'duvidas-ep6',
-            src: '/Podcasts/duvidas.mp3',
+            src: '/Podcasts/saude-ocular-duvidas.mp3',
             title: t('podcast.episodes.duvidas.title'),
             description: t('podcast.episodes.duvidas.description'),
-            duration: '11:05',
+            duration: '12:45',
             cover: '/Podcasts/Covers/duvidas_cover.jpeg',
             category: 'FAQ',
-            date: '2024-08-01',
+            date: '2025-08-25',
             spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
         }
     ];
@@ -147,14 +147,15 @@ const LatestEpisodes = () => {
             <div className="container mx-auto px-4 md:px-6 relative z-10">
                 {/* Enhanced Header */}
                 <div className="text-center mb-10 md:mb-12">
-                    {isTestEnv && <span className="sr-only">podcast.title</span>}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-blue-100 via-indigo-50 to-purple-100 text-blue-700 mb-8 border border-blue-200/50 shadow-lg backdrop-blur-sm"
                     >
-                        <Mic2 className="w-6 h-6" />
+                        <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                            <Mic2 className="w-4 h-4 text-white" />
+                        </div>
                         <span className="text-sm font-bold tracking-wide uppercase">{t('navbar.podcast', 'Podcast')}</span>
                         <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
                     </motion.div>
@@ -190,7 +191,7 @@ const LatestEpisodes = () => {
                         className="flex flex-wrap items-center justify-center gap-4 mb-8"
                     >
                         <div className="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-slate-200/50 shadow-sm">
-                            <Mic2 className="w-5 h-5 text-blue-600" />
+                            <Headphones className="w-4 h-4 text-blue-600" />
                             <span className="text-sm font-semibold text-slate-700">{episodes.length} Episódios</span>
                         </div>
                         <div className="flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-slate-200/50 shadow-sm">
@@ -206,7 +207,7 @@ const LatestEpisodes = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
-                    className="mb-4 md:mb-6"
+                    className="mb-6 md:mb-8 lg:mb-10"
                 >
                     <div className="relative">
                         {/* Gradient fade edges */}
@@ -215,10 +216,11 @@ const LatestEpisodes = () => {
 
                         <div
                             data-testid="podcast-scroll"
-                            className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-proximity pb-3 md:pb-4 px-1 md:px-2 scroll-container scrollbar-none touch-pan-x"
+                            className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-3 md:pb-4 px-1 md:px-2"
                             style={{
                                 scrollbarWidth: 'none',
-                                msOverflowStyle: 'none'
+                                msOverflowStyle: 'none',
+                                WebkitScrollbar: { display: 'none' }
                             }}
                         >
                             {episodes.map((episode, index) => (
@@ -232,10 +234,9 @@ const LatestEpisodes = () => {
                                 >
                                     <div className="relative group perspective-1000">
                                         <div className="absolute -inset-1 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
-                                        <PodcastEpisodeCard
+                                        <AudioPlayer
                                             episode={episode}
-                                            index={index}
-                                            onPlay={handlePlayEpisode}
+                                            mode="inline"
                                             className="h-full relative glass-blue card-3d shadow-xl rounded-xl hover:shadow-2xl transition-all duration-300 group-hover:transform group-hover:scale-[1.02] border border-blue-200/40"
                                         />
                                     </div>
@@ -258,7 +259,7 @@ const LatestEpisodes = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
-                    className="mb-4"
+                    className="mb-8"
                 >
                     <SpotifyEmbed type="show" className="max-w-3xl mx-auto" />
                 </motion.div>
@@ -280,7 +281,7 @@ const LatestEpisodes = () => {
                                 size="lg"
                                 className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 gap-3 px-10 py-4 text-lg font-bold rounded-2xl shadow-2xl border-0 transform hover:scale-105 transition-all duration-300"
                             >
-                                <Mic2 className="w-6 h-6" />
+                                <Headphones className="w-6 h-6" />
                                 {t('podcast.visit_podcast', 'Ver todos os episódios')}
                                 <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                             </Button>
@@ -292,20 +293,6 @@ const LatestEpisodes = () => {
                     </p>
                 </motion.div>
             </div>
-
-            {/* Audio Player Modal */}
-            <AnimatePresence>
-                {isPlayerModalOpen && selectedEpisode && (
-                    <AudioPlayer
-                        episode={selectedEpisode}
-                        mode="modal"
-                        onClose={() => {
-                            setIsPlayerModalOpen(false);
-                            setSelectedEpisode(null);
-                        }}
-                    />
-                )}
-            </AnimatePresence>
         </section>
     );
 };

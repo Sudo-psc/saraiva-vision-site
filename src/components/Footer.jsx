@@ -106,7 +106,7 @@ const Footer = () => {
               <span className="block">DPO: <a href={`mailto:${clinicInfo.dpoEmail}`} className="underline hover:text-white">{clinicInfo.dpoEmail}</a></span>
               <span className="block">
                 <a href="/privacy" className="underline hover:text-white mr-3">{t('privacy.link_label')}</a>
-                <button onClick={() => window.dispatchEvent(new Event('open-privacy-settings'))} className="underline hover:text-white">
+                <button type="button" onClick={() => window.dispatchEvent(new Event('open-privacy-settings'))} className="underline hover:text-white">
                   {t('privacy.manage_cookies')}
                 </button>
               </span>
