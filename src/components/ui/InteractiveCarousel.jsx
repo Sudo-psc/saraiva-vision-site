@@ -34,6 +34,7 @@ const InteractiveCarousel = forwardRef(({
   showIndicators = true,
   arrowPosition = 'outside',
   indicatorStyle = 'dots',
+  indicatorGranularity = 'items', // 'items' | 'pages'
   
   // Snap Configuration
   snapMode = 'start',
@@ -73,6 +74,7 @@ const InteractiveCarousel = forwardRef(({
     isDragging,
     scrollToIndex,
     scrollByAmount,
+    itemsPerView,
     handlers
   } = useCarousel(items, {
     autoPlay,
@@ -295,8 +297,13 @@ const InteractiveCarousel = forwardRef(({
           aria-label={t('ui.carousel_navigation', 'Navegação do carrossel')}
           role="tablist"
         >
-          {items.map((_, index) => {
-            const isActive = index === currentIndex;
+          {(indicatorGranularity === 'pages' 
+            ? Array.from({ length: Math.max(1, Math.ceil(items.length / Math.max(1, itemsPerView))) })
+            : items
+           ).map((_, index) => {
+            const isActive = indicatorGranularity === 'pages'
+              ? index === Math.floor(currentIndex / Math.max(1, itemsPerView))
+              : index === currentIndex;
             
             if (indicatorStyle === 'dots') {
               return (
@@ -305,16 +312,20 @@ const InteractiveCarousel = forwardRef(({
                   type="button"
                   role="tab"
                   aria-selected={isActive}
-                  aria-label={t('ui.go_to_item', { 
-                    index: index + 1, 
-                    defaultValue: `Ir para item ${index + 1}` 
-                  })}
-                  onClick={() => scrollToIndex(index)}
+                  aria-label={indicatorGranularity === 'pages'
+                    ? t('ui.go_to_page', { index: index + 1, defaultValue: `Ir para página ${index + 1}` })
+                    : t('ui.go_to_item', { index: index + 1, defaultValue: `Ir para item ${index + 1}` })
+                  }
+                  onClick={() => scrollToIndex(
+                    indicatorGranularity === 'pages' 
+                      ? index * Math.max(1, itemsPerView) 
+                      : index
+                  )}
                   className={cn(
-                    'w-3 h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500',
+                    'rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500',
                     {
-                      'bg-blue-600 scale-110 shadow': isActive,
-                      'bg-slate-300 hover:bg-slate-400': !isActive
+                      'bg-blue-600 w-6 h-2.5 shadow': isActive,
+                      'bg-slate-300 hover:bg-slate-400 w-2.5 h-2.5': !isActive
                     }
                   )}
                 />
@@ -328,11 +339,15 @@ const InteractiveCarousel = forwardRef(({
                   type="button"
                   role="tab"
                   aria-selected={isActive}
-                  aria-label={t('ui.go_to_item', { 
-                    index: index + 1, 
-                    defaultValue: `Ir para item ${index + 1}` 
-                  })}
-                  onClick={() => scrollToIndex(index)}
+                  aria-label={indicatorGranularity === 'pages'
+                    ? t('ui.go_to_page', { index: index + 1, defaultValue: `Ir para página ${index + 1}` })
+                    : t('ui.go_to_item', { index: index + 1, defaultValue: `Ir para item ${index + 1}` })
+                  }
+                  onClick={() => scrollToIndex(
+                    indicatorGranularity === 'pages' 
+                      ? index * Math.max(1, itemsPerView) 
+                      : index
+                  )}
                   className={cn(
                     'h-1 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500',
                     {

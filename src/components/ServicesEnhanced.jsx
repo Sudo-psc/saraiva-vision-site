@@ -255,6 +255,7 @@ const ServicesEnhanced = ({ full = false }) => {
           showIndicators
           arrowPosition="outside"
           indicatorStyle="dots"
+          indicatorGranularity="pages"
           
           // Snap Configuration
           snapMode="start"

@@ -91,6 +91,8 @@ export const useCarousel = <T>(
   const dragStartXRef = useRef(0);
   const scrollStartRef = useRef(0);
   const cardWidthRef = useRef(320);
+  const itemsPerViewRef = useRef(1);
+  const [itemsPerView, setItemsPerView] = useState(1);
 
   // Measure card width for scroll calculations
   const measure = useCallback(() => {
@@ -98,10 +100,22 @@ export const useCarousel = <T>(
     if (!el) return;
     const first = el.querySelector('[data-card]') as HTMLElement;
     if (first) {
-      const style = window.getComputedStyle(first);
       const width = first.getBoundingClientRect().width;
-      const marginRight = parseFloat(style.marginRight) || (options.gap || 24);
-      cardWidthRef.current = width + marginRight;
+      const second = first.nextElementSibling as HTMLElement | null;
+      let gap = options.gap || 24;
+      if (second) {
+        const r1 = first.getBoundingClientRect();
+        const r2 = second.getBoundingClientRect();
+        gap = Math.max(0, r2.left - r1.right);
+      } else {
+        const style = window.getComputedStyle(el);
+        const styleGap = parseFloat((style as any).columnGap || (style as any).gap);
+        if (!Number.isNaN(styleGap)) gap = styleGap;
+      }
+      cardWidthRef.current = width + gap;
+      const perView = Math.max(1, Math.round(el.clientWidth / cardWidthRef.current));
+      itemsPerViewRef.current = perView;
+      setItemsPerView(perView);
     }
   }, [options.gap]);
 
@@ -121,11 +135,11 @@ export const useCarousel = <T>(
   const scrollByAmount = useCallback((direction: number) => {
     const el = scrollerRef.current;
     if (!el) return;
-    const delta = el.clientWidth * 0.8 * direction;
-    const max = el.scrollWidth - el.clientWidth;
-    const next = Math.max(0, Math.min(el.scrollLeft + delta, max));
-    el.scrollTo({ left: next, behavior: 'smooth' });
-  }, []);
+    const per = Math.max(1, itemsPerViewRef.current);
+    const rawIndex = Math.round(el.scrollLeft / cardWidthRef.current);
+    const targetIndex = Math.max(0, Math.min(items.length - 1, rawIndex + direction * per));
+    scrollToIndex(targetIndex);
+  }, [items.length, scrollToIndex]);
 
   // Update current index based on scroll position
   const updateIndex = useCallback(
@@ -168,8 +182,14 @@ export const useCarousel = <T>(
   const endDrag = useCallback(() => {
     if (!isDragging) return;
     setIsDragging(false);
-    setTimeout(() => { pauseRef.current = false; }, 800);
-  }, [isDragging]);
+    setTimeout(() => {
+      pauseRef.current = false;
+      const el = scrollerRef.current;
+      if (!el) return;
+      const nearest = Math.round(el.scrollLeft / cardWidthRef.current);
+      scrollToIndex(nearest);
+    }, 200);
+  }, [isDragging, scrollToIndex]);
 
   // Wheel handler for horizontal scrolling
   const onWheel = useCallback((e: React.WheelEvent) => {
@@ -254,17 +274,24 @@ export const useCarousel = <T>(
     const el = scrollerRef.current;
     if (!el) return;
     
+    const snapAfterScroll = debounce(() => {
+      if (isDragging) return;
+      const nearest = Math.round(el.scrollLeft / cardWidthRef.current);
+      scrollToIndex(nearest);
+    }, 180);
+
     const handleScroll = () => {
       updateIndex();
       const max = el.scrollWidth - el.clientWidth;
       if (el.scrollLeft >= max) {
         el.scrollLeft = max;
       }
+      snapAfterScroll();
     };
     
     el.addEventListener('scroll', handleScroll, { passive: true });
     return () => el.removeEventListener('scroll', handleScroll);
-  }, [updateIndex]);
+  }, [updateIndex, isDragging, scrollToIndex]);
 
   // Pause/resume handlers
   useEffect(() => {
@@ -307,6 +334,7 @@ export const useCarousel = <T>(
     isDragging,
     scrollToIndex,
     scrollByAmount,
+    itemsPerView,
     measure,
     handlers: {
       onPointerDown,
