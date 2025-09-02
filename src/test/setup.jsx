@@ -263,3 +263,165 @@ global.fbq = vi.fn()
 
 // Mock scrollIntoView for JSDOM
 Element.prototype.scrollIntoView = vi.fn()
+
+// Mock window.scrollTo and related scroll APIs
+Object.defineProperty(window, 'scrollTo', {
+  writable: true,
+  value: vi.fn((x, y) => {
+    window.pageXOffset = typeof x === 'object' ? x.left || 0 : x || 0;
+    window.pageYOffset = typeof x === 'object' ? x.top || 0 : y || 0;
+    window.scrollX = window.pageXOffset;
+    window.scrollY = window.pageYOffset;
+  })
+});
+
+Object.defineProperty(window, 'scroll', {
+  writable: true,
+  value: window.scrollTo
+});
+
+// Mock window.scrollX and scrollY
+Object.defineProperty(window, 'pageXOffset', {
+  writable: true,
+  value: 0
+});
+
+Object.defineProperty(window, 'pageYOffset', {
+  writable: true,
+  value: 0
+});
+
+Object.defineProperty(window, 'scrollX', {
+  writable: true,
+  value: 0
+});
+
+Object.defineProperty(window, 'scrollY', {
+  writable: true,
+  value: 0
+});
+
+// Mock window.open for popup handling
+Object.defineProperty(window, 'open', {
+  writable: true,
+  value: vi.fn((url, name, features) => {
+    // Simulate popup blocker behavior in tests
+    const mockWindow = {
+      closed: false,
+      location: { href: url },
+      close: vi.fn(() => { mockWindow.closed = true; }),
+      focus: vi.fn(),
+      blur: vi.fn()
+    };
+    return mockWindow;
+  })
+});
+
+// Mock window.location methods - use delete first to avoid non-configurable errors
+delete window.location;
+window.location = {
+  href: 'http://localhost/',
+  origin: 'http://localhost',
+  protocol: 'http:',
+  hostname: 'localhost',
+  port: '',
+  pathname: '/',
+  search: '',
+  hash: '',
+  assign: vi.fn(),
+  replace: vi.fn(),
+  reload: vi.fn()
+};
+
+// Mock localStorage and sessionStorage
+const createStorage = () => {
+  let store = {};
+  return {
+    getItem: vi.fn((key) => store[key] || null),
+    setItem: vi.fn((key, value) => { store[key] = value; }),
+    removeItem: vi.fn((key) => { delete store[key]; }),
+    clear: vi.fn(() => { store = {}; }),
+    get length() { return Object.keys(store).length; },
+    key: vi.fn((index) => Object.keys(store)[index] || null)
+  };
+};
+
+Object.defineProperty(window, 'localStorage', {
+  value: createStorage()
+});
+
+Object.defineProperty(window, 'sessionStorage', {
+  value: createStorage()
+});
+
+// Mock requestAnimationFrame and cancelAnimationFrame
+global.requestAnimationFrame = vi.fn((cb) => {
+  return setTimeout(cb, 16); // ~60fps
+});
+
+global.cancelAnimationFrame = vi.fn((id) => {
+  clearTimeout(id);
+});
+
+// Mock setTimeout and setInterval for better test control
+vi.useFakeTimers();
+
+// Mock getBoundingClientRect
+Element.prototype.getBoundingClientRect = vi.fn(() => ({
+  top: 0,
+  left: 0,
+  bottom: 100,
+  right: 100,
+  width: 100,
+  height: 100,
+  x: 0,
+  y: 0,
+  toJSON: vi.fn()
+}));
+
+// Mock getComputedStyle
+Object.defineProperty(window, 'getComputedStyle', {
+  writable: true,
+  value: vi.fn(() => ({
+    getPropertyValue: vi.fn(() => ''),
+    columnGap: '24px',
+    gap: '24px',
+    marginRight: '0px',
+    // Add commonly accessed properties
+    display: 'block',
+    position: 'static',
+    visibility: 'visible',
+    width: '100px',
+    height: '100px'
+  }))
+});
+
+// Mock addEventListener and removeEventListener on window
+const originalAddEventListener = window.addEventListener;
+const originalRemoveEventListener = window.removeEventListener;
+const eventListeners = new Map();
+
+window.addEventListener = vi.fn((event, handler, options) => {
+  if (!eventListeners.has(event)) {
+    eventListeners.set(event, new Set());
+  }
+  eventListeners.get(event).add(handler);
+  return originalAddEventListener.call(window, event, handler, options);
+});
+
+window.removeEventListener = vi.fn((event, handler, options) => {
+  if (eventListeners.has(event)) {
+    eventListeners.get(event).delete(handler);
+  }
+  return originalRemoveEventListener.call(window, event, handler, options);
+});
+
+// Helper to trigger events in tests
+window.triggerEvent = (eventName, eventData = {}) => {
+  const handlers = eventListeners.get(eventName);
+  if (handlers) {
+    handlers.forEach(handler => {
+      handler(new Event(eventName, eventData));
+    });
+  }
+};
