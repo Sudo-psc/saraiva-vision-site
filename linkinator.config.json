@@ -1,0 +1,19 @@
+{
+  "path": "./dist",
+  "recurse": true,
+  "skip": [
+    "mailto:",
+    "tel:",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://www.googletagmanager.com",
+    "https://www.google-analytics.com",
+    "https://storage.googleapis.com"
+  ],
+  "timeout": 5000,
+  "concurrency": 100,
+  "retry": 2,
+  "retryErrors": true,
+  "silent": false,
+  "format": "text"
+}

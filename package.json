@@ -13,6 +13,10 @@
     "deploy:local": "sudo ./deploy.sh",
     "dev:full": "./dev.sh",
     "smoke:test": "bash scripts/smoke-test.sh",
+    "verify": "npm run build && npm run verify:links && npm run verify:html && npm run verify:lighthouse",
+    "verify:links": "linkinator dist --config linkinator.config.json",
+    "verify:html": "html-validate dist/**/*.html",
+    "verify:lighthouse": "lhci autorun --config lighthouserc.json",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
@@ -53,6 +57,7 @@
     "web-vitals": "^5.1.0"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.14.0",
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -64,7 +69,9 @@
     "autoprefixer": "^10.4.16",
     "eslint": "^8.57.1",
     "eslint-config-react-app": "^7.0.1",
+    "html-validate": "^8.24.1",
     "jsdom": "^26.1.0",
+    "linkinator": "^6.1.2",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.3",
     "terser": "^5.39.0",

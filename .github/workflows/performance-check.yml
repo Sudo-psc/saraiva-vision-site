@@ -1,0 +1,75 @@
+name: Performance & Quality Check
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+concurrency:
+  group: perf-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  performance-audit:
+    name: Performance & Quality Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20.19.1
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.1'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Run verification suite
+        run: npm run verify
+
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: .lighthouseci/
+          retention-days: 7
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let comment = '## 🔍 Performance & Quality Check\n\n';
+            
+            // Check if verification passed
+            const { execSync } = require('child_process');
+            try {
+              execSync('npm run verify', { stdio: 'pipe' });
+              comment += '✅ **All checks passed!**\n\n';
+              comment += '- ✅ Build successful\n';
+              comment += '- ✅ Link validation passed\n';  
+              comment += '- ✅ HTML validation passed\n';
+              comment += '- ✅ Lighthouse audit passed\n';
+            } catch (error) {
+              comment += '❌ **Some checks failed**\n\n';
+              comment += 'Please check the action logs for detailed information.\n';
+            }
+            
+            comment += '\n📊 **Performance Budgets:**\n';
+            comment += '- LCP: ≤ 2.5s\n';
+            comment += '- CLS: ≤ 0.1\n';
+            comment += '- Total Bundle: ≤ 1.6MB\n';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
