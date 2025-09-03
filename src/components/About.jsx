@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Check } from 'lucide-react';
+import OptimizedPicture from '@/components/ui/OptimizedPicture';
 
 const About = () => {
   const { t } = useTranslation();
@@ -134,9 +135,11 @@ const About = () => {
               <div className="relative w-full max-w-xs">
                 <div className="absolute -inset-4 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-indigo-400/20 rounded-3xl blur-lg" />
                 <div className="relative aspect-[3/4] overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-b from-blue-50 to-white">
-                  <img
+                  <OptimizedPicture
                     src="/img/drphilipe_perfil.png"
                     alt={t('about.doctor.alt')}
+                    width={300}
+                    height={400}
                     className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                     decoding="async"

@@ -80,7 +80,7 @@ npm run verify
 
 # Verificações individuais
 npm run verify:links
-npm run verify:html  
+npm run verify:html
 npm run verify:lighthouse
 ```
 

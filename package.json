@@ -21,7 +21,9 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "audio:duration": "node tools/get-audio-duration.js"
+    "audio:duration": "node tools/get-audio-duration.js",
+    "images:build": "node tools/img-pipeline.mjs",
+    "images:check": "node tools/img-pipeline.mjs check"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.1",
@@ -70,9 +72,12 @@
     "eslint": "^8.57.1",
     "eslint-config-react-app": "^7.0.1",
     "html-validate": "^8.24.1",
+    "imagemin": "^9.0.0",
+    "imagemin-webp": "^8.0.0",
     "jsdom": "^26.1.0",
     "linkinator": "^6.1.2",
     "postcss": "^8.4.31",
+    "sharp": "^0.33.0",
     "tailwindcss": "^3.3.3",
     "terser": "^5.39.0",
     "vite": "^7.1.3",

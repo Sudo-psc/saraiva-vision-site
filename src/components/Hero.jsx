@@ -7,6 +7,7 @@ import { clinicInfo } from '@/lib/clinicInfo';
 import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { safeOpenUrl } from '@/utils/safeNavigation';
 import { useHeroImagePreload } from '@/hooks/useResourcePreload';
+import OptimizedPicture from '@/components/ui/OptimizedPicture';
 
 const Hero = () => {
   const { t } = useTranslation();
@@ -88,7 +89,7 @@ const Hero = () => {
               <div className="flex -space-x-4">
                 <div className="relative group">
                   <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
-                    <img
+                    <OptimizedPicture
                       src="/img/avatar-female-blonde.png"
                       alt={t('ui.alt.satisfied_patient_1', 'Paciente satisfeito 1')}
                       className="w-12 h-12 object-cover"
@@ -96,6 +97,7 @@ const Hero = () => {
                       height={48}
                       loading="lazy"
                       decoding="async"
+                      sizes="48px"
                     />
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
@@ -106,7 +108,7 @@ const Hero = () => {
                 </div>
                 <div className="relative group">
                   <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
-                    <img
+                    <OptimizedPicture
                       src="/img/avatar-female-brunette.png"
                       alt={t('ui.alt.satisfied_patient_2', 'Paciente satisfeito 2')}
                       className="w-12 h-12 object-cover"
@@ -114,6 +116,7 @@ const Hero = () => {
                       height={48}
                       loading="lazy"
                       decoding="async"
+                      sizes="48px"
                     />
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center ring-2 ring-white">
@@ -157,17 +160,17 @@ const Hero = () => {
             className="relative"
           >
             <div className="relative z-10 rounded-3xl overflow-hidden shadow-soft-medium">
-              <img
+              <OptimizedPicture
                 src={heroSrc}
                 alt={t('ui.alt.hero_image', 'Família sorrindo - Saraiva Vision')}
                 width={800}
                 height={640}
                 loading="eager"
-                fetchpriority="high"
                 decoding="async"
                 sizes="(min-width: 1024px) 800px, 100vw"
                 onError={handleHeroError}
                 className="block w-full h-auto aspect-[4/3] object-cover object-center"
+                fetchpriority="high"
               />
             </div>
 

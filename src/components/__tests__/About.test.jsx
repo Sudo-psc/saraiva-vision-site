@@ -8,24 +8,28 @@ vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key) => {
       const mockTranslations = {
-        'about.title': 'Sobre a Saraiva Vision',
-        'about.subtitle': 'Nossa missão é cuidar da sua visão com excelência e humanização',
-        'about.mission.title': 'Nossa Missão',
-        'about.mission.description': 'Oferecer cuidados oftalmológicos de excelência...',
-        'about.vision.title': 'Nossa Visão',
-        'about.vision.description': 'Ser referência em saúde ocular...',
-        'about.values.title': 'Nossos Valores',
-        'about.values.excellence': 'Excelência',
-        'about.values.excellence_desc': 'Compromisso com a qualidade...',
-        'about.values.humanization': 'Humanização',
-        'about.values.humanization_desc': 'Atendimento humanizado...',
-        'about.values.innovation': 'Inovação',
-        'about.values.innovation_desc': 'Tecnologia de ponta...',
-        'about.team.title': 'Nossa Equipe',
-        'about.team.description': 'Profissionais qualificados e experientes',
-        'about.doctor.name': 'Dr. Philipe Cruz',
-        'about.doctor.title': 'Oftalmologista',
-        'about.doctor.description': 'Especialista em saúde ocular com anos de experiência...'
+        'about.tag': 'Sobre Nós',
+        'about.title': 'Dedicados à Excelência em Cada Detalhe da Sua Visão',
+        'about.p1': 'A Saraiva Vision nasceu do sonho de oferecer um atendimento oftalmológico de alta qualidade em Caratinga e região, unindo tecnologia de ponta a uma abordagem humana e personalizada.',
+        'about.p2': 'Nossa missão transcende o simples tratamento de doenças oculares. Acreditamos na prevenção como o melhor caminho para preservar a visão.',
+        'about.p3': 'Como parceiros oficiais da rede Amor e Saúde, mantemos os mais altos padrões de qualidade e segurança.',
+        'about.features': [
+          'Infraestrutura Moderna e Equipada',
+          'Profissionais Altamente Qualificados',
+          'Atendimento Humanizado e Personalizado',
+          'Compromisso com Resultados Duradouros',
+          'Tecnologia de Ponta em Diagnósticos',
+          'Parceria com Rede Amor e Saúde'
+        ],
+        'about.alt1': 'Consultório oftalmológico moderno da Saraiva Vision',
+        'about.alt2': 'Dr. Philipe Saraiva realizando exame oftalmológico detalhado',
+        'about.alt3': 'Paciente satisfeito após consulta na Saraiva Vision',
+        'about.alt4': 'Equipamento oftalmológico de última geração',
+        'about.doctor.heading': 'Conheça o Dr. Philipe',
+        'about.doctor.name': 'Dr. Philipe Saraiva',
+        'about.doctor.title': 'Oftalmologista CRM/MG 69.870',
+        'about.doctor.alt': 'Dr. Philipe Saraiva, oftalmologista especialista',
+        'about.doctor.description': 'Com anos de experiência em oftalmologia, o Dr. Philipe Saraiva é especialista em diagnóstico e tratamento de diversas condições oculares.'
       };
       return mockTranslations[key] || key;
     },
@@ -59,7 +63,7 @@ describe('About Component', () => {
     renderWithRouter(<About />);
     
     // Check main section exists
-    const aboutSection = screen.getByText(/Sobre a Saraiva Vision/i).closest('section');
+    const aboutSection = screen.getByText(/Dedicados à Excelência em Cada Detalhe da Sua Visão/i).closest('section');
     expect(aboutSection).toBeInTheDocument();
     expect(aboutSection).toHaveAttribute('id', 'about');
   });
@@ -67,70 +71,56 @@ describe('About Component', () => {
   it('displays main heading and subtitle', () => {
     renderWithRouter(<About />);
     
-    const title = screen.getByRole('heading', { level: 2, name: /Sobre a Saraiva Vision/i });
+    const title = screen.getByRole('heading', { level: 2, name: /Dedicados à Excelência em Cada Detalhe da Sua Visão/i });
     expect(title).toBeInTheDocument();
     
-    const subtitle = screen.getByText(/Nossa missão é cuidar da sua visão/i);
+    const subtitle = screen.getByText(/A Saraiva Vision nasceu do sonho de oferecer/i);
     expect(subtitle).toBeInTheDocument();
   });
 
-  it('displays mission section', () => {
+  it('displays first paragraph', () => {
     renderWithRouter(<About />);
     
-    const missionTitle = screen.getByText(/Nossa Missão/i);
-    expect(missionTitle).toBeInTheDocument();
-    
-    const missionDescription = screen.getByText(/Oferecer cuidados oftalmológicos/i);
-    expect(missionDescription).toBeInTheDocument();
+    const firstParagraph = screen.getByText(/A Saraiva Vision nasceu do sonho de oferecer/i);
+    expect(firstParagraph).toBeInTheDocument();
   });
 
-  it('displays vision section', () => {
+  it('displays second paragraph', () => {
     renderWithRouter(<About />);
     
-    const visionTitle = screen.getByText(/Nossa Visão/i);
-    expect(visionTitle).toBeInTheDocument();
-    
-    const visionDescription = screen.getByText(/Ser referência em saúde ocular/i);
-    expect(visionDescription).toBeInTheDocument();
+    const secondParagraph = screen.getByText(/Nossa missão transcende o simples tratamento/i);
+    expect(secondParagraph).toBeInTheDocument();
   });
 
-  it('displays values section with all values', () => {
+  it('displays features section with all features', () => {
     renderWithRouter(<About />);
     
-    const valuesTitle = screen.getByText(/Nossos Valores/i);
-    expect(valuesTitle).toBeInTheDocument();
-    
-    // Check individual values
-    expect(screen.getByText(/Excelência/i)).toBeInTheDocument();
-    expect(screen.getByText(/Compromisso com a qualidade/i)).toBeInTheDocument();
-    
-    expect(screen.getByText(/Humanização/i)).toBeInTheDocument();
-    expect(screen.getByText(/Atendimento humanizado/i)).toBeInTheDocument();
-    
-    expect(screen.getByText(/Inovação/i)).toBeInTheDocument();
-    expect(screen.getByText(/Tecnologia de ponta/i)).toBeInTheDocument();
+    // Check individual features
+    expect(screen.getByText(/Infraestrutura Moderna e Equipada/i)).toBeInTheDocument();
+    expect(screen.getByText(/Profissionais Altamente Qualificados/i)).toBeInTheDocument();
+    expect(screen.getByText(/Atendimento Humanizado e Personalizado/i)).toBeInTheDocument();
+    expect(screen.getByText(/Compromisso com Resultados Duradouros/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tecnologia de Ponta em Diagnósticos/i)).toBeInTheDocument();
+    expect(screen.getByText(/Parceria com Rede Amor e Saúde/i)).toBeInTheDocument();
   });
 
-  it('displays team section', () => {
+  it('displays doctor section heading', () => {
     renderWithRouter(<About />);
     
-    const teamTitle = screen.getByText(/Nossa Equipe/i);
-    expect(teamTitle).toBeInTheDocument();
-    
-    const teamDescription = screen.getByText(/Profissionais qualificados/i);
-    expect(teamDescription).toBeInTheDocument();
+    const doctorHeading = screen.getByText(/Conheça o Dr. Philipe/i);
+    expect(doctorHeading).toBeInTheDocument();
   });
 
   it('displays doctor information', () => {
     renderWithRouter(<About />);
     
-    const doctorName = screen.getByText(/Dr. Philipe Cruz/i);
+    const doctorName = screen.getByText(/Dr. Philipe Saraiva/i);
     expect(doctorName).toBeInTheDocument();
     
-    const doctorTitle = screen.getByText(/Oftalmologista/i);
+    const doctorTitle = screen.getByText(/Oftalmologista CRM\/MG 69\.870/i);
     expect(doctorTitle).toBeInTheDocument();
     
-    const doctorDescription = screen.getByText(/Especialista em saúde ocular/i);
+    const doctorDescription = screen.getByText(/Com anos de experiência em oftalmologia/i);
     expect(doctorDescription).toBeInTheDocument();
   });
 
@@ -142,15 +132,15 @@ describe('About Component', () => {
     expect(h2Elements.length).toBeGreaterThan(0);
     
     // Check for section structure
-    const section = screen.getByText(/Sobre a Saraiva Vision/i).closest('section');
+    const section = screen.getByText(/Dedicados à Excelência em Cada Detalhe da Sua Visão/i).closest('section');
     expect(section).toBeInTheDocument();
   });
 
   it('has proper styling classes', () => {
     renderWithRouter(<About />);
     
-    const section = screen.getByText(/Sobre a Saraiva Vision/i).closest('section');
-    expect(section).toHaveClass('py-16');
+    const section = screen.getByText(/Dedicados à Excelência em Cada Detalhe da Sua Visão/i).closest('section');
+    expect(section).toHaveClass('py-20');
     
     const container = section?.querySelector('.container');
     expect(container).toBeInTheDocument();
@@ -160,14 +150,14 @@ describe('About Component', () => {
     renderWithRouter(<About />);
     
     // Check for grid container
-    const gridContainer = screen.getByText(/Nossa Missão/i).closest('.grid');
+    const gridContainer = screen.getByText(/Infraestrutura Moderna e Equipada/i).closest('.grid');
     expect(gridContainer).toBeInTheDocument();
   });
 
   it('includes proper responsive design classes', () => {
     renderWithRouter(<About />);
     
-    const section = screen.getByText(/Sobre a Saraiva Vision/i).closest('section');
+    const section = screen.getByText(/Dedicados à Excelência em Cada Detalhe da Sua Visão/i).closest('section');
     const gridElements = section?.querySelectorAll('.grid');
     
     // Should have grid elements for responsive layout

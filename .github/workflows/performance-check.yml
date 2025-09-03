@@ -2,7 +2,7 @@ name: Performance & Quality Check
 
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
   workflow_dispatch:
 
 concurrency:
@@ -22,8 +22,8 @@ jobs:
       - name: Setup Node.js 20.19.1
         uses: actions/setup-node@v4
         with:
-          node-version: '20.19.1'
-          cache: 'npm'
+          node-version: "20.19.1"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
@@ -45,28 +45,28 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            
+
             let comment = '## 🔍 Performance & Quality Check\n\n';
-            
+
             // Check if verification passed
             const { execSync } = require('child_process');
             try {
               execSync('npm run verify', { stdio: 'pipe' });
               comment += '✅ **All checks passed!**\n\n';
               comment += '- ✅ Build successful\n';
-              comment += '- ✅ Link validation passed\n';  
+              comment += '- ✅ Link validation passed\n';
               comment += '- ✅ HTML validation passed\n';
               comment += '- ✅ Lighthouse audit passed\n';
             } catch (error) {
               comment += '❌ **Some checks failed**\n\n';
               comment += 'Please check the action logs for detailed information.\n';
             }
-            
+
             comment += '\n📊 **Performance Budgets:**\n';
             comment += '- LCP: ≤ 2.5s\n';
             comment += '- CLS: ≤ 0.1\n';
             comment += '- Total Bundle: ≤ 1.6MB\n';
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
