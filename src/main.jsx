@@ -22,21 +22,16 @@ if (typeof window !== 'undefined') {
   window.addEventListener('load', () => {
     idle(async () => {
       try {
-        const [perf, vitals, analytics, criticalCSS] = await Promise.all([
-          import('@/utils/performanceOptimizer'),
+        const [vitals, analytics] = await Promise.all([
           import('@/utils/webVitalsMonitoring'),
-          import('@/utils/analytics'),
-          import('@/utils/criticalCSS')
+          import('@/utils/analytics')
         ]);
-        perf.initPerformanceOptimizations?.();
         vitals.initWebVitals?.({
           debug: import.meta.env.DEV,
           endpoint: import.meta.env.PROD ? '/api/web-vitals' : null
         });
         analytics.bindConsentUpdates?.();
         analytics.persistUTMParameters?.();
-        // optional: inline critical CSS if re-enabled
-        // criticalCSS.inlineCriticalCSS?.();
       } catch (e) {
         if (import.meta.env.DEV) console.warn('Deferred init failed:', e);
       }
