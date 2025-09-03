@@ -137,6 +137,8 @@ const TrustSignals = () => {
                     src={partner.logo}
                     alt={`Logo ${partner.name}`}
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </motion.div>

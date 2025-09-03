@@ -114,8 +114,9 @@ describe('About Component', () => {
   it('displays doctor information', () => {
     renderWithRouter(<About />);
     
-    const doctorName = screen.getByText(/Dr. Philipe Saraiva/i);
-    expect(doctorName).toBeInTheDocument();
+    // Use getAllByText to handle multiple occurrences
+    const doctorNames = screen.getAllByText(/Dr. Philipe Saraiva/i);
+    expect(doctorNames.length).toBeGreaterThan(0);
     
     const doctorTitle = screen.getByText(/Oftalmologista CRM\/MG 69\.870/i);
     expect(doctorTitle).toBeInTheDocument();

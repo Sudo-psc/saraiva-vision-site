@@ -262,6 +262,8 @@ const Accessibility = () => {
                 src="/img/Acessib_icon.png" 
                 alt="Acessibilidade" 
                 className="w-full h-full object-contain" 
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </motion.button>

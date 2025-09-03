@@ -114,6 +114,7 @@ const CompactGoogleReviews = () => {
                                         alt={`Foto de ${review.author}`}
                                         className="w-full h-full object-cover"
                                         loading="lazy"
+                                        decoding="async"
                                     />
                                 </div>
                             </div>

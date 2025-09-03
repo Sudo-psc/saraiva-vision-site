@@ -78,6 +78,8 @@ const BlogPage = ({ wordpressUrl }) => {
                 src={post._embedded?.['wp:featuredmedia']?.[0]?.source_url || 'https://placehold.co/600x400/e2e8f0/64748b?text=Image'}
                 alt={(post.title?.rendered || '').replace(/<[^>]+>/g, '')}
                 className="w-full h-56 object-cover transition-transform duration-300 hover:scale-105"
+                loading="lazy"
+                decoding="async"
               />
             </Link>
             <div className="p-6 flex flex-col flex-grow">
