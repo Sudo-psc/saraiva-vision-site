@@ -89,9 +89,9 @@ const Hero = () => {
                 <div className="relative group">
                   <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
                     <img
-                      src="/img/patient-avatar-1.svg"
+                      src="/img/avatar-female-blonde.png"
                       alt={t('ui.alt.satisfied_patient_1', 'Paciente satisfeito 1')}
-                      className="w-12 h-12 object-contain"
+                      className="w-12 h-12 object-cover"
                       width={48}
                       height={48}
                       loading="lazy"
@@ -107,9 +107,9 @@ const Hero = () => {
                 <div className="relative group">
                   <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
                     <img
-                      src="/img/patient-avatar-2.svg"
+                      src="/img/avatar-female-brunette.png"
                       alt={t('ui.alt.satisfied_patient_2', 'Paciente satisfeito 2')}
-                      className="w-12 h-12 object-contain"
+                      className="w-12 h-12 object-cover"
                       width={48}
                       height={48}
                       loading="lazy"

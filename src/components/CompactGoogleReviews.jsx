@@ -12,7 +12,7 @@ const featuredReviews = [
         rating: 5,
         text: 'Que atendimento maravilhoso! Tem pessoa que realmente nasce para exalar gentileza... Minha avó foi extremamente bem atendida, da chegada a saída da clínica.',
         relativeTime: 'há uma semana',
-        avatar: '/img/patient-avatar-1.svg'
+        avatar: '/img/avatar-female-blonde.png'
     },
     {
         id: 2,
@@ -20,7 +20,7 @@ const featuredReviews = [
         rating: 5,
         text: 'Ótimo atendimento, excelente espaço. Obrigada',
         relativeTime: 'há uma semana',
-        avatar: '/img/patient-avatar-2.svg'
+        avatar: '/img/avatar-female-brunette.png'
     },
     {
         id: 1,
@@ -28,7 +28,7 @@ const featuredReviews = [
         rating: 5,
         text: 'Profissional extremamente competente e atencioso. Recomendo!',
         relativeTime: 'há uma semana',
-        avatar: '/img/patient-avatar-3.svg'
+        avatar: '/img/avatar-female-black.png'
     }
 ];
 
