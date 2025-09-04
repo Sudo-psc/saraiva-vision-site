@@ -18,7 +18,7 @@ const ContactLenses = () => {
       subtitle: t('contactLenses.types.soft.subtitle'),
       features: t('contactLenses.types.soft.features', { returnObjects: true }),
       icon: Heart,
-      color: 'bg-green-50 border-green-200'
+      color: 'bg-green-50/80 border-green-400/60 shadow-green-100/50'
     },
     {
       type: 'rigid',
@@ -26,7 +26,7 @@ const ContactLenses = () => {
       subtitle: t('contactLenses.types.rigid.subtitle'),
       features: t('contactLenses.types.rigid.features', { returnObjects: true }),
       icon: Shield,
-      color: 'bg-blue-50 border-blue-200'
+      color: 'bg-blue-50/80 border-blue-400/60 shadow-blue-100/50'
     },
     {
       type: 'multifocal',
@@ -34,7 +34,7 @@ const ContactLenses = () => {
       subtitle: t('contactLenses.types.multifocal.subtitle'),
       features: t('contactLenses.types.multifocal.features', { returnObjects: true }),
       icon: Zap,
-      color: 'bg-purple-50 border-purple-200'
+      color: 'bg-purple-50/80 border-purple-400/60 shadow-purple-100/50'
     }
   ];
 
@@ -71,8 +71,14 @@ const ContactLenses = () => {
 
 
   return (
-    <section id="lentes-de-contato" className="bg-gradient-to-b from-white via-blue-50/30 to-white py-16 lg:py-24">
-      <div className="container mx-auto px-4 md:px-6">
+    <section id="lentes-de-contato" className="relative bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30 py-16 lg:py-24 overflow-hidden">
+      {/* 3D Background Effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/60 via-indigo-50/40 to-purple-50/20"></div>
+      <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-gradient-radial from-blue-100/30 via-transparent to-transparent rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-indigo-100/20 via-transparent to-transparent rounded-full blur-3xl"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-gradient-conic from-blue-50/10 via-indigo-50/10 to-purple-50/10 rounded-full blur-2xl"></div>
+      
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Título principal da seção */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -343,32 +349,37 @@ const ContactLenses = () => {
               return (
                 <motion.div
                   key={lens.type}
-                  className={`p-8 h-full rounded-3xl border-2 ${lens.color} hover:shadow-lg transition-all duration-300`}
+                  className={`p-8 h-full rounded-3xl border-2 ${lens.color} backdrop-blur-sm hover:shadow-xl hover:shadow-${lens.color.split('shadow-')[1]} hover:-translate-y-1 transition-all duration-300 relative overflow-hidden`}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <div className="text-center mb-6">
-                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-slate-200">
-                      <Icon className="h-6 w-6 text-blue-600" />
+                  {/* 3D Card Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/5 pointer-events-none"></div>
+                  
+                  <div className="relative z-10">
+                    <div className="text-center mb-6">
+                      <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg border border-slate-300/80">
+                        <Icon className="h-6 w-6 text-blue-600" />
+                      </div>
+                      <h3 className="text-xl font-bold text-slate-900 mb-2">
+                        {lens.title}
+                      </h3>
+                      <p className="text-sm text-slate-600 font-medium">
+                        {lens.subtitle}
+                      </p>
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">
-                      {lens.title}
-                    </h3>
-                    <p className="text-sm text-slate-600 font-medium">
-                      {lens.subtitle}
-                    </p>
-                  </div>
 
-                  <ul className="space-y-3">
-                    {Array.isArray(lens.features) && lens.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
-                        <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-slate-700 leading-relaxed">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+                    <ul className="space-y-3">
+                      {Array.isArray(lens.features) && lens.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-3">
+                          <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                          <span className="text-sm text-slate-700 leading-relaxed">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </motion.div>
               );
             })}
