@@ -104,6 +104,39 @@ if [[ "$NO_BUILD" = false ]]; then
 
   echo "🔨 Building (vite build)…"
   run "npm run build"
+  
+  # Post-build validation
+  echo "🔍 Validando build..."
+  if [[ ! -d "dist" ]]; then
+    echo "❌ Build falhou - diretório dist não criado"; exit 1
+  fi
+  
+  if [[ ! -f "dist/index.html" ]]; then
+    echo "❌ Build falhou - index.html não encontrado"; exit 1
+  fi
+  
+  # Check for critical assets
+  JS_FILES=$(find dist/assets -name "*.js" 2>/dev/null | wc -l)
+  CSS_FILES=$(find dist/assets -name "*.css" 2>/dev/null | wc -l)
+  
+  if [[ $JS_FILES -eq 0 ]]; then
+    echo "⚠️  Nenhum arquivo JS encontrado em dist/assets"
+  else
+    echo "✅ Build incluiu $JS_FILES arquivos JS"
+  fi
+  
+  if [[ $CSS_FILES -eq 0 ]]; then
+    echo "⚠️  Nenhum arquivo CSS encontrado em dist/assets"
+  else
+    echo "✅ Build incluiu $CSS_FILES arquivos CSS"
+  fi
+  
+  # Validate HTML structure
+  if grep -q "<!DOCTYPE html>" dist/index.html; then
+    echo "✅ index.html tem estrutura HTML válida"
+  else
+    echo "⚠️  index.html pode ter problemas de estrutura"
+  fi
 fi
 
 if [[ ! -d "dist" ]]; then
@@ -264,6 +297,71 @@ if [[ -f "$PROJECT_ROOT/scripts/verify-gtm.js" ]]; then
   fi
 else
   echo "⚠️  Script de verificação GTM não encontrado (scripts/verify-gtm.js)"
+fi
+
+# Post-deployment health checks
+echo "🔍 Executando verificações pós-deploy..."
+
+# Check if site is accessible
+if ! $DRY_RUN; then
+  echo "📡 Verificando acessibilidade do site..."
+  if curl -s -o /dev/null -w "%{http_code}" "https://saraivavision.com.br" | grep -q "200"; then
+    echo "✅ Site acessível (HTTP 200)"
+  else
+    echo "⚠️  Site pode não estar acessível"
+  fi
+  
+  # Verify key assets exist
+  echo "📄 Verificando assets críticos..."
+  if [[ -f "$NEW_RELEASE/index.html" ]]; then
+    echo "✅ index.html existe"
+  else
+    echo "❌ index.html não encontrado!"
+  fi
+  
+  if [[ -d "$NEW_RELEASE/assets" ]]; then
+    ASSET_COUNT=$(find "$NEW_RELEASE/assets" -name "*.js" -o -name "*.css" | wc -l)
+    echo "✅ Assets encontrados: $ASSET_COUNT arquivos"
+  else
+    echo "⚠️  Diretório assets não encontrado"
+  fi
+  
+  # Check nginx process
+  if systemctl is-active --quiet nginx; then
+    echo "✅ Nginx está ativo"
+  else
+    echo "❌ Nginx não está ativo!"
+  fi
+  
+  # Verify permissions
+  if [[ -r "$NEW_RELEASE/index.html" ]]; then
+    echo "✅ Permissões de leitura OK"
+  else
+    echo "⚠️  Problemas de permissão detectados"
+  fi
+  
+  # Run smoke test if available
+  if [[ -f "$PROJECT_ROOT/scripts/smoke-test.sh" ]]; then
+    echo "🧪 Executando smoke test..."
+    if bash "$PROJECT_ROOT/scripts/smoke-test.sh"; then
+      echo "✅ Smoke test passou"
+    else
+      echo "⚠️  Smoke test falhou"
+    fi
+  fi
+  
+  # Run deployment validation
+  if [[ -f "$PROJECT_ROOT/scripts/validate-deployment.sh" ]]; then
+    echo "🔍 Executando validação completa de deployment..."
+    export SITE_URL="https://saraivavision.com.br"
+    if bash "$PROJECT_ROOT/scripts/validate-deployment.sh"; then
+      echo "✅ Validação de deployment passou"
+    else
+      echo "⚠️  Validação de deployment detectou problemas"
+    fi
+  fi
+else
+  echo "[dry-run] Pulos de verificação pós-deploy"
 fi
 
 echo "➡️  Current release: $NEW_RELEASE"
