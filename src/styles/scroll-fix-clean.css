@@ -1,0 +1,151 @@
+/* ==========================================================================
+   SCROLL FIX LIMPO E DEFINITIVO
+   ========================================================================== */
+
+/* RESET FUNDAMENTAL - Estrutura base simples */
+html {
+  /* HTML não deve ter scroll próprio */
+  overflow-x: hidden;
+  overflow-y: visible;
+  height: auto;
+  scroll-behavior: smooth;
+}
+
+body {
+  /* Body gerencia o scroll principal */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  /* Previne bounce em iOS */
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Container raiz nunca deve ter scroll próprio */
+#root {
+  min-height: 100vh;
+  overflow: visible;
+  position: relative;
+}
+
+/* CONTAINERS PRINCIPAIS - Nunca criam scroll próprio */
+main,
+section,
+article,
+.container,
+.max-w-7xl,
+.mx-auto {
+  overflow: visible;
+}
+
+/* ELEMENTOS FIXOS - Sem interferir no scroll */
+.fixed,
+[class*="fixed"] {
+  position: fixed;
+  z-index: 1000;
+  /* Remove transforms que podem quebrar fixed positioning */
+  transform: none;
+  will-change: auto;
+}
+
+/* WIDGETS ESPECÍFICOS */
+[class*="WhatsApp"],
+[class*="Consent"],
+[class*="Modal"] {
+  position: fixed;
+  z-index: 1000;
+  /* Garante que não interfere no scroll */
+  pointer-events: auto;
+}
+
+/* CARROSSEL - Scroll horizontal interno bem comportado */
+.scroll-container {
+  overflow-x: auto;
+  overflow-y: visible;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  /* Scrollbars invisíveis */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* DRAG TO SCROLL - Sem interferir na página */
+.dragging {
+  cursor: grabbing;
+  user-select: none;
+  scroll-snap-type: none;
+}
+
+/* MODAL OVERLAY - Bloqueia scroll quando necessário */
+body.scroll-locked {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+/* MOBILE OPTIMIZATIONS */
+@media (max-width: 768px) {
+  body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+  }
+  
+  .scroll-container {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  * {
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
+  }
+}
+
+/* UTILITY CLASSES */
+.no-scroll {
+  overflow: hidden;
+}
+
+.can-scroll {
+  overflow: auto;
+}
+
+.no-overflow-x {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+.touch-pan-x {
+  touch-action: pan-x;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+.transform-gpu {
+  transform: translateZ(0);
+}

@@ -46,7 +46,7 @@ const ConsentManager = () => {
   const rejectAll = () => save({ analytics: false, marketing: false, functional: false });
 
   const Banner = () => (
-    <div className="fixed bottom-4 left-4 right-4 md:right-auto md:max-w-md z-50 bg-white border border-slate-200 shadow-xl rounded-lg p-4 text-sm space-y-3">
+    <div className="fixed bottom-4 left-4 right-4 md:right-auto md:max-w-md z-50 bg-white border border-slate-200 shadow-xl rounded-lg p-4 text-sm space-y-3" style={{ position: 'fixed' }}>
       <p className="text-slate-700">{t('privacy.intro')}</p>
       <div className="flex flex-wrap gap-2 justify-end">
         <button type="button" onClick={rejectAll} className="px-3 py-1.5 rounded border text-slate-600 hover:bg-slate-50">{t('common.reject_all', 'Rejeitar')}</button>

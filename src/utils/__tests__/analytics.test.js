@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
+import { trackConversion, trackGA, trackMeta } from '@/utils/analytics';
+import { hasConsent } from '@/utils/consentMode';
+
 // Mock the consent module before importing analytics
 vi.mock('@/utils/consentMode', () => ({
   hasConsent: vi.fn(() => false),
   onConsentChange: vi.fn(),
 }));
-
-import { trackConversion, trackGA, trackMeta } from '@/utils/analytics';
-import { hasConsent } from '@/utils/consentMode';
 
 const STORAGE_KEY = 'sv_consent_v1';
 

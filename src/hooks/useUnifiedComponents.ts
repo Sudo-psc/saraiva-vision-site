@@ -192,27 +192,30 @@ export const useCarousel = <T>(
   }, [isDragging, scrollToIndex]);
 
   // Wheel handler for horizontal scrolling
-  const onWheel = useCallback((e: React.WheelEvent) => {
-    if (!options.wheelToScroll) return;
-    const el = scrollerRef.current;
-    if (!el) return;
-    
-    // Only intercept vertical scrolling if there's horizontal scroll available
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      const maxScrollLeft = el.scrollWidth - el.clientWidth;
-      const canScrollLeft = el.scrollLeft > 0;
-      const canScrollRight = el.scrollLeft < maxScrollLeft;
-      
-      // Only prevent page scroll if we can actually scroll horizontally in the intended direction
-      const scrollingLeft = e.deltaY < 0;
-      const scrollingRight = e.deltaY > 0;
-      
-      if ((scrollingLeft && canScrollLeft) || (scrollingRight && canScrollRight)) {
-        el.scrollLeft += e.deltaY;
-        e.preventDefault();
+  // Attach a native wheel listener with passive: false to allow preventDefault
+  useEffect(() => {
+    const el = scrollerRef.current as HTMLDivElement | null;
+    if (!el || !options.wheelToScroll) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      // Only intercept vertical scrolling if there's horizontal scroll available
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        const maxScrollLeft = el.scrollWidth - el.clientWidth;
+        const canScrollLeft = el.scrollLeft > 0;
+        const canScrollRight = el.scrollLeft < maxScrollLeft;
+
+        const scrollingLeft = e.deltaY < 0;
+        const scrollingRight = e.deltaY > 0;
+
+        if ((scrollingLeft && canScrollLeft) || (scrollingRight && canScrollRight)) {
+          el.scrollLeft += e.deltaY;
+          e.preventDefault(); // Only valid with passive: false
+        }
       }
-      // If we can't scroll horizontally, let the page scroll normally
-    }
+    };
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
   }, [options.wheelToScroll]);
 
   // Auto-play functionality
@@ -341,8 +344,7 @@ export const useCarousel = <T>(
       onPointerMove,
       onPointerUp: endDrag,
       onPointerCancel: endDrag,
-      onMouseLeave: endDrag,
-      onWheel
+      onMouseLeave: endDrag
     }
   };
 };
