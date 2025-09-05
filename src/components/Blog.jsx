@@ -6,36 +6,28 @@ import { Calendar, ArrowRight, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
+import { fetchPosts as fetchWPPosts } from '@/lib/wordpress';
 
-const Blog = ({ wordpressUrl }) => {
+const Blog = () => {
   const { t, i18n } = useTranslation();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!wordpressUrl) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchPosts = async () => {
+    let cancelled = false;
+    (async () => {
       try {
-        const response = await fetch(`${wordpressUrl}/wp-json/wp/v2/posts?per_page=3&_embed`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setPosts(data);
-      } catch (error) {
-        setError(error.message);
+        const data = await fetchWPPosts({ per_page: 3, _embed: true });
+        if (!cancelled) setPosts(data);
+      } catch (err) {
+        if (!cancelled) setError(err.message || 'Failed to load posts');
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
-    };
-
-    fetchPosts();
-  }, [wordpressUrl]);
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   const getDateLocale = () => {
     return i18n.language === 'pt' ? ptBR : enUS;
@@ -50,7 +42,7 @@ const Blog = ({ wordpressUrl }) => {
       );
     }
 
-    if (error || !wordpressUrl) {
+    if (error) {
       return (
         <div className="text-center p-8 bg-yellow-50 border border-yellow-200 rounded-2xl">
           <h3 className="text-xl font-semibold text-yellow-800">{t('blog.placeholder_title')}</h3>

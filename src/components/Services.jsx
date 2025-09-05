@@ -291,27 +291,25 @@ const Services = ({ full = false }) => {
     setTimeout(() => { pauseRef.current = false; snapToNearest(); }, 200);
   }, [isDragging]);
 
-  // Convert vertical wheel to horizontal scroll inside the carousel for frictionless navigation
-  const onWheel = useCallback((e) => {
+  // Convert vertical wheel to horizontal scroll using native listener (passive:false)
+  useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
-    
-    // Only intercept vertical scrolling if there's horizontal scroll available
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      const maxScrollLeft = el.scrollWidth - el.clientWidth;
-      const canScrollLeft = el.scrollLeft > 0;
-      const canScrollRight = el.scrollLeft < maxScrollLeft;
-      
-      // Only prevent page scroll if we can actually scroll horizontally in the intended direction
-      const scrollingLeft = e.deltaY < 0;
-      const scrollingRight = e.deltaY > 0;
-      
-      if ((scrollingLeft && canScrollLeft) || (scrollingRight && canScrollRight)) {
-        el.scrollLeft += e.deltaY;
-        e.preventDefault();
+    const handleWheel = (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        const maxScrollLeft = el.scrollWidth - el.clientWidth;
+        const canScrollLeft = el.scrollLeft > 0;
+        const canScrollRight = el.scrollLeft < maxScrollLeft;
+        const scrollingLeft = e.deltaY < 0;
+        const scrollingRight = e.deltaY > 0;
+        if ((scrollingLeft && canScrollLeft) || (scrollingRight && canScrollRight)) {
+          el.scrollLeft += e.deltaY;
+          e.preventDefault();
+        }
       }
-      // If we can't scroll horizontally, let the page scroll normally
-    }
+    };
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
   }, []);
 
   // Atualiza índice e remove loop infinito
@@ -469,7 +467,7 @@ const Services = ({ full = false }) => {
             onPointerUp={endDrag}
             onPointerCancel={endDrag}
             onMouseLeave={endDrag}
-            onWheel={onWheel}
+            /* wheel handler attached via native addEventListener(passive:false) */
           >
             <AnimatePresence mode="popLayout">
               {serviceItems.map((service, index) => (

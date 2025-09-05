@@ -4,13 +4,69 @@
  * Implements caching, error handling, and security best practices
  */
 
-// Get WordPress API URL from environment with fallback
-// Accepts either the site base (e.g. https://example.com) or the full API base (https://example.com/wp-json/wp/v2)
-const RAW_WORDPRESS_URL = import.meta.env.VITE_WORDPRESS_API_URL || 'https://saraivavision.com.br/cms';
-const NORMALIZED_BASE = (RAW_WORDPRESS_URL || '').replace(/\/$/, '');
-const API_BASE_URL = NORMALIZED_BASE.includes('/wp-json')
-  ? NORMALIZED_BASE
-  : `${NORMALIZED_BASE}/wp-json/wp/v2`;
+// Get WordPress API URL from environment with robust normalization
+// Accepts:
+// - Site base (e.g., https://example.com or https://example.com/cms)
+// - API base (e.g., https://example.com/wp-json/wp/v2 or https://example.com/wp-json)
+// - Relative (preferred for same-origin): /wp-json/wp/v2
+const RAW_WORDPRESS_URL =
+  import.meta.env.VITE_WORDPRESS_API_URL ||
+  import.meta.env.VITE_WORDPRESS_URL ||
+  import.meta.env.VITE_API_BASE_URL ||
+  '';
+
+function deriveApiBase(raw) {
+  const fallback = '/wp-json/wp/v2'; // same-origin default (works with Vite proxy and Nginx)
+  if (!raw || typeof raw !== 'string') return fallback;
+  let base = raw.trim().replace(/\/$/, '');
+
+  // In development, prefer same-origin to avoid CSP/CORS/mixed-content.
+  // If an absolute localhost URL is configured that doesn't match the page origin,
+  // fall back to the relative same-origin API path so the Vite proxy can handle it.
+  try {
+    // Only when running in browser during dev
+    if (typeof window !== 'undefined' && import.meta?.env?.DEV) {
+      const maybeUrl = new URL(base);
+      if (maybeUrl.origin !== window.location.origin) {
+        return fallback;
+      }
+    }
+  } catch {
+    // Not an absolute URL or not in a browser context — continue
+  }
+
+  // If already points to v2 API
+  if (/\/wp-json\/wp\/v2$/i.test(base)) return base;
+
+  // If points to wp-json root, append /wp/v2
+  if (/\/wp-json$/i.test(base)) return `${base}/wp/v2`;
+
+  // Otherwise treat as site base (optionally in subdir like /cms)
+  try {
+    // Absolute URL
+    const url = new URL(base);
+    return `${url.origin}${url.pathname.replace(/\/$/, '')}/wp-json/wp/v2`;
+  } catch {
+    // Relative path base
+    if (base.startsWith('/')) return `${base.replace(/\/$/, '')}/wp-json/wp/v2`;
+    // Unknown format, use fallback
+    return fallback;
+  }
+}
+
+const API_BASE_URL = deriveApiBase(RAW_WORDPRESS_URL);
+
+// Optional dev-only logging of final API base URL (disabled by default)
+try {
+  const shouldLog = typeof window !== 'undefined'
+    && (import.meta?.env?.VITE_LOG_WP_API === '1')
+    && (import.meta?.env?.MODE !== 'production');
+  if (shouldLog && !window.__WP_API_LOGGED__) {
+    // eslint-disable-next-line no-console
+    console.info('[WP] API base URL:', API_BASE_URL, '(raw:', RAW_WORDPRESS_URL || 'unset', ')');
+    window.__WP_API_LOGGED__ = true;
+  }
+} catch {}
 
 // Cache configuration
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -22,7 +78,7 @@ const cache = new Map();
 async function wpApiFetch(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
   const cacheKey = `${url}-${JSON.stringify(options)}`;
-  
+
   // Check cache first
   if (cache.has(cacheKey)) {
     const cached = cache.get(cacheKey);
@@ -42,11 +98,11 @@ async function wpApiFetch(endpoint, options = {}) {
     });
 
     if (!response.ok) {
-      throw new Error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      throw new Error(`WordPress API Error: ${response.status} ${response.statusText} @ ${url}`);
     }
 
     const data = await response.json();
-    
+
     // Cache successful responses
     cache.set(cacheKey, {
       data,
@@ -83,7 +139,7 @@ export async function fetchPosts(params = {}) {
 
   const queryParams = { ...defaultParams, ...params };
   const queryString = new URLSearchParams(queryParams).toString();
-  
+
   return await wpApiFetch(`/posts?${queryString}`);
 }
 
@@ -97,7 +153,7 @@ export async function fetchPostBySlug(slug) {
   }
 
   const posts = await wpApiFetch(`/posts?slug=${encodeURIComponent(slug)}&_embed=true`);
-  
+
   if (!posts || posts.length === 0) {
     throw new Error('Post not found');
   }
@@ -131,7 +187,7 @@ export async function fetchCategories(params = {}) {
 
   const queryParams = { ...defaultParams, ...params };
   const queryString = new URLSearchParams(queryParams).toString();
-  
+
   return await wpApiFetch(`/categories?${queryString}`);
 }
 
@@ -152,7 +208,7 @@ export async function fetchPostsByCategory(categorySlug, params = {}) {
   }
 
   const categoryId = categories[0].id;
-  
+
   return await fetchPosts({
     categories: [categoryId],
     ...params
@@ -173,7 +229,7 @@ export async function fetchTags(params = {}) {
 
   const queryParams = { ...defaultParams, ...params };
   const queryString = new URLSearchParams(queryParams).toString();
-  
+
   return await wpApiFetch(`/tags?${queryString}`);
 }
 
@@ -232,12 +288,12 @@ export async function fetchRelatedPosts(post, count = 3) {
   const tags = post.tags || [];
 
   // Fetch posts with same categories or tags, excluding current post
-  const relatedByCategory = categories.length > 0 
+  const relatedByCategory = categories.length > 0
     ? await fetchPosts({
-        categories,
-        per_page: count + 1, // +1 to account for current post
-        exclude: [post.id]
-      })
+      categories,
+      per_page: count + 1, // +1 to account for current post
+      exclude: [post.id]
+    })
     : [];
 
   if (relatedByCategory.length >= count) {
@@ -251,7 +307,7 @@ export async function fetchRelatedPosts(post, count = 3) {
       per_page: count,
       exclude: [post.id, ...relatedByCategory.map(p => p.id)]
     });
-    
+
     return [...relatedByCategory, ...relatedByTags].slice(0, count);
   }
 
@@ -268,7 +324,7 @@ export async function fetchRelatedPosts(post, count = 3) {
  */
 export function cleanHtmlContent(htmlContent) {
   if (!htmlContent) return '';
-  
+
   // Remove script tags and potentially dangerous content
   return htmlContent
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
@@ -283,15 +339,15 @@ export function cleanHtmlContent(htmlContent) {
  */
 export function extractPlainText(htmlContent, maxLength = 150) {
   if (!htmlContent) return '';
-  
+
   const div = document.createElement('div');
   div.innerHTML = htmlContent;
   const text = div.textContent || div.innerText || '';
-  
+
   if (maxLength && text.length > maxLength) {
     return text.substring(0, maxLength).trimEnd() + '...';
   }
-  
+
   return text;
 }
 
@@ -306,12 +362,12 @@ export function getFeaturedImageUrl(post, size = 'large') {
   }
 
   const media = post._embedded['wp:featuredmedia'][0];
-  
+
   // Try to get specific size, fallback to full size
   if (media.media_details?.sizes?.[size]) {
     return media.media_details.sizes[size].source_url;
   }
-  
+
   return media.source_url;
 }
 
@@ -325,7 +381,7 @@ export function getAuthorInfo(post) {
   }
 
   const author = post._embedded.author[0];
-  
+
   return {
     id: author.id,
     name: author.name,

@@ -1,5 +1,8 @@
 import { describe, it, beforeEach, expect, vi } from 'vitest';
 
+import { trackGA, trackMeta, bindConsentUpdates, trackEnhancedConversion } from '../analytics.js';
+import { hasConsent, onConsentChange } from '@/utils/consentMode';
+
 // Mock consent module first, then import analytics to ensure it sees the mocked functions
 vi.mock('@/utils/consentMode', async (importOriginal) => {
   const actual = await importOriginal();
@@ -9,9 +12,6 @@ vi.mock('@/utils/consentMode', async (importOriginal) => {
     onConsentChange: vi.fn(() => () => {})
   };
 });
-
-import { trackGA, trackMeta, bindConsentUpdates, trackEnhancedConversion } from '../analytics.js';
-import { hasConsent, onConsentChange } from '@/utils/consentMode';
 
 describe('analytics (consent-aware)', () => {
   beforeEach(() => {

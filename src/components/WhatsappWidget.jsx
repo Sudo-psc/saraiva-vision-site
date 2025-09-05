@@ -24,6 +24,7 @@ const WhatsappWidget = ({ phoneNumber }) => {
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 1.5 }}
+        style={{ transform: 'translateZ(0)', willChange: 'transform' }}
       >
         {/* Tooltip for better visibility */}
         <AnimatePresence>

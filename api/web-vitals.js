@@ -1,7 +1,10 @@
 /**
  * Web Vitals API Endpoint
- * Serverless function to collect and store Core Web Vitals data
+ * Collects and persists Core Web Vitals data server-side (JSONL log).
  */
+
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
 
 export default async function handler(req, res) {
   // Only accept POST requests
@@ -57,8 +60,16 @@ export default async function handler(req, res) {
       received: new Date().toISOString()
     };
 
-    // TODO: Store in database (Supabase, MongoDB, etc.)
-    // await storeWebVital(vitalsData);
+    // Persist to JSONL log (local server-side storage)
+    try {
+      const logDir = process.env.WEB_VITALS_LOG_DIR || path.resolve(process.cwd(), 'logs');
+      const logFile = path.join(logDir, 'web-vitals.jsonl');
+      await fs.mkdir(logDir, { recursive: true });
+      await fs.appendFile(logFile, JSON.stringify(vitalsData) + '\n', 'utf8');
+    } catch (logErr) {
+      // Non-fatal: log to console, but still return success
+      console.warn('Web Vitals log append failed:', logErr.message);
+    }
 
     // Send success response
     res.status(200).json({

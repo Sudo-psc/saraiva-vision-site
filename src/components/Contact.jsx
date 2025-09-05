@@ -395,11 +395,16 @@ const Contact = () => {
                       {t('contact.recaptcha_label', 'Verificação de Segurança')}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500">
+                  <p className={`text-xs ${recaptchaReady ? 'text-green-600' : 'text-red-500'}`}>
                     {recaptchaReady
                       ? t('contact.recaptcha_ready', 'Proteção automática reCAPTCHA ativada')
                       : t('contact.recaptcha_not_ready', 'Verificação de segurança indisponível. Tente novamente.')}
                   </p>
+                  {!recaptchaReady && (
+                    <p className="text-xs text-slate-500 mt-1">
+                      Certifique-se de que está conectado à internet e recarregue a página.
+                    </p>
+                  )}
                 </div>
 
                 <Button

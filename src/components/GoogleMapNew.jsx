@@ -177,7 +177,10 @@ const GoogleMap = ({ height = 340 }) => {
     const addDebugLog = useCallback((message) => {
         const timestamp = new Date().toLocaleTimeString();
         const logEntry = `${timestamp}: ${message}`;
-        console.log(`[GoogleMap] ${logEntry}`);
+        // Only log to console in development mode
+        if (import.meta.env.DEV) {
+            console.log(`[GoogleMap] ${logEntry}`);
+        }
         setDebugInfo(prev => [...prev.slice(-4), logEntry]); // Keep only last 5 entries
     }, []);
 
@@ -250,14 +253,7 @@ const GoogleMap = ({ height = 340 }) => {
                     mapId: 'DEMO_MAP_ID', // Map ID necessário para Advanced Markers
                     mapTypeControl: false,
                     streetViewControl: false,
-                    fullscreenControl: false,
-                    styles: [
-                        {
-                            featureType: 'poi',
-                            elementType: 'labels',
-                            stylers: [{ visibility: 'on' }]
-                        }
-                    ]
+                    fullscreenControl: false
                 });
                 addDebugLog('✅ Mapa criado com sucesso');
 
@@ -280,7 +276,7 @@ const GoogleMap = ({ height = 340 }) => {
                                 'displayName', 'location', 'formattedAddress', 'rating', 'userRatingCount', 
                                 'googleMapsURI', 'businessStatus', 'priceLevel', 'photos', 'reviews',
                                 'regularOpeningHours', 'websiteURI', 'nationalPhoneNumber', 'types',
-                                'editorialSummary', 'primaryType', 'shortFormattedAddress'
+                                'editorialSummary', 'primaryType'
                             ]
                         });
                         addDebugLog('✅ Detalhes completos do perfil Google Business obtidos');
@@ -289,7 +285,6 @@ const GoogleMap = ({ height = 340 }) => {
                             name: place.displayName,
                             geometry: { location: place.location },
                             formatted_address: place.formattedAddress,
-                            short_address: place.shortFormattedAddress,
                             rating: place.rating,
                             user_ratings_total: place.userRatingCount,
                             url: place.googleMapsURI,

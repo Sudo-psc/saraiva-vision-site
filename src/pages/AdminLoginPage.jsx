@@ -34,12 +34,13 @@ const AdminLoginPage = () => {
 		setLoading(true);
 		setError(null);
 
-		try {
-			// For WordPress admin, we'll redirect to WordPress admin panel
-			const wordpressAdminUrl = 'http://localhost:8080/wp-admin';
 
-			// Open WordPress admin in new tab
-			window.open(wordpressAdminUrl, '_blank');
+		try {
+			// Redirect to WordPress admin panel (configurable)
+			const wordpressAdminUrl = import.meta.env.VITE_WORDPRESS_ADMIN_URL || `${window.location.origin}/wp-admin`;
+
+			// Open WordPress admin in new tab securely
+			window.open(wordpressAdminUrl, '_blank', 'noopener,noreferrer');
 
 			// Show success message and redirect to blog
 			setTimeout(() => {
@@ -54,7 +55,8 @@ const AdminLoginPage = () => {
 	};
 
 	const redirectToWordPressAdmin = () => {
-		window.open('http://localhost:8080/wp-admin', '_blank');
+		const wordpressAdminUrl = import.meta.env.VITE_WORDPRESS_ADMIN_URL || `${window.location.origin}/wp-admin`;
+		window.open(wordpressAdminUrl, '_blank', 'noopener,noreferrer');
 	};
 
 	return (
@@ -199,7 +201,7 @@ const AdminLoginPage = () => {
 										Credenciais padrão de desenvolvimento:
 									</p>
 									<div className="bg-gray-50 p-3 rounded text-left">
-										<p><strong>URL:</strong> http://localhost:8080/wp-admin</p>
+										<p><strong>URL:</strong> {import.meta.env.VITE_WORDPRESS_ADMIN_URL || `${window.location.origin}/wp-admin`}</p>
 										<p><strong>Usuário:</strong> admin</p>
 										<p><strong>Senha:</strong> Configurar durante instalação</p>
 									</div>

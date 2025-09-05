@@ -4,40 +4,29 @@
 
 /* RESET FUNDAMENTAL - Estrutura base limpa */
 html {
-  /* HTML define altura e overflow base */
+  /* HTML define altura e não cria scroll próprio */
   height: 100%;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  scroll-behavior: smooth;
-  /* Garantir largura completa */
-  width: 100%;
-  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
   /* Body é responsável pelo scroll principal */
-  height: 100%;
+  min-height: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
   /* Previne scroll chaining e bounce em iOS */
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
-  /* Garantir largura completa */
-  width: 100%;
-  max-width: 100%;
 }
 
 /* Container raiz nunca deve ter scroll próprio */
 #root {
-  min-height: 100vh !important;
+  min-height: 100vh;
   overflow: visible !important;
   position: relative !important;
-  /* Garantir largura completa */
-  width: 100% !important;
-  max-width: 100% !important;
 }
 
 /* CONTAINERS PRINCIPAIS - Nunca criam scroll próprio */
@@ -109,13 +98,21 @@ article,
   max-width: 100% !important;
 }
 
-/* ELEMENTOS FIXOS - Não interferem no scroll */
+/* ELEMENTOS FIXOS - sem hacks globais de transform para evitar bugs de posicionamento */
 .fixed,
 .sticky,
 [class*="fixed"],
 [class*="sticky"] {
-  transform: translateZ(0);
-  will-change: transform;
+  will-change: auto;
+}
+
+/* Widgets específicos */
+[class*="WhatsappWidget"],
+[class*="StickyWhatsApp"],
+[class*="ConsentManager"] {
+  position: fixed !important;
+  z-index: 1000;
+  isolation: isolate;
 }
 
 /* CARROSSEL E COMPONENTES INTERNOS */
@@ -146,9 +143,9 @@ article,
 
 /* Estado quando body está bloqueado (aplicado via JS) */
 body.scroll-locked {
-  position: fixed !important;
-  width: 100% !important;
+  /* Bloqueio de scroll sem alterar posicionamento fixo dos filhos */
   overflow: hidden !important;
+  padding-right: var(--scrollbar-width, 0px) !important;
 }
 
 /* MOBILE OPTIMIZATIONS */

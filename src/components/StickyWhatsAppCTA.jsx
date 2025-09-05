@@ -15,13 +15,22 @@ const StickyWhatsAppCTA = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
       const shouldShow = scrollY > 400 && !isDismissed;
       setIsVisible(shouldShow);
     };
 
+    // Detecta mudanças de layout que podem afetar o scroll
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
+    document.addEventListener('visibilitychange', handleScroll);
+    // Inicializa estado baseado na posição atual
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      document.removeEventListener('visibilitychange', handleScroll);
+    };
   }, [isDismissed]);
 
   const handleWhatsAppClick = () => {
@@ -45,7 +54,8 @@ const StickyWhatsAppCTA = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed bottom-4 left-4 right-4 z-50 max-w-md mx-auto"
+          className="fixed bottom-4 left-4 right-4 z-50 max-w-md mx-auto pointer-events-auto"
+          style={{ position: 'fixed' }}
         >
           <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-2xl shadow-2xl border border-green-400/30 backdrop-blur-sm">
             <button
