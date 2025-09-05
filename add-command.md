@@ -112,9 +112,9 @@ add-command "database-backup" "Create and verify database backup procedures" --t
 
 ## 📚 References & Resources
 
-- [📖 **Related Documentation**](./link-to-docs.md)
-- [🔧 **Technical Specifications**](./link-to-specs.md)
-- [📋 **Related Checklists**](./link-to-checklists.md)
+- [📖 **Related Documentation**](./DOCUMENTATION_INDEX.md)
+- [🔧 **Technical Specifications**](./docs/SYSTEM_ARCHITECTURE.md)
+- [📋 **Related Checklists**](./DEPLOYMENT_CHECKLIST.md)
 
 ---
 
@@ -321,7 +321,7 @@ add-command "new-security-check" "Custom security verification" \
 - [📋 **Project Index**](./PROJECT_DOCUMENTATION_INDEX.md) - All project documentation
 - [🚀 **Quick Reference**](./DEVELOPER_QUICK_REFERENCE.md) - Developer shortcuts
 - [🛡️ **Security Playbook**](./SECURITY_ROTATION_PLAYBOOK.md) - Security procedures
-- [📊 **Testing Guide**](./TEST_REPORT.md) - Testing documentation
+- [📊 **Testing Guide**](./docs/TESTING_GUIDE.md) - Testing documentation
 
 ---
 

@@ -117,7 +117,7 @@ Guia completo para navegação em toda a documentação do projeto Saraiva Visio
 
 - **Repositório**: [saraiva-vision-site](https://github.com/Sudo-psc/saraiva-vision-site)
 - **Site**: [Saraiva Vision](https://saraivavision.com.br)
-- **Comandos frequentes**: [CLAUDE.md#development-commands](./CLAUDE.md#development-commands)
+- **Comandos frequentes**: [CLAUDE.md](./CLAUDE.md)
 
 ## 📞 Suporte
 

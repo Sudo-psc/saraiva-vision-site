@@ -17,6 +17,7 @@
     "verify:links": "linkinator dist --config linkinator.config.json",
     "verify:html": "html-validate dist/**/*.html",
     "verify:lighthouse": "lhci autorun --config lighthouserc.json",
+    "verify:docs": "node scripts/validate-docs.js",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
