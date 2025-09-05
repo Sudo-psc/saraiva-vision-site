@@ -1,37 +1,49 @@
 # Saraiva Vision - API Design Specification
 
+Documentação completa das APIs do projeto, com exemplos práticos e padrões de integração.
+
 ## 🔌 API Architecture Overview
 
-**Pattern**: RESTful APIs with serverless functions
-**Authentication**: API keys and rate limiting
-**Data Format**: JSON with standardized response structure
-**Error Handling**: HTTP status codes with detailed error messages
+**Pattern**: RESTful APIs with serverless functions  
+**Authentication**: API keys and rate limiting  
+**Data Format**: JSON with standardized response structure  
+**Error Handling**: HTTP status codes with detailed error messages  
+**Caching**: Response caching with TTL for performance  
+**Security**: CORS, input validation, and rate limiting  
 
-## 📋 API Endpoint Specification
+## 📋 Available APIs
 
 ### 1. Google Reviews API (`/api/reviews`)
 
-#### Endpoint Configuration
-```typescript
-// GET /api/reviews
-interface ReviewsRequest {
-  placeId?: string;
-  lang?: 'pt' | 'en';
-  limit?: number; // Default: 5, Max: 20
-}
+**Purpose**: Fetch and display Google reviews for the clinic  
+**Method**: `GET`  
+**Rate Limit**: 10 requests per minute per IP  
+**Cache**: 5 minutes TTL  
 
+#### Request Parameters
+```typescript
+interface ReviewsRequest {
+  placeId?: string;     // Optional: Override default place ID
+  lang?: 'pt' | 'en';   // Language preference (default: 'pt')
+  limit?: number;       // Number of reviews (default: 5, max: 20)
+}
+```
+
+#### Response Format
+```typescript
 interface ReviewsResponse {
   success: boolean;
   data: {
     reviews: Review[];
-    rating: number;
-    totalReviews: number;
-    lastUpdated: string;
+    rating: number;           // Overall rating (1-5)
+    totalReviews: number;     // Total review count
+    lastUpdated: string;      // ISO timestamp
   };
   meta: {
     placeId: string;
     cached: boolean;
     cacheExpiry: string;
+    requestId: string;
   };
   error?: string;
 }
@@ -39,65 +51,518 @@ interface ReviewsResponse {
 interface Review {
   id: string;
   author: string;
-  rating: number;
+  rating: number;           // 1-5 stars
   text: string;
-  date: string;
+  date: string;             // ISO timestamp
   profileImage?: string;
   verified: boolean;
 }
 ```
 
-#### Implementation
+#### Usage Examples
+
+**Frontend Integration**
 ```javascript
-// /api/reviews.js
-export default async function handler(req, res) {
-  // CORS Headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+// React Hook for Reviews
+import { useState, useEffect } from 'react';
+
+export const useGoogleReviews = (limit = 5) => {
+  const [reviews, setReviews] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch(`/api/reviews?limit=${limit}`);
+        const data = await response.json();
+        
+        if (data.success) {
+          setReviews(data.data);
+        } else {
+          setError(data.error);
+        }
+      } catch (err) {
+        setError('Failed to fetch reviews');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [limit]);
+
+  return { reviews, loading, error };
+};
+
+// Component Usage
+const GoogleReviews = () => {
+  const { reviews, loading, error } = useGoogleReviews(5);
+
+  if (loading) return <div>Carregando avaliações...</div>;
+  if (error) return <div>Erro: {error}</div>;
+
+  return (
+    <div>
+      <h3>Avaliações Google ({reviews.totalReviews})</h3>
+      <div>Nota: {reviews.rating}/5 ⭐</div>
+      {reviews.reviews.map(review => (
+        <div key={review.id}>
+          <strong>{review.author}</strong> - {review.rating}/5
+          <p>{review.text}</p>
+          <time>{new Date(review.date).toLocaleDateString('pt-BR')}</time>
+        </div>
+      ))}
+    </div>
+  );
+};
+```
+
+**Direct API Calls**
+```bash
+# Basic request
+curl "https://saraivavision.com.br/api/reviews"
+
+# With parameters
+curl "https://saraivavision.com.br/api/reviews?limit=10&lang=pt"
+
+# Response example
+{
+  "success": true,
+  "data": {
+    "reviews": [
+      {
+        "id": "ChZDSUhNMG9nS0VJQ0FnSUR...",
+        "author": "Maria Silva",
+        "rating": 5,
+        "text": "Excelente atendimento! Dr. Philipe é muito atencioso...",
+        "date": "2024-12-15T10:30:00Z",
+        "verified": true
+      }
+    ],
+    "rating": 4.8,
+    "totalReviews": 127,
+    "lastUpdated": "2025-01-05T14:30:00Z"
+  },
+  "meta": {
+    "placeId": "ChIJXX...",
+    "cached": false,
+    "cacheExpiry": "2025-01-05T14:35:00Z",
+    "requestId": "req_123456"
+  }
+}
+```
+
+### 2. Contact Form API (`/api/contact`)
+
+**Purpose**: Handle contact form submissions with validation  
+**Method**: `POST`  
+**Rate Limit**: 5 submissions per hour per IP  
+**Validation**: reCAPTCHA v3, honeypot, sanitization  
+
+#### Request Format
+```typescript
+interface ContactRequest {
+  name: string;           // Required, 2-100 chars
+  email: string;          // Required, valid email
+  phone: string;          // Required, Brazilian format
+  message: string;        // Required, 10-1000 chars
+  service?: string;       // Optional, service of interest
+  recaptchaToken: string; // Required, reCAPTCHA v3 token
+  website?: string;       // Honeypot field (should be empty)
+}
+```
+
+#### Response Format
+```typescript
+interface ContactResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    id: string;           // Submission ID
+    timestamp: string;
+  };
+  error?: {
+    field?: string;       // Field with validation error
+    code: string;         // Error code
+    message: string;      // Human readable message
+  };
+}
+```
+
+#### Usage Examples
+
+**Frontend Form**
+```javascript
+import { useState } from 'react';
+
+export const ContactForm = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+    service: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      // Get reCAPTCHA token
+      const recaptchaToken = await grecaptcha.execute(
+        process.env.REACT_APP_RECAPTCHA_SITE_KEY, 
+        { action: 'contact_form' }
+      );
+
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          recaptchaToken
+        })
+      });
+
+      const data = await response.json();
+      setResult(data);
+
+      if (data.success) {
+        setFormData({ name: '', email: '', phone: '', message: '', service: '' });
+      }
+    } catch (error) {
+      setResult({ 
+        success: false, 
+        error: { message: 'Erro de conexão' } 
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Nome completo"
+        value={formData.name}
+        onChange={(e) => setFormData({...formData, name: e.target.value})}
+        required
+      />
+      <input
+        type="email"
+        placeholder="E-mail"
+        value={formData.email}
+        onChange={(e) => setFormData({...formData, email: e.target.value})}
+        required
+      />
+      <input
+        type="tel"
+        placeholder="Telefone"
+        value={formData.phone}
+        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+        required
+      />
+      <textarea
+        placeholder="Mensagem"
+        value={formData.message}
+        onChange={(e) => setFormData({...formData, message: e.target.value})}
+        required
+      />
+      
+      {/* Honeypot */}
+      <input
+        type="text"
+        name="website"
+        style={{ display: 'none' }}
+        tabIndex={-1}
+        autoComplete="off"
+      />
+      
+      <button type="submit" disabled={loading}>
+        {loading ? 'Enviando...' : 'Enviar Mensagem'}
+      </button>
+      
+      {result && (
+        <div className={result.success ? 'success' : 'error'}>
+          {result.message || result.error?.message}
+        </div>
+      )}
+    </form>
+  );
+};
+```
+
+### 3. Environment Debug API (`/api/env-debug`)
+
+**Purpose**: Debug environment variables in development  
+**Method**: `GET`  
+**Environment**: Development only  
+**Security**: Sanitized output, no sensitive data  
+
+#### Response Format
+```typescript
+interface EnvDebugResponse {
+  success: boolean;
+  environment: 'development' | 'production';
+  data: {
+    nodeEnv: string;
+    hasGoogleApiKey: boolean;
+    hasRecaptchaKey: boolean;
+    hasSupabaseUrl: boolean;
+    buildTime: string;
+  };
+}
+```
+
+## 🔒 Security Implementation
+
+### Rate Limiting
+```javascript
+// Rate limiting implementation
+const rateLimiter = new Map();
+
+const checkRateLimit = (req, maxRequests = 10, windowMs = 60000) => {
+  const clientId = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const now = Date.now();
+  const windowStart = now - windowMs;
   
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+  if (!rateLimiter.has(clientId)) {
+    rateLimiter.set(clientId, []);
   }
   
-  if (req.method !== 'GET') {
-    return res.status(405).json({ 
-      success: false, 
-      error: 'Method not allowed' 
-    });
+  const requests = rateLimiter.get(clientId)
+    .filter(timestamp => timestamp > windowStart);
+  
+  if (requests.length >= maxRequests) {
+    return {
+      allowed: false,
+      retryAfter: Math.ceil((requests[0] + windowMs - now) / 1000)
+    };
   }
+  
+  requests.push(now);
+  rateLimiter.set(clientId, requests);
+  
+  return { allowed: true };
+};
+```
 
-  try {
-    const { placeId, lang = 'pt', limit = 5 } = req.query;
-    const targetPlaceId = placeId || process.env.GOOGLE_PLACE_ID;
-    
-    // Rate limiting check
-    const rateLimitResult = await checkRateLimit(req);
-    if (!rateLimitResult.allowed) {
-      return res.status(429).json({
-        success: false,
-        error: 'Rate limit exceeded',
-        retryAfter: rateLimitResult.retryAfter
-      });
-    }
+### Input Validation
+```javascript
+// Input sanitization
+const sanitizeInput = (input) => {
+  if (typeof input !== 'string') return '';
+  
+  return input
+    .trim()
+    .slice(0, 1000)  // Max length
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove scripts
+    .replace(/[<>]/g, ''); // Remove HTML brackets
+};
 
-    // Cache check
-    const cacheKey = `reviews_${targetPlaceId}_${lang}_${limit}`;
-    const cached = await getCache(cacheKey);
-    if (cached) {
-      return res.status(200).json({
-        ...cached,
-        meta: { ...cached.meta, cached: true }
-      });
-    }
+// Email validation
+const isValidEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email) && email.length <= 254;
+};
 
-    // Google Places API call
-    const apiKey = process.env.GOOGLE_PLACES_API_KEY;
-    const url = `https://maps.googleapis.com/maps/api/place/details/json`;
-    const params = new URLSearchParams({
-      place_id: targetPlaceId,
-      fields: 'reviews,rating,user_ratings_total',
-      key: apiKey,
+// Phone validation (Brazilian format)
+const isValidPhone = (phone) => {
+  const phoneRegex = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
+  return phoneRegex.test(phone);
+};
+```
+
+### reCAPTCHA Integration
+```javascript
+// Server-side reCAPTCHA verification
+const verifyRecaptcha = async (token, expectedAction = 'contact_form') => {
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+  const verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+  
+  const response = await fetch(verifyUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `secret=${secretKey}&response=${token}`
+  });
+  
+  const data = await response.json();
+  
+  return {
+    success: data.success,
+    score: data.score,
+    action: data.action,
+    valid: data.success && 
+           data.score >= 0.5 && 
+           data.action === expectedAction
+  };
+};
+```
+
+## 📊 Caching Strategy
+
+### Response Caching
+```javascript
+// Simple in-memory cache
+const cache = new Map();
+
+const setCache = (key, data, ttlMs = 300000) => { // 5 minutes default
+  cache.set(key, {
+    data,
+    expires: Date.now() + ttlMs
+  });
+};
+
+const getCache = (key) => {
+  const cached = cache.get(key);
+  if (!cached || cached.expires < Date.now()) {
+    cache.delete(key);
+    return null;
+  }
+  return cached.data;
+};
+
+// Usage in API endpoints
+const cacheKey = `reviews_${placeId}_${lang}`;
+const cached = getCache(cacheKey);
+if (cached) {
+  return res.json({ ...cached, meta: { ...cached.meta, cached: true } });
+}
+```
+
+## 🛠️ Development Tools
+
+### API Testing
+```bash
+# Test reviews API
+curl -X GET "http://localhost:3000/api/reviews?limit=3" \
+  -H "Accept: application/json"
+
+# Test contact API
+curl -X POST "http://localhost:3000/api/contact" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Teste Silva",
+    "email": "teste@example.com",
+    "phone": "(33) 99999-9999",
+    "message": "Teste de contato",
+    "recaptchaToken": "test_token"
+  }'
+
+# Test rate limiting
+for i in {1..15}; do
+  curl "http://localhost:3000/api/reviews" && echo
+done
+```
+
+### Local Development Server
+```bash
+# Start API server only
+npm run start:api
+
+# Start full stack (frontend + API)
+npm run dev:full
+
+# Monitor API logs
+tail -f server.log
+```
+
+## 📈 Monitoring and Analytics
+
+### API Metrics
+```javascript
+// Basic metrics collection
+const metrics = {
+  requests: 0,
+  errors: 0,
+  responseTime: [],
+  rateLimit: 0
+};
+
+const recordMetrics = (endpoint, statusCode, responseTime) => {
+  metrics.requests++;
+  metrics.responseTime.push(responseTime);
+  
+  if (statusCode >= 400) {
+    metrics.errors++;
+  }
+  
+  if (statusCode === 429) {
+    metrics.rateLimit++;
+  }
+};
+
+// Export metrics endpoint
+export const getMetrics = () => ({
+  ...metrics,
+  avgResponseTime: metrics.responseTime.length > 0 
+    ? metrics.responseTime.reduce((a, b) => a + b) / metrics.responseTime.length 
+    : 0,
+  errorRate: metrics.requests > 0 ? metrics.errors / metrics.requests : 0
+});
+```
+
+### Error Tracking
+```javascript
+// Error logging
+const logError = (error, context) => {
+  const logEntry = {
+    timestamp: new Date().toISOString(),
+    error: error.message,
+    stack: error.stack,
+    context,
+    userAgent: context.req?.headers?.['user-agent'],
+    ip: context.req?.headers?.['x-forwarded-for']
+  };
+  
+  console.error('API Error:', JSON.stringify(logEntry, null, 2));
+  
+  // In production, send to monitoring service
+  if (process.env.NODE_ENV === 'production') {
+    // sendToMonitoring(logEntry);
+  }
+};
+```
+
+## 🚀 Deployment Configuration
+
+### Environment Variables
+```bash
+# Required for production
+GOOGLE_PLACES_API_KEY=your_google_api_key
+GOOGLE_PLACE_ID=your_place_id
+RECAPTCHA_SECRET_KEY=your_recaptcha_secret
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_key
+
+# Optional
+API_RATE_LIMIT_MAX=10
+API_RATE_LIMIT_WINDOW=60000
+CACHE_TTL=300000
+```
+
+### CORS Configuration
+```javascript
+// Production CORS settings
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://saraivavision.com.br', 'https://www.saraivavision.com.br']
+    : ['http://localhost:3000', 'http://localhost:5173'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200
+};
+```
+
+---
+
+*Esta documentação cobre todas as APIs implementadas no projeto. Para exemplos de integração específicos, consulte os componentes em `src/components/`.*
       language: lang
     });
 

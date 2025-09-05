@@ -2,6 +2,17 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 📚 Quick Navigation
+
+**New to the project?** Start here:
+- [🚀 Developer Quick Start](./DEVELOPER_QUICK_START.md) - 5-minute setup guide
+- [🌟 Complete Getting Started](./GETTING_STARTED.md) - Comprehensive beginner guide
+- [📚 Documentation Index](./DOCUMENTATION_INDEX.md) - Navigate all documentation
+
+**Need help?** Check these:
+- [🔧 Troubleshooting Guide](./TROUBLESHOOTING.md) - Solutions for common problems
+- [🔌 API Documentation](./docs/API_DESIGN_SPECIFICATION.md) - Complete API reference
+
 ## Development Commands
 
 ### Core Development
@@ -194,3 +205,15 @@ npm run test:coverage             # Full coverage report
 3. **No SSR**: SPA approach chosen for deployment simplicity and dynamic content
 4. **Tailwind Over CSS Modules**: Utility-first for rapid medical site development
 5. **Radix UI Base**: Accessibility-first component library for healthcare compliance
+
+## 📖 Additional Resources
+
+For comprehensive documentation and guides:
+- **[📚 Documentation Index](./DOCUMENTATION_INDEX.md)** - Complete documentation navigation
+- **[🚀 Quick Start Guide](./DEVELOPER_QUICK_START.md)** - Fast setup for experienced developers
+- **[🌟 Getting Started](./GETTING_STARTED.md)** - Complete guide for beginners
+- **[🔧 Troubleshooting](./TROUBLESHOOTING.md)** - Solutions for common development issues
+- **[🔌 API Reference](./docs/API_DESIGN_SPECIFICATION.md)** - Complete API documentation
+- **[🎨 Brand Guide](./docs/BRAND_GUIDE.md)** - Design system and visual guidelines
+- **[🧪 Testing Guide](./docs/TESTING_GUIDE.md)** - Comprehensive testing strategies
+- **[🏗️ System Architecture](./docs/SYSTEM_ARCHITECTURE.md)** - Technical architecture overview
