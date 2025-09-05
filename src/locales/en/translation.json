@@ -955,5 +955,34 @@
     "title": "Saraiva Vision Podcast | Eye Health Audio | Caratinga/MG",
     "description": "Listen to specialized ophthalmology episodes with Dr. Philipe Saraiva. Tips, prevention and treatments to keep your eyes healthy.",
     "keywords": "ophthalmology podcast, eye health audio, Dr Philipe Saraiva podcast, vision tips, eye prevention, eye treatment, medical podcast Caratinga"
+  },
+  "admin": {
+    "pageTitle": "Administrative Area | Saraiva Vision",
+    "pageDescription": "Access to the Saraiva Vision blog administrative area",
+    "title": "Administrative Area",
+    "subtitle": "Login to manage blog content",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "login": "Login",
+    "loggingIn": "Logging in...",
+    "loginError": "Login error. Check your credentials.",
+    "backToBlog": "Back to Blog"
+  },
+  "blog": {
+    "page_title": "Blog",
+    "page_description": "Articles and news about eye health.",
+    "page_subtitle": "Articles and news about eye health",
+    "search_placeholder": "Search articles...",
+    "all_categories": "All categories",
+    "read_more": "Read more",
+    "placeholder_title": "Content unavailable right now",
+    "placeholder_desc_page": "We are setting up the CMS connection. Please try again soon.",
+    "no_posts": "No articles found",
+    "no_posts_description": "Try adjusting filters or search.",
+    "back_to_blog": "Back to Blog",
+    "post_error_title": "Could not load the article",
+    "post_error_desc": "There was a problem loading this content. Go back to the blog and try again."
   }
 }
