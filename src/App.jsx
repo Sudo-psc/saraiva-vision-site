@@ -15,6 +15,10 @@ const FAQPage = lazy(() => import('@/pages/FAQPage'));
 const MedicalArticleExample = lazy(() => import('@/pages/MedicalArticleExample'));
 const PodcastPage = lazy(() => import('@/pages/PodcastPage'));
 const AdminPage = lazy(() => import('@/pages/AdminPage'));
+const BlogPage = lazy(() => import('@/pages/BlogPage'));
+const PostPage = lazy(() => import('@/pages/PostPage'));
+const CategoryPage = lazy(() => import('@/pages/CategoryPage'));
+const AdminLoginPage = lazy(() => import('@/pages/AdminLoginPage'));
 import ScrollToTop from '@/components/ScrollToTop';
 import { Toaster } from '@/components/ui/toaster';
 import ConsentManager from '@/components/ConsentManager';
@@ -47,6 +51,10 @@ function App() {
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
           <Route path="/podcast" element={<PodcastPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<PostPage />} />
+          <Route path="/categoria/:slug" element={<CategoryPage />} />
+          <Route path="/admin" element={<AdminLoginPage />} />
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
           <Route path="/wp-admin" element={<AdminPage />} />
         </Routes>

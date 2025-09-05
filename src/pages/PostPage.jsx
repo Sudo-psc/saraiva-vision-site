@@ -1,51 +1,90 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
-import { Calendar, User, ArrowLeft, Loader2, AlertTriangle } from 'lucide-react';
+import { Calendar, User, ArrowLeft, Loader2, AlertTriangle, Share2, Clock } from 'lucide-react';
+import DOMPurify from 'dompurify';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { Button } from '@/components/ui/button';
+import {
+  fetchPostBySlug,
+  fetchRelatedPosts,
+  getFeaturedImageUrl,
+  getAuthorInfo,
+  cleanHtmlContent,
+  extractPlainText
+} from '../lib/wordpress';
 
-const PostPage = ({ wordpressUrl }) => {
+const PostPage = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [post, setPost] = useState(null);
+  const [relatedPosts, setRelatedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!wordpressUrl) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchPost = async () => {
+    const loadPost = async () => {
       try {
-        const response = await fetch(`${wordpressUrl}/wp-json/wp/v2/posts?slug=${slug}&_embed`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+        setLoading(true);
+        setError(null);
+
+        const postData = await fetchPostBySlug(slug);
+        setPost(postData);
+
+        // Load related posts
+        try {
+          const related = await fetchRelatedPosts(postData, 3);
+          setRelatedPosts(related);
+        } catch (relatedError) {
+          console.warn('Could not load related posts:', relatedError);
+          setRelatedPosts([]);
         }
-        const data = await response.json();
-        if (data.length > 0) {
-          setPost(data[0]);
-        } else {
-          throw new Error('Post not found');
-        }
+
       } catch (error) {
+        console.error('Error loading post:', error);
         setError(error.message);
+        if (error.message === 'Post not found') {
+          navigate('/blog', { replace: true });
+        }
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPost();
-  }, [slug, wordpressUrl]);
+    if (slug) {
+      loadPost();
+    }
+  }, [slug, navigate]);
 
   const getDateLocale = () => {
     return i18n.language === 'pt' ? ptBR : enUS;
+  };
+
+  const sharePost = () => {
+    if (navigator.share && post) {
+      navigator.share({
+        title: post.title?.rendered?.replace(/<[^>]+>/g, '') || '',
+        text: extractPlainText(post.excerpt?.rendered || '', 100),
+        url: window.location.href,
+      });
+    } else {
+      // Fallback to copy URL
+      navigator.clipboard.writeText(window.location.href);
+    }
+  };
+
+  const estimateReadingTime = (content) => {
+    const wordsPerMinute = 200;
+    const text = extractPlainText(content);
+    const wordCount = text.split(/\s+/).length;
+    const minutes = Math.ceil(wordCount / wordsPerMinute);
+    return minutes;
   };
 
   if (loading) {
@@ -56,7 +95,7 @@ const PostPage = ({ wordpressUrl }) => {
     );
   }
 
-  if (error || !wordpressUrl) {
+  if (error) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
