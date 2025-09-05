@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SEOHead from '@/components/SEOHead';
-import Services from '@/components/Services';
+import ServicesEnhanced from '@/components/ServicesEnhanced';
 import { useTranslation } from 'react-i18next';
 
 const ServicesPage = () => {
@@ -18,7 +18,7 @@ const ServicesPage = () => {
       <SEOHead {...seo} />
       <Navbar />
       <main className="flex-1 pt-28">
-        <Services full />
+        <ServicesEnhanced full grid />
       </main>
       <Footer />
     </div>

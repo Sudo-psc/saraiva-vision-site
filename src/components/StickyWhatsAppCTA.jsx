@@ -55,7 +55,6 @@ const StickyWhatsAppCTA = () => {
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           className="fixed bottom-4 left-4 right-4 z-50 max-w-md mx-auto pointer-events-auto"
-          style={{ position: 'fixed' }}
         >
           <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-2xl shadow-2xl border border-green-400/30 backdrop-blur-sm">
             <button
@@ -65,7 +64,7 @@ const StickyWhatsAppCTA = () => {
             >
               <X size={14} />
             </button>
-            
+
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                 <MessageCircle size={20} className="animate-pulse" />
@@ -75,7 +74,7 @@ const StickyWhatsAppCTA = () => {
                 <p className="text-green-100 text-sm">Resposta em até 1 minuto</p>
               </div>
             </div>
-            
+
             <div className="flex gap-2">
               <button
                 onClick={handleWhatsAppClick}

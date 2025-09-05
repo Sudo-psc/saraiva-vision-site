@@ -119,7 +119,7 @@ const PostPage = () => {
   const cleanTitle = post.title.rendered.replace(/<[^>]+>/g, '');
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white relative">
       <Helmet>
         <title>{cleanTitle} | Saraiva Vision</title>
         <meta name="description" content={post.excerpt.rendered.replace(/<[^>]+>/g, '')} />
@@ -168,6 +168,40 @@ const PostPage = () => {
         </div>
       </main>
       <Footer />
+
+      {/* Overlay: Página em construção (controlado por VITE_BLOG_UNDER_CONSTRUCTION) */}
+      {(() => {
+        const showOverlay = (import.meta?.env?.VITE_BLOG_UNDER_CONSTRUCTION ?? '1') !== '0';
+        if (!showOverlay) return null;
+        return (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Página em construção"
+            className="fixed inset-0 z-50 flex items-center justify-center"
+          >
+            {/* Backdrop */}
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+            {/* Message card */}
+            <div className="relative mx-4 max-w-xl w-full rounded-2xl bg-white/95 shadow-2xl border border-slate-200 p-8 text-center">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
+                Página em construção
+              </h2>
+              <p className="mt-3 text-slate-600">
+                Em breve você encontrará conteúdos e novidades aqui no nosso blog.
+              </p>
+              <div className="mt-6 flex items-center justify-center gap-3">
+                <a
+                  href="/"
+                  className="inline-flex items-center px-5 py-2.5 rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  Voltar à página inicial
+                </a>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 };

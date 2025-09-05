@@ -127,14 +127,14 @@ class HealthcareMonitoringSystem {
       });
     });
 
-    // Chrome extension errors
-    if (typeof chrome !== 'undefined' && chrome.runtime) {
-      chrome.runtime.onConnect.addListener((port) => {
+    // Chrome extension errors (guarded)
+    if (typeof window !== 'undefined' && window.chrome?.runtime) {
+      window.chrome.runtime.onConnect.addListener((port) => {
         port.onDisconnect.addListener(() => {
-          if (chrome.runtime.lastError) {
+          if (window.chrome?.runtime?.lastError) {
             this.handleGlobalError({
               type: 'chrome_extension_error',
-              message: chrome.runtime.lastError.message,
+              message: window.chrome.runtime.lastError.message,
               context: 'extension_disconnect'
             });
           }

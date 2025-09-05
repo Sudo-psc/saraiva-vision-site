@@ -133,7 +133,7 @@ describe('safeNavigation utilities', () => {
       
       const result = safeOpenWithConfirmation(url, serviceName);
       
-      expect(confirm).toHaveBeenCalledWith('Você será redirecionado para Example Service. Continuar?');
+      expect(global.confirm).toHaveBeenCalledWith('Você será redirecionado para Example Service. Continuar?');
       expect(result).toBe(true);
     });
 
@@ -144,7 +144,7 @@ describe('safeNavigation utilities', () => {
       
       const result = safeOpenWithConfirmation(url, serviceName);
       
-      expect(confirm).toHaveBeenCalled();
+      expect(global.confirm).toHaveBeenCalled();
       expect(result).toBe(false);
       expect(window.open).not.toHaveBeenCalled();
     });
@@ -158,7 +158,7 @@ describe('safeNavigation utilities', () => {
       
       const result = safeOpenWithConfirmation(url, serviceName, customMessage);
       
-      expect(confirm).toHaveBeenCalledWith(customMessage);
+      expect(global.confirm).toHaveBeenCalledWith(customMessage);
       expect(result).toBe(true);
     });
 

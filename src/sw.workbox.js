@@ -1,3 +1,5 @@
+/* eslint-env serviceworker */
+/* eslint-disable no-restricted-globals */
 /*
 	Saraiva Vision - Service Worker Workbox
 

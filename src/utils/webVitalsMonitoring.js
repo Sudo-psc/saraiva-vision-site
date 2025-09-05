@@ -26,10 +26,10 @@ class WebVitalsMonitor {
 
   initAnalytics() {
     // Check for GA4
-    if (typeof gtag !== 'undefined') {
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
       return {
         send: (name, value, data) => {
-          gtag('event', name, {
+          window.gtag('event', name, {
             event_category: 'Web Vitals',
             value: Math.round(value),
             custom_map: { metric_rating: data.rating },

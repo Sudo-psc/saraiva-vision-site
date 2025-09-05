@@ -60,9 +60,9 @@ class ConsentManager {
     if (typeof window === 'undefined') return;
     
     // Initialize Google Consent Mode with defaults
-    if (typeof gtag !== 'undefined') {
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
       // Set default consent state
-      gtag('consent', 'default', {
+      window.gtag('consent', 'default', {
         ...this.getRegionalDefaults(),
         wait_for_update: 2000, // Wait up to 2 seconds for user interaction
       });
@@ -75,10 +75,10 @@ class ConsentManager {
     } else {
       // Queue consent commands for when gtag loads
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      const gtag = (...args) => window.dataLayer.push(args);
       window.gtag = gtag;
       
-      gtag('consent', 'default', {
+      window.gtag('consent', 'default', {
         ...this.getRegionalDefaults(),
         wait_for_update: 2000,
       });
@@ -140,8 +140,8 @@ class ConsentManager {
 
   // Update Google Consent Mode
   updateGoogleConsent(consent) {
-    if (typeof gtag !== 'undefined') {
-      gtag('consent', 'update', consent);
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+      window.gtag('consent', 'update', consent);
     }
   }
 
