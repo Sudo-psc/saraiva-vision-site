@@ -485,6 +485,7 @@
     "button": "Saiba Mais",
     "schedule_button": "Agendar Consulta para Lentes",
     "whatsapp_button": "Tirar Dúvidas no WhatsApp",
+    "brand_logo_alt": "Logo da marca {{brandName}} - Lentes de contato de qualidade",
     "process_steps": [
       {
         "title": "Avaliação Inicial",

@@ -409,7 +409,7 @@ const AudioPlayer = ({
                     <div className="text-center mb-6">
                         <img
                             src={episode.cover}
-                            alt={episode.title}
+                            alt={t('ui.alt.podcast_episode', 'Capa do episódio de podcast sobre saúde ocular') + ': ' + episode.title}
                             className="w-40 h-40 rounded-2xl mx-auto mb-4 shadow-lg object-cover"
                             width={256}
                             height={256}
@@ -468,7 +468,7 @@ const AudioPlayer = ({
                 <div className="mb-4">
                     <img
                         src={episode.cover}
-                        alt={`${t('podcast.cover_alt', 'Capa do podcast')}: ${episode.title}`}
+                        alt={t('ui.alt.podcast_episode', 'Capa do episódio de podcast sobre saúde ocular') + ': ' + episode.title}
                         className="w-full aspect-square rounded-xl object-cover shadow-md"
                         loading="lazy"
                         onError={(e) => { try { e.currentTarget.src = '/Podcasts/Covers/podcast.png'; } catch (_) {} }}
@@ -495,7 +495,7 @@ const AudioPlayer = ({
                 <div className="flex items-start gap-4 mb-6">
                     <img
                         src={episode.cover}
-                        alt={`${t('podcast.cover_alt', 'Capa do podcast')}: ${episode.title}`}
+                        alt={t('ui.alt.podcast_episode', 'Capa do episódio de podcast sobre saúde ocular') + ': ' + episode.title}
                         className="w-16 h-16 rounded-xl object-cover shadow-md flex-shrink-0"
                         loading="lazy"
                         onError={(e) => { try { e.currentTarget.src = '/Podcasts/Covers/podcast.png'; } catch (_) {} }}

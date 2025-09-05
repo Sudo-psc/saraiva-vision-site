@@ -277,7 +277,7 @@ function PodcastPage() {
                     <div className="flex-shrink-0 relative group">
                       <OptimizedImage
                         src={featuredEpisode.cover}
-                        alt={featuredEpisode.title}
+                        alt={t('ui.alt.podcast_episode', 'Capa do episódio de podcast sobre saúde ocular') + ': ' + featuredEpisode.title}
                         className="w-48 h-48 lg:w-64 lg:h-64 rounded-3xl object-cover shadow-2xl"
                         priority={true}
                       />
