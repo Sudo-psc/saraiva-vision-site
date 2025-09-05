@@ -1,5 +1,7 @@
 /* IMPORTA SOLUÇÃO DEFINITIVA DE SCROLL */
 @import './styles/scroll-fix.css';
+/* IMPORTA DESIGN SYSTEM ENHANCEMENTS */
+@import './styles/design-system.css';
 
 @tailwind base;
 @tailwind components;

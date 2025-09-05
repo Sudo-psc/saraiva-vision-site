@@ -62,8 +62,14 @@ const Testimonials = ({ limit }) => {
   if (testimonials.length === 0) return null;
 
   return (
-    <section id="testimonials" className="py-24 bg-gradient-to-br from-blue-50 to-slate-50">
-      <div className="container mx-auto px-4 md:px-6">
+    <section id="testimonials" className="section-padding-large bg-section-gradient relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-20 w-64 h-64 bg-gradient-to-br from-blue-400/6 to-cyan-400/6 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-20 right-20 w-48 h-48 bg-gradient-to-br from-purple-400/6 to-pink-400/6 rounded-full blur-3xl animate-float-delayed" />
+      </div>
+      
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -86,8 +92,8 @@ const Testimonials = ({ limit }) => {
 
         {/* Featured Testimonial (Carousel) */}
         <div className="max-w-4xl mx-auto mb-16">
-          <div className="relative bg-white rounded-3xl shadow-soft-medium border-2 border-slate-300 p-8 md:p-12">
-            <div className="absolute top-8 left-8 text-blue-200">
+          <div className="relative glass-card rounded-3xl shadow-3d hover:shadow-3d-hover border-2 border-slate-200/50 p-8 md:p-12 card-hover">
+            <div className="absolute top-8 left-8 text-blue-300/60">
               <Quote size={48} />
             </div>
 
