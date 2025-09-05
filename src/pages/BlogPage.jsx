@@ -76,7 +76,9 @@ const BlogPage = ({ wordpressUrl }) => {
             <Link to={`/blog/${post.slug}`} className="block overflow-hidden">
               <img
                 src={post._embedded?.['wp:featuredmedia']?.[0]?.source_url || 'https://placehold.co/600x400/e2e8f0/64748b?text=Image'}
-                alt={(post.title?.rendered || '').replace(/<[^>]+>/g, '')}
+                alt={post._embedded?.['wp:featuredmedia']?.[0]?.alt_text || 
+                     t('ui.alt.blog_post', 'Imagem ilustrativa do artigo') + ': ' + 
+                     (post.title?.rendered || '').replace(/<[^>]+>/g, '')}
                 className="w-full h-56 object-cover transition-transform duration-300 hover:scale-105"
                 loading="lazy"
                 decoding="async"
