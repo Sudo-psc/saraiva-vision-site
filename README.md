@@ -62,7 +62,7 @@ Site institucional desenvolvido para a Clínica Saraiva Vision, especializada em
 ## 📁 Estrutura do Projeto
 
 ```
-saraiva-vision-site/
+saraivavision-site-v2/
 ├── public/                 # Arquivos estáticos
 │   ├── img/               # Imagens e assets
 │   ├── robots.txt         # SEO crawler rules
@@ -96,8 +96,8 @@ saraiva-vision-site/
 
 1. **Clone o repositório**
 ```bash
-git clone https://github.com/seu-usuario/saraiva-vision-site.git
-cd saraiva-vision-site
+git clone https://github.com/Sudo-psc/saraivavision-site-v2.git
+cd saraivavision-site-v2
 ```
 
 2. **Instale as dependências**

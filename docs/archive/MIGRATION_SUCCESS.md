@@ -47,7 +47,7 @@ npm run serve            # Serve na porta 3000
 ## 📁 Estrutura de Arquivos
 
 ```
-/home/saraiva-vision-site/          # Código fonte
+/home/saraivavision-site-v2/          # Código fonte
 ├── nginx.local.conf                # ✅ Config nginx local
 ├── deploy.sh                       # ✅ Script deploy atualizado
 ├── dev.sh                          # ✅ Script desenvolvimento

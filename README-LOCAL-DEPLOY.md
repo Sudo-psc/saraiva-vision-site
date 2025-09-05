@@ -27,7 +27,7 @@ sudo ./deploy.sh
 
 ## 📁 Estrutura de Deploy
 
-- **Código fonte**: `/home/saraiva-vision-site/`
+- **Código fonte**: `/home/saraivavision-site-v2/`
 - **Build de produção (symlink)**: `/var/www/saraivavision/current/`
 - **Releases**: `/var/www/saraivavision/releases/<timestamp>/`
 - **Configuração nginx**: `/etc/nginx/sites-available/saraivavision`
