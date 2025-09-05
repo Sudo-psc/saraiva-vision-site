@@ -55,19 +55,31 @@ function HomePage() {
       <main>
         <Hero />
 
+        <hr className="hr-divider" aria-hidden="true" />
+
 
         <Services />
 
+        <hr className="hr-divider" aria-hidden="true" />
+
         <About />
 
+        <hr className="hr-divider" aria-hidden="true" />
+
         <LatestEpisodes />
+
+        <hr className="hr-divider" aria-hidden="true" />
 
         <CompactGoogleReviews />
 
         {/* Local / Mapa (Google Places) */}
         <GoogleLocalSection />
 
+        <hr className="hr-divider" aria-hidden="true" />
+
         <Contact />
+
+        <hr className="hr-divider" aria-hidden="true" />
 
         <FAQ />
       </main>

@@ -14,25 +14,34 @@ describe('LatestEpisodes (mobile-first + design)', () => {
 
   it('renders the podcast header text', () => {
     renderComponent();
-    // With mocked i18n, this resolves to the key
-    expect(screen.getByText('podcast.title')).toBeInTheDocument();
+    // Updated to match new featured episode title
+    expect(screen.getByText('Podcast em Destaque')).toBeInTheDocument();
   });
 
-  it('uses a horizontal scrollable carousel on mobile', () => {
+  it('displays a single featured episode instead of carousel', () => {
     const { container } = renderComponent();
+    // Should no longer have the scroll carousel
     const scroll = container.querySelector('[data-testid="podcast-scroll"]');
-    expect(scroll).toBeTruthy();
-    expect(scroll?.className).toContain('overflow-x-auto');
-    expect(scroll?.className).toContain('snap-x');
+    expect(scroll).toBeFalsy();
+
+    // Should have a single featured episode section
+    const featuredSection = container.querySelector('.max-w-4xl');
+    expect(featuredSection).toBeTruthy();
   });
 
-  it('applies glassmorphism and 3D card styles to episode cards', () => {
+  it('applies glassmorphism and 3D card styles to the featured episode', () => {
     const { container } = renderComponent();
     const card3d = container.querySelector('.card-3d');
     expect(card3d).toBeTruthy();
     // Ensure glass variant applied
     const glass = container.querySelector('.glass-blue');
     expect(glass).toBeTruthy();
+  });
+
+  it('does not include Spotify embed on homepage', () => {
+    const { container } = renderComponent();
+    const spotifyEmbed = container.querySelector('iframe[src*="spotify.com/embed"]');
+    expect(spotifyEmbed).toBeFalsy();
   });
 
   it('links to the full podcast page', () => {

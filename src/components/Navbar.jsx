@@ -57,8 +57,11 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-header-gradient shadow-md py-2' : 'bg-transparent py-4'
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-header-gradient shadow-md py-2'
+          : 'bg-white/90 backdrop-blur border-b border-slate-200/60 md:bg-transparent md:border-0 py-3'
+      }`}
     >
       <div className="container mx-auto px-4 md:px-6 no-scrollbar-x">
         <div className="flex items-center justify-between w-full">
@@ -161,12 +164,15 @@ const Navbar = () => {
           <div className="md:hidden flex items-center gap-2">
             <LanguageSwitcher />
             <Button
-              variant="ghost"
+              variant="outline"
               size="icon"
+              className="!h-12 !w-12 rounded-2xl border-blue-500 text-blue-700 bg-white shadow-3d hover:shadow-3d-hover"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? t('navbar.close_menu') : t('navbar.open_menu')}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-primary-navigation"
             >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </Button>
           </div>
         </div>
@@ -181,7 +187,7 @@ const Navbar = () => {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="md:hidden bg-white/95 backdrop-blur-lg border-t touch-scroll scroll-container scrollbar-none max-h-[calc(100dvh-56px)] overflow-y-auto"
           >
-            <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4 no-scrollbar-x" aria-label={t('navbar.mobile_navigation', 'Navegação móvel')}>
+            <nav id="mobile-primary-navigation" className="container mx-auto px-4 py-4 flex flex-col space-y-4 no-scrollbar-x" aria-label={t('navbar.mobile_navigation', 'Navegação móvel')}>
               {navLinks.map((link) => (
                 link.internal ? (
                   <a

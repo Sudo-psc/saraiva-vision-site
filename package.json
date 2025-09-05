@@ -13,7 +13,7 @@
     "deploy:local": "sudo ./deploy.sh",
     "dev:full": "./dev.sh",
     "smoke:test": "bash scripts/smoke-test.sh",
-    "verify": "npm run build && npm run verify:links && npm run verify:html && npm run verify:lighthouse",
+    "verify": "npm run build && npm run verify:gtm && npm run verify:links && npm run verify:html && npm run verify:lighthouse",
     "verify:links": "linkinator dist --config linkinator.config.json",
     "verify:html": "html-validate dist/**/*.html",
     "verify:lighthouse": "lhci autorun --config lighthouserc.json",
@@ -21,6 +21,8 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:gtm": "vitest run tests/gtm.test.js",
+    "verify:gtm": "node scripts/verify-gtm.js",
     "audio:duration": "node tools/get-audio-duration.js",
     "images:build": "node tools/img-pipeline.mjs",
     "images:check": "node tools/img-pipeline.mjs check"

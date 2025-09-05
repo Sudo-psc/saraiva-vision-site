@@ -27,7 +27,10 @@
     "services_link": "Ver todos os serviços"
   },
   "common": {
-    "logo_alt": "Saraiva Vision Logo"
+    "logo_alt": "Saraiva Vision Logo",
+    "reject_all": "Rejeitar",
+    "customize": "Personalizar",
+    "accept_all": "Aceitar"
   },
   "hero": {
     "partner": "Parceiro Oficial Amor e Saúde",
@@ -232,6 +235,7 @@
   },
   "services": {
     "title": "Nossos Serviços",
+    "title_full": "Cuidados Oftalmológicos Completos",
     "subtitle": "Oferecemos uma gama completa de serviços oftalmológicos para cuidar da sua visão com a máxima qualidade e tecnologia.",
     "badge": "Nossos Serviços",
     "learn_more": "Saiba Mais",
@@ -239,6 +243,7 @@
     "show_less": "Mostrar menos",
     "carousel_navigation": "Navegação do carrossel de serviços",
     "go_to": "Ir para serviço {{index}}",
+    "go_to_page": "Ir para página {{index}}",
     "schedule_button": "Agende Sua Consulta Agora",
     "items": {
       "consultations": {
@@ -673,6 +678,7 @@
     "sending_label": "Enviando...",
     "recaptcha_not_ready": "Verificação de segurança indisponível. Tente novamente.",
     "recaptcha_error": "Falha na verificação de segurança. Tente novamente.",
+    "recaptcha_ready": "Proteção automática reCAPTCHA ativada",
     "server_error": "Não foi possível enviar. Tente novamente mais tarde.",
     "validation": {
       "name_min": "Informe pelo menos 3 caracteres.",
@@ -686,7 +692,16 @@
     "phone_call_error": "Erro ao iniciar chamada. Ligue manualmente: {phoneDisplay}",
     "email_error": "Erro ao abrir cliente de email. Envie para: {email}",
     "rate_limit_title": "Aguarde um momento",
-    "rate_limit_desc": "Aguarde 30 segundos antes de enviar novamente."
+    "rate_limit_desc": "Aguarde 30 segundos antes de enviar novamente.",
+    "schedule_consultation": "Agendar Consulta",
+    "modal_description": "Escolha sua forma preferida de contato. Resposta em até 1 minuto no horário comercial.",
+    "whatsapp_title": "WhatsApp",
+    "whatsapp_fast_response": "Resposta em até 1 minuto • Mais rápido",
+    "phone_title": "Telefone",
+    "phone_call_now": "Ligue agora",
+    "email_title": "E-mail",
+    "email_details": "Envie detalhes e preferências de horário",
+    "whatsapp_footer_help": "Caso o WhatsApp não abra automaticamente, adicione o número manualmente:"
   },
   "footer": {
     "slogan": "Excelência no cuidado com a visão, perto de você.",

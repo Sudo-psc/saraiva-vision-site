@@ -120,55 +120,69 @@ const About = () => {
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="max-w-6xl mx-auto bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/50 p-8 md:p-12"
+          transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
+          className="max-w-6xl mx-auto group"
+          style={{ perspective: "1500px" }}
         >
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
-            {/* Doctor Image */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="lg:col-span-1 flex justify-center"
-            >
-              <div className="relative w-full max-w-xs">
-                <div className="absolute -inset-4 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-indigo-400/20 rounded-3xl blur-lg" />
-                <div className="relative aspect-[3/4] overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-b from-blue-50 to-white">
-                  <OptimizedPicture
-                    src="/img/drphilipe_perfil.png"
-                    alt={t('about.doctor.alt')}
-                    width={300}
-                    height={400}
-                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    decoding="async"
-                    sizes="(max-width: 768px) 80vw, (max-width: 1024px) 40vw, 300px"
-                  />
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            transition={{ type: "spring", stiffness: 200, damping: 30 }}
+            className="relative bg-white/60 backdrop-blur-xl rounded-3xl shadow-2xl border-t border-l border-white/50"
+          >
+            <div className="absolute -inset-px rounded-3xl border border-transparent bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-lg group-hover:blur-xl transition-all duration-500" />
+
+            <div className="relative p-8 md:p-12">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+                {/* 3D Doctor Image */}
+                <motion.div
+                  className="lg:col-span-1 flex justify-center"
+                  style={{ transformStyle: "preserve-3d" }}
+                >
+                  <motion.div
+                    className="relative w-full max-w-xs"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
+                    <div className="absolute -inset-4 bg-gradient-to-r from-blue-400/30 via-purple-400/30 to-indigo-400/30 rounded-3xl blur-xl" style={{ transform: "translateZ(-50px)" }} />
+                    <div className="relative aspect-[3/4] overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-b from-blue-50 to-white" style={{ transform: "translateZ(0)" }}>
+                      <img
+                        src="/img/drphilipe_terno.jpeg"
+                        alt={t('about.doctor.alt')}
+                        width={300}
+                        height={400}
+                        className="w-full h-full object-cover object-top transition-transform duration-500"
+                        loading="lazy"
+                        decoding="async"
+                        onError={(e) => {
+                          console.error('Erro ao carregar imagem do Dr. Philipe:', e);
+                          // Fallback para imagem alternativa
+                          e.target.src = '/img/drphilipe_perfil.png';
+                        }}
+                      />
+                    </div>
+                    <div className="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full opacity-80 animate-pulse" style={{ transform: "translateZ(20px)" }} />
+                    <div className="absolute -bottom-4 -left-4 w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full opacity-70 animate-bounce" style={{ animationDuration: '3s', transform: "translateZ(-20px)" }} />
+                  </motion.div>
+                </motion.div>
+
+                {/* Doctor Info */}
+                <div className="lg:col-span-2 space-y-6 text-center lg:text-left">
+                  <div>
+                    <h3 className="text-3xl md:text-4xl font-black text-slate-900 mb-2">{t('about.doctor.heading')}</h3>
+                    <p className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">
+                      {t('about.doctor.name')} – {t('about.doctor.title')}
+                    </p>
+                  </div>
+
+                  <div className="prose prose-slate max-w-none">
+                    <p className="text-slate-700 leading-relaxed whitespace-pre-line text-lg">
+                      {t('about.doctor.description')}
+                    </p>
+                  </div>
                 </div>
-
-                {/* Enhanced decorative elements */}
-                <div className="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full opacity-70 animate-pulse" />
-                <div className="absolute -bottom-4 -left-4 w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full opacity-60 animate-bounce" style={{ animationDuration: '3s' }} />
-              </div>
-            </motion.div>
-
-            {/* Doctor Info */}
-            <div className="lg:col-span-2 space-y-6 text-center lg:text-left">
-              <div>
-                <h3 className="text-3xl md:text-4xl font-black text-slate-900 mb-2">{t('about.doctor.heading')}</h3>
-                <p className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">
-                  {t('about.doctor.name')} – {t('about.doctor.title')}
-                </p>
-              </div>
-
-              <div className="prose prose-slate max-w-none">
-                <p className="text-slate-700 leading-relaxed whitespace-pre-line text-lg">
-                  {t('about.doctor.description')}
-                </p>
               </div>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Removed section: Doctor specialization/experience block */}

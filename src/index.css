@@ -1,12 +1,41 @@
+/* IMPORTA SOLUÇÃO DEFINITIVA DE SCROLL */
+@import './styles/scroll-fix.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* IMPORTA SOLUÇÃO DEFINITIVA DE SCROLL */
-@import './styles/scroll-fix.css';
-
 /* Performance and UX optimizations */
 @layer utilities {
+  /* Vertical stack spacing: ensures >= 2rem between siblings */
+  .stack > * + * {
+    margin-top: 2rem; /* 32px */
+  }
+
+  /* Elegant hr divider */
+  .hr-divider {
+    display: block;
+    width: 100%;
+    height: 1px;
+    border: 0;
+    background: linear-gradient(to right, transparent, #e0e0e0, transparent);
+    opacity: 1;
+    margin: 2rem 0; /* 32px vertical spacing */
+  }
+
+  /* Subtle surface gradients that complement the palette */
+  .bg-soft-radial {
+    background-image: radial-gradient(60% 60% at 50% 0%, rgba(59, 130, 246, 0.08), rgba(147, 51, 234, 0.06) 50%, transparent 100%);
+  }
+
+  .bg-surface-gradient {
+    background-image: linear-gradient(180deg, rgba(248, 250, 252, 1) 0%, rgba(255, 255, 255, 1) 40%, rgba(239, 246, 255, 0.5) 100%);
+  }
+
+  .bg-grid-soft {
+    background-image: radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.06) 1px, transparent 0);
+    background-size: 28px 28px;
+  }
   .floating-widget {
     position: fixed !important;
     transform: translateZ(0);
@@ -1047,9 +1076,12 @@ body {
   .overflow-x-auto,
   [class*="overflow-"] {
     /* Hide scrollbars while preserving scroll */
-    -ms-overflow-style: none; /* IE/Edge */
-    scrollbar-width: none;    /* Firefox */
-    overscroll-behavior: contain; /* prevent scroll chaining */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    overscroll-behavior: contain;
+    /* prevent scroll chaining */
   }
 
   /* Webkit browsers (Chrome, Safari, Edge) - transparent scrollbars */
@@ -1057,7 +1089,8 @@ body {
   .overflow-y-auto::-webkit-scrollbar,
   .overflow-x-auto::-webkit-scrollbar,
   [class*="overflow-"]::-webkit-scrollbar {
-    display: none; /* Chrome/Safari/Edge */
+    display: none;
+    /* Chrome/Safari/Edge */
   }
 
   .scroll-container::-webkit-scrollbar-track,
@@ -1092,6 +1125,7 @@ body {
     [class*="overflow-"]::-webkit-scrollbar {
       display: none;
     }
+
     .scroll-container,
     .overflow-y-auto,
     .overflow-x-auto,
@@ -1103,12 +1137,15 @@ body {
 
   /* Utility: completely hide scrollbars for targeted containers */
   .scrollbar-none {
-    -ms-overflow-style: none; /* IE/Edge */
-    scrollbar-width: none;    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 
   .scrollbar-none::-webkit-scrollbar {
-    display: none;            /* Chrome/Safari/Edge */
+    display: none;
+    /* Chrome/Safari/Edge */
   }
 
   /* Utility: touch-action pan-x for smooth horizontal gestures */
@@ -1117,10 +1154,17 @@ body {
   }
 
   /* Global: prevent scroll chaining and hide global scrollbars */
-  html, body {
+  html,
+  body {
     overscroll-behavior-y: none;
-    -ms-overflow-style: none; /* IE/Edge */
-    scrollbar-width: none;    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
-  html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+  }
 }

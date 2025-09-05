@@ -242,6 +242,30 @@ else
 fi
 
 echo "✅ Deploy completed"
+
+# GTM Verification
+echo "🏷️  Verificando integração GTM..."
+if [[ -f "$PROJECT_ROOT/scripts/verify-gtm.js" ]]; then
+  if ! $DRY_RUN; then
+    cd "$PROJECT_ROOT"
+    # Set environment variables for verification
+    export SITE_URL="https://saraivavision.com.br"
+    export DIST_DIR="$NEW_RELEASE"
+    export VITE_GTM_ID="${VITE_GTM_ID:-GTM-KF2NP85D}"
+    
+    if node scripts/verify-gtm.js; then
+      echo "✅ GTM verificação passou - ID: $VITE_GTM_ID"
+    else
+      echo "⚠️  GTM verificação falhou, mas deploy continuou"
+      echo "💡 Execute manualmente: node scripts/verify-gtm.js"
+    fi
+  else
+    echo "[dry-run] node scripts/verify-gtm.js"
+  fi
+else
+  echo "⚠️  Script de verificação GTM não encontrado (scripts/verify-gtm.js)"
+fi
+
 echo "➡️  Current release: $NEW_RELEASE"
 echo "🌐 Root serving path (nginx): $CURRENT_LINK"
 if [[ -n "$CURRENT_TARGET" ]]; then

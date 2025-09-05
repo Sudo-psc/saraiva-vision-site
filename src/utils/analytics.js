@@ -134,6 +134,41 @@ export function trackConversion(type, context = {}) {
       });
       return;
     }
+    case 'service_page_view': {
+      // Track specific service page views for interest tracking
+      trackGA('page_view', {
+        page_title: params.service_title || 'Service Page',
+        page_location: params.page_url || window.location.href,
+        service_id: params.service_id,
+        service_category: params.service_category || 'medical_service',
+        engagement_time_msec: Date.now()
+      });
+      trackMeta('ViewContent', {
+        content_type: 'service_page',
+        content_name: params.service_title || 'Service Page',
+        content_category: 'Medical Service',
+        content_ids: [params.service_id]
+      });
+      return;
+    }
+    case 'service_cta_click': {
+      // Track when users click CTA buttons from service pages
+      trackGA('select_item', {
+        item_list_name: 'service_page',
+        items: [{
+          item_id: params.service_id,
+          item_name: params.service_title,
+          item_category: 'medical_service',
+          item_variant: params.cta_type || 'schedule'
+        }]
+      });
+      trackMeta('Lead', {
+        content_name: `${params.service_title} - ${params.cta_type || 'Schedule'}`,
+        content_category: 'Service CTA',
+        source: 'service_page'
+      });
+      return;
+    }
     default: {
       // Fallback to GA only
       trackGA(type, params);

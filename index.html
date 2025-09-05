@@ -312,6 +312,54 @@
       }
     </script>
 
+  <!-- Direct Google Analytics (GA4) - Consent-gated -->
+  <script>
+    (function() {
+      // GA4 Measurement ID - hardcoded to avoid Vite processing issues
+      const GA_MEASUREMENT_ID = 'G-LXWRK8ELS6';
+
+      // Helper: load GA4 gtag once
+      function loadGA4(id) {
+        if (!id) return;
+        if (window.__GA4_LOADED__) return;
+        window.__GA4_LOADED__ = true;
+        
+        // Load gtag script
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+        document.head.appendChild(script);
+
+        // Initialize gtag
+        script.onload = function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', id);
+        };
+      }
+
+      // Load GA4 when consent is granted
+      window.addEventListener('consent-updated', function(e) {
+        const consent = e.detail || {};
+        if (consent.analytics && !window.__GA4_LOADED__) {
+          loadGA4(GA_MEASUREMENT_ID);
+        }
+      });
+
+      // Auto-apply for returning visitors with stored consent
+      try {
+        const saved = JSON.parse(localStorage.getItem('sv_consent_v1'));
+        if (saved && saved.analytics && !window.__GA4_LOADED__) {
+          loadGA4(GA_MEASUREMENT_ID);
+        }
+      } catch (e) {
+        // Ignore localStorage errors
+      }
+    })();
+  </script>
+
   <!-- Consent-gated GTM container (configure GA4/Meta inside GTM). ID from env. -->
   <script type="module">
     const GTM_ID = import.meta.env.VITE_GTM_ID; // e.g., GTM-XXXXXXX

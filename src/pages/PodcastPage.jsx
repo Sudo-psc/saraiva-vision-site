@@ -19,10 +19,10 @@ import SEOHead from '@/components/SEOHead';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import AudioPlayer from '@/components/AudioPlayer';
 import SpotifyEmbed from '@/components/SpotifyEmbed';
+import AudioPlayer from '@/components/AudioPlayer';
 import { Button } from '@/components/ui/button';
-import SafeImage from '@/components/ui/SafeImage';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 
 // Hooks and utils
 import { usePodcastSEO } from '@/hooks/useSEO';
@@ -42,7 +42,7 @@ function PodcastPage() {
       src: '/Podcasts/Saúde Ocular em Foco - Lentes de Contato_ Rígidas vs Gelatinosas_2025_08_31.mp3',
       title: t('podcast.episodes.lentes_contato.title'),
       description: t('podcast.episodes.lentes_contato.description'),
-      cover: '/Podcasts/Covers/lentes_contato_cover.png',
+      cover: '/Podcasts/Covers/lentes_contato_cover.jpg',
       duration: '05:30',
       date: '2025-08-31',
       category: 'Lentes de Contato',
@@ -56,7 +56,7 @@ function PodcastPage() {
       src: '/Podcasts/Saúde Ocular em Foco - DMRI_ Quando a Mácula Decide se Aposentar_2025_08_31.mp3',
       title: t('podcast.episodes.dmri.title'),
       description: t('podcast.episodes.dmri.description'),
-      cover: '/Podcasts/Covers/dmri.png',
+      cover: '/Podcasts/Covers/dmri.jpg',
       duration: '06:13',
       date: '2025-08-31',
       category: 'Doenças Oculares',
@@ -70,7 +70,7 @@ function PodcastPage() {
       src: '/Podcasts/glaucoma.mp3',
       title: t('podcast.episodes.glaucoma.title'),
       description: t('podcast.episodes.glaucoma.description'),
-      cover: '/Podcasts/Covers/glaucoma.avif',
+      cover: '/Podcasts/Covers/glaucoma.jpg',
       duration: '12:30',
       date: '2024-08-20',
       category: 'Doenças Oculares',
@@ -85,7 +85,7 @@ function PodcastPage() {
       src: '/Podcasts/ceratocone.mp3',
       title: t('podcast.episodes.ceratocone.title'),
       description: t('podcast.episodes.ceratocone.description'),
-      cover: '/Podcasts/Covers/ceratocone_cover.png',
+      cover: '/Podcasts/Covers/ceratocone_cover.jpg',
       duration: '11:40',
       date: '2025-08-30',
       category: 'Doenças Oculares',
@@ -142,7 +142,7 @@ function PodcastPage() {
       src: '/Podcasts/olho-seco.mp3',
       title: t('podcast.episodes.olho_seco.title'),
       description: t('podcast.episodes.olho_seco.description'),
-      cover: '/Podcasts/Covers/podcast.png',
+      cover: '/Podcasts/Covers/podcast.jpg',
       duration: '09:50',
       date: '2024-08-05',
       category: 'Sintomas',
@@ -168,10 +168,8 @@ function PodcastPage() {
 
   // State management
   const [filteredEpisodes, setFilteredEpisodes] = useState(episodes);
-  const [selectedEpisode, setSelectedEpisode] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [isPlayerModalOpen, setIsPlayerModalOpen] = useState(false);
 
   // Get unique categories
   const categories = ['all', ...new Set(episodes.map(ep => ep.category))];
@@ -195,11 +193,6 @@ function PodcastPage() {
     setFilteredEpisodes(filtered);
   }, [searchQuery, selectedCategory, episodes]);
 
-  const handlePlayEpisode = (episode) => {
-    setSelectedEpisode(episode);
-    setIsPlayerModalOpen(true);
-  };
-
   const featuredEpisode = episodes.find(ep => ep.featured);
 
   return (
@@ -208,6 +201,16 @@ function PodcastPage() {
       {/* SEO and Schema */}
       <SEOHead {...seoData} />
       <SchemaMarkup type="podcast" data={{ episodes }} />
+
+      {/* Preload imagens críticas */}
+      {featuredEpisode && (
+        <link
+          rel="preload"
+          as="image"
+          href={featuredEpisode.cover}
+          fetchPriority="high"
+        />
+      )}
 
       <Navbar />
 
@@ -272,20 +275,12 @@ function PodcastPage() {
                 <div className="glass-blue card-3d rounded-3xl shadow-soft-light p-6 md:p-8 lg:p-10 border border-blue-200/40">
                   <div className="flex flex-col lg:flex-row items-center gap-8">
                     <div className="flex-shrink-0 relative group">
-                      <SafeImage
+                      <OptimizedImage
                         src={featuredEpisode.cover}
                         alt={featuredEpisode.title}
                         className="w-48 h-48 lg:w-64 lg:h-64 rounded-3xl object-cover shadow-2xl"
+                        priority={true}
                       />
-                      <button
-                        onClick={() => handlePlayEpisode(featuredEpisode)}
-                        className="absolute inset-0 bg-black/30 rounded-3xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
-                        aria-label={t('podcast.open_episode')}
-                      >
-                        <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <Play className="w-8 h-8 text-blue-600 ml-1" />
-                        </div>
-                      </button>
                     </div>
 
                     <div className="flex-grow text-center lg:text-left">
@@ -327,15 +322,6 @@ function PodcastPage() {
                       </div>
 
                       <div className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start">
-                        <Button
-                          onClick={() => handlePlayEpisode(featuredEpisode)}
-                          size="lg"
-                          className="bg-blue-600 hover:bg-blue-700 text-white gap-2 px-8"
-                        >
-                          <Play className="w-5 h-5" />
-                          Reproduzir Agora
-                        </Button>
-
                         <a
                           href={featuredEpisode.spotifyUrl}
                           target="_blank"
@@ -343,13 +329,12 @@ function PodcastPage() {
                         >
                           <Button
                             size="lg"
-                            variant="outline"
-                            className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white gap-2 px-8"
+                            className="bg-green-600 hover:bg-green-700 text-white gap-2 px-8"
                           >
                             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                               <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.84-.54 0-.36.179-.66.479-.78 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02v-.12h.002zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.48.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3L19.081 10.68z" />
                             </svg>
-                            {t('podcast.listen_spotify')}
+                            Ouvir no Spotify
                           </Button>
                         </a>
                       </div>
@@ -418,57 +403,27 @@ function PodcastPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="glass-blue card-3d rounded-2xl shadow-soft-light overflow-hidden group hover:shadow-lg transition-all cursor-pointer border border-blue-200/40"
-                        onClick={() => handlePlayEpisode(episode)}
+                        transition={{ delay: index * 0.06 }}
+                        className="block"
                       >
-                        <div className="relative aspect-square">
-                          <SafeImage
-                            src={episode.cover}
-                            alt={episode.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                          />
-                          <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
-                              <Play className="w-6 h-6 text-blue-600 ml-0.5" />
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="p-6">
-                          <div className="flex items-center gap-2 mb-3">
-                            <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
-                              {episode.category}
-                            </span>
-                            {episode.duration && (
-                              <div className="flex items-center gap-1 text-xs text-gray-500">
-                                <Clock className="w-3 h-3" />
-                                <span>{episode.duration}</span>
-                              </div>
-                            )}
-                          </div>
-
-                          <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                            {episode.title}
-                          </h3>
-
-                          <p className="text-sm text-gray-600 line-clamp-2 mb-4">
-                            {episode.description}
-                          </p>
-
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs text-gray-500">
-                              {new Date(episode.date).toLocaleDateString('pt-BR')}
-                            </span>
-
-                            <div className="flex items-center gap-2">
-                              {episode.tags.slice(0, 2).map(tag => (
-                                <span key={tag} className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
-                                  #{tag}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
+                        <AudioPlayer
+                          episode={episode}
+                          mode="card"
+                          className="glass-blue card-3d hover:shadow-2xl transition-all border border-blue-200/40"
+                        />
+                        <div className="flex items-center justify-between px-1 pt-2 text-xs text-gray-500">
+                          <span>{new Date(episode.date).toLocaleDateString('pt-BR')}</span>
+                          {episode.spotifyUrl && (
+                            <a
+                              href={episode.spotifyUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-green-600 hover:text-green-700"
+                              aria-label="Ouvir no Spotify"
+                            >
+                              Spotify
+                            </a>
+                          )}
                         </div>
                       </motion.div>
                     ))}
@@ -491,20 +446,6 @@ function PodcastPage() {
       </main>
 
       <Footer />
-
-      {/* Audio Player Modal */}
-      <AnimatePresence>
-        {isPlayerModalOpen && selectedEpisode && (
-          <AudioPlayer
-            episode={selectedEpisode}
-            mode="modal"
-            onClose={() => {
-              setIsPlayerModalOpen(false);
-              setSelectedEpisode(null);
-            }}
-          />
-        )}
-      </AnimatePresence>
 
       {/* Test marker to stabilize i18n-dependent tests */}
       {isTestEnv && (

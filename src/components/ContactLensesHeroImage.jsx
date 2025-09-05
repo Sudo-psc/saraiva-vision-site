@@ -35,25 +35,24 @@ const ContactLensesHeroImage = ({ className = "", alt = "Lentes de Contato Premi
                             style={{ transform: "translateZ(30px)" }}
                         />
                         <motion.div
-                            className="absolute -inset-4 flex items-center justify-center"
-                            style={{ transform: "translateZ(60px)" }}
+                            className="absolute inset-4 flex items-center justify-center"
+                            style={{ transform: "translateZ(50px)" }}
                         >
                             <img
                                 src="/img/icon_lentes.png"
                                 alt="Ícone de lentes de contato"
-                                className="w-40 h-40 object-contain shadow-2xl"
+                                className="w-32 h-32 object-contain shadow-lg"
                                 style={{
-                                    filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.25)) drop-shadow(0 4px 8px rgba(0,0,0,0.15))',
-                                    maxWidth: '160px',
-                                    maxHeight: '160px',
-                                    zIndex: 10
+                                    filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
+                                    maxWidth: '128px',
+                                    maxHeight: '128px'
                                 }}
                                 onError={(e) => {
                                     console.error('Erro ao carregar ícone de lentes:', e);
                                     // Fallback para um ícone CSS se a imagem falhar
                                     e.target.style.display = 'none';
                                     const fallback = document.createElement('div');
-                                    fallback.className = 'w-40 h-40 bg-blue-400 rounded-full flex items-center justify-center text-white text-4xl font-bold shadow-2xl';
+                                    fallback.className = 'w-32 h-32 bg-blue-400 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg';
                                     fallback.innerHTML = '👁️';
                                     e.target.parentNode.appendChild(fallback);
                                 }}

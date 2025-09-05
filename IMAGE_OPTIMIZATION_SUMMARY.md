@@ -5,7 +5,7 @@
 ### **🔧 Páginas Otimizadas (2 componentes principais)**
 
 #### 1. **HomePage (Hero Component)**
-- **Imagens otimizadas**: 
+- **Imagens otimizadas**:
   - `hero.png` (principal above-the-fold)
   - `avatar-female-blonde.png`
   - `avatar-female-brunette.png`
@@ -49,10 +49,10 @@
 <picture>
   <!-- AVIF - melhor compressão -->
   <source srcset="/img/hero.avif" type="image/avif" />
-  
+
   <!-- WebP - amplo suporte -->
   <source srcset="/img/hero.webp" type="image/webp" />
-  
+
   <!-- Fallback original -->
   <img src="/img/hero.png" alt="..." />
 </picture>
@@ -82,7 +82,7 @@
    - Substituição `<img>` → `<OptimizedPicture>`
    - 3 imagens otimizadas (hero + 2 avatars)
 
-2. **`src/components/About.jsx`** 
+2. **`src/components/About.jsx`**
    - Substituição `<img>` → `<OptimizedPicture>`
    - 1 imagem otimizada (Dr. Philipe)
 
@@ -137,7 +137,7 @@ git revert HEAD
 - <img src={heroSrc} alt="..." />
 + <OptimizedPicture src={heroSrc} alt="..." />
 
-# About.jsx  
+# About.jsx
 - <img src="/img/drphilipe_perfil.png" />
 + <OptimizedPicture src="/img/drphilipe_perfil.png" />
 
@@ -153,7 +153,7 @@ git revert HEAD
 
 ### **🎯 Conclusão**
 
-**Meta estabelecida**: ≥30% de redução no tamanho das imagens  
+**Meta estabelecida**: ≥30% de redução no tamanho das imagens
 **Resultado alcançado**: **96.2% de redução** (9.23 MB → 0.35 MB)
 
 **Status**: ✅ **IMPLEMENTAÇÃO CONCLUÍDA COM SUCESSO**

@@ -1,0 +1,444 @@
+import 'dotenv/config';
+import path from 'node:path';
+import react from '@vitejs/plugin-react';
+import { createLogger, defineConfig } from 'vite';
+import { writeSitemapFile } from './src/utils/sitemapGenerator.js';
+import { workboxVitePlugin } from './src/utils/workbox-vite-plugin.js';
+
+const isDev = process.env.NODE_ENV !== 'production';
+
+const configHorizonsViteErrorHandler = `
+const observer = new MutationObserver((mutations) => {
+	for (const mutation of mutations) {
+		for (const addedNode of mutation.addedNodes) {
+			if (
+				addedNode.nodeType === Node.ELEMENT_NODE &&
+				(
+					addedNode.tagName?.toLowerCase() === 'vite-error-overlay' ||
+					addedNode.classList?.contains('backdrop')
+				)
+			) {
+				handleViteOverlay(addedNode);
+			}
+		}
+	}
+});
+
+observer.observe(document.documentElement, {
+	childList: true,
+	subtree: true
+});
+
+function handleViteOverlay(node) {
+	if (!node.shadowRoot) {
+		return;
+	}
+
+	const backdrop = node.shadowRoot.querySelector('.backdrop');
+
+	if (backdrop) {
+		const overlayHtml = backdrop.outerHTML;
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(overlayHtml, 'text/html');
+		const messageBodyElement = doc.querySelector('.message-body');
+		const fileElement = doc.querySelector('.file');
+		const messageText = messageBodyElement ? messageBodyElement.textContent.trim() : '';
+		const fileText = fileElement ? fileElement.textContent.trim() : '';
+		const error = messageText + (fileText ? ' File:' + fileText : '');
+
+		window.parent.postMessage({
+			type: 'horizons-vite-error',
+			error,
+		}, '*');
+	}
+}
+`;
+
+const configHorizonsRuntimeErrorHandler = `
+window.onerror = (message, source, lineno, colno, errorObj) => {
+	const errorDetails = errorObj ? JSON.stringify({
+		name: errorObj.name,
+		message: errorObj.message,
+		stack: errorObj.stack,
+		source,
+		lineno,
+		colno,
+	}) : null;
+
+	window.parent.postMessage({
+		type: 'horizons-runtime-error',
+		message,
+		error: errorDetails
+	}, '*');
+};
+`;
+
+const configHorizonsConsoleErrroHandler = `
+const originalConsoleError = console.error;
+console.error = function(...args) {
+	originalConsoleError.apply(console, args);
+
+	let errorString = '';
+
+	for (let i = 0; i < args.length; i++) {
+		const arg = args[i];
+		if (arg instanceof Error) {
+			errorString = arg.stack || \`\${arg.name}: \${arg.message}\`;
+			break;
+		}
+	}
+
+	if (!errorString) {
+		errorString = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : String(arg)).join(' ');
+	}
+
+	window.parent.postMessage({
+		type: 'horizons-console-error',
+		error: errorString
+	}, '*');
+};
+`;
+
+const configWindowFetchMonkeyPatch = `
+const originalFetch = window.fetch;
+
+function sanitize(u){
+  try { const x = new URL(u, window.location.origin); x.search = ''; return x.toString(); } catch { return (u||'').split('?')[0]; }
+}
+
+window.fetch = function(...args) {
+  const urlArg = args[0] instanceof Request ? args[0].url : args[0] || '';
+
+  // Skip WebSocket URLs
+  if (typeof urlArg === 'string' && (urlArg.startsWith('ws:') || urlArg.startsWith('wss:'))) {
+    return originalFetch.apply(this, args);
+  }
+
+  return originalFetch.apply(this, args)
+    .then(async response => {
+      const contentType = response.headers.get('Content-Type') || '';
+
+      // Exclude HTML document responses
+      const isDocumentResponse =
+        contentType.includes('text/html') ||
+        contentType.includes('application/xhtml+xml');
+
+      if (!response.ok && !isDocumentResponse) {
+        const responseClone = response.clone();
+        let errorFromRes = '';
+        try { errorFromRes = await responseClone.text(); } catch {}
+        const requestUrl = response.url || urlArg || '';
+        const safeUrl = sanitize(requestUrl);
+        console.error(`Fetch error from ${safeUrl}: ${String(errorFromRes).slice(0, 800)}`);
+      }
+
+      return response;
+    })
+    .catch(error => {
+      const safeUrl = sanitize(urlArg || '');
+      if (!String(urlArg).match(/\.html?$/i)) {
+        console.error(`Fetch error from ${safeUrl}: ${error && error.message ? error.message : String(error)}`);
+      }
+      throw error;
+    });
+};
+`;
+
+// Reload the page if an entry, stylesheet, or any app chunk fails to load (handles post-deploy hash mismatch)
+const assetFallbackScript = `(() => {\n  let retried = false;\n  function retry(){\n    if(retried) return; retried = true;\n    fetch('/', { cache: 'reload' }).then(()=>window.location.reload()).catch(()=>console.warn('Asset fallback reload failed'));;\n  }\n  window.addEventListener('error', (e)=> {\n    const el = e && e.target ? e.target : null;\n    if(!el || !el.tagName) return;\n    const tag = el.tagName.toUpperCase();\n    const src = (el.src || '').toString();\n    const href = (el.href || '').toString();\n    // Entry JS\n    if(tag==='SCRIPT' && /\\\/assets\\\/entry\\\/index-/.test(src)){ retry(); return; }\n    // Main CSS\n    if(tag==='LINK' && el.rel==='stylesheet' && /\\\/assets\\\/styles\\\/index-/.test(href)){ retry(); return; }\n    // Any other app chunk under /assets (e.g., LensesPage-*.js)\n    if(tag==='SCRIPT' && /\\\/assets\\\/.*-([A-Za-z0-9_]{4,})\\\.js$/.test(src)){ retry(); return; }\n  }, true);\n})();`;
+
+const addTransformIndexHtml = {
+	name: 'add-transform-index-html',
+	transformIndexHtml(html) {
+		return {
+			html,
+			tags: [
+				{
+					tag: 'script',
+					attrs: { type: 'module' },
+					children: configHorizonsRuntimeErrorHandler,
+					injectTo: 'head',
+				},
+				{
+					tag: 'script',
+					attrs: { type: 'module' },
+					children: configHorizonsViteErrorHandler,
+					injectTo: 'head',
+				},
+				{
+					tag: 'script',
+					attrs: { type: 'module' },
+					children: configHorizonsConsoleErrroHandler,
+					injectTo: 'head',
+				},
+				{
+					tag: 'script',
+					attrs: { type: 'module' },
+					children: configWindowFetchMonkeyPatch,
+					injectTo: 'head',
+				},
+				{
+					tag: 'script',
+					attrs: { type: 'module' },
+					children: assetFallbackScript,
+					injectTo: 'head',
+				},
+			],
+		};
+	},
+};
+
+console.warn = () => { };
+
+const logger = createLogger()
+const loggerError = logger.error
+
+logger.error = (msg, options) => {
+	if (options?.error?.toString().includes('CssSyntaxError: [postcss]')) {
+		return;
+	}
+
+	loggerError(msg, options);
+}
+
+// Simple in-memory cache for reviews
+let __reviewsCache;
+
+// Nota: /api/reviews agora servido por função serverless (ver api/reviews.js).
+
+export default defineConfig({
+	customLogger: logger,
+	define: {
+		__BUILD_ID__: JSON.stringify(Date.now()),
+	},
+	plugins: [
+		react(),
+		addTransformIndexHtml,
+		// Workbox service worker generation (production only)
+		workboxVitePlugin(),
+		// Dev-only debug and API endpoints
+		{
+			name: 'dev-api-endpoints',
+			apply: 'serve',
+			configureServer(server) {
+				// Debug endpoint
+				server.middlewares.use('/api/env-debug', (req, res) => {
+					res.setHeader('Content-Type', 'application/json');
+					const envStatus = {
+						NODE_ENV: process.env.NODE_ENV,
+						hasGoogleMapsKey: !!process.env.VITE_GOOGLE_MAPS_API_KEY,
+						hasGooglePlaceId: !!process.env.VITE_GOOGLE_PLACE_ID,
+						hasSupabaseUrl: !!process.env.VITE_SUPABASE_URL,
+						hasSupabaseKey: !!process.env.VITE_SUPABASE_ANON_KEY,
+						preview: process.env.VITE_GOOGLE_MAPS_API_KEY?.substring(0, 10) + '...' || 'undefined'
+					};
+					res.end(JSON.stringify(envStatus, null, 2));
+				});
+
+				// Reviews API endpoint for development
+				server.middlewares.use('/api/reviews', async (req, res) => {
+					if (req.method !== 'GET') {
+						res.writeHead(405, { 'Content-Type': 'application/json' });
+						res.end(JSON.stringify({ error: 'Method not allowed' }));
+						return;
+					}
+
+					try {
+						// Import and execute the reviews handler
+						const { default: handler } = await import('./api/reviews.js');
+
+						// Create mock req/res objects compatible with the handler
+						const mockReq = {
+							method: 'GET',
+							headers: req.headers,
+							url: req.url
+						};
+
+						const mockRes = {
+							status: (code) => ({
+								json: (data) => {
+									res.writeHead(code, { 'Content-Type': 'application/json' });
+									res.end(JSON.stringify(data));
+								},
+								end: (data) => {
+									res.writeHead(code);
+									res.end(data);
+								}
+							}),
+							setHeader: (name, value) => res.setHeader(name, value),
+							writeHead: (code, headers) => res.writeHead(code, headers),
+							write: (data) => res.write(data),
+							end: (data) => res.end(data)
+						};
+
+						await handler(mockReq, mockRes);
+					} catch (error) {
+						console.error('Reviews API error in dev:', error);
+						res.writeHead(500, { 'Content-Type': 'application/json' });
+						res.end(JSON.stringify({
+							error: 'Internal server error',
+							message: error.message
+						}));
+					}
+				});
+
+				// Contact API endpoint for development
+				server.middlewares.use('/api/contact', async (req, res) => {
+					try {
+						const { default: handler } = await import('./api/contact.js');
+
+						// Collect JSON body for POST
+						let body = {};
+						if (req.method === 'POST') {
+							const buffers = [];
+							for await (const chunk of req) buffers.push(chunk);
+							const raw = Buffer.concat(buffers).toString('utf8');
+							try { body = raw ? JSON.parse(raw) : {}; } catch { body = {}; }
+						}
+
+						const mockReq = {
+							method: req.method,
+							headers: req.headers,
+							url: req.url,
+							body
+						};
+
+						const mockRes = {
+							status: (code) => ({
+								json: (data) => {
+									res.writeHead(code, { 'Content-Type': 'application/json' });
+									res.end(JSON.stringify(data));
+								},
+								end: (data) => {
+									res.writeHead(code);
+									res.end(data);
+								}
+							}),
+							setHeader: (name, value) => res.setHeader(name, value),
+							writeHead: (code, headers) => res.writeHead(code, headers),
+							write: (data) => res.write(data),
+							end: (data) => res.end(data)
+						};
+
+						await handler(mockReq, mockRes);
+					} catch (error) {
+						console.error('Contact API error in dev:', error);
+						res.writeHead(500, { 'Content-Type': 'application/json' });
+						res.end(JSON.stringify({
+							error: 'Internal server error',
+							message: error.message
+						}));
+					}
+				});
+			}
+		},
+		// Plugin para gerar sitemap durante o build
+		{
+			name: 'generate-sitemap',
+			async writeBundle(options) {
+				if (options.dir && process.env.NODE_ENV === 'production') {
+					await writeSitemapFile(options.dir);
+				}
+			}
+		}
+	],
+	server: {
+		host: '0.0.0.0',
+		port: 5173,
+		cors: true,
+		headers: {
+			'Cross-Origin-Embedder-Policy': 'credentialless',
+			// Lightweight CSP in dev to mirror prod behavior and avoid meta tag issues
+			'Content-Security-Policy': [
+				"default-src 'self'",
+				"base-uri 'self'",
+				"form-action 'self'",
+				"frame-ancestors 'self'",
+				"object-src 'none'",
+				"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.gstatic.com https://www.google.com https://maps.googleapis.com",
+				"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+				"img-src 'self' data: https:",
+				"font-src 'self' https://fonts.gstatic.com",
+				"connect-src 'self' ws: wss: https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://www.gstatic.com https://www.google.com https://maps.googleapis.com https://places.googleapis.com https://maps.gstatic.com",
+				"frame-src 'self' https://www.googletagmanager.com https://open.spotify.com https://www.google.com",
+				"media-src 'self' https: data:"
+			].join('; '),
+		},
+		allowedHosts: true,
+	},
+	resolve: {
+		extensions: ['.jsx', '.js', '.tsx', '.ts', '.json',],
+		alias: {
+			'@': path.resolve(__dirname, './src'),
+		},
+	},
+	build: {
+		cssMinify: 'esbuild',
+		minify: 'terser',
+		sourcemap: false,
+		terserOptions: {
+			compress: {
+				drop_console: true,
+				drop_debugger: true
+			}
+		},
+		rollupOptions: {
+			external: [
+				'@babel/parser',
+				'@babel/traverse',
+				'@babel/generator',
+				'@babel/types'
+			],
+			output: {
+				manualChunks: (id) => {
+					// Keep vendor libraries split; avoid over-splitting app chunks
+					if (id.includes('node_modules')) {
+						if (id.includes('react')) return 'vendor-react';
+						if (id.includes('framer-motion')) return 'vendor-motion';
+						if (id.includes('i18next')) return 'vendor-i18n';
+						if (id.includes('lucide-react')) return 'vendor-ui';
+						if (id.includes('@supabase')) return 'vendor-db';
+						return 'vendor-misc';
+					}
+					// Let Rollup decide app chunking to prevent unnecessary preloads
+				},
+				chunkFileNames: (chunkInfo) => {
+					const name = chunkInfo.name;
+					if (name.startsWith('vendor-')) {
+						return 'assets/vendor/[name]-[hash].js';
+					}
+					if (name.startsWith('components-')) {
+						return 'assets/components/[name]-[hash].js';
+					}
+					if (name.startsWith('app-')) {
+						return 'assets/app/[name]-[hash].js';
+					}
+					return 'assets/[name]-[hash].js';
+				},
+				entryFileNames: 'assets/entry/[name]-[hash].js',
+				assetFileNames: (assetInfo) => {
+					const name = assetInfo.name;
+					if (name.endsWith('.css')) {
+						return 'assets/styles/[name]-[hash].[ext]';
+					}
+					if (/\.(png|jpe?g|svg|gif|webp|avif)$/i.test(name)) {
+						return 'assets/images/[name]-[hash].[ext]';
+					}
+					if (/\.(woff2?|eot|ttf|otf)$/i.test(name)) {
+						return 'assets/fonts/[name]-[hash].[ext]';
+					}
+					return 'assets/[name]-[hash].[ext]';
+				}
+			}
+		}
+	},
+	experimental: {
+		renderBuiltUrl(filename, { hostType }) {
+			if (hostType === 'js') {
+				return { js: `./${filename}` };
+			} else {
+				return `./${filename}`;
+			}
+		}
+	}
+});
