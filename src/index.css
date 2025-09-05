@@ -1,5 +1,5 @@
-/* IMPORTA SOLUÇÃO DEFINITIVA DE SCROLL */
-@import './styles/scroll-fix.css';
+/* IMPORTA SOLUÇÃO LIMPA DE SCROLL */
+@import './styles/scroll-fix-clean.css';
 /* IMPORTA DESIGN SYSTEM ENHANCEMENTS */
 @import './styles/design-system.css';
 
@@ -9,9 +9,11 @@
 
 /* Performance and UX optimizations */
 @layer utilities {
+
   /* Vertical stack spacing: ensures >= 2rem between siblings */
-  .stack > * + * {
-    margin-top: 2rem; /* 32px */
+  .stack>*+* {
+    margin-top: 2rem;
+    /* 32px */
   }
 
   /* Elegant hr divider */
@@ -22,7 +24,8 @@
     border: 0;
     background: linear-gradient(to right, transparent, #e0e0e0, transparent);
     opacity: 1;
-    margin: 2rem 0; /* 32px vertical spacing */
+    margin: 2rem 0;
+    /* 32px vertical spacing */
   }
 
   /* Subtle surface gradients that complement the palette */
@@ -38,6 +41,7 @@
     background-image: radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.06) 1px, transparent 0);
     background-size: 28px 28px;
   }
+
   .floating-widget {
     position: fixed !important;
     transform: translateZ(0);
@@ -1016,104 +1020,8 @@ body {
     overflow: hidden;
   }
 
-  /* SCROLL MANAGEMENT: Defer to scroll-fix.css - no conflicts */
-  /* scroll-fix.css imported at top provides the complete scroll solution */
+  /* CRITICAL FIX: Simpler scroll management - delegated to scroll-fix-clean.css */
+  /* Rules moved to scroll-fix-clean.css for cleaner organization */
 
-  /* Transparent/Invisible scrollbars for internal scroll containers */
-  .scroll-container,
-  .overflow-y-auto,
-  .overflow-x-auto,
-  [class*="overflow-"] {
-    /* Hide scrollbars while preserving scroll */
-    -ms-overflow-style: none;
-    /* IE/Edge */
-    scrollbar-width: none;
-    /* Firefox */
-    overscroll-behavior: contain;
-    /* prevent scroll chaining */
-  }
-
-  /* Webkit browsers (Chrome, Safari, Edge) - transparent scrollbars */
-  .scroll-container::-webkit-scrollbar,
-  .overflow-y-auto::-webkit-scrollbar,
-  .overflow-x-auto::-webkit-scrollbar,
-  [class*="overflow-"]::-webkit-scrollbar {
-    display: none;
-    /* Chrome/Safari/Edge */
-  }
-
-  .scroll-container::-webkit-scrollbar-track,
-  .overflow-y-auto::-webkit-scrollbar-track,
-  .overflow-x-auto::-webkit-scrollbar-track,
-  [class*="overflow-"]::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .scroll-container::-webkit-scrollbar-thumb,
-  .overflow-y-auto::-webkit-scrollbar-thumb,
-  .overflow-x-auto::-webkit-scrollbar-thumb,
-  [class*="overflow-"]::-webkit-scrollbar-thumb {
-    background: transparent;
-    border-radius: 3px;
-    border: none;
-  }
-
-  .scroll-container::-webkit-scrollbar-thumb:hover,
-  .overflow-y-auto::-webkit-scrollbar-thumb:hover,
-  .overflow-x-auto::-webkit-scrollbar-thumb:hover,
-  [class*="overflow-"]::-webkit-scrollbar-thumb:hover {
-    background: transparent;
-  }
-
-  /* Hide scrollbars on mobile for cleaner experience */
-  @media (max-width: 768px) {
-
-    .scroll-container::-webkit-scrollbar,
-    .overflow-y-auto::-webkit-scrollbar,
-    .overflow-x-auto::-webkit-scrollbar,
-    [class*="overflow-"]::-webkit-scrollbar {
-      display: none;
-    }
-
-    .scroll-container,
-    .overflow-y-auto,
-    .overflow-x-auto,
-    [class*="overflow-"] {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-  }
-
-  /* Utility: completely hide scrollbars for targeted containers */
-  .scrollbar-none {
-    -ms-overflow-style: none;
-    /* IE/Edge */
-    scrollbar-width: none;
-    /* Firefox */
-  }
-
-  .scrollbar-none::-webkit-scrollbar {
-    display: none;
-    /* Chrome/Safari/Edge */
-  }
-
-  /* Utility: touch-action pan-x for smooth horizontal gestures */
-  .touch-pan-x {
-    touch-action: pan-x;
-  }
-
-  /* Global: prevent scroll chaining and hide global scrollbars */
-  html,
-  body {
-    overscroll-behavior-y: none;
-    -ms-overflow-style: none;
-    /* IE/Edge */
-    scrollbar-width: none;
-    /* Firefox */
-  }
-
-  html::-webkit-scrollbar,
-  body::-webkit-scrollbar {
-    display: none;
-  }
+  /* Scroll management moved to scroll-fix-clean.css */
 }

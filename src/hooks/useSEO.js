@@ -24,6 +24,7 @@ export const useSEO = ({
   const { t, i18n } = useTranslation();
   let location;
   try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     location = useLocation();
   } catch {
     const pathname = (typeof window !== 'undefined' && window.location && window.location.pathname) || '/';
@@ -123,7 +124,30 @@ export const useSEO = ({
       noindex
     };
     return result;
-  }, [t, i18n.language, location.pathname, titleKey, descriptionKey, keywordsKey, customTitle, customDescription, customKeywords, pageType, serviceId, breadcrumbs, noindex]);
+  }, [
+    t,
+    currentLang,
+    baseUrl,
+    location.pathname,
+    titleKey,
+    descriptionKey,
+    keywordsKey,
+    customTitle,
+    customDescription,
+    customKeywords,
+    directTitle,
+    directDescription,
+    directKeywords,
+    image,
+    providedSchema,
+    genClinic,
+    genWebPage,
+    genBreadcrumb,
+    pageType,
+    serviceId,
+    breadcrumbs,
+    noindex
+  ]);
   
   return seoData;
 };

@@ -66,9 +66,7 @@ export const safeOpenWithConfirmation = (url, serviceName, confirmMessage) => {
 
   const confirmFn = (typeof window !== 'undefined' && typeof window.confirm === 'function')
     ? window.confirm
-    : (typeof globalThis !== 'undefined' && typeof globalThis.confirm === 'function')
-      ? globalThis.confirm
-      : null;
+    : null;
 
   const confirmed = confirmFn ? confirmFn(message) : false;
   if (confirmed) {

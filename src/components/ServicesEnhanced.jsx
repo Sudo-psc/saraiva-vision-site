@@ -10,7 +10,7 @@ import InteractiveCarousel from '@/components/ui/InteractiveCarousel';
  * Enhanced Services component using unified component interfaces
  * Maintains backward compatibility while leveraging new architecture
  */
-const ServicesEnhanced = ({ full = false }) => {
+const ServicesEnhanced = ({ full = false, grid = false }) => {
   const { t } = useTranslation();
   const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
 
@@ -230,65 +230,62 @@ const ServicesEnhanced = ({ full = false }) => {
           </motion.div>
         </div>
 
-        {/* Enhanced Interactive Carousel */}
-        <InteractiveCarousel
-          items={serviceItems}
-          renderItem={renderServiceCard}
-          keyExtractor={(service) => service.id}
-          
-          // Layout Configuration
-          gap={24}
-          cardWidth="responsive"
-          minWidth={260}
-          maxWidth={320}
-          
-          // Interaction Modes
-          dragToScroll
-          wheelToScroll
-          keyboardNav
-          touchSwipe
-          autoPlay={!isTestEnv} // Disable autoplay in test environment
-          autoPlaySpeed={0.18}
-          
-          // Navigation Controls
-          showArrows
-          showIndicators
-          arrowPosition="outside"
-          indicatorStyle="dots"
-          indicatorGranularity="pages"
-          
-          // Snap Configuration
-          snapMode="start"
-          snapForce="proximity"
-          
-          // Visual Effects
-          fadeEdges
-          perspective3D
-          
-          // Performance
-          lazyLoad={!isTestEnv} // Disable lazy loading in test environment
-          preloadAdjacent={2}
-          
-          // Accessibility
-          aria-label={t('services.title')}
-          announceChanges
-          respectReducedMotion
-          
-          // Event Handlers
-          onScroll={(index) => {
-            // Optional: Analytics tracking
-            console.debug(`Service carousel scrolled to index: ${index}`);
-          }}
-          onItemClick={(service, index) => {
-            // Optional: Analytics tracking
-            console.debug(`Service clicked: ${service.id} at index: ${index}`);
-          }}
-          onBoundaryReach={(boundary) => {
-            console.debug(`Carousel reached ${boundary} boundary`);
-          }}
-          
-          className="mt-8"
-        />
+        {/* Grid or Carousel based on prop */}
+        {grid ? (
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+            {serviceItems.map((service, index) => (
+              <div key={service.id}>
+                {renderServiceCard(service, index)}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <InteractiveCarousel
+            items={serviceItems}
+            renderItem={renderServiceCard}
+            keyExtractor={(service) => service.id}
+
+            // Layout Configuration
+            gap={24}
+            cardWidth="responsive"
+            minWidth={260}
+            maxWidth={320}
+
+            // Interaction Modes
+            dragToScroll
+            wheelToScroll
+            keyboardNav
+            touchSwipe
+            autoPlay={!isTestEnv} // Disable autoplay in test environment
+            autoPlaySpeed={0.18}
+
+            // Navigation Controls
+            showArrows
+            showIndicators
+            arrowPosition="outside"
+            indicatorStyle="dots"
+            indicatorGranularity="pages"
+
+            // Snap Configuration
+            snapMode="start"
+            snapForce="proximity"
+
+            // Visual Effects
+            fadeEdges
+            perspective3D
+
+            // Performance
+            lazyLoad={!isTestEnv} // Disable lazy loading in test environment
+            preloadAdjacent={2}
+
+            // Accessibility
+            aria-label={t('services.title')}
+            announceChanges
+            respectReducedMotion
+
+            className="mt-8"
+          />
+        )}
       </div>
     </section>
   );

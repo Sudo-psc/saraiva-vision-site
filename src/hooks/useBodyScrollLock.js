@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Hook para bloquear scroll do body de forma confiável
- * Compatível com o sistema de scroll-fix.css
+ * Hook para bloquear scroll do body de forma limpa e confiável
+ * Compatível com o sistema de scroll-fix-clean.css
  */
 export function useBodyScrollLock(isLocked) {
   const scrollPositionRef = useRef(0);
@@ -13,21 +13,19 @@ export function useBodyScrollLock(isLocked) {
     if (isLocked === isLockedRef.current) return;
 
     const body = document.body;
-    const docEl = document.documentElement;
 
     if (isLocked && !isLockedRef.current) {
-      // BLOQUEAR: Calcula largura da scrollbar para evitar layout shift
-      const scrollbarWidth = window.innerWidth - docEl.clientWidth;
-      body.style.setProperty('--scrollbar-width', `${Math.max(0, scrollbarWidth)}px`);
-      // Não fixa o body (evita quebrar position: fixed dos filhos)
+      // BLOQUEAR: Aplica classe que usa CSS limpo
+      scrollPositionRef.current = window.pageYOffset;
       body.classList.add('scroll-locked');
+      body.style.top = `-${scrollPositionRef.current}px`;
       isLockedRef.current = true;
 
     } else if (!isLocked && isLockedRef.current) {
-      // DESBLOQUEAR: Remove classe e propriedades auxiliares
+      // DESBLOQUEAR: Remove classe e restaura posição
       body.classList.remove('scroll-locked');
-      body.style.removeProperty('--scrollbar-width');
-      body.style.overflow = '';
+      body.style.removeProperty('top');
+      window.scrollTo(0, scrollPositionRef.current);
       isLockedRef.current = false;
     }
 
@@ -35,8 +33,7 @@ export function useBodyScrollLock(isLocked) {
     return () => {
       if (isLockedRef.current) {
         body.classList.remove('scroll-locked');
-        body.style.removeProperty('--scrollbar-width');
-        body.style.overflow = '';
+        body.style.removeProperty('top');
         isLockedRef.current = false;
       }
     };

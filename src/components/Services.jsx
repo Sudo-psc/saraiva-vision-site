@@ -271,7 +271,7 @@ const Services = ({ full = false }) => {
     pauseRef.current = true;
     dragStartXRef.current = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
     scrollStartRef.current = el.scrollLeft;
-    try { el.setPointerCapture && el.setPointerCapture(e.pointerId); } catch (_) {}
+    try { el.setPointerCapture && el.setPointerCapture(e.pointerId); } catch (_) { }
   }, []);
 
   const onPointerMove = useCallback((e) => {
@@ -291,20 +291,30 @@ const Services = ({ full = false }) => {
     setTimeout(() => { pauseRef.current = false; snapToNearest(); }, 200);
   }, [isDragging]);
 
-  // Convert vertical wheel to horizontal scroll using native listener (passive:false)
+  // Convert vertical wheel to horizontal scroll usando native listener (passive:false)
+  // Melhorado para não interferir com scroll da página
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
     const handleWheel = (e) => {
+      // Só intercepta se está focado ou mouse está sobre o elemento
+      const isHovered = el.matches(':hover');
+      const isFocused = document.activeElement === el || el.contains(document.activeElement);
+
+      if (!isHovered && !isFocused) return;
+
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
         const maxScrollLeft = el.scrollWidth - el.clientWidth;
         const canScrollLeft = el.scrollLeft > 0;
         const canScrollRight = el.scrollLeft < maxScrollLeft;
         const scrollingLeft = e.deltaY < 0;
         const scrollingRight = e.deltaY > 0;
+
+        // Só previne default se pode fazer scroll interno
         if ((scrollingLeft && canScrollLeft) || (scrollingRight && canScrollRight)) {
-          el.scrollLeft += e.deltaY;
+          el.scrollLeft += e.deltaY * 0.8; // Reduz sensibilidade
           e.preventDefault();
+          e.stopPropagation();
         }
       }
     };
@@ -460,14 +470,17 @@ const Services = ({ full = false }) => {
             ref={scrollerRef}
             tabIndex={0}
             className={`perspective-1000 flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-proximity scroll-smooth scroll-container scrollbar-none overscroll-x-contain cursor-grab active:cursor-grabbing select-none touch-pan-x ${isDragging ? 'dragging' : ''}`}
-            style={{ scrollSnapType: isDragging ? 'none' : undefined }}
+            style={{
+              scrollSnapType: isDragging ? 'none' : undefined,
+              isolation: 'isolate' // Previne interferência com scroll da página
+            }}
             layout="position"
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
             onPointerUp={endDrag}
             onPointerCancel={endDrag}
             onMouseLeave={endDrag}
-            /* wheel handler attached via native addEventListener(passive:false) */
+          /* wheel handler attached via native addEventListener(passive:false) */
           >
             <AnimatePresence mode="popLayout">
               {serviceItems.map((service, index) => (
