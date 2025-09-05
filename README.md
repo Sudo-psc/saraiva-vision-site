@@ -4,6 +4,16 @@
 
 **Site institucional moderno da Clínica Saraiva Vision em Caratinga, MG**
 
+## 🚀 Início Rápido
+
+| Para desenvolvedores | Para designers | Para conteúdo |
+|---------------------|----------------|---------------|
+| [Setup em 5 min](./DEVELOPER_QUICK_START.md) | [Guia de Marca](./docs/BRAND_GUIDE.md) | [Estratégia Médica](./docs/MEDICAL_CONTENT_STRATEGY.md) |
+| [Troubleshooting](./TROUBLESHOOTING.md) | [Design System](./docs/DESIGN_SYSTEM_INDEX.md) | [SEO Plan](./docs/SEO_DESIGN_PLAN.md) |
+| [Comandos](./CLAUDE.md) | [Componentes](./docs/COMPONENT_DESIGN_SYSTEM.md) | [Guidelines](./docs/MEDICAL_CONTENT_STRATEGY.md) |
+
+📚 **[Índice Completo de Documentação](./DOCUMENTATION_INDEX.md)** | 🏗️ **[Arquitetura do Sistema](./docs/SYSTEM_ARCHITECTURE.md)** | 🧪 **[Guia de Testes](./docs/TESTING_GUIDE.md)**
+
 ## 🏥 Sobre o Projeto
 
 Site institucional desenvolvido para a Clínica Saraiva Vision, especializada em oftalmologia em Caratinga-MG. O projeto combina design moderno, performance otimizada e funcionalidades avançadas para oferecer a melhor experiência aos pacientes.
@@ -249,12 +259,40 @@ Para contribuir com o projeto, siga as diretrizes de desenvolvimento e abra um P
 
 ## 📚 Documentação Adicional
 
-- [Guia de Implementação](./IMPLEMENTATION_GUIDE.md)
-- [Manual de Deploy](./README-DEPLOY.md)
-- [Relatório SEO](./SEO_AUDIT_REPORT.md)
-- [Plano de Design SEO](./docs/SEO_DESIGN_PLAN.md)
-- [Guia de Marca e Identidade Visual](./docs/BRAND_GUIDE.md)
-- [Estratégia de Conteúdo Médico](./docs/MEDICAL_CONTENT_STRATEGY.md)
+### 📖 Guias Essenciais
+- **[📚 Índice de Documentação](./DOCUMENTATION_INDEX.md)** - Navegação completa por toda documentação
+- **[🚀 Guia de Início Rápido](./DEVELOPER_QUICK_START.md)** - Setup em 5 minutos para novos desenvolvedores
+- **[🔧 Troubleshooting](./TROUBLESHOOTING.md)** - Soluções para problemas comuns
+- **[🤖 Guia Claude](./CLAUDE.md)** - Comandos e patterns de desenvolvimento
+
+### 🏗️ Arquitetura e Sistema
+- **[📐 Arquitetura do Sistema](./docs/SYSTEM_ARCHITECTURE.md)** - Overview técnico completo
+- **[🔧 Especificação de APIs](./docs/API_DESIGN_SPECIFICATION.md)** - Design e documentação das APIs
+- **[📋 Guia de Implementação](./docs/IMPLEMENTATION_GUIDE.md)** - Padrões de desenvolvimento
+
+### 🎨 Design e Interface
+- **[🎨 Guia de Marca](./docs/BRAND_GUIDE.md)** - Identidade visual e guidelines
+- **[🧩 Sistema de Design](./docs/DESIGN_SYSTEM_INDEX.md)** - Componentes e tokens
+- **[📱 Design de Componentes](./docs/COMPONENT_DESIGN_SYSTEM.md)** - Padrões de UI/UX
+
+### 🧪 Qualidade e Testes
+- **[🧪 Guia de Testes](./docs/TESTING_GUIDE.md)** - Estratégias e práticas de teste
+- **[📊 Testes GTM](./docs/GTM_TESTING.md)** - Validação de analytics
+
+### 🚀 Deploy e Produção
+- **[✅ Checklist de Deploy](./DEPLOYMENT_CHECKLIST.md)** - Lista verificação para produção
+- **[🏠 Deploy Local](./README-LOCAL-DEPLOY.md)** - Instruções para ambiente local
+- **[🔒 Playbook de Segurança](./SECURITY_ROTATION_PLAYBOOK.md)** - Rotação de credenciais
+
+### 📈 SEO e Conteúdo
+- **[📈 Plano de SEO](./docs/SEO_DESIGN_PLAN.md)** - Estratégia de otimização
+- **[🏥 Estratégia Médica](./docs/MEDICAL_CONTENT_STRATEGY.md)** - Guidelines de conteúdo médico
+- **[⚡ Performance](./README_PERF.md)** - Otimizações e métricas
+
+### 🔧 Manutenção e Suporte
+- **[🛠️ Correções Console](./CONSOLE_FIXES.md)** - Fixes para problemas comuns
+- **[🌐 Nginx Updates](./NGINX_UPDATE_NOTES.md)** - Configuração do servidor
+- **[🔍 Auditoria URLs](./URL_AUDIT_REPORT.md)** - Relatório de links e SEO
 
 ---
 
