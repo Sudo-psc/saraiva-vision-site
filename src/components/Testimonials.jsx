@@ -91,8 +91,8 @@ const Testimonials = ({ limit }) => {
         </motion.div>
 
         {/* Featured Testimonial (Carousel) */}
-        <div className="max-w-4xl mx-auto mb-16">
-          <div className="relative glass-card rounded-3xl shadow-3d hover:shadow-3d-hover border-2 border-slate-200/50 p-8 md:p-12 card-hover">
+        <div className="max-w-4xl mx-auto mb-16 perspective-1000">
+          <div className="relative glass-card testimonial-gradient-border testimonial-card-3d hover-sheen shadow-3d hover:shadow-3d-hover border-0 p-8 md:p-12 transform-gpu">
             <div className="absolute top-8 left-8 text-blue-300/60">
               <Quote size={48} />
             </div>
@@ -198,7 +198,7 @@ const Testimonials = ({ limit }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white rounded-2xl p-6 shadow-soft-light hover:shadow-soft-medium border-2 border-slate-300 transition-all duration-300 group cursor-pointer"
+              className="bg-white rounded-2xl p-6 shadow-soft-light hover:shadow-soft-medium testimonial-border-strong testimonial-card-3d hover-sheen transition-all duration-500 ease-out group cursor-pointer transform-gpu"
               onClick={() => goToSlide(index)}
             >
               {/* Rating */}
@@ -209,7 +209,7 @@ const Testimonials = ({ limit }) => {
               </div>
 
               {/* Testimonial Text */}
-              <p className="text-slate-600 mb-6 italic group-hover:text-slate-700 transition-colors">
+              <p className="text-slate-600 mb-6 italic group-hover:text-slate-800 transition-colors">
                 "{testimonial.content}"
               </p>
 
