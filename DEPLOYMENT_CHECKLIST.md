@@ -99,6 +99,45 @@ sudo systemctl reload nginx
 ```
 
 ### **3. Post-Deployment Verification**
+
+#### Nginx Bundle Verification (server)
+```bash
+# 1) Defina o domínio do site
+DOMAIN="saraivavision.com.br"   # ajuste se necessário
+
+# 2) O HTML raiz está sem cache e servindo?
+curl -sI https://$DOMAIN/ | egrep -i 'HTTP/|content-type|cache-control|etag'
+
+# 3) O release atual está sendo servido? (deploy.sh grava RELEASE_INFO.json no dist)
+curl -sf https://$DOMAIN/RELEASE_INFO.json | jq . || curl -sf https://$DOMAIN/RELEASE_INFO.json
+
+# 4) Um asset com hash está com cache imutável?
+ASSET=$(curl -s https://$DOMAIN/index.html | grep -oE 'assets/[^"\']+\.(js|css)' | head -n1)
+echo "Asset: $ASSET"
+curl -sI https://$DOMAIN/$ASSET | egrep -i 'HTTP/|cache-control|content-type'
+
+# 5) Headers de segurança e CSP aplicados ao HTML?
+curl -sI https://$DOMAIN/index.html | egrep -i 'content-security-policy|x-frame-options|x-content-type-options|referrer-policy'
+
+# 6) Healthcheck do app
+curl -sf https://$DOMAIN/health && echo "\nOK"
+
+# 7) Endpoint /ads (fallback contra ad-blockers)
+curl -sSI -H "Host: www.$DOMAIN" https://$DOMAIN/ads | sed -n '1,12p'
+
+# 8) Proxy do WordPress via mesmo domínio (evita CORS/CSP)
+curl -sf https://$DOMAIN/wp-json/wp/v2/ | head -c 200; echo
+
+# 9) Service Worker (cache curto)
+curl -sI https://$DOMAIN/sw.js | egrep -i 'HTTP/|cache-control|content-type'
+```
+
+Se usar ambiente local com portas internas:
+```bash
+curl -sf http://localhost:8082/health && echo ok
+curl -sf http://localhost:8082/wp-json/wp/v2/ | head -c 200; echo
+curl -sf http://localhost:8083/wp-json/wp/v2/ | head -c 200; echo
+```
 - [ ] **Homepage Loading**: Verify services section renders correctly
 - [ ] **Podcast Page**: Test episode cards and audio player
 - [ ] **Mobile Navigation**: Verify carousel touch interactions
