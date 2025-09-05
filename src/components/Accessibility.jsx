@@ -239,8 +239,8 @@ const Accessibility = () => {
 
   return (
     <>
-      {/* Floating Button - Positioned to avoid overlap with CTA buttons */}
-      <div className="fixed z-[90] bottom-32 right-4 sm:bottom-40 sm:right-6 flex flex-col items-end gap-2">
+      {/* Floating Button - bottom-left small bubble */}
+      <div className="fixed z-[90] bottom-20 left-4 sm:bottom-28 sm:left-6 flex flex-col items-start gap-2">
         <div className="relative group">
           <motion.button
             initial={{ scale: 0 }}
@@ -251,13 +251,13 @@ const Accessibility = () => {
             aria-haspopup="dialog"
             aria-expanded={open}
             aria-label={t('accessibility.toggle', 'Acessibilidade')}
-            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-rose-500 text-white border border-white/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-purple-600 backdrop-blur-sm"
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-rose-500 text-white border border-white/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-purple-600 backdrop-blur-sm"
             style={{
               transform: 'translateZ(0)',
               willChange: 'transform'
             }}
           >
-            <div className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center">
               <img 
                 src="/img/Acessib_icon.png" 
                 alt="Acessibilidade" 
@@ -267,7 +267,7 @@ const Accessibility = () => {
               />
             </div>
           </motion.button>
-          <div className="pointer-events-none absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
+          <div className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
             Acessibilidade
           </div>
         </div>
@@ -279,12 +279,12 @@ const Accessibility = () => {
           <motion.aside
             role="dialog"
             aria-label="Menu de Acessibilidade"
-            initial={{ x: '100%' }}
+            initial={{ x: '-100%' }}
             animate={{ x: 0 }}
-            exit={{ x: '100%' }}
+            exit={{ x: '-100%' }}
             transition={{ type: 'tween', duration: 0.35 }}
             ref={panelRef}
-            className="fixed top-0 right-0 h-full w-full max-w-md bg-gradient-to-br from-white via-fuchsia-50 to-purple-50 shadow-2xl border-l border-purple-200/50 z-[95] flex flex-col focus:outline-none"
+            className="fixed top-0 left-0 h-full w-full max-w-md bg-gradient-to-br from-white via-fuchsia-50 to-purple-50 shadow-2xl border-r border-purple-200/50 z-[95] flex flex-col focus:outline-none"
             style={{
               transform: 'translateZ(0)',
               willChange: 'transform'
@@ -398,7 +398,7 @@ const Accessibility = () => {
       </AnimatePresence>
 
       {/* Global Styles */}
-      <style jsx global>{`
+      <style>{`
         :root { --a11y-font-scale: 1; --a11y-letter-spacing: 0px; --a11y-word-spacing: 0px; --a11y-zoom:1; }
         body { letter-spacing: var(--a11y-letter-spacing); word-spacing: var(--a11y-word-spacing); }
         .a11y-contrast-high { filter: contrast(135%) brightness(105%); }

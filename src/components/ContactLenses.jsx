@@ -252,7 +252,7 @@ const ContactLenses = () => {
                 <div className="relative h-48 overflow-hidden">
                   <img loading="lazy" decoding="async"
                     src={brand.image}
-                    alt={`Lentes ${brand.name}`}
+                    alt={t('contact_lenses.brand_logo_alt', 'Logo da marca {{brandName}} - Lentes de contato de qualidade', { brandName: brand.name })}
                     sizes="(min-width: 1024px) 33vw, 100vw"
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                   />

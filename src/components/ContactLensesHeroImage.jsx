@@ -1,7 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const ContactLensesHeroImage = ({ className = "", alt = "Lentes de Contato Premium" }) => {
+    const { t } = useTranslation();
+    
     return (
         <motion.div
             className={`relative ${className}`}
@@ -40,7 +43,7 @@ const ContactLensesHeroImage = ({ className = "", alt = "Lentes de Contato Premi
                         >
                             <img
                                 src="/img/icon_lentes.png"
-                                alt="Ícone de lentes de contato"
+                                alt={t('ui.alt.contact_lenses_icon', 'Ícone representativo de lentes de contato')}
                                 className="w-32 h-32 object-contain shadow-lg"
                                 style={{
                                     filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
