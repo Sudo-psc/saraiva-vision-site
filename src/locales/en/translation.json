@@ -335,6 +335,7 @@
     "button": "Learn More",
     "schedule_button": "Schedule Lens Consultation",
     "whatsapp_button": "Ask Questions on WhatsApp",
+    "brand_logo_alt": "{{brandName}} brand logo - Quality contact lenses",
     "process_steps": [
       {
         "title": "Initial Evaluation",
@@ -935,7 +936,10 @@
       "hero_image": "Smiling family - Saraiva Vision",
       "satisfied_patient_1": "Satisfied patient 1",
       "satisfied_patient_2": "Satisfied patient 2",
-      "doctor": "Ophthalmologist smiling at the camera in a modern clinic"
+      "doctor": "Ophthalmologist smiling at the camera in a modern clinic",
+      "contact_lenses_icon": "Contact lenses representative icon",
+      "blog_post": "Article illustration image",
+      "podcast_episode": "Podcast episode cover about eye health"
     }
   },
   "location": {

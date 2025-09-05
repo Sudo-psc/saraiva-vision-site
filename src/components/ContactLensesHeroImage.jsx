@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 const ContactLensesHeroImage = ({ className = "", alt = "Lentes de Contato Premium" }) => {
     const { t } = useTranslation();
-    
+
     return (
         <motion.div
             className={`relative ${className}`}

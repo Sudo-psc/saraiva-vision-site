@@ -77,7 +77,7 @@ const ContactLenses = () => {
       <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-gradient-radial from-blue-100/30 via-transparent to-transparent rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-indigo-100/20 via-transparent to-transparent rounded-full blur-3xl"></div>
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-gradient-conic from-blue-50/10 via-indigo-50/10 to-purple-50/10 rounded-full blur-2xl"></div>
-      
+
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Título principal da seção */}
         <motion.div
@@ -357,7 +357,7 @@ const ContactLenses = () => {
                 >
                   {/* 3D Card Effect */}
                   <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/5 pointer-events-none"></div>
-                  
+
                   <div className="relative z-10">
                     <div className="text-center mb-6">
                       <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg border border-slate-300/80">

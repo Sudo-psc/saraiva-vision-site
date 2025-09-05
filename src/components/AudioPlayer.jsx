@@ -99,14 +99,14 @@ const AudioPlayer = ({
             } catch (_) { }
             // Ensure inline playback on iOS + unmute before play
             audio.playsInline = true;
-            try { audio.muted = false; } catch (_) {}
+            try { audio.muted = false; } catch (_) { }
             const playPromise = audio.play();
             if (playPromise && typeof playPromise.then === 'function') {
                 playPromise
                     .then(() => setIsPlaying(true))
                     .catch(() => {
                         // Retry once for Safari quirks
-                        try { audio.muted = false; } catch (_) {}
+                        try { audio.muted = false; } catch (_) { }
                         audio.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
                     });
             } else {
@@ -413,7 +413,7 @@ const AudioPlayer = ({
                             className="w-40 h-40 rounded-2xl mx-auto mb-4 shadow-lg object-cover"
                             width={256}
                             height={256}
-                            onError={(e) => { try { e.currentTarget.src = '/Podcasts/Covers/podcast.png'; } catch (_) {} }}
+                            onError={(e) => { try { e.currentTarget.src = '/Podcasts/Covers/podcast.png'; } catch (_) { } }}
                         />
                         <h3 className="text-xl font-bold text-gray-900 mb-2">{episode.title}</h3>
                         {episode.description && (
@@ -471,7 +471,7 @@ const AudioPlayer = ({
                         alt={t('ui.alt.podcast_episode', 'Capa do episódio de podcast sobre saúde ocular') + ': ' + episode.title}
                         className="w-full aspect-square rounded-xl object-cover shadow-md"
                         loading="lazy"
-                        onError={(e) => { try { e.currentTarget.src = '/Podcasts/Covers/podcast.png'; } catch (_) {} }}
+                        onError={(e) => { try { e.currentTarget.src = '/Podcasts/Covers/podcast.png'; } catch (_) { } }}
                     />
                     <div className="mt-3">
                         <h4 className="font-bold text-gray-900 mb-1 line-clamp-2">{episode.title}</h4>
@@ -498,7 +498,7 @@ const AudioPlayer = ({
                         alt={t('ui.alt.podcast_episode', 'Capa do episódio de podcast sobre saúde ocular') + ': ' + episode.title}
                         className="w-16 h-16 rounded-xl object-cover shadow-md flex-shrink-0"
                         loading="lazy"
-                        onError={(e) => { try { e.currentTarget.src = '/Podcasts/Covers/podcast.png'; } catch (_) {} }}
+                        onError={(e) => { try { e.currentTarget.src = '/Podcasts/Covers/podcast.png'; } catch (_) { } }}
                     />
                     <div className="flex-grow min-w-0">
                         <h4 className="font-bold text-gray-900 mb-1 line-clamp-2">{episode.title}</h4>

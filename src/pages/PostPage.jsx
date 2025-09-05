@@ -115,8 +115,8 @@ const PostPage = ({ wordpressUrl }) => {
             {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
               <img
                 src={post._embedded['wp:featuredmedia'][0].source_url}
-                alt={post._embedded['wp:featuredmedia'][0]?.alt_text || 
-                     t('ui.alt.blog_post', 'Imagem ilustrativa do artigo') + ': ' + cleanTitle}
+                alt={post._embedded['wp:featuredmedia'][0]?.alt_text ||
+                  t('ui.alt.blog_post', 'Imagem ilustrativa do artigo') + ': ' + cleanTitle}
                 className="w-full h-auto max-h-[500px] object-cover rounded-2xl shadow-soft-medium mb-12"
               />
             )}
