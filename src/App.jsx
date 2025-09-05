@@ -22,6 +22,7 @@ import WhatsappWidget from '@/components/WhatsappWidget';
 import ServiceWorkerUpdateNotification from '@/components/ServiceWorkerUpdateNotification';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { safePhoneFormat } from '@/utils/phoneFormatter';
+import Accessibility from '@/components/Accessibility';
 
 function App() {
   const { i18n } = useTranslation();
@@ -53,6 +54,7 @@ function App() {
       <CTAModal />
       <ServiceWorkerUpdateNotification />
       <WhatsappWidget phoneNumber={safePhoneFormat(clinicInfo.whatsapp || clinicInfo.phone)} />
+      <Accessibility />
     </HelmetProvider>
   );
 }
