@@ -291,36 +291,7 @@ const Services = ({ full = false }) => {
     setTimeout(() => { pauseRef.current = false; snapToNearest(); }, 200);
   }, [isDragging]);
 
-  // Convert vertical wheel to horizontal scroll usando native listener (passive:false)
-  // Melhorado para não interferir com scroll da página
-  useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const handleWheel = (e) => {
-      // Só intercepta se está focado ou mouse está sobre o elemento
-      const isHovered = el.matches(':hover');
-      const isFocused = document.activeElement === el || el.contains(document.activeElement);
-
-      if (!isHovered && !isFocused) return;
-
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        const maxScrollLeft = el.scrollWidth - el.clientWidth;
-        const canScrollLeft = el.scrollLeft > 0;
-        const canScrollRight = el.scrollLeft < maxScrollLeft;
-        const scrollingLeft = e.deltaY < 0;
-        const scrollingRight = e.deltaY > 0;
-
-        // Só previne default se pode fazer scroll interno
-        if ((scrollingLeft && canScrollLeft) || (scrollingRight && canScrollRight)) {
-          el.scrollLeft += e.deltaY * 0.8; // Reduz sensibilidade
-          e.preventDefault();
-          e.stopPropagation();
-        }
-      }
-    };
-    el.addEventListener('wheel', handleWheel, { passive: false });
-    return () => el.removeEventListener('wheel', handleWheel);
-  }, []);
+  
 
   // Atualiza índice e remove loop infinito
   useEffect(() => {

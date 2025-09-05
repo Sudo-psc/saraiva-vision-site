@@ -30,8 +30,8 @@ const ConsentManager = () => {
     return () => window.removeEventListener('open-privacy-settings', handler);
   }, []);
 
-  // Lock body scroll when banner or modal is visible
-  useBodyScrollLock(showBanner || open);
+  // Lock body scroll ONLY when modal is open (banner não bloqueia scroll)
+  useBodyScrollLock(open);
 
   const save = (next) => {
     const payload = { ...next, timestamp: new Date().toISOString() };
