@@ -1,0 +1,278 @@
+/* Design System Enhancement - Custom CSS Classes */
+
+/* Glass Morphism Effect */
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Gradient Borders */
+.gradient-border {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+  border: 1px solid transparent;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.2), rgba(236, 72, 153, 0.2));
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: subtract;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: subtract;
+  pointer-events: none;
+}
+
+/* Text Gradients */
+.text-gradient {
+  background: linear-gradient(135deg, #3b82f6, #9333ea, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-medical-gradient {
+  background: linear-gradient(135deg, #0ea5e9, #3b82f6, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Icon Container */
+.icon-container {
+  @apply w-12 h-12 rounded-xl flex items-center justify-center text-blue-600;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+}
+
+/* Enhanced Buttons */
+.btn-medical {
+  background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-medical:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* Scroll Container */
+.scroll-container {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Perspective for 3D effects */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Smooth Focus States */
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+}
+
+/* Card Hover Effects */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Animated Underlines */
+.underline-animated {
+  position: relative;
+  overflow: hidden;
+}
+
+.underline-animated::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(135deg, #3b82f6, #9333ea);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.underline-animated:hover::after {
+  transform: translateX(0);
+}
+
+/* Loading States */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Section Spacing Utilities */
+.section-padding {
+  @apply py-16 lg:py-24;
+}
+
+.section-padding-large {
+  @apply py-24 lg:py-32;
+}
+
+/* Content Width Constraints */
+.content-width {
+  @apply max-w-7xl mx-auto px-4 md:px-6;
+}
+
+.prose-width {
+  @apply max-w-prose mx-auto;
+}
+
+/* Enhanced Gradients */
+.bg-hero-enhanced {
+  background: linear-gradient(135deg, 
+    #f8fafc 0%, 
+    #f1f5f9 20%, 
+    rgba(59, 130, 246, 0.05) 40%, 
+    rgba(147, 51, 234, 0.05) 60%, 
+    #e2e8f0 80%, 
+    #cbd5e1 100%
+  );
+}
+
+.bg-section-gradient {
+  background: linear-gradient(135deg, 
+    rgba(248, 250, 252, 1) 0%, 
+    rgba(241, 245, 249, 0.8) 50%, 
+    rgba(226, 232, 240, 0.6) 100%
+  );
+}
+
+/* Medical Theme Colors */
+.text-trust {
+  @apply text-green-600;
+}
+
+.text-medical {
+  @apply text-blue-600;
+}
+
+.bg-trust {
+  @apply bg-green-50;
+}
+
+.bg-medical {
+  @apply bg-blue-50;
+}
+
+.border-trust {
+  @apply border-green-200;
+}
+
+.border-medical {
+  @apply border-blue-200;
+}
+
+/* Enhanced Typography */
+.heading-enhanced {
+  @apply font-bold tracking-tight;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+}
+
+.body-enhanced {
+  @apply leading-relaxed;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+}
+
+/* Status Indicators */
+.status-indicator {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.status-success {
+  @apply bg-green-100 text-green-800;
+}
+
+.status-info {
+  @apply bg-blue-100 text-blue-800;
+}
+
+.status-warning {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.status-error {
+  @apply bg-red-100 text-red-800;
+}
+
+/* Enhanced Accessibility */
+.sr-only-focusable {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.sr-only-focusable:focus {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: inherit !important;
+  margin: inherit !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: inherit !important;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .gradient-border {
+    border: 2px solid;
+  }
+  
+  .text-gradient,
+  .text-medical-gradient {
+    -webkit-text-fill-color: unset;
+    background: none;
+    @apply text-gray-900;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

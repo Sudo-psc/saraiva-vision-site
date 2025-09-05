@@ -39,10 +39,11 @@ const Hero = () => {
   }, [heroSrc]);
 
   return (
-    <section id="home" className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-hero-gradient">
-      <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(67,100,247,0.1),transparent_60%)]"></div>
-        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom_left,rgba(0,82,212,0.1),transparent_60%)]"></div>
+    <section id="home" className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-hero-enhanced">
+      <div className="absolute inset-0 z-0 opacity-40">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_60%)]"></div>
+        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom_left,rgba(147,51,234,0.08),transparent_60%)]"></div>
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-blue-400/5 via-purple-400/8 to-pink-400/5 rounded-full blur-3xl animate-pulse-soft"></div>
       </div>
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -68,12 +69,12 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center lg:justify-start">
-              <Button size="xl" variant="cta" className="gap-2 shadow-2xl" onClick={handleAgendarClick}>
+              <Button size="xl" variant="cta" className="gap-2 btn-medical focus-ring" onClick={handleAgendarClick}>
                 <Calendar size={20} />
                 {t('hero.schedule_button')}
               </Button>
 
-              <Button variant="outline" size="lg" className="gap-2" onClick={handleNossosServicosClick}>
+              <Button variant="outline" size="lg" className="gap-2 glass-card hover:glass-morphism-hover focus-ring transition-all duration-300" onClick={handleNossosServicosClick}>
                 {t('hero.services_button')}
                 <ArrowRight size={20} />
               </Button>
@@ -159,7 +160,7 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative"
           >
-            <div className="relative z-10 rounded-3xl overflow-hidden shadow-soft-medium">
+            <div className="relative z-10 rounded-3xl overflow-hidden shadow-3d hover:shadow-3d-hover transition-all duration-500 card-hover">
               <OptimizedPicture
                 src={heroSrc}
                 alt={t('ui.alt.hero_image', 'Família sorrindo - Saraiva Vision')}

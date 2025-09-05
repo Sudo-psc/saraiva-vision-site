@@ -23,14 +23,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js 20.19.1
+      - name: Setup Node from .nvmrc
         uses: actions/setup-node@v4
         with:
-          node-version: '20.19.1'
-          cache: 'npm'
+          node-version-file: .nvmrc
+          cache: npm
 
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
+
+      - name: Lint
+        run: npx eslint src
 
       - name: Run unit tests
         run: npm test -- --run
@@ -94,7 +97,7 @@ jobs:
           set -euo pipefail
           RELEASE="${GITHUB_SHA::12}-$GITHUB_RUN_NUMBER"
           REMOTE_RELEASE_DIR="$DEPLOY_ROOT/releases/$RELEASE"
-          CURRENT_LINK="$DEPLOY_ROOT/saraivavision"
+          CURRENT_LINK="$DEPLOY_ROOT/current"
           echo "Saving current target and switching symlink atomically"
           ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "\
             set -euo pipefail; \
@@ -115,4 +118,3 @@ jobs:
       - name: Deployment summary
         run: |
           echo "Deployment completed to ${{ inputs.url || 'https://saraivavision.com.br' }}"
-

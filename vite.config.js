@@ -19,7 +19,22 @@ export default defineConfig({
 		},
 	},
 	server: {
-		port: 3000,
-		host: true
+		port: 3002,
+		host: true,
+		proxy: {
+			'/wp-json': {
+				target: 'http://localhost:8083',
+				changeOrigin: true,
+				secure: false,
+				headers: {
+					'Origin': 'http://localhost:3002'
+				}
+			},
+			'/wp-admin': {
+				target: 'http://localhost:8083',
+				changeOrigin: true,
+				secure: false
+			}
+		}
 	}
 })

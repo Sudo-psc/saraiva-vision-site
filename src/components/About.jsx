@@ -23,12 +23,13 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-blue-50/20 to-indigo-50/30 relative overflow-hidden">
+    <section id="about" className="section-padding bg-section-gradient relative overflow-hidden">
       {/* Enhanced Background Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/8 to-purple-400/8 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-purple-400/8 to-pink-400/8 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-10 right-20 w-32 h-32 bg-gradient-to-br from-cyan-300/6 to-blue-400/6 rounded-full blur-2xl animate-bounce" style={{ animationDuration: '8s' }} />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/8 to-purple-400/8 rounded-full blur-3xl animate-pulse-soft" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-purple-400/8 to-pink-400/8 rounded-full blur-3xl animate-pulse-soft" style={{ animationDelay: '1000ms' }} />
+        <div className="absolute top-10 right-20 w-32 h-32 bg-gradient-to-br from-cyan-300/6 to-blue-400/6 rounded-full blur-2xl animate-float" />
+        <div className="absolute bottom-10 left-20 w-24 h-24 bg-gradient-to-br from-green-300/6 to-emerald-400/6 rounded-full blur-2xl animate-float-delayed" />
       </div>
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -44,20 +45,20 @@ const About = () => {
 
             <div className="grid grid-cols-2 gap-4 relative z-10">
               <div className="space-y-4">
-                <div className="rounded-2xl overflow-hidden shadow-soft-medium h-64">
-                  <img loading="lazy" decoding="async" className="w-full h-full object-cover" alt={imageAlts[0]} src={imageUrls[0]} sizes="(min-width: 1024px) 33vw, 50vw" />
+                <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-64">
+                  <img loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt={imageAlts[0]} src={imageUrls[0]} sizes="(min-width: 1024px) 33vw, 50vw" />
                 </div>
-                <div className="rounded-2xl overflow-hidden shadow-soft-medium h-40">
-                  <img loading="lazy" decoding="async" className="w-full h-full object-cover" alt={imageAlts[1]} src={imageUrls[1]} sizes="(min-width: 1024px) 33vw, 50vw" />
+                <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-40">
+                  <img loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt={imageAlts[1]} src={imageUrls[1]} sizes="(min-width: 1024px) 33vw, 50vw" />
                 </div>
               </div>
 
               <div className="space-y-4 mt-8">
-                <div className="rounded-2xl overflow-hidden shadow-soft-medium h-40">
-                  <img loading="lazy" decoding="async" className="w-full h-full object-cover" alt={imageAlts[2]} src={imageUrls[2]} sizes="(min-width: 1024px) 33vw, 50vw" />
+                <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-40">
+                  <img loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt={imageAlts[2]} src={imageUrls[2]} sizes="(min-width: 1024px) 33vw, 50vw" />
                 </div>
-                <div className="rounded-2xl overflow-hidden shadow-soft-medium h-64">
-                  <img loading="lazy" decoding="async" className="w-full h-full object-cover" alt={imageAlts[3]} src={imageUrls[3]} sizes="(min-width: 1024px) 33vw, 50vw" />
+                <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-64">
+                  <img loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt={imageAlts[3]} src={imageUrls[3]} sizes="(min-width: 1024px) 33vw, 50vw" />
                 </div>
               </div>
             </div>
