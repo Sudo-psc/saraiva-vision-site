@@ -84,8 +84,8 @@
 
 ## 📚 References & Resources
 
-- [📖 **Code Style Guide**](./docs/CODE_STYLE.md)
-- [🔧 **Quality Standards**](./docs/QUALITY_STANDARDS.md)
+- [📖 **Code Style Guide**](./CLAUDE.md)
+- [🔧 **Quality Standards**](./docs/SYSTEM_ARCHITECTURE.md)
 - [📋 **Testing Guide**](./docs/TESTING_GUIDE.md)
 
 ---
