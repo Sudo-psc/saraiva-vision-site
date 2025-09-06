@@ -153,7 +153,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
           {
             label: t('services.learn_more'),
             variant: 'secondary',
-            href: `/servico/${service.id}`,
+            href: `/servicos/${service.id}`,
             icon: <ArrowRight className="w-4 h-4" />,
             'aria-label': `Saiba mais sobre ${service.title}`
           }

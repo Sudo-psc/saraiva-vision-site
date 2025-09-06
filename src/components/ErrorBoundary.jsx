@@ -16,9 +16,7 @@ class ErrorBoundary extends React.Component {
       // eslint-disable-next-line no-console
       console.error('ErrorBoundary caught:', error, info);
     }
-  }
-
-  render() {
+  } render() {
     if (this.state.hasError) {
       return (
         <div role="alert" className="p-4 text-sm text-red-700 bg-red-50 rounded-md">

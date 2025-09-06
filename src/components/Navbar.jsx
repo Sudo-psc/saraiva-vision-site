@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, MessageCircle, Globe, ChevronDown, Calendar, Headphones } from 'lucide-react';
+import { Menu, X, MessageCircle, Globe, ChevronDown, Calendar, Headphones, Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/Logo';

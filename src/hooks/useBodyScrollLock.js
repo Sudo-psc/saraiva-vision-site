@@ -5,44 +5,59 @@ import { useEffect, useRef } from 'react';
  * Compatível com o sistema de scroll-fix-clean.css
  * Não usa position:fixed para evitar quebrar widgets
  */
+// Module-scoped lock counter to support multiple concurrent lockers
+let __bodyScrollLockCount = 0;
+
 export function useBodyScrollLock(isLocked) {
   const isLockedRef = useRef(false);
   const scrollPositionRef = useRef(0);
 
   useEffect(() => {
-    if (typeof document === 'undefined') return () => { };
-    if (isLocked === isLockedRef.current) return;
-
+    if (typeof document === 'undefined') return () => {};
     const body = document.body;
     const docEl = document.documentElement;
 
-    if (isLocked && !isLockedRef.current) {
-      // Salva posição atual
+    const lock = () => {
+      if (isLockedRef.current) return;
+      // Salva posição atual (apenas na primeira aquisição deste hook)
       scrollPositionRef.current = window.pageYOffset;
 
-      // Calcula largura da scrollbar para evitar layout shift
-      const scrollbarWidth = Math.max(0, window.innerWidth - docEl.clientWidth);
-      body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+      // Incrementa contador global
+      __bodyScrollLockCount = Math.max(0, __bodyScrollLockCount) + 1;
 
-      // Aplica lock sem position:fixed (mantém widgets funcionando)
-      body.classList.add('scroll-locked');
+      // Se transição de 0 -> 1, aplica lock visual/global
+      if (__bodyScrollLockCount === 1) {
+        const scrollbarWidth = Math.max(0, window.innerWidth - docEl.clientWidth);
+        body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+        body.classList.add('scroll-locked');
+      }
+
       isLockedRef.current = true;
+    };
 
-    } else if (!isLocked && isLockedRef.current) {
-      // Remove lock
-      body.classList.remove('scroll-locked');
-      body.style.removeProperty('--scrollbar-width');
-
-      // Restaura posição de scroll
-      window.scrollTo(0, scrollPositionRef.current);
+    const unlock = () => {
+      if (!isLockedRef.current) return;
       isLockedRef.current = false;
-    }
 
-    return () => {
-      if (isLockedRef.current) {
+      // Decrementa contador global
+      __bodyScrollLockCount = Math.max(0, __bodyScrollLockCount - 1);
+
+      // Se transição para 0, remove lock e restaura posição
+      if (__bodyScrollLockCount === 0) {
         body.classList.remove('scroll-locked');
         body.style.removeProperty('--scrollbar-width');
-        isLockedRef.current = false;
+        // Restaura posição de scroll do momento da primeira aquisição
+        try { window.scrollTo(0, scrollPositionRef.current); } catch (_) {}
+      }
+    };
+
+    // Sync estado atual
+    if (isLocked) lock(); else unlock();
+
+    // Cleanup: garante liberação caso componente desmonte ainda travado
+    return () => {
+      if (isLockedRef.current) {
+        unlock();
       }
     };
   }, [isLocked]);

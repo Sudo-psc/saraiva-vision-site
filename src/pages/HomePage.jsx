@@ -14,6 +14,7 @@ import CompactGoogleReviews from '@/components/CompactGoogleReviews';
 import GoogleLocalSection from '@/components/GoogleLocalSection';
 import FAQ from '@/components/FAQ';
 import LatestEpisodes from '@/components/LatestEpisodes';
+import LatestBlogPosts from '@/components/LatestBlogPosts';
 
 function HomePage() {
   const location = useLocation();
@@ -66,6 +67,10 @@ function HomePage() {
         <hr className="hr-divider" aria-hidden="true" />
 
         <div className="homepage-section bg-section-latest-episodes"><LatestEpisodes /></div>
+
+        <hr className="hr-divider" aria-hidden="true" />
+
+        <div className="homepage-section bg-section-latest-blog-posts"><LatestBlogPosts /></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 

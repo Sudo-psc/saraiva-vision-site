@@ -1,103 +1,48 @@
-#!/usr/bin/env node
+import imagemin from 'imagemin';
+import imageminWebp from 'imagemin-webp';
+import { glob } from 'glob';
+import { statSync, unlinkSync, renameSync, mkdirSync, existsSync } from 'fs';
+import { dirname, join, basename } from 'path';
 
-import sharp from 'sharp';
-import { promises as fs } from 'fs';
-import path from 'path';
+const source = 'public/images/src/**/*.{png,jpg,jpeg}';
+const destination = 'public/images/dist';
 
-const images = [
-	{
-		input: 'public/img/hero.png',
-		outputs: [
-			{ format: 'webp', quality: 85 },
-			{ format: 'avif', quality: 70 }
-		]
-	},
-	{
-		input: 'public/img/drphilipe_perfil.png',
-		outputs: [
-			{ format: 'webp', quality: 85 },
-			{ format: 'avif', quality: 70 }
-		]
-	},
-	{
-		input: 'public/img/avatar-female-blonde.png',
-		outputs: [
-			{ format: 'webp', quality: 90 },
-			{ format: 'avif', quality: 80 }
-		]
-	},
-	{
-		input: 'public/img/avatar-female-brunette.png',
-		outputs: [
-			{ format: 'webp', quality: 90 },
-			{ format: 'avif', quality: 80 }
-		]
-	}
-];
+const checkMode = process.argv.includes('check');
 
-async function optimizeImages() {
-	console.log('🎨 Iniciando otimização de imagens...');
+(async () => {
+  const files = await glob(source);
 
-	let totalSavings = 0;
-	let originalTotal = 0;
+  if (checkMode) {
+    console.log('Images that would be optimized:');
+    files.forEach(file => console.log(file));
+    return;
+  }
 
-	for (const imageConfig of images) {
-		const { input, outputs } = imageConfig;
+  console.log('Optimizing images...');
 
-		try {
-			// Verificar se arquivo original existe
-			const originalStat = await fs.stat(input);
-			originalTotal += originalStat.size;
+  for (const file of files) {
+    try {
+      const stats = statSync(file);
+      if (stats.size > 500 * 1024) { // Only optimize files larger than 500KB
+        console.log(`Optimizing ${file}...`);
 
-			console.log(`\n📷 Processando: ${input} (${(originalStat.size / 1024 / 1024).toFixed(2)} MB)`);
+        const output = await imagemin([file], {
+          destination: dirname(file),
+          plugins: [
+            imageminWebp({ quality: 80 })
+          ]
+        });
 
-			const baseName = path.basename(input, path.extname(input));
-			const dir = path.dirname(input);
+        if (output.length > 0) {
+          const newPath = output[0].destinationPath.replace('/src/', '/dist/');
+          renameSync(output[0].sourcePath, newPath);
+          console.log(`Optimized and moved to ${newPath}`);
+        }
+      }
+    } catch (error) {
+      console.error(`Error optimizing ${file}:`, error);
+    }
+  }
 
-			for (const output of outputs) {
-				const outputPath = path.join(dir, `${baseName}.${output.format}`);
-
-				await sharp(input)
-				[output.format]({
-					quality: output.quality,
-					effort: output.format === 'avif' ? 9 : 6 // Max effort for AVIF
-				})
-					.toFile(outputPath);
-
-				const newStat = await fs.stat(outputPath);
-				const savings = originalStat.size - newStat.size;
-				totalSavings += savings;
-
-				const savingsPercent = ((savings / originalStat.size) * 100).toFixed(1);
-				console.log(`  ✅ ${output.format.toUpperCase()}: ${(newStat.size / 1024 / 1024).toFixed(2)} MB (-${savingsPercent}%)`);
-			}
-		} catch (error) {
-			console.error(`❌ Erro ao processar ${input}:`, error.message);
-		}
-	}
-
-	console.log(`\n📊 Resumo da Otimização:`);
-	console.log(`💾 Tamanho original total: ${(originalTotal / 1024 / 1024).toFixed(2)} MB`);
-	console.log(`💸 Economia total: ${(totalSavings / 1024 / 1024).toFixed(2)} MB`);
-	console.log(`📈 Redução percentual: ${((totalSavings / originalTotal) * 100).toFixed(1)}%`);
-
-	return { originalTotal, totalSavings };
-}
-
-if (import.meta.url === `file://${process.argv[1]}`) {
-	optimizeImages()
-		.then(({ totalSavings, originalTotal }) => {
-			const reductionPercent = ((totalSavings / originalTotal) * 100).toFixed(1);
-			if (parseFloat(reductionPercent) >= 30) {
-				console.log(`\n🎯 Meta atingida! Redução de ${reductionPercent}% (≥30%)`);
-				process.exit(0);
-			} else {
-				console.log(`\n⚠️  Meta não atingida. Redução de ${reductionPercent}% (<30%)`);
-				process.exit(1);
-			}
-		})
-		.catch(error => {
-			console.error('💥 Erro na otimização:', error);
-			process.exit(1);
-		});
-}
+  console.log('Image optimization complete.');
+})();
