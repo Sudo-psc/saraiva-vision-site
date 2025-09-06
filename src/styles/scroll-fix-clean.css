@@ -28,6 +28,8 @@ body {
 	min-height: 100vh;
 	overflow: visible;
 	position: relative;
+	width: 100%;
+	max-width: 100vw;
 }
 
 /* CONTAINERS PRINCIPAIS - Nunca criam scroll próprio */
@@ -36,8 +38,16 @@ section,
 article,
 .container,
 .max-w-7xl,
-.mx-auto {
+.mx-auto,
+.homepage-section {
 	overflow: visible;
+	width: 100%;
+	max-width: 100%;
+}
+
+/* Força containers de página a não terem altura fixa problemática */
+.min-h-screen {
+	min-height: auto !important;
 }
 
 /* ELEMENTOS FIXOS - limitar apenas à utility .fixed (evitar pegar substrings) */
@@ -83,6 +93,21 @@ article,
 body.scroll-locked {
 	overflow: hidden !important;
 	padding-right: var(--scrollbar-width, 0px);
+	position: relative;
+}
+
+/* MODAIS E OVERLAYS - Previne scroll duplo */
+[role="dialog"],
+[aria-modal="true"],
+.modal-content {
+	/* Modais não devem criar scroll interno a menos que necessário */
+	overflow: visible;
+}
+
+.modal-content.scrollable {
+	/* Apenas quando explicitamente marcado como scrollable */
+	overflow-y: auto;
+	max-height: 90vh;
 }
 
 /* MOBILE OPTIMIZATIONS */

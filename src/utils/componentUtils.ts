@@ -9,14 +9,21 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // Size mapping utilities
-export const getSizeClasses = (size: Size): string => {
-  const sizeMap = {
-    compact: 'p-4 min-w-[240px] max-w-[280px]',
-    standard: 'p-6 md:p-8 min-w-[260px] max-w-[300px] md:min-w-[280px] md:max-w-[320px]',
-    featured: 'p-8 md:p-10 lg:p-12 min-w-[320px] max-w-[400px]',
-    hero: 'p-10 md:p-12 lg:p-16 min-w-[400px] max-w-[600px]'
-  };
-  return sizeMap[size];
+export const getSizeClasses = (size: string) => {
+  switch (size) {
+    case 'sm':
+      return 'p-4 min-w-[200px] max-w-[240px] h-[320px]';
+    case 'standard':
+      return 'p-6 md:p-8 min-w-[260px] max-w-[300px] h-[400px]'; // Altura padronizada
+    case 'lg':
+      return 'p-8 md:p-10 min-w-[300px] max-w-[380px] h-[460px]';
+    case 'xl':
+      return 'p-10 md:p-12 min-w-[340px] max-w-[420px] h-[520px]';
+    case 'full':
+      return 'p-6 md:p-8 w-full h-auto min-h-[400px]';
+    default:
+      return 'p-6 md:p-8 min-w-[260px] max-w-[300px] h-[400px]'; // Default com altura padronizada
+  }
 };
 
 // Variant-based styling
@@ -89,12 +96,12 @@ export const getMotionPreset = (preset: MotionPreset) => {
 // Interactive state utilities
 export const getInteractiveClasses = (interactive: boolean, clickable: boolean): string => {
   if (!interactive) return '';
-  
+
   const baseClasses = 'will-change-transform transform-gpu preserve-3d';
-  const clickableClasses = clickable 
-    ? 'cursor-pointer focus-within:ring-2 focus-within:ring-blue-500/20' 
+  const clickableClasses = clickable
+    ? 'cursor-pointer focus-within:ring-2 focus-within:ring-blue-500/20'
     : '';
-  
+
   return cn(baseClasses, clickableClasses);
 };
 
@@ -169,12 +176,12 @@ export const shouldLazyLoad = (lazy?: boolean, index?: number): boolean => {
 // Focus management utilities
 export const manageFocus = (element: HTMLElement | null, shouldFocus: boolean = true) => {
   if (!element || !shouldFocus) return;
-  
+
   // Ensure element is focusable
   if (!element.hasAttribute('tabindex')) {
     element.setAttribute('tabindex', '0');
   }
-  
+
   // Focus with smooth scroll if needed
   element.focus({ preventScroll: false });
   element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

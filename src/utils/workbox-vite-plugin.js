@@ -36,14 +36,14 @@ export function workboxVitePlugin() {
 
 					// Arquivos a serem pré-cacheados
 					globPatterns: [
-						// Assets essenciais para funcionamento offline
+						// App shell e PWA
 						'index.html',
-						'assets/entry/*.js',
-						'assets/styles/*.css',
-						'assets/vendor/vendor-react-*.js',
 						'site.webmanifest',
 						'favicon-*.png',
 						'apple-touch-icon.png',
+						// JS e CSS gerados pelo Vite (qualquer subpasta dentro de assets)
+						'assets/**/*.js',
+						'assets/**/*.css',
 						// Imagens críticas pequenas
 						'img/Acessib_icon.png'
 					],

@@ -16,31 +16,31 @@ export const WIDGET_LAYERS = {
 // Posições padronizadas para widgets
 export const WIDGET_POSITIONS = {
 	BOTTOM_RIGHT: {
-		bottom: '1.25rem', // 20px
+		bottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))', // 20px + safe-area
 		right: '1rem',     // 16px
 		'@media (min-width: 640px)': {
-			bottom: '1.75rem', // 28px
+			bottom: 'calc(1.75rem + env(safe-area-inset-bottom, 0px))', // 28px + safe-area
 			right: '1.5rem'    // 24px
 		}
 	},
 	BOTTOM_LEFT: {
-		bottom: '1.25rem',
+		bottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))',
 		left: '1rem',
 		'@media (min-width: 640px)': {
-			bottom: '1.75rem',
+			bottom: 'calc(1.75rem + env(safe-area-inset-bottom, 0px))',
 			left: '1.5rem'
 		}
 	},
 	ACCESSIBILITY: {
-		bottom: '5rem',     // Above WhatsApp
+		bottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))',     // Above WhatsApp
 		left: '1rem',
 		'@media (min-width: 640px)': {
-			bottom: '6rem',
+			bottom: 'calc(6rem + env(safe-area-inset-bottom, 0px))',
 			left: '1.5rem'
 		}
 	},
 	STICKY_CTA: {
-		bottom: '1rem',
+		bottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))',
 		left: '1rem',
 		right: '1rem',
 		'@media (min-width: 768px)': {

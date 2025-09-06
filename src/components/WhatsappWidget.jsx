@@ -62,7 +62,8 @@ const WhatsappWidget = ({ phoneNumber }) => {
           target="_blank"
           rel="noopener noreferrer"
           className="bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full shadow-2xl flex items-center justify-center relative overflow-hidden group"
-          style={{ minHeight: '64px', minWidth: '64px', padding: '16px' }}
+          // Melhor responsividade ao toque e rolagem em mobile
+          style={{ minHeight: '64px', minWidth: '64px', padding: '16px', touchAction: 'manipulation' }}
           whileHover={{ scale: 1.1, rotate: 5 }}
           whileTap={{ scale: 0.95 }}
           onClick={hideTooltip}
