@@ -29,6 +29,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download build artifact from CI
+        id: download-dist
+        continue-on-error: true
         uses: dawidd6/action-download-artifact@v6
         with:
           workflow: ci.yml
@@ -36,6 +38,35 @@ jobs:
           commit: ${{ github.sha }}
           name: dist
           path: dist
+
+      - name: Check dist presence
+        id: check-dist
+        run: |
+          if [ -d dist ] && [ "$(ls -A dist 2>/dev/null | wc -l)" -gt 0 ]; then
+            echo "present=true" >> $GITHUB_OUTPUT
+          else
+            echo "present=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Node.js (fallback)
+        if: steps.check-dist.outputs.present != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies (fallback)
+        if: steps.check-dist.outputs.present != 'true'
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --include=dev
+          else
+            npm install --include=dev
+          fi
+
+      - name: Build (Vite) — fallback
+        if: steps.check-dist.outputs.present != 'true'
+        run: npm run build
 
       - name: Package deploy bundle
         run: |
