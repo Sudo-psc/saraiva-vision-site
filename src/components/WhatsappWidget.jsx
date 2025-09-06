@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X } from 'lucide-react';
+import { useWidgetManager } from '../utils/widgetManager.jsx';
 
 const WhatsappWidget = ({ phoneNumber }) => {
   const whatsappLink = `https://wa.me/${phoneNumber}`;
   const [showTooltip, setShowTooltip] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const { getWidgetProps } = useWidgetManager();
+  const widgetProps = getWidgetProps('whatsapp');
 
   useEffect(() => {
     setMounted(true);
@@ -20,11 +23,14 @@ const WhatsappWidget = ({ phoneNumber }) => {
     <>
       {/* Enhanced Mobile-First WhatsApp Widget */}
       <motion.div
-        className="fixed bottom-6 right-4 z-[80] sm:bottom-8 sm:right-6"
+        className={`floating-widget widget-smooth ${widgetProps.className}`}
+        style={{
+          zIndex: widgetProps.zIndex,
+          ...widgetProps.position
+        }}
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 1.5 }}
-        style={{ transform: 'translateZ(0)', willChange: 'transform' }}
       >
         {/* Tooltip for better visibility */}
         <AnimatePresence>
@@ -65,9 +71,9 @@ const WhatsappWidget = ({ phoneNumber }) => {
           {/* Pulse animation background */}
           <div className="absolute inset-0 bg-green-400 rounded-full animate-ping opacity-20"></div>
           <div className="absolute inset-0 bg-green-400 rounded-full animate-pulse opacity-10"></div>
-          
+
           <MessageCircle size={32} className="relative z-10 animate-bounce sm:animate-none group-hover:animate-bounce" />
-          
+
           {/* Online indicator */}
           <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
         </motion.a>

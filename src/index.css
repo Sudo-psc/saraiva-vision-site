@@ -42,11 +42,15 @@
     background-size: 28px 28px;
   }
 
+  /* Sistema centralizado de widgets flutuantes - refatorado */
   .floating-widget {
     position: fixed !important;
+    isolation: isolate;
+    contain: layout style;
     transform: translateZ(0);
     will-change: transform;
     backface-visibility: hidden;
+    pointer-events: auto;
   }
 
   /* Enhanced touch scrolling for mobile */
@@ -99,43 +103,41 @@
     }
   }
 
-  .floating-widget-bottom-right {
-    bottom: 1rem;
+  /* Posições padronizadas para widgets - sem conflitos */
+  .widget-bottom-right {
+    bottom: 1.25rem;
     right: 1rem;
   }
 
-  .floating-widget-bottom-left {
-    bottom: 1rem;
+  .widget-bottom-left {
+    bottom: 1.25rem;
+    left: 1rem;
+  }
+
+  .widget-accessibility {
+    bottom: 5rem;
     left: 1rem;
   }
 
   @media (min-width: 640px) {
-    .floating-widget-bottom-right {
-      bottom: 1.5rem;
+    .widget-bottom-right {
+      bottom: 1.75rem;
       right: 1.5rem;
     }
 
-    .floating-widget-bottom-left {
-      bottom: 1.5rem;
+    .widget-bottom-left {
+      bottom: 1.75rem;
+      left: 1.5rem;
+    }
+
+    .widget-accessibility {
+      bottom: 6rem;
       left: 1.5rem;
     }
   }
 
-  /* Ensure accessibility widget doesn't overlap with other widgets */
-  .accessibility-widget {
-    bottom: 6rem;
-    right: 1rem;
-  }
-
-  @media (min-width: 640px) {
-    .accessibility-widget {
-      bottom: 7rem;
-      right: 1.5rem;
-    }
-  }
-
-  /* Smooth scrolling behavior for floating elements */
-  .floating-smooth {
+  /* Transições suaves para widgets */
+  .widget-smooth {
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
@@ -919,10 +921,13 @@ html {
     border-radius: inherit;
     /* Stronger blue/cyan palette */
     background: linear-gradient(135deg,
-      rgba(59, 130, 246, 0.70),  /* blue-500 */
-      rgba(6, 182, 212, 0.65),   /* cyan-500 */
-      rgba(14, 165, 233, 0.60)   /* sky-500 */
-    );
+        rgba(59, 130, 246, 0.70),
+        /* blue-500 */
+        rgba(6, 182, 212, 0.65),
+        /* cyan-500 */
+        rgba(14, 165, 233, 0.60)
+        /* sky-500 */
+      );
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;

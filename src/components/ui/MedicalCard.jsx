@@ -209,7 +209,7 @@ const MedicalCard = forwardRef(({
             )}
             whileHover={shouldAnimate ? { scale: 1.1, rotate: 3 } : {}}
           >
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-teal-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative drop-shadow-lg select-none">
               {media.src || children}
             </div>
@@ -288,7 +288,7 @@ const MedicalCard = forwardRef(({
           <div className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700" 
                style={{ background: 'radial-gradient(circle at 30% 20%, rgba(96,165,250,0.35), transparent 60%)' }} />
           <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 mix-blend-overlay" 
-               style={{ background: 'linear-gradient(140deg, rgba(147,51,234,0.15), rgba(236,72,153,0.12), rgba(59,130,246,0.12))' }} />
+               style={{ background: 'linear-gradient(140deg, rgba(6,50,200,0.15), rgba(20,184,166,0.12), rgba(59,130,246,0.12))' }} />
         </>
       )}
 
@@ -324,7 +324,7 @@ const MedicalCard = forwardRef(({
 
       {/* Gradient bottom edge for service cards */}
       {variant === 'service' && (
-        <div className="pointer-events-none absolute bottom-0 inset-x-0 h-1.5 bg-gradient-to-r from-blue-400/0 via-purple-500/40 to-pink-400/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="pointer-events-none absolute bottom-0 inset-x-0 h-1.5 bg-gradient-to-r from-blue-400/0 via-cyan-500/40 to-teal-400/0 opacity-0 group-hover:opacity-100 transition-opacity" />
       )}
     </>
   );

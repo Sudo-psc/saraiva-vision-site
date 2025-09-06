@@ -78,8 +78,16 @@ class WebVitalsMonitor {
       this.analytics.send(`web_vital_${name.toLowerCase()}`, value, { rating });
     }
 
-    // Send to custom endpoint (only in production or if endpoint is available)
-    if (this.options.endpoint && !this.options.debug) {
+    // Send to custom endpoint (only in production and if endpoint is explicitly provided)
+    if (this.options.endpoint && typeof this.options.endpoint === 'string' && this.options.endpoint.length > 0) {
+      // Skip if in development mode unless explicitly forced
+      if (this.options.debug && !this.options.forceEndpoint) {
+        if (this.options.debug) {
+          console.log(`[Web Vitals] Skipping endpoint in dev mode: ${this.options.endpoint}`);
+        }
+        return;
+      }
+
       try {
         await fetch(this.options.endpoint, {
           method: 'POST',
@@ -100,7 +108,7 @@ class WebVitalsMonitor {
         });
       } catch (error) {
         if (this.options.debug) {
-          console.warn('[Web Vitals] Failed to send metric:', error);
+          console.warn('[Web Vitals] Failed to send metric to', this.options.endpoint, ':', error.message);
         }
       }
     }

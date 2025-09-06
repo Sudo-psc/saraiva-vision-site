@@ -3,12 +3,15 @@ import { MessageCircle, Phone, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { useTranslation } from 'react-i18next';
+import { useWidgetManager } from '../utils/widgetManager.jsx';
 
 const StickyWhatsAppCTA = () => {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   const { generateWhatsAppUrl } = useWhatsApp();
+  const { getWidgetProps } = useWidgetManager();
+  const widgetProps = getWidgetProps('sticky_cta');
 
   const whatsappUrl = generateWhatsAppUrl('Olá! Gostaria de agendar uma consulta.');
   const phoneNumber = '+55 33 99860-1427';
@@ -54,7 +57,13 @@ const StickyWhatsAppCTA = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed bottom-4 left-4 right-4 z-50 max-w-md mx-auto pointer-events-auto"
+          className={`floating-widget widget-smooth ${widgetProps.className} pointer-events-auto`}
+          style={{
+            zIndex: widgetProps.zIndex,
+            ...widgetProps.position,
+            left: '1rem',
+            right: '1rem',
+          }}
         >
           <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-2xl shadow-2xl border border-green-400/30 backdrop-blur-sm">
             <button

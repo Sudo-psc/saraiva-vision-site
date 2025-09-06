@@ -17,7 +17,7 @@ const buttonVariants = cva(
         secondary: 'bg-slate-100 text-slate-800 border border-slate-300 hover:bg-slate-200',
         ghost: 'text-slate-800 hover:bg-slate-100 hover:text-slate-900',
         link: 'text-blue-700 underline-offset-4 hover:underline hover:text-blue-800',
-        gradient: 'bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 text-white hover:from-blue-700 hover:via-purple-700 hover:to-blue-900 hover:shadow-purple-500/30',
+        gradient: 'bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-800 text-white hover:from-blue-700 hover:via-cyan-700 hover:to-blue-900 hover:shadow-cyan-500/30',
       },
       size: {
         default: 'h-11 px-6 py-2',

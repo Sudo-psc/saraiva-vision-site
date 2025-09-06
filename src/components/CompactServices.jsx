@@ -10,19 +10,19 @@ const CompactServiceCard = React.forwardRef(({ service, index }, ref) => {
   const gradients = [
     'bg-gradient-to-br from-blue-50 via-blue-25 to-indigo-50',
     'bg-gradient-to-br from-green-50 via-emerald-25 to-teal-50',
-    'bg-gradient-to-br from-purple-50 via-violet-25 to-indigo-50',
+    'bg-gradient-to-br from-cyan-50 via-cyan-25 to-teal-50',
     'bg-gradient-to-br from-orange-50 via-amber-25 to-yellow-50',
     'bg-gradient-to-br from-teal-50 via-cyan-25 to-sky-50',
-    'bg-gradient-to-br from-rose-50 via-pink-25 to-purple-50'
+    'bg-gradient-to-br from-blue-50 via-cyan-25 to-teal-50'
   ];
 
   const hoverGradients = [
     'group-hover:from-blue-100 group-hover:via-blue-50 group-hover:to-indigo-100',
     'group-hover:from-green-100 group-hover:via-emerald-50 group-hover:to-teal-100',
-    'group-hover:from-purple-100 group-hover:via-violet-50 group-hover:to-indigo-100',
+    'group-hover:from-cyan-100 group-hover:via-cyan-50 group-hover:to-teal-100',
     'group-hover:from-orange-100 group-hover:via-amber-50 group-hover:to-yellow-100',
     'group-hover:from-teal-100 group-hover:via-cyan-50 group-hover:to-sky-100',
-    'group-hover:from-rose-100 group-hover:via-pink-50 group-hover:to-purple-100'
+    'group-hover:from-blue-100 group-hover:via-cyan-50 group-hover:to-teal-100'
   ];
 
   return (
@@ -227,7 +227,7 @@ const CompactServices = () => {
                 }}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 backdrop-blur-sm group"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 backdrop-blur-sm group"
               >
                 <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
                 <span className="text-lg">

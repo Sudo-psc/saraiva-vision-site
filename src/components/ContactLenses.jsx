@@ -34,7 +34,7 @@ const ContactLenses = () => {
       subtitle: t('contactLenses.types.multifocal.subtitle'),
       features: t('contactLenses.types.multifocal.features', { returnObjects: true }),
       icon: Zap,
-      color: 'bg-purple-50/80 border-purple-400/60 shadow-purple-100/50'
+      color: 'bg-cyan-50/80 border-cyan-400/60 shadow-cyan-100/50'
     }
   ];
 
@@ -73,10 +73,10 @@ const ContactLenses = () => {
   return (
     <section id="lentes-de-contato" className="relative bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30 py-16 lg:py-24 overflow-hidden">
       {/* 3D Background Effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/60 via-indigo-50/40 to-purple-50/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/60 via-cyan-50/40 to-teal-50/20"></div>
       <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-gradient-radial from-blue-100/30 via-transparent to-transparent rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-indigo-100/20 via-transparent to-transparent rounded-full blur-3xl"></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-gradient-conic from-blue-50/10 via-indigo-50/10 to-purple-50/10 rounded-full blur-2xl"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-gradient-conic from-blue-50/10 via-cyan-50/10 to-teal-50/10 rounded-full blur-2xl"></div>
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Título principal da seção */}
@@ -134,7 +134,7 @@ const ContactLenses = () => {
           >
             <div className="relative group">
               {/* Background gradient */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
 
               {/* Custom SVG Hero Image */}
               <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-4 border border-slate-200/80 shadow-2xl">
@@ -147,8 +147,8 @@ const ContactLenses = () => {
                 <div className="absolute -top-6 -right-6 w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center animate-float">
                   <Eye className="w-6 h-6 text-blue-600" />
                 </div>
-                <div className="absolute -bottom-6 -left-6 w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center animate-float-delayed">
-                  <Sparkles className="w-5 h-5 text-purple-600" />
+                <div className="absolute -bottom-6 -left-6 w-10 h-10 bg-cyan-500/20 rounded-full flex items-center justify-center animate-float-delayed">
+                  <Sparkles className="w-5 h-5 text-cyan-600" />
                 </div>
                 <div className="absolute top-1/2 -right-8 w-8 h-8 bg-green-500/20 rounded-full animate-pulse"></div>
               </div>
@@ -166,7 +166,7 @@ const ContactLenses = () => {
                 </div>
                 <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
                 <div className="flex items-center gap-1 text-sm text-gray-600">
-                  <Users className="w-4 h-4 text-purple-600" />
+                  <Users className="w-4 h-4 text-cyan-600" />
                   <span className="font-medium">1000+ clientes</span>
                 </div>
               </div>

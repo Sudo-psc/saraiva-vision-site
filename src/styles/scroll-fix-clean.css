@@ -40,24 +40,21 @@ article,
 	overflow: visible;
 }
 
-/* ELEMENTOS FIXOS - Sem interferir no scroll */
-.fixed,
-[class*="fixed"] {
-	position: fixed;
+/* ELEMENTOS FIXOS - limitar apenas à utility .fixed (evitar pegar substrings) */
+.fixed {
+	position: fixed !important;
 	z-index: 1000;
-	/* Remove transforms que podem quebrar fixed positioning */
-	transform: none;
-	will-change: auto;
 }
 
-/* WIDGETS ESPECÍFICOS */
-[class*="WhatsApp"],
-[class*="Consent"],
-[class*="Modal"] {
-	position: fixed;
+/* WIDGETS ESPECÍFICOS - remoção de seletor por substring para evitar side-effects.
+   Os componentes definem sua posição explicitamente. */
+
+/* Mantém utilitário .floating-widget como opt-in explícito */
+.floating-widget {
+	position: fixed !important;
 	z-index: 1000;
-	/* Garante que não interfere no scroll */
-	pointer-events: auto;
+	backface-visibility: hidden;
+	transform: translateZ(0);
 }
 
 /* CARROSSEL - Scroll horizontal interno bem comportado */
@@ -84,11 +81,8 @@ article,
 
 /* MODAL OVERLAY - Bloqueia scroll quando necessário */
 body.scroll-locked {
-	overflow: hidden;
-	position: fixed;
-	width: 100%;
-	top: 0;
-	left: 0;
+	overflow: hidden !important;
+	padding-right: var(--scrollbar-width, 0px);
 }
 
 /* MOBILE OPTIMIZATIONS */

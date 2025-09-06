@@ -32,7 +32,7 @@ function HomePage() {
   }, [location]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-blue-50/20 relative overflow-x-hidden">
+    <div className="min-h-screen relative overflow-x-hidden">
       {/* Enhanced decorative background with contained gradients and shapes */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         {/* Main background orbs - contained within viewport */}
@@ -53,35 +53,34 @@ function HomePage() {
       <Navbar />
 
       <main>
-        <Hero />
+        <div className="homepage-section bg-section-hero"><Hero /></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 
-
-        <Services />
-
-        <hr className="hr-divider" aria-hidden="true" />
-
-        <About />
+        <div className="homepage-section bg-section-services"><Services /></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 
-        <LatestEpisodes />
+        <div className="homepage-section bg-section-about"><About /></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 
-        <CompactGoogleReviews />
+        <div className="homepage-section bg-section-latest-episodes"><LatestEpisodes /></div>
+
+        <hr className="hr-divider" aria-hidden="true" />
+
+        <div className="homepage-section bg-section-compact-google-reviews"><CompactGoogleReviews /></div>
 
         {/* Local / Mapa (Google Places) */}
-        <GoogleLocalSection />
+        <div className="homepage-section bg-section-google-local"><GoogleLocalSection /></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 
-        <Contact />
+        <div className="homepage-section bg-section-contact"><Contact /></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 
-        <FAQ />
+        <div className="homepage-section bg-section-faq"><FAQ /></div>
       </main>
 
       <Footer />
