@@ -134,37 +134,26 @@
   }
 }
 
-/* Ensure white background as fallback and prevent horizontal scroll */
+/* Core styles that work with scroll-fix.css */
 html {
   background-color: white !important;
   color: #1a1a1a !important;
   /* Enhanced font fallback stack */
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  /* Fix double scroll: only prevent horizontal overflow */
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100%;
-  height: 100%;
+  /* Defer scroll behavior to scroll-fix.css */
 }
 
 body {
   margin: 0;
   padding: 0;
-  /* Fix double scroll: only prevent horizontal overflow, let browser handle vertical */
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100%;
-  position: relative;
-  height: 100%;
+  /* Defer scroll behavior to scroll-fix.css */
 }
 
-/* Ensure root element doesn't overflow */
+/* Ensure root element follows scroll-fix.css rules */
 #root {
-  /* Root container is scroll-free */
-  overflow: visible !important;
+  /* Defer to scroll-fix.css for overflow and height management */
   width: 100% !important;
   max-width: 100% !important;
-  min-height: 100vh !important;
   position: relative !important;
 }
 
@@ -408,9 +397,7 @@ body {
     line-height: 1.6;
     color: hsl(var(--text-primary));
     scroll-behavior: smooth;
-    /* Enhanced mobile responsiveness with proper scroll management */
-    overflow-x: hidden;
-    overflow-y: auto;
+    /* Defer scroll overflow behavior to scroll-fix.css */
     width: 100%;
     max-width: 100%;
     position: relative;
@@ -1027,48 +1014,8 @@ body {
     overflow: hidden;
   }
 
-  /* CRITICAL FIX: Complete scroll management system */
-  html {
-    overflow: hidden !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
-  }
-
-  body {
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
-    position: relative !important;
-  }
-
-  #root {
-    overflow: visible !important;
-    height: auto !important;
-    min-height: 100vh !important;
-    max-height: none !important;
-  }
-
-  /* Ensure no nested scroll contexts for main containers */
-  .min-h-screen {
-    min-height: 100vh !important;
-    height: auto !important;
-    overflow: visible !important;
-  }
-
-  /* Prevent any main layout components from creating scroll contexts */
-  main,
-  section,
-  article,
-  .container,
-  .max-w-7xl {
-    overflow: visible !important;
-  }
-
-  /* Only specific scroll containers should have scroll */
-  .scroll-container {
-    overflow: auto !important;
-  }
+  /* SCROLL MANAGEMENT: Defer to scroll-fix.css - no conflicts */
+  /* scroll-fix.css imported at top provides the complete scroll solution */
 
   /* Transparent/Invisible scrollbars for internal scroll containers */
   .scroll-container,
