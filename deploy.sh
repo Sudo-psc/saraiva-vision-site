@@ -61,6 +61,7 @@ Usage: sudo ./deploy.sh [options]
   --wp-check      Also verify WordPress asset endpoints (jquery, load-styles)
   --site-url URL  Override base URL for verification (default: ${SITE_URL_DEFAULT} or env SITE_URL)
   --verify-only   Run verification against current site and exit (no build/deploy)
+  --log-file PATH Write structured logs additionally to PATH
 USAGE
 }
 
@@ -104,6 +105,11 @@ while [[ $# -gt 0 ]]; do
       VERIFY_ONLY=true
       shift
       ;;
+    --log-file)
+      if [[ -z "${2:-}" ]]; then echo "❌ --log-file requer caminho"; exit 1; fi
+      LOG_FILE="$2"
+      shift 2
+      ;;
     --prune)
       if [[ -z "${2:-}" || ! "$2" =~ ^[0-9]+$ ]]; then
         echo "❌ --prune requer número"; exit 1
@@ -120,14 +126,17 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+logi INIT "Starting deploy Saraiva Vision (atomic)"
 echo "🚀 Deploy Saraiva Vision (atomic)"
 
 # Preconditions
 if [[ ! -f "$PROJECT_ROOT/package.json" ]]; then
+  loge PRECHECK "package.json not found; run from project root"
   echo "❌ Run from project root (package.json not found)"; exit 1
 fi
 
 if [[ "${EUID:-$(id -u)}" -ne 0 ]]; then
+  loge PRECHECK "Run as root (sudo) to manage files under /var and nginx"
   echo "❌ Run as root (sudo) to manage files under /var and nginx"; exit 1
 fi
 
@@ -141,6 +150,7 @@ if [[ "$NO_BUILD" = false ]]; then
     . "/etc/profile.d/nvm.sh" || true
   fi
   if command -v nvm >/dev/null 2>&1 && [[ -f .nvmrc ]]; then
+    logi BUILD "Using Node $(cat .nvmrc) via nvm"
     echo "🔧 Using Node $(cat .nvmrc) via nvm"; nvm install >/dev/null || true; nvm use || true
   fi
 fi
@@ -152,6 +162,19 @@ run() {
     eval "$@"
   fi
 }
+
+# ---------- Structured logging ----------
+ts() { date -u +%Y-%m-%dT%H:%M:%SZ; }
+_write_log() {
+  local line="$1"
+  if [[ -n "${LOG_FILE:-}" ]]; then
+    mkdir -p "$(dirname "$LOG_FILE")" 2>/dev/null || true
+    printf "%s\n" "$line" >> "$LOG_FILE" 2>/dev/null || true
+  fi
+}
+logi() { local tag="$1"; shift; local msg="$*"; local line="$(ts) [INFO] [$tag] $msg"; echo "$line"; _write_log "$line"; }
+logw() { local tag="$1"; shift; local msg="$*"; local line="$(ts) [WARN] [$tag] $msg"; echo "$line"; _write_log "$line"; }
+loge() { local tag="$1"; shift; local msg="$*"; local line="$(ts) [ERROR] [$tag] $msg"; echo "$line"; _write_log "$line"; }
 
 # ---------- Verification helpers ----------
 normalize_url() {
@@ -272,19 +295,23 @@ fi
 
 # Build
 if [[ "$NO_BUILD" = false ]]; then
+  logi BUILD "Installing dependencies (legacy peer deps)"
   echo "📦 Installing dependencies (npm install with legacy peer deps)…"
   # Ensure devDependencies are installed even if NODE_ENV=production is set in the environment
   run "npm install --legacy-peer-deps --no-audit --no-fund --include=dev"
 
+  logi BUILD "Building (vite build)"
   echo "🔨 Building (vite build)…"
   run "npm run build"
 fi
 
 if [[ ! -d "dist" ]]; then
+  loge BUILD "dist/ not found"
   echo "❌ dist/ not found. Build first or remove --no-build"; exit 1
 fi
 
 # Write release metadata for runtime verification
+logi RELEASE "Writing release metadata"
 echo "🧾 Writing release metadata to dist/RELEASE_INFO.json"
 GIT_COMMIT=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 APP_VERSION=$(node -pe "require('./package.json').version" 2>/dev/null || echo "0.0.0")
@@ -300,18 +327,22 @@ cat > dist/RELEASE_INFO.json <<META
 META
 
 # Prepare release dir
+logi RELEASE "Preparing release directory: $NEW_RELEASE"
 echo "📁 Preparing release directory: $NEW_RELEASE"
 run "mkdir -p '$NEW_RELEASE'"
 
+logi RELEASE "Rsync dist/ -> $NEW_RELEASE"
 echo "📋 Rsync dist/ -> $NEW_RELEASE"
 RSYNC_FLAGS="-a --delete --human-readable --stats --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r"
 run "rsync $RSYNC_FLAGS dist/ '$NEW_RELEASE/'"
 
 # Sanity check: index.html exists in new release
 if [[ ! -f "$NEW_RELEASE/index.html" ]]; then
+  loge RELEASE "Missing index.html in new release ($NEW_RELEASE)"
   echo "❌ index.html não encontrado em $NEW_RELEASE após build. Abortando antes de trocar symlink."; exit 1
 fi
 
+logi RELEASE "Fix ownership and permissions on $NEW_RELEASE"
 echo "🔐 Fix ownership and permissions"
 run "chown -R www-data:www-data '$NEW_RELEASE'"
 run "chmod -R u=rwX,g=rX,o=rX '$NEW_RELEASE'"
@@ -322,6 +353,7 @@ if [[ -L "$CURRENT_LINK" ]]; then
   CURRENT_TARGET="$(readlink -f "$CURRENT_LINK" || true)"
 fi
 if [[ -n "$CURRENT_TARGET" && -d "$CURRENT_TARGET" ]]; then
+  logi RELEASE "Backup pointer to $BACKUP_DIR/last_release.txt"
   echo "💾 Backing up current to $BACKUP_DIR (metadata only, as releases persist)"
   run "mkdir -p '$BACKUP_DIR'"
   # Store a pointer to last release
@@ -330,14 +362,17 @@ fi
 
 # Atomic switch (com migração se current ainda for diretório físico)
 if [[ -e "$CURRENT_LINK" && ! -L "$CURRENT_LINK" ]]; then
+  logw RELEASE "current exists as directory; migrating to symlink"
   echo "⚠️  current existe como diretório físico (não symlink). Convertendo para estratégia atômica."
   MIGRATION_BACKUP="${CURRENT_LINK}.migrated-$(date +%s)"
   # Renomeia diretório atual para backup para depois poder limpar manualmente
   run "mv '$CURRENT_LINK' '$MIGRATION_BACKUP'"
+  logi RELEASE "Creating fresh symlink current -> $NEW_RELEASE"
   echo "🔁 Criando symlink fresh current -> $NEW_RELEASE"
   run "ln -s '$NEW_RELEASE' '$CURRENT_LINK'"
   echo "📝 Diretório antigo preservado em: $MIGRATION_BACKUP (remova manualmente após validar)"
 else
+  logi RELEASE "Switching current -> $NEW_RELEASE"
   echo "🔁 Switching current -> $NEW_RELEASE"
   run "ln -sfn '$NEW_RELEASE' '$CURRENT_LINK'"
 fi
@@ -356,6 +391,7 @@ if [[ "$LINK_LEGACY" = true ]]; then
   if [[ -e "$LEGACY_ROOT_LINK" && ! -L "$LEGACY_ROOT_LINK" ]]; then
     echo "⚠️  ${LEGACY_ROOT_LINK} exists and is not a symlink. Skipping legacy link to avoid destructive change."
   else
+    logi RELEASE "Linking legacy root: ${LEGACY_ROOT_LINK} -> $CURRENT_LINK"
     echo "🔗 Linking legacy root: ${LEGACY_ROOT_LINK} -> $CURRENT_LINK"
     run "ln -sfn '$CURRENT_LINK' '$LEGACY_ROOT_LINK'"
   fi
@@ -363,6 +399,7 @@ fi
 
 # Nginx configuration (conditional)
 if [[ "$SKIP_NGINX" = false ]]; then
+  logi NGINX "Ensuring nginx site configuration is linked"
   echo "⚙️  Ensuring nginx site configuration is linked"
   # Copy config only if changed
   COPY_NGINX=false
@@ -372,9 +409,11 @@ if [[ "$SKIP_NGINX" = false ]]; then
     fi
   fi
   if $COPY_NGINX; then
+    logi NGINX "Updating nginx config"
     echo "📝 Updating nginx config"
     run "cp '$NGINX_SITE_CONFIG_SRC' '$NGINX_CONFIG_DEST'"
   else
+    logi NGINX "Nginx config unchanged"
     echo "📝 Nginx config unchanged"
   fi
 
@@ -397,41 +436,53 @@ if [[ "$SKIP_NGINX" = false ]]; then
     run "rm -f /etc/nginx/sites-available/saraivavisao"
   fi
 
+  logi NGINX "Testing nginx config"
   echo "🔍 Testing nginx config"
   run "nginx -t"
 
+  logi NGINX "Reloading nginx (zero-downtime)"
   echo "🔄 Reloading nginx (zero-downtime)"
   run "systemctl reload nginx"
 
+  logi NGINX "Ensuring nginx service is active"
   echo "🧭 Ensuring nginx service is active"
   if ! $DRY_RUN && ! systemctl is-active --quiet nginx; then
+    logi NGINX "Starting nginx"
     echo "🚀 Starting nginx"
     run "systemctl start nginx"
   fi
 
+  logi NGINX "Enabling nginx on boot"
   echo "🧷 Enabling nginx on boot"
   run "systemctl enable nginx"
 
   # Post-reload verification (HTTP checks)
   if ! $SKIP_VERIFY; then
+    logi VERIFY "HTTP post-deploy verification"
     echo "🧪 Verificação HTTP pós-deploy"
     if verify_nginx_site "$SITE_URL_EFFECTIVE"; then
+      logi VERIFY "HTTP verification OK"
       echo "✅ Verificação HTTP OK"
     else
+      loge VERIFY "HTTP verification failed — attempting rollback"
       echo "❌ Verificação HTTP falhou — tentando rollback"
       rollback_to_previous || true
       exit 3
     fi
   else
+    logw VERIFY "Skipping HTTP verification (flag)"
     echo "⏭  Pulando verificação HTTP (por flag)"
   fi
 else
+  logw NGINX "Skipping nginx config/reload as requested"
   echo "⏭  Skipping nginx config/reload as requested"
 fi
 
+logi DONE "Deploy completed"
 echo "✅ Deploy completed"
 
 # GTM Verification
+logi VERIFY "Verificando integração GTM"
 echo "🏷️  Verificando integração GTM..."
 if [[ -f "$PROJECT_ROOT/scripts/verify-gtm.js" ]]; then
   if ! $DRY_RUN; then
@@ -442,8 +493,10 @@ if [[ -f "$PROJECT_ROOT/scripts/verify-gtm.js" ]]; then
     export VITE_GTM_ID="${VITE_GTM_ID:-GTM-KF2NP85D}"
 
     if node scripts/verify-gtm.js; then
+      logi VERIFY "GTM verification passed - ID: $VITE_GTM_ID"
       echo "✅ GTM verificação passou - ID: $VITE_GTM_ID"
     else
+      logw VERIFY "GTM verification failed (non-blocking)"
       echo "⚠️  GTM verificação falhou, mas deploy continuou"
       echo "💡 Execute manualmente: node scripts/verify-gtm.js"
     fi
@@ -451,18 +504,24 @@ if [[ -f "$PROJECT_ROOT/scripts/verify-gtm.js" ]]; then
     echo "[dry-run] node scripts/verify-gtm.js"
   fi
 else
+  logw VERIFY "Script de verificação GTM não encontrado (scripts/verify-gtm.js)"
   echo "⚠️  Script de verificação GTM não encontrado (scripts/verify-gtm.js)"
 fi
 
+logi DONE "Current release: $NEW_RELEASE"
 echo "➡️  Current release: $NEW_RELEASE"
+logi DONE "Root serving path: $CURRENT_LINK"
 echo "🌐 Root serving path (nginx): $CURRENT_LINK"
 if [[ -n "$CURRENT_TARGET" ]]; then
+  logi DONE "Previous release: $CURRENT_TARGET"
   echo "↩️  Previous release: $CURRENT_TARGET"
 fi
+logi DONE "Rollback hint: sudo ./rollback.sh"
 echo "💡 Rollback: sudo ./rollback.sh (switch to previous release)"
 
 # Prune old releases if requested
 if [[ -n "$PRUNE_KEEP" ]]; then
+  logi CLEANUP "Pruning releases (keep last $PRUNE_KEEP)"
   echo "🧹 Pruning releases (keeping last $PRUNE_KEEP)"
   ALL_RELEASES=( $(ls -1 "$RELEASES_DIR" | sort) )
   COUNT=${#ALL_RELEASES[@]}
@@ -474,10 +533,12 @@ if [[ -n "$PRUNE_KEEP" ]]; then
       if [[ "$CURRENT_TARGET" == "$RELEASES_DIR/$OLD_REL" || "$NEW_RELEASE" == "$RELEASES_DIR/$OLD_REL" ]]; then
         continue
       fi
+      logi CLEANUP "Removing $RELEASES_DIR/$OLD_REL"
       echo "   - Removing $RELEASES_DIR/$OLD_REL"
       run "rm -rf '$RELEASES_DIR/$OLD_REL'"
     done
   else
+    logi CLEANUP "Nothing to prune (total $COUNT <= $PRUNE_KEEP)"
     echo "   Nada a remover (total $COUNT <= $PRUNE_KEEP)"
-  fi
+fi
 fi
