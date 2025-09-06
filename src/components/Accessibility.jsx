@@ -240,7 +240,7 @@ const Accessibility = () => {
   return (
     <>
       {/* Floating Button - bottom-left small bubble */}
-      <div className="fixed z-[90] bottom-20 left-4 sm:bottom-28 sm:left-6 flex flex-col items-start gap-2">
+      <div className="fixed z-[90] bottom-6 left-4 sm:bottom-8 sm:left-6 flex flex-col items-start gap-2">
         <div className="relative group">
           <motion.button
             initial={{ scale: 0 }}

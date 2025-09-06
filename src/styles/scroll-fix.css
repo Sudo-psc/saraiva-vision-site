@@ -4,11 +4,14 @@
 
 /* RESET FUNDAMENTAL - Estrutura base limpa */
 html {
-  /* HTML só define altura e overflow base */
+  /* HTML define altura e overflow base */
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
   scroll-behavior: smooth;
+  /* Garantir largura completa */
+  width: 100%;
+  max-width: 100%;
 }
 
 body {
@@ -16,19 +19,25 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
   position: relative;
   /* Previne scroll chaining e bounce em iOS */
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
+  /* Garantir largura completa */
+  width: 100%;
+  max-width: 100%;
 }
 
 /* Container raiz nunca deve ter scroll próprio */
 #root {
-  min-height: 100vh;
+  min-height: 100vh !important;
   overflow: visible !important;
   position: relative !important;
+  /* Garantir largura completa */
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 /* CONTAINERS PRINCIPAIS - Nunca criam scroll próprio */
