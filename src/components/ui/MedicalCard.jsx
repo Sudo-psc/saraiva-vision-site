@@ -205,14 +205,18 @@ const MedicalCard = forwardRef(({
         return (
           <motion.div
             className={cn(
-              mediaClasses,
-              'flex items-center justify-center mb-3'
+              'service-icon-container',
+              'flex items-center justify-center mb-6'
             )}
-            whileHover={shouldAnimate ? { scale: 1.1, rotate: 3 } : {}}
+            whileHover={shouldAnimate ? { scale: 1.05, rotate: 2 } : {}}
           >
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-teal-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative drop-shadow-lg select-none">
-              {media.src || children}
+              {React.isValidElement(media.src) ? 
+                React.cloneElement(media.src, { 
+                  className: cn('service-icon-image', media.src.props?.className) 
+                }) : 
+                media.src || children
+              }
             </div>
           </motion.div>
         );
