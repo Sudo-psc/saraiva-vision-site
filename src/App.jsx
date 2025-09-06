@@ -14,6 +14,7 @@ const LensesPage = lazy(() => import('@/pages/LensesPage'));
 const FAQPage = lazy(() => import('@/pages/FAQPage'));
 const MedicalArticleExample = lazy(() => import('@/pages/MedicalArticleExample'));
 const PodcastPage = lazy(() => import('@/pages/PodcastPage'));
+const AdminPage = lazy(() => import('@/pages/AdminPage'));
 import ScrollToTop from '@/components/ScrollToTop';
 import { Toaster } from '@/components/ui/toaster';
 import ConsentManager from '@/components/ConsentManager';
@@ -47,6 +48,7 @@ function App() {
           <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
           <Route path="/podcast" element={<PodcastPage />} />
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          <Route path="/wp-admin" element={<AdminPage />} />
         </Routes>
       </Suspense>
       <Toaster />
