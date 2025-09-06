@@ -6,8 +6,6 @@ import { Button } from '@/components/ui/button';
 import AudioPlayer from '@/components/AudioPlayer';
 import { Link } from 'react-router-dom';
 
-const PODCAST_ROUTE = '/podcast';
-
 const LatestEpisodes = () => {
     const { t } = useTranslation();
 
@@ -130,7 +128,7 @@ const LatestEpisodes = () => {
                         {/* Glow effect */}
                         <div className="absolute -inset-2 bg-gradient-to-r from-blue-400/30 via-cyan-400/30 to-teal-400/30 rounded-2xl blur-lg opacity-70" />
 
-                        <Link to={PODCAST_ROUTE} aria-label={t('podcast.visit_podcast', 'Ver todos os episódios')}>
+                        <Link to="/podcast" aria-label={t('podcast.visit_podcast', 'Ver todos os episódios')}>
                             <Button
                                 size="lg"
                                 className="relative bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 text-white hover:from-blue-700 hover:via-cyan-700 hover:to-teal-700 gap-3 px-10 py-4 text-lg font-bold rounded-2xl shadow-2xl border-0 transform hover:scale-105 transition-all duration-300"

@@ -37,6 +37,14 @@ SKIP_NGINX=false
 NO_BUILD=false
 LINK_LEGACY=false
 PRUNE_KEEP=""
+# Verification controls
+SKIP_VERIFY=false
+WP_CHECK=false
+WP_STRICT=false
+# Site URL for verification (default local HTTP). Can be overridden by env SITE_URL or --site-url
+SITE_URL_DEFAULT="http://localhost:8082"
+SITE_URL_INPUT="${SITE_URL:-}"
+VERIFY_ONLY=false
 
 # Legacy root compatibility (older vhost may still point to this path)
 readonly LEGACY_ROOT_LINK="/var/www/saraiva-vision-site"
@@ -49,18 +57,66 @@ Usage: sudo ./deploy.sh [options]
   --no-build      Skip npm install/build (use existing dist/)
   --link-legacy-root  Create/update symlink ${LEGACY_ROOT_LINK} -> current release (for legacy nginx root)
   --prune N       After deploy, keep only the last N releases (older ones removed)
+  --skip-verify   Skip HTTP verification after nginx reload
+  --wp-check      Also verify WordPress asset endpoints (jquery, load-styles)
+  --site-url URL  Override base URL for verification (default: ${SITE_URL_DEFAULT} or env SITE_URL)
+  --verify-only   Run verification against current site and exit (no build/deploy)
 USAGE
 }
 
-for arg in "$@"; do
-  case "$arg" in
-    --dry-run) DRY_RUN=true; shift ;;
-    --skip-nginx) SKIP_NGINX=true; shift ;;
-    --no-build) NO_BUILD=true; shift ;;
-    --link-legacy-root) LINK_LEGACY=true; shift ;;
-  --prune) shift; PRUNE_KEEP="${1:-}"; if [[ -z "$PRUNE_KEEP" || ! "$PRUNE_KEEP" =~ ^[0-9]+$ ]]; then echo "❌ --prune requer número"; exit 1; fi; shift ;;
-    -h|--help) usage; exit 0 ;;
-    *) echo "Unknown option: $arg"; usage; exit 1 ;;
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dry-run)
+      DRY_RUN=true
+      shift
+      ;;
+    --skip-nginx)
+      SKIP_NGINX=true
+      shift
+      ;;
+    --no-build)
+      NO_BUILD=true
+      shift
+      ;;
+    --link-legacy-root)
+      LINK_LEGACY=true
+      shift
+      ;;
+    --skip-verify)
+      SKIP_VERIFY=true
+      shift
+      ;;
+    --wp-check)
+      WP_CHECK=true
+      shift
+      ;;
+    --wp-strict)
+      WP_CHECK=true
+      WP_STRICT=true
+      shift
+      ;;
+    --site-url)
+      if [[ -z "${2:-}" ]]; then echo "❌ --site-url requer URL"; exit 1; fi
+      SITE_URL_INPUT="$2"
+      shift 2
+      ;;
+    --verify-only)
+      VERIFY_ONLY=true
+      shift
+      ;;
+    --prune)
+      if [[ -z "${2:-}" || ! "$2" =~ ^[0-9]+$ ]]; then
+        echo "❌ --prune requer número"; exit 1
+      fi
+      PRUNE_KEEP="$2"
+      shift 2
+      ;;
+    -h|--help)
+      usage; exit 0
+      ;;
+    *)
+      echo "Unknown option: $1"; usage; exit 1
+      ;;
   esac
 done
 
@@ -97,10 +153,128 @@ run() {
   fi
 }
 
+# ---------- Verification helpers ----------
+normalize_url() {
+  local u="$1"
+  # strip trailing slash
+  u=${u%%/}
+  printf "%s" "$u"
+}
+
+http_head() {
+  # args: url; prints headers to stdout, returns 0 if curl succeeded
+  curl -sS -I -L "$1" || return 1
+}
+
+http_get() {
+  curl -sS -L "$1" || return 1
+}
+
+check_status() {
+  # args: url expected_code_regex
+  local url="$1" expect="$2"
+  local code
+  code=$(curl -sS -o /dev/null -w "%{http_code}" -L "$url" || true)
+  [[ "$code" =~ $expect ]]
+}
+
+check_header_contains() {
+  # args: url header_name regex
+  local url="$1" name="$2" re="$3"
+  local hdr
+  hdr=$(curl -sS -I -L "$url" | tr -d '\r' | grep -i "^$name:" || true)
+  [[ "$hdr" =~ $re ]]
+}
+
+verify_nginx_site() {
+  local base="$1"
+  local ok=true
+
+  echo "🔎 Verificando site em: $base"
+
+  # Root should be 200/3xx
+  if check_status "$base/" '^(200|30[12])$'; then
+    echo "  ✅ Root responde (200/3xx)"
+  else
+    echo "  ❌ Root não respondeu 200/3xx"; ok=false
+  fi
+
+  # Health
+  if check_status "$base/health" '^200$'; then
+    echo "  ✅ /health 200"
+  else
+    echo "  ❌ /health não retornou 200"; ok=false
+  fi
+
+  # Manifest content-type
+  if check_header_contains "$base/site.webmanifest" 'Content-Type' 'application/manifest\+json'; then
+    echo "  ✅ /site.webmanifest com Content-Type correto"
+  else
+    echo "  ❌ /site.webmanifest sem Content-Type application/manifest+json"; ok=false
+  fi
+
+  # Try a CSS asset for gzip if available
+  local css
+  css=$(ls -1 "$NEW_RELEASE"/assets/*.css 2>/dev/null | head -n1 || true)
+  if [[ -n "$css" ]]; then
+    local css_url="$base/assets/$(basename "$css")"
+    local enc
+    enc=$(curl -sS -I -H 'Accept-Encoding: gzip' "$css_url" | tr -d '\r' | grep -i '^Content-Encoding:' || true)
+    if [[ -n "$enc" ]]; then echo "  ✅ Asset CSS com gzip"; else echo "  ⚠️  Asset CSS sem Content-Encoding (gzip): verificar config"; fi
+  else
+    echo "  ℹ️  Nenhum CSS em $NEW_RELEASE/assets para testar gzip"
+  fi
+
+  # Optional: WordPress endpoints
+  if $WP_CHECK; then
+    if check_header_contains "$base/wp-includes/js/jquery/jquery.min.js" 'Content-Type' 'javascript'; then
+      echo "  ✅ WP jquery entregue com MIME de script"
+    else
+      echo "  ⚠️  WP jquery não encontrado ou MIME incorreto"; $WP_STRICT && ok=false
+    fi
+    if check_header_contains "$base/wp-admin/load-styles.php" 'Content-Type' 'text/css'; then
+      echo "  ✅ WP load-styles com CSS"
+    else
+      echo "  ⚠️  WP load-styles não retornou CSS"; $WP_STRICT && ok=false
+    fi
+  fi
+
+  $ok
+}
+
+rollback_to_previous() {
+  local ptr="$BACKUP_DIR/last_release.txt"
+  if [[ -f "$ptr" ]]; then
+    local target
+    target=$(cat "$ptr")
+    if [[ -n "$target" && -d "$target" ]]; then
+      echo "↩️  Rollback para release anterior: $target"
+      run "ln -sfn '$target' '$CURRENT_LINK'"
+      run "nginx -t && systemctl reload nginx"
+      return 0
+    fi
+  fi
+  echo "⚠️  Rollback não executado (ponteiro inválido)"
+  return 1
+}
+
+# Resolve SITE_URL
+SITE_URL_EFFECTIVE="$(normalize_url "${SITE_URL_INPUT:-$SITE_URL_DEFAULT}")"
+
+# Fast path: verification only
+if $VERIFY_ONLY; then
+  if verify_nginx_site "$SITE_URL_EFFECTIVE"; then
+    echo "✅ Verificação concluída com sucesso"; exit 0
+  else
+    echo "❌ Verificação falhou"; exit 2
+  fi
+fi
+
 # Build
 if [[ "$NO_BUILD" = false ]]; then
   echo "📦 Installing dependencies (npm install with legacy peer deps)…"
-  run "npm install --legacy-peer-deps --no-audit --no-fund"
+  # Ensure devDependencies are installed even if NODE_ENV=production is set in the environment
+  run "npm install --legacy-peer-deps --no-audit --no-fund --include=dev"
 
   echo "🔨 Building (vite build)…"
   run "npm run build"
@@ -237,6 +411,20 @@ if [[ "$SKIP_NGINX" = false ]]; then
 
   echo "🧷 Enabling nginx on boot"
   run "systemctl enable nginx"
+
+  # Post-reload verification (HTTP checks)
+  if ! $SKIP_VERIFY; then
+    echo "🧪 Verificação HTTP pós-deploy"
+    if verify_nginx_site "$SITE_URL_EFFECTIVE"; then
+      echo "✅ Verificação HTTP OK"
+    else
+      echo "❌ Verificação HTTP falhou — tentando rollback"
+      rollback_to_previous || true
+      exit 3
+    fi
+  else
+    echo "⏭  Pulando verificação HTTP (por flag)"
+  fi
 else
   echo "⏭  Skipping nginx config/reload as requested"
 fi

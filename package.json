@@ -27,7 +27,8 @@
     "verify:gtm": "node scripts/verify-gtm.js",
     "audio:duration": "node tools/get-audio-duration.js",
     "images:build": "node tools/img-pipeline.mjs",
-    "images:check": "node tools/img-pipeline.mjs check"
+    "images:check": "node tools/img-pipeline.mjs check",
+    "images:optimize": "./scripts/optimize-images.sh"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.1",
