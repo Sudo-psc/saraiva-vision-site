@@ -114,7 +114,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
         clickable
         hoverEffects="pronounced"
         cfmCompliant
-        className="service-card-3d service-glass-enhanced bg-white/60 backdrop-blur-lg transition-all duration-500 transform-gpu hover:-translate-y-3 hover:shadow-3d-hover" // Classes aprimoradas
+        className="service-card-3d service-glass-enhanced bg-white/60 backdrop-blur-lg transition-all duration-500 transform-gpu hover:-translate-y-3 hover:shadow-3d-hover h-[400px] flex flex-col" // Classes aprimoradas com altura padronizada
         aria-label={`${service.title} - ${service.description}`}
         data-testid={service.testKey ? `service-card-${service.id}` : undefined}
         media={{
@@ -133,10 +133,10 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
         body={
           <>
             <motion.h3
-              className="text-xl font-bold mb-4 service-text-enhanced tracking-tight" // Contraste melhorado
+              className="text-xl font-bold mb-2 service-text-enhanced tracking-tight" // Contraste melhorado
               whileHover={{ scale: 1.06 }}
             >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 group-hover:from-blue-700 group-hover:via-cyan-700 group-hover:to-blue-700 transition-colors duration-500">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 group-hover:from-blue-800 group-hover:via-cyan-800 group-hover:to-blue-800 transition-colors duration-500">
                 {service.title}
               </span>
               {isTestEnv && service.testKey && (
@@ -144,7 +144,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
               )}
             </motion.h3>
 
-            <p className="service-description-enhanced text-sm leading-relaxed mb-6 max-w-xs transition-colors group-hover:text-slate-800 line-clamp-3"> {/* Contraste melhorado */}
+            <p className="service-description-enhanced text-sm leading-relaxed mb-4 max-w-xs transition-colors"> {/* Contraste melhorado */}
               {service.description}
             </p>
           </>

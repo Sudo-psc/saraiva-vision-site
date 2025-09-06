@@ -12,6 +12,7 @@
 */
 
 import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
+import { clientsClaim } from 'workbox-core';
 import { registerRoute, NavigationRoute } from 'workbox-routing';
 import {
 	NetworkFirst,
@@ -22,7 +23,7 @@ import {
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { ExpirationPlugin } from 'workbox-expiration';
 
-const SW_VERSION = 'workbox-v2.0.0';
+const SW_VERSION = 'workbox-v2.0.1';
 
 // ========================
 // WORKBOX PRECACHING
@@ -37,7 +38,7 @@ cleanupOutdatedCaches();
 // SPA Navigation - Network First com fallback para index.html cached
 const navigationHandler = new NetworkFirst({
 	cacheName: `sv-navigation-${SW_VERSION}`,
-	networkTimeoutSeconds: 3,
+	networkTimeoutSeconds: 10,
 	plugins: [
 		new CacheableResponsePlugin({
 			statuses: [0, 200]
@@ -64,9 +65,8 @@ registerRoute(navigationRoute);
 registerRoute(
 	({ request, url }) => {
 		return url.pathname.startsWith('/assets/') &&
-			(request.destination === 'script' ||
-				request.destination === 'style') &&
-			/\-[a-f0-9]{8,}\.(js|css)$/i.test(url.pathname);
+			(request.destination === 'script' || request.destination === 'style') &&
+			/\-[A-Za-z0-9_\-]{6,}\.(js|css)$/i.test(url.pathname);
 	},
 	new CacheFirst({
 		cacheName: `sv-hashed-assets-${SW_VERSION}`,
@@ -266,7 +266,13 @@ self.addEventListener('quotaexceed', () => {
 });
 
 // Log de ativação para debugging
+self.addEventListener('install', (event) => {
+	// Garante ativação imediata da nova versão
+	self.skipWaiting();
+});
+
 self.addEventListener('activate', (event) => {
+	clientsClaim();
 	console.log(`[SW] Workbox ${SW_VERSION} ativado`);
 });
 

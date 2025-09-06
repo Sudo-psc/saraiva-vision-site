@@ -26,52 +26,52 @@ const MedicalCard = forwardRef(({
   // Core Properties
   variant,
   size = 'standard',
-  
+
   // Visual Design
   glassMorphism = false,
   shadow3D = false,
   gradient = 'none',
   borderRadius = 'xl',
-  
+
   // Interactive Behavior
   interactive = false,
   draggable = false,
   clickable = false,
   hoverEffects = 'subtle',
-  
+
   // Accessibility & Compliance
   'aria-label': ariaLabel,
   cfmCompliant = false,
   'data-testid': testId,
   reducedMotion = false,
-  
+
   // Content Structure
   header,
   media,
   body,
   footer,
   actions = [],
-  
+
   // Animation Configuration
   animationDelay = 0,
   motionPreset = 'entrance',
   stagger = false,
-  
+
   // Event Handlers
   onClick,
   onKeyDown,
-  
+
   // HTML props
   className,
   children,
   ...props
 }, ref) => {
   // Animation configuration
-  const animationConfig = useAnimationConfig({ 
+  const animationConfig = useAnimationConfig({
     reduceMotion: reducedMotion,
-    delay: animationDelay 
+    delay: animationDelay
   });
-  
+
   // Media loading state
   const {
     isLoading,
@@ -86,40 +86,41 @@ const MedicalCard = forwardRef(({
   const cardClasses = cn(
     // Base classes
     'group relative flex flex-col overflow-hidden will-change-transform transform-gpu preserve-3d',
-    
+
     // Size-based classes
     getSizeClasses(size),
-    
+
     // Variant styling
     getVariantClasses(variant),
-    
+
     // Theme colors
     getThemeClasses(gradient),
-    
+
     // Border radius
     getBorderRadiusClasses(borderRadius),
-    
+
     // Hover effects
     getHoverEffectClasses(hoverEffects),
-    
+
     // Interactive behavior
     getInteractiveClasses(interactive, clickable),
-    
+
     // Responsive classes
     getResponsiveClasses(size),
-    
+
     // Medical compliance
     getMedicalComplianceClasses(cfmCompliant),
-    
+
     // Special effects
     {
-      'glass-morphism': glassMorphism && variant === 'service',
+      'glass-morphism service-glass-enhanced': glassMorphism && variant === 'service',
+      'service-card-3d': variant === 'service',
       'shadow-3d hover:shadow-3d-hover': shadow3D,
       'cursor-pointer': clickable,
       'cursor-grab active:cursor-grabbing select-none': draggable,
       'focus-within:ring-2 focus-within:ring-blue-500/20': interactive
     },
-    
+
     className
   );
 
@@ -142,7 +143,7 @@ const MedicalCard = forwardRef(({
     if (onKeyDown) {
       onKeyDown(e);
     }
-    
+
     // Handle Enter and Space for clickable cards
     if (clickable && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
@@ -180,8 +181,8 @@ const MedicalCard = forwardRef(({
               fallbackSrc={media.fallbackSrc}
               onLoad={handleLoad}
               onError={(e) => {
-                try { media.onError && media.onError(e); } catch (_) {}
-                try { handleError(e); } catch (_) {}
+                try { media.onError && media.onError(e); } catch (_) { }
+                try { handleError(e); } catch (_) { }
               }}
             />
             {isLoading && (
@@ -205,7 +206,7 @@ const MedicalCard = forwardRef(({
           <motion.div
             className={cn(
               mediaClasses,
-              'flex items-center justify-center mb-6'
+              'flex items-center justify-center mb-3'
             )}
             whileHover={shouldAnimate ? { scale: 1.1, rotate: 3 } : {}}
           >
@@ -239,16 +240,16 @@ const MedicalCard = forwardRef(({
       <div className="flex flex-wrap gap-2 mt-auto pt-4">
         {actions.map((action, index) => {
           const ActionComponent = action.href ? Link : Button;
-          const actionProps = action.href 
-            ? { 
-                to: action.href,
-                ...(action.external && { 
-                  as: 'a', 
-                  href: action.href, 
-                  target: '_blank', 
-                  rel: 'noopener noreferrer' 
-                })
-              }
+          const actionProps = action.href
+            ? {
+              to: action.href,
+              ...(action.external && {
+                as: 'a',
+                href: action.href,
+                target: '_blank',
+                rel: 'noopener noreferrer'
+              })
+            }
             : { onClick: action.onClick, disabled: action.disabled };
 
           return (
@@ -285,10 +286,10 @@ const MedicalCard = forwardRef(({
       {/* Background effects */}
       {variant === 'service' && (
         <>
-          <div className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700" 
-               style={{ background: 'radial-gradient(circle at 30% 20%, rgba(96,165,250,0.35), transparent 60%)' }} />
-          <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 mix-blend-overlay" 
-               style={{ background: 'linear-gradient(140deg, rgba(6,50,200,0.15), rgba(20,184,166,0.12), rgba(59,130,246,0.12))' }} />
+          <div className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+            style={{ background: 'radial-gradient(circle at 30% 20%, rgba(96,165,250,0.35), transparent 60%)' }} />
+          <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 mix-blend-overlay"
+            style={{ background: 'linear-gradient(140deg, rgba(6,50,200,0.15), rgba(20,184,166,0.12), rgba(59,130,246,0.12))' }} />
         </>
       )}
 
@@ -341,7 +342,7 @@ const MedicalCard = forwardRef(({
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         {...motionConfig}
-        {...(stagger && { 
+        {...(stagger && {
           custom: animationDelay,
           transition: { ...motionConfig.transition, delay: animationDelay }
         })}

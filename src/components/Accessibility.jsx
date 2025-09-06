@@ -259,6 +259,7 @@ const Accessibility = () => {
             aria-expanded={open}
             aria-label={t('accessibility.toggle', 'Acessibilidade')}
             className="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-blue-600 via-cyan-500 to-teal-500 text-white border border-white/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600 backdrop-blur-sm"
+            style={{ touchAction: 'manipulation' }}
           >
             <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center">
               <img

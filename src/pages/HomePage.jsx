@@ -32,7 +32,7 @@ function HomePage() {
   }, [location]);
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden">
+    <div className="relative w-full">
       {/* Enhanced decorative background with contained gradients and shapes */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         {/* Main background orbs - contained within viewport */}

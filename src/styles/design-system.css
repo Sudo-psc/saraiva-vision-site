@@ -57,24 +57,42 @@
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
 }
 
-/* Enhanced Medical Service Cards */
+/* Enhanced Medical Service Cards - IMPROVED VERSION */
 .service-card-enhanced {
+  /* Enhanced Glassmorphism Background */
   background: linear-gradient(145deg,
       rgba(255, 255, 255, 0.95) 0%,
-      rgba(255, 255, 255, 0.85) 50%,
-      rgba(248, 250, 252, 0.9) 100%);
-  backdrop-filter: blur(25px) saturate(200%);
-  -webkit-backdrop-filter: blur(25px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+      rgba(255, 255, 255, 0.85) 30%,
+      rgba(248, 250, 252, 0.9) 70%,
+      rgba(241, 245, 249, 0.95) 100%);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+
+  /* Prominent Borders with Gradient */
+  border: 2px solid;
+  border-image: linear-gradient(135deg,
+      rgba(59, 130, 246, 0.4),
+      rgba(147, 51, 234, 0.3),
+      rgba(16, 185, 129, 0.4)) 1;
   border-radius: 2rem;
+
+  /* Enhanced 3D Shadow Effects */
   box-shadow:
-    0 8px 16px rgba(15, 23, 42, 0.12),
-    0 16px 32px rgba(59, 130, 246, 0.08),
-    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    0 8px 16px rgba(15, 23, 42, 0.15),
+    0 16px 32px rgba(59, 130, 246, 0.12),
+    0 24px 48px rgba(147, 51, 234, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+    0 1px 3px rgba(255, 255, 255, 0.3) inset;
+
+  /* Standardized Height */
+  min-height: 400px;
+  max-height: 400px;
+  height: 400px;
+
   position: relative;
   overflow: hidden;
   transform-style: preserve-3d;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.4);
 }
 
 .service-card-enhanced::before {
@@ -83,25 +101,61 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
+  height: 2px;
   background: linear-gradient(90deg,
       transparent,
-      rgba(255, 255, 255, 0.8),
+      rgba(59, 130, 246, 0.6),
+      rgba(147, 51, 234, 0.4),
+      rgba(16, 185, 129, 0.6),
       transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.service-card-enhanced::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg,
+      rgba(59, 130, 246, 0.2),
+      rgba(147, 51, 234, 0.4),
+      rgba(16, 185, 129, 0.3));
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .service-card-enhanced:hover {
-  transform: translateY(-12px) rotateX(3deg) rotateY(3deg) scale(1.02);
+  /* Dramatic 3D Transform */
+  transform: translateY(-16px) rotateX(8deg) rotateY(-4deg) scale(1.03);
+
+  /* Vibrant Background on Hover */
   background: linear-gradient(145deg,
       rgba(255, 255, 255, 0.98) 0%,
-      rgba(255, 255, 255, 0.92) 50%,
-      rgba(239, 246, 255, 0.95) 100%);
-  border-color: rgba(59, 130, 246, 0.3);
+      rgba(255, 255, 255, 0.92) 30%,
+      rgba(239, 246, 255, 0.95) 70%,
+      rgba(219, 234, 254, 0.98) 100%);
+
+  /* Animated Border Gradient */
+  border-image: linear-gradient(135deg,
+      rgba(59, 130, 246, 0.7),
+      rgba(147, 51, 234, 0.6),
+      rgba(16, 185, 129, 0.7)) 1;
+
+  /* Dramatic 3D Shadows */
   box-shadow:
-    0 20px 40px rgba(15, 23, 42, 0.16),
-    0 32px 64px rgba(59, 130, 246, 0.12),
-    0 40px 80px rgba(20, 184, 166, 0.08),
-    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+    0 16px 32px rgba(15, 23, 42, 0.2),
+    0 32px 64px rgba(59, 130, 246, 0.18),
+    0 48px 80px rgba(147, 51, 234, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.4) inset,
+    0 2px 8px rgba(255, 255, 255, 0.5) inset;
+}
+
+.service-card-enhanced:hover::before,
+.service-card-enhanced:hover::after {
+  opacity: 1;
 }
 
 /* Enhanced Service Card Icon Container */
@@ -115,6 +169,37 @@
   position: relative;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced Text Styling for Service Cards */
+.service-text-enhanced {
+  color: rgb(15, 23, 42) !important;
+  /* slate-900 */
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.service-card-enhanced:hover .service-text-enhanced {
+  color: rgb(30, 58, 138) !important;
+  /* blue-800 */
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
+}
+
+.service-description-enhanced {
+  color: rgb(51, 65, 85) !important;
+  /* slate-600 */
+  font-weight: 500;
+  line-height: 1.6;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+}
+
+.service-card-enhanced:hover .service-description-enhanced {
+  color: rgb(30, 41, 59) !important;
+  /* slate-700 */
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
 }
 
 .service-icon-enhanced::before {

@@ -91,24 +91,34 @@ export class ServiceWorkerManager {
 		if (!this.registration) return;
 
 		// Novo service worker instalando
-		this.registration.addEventListener('updatefound', () => {
-			const newWorker = this.registration.installing;
+			this.registration.addEventListener('updatefound', () => {
+				const newWorker = this.registration.installing;
+				if (!newWorker) return;
 
-			newWorker.addEventListener('statechange', () => {
-				if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-					console.log('[SW] 🆕 Nova versão disponível');
-					this.updateAvailable = true;
-					this.triggerCallback('updateAvailable', newWorker);
-				}
+				newWorker.addEventListener('statechange', async () => {
+					if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+						console.log('[SW] 🆕 Nova versão disponível');
+						this.updateAvailable = true;
+						this.triggerCallback('updateAvailable', newWorker);
+						// Auto-aplicar update para evitar assets 404 por index antigo
+						try {
+							await this.applyUpdate();
+							console.log('[SW] ⏭️  SKIP_WAITING enviado');
+						} catch (e) {
+							console.warn('[SW] Falha ao aplicar update automaticamente:', e);
+						}
+					}
+				});
 			});
-		});
 
 		// Controller mudou (nova versão ativa)
 		navigator.serviceWorker.addEventListener('controllerchange', () => {
-			console.log('[SW] 🔄 Controller alterado - recarregando página');
+			console.log('[SW] 🔄 Controller alterado - aplicando nova versão');
 			this.triggerCallback('controllerChanged');
-			// Opcional: recarregar automaticamente
-			// window.location.reload();
+			// Recarregar após pequena espera para garantir ativação completa
+			setTimeout(() => {
+				try { window.location.reload(); } catch(_) {}
+			}, 300);
 		});
 
 		// Messages do service worker
