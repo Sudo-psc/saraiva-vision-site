@@ -249,7 +249,7 @@ module.exports = {
         'glass': '0 8px 32px rgba(31, 38, 135, 0.37)',
         'glow-blue': '0 0 30px rgba(59, 130, 246, 0.3)',
         'glow-green': '0 0 30px rgba(34, 197, 94, 0.3)',
-        'glow-purple': '0 0 30px rgba(147, 51, 234, 0.3)',
+        'glow-cyan': '0 0 30px rgba(34, 211, 238, 0.3)',
         'medical': '0 4px 20px rgba(14, 165, 233, 0.15)',
         '3d': '0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1)',
         '3d-hover': '0 4px 8px rgba(0,0,0,0.12), 0 12px 24px rgba(0,0,0,0.15)',

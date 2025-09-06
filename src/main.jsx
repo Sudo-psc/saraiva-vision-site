@@ -28,7 +28,7 @@ if (typeof window !== 'undefined') {
         ]);
         vitals.initWebVitals?.({
           debug: import.meta.env.DEV,
-          endpoint: import.meta.env.PROD ? '/api/web-vitals' : null
+          endpoint: import.meta.env.PROD ? '/api/web-vitals' : undefined
         });
         analytics.bindConsentUpdates?.();
         analytics.persistUTMParameters?.();

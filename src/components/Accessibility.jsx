@@ -25,6 +25,7 @@ import {
   Wand2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useWidgetManager } from '../utils/widgetManager.jsx';
 
 // Helper to announce changes to screen readers
 const ariaAnnounce = (msg) => {
@@ -87,6 +88,8 @@ const Accessibility = () => {
   const panelRef = useRef(null);
   const rulerRef = useRef(null);
   const speechRef = useRef(null);
+  const { getWidgetProps } = useWidgetManager();
+  const widgetProps = getWidgetProps('accessibility');
 
   // Persist settings
   useEffect(() => {
@@ -219,7 +222,7 @@ const Accessibility = () => {
   const Section = ({ title, icon: Icon, children }) => (
     <div className="mb-6">
       <h4 className="flex items-center gap-2 font-semibold text-sm text-slate-700 mb-3">
-        <Icon size={16} className="text-purple-600" /> {title}
+        <Icon size={16} className="text-cyan-600" /> {title}
       </h4>
       <div className="space-y-2">{children}</div>
     </div>
@@ -231,7 +234,7 @@ const Accessibility = () => {
       onClick={onClick}
       aria-pressed={active}
       aria-label={ariaLabel}
-      className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white flex items-center gap-1 ${active ? 'bg-gradient-to-r from-purple-600 to-pink-500 text-white border-transparent shadow' : 'bg-white/60 backdrop-blur border-slate-300 text-slate-700 hover:bg-white'}`}
+      className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white flex items-center gap-1 ${active ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white border-transparent shadow' : 'bg-white/60 backdrop-blur border-slate-300 text-slate-700 hover:bg-white'}`}
     >
       {children}
     </button>
@@ -240,7 +243,11 @@ const Accessibility = () => {
   return (
     <>
       {/* Floating Button - bottom-left small bubble */}
-      <div className="fixed z-[90] bottom-6 left-4 sm:bottom-8 sm:left-6 flex flex-col items-start gap-2">
+      <div className={`floating-widget widget-smooth ${widgetProps.className}`}
+        style={{
+          zIndex: widgetProps.zIndex,
+          ...widgetProps.position
+        }}>
         <div className="relative group">
           <motion.button
             initial={{ scale: 0 }}
@@ -251,17 +258,13 @@ const Accessibility = () => {
             aria-haspopup="dialog"
             aria-expanded={open}
             aria-label={t('accessibility.toggle', 'Acessibilidade')}
-            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-rose-500 text-white border border-white/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-purple-600 backdrop-blur-sm"
-            style={{
-              transform: 'translateZ(0)',
-              willChange: 'transform'
-            }}
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-blue-600 via-cyan-500 to-teal-500 text-white border border-white/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600 backdrop-blur-sm"
           >
             <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center">
-              <img 
-                src="/img/Acessib_icon.png" 
-                alt="Acessibilidade" 
-                className="w-full h-full object-contain" 
+              <img
+                src="/img/Acessib_icon.png"
+                alt="Acessibilidade"
+                className="w-full h-full object-contain"
                 loading="lazy"
                 decoding="async"
               />
@@ -284,7 +287,7 @@ const Accessibility = () => {
             exit={{ x: '-100%' }}
             transition={{ type: 'tween', duration: 0.35 }}
             ref={panelRef}
-            className="fixed top-0 left-0 h-full w-full max-w-md bg-gradient-to-br from-white via-fuchsia-50 to-purple-50 shadow-2xl border-r border-purple-200/50 z-[95] flex flex-col focus:outline-none"
+            className="fixed top-0 left-0 h-full w-full max-w-md bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-2xl border-r border-blue-200/50 z-[95] flex flex-col focus:outline-none"
             style={{
               transform: 'translateZ(0)',
               willChange: 'transform'
@@ -298,7 +301,7 @@ const Accessibility = () => {
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Fechar menu"
-                className="p-2 rounded-md hover:bg-purple-100 text-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2"
+                className="p-2 rounded-md hover:bg-blue-100 text-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
                 <X size={20} />
               </button>
@@ -388,11 +391,11 @@ const Accessibility = () => {
             }}
           >
             {'1234567890qwertyuiopasdfghjklçzxcvbnm'.split('').map(k => (
-              <button type="button" key={k} className="px-2 py-2 rounded bg-purple-100 hover:bg-purple-200 text-slate-700 font-medium" onClick={() => {
+              <button type="button" key={k} className="px-2 py-2 rounded bg-blue-100 hover:bg-blue-200 text-slate-700 font-medium" onClick={() => {
                 const a = document.activeElement; if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) { a.value += k; a.dispatchEvent(new Event('input', { bubbles: true })); }
               }}>{k}</button>
             ))}
-            <button type="button" className="col-span-2 px-2 py-2 rounded bg-pink-500 text-white font-semibold" onClick={() => { const a = document.activeElement; if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) { a.value += ' '; a.dispatchEvent(new Event('input', { bubbles: true })); } }}>Espaço</button>
+            <button type="button" className="col-span-2 px-2 py-2 rounded bg-blue-500 text-white font-semibold" onClick={() => { const a = document.activeElement; if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) { a.value += ' '; a.dispatchEvent(new Event('input', { bubbles: true })); } }}>Espaço</button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -405,8 +408,8 @@ const Accessibility = () => {
         .a11y-dark { background:#0f0f17 !important; color:#f1f5f9 !important; }
         .a11y-dark * { color: inherit !important; }
         .a11y-invert { filter: invert(1) hue-rotate(180deg); }
-        .a11y-highlight-headings h1, .a11y-highlight-headings h2, .a11y-highlight-headings h3, .a11y-highlight-headings h4, .a11y-highlight-headings h5 { outline:3px solid #d946ef; outline-offset:2px; border-radius:4px; }
-        .a11y-highlight-links a { outline:2px dashed #9333ea; outline-offset:2px; }
+        .a11y-highlight-headings h1, .a11y-highlight-headings h2, .a11y-highlight-headings h3, .a11y-highlight-headings h4, .a11y-highlight-headings h5 { outline:3px solid #06b6d4; outline-offset:2px; border-radius:4px; }
+        .a11y-highlight-links a { outline:2px dashed #06b6d4; outline-offset:2px; }
         .a11y-pause-animations *, .a11y-epilepsy-safe * { animation-play-state: paused !important; transition:none !important; }
         .a11y-dyslexia body, .a11y-dyslexia * { font-family: 'OpenDyslexic','Atkinson Hyperlegible', system-ui, sans-serif !important; }
         .a11y-adhd body { background-image: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), radial-gradient(circle at 10% 10%, #f5d0fe 0, transparent 60%), radial-gradient(circle at 90% 80%, #e0e7ff 0, transparent 55%); background-attachment: fixed; }

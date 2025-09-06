@@ -101,7 +101,6 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
     return servicesWithIcons;
   }, [t, isTestEnv]);
 
-  // Render individual service card using MedicalCard
   const renderServiceCard = (service, index) => {
     return (
       <MedicalCard
@@ -110,11 +109,12 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
         glassMorphism
         shadow3D
         gradient="none"
-        borderRadius="2xl"
+        borderRadius="3xl" // Borda mais redonda
         interactive
         clickable
         hoverEffects="pronounced"
         cfmCompliant
+        className="service-card-3d service-glass-enhanced bg-white/60 backdrop-blur-lg transition-all duration-500 transform-gpu hover:-translate-y-3 hover:shadow-3d-hover" // Classes aprimoradas
         aria-label={`${service.title} - ${service.description}`}
         data-testid={service.testKey ? `service-card-${service.id}` : undefined}
         media={{
@@ -125,7 +125,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
         }}
         header={
           service.category && (
-            <div className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium mb-2">
+            <div className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 rounded-full text-xs font-semibold mb-3 shadow-sm border border-blue-200/50">
               {service.category}
             </div>
           )
@@ -133,18 +133,18 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
         body={
           <>
             <motion.h3
-              className="text-xl font-semibold mb-3 text-slate-800 tracking-tight"
+              className="text-xl font-bold mb-4 service-text-enhanced tracking-tight" // Contraste melhorado
               whileHover={{ scale: 1.06 }}
             >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-900 to-slate-700 group-hover:from-blue-700 group-hover:via-purple-700 group-hover:to-pink-700 transition-colors duration-500">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 group-hover:from-blue-700 group-hover:via-cyan-700 group-hover:to-blue-700 transition-colors duration-500">
                 {service.title}
               </span>
               {isTestEnv && service.testKey && (
                 <span className="sr-only">{service.testKey}</span>
               )}
             </motion.h3>
-            
-            <p className="text-slate-600 text-sm leading-relaxed mb-6 max-w-xs transition-colors group-hover:text-slate-700 line-clamp-3">
+
+            <p className="service-description-enhanced text-sm leading-relaxed mb-6 max-w-xs transition-colors group-hover:text-slate-800 line-clamp-3"> {/* Contraste melhorado */}
               {service.description}
             </p>
           </>
@@ -166,33 +166,38 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
   };
 
   return (
-    <section 
-      id="services" 
-      className="py-16 lg:py-28 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden"
+    <section
+      id="services"
+      className="services-page-bg py-20 lg:py-32 relative overflow-hidden min-h-screen"
     >
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/5 to-purple-400/5" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-purple-400/10 to-pink-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
+      {/* Enhanced Background Elements with 3D Effects */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/8 to-cyan-400/6" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/12 to-cyan-400/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-cyan-400/10 to-teal-400/8 rounded-full blur-3xl animate-pulse delay-1000" />
+      <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-br from-purple-400/8 to-pink-400/6 rounded-full blur-2xl animate-pulse delay-500" />
+
+      {/* Floating geometric shapes for depth */}
+      <div className="absolute top-20 right-20 w-32 h-32 border border-blue-200/30 rounded-3xl rotate-12 animate-float opacity-60" />
+      <div className="absolute bottom-32 left-16 w-24 h-24 border border-cyan-200/30 rounded-2xl -rotate-12 animate-float-delayed opacity-40" />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Enhanced Header Section */}
         <div className="text-center mb-20">
           {/* Badge */}
-          <div 
-            className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700" 
+          <div
+            className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700"
             data-testid="services-badge"
           >
             {t('services.badge', 'Nossos Serviços')}
           </div>
-          
+
           {/* Test environment literal text */}
           {isTestEnv && (
             <span className="sr-only" data-testid="services-literal-text">
               Nossos Serviços
             </span>
           )}
-          
+
           {/* Main Title */}
           <motion.h2
             initial={{ opacity: 0, y: -30, scale: 0.9 }}
@@ -206,7 +211,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
               : t('services.title_full', full ? 'Nossos Serviços' : 'Cuidados Oftalmológicos Completos')
             }
           </motion.h2>
-          
+
           {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -226,7 +231,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex justify-center mt-8"
           >
-            <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full shadow-lg" />
+            <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full shadow-lg" />
           </motion.div>
         </div>
 

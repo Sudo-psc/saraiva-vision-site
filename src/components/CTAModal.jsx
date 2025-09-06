@@ -163,9 +163,9 @@ const CTAModal = () => {
                 alert(t('contact.email_error', `Erro ao abrir cliente de email. Envie para: ${email}`));
               }
             }}
-            className="flex items-center gap-4 p-4 rounded-2xl border border-purple-200 bg-purple-50 hover:bg-purple-100 transition w-full text-left"
+            className="flex items-center gap-4 p-4 rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100 transition w-full text-left"
           >
-            <div className="p-3 rounded-xl bg-purple-500 text-white"><Mail size={22} /></div>
+            <div className="p-3 rounded-xl bg-blue-500 text-white"><Mail size={22} /></div>
             <div>
               <div className="font-medium text-slate-800">{t('contact.email_title', 'E-mail')}</div>
               <div className="text-xs text-slate-500">{t('contact.email_details', 'Envie detalhes e preferências de horário')}</div>

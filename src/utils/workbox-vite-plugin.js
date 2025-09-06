@@ -2,6 +2,7 @@
 import { injectManifest } from 'workbox-build';
 import path from 'path';
 import fs from 'fs';
+import esbuild from 'esbuild';
 
 export function workboxVitePlugin() {
 	return {
@@ -12,15 +13,26 @@ export function workboxVitePlugin() {
 			console.log('[Workbox] Gerando service worker...');
 
 			try {
-				const { count, size, warnings } = await injectManifest({
-					// Diretório dos assets buildados
-					globDirectory: path.join(process.cwd(), 'dist'),
+            const distDir = path.join(process.cwd(), 'dist');
+            const swSrcPath = path.join(process.cwd(), 'src', 'sw.workbox.js');
+            const bundledPath = path.join(distDir, 'sw-bundled.js');
 
-					// Template do SW customizado
-					swSrc: path.join(process.cwd(), 'src', 'sw.workbox.js'),
+            // 1) Bundle o SW para remover imports não suportados pelo browser no contexto de SW
+            await esbuild.build({
+                entryPoints: [swSrcPath],
+                bundle: true,
+                format: 'iife',
+                platform: 'browser',
+                outfile: bundledPath,
+                sourcemap: false,
+                target: ['es2019']
+            });
 
-					// Diretório de saída
-					swDest: path.join(process.cwd(), 'dist', 'sw.js'),
+            // 2) Inject manifest no arquivo já bundleado
+            const { count, size, warnings } = await injectManifest({
+                globDirectory: distDir,
+                swSrc: bundledPath,
+                swDest: path.join(distDir, 'sw.js'),
 
 					// Arquivos a serem pré-cacheados
 					globPatterns: [
@@ -37,13 +49,13 @@ export function workboxVitePlugin() {
 					],
 
 					// Excluir do precache
-					globIgnores: [
-						'**/node_modules/**/*',
-						'assets/images/**/*', // Imagens serão cached on-demand
-						'Podcasts/**/*', // Podcasts não são críticos
-						'**/*.map', // Source maps
-						'test-*.html' // Arquivos de teste
-					],
+                globIgnores: [
+                    '**/node_modules/**/*',
+                    'assets/images/**/*', // Imagens serão cached on-demand
+                    'Podcasts/**/*', // Podcasts não são críticos
+                    '**/*.map', // Source maps
+                    'test-*.html' // Arquivos de teste
+                ],
 
 					// Configurações avançadas
 					maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB max por arquivo

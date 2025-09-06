@@ -49,7 +49,7 @@ const ServiceCard = ({ service, index, lazy = true }) => {
         className="relative mb-6 w-32 h-32 flex items-center justify-center"
         whileHover={prefersReducedMotion ? {} : { scale: 1.1, rotate: 3 }}
       >
-        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/15 via-purple-500/15 to-pink-500/15 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/15 via-cyan-500/15 to-teal-500/15 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
         <div className="relative w-28 h-28 drop-shadow-xl select-none flex items-center justify-center rounded-3xl">
           {visible ? service.icon : (
             <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-slate-200 to-slate-100 animate-pulse" aria-hidden="true" />
@@ -62,7 +62,7 @@ const ServiceCard = ({ service, index, lazy = true }) => {
         className="text-xl font-semibold mb-3 text-slate-800 tracking-tight"
         whileHover={{ scale: 1.06 }}
       >
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-900 to-slate-700 group-hover:from-blue-700 group-hover:via-purple-700 group-hover:to-pink-700 transition-colors duration-500">
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-900 to-slate-700 group-hover:from-blue-600 group-hover:via-cyan-600 group-hover:to-teal-600 transition-colors duration-500">
           {service.title}
         </span>
         {isTestEnv && service.testKey && (
@@ -78,16 +78,16 @@ const ServiceCard = ({ service, index, lazy = true }) => {
       {/* Saiba mais link styled as button */}
       <Link
         to={`/servico/${service.id}`}
-        className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-slate-700 bg-gradient-to-r from-slate-100 to-slate-50 hover:from-blue-50 hover:to-pink-50 border border-slate-200/70 hover:border-blue-300/60 shadow-sm hover:shadow-md transition-all group/button overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+        className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-slate-700 bg-gradient-to-r from-slate-100 to-slate-50 hover:from-blue-50 hover:to-cyan-50 border border-slate-200/70 hover:border-blue-300/60 shadow-sm hover:shadow-md transition-all group/button overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
       >
         <span className="relative z-10 group-hover/button:text-blue-700 transition-colors">{t('services.learn_more')}</span>
         <ArrowRight className="w-4 h-4 relative z-10 transition-transform group-hover/button:translate-x-1" />
-        <span className="absolute inset-0 opacity-0 group-hover/button:opacity-100 bg-gradient-to-r from-blue-200/30 via-purple-200/30 to-pink-200/30 transition-opacity" />
+        <span className="absolute inset-0 opacity-0 group-hover/button:opacity-100 bg-gradient-to-r from-blue-200/30 via-cyan-200/30 to-teal-200/30 transition-opacity" />
         <span className="absolute -inset-px rounded-full border border-transparent group-hover/button:border-blue-400/40 transition-colors" />
       </Link>
 
       {/* Subtle bottom gradient edge */}
-      <div className="pointer-events-none absolute bottom-0 inset-x-0 h-1.5 bg-gradient-to-r from-blue-400/0 via-purple-500/40 to-pink-400/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div className="pointer-events-none absolute bottom-0 inset-x-0 h-1.5 bg-gradient-to-r from-blue-400/0 via-cyan-500/40 to-teal-400/0 opacity-0 group-hover:opacity-100 transition-opacity" />
     </motion.div>
   );
 };
@@ -363,15 +363,15 @@ const Services = ({ full = false }) => {
   return (
     <section id="services" className="py-16 lg:py-28 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/5 to-purple-400/5" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-purple-400/10 to-pink-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/5 to-cyan-400/5" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-cyan-400/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-cyan-400/10 to-teal-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Enhanced Header Section */}
         <div className="text-center mb-20">
           {/* Badge visível para manter compatibilidade com fluxo de integração que busca 'Nossos Serviços' */}
-          <div className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700" data-testid="services-badge">
+          <div className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700" data-testid="services-badge">
             {t('services.badge', 'Nossos Serviços')}
           </div>
           {/* Texto literal extra apenas no ambiente de teste para atender busca direta por 'Nossos Serviços' quando i18n retorna chaves */}
@@ -407,7 +407,7 @@ const Services = ({ full = false }) => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex justify-center mt-8"
           >
-            <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full shadow-lg" />
+            <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full shadow-lg" />
           </motion.div>
         </div>
 

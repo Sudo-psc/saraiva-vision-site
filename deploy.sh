@@ -99,8 +99,8 @@ run() {
 
 # Build
 if [[ "$NO_BUILD" = false ]]; then
-  echo "📦 Installing dependencies (npm ci)…"
-  run "npm ci --no-audit --no-fund"
+  echo "📦 Installing dependencies (npm install with legacy peer deps)…"
+  run "npm install --legacy-peer-deps --no-audit --no-fund"
 
   echo "🔨 Building (vite build)…"
   run "npm run build"
@@ -252,7 +252,7 @@ if [[ -f "$PROJECT_ROOT/scripts/verify-gtm.js" ]]; then
     export SITE_URL="https://saraivavision.com.br"
     export DIST_DIR="$NEW_RELEASE"
     export VITE_GTM_ID="${VITE_GTM_ID:-GTM-KF2NP85D}"
-    
+
     if node scripts/verify-gtm.js; then
       echo "✅ GTM verificação passou - ID: $VITE_GTM_ID"
     else

@@ -29,12 +29,12 @@ const LatestEpisodes = () => {
             {/* Enhanced Background Elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 {/* Main gradient orbs */}
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/12 to-purple-400/12 rounded-full blur-3xl animate-pulse" />
-                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-purple-400/12 to-pink-400/12 rounded-full blur-3xl animate-pulse delay-1000" />
+                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/12 to-cyan-400/12 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-cyan-400/12 to-teal-400/12 rounded-full blur-3xl animate-pulse delay-1000" />
 
                 {/* Additional floating elements */}
                 <div className="absolute top-10 right-10 w-32 h-32 bg-gradient-to-br from-cyan-300/8 to-blue-400/8 rounded-full blur-2xl animate-bounce" style={{ animationDuration: '6s' }} />
-                <div className="absolute bottom-16 left-16 w-40 h-40 bg-gradient-to-br from-indigo-300/6 to-purple-300/6 rounded-full blur-2xl animate-bounce delay-500" style={{ animationDuration: '8s' }} />
+                <div className="absolute bottom-16 left-16 w-40 h-40 bg-gradient-to-br from-cyan-300/6 to-teal-300/6 rounded-full blur-2xl animate-bounce delay-500" style={{ animationDuration: '8s' }} />
 
                 {/* Subtle grid pattern */}
                 <div className="absolute inset-0 opacity-[0.02]" style={{
@@ -50,7 +50,7 @@ const LatestEpisodes = () => {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-blue-100 via-indigo-50 to-purple-100 text-blue-700 mb-8 border border-blue-200/50 shadow-lg backdrop-blur-sm"
+                        className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-blue-100 via-cyan-50 to-teal-100 text-blue-700 mb-8 border border-blue-200/50 shadow-lg backdrop-blur-sm"
                     >
                         <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
                             <Mic2 className="w-4 h-4 text-white" />
@@ -66,7 +66,7 @@ const LatestEpisodes = () => {
                         transition={{ delay: 0.1 }}
                         className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6 leading-tight"
                     >
-                        <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                        <span className="bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 bg-clip-text text-transparent">
                             Podcast em Destaque
                         </span>
                     </motion.h2>
@@ -109,7 +109,7 @@ const LatestEpisodes = () => {
                     className="mb-8 max-w-4xl mx-auto"
                 >
                     <div className="relative group perspective-1000">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
+                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-400/20 via-cyan-400/20 to-teal-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
                         <AudioPlayer
                             episode={featuredEpisode}
                             mode="inline"
@@ -128,12 +128,12 @@ const LatestEpisodes = () => {
                 >
                     <div className="relative inline-block">
                         {/* Glow effect */}
-                        <div className="absolute -inset-2 bg-gradient-to-r from-blue-400/30 via-purple-400/30 to-indigo-400/30 rounded-2xl blur-lg opacity-70" />
+                        <div className="absolute -inset-2 bg-gradient-to-r from-blue-400/30 via-cyan-400/30 to-teal-400/30 rounded-2xl blur-lg opacity-70" />
 
                         <Link to={PODCAST_ROUTE} aria-label={t('podcast.visit_podcast', 'Ver todos os episódios')}>
                             <Button
                                 size="lg"
-                                className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 gap-3 px-10 py-4 text-lg font-bold rounded-2xl shadow-2xl border-0 transform hover:scale-105 transition-all duration-300"
+                                className="relative bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 text-white hover:from-blue-700 hover:via-cyan-700 hover:to-teal-700 gap-3 px-10 py-4 text-lg font-bold rounded-2xl shadow-2xl border-0 transform hover:scale-105 transition-all duration-300"
                             >
                                 <Headphones className="w-6 h-6" />
                                 {t('podcast.visit_podcast', 'Ver Todos os Episódios')}

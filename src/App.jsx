@@ -24,10 +24,12 @@ import { Toaster } from '@/components/ui/toaster';
 import ConsentManager from '@/components/ConsentManager';
 import CTAModal from '@/components/CTAModal';
 import WhatsappWidget from '@/components/WhatsappWidget';
+import StickyWhatsAppCTA from '@/components/StickyWhatsAppCTA';
 import ServiceWorkerUpdateNotification from '@/components/ServiceWorkerUpdateNotification';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { safePhoneFormat } from '@/utils/phoneFormatter';
 import Accessibility from '@/components/Accessibility';
+import { WidgetProvider } from '@/utils/widgetManager.jsx';
 
 function App() {
   const { i18n } = useTranslation();
@@ -38,33 +40,36 @@ function App() {
 
   return (
     <HelmetProvider>
-      <ScrollToTop />
-      <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/servicos" element={<ServicesPage />} />
-          <Route path="/servico/:serviceId" element={<ServiceDetailPage />} />
-          <Route path="/sobre" element={<AboutPage />} />
-          <Route path="/depoimentos" element={<TestimonialsPage />} />
-          <Route path="/contato" element={<ContactPage />} />
-          <Route path="/lentes" element={<LensesPage />} />
-          <Route path="/faq" element={<FAQPage />} />
-          <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
-          <Route path="/podcast" element={<PodcastPage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/blog/:slug" element={<PostPage />} />
-          <Route path="/categoria/:slug" element={<CategoryPage />} />
-          <Route path="/admin" element={<AdminLoginPage />} />
-          <Route path="/privacy" element={<PrivacyPolicyPage />} />
-          <Route path="/wp-admin" element={<AdminPage />} />
-        </Routes>
-      </Suspense>
-      <Toaster />
-      <ConsentManager />
-      <CTAModal />
-      <ServiceWorkerUpdateNotification />
-      <WhatsappWidget phoneNumber={safePhoneFormat(clinicInfo.whatsapp || clinicInfo.phone)} />
-      <Accessibility />
+      <WidgetProvider>
+        <ScrollToTop />
+        <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/servicos" element={<ServicesPage />} />
+            <Route path="/servico/:serviceId" element={<ServiceDetailPage />} />
+            <Route path="/sobre" element={<AboutPage />} />
+            <Route path="/depoimentos" element={<TestimonialsPage />} />
+            <Route path="/contato" element={<ContactPage />} />
+            <Route path="/lentes" element={<LensesPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
+            <Route path="/podcast" element={<PodcastPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<PostPage />} />
+            <Route path="/categoria/:slug" element={<CategoryPage />} />
+            <Route path="/admin" element={<AdminLoginPage />} />
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/wp-admin" element={<AdminPage />} />
+          </Routes>
+        </Suspense>
+        <Toaster />
+        <ConsentManager />
+        <CTAModal />
+        <ServiceWorkerUpdateNotification />
+        <WhatsappWidget phoneNumber={safePhoneFormat(clinicInfo.whatsapp || clinicInfo.phone)} />
+        <StickyWhatsAppCTA />
+        <Accessibility />
+      </WidgetProvider>
     </HelmetProvider>
   );
 }
