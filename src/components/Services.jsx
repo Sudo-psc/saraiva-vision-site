@@ -37,7 +37,7 @@ const ServiceCard = ({ service, index, lazy = true }) => {
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.05 }}
-      className="service-card-3d group relative flex flex-col items-center text-center rounded-3xl glass-morphism gradient-border shadow-3d hover:shadow-3d-hover border border-slate-200/80 hover:border-blue-300/80 will-change-transform transform-gpu preserve-3d w-full h-full focus-within:ring-2 focus-within:ring-blue-500/20 transition-transform duration-500 touch-manipulation"
+      className="service-card-3d group relative flex flex-col items-center text-center rounded-3xl glass-morphism shadow-3d hover:shadow-3d-hover will-change-transform transform-gpu preserve-3d w-full h-full focus-within:ring-2 focus-within:ring-blue-500/20 transition-transform duration-500 touch-manipulation"
       style={{
         minWidth: '280px', // Garante largura mínima consistente
         scrollSnapAlign: 'start'
@@ -82,7 +82,7 @@ const ServiceCard = ({ service, index, lazy = true }) => {
 
       {/* Saiba mais link styled as button */}
       <Link
-        to={`/servico/${service.id}`}
+        to={`/servicos/${service.id}`}
         className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-slate-700 bg-gradient-to-r from-slate-100 to-slate-50 hover:from-blue-50 hover:to-cyan-50 border border-slate-200/70 hover:border-blue-300/60 shadow-sm hover:shadow-md transition-all group/button overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
       >
         <span className="relative z-10 group-hover/button:text-blue-700 transition-colors">{t('services.learn_more')}</span>
@@ -97,7 +97,7 @@ const ServiceCard = ({ service, index, lazy = true }) => {
   );
 };
 
-const Services = ({ full = false }) => {
+const Services = ({ full = false, autoplay = true }) => {
   const { t } = useTranslation();
 
   // Modo de compatibilidade para suite de testes legada (espera apenas 6 serviços específicos)
@@ -188,6 +188,37 @@ const Services = ({ full = false }) => {
   const dragStartXRef = useRef(0);
   const scrollStartRef = useRef(0);
 
+  // Função para verificar se o container pode rolar mais
+  const canScrollFurther = useCallback((el, deltaX) => {
+    if (!el) return false;
+    return deltaX > 0
+      ? el.scrollLeft + el.clientWidth < el.scrollWidth
+      : el.scrollLeft > 0;
+  }, []);
+
+  // Sistema de scroll inteligente para carrossel
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    const handleWheel = (e) => {
+      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+
+      // Apenas interfere em scroll horizontal dentro do carrossel
+      if (isHorizontal && canScrollFurther(el, e.deltaX)) {
+        // Deixa o scroll horizontal natural (passive: true)
+        return;
+      }
+
+      // Para scroll vertical ou quando chegou ao limite, não interfere
+      // Permite propagação natural para o body
+    };
+
+    // Listener passivo - não bloqueia scroll global
+    el.addEventListener('wheel', handleWheel, { passive: true });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, [canScrollFurther]);
+
   const measure = useCallback(() => {
     const el = scrollerRef.current;
     if (!el) return;
@@ -276,10 +307,11 @@ const Services = ({ full = false }) => {
     const el = scrollerRef.current;
     if (!el) return;
     const handler = (e) => {
+      // Apenas previne default para teclas de navegação, não para scroll
       if (e.key === 'ArrowRight') { e.preventDefault(); scrollByAmount(1); }
       if (e.key === 'ArrowLeft') { e.preventDefault(); scrollByAmount(-1); }
     };
-    el.addEventListener('keydown', handler);
+    el.addEventListener('keydown', handler, { passive: false }); // Necessário para preventDefault
     return () => el.removeEventListener('keydown', handler);
   }, []);
 
@@ -315,10 +347,8 @@ const Services = ({ full = false }) => {
     const maxScroll = el.scrollWidth - el.clientWidth;
     el.scrollLeft = Math.max(0, Math.min(maxScroll, newScrollLeft));
 
-    // Previne scroll vertical apenas se for necessário
-    if (Math.abs(dx) > 5) {
-      e.preventDefault?.();
-    }
+    // REMOVIDO: preventDefault que bloqueava scroll global
+    // Permite propagação natural do evento
   }, [isDragging]);
 
   const endDrag = useCallback(() => {
@@ -353,7 +383,7 @@ const Services = ({ full = false }) => {
 
   // Autoplay simples e contínuo - melhorado para evitar conflitos
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion || !autoplay) return;
     const el = scrollerRef.current;
     if (!el) return;
 
@@ -401,7 +431,7 @@ const Services = ({ full = false }) => {
         rafRef.current = null;
       }
     };
-  }, [prefersReducedMotion, serviceItems.length, isDragging]);
+  }, [prefersReducedMotion, serviceItems.length, isDragging, autoplay]);
 
   // Pausa ao interagir - versão otimizada para não bloquear autoplay indefinidamente
   useEffect(() => {
@@ -415,7 +445,7 @@ const Services = ({ full = false }) => {
       // Clear any existing timeout
       if (pauseTimeout) clearTimeout(pauseTimeout);
     };
-    
+
     const resume = () => {
       // Clear any existing timeout
       if (pauseTimeout) clearTimeout(pauseTimeout);
