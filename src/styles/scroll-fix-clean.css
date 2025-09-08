@@ -1,42 +1,31 @@
 /**
- * Clean Scroll System - VERSÃO REFORÇADA - Previne Double Scroll e Bloqueia Scroll Interno
- * Este arquivo elimina completamente conflitos de rolagem dupla e bloqueia scroll dentro das views
+ * Scroll System Normalizado - Conforme Especificações
+ * Sistema que permite scroll fluido nativo sem interferências
  */
 
-/* BLOQUEIO TOTAL DE SCROLL-BEHAVIOR - Força auto em todos os elementos */
+/* NORMALIZAÇÃO GLOBAL: HTML/BODY com overflow correto */
+html,
+body {
+	overflow-y: auto !important;
+	overscroll-behavior-y: none !important;
+	scroll-behavior: smooth !important;
+}
+
+/* PERMISSÃO DE SCROLL NATIVO: Remove bloqueios desnecessários */
 * {
-	scroll-behavior: auto !important;
+	/* Permitir scroll-behavior nativo */
+	scroll-behavior: smooth;
 }
 
-/* ANTI-SCROLL DUPLO - Regras específicas para desktop */
-@media (hover: hover) and (pointer: fine) {
-	html,
-	body {
-		scroll-behavior: auto !important;
-		overscroll-behavior: auto !important;
-	}
-
-	/* BLOQUEIO ADICIONAL - Previne CSS scroll interference */
-	html {
-		scroll-behavior: auto !important;
-	}
-
-	/* FORÇA SCROLL AUTO - Desabilita qualquer smooth scroll restante */
-	:root {
-		scroll-behavior: auto !important;
-	}
-}
-
-/* BLOQUEIO DE SCROLL DENTRO DE VIEWS E CONTAINERS */
+/* CONTAINERS: Apenas overflow-x bloqueado */
 .view-container,
 .page-container,
 .route-container,
 .container,
 main,
 section {
-	scroll-behavior: auto !important;
-	overscroll-behavior: none !important;
 	overflow-x: hidden !important;
+	/* overflow-y permitido para scroll natural */
 }
 
 /* PERMITE SCROLL SUAVE APENAS QUANDO EXPLICITAMENTE HABILITADO */
@@ -53,6 +42,7 @@ body {
 
 /* Enable smooth scroll only on mobile to avoid conflicts */
 @media (hover: none) and (pointer: coarse) {
+
 	html,
 	body {
 		scroll-behavior: smooth;
@@ -73,6 +63,32 @@ body {
 	width: 100% !important;
 }
 
+/* --- HERO specific: prevent internal scroll and double scrollbars --- */
+.hero-no-scroll {
+	overflow: hidden !important;
+	overscroll-behavior: none !important;
+	/* Ensure no inner scrollbar is ever shown */
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE/Edge */
+}
+.hero-no-scroll::-webkit-scrollbar { display: none; }
+
+/* Ensure homepage sections don't create their own scroll contexts */
+.homepage-section {
+	overflow: visible !important;
+	width: 100%;
+	max-width: 100%;
+}
+
+/* Root container normalization to avoid nested scrollbars */
+#root {
+	min-height: 100dvh;
+	overflow: visible !important;
+	position: relative;
+	width: 100%;
+	max-width: 100vw;
+}
+
 /* HORIZONTAL SCROLL CONTROLADO - Permite apenas em carrosséis designados */
 .horizontal-scroll {
 	scroll-behavior: auto !important;
@@ -82,8 +98,8 @@ body {
 	-ms-overflow-style: none;
 	overscroll-behavior-x: contain;
 	/* Previne bounce horizontal */
-	overscroll-behavior-y: none !important;
-	/* BLOQUEADO: Scroll vertical da página */
+	overscroll-behavior-y: auto !important;
+	/* PERMITIDO: Scroll vertical da página pode propagar quando carrossel não pode mais rolar */
 	overflow-y: hidden !important;
 	/* IMPORTANTE: Bloqueia scroll vertical dentro do carrossel */
 }

@@ -44,7 +44,10 @@ const Hero = () => {
   }, [heroSrc]);
 
   return (
-    <section id="home" className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-hero-enhanced">
+    <section
+      id="home"
+      className="scroll-block-internal isolate relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden overflow-x-hidden bg-hero-enhanced min-h-[100dvh]"
+    >
       <div className="absolute inset-0 z-0 opacity-40">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_60%)]"></div>
         <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom_left,rgba(6,182,212,0.08),transparent_60%)]"></div>
