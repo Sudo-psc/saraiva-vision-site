@@ -46,7 +46,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="scroll-block-internal isolate relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden overflow-x-hidden bg-hero-enhanced min-h-[100dvh] mx-[10%]"
+      className="scroll-block-internal isolate relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden overflow-x-hidden bg-hero-enhanced min-h-[100dvh]"
     >
       <div className="absolute inset-0 z-0 opacity-40">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_60%)]"></div>
@@ -54,7 +54,9 @@ const Hero = () => {
         <div className="absolute top-1/2 left-1/2 w-96 h-96 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-blue-400/5 via-cyan-400/8 to-teal-400/5 rounded-full blur-3xl animate-pulse-soft"></div>
       </div>
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
+      {/* Conteúdo centralizado com paddings responsivos em vez de margem no section,
+          mantendo o background full-bleed e evitando cortes nas laterais. */}
+      <div className="container mx-auto px-6 md:px-8 lg:px-[6%] xl:px-[7%] 2xl:px-[8%] relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
