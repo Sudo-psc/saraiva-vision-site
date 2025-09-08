@@ -152,7 +152,7 @@ export async function fetchPostBySlug(slug) {
     throw new Error('Post slug is required');
   }
 
-  const posts = await wpApiFetch(`/posts?slug=${encodeURIComponent(slug)}&_embed=true`);
+  const posts = await wpApiFetch(`/posts?slug=${encodeURIComponent(slug)}&_embed=true&status=publish`);
 
   if (!posts || posts.length === 0) {
     throw new Error('Post not found');

@@ -692,7 +692,10 @@
     "sending_label": "Enviando...",
     "recaptcha_not_ready": "Verificação de segurança indisponível. Tente novamente.",
     "recaptcha_error": "Falha na verificação de segurança. Tente novamente.",
-    "recaptcha_ready": "Proteção automática reCAPTCHA ativada",
+  "recaptcha_ready": "Proteção automática reCAPTCHA ativada",
+  "recaptcha": {
+    "disclosure_html": "Este site é protegido pelo reCAPTCHA e se aplicam a <a href=\"https://policies.google.com/privacy\" target=\"_blank\" rel=\"noopener noreferrer\">Política de Privacidade</a> e os <a href=\"https://policies.google.com/terms\" target=\"_blank\" rel=\"noopener noreferrer\">Termos de Serviço</a> do Google."
+  },
     "server_error": "Não foi possível enviar. Tente novamente mais tarde.",
     "validation": {
       "name_min": "Informe pelo menos 3 caracteres.",

@@ -13,50 +13,21 @@ export const WIDGET_LAYERS = {
 	TOAST: 110
 };
 
-// Posições padronizadas para widgets
-export const WIDGET_POSITIONS = {
-	BOTTOM_RIGHT: {
-		bottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))', // 20px + safe-area
-		right: '1rem',     // 16px
-		'@media (min-width: 640px)': {
-			bottom: 'calc(1.75rem + env(safe-area-inset-bottom, 0px))', // 28px + safe-area
-			right: '1.5rem'    // 24px
-		}
-	},
-	BOTTOM_LEFT: {
-		bottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))',
-		left: '1rem',
-		'@media (min-width: 640px)': {
-			bottom: 'calc(1.75rem + env(safe-area-inset-bottom, 0px))',
-			left: '1.5rem'
-		}
-	},
-	ACCESSIBILITY: {
-		bottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))',     // Above WhatsApp
-		left: '1rem',
-		'@media (min-width: 640px)': {
-			bottom: 'calc(6rem + env(safe-area-inset-bottom, 0px))',
-			left: '1.5rem'
-		}
-	},
-	STICKY_CTA: {
-		bottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))',
-		left: '1rem',
-		right: '1rem',
-		'@media (min-width: 768px)': {
-			left: 'auto',
-			right: '1rem',
-			maxWidth: '24rem'
-		}
-	}
+// Classes responsivas padronizadas para widgets (evita inline @media incompatível)
+export const POSITION_CLASSES = {
+  BOTTOM_RIGHT: 'bottom-20 right-4 sm:bottom-28 sm:right-6',
+  BOTTOM_LEFT: 'bottom-20 left-4 sm:bottom-28 sm:left-6',
+  // Mantém o botão de acessibilidade acima do WhatsApp
+  ACCESSIBILITY: 'bottom-24 left-4 sm:bottom-32 sm:left-6',
+  // STICKY_CTA é tratado no próprio componente (precisa de left e right simultâneos)
 };
 
 // Classes CSS para widgets
 export const WIDGET_CLASSES = {
-	BASE: 'fixed pointer-events-auto',
-	SMOOTH: 'transition-transform duration-200 ease-out',
-	ISOLATED: 'isolation-isolate',
-	GPU_OPTIMIZED: 'transform-gpu will-change-transform backface-visibility-hidden'
+  BASE: 'fixed pointer-events-auto',
+  SMOOTH: 'transition-transform duration-200 ease-out',
+  ISOLATED: 'isolation-isolate',
+  GPU_OPTIMIZED: 'transform-gpu will-change-transform backface-visibility-hidden'
 };
 
 /**
@@ -76,10 +47,13 @@ export const useWidgetManager = () => {
 			widgetType === 'accessibility' ? 'ACCESSIBILITY' :
 				widgetType === 'sticky_cta' ? 'STICKY_CTA' : 'BOTTOM_RIGHT';
 
+		const zIndexClass = `z-[${WIDGET_LAYERS[layerKey]}]`;
+		const positionClass = POSITION_CLASSES[positionKey] || '';
+
 		return {
-			zIndex: WIDGET_LAYERS[layerKey],
-			position: WIDGET_POSITIONS[positionKey],
-			className: `${WIDGET_CLASSES.BASE} ${WIDGET_CLASSES.SMOOTH} ${WIDGET_CLASSES.ISOLATED}`
+			zIndexClass,
+			positionClass,
+			className: `${WIDGET_CLASSES.BASE} ${WIDGET_CLASSES.SMOOTH} ${WIDGET_CLASSES.ISOLATED} widget-${widgetType}`
 		};
 	};
 

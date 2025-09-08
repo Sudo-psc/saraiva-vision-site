@@ -92,7 +92,7 @@ const Testimonials = ({ limit }) => {
 
         {/* Featured Testimonial (Carousel) */}
         <div className="max-w-4xl mx-auto mb-16 perspective-1000">
-          <div className="relative glass-card testimonial-gradient-border testimonial-card-3d hover-sheen shadow-3d hover:shadow-3d-hover border-0 p-8 md:p-12 transform-gpu">
+          <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl testimonial-gradient-border testimonial-card-3d hover-sheen shadow-3d hover:shadow-3d-hover border-0 p-8 md:p-12 transform-gpu">
             <div className="absolute top-8 left-8 text-blue-300/60">
               <Quote size={48} />
             </div>
@@ -114,7 +114,7 @@ const Testimonials = ({ limit }) => {
                 </div>
 
                 {/* Testimonial Text */}
-                <blockquote className="text-xl md:text-2xl font-medium text-slate-700 mb-8 leading-relaxed italic">
+                <blockquote className="text-xl md:text-2xl font-medium text-slate-800 mb-8 leading-relaxed italic">
                   "{testimonials[currentSlide].content}"
                 </blockquote>
 
@@ -129,10 +129,10 @@ const Testimonials = ({ limit }) => {
                     />
                   </div>
                   <div className="text-center sm:text-left">
-                    <h4 className="text-lg font-semibold text-slate-900">
+                    <h4 className="text-lg font-semibold text-gray-900">
                       {testimonials[currentSlide].name}
                     </h4>
-                    <p className="text-slate-600">
+                    <p className="text-gray-600">
                       {testimonials[currentSlide].role}
                     </p>
                   </div>
@@ -198,7 +198,7 @@ const Testimonials = ({ limit }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white rounded-2xl p-6 shadow-soft-light hover:shadow-soft-medium testimonial-border-strong testimonial-card-3d hover-sheen transition-all duration-500 ease-out group cursor-pointer transform-gpu"
+              className="bg-slate-50 rounded-2xl p-6 shadow-soft-light hover:shadow-soft-medium border border-slate-200 testimonial-card-3d hover-sheen transition-all duration-500 ease-out group cursor-pointer transform-gpu"
               onClick={() => goToSlide(index)}
             >
               {/* Rating */}
@@ -209,12 +209,12 @@ const Testimonials = ({ limit }) => {
               </div>
 
               {/* Testimonial Text */}
-              <p className="text-slate-600 mb-6 italic group-hover:text-slate-800 transition-colors">
+              <p className="text-slate-700 mb-6 italic group-hover:text-slate-900 transition-colors">
                 "{testimonial.content}"
               </p>
 
               {/* Author */}
-              <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
+              <div className="flex items-center gap-3 pt-4 border-t border-slate-200">
                 <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-200">
                   <img
                     className="w-full h-full object-cover"
@@ -224,16 +224,16 @@ const Testimonials = ({ limit }) => {
                   />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-slate-900 text-sm">
+                  <h4 className="font-semibold text-gray-900 text-sm">
                     {testimonial.name}
                   </h4>
-                  <p className="text-xs text-slate-700">
+                  <p className="text-xs text-gray-600">
                     {testimonial.role}
                   </p>
                 </div>
               </div>
             </motion.div>
-          ))}
+          ))}"
         </div>
 
         {limit && testimonials.length > limit && (

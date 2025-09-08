@@ -8,21 +8,21 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Size mapping utilities
+// Size mapping utilities - Cards com altura automática e larguras responsivas
 export const getSizeClasses = (size: string) => {
   switch (size) {
     case 'sm':
-      return 'p-4 min-w-[200px] max-w-[240px] h-[320px]';
+      return 'p-4 min-w-[280px] max-w-[320px] min-h-[400px]'; // Cards menores
     case 'standard':
-      return 'p-6 md:p-8 min-w-[260px] max-w-[300px] h-[400px]'; // Altura padronizada
+      return 'p-6 min-w-[320px] max-w-[380px] min-h-[480px]'; // Padrão responsivo
     case 'lg':
-      return 'p-8 md:p-10 min-w-[300px] max-w-[380px] h-[460px]';
+      return 'p-8 min-w-[380px] max-w-[440px] min-h-[520px]'; // Cards maiores
     case 'xl':
-      return 'p-10 md:p-12 min-w-[340px] max-w-[420px] h-[520px]';
+      return 'p-10 min-w-[440px] max-w-[500px] min-h-[560px]'; // Cards extra grandes
     case 'full':
-      return 'p-6 md:p-8 w-full h-auto min-h-[400px]';
+      return 'p-6 w-full min-h-[480px]'; // Full width
     default:
-      return 'p-6 md:p-8 min-w-[260px] max-w-[300px] h-[400px]'; // Default com altura padronizada
+      return 'p-6 min-w-[320px] max-w-[380px] min-h-[480px]'; // Default responsivo
   }
 };
 

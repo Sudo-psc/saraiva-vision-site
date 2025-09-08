@@ -110,6 +110,16 @@ const Footer = () => {
                   {t('privacy.manage_cookies')}
                 </button>
               </span>
+              {/* reCAPTCHA disclosure (required if badge is hidden) */}
+              <span
+                className="block mt-2"
+                dangerouslySetInnerHTML={{
+                  __html: t(
+                    'recaptcha.disclosure_html',
+                    'Este site é protegido pelo reCAPTCHA e se aplicam a <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="underline">Política de Privacidade</a> e os <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" class="underline">Termos de Serviço</a> do Google.'
+                  )
+                }}
+              />
             </p>
             <p className="text-slate-500 text-xs">{t('privacy.disclaimer')}</p>
             <p className="text-slate-500 text-xs">{t('cfm.disclaimer')}</p>

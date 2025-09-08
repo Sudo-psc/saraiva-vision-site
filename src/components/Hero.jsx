@@ -7,6 +7,7 @@ import { clinicInfo } from '@/lib/clinicInfo';
 import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { safeOpenUrl } from '@/utils/safeNavigation';
 import { useHeroImagePreload } from '@/hooks/useResourcePreload';
+import { smoothScrollTo } from '@/utils/scrollUtils';
 import OptimizedPicture from '@/components/ui/OptimizedPicture';
 
 const Hero = () => {
@@ -30,7 +31,11 @@ const Hero = () => {
   const handleAgendarContato = openFloatingCTA;
 
   const handleNossosServicosClick = () => {
-    document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+    smoothScrollTo('#services', {
+      offset: -80, // Account for navbar height
+      duration: 800,
+      easing: 'easeInOutCubic'
+    });
   };
 
   const [heroSrc, setHeroSrc] = useState('/img/hero.png');
