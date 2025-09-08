@@ -32,7 +32,8 @@ const Navbar = () => {
       setIsScrolled(window.scrollY > PERFORMANCE.SCROLL_THRESHOLD);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // CORRIGIDO: Listener passivo para scroll
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -58,11 +59,10 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
           ? 'bg-header-gradient shadow-md py-2'
           : 'bg-white/90 backdrop-blur border-b border-slate-200/60 md:bg-transparent md:border-0 py-3'
-      }`}
+        }`}
     >
       <div className="container mx-auto px-4 md:px-6 no-scrollbar-x">
         <div className="flex items-center justify-between w-full">
