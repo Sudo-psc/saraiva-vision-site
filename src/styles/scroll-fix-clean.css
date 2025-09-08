@@ -1,183 +1,100 @@
-/* ==========================================================================
-   SCROLL FIX LIMPO E DEFINITIVO
-   ========================================================================== */
+/**
+ * Clean Scroll System - Prevents Double Scroll Issues
+ * This file provides conflict-free scrolling by removing competing implementations
+ */
 
-/* RESET FUNDAMENTAL - Estrutura base simples */
-html {
-	/* HTML não deve ter scroll próprio */
-	overflow-x: hidden;
-	overflow-y: visible;
-	height: auto;
-	scroll-behavior: smooth;
+/* Reset all CSS smooth scroll to prevent conflicts - ONLY for desktop */
+@media (hover: hover) and (pointer: fine) {
+	* {
+		scroll-behavior: auto !important;
+	}
 }
 
+/* Specific desktop fixes for double scroll */
+@media (hover: hover) and (pointer: fine) {
+
+	html,
+	body {
+		scroll-behavior: auto !important;
+		overscroll-behavior: auto !important;
+	}
+
+	/* Prevent CSS scroll interference on desktop */
+	html {
+		scroll-behavior: auto !important;
+	}
+
+	/* Disable any remaining smooth scroll on desktop */
+	:root {
+		scroll-behavior: auto !important;
+	}
+}
+
+/* Allow controlled smooth scrolling only when explicitly enabled */
+.scroll-smooth-enabled {
+	scroll-behavior: smooth !important;
+}
+
+/* Prevent overscroll bounce that can interfere with animations */
+html,
 body {
-	/* Body gerencia o scroll principal */
-	margin: 0;
-	padding: 0;
-	overflow-x: hidden;
-	overflow-y: auto;
-	position: relative;
-	/* Previne bounce em iOS */
-	overscroll-behavior-y: none;
+	overscroll-behavior: auto;
 	-webkit-overflow-scrolling: touch;
+	scroll-behavior: smooth;
+	/* Permite scroll suave no mobile */
 }
 
-/* Container raiz nunca deve ter scroll próprio */
-#root {
-	min-height: 100vh;
-	overflow: visible;
-	position: relative;
-	width: 100%;
-	max-width: 100vw;
-}
-
-/* Fallbacks seguros para apps que usam wrappers nomeados */
-.app,
-.layout {
-	min-height: 100%;
-	overflow: visible;
-}
-
-/* CONTAINERS PRINCIPAIS - Nunca criam scroll próprio */
-main,
-section,
-article,
-.container,
-.max-w-7xl,
-.mx-auto,
-.homepage-section {
-	overflow: visible;
-	width: 100%;
-	max-width: 100%;
-}
-
-/* Força containers de página a não terem altura fixa problemática */
-.min-h-screen {
-	min-height: auto !important;
-}
-
-/* ELEMENTOS FIXOS - limitar apenas à utility .fixed (evitar pegar substrings) */
-.fixed {
-	position: fixed !important;
-	z-index: 1000;
-}
-
-/* WIDGETS ESPECÍFICOS - remoção de seletor por substring para evitar side-effects.
-   Os componentes definem sua posição explicitamente. */
-
-/* Mantém utilitário .floating-widget como opt-in explícito */
-.floating-widget {
-	position: fixed !important;
-	z-index: 1000;
-	backface-visibility: hidden;
-	transform: translateZ(0);
-}
-
-/* CARROSSEL - Scroll horizontal interno bem comportado */
+/* Fix for iOS scroll momentum conflicts */
 .scroll-container {
-	overflow-x: auto;
-	overflow-y: visible;
-	overscroll-behavior-x: contain;
 	-webkit-overflow-scrolling: touch;
-	/* Scrollbars invisíveis */
+	overscroll-behavior: auto;
+}
+
+/* Prevent scroll conflicts in modal/overlay scenarios */
+.scroll-lock {
+	overflow: hidden !important;
+	position: fixed !important;
+	width: 100% !important;
+}
+
+/* Ensure smooth horizontal scrolling for carousels */
+.horizontal-scroll {
+	scroll-behavior: auto;
+	/* Let JS handle smoothness */
+	-webkit-overflow-scrolling: touch;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
+	overscroll-behavior-x: contain;
+	/* Previne bounce horizontal */
+	overscroll-behavior-y: auto;
+	/* Permite scroll vertical da página */
 }
 
-.scroll-container::-webkit-scrollbar {
+.horizontal-scroll::-webkit-scrollbar {
 	display: none;
 }
 
-/* DRAG TO SCROLL - Sem interferir na página */
-.dragging {
-	cursor: grabbing;
-	user-select: none;
-	scroll-snap-type: none;
-}
-
-/* MODAL OVERLAY - Bloqueia scroll quando necessário */
-body.scroll-locked {
-	overflow: hidden !important;
-	padding-right: var(--scrollbar-width, 0px);
-	position: relative;
-}
-
-/* Alias para compatibilidade: alguns componentes podem usar body.modal-open */
-body.modal-open {
-	overflow: hidden !important;
-	padding-right: var(--scrollbar-width, 0px);
-}
-
-/* MODAIS E OVERLAYS - Previne scroll duplo */
-[role="dialog"],
-[aria-modal="true"],
-.modal-content {
-	/* Modais não devem criar scroll interno a menos que necessário */
-	overflow: visible;
-}
-
-.modal-content.scrollable {
-	/* Apenas quando explicitamente marcado como scrollable */
-	overflow-y: auto;
-	max-height: 90vh;
-}
-
-/* MOBILE OPTIMIZATIONS */
-@media (max-width: 768px) {
-	body {
-		-webkit-overflow-scrolling: touch;
-		overscroll-behavior-y: none;
+/* Otimizações específicas para mobile touch */
+@media (hover: none) and (pointer: coarse) {
+	.horizontal-scroll {
+		scroll-snap-type: x proximity;
+		/* Força hardware acceleration em iOS */
+		transform: translate3d(0, 0, 0);
+		will-change: scroll-position;
 	}
 
-	.scroll-container {
-		-webkit-overflow-scrolling: touch;
+	/* Melhora performance do snap em mobile */
+	.horizontal-scroll>* {
+		scroll-snap-align: start;
 	}
 }
 
-/* ACCESSIBILITY */
+/* Fix for reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
-	html {
-		scroll-behavior: auto;
-	}
-
 	* {
-		scroll-behavior: auto;
-		transition-duration: 0.01ms;
-		animation-duration: 0.01ms;
+		scroll-behavior: auto !important;
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
 	}
-}
-
-/* UTILITY CLASSES */
-.no-scroll {
-	overflow: hidden;
-}
-
-.can-scroll {
-	overflow: auto;
-}
-
-.no-overflow-x {
-	overflow-x: hidden;
-	max-width: 100%;
-}
-
-.touch-pan-x {
-	touch-action: pan-x;
-}
-
-.perspective-1000 {
-	perspective: 1000px;
-}
-
-.preserve-3d {
-	transform-style: preserve-3d;
-}
-
-.will-change-transform {
-	will-change: transform;
-}
-
-.transform-gpu {
-	transform: translateZ(0);
 }

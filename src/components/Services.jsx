@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 import { debounce } from '@/utils/componentUtils';
+import { smoothScrollHorizontal } from '@/utils/scrollUtils';
 
 const ServiceCard = ({ service, index, lazy = true }) => {
   const { t } = useTranslation();
@@ -36,7 +37,11 @@ const ServiceCard = ({ service, index, lazy = true }) => {
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.05 }}
-      className="group relative flex flex-col items-center text-center p-8 rounded-3xl glass-morphism gradient-border shadow-3d hover:shadow-3d-hover border border-slate-200/80 hover:border-blue-300/80 overflow-hidden will-change-transform transform-gpu preserve-3d flex-shrink-0 snap-start min-w-[260px] max-w-[300px] md:min-w-[280px] md:max-w-[320px] focus-within:ring-2 focus-within:ring-blue-500/20 transition-transform duration-500"
+      className="service-card-3d group relative flex flex-col items-center text-center rounded-3xl glass-morphism gradient-border shadow-3d hover:shadow-3d-hover border border-slate-200/80 hover:border-blue-300/80 will-change-transform transform-gpu preserve-3d w-full h-full focus-within:ring-2 focus-within:ring-blue-500/20 transition-transform duration-500 touch-manipulation"
+      style={{
+        minWidth: '280px', // Garante largura mínima consistente
+        scrollSnapAlign: 'start'
+      }}
       whileHover={prefersReducedMotion ? {} : { y: -8 }}
       exit={{ opacity: 0, y: 10, scale: 0.98 }}
     >
@@ -46,23 +51,23 @@ const ServiceCard = ({ service, index, lazy = true }) => {
 
       {/* Icon */}
       <motion.div
-        className="relative mb-6 w-32 h-32 flex items-center justify-center"
+        className="relative mb-4 w-24 h-24 flex items-center justify-center"
         whileHover={prefersReducedMotion ? {} : { scale: 1.1, rotate: 3 }}
       >
         <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/15 via-cyan-500/15 to-teal-500/15 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-        <div className="relative w-28 h-28 drop-shadow-xl select-none flex items-center justify-center rounded-3xl">
+        <div className="relative w-20 h-20 drop-shadow-xl select-none flex items-center justify-center rounded-3xl">
           {visible ? service.icon : (
-            <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-slate-200 to-slate-100 animate-pulse" aria-hidden="true" />
+            <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-slate-200 to-slate-100 animate-pulse" aria-hidden="true" />
           )}
         </div>
       </motion.div>
 
       {/* Title */}
       <motion.h3
-        className="text-xl font-semibold mb-3 text-slate-800 tracking-tight"
+        className="service-text-enhanced tracking-tight"
         whileHover={{ scale: 1.06 }}
       >
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-900 to-slate-700 group-hover:from-blue-600 group-hover:via-cyan-600 group-hover:to-teal-600 transition-colors duration-500">
+        <span className="service-text-enhanced">
           {service.title}
         </span>
         {isTestEnv && service.testKey && (
@@ -71,7 +76,7 @@ const ServiceCard = ({ service, index, lazy = true }) => {
       </motion.h3>
 
       {/* Description */}
-      <p className="text-slate-600 text-sm leading-relaxed mb-6 max-w-xs transition-colors group-hover:text-slate-700 line-clamp-3">
+      <p className="service-description-enhanced text-slate-600 leading-relaxed transition-colors group-hover:text-slate-700">
         {service.description}
       </p>
 
@@ -236,9 +241,24 @@ const Services = ({ full = false }) => {
   const scrollToIndex = useCallback((i) => {
     const el = scrollerRef.current;
     if (!el) return;
+
+    // Para autoplay, usar scroll direto sem animação suave para não interferir
+    if (!pauseRef.current) {
+      el.scrollLeft = i * cardWidthRef.current;
+      return;
+    }
+
+    // Para interação manual, usar animação suave
     pauseRef.current = true;
-    el.scrollTo({ left: i * cardWidthRef.current, behavior: 'smooth' });
-    setTimeout(() => { pauseRef.current = false; }, 3000);
+
+    // Use optimized horizontal scroll instead of native scrollTo
+    smoothScrollHorizontal(el, i * cardWidthRef.current, {
+      duration: 600,
+      easing: 'easeOutQuart'
+    });
+
+    // Reduzido de 3000ms para 2000ms para retomar autoplay mais rapidamente
+    setTimeout(() => { pauseRef.current = false; }, 2000);
   }, []);
 
   // Snap automático para o card mais próximo após rolagem
@@ -263,35 +283,55 @@ const Services = ({ full = false }) => {
     return () => el.removeEventListener('keydown', handler);
   }, []);
 
-  // Drag to scroll for frictionless interaction
+  // Touch-optimized drag to scroll
   const onPointerDown = useCallback((e) => {
     const el = scrollerRef.current;
     if (!el) return;
+
+    // Melhor detecção touch vs mouse
+    const isTouch = e.pointerType === 'touch' || e.type === 'touchstart';
+
     setIsDragging(true);
     pauseRef.current = true;
-    dragStartXRef.current = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+    dragStartXRef.current = e.clientX ?? (e.touches?.[0]?.clientX || 0);
     scrollStartRef.current = el.scrollLeft;
-    try { el.setPointerCapture && el.setPointerCapture(e.pointerId); } catch (_) { }
+
+    // Apenas capture pointer para mouse, não para touch
+    if (!isTouch && el.setPointerCapture) {
+      try { el.setPointerCapture(e.pointerId); } catch (_) { }
+    }
   }, []);
 
   const onPointerMove = useCallback((e) => {
     if (!isDragging) return;
     const el = scrollerRef.current;
     if (!el) return;
-    const clientX = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+
+    const clientX = e.clientX ?? (e.touches?.[0]?.clientX || 0);
     const dx = clientX - dragStartXRef.current;
-    el.scrollLeft = scrollStartRef.current - dx;
-    if (typeof e.preventDefault === 'function') e.preventDefault();
+    const newScrollLeft = scrollStartRef.current - dx;
+
+    // Previne scroll além dos limites
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    el.scrollLeft = Math.max(0, Math.min(maxScroll, newScrollLeft));
+
+    // Previne scroll vertical apenas se for necessário
+    if (Math.abs(dx) > 5) {
+      e.preventDefault?.();
+    }
   }, [isDragging]);
 
   const endDrag = useCallback(() => {
     if (!isDragging) return;
     setIsDragging(false);
-    // small delay to avoid immediate autoplay jump
-    setTimeout(() => { pauseRef.current = false; snapToNearest(); }, 200);
-  }, [isDragging]);
+    // Delay mais longo para touch
+    setTimeout(() => {
+      pauseRef.current = false;
+      snapToNearest();
+    }, 300);
+  }, [isDragging, snapToNearest]);
 
-  
+
 
   // Atualiza índice e remove loop infinito
   useEffect(() => {
@@ -311,48 +351,75 @@ const Services = ({ full = false }) => {
     return () => el.removeEventListener('scroll', handleScroll);
   }, [serviceItems.length, updateIndex, debouncedSnap]);
 
-  // Autoplay contínuo (para até o fim, sem loop)
+  // Autoplay simples e contínuo - melhorado para evitar conflitos
   useEffect(() => {
     if (prefersReducedMotion) return;
     const el = scrollerRef.current;
     if (!el) return;
+
     let last = performance.now();
-    const speed = 0.18; // px/ms
+    const speed = 0.3; // px/ms - aumentado para ser mais visível
+
     const tick = (now) => {
-      const dt = now - last; last = now;
-      if (!pauseRef.current) {
+      const dt = now - last;
+      last = now;
+
+      // Só anima se não estiver pausado E não estiver sendo usado manualmente
+      if (!pauseRef.current && !isDragging) {
         const max = el.scrollWidth - el.clientWidth;
-        const next = Math.min(max, el.scrollLeft + dt * speed);
-        el.scrollLeft = next;
-        // Pausa quando chegar ao fim (sem loop)
-        if (next >= max) {
-          pauseRef.current = true;
+        if (max > 0) {
+          const next = el.scrollLeft + dt * speed;
+          if (next >= max) {
+            // Reset suave para o início
+            el.scrollLeft = 0;
+          } else {
+            el.scrollLeft = next;
+          }
         }
       }
+
       rafRef.current = requestAnimationFrame(tick);
     };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [prefersReducedMotion, serviceItems.length]);
 
-  // Pausa ao interagir
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+  }, [prefersReducedMotion, serviceItems.length, isDragging]);
+
+  // Pausa ao interagir - versão otimizada para não bloquear autoplay indefinidamente
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
-    const pause = () => { pauseRef.current = true; };
-    const resume = () => { pauseRef.current = false; };
+
+    const pause = () => {
+      pauseRef.current = true;
+    };
+    const resume = () => {
+      setTimeout(() => {
+        pauseRef.current = false;
+      }, 1000); // Reduzido de 500ms para 1s
+    };
+
+    // Eventos básicos de interação
     el.addEventListener('mouseenter', pause);
     el.addEventListener('mouseleave', resume);
-    el.addEventListener('focusin', pause);
-    el.addEventListener('focusout', resume);
+    el.addEventListener('touchstart', pause, { passive: true });
+    el.addEventListener('touchend', resume, { passive: true });
     el.addEventListener('pointerdown', pause);
-    window.addEventListener('mouseup', () => setTimeout(resume, 1200));
+    window.addEventListener('pointerup', resume);
+
     return () => {
       el.removeEventListener('mouseenter', pause);
       el.removeEventListener('mouseleave', resume);
-      el.removeEventListener('focusin', pause);
-      el.removeEventListener('focusout', resume);
+      el.removeEventListener('touchstart', pause);
+      el.removeEventListener('touchend', resume);
       el.removeEventListener('pointerdown', pause);
+      window.removeEventListener('pointerup', resume);
     };
   }, []);
 
@@ -440,10 +507,14 @@ const Services = ({ full = false }) => {
           <motion.div
             ref={scrollerRef}
             tabIndex={0}
-            className={`perspective-1000 flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-proximity scroll-smooth scroll-container scrollbar-none overscroll-x-contain cursor-grab active:cursor-grabbing select-none touch-pan-x ${isDragging ? 'dragging' : ''}`}
+            className={`perspective-1000 flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-proximity scrollbar-none cursor-grab active:cursor-grabbing select-none ${isDragging ? 'dragging' : ''}`}
             style={{
-              scrollSnapType: isDragging ? 'none' : undefined,
-              isolation: 'isolate' // Previne interferência com scroll da página
+              scrollSnapType: isDragging ? 'none' : 'x proximity',
+              isolation: 'isolate',
+              touchAction: 'pan-x pan-y', // Permite pan horizontal e vertical
+              WebkitOverflowScrolling: 'touch',
+              overscrollBehaviorX: 'contain',
+              overscrollBehaviorY: 'auto'
             }}
             layout="position"
             onPointerDown={onPointerDown}
@@ -451,7 +522,9 @@ const Services = ({ full = false }) => {
             onPointerUp={endDrag}
             onPointerCancel={endDrag}
             onMouseLeave={endDrag}
-          /* wheel handler attached via native addEventListener(passive:false) */
+            onTouchStart={onPointerDown}
+            onTouchMove={onPointerMove}
+            onTouchEnd={endDrag}
           >
             <AnimatePresence mode="popLayout">
               {serviceItems.map((service, index) => (

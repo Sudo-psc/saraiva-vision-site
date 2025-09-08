@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import SEOHead from '@/components/SEOHead';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import { useHomeSEO } from '@/hooks/useSEO';
+import { initScrollSystem, scrollToHash, cleanupScrollSystem } from '@/utils/scrollUtils';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
@@ -22,13 +23,25 @@ function HomePage() {
   const { t } = useTranslation();
 
   useEffect(() => {
+    // Initialize scroll system to prevent conflicts
+    initScrollSystem();
+
+    return () => {
+      // Cleanup on unmount
+      cleanupScrollSystem();
+    };
+  }, []);
+
+  useEffect(() => {
     if (location.hash) {
-      const element = document.querySelector(location.hash);
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      }
+      // Use improved scroll system with delay for proper rendering
+      setTimeout(() => {
+        scrollToHash(location.hash, {
+          offset: -80, // Account for navbar height
+          duration: 800,
+          easing: 'easeInOutCubic'
+        });
+      }, 100);
     }
   }, [location]);
 
@@ -66,14 +79,6 @@ function HomePage() {
 
         <hr className="hr-divider" aria-hidden="true" />
 
-        <div className="homepage-section bg-section-latest-episodes"><LatestEpisodes /></div>
-
-        <hr className="hr-divider" aria-hidden="true" />
-
-        <div className="homepage-section bg-section-latest-blog-posts"><LatestBlogPosts /></div>
-
-        <hr className="hr-divider" aria-hidden="true" />
-
         <div className="homepage-section bg-section-compact-google-reviews"><CompactGoogleReviews /></div>
 
         {/* Local / Mapa (Google Places) */}
@@ -82,6 +87,14 @@ function HomePage() {
         <hr className="hr-divider" aria-hidden="true" />
 
         <div className="homepage-section bg-section-contact"><Contact /></div>
+
+        <hr className="hr-divider" aria-hidden="true" />
+
+        <div className="homepage-section bg-section-latest-episodes"><LatestEpisodes /></div>
+
+        <hr className="hr-divider" aria-hidden="true" />
+
+        <div className="homepage-section bg-section-latest-blog-posts"><LatestBlogPosts /></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 

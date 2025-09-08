@@ -49,6 +49,19 @@ VERIFY_ONLY=false
 # Legacy root compatibility (older vhost may still point to this path)
 readonly LEGACY_ROOT_LINK="/var/www/saraiva-vision-site"
 
+# ---------- Structured logging (early) ----------
+ts() { date -u +%Y-%m-%dT%H:%M:%SZ; }
+_write_log() {
+  local line="$1"
+  if [[ -n "${LOG_FILE:-}" ]]; then
+    mkdir -p "$(dirname "$LOG_FILE")" 2>/dev/null || true
+    printf "%s\n" "$line" >> "$LOG_FILE" 2>/dev/null || true
+  fi
+}
+logi() { local tag="$1"; shift; local msg="$*"; local line="$(ts) [INFO] [$tag] $msg"; echo "$line"; _write_log "$line"; }
+logw() { local tag="$1"; shift; local msg="$*"; local line="$(ts) [WARN] [$tag] $msg"; echo "$line"; _write_log "$line"; }
+loge() { local tag="$1"; shift; local msg="$*"; local line="$(ts) [ERROR] [$tag] $msg"; echo "$line"; _write_log "$line"; }
+
 usage() {
   cat << USAGE
 Usage: sudo ./deploy.sh [options]
@@ -163,18 +176,7 @@ run() {
   fi
 }
 
-# ---------- Structured logging ----------
-ts() { date -u +%Y-%m-%dT%H:%M:%SZ; }
-_write_log() {
-  local line="$1"
-  if [[ -n "${LOG_FILE:-}" ]]; then
-    mkdir -p "$(dirname "$LOG_FILE")" 2>/dev/null || true
-    printf "%s\n" "$line" >> "$LOG_FILE" 2>/dev/null || true
-  fi
-}
-logi() { local tag="$1"; shift; local msg="$*"; local line="$(ts) [INFO] [$tag] $msg"; echo "$line"; _write_log "$line"; }
-logw() { local tag="$1"; shift; local msg="$*"; local line="$(ts) [WARN] [$tag] $msg"; echo "$line"; _write_log "$line"; }
-loge() { local tag="$1"; shift; local msg="$*"; local line="$(ts) [ERROR] [$tag] $msg"; echo "$line"; _write_log "$line"; }
+# (logging functions defined earlier)
 
 # ---------- Verification helpers ----------
 normalize_url() {

@@ -104,8 +104,24 @@ const Accessibility = () => {
     root.style.setProperty('--a11y-letter-spacing', `${state.letterSpacing}px`);
     root.style.setProperty('--a11y-word-spacing', `${state.wordSpacing}px`);
     root.style.setProperty('--a11y-zoom', state.zoom);
-    document.body.style.transform = `scale(${state.zoom})`;
-    document.body.style.transformOrigin = 'top left';
+
+    // Importante: NUNCA transforme o body, pois isso quebra position: fixed
+    // e "prende" widgets flutuantes. Aplique zoom apenas no wrapper de conteúdo.
+    try {
+      const appContent = document.getElementById('app-content');
+      if (appContent) {
+        if (state.zoom && state.zoom !== 1) {
+          appContent.style.transform = `scale(${state.zoom})`;
+          appContent.style.transformOrigin = 'top left';
+        } else {
+          appContent.style.transform = '';
+          appContent.style.transformOrigin = '';
+        }
+      }
+      // Garantir que body não está transformado (migração de estados antigos)
+      document.body.style.transform = '';
+      document.body.style.transformOrigin = '';
+    } catch { /* noop */ }
 
     root.classList.toggle('a11y-contrast-high', state.contrast === 'high');
     root.classList.toggle('a11y-dark', state.contrast === 'dark');
@@ -243,11 +259,7 @@ const Accessibility = () => {
   return (
     <>
       {/* Floating Button - bottom-left small bubble */}
-      <div className={`floating-widget widget-smooth ${widgetProps.className}`}
-        style={{
-          zIndex: widgetProps.zIndex,
-          ...widgetProps.position
-        }}>
+      <div className={`floating-widget widget-smooth ${widgetProps.className} ${widgetProps.positionClass} ${widgetProps.zIndexClass} widget-lower-10`}>
         <div className="relative group">
           <motion.button
             initial={{ scale: 0 }}
@@ -258,18 +270,10 @@ const Accessibility = () => {
             aria-haspopup="dialog"
             aria-expanded={open}
             aria-label={t('accessibility.toggle', 'Acessibilidade')}
-            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-blue-600 via-cyan-500 to-teal-500 text-white border border-white/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600 backdrop-blur-sm"
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-blue-600/60 via-cyan-500/60 to-teal-500/60 text-white border border-white/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600/50 backdrop-blur-md"
             style={{ touchAction: 'manipulation' }}
           >
-            <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center">
-              <img
-                src="/img/Acessib_icon.png"
-                alt="Acessibilidade"
-                className="w-full h-full object-contain"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
+            <AccessibilityIcon size={22} className="text-white drop-shadow" />
           </motion.button>
           <div className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
             Acessibilidade

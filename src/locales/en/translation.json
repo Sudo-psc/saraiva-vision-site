@@ -524,7 +524,10 @@
     "toast_error_desc": "Some information needs correction.",
     "sending_label": "Sending...",
     "recaptcha_not_ready": "Security verification unavailable. Please try again.",
-    "recaptcha_error": "Security verification failed. Please try again.",
+  "recaptcha_error": "Security verification failed. Please try again.",
+  "recaptcha": {
+    "disclosure_html": "This site is protected by reCAPTCHA and the Google <a href=\"https://policies.google.com/privacy\" target=\"_blank\" rel=\"noopener noreferrer\">Privacy Policy</a> and <a href=\"https://policies.google.com/terms\" target=\"_blank\" rel=\"noopener noreferrer\">Terms of Service</a> apply."
+  },
     "server_error": "Could not send right now. Please try again later.",
     "validation": {
       "name_min": "Please enter at least 3 characters.",

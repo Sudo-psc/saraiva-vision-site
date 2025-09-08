@@ -211,10 +211,10 @@ const MedicalCard = forwardRef(({
             whileHover={shouldAnimate ? { scale: 1.05, rotate: 2 } : {}}
           >
             <div className="relative drop-shadow-lg select-none">
-              {React.isValidElement(media.src) ? 
-                React.cloneElement(media.src, { 
-                  className: cn('service-icon-image', media.src.props?.className) 
-                }) : 
+              {React.isValidElement(media.src) ?
+                React.cloneElement(media.src, {
+                  className: cn('service-icon-image', media.src.props?.className)
+                }) :
                 media.src || children
               }
             </div>

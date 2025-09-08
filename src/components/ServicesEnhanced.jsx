@@ -2,6 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 import MedicalCard from '@/components/ui/MedicalCard';
 import InteractiveCarousel from '@/components/ui/InteractiveCarousel';
@@ -103,65 +104,74 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
 
   const renderServiceCard = (service, index) => {
     return (
-      <MedicalCard
-        variant="service"
-        size="standard"
-        glassMorphism
-        shadow3D
-        gradient="none"
-        borderRadius="3xl" // Borda mais redonda
-        interactive
-        clickable
-        hoverEffects="pronounced"
-        cfmCompliant
-        className="service-card-3d service-glass-enhanced bg-white/60 backdrop-blur-lg transition-all duration-500 transform-gpu hover:-translate-y-3 hover:shadow-3d-hover h-[480px] flex flex-col p-6" // Classes aprimoradas com altura aumentada e padding adequado
-        aria-label={`${service.title} - ${service.description}`}
-        data-testid={service.testKey ? `service-card-${service.id}` : undefined}
-        media={{
-          type: 'icon',
-          src: service.icon,
-          alt: service.title,
-          aspectRatio: '1:1'
-        }}
-        header={
-          service.category && (
-            <div className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 rounded-full text-xs font-semibold mb-3 shadow-sm border border-blue-200/50">
-              {service.category}
-            </div>
-          )
-        }
-        body={
-          <>
-            <motion.h3
-              className="text-xl font-bold mb-3 service-text-enhanced tracking-tight text-center" // Centralizado para melhor leitura
-              whileHover={{ scale: 1.06 }}
-            >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 group-hover:from-blue-800 group-hover:via-cyan-800 group-hover:to-blue-800 transition-colors duration-500">
-                {service.title}
-              </span>
-              {isTestEnv && service.testKey && (
-                <span className="sr-only">{service.testKey}</span>
+      <Link
+        to={`/servicos/${service.id}`}
+        className="block h-full"
+        aria-label={`Ver detalhes sobre ${service.title}`}
+      >
+        <MedicalCard
+          variant="service"
+          size="standard"
+          glassMorphism
+          shadow3D
+          gradient="none"
+          borderRadius="3xl"
+          interactive
+          clickable
+          hoverEffects="pronounced"
+          cfmCompliant
+          className="service-card-3d service-glass-enhanced bg-white/60 backdrop-blur-lg transition-all duration-500 transform-gpu hover:-translate-y-3 hover:shadow-3d-hover flex flex-col cursor-pointer w-full h-full"
+          aria-label={`${service.title} - ${service.description}`}
+          data-testid={service.testKey ? `service-card-${service.id}` : undefined}
+          media={{
+            type: 'icon',
+            src: service.icon,
+            alt: service.title,
+            aspectRatio: '1:1'
+          }}
+          header={
+            <>
+              {service.category && (
+                <div className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 rounded-full text-xs font-semibold mb-3 shadow-sm border border-blue-200/50">
+                  {service.category}
+                </div>
               )}
-            </motion.h3>
 
-            <p className="service-description-enhanced text-sm leading-relaxed mb-6 text-center flex-grow" style={{ minHeight: '3.5rem' }}> {/* Altura mínima para descrição e texto centralizado */}
-              {service.description}
-            </p>
-          </>
-        }
-        actions={[
-          {
-            label: t('services.learn_more'),
-            variant: 'secondary',
-            href: `/servicos/${service.id}`,
-            icon: <ArrowRight className="w-4 h-4" />,
-            'aria-label': `Saiba mais sobre ${service.title}`
+              {/* Seta no canto superior direito */}
+              <motion.div
+                className="absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg z-10"
+                whileHover={{ scale: 1.2, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 15 }}
+              >
+                <ArrowRight className="w-4 h-4" />
+              </motion.div>
+            </>
           }
-        ]}
-        animationDelay={index * 0.05}
-        motionPreset="entrance"
-        stagger
-      />
+          body={
+            <>
+              <motion.h3
+                className="service-text-enhanced tracking-tight text-center break-words"
+                whileHover={{ scale: 1.06 }}
+              >
+                <span className="service-text-enhanced">
+                  {service.title}
+                </span>
+                {isTestEnv && service.testKey && (
+                  <span className="sr-only">{service.testKey}</span>
+                )}
+              </motion.h3>
+
+              <p className="service-description-enhanced text-center flex-grow">
+                {service.description}
+              </p>
+            </>
+          }
+          actions={[]} // Removido o botão "Saiba Mais"
+          animationDelay={index * 0.05}
+          motionPreset="entrance"
+          stagger
+        />
+      </Link>
     );
   };
 
@@ -235,11 +245,11 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
           </motion.div>
         </div>
 
-        {/* Grid or Carousel based on prop */}
+        {/* Grid Layout - Layout responsivo padronizado */}
         {grid ? (
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 auto-rows-fr">
             {serviceItems.map((service, index) => (
-              <div key={service.id}>
+              <div key={service.id} className="flex">
                 {renderServiceCard(service, index)}
               </div>
             ))}

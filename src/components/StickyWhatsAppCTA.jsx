@@ -57,10 +57,8 @@ const StickyWhatsAppCTA = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className={`floating-widget widget-smooth ${widgetProps.className} pointer-events-auto`}
+          className={`floating-widget widget-smooth ${widgetProps.className} pointer-events-auto bottom-4 sm:bottom-6 ${widgetProps.zIndexClass} widget-lower-10`}
           style={{
-            zIndex: widgetProps.zIndex,
-            ...widgetProps.position,
             left: '1rem',
             right: '1rem',
           }}

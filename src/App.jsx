@@ -40,27 +40,35 @@ function App() {
   return (
     <HelmetProvider>
       <WidgetProvider>
-        <ScrollToTop />
-        <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/servicos" element={<ServicesPage />} />
-            <Route path="/servicos/:serviceId" element={<ServiceDetailPage />} />
-            <Route path="/sobre" element={<AboutPage />} />
-            <Route path="/depoimentos" element={<TestimonialsPage />} />
-            <Route path="/contato" element={<ContactPage />} />
-            <Route path="/lentes" element={<LensesPage />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
-            <Route path="/podcast" element={<PodcastPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:slug" element={<PostPage />} />
-            <Route path="/categoria/:slug" element={<CategoryPage />} />
-            <Route path="/admin" element={<AdminLoginPage />} />
-            <Route path="/privacy" element={<PrivacyPolicyPage />} />
+        {/*
+          Envolvemos apenas o conteúdo da aplicação em um wrapper dedicado.
+          Isso permite aplicar zoom/transform no conteúdo sem afetar widgets
+          fixos (WhatsApp, Acessibilidade, toasts, modais), que permanecem
+          fora desse container e não sofrem com o bug de fixed + transform.
+        */}
+        <div id="app-content">
+          <ScrollToTop />
+          <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/servicos" element={<ServicesPage />} />
+              <Route path="/servicos/:serviceId" element={<ServiceDetailPage />} />
+              <Route path="/sobre" element={<AboutPage />} />
+              <Route path="/depoimentos" element={<TestimonialsPage />} />
+              <Route path="/contato" element={<ContactPage />} />
+              <Route path="/lentes" element={<LensesPage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
+              <Route path="/podcast" element={<PodcastPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<PostPage />} />
+              <Route path="/categoria/:slug" element={<CategoryPage />} />
+              <Route path="/admin" element={<AdminLoginPage />} />
+              <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/wp-admin" element={<AdminPage />} />
-          </Routes>
-        </Suspense>
+            </Routes>
+          </Suspense>
+        </div>
         <Toaster />
         <ConsentManager />
         <CTAModal />
