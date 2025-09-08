@@ -46,7 +46,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="scroll-block-internal isolate relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden overflow-x-hidden bg-hero-enhanced min-h-[100dvh]"
+      className="scroll-block-internal isolate relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden overflow-x-hidden bg-hero-enhanced min-h-[100dvh] mx-[10%]"
     >
       <div className="absolute inset-0 z-0 opacity-40">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_60%)]"></div>
@@ -168,7 +168,7 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative"
           >
-            <div className="relative z-10 rounded-3xl overflow-hidden shadow-3d hover:shadow-3d-hover transition-all duration-500 card-hover">
+            <div className="hero-image-container relative z-10 rounded-3xl overflow-hidden shadow-3d hover:shadow-3d-hover transition-all duration-500 card-hover bg-gradient-to-br from-blue-50 to-cyan-50">
               <OptimizedPicture
                 src={heroSrc}
                 alt={t('ui.alt.hero_image', 'Família sorrindo - Saraiva Vision')}
@@ -178,7 +178,7 @@ const Hero = () => {
                 decoding="async"
                 sizes="(min-width: 1024px) 800px, 100vw"
                 onError={handleHeroError}
-                className="block w-full h-auto aspect-[4/3] object-cover object-center"
+                className="block w-full h-auto aspect-[4/3] object-cover object-center rounded-3xl transition-transform duration-700 hover:scale-105"
                 fetchpriority="high"
               />
             </div>
