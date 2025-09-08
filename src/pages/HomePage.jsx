@@ -71,34 +71,34 @@ function HomePage() {
 
         <hr className="hr-divider" aria-hidden="true" />
 
-        <div className="homepage-section bg-section-services"><Services /></div>
+        <div className="homepage-section bg-section-services"><div className="content-width"><Services /></div></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 
-        <div className="homepage-section bg-section-about"><About /></div>
+        <div className="homepage-section bg-section-about"><div className="content-width"><About /></div></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 
-        <div className="homepage-section bg-section-compact-google-reviews"><CompactGoogleReviews /></div>
+        <div className="homepage-section bg-section-compact-google-reviews"><div className="content-width"><CompactGoogleReviews /></div></div>
 
         {/* Local / Mapa (Google Places) */}
-        <div className="homepage-section bg-section-google-local"><GoogleLocalSection /></div>
+        <div className="homepage-section bg-section-google-local"><div className="content-width"><GoogleLocalSection /></div></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 
-        <div className="homepage-section bg-section-contact"><Contact /></div>
+        <div className="homepage-section bg-section-contact"><div className="content-width"><Contact /></div></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 
-        <div className="homepage-section bg-section-latest-episodes"><LatestEpisodes /></div>
+        <div className="homepage-section bg-section-latest-episodes"><div className="content-width"><LatestEpisodes /></div></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 
-        <div className="homepage-section bg-section-latest-blog-posts"><LatestBlogPosts /></div>
+        <div className="homepage-section bg-section-latest-blog-posts"><div className="content-width"><LatestBlogPosts /></div></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 
-        <div className="homepage-section bg-section-faq"><FAQ /></div>
+        <div className="homepage-section bg-section-faq"><div className="content-width"><FAQ /></div></div>
       </main>
 
       <Footer />
