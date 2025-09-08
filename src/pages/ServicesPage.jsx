@@ -17,7 +17,7 @@ const ServicesPage = () => {
     <div className="min-h-screen flex flex-col bg-white">
       <SEOHead {...seo} />
       <Navbar />
-      <main className="flex-1 pt-28">
+      <main className="flex-1 pt-28 scroll-block-internal mx-[5%] lg:mx-[10%]">
         <ServicesEnhanced full grid />
       </main>
       <Footer />

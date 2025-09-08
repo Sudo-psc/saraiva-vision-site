@@ -25,8 +25,8 @@ const StickyWhatsAppCTA = () => {
 
     // Detecta mudanças de layout que podem afetar o scroll
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
-    document.addEventListener('visibilitychange', handleScroll);
+    window.addEventListener('resize', handleScroll, { passive: true });
+    document.addEventListener('visibilitychange', handleScroll, { passive: true });
     // Inicializa estado baseado na posição atual
     handleScroll();
     return () => {
