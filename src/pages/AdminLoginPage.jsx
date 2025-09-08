@@ -69,7 +69,7 @@ const AdminLoginPage = () => {
 
 			<Navbar />
 
-			<main className="pt-20 pb-16">
+			<main className="pt-20 pb-16 mx-[4%] md:mx-[6%] lg:mx-[8%]">
 				<div className="container mx-auto px-4">
 					<div className="max-w-md mx-auto">
 						<motion.div
