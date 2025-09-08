@@ -7,7 +7,7 @@ import { debounce, throttle } from '@/utils/componentUtils';
 // Hook for managing component animation preferences
 export const useAnimationConfig = (config?: Partial<AnimationConfig>) => {
   const prefersReducedMotion = useReducedMotion();
-  
+
   const animationConfig: AnimationConfig = {
     reduceMotion: prefersReducedMotion || config?.reduceMotion || false,
     staggerChildren: config?.staggerChildren || 0.05,
@@ -124,9 +124,9 @@ export const useCarousel = <T>(
     const el = scrollerRef.current;
     if (!el) return;
     pauseRef.current = true;
-    el.scrollTo({ 
-      left: index * cardWidthRef.current, 
-      behavior: 'smooth' 
+    el.scrollTo({
+      left: index * cardWidthRef.current,
+      behavior: 'smooth'
     });
     setTimeout(() => { pauseRef.current = false; }, 3000);
   }, []);
@@ -158,22 +158,22 @@ export const useCarousel = <T>(
     if (!options.dragToScroll) return;
     const el = scrollerRef.current;
     if (!el) return;
-    
+
     setIsDragging(true);
     pauseRef.current = true;
     dragStartXRef.current = e.clientX;
     scrollStartRef.current = el.scrollLeft;
-    
-    try { 
-      el.setPointerCapture(e.pointerId); 
-    } catch (_) {}
+
+    try {
+      el.setPointerCapture(e.pointerId);
+    } catch (_) { }
   }, [options.dragToScroll]);
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     if (!isDragging || !options.dragToScroll) return;
     const el = scrollerRef.current;
     if (!el) return;
-    
+
     const dx = e.clientX - dragStartXRef.current;
     el.scrollLeft = scrollStartRef.current - dx;
     e.preventDefault();
@@ -191,60 +191,64 @@ export const useCarousel = <T>(
     }, 200);
   }, [isDragging, scrollToIndex]);
 
-  // Wheel handler for horizontal scrolling
-  // Attach a native wheel listener with passive: false to allow preventDefault
+  // Sistema de scroll inteligente para carrossel horizontal
   useEffect(() => {
     const el = scrollerRef.current as HTMLDivElement | null;
     if (!el || !options.wheelToScroll) return;
 
-    const handleWheel = (e: WheelEvent) => {
-      // Only intercept vertical scrolling if there's horizontal scroll available
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        const maxScrollLeft = el.scrollWidth - el.clientWidth;
-        const canScrollLeft = el.scrollLeft > 0;
-        const canScrollRight = el.scrollLeft < maxScrollLeft;
-
-        const scrollingLeft = e.deltaY < 0;
-        const scrollingRight = e.deltaY > 0;
-
-        if ((scrollingLeft && canScrollLeft) || (scrollingRight && canScrollRight)) {
-          el.scrollLeft += e.deltaY;
-          e.preventDefault(); // Only valid with passive: false
-        }
-      }
+    // Função para verificar se pode rolar mais no carrossel
+    const canScrollFurther = (deltaX: number) => {
+      return deltaX > 0
+        ? el.scrollLeft + el.clientWidth < el.scrollWidth
+        : el.scrollLeft > 0;
     };
 
-    el.addEventListener('wheel', handleWheel, { passive: false });
+    const handleWheel = (e: WheelEvent) => {
+      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+
+      // Para scroll horizontal: apenas interfere se o carrossel ainda pode rolar
+      if (isHorizontal && canScrollFurther(e.deltaX)) {
+        // Permite scroll natural no carrossel
+        return;
+      }
+
+      // Para scroll vertical ou quando carrossel chegou ao limite:
+      // NÃO interfere - permite propagação para o body
+      // REMOVIDO: preventDefault que bloqueava scroll global
+    };
+
+    // CORRIGIDO: Usa passive: true - não bloqueia scroll global
+    el.addEventListener('wheel', handleWheel, { passive: true });
     return () => el.removeEventListener('wheel', handleWheel);
   }, [options.wheelToScroll]);
 
   // Auto-play functionality
   useEffect(() => {
     if (!options.autoPlay || pauseRef.current) return;
-    
+
     const el = scrollerRef.current;
     if (!el) return;
-    
+
     let last = performance.now();
     const speed = options.autoPlaySpeed || 0.18;
-    
+
     const tick = (now: number) => {
       const dt = now - last;
       last = now;
-      
+
       if (!pauseRef.current) {
         const max = el.scrollWidth - el.clientWidth;
         const next = Math.min(max, el.scrollLeft + dt * speed);
         el.scrollLeft = next;
-        
+
         if (next >= max) {
           pauseRef.current = true;
         }
       }
-      
+
       rafRef.current = requestAnimationFrame(tick);
     };
-    
+
     rafRef.current = requestAnimationFrame(tick);
     return () => {
       if (rafRef.current) {
@@ -253,12 +257,13 @@ export const useCarousel = <T>(
     };
   }, [options.autoPlay, options.autoPlaySpeed]);
 
-  // Keyboard navigation
+  // Navegação por teclado - preventDefault apenas para teclas específicas
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
-    
+
     const handler = (e: KeyboardEvent) => {
+      // Apenas previne default para teclas de navegação do carrossel
       if (e.key === 'ArrowRight') {
         e.preventDefault();
         scrollByAmount(1);
@@ -266,9 +271,11 @@ export const useCarousel = <T>(
         e.preventDefault();
         scrollByAmount(-1);
       }
+      // Outras teclas (PageUp, PageDown, etc.) propagam naturalmente
     };
-    
-    el.addEventListener('keydown', handler);
+
+    // passive: false necessário apenas para preventDefault nas teclas específicas
+    el.addEventListener('keydown', handler, { passive: false });
     return () => el.removeEventListener('keydown', handler);
   }, [scrollByAmount]);
 
@@ -276,7 +283,7 @@ export const useCarousel = <T>(
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
-    
+
     const snapAfterScroll = debounce(() => {
       if (isDragging) return;
       const nearest = Math.round(el.scrollLeft / cardWidthRef.current);
@@ -291,7 +298,7 @@ export const useCarousel = <T>(
       }
       snapAfterScroll();
     };
-    
+
     el.addEventListener('scroll', handleScroll, { passive: true });
     return () => el.removeEventListener('scroll', handleScroll);
   }, [updateIndex, isDragging, scrollToIndex]);
@@ -300,19 +307,19 @@ export const useCarousel = <T>(
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
-    
+
     const pause = () => { pauseRef.current = true; };
     const resume = () => { pauseRef.current = false; };
-    
+
     el.addEventListener('mouseenter', pause);
     el.addEventListener('mouseleave', resume);
     el.addEventListener('focusin', pause);
     el.addEventListener('focusout', resume);
     el.addEventListener('pointerdown', pause);
-    
+
     const handleMouseUp = () => setTimeout(resume, 1200);
     window.addEventListener('mouseup', handleMouseUp);
-    
+
     return () => {
       el.removeEventListener('mouseenter', pause);
       el.removeEventListener('mouseleave', resume);
@@ -357,7 +364,7 @@ export const useAccessibility = (options: {
 } = {}) => {
   const [announcementText, setAnnouncementText] = useState('');
   const prefersReducedMotion = useReducedMotion();
-  
+
   const announce = useCallback((text: string) => {
     if (!options.announceChanges) return;
     setAnnouncementText(text);
@@ -380,14 +387,14 @@ export const useAccessibility = (options: {
 // Hook for managing component focus
 export const useFocusManagement = (containerRef: React.RefObject<HTMLElement>) => {
   const [focusedIndex, setFocusedIndex] = useState(-1);
-  
+
   const focusItem = useCallback((index: number) => {
     const container = containerRef.current;
     if (!container) return;
-    
+
     const items = container.querySelectorAll('[data-focusable]');
     const item = items[index] as HTMLElement;
-    
+
     if (item) {
       item.focus();
       setFocusedIndex(index);
@@ -397,7 +404,7 @@ export const useFocusManagement = (containerRef: React.RefObject<HTMLElement>) =
   const nextItem = useCallback(() => {
     const container = containerRef.current;
     if (!container) return;
-    
+
     const items = container.querySelectorAll('[data-focusable]');
     const nextIndex = Math.min(focusedIndex + 1, items.length - 1);
     focusItem(nextIndex);

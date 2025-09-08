@@ -62,7 +62,7 @@ const Testimonials = ({ limit }) => {
   if (testimonials.length === 0) return null;
 
   return (
-    <section id="testimonials" className="section-padding-large bg-section-gradient relative overflow-hidden">
+    <section id="testimonials" className="section-padding-large bg-section-gradient relative overflow-hidden scroll-block-internal">
       {/* Background Effects */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-20 left-20 w-64 h-64 bg-gradient-to-br from-blue-400/6 to-cyan-400/6 rounded-full blur-3xl animate-float" />

@@ -29,12 +29,17 @@ import { clinicInfo } from '@/lib/clinicInfo';
 import { safePhoneFormat } from '@/utils/phoneFormatter';
 import Accessibility from '@/components/Accessibility';
 import { WidgetProvider } from '@/utils/widgetManager.jsx';
+import { initScrollTelemetry } from '@/utils/scrollTelemetry';
+import ScrollDiagnostics from '@/components/ScrollDiagnostics';
 
 function App() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
     document.documentElement.lang = i18n.language;
+
+    // Inicializa telemetria de scroll para monitorar preventDefault
+    initScrollTelemetry();
   }, [i18n.language]);
 
   return (
@@ -42,13 +47,12 @@ function App() {
       <WidgetProvider>
         {/*
           Envolvemos apenas o conteúdo da aplicação em um wrapper dedicado.
-          ANTI-SCROLL DUPLO: Aplicamos classes que bloqueiam scroll interno
-          e previnem conflitos de rolagem entre CSS e JS.
+          SCROLL NORMALIZADO: Container sem bloqueios que permite scroll fluido.
           Isso permite aplicar zoom/transform no conteúdo sem afetar widgets
           fixos (WhatsApp, Acessibilidade, toasts, modais), que permanecem
           fora desse container e não sofrem com o bug de fixed + transform.
         */}
-        <div id="app-content" className="page-container view-container scroll-blocked">
+        <div id="app-content">
           <ScrollToTop />
           <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
             <Routes>
@@ -67,7 +71,7 @@ function App() {
               <Route path="/categoria/:slug" element={<CategoryPage />} />
               <Route path="/admin" element={<AdminLoginPage />} />
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
-            <Route path="/wp-admin" element={<AdminPage />} />
+              <Route path="/wp-admin" element={<AdminPage />} />
             </Routes>
           </Suspense>
         </div>
@@ -77,6 +81,7 @@ function App() {
         <ServiceWorkerUpdateNotification />
         <WhatsappWidget phoneNumber={safePhoneFormat(clinicInfo.whatsapp || clinicInfo.phone)} />
         <Accessibility />
+        <ScrollDiagnostics />
       </WidgetProvider>
     </HelmetProvider>
   );
