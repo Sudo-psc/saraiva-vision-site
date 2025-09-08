@@ -238,7 +238,7 @@ const LatestBlogPosts = () => {
     };
 
     return (
-        <section className="py-10 md:py-12 lg:py-16 bg-white relative overflow-hidden">
+        <section className="py-10 md:py-12 lg:py-16 bg-white relative overflow-hidden scroll-block-internal">
             {/* Background Decorations */}
             <div className="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-indigo-50/30" />
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/5 to-indigo-400/5 rounded-full blur-3xl" />
