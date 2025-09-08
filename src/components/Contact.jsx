@@ -249,8 +249,8 @@ const Contact = () => {
 
 
   return (
-    <section id="contact" className="py-16 md:py-20 bg-subtle-gradient">
-      <div className="container mx-auto px-4 md:px-6">
+    <section id="contact" className="py-16 md:py-20 bg-subtle-gradient scroll-block-internal">
+      <div className="container mx-auto px-4 md:px-6 lg:px-[3%] xl:px-[4%] 2xl:px-[5%]">
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
@@ -364,7 +364,7 @@ const Contact = () => {
                     placeholder={t('contact.message_placeholder')}
                     aria-invalid={!!errors.message}
                     aria-describedby={errors.message ? 'error-message' : undefined}
-                    style={{ fontSize: '16px', minHeight: '120px', padding: '12px 16px', resize: 'vertical' }}
+                    style={{ fontSize: '16px', minHeight: '120px', padding: '12px 16px', resize: 'vertical', overscrollBehavior: 'none' }}
                   ></textarea>
                   {errors.message && <p id="error-message" className="mt-2 text-sm text-red-600 font-medium">{errors.message}</p>}
                 </div>
@@ -469,10 +469,10 @@ const Contact = () => {
                     <div className="icon-container">
                       {info.icon}
                     </div>
-                    <div>
+                    <div className="min-w-0 break-words leading-relaxed">
                       <h4 className="font-bold text-slate-800">{info.title}</h4>
-                      <div className="mt-1 text-sm">{info.details}</div>
-                      <div className="text-slate-500 text-sm mt-0.5">{info.subDetails}</div>
+                      <div className="mt-1 text-sm text-wrap">{info.details}</div>
+                      <div className="text-slate-500 text-sm mt-0.5 text-wrap">{info.subDetails}</div>
                     </div>
                   </div>
                 </motion.div>

@@ -1792,3 +1792,35 @@ html {
   overflow: visible !important;
   overscroll-behavior: none !important;
 }
+
+/* Reduce side margins visual weight in Contact and refine cards */
+#contact .modern-card,
+#contact .modern-card-alt {
+  border-width: 1px !important;
+  border-color: rgb(226 232 240 / 1) !important; /* slate-200 */
+  background: rgba(255,255,255,0.96) !important;
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  box-shadow: 0 10px 24px rgba(15,23,42,0.10) !important;
+}
+
+#contact .modern-card:hover,
+#contact .modern-card-alt:hover {
+  border-color: rgb(147 197 253 / 1) !important; /* blue-300 */
+  box-shadow: 0 18px 40px rgba(59,130,246,0.18) !important;
+  transform: translateY(-6px);
+}
+
+/* Icons with soft gradient background */
+#contact .icon-container {
+  background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(6,182,212,0.10));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6), 0 4px 10px rgba(15,23,42,0.08);
+}
+
+/* Ensure long texts never get clipped */
+#contact .modern-card *,
+#contact .modern-card-alt * {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
