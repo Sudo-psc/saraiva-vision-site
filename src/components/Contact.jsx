@@ -250,7 +250,7 @@ const Contact = () => {
 
   return (
     <section id="contact" className="py-16 md:py-20 bg-subtle-gradient scroll-block-internal">
-      <div className="container mx-auto px-4 md:px-6 lg:px-[3%] xl:px-[4%] 2xl:px-[5%]">
+      <div className="container mx-auto px-4 md:px-6 lg:px-[2.5%] xl:px-[3%] 2xl:px-[3.5%]">
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
