@@ -238,7 +238,7 @@ const BlogPage = () => {
         <meta name="description" content={t('blog.page_description')} />
       </Helmet>
       <Navbar />
-      <main className="py-32 md:py-40">
+      <main className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%]">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: -20 }}

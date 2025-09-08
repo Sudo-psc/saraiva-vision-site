@@ -35,7 +35,7 @@ const CategoryPage = () => {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <main className="py-32 md:py-40">
+        <main className="py-32 md:py-40 mx-[4%] md:mx-[6%] lg:mx-[8%]">
           <div className="container mx-auto px-4 md:px-6">
             <div className="flex justify-center items-center h-96">
               <Loader2 className="h-16 w-16 animate-spin text-blue-500" />
@@ -51,7 +51,7 @@ const CategoryPage = () => {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <main className="py-32 md:py-40">
+        <main className="py-32 md:py-40 mx-[4%] md:mx-[6%] lg:mx-[8%]">
           <div className="container mx-auto px-4 md:px-6">
             <div className="text-center p-12 bg-red-50 border border-red-200 rounded-2xl max-w-2xl mx-auto">
               <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
@@ -233,7 +233,7 @@ const CategoryPage = () => {
 
       <Navbar />
       
-      <main className="py-32 md:py-40">
+      <main className="py-32 md:py-40 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         <div className="container mx-auto px-4 md:px-6">
           {/* Breadcrumbs */}
           <motion.div
