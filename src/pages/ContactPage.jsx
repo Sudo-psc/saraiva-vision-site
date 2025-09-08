@@ -17,7 +17,7 @@ const ContactPage = () => {
     <div className="min-h-screen flex flex-col bg-white">
       <SEOHead {...seo} />
       <Navbar />
-      <main className="flex-1 pt-28 mx-[4%] md:mx-[6%] lg:mx-[8%]">
+      <main className="flex-1 pt-28 mx-[2%] md:mx-[3%] lg:mx-[4%]">
         <Contact />
       </main>
       <Footer />
