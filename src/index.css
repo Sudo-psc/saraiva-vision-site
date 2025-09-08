@@ -8,26 +8,33 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== SISTEMA ANTI-SCROLL DUPLO GLOBAL ===== */
-/* BLOQUEIO TOTAL: Força scroll-behavior auto em todos os elementos */
-*, *::before, *::after {
-  scroll-behavior: auto !important;
-}
+/* ===== NORMALIZAÇÃO DE SCROLL - VERSÃO CORRIGIDA ===== */
+/* Normalização conforme especificações para scroll fluido */
 
-/* BLOQUEIO ESPECÍFICO PARA HTML/BODY */
+/* HTML/BODY: Overflow normalizado para scroll fluido */
 html {
-  scroll-behavior: auto !important;
-  overflow-x: hidden !important;
-  overscroll-behavior: auto !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: none !important;
+  scroll-behavior: smooth !important;
+  /* Remover bloqueios anteriores */
 }
 
 body {
-  scroll-behavior: auto !important;
-  overflow-x: hidden !important;
-  overscroll-behavior: auto !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: none !important;
+  scroll-behavior: smooth !important;
+  /* Remover bloqueios anteriores */
 }
 
-/* ===== FIM DO SISTEMA ANTI-SCROLL DUPLO ===== */
+/* Reset: Remover bloqueios globais desnecessários */
+*,
+*::before,
+*::after {
+  /* Permitir scroll-behavior nativo */
+  scroll-behavior: smooth;
+}
+
+/* ===== FIM DA NORMALIZAÇÃO ===== */
 
 /* Performance and UX optimizations */
 @layer utilities {
@@ -94,13 +101,13 @@ body {
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Enhanced scroll snap for better UX */
+  /* Enhanced scroll snap for better UX - CORRIGIDO: proximity em vez de mandatory */
   .snap-x {
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
   }
 
-  .snap-mandatory>* {
-    scroll-snap-align: center;
+  .snap-proximity>* {
+    scroll-snap-align: start;
   }
 
   /* Mobile-specific optimizations */
@@ -170,7 +177,7 @@ body {
 
   /* Efeito de transparência para o widget de acessibilidade */
   .widget-accessibility {
-    opacity: 0.5;
+    opacity: 0.35;
     transition: opacity 0.3s ease, filter 0.3s ease;
   }
 
@@ -470,16 +477,15 @@ html {
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
     color: hsl(var(--text-primary));
-    /* BLOQUEADO: scroll-behavior removido para prevenir scroll duplo */
-    scroll-behavior: auto !important;
-    /* Enhanced mobile responsiveness with proper scroll management */
-    overflow-x: hidden !important;
+    /* NORMALIZADO: Scroll fluido nativo conforme especificações */
     overflow-y: auto !important;
+    overscroll-behavior-y: none !important;
+    scroll-behavior: smooth !important;
+    /* Enhanced mobile responsiveness */
+    overflow-x: hidden !important;
     width: 100% !important;
     max-width: 100vw !important;
     position: relative;
-    /* ANTI-SCROLL DUPLO: Previne conflitos de rolagem */
-    overscroll-behavior: auto !important;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -1010,13 +1016,9 @@ html {
     backdrop-filter: blur(25px) saturate(180%);
     -webkit-backdrop-filter: blur(25px) saturate(180%);
 
-    /* Bordas mais evidentes com gradiente vibrante e contorno mais espesso */
-    border: 3px solid;
-    border-image: linear-gradient(135deg,
-        rgba(59, 130, 246, 0.6),
-        rgba(147, 51, 234, 0.5),
-        rgba(16, 185, 129, 0.6),
-        rgba(6, 182, 212, 0.5)) 1;
+    /* Removido contorno: bordas limpas sem moldura quadrada */
+    border: none !important;
+    border-image: none !important;
 
     /* Sombras 3D mais dramáticas e profundas */
     box-shadow:
@@ -1033,35 +1035,11 @@ html {
   }
 
   .service-card-3d::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg,
-        transparent,
-        rgba(59, 130, 246, 0.6),
-        rgba(147, 51, 234, 0.4),
-        rgba(16, 185, 129, 0.6),
-        transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    content: none !important;
   }
 
   .service-card-3d::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg,
-        rgba(59, 130, 246, 0.2),
-        rgba(147, 51, 234, 0.4),
-        rgba(16, 185, 129, 0.3));
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    content: none !important;
   }
 
   .service-card-3d:hover {
@@ -1074,12 +1052,8 @@ html {
         rgba(239, 246, 255, 0.95) 70%,
         rgba(219, 234, 254, 0.98) 100%);
 
-    /* Bordas com gradiente animado mais intenso */
-    border-image: linear-gradient(135deg,
-        rgba(59, 130, 246, 0.9),
-        rgba(147, 51, 234, 0.8),
-        rgba(16, 185, 129, 0.9),
-        rgba(6, 182, 212, 0.8)) 1;
+    /* Sem borda no hover */
+    border-image: none !important;
 
     /* Sombras 3D extremamente dramáticas */
     box-shadow:
@@ -1676,3 +1650,145 @@ html {
 /* Rules moved to scroll-fix-clean.css for cleaner organization */
 
 /* Scroll management moved to scroll-fix-clean.css */
+
+/* ESPECÍFICO: Bloquear scroll interno no componente About */
+.scroll-block-internal {
+  /* Bloqueia qualquer scroll interno, permite apenas scroll da página */
+  overflow: visible !important;
+  overscroll-behavior: none !important;
+  /* Remove qualquer comportamento de scroll interno */
+}
+
+.scroll-block-internal * {
+  /* Aplica a todos os elementos filhos */
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+  overscroll-behavior: none !important;
+  /* Garante que não há scroll interno em nenhum elemento filho */
+}
+
+/* Exceção para preservar bordas arredondadas em imagens */
+.scroll-block-internal .rounded-3xl,
+.scroll-block-internal [class*="rounded-"] {
+  overflow: hidden !important;
+  /* Preserva bordas arredondadas em elementos específicos */
+}
+
+.scroll-block-internal .hero-image-container {
+  overflow: hidden !important;
+  /* Garante que containers de imagem mantenham overflow hidden */
+}
+
+/* ===== CORREÇÕES ESPECÍFICAS PARA PÁGINAS DE SERVIÇOS ===== */
+
+/* Correção para cards de serviços - evita corte de texto */
+.service-card-3d {
+  min-height: 320px !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  user-select: none !important; /* Remove seleção de texto indesejada */
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
+.service-card-3d * {
+  user-select: none !important; /* Remove seleção em todos os filhos */
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
+/* Melhoria no texto dos cards */
+.service-text-enhanced {
+  font-size: 1.25rem !important; /* text-xl */
+  font-weight: 700 !important; /* font-bold */
+  line-height: 1.4 !important;
+  color: rgb(15 23 42) !important; /* slate-900 */
+  margin-bottom: 0.75rem !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  hyphens: auto !important;
+}
+
+.service-description-enhanced {
+  font-size: 0.875rem !important; /* text-sm */
+  line-height: 1.5 !important;
+  color: rgb(71 85 105) !important; /* slate-600 */
+  flex-grow: 1 !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 4 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+/* Remove efeitos de seleção indesejados no hover */
+.service-card-3d:hover {
+  outline: none !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 
+              0 0 0 1px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Melhoria no grid de serviços */
+.services-page-bg {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+}
+
+/* Grid responsivo melhorado */
+@media (min-width: 1280px) {
+  .services-grid-enhanced {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    gap: 2rem !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .services-grid-enhanced {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .services-grid-enhanced {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+}
+
+/* ===== CORREÇÕES ESPECÍFICAS PARA COMPONENTE CONTACT ===== */
+
+/* Evita rolagem dupla no componente Contact */
+#contact {
+  overflow: visible !important;
+  overscroll-behavior: none !important;
+}
+
+#contact * {
+  overscroll-behavior: none !important;
+}
+
+/* Correção específica para formulários dentro do Contact */
+#contact form,
+#contact .form-input,
+#contact textarea,
+#contact input {
+  overscroll-behavior: none !important;
+}
+
+/* Garante que textarea não cause scroll interno */
+#contact textarea {
+  overflow-y: auto !important;
+  overscroll-behavior: none !important;
+  scroll-behavior: smooth !important;
+}
+
+/* Corrige cards do Contact que podem ter overflow */
+#contact .modern-card,
+#contact .modern-card-alt {
+  overflow: visible !important;
+  overscroll-behavior: none !important;
+}
