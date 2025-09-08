@@ -1081,6 +1081,7 @@ html {
     min-width: 320px !important;
     max-width: 320px !important;
     height: auto !important;
+    max-height: none !important; /* Remove qualquer limite que corte conteúdo */
     min-height: 432px !important;
     /* Altura mínima reduzida -20%: 540px → 432px */
     display: flex !important;
@@ -1091,6 +1092,7 @@ html {
     /* Padding uniforme e generoso */
     flex-shrink: 0 !important;
     /* Evita encolhimento no carrossel */
+    overflow: visible !important; /* Garante que títulos/descrições não sejam cortados */
   }
 
   /* Título do card - flexível e sem restrições de altura */
@@ -1727,6 +1729,26 @@ html {
   overflow: visible !important;
   margin-top: 0.75rem !important; /* Espaçamento superior */
   margin-bottom: 1rem !important; /* Espaçamento inferior */
+  /* Força remoção de qualquer line-clamp */
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+  max-height: none !important;
+  height: auto !important;
+}
+
+/* Regra adicional para garantir que parágrafos em service cards não tenham line-clamp */
+.service-card-3d p,
+.service-card-3d .service-description-enhanced,
+.services-grid-enhanced p {
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+  display: block !important;
+  overflow: visible !important;
+  max-height: none !important;
+  height: auto !important;
+  text-overflow: unset !important;
 }
 
 /* Remove efeitos de seleção indesejados no hover */
