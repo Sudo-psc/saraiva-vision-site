@@ -42,11 +42,13 @@ function App() {
       <WidgetProvider>
         {/*
           Envolvemos apenas o conteúdo da aplicação em um wrapper dedicado.
+          ANTI-SCROLL DUPLO: Aplicamos classes que bloqueiam scroll interno
+          e previnem conflitos de rolagem entre CSS e JS.
           Isso permite aplicar zoom/transform no conteúdo sem afetar widgets
           fixos (WhatsApp, Acessibilidade, toasts, modais), que permanecem
           fora desse container e não sofrem com o bug de fixed + transform.
         */}
-        <div id="app-content">
+        <div id="app-content" className="page-container view-container scroll-blocked">
           <ScrollToTop />
           <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
             <Routes>

@@ -1,36 +1,45 @@
 /**
- * Clean Scroll System - Prevents Double Scroll Issues
- * This file provides conflict-free scrolling by removing competing implementations
+ * Clean Scroll System - VERSÃO REFORÇADA - Previne Double Scroll e Bloqueia Scroll Interno
+ * Este arquivo elimina completamente conflitos de rolagem dupla e bloqueia scroll dentro das views
  */
 
-/* Reset all CSS smooth scroll to prevent conflicts - ONLY for desktop */
-@media (hover: hover) and (pointer: fine) {
-	* {
-		scroll-behavior: auto !important;
-	}
+/* BLOQUEIO TOTAL DE SCROLL-BEHAVIOR - Força auto em todos os elementos */
+* {
+	scroll-behavior: auto !important;
 }
 
-/* Specific desktop fixes for double scroll */
+/* ANTI-SCROLL DUPLO - Regras específicas para desktop */
 @media (hover: hover) and (pointer: fine) {
-
 	html,
 	body {
 		scroll-behavior: auto !important;
 		overscroll-behavior: auto !important;
 	}
 
-	/* Prevent CSS scroll interference on desktop */
+	/* BLOQUEIO ADICIONAL - Previne CSS scroll interference */
 	html {
 		scroll-behavior: auto !important;
 	}
 
-	/* Disable any remaining smooth scroll on desktop */
+	/* FORÇA SCROLL AUTO - Desabilita qualquer smooth scroll restante */
 	:root {
 		scroll-behavior: auto !important;
 	}
 }
 
-/* Allow controlled smooth scrolling only when explicitly enabled */
+/* BLOQUEIO DE SCROLL DENTRO DE VIEWS E CONTAINERS */
+.view-container,
+.page-container,
+.route-container,
+.container,
+main,
+section {
+	scroll-behavior: auto !important;
+	overscroll-behavior: none !important;
+	overflow-x: hidden !important;
+}
+
+/* PERMITE SCROLL SUAVE APENAS QUANDO EXPLICITAMENTE HABILITADO */
 .scroll-smooth-enabled {
 	scroll-behavior: smooth !important;
 }
@@ -40,8 +49,15 @@ html,
 body {
 	overscroll-behavior: auto;
 	-webkit-overflow-scrolling: touch;
-	scroll-behavior: smooth;
-	/* Permite scroll suave no mobile */
+}
+
+/* Enable smooth scroll only on mobile to avoid conflicts */
+@media (hover: none) and (pointer: coarse) {
+	html,
+	body {
+		scroll-behavior: smooth;
+		/* Permite scroll suave apenas no mobile */
+	}
 }
 
 /* Fix for iOS scroll momentum conflicts */
@@ -57,21 +73,42 @@ body {
 	width: 100% !important;
 }
 
-/* Ensure smooth horizontal scrolling for carousels */
+/* HORIZONTAL SCROLL CONTROLADO - Permite apenas em carrosséis designados */
 .horizontal-scroll {
-	scroll-behavior: auto;
-	/* Let JS handle smoothness */
+	scroll-behavior: auto !important;
+	/* JS controla suavidade */
 	-webkit-overflow-scrolling: touch;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
 	overscroll-behavior-x: contain;
 	/* Previne bounce horizontal */
-	overscroll-behavior-y: auto;
-	/* Permite scroll vertical da página */
+	overscroll-behavior-y: none !important;
+	/* BLOQUEADO: Scroll vertical da página */
+	overflow-y: hidden !important;
+	/* IMPORTANTE: Bloqueia scroll vertical dentro do carrossel */
 }
 
 .horizontal-scroll::-webkit-scrollbar {
 	display: none;
+}
+
+/* BLOQUEIO DE SCROLL EM COMPONENTES INTERNOS */
+.scroll-blocked {
+	overflow: hidden !important;
+	overscroll-behavior: none !important;
+	scroll-behavior: auto !important;
+}
+
+/* BLOQUEIO ESPECÍFICO PARA VIEWS DE PÁGINAS */
+.page-view,
+.route-view {
+	overflow-x: hidden !important;
+	overflow-y: visible !important;
+	overscroll-behavior: none !important;
+	scroll-behavior: auto !important;
+	position: relative;
+	width: 100% !important;
+	max-width: 100vw !important;
 }
 
 /* Otimizações específicas para mobile touch */
