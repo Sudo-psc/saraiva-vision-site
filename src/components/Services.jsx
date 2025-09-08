@@ -358,20 +358,32 @@ const Services = ({ full = false }) => {
     if (!el) return;
 
     let last = performance.now();
-    const speed = 0.3; // px/ms - aumentado para ser mais visível
+    const speed = 0.4; // px/ms - increased for better visibility
+    let initialized = false;
 
     const tick = (now) => {
       const dt = now - last;
       last = now;
 
-      // Só anima se não estiver pausado E não estiver sendo usado manualmente
-      if (!pauseRef.current && !isDragging) {
+      // Initialize after first tick to ensure DOM is ready
+      if (!initialized) {
+        initialized = true;
+        pauseRef.current = false;
+      }
+
+      // Only animate if not paused AND not being dragged AND has scrollable content
+      if (!pauseRef.current && !isDragging && el.scrollWidth > el.clientWidth) {
         const max = el.scrollWidth - el.clientWidth;
         if (max > 0) {
           const next = el.scrollLeft + dt * speed;
           if (next >= max) {
-            // Reset suave para o início
-            el.scrollLeft = 0;
+            // Smooth reset to beginning with small delay
+            setTimeout(() => {
+              if (!pauseRef.current && !isDragging) {
+                el.scrollLeft = 0;
+                setCurrentIndex(0);
+              }
+            }, 1000);
           } else {
             el.scrollLeft = next;
           }
@@ -396,13 +408,21 @@ const Services = ({ full = false }) => {
     const el = scrollerRef.current;
     if (!el) return;
 
+    let pauseTimeout;
+
     const pause = () => {
       pauseRef.current = true;
+      // Clear any existing timeout
+      if (pauseTimeout) clearTimeout(pauseTimeout);
     };
+    
     const resume = () => {
-      setTimeout(() => {
+      // Clear any existing timeout
+      if (pauseTimeout) clearTimeout(pauseTimeout);
+      // Set a new timeout to resume
+      pauseTimeout = setTimeout(() => {
         pauseRef.current = false;
-      }, 1000); // Reduzido de 500ms para 1s
+      }, 800); // Reduced timeout for faster resume
     };
 
     // Eventos básicos de interação
@@ -413,7 +433,13 @@ const Services = ({ full = false }) => {
     el.addEventListener('pointerdown', pause);
     window.addEventListener('pointerup', resume);
 
+    // Force initial resume after component mount
+    pauseTimeout = setTimeout(() => {
+      pauseRef.current = false;
+    }, 2000);
+
     return () => {
+      if (pauseTimeout) clearTimeout(pauseTimeout);
       el.removeEventListener('mouseenter', pause);
       el.removeEventListener('mouseleave', resume);
       el.removeEventListener('touchstart', pause);
@@ -507,7 +533,7 @@ const Services = ({ full = false }) => {
           <motion.div
             ref={scrollerRef}
             tabIndex={0}
-            className={`perspective-1000 flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-proximity scrollbar-none cursor-grab active:cursor-grabbing select-none ${isDragging ? 'dragging' : ''}`}
+            className={`horizontal-scroll perspective-1000 flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-proximity scrollbar-none cursor-grab active:cursor-grabbing select-none ${isDragging ? 'dragging' : ''}`}
             style={{
               scrollSnapType: isDragging ? 'none' : 'x proximity',
               isolation: 'isolate',

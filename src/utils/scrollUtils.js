@@ -152,59 +152,88 @@ export const cancelScrollAnimations = () => {
 };
 
 /**
- * Initialize scroll conflict prevention
+ * Initialize scroll conflict prevention - VERSÃO REFORÇADA ANTI-SCROLL DUPLO
  */
 export const initScrollSystem = () => {
 	// Detect if we're on desktop
 	const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-	// Prevent conflicts with CSS scroll-behavior
+	// BLOQUEIO AGRESSIVO DE CONFLITOS - Sistema reforçado
 	const style = document.createElement('style');
+	style.id = 'scroll-system-styles';
 	style.textContent = `
-    /* Prevent CSS scroll conflicts */
-    html, body, * {
+    /* BLOQUEIO TOTAL DE SCROLL-BEHAVIOR */
+    *, *::before, *::after {
       scroll-behavior: auto !important;
     }
 
-    /* Extra desktop-specific fixes */
+    /* ANTI-SCROLL DUPLO GLOBAL */
+    html, body {
+      scroll-behavior: auto !important;
+      overscroll-behavior: auto !important;
+    }
+
+    /* BLOQUEIO DE SCROLL DENTRO DE VIEWS */
+    .view-container, .page-container, .route-container,
+    main, section, article, div[class*="page-"] {
+      scroll-behavior: auto !important;
+      overscroll-behavior: none !important;
+      overflow-x: hidden !important;
+    }
+
+    /* BLOQUEIO ESPECÍFICO PARA CARROSSÉIS */
+    .horizontal-scroll {
+      overscroll-behavior-y: none !important;
+      overflow-y: hidden !important;
+    }
+
+    /* Desktop-specific fixes - REFORÇADO */
     ${isDesktop ? `
-      html {
+      body, html {
+        overscroll-behavior-y: auto !important;
         scroll-behavior: auto !important;
-        overscroll-behavior: auto !important;
       }
-
-      body {
-        scroll-behavior: auto !important;
-        overscroll-behavior: auto !important;
-      }
-
-      :root {
-        scroll-behavior: auto !important;
+      
+      .desktop-scroll-fix {
+        overscroll-behavior-y: auto !important;
       }
     ` : ''}
 
-    /* Allow manual smooth scroll only through JS */
-    .smooth-scroll-enabled {
-      scroll-behavior: smooth;
+    /* Mobile touch optimization - SEM CONFLITOS */
+    @media (hover: none) and (pointer: coarse) {
+      body {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: auto !important;
+      }
     }
   `;
+	// Check if style already exists to prevent duplicates
+	const existingStyle = document.getElementById('scroll-system-styles');
+	if (existingStyle) {
+		existingStyle.remove();
+	}
 	document.head.appendChild(style);
 
-	// Override native scrollIntoView to prevent conflicts
-	const originalScrollIntoView = Element.prototype.scrollIntoView;
-	Element.prototype.scrollIntoView = function (options = {}) {
-		// Force our custom scroll for any smooth behavior
-		if (options === true || options.behavior === 'smooth' || !options.behavior) {
-			// Use our smooth scroll instead
-			return smoothScrollTo(this, {
-				block: options.block || 'start',
-				inline: options.inline || 'nearest'
-			});
-		} else {
-			// Use native for instant scrolling
-			return originalScrollIntoView.call(this, { ...options, behavior: 'auto' });
-		}
-	};
+	// More conservative scrollIntoView override - only when needed
+	if (!window.scrollSystemInitialized) {
+		const originalScrollIntoView = Element.prototype.scrollIntoView;
+		Element.prototype.scrollIntoView = function (options = {}) {
+			// Only override if element has conflict class or if explicitly smooth
+			const hasConflictClass = this.classList?.contains('scroll-conflict-prevention');
+			
+			if (hasConflictClass || (options.behavior === 'smooth' && window.scrollAnimation)) {
+				// Use our smooth scroll for conflicting elements
+				return smoothScrollTo(this, {
+					block: options.block || 'start',
+					inline: options.inline || 'nearest'
+				});
+			} else {
+				// Use native behavior for everything else
+				return originalScrollIntoView.call(this, options);
+			}
+		};
+		window.scrollSystemInitialized = true;
+	}
 
 	console.log(`🎯 Scroll system initialized for ${isDesktop ? 'desktop' : 'mobile'} - conflicts prevented`);
 };
@@ -223,4 +252,13 @@ export const cleanupScrollSystem = () => {
 			container.scrollAnimation = null;
 		}
 	});
+
+	// Remove injected styles
+	const existingStyle = document.getElementById('scroll-system-styles');
+	if (existingStyle) {
+		existingStyle.remove();
+	}
+
+	// Reset scroll system state
+	window.scrollSystemInitialized = false;
 };

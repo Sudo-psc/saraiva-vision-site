@@ -270,7 +270,7 @@ const Accessibility = () => {
             aria-haspopup="dialog"
             aria-expanded={open}
             aria-label={t('accessibility.toggle', 'Acessibilidade')}
-            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-blue-600/60 via-cyan-500/60 to-teal-500/60 text-white border border-white/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600/50 backdrop-blur-md"
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-blue-600/35 via-cyan-500/35 to-teal-500/35 hover:from-blue-500/70 hover:via-cyan-400/70 hover:to-teal-400/70 text-white border border-white/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600/50 backdrop-blur-md transition-all duration-300 ease-in-out"
             style={{ touchAction: 'manipulation' }}
           >
             <AccessibilityIcon size={22} className="text-white drop-shadow" />
