@@ -191,7 +191,7 @@ const LatestBlogPosts = () => {
                     </h3>
 
                     {/* Excerpt */}
-                    <p className="text-slate-600 mb-4 line-clamp-4 leading-relaxed flex-grow">
+                    <p className="text-slate-600 mb-4 line-clamp-5 leading-relaxed flex-grow">
                         {getPostExcerpt(post)}
                     </p>
 
