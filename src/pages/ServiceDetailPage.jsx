@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SEOHead from '@/components/SEOHead';
+import ServiceDetailedContent from '@/components/ServiceDetailedContent';
 import { useTranslation } from 'react-i18next';
 import { createServiceConfig } from '@/data/serviceConfig';
+import { generateServiceFAQSchema } from '@/lib/serviceFAQSchema';
 import { ArrowLeft, Clock, CheckCircle, Star, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -40,6 +42,58 @@ const ServiceDetailPage = () => {
       </div>
     );
   }
+
+  // Generate FAQ schema for SEO
+  useEffect(() => {
+    if (service) {
+      // Get FAQ data from ServiceDetailedContent component data
+      const serviceContentData = {
+        'consultas-oftalmologicas': {
+          faqs: [
+            {
+              question: "Com que frequência devo fazer consultas oftalmológicas?",
+              answer: "Recomendamos consultas anuais para adultos até 40 anos, semestrais após os 40 anos devido ao aumento do risco de glaucoma e presbiopia, e conforme orientação médica para portadores de doenças oculares crônicas."
+            },
+            {
+              question: "Preciso dilatar a pupila em todas as consultas?",
+              answer: "A dilatação pupilar é necessária para exame completo da retina e diagnóstico de várias condições. Geralmente é realizada na primeira consulta e posteriormente conforme indicação clínica específica."
+            },
+            {
+              question: "Posso dirigir após a consulta com dilatação?",
+              answer: "Não é recomendado dirigir por 4-6 horas após a dilatação devido ao embaçamento visual e fotofobia. Sugerimos vir acompanhado ou utilizar transporte alternativo."
+            }
+          ]
+        }
+      };
+
+      const contentData = serviceContentData[serviceId];
+      if (contentData?.faqs) {
+        const faqSchema = generateServiceFAQSchema(serviceId, contentData.faqs, service.title);
+        if (faqSchema) {
+          // Remove existing FAQ schema
+          const existingSchema = document.querySelector('script[type="application/ld+json"][data-faq-schema]');
+          if (existingSchema) {
+            existingSchema.remove();
+          }
+          
+          // Add new FAQ schema
+          const script = document.createElement('script');
+          script.type = 'application/ld+json';
+          script.setAttribute('data-faq-schema', 'true');
+          script.textContent = JSON.stringify(faqSchema);
+          document.head.appendChild(script);
+        }
+      }
+    }
+
+    return () => {
+      // Cleanup: remove FAQ schema when component unmounts
+      const existingSchema = document.querySelector('script[type="application/ld+json"][data-faq-schema]');
+      if (existingSchema) {
+        existingSchema.remove();
+      }
+    };
+  }, [serviceId, service]);
 
   const seo = {
     title: service.title + ' | Saraiva Vision',
@@ -190,6 +244,11 @@ const ServiceDetailPage = () => {
                 </button>
               </motion.div>
             </div>
+          </div>
+
+          {/* Conteúdo detalhado com FAQs, interlinks e referências */}
+          <div className="mt-12">
+            <ServiceDetailedContent serviceId={serviceId} />
           </div>
         </div>
       </main>

@@ -15,9 +15,9 @@ const Footer = () => {
     });
   };
 
-  const phoneNumber = "5533998601427";
+  const phoneNumber = clinicInfo.phone.replace(/\D/g, '');
   const whatsappLink = `https://wa.me/${phoneNumber}`;
-  const chatbotUrl = "https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica?model=gpt-4o";
+  const chatbotUrl = clinicInfo.chatbotUrl;
   const amorSaudeLogo = "https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/66c6d707b457395f0aaf159d826531ef.png";
 
   const navLinks = [
@@ -31,10 +31,9 @@ const Footer = () => {
   const serviceLinks = t('footer.service_links', { returnObjects: true });
 
   const socialLinks = [
-    { href: "https://web.facebook.com/profile.php?id=61559488419531", icon: <Facebook size={20} />, label: 'Facebook' },
-    { href: "https://www.instagram.com/saraiva_vision/", icon: <Instagram size={20} />, label: 'Instagram' },
-    { href: "https://www.linkedin.com/in/dr-philipe-saraiva", icon: <Linkedin size={20} />, label: 'LinkedIn' },
-    { href: "https://x.com/philipe_saraiva", icon: <Twitter size={20} />, label: 'Twitter' },
+    { href: clinicInfo.facebook, icon: <Facebook size={20} />, label: 'Facebook' },
+    { href: clinicInfo.instagram, icon: <Instagram size={20} />, label: 'Instagram' },
+    { href: clinicInfo.linkedin, icon: <Linkedin size={20} />, label: 'LinkedIn' },
   ];
 
   return (
@@ -80,11 +79,11 @@ const Footer = () => {
               <li>{t('footer.address_line1')}</li>
               <li>{t('footer.address_line2')}</li>
               <li>
-                <a href="mailto:saraivavision@gmail.com" className="hover:text-white transition-colors">saraivavision@gmail.com</a>
+                <a href={`mailto:${clinicInfo.email}`} className="hover:text-white transition-colors">{clinicInfo.email}</a>
               </li>
               <li>
                 <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
-                  <MessageCircle size={16} /> +55 33 99860-1427
+                  <MessageCircle size={16} /> {clinicInfo.phoneDisplay}
                 </a>
               </li>
               <li>

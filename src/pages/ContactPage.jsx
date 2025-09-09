@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SEOHead from '@/components/SEOHead';
 import Contact from '@/components/Contact';
+import GoogleLocalSection from '@/components/GoogleLocalSection';
 import { useTranslation } from 'react-i18next';
 
 const ContactPage = () => {
@@ -20,6 +21,8 @@ const ContactPage = () => {
       <main className="flex-1 pt-28 mx-[2%] md:mx-[3%] lg:mx-[3%] xl:mx-[3.5%]">
         <Contact />
       </main>
+      {/* Encontre-nos Section */}
+      <GoogleLocalSection />
       <Footer />
     </div>
   );
