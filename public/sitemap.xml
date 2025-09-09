@@ -25,37 +25,43 @@
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://saraivavision.com.br/servico/consultas-oftalmologicas</loc>
+    <loc>https://saraivavision.com.br/servicos</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/servicos/consultas-oftalmologicas</loc>
     <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://saraivavision.com.br/servico/exames-de-refracao</loc>
+    <loc>https://saraivavision.com.br/servicos/exames-de-refracao</loc>
     <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://saraivavision.com.br/servico/tratamentos-especializados</loc>
+    <loc>https://saraivavision.com.br/servicos/tratamentos-especializados</loc>
     <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://saraivavision.com.br/servico/cirurgias-oftalmologicas</loc>
+    <loc>https://saraivavision.com.br/servicos/cirurgias-oftalmologicas</loc>
     <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://saraivavision.com.br/servico/acompanhamento-pediatrico</loc>
+    <loc>https://saraivavision.com.br/servicos/acompanhamento-pediatrico</loc>
     <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://saraivavision.com.br/servico/laudos-especializados</loc>
+    <loc>https://saraivavision.com.br/servicos/laudos-especializados</loc>
     <lastmod>2024-12-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

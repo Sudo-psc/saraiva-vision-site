@@ -120,23 +120,11 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
           clickable
           hoverEffects="pronounced"
           cfmCompliant
-          className="service-card-3d service-glass-enhanced bg-white/60 backdrop-blur-lg transition-all duration-500 transform-gpu hover:-translate-y-3 hover:shadow-3d-hover flex flex-col cursor-pointer w-full h-full"
+          className="service-card-3d service-card-enhanced service-glass-enhanced bg-white/60 backdrop-blur-lg transition-all duration-500 transform-gpu hover:-translate-y-3 hover:shadow-3d-hover cursor-pointer w-full h-full"
           aria-label={`${service.title} - ${service.description}`}
           data-testid={service.testKey ? `service-card-${service.id}` : undefined}
-          media={{
-            type: 'icon',
-            src: service.icon,
-            alt: service.title,
-            aspectRatio: '1:1'
-          }}
-          header={
-            <>
-              {service.category && (
-                <div className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 rounded-full text-xs font-semibold mb-3 shadow-sm border border-blue-200/50">
-                  {service.category}
-                </div>
-              )}
-
+          body={
+            <div className="service-card-content-wrapper">
               {/* Seta no canto superior direito */}
               <motion.div
                 className="absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg z-10"
@@ -145,26 +133,48 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
               >
                 <ArrowRight className="w-4 h-4" />
               </motion.div>
-            </>
-          }
-          body={
-            <>
-              <motion.h3
-                className="service-text-enhanced tracking-tight text-center break-words"
-                whileHover={{ scale: 1.06 }}
-              >
-                <span className="service-text-enhanced">
-                  {service.title}
-                </span>
-                {isTestEnv && service.testKey && (
-                  <span className="sr-only">{service.testKey}</span>
-                )}
-              </motion.h3>
 
-              <p className="service-description-enhanced text-center flex-grow">
-                {service.description}
-              </p>
-            </>
+              {/* Categoria */}
+              {service.category && (
+                <div className="service-category-badge">
+                  <div className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 rounded-full text-xs font-semibold shadow-sm border border-blue-200/50">
+                    {service.category}
+                  </div>
+                </div>
+              )}
+
+              {/* Ícone */}
+              <motion.div
+                className="service-icon-container"
+                whileHover={{ scale: 1.05, rotate: 2 }}
+              >
+                <div className="relative drop-shadow-lg select-none">
+                  {React.isValidElement(service.icon) ?
+                    React.cloneElement(service.icon, {
+                      className: 'service-icon-image'
+                    }) :
+                    service.icon
+                  }
+                </div>
+              </motion.div>
+
+              {/* Conteúdo principal */}
+              <div className="flex-grow flex flex-col justify-center">
+                <motion.h3
+                  className="service-text-enhanced"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  {service.title}
+                  {isTestEnv && service.testKey && (
+                    <span className="sr-only">{service.testKey}</span>
+                  )}
+                </motion.h3>
+
+                <p className="service-description-enhanced">
+                  {service.description}
+                </p>
+              </div>
+            </div>
           }
           actions={[]} // Removido o botão "Saiba Mais"
           animationDelay={index * 0.05}
@@ -247,9 +257,9 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
 
         {/* Grid Layout - Layout responsivo padronizado */}
         {grid ? (
-          <div className="mt-8 services-grid-enhanced grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 auto-rows-fr">
+          <div className="mt-8 services-grid-enhanced grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {serviceItems.map((service, index) => (
-              <div key={service.id} className="flex">
+              <div key={service.id} className="flex h-full">
                 {renderServiceCard(service, index)}
               </div>
             ))}

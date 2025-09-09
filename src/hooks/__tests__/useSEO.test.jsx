@@ -234,7 +234,7 @@ describe('useServiceSEO Hook', () => {
   });
 
   it('sets correct canonical URL for service', () => {
-    window.location.pathname = `/servico/${mockService.slug}`;
+    window.location.pathname = `/servicos/${mockService.slug}`;
 
     const { result } = renderHook(() => useServiceSEO(mockService), { wrapper: TestWrapper });
 

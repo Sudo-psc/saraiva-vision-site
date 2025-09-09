@@ -158,7 +158,7 @@ const LatestBlogPosts = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 + index * 0.1 }}
-                className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl"
+                className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl min-h-[420px] flex flex-col"
             >
                 {/* Featured Image */}
                 {featuredImage && (
@@ -173,7 +173,7 @@ const LatestBlogPosts = () => {
                     </div>
                 )}
 
-                <div className="p-6">
+                <div className="p-6 flex flex-col flex-grow">
                     {/* Category and Date */}
                     <div className="flex items-center justify-between mb-4">
                         <span className="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
@@ -186,12 +186,12 @@ const LatestBlogPosts = () => {
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-xl font-bold mb-3 text-slate-900 line-clamp-2">
+                    <h3 className="text-xl font-bold mb-3 text-slate-900 line-clamp-3">
                         {getPostTitle(post)}
                     </h3>
 
                     {/* Excerpt */}
-                    <p className="text-slate-600 mb-4 line-clamp-3">
+                    <p className="text-slate-600 mb-4 line-clamp-4 leading-relaxed flex-grow">
                         {getPostExcerpt(post)}
                     </p>
 

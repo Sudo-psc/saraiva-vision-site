@@ -163,8 +163,8 @@ export const useServiceSEO = (service) => {
   
   const breadcrumbs = [
     { name: t('navbar.home'), url: '/' },
-    { name: t('navbar.services'), url: '/#services' },
-    { name: service?.title || t('navbar.services'), url: `/servico/${service?.slug || ''}` }
+  { name: t('navbar.services'), url: '/servicos' },
+    { name: service?.title || t('navbar.services'), url: `/servicos/${service?.slug || ''}` }
   ];
   const schema = hasClinic ? genClinic(currentLang, true) : undefined;
   return useSEO({

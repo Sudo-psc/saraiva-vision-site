@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { HelmetProvider } from 'react-helmet-async';
 // Code splitting das rotas para melhorar TTI inicial da Home.
@@ -20,6 +20,7 @@ const PostPage = lazy(() => import('@/pages/PostPage'));
 const CategoryPage = lazy(() => import('@/pages/CategoryPage'));
 const AdminLoginPage = lazy(() => import('@/pages/AdminLoginPage'));
 import ScrollToTop from '@/components/ScrollToTop';
+import ServiceRedirect from '@/components/ServiceRedirect';
 import { Toaster } from '@/components/ui/toaster';
 import ConsentManager from '@/components/ConsentManager';
 import CTAModal from '@/components/CTAModal';
@@ -59,6 +60,8 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/servicos" element={<ServicesPage />} />
               <Route path="/servicos/:serviceId" element={<ServiceDetailPage />} />
+              {/* Redirecionamentos 301 para padronização de URLs */}
+              <Route path="/servico/:serviceId" element={<ServiceRedirect />} />
               <Route path="/sobre" element={<AboutPage />} />
               <Route path="/depoimentos" element={<TestimonialsPage />} />
               <Route path="/contato" element={<ContactPage />} />
