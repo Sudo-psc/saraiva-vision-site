@@ -464,3 +464,235 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Custom padding classes for GoogleLocalSection */
+.py-13 {
+  padding-top: 3.25rem; /* 52px */
+  padding-bottom: 3.25rem; /* 52px */
+}
+
+.py-16 {
+  padding-top: 4rem; /* 64px */
+  padding-bottom: 4rem; /* 64px */
+}
+
+/* Ajuste adicional: redução de mais 15% na altura vertical */
+.py-11 {
+  padding-top: 2.75rem; /* 44px = 52px * 0.85 (15% reduction) */
+  padding-bottom: 2.75rem; /* 44px */
+}
+
+.py-14 {
+  padding-top: 3.5rem; /* 56px = 64px * 0.875 (aproximação para 15% reduction) */
+  padding-bottom: 3.5rem; /* 56px */
+}
+
+/* Redução adicional de ~20% (mobile) */
+.py-9 {
+  padding-top: 2.25rem; /* 36px */
+  padding-bottom: 2.25rem; /* 36px */
+}
+
+/* Classes para margem lateral de 10% no texto */
+.text-section-padding {
+  padding-left: 7%;
+  padding-right: 7%;
+}
+
+@media (max-width: 1024px) {
+  .text-section-padding {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+}
+
+@media (max-width: 768px) {
+  .text-section-padding {
+    padding-left: 3%;
+    padding-right: 3%;
+  }
+}
+
+/* Padronização de altura dos cards de serviços */
+.services-grid-enhanced {
+  display: grid;
+  align-items: stretch; /* Força todos os cards a terem a mesma altura */
+}
+
+.services-grid-enhanced > div {
+  display: flex;
+  min-height: 420px; /* Altura mínima padronizada */
+}
+
+.services-grid-enhanced .service-card-3d {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Controle do conteúdo dentro do card */
+.service-card-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1.5rem;
+  justify-content: space-between;
+  min-height: 380px; /* Altura mínima do conteúdo */
+}
+
+/* Título com altura controlada */
+.service-text-enhanced {
+  color: rgb(15, 23, 42) !important;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  /* Padronização de altura do título */
+  font-size: 1.25rem; /* text-xl */
+  line-height: 1.4;
+  min-height: 3.5rem; /* Espaço mínimo para 2 linhas */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 1rem;
+  
+  /* Controle de overflow para títulos longos */
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Descrição com altura controlada */
+.service-description-enhanced {
+  color: rgb(51, 65, 85) !important;
+  font-weight: 500;
+  line-height: 1.6;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+  
+  /* Padronização de altura da descrição */
+  font-size: 0.95rem; /* text-sm+ */
+  min-height: 7rem; /* Espaço mínimo para ~4 linhas */
+  display: flex;
+  align-items: flex-start;
+  text-align: center;
+  
+  /* Controle de overflow para descrições longas */
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  
+  /* Limitar a 5 linhas com ellipsis se necessário */
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Ícone padronizado */
+.service-icon-container {
+  min-height: 8rem; /* 128px - altura fixa para o ícone */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.service-icon-image {
+  width: 64px !important;
+  height: 64px !important;
+  object-fit: contain;
+}
+
+/* Categoria badge padronizada */
+.service-category-badge {
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+/* Responsividade para diferentes tamanhos de tela */
+@media (max-width: 768px) {
+  .services-grid-enhanced > div {
+    min-height: 380px; /* Altura menor em mobile */
+  }
+  
+  .service-card-content-wrapper {
+    min-height: 340px;
+    padding: 1.25rem;
+  }
+  
+  .service-text-enhanced {
+    font-size: 1.125rem; /* text-lg */
+    min-height: 3rem;
+  }
+  
+  .service-description-enhanced {
+    font-size: 0.875rem; /* text-sm */
+    min-height: 6rem;
+    -webkit-line-clamp: 4;
+  }
+  
+  .service-icon-container {
+    min-height: 7rem;
+  }
+  
+  .service-icon-image {
+    width: 56px !important;
+    height: 56px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .services-grid-enhanced > div {
+    min-height: 450px; /* Altura maior em telas grandes */
+  }
+  
+  .service-card-content-wrapper {
+    min-height: 410px;
+    padding: 2rem;
+  }
+  
+  .service-text-enhanced {
+    font-size: 1.375rem; /* text-xl+ */
+    min-height: 4rem;
+  }
+  
+  .service-description-enhanced {
+    font-size: 1rem; /* text-base */
+    min-height: 8rem;
+    -webkit-line-clamp: 6;
+  }
+  
+  .service-icon-container {
+    min-height: 9rem;
+  }
+  
+  .service-icon-image {
+    width: 72px !important;
+    height: 72px !important;
+  }
+}
+
+/* Hover states aprimorados */
+.service-card-enhanced:hover .service-text-enhanced {
+  color: rgb(30, 58, 138) !important;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+}
+
+.service-card-enhanced:hover .service-description-enhanced {
+  color: rgb(30, 41, 59) !important;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+/* Transições suaves para mudanças de tamanho */
+.service-card-3d,
+.service-text-enhanced,
+.service-description-enhanced,
+.service-icon-container {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

@@ -64,7 +64,7 @@ vi.mock('react-router-dom', async () => {
 const renderWithProviders = (component) => {
   return render(
     <I18nextProvider i18n={i18n}>
-      <MemoryRouter initialEntries={['/servico/consulta-oftalmologica']}>
+  <MemoryRouter initialEntries={['/servicos/consulta-oftalmologica']}>
         {component}
       </MemoryRouter>
     </I18nextProvider>
@@ -75,7 +75,7 @@ describe('ServiceDetailPage GTM Tracking', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     Object.defineProperty(window, 'location', {
-      value: { href: 'https://saraivavision.com.br/servico/consulta-oftalmologica' },
+  value: { href: 'https://saraivavision.com.br/servicos/consulta-oftalmologica' },
       writable: true
     });
   });
@@ -93,7 +93,7 @@ describe('ServiceDetailPage GTM Tracking', () => {
       service_id: 'consulta-oftalmologica', 
       service_title: 'Consulta Oftalmológica',
       service_category: 'consultation',
-      page_url: 'https://saraivavision.com.br/servico/consulta-oftalmologica'
+  page_url: 'https://saraivavision.com.br/servicos/consulta-oftalmologica'
     });
   });
 

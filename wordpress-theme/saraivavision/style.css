@@ -114,7 +114,7 @@ nav.primary a:hover { background: var(--soft-gray-100); text-decoration: none; }
 .btn-outline:hover { border-color: var(--brand-blue-600); color: var(--brand-blue-700); }
 
 /* Footer */
-footer.site-footer { border-top:1px solid var(--border); margin-top: 3rem; padding: 2rem 0; color: var(--muted); }
+footer.site-footer { border-top:1px solid var(--border); margin-top: 3rem; padding: 2rem 7%; color: var(--muted); }
 .footer-grid { display:grid; grid-template-columns: 1fr; gap:1rem; }
 @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr; } }
 .footer-heading { font-weight: 700; color: var(--text); margin-bottom:.5rem; }
@@ -132,4 +132,3 @@ button, input[type=submit] { font: inherit; }
 /* Accessibility */
 .skip-link { position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden; }
 .skip-link:focus { position:static; width:auto; height:auto; padding:.5rem; background:#000; color:#fff; }
-

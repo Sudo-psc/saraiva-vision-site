@@ -82,7 +82,7 @@ function HomePage() {
         <div className="homepage-section bg-section-compact-google-reviews"><div className="content-width"><CompactGoogleReviews /></div></div>
 
         {/* Local / Mapa (Google Places) */}
-        <div className="homepage-section bg-section-google-local"><div className="content-width"><GoogleLocalSection /></div></div>
+        <div className="homepage-section bg-section-google-local"><GoogleLocalSection /></div>
 
         <hr className="hr-divider" aria-hidden="true" />
 

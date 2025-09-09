@@ -39,7 +39,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-slate-800 text-slate-300 pt-16 pb-8">
-      <div className="container mx-auto px-4 md:px-6">
+      <div className="container mx-auto px-[7%]">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div>
             <Logo isWhite />
@@ -101,7 +101,7 @@ const Footer = () => {
           <div className="flex-1 space-y-2">
             <p className="text-slate-400 text-xs leading-snug">
               <span className="block font-medium text-slate-300">{clinicInfo.responsiblePhysician} • {clinicInfo.responsiblePhysicianCRM}</span>
-              <span className="block">{clinicInfo.responsibleNurse} • {clinicInfo.responsibleNursePhone}</span>
+              <span className="block">{clinicInfo.responsibleNurse}</span>
               <span className="block">CNPJ: {clinicInfo.taxId}</span>
               <span className="block">DPO: <a href={`mailto:${clinicInfo.dpoEmail}`} className="underline hover:text-white">{clinicInfo.dpoEmail}</a></span>
               <span className="block">

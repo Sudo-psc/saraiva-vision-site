@@ -130,7 +130,7 @@ const CategoryPage = () => {
               </h3>
               
               {excerpt && (
-                <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
+                <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-4">
                   {excerpt}
                 </p>
               )}

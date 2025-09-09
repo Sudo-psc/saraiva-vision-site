@@ -21,7 +21,7 @@ export const generateSitemap = (blogPosts = []) => {
     'acompanhamento-pediatrico',
     'laudos-especializados'
   ].map(service => ({
-    url: `/servico/${service}`,
+    url: `/servicos/${service}`,
     priority: '0.8',
     changefreq: 'monthly',
     lastmod: currentDate

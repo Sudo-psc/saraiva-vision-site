@@ -23,7 +23,7 @@ const LatestEpisodes = () => {
     };
 
     return (
-        <section className="py-10 md:py-12 lg:py-16 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 relative overflow-hidden">
+        <section className="py-10 md:py-12 lg:py-16 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 relative overflow-hidden scroll-block-internal">
             {/* Enhanced Background Elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 {/* Main gradient orbs */}

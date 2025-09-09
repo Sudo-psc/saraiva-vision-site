@@ -56,13 +56,13 @@ const CompactServiceCard = React.forwardRef(({ service, index }, ref) => {
       </h3>
 
       {/* Enhanced benefit description */}
-      <p className="text-sm text-slate-600 text-center mb-6 leading-relaxed group-hover:text-slate-700 transition-colors duration-300 font-medium line-clamp-3">
+      <p className="text-sm text-slate-600 text-center mb-6 leading-relaxed group-hover:text-slate-700 transition-colors duration-300 font-medium line-clamp-4">
         {service.benefit}
       </p>
 
       {/* Enhanced call to action */}
       <Link
-        to={`/servico/${service.id}`}
+        to={`/servicos/${service.id}`}
         className="inline-flex items-center justify-center gap-2 w-full py-3 px-6 text-sm font-bold text-blue-700 bg-white/80 hover:bg-white border border-blue-200/50 hover:border-blue-300 rounded-xl transition-all duration-300 group/button hover:shadow-lg backdrop-blur-sm"
       >
         <span>{t('services.learn_more')}</span>

@@ -214,7 +214,7 @@ export const generateFAQSchema = (faqItems, language = 'pt', forGraph = false) =
 export const generateMedicalProcedureSchema = (service, language = 'pt', forGraph = false) => {
   const schema = {
     '@type': 'MedicalProcedure',
-    '@id': `https://saraivavision.com.br/servico/${service.id}#procedure`,
+    '@id': `https://saraivavision.com.br/servicos/${service.id}#procedure`,
     name: service.title,
     description: service.description,
     category: 'Ophthalmology',
