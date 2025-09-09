@@ -29,7 +29,7 @@ vi.mock('@/data/serviceConfig', () => ({
 }));
 
 vi.mock('@/components/SEOHead', () => ({ default: () => <div data-testid="seo-head" /> }));
-vi.mock('@/components/Navbar', () => ({ default: () => <div data-testid="navbar" /> }));  
+vi.mock('@/components/Navbar', () => ({ default: () => <div data-testid="navbar" /> }));
 vi.mock('@/components/Footer', () => ({ default: () => <div data-testid="footer" /> }));
 
 // Os componentes internos foram refatorados; o teste deve focar no CTA real renderizado
@@ -40,15 +40,15 @@ vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
-  useParams: () => ({ serviceId: 'consulta-oftalmologica' }),
-  useNavigate: () => mockNavigate
+    useParams: () => ({ serviceId: 'consulta-oftalmologica' }),
+    useNavigate: () => mockNavigate
   };
 });
 
 const renderWithProviders = (component) => {
   return render(
     <I18nextProvider i18n={i18n}>
-  <MemoryRouter initialEntries={['/servicos/consulta-oftalmologica']}>
+      <MemoryRouter initialEntries={['/servicos/consulta-oftalmologica']}>
         {component}
       </MemoryRouter>
     </I18nextProvider>
@@ -59,14 +59,14 @@ describe('ServiceDetailPage GTM Tracking', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     Object.defineProperty(window, 'location', {
-  value: { href: 'https://saraivavision.com.br/servicos/consulta-oftalmologica' },
+      value: { href: 'https://saraivavision.com.br/servicos/consulta-oftalmologica' },
       writable: true
     });
   });
 
   it('should render service page with correct content', () => {
     renderWithProviders(<ServiceDetailPage />);
-    
+
     // Verify component renders
     expect(screen.getByTestId('seo-head')).toBeDefined();
     expect(screen.getByTestId('navbar')).toBeDefined();
@@ -78,10 +78,10 @@ describe('ServiceDetailPage GTM Tracking', () => {
 
   it('should handle CTA clicks', () => {
     renderWithProviders(<ServiceDetailPage />);
-    
-  const scheduleBtn = screen.getByRole('button', { name: /Agendar Agora/i });
-  scheduleBtn.click();
-    
-  expect(mockNavigate).toHaveBeenCalledWith('/contato');
+
+    const scheduleBtn = screen.getByRole('button', { name: /Agendar Agora/i });
+    scheduleBtn.click();
+
+    expect(mockNavigate).toHaveBeenCalledWith('/contato');
   });
 });

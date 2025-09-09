@@ -36,7 +36,7 @@ export const useSEO = ({
       const loc = window.location;
       if (loc.origin) return loc.origin;
       if (loc.href) {
-        try { return new URL(loc.href).origin; } catch {}
+        try { return new URL(loc.href).origin; } catch { }
       }
     }
     return 'https://saraivavision.com.br';
@@ -48,29 +48,29 @@ export const useSEO = ({
   const genClinic = hasClinic ? schemaLib.generateMedicalClinicSchema : (() => ({}));
   const genWebPage = hasWebPage ? schemaLib.generateMedicalWebPageSchema : (() => ({}));
   const genBreadcrumb = hasBreadcrumb ? schemaLib.generateBreadcrumbSchema : (() => ({}));
-  
+
   const seoData = useMemo(() => {
     // Determinar título, descrição e keywords
     const title = directTitle || customTitle || (titleKey ? t(titleKey) : 'Clínica Saraiva Vision');
     const description = directDescription || customDescription || (descriptionKey ? t(descriptionKey) : t('homeMeta.description'));
     const keywords = directKeywords || customKeywords || (keywordsKey ? t(keywordsKey) : t('homeMeta.keywords'));
-    
+
     // URL canônica
     const canonicalUrl = `${baseUrl}${location.pathname && location.pathname !== '/' ? location.pathname : ''}`;
-    
+
     // URLs alternativas para idiomas (path-based para melhor SEO)
     const alternateUrls = {
       'pt-BR': `${baseUrl}${location.pathname}`,
       'en-US': `${baseUrl}/en${location.pathname}`,
       'x-default': `${baseUrl}${location.pathname}`
     };
-    
+
     // Gerar structured data baseado no tipo de página
     let structuredData = [];
-    
+
     // Sempre incluir o schema da clínica (para @graph)
     structuredData.push(genClinic(currentLang, true));
-    
+
     // Schema da página específica
     if (pageType === 'service' && serviceId) {
       const serviceInfo = {
@@ -88,12 +88,12 @@ export const useSEO = ({
       };
       structuredData.push(genWebPage(pageInfo, currentLang, true));
     }
-    
+
     // Breadcrumbs schema se fornecido (para @graph)
     if (breadcrumbs.length > 0) {
       structuredData.push(genBreadcrumb(breadcrumbs, true));
     }
-    
+
     // Configurar como @graph para múltiplos schemas
     const finalStructuredData = {
       '@context': 'https://schema.org',
@@ -148,7 +148,7 @@ export const useSEO = ({
     breadcrumbs,
     noindex
   ]);
-  
+
   return seoData;
 };
 
@@ -156,14 +156,14 @@ export const useSEO = ({
 export const useServiceSEO = (service) => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
-  
+
   // Schema generators with fallbacks
   const hasClinic = Object.prototype.hasOwnProperty.call(schemaLib, 'generateMedicalClinicSchema');
   const genClinic = hasClinic ? schemaLib.generateMedicalClinicSchema : (() => ({}));
-  
+
   const breadcrumbs = [
     { name: t('navbar.home'), url: '/' },
-  { name: t('navbar.services'), url: '/servicos' },
+    { name: t('navbar.services'), url: '/servicos' },
     { name: service?.title || t('navbar.services'), url: `/servicos/${service?.slug || ''}` }
   ];
   const schema = hasClinic ? genClinic(currentLang, true) : undefined;
@@ -184,10 +184,10 @@ export const useLensesSEO = () => {
     { name: 'Início', url: '/' },
     { name: 'Lentes de Contato', url: '/lentes' }
   ];
-  
+
   return useSEO({
     titleKey: 'lensesMeta.title',
-    descriptionKey: 'lensesMeta.description', 
+    descriptionKey: 'lensesMeta.description',
     keywordsKey: 'lensesMeta.keywords',
     pageType: 'page',
     breadcrumbs
@@ -208,12 +208,12 @@ export const useHomeSEO = () => {
 // Hook específico para página de depoimentos
 export const useTestimonialsSEO = () => {
   const { t } = useTranslation();
-  
+
   const breadcrumbs = [
     { name: t('navbar.home'), url: '/' },
     { name: t('navbar.testimonials'), url: '/depoimentos' }
   ];
-  
+
   return useSEO({
     titleKey: 'testimonialsMeta.title',
     descriptionKey: 'testimonialsMeta.description',
@@ -226,15 +226,15 @@ export const useTestimonialsSEO = () => {
 // Hook específico para página FAQ
 export const useFAQSEO = () => {
   const { t } = useTranslation();
-  
+
   const breadcrumbs = [
     { name: t('navbar.home'), url: '/' },
     { name: t('faq.title'), url: '/faq' }
   ];
-  
+
   return useSEO({
     titleKey: 'faqMeta.title',
-    descriptionKey: 'faqMeta.description', 
+    descriptionKey: 'faqMeta.description',
     keywordsKey: 'faqMeta.keywords',
     pageType: 'faq',
     breadcrumbs
@@ -244,12 +244,12 @@ export const useFAQSEO = () => {
 // Hook específico para página de contato
 export const useContactSEO = () => {
   const { t } = useTranslation();
-  
+
   const breadcrumbs = [
     { name: t('navbar.home'), url: '/' },
     { name: t('navbar.contact'), url: '/contato' }
   ];
-  
+
   return useSEO({
     title: t('navbar.contact') + ' | Clínica Saraiva Vision',
     description: 'Entre em contato com a Clínica Saraiva Vision em Caratinga/MG. Agende sua consulta oftalmológica pelo WhatsApp, telefone ou presencialmente.',
@@ -263,12 +263,12 @@ export const useContactSEO = () => {
 // Hook específico para página sobre
 export const useAboutSEO = () => {
   const { t } = useTranslation();
-  
+
   const breadcrumbs = [
     { name: t('navbar.home'), url: '/' },
     { name: t('navbar.about'), url: '/sobre' }
   ];
-  
+
   return useSEO({
     customTitle: t('navbar.about') + ' | Dr. Philipe Saraiva | CRM-MG 69.870',
     customDescription: 'Conheça o Dr. Philipe Saraiva (CRM-MG 69.870) e a Clínica Saraiva Vision. Oftalmologista especializado em Caratinga/MG com tecnologia avançada e atendimento humanizado.',
@@ -281,12 +281,12 @@ export const useAboutSEO = () => {
 // Hook específico para página de política de privacidade
 export const usePrivacyPolicySEO = () => {
   const { t } = useTranslation();
-  
+
   const breadcrumbs = [
     { name: t('navbar.home'), url: '/' },
     { name: t('privacy.title'), url: '/privacy' }
   ];
-  
+
   return useSEO({
     titleKey: 'privacyMeta.title',
     descriptionKey: 'privacyMeta.description',
@@ -300,12 +300,12 @@ export const usePrivacyPolicySEO = () => {
 // Hook específico para página de podcast
 export const usePodcastSEO = () => {
   const { t } = useTranslation();
-  
+
   const breadcrumbs = [
     { name: t('navbar.home'), url: '/' },
     { name: t('navbar.podcast'), url: '/podcast' }
   ];
-  
+
   return useSEO({
     titleKey: 'podcastMeta.title',
     descriptionKey: 'podcastMeta.description',
