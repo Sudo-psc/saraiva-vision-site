@@ -42,7 +42,7 @@ SKIP_VERIFY=false
 WP_CHECK=false
 WP_STRICT=false
 # Site URL for verification (default local HTTP). Can be overridden by env SITE_URL or --site-url
-SITE_URL_DEFAULT="http://localhost:8082"
+SITE_URL_DEFAULT="http://localhost"
 SITE_URL_INPUT="${SITE_URL:-}"
 VERIFY_ONLY=false
 

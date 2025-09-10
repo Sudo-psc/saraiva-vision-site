@@ -7,7 +7,16 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { useAutoplayCarousel } from '@/hooks/useAutoplayCarousel';
-import { setupCarouselTest } from '@/tests/utils/testUtils';
+import { setupCarouselTest } from '@/utils/__tests__/testUtils';
+
+// Mock framer-motion
+vi.mock('framer-motion', async (importOriginal) => {
+	const actual = await importOriginal();
+	return {
+		...actual,
+		useReducedMotion: vi.fn(() => false), // Default to NO reduced motion for most tests
+	};
+});
 
 describe('useAutoplayCarousel Hook Contract', () => {
 	let testUtils;
@@ -338,6 +347,11 @@ describe('useAutoplayCarousel Hook Contract', () => {
 
 	describe('Accessibility Contract', () => {
 		it('should respect prefers-reduced-motion', () => {
+			// Override the hook to return true specifically for this test
+			const framerMotion = require('framer-motion');
+			const originalFn = framerMotion.useReducedMotion;
+			framerMotion.useReducedMotion = vi.fn().mockReturnValue(true);
+			
 			const { result } = renderHook(() =>
 				useAutoplayCarousel({ totalSlides: 5 })
 			);
@@ -350,6 +364,9 @@ describe('useAutoplayCarousel Hook Contract', () => {
 				result.current.play();
 			});
 			expect(result.current.isPlaying).toBe(false);
+			
+			// Restore original function
+			framerMotion.useReducedMotion = originalFn;
 		});
 	});
 
