@@ -28,7 +28,7 @@ This is a React-based medical clinic website for SaraivaVision (ophthalmology cl
 // PREFERRED: Functional components with hooks
 const Component = ({ prop1, prop2 }) => {
   const [state, setState] = useState(initialValue);
-  
+
   return (
     <div className="component-container">
       {/* JSX content */}
@@ -50,6 +50,39 @@ const HomePage = lazy(() => import('@/pages/HomePage'));
   - `/components/icons` - Custom SVG icons (flags, medical icons)
   - `/components/ServiceDetail` - Service-specific components
   - `/components` - Business logic components
+  - `/hooks` - Custom React hooks (including useAutoplayCarousel)
+
+### Carousel Autoplay Patterns (Feature: 001-autoplay-dos-cards)
+- **Accessibility First**: Always respect `prefers-reduced-motion` and provide pause controls
+- **Medical UX**: 4.5 second intervals for content absorption, pause on hover/focus
+- **State Management**: Use useReducer for complex interaction states (playing, paused, user interacting)
+- **Performance**: Combine setTimeout for timing + requestAnimationFrame for smooth animations
+
+```javascript
+// PREFERRED: useAutoplayCarousel hook pattern
+const carousel = useAutoplayCarousel({
+  totalSlides: items.length,
+  config: {
+    defaultInterval: 4500,    // Medical content needs more time
+    pauseOnHover: true,       // Allow reading without pressure
+    respectReducedMotion: true // Accessibility compliance
+  },
+  onSlideChange: (index, direction) => {
+    // Analytics, announcements, etc.
+  }
+});
+
+// Apply handlers to container
+<div {...carousel.handlers}>
+  {/* Carousel content */}
+</div>
+```
+
+- **Integration Requirements**:
+  - Use existing Framer Motion for smooth transitions
+  - Maintain backward compatibility with Services component
+  - Include proper ARIA live regions for screen readers
+  - Support keyboard navigation (Arrow keys, Tab, Space)
 
 ### Design System Usage
 ```javascript
@@ -71,7 +104,7 @@ import { useTranslation } from 'react-i18next';
 
 const Component = () => {
   const { t } = useTranslation();
-  
+
   return (
     <h1>{t('common.welcome')}</h1>
   );
@@ -107,15 +140,15 @@ className="text-sm md:text-base lg:text-lg"
 </button>
 
 // Image alt texts must be descriptive
-<img 
-  src="/medical-equipment.jpg" 
+<img
+  src="/medical-equipment.jpg"
   alt={t('equipment.description')}
   loading="lazy"
 />
 
 // Form accessibility
 <label htmlFor="patient-name">{t('forms.patientName')}</label>
-<input 
+<input
   id="patient-name"
   type="text"
   required
@@ -166,7 +199,7 @@ const ServiceDetail = ({ serviceId }) => {
       "name": "SaraivaVision"
     }
   };
-  
+
   return (
     <div>
       <SchemaMarkup schema={schema} />
@@ -183,13 +216,13 @@ import ReCAPTCHA from 'react-google-recaptcha';
 
 const ContactForm = () => {
   const [captchaToken, setCaptchaToken] = useState(null);
-  
+
   const handleSubmit = async (formData) => {
     if (!captchaToken) {
       toast.error(t('errors.captchaRequired'));
       return;
     }
-    
+
     // Submit with LGPD compliance
     const response = await submitForm({
       ...formData,
@@ -197,7 +230,7 @@ const ContactForm = () => {
       privacyConsent: true
     });
   };
-  
+
   return (
     <form onSubmit={handleSubmit}>
       {/* Form fields */}
@@ -221,12 +254,12 @@ import Component from '../Component';
 describe('Component', () => {
   it('renders with accessibility compliance', () => {
     render(<Component />);
-    
+
     // Test accessibility
     expect(screen.getByRole('button')).toBeInTheDocument();
     expect(screen.getByLabelText(/close/i)).toBeInTheDocument();
   });
-  
+
   it('handles medical data correctly', () => {
     // Test medical-specific functionality
   });
@@ -239,7 +272,7 @@ describe('Component', () => {
 it('loads Google Maps with fallback', async () => {
   const mockLoadGoogleMaps = vi.fn();
   render(<GoogleMap />);
-  
+
   // Test fallback when Maps fails
   expect(screen.getByText(/map not available/i)).toBeInTheDocument();
 });
@@ -260,7 +293,7 @@ const submitContactForm = async (formData) => {
         created_at: new Date().toISOString(),
         privacy_consent: true
       }]);
-      
+
     if (error) throw error;
     return data;
   } catch (error) {
@@ -277,17 +310,17 @@ import { loadGoogleMaps } from '@/lib/loadGoogleMaps';
 const GoogleMapComponent = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState(false);
-  
+
   useEffect(() => {
     loadGoogleMaps()
       .then(() => setMapLoaded(true))
       .catch(() => setMapError(true));
   }, []);
-  
+
   if (mapError) {
     return <div>{t('map.loadError')}</div>;
   }
-  
+
   return mapLoaded ? <GoogleMapLoaded /> : <MapSkeleton />;
 };
 ```
@@ -337,7 +370,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 const handleError = (error) => {
   // Log technical details (not sensitive data)
   console.error('Operation failed:', error.message);
-  
+
   // Show user-friendly message
   toast.error(t('errors.tryAgainLater'));
 };
@@ -346,7 +379,7 @@ const handleError = (error) => {
 ## 📋 Code Quality Rules
 
 ### ESLint Configuration
-- Follow existing `.eslintrc.json` rules  
+- Follow existing `.eslintrc.json` rules
 - Maximum function complexity: 15
 - Maximum line length: 120 characters
 - Mandatory PropTypes for components
@@ -397,20 +430,20 @@ const map = new google.maps.Map(); // ❌ May cause no-undef errors
 const Component = ({ condition }) => {
   const [state, setState] = useState(initial);
   const memoValue = useMemo(() => calculation, [deps]);
-  
+
   useEffect(() => {
     if (condition) {
       // Effect logic
     }
   }, [condition]);
-  
+
   if (!condition) return null; // Early return after hooks
 };
 
 // AVOID: Conditional hooks
 const Component = ({ condition }) => {
   if (!condition) return null; // ❌ Early return before hooks
-  
+
   const [state, setState] = useState(initial); // ❌ Hook after early return
 };
 ```
@@ -422,7 +455,7 @@ import { useState } from 'react'; // Only import what's used
 
 const Component = () => {
   const [state, setState] = useState(initial);
-  
+
   // Use underscore prefix for intentionally unused parameters
   const handleCallback = (_unusedParam, usedParam) => {
     console.log(usedParam);
@@ -455,7 +488,7 @@ import { useTranslation } from 'react-i18next';
 
 const Component = () => {
   const { t } = useTranslation();
-  
+
   return (
     <div>
       <h1>{t('common.welcome')}</h1>
@@ -520,7 +553,7 @@ const ServicePage = ({ service }) => (
       <title>{t(`services.${service.id}.seoTitle`)}</title>
       <meta name="description" content={t(`services.${service.id}.seoDescription`)} />
       <meta name="keywords" content={t(`services.${service.id}.keywords`)} />
-      
+
       {/* Medical-specific meta tags */}
       <meta name="medical-specialty" content="Ophthalmology" />
       <meta name="geo.region" content="BR-SP" />
