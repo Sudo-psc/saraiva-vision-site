@@ -8,3 +8,4 @@ model_reasoning_effort="high" - - search
 "$@"
 fi
 }
+alias gemini='npx @google/gemini-cli'

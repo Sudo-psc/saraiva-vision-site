@@ -25,7 +25,7 @@ export default defineConfig({
 		host: true,
 		proxy: {
 			'/wp-json': {
-				target: 'http://localhost:8083',
+				target: 'http://localhost:8080',
 				changeOrigin: true,
 				secure: false,
 				headers: {
@@ -33,7 +33,7 @@ export default defineConfig({
 				}
 			},
 			'/wp-admin': {
-				target: 'http://localhost:8083',
+				target: 'http://localhost:8080',
 				changeOrigin: true,
 				secure: false
 			}
