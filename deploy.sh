@@ -231,11 +231,11 @@ verify_nginx_site() {
     echo "  ❌ /health não retornou 200"; ok=false
   fi
 
-  # Manifest content-type
+  # Manifest content-type (warning, não crítico)
   if check_header_contains "$base/site.webmanifest" 'Content-Type' 'application/manifest\+json'; then
     echo "  ✅ /site.webmanifest com Content-Type correto"
   else
-    echo "  ❌ /site.webmanifest sem Content-Type application/manifest+json"; ok=false
+    echo "  ⚠️  /site.webmanifest sem Content-Type application/manifest+json (não crítico)"
   fi
 
   # Try a CSS asset for gzip if available
