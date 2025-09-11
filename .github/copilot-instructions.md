@@ -209,35 +209,87 @@ const ServiceDetail = ({ serviceId }) => {
 };
 ```
 
-### Contact Forms
+### Contact Forms (Feature: 002-resend-contact-form)
 ```javascript
-// Include reCAPTCHA for spam protection
-import ReCAPTCHA from 'react-google-recaptcha';
+// Medical contact form with Resend email integration
+import { useState } from 'react';
+import { z } from 'zod';
+
+const ContactFormSchema = z.object({
+  name: z.string().min(2).max(100).regex(/^[a-zA-ZÀ-ÿ\s'-]+$/),
+  email: z.string().email().max(255),
+  phone: z.string().regex(/^\+55\s\d{2}\s\d{4,5}-\d{4}$/).optional(),
+  message: z.string().min(10).max(1000),
+  consent: z.literal(true), // LGPD compliance
+  website: z.string().max(0).optional() // Honeypot for spam detection
+});
 
 const ContactForm = () => {
-  const [captchaToken, setCaptchaToken] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = async (formData) => {
-    if (!captchaToken) {
-      toast.error(t('errors.captchaRequired'));
-      return;
+    try {
+      setLoading(true);
+      
+      // Client-side validation
+      const validated = ContactFormSchema.parse(formData);
+      
+      // API submission
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(validated)
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        toast.success(t('contact.success'));
+        resetForm();
+      } else {
+        if (result.fieldErrors) {
+          setErrors(result.fieldErrors);
+        } else {
+          toast.error(result.message);
+        }
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors(error.flatten().fieldErrors);
+      } else {
+        toast.error(t('contact.networkError'));
+      }
+    } finally {
+      setLoading(false);
     }
-
-    // Submit with LGPD compliance
-    const response = await submitForm({
-      ...formData,
-      captchaToken,
-      privacyConsent: true
-    });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* Form fields */}
-      <ReCAPTCHA
-        sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-        onChange={setCaptchaToken}
-      />
+    <form onSubmit={handleSubmit} className="medical-contact-form">
+      {/* Form fields with validation */}
+      <input name="name" required aria-describedby="name-error" />
+      {errors.name && <span id="name-error" role="alert">{errors.name[0]}</span>}
+      
+      <input name="email" type="email" required aria-describedby="email-error" />
+      {errors.email && <span id="email-error" role="alert">{errors.email[0]}</span>}
+      
+      <input name="phone" type="tel" placeholder="+55 11 99999-9999" />
+      
+      <textarea name="message" required minLength={10} maxLength={1000} />
+      
+      {/* LGPD Consent */}
+      <label>
+        <input type="checkbox" name="consent" required />
+        {t('contact.privacyConsent')}
+      </label>
+      
+      {/* Honeypot for spam detection */}
+      <input name="website" type="text" style={{ display: 'none' }} tabIndex={-1} />
+      
+      <button type="submit" disabled={loading}>
+        {loading ? t('contact.sending') : t('contact.submit')}
+      </button>
     </form>
   );
 };
@@ -279,6 +331,37 @@ it('loads Google Maps with fallback', async () => {
 ```
 
 ## 🔧 API Integration
+
+### Resend Email Integration (Feature: 002-resend-contact-form)
+- **Medical Email Delivery**: Professional patient inquiry emails to Dr. Philipe
+- **LGPD Compliance**: No data storage, direct email delivery only
+- **Rate Limiting**: 5 submissions per IP per hour to prevent spam
+- **Security**: Multi-layer validation and sanitization
+
+```javascript
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+const sendContactEmail = async (formData) => {
+  try {
+    const { name, email, phone, message } = formData;
+    
+    const emailData = await resend.emails.send({
+      from: 'noreply@saraivavision.com.br',
+      to: 'philipe_cruz@outlook.com',
+      subject: `New Patient Inquiry - ${name} - SaraivaVision`,
+      html: renderProfessionalTemplate({ name, email, phone, message }),
+      text: renderTextTemplate({ name, email, phone, message })
+    });
+    
+    return { success: true, submissionId: emailData.id };
+  } catch (error) {
+    logger.error('Email sending failed:', { error: error.message });
+    throw new Error('Failed to send email');
+  }
+};
+```
 
 ### Supabase Integration
 ```javascript
