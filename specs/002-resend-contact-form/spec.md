@@ -6,8 +6,8 @@ Integrate the existing contact form with Resend API to send structured patient c
 ## User Stories
 
 ### US1: Patient Contact Submission
-**As a** potential patient visiting the website  
-**I want to** submit a contact form with my medical inquiry  
+**As a** potential patient visiting the website
+**I want to** submit a contact form with my medical inquiry
 **So that** Dr. Philipe receives my information and can respond appropriately
 
 **Acceptance Criteria:**
@@ -18,8 +18,8 @@ Integrate the existing contact form with Resend API to send structured patient c
 - LGPD privacy consent is required before submission
 
 ### US2: Doctor Email Reception
-**As a** Dr. Philipe (medical professional)  
-**I want to** receive structured patient inquiries via email  
+**As a** Dr. Philipe (medical professional)
+**I want to** receive structured patient inquiries via email
 **So that** I can review and respond to potential patients efficiently
 
 **Acceptance Criteria:**
@@ -29,8 +29,8 @@ Integrate the existing contact form with Resend API to send structured patient c
 - Patient contact details are easily accessible for response
 
 ### US3: System Reliability
-**As a** clinic administrator  
-**I want to** ensure all patient contact requests are delivered  
+**As a** clinic administrator
+**I want to** ensure all patient contact requests are delivered
 **So that** no potential patients are lost due to technical issues
 
 **Acceptance Criteria:**

@@ -231,19 +231,19 @@ const ContactForm = () => {
   const handleSubmit = async (formData) => {
     try {
       setLoading(true);
-      
+
       // Client-side validation
       const validated = ContactFormSchema.parse(formData);
-      
+
       // API submission
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(validated)
       });
-      
+
       const result = await response.json();
-      
+
       if (result.success) {
         toast.success(t('contact.success'));
         resetForm();
@@ -270,23 +270,23 @@ const ContactForm = () => {
       {/* Form fields with validation */}
       <input name="name" required aria-describedby="name-error" />
       {errors.name && <span id="name-error" role="alert">{errors.name[0]}</span>}
-      
+
       <input name="email" type="email" required aria-describedby="email-error" />
       {errors.email && <span id="email-error" role="alert">{errors.email[0]}</span>}
-      
+
       <input name="phone" type="tel" placeholder="+55 11 99999-9999" />
-      
+
       <textarea name="message" required minLength={10} maxLength={1000} />
-      
+
       {/* LGPD Consent */}
       <label>
         <input type="checkbox" name="consent" required />
         {t('contact.privacyConsent')}
       </label>
-      
+
       {/* Honeypot for spam detection */}
       <input name="website" type="text" style={{ display: 'none' }} tabIndex={-1} />
-      
+
       <button type="submit" disabled={loading}>
         {loading ? t('contact.sending') : t('contact.submit')}
       </button>
@@ -346,7 +346,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const sendContactEmail = async (formData) => {
   try {
     const { name, email, phone, message } = formData;
-    
+
     const emailData = await resend.emails.send({
       from: 'noreply@saraivavision.com.br',
       to: 'philipe_cruz@outlook.com',
@@ -354,7 +354,7 @@ const sendContactEmail = async (formData) => {
       html: renderProfessionalTemplate({ name, email, phone, message }),
       text: renderTextTemplate({ name, email, phone, message })
     });
-    
+
     return { success: true, submissionId: emailData.id };
   } catch (error) {
     logger.error('Email sending failed:', { error: error.message });

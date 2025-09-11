@@ -22,7 +22,7 @@ curl -X GET "https://api.resend.com/domains" \
 
 ### Required Files
 - `api/lib/email-service.js` - Resend integration library
-- `api/lib/validator.js` - Form validation library  
+- `api/lib/validator.js` - Form validation library
 - `api/contact.js` - Contact form API endpoint
 - `src/components/Contact.jsx` - Updated contact form component
 
@@ -39,7 +39,7 @@ curl -X GET "https://api.resend.com/domains" \
      -H "Content-Type: application/json" \
      -d '{
        "name": "João Silva",
-       "email": "joao.silva@email.com", 
+       "email": "joao.silva@email.com",
        "phone": "+55 11 99999-9999",
        "message": "Gostaria de agendar uma consulta para avaliar minha visão.",
        "consent": true
@@ -130,7 +130,7 @@ curl -X GET "https://api.resend.com/domains" \
    {
      "success": false,
      "message": "Muitas tentativas. Tente novamente em 1 hora.",
-     "error": "rate_limit_exceeded", 
+     "error": "rate_limit_exceeded",
      "code": "RATE_LIMIT_ERROR",
      "retryAfter": 3600
    }
@@ -184,7 +184,7 @@ curl -X GET "https://api.resend.com/domains" \
 1. **Temporarily disable internet or use invalid API key**:
    ```bash
    export RESEND_API_KEY="invalid_key"
-   
+
    curl -X POST http://localhost:3001/api/contact \
      -H "Content-Type: application/json" \
      -d '{
@@ -199,7 +199,7 @@ curl -X GET "https://api.resend.com/domains" \
    ```json
    {
      "success": false,
-     "message": "Erro interno do servidor. Tente novamente em alguns minutos.", 
+     "message": "Erro interno do servidor. Tente novamente em alguns minutos.",
      "error": "email_service_error",
      "code": "EMAIL_ERROR"
    }
@@ -304,7 +304,7 @@ tail -f logs/contact-api.log
 
 # Look for patterns:
 # - Successful submissions: INFO level
-# - Validation errors: WARN level  
+# - Validation errors: WARN level
 # - Service failures: ERROR level
 # - No PII in logs: Names/emails should be redacted
 ```

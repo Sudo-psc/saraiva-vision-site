@@ -56,7 +56,7 @@ const contactFormFields = {
 // Current submission flow
 const currentFlow = {
   1: 'Form validation on submit',
-  2: 'Success message display', 
+  2: 'Success message display',
   3: 'Form reset',
   // Missing: Actual email delivery
 };
@@ -82,7 +82,7 @@ const validationLayers = {
 // XSS Prevention
 const xssPrevention = {
   input: 'DOMPurify sanitization',
-  template: 'Escape HTML entities', 
+  template: 'Escape HTML entities',
   headers: 'Content Security Policy'
 };
 ```
@@ -141,7 +141,7 @@ const optimizations = {
   <header style="background: #1e40af; color: white; padding: 20px;">
     <h1>SaraivaVision - New Patient Inquiry</h1>
   </header>
-  
+
   <main style="padding: 20px; background: #ffffff;">
     <section>
       <h2>Patient Information</h2>
@@ -149,19 +149,19 @@ const optimizations = {
       <p><strong>Email:</strong> {{patientEmail}}</p>
       <p><strong>Phone:</strong> {{patientPhone}}</p>
     </section>
-    
+
     <section>
       <h2>Inquiry Details</h2>
       <p>{{patientMessage}}</p>
     </section>
-    
+
     <section>
       <h2>Next Steps</h2>
       <p>Please respond directly to the patient's email address above.</p>
       <p>Submitted on: {{submissionDate}}</p>
     </section>
   </main>
-  
+
   <footer style="background: #f8fafc; padding: 20px; text-align: center;">
     <p>SaraivaVision Ophthalmology Clinic</p>
     <p>This email was generated automatically from the website contact form.</p>
@@ -230,9 +230,9 @@ const handleSubmit = async (formData) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
     });
-    
+
     const result = await response.json();
-    
+
     if (result.success) {
       showSuccess('Message sent successfully!');
       resetForm();
@@ -256,7 +256,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 app.post('/api/contact', rateLimit, validateInput, async (req, res) => {
   try {
     const { name, email, phone, message } = req.body;
-    
+
     const emailData = await resend.emails.send({
       from: 'noreply@saraivavision.com.br',
       to: 'philipe_cruz@outlook.com',
@@ -264,17 +264,17 @@ app.post('/api/contact', rateLimit, validateInput, async (req, res) => {
       html: renderTemplate({ name, email, phone, message }),
       text: renderTextTemplate({ name, email, phone, message })
     });
-    
-    res.json({ 
-      success: true, 
+
+    res.json({
+      success: true,
       message: 'Your message has been sent successfully!',
-      submissionId: emailData.id 
+      submissionId: emailData.id
     });
   } catch (error) {
     logger.error('Email sending failed:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to send message. Please try again.' 
+    res.status(500).json({
+      success: false,
+      message: 'Failed to send message. Please try again.'
     });
   }
 });

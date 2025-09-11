@@ -10,16 +10,16 @@ interface ContactSubmission {
   email: string;          // Valid email format, normalized lowercase
   phone?: string;         // Optional Brazilian phone format (+55 XX XXXXX-XXXX)
   message: string;        // Inquiry text, 10-1000 characters, sanitized
-  
+
   // Legal & Compliance
   consent: boolean;       // LGPD consent required (must be true)
-  
+
   // System Metadata
   timestamp: string;      // ISO 8601 submission timestamp
   userAgent: string;      // Client info for logging/debugging
   ipAddress: string;      // Hashed IP for rate limiting (privacy-safe)
   submissionId: string;   // UUID for tracking and support
-  
+
   // Honeypot (spam detection)
   website?: string;       // Hidden field, should be empty
 }
@@ -31,16 +31,16 @@ interface EmailTemplate {
   // Recipient
   to: string;             // Dr. Philipe's email address
   from: string;           // Clinic's verified sender address
-  
+
   // Content
   subject: string;        // Professional subject line template
   html: string;           // Rich HTML email content
   text: string;           // Plain text fallback
-  
+
   // Metadata
   templateVersion: string; // Template version for A/B testing
   priority: 'normal' | 'high'; // Email priority level
-  
+
   // Tracking
   tags: string[];         // Categorization tags for analytics
   metadata: Record<string, string>; // Additional tracking data
@@ -52,16 +52,16 @@ interface EmailTemplate {
 interface APIResponse {
   success: boolean;       // Operation success status
   message: string;        // User-friendly response message
-  
+
   // Success data
   submissionId?: string;  // Tracking ID for successful submissions
   estimatedDelivery?: string; // Expected delivery time
-  
+
   // Error data
   error?: string;         // Error type (sanitized for security)
   code?: string;          // Error code for client handling
   retryAfter?: number;    // Seconds to wait before retry (rate limiting)
-  
+
   // Validation errors
   fieldErrors?: Record<string, string[]>; // Field-specific validation errors
 }
@@ -75,7 +75,7 @@ interface RateLimitState {
   windowStart: string;    // Rate limit window start time
   windowDuration: number; // Window duration in milliseconds
   maxSubmissions: number; // Maximum allowed submissions per window
-  
+
   // Metadata
   lastSubmission: string; // Timestamp of last submission
   userAgent: string;      // User agent for pattern detection
@@ -96,30 +96,30 @@ const ContactSubmissionSchema = z.object({
     .min(2, 'Name must be at least 2 characters')
     .max(100, 'Name must not exceed 100 characters')
     .regex(/^[a-zA-ZÀ-ÿ\s'-]+$/, 'Name contains invalid characters'),
-    
+
   email: z.string()
     .email('Invalid email format')
     .max(255, 'Email address too long')
     .toLowerCase(),
-    
+
   message: z.string()
     .min(10, 'Message must be at least 10 characters')
     .max(1000, 'Message must not exceed 1000 characters')
     .trim(),
-    
+
   consent: z.literal(true, {
     errorMap: () => ({ message: 'Privacy consent is required' })
   }),
-  
+
   // Optional fields
   phone: z.string()
     .regex(/^\+55\s\d{2}\s\d{4,5}-\d{4}$/, 'Invalid Brazilian phone format')
     .optional()
     .or(z.literal('')),
-    
+
   // Honeypot (should be empty)
   website: z.string().max(0, 'Spam detected').optional(),
-  
+
   // System fields (added by server)
   timestamp: z.string().datetime().optional(),
   userAgent: z.string().max(500).optional(),
@@ -136,22 +136,22 @@ export type ContactSubmission = z.infer<typeof ContactSubmissionSchema>;
 const EmailTemplateSchema = z.object({
   to: z.string().email('Invalid recipient email'),
   from: z.string().email('Invalid sender email'),
-  
+
   subject: z.string()
     .min(5, 'Subject too short')
     .max(100, 'Subject too long'),
-    
+
   html: z.string()
     .min(50, 'HTML content too short')
     .max(100000, 'HTML content too large'),
-    
+
   text: z.string()
     .min(20, 'Text content too short')
     .max(10000, 'Text content too large'),
-    
+
   templateVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
   priority: z.enum(['normal', 'high']).default('normal'),
-  
+
   tags: z.array(z.string()).max(10, 'Too many tags'),
   metadata: z.record(z.string(), z.string())
 });
@@ -163,7 +163,7 @@ export type EmailTemplate = z.infer<typeof EmailTemplateSchema>;
 
 ### Form Submission Workflow
 ```typescript
-type SubmissionState = 
+type SubmissionState =
   | 'idle'           // Form ready for input
   | 'validating'     // Client-side validation in progress
   | 'submitting'     // API request in progress
@@ -185,7 +185,7 @@ const stateTransitions = {
 
 ### Email Delivery States
 ```typescript
-type DeliveryState = 
+type DeliveryState =
   | 'pending'        // Email queued for sending
   | 'sent'          // Email sent to provider
   | 'delivered'     // Email delivered to recipient
@@ -242,7 +242,7 @@ const mapToEmailData = (submission: ContactSubmission) => ({
     timeStyle: 'short'
   }),
   submissionId: submission.submissionId,
-  
+
   // Clinic information
   clinicName: 'SaraivaVision',
   clinicEmail: 'contato@saraivavision.com.br',
@@ -291,19 +291,19 @@ RateLimitState (n) ← IPAddress → ContactSubmission (n)
 const processContactSubmission = async (formData: ContactSubmission) => {
   // 1. Validate input (in-memory only)
   const validated = ContactSubmissionSchema.parse(formData);
-  
+
   // 2. Check rate limits (in-memory cache with TTL)
   await checkRateLimit(validated.ipAddress);
-  
+
   // 3. Generate email (in-memory template rendering)
   const emailData = generateEmailTemplate(validated);
-  
+
   // 4. Send email (direct API call)
   const result = await sendEmail(emailData);
-  
+
   // 5. Return response (no data persistence)
   return result;
-  
+
   // Data is garbage collected after response
   // No PII stored anywhere in the system
 };

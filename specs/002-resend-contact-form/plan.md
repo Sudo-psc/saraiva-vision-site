@@ -27,14 +27,14 @@
 Integrate Resend API with existing contact form to deliver patient inquiries directly to Dr. Philipe's email (philipe_cruz@outlook.com). Technical approach: create secure API endpoint with rate limiting, maintain existing form UX, implement professional email template with LGPD compliance.
 
 ## Technical Context
-**Language/Version**: JavaScript ES2022, Node.js 20.x  
-**Primary Dependencies**: React 18, Resend API SDK, Express.js, Zod validation  
-**Storage**: No persistent storage (direct email only)  
-**Testing**: Vitest, React Testing Library, Supertest for API  
-**Target Platform**: Web application (Vite + Node.js backend)  
-**Project Type**: web - determines source structure (frontend + backend)  
-**Performance Goals**: <3s form submission response, 99.9% email delivery rate  
-**Constraints**: LGPD compliance, 5 submissions/IP/hour rate limit, <200ms p95 API response  
+**Language/Version**: JavaScript ES2022, Node.js 20.x
+**Primary Dependencies**: React 18, Resend API SDK, Express.js, Zod validation
+**Storage**: No persistent storage (direct email only)
+**Testing**: Vitest, React Testing Library, Supertest for API
+**Target Platform**: Web application (Vite + Node.js backend)
+**Project Type**: web - determines source structure (frontend + backend)
+**Performance Goals**: <3s form submission response, 99.9% email delivery rate
+**Constraints**: LGPD compliance, 5 submissions/IP/hour rate limit, <200ms p95 API response
 **Scale/Scope**: Medical clinic contact form, ~50 submissions/month, single email recipient
 
 ## Constitution Check
@@ -211,7 +211,7 @@ email-service --send --to="philipe_cruz@outlook.com" --template="contact" --data
 email-service --validate-template --template="contact"
 email-service --test-connection
 
-# contact-validator CLI  
+# contact-validator CLI
 contact-validator --validate --data='{"name":"John","email":"test@example.com"}' --format=json
 contact-validator --sanitize --input="<script>alert('xss')</script>"
 ```
@@ -226,18 +226,18 @@ describe('POST /api/contact', () => {
       .post('/api/contact')
       .send(validContactData)
       .expect(200);
-    
+
     expect(response.body.success).toBe(true);
     // Verify email was sent to Dr. Philipe
   });
-  
+
   it('should reject invalid email format', async () => {
-    // This test MUST fail initially  
+    // This test MUST fail initially
     const response = await request(app)
       .post('/api/contact')
       .send({ ...validContactData, email: 'invalid-email' })
       .expect(400);
-      
+
     expect(response.body.error).toContain('Invalid email format');
   });
 });
@@ -261,7 +261,7 @@ describe('POST /api/contact', () => {
 **Ordering Strategy**:
 1. **TDD Foundation**: All tests before implementation
 2. **Backend First**: API libraries before frontend integration
-3. **Dependency Order**: 
+3. **Dependency Order**:
    - Libraries (email-service, validator) [P]
    - API endpoint (depends on libraries)
    - Frontend integration (depends on API)
@@ -279,8 +279,8 @@ describe('POST /api/contact', () => {
 ## Phase 3+: Future Implementation
 *These phases are beyond the scope of the /plan command*
 
-**Phase 3**: Task execution (/tasks command creates tasks.md)  
-**Phase 4**: Implementation following RED-GREEN-REFACTOR cycle  
+**Phase 3**: Task execution (/tasks command creates tasks.md)
+**Phase 4**: Implementation following RED-GREEN-REFACTOR cycle
 **Phase 5**: Validation (email delivery tests, form UX testing, security validation)
 
 ## Complexity Tracking
@@ -291,7 +291,7 @@ describe('POST /api/contact', () => {
 
 **Phase Status**:
 - [x] Phase 0: Research complete (/plan command)
-- [x] Phase 1: Design complete (/plan command)  
+- [x] Phase 1: Design complete (/plan command)
 - [x] Phase 2: Task planning complete (/plan command - describe approach only)
 - [ ] Phase 3: Tasks generated (/tasks command)
 - [ ] Phase 4: Implementation complete
@@ -299,7 +299,7 @@ describe('POST /api/contact', () => {
 
 **Gate Status**:
 - [x] Initial Constitution Check: PASS
-- [x] Post-Design Constitution Check: PASS  
+- [x] Post-Design Constitution Check: PASS
 - [x] All NEEDS CLARIFICATION resolved
 - [x] Complexity deviations documented (none)
 
