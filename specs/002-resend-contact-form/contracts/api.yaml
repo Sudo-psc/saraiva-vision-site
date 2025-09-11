@@ -8,7 +8,7 @@ info:
     email: tech@saraivavision.com.br
   license:
     name: Proprietary
-    
+
 servers:
   - url: https://saraivavision.com.br/api
     description: Production server
@@ -23,23 +23,23 @@ paths:
     post:
       summary: Submit patient contact form
       description: |
-        Processes patient contact form submissions and sends structured emails 
+        Processes patient contact form submissions and sends structured emails
         to Dr. Philipe. Includes rate limiting, validation, and LGPD compliance.
-        
+
         **Rate Limits**: 5 submissions per IP per hour
         **Data Retention**: No data stored (direct email delivery only)
         **Compliance**: LGPD compliant with explicit consent required
-        
+
       operationId: submitContactForm
       tags:
         - Contact Form
-        
+
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContactSubmission'
+              $ref: "#/components/schemas/ContactSubmission"
             examples:
               valid_submission:
                 summary: Valid patient contact submission
@@ -56,14 +56,14 @@ paths:
                   email: "maria.santos@email.com"
                   message: "Preciso de informações sobre cirurgia de catarata."
                   consent: true
-                  
+
       responses:
-        '200':
+        "200":
           description: Email sent successfully to Dr. Philipe
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SuccessResponse'
+                $ref: "#/components/schemas/SuccessResponse"
               examples:
                 success:
                   summary: Successful email delivery
@@ -72,13 +72,13 @@ paths:
                     message: "Sua mensagem foi enviada com sucesso! Dr. Philipe entrará em contato em breve."
                     submissionId: "550e8400-e29b-41d4-a716-446655440000"
                     estimatedDelivery: "2025-09-11T14:30:00Z"
-                    
-        '400':
+
+        "400":
           description: Validation error in request data
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationError'
+                $ref: "#/components/schemas/ValidationError"
               examples:
                 validation_error:
                   summary: Multiple validation errors
@@ -91,8 +91,8 @@ paths:
                       email: ["Formato de email inválido"]
                       message: ["A mensagem deve ter pelo menos 10 caracteres"]
                       consent: ["O consentimento de privacidade é obrigatório"]
-                      
-        '429':
+
+        "429":
           description: Rate limit exceeded
           headers:
             Retry-After:
@@ -103,7 +103,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RateLimitError'
+                $ref: "#/components/schemas/RateLimitError"
               examples:
                 rate_limit:
                   summary: Too many submissions from IP
@@ -113,13 +113,13 @@ paths:
                     error: "rate_limit_exceeded"
                     code: "RATE_LIMIT_ERROR"
                     retryAfter: 3600
-                    
-        '422':
+
+        "422":
           description: Spam or suspicious activity detected
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SpamError'
+                $ref: "#/components/schemas/SpamError"
               examples:
                 spam_detected:
                   summary: Honeypot field filled (spam bot)
@@ -128,13 +128,13 @@ paths:
                     message: "Envio suspeito detectado. Entre em contato diretamente se isso for um erro."
                     error: "spam_detected"
                     code: "SPAM_ERROR"
-                    
-        '500':
+
+        "500":
           description: Internal server error (email service failure)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ServerError'
+                $ref: "#/components/schemas/ServerError"
               examples:
                 server_error:
                   summary: Email service unavailable
@@ -143,8 +143,8 @@ paths:
                     message: "Erro interno do servidor. Tente novamente em alguns minutos."
                     error: "internal_error"
                     code: "SERVER_ERROR"
-                    
-        '503':
+
+        "503":
           description: Service temporarily unavailable
           headers:
             Retry-After:
@@ -155,8 +155,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ServiceUnavailableError'
-                
+                $ref: "#/components/schemas/ServiceUnavailableError"
+
   /contact/health:
     get:
       summary: Health check for contact service
@@ -164,9 +164,9 @@ paths:
       operationId: getContactHealth
       tags:
         - Health Check
-        
+
       responses:
-        '200':
+        "200":
           description: Service is healthy
           content:
             application/json:
@@ -195,7 +195,7 @@ paths:
                         type: number
                         description: 24h email delivery success rate
                         example: 0.999
-                        
+
 components:
   schemas:
     ContactSubmission:
@@ -213,39 +213,39 @@ components:
           pattern: "^[a-zA-ZÀ-ÿ\\s'-]+$"
           description: Patient's full name
           example: "João Silva"
-          
+
         email:
           type: string
           format: email
           maxLength: 255
           description: Patient's email address
           example: "joao.silva@email.com"
-          
+
         phone:
           type: string
           pattern: "^\\+55\\s\\d{2}\\s\\d{4,5}-\\d{4}$"
           description: Brazilian phone number (optional)
           example: "+55 11 99999-9999"
-          
+
         message:
           type: string
           minLength: 10
           maxLength: 1000
           description: Patient's inquiry or message
           example: "Gostaria de agendar uma consulta para avaliar minha visão."
-          
+
         consent:
           type: boolean
           enum: [true]
           description: LGPD privacy consent (must be true)
           example: true
-          
+
         website:
           type: string
           maxLength: 0
           description: Honeypot field (should remain empty)
           example: ""
-          
+
     SuccessResponse:
       type: object
       required:
@@ -257,24 +257,24 @@ components:
           type: boolean
           enum: [true]
           example: true
-          
+
         message:
           type: string
           description: User-friendly success message in Portuguese
           example: "Sua mensagem foi enviada com sucesso! Dr. Philipe entrará em contato em breve."
-          
+
         submissionId:
           type: string
           format: uuid
           description: Unique identifier for tracking purposes
           example: "550e8400-e29b-41d4-a716-446655440000"
-          
+
         estimatedDelivery:
           type: string
           format: date-time
           description: Estimated email delivery time
           example: "2025-09-11T14:30:00Z"
-          
+
     ValidationError:
       type: object
       required:
@@ -287,22 +287,22 @@ components:
           type: boolean
           enum: [false]
           example: false
-          
+
         message:
           type: string
           description: General error message in Portuguese
           example: "Por favor, corrija os erros abaixo"
-          
+
         error:
           type: string
           enum: [validation_failed]
           example: "validation_failed"
-          
+
         code:
           type: string
           enum: [VALIDATION_ERROR]
           example: "VALIDATION_ERROR"
-          
+
         fieldErrors:
           type: object
           additionalProperties:
@@ -313,7 +313,7 @@ components:
           example:
             email: ["Formato de email inválido"]
             message: ["A mensagem deve ter pelo menos 10 caracteres"]
-            
+
     RateLimitError:
       type: object
       required:
@@ -326,25 +326,25 @@ components:
         success:
           type: boolean
           enum: [false]
-          
+
         message:
           type: string
           description: Rate limit message in Portuguese
           example: "Muitas tentativas. Tente novamente em 1 hora."
-          
+
         error:
           type: string
           enum: [rate_limit_exceeded]
-          
+
         code:
           type: string
           enum: [RATE_LIMIT_ERROR]
-          
+
         retryAfter:
           type: integer
           description: Seconds to wait before next request
           example: 3600
-          
+
     SpamError:
       type: object
       required:
@@ -356,20 +356,20 @@ components:
         success:
           type: boolean
           enum: [false]
-          
+
         message:
           type: string
           description: Spam detection message in Portuguese
           example: "Envio suspeito detectado. Entre em contato diretamente se isso for um erro."
-          
+
         error:
           type: string
           enum: [spam_detected]
-          
+
         code:
           type: string
           enum: [SPAM_ERROR]
-          
+
     ServerError:
       type: object
       required:
@@ -381,20 +381,20 @@ components:
         success:
           type: boolean
           enum: [false]
-          
+
         message:
           type: string
           description: Server error message in Portuguese
           example: "Erro interno do servidor. Tente novamente em alguns minutos."
-          
+
         error:
           type: string
           enum: [internal_error, email_service_error, configuration_error]
-          
+
         code:
           type: string
           enum: [SERVER_ERROR, EMAIL_ERROR, CONFIG_ERROR]
-          
+
     ServiceUnavailableError:
       type: object
       required:
@@ -406,16 +406,16 @@ components:
         success:
           type: boolean
           enum: [false]
-          
+
         message:
           type: string
           description: Service unavailable message in Portuguese
           example: "Serviço temporariamente indisponível. Tente novamente em alguns minutos."
-          
+
         error:
           type: string
           enum: [service_unavailable]
-          
+
         code:
           type: string
           enum: [SERVICE_UNAVAILABLE]
