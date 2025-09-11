@@ -169,8 +169,9 @@ if [[ "$NO_BUILD" = false ]]; then
 fi
 
 run() {
-  if $DRY_RUN; then
-    echo "[dry-run] $*"
+  if $DRY_RUN;
+  then
+    echo "[dry-run] $@"
   else
     eval "$@"
   fi
@@ -199,7 +200,7 @@ check_status() {
   # args: url expected_code_regex
   local url="$1" expect="$2"
   local code
-  code=$(curl -sS -o /dev/null -w "%{http_code}" -L "$url" || true)
+  code=$(curl -sS -o /dev/null -w "%{{http_code}}" -L "$url" || true)
   [[ "$code" =~ $expect ]]
 }
 
@@ -287,7 +288,8 @@ rollback_to_previous() {
 SITE_URL_EFFECTIVE="$(normalize_url "${SITE_URL_INPUT:-$SITE_URL_DEFAULT}")"
 
 # Fast path: verification only
-if $VERIFY_ONLY; then
+if $VERIFY_ONLY;
+then
   if verify_nginx_site "$SITE_URL_EFFECTIVE"; then
     echo "✅ Verificação concluída com sucesso"; exit 0
   else
@@ -410,7 +412,8 @@ if [[ "$SKIP_NGINX" = false ]]; then
       COPY_NGINX=true
     fi
   fi
-  if $COPY_NGINX; then
+  if $COPY_NGINX;
+  then
     logi NGINX "Updating nginx config"
     echo "📝 Updating nginx config"
     run "cp '$NGINX_SITE_CONFIG_SRC' '$NGINX_CONFIG_DEST'"
@@ -459,7 +462,8 @@ if [[ "$SKIP_NGINX" = false ]]; then
   run "systemctl enable nginx"
 
   # Post-reload verification (HTTP checks)
-  if ! $SKIP_VERIFY; then
+  if ! $SKIP_VERIFY;
+  then
     logi VERIFY "HTTP post-deploy verification"
     echo "🧪 Verificação HTTP pós-deploy"
     if verify_nginx_site "$SITE_URL_EFFECTIVE"; then
@@ -487,7 +491,8 @@ echo "✅ Deploy completed"
 logi VERIFY "Verificando integração GTM"
 echo "🏷️  Verificando integração GTM..."
 if [[ -f "$PROJECT_ROOT/scripts/verify-gtm.js" ]]; then
-  if ! $DRY_RUN; then
+  if ! $DRY_RUN;
+  then
     cd "$PROJECT_ROOT"
     # Set environment variables for verification
     export SITE_URL="https://saraivavision.com.br"
@@ -542,5 +547,5 @@ if [[ -n "$PRUNE_KEEP" ]]; then
   else
     logi CLEANUP "Nothing to prune (total $COUNT <= $PRUNE_KEEP)"
     echo "   Nada a remover (total $COUNT <= $PRUNE_KEEP)"
-fi
+  fi
 fi
