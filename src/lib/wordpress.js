@@ -69,21 +69,22 @@ const cache = new Map();
 
 /**
  * Generic API fetch with error handling and caching
- * Enhanced for Clínica Saraiva Vision with robust HTML/JSON detection
+ * Enhanced for Clínica Saraiva Vision with robust HTML/JSON detection and 404 recovery
  */
 async function wpApiFetch(endpoint, options = {}) {
-  // Suporte para ambiente de desenvolvimento e produção da Clínica Saraiva Vision
-  const baseUrl = process.env.NODE_ENV === 'development' 
-    ? API_BASE_URL // Usar servidor mock local
-    : 'https://clinicasaraivavision.com.br/wp-json/wp/v2'; // Produção
+  // Defina a URL base da API com uma lógica mais flexível
+  // 1. Use API_BASE_URL (do .env) se estiver definido.
+  // 2. Caso contrário, use a URL de produção como fallback.
+  const baseUrl = API_BASE_URL && API_BASE_URL.trim() !== ''
+    ? API_BASE_URL
+    : 'https://clinicasaraivavision.com.br/wp-json/wp/v2';
   
-  const url = `${baseUrl}${endpoint}`;
-  const cacheKey = `${url}-${JSON.stringify(options)}`;
+  const primaryUrl = `${baseUrl}${endpoint}`;
+  const cacheKey = `${primaryUrl}-${JSON.stringify(options)}`;
 
   // Debug: Log the exact URL being requested
-  console.log('[Clínica Saraiva Vision] Requesting URL:', url);
-  console.log('[WordPress] Environment:', process.env.NODE_ENV);
-  console.log('[WordPress] Base URL:', baseUrl);
+  console.log('[Clínica Saraiva Vision] Primary URL:', primaryUrl);
+  console.log('[WordPress] Environment:', import.meta.env.MODE || 'unknown');
 
   // Check cache first
   if (cache.has(cacheKey)) {
@@ -95,84 +96,108 @@ async function wpApiFetch(endpoint, options = {}) {
     cache.delete(cacheKey);
   }
 
-  try {
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-WP-Nonce': '', // Para futuras implementações de autenticação
-        ...options.headers
-      },
-      ...options
+  // Função para tentar múltiplas URLs (fallback para erro 404)
+  const tryMultipleUrls = async () => {
+    const urlsToTry = [];
+    
+    // URL primária (padrão)
+    urlsToTry.push({
+      url: primaryUrl,
+      description: 'URL primária da API REST'
     });
 
-    if (!response.ok) {
-      // Debug: Log response details for non-OK responses
-      const responseText = await response.text();
-      console.error('[Clínica Saraiva Vision] Non-OK Response:', {
-        status: response.status,
-        statusText: response.statusText,
-        url: url,
-        responsePreview: responseText.substring(0, 200)
+    // Fallback 1: Usar query parameter rest_route (para permalinks não funcionais)
+    if (baseUrl.includes('/wp-json/wp/v2')) {
+      const siteBase = baseUrl.replace('/wp-json/wp/v2', '');
+      urlsToTry.push({
+        url: `${siteBase}/?rest_route=/wp/v2${endpoint}`,
+        description: 'Fallback usando rest_route query parameter'
       });
-      throw new Error(`WordPress API Error: ${response.status} ${response.statusText} @ ${url}`);
     }
 
-    const responseText = await response.text();
-    
-    // CORREÇÃO PRINCIPAL: Verificar se o servidor retornou HTML em vez de JSON
-    if (responseText.startsWith('<!doctype') || 
-        responseText.startsWith('<html') || 
-        responseText.startsWith('<!DOCTYPE') ||
-        responseText.includes('<title>') ||
-        responseText.includes('vite/client')) {
-      
-      const errorMsg = `[Clínica Saraiva Vision] Servidor retornou HTML em vez de JSON. 
-      Isso pode indicar:
-      1. Problema de roteamento no servidor WordPress
-      2. Plugin conflitante interferindo na API
-      3. Configuração incorreta do .htaccess
-      4. Servidor de desenvolvimento (Vite) interceptando requests
-      
-      URL problemática: ${url}
-      Resposta recebida: ${responseText.substring(0, 300)}...`;
-      
-      console.error(errorMsg);
-      throw new Error('Servidor WordPress retornou HTML em vez de JSON. Verificar configuração do WordPress.');
-    }
-    
-    // Debug: Log response preview to check if it's valid JSON
-    console.log('[WordPress] Response preview:', responseText.substring(0, 100));
-    
-    let data;
-    try {
-      data = JSON.parse(responseText);
-    } catch (jsonError) {
-      console.error('[Clínica Saraiva Vision] JSON Parse Error:', jsonError);
-      console.error('[WordPress] Response was:', responseText.substring(0, 500));
-      
-      // Detalhes específicos sobre o erro para depuração
-      const errorDetails = {
-        url,
-        responseLength: responseText.length,
-        responseStart: responseText.substring(0, 200),
-        isHTML: responseText.includes('<html') || responseText.includes('<!doctype'),
-        hasViteClient: responseText.includes('vite/client'),
-        jsonError: jsonError.message
-      };
-      
-      console.error('[Clínica Saraiva Vision] Detalhes do erro:', errorDetails);
-      throw new Error(`Invalid JSON response from ${url}: ${jsonError.message}`);
+    // Fallback 2: Tentar com index.php se mod_rewrite estiver desabilitado
+    if (baseUrl.includes('/wp-json/wp/v2')) {
+      const siteBase = baseUrl.replace('/wp-json/wp/v2', '');
+      urlsToTry.push({
+        url: `${siteBase}/index.php?rest_route=/wp/v2${endpoint}`,
+        description: 'Fallback usando index.php (sem mod_rewrite)'
+      });
     }
 
+    for (const { url, description } of urlsToTry) {
+      try {
+        console.log(`[Clínica Saraiva Vision] Tentando ${description}:`, url);
+        
+        const response = await fetch(url, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'User-Agent': 'Clinica-Saraiva-Vision/2.0',
+            ...options.headers
+          },
+          ...options
+        });
+
+        const responseText = await response.text();
+
+        if (response.ok) {
+          // Verificar se é HTML em vez de JSON
+          if (responseText.startsWith('<!doctype') || 
+              responseText.startsWith('<html') || 
+              responseText.includes('<title>')) {
+            console.warn(`[Clínica Saraiva Vision] ${description} retornou HTML:`, url);
+            continue; // Tentar próxima URL
+          }
+
+          // Tentar fazer parse do JSON
+          try {
+            const data = JSON.parse(responseText);
+            console.log(`[Clínica Saraiva Vision] ✅ Sucesso com ${description}`);
+            return { data, successUrl: url };
+          } catch (jsonError) {
+            console.warn(`[Clínica Saraiva Vision] ${description} - JSON inválido:`, jsonError.message);
+            continue; // Tentar próxima URL
+          }
+        } else {
+          console.warn(`[Clínica Saraiva Vision] ${description} - Status ${response.status}:`, url);
+          
+          // Log detalhado para 404 especificamente
+          if (response.status === 404) {
+            console.error(`[Clínica Saraiva Vision] 404 Error Details:`, {
+              url,
+              status: response.status,
+              statusText: response.statusText,
+              responsePreview: responseText.substring(0, 200),
+              possibleCauses: [
+                'WordPress REST API desabilitada',
+                'Permalinks mal configurados',
+                'Arquivo .htaccess problemático',
+                'Plugin interferindo na API',
+                'mod_rewrite não habilitado'
+              ]
+            });
+          }
+        }
+      } catch (networkError) {
+        console.warn(`[Clínica Saraiva Vision] ${description} - Erro de rede:`, networkError.message);
+      }
+    }
+
+    // Se chegou até aqui, nenhuma URL funcionou
+    throw new Error(`[Clínica Saraiva Vision] Todas as URLs falharam para endpoint: ${endpoint}`);
+  };
+
+  try {
+    const result = await tryMultipleUrls();
+    
     // Cache successful responses
     cache.set(cacheKey, {
-      data,
+      data: result.data,
       timestamp: Date.now()
     });
 
-    console.log(`[Clínica Saraiva Vision] API success: ${endpoint} (${Array.isArray(data) ? data.length : 1} items)`);
-    return data;
+    console.log(`[Clínica Saraiva Vision] API success: ${endpoint} (${Array.isArray(result.data) ? result.data.length : 1} items)`);
+    return result.data;
   } catch (error) {
     console.error('[Clínica Saraiva Vision] WordPress API fetch error:', error);
     throw error;
@@ -677,72 +702,171 @@ export function clearWordPressCache() {
 
 /**
  * Check if WordPress API is available
- * Diagnóstico detalhado para Clínica Saraiva Vision
+ * Diagnóstico detalhado para Clínica Saraiva Vision com correção de 404
  */
 export async function checkWordPressConnection() {
   const diagnosticResults = {
     isConnected: false,
-    environment: process.env.NODE_ENV,
+    environment: import.meta.env.MODE || 'unknown',
     baseUrl: API_BASE_URL,
+    workingUrl: null,
     errors: [],
-    recommendations: []
+    recommendations: [],
+    testedUrls: []
   };
 
-  try {
-    const testUrl = `${API_BASE_URL}/posts?per_page=1`;
-    console.log('[Clínica Saraiva Vision] Testando conexão com:', testUrl);
-    
-    const response = await fetch(testUrl, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
+  // URLs para testar (mesmo sistema de fallback da wpApiFetch)
+  const baseUrl = API_BASE_URL && API_BASE_URL.trim() !== ''
+    ? API_BASE_URL
+    : 'https://clinicasaraivavision.com.br/wp-json/wp/v2';
+
+  const urlsToTest = [];
+  
+  // URL primária
+  urlsToTest.push({
+    url: `${baseUrl}/posts?per_page=1`,
+    description: 'API REST padrão'
+  });
+
+  // Fallback 1: rest_route query parameter
+  if (baseUrl.includes('/wp-json/wp/v2')) {
+    const siteBase = baseUrl.replace('/wp-json/wp/v2', '');
+    urlsToTest.push({
+      url: `${siteBase}/?rest_route=/wp/v2/posts&per_page=1`,
+      description: 'Fallback com rest_route'
     });
-    
-    const responseText = await response.text();
-    
-    // Verificar se é HTML em vez de JSON
-    if (responseText.startsWith('<!doctype') || responseText.startsWith('<html')) {
-      diagnosticResults.errors.push('Servidor retornou HTML em vez de JSON');
-      diagnosticResults.recommendations.push('Verificar configuração do .htaccess no WordPress');
-      diagnosticResults.recommendations.push('Desativar plugins que possam interferir na API REST');
-      diagnosticResults.recommendations.push('Verificar se as regras de rewrite estão funcionando');
+  }
+
+  // Fallback 2: index.php
+  if (baseUrl.includes('/wp-json/wp/v2')) {
+    const siteBase = baseUrl.replace('/wp-json/wp/v2', '');
+    urlsToTest.push({
+      url: `${siteBase}/index.php?rest_route=/wp/v2/posts&per_page=1`,
+      description: 'Fallback com index.php'
+    });
+  }
+
+  for (const { url, description } of urlsToTest) {
+    try {
+      console.log(`[Clínica Saraiva Vision] Testando ${description}:`, url);
       
-      if (responseText.includes('vite')) {
-        diagnosticResults.errors.push('Servidor de desenvolvimento interceptando requests');
-        diagnosticResults.recommendations.push('Configurar proxy corretamente no Vite');
+      const response = await fetch(url, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'User-Agent': 'Clinica-Saraiva-Vision-Diagnostics/2.0'
+        }
+      });
+      
+      const responseText = await response.text();
+      
+      diagnosticResults.testedUrls.push({
+        url,
+        description,
+        status: response.status,
+        success: response.ok,
+        isHtml: responseText.includes('<html') || responseText.includes('<!doctype')
+      });
+
+      if (response.ok) {
+        // Verificar se é HTML em vez de JSON
+        if (responseText.startsWith('<!doctype') || responseText.startsWith('<html')) {
+          diagnosticResults.errors.push(`${description}: Servidor retornou HTML em vez de JSON`);
+          
+          if (responseText.includes('vite')) {
+            diagnosticResults.errors.push('Servidor de desenvolvimento interceptando requests');
+            diagnosticResults.recommendations.push('Configurar proxy corretamente no Vite');
+          }
+          continue;
+        }
+        
+        // Tentar fazer parse do JSON
+        try {
+          const data = JSON.parse(responseText);
+          diagnosticResults.isConnected = true;
+          diagnosticResults.workingUrl = url;
+          diagnosticResults.postsFound = Array.isArray(data) ? data.length : 1;
+          console.log(`[Clínica Saraiva Vision] ✅ Conexão bem-sucedida com ${description}!`);
+          break; // Sucesso! Parar de testar outras URLs
+        } catch (jsonError) {
+          diagnosticResults.errors.push(`${description}: Erro de JSON - ${jsonError.message}`);
+        }
+      } else if (response.status === 404) {
+        diagnosticResults.errors.push(`${description}: 404 Not Found - API REST não disponível nesta URL`);
+        
+        if (description === 'API REST padrão') {
+          diagnosticResults.recommendations.push('Verificar se permalinks estão configurados corretamente');
+          diagnosticResults.recommendations.push('Verificar se mod_rewrite está habilitado no servidor');
+          diagnosticResults.recommendations.push('Verificar arquivo .htaccess do WordPress');
+          diagnosticResults.recommendations.push('Verificar se a API REST está habilitada no WordPress');
+        }
+      } else {
+        diagnosticResults.errors.push(`${description}: HTTP ${response.status} ${response.statusText}`);
       }
       
-      return diagnosticResults;
+    } catch (error) {
+      diagnosticResults.errors.push(`${description}: Erro de rede - ${error.message}`);
+      diagnosticResults.testedUrls.push({
+        url,
+        description,
+        success: false,
+        error: error.message
+      });
+      
+      if (error.message.includes('CORS')) {
+        diagnosticResults.recommendations.push('Configurar CORS no servidor WordPress');
+      }
+      
+      console.error(`[Clínica Saraiva Vision] Erro testando ${description}:`, error);
     }
-    
-    // Tentar fazer parse do JSON
-    try {
-      const data = JSON.parse(responseText);
-      diagnosticResults.isConnected = true;
-      diagnosticResults.postsFound = Array.isArray(data) ? data.length : 1;
-      console.log('[Clínica Saraiva Vision] Conexão bem-sucedida!');
-    } catch (jsonError) {
-      diagnosticResults.errors.push(`Erro de JSON: ${jsonError.message}`);
-      diagnosticResults.recommendations.push('Verificar formato de resposta da API');
-    }
-    
-  } catch (error) {
-    diagnosticResults.errors.push(`Erro de conexão: ${error.message}`);
-    
-    if (error.message.includes('CORS')) {
-      diagnosticResults.recommendations.push('Configurar CORS no servidor WordPress');
-    }
-    
-    if (error.message.includes('fetch')) {
-      diagnosticResults.recommendations.push('Verificar conectividade de rede');
-      diagnosticResults.recommendations.push('Verificar se o servidor WordPress está ativo');
-    }
-    
-    console.error('[Clínica Saraiva Vision] Falha na verificação de conectividade:', error);
+  }
+
+  // Se nenhuma URL funcionou, adicionar recomendações gerais
+  if (!diagnosticResults.isConnected) {
+    diagnosticResults.recommendations.push('Verificar se WordPress está instalado e ativo');
+    diagnosticResults.recommendations.push('Verificar se não há plugins desabilitando a API REST');
+    diagnosticResults.recommendations.push('Contatar administrador do servidor para verificar configurações');
   }
 
   return diagnosticResults;
+}
+
+/**
+ * Monitoramento da saúde da API WordPress - Clínica Saraiva Vision
+ */
+export async function logApiHealth() {
+  console.log('🏥 [Clínica Saraiva Vision] Verificando saúde da API WordPress...');
+  
+  const healthCheck = {
+    timestamp: new Date().toISOString(),
+    clinic: 'Saraiva Vision - Caratinga, MG',
+    doctor: 'Dr. Philipe Saraiva Cruz (CRM-MG 69.870)',
+    status: 'checking'
+  };
+
+  try {
+    const connectionResult = await checkWordPressConnection();
+    
+    healthCheck.status = connectionResult.isConnected ? 'healthy' : 'unhealthy';
+    healthCheck.workingUrl = connectionResult.workingUrl;
+    healthCheck.errors = connectionResult.errors;
+    healthCheck.testedUrls = connectionResult.testedUrls;
+
+    if (connectionResult.isConnected) {
+      console.log('✅ [Clínica Saraiva Vision] API WordPress funcionando corretamente');
+      console.log(`📍 URL ativa: ${connectionResult.workingUrl}`);
+    } else {
+      console.warn('⚠️ [Clínica Saraiva Vision] Problemas detectados na API WordPress');
+      console.log('🔧 Recomendações:', connectionResult.recommendations);
+    }
+
+    return healthCheck;
+  } catch (error) {
+    healthCheck.status = 'error';
+    healthCheck.error = error.message;
+    console.error('❌ [Clínica Saraiva Vision] Erro no monitoramento da API:', error);
+    return healthCheck;
+  }
 }
 
 /**
@@ -753,7 +877,14 @@ export async function diagnosisWordPress() {
   
   const diagnosis = {
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV,
+    environment: import.meta.env.MODE || 'unknown',
+    clinic: {
+      name: 'Clínica Saraiva Vision',
+      location: 'Caratinga, MG',
+      doctor: 'Dr. Philipe Saraiva Cruz (CRM-MG 69.870)',
+      nurse: 'Ana Lúcia',
+      partnership: 'Clínica Amor e Saúde'
+    },
     configuration: {
       rawUrl: RAW_WORDPRESS_URL,
       apiBaseUrl: API_BASE_URL,

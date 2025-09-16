@@ -8,7 +8,7 @@ import { onCLS, onFCP, onLCP, onTTFB, onINP } from 'web-vitals';
 class WebVitalsMonitor {
   constructor(options = {}) {
     this.options = {
-      endpoint: '/api/web-vitals',
+      endpoint: '/web-vitals',
       debug: process.env.NODE_ENV === 'development',
       thresholds: {
         LCP: 2500, // ms
