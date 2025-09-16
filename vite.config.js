@@ -36,19 +36,21 @@ export default defineConfig({
 		port: 3002,
 		host: true,
 		proxy: {
-			'/wp-json': {
-				target: 'http://localhost:8080',
-				changeOrigin: true,
-				secure: false,
-				headers: {
-					'Origin': 'http://localhost:3002'
-				}
-			},
-			'/wp-admin': {
-				target: 'http://localhost:8080',
-				changeOrigin: true,
-				secure: false
-			}
+			// WordPress proxy disabled - CMS not currently installed
+			// Uncomment when WordPress is available:
+			// '/wp-json': {
+			// 	target: 'https://saraivavision.com.br',
+			// 	changeOrigin: true,
+			// 	secure: true,
+			// 	headers: {
+			// 		'Origin': 'http://localhost:3002'
+			// 	}
+			// },
+			// '/wp-admin': {
+			// 	target: 'https://saraivavision.com.br',
+			// 	changeOrigin: true,
+			// 	secure: true
+			// }
 		}
 	}
 })
