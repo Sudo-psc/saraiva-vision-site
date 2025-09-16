@@ -14,17 +14,21 @@ readonly DEPLOY_ROOT="/var/www/saraivavision"
 readonly RELEASES_DIR="$DEPLOY_ROOT/releases"
 readonly CURRENT_LINK="$DEPLOY_ROOT/current"   # nginx root points here
 readonly BACKUP_DIR="/var/backups/saraivavision"
-readonly NGINX_CONFIG_SRC="${PROJECT_ROOT}/nginx.conf"  # configuração canônica completa
-# Preferir um site.conf minimal correto, senão cair para nginx.conf canônico.
-if [[ -f "${PROJECT_ROOT}/nginx.repaired.conf" ]]; then
-  NGINX_SITE_CONFIG_SRC="${PROJECT_ROOT}/nginx.repaired.conf"
+# New consolidated Nginx configuration structure
+readonly NGINX_CONFIG_SRC="${PROJECT_ROOT}/nginx-configs/production.conf"  # Primary production config
+
+# Configuration hierarchy (in order of preference)
+if [[ -f "${PROJECT_ROOT}/nginx-configs/production.conf" ]]; then
+  NGINX_SITE_CONFIG_SRC="${PROJECT_ROOT}/nginx-configs/production.conf"
+  echo "✅ Using consolidated production configuration"
 elif [[ -f "${PROJECT_ROOT}/nginx.conf" ]]; then
   NGINX_SITE_CONFIG_SRC="${PROJECT_ROOT}/nginx.conf"
+  echo "⚠️  Using legacy nginx.conf (consider migrating to nginx-configs/production.conf)"
 elif [[ -f "${PROJECT_ROOT}/nginx-site.conf" ]]; then
-  echo "⚠️  Usando nginx-site.conf (verifique se root aponta para /var/www/saraivavision/current)"
+  echo "⚠️  Using nginx-site.conf (legacy - verifique se root aponta para /var/www/saraivavision/current)"
   NGINX_SITE_CONFIG_SRC="${PROJECT_ROOT}/nginx-site.conf"
 else
-  echo "❌ Nenhuma configuração nginx* encontrada no diretório do projeto"; exit 1
+  echo "❌ Nenhuma configuração nginx encontrada. Esperado: nginx-configs/production.conf"; exit 1
 fi
 # Allow override via env to accommodate different server naming conventions
 readonly NGINX_CONFIG_DEST="${NGINX_CONFIG_DEST:-/etc/nginx/sites-available/saraivavision}"
