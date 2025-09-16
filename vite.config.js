@@ -14,9 +14,21 @@ export default defineConfig({
 	build: {
 		outDir: 'dist',
 		sourcemap: false,
+		chunkSizeWarningLimit: 600,
 		rollupOptions: {
 			output: {
-				manualChunks: undefined,
+				manualChunks: {
+					// Split vendor libraries
+					vendor: ['react', 'react-dom'],
+					// Split routing libraries
+					router: ['react-router-dom'],
+					// Split UI libraries
+					ui: ['@radix-ui/react-dialog', '@radix-ui/react-toast', '@radix-ui/react-visually-hidden'],
+					// Split animation libraries
+					animation: ['framer-motion'],
+					// Split utility libraries
+					utils: ['date-fns', 'clsx', 'class-variance-authority'],
+				},
 			},
 		},
 	},
