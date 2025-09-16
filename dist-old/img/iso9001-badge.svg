@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Badge Background -->
+  <circle cx="100" cy="100" r="95" fill="#ffffff" stroke="#1e40af" stroke-width="4"/>
+  <circle cx="100" cy="100" r="85" fill="#f8fafc" stroke="#3b82f6" stroke-width="2"/>
+
+  <!-- ISO Logo Style -->
+  <text x="100" y="50" text-anchor="middle" fill="#1e40af" font-family="Arial, sans-serif" font-size="24" font-weight="bold">ISO</text>
+  <text x="100" y="80" text-anchor="middle" fill="#dc2626" font-family="Arial, sans-serif" font-size="32" font-weight="bold">9001</text>
+
+  <!-- Quality Management Text -->
+  <text x="100" y="100" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">QUALITY</text>
+  <text x="100" y="115" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">MANAGEMENT</text>
+  <text x="100" y="130" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="10">SYSTEM</text>
+
+  <!-- Certification Text -->
+  <text x="100" y="155" text-anchor="middle" fill="#1e40af" font-family="Arial, sans-serif" font-size="12" font-weight="bold">CERTIFIED</text>
+
+  <!-- Year -->
+  <text x="100" y="175" text-anchor="middle" fill="#64748b" font-family="Arial, sans-serif" font-size="10">2024</text>
+
+  <!-- Decorative elements -->
+  <circle cx="100" cy="35" r="3" fill="#3b82f6"/>
+  <circle cx="100" cy="185" r="3" fill="#3b82f6"/>
+</svg>

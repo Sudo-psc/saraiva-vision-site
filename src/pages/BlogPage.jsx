@@ -34,11 +34,17 @@ const BlogPage = () => {
         setLoading(true);
         setError(null);
 
+        // Debug: Log API configuration
+        console.log('[BlogPage] Checking WordPress connection...');
+        console.log('[BlogPage] API_BASE_URL:', import.meta.env.VITE_WORDPRESS_API_URL);
+
         // Check if WordPress is available
         const isConnected = await checkWordPressConnection();
+        console.log('[BlogPage] WordPress connection result:', isConnected);
         setWordpressAvailable(isConnected);
 
         if (!isConnected) {
+          console.log('[BlogPage] WordPress not available, showing fallback');
           setLoading(false);
           return;
         }
@@ -76,7 +82,7 @@ const BlogPage = () => {
     };
 
     loadData();
-  }, [currentPage, selectedCategory, searchTerm]);
+  }, [currentPage, selectedCategory, searchTerm, categories]);
 
   const getDateLocale = () => {
     return i18n.language === 'pt' ? ptBR : enUS;
@@ -102,33 +108,55 @@ const BlogPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: index * 0.1 }}
-        className="modern-card overflow-hidden flex flex-col"
+        className="modern-card overflow-hidden flex flex-col focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
+        role="article"
+        aria-labelledby={`post-title-${post.id}`}
       >
-        <Link to={`/blog/${post.slug}`} className="block overflow-hidden">
+        <Link 
+          to={`/blog/${post.slug}`} 
+          className="block overflow-hidden focus:outline-none"
+          aria-label={t('blog.read_post', 'Ler o post: {{title}}', { title: (post.title?.rendered || '').replace(/<[^>]+>/g, '') })}
+        >
           <img
             src={featuredImage || 'https://placehold.co/600x400/e2e8f0/64748b?text=Image'}
             alt={post._embedded?.['wp:featuredmedia']?.[0]?.alt_text ||
               t('ui.alt.blog_post', 'Imagem ilustrativa do artigo') + ': ' +
               (post.title?.rendered || '').replace(/<[^>]+>/g, '')}
-            className="w-full h-56 object-cover transition-transform duration-300 hover:scale-105"
+            className="w-full h-48 sm:h-52 md:h-56 object-cover transition-transform duration-300 hover:scale-105"
             loading="lazy"
             decoding="async"
           />
         </Link>
-        <div className="p-6 flex flex-col flex-grow">
-          <div className="flex items-center text-sm text-gray-500 mb-3">
-            <Calendar className="w-4 h-4 mr-2" />
-            <span>{format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })}</span>
+        <div className="p-4 sm:p-6 flex flex-col flex-grow">
+          <div className="flex items-center text-sm text-gray-600 mb-3">
+            <Calendar className="w-4 h-4 mr-2" aria-hidden="true" />
+            <time 
+              dateTime={post.date}
+              aria-label={t('blog.published_date', 'Publicado em {{date}}', { 
+                date: format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() }) 
+              })}
+            >
+              {format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })}
+            </time>
             {post._embedded?.['wp:term']?.[0]?.length > 0 && (
-              <span className="ml-4 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+              <span 
+                className="ml-4 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
+                role="note"
+                aria-label={t('blog.category_label', 'Categoria: {{category}}', { 
+                  category: post._embedded['wp:term'][0][0].name 
+                })}
+              >
                 {post._embedded['wp:term'][0][0].name}
               </span>
             )}
           </div>
-          <h3 className="text-xl font-bold mb-3 text-gray-900 flex-grow">
+          <h3 
+            id={`post-title-${post.id}`}
+            className="text-xl font-bold mb-3 text-gray-900 flex-grow"
+          >
             <Link
               to={`/blog/${post.slug}`}
-              className="hover:text-blue-600"
+              className="hover:text-blue-600 focus:outline-none focus:text-blue-600 focus:underline"
               dangerouslySetInnerHTML={{ __html: post.title.rendered }}
             />
           </h3>
@@ -137,10 +165,16 @@ const BlogPage = () => {
               {excerpt}
             </div>
           )}
-          <Link to={`/blog/${post.slug}`} className="mt-auto">
-            <Button variant="link" className="p-0 text-blue-600 font-semibold group">
+          <Link 
+            to={`/blog/${post.slug}`} 
+            className="mt-auto focus:outline-none"
+            aria-label={t('blog.read_more_post', 'Leia mais sobre: {{title}}', { 
+              title: (post.title?.rendered || '').replace(/<[^>]+>/g, '') 
+            })}
+          >
+            <Button variant="link" className="p-0 text-blue-600 font-semibold group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded">
               {t('blog.read_more')}
-              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </Button>
           </Link>
         </div>
@@ -151,16 +185,21 @@ const BlogPage = () => {
   const renderContent = () => {
     if (loading) {
       return (
-        <div className="flex justify-center items-center h-96">
-          <Loader2 className="h-16 w-16 animate-spin text-blue-500" />
+        <div className="flex justify-center items-center h-96" role="status" aria-live="polite">
+          <Loader2 className="h-16 w-16 animate-spin text-blue-500" aria-hidden="true" />
+          <span className="sr-only">{t('blog.loading', 'Carregando posts do blog...')}</span>
         </div>
       );
     }
 
     if (error || !wordpressAvailable) {
       return (
-        <div className="text-center p-12 bg-yellow-50 border border-yellow-200 rounded-2xl max-w-2xl mx-auto">
-          <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
+        <div 
+          className="text-center p-12 bg-yellow-50 border border-yellow-200 rounded-2xl max-w-2xl mx-auto"
+          role="alert"
+          aria-live="assertive"
+        >
+          <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" aria-hidden="true" />
           <h3 className="text-2xl font-semibold text-yellow-800">{t('blog.placeholder_title')}</h3>
           <p className="text-yellow-700 mt-2">{t('blog.placeholder_desc_page')}</p>
         </div>
@@ -169,7 +208,11 @@ const BlogPage = () => {
 
     if (posts.length === 0) {
       return (
-        <div className="text-center p-12">
+        <div 
+          className="text-center p-12"
+          role="status"
+          aria-live="polite"
+        >
           <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('blog.no_posts')}</h3>
           <p className="text-gray-600">{t('blog.no_posts_description')}</p>
         </div>
@@ -183,23 +226,33 @@ const BlogPage = () => {
           {/* Search Bar */}
           <form onSubmit={handleSearch} className="max-w-md mx-auto mb-8">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <label htmlFor="blog-search" className="sr-only">
+                {t('blog.search_placeholder')}
+              </label>
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" aria-hidden="true" />
               <input
+                id="blog-search"
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder={t('blog.search_placeholder')}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                aria-describedby="search-description"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:border-transparent"
               />
+              <span id="search-description" className="sr-only">
+                {t('blog.search_description', 'Digite para buscar posts por título ou conteúdo')}
+              </span>
             </div>
           </form>
 
           {/* Category Filter */}
           {categories.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-2">
+            <div className="flex flex-wrap justify-center gap-2" role="group" aria-label={t('blog.category_filters', 'Filtros de categoria')}>
               <button
                 onClick={() => handleCategoryChange(null)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${selectedCategory === null
+                aria-pressed={selectedCategory === null}
+                aria-label={t('blog.all_categories_label', 'Mostrar todos os posts')}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${selectedCategory === null
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}
@@ -211,7 +264,9 @@ const BlogPage = () => {
                 <button
                   key={category.id}
                   onClick={() => handleCategoryChange(category.id)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${selectedCategory === category.id
+                  aria-pressed={selectedCategory === category.id}
+                  aria-label={t('blog.filter_by_category', 'Filtrar por categoria: {{category}}', { category: category.name })}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${selectedCategory === category.id
                       ? 'bg-blue-600 text-white'
                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                     }`}
@@ -224,7 +279,7 @@ const BlogPage = () => {
         </div>
 
         {/* Posts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 md:gap-8">
           {posts.map((post, index) => renderPostCard(post, index))}
         </div>
       </>
@@ -238,9 +293,13 @@ const BlogPage = () => {
         <meta name="description" content={t('blog.page_description')} />
       </Helmet>
       <Navbar />
-      <main className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%]">
-        <div className="container mx-auto px-4 md:px-6">
-          <motion.div
+      <main 
+        className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%]"
+        role="main"
+        aria-label={t('blog.main_content_label', 'Conteúdo principal do blog')}
+      >
+        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+          <motion.header
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -248,45 +307,13 @@ const BlogPage = () => {
           >
             <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900">{t('blog.page_title')}</h1>
             <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">{t('blog.page_subtitle')}</p>
-          </motion.div>
-          {renderContent()}
+          </motion.header>
+          <section aria-label={t('blog.posts_section_label', 'Posts do blog')}>
+            {renderContent()}
+          </section>
         </div>
       </main>
       <Footer />
-
-      {/* Overlay: Página em construção */}
-      {(() => {
-        const showOverlay = (import.meta?.env?.VITE_BLOG_UNDER_CONSTRUCTION ?? '1') !== '0';
-        if (!showOverlay) return null;
-        return (
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Página em construção"
-            className="fixed inset-0 z-50 flex items-center justify-center"
-          >
-            {/* Backdrop */}
-            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-            {/* Message card */}
-            <div className="relative mx-4 max-w-xl w-full rounded-2xl bg-white/95 shadow-2xl border border-slate-200 p-8 text-center">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
-                Página em construção
-              </h2>
-              <p className="mt-3 text-slate-600">
-                Em breve você encontrará conteúdos e novidades aqui no nosso blog.
-              </p>
-              <div className="mt-6 flex items-center justify-center gap-3">
-                <a
-                  href="/"
-                  className="inline-flex items-center px-5 py-2.5 rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Voltar à página inicial
-                </a>
-              </div>
-            </div>
-          </div>
-        );
-      })()}
     </div>
   );
 };

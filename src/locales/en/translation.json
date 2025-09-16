@@ -986,6 +986,17 @@
     "no_posts_description": "Try adjusting filters or search.",
     "back_to_blog": "Back to Blog",
     "post_error_title": "Could not load the article",
-    "post_error_desc": "There was a problem loading this content. Go back to the blog and try again."
+    "post_error_desc": "There was a problem loading this content. Go back to the blog and try again.",
+    "loading": "Loading blog posts...",
+    "search_description": "Type to search posts by title or content",
+    "category_filters": "Category filters",
+    "all_categories_label": "Show all posts",
+    "filter_by_category": "Filter by category: {{category}}",
+    "published_date": "Published on {{date}}",
+    "category_label": "Category: {{category}}",
+    "read_post": "Read the post: {{title}}",
+    "read_more_post": "Read more about: {{title}}",
+    "main_content_label": "Blog main content",
+    "posts_section_label": "Blog posts"
   }
 }

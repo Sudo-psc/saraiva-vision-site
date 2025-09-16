@@ -1,3 +1,18 @@
+// Adicione estas linhas ao seu arquivo wp-config.php,
+// de preferência antes da linha "/* That's all, stop editing! */".
+
+// Define os URLs públicos do site
+define('WP_HOME', 'https://www.saraivavision.com.br');
+define('WP_SITEURL', 'https://www.saraivavision.com.br');
+
+// Força o uso de SSL para o login e a área administrativa
+define('FORCE_SSL_ADMIN', true);
+
+// Faz o WordPress reconhecer o proxy HTTPS
+// Isso verifica o header 'X-Forwarded-Proto' que o Nginx envia
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && ['HTTP_X_FORWARDED_PROTO'] === 'https') {
+['HTTPS'] = 'on';
+}
 <?php
 
 /**

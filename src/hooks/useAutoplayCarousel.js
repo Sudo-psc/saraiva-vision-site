@@ -224,17 +224,11 @@ export const useAutoplayCarousel = ({
   // Start autoplay timer
   const startTimer = useCallback(() => {
     clearTimers();
-    
-    if (!state.isPlaying || !state.isEnabled || !state.tabVisible) {
-      setProgress(0);
-      setTimeRemaining(state.interval);
-      return;
-    }
 
     const startTime = Date.now();
     progressStartRef.current = startTime;
     progressDurationRef.current = state.interval;
-    
+
     // Set initial progress values
     setProgress(0);
     setTimeRemaining(state.interval);
@@ -262,12 +256,10 @@ export const useAutoplayCarousel = ({
     // Main autoplay timer
     timerRef.current = setTimeout(() => {
       if (progressTimerId) clearTimeout(progressTimerId);
-      // Only transition if still playing and enabled
-      if (state.isPlaying && state.isEnabled && state.tabVisible) {
-        dispatch({ type: 'NEXT', manual: false });
-      }
+      // The useEffect cleanup function handles pausing, so we can dispatch directly.
+      dispatch({ type: 'NEXT', manual: false });
     }, state.interval);
-  }, [state.isPlaying, state.isEnabled, state.tabVisible, state.interval, clearTimers]);
+  }, [state.interval, clearTimers, dispatch, setProgress, setTimeRemaining, state.isPlaying]);
 
   // Control methods
   const play = useCallback(() => {

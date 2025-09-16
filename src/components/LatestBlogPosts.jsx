@@ -21,43 +21,48 @@ const LatestBlogPosts = () => {
     const [wordpressAvailable, setWordpressAvailable] = useState(true);
 
     // Fallback posts para quando o WordPress não estiver disponível
+    // Dados de fallback relacionados à clínica
     const fallbackPosts = [
         {
-            id: 'dry-eyes',
-            title: t('blog.posts.dryEyes.title'),
-            excerpt: t('blog.posts.dryEyes.excerpt'),
-            category: t('blog.categories.prevention'),
-            link: '/blog/sindrome-do-olho-seco-sintomas-e-tratamentos',
-            date: new Date().toISOString(),
+            id: 1,
+            title: "Importância dos Exames Oftalmológicos Preventivos",
+            excerpt: "Dr. Philipe Saraiva Cruz explica como exames como refração e mapeamento de retina podem prevenir problemas visuais.",
+            date: "2025-09-15T10:00:00",
+            category: t('blog.categories.prevention', 'Prevenção'),
+            link: '/blog/exames-preventivos',
             isFallback: true
         },
         {
-            id: 'cataract',
-            title: t('blog.posts.cataract.title'),
-            excerpt: t('blog.posts.cataract.excerpt'),
-            category: t('blog.categories.treatments'),
-            link: '/blog/cirurgia-de-catarata-guia-completo',
-            date: new Date().toISOString(),
+            id: 2,
+            title: "Adaptação de Lentes de Contato: Processo Personalizado",
+            excerpt: "Nossa equipe, incluindo a enfermeira Ana Lúcia, oferece acompanhamento completo na adaptação de lentes.",
+            date: "2025-09-10T11:00:00",
+            category: t('blog.categories.treatments', 'Tratamentos'),
+            link: '/blog/adaptacao-lentes-contato',
             isFallback: true
         },
         {
-            id: 'child-eyes',
-            title: t('blog.posts.childEyes.title'),
-            excerpt: t('blog.posts.childEyes.excerpt'),
-            category: t('blog.categories.pediatric'),
-            link: '/blog/cuidados-com-a-visao-infantil',
-            date: new Date().toISOString(),
+            id: 3,
+            title: "O que é Meibografia e por que é importante?",
+            excerpt: "Entenda como o exame de Meibografia, oferecido na Clínica Saraiva Vision, ajuda no diagnóstico do olho seco.",
+            date: "2025-09-05T09:00:00",
+            category: t('blog.categories.exams', 'Exames'),
+            link: '/blog/o-que-e-meibografia',
             isFallback: true
         }
     ];
 
     useEffect(() => {
         const loadPosts = async () => {
+            const debugMode = import.meta.env.DEV;
+            if (debugMode) {
+                console.log('Carregando posts do blog da Clínica Saraiva Vision...');
+            }
+
             try {
                 setLoading(true);
                 setError(null);
 
-                // Verificar se o WordPress está disponível
                 const isConnected = await checkWordPressConnection();
                 setWordpressAvailable(isConnected);
 
@@ -68,7 +73,6 @@ const LatestBlogPosts = () => {
                     return;
                 }
 
-                // Buscar posts reais do WordPress
                 const recentPosts = await fetchRecentPosts(3);
                 setPosts(recentPosts.length > 0 ? recentPosts : fallbackPosts);
 
