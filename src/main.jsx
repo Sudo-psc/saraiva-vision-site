@@ -26,7 +26,7 @@ if (typeof window !== 'undefined') {
         ]);
         vitals.initWebVitals?.({
           debug: import.meta.env.DEV,
-          endpoint: import.meta.env.PROD ? '/api/web-vitals' : undefined
+          endpoint: '/web-vitals'
         });
         // Bind consent updates and persist UTMs
         analytics.bindConsentUpdates?.();
