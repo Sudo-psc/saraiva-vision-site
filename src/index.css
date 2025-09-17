@@ -526,6 +526,52 @@ html {
     box-sizing: border-box;
   }
 
+  /* Corrige overflow em elementos de mídia */
+  img, video, canvas {
+    overflow: hidden; /* ou clip */
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Para view transitions específicas */
+  .view-transition img {
+    overflow: clip;
+    contain: layout style paint;
+  }
+
+  /* Media elements optimization */
+  img, video, canvas {
+    display: block;
+    border-style: none;
+    box-sizing: border-box;
+    /* Performance optimization */
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* Canvas-specific fixes */
+  canvas {
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+  }
+
+  /* View transitions optimization */
+  .view-transition {
+    view-transition-name: root;
+  }
+
+  .view-transition img,
+  .view-transition video,
+  .view-transition canvas {
+    overflow: clip;
+    contain: layout style paint;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+  }
+
   /* Prevent images from overflowing */
   img,
   video {

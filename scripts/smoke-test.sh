@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-URL="${1:-http://localhost}"
+URL="${1:-https://saraivavision.com.br}"
 
 echo "🔎 Running smoke tests against: $URL"
 

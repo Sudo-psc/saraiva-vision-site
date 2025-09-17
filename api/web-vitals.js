@@ -9,17 +9,18 @@ import path from 'node:path';
 export default async function handler(req, res) {
   // Only accept POST requests
   if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST, OPTIONS');
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Content-Length');
 
   // Handle preflight
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    return res.status(204).end();
   }
 
   try {
@@ -80,9 +81,12 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Web Vitals API error:', error);
+
+    // Graceful error response for client
     res.status(500).json({
       error: 'Internal server error',
-      message: error.message
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Failed to process web vital',
+      timestamp: new Date().toISOString()
     });
   }
 }

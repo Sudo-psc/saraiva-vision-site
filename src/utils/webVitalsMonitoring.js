@@ -21,6 +21,9 @@ class WebVitalsMonitor {
     };
 
     this.vitals = {};
+    this.failedMetrics = [];
+    this.retryAttempts = 0;
+    this.maxRetries = 3;
     this.analytics = this.initAnalytics();
   }
 
@@ -89,12 +92,9 @@ class WebVitalsMonitor {
       }
 
       try {
-        await fetch(this.options.endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+        // Graceful fallback: use Beacon API for better reliability
+        if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+          const data = JSON.stringify({
             metric: name,
             value: Math.round(value),
             rating,
@@ -104,13 +104,149 @@ class WebVitalsMonitor {
             timestamp: Date.now(),
             userAgent: navigator.userAgent,
             connection: navigator.connection?.effectiveType || 'unknown'
-          }),
-        });
+          });
+
+          navigator.sendBeacon(this.options.endpoint, data);
+        } else {
+          // Fallback to fetch with timeout and retry logic
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+
+          const response = await fetch(this.options.endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              metric: name,
+              value: Math.round(value),
+              rating,
+              delta: Math.round(delta),
+              id,
+              url: window.location.pathname,
+              timestamp: Date.now(),
+              userAgent: navigator.userAgent,
+              connection: navigator.connection?.effectiveType || 'unknown'
+            }),
+            signal: controller.signal,
+            keepalive: true
+          });
+
+          clearTimeout(timeoutId);
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+        }
       } catch (error) {
+        // Graceful fallback: log but don't break user experience
         if (this.options.debug) {
-          console.warn('[Web Vitals] Failed to send metric to', this.options.endpoint, ':', error.message);
+          console.debug(`[Web Vitals] Failed to send metric to ${this.options.endpoint}:`, error.message);
+        }
+
+        // Store failed metrics for later retry
+        this.storeFailedMetric(name, value, rating, delta, id);
+      }
+    }
+  }
+
+  storeFailedMetric(name, value, rating, delta, id) {
+    this.failedMetrics.push({
+      name, value, rating, delta, id,
+      timestamp: Date.now(),
+      retryCount: 0
+    });
+
+    // Limit the size of failed metrics queue
+    if (this.failedMetrics.length > 50) {
+      this.failedMetrics = this.failedMetrics.slice(-30);
+    }
+
+    // Schedule retry if not already scheduled
+    this.scheduleRetry();
+  }
+
+  scheduleRetry() {
+    if (this.retryTimer) return;
+
+    this.retryTimer = setTimeout(() => {
+      this.retryFailedMetrics();
+      this.retryTimer = null;
+    }, 30000); // Retry after 30 seconds
+  }
+
+  async retryFailedMetrics() {
+    if (this.failedMetrics.length === 0) return;
+
+    const metricsToRetry = this.failedMetrics.filter(metric =>
+      metric.retryCount < this.maxRetries
+    );
+
+    for (const metric of metricsToRetry) {
+      try {
+        await this.sendMetricToEndpoint(metric);
+        // Remove from failed metrics on success
+        const index = this.failedMetrics.indexOf(metric);
+        if (index > -1) {
+          this.failedMetrics.splice(index, 1);
+        }
+      } catch (error) {
+        metric.retryCount++;
+        if (this.options.debug) {
+          console.debug(`[Web Vitals] Retry ${metric.retryCount} failed for ${metric.name}:`, error.message);
         }
       }
+    }
+  }
+
+  async sendMetricToEndpoint(metric) {
+    const { name, value, rating, delta, id } = metric;
+
+    if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+      const data = JSON.stringify({
+        metric: name,
+        value: Math.round(value),
+        rating,
+        delta: Math.round(delta),
+        id,
+        url: window.location.pathname,
+        timestamp: Date.now(),
+        userAgent: navigator.userAgent,
+        connection: navigator.connection?.effectiveType || 'unknown'
+      });
+
+      return navigator.sendBeacon(this.options.endpoint, data);
+    } else {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+      const response = await fetch(this.options.endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          metric: name,
+          value: Math.round(value),
+          rating,
+          delta: Math.round(delta),
+          id,
+          url: window.location.pathname,
+          timestamp: Date.now(),
+          userAgent: navigator.userAgent,
+          connection: navigator.connection?.effectiveType || 'unknown'
+        }),
+        signal: controller.signal,
+        keepalive: true
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      return response;
     }
   }
 

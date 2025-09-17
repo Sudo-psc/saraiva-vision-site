@@ -42,13 +42,20 @@ export default defineConfig({
 				changeOrigin: true,
 				secure: false,
 				headers: {
-					'Origin': 'http://localhost:3002'
+					'Origin': 'http://localhost:3002',
+					'Access-Control-Allow-Origin': '*',
+					'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+					'Access-Control-Allow-Headers': 'Content-Type, Authorization'
 				}
 			},
 			'/wp-admin': {
 				target: 'http://localhost:8083',
 				changeOrigin: true,
-				secure: false
+				secure: false,
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+					'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+				}
 			}
 		}
 	}
