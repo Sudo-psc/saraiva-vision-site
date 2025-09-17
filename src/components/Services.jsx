@@ -8,12 +8,24 @@ import { debounce } from '@/utils/componentUtils';
 import { smoothScrollHorizontal } from '@/utils/scrollUtils';
 import { useAutoplayCarousel } from '@/hooks/useAutoplayCarousel';
 
-const ServiceCard = ({ service, index, lazy = true }) => {
+const ServiceCard = React.forwardRef(({ service, index, lazy = true }, ref) => {
   const { t } = useTranslation();
   const prefersReducedMotion = useReducedMotion();
   const [visible, setVisible] = useState(!lazy);
   const cardRef = useRef(null);
   const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
+
+  // Combine external ref with internal ref
+  const combinedRef = useCallback((node) => {
+    cardRef.current = node;
+    if (ref) {
+      if (typeof ref === 'function') {
+        ref(node);
+      } else {
+        ref.current = node;
+      }
+    }
+  }, [ref]);
 
   useEffect(() => {
     if (!lazy || visible || !cardRef.current) return;
@@ -31,7 +43,7 @@ const ServiceCard = ({ service, index, lazy = true }) => {
 
   return (
     <motion.div
-      ref={cardRef}
+      ref={combinedRef}
       data-card
       layout
       initial={{ y: 40, opacity: 0 }}
@@ -96,65 +108,18 @@ const ServiceCard = ({ service, index, lazy = true }) => {
       <div className="pointer-events-none absolute bottom-0 inset-x-0 h-1.5 bg-gradient-to-r from-blue-400/0 via-cyan-500/40 to-teal-400/0 opacity-0 group-hover:opacity-100 transition-opacity" />
     </motion.div>
   );
-};
+});
+
+ServiceCard.displayName = 'ServiceCard';
 
 const Services = ({ full = false, autoplay = true }) => {
   const { t } = useTranslation();
-
-  // Modo de compatibilidade para suite de testes legada (espera apenas 6 serviços específicos)
-  const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
-
-  const baseItemsRef = useRef(null);
-  if (!baseItemsRef.current) {
-    if (isTestEnv) {
-      // Conjunto reduzido de 6 serviços com IDs e textos esperados pelos testes (mantém nova infra em produção)
-      baseItemsRef.current = [
-        {
-          id: 'consultas-oftalmologicas',
-          icon: <div data-testid="consultation-icon" className="w-full h-full object-contain" />,
-          title: t('services.consultation.title', 'Consultas Especializadas'),
-          description: t('services.consultation.description', 'Avaliação completa da saúde ocular com equipamentos modernos.'),
-          testKey: 'services.items.consultations.title'
-        },
-        {
-          id: 'exames-diagnosticos',
-          icon: <div data-testid="exam-icon" className="w-full h-full object-contain" />,
-          title: t('services.exams.title', 'Exames Diagnósticos'),
-          description: t('services.exams.description', 'Exames precisos para diagnóstico precoce de doenças oculares.'),
-          testKey: 'services.items.refraction.title'
-        },
-        {
-          id: 'tratamentos-avancados',
-          icon: <div data-testid="treatment-icon" className="w-full h-full object-contain" />,
-          title: t('services.treatments.title', 'Tratamentos Avançados'),
-          description: t('services.treatments.description', 'Tratamentos modernos e eficazes para diversas condições oculares.'),
-          testKey: 'services.items.specialized.title'
-        },
-        {
-          id: 'cirurgias-oftalmologicas',
-          icon: <div data-testid="surgery-icon" className="w-full h-full object-contain" />,
-          title: t('services.surgery.title', 'Cirurgias Especializadas'),
-          description: t('services.surgery.description', 'Procedimentos cirúrgicos com tecnologia de última geração.'),
-          testKey: 'services.items.surgeries.title'
-        },
-        {
-          id: 'acompanhamento-pediatrico',
-          icon: <div data-testid="pediatric-icon" className="w-full h-full object-contain" />,
-          title: t('services.pediatric.title', 'Oftalmologia Pediátrica'),
-          description: t('services.pediatric.description', 'Cuidados especializados para a saúde ocular infantil.'),
-          testKey: 'services.items.pediatric.title'
-        },
-        {
-          id: 'laudos-especializados',
-          icon: <div data-testid="report-icon" className="w-full h-full object-contain" />,
-          title: t('services.reports.title', 'Laudos Especializados'),
-          description: t('services.reports.description', 'Relatórios médicos detalhados e precisos.'),
-          testKey: 'services.items.reports.title'
-        }
-      ];
-    } else {
-      // Conjunto completo (12) usado em produção
-      baseItemsRef.current = [
+  const [serviceItems, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+  const loadServices = useCallback(async () => {
+    setLoading(true);
+    const clinicServices = [
         { id: 'consultas-oftalmologicas', icon: getServiceIcon('consultas-oftalmologicas', { className: 'w-full h-full object-contain' }), title: t('services.items.consultations.title'), description: t('services.items.consultations.description') },
         { id: 'exames-de-refracao', icon: getServiceIcon('exames-de-refracao', { className: 'w-full h-full object-contain' }), title: t('services.items.refraction.title'), description: t('services.items.refraction.description') },
         { id: 'tratamentos-especializados', icon: getServiceIcon('tratamentos-especializados', { className: 'w-full h-full object-contain' }), title: t('services.items.specialized.title'), description: t('services.items.specialized.description') },
@@ -167,21 +132,18 @@ const Services = ({ full = false, autoplay = true }) => {
         { id: 'paquimetria', icon: getServiceIcon('paquimetria', { className: 'w-full h-full object-contain' }), title: t('services.items.pachymetry.title'), description: t('services.items.pachymetry.description') },
         { id: 'retinografia', icon: getServiceIcon('retinografia', { className: 'w-full h-full object-contain' }), title: t('services.items.retinography.title'), description: t('services.items.retinography.description') },
         { id: 'campo-visual', icon: getServiceIcon('campo-visual', { className: 'w-full h-full object-contain' }), title: t('services.items.visualField.title'), description: t('services.items.visualField.description') }
-      ];
-      // Embaralhar para experiência dinâmica
-      for (let i = baseItemsRef.current.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [baseItemsRef.current[i], baseItemsRef.current[j]] = [baseItemsRef.current[j], baseItemsRef.current[i]];
-      }
-    }
-  }
-
-  const serviceItems = baseItemsRef.current;
+    ];
+    setServices(clinicServices);
+    setLoading(false);
+  }, [t]);
+  
+  useEffect(() => {
+    loadServices();
+  }, [loadServices]);
   const scrollerRef = useRef(null);
   const cardWidthRef = useRef(320); // width + gap
   const itemsPerViewRef = useRef(1);
   const [itemsPerView, setItemsPerView] = useState(1);
-  const prefersReducedMotion = useReducedMotion();
   const [isDragging, setIsDragging] = useState(false);
   const dragStartXRef = useRef(0);
   const scrollStartRef = useRef(0);
@@ -270,15 +232,6 @@ const Services = ({ full = false, autoplay = true }) => {
     return () => window.removeEventListener('resize', measure);
   }, [measure]);
 
-  const scrollByAmount = (dir = 1) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const per = Math.max(1, itemsPerViewRef.current);
-    const rawIndex = Math.round(el.scrollLeft / cardWidthRef.current);
-    const targetIndex = Math.max(0, Math.min(serviceItems.length - 1, rawIndex + dir * per));
-    scrollToIndex(targetIndex);
-  };
-
   const updateIndex = useCallback(() => {
     const el = scrollerRef.current;
     if (!el) return;
@@ -304,6 +257,15 @@ const Services = ({ full = false, autoplay = true }) => {
     autoplayCarousel.goToSlide(i);
   }, [autoplayCarousel]);
 
+  const scrollByAmount = useCallback((dir = 1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const per = Math.max(1, itemsPerViewRef.current);
+    const rawIndex = Math.round(el.scrollLeft / cardWidthRef.current);
+    const targetIndex = Math.max(0, Math.min(serviceItems.length - 1, rawIndex + dir * per));
+    scrollToIndex(targetIndex);
+  }, [serviceItems.length, scrollToIndex]);
+
   // Snap automático para o card mais próximo após rolagem
   const snapToNearest = useCallback(() => {
     const el = scrollerRef.current;
@@ -325,7 +287,7 @@ const Services = ({ full = false, autoplay = true }) => {
     };
     el.addEventListener('keydown', handler, { passive: false }); // Necessário para preventDefault
     return () => el.removeEventListener('keydown', handler);
-  }, []);
+  }, [scrollByAmount]);
 
   // Touch-optimized drag to scroll
   const onPointerDown = useCallback((e) => {

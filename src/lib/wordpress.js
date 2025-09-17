@@ -393,6 +393,27 @@ const fallbackCategories = [
 // Posts de fallback com conteúdo médico da Clínica Saraiva Vision
 const fallbackPosts = [
   {
+    id: 4, // New unique ID
+    title: { rendered: "Importância dos Exames Oftalmológicos Preventivos" },
+    slug: "importancia-exames-oftalmologicos-preventivos",
+    excerpt: { rendered: "Dr. Philipe e Ana Lúcia orientam sobre refração, paquimetria..." },
+    content: { rendered: "<p>Dr. Philipe e Ana Lúcia orientam sobre refração, paquimetria...</p>" },
+    date: new Date().toISOString(),
+    categories: [2], // ID for "Exames Especializados"
+    tags: [], // No tags provided
+    author: 1, // Dr. Philipe
+    featured_media: 4, // Placeholder
+    _embedded: {
+      author: [{
+        id: 1,
+        name: 'Dr. Philipe Saraiva Cruz',
+        slug: 'dr-philipe-saraiva-cruz',
+        description: 'Oftalmologista CRM-MG 69.870',
+        avatar_urls: { 96: '/images/dr-philipe-avatar.jpg' }
+      }]
+    }
+  },
+  {
     id: 1,
     title: { rendered: 'A Importância do Exame de Fundo de Olho' },
     slug: 'importancia-exame-fundo-de-olho',
