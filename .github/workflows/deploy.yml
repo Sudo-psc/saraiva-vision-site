@@ -95,6 +95,8 @@ jobs:
           username: ${{ secrets.PROD_SSH_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           port: ${{ secrets.PROD_SSH_PORT || 22 }}
+          fingerprint: ${{ secrets.PROD_HOST_FINGERPRINT }}
+          host_key_verification: true
           script: |
             set -euo pipefail
             BASE_DIR=${{ secrets.PROD_REMOTE_PATH || '/home/deploy/saraivavision' }}
@@ -110,6 +112,8 @@ jobs:
           username: ${{ secrets.PROD_SSH_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           port: ${{ secrets.PROD_SSH_PORT || 22 }}
+          fingerprint: ${{ secrets.PROD_HOST_FINGERPRINT }}
+          host_key_verification: true
           script: |
             set -euo pipefail
             BASE_DIR=${{ secrets.PROD_REMOTE_PATH || '/home/deploy/saraivavision' }}
