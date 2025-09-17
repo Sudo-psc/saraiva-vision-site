@@ -130,8 +130,10 @@ Título: Blog Saraiva Vision - Oftalmologia
 URL: http://localhost:8083
 Idioma: Português Brasil (pt_BR)
 Fuso: America/Sao_Paulo
-Admin: admin/admin123
-Email: admin@saraivavision.com.br
+Admin: ADMIN_USERNAME/ADMIN_PASSWORD
+Email: ADMIN_EMAIL
+
+**Note:** These are placeholder values. Please refer to the `.env.example` file to set up your local environment with secure credentials.
 ```
 
 ### Recursos Ativados
@@ -218,7 +220,7 @@ cd /Users/philipecruz/saraiva-vision-site
 ```
 
 ### URLs Importantes
-- **WordPress Admin:** http://localhost:8083/wp-admin/ (admin/admin123)
+- **WordPress Admin:** http://localhost:8083/wp-admin/ (see credentials section)
 - **WordPress Site:** http://localhost:8083/
 - **WordPress API:** http://localhost:8083/wp-json/wp/v2/
 - **React Blog:** http://localhost:3003/blog

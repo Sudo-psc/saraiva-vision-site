@@ -287,7 +287,9 @@
 
       function displayResults() {
         const container = document.getElementById("results");
-        let html = "";
+
+        // Limpar o container de forma segura
+        container.innerHTML = "";
 
         Object.keys(testResults).forEach((testName) => {
           const result = testResults[testName];
@@ -301,44 +303,80 @@
               testing: "🔄",
             }[result.status] || "📋";
 
-          html += `
-                    <div class="test-section">
-                        <div class="test-title">
-                            ${icon} ${testName}
-                            <span class="status ${statusClass}">${result.status.toUpperCase()}</span>
-                        </div>
-                        <div class="result ${statusClass}">
-                            <strong>Resultado:</strong> ${result.message}
-                        </div>
-                        ${result.details ? renderDetails(result.details) : ""}
-                    </div>
-                `;
-        });
+          // Criar o elemento principal .test-section
+          const testSection = document.createElement("div");
+          testSection.className = "test-section";
 
-        container.innerHTML = html;
+          // Criar o elemento .test-title com conteúdo seguro
+          const testTitle = document.createElement("div");
+          testTitle.className = "test-title";
+          testTitle.textContent = `${icon} ${testName}`;
+
+          // Criar o span de status com classe e texto seguros
+          const statusSpan = document.createElement("span");
+          statusSpan.className = `status ${statusClass}`;
+          statusSpan.textContent = result.status.toUpperCase();
+          testTitle.appendChild(statusSpan);
+          testSection.appendChild(testTitle);
+
+          // Criar o elemento .result com conteúdo seguro
+          const resultDiv = document.createElement("div");
+          resultDiv.className = `result ${statusClass}`;
+          resultDiv.textContent = `Resultado: ${result.message}`;
+          testSection.appendChild(resultDiv);
+
+          // Adicionar detalhes se existirem
+          if (result.details) {
+            const detailsContent = renderDetails(result.details);
+            if (detailsContent instanceof Node) {
+              testSection.appendChild(detailsContent);
+            } else if (typeof detailsContent === "string") {
+              // Se renderDetails retornar string, criar um div seguro
+              const detailsDiv = document.createElement("div");
+              detailsDiv.innerHTML = detailsContent; // Considerando que renderDetails já sanitiza
+              testSection.appendChild(detailsDiv);
+            }
+          }
+
+          // Adicionar a seção completa ao container
+          container.appendChild(testSection);
+        });
       }
 
       function renderDetails(details) {
         if (typeof details === "string") {
-          return `<div class="code-block">${details}</div>`;
+          // Criar elemento code-block seguro
+          const codeBlock = document.createElement("div");
+          codeBlock.className = "code-block";
+          codeBlock.textContent = details;
+          return codeBlock;
         }
 
         if (Array.isArray(details)) {
-          return `
-                    <div class="recommendations">
-                        <h4>📋 Detalhes:</h4>
-                        <ul>${details
-                          .map((item) => `<li>${item}</li>`)
-                          .join("")}</ul>
-                    </div>
-                `;
+          // Criar elemento recommendations seguro
+          const recommendationsDiv = document.createElement("div");
+          recommendationsDiv.className = "recommendations";
+
+          const titleH4 = document.createElement("h4");
+          titleH4.textContent = "📋 Detalhes:";
+          recommendationsDiv.appendChild(titleH4);
+
+          const ul = document.createElement("ul");
+          details.forEach((item) => {
+            const li = document.createElement("li");
+            li.textContent = item;
+            ul.appendChild(li);
+          });
+          recommendationsDiv.appendChild(ul);
+
+          return recommendationsDiv;
         }
 
-        return `<div class="code-block">${JSON.stringify(
-          details,
-          null,
-          2
-        )}</div>`;
+        // Criar elemento code-block para JSON
+        const codeBlock = document.createElement("div");
+        codeBlock.className = "code-block";
+        codeBlock.textContent = JSON.stringify(details, null, 2);
+        return codeBlock;
       }
 
       async function testApiUrls() {
