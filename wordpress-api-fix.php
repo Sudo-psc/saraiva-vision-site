@@ -1,244 +1,366 @@
 <?php
 
 /**
- * WordPress API REST Fix - Clínica Saraiva Vision
+ * Plugin para configuração automática do WordPress
+ * Clínica Saraiva Vision - Dr. Philipe Saraiva Cruz
  * 
- * Adicione este código ao functions.php do tema ativo ou crie um plugin
- * para resolver problemas de 404 na API REST do WordPress
- * 
- * Desenvolvido para: Dr. Philipe Saraiva Cruz (CRM-MG 69.870)
- * Clínica: Saraiva Vision - Caratinga, MG
+ * Este plugin configura automaticamente o WordPress para funcionar como Headless CMS
+ * para o site da Clínica Saraiva Vision
  */
 
-// Prevenir acesso direto
+// Prevent direct access
 if (!defined('ABSPATH')) {
     exit;
 }
 
 /**
- * Classe principal para corrigir problemas da API REST
+ * Configurações de CORS para API REST
  */
-class ClinicaSaraivaVision_API_Fix
+function saraiva_enable_cors()
 {
+    // Allow CORS from frontend domains
+    $allowed_origins = [
+        'http://localhost:3002',
+        'http://localhost:8082',
+        'https://saraivavision.com.br',
+        'https://www.saraivavision.com.br'
+    ];
 
-    public function __construct()
-    {
-        add_action('init', array($this, 'fix_rest_api_permalinks'));
-        add_action('wp_loaded', array($this, 'ensure_rest_api_enabled'));
-        add_filter('rest_enabled', '__return_true');
-        add_filter('rest_jsonp_enabled', '__return_true');
+    $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 
-        // Hook para depuração (apenas em desenvolvimento)
-        if (WP_DEBUG) {
-            add_action('rest_api_init', array($this, 'log_rest_api_status'));
-        }
+    if (in_array($origin, $allowed_origins)) {
+        header("Access-Control-Allow-Origin: $origin");
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Max-Age: 86400');
     }
 
-    /**
-     * Corrigir problemas de permalinks da API REST
-     */
-    public function fix_rest_api_permalinks()
-    {
-        // Verificar se as regras de rewrite precisam ser atualizadas
-        $permalink_structure = get_option('permalink_structure');
-
-        // Se permalinks estiverem vazios, configurar estrutura padrão
-        if (empty($permalink_structure)) {
-            // Check if we've already attempted to fix this
-            $fix_attempted = get_option('saraiva_vision_permalink_fix_attempted');
-
-            if (!$fix_attempted) {
-                global $wp_rewrite;
-                $wp_rewrite->set_permalink_structure('/%postname%/');
-                flush_rewrite_rules(false);
-                update_option('saraiva_vision_permalink_fix_attempted', true);
-
-                // Log da correção
-                error_log('[Clínica Saraiva Vision] Permalink structure corrigida');
-            }
-        }
-        // Garantir que a API REST funcione mesmo com permalinks problemáticos
-        add_action('parse_request', array($this, 'handle_rest_route_fallback'));
-    }
-
-    /**
-     * Fallback para quando a API REST não funciona com permalinks
-     */
-    public function handle_rest_route_fallback($wp)
-    {
-        // Verificar se é uma requisição para API REST via query parameter
-        if (isset($_GET['rest_route'])) {
-            $rest_route = sanitize_text_field($_GET['rest_route']);
-
-            // Verificar se é uma rota válida da API WP v2
-            if (strpos($rest_route, '/wp/v2/') === 0) {
-                // Definir a rota REST
-                $wp->query_vars['rest_route'] = $rest_route;
-
-                // Log da correção
-                error_log('[Clínica Saraiva Vision] Usando fallback rest_route: ' . $rest_route);
-            }
-        }
-    }
-
-    /**
-     * Garantir que a API REST esteja habilitada
-     */
-    public function ensure_rest_api_enabled()
-    {
-        // Remover filtros que possam desabilitar a API REST
-        $filters_to_remove = array(
-            'rest_enabled',
-            'rest_jsonp_enabled',
-            'wp_rest_server_class'
-        );
-
-        foreach ($filters_to_remove as $filter) {
-            if (has_filter($filter, '__return_false')) {
-                remove_filter($filter, '__return_false');
-                error_log('[Clínica Saraiva Vision] Removido filtro restritivo: ' . $filter);
-            }
+    // Handle preflight requests
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
+            header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS, PATCH");
         }
 
-        // Garantir que a API REST esteja habilitada
-        if (!function_exists('rest_get_server')) {
-            error_log('[Clínica Saraiva Vision] ERRO: Função rest_get_server não existe');
-        }
-    }
-
-    /**
-     * Log do status da API REST (apenas em desenvolvimento)
-     */
-    public function log_rest_api_status()
-    {
-        if (!WP_DEBUG) {
-            return;
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
+            header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
         }
 
-        $status = array(
-            'timestamp' => current_time('mysql'),
-            'clinic' => 'Clínica Saraiva Vision - Caratinga, MG',
-            'doctor' => 'Dr. Philipe Saraiva Cruz (CRM-MG 69.870)',
-            'api_enabled' => rest_enabled(),
-            'permalink_structure' => get_option('permalink_structure'),
-            'rest_url' => get_rest_url(),
-            'home_url' => home_url(),
-            'site_url' => site_url()
-        );
-
-        error_log('[Clínica Saraiva Vision] Status da API REST: ' . json_encode($status));
-    }
-
-    /**
-     * Adicionar headers CORS para desenvolvimento
-     */
-    public function add_cors_headers()
-    {
-        // Apenas adicionar CORS em desenvolvimento
-        if (WP_DEBUG || (defined('WP_ENVIRONMENT_TYPE') && WP_ENVIRONMENT_TYPE === 'development')) {
-            // Use specific origins instead of wildcard
-            $allowed_origins = array(
-                'http://localhost:4173',
-                'http://localhost:5173',
-                'http://192.168.100.122:4173'
-            );
-
-            $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
-            if (in_array($origin, $allowed_origins)) {
-                header('Access-Control-Allow-Origin: ' . $origin);
-            }
-
-            header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-            header('Access-Control-Allow-Headers: Content-Type, Authorization');
-
-            if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-                http_response_code(200);
-                exit;
-            }
-        }
+        exit(0);
     }
 }
-
-// Inicializar a correção
-new ClinicaSaraivaVision_API_Fix();
+add_action('init', 'saraiva_enable_cors');
 
 /**
- * Adicionar endpoint customizado para teste da API
+ * Adicionar campos customizados para posts médicos
  */
-add_action('rest_api_init', function () {
-    register_rest_route('clinica-saraiva-vision/v1', '/test', array(
+function saraiva_add_post_meta_fields()
+{
+    // Campos específicos para posts médicos
+    add_meta_box(
+        'saraiva_medical_meta',
+        'Informações Médicas',
+        'saraiva_medical_meta_callback',
+        'post',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'saraiva_add_post_meta_fields');
+
+function saraiva_medical_meta_callback($post)
+{
+    wp_nonce_field('saraiva_medical_meta', 'saraiva_medical_meta_nonce');
+
+    $difficulty_level = get_post_meta($post->ID, '_medical_difficulty', true);
+    $reading_time = get_post_meta($post->ID, '_reading_time', true);
+    $medical_disclaimer = get_post_meta($post->ID, '_medical_disclaimer', true);
+
+?>
+    <table class="form-table">
+        <tr>
+            <th><label for="medical_difficulty">Nível de Dificuldade:</label></th>
+            <td>
+                <select name="medical_difficulty" id="medical_difficulty">
+                    <option value="basic" <?php selected($difficulty_level, 'basic'); ?>>Básico</option>
+                    <option value="intermediate" <?php selected($difficulty_level, 'intermediate'); ?>>Intermediário</option>
+                    <option value="advanced" <?php selected($difficulty_level, 'advanced'); ?>>Avançado</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="reading_time">Tempo de Leitura (min):</label></th>
+            <td>
+                <input type="number" name="reading_time" id="reading_time" value="<?php echo $reading_time; ?>" min="1" max="60" />
+            </td>
+        </tr>
+        <tr>
+            <th><label for="medical_disclaimer">Aviso Médico Personalizado:</label></th>
+            <td>
+                <textarea name="medical_disclaimer" id="medical_disclaimer" rows="3" cols="50"><?php echo $medical_disclaimer; ?></textarea>
+                <p class="description">Deixe em branco para usar o aviso padrão.</p>
+            </td>
+        </tr>
+    </table>
+<?php
+}
+
+function saraiva_save_medical_meta($post_id)
+{
+    if (!isset($_POST['saraiva_medical_meta_nonce']) || !wp_verify_nonce($_POST['saraiva_medical_meta_nonce'], 'saraiva_medical_meta')) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (isset($_POST['medical_difficulty'])) {
+        update_post_meta($post_id, '_medical_difficulty', sanitize_text_field($_POST['medical_difficulty']));
+    }
+
+    if (isset($_POST['reading_time'])) {
+        update_post_meta($post_id, '_reading_time', intval($_POST['reading_time']));
+    }
+
+    if (isset($_POST['medical_disclaimer'])) {
+        update_post_meta($post_id, '_medical_disclaimer', sanitize_textarea_field($_POST['medical_disclaimer']));
+    }
+}
+add_action('save_post', 'saraiva_save_medical_meta');
+
+/**
+ * Adicionar campos customizados à API REST
+ */
+function saraiva_register_rest_fields()
+{
+    // Campo de dificuldade médica
+    register_rest_field('post', 'medical_difficulty', [
+        'get_callback' => function ($object) {
+            return get_post_meta($object['id'], '_medical_difficulty', true) ?: 'basic';
+        },
+        'schema' => [
+            'description' => 'Nível de dificuldade do conteúdo médico',
+            'type' => 'string',
+            'enum' => ['basic', 'intermediate', 'advanced'],
+        ],
+    ]);
+
+    // Campo de tempo de leitura
+    register_rest_field('post', 'reading_time', [
+        'get_callback' => function ($object) {
+            return intval(get_post_meta($object['id'], '_reading_time', true)) ?: 5;
+        },
+        'schema' => [
+            'description' => 'Tempo estimado de leitura em minutos',
+            'type' => 'integer',
+        ],
+    ]);
+
+    // Campo de aviso médico
+    register_rest_field('post', 'medical_disclaimer', [
+        'get_callback' => function ($object) {
+            $custom = get_post_meta($object['id'], '_medical_disclaimer', true);
+            return $custom ?: 'Este conteúdo é meramente informativo. Consulte sempre um oftalmologista para diagnóstico e tratamento adequado.';
+        },
+        'schema' => [
+            'description' => 'Aviso médico do post',
+            'type' => 'string',
+        ],
+    ]);
+
+    // Informações do autor médico
+    register_rest_field('post', 'doctor_info', [
+        'get_callback' => function ($object) {
+            $author_id = $object['author'];
+            return [
+                'name' => get_the_author_meta('display_name', $author_id),
+                'crm' => get_user_meta($author_id, 'doctor_crm', true) ?: 'CRM-MG 69.870',
+                'specialty' => get_user_meta($author_id, 'doctor_specialty', true) ?: 'Oftalmologia',
+                'clinic' => get_user_meta($author_id, 'clinic_location', true) ?: 'Caratinga, MG',
+                'bio' => get_the_author_meta('description', $author_id),
+            ];
+        },
+        'schema' => [
+            'description' => 'Informações do médico autor',
+            'type' => 'object',
+        ],
+    ]);
+
+    // Featured image URLs otimizadas
+    register_rest_field('post', 'featured_image_urls', [
+        'get_callback' => function ($object) {
+            $image_id = get_post_thumbnail_id($object['id']);
+            if ($image_id) {
+                return [
+                    'thumbnail' => wp_get_attachment_image_url($image_id, 'blog-thumb'),
+                    'medium' => wp_get_attachment_image_url($image_id, 'blog-medium'),
+                    'large' => wp_get_attachment_image_url($image_id, 'blog-large'),
+                    'full' => wp_get_attachment_image_url($image_id, 'full'),
+                    'alt_text' => get_post_meta($image_id, '_wp_attachment_image_alt', true)
+                ];
+            }
+            return null;
+        },
+        'schema' => [
+            'description' => 'URLs das imagens em diferentes tamanhos',
+            'type' => 'object',
+        ],
+    ]);
+}
+add_action('rest_api_init', 'saraiva_register_rest_fields');
+
+/**
+ * Configurar thumbnails e tamanhos de imagem
+ */
+function saraiva_setup_theme_support()
+{
+    // Habilitar thumbnails
+    add_theme_support('post-thumbnails');
+
+    // Definir tamanhos de imagem personalizados
+    add_image_size('blog-thumb', 300, 200, true);
+    add_image_size('blog-medium', 600, 400, true);
+    add_image_size('blog-large', 1200, 800, true);
+    add_image_size('blog-hero', 1920, 1080, true);
+}
+add_action('after_setup_theme', 'saraiva_setup_theme_support');
+
+/**
+ * Configurações automáticas na ativação
+ */
+function saraiva_auto_configure()
+{
+    // Configurar permalinks para SEO
+    update_option('permalink_structure', '/blog/%postname%/');
+
+    // Configurações do site
+    update_option('blogname', 'Blog Médico - Dr. Philipe Saraiva');
+    update_option('blogdescription', 'Informações especializadas em oftalmologia');
+
+    // Configurações de discussão
+    update_option('default_comment_status', 'closed');
+    update_option('default_ping_status', 'closed');
+
+    // Configurações de leitura
+    update_option('posts_per_page', 12);
+    update_option('show_on_front', 'posts');
+
+    // Flush rewrite rules
+    flush_rewrite_rules();
+}
+
+// Executar configurações na primeira carga
+if (!get_option('saraiva_configured', false)) {
+    saraiva_auto_configure();
+    update_option('saraiva_configured', true);
+}
+
+/**
+ * Adicionar endpoints customizados para a clínica
+ */
+function saraiva_custom_endpoints()
+{
+    // Endpoint para informações da clínica
+    register_rest_route('saraiva/v1', '/clinic-info', [
         'methods' => 'GET',
-        'callback' => 'clinica_saraiva_vision_api_test',
+        'callback' => function () {
+            return [
+                'name' => 'Clínica Saraiva Vision',
+                'doctor' => [
+                    'name' => 'Dr. Philipe Saraiva Cruz',
+                    'crm' => 'CRM-MG 69.870',
+                    'specialty' => 'Oftalmologia',
+                    'qualifications' => [
+                        'Especialização em Cirurgia Refrativa',
+                        'Especialização em Doenças da Retina',
+                        'Membro da Sociedade Brasileira de Oftalmologia'
+                    ]
+                ],
+                'location' => [
+                    'city' => 'Caratinga',
+                    'state' => 'Minas Gerais',
+                    'address' => 'Rua Coronel Antônio Pinto, 131 - Centro',
+                    'phone' => '(33) 3321-8555',
+                    'email' => 'contato@saraivavision.com.br'
+                ],
+                'services' => [
+                    'Consultas Oftalmológicas',
+                    'Exame de Fundo de Olho',
+                    'Cirurgia Refrativa',
+                    'Tratamento de Glaucoma',
+                    'Cirurgia de Catarata',
+                    'Adaptação de Lentes de Contato'
+                ]
+            ];
+        },
         'permission_callback' => '__return_true'
-    ));
-});
+    ]);
+
+    // Endpoint para estatísticas do blog
+    register_rest_route('saraiva/v1', '/blog-stats', [
+        'methods' => 'GET',
+        'callback' => function () {
+            $posts_count = wp_count_posts('post');
+            $categories_count = wp_count_terms(['taxonomy' => 'category']);
+
+            return [
+                'total_posts' => $posts_count->publish,
+                'total_categories' => $categories_count,
+                'latest_post' => get_the_date('c', get_option('sticky_posts')[0] ?? null),
+                'wordpress_version' => get_bloginfo('version'),
+                'last_updated' => current_time('c')
+            ];
+        },
+        'permission_callback' => '__return_true'
+    ]);
+}
+add_action('rest_api_init', 'saraiva_custom_endpoints');
 
 /**
- * Função de teste da API da clínica
+ * Configurar menus automáticos
  */
-function clinica_saraiva_vision_api_test()
+function saraiva_create_menus()
 {
-    return new WP_REST_Response(array(
-        'status' => 'success',
-        'message' => 'API WordPress funcionando corretamente',
-        'clinic' => array(
-            'name' => 'Clínica Saraiva Vision',
-            'location' => 'Caratinga, Minas Gerais',
-            'doctor' => array(
-                'name' => 'Dr. Philipe Saraiva Cruz',
-                'crm' => 'CRM-MG 69.870',
-                'specialty' => 'Oftalmologia'
-            ),
-            'nurse' => array(
-                'name' => 'Ana Lúcia',
-                'specialty' => 'Enfermagem Oftalmológica'
-            ),
-            'partnership' => 'Clínica Amor e Saúde',
-            'services' => array(
-                'Consultas Oftalmológicas',
-                'Refração',
-                'Paquimetria',
-                'Mapeamento de Retina',
-                'Biometria',
-                'Retinografia',
-                'Topografia Corneana',
-                'Meiobografia',
-                'Testes de Jones e Schirmer',
-                'Adaptação de Lentes de Contato'
-            )
-        ),
-        'api_info' => array(
-            'rest_url' => get_rest_url(),
-            'posts_endpoint' => get_rest_url(null, 'wp/v2/posts'),
-            'categories_endpoint' => get_rest_url(null, 'wp/v2/categories'),
-            'test_endpoint' => get_rest_url(null, 'clinica-saraiva-vision/v1/test')
-        ),
-        'timestamp' => current_time('mysql'),
-        'wordpress_version' => get_bloginfo('version'),
-        'php_version' => PHP_VERSION
-    ), 200);
+    // Registrar localização do menu
+    register_nav_menus([
+        'main-menu' => 'Menu Principal',
+        'footer-menu' => 'Menu do Rodapé'
+    ]);
+}
+add_action('init', 'saraiva_create_menus');
+
+/**
+ * Adicionar logs de debug para desenvolvimento
+ */
+function saraiva_log($message, $type = 'info')
+{
+    if (WP_DEBUG && WP_DEBUG_LOG) {
+        error_log("[Saraiva Vision - $type] $message");
+    }
 }
 
-/**
- * Adicionar informações da clínica ao cabeçalho da API REST
- */
-add_action('rest_api_init', function () {
-    header('X-Clinic-Name: Clinica Saraiva Vision');
-    header('X-Clinic-Doctor: Dr. Philipe Saraiva Cruz CRM-MG-69870');
-    header('X-Clinic-Location: Caratinga-MG');
-});
+// Log de inicialização
+saraiva_log('Plugin Saraiva Vision carregado com sucesso');
 
 /**
- * Flush de regras de rewrite na ativação (se usado como plugin)
+ * Adicionar aviso médico automático nos posts
  */
-register_activation_hook(__FILE__, function () {
-    flush_rewrite_rules();
-    error_log('[Clínica Saraiva Vision] Plugin ativado - regras de rewrite atualizadas');
-});
+function saraiva_add_medical_disclaimer($content)
+{
+    if (is_single() && get_post_type() === 'post') {
+        $disclaimer = '<div class="medical-disclaimer" style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin: 20px 0; font-size: 14px;">';
+        $disclaimer .= '<strong>⚕️ Aviso Médico:</strong> ';
+        $disclaimer .= get_post_meta(get_the_ID(), '_medical_disclaimer', true) ?:
+            'Este conteúdo é meramente informativo e não substitui uma consulta médica. Consulte sempre um oftalmologista para diagnóstico e tratamento adequado.';
+        $disclaimer .= '<br><small><strong>Dr. Philipe Saraiva Cruz - CRM-MG 69.870</strong></small>';
+        $disclaimer .= '</div>';
 
-register_deactivation_hook(__FILE__, function () {
-    flush_rewrite_rules();
-    error_log('[Clínica Saraiva Vision] Plugin desativado - regras de rewrite limpas');
-});
+        $content = $content . $disclaimer;
+    }
 
+    return $content;
+}
+add_filter('the_content', 'saraiva_add_medical_disclaimer');
 
+// Configuração final
+saraiva_log('Configurações da Clínica Saraiva Vision aplicadas com sucesso');
+?>

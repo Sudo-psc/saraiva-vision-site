@@ -423,11 +423,15 @@
             results.push(testResult);
           } catch (error) {
             // Handle timeout/abort errors specifically
-            const isTimeout = error.name === 'AbortError';
+            const isTimeout = error.name === "AbortError";
             results.push({
               name: testUrl.name,
               url: testUrl.url,
-              error: isTimeout ? `Timeout após ${timeoutMs/1000}s - servidor pode estar lento ou inativo` : error.message,
+              error: isTimeout
+                ? `Timeout após ${
+                    timeoutMs / 1000
+                  }s - servidor pode estar lento ou inativo`
+                : error.message,
               isTimeout: isTimeout,
               success: false,
             });
