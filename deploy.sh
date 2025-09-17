@@ -41,6 +41,23 @@ SKIP_NGINX=false
 NO_BUILD=false
 LINK_LEGACY=false
 PRUNE_KEEP=""
+# Quality gates & diagnostics
+RUN_TESTS=true
+RUN_DIAGNOSTICS=true
+# Git/GitHub workflow helpers
+GIT_COMMIT_MESSAGE=""
+GIT_PUSH=false
+CREATE_PR=false
+PR_TITLE=""
+PR_BODY=""
+PR_BODY_FILE=""
+PR_DRAFT=false
+REQUEST_CODERABBIT=false
+CODERABBIT_REVIEWER="${CODERABBIT_REVIEWER:-coderabbitai}"
+GIT_REMOTE="${GIT_REMOTE:-origin}"
+# Cache for PR metadata when workflow integration is used
+PR_NUMBER_CACHE=""
+PR_URL_CACHE=""
 # Verification controls
 SKIP_VERIFY=false
 WP_CHECK=false
@@ -74,11 +91,23 @@ Usage: sudo ./deploy.sh [options]
   --no-build      Skip npm install/build (use existing dist/)
   --link-legacy-root  Create/update symlink ${LEGACY_ROOT_LINK} -> current release (for legacy nginx root)
   --prune N       After deploy, keep only the last N releases (older ones removed)
+  --skip-tests    Skip lint/tests before build
+  --skip-diagnostics  Skip system diagnostics before deploy
   --skip-verify   Skip HTTP verification after nginx reload
   --wp-check      Also verify WordPress asset endpoints (jquery, load-styles)
   --site-url URL  Override base URL for verification (default: ${SITE_URL_DEFAULT} or env SITE_URL)
   --verify-only   Run verification against current site and exit (no build/deploy)
   --log-file PATH Write structured logs additionally to PATH
+  --commit-message MSG  Stage and commit repository changes with message MSG
+  --git-push      Push current branch to ${GIT_REMOTE} after commit
+  --git-remote NAME  Use NAME as git remote when pushing (default: ${GIT_REMOTE})
+  --create-pr     Ensure there is an open pull request for current branch (uses gh)
+  --pr-title TITLE  Title to use when creating a pull request
+  --pr-body TEXT   Pull request body content
+  --pr-body-file FILE  Read pull request body from FILE
+  --pr-draft      Open pull request as draft when using --create-pr
+  --request-review  Request CodeRabbit review on the active pull request (implies --create-pr)
+  --coderabbit-reviewer HANDLE  Override CodeRabbit reviewer handle (default: ${CODERABBIT_REVIEWER})
 USAGE
 }
 
@@ -104,6 +133,14 @@ while [[ $# -gt 0 ]]; do
       SKIP_VERIFY=true
       shift
       ;;
+    --skip-tests)
+      RUN_TESTS=false
+      shift
+      ;;
+    --skip-diagnostics)
+      RUN_DIAGNOSTICS=false
+      shift
+      ;;
     --wp-check)
       WP_CHECK=true
       shift
@@ -112,6 +149,57 @@ while [[ $# -gt 0 ]]; do
       WP_CHECK=true
       WP_STRICT=true
       shift
+      ;;
+    --commit-message)
+      if [[ -z "${2:-}" ]]; then echo "❌ --commit-message requer mensagem"; exit 1; fi
+      GIT_COMMIT_MESSAGE="$2"
+      shift 2
+      ;;
+    --git-push)
+      GIT_PUSH=true
+      shift
+      ;;
+    --git-remote)
+      if [[ -z "${2:-}" ]]; then echo "❌ --git-remote requer nome"; exit 1; fi
+      GIT_REMOTE="$2"
+      shift 2
+      ;;
+    --create-pr)
+      CREATE_PR=true
+      shift
+      ;;
+    --pr-title)
+      if [[ -z "${2:-}" ]]; then echo "❌ --pr-title requer texto"; exit 1; fi
+      PR_TITLE="$2"
+      CREATE_PR=true
+      shift 2
+      ;;
+    --pr-body)
+      if [[ -z "${2:-}" ]]; then echo "❌ --pr-body requer texto"; exit 1; fi
+      PR_BODY="$2"
+      CREATE_PR=true
+      shift 2
+      ;;
+    --pr-body-file)
+      if [[ -z "${2:-}" ]]; then echo "❌ --pr-body-file requer caminho"; exit 1; fi
+      PR_BODY_FILE="$2"
+      CREATE_PR=true
+      shift 2
+      ;;
+    --pr-draft)
+      PR_DRAFT=true
+      CREATE_PR=true
+      shift
+      ;;
+    --request-review)
+      REQUEST_CODERABBIT=true
+      CREATE_PR=true
+      shift
+      ;;
+    --coderabbit-reviewer)
+      if [[ -z "${2:-}" ]]; then echo "❌ --coderabbit-reviewer requer identificador"; exit 1; fi
+      CODERABBIT_REVIEWER="$2"
+      shift 2
       ;;
     --site-url)
       if [[ -z "${2:-}" ]]; then echo "❌ --site-url requer URL"; exit 1; fi
@@ -157,6 +245,13 @@ if [[ "${EUID:-$(id -u)}" -ne 0 ]]; then
   echo "❌ Run as root (sudo) to manage files under /var and nginx"; exit 1
 fi
 
+if $RUN_DIAGNOSTICS; then
+  collect_diagnostics
+else
+  logw DIAG "Skipping diagnostics (--skip-diagnostics)"
+  echo "⏭  Pulando diagnósticos (--skip-diagnostics)"
+fi
+
 # Optional: respect .nvmrc if available to ensure correct Node for build
 if [[ "$NO_BUILD" = false ]]; then
   if [[ -f "$HOME/.nvm/nvm.sh" ]]; then
@@ -178,6 +273,303 @@ run() {
     echo "[dry-run] $@"
   else
     eval "$@"
+  fi
+}
+
+# Command runner preserving arguments (for git/gh)
+run_cmd() {
+  if $DRY_RUN; then
+    printf "[dry-run]"
+    for arg in "$@"; do
+      printf " %q" "$arg"
+    done
+    printf "\n"
+    return 0
+  fi
+  "$@"
+}
+
+collect_diagnostics() {
+  logi DIAG "Collecting deployment diagnostics"
+  echo "🩺 Coletando diagnósticos do ambiente"
+
+  if command -v node >/dev/null 2>&1; then
+    echo "   • Node: $(node -v 2>/dev/null || echo desconhecido)"
+  else
+    echo "   • ⚠️  Node não encontrado no PATH"
+  fi
+
+  if command -v npm >/dev/null 2>&1; then
+    echo "   • npm: $(npm -v 2>/dev/null || echo desconhecido)"
+  else
+    echo "   • ⚠️  npm não encontrado no PATH"
+  fi
+
+  if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    local branch
+    branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "desconhecido")
+    echo "   • Git branch atual: $branch"
+    local pending
+    pending=$(git status --short 2>/dev/null || true)
+    if [[ -n "$pending" ]]; then
+      echo "   • Mudanças pendentes:";
+      echo "$pending" | sed 's/^/      /'
+    else
+      echo "   • Working tree limpo"
+    fi
+  else
+    echo "   • ℹ️  Repositório Git não detectado (integração opcional)"
+  fi
+
+  local disk_path="$DEPLOY_ROOT"
+  [[ -d "$disk_path" ]] || disk_path="$PROJECT_ROOT"
+  if command -v df >/dev/null 2>&1; then
+    local disk_line
+    disk_line=$(df -h "$disk_path" 2>/dev/null | tail -n +2 | head -n1)
+    if [[ -n "$disk_line" ]]; then
+      echo "   • Uso de disco em ${disk_path}: $disk_line"
+    fi
+  fi
+
+  if command -v systemctl >/dev/null 2>&1; then
+    if systemctl is-active --quiet nginx; then
+      echo "   • nginx ativo (systemctl is-active nginx)"
+    else
+      echo "   • ⚠️  nginx não está ativo (systemctl is-active nginx)"
+    fi
+  fi
+
+  if command -v nginx >/dev/null 2>&1; then
+    local nginx_version
+    nginx_version=$(nginx -v 2>&1 || true)
+    [[ -n "$nginx_version" ]] && echo "   • $nginx_version"
+  fi
+}
+
+run_quality_gates() {
+  logi TEST "Running lint/tests before build"
+  echo "🧪 Executando lint (eslint) e testes (vitest run)"
+
+  if ! command -v npm >/dev/null 2>&1; then
+    loge TEST "npm não encontrado para executar lint/test"
+    echo "❌ npm não encontrado (instale Node/npm antes do deploy)"
+    exit 1
+  fi
+
+  if ! run "npx eslint src --max-warnings=0"; then
+    loge TEST "eslint falhou"
+    echo "❌ eslint falhou (corrija os problemas antes do deploy)"
+    exit 1
+  fi
+
+  if ! run "npm run test:run -- --reporter=basic"; then
+    loge TEST "vitest run falhou"
+    echo "❌ Testes Vitest falharam"
+    exit 1
+  fi
+}
+
+git_commit_changes() {
+  local message="$1"
+  if [[ -z "$message" ]]; then
+    return 0
+  fi
+  if ! command -v git >/dev/null 2>&1 || ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    logw GIT "Git não disponível; ignorando commit automático"
+    echo "⚠️  Git não detectado (commit automático ignorado)"
+    return 0
+  fi
+
+  local status
+  status=$(git status --porcelain 2>/dev/null || true)
+  if [[ -z "$status" ]]; then
+    logw GIT "Nenhuma mudança para commit"
+    echo "ℹ️  Nenhuma mudança detectada; commit não criado"
+    return 0
+  fi
+
+  logi GIT "Commit automático: $message"
+  echo "📝 Criando commit: $message"
+  if $DRY_RUN; then
+    echo "[dry-run] git add -A"
+    printf "[dry-run] git commit -m %q\n" "$message"
+    return 0
+  fi
+
+  git add -A
+  git commit -m "$message"
+}
+
+git_push_changes() {
+  if ! command -v git >/dev/null 2>&1 || ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    logw GIT "Git não disponível; ignorando push"
+    echo "⚠️  Git não detectado (push ignorado)"
+    return 0
+  fi
+
+  local branch
+  branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+  if [[ -z "$branch" || "$branch" == "HEAD" ]]; then
+    logw GIT "Não foi possível determinar o branch atual"
+    echo "⚠️  Branch Git não detectado; push ignorado"
+    return 1
+  fi
+
+  logi GIT "Enviando branch $branch para $GIT_REMOTE"
+  echo "⬆️  Fazendo push de $branch para $GIT_REMOTE"
+
+  if $DRY_RUN; then
+    printf "[dry-run] git push %q %q\n" "$GIT_REMOTE" "$branch"
+    return 0
+  fi
+
+  if git rev-parse --abbrev-ref --symbolic-full-name "@{u}" >/dev/null 2>&1; then
+    git push
+  else
+    git push "$GIT_REMOTE" "$branch" --set-upstream
+  fi
+}
+
+ensure_pull_request() {
+  PR_NUMBER_CACHE=""
+  PR_URL_CACHE=""
+
+  if ! command -v gh >/dev/null 2>&1; then
+    logw GIT "GitHub CLI (gh) não encontrado; pulando criação/consulta de PR"
+    echo "⚠️  gh CLI não detectado (integração com PR indisponível)"
+    return 1
+  fi
+
+  local pr_number
+  pr_number=$(gh pr view --json number --jq '.number' 2>/dev/null || true)
+
+  if [[ -z "$pr_number" ]]; then
+    if ! $CREATE_PR; then
+      logw GIT "Nenhum PR encontrado para o branch atual"
+      echo "ℹ️  Nenhum PR ativo; use --create-pr para abrir um"
+      return 1
+    fi
+
+    local args=()
+    if [[ -n "$PR_TITLE" ]]; then
+      args+=(--title "$PR_TITLE")
+    else
+      args+=(--title "Deploy ${TIMESTAMP}")
+    fi
+
+    if [[ -n "$PR_BODY_FILE" ]]; then
+      if [[ ! -f "$PR_BODY_FILE" ]]; then
+        loge GIT "Arquivo de PR não encontrado: $PR_BODY_FILE"
+        echo "❌ Arquivo de PR não encontrado: $PR_BODY_FILE"
+        return 1
+      fi
+      args+=(--body-file "$PR_BODY_FILE")
+    elif [[ -n "$PR_BODY" ]]; then
+      args+=(--body "$PR_BODY")
+    fi
+
+    if $PR_DRAFT; then
+      args+=(--draft)
+    fi
+
+    logi GIT "Criando pull request via gh"
+    echo "🆕 Criando pull request"
+
+    if $DRY_RUN; then
+      printf "[dry-run] gh pr create"
+      local arg
+      for arg in "${args[@]}"; do
+        printf " %q" "$arg"
+      done
+      printf "\n"
+    else
+      if ! gh pr create "${args[@]}"; then
+        loge GIT "Falha ao criar pull request"
+        echo "❌ gh pr create falhou"
+        return 1
+      fi
+    fi
+
+    pr_number=$(gh pr view --json number --jq '.number' 2>/dev/null || true)
+  else
+    logi GIT "PR existente detectado: #$pr_number"
+  fi
+
+  if [[ -n "$pr_number" ]]; then
+    PR_NUMBER_CACHE="$pr_number"
+    PR_URL_CACHE=$(gh pr view --json url --jq '.url' 2>/dev/null || true)
+    if [[ -n "$PR_URL_CACHE" ]]; then
+      echo "🔗 PR: $PR_URL_CACHE"
+    fi
+    return 0
+  fi
+
+  return 1
+}
+
+request_coderabbit_review() {
+  local reviewer="$1"
+  local pr_number="$2"
+  if [[ -z "$pr_number" ]]; then
+    logw GIT "Sem PR para solicitar revisão do CodeRabbit"
+    echo "⚠️  Nenhum PR ativo para solicitar revisão"
+    return 1
+  fi
+
+  if ! command -v gh >/dev/null 2>&1; then
+    logw GIT "gh não encontrado para solicitar revisão"
+    echo "⚠️  gh CLI não disponível para solicitar revisão"
+    return 1
+  fi
+
+  logi GIT "Solicitando revisão CodeRabbit para PR #$pr_number"
+  echo "🤖 Solicitando revisão do CodeRabbit (@${reviewer})"
+
+  if $DRY_RUN; then
+    printf "[dry-run] gh api repos/:owner/:repo/pulls/%s/requested_reviewers --method POST -f reviewers[]=%q\n" "$pr_number" "$reviewer"
+    return 0
+  fi
+
+  if ! gh api "repos/:owner/:repo/pulls/${pr_number}/requested_reviewers" --method POST -f "reviewers[]=$reviewer" >/dev/null 2>&1; then
+    logw GIT "Falha ao solicitar revisão do CodeRabbit"
+    echo "⚠️  Não foi possível solicitar revisão automática. Verifique se o reviewer '$reviewer' é válido."
+    return 1
+  fi
+
+  logi GIT "Revisão CodeRabbit solicitada"
+  return 0
+}
+
+handle_git_workflow() {
+  if [[ -z "$GIT_COMMIT_MESSAGE" && "$GIT_PUSH" == false && "$CREATE_PR" == false && "$REQUEST_CODERABBIT" == false ]]; then
+    return
+  fi
+
+  if ! command -v git >/dev/null 2>&1 || ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    logw GIT "Repositório Git não detectado; ignorando integrações de workflow"
+    echo "⚠️  Nenhum repositório Git detectado (integração com CodeRabbit ignorada)"
+    return
+  fi
+
+  if [[ -n "$GIT_COMMIT_MESSAGE" ]]; then
+    git_commit_changes "$GIT_COMMIT_MESSAGE"
+  fi
+
+  if $GIT_PUSH; then
+    if ! git_push_changes; then
+      logw GIT "git push falhou"
+    fi
+  fi
+
+  if $CREATE_PR || $REQUEST_CODERABBIT; then
+    ensure_pull_request || true
+  fi
+
+  if $REQUEST_CODERABBIT && [[ -n "$PR_NUMBER_CACHE" ]]; then
+    request_coderabbit_review "$CODERABBIT_REVIEWER" "$PR_NUMBER_CACHE" || true
+  elif $REQUEST_CODERABBIT;
+  then
+    logw GIT "Não foi possível solicitar revisão do CodeRabbit automaticamente"
   fi
 }
 
@@ -301,13 +693,26 @@ then
   fi
 fi
 
-# Build
+# Build & quality gates
 if [[ "$NO_BUILD" = false ]]; then
   logi BUILD "Installing dependencies (legacy peer deps)"
   echo "📦 Installing dependencies (npm install with legacy peer deps)…"
   # Ensure devDependencies are installed even if NODE_ENV=production is set in the environment
   run "npm install --legacy-peer-deps --no-audit --no-fund --include=dev"
+fi
 
+if $RUN_TESTS; then
+  if [[ "$NO_BUILD" = true ]]; then
+    logw TEST "--no-build ativo; executando lint/tests com dependências existentes"
+    echo "ℹ️  Executando lint/tests com dependências já instaladas (--no-build)"
+  fi
+  run_quality_gates
+else
+  logw TEST "Skipping lint/tests (--skip-tests)"
+  echo "⏭  Pulando lint/tests (--skip-tests)"
+fi
+
+if [[ "$NO_BUILD" = false ]]; then
   logi BUILD "Building (vite build)"
   echo "🔨 Building (vite build)…"
   run "npm run build"
@@ -529,6 +934,9 @@ if [[ -n "$CURRENT_TARGET" ]]; then
 fi
 logi DONE "Rollback hint: sudo ./rollback.sh"
 echo "💡 Rollback: sudo ./rollback.sh (switch to previous release)"
+
+# Optional Git/GitHub workflow automation (commit/push/PR/review)
+handle_git_workflow
 
 # Prune old releases if requested
 if [[ -n "$PRUNE_KEEP" ]]; then
