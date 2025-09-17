@@ -116,6 +116,7 @@ const Services = ({ full = false, autoplay = true }) => {
   const { t } = useTranslation();
   const [serviceItems, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
   
   const loadServices = useCallback(async () => {
     setLoading(true);
@@ -148,9 +149,9 @@ const Services = ({ full = false, autoplay = true }) => {
   const dragStartXRef = useRef(0);
   const scrollStartRef = useRef(0);
 
-  // Autoplay carousel hook integration
+  // Autoplay carousel hook integration - só inicializa quando há serviços
   const autoplayCarousel = useAutoplayCarousel({
-    totalSlides: serviceItems.length,
+    totalSlides: Math.max(1, serviceItems.length), // Garante que nunca seja 0
     config: {
       defaultInterval: 4500,
       pauseOnHover: true,
@@ -158,7 +159,7 @@ const Services = ({ full = false, autoplay = true }) => {
       respectReducedMotion: true
     },
     onSlideChange: (newIndex, direction) => {
-      if (scrollerRef.current) {
+      if (scrollerRef.current && serviceItems.length > 0) {
         const targetScroll = newIndex * cardWidthRef.current;
         smoothScrollHorizontal(scrollerRef.current, targetScroll, 300);
       }
@@ -355,14 +356,14 @@ const Services = ({ full = false, autoplay = true }) => {
     return () => el.removeEventListener('scroll', handleScroll);
   }, [serviceItems.length, updateIndex, debouncedSnap]);
 
-  // Start autoplay if enabled
+  // Start autoplay if enabled - apenas quando há serviços carregados
   useEffect(() => {
-    if (autoplay && autoplayCarousel.isEnabled) {
+    if (autoplay && autoplayCarousel.isEnabled && serviceItems.length > 0 && !loading) {
       autoplayCarousel.play();
     } else {
       autoplayCarousel.pause();
     }
-  }, [autoplay, autoplayCarousel]);
+  }, [autoplay, autoplayCarousel, serviceItems.length, loading]);
 
   // Use autoplay hook's built-in interaction handlers
   useEffect(() => {
