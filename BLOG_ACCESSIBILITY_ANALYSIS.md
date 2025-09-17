@@ -42,7 +42,12 @@
 
 ### 1. Melhorar Grid Responsivo
 ```css
-grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4
+/* Fluid grid que se adapta naturalmente ao espaço disponível */
+grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+gap: 1.5rem;
+
+/* Ou usando Tailwind classes customizadas */
+class="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(18rem,1fr))]"
 ```
 
 ### 2. Adicionar ARIA Labels
