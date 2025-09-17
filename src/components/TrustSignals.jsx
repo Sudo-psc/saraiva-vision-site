@@ -1,12 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Shield, Award, Users, Clock, Heart, Star } from 'lucide-react';
+import { Shield, Award, Users, Clock, CheckCircle } from 'lucide-react';
 
 const TrustSignals = () => {
   const { t } = useTranslation();
 
   const trustItems = [
+    {
+      icon: CheckCircle,
+      title: t('trust.iso.title'),
+      description: t('trust.iso.description'),
+      color: 'blue'
+    },
     {
       icon: Award,
       title: t('trust.awards.title'),
