@@ -334,11 +334,9 @@ it('loads Google Maps with fallback', async () => {
 
 ### Resend Email Integration (Feature: 002-resend-contact-form)
 - **Medical Email Delivery**: Professional patient inquiry emails to Dr. Philipe
-- **LGPD Compliance**: No data storage, direct email delivery only
+- **LGPD Compliance**: Default: no data storage (direct email). Optional logging requires explicit consent, retention limits, and DSR support.
 - **Rate Limiting**: 5 submissions per IP per hour to prevent spam
 - **Security**: Multi-layer validation and sanitization
-
-```javascript
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
