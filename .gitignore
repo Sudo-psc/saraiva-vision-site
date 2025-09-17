@@ -49,3 +49,14 @@ Thumbs.db
 
 # Build artifacts
 vite.svg
+
+# Test files (development only)
+test-*.js
+test-*.mjs
+test-*.html
+test-*.png
+test-*.jpg
+
+# Cache files
+.cache/
+coverage/.tmp

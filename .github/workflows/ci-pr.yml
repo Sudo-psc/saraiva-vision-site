@@ -1,0 +1,185 @@
+name: CI - Pull Requests
+
+on:
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ci-pr-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    name: Frontend (lint, typecheck, unit, build, LHCI)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18, 20]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'pnpm'
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Install deps (frontend)
+        working-directory: ./frontend
+        run: pnpm i --frozen-lockfile
+
+      - name: Lint
+        working-directory: ./frontend
+        run: pnpm lint
+
+      - name: Typecheck
+        working-directory: ./frontend
+        run: pnpm typecheck
+
+      - name: Unit tests
+        working-directory: ./frontend
+        run: pnpm test -- --reporter=junit --outputFile=./junit-frontend.xml
+
+      - name: Upload JUnit report (frontend)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-frontend-${{ matrix.node }}
+          path: frontend/junit-frontend.xml
+          if-no-files-found: ignore
+
+      - name: Build (Node 20 only)
+        if: matrix.node == 20
+        working-directory: ./frontend
+        run: |
+          pnpm build
+          pnpm analyze || true
+
+      - name: Start preview (vite)
+        if: matrix.node == 20
+        working-directory: ./frontend
+        run: pnpm dlx serve dist -l 4173 &
+
+      - name: Wait for preview
+        if: matrix.node == 20
+        run: |
+          for i in {1..30}; do curl -sf http://127.0.0.1:4173 >/dev/null && break || sleep 1; done
+
+      - name: Lighthouse CI (bundle thresholds)
+        if: matrix.node == 20
+        working-directory: ./frontend
+        run: pnpm lhci autorun
+
+      - name: Upload Frontend Artifacts
+        if: matrix.node == 20
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist
+          if-no-files-found: error
+
+      - name: Upload Bundle Analyzer
+        if: matrix.node == 20
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-analyzer
+          path: frontend/stats.html
+          if-no-files-found: ignore
+
+  backend:
+    name: Backend (PHPCS, PHPStan, PHPUnit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer, phpstan, phpcs, phpunit
+
+      - name: Composer install
+        working-directory: ./wp
+        run: composer install --no-interaction --prefer-dist
+
+      - name: PHPCS (PSR-12)
+        working-directory: ./wp
+        run: vendor/bin/phpcs --standard=ruleset.xml
+
+      - name: PHPStan (level max)
+        working-directory: ./wp
+        run: vendor/bin/phpstan analyse --no-progress
+
+      - name: PHPUnit
+        working-directory: ./wp
+        run: vendor/bin/phpunit --log-junit ./junit-backend.xml
+
+      - name: Upload Backend JUnit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-backend
+          path: wp/junit-backend.xml
+          if-no-files-found: ignore
+
+  security:
+    name: Security (Semgrep, Gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Semgrep CI
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: ./.semgrep.yml
+          generateSarif: true
+      - name: Upload Semgrep SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+      - name: Gitleaks
+        uses: zricethezav/gitleaks-action@v2
+        with:
+          config-path: .gitleaks.toml
+
+  e2e:
+    name: E2E (Playwright + a11y)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [frontend]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: corepack enable
+      - name: Install deps
+        working-directory: ./frontend
+        run: pnpm i --frozen-lockfile
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Start web server (Vite preview)
+        working-directory: ./frontend
+        run: |
+          pnpm dlx serve dist -l 4173 &
+          for i in {1..30}; do curl -sf http://127.0.0.1:4173 >/dev/null && break || sleep 1; done
+      - name: Run Playwright tests
+        working-directory: ./frontend
+        run: pnpm exec playwright test --reporter=html
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: frontend/playwright-report
+          if-no-files-found: ignore
+

@@ -407,7 +407,7 @@ const mockOnClick = vi.fn()
 vi.mock('@/hooks/useWhatsApp', () => ({
   useWhatsApp: () => ({
     generateWhatsAppUrl: vi.fn(() => 'https://wa.me/123'),
-    openFloatingCTA: vi.fn()
+    openFloatingCTA: vi.fn() // abre CTAModal (evento `open-cta-modal`)
   })
 }))
 

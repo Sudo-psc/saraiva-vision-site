@@ -1,0 +1,151 @@
+name: WP Theme Package & Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: "Deploy to remote WordPress via SSH"
+        type: boolean
+        default: false
+      wp_url:
+        description: "WordPress site URL (for output only)"
+        required: false
+      setup_menu:
+        description: "After deploy, import primary menu via WP-CLI"
+        type: boolean
+        default: false
+  push:
+    tags:
+      - "theme-v*"
+
+concurrency:
+  group: wp-theme-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    name: Package Theme
+    runs-on: ubuntu-latest
+    outputs:
+      artifact: saraivavision-theme
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Package theme zip
+        run: |
+          bash scripts/package-theme.sh
+
+      - name: Upload theme zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: saraivavision-theme-zip
+          path: saraivavision-wp-theme.zip
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload theme directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: saraivavision-theme
+          path: wordpress-theme/saraivavision
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    name: Deploy Theme to WordPress
+    runs-on: ubuntu-latest
+    needs: package
+    if: ${{ inputs.deploy == true }}
+    steps:
+      - name: Download theme dir artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: saraivavision-theme
+          path: theme
+
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add host to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "${{ secrets.WP_SSH_PORT }}" "${{ secrets.WP_SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Normalize WordPress permissions and FS method
+        env:
+          SSH_USER: ${{ secrets.WP_SSH_USER }}
+          SSH_HOST: ${{ secrets.WP_SSH_HOST }}
+          SSH_PORT: ${{ secrets.WP_SSH_PORT }}
+          WP_PATH: ${{ secrets.WP_PATH }}
+          WP_WEB_USER: ${{ secrets.WP_WEB_USER || vars.WP_WEB_USER || 'www-data' }}
+        run: |
+          set -euo pipefail
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "\
+            set -euo pipefail; \
+            WP_ROOT='$WP_PATH'; WEB_USER='${WP_WEB_USER:-www-data}'; \
+            echo 'WP_ROOT:' \$WP_ROOT; echo 'WEB_USER:' \$WEB_USER; \
+            sudo mkdir -p \"$WP_ROOT/wp-content/upgrade\"; \
+            sudo chown -R \"$WEB_USER:$WEB_USER\" \"$WP_ROOT/wp-content\" || true; \
+            sudo find \"$WP_ROOT/wp-content\" -type d -exec chmod 755 {} +; \
+            sudo find \"$WP_ROOT/wp-content\" -type f -exec chmod 644 {} +; \
+            if command -v getenforce >/dev/null 2>&1; then \
+              if [ \"$(getenforce)\" = \"Enforcing\" ]; then sudo chcon -R -t httpd_sys_rw_content_t \"$WP_ROOT/wp-content\" || true; fi; \
+            fi; \
+            if [ -f \"$WP_ROOT/wp-config.php\" ]; then \
+              if ! grep -q FS_METHOD \"$WP_ROOT/wp-config.php\"; then \
+                sudo sed -i \"/stop editing/i define('FS_METHOD','direct');\" \"$WP_ROOT/wp-config.php\" || echo \"define('FS_METHOD','direct');\" | sudo tee -a \"$WP_ROOT/wp-config.php\" >/dev/null; \
+              fi; \
+              if ! grep -q WP_TEMP_DIR \"$WP_ROOT/wp-config.php\"; then \
+                echo \"define('WP_TEMP_DIR', '$WP_ROOT/wp-content/upgrade');\" | sudo tee -a \"$WP_ROOT/wp-config.php\" >/dev/null; \
+              fi; \
+            fi; \
+          "
+
+      - name: Rsync theme to server
+        env:
+          SSH_USER: ${{ secrets.WP_SSH_USER }}
+          SSH_HOST: ${{ secrets.WP_SSH_HOST }}
+          SSH_PORT: ${{ secrets.WP_SSH_PORT }}
+          WP_PATH: ${{ secrets.WP_PATH }}
+        run: |
+          set -euo pipefail
+          REMOTE_DIR="$WP_PATH/wp-content/themes/saraivavision"
+          echo "Syncing theme to $REMOTE_DIR"
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "mkdir -p '$REMOTE_DIR'"
+          rsync -az --delete -e "ssh -p $SSH_PORT" theme/ "$SSH_USER@$SSH_HOST:$REMOTE_DIR/"
+
+      - name: Activate theme (if WP-CLI available)
+        env:
+          SSH_USER: ${{ secrets.WP_SSH_USER }}
+          SSH_HOST: ${{ secrets.WP_SSH_HOST }}
+          SSH_PORT: ${{ secrets.WP_SSH_PORT }}
+          WP_PATH: ${{ secrets.WP_PATH }}
+        run: |
+          set -euo pipefail
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "\
+            if command -v wp >/dev/null 2>&1; then \
+              cd '$WP_PATH' && wp theme activate saraivavision --allow-root && wp cache flush --allow-root; \
+            else \
+              echo 'WP-CLI not found; theme uploaded but not activated.'; \
+            fi \
+          "
+
+      - name: Setup menu via WP-CLI
+        if: ${{ inputs.setup_menu == true }}
+        env:
+          SSH_USER: ${{ secrets.WP_SSH_USER }}
+          SSH_HOST: ${{ secrets.WP_SSH_HOST }}
+          SSH_PORT: ${{ secrets.WP_SSH_PORT }}
+          WP_PATH: ${{ secrets.WP_PATH }}
+        run: |
+          set -euo pipefail
+          echo "Uploading and running wp-setup-menu.sh on remote..."
+          scp -P "$SSH_PORT" scripts/wp-setup-menu.sh "$SSH_USER@$SSH_HOST:/tmp/wp-setup-menu.sh"
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "WP_PATH='$WP_PATH' bash /tmp/wp-setup-menu.sh"
+
+      - name: Summary
+        run: |
+          echo "Theme deployed to ${{ inputs.wp_url || 'remote host' }}"

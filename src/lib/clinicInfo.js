@@ -1,6 +1,6 @@
 // Centralized clinic information to keep consistency with Google Business Profile.
 
-export const CLINIC_PLACE_ID = import.meta.env.VITE_GOOGLE_PLACE_ID || 'ChIJVUKww7WRugARF7u2lAe7BeE';
+export const CLINIC_PLACE_ID = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GOOGLE_PLACE_ID) || 'ChIJVUKww7WRugARF7u2lAe7BeE';
 
 export const clinicInfo = {
   name: 'Clínica Saraiva Vision',
@@ -11,11 +11,21 @@ export const clinicInfo = {
   state: 'MG',
   postalCode: '35300-299',
   country: 'BR',
+  // Structured address for easy access in components
+  address: {
+    street: 'Rua Catarina Maria Passos, 97',
+    city: 'Caratinga',
+    state: 'MG',
+    zip: '35300-299',
+    country: 'BR'
+  },
   phoneDisplay: '+55 33 99860-1427',
   phone: '+5533998601427',
   whatsapp: '+5533998601427',
   email: 'saraivavision@gmail.com',
   instagram: 'https://www.instagram.com/saraiva_vision/',
+  facebook: 'https://www.facebook.com/saraivavision',
+  linkedin: 'https://www.linkedin.com/company/saraiva-vision',
   chatbotUrl: 'https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica',
   onlineSchedulingUrl: 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613',
   // Security validation for external integrations
@@ -44,8 +54,8 @@ export const clinicInfo = {
   dpoEmail: 'saraivavision@gmail.com',
   taxId: '53.864.119/0001-79',
   foundingDate: '2024-02-08',
-  latitude: -19.7868,
-  longitude: -42.1392,
+  latitude: -19.7890206,
+  longitude: -42.1347583,
   servicesKeywords: [
     'Consultas oftalmológicas',
     'Exames de refração',

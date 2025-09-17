@@ -1,59 +1,90 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
-import { Calendar, User, ArrowLeft, Loader2, AlertTriangle } from 'lucide-react';
+import { Calendar, User, ArrowLeft, Loader2, AlertTriangle, Share2, Clock } from 'lucide-react';
+import DOMPurify from 'dompurify';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import blogPosts from '@/lib/blogPosts';
-import CommentSection from '@/components/CommentSection';
+import { Button } from '@/components/ui/button';
+import {
+  fetchPostBySlug,
+  fetchRelatedPosts,
+  getFeaturedImageUrl,
+  getAuthorInfo,
+  cleanHtmlContent,
+  extractPlainText
+} from '../lib/wordpress';
 
-const PostPage = ({ wordpressUrl }) => {
+const PostPage = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [post, setPost] = useState(null);
+  const [relatedPosts, setRelatedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!wordpressUrl) {
-      const localPost = blogPosts.find((p) => p.slug === slug);
-      if (localPost) {
-        setPost(localPost);
-      } else {
-        setError('Post not found');
-      }
-      setLoading(false);
-      return;
-    }
-
-    const fetchPost = async () => {
+    const loadPost = async () => {
       try {
-        const response = await fetch(`${wordpressUrl}/wp-json/wp/v2/posts?slug=${slug}&_embed`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+        setLoading(true);
+        setError(null);
+
+        const postData = await fetchPostBySlug(slug);
+        setPost(postData);
+
+        // Load related posts
+        try {
+          const related = await fetchRelatedPosts(postData, 3);
+          setRelatedPosts(related);
+        } catch (relatedError) {
+          console.warn('Could not load related posts:', relatedError);
+          setRelatedPosts([]);
         }
-        const data = await response.json();
-        if (data.length > 0) {
-          setPost(data[0]);
-        } else {
-          throw new Error('Post not found');
-        }
+
       } catch (error) {
+        console.error('Error loading post:', error);
         setError(error.message);
+        if (error.message === 'Post not found') {
+          navigate('/blog', { replace: true });
+        }
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPost();
-  }, [slug, wordpressUrl]);
+    if (slug) {
+      loadPost();
+    }
+  }, [slug, navigate]);
 
   const getDateLocale = () => {
     return i18n.language === 'pt' ? ptBR : enUS;
+  };
+
+  const sharePost = () => {
+    if (navigator.share && post) {
+      navigator.share({
+        title: post.title?.rendered?.replace(/<[^>]+>/g, '') || '',
+        text: extractPlainText(post.excerpt?.rendered || '', 100),
+        url: window.location.href,
+      });
+    } else {
+      // Fallback to copy URL
+      navigator.clipboard.writeText(window.location.href);
+    }
+  };
+
+  const estimateReadingTime = (content) => {
+    const wordsPerMinute = 200;
+    const text = extractPlainText(content);
+    const wordCount = text.split(/\s+/).length;
+    const minutes = Math.ceil(wordCount / wordsPerMinute);
+    return minutes;
   };
 
   if (loading) {
@@ -64,11 +95,11 @@ const PostPage = ({ wordpressUrl }) => {
     );
   }
 
-  if (error || !post) {
+  if (error) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <main className="py-32 md:py-40">
+        <main className="py-32 md:py-40 mx-[4%] md:mx-[6%] lg:mx-[8%]">
           <div className="container mx-auto px-4 md:px-6 text-center">
             <AlertTriangle className="h-16 w-16 text-red-500 mx-auto mb-4" />
             <h1 className="text-3xl font-bold text-red-800">{t('blog.post_error_title')}</h1>
@@ -83,24 +114,18 @@ const PostPage = ({ wordpressUrl }) => {
     );
   }
 
-  const isWP = !!post.title?.rendered;
-  const title = isWP ? post.title.rendered : post.translations[i18n.language].title;
-  const content = isWP ? post.content.rendered : post.translations[i18n.language].content;
-  const excerpt = isWP
-    ? post.excerpt.rendered.replace(/<[^>]+>/g, '')
-    : post.translations[i18n.language].excerpt;
-  const image = isWP ? post._embedded?.['wp:featuredmedia']?.[0]?.source_url : post.image;
-  const author = isWP ? post._embedded.author[0].name : post.author;
-  const cleanTitle = isWP ? post.title.rendered.replace(/<[^>]+>/g, '') : post.translations[i18n.language].title;
+  if (!post) return null;
+
+  const cleanTitle = post.title.rendered.replace(/<[^>]+>/g, '');
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white relative">
       <Helmet>
         <title>{cleanTitle} | Saraiva Vision</title>
-        <meta name="description" content={excerpt} />
+        <meta name="description" content={post.excerpt.rendered.replace(/<[^>]+>/g, '')} />
       </Helmet>
       <Navbar />
-      <main className="py-32 md:py-40">
+      <main className="py-32 md:py-40 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -113,7 +138,7 @@ const PostPage = ({ wordpressUrl }) => {
               {t('blog.back_to_blog')}
             </Link>
 
-            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6" dangerouslySetInnerHTML={{ __html: title }} />
+            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
 
             <div className="flex items-center text-gray-500 space-x-6 mb-10 pb-10 border-b">
               <div className="flex items-center">
@@ -122,27 +147,29 @@ const PostPage = ({ wordpressUrl }) => {
               </div>
               <div className="flex items-center">
                 <User className="w-5 h-5 mr-2" />
-                <span>{author}</span>
+                <span>{post?._embedded?.author?.[0]?.name || t('blog.unknown_author', 'Autor desconhecido')}</span>
               </div>
             </div>
 
-            {image && (
+            {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
               <img
-                src={image}
-                alt={title}
+                src={post._embedded['wp:featuredmedia'][0].source_url}
+                alt={post._embedded['wp:featuredmedia'][0]?.alt_text ||
+                  t('ui.alt.blog_post', 'Imagem ilustrativa do artigo') + ': ' + cleanTitle}
                 className="w-full h-auto max-h-[500px] object-cover rounded-2xl shadow-soft-medium mb-12"
               />
             )}
 
             <div
               className="prose lg:prose-xl max-w-none"
-              dangerouslySetInnerHTML={{ __html: content }}
+              dangerouslySetInnerHTML={{ __html: post.content.rendered }}
             />
-            <CommentSection postSlug={slug} />
           </motion.div>
         </div>
       </main>
       <Footer />
+
+      {/* Aviso de construção removido nesta subpágina */}
     </div>
   );
 };

@@ -1,92 +1,96 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import handler from '../contact.js';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-vi.mock('resend', () => {
-  const send = vi.fn().mockResolvedValue({ id: '1' });
-  return {
-    Resend: vi.fn().mockImplementation(() => ({
-      emails: { send }
-    }))
-  };
-});
+const { default: handler } = await import('../contact.js');
 
-const mockReqRes = (body = {}) => {
-  const req = {
-    method: 'POST',
-    body,
-    headers: {},
-    connection: { remoteAddress: '127.0.0.1' }
-  };
-  const res = {
-    statusCode: 200,
-    headers: {},
-    setHeader(name, value) {
-      this.headers[name] = value;
-    },
-    status(code) {
-      this.statusCode = code;
-      return this;
-    },
-    json(payload) {
-      this.payload = payload;
-      return this;
-    }
-  };
-  return { req, res };
-};
+describe('Contact API Handler (reCAPTCHA v3)', () => {
+  let mockReq;
+  let mockRes;
+  let originalEnv;
 
-beforeEach(() => {
-  global.fetch = vi.fn().mockResolvedValue({
-    json: () => Promise.resolve({ success: true, score: 0.9 })
-  });
-  process.env.RESEND_API_KEY = 'test';
-  process.env.CONTACT_FROM_EMAIL = 'from@example.com';
-  process.env.CONTACT_TO_EMAIL = 'to@example.com';
-  process.env.RECAPTCHA_SECRET_KEY = 'recaptcha';
-  delete global.rateLimitStore;
-});
+  beforeEach(() => {
+    originalEnv = process.env;
+    process.env = { ...originalEnv, NODE_ENV: 'test' };
 
-describe('contact API handler', () => {
-  it('rejects missing fields', async () => {
-    const { req, res } = mockReqRes({});
-    await handler(req, res);
-    expect(res.statusCode).toBe(400);
-    expect(res.payload.error).toBe('Missing required fields');
+    // Reset rate limiter for each test
+    global.__contactRateLimiter = new Map();
+
+    mockReq = {
+      method: 'POST',
+      headers: {},
+      url: '/api/contact',
+      body: {},
+      socket: { remoteAddress: '127.0.0.1' }
+    };
+
+    mockRes = {
+      status: vi.fn().mockReturnThis(),
+      json: vi.fn().mockReturnThis(),
+      setHeader: vi.fn().mockReturnThis(),
+      end: vi.fn().mockReturnThis(),
+      writeHead: vi.fn().mockReturnThis(),
+      write: vi.fn().mockReturnThis(),
+    };
+
+    global.fetch = vi.fn();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
   });
 
-  it('sanitizes input and sends email', async () => {
-    const { Resend } = await import('resend');
-    const { req, res } = mockReqRes({
-      name: '<b>Ana</b>',
-      email: 'ana@example.com',
-      phone: '(33) 99999-9999',
-      message: 'Ola mundo',
-      consent: true,
-      recaptchaToken: 'token'
+  afterEach(() => {
+    process.env = originalEnv;
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
+  });
+
+  it('rejects non-POST methods with 405', async () => {
+    mockReq.method = 'GET';
+    await handler(mockReq, mockRes);
+    expect(mockRes.status).toHaveBeenCalledWith(405);
+    expect(mockRes.json).toHaveBeenCalledWith({ error: 'Method not allowed' });
+  });
+
+  it('returns 400 when token is missing', async () => {
+    await handler(mockReq, mockRes);
+    expect(mockRes.status).toHaveBeenCalledWith(400);
+    expect(mockRes.json).toHaveBeenCalledWith({ error: 'missing_token' });
+  });
+
+  it('returns 400 when secret is missing', async () => {
+    mockReq.body = { token: 'abc123', action: 'contact', name: 'A', email: 'a@b.com', phone: '1', message: 'm' };
+    await handler(mockReq, mockRes);
+    expect(mockRes.status).toHaveBeenCalledWith(400);
+    expect(mockRes.json).toHaveBeenCalledWith(expect.objectContaining({ error: 'recaptcha_failed' }));
+  });
+
+  it('verifies reCAPTCHA and returns ok on success', async () => {
+    process.env.RECAPTCHA_SECRET = 'secret';
+    mockReq.body = { token: 'abc123', action: 'contact', name: 'John', email: 'john@test.com', phone: '33998601427', message: 'Hello there' };
+
+    global.fetch.mockResolvedValue({
+      json: () => Promise.resolve({ success: true, score: 0.9, action: 'contact' })
     });
 
-    await handler(req, res);
-
-    expect(res.statusCode).toBe(200);
-    const resendInstance = Resend.mock.instances[0];
-    expect(resendInstance.emails.send).toHaveBeenCalled();
-    const args = resendInstance.emails.send.mock.calls[0][0];
-    expect(args.html).not.toContain('<b>');
+    await handler(mockReq, mockRes);
+    expect(mockRes.status).toHaveBeenCalledWith(200);
+    const payload = mockRes.json.mock.calls[0][0];
+    expect(payload.ok).toBe(true);
+    expect(payload.recaptcha.score).toBeGreaterThan(0.5);
   });
 
-  it('rejects injection attempts', async () => {
-    const { req, res } = mockReqRes({
-      name: "Ana",
-      email: 'ana@example.com',
-      phone: '(33) 99999-9999',
-      message: 'DROP TABLE users;--',
-      consent: true,
-      recaptchaToken: 'token'
-    });
+  it('returns 400 for low score', async () => {
+    process.env.RECAPTCHA_SECRET = 'secret';
+    mockReq.body = { token: 'abc123', action: 'contact' };
+    global.fetch.mockResolvedValue({ json: () => Promise.resolve({ success: true, score: 0.3, action: 'contact' }) });
+    await handler(mockReq, mockRes);
+    expect(mockRes.status).toHaveBeenCalledWith(400);
+    expect(mockRes.json).toHaveBeenCalledWith(expect.objectContaining({ error: 'recaptcha_failed' }));
+  });
 
-    await handler(req, res);
-    expect(res.statusCode).toBe(400);
-    expect(res.payload.error).toBe('Potential injection attack detected');
+  it('returns 400 for action mismatch', async () => {
+    process.env.RECAPTCHA_SECRET = 'secret';
+    mockReq.body = { token: 'abc123', action: 'contact' };
+    global.fetch.mockResolvedValue({ json: () => Promise.resolve({ success: true, score: 0.9, action: 'other' }) });
+    await handler(mockReq, mockRes);
+    expect(mockRes.status).toHaveBeenCalledWith(400);
   });
 });
 

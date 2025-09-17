@@ -6,6 +6,7 @@
     "about": "Sobre Nós",
     "testimonials": "Depoimentos",
     "contact": "Contato",
+    "faq": "FAQ",
     "blog": "Blog",
     "schedule": "Agendar",
     "schedule_online": "Agendar Online",
@@ -22,22 +23,49 @@
     "more_options_desc": "Telefone, e-mail e outras formas",
     "scheduling_error": "Serviço indisponível. Use WhatsApp ou ligue para (33) 99860-1427",
     "external_link_warning": "Você será redirecionado para {serviceName}. Continuar?",
-    "external_link_title": "Abre em nova aba: {serviceName}"
+    "external_link_title": "Abre em nova aba: {serviceName}",
+    "services_link": "Ver todos os serviços"
   },
   "common": {
-    "logo_alt": "Saraiva Vision Logo"
+    "logo_alt": "Saraiva Vision Logo",
+    "reject_all": "Rejeitar",
+    "customize": "Personalizar",
+    "accept_all": "Aceitar"
   },
   "hero": {
     "partner": "Parceiro Oficial Amor e Saúde",
-    "title": "Cuidando da sua <1>visão</1> com excelência",
-    "subtitle": "Na Saraiva Vision, combinamos tecnologia de ponta com um atendimento humanizado para oferecer o melhor em saúde ocular. Sua visão é a nossa prioridade.",
+    "title": "Cuidando da sua <1>visão</1> com excelência em Caratinga",
+    "subtitle": "Tecnologia de ponta e atendimento humanizado com o Dr. Philipe Saraiva (CRM-MG 69.870).",
     "schedule_button": "Agendar Consulta",
+    "whatsapp_button": "Falar no WhatsApp",
     "services_button": "Nossos Serviços",
+    "trust_stats": "+5k pacientes • 4,9/5 avaliação • Parceiro Amor e Saúde",
     "patients_served": "<0>Mais de 5.000 pacientes</0> atendidos com satisfação",
     "advanced_tech_title": "Tecnologia Avançada",
     "advanced_tech_desc": "Equipamentos de última geração para diagnósticos precisos.",
     "microcopy_fast_confirmation": "Preencha seus dados e receba confirmação em 1 minuto. 100% seguro.",
     "more_contact_options": "Outras formas de contato"
+  },
+  "accessibility": {
+    "toggle": "Abrir menu de acessibilidade",
+    "title": "Acessibilidade",
+    "close": "Fechar",
+    "fontSize": {
+      "label": "Tamanho da Fonte",
+      "normal": "Normal",
+      "large": "Grande",
+      "extra-large": "Extra Grande"
+    },
+    "contrast": {
+      "label": "Contraste",
+      "normal": "Normal",
+      "high": "Alto",
+      "dark": "Escuro"
+    },
+    "readingMode": {
+      "on": "Modo Leitura",
+      "off": "Sair do Modo Leitura"
+    }
   },
   "trust": {
     "badge": "Confiança e Qualidade",
@@ -55,10 +83,6 @@
       "title": "15+ Anos",
       "description": "De experiência em saúde ocular"
     },
-    "iso": {
-      "title": "Certificação ISO 9001",
-      "description": "Sistema de gestão da qualidade reconhecido"
-    },
     "partnerships": {
       "sectionTitle": "Nossos Parceiros"
     },
@@ -68,29 +92,10 @@
       "years": "Anos de Experiência"
     }
   },
-  "certificates": {
-    "badge": "Certificações e Afiliações",
-    "title": "Nossas Credenciais",
-    "items": {
-      "iso9001": {
-        "title": "Certificação ISO 9001",
-        "description": "Padrão internacional de gestão de qualidade"
-      },
-      "abo": {
-        "title": "Membro da ABO",
-        "description": "Associação Brasileira de Oftalmologia"
-      }
-    }
-  },
-  "faqPreview": {
-    "badge": "Perguntas rápidas",
-    "title": "Dúvidas frequentes",
-    "link": "Ver todas as perguntas"
-  },
   "faq": {
     "badge": "Dúvidas Frequentes",
     "title": "Perguntas Frequentes",
-    "subtitle": "Esclareça suas dúvidas sobre saúde ocular em Caratinga: lentes de contato, laudos oftalmológicos, glaucoma, convênios e consultas infantis.",
+    "subtitle": "Tire suas dúvidas sobre saúde ocular em Caratinga: lentes de contato, laudo oftalmológico, glaucoma, convênios e consultas infantis.",
     "search": {
       "placeholder": "Buscar pergunta...",
       "noResults": "Nenhuma pergunta encontrada para sua busca."
@@ -110,7 +115,7 @@
       },
       "insurance": {
         "question": "A Saraiva Vision atende convênios?",
-        "answer": "Sim. A Saraiva Vision Oftalmologia em Caratinga atende diversos convênios médicos, além de consultas particulares. O paciente pode confirmar com a equipe administrativa quais planos de saúde possuem cobertura para consultas, exames e procedimentos oftalmológicos. O atendimento via convênio facilita o acesso a exames preventivos e tratamentos, reduzindo custos para o paciente. Caso seu plano não cubra determinados procedimentos, a clínica também oferece opções acessíveis em atendimento particular, mantendo sempre o padrão de qualidade e segurança no cuidado com a visão."
+        "answer": "Atualmente atendemos os convênios Amor e Saúde e Sindicato, além de consultas particulares. Para confirmar a cobertura do seu atendimento por um desses convênios, entre em contato com nossa equipe administrativa. Caso não possua um desses convênios ou o procedimento não tenha cobertura, realizamos o atendimento de forma particular com valores acessíveis, mantendo o mesmo padrão de qualidade e segurança."
       },
       "preparation": {
         "question": "Como me preparar para a consulta?",
@@ -155,27 +160,80 @@
     }
   },
   "blog": {
-    "tag": "Educação em Saúde",
-    "title": "Blog Saraiva Vision em Caratinga",
-    "subtitle": "Artigos sobre saúde ocular, tratamentos e novidades em Caratinga e região.",
-    "view_all": "Ver todos os artigos",
-    "read_more": "Continuar lendo",
-    "placeholder_title": "Conteúdo em preparação",
-    "placeholder_desc": "Em breve dicas e notícias sobre saúde ocular.",
-      "placeholder_desc_page": "Estamos preparando artigos com foco em Caratinga, MG.",
-    "page_title": "Blog de Saúde Visual em Caratinga",
-    "page_description": "Dicas de oftalmologia e notícias locais para Caratinga e região.",
-    "page_subtitle": "Saiba mais sobre cuidados com os olhos na nossa cidade.",
-    "post_error_title": "Publicação não encontrada",
-    "post_error_desc": "Não foi possível carregar este conteúdo.",
-    "back_to_blog": "Voltar para o blog"
-  },
-  "comments": {
-    "title": "Comentários",
-    "no_comments": "Ainda não há comentários",
-    "name_label": "Nome",
-    "message_label": "Comentário",
-    "submit": "Adicionar Comentário"
+    "page_title": "Blog",
+    "page_description": "Artigos e novidades sobre saúde ocular.",
+    "page_subtitle": "Artigos e novidades sobre saúde ocular",
+    "search_placeholder": "Buscar artigos...",
+    "all_categories": "Todas as categorias",
+    "read_more": "Ler mais",
+    "placeholder_title": "Conteúdo indisponível no momento",
+    "placeholder_desc_page": "Estamos configurando a conexão com o nosso CMS. Tente novamente em breve.",
+    "no_posts": "Nenhum artigo encontrado",
+    "no_posts_description": "Tente ajustar os filtros ou a busca.",
+    "back_to_blog": "Voltar ao Blog",
+    "loading": "Carregando posts do blog...",
+    "search_description": "Digite para buscar posts por título ou conteúdo",
+    "category_filters": "Filtros de categoria",
+    "all_categories_label": "Mostrar todos os posts",
+    "filter_by_category": "Filtrar por categoria: {{category}}",
+    "published_date": "Publicado em {{date}}",
+    "category_label": "Categoria: {{category}}",
+    "read_post": "Ler o post: {{title}}",
+    "read_more_post": "Leia mais sobre: {{title}}",
+    "main_content_label": "Conteúdo principal do blog",
+    "posts_section_label": "Posts do blog",
+    "post_error_title": "Não foi possível carregar o artigo",
+    "post_error_desc": "Houve um problema ao carregar este conteúdo. Volte ao blog e tente novamente.",
+    "badge": "Educação em Saúde",
+    "title": "Blog Saraiva Vision",
+    "subtitle": "Artigos educativos sobre saúde ocular, tratamentos e novidades da oftalmologia para manter você bem informado.",
+    "featured": "Destaque",
+    "readMore": "Ler Artigo",
+    "categories": {
+      "all": "Todos",
+      "prevention": "Prevenção",
+      "treatments": "Tratamentos",
+      "pediatric": "Pediatria",
+      "technology": "Tecnologia",
+      "exams": "Exames Diagnósticos",
+      "general": "Saúde Ocular",
+      "consultas": "Consultas Oftalmológicas",
+      "exames": "Exames Especializados",
+      "refracao": "Refração",
+      "paquimetria": "Paquimetria",
+      "mapeamento-retina": "Mapeamento de Retina",
+      "biometria": "Biometria",
+      "retinografia": "Retinografia",
+      "topografia-corneana": "Topografia Corneana",
+      "lentes-contato": "Lentes de Contato",
+      "testes-especiais": "Testes Especiais"
+    },
+    "posts": {
+      "dryEyes": {
+        "title": "Síndrome do Olho Seco: Sintomas e Tratamentos",
+        "excerpt": "Entenda as causas da síndrome do olho seco e conheça as opções de tratamento mais eficazes para aliviar os sintomas."
+      },
+      "cataract": {
+        "title": "Cirurgia de Catarata: Guia Completo",
+        "excerpt": "Tudo que você precisa saber sobre a cirurgia de catarata, desde a preparação até o pós-operatório."
+      },
+      "childEyes": {
+        "title": "Cuidados com a Visão Infantil",
+        "excerpt": "Como identificar problemas visuais em crianças e a importância do acompanhamento oftalmológico desde cedo."
+      },
+      "technology": {
+        "title": "Novas Tecnologias em Oftalmologia",
+        "excerpt": "Conheça as mais recentes inovações tecnológicas que estão revolucionando os tratamentos oftalmológicos."
+      }
+    },
+    "newsletter": {
+      "title": "Receba conteúdo exclusivo",
+      "description": "Assine nossa newsletter e receba artigos sobre saúde ocular direto no seu e-mail.",
+      "emailPlaceholder": "Digite seu e-mail",
+      "subscribe": "Assinar",
+      "privacy": "Respeitamos sua privacidade. Sem spam."
+    },
+    "visitBlog": "Visitar Blog Completo"
   },
   "testimonials": {
     "badge": "Depoimentos",
@@ -187,6 +245,7 @@
     "avgRating": "Nota Média",
     "totalReviews": "Avaliações",
     "satisfaction": "Satisfação",
+    "viewAll": "Ver todos depoimentos",
     "reviews": [
       {
         "name": "Maria Silva",
@@ -212,41 +271,236 @@
   },
   "services": {
     "title": "Nossos Serviços",
+    "title_full": "Cuidados Oftalmológicos Completos",
     "subtitle": "Oferecemos uma gama completa de serviços oftalmológicos para cuidar da sua visão com a máxima qualidade e tecnologia.",
+    "badge": "Nossos Serviços",
     "learn_more": "Saiba Mais",
+    "view_all": "Ver todos os 12 serviços",
+    "show_less": "Mostrar menos",
+    "carousel_navigation": "Navegação do carrossel de serviços",
+    "go_to": "Ir para serviço {{index}}",
+    "go_to_page": "Ir para página {{index}}",
     "schedule_button": "Agende Sua Consulta Agora",
     "items": {
       "consultations": {
         "title": "Consultas Oftalmológicas Completas",
         "description": "Exame oftalmológico abrangente com Dr. Philipe Saraiva em Caratinga. Tecnologia de ponta, diagnóstico preciso e acompanhamento personalizado para preservar sua visão com excelência.",
-        "fullDescription": "A consulta oftalmológica na Clínica Saraiva Vision é um processo completo e minucioso conduzido pelo Dr. Philipe Saraiva (CRM-MG 69.870), especialista com mais de 15 anos de experiência em oftalmologia. Iniciamos com uma anamnese detalhada, investigando seu histórico ocular, sintomas atuais, medicamentos em uso e fatores de risco. Em seguida, realizamos uma bateria de exames especializados: teste de acuidade visual com tabelas padronizadas, refração computadorizada para determinação precisa do grau, biomicroscopia do segmento anterior para avaliar córnea, cristalino e estruturas adjacentes, tonometria para medição da pressão intraocular (fundamental na prevenção do glaucoma), e mapeamento de retina com oftalmoscopia direta e indireta. Quando necessário, complementamos com exames adicionais como gonioscopia, campimetria visual e tomografia de coerência óptica (OCT). Nossa abordagem preventiva permite detectar precocemente doenças como glaucoma, catarata, degeneração macular e retinopatia diabética, proporcionando tratamento mais eficaz e preservação da qualidade visual. Além disso, oferecemos orientações detalhadas de cuidados preventivos e acompanhamento contínuo para cada paciente."
+        "fullDescription": "A consulta oftalmológica na Clínica Saraiva Vision é um processo completo e minucioso conduzido pelo Dr. Philipe Saraiva (CRM-MG 69.870), especialista com mais de 15 anos de experiência em oftalmologia. Iniciamos com uma anamnese detalhada, investigando seu histórico ocular, sintomas atuais, medicamentos em uso e fatores de risco. Em seguida, realizamos uma bateria de exames especializados: teste de acuidade visual com tabelas padronizadas, refração computadorizada para determinação precisa do grau, biomicroscopia do segmento anterior para avaliar córnea, cristalino e estruturas adjacentes, tonometria para medição da pressão intraocular (fundamental na prevenção do glaucoma), e mapeamento de retina com oftalmoscopia direta e indireta. Quando necessário, complementamos com exames adicionais como gonioscopia, campimetria visual e tomografia de coerência óptica (OCT). Nossa abordagem preventiva permite detectar precocemente doenças como glaucoma, catarata, degeneração macular e retinopatia diabética, proporcionando tratamento mais eficaz e preservação da qualidade visual."
       },
       "refraction": {
         "title": "Exames de Refração e Adaptação de Lentes de Contato",
-        "description": "Determinação precisa do grau para óculos e adaptação especializada de lentes de contato. Avaliação completa da refração ocular com equipamentos de última geração para máxima precisão no diagnóstico.",
-        "fullDescription": "Nossos exames de refração utilizam tecnologia avançada para determinar com precisão mílimétrica o grau de miopia, hipermetropia, astigmatismo e presbiopia. Além disso, oferecemos serviço completo de adaptação de lentes de contato, incluindo lentes gelatinosas, rígidas gas permeáveis, multifocais e tóricas. Nossa equipe especializada acompanha todo o processo de adaptação, garantindo conforto e segurança para seus olhos. Após o exame, explicamos todas as opções de correção visual e fornecemos recomendações personalizadas."
+        "description": "Determinação precisa do grau para óculos e adaptação especializada de lentes de contato. Avaliação completa da refração ocular com equipamentos de última geração para máxima precisão no diagnóstico."
       },
       "specialized": {
         "title": "Tratamentos Especializados",
-        "description": "Tratamentos avançados para glaucoma, catarata, degeneração macular, retinopatia diabética e outras condições oculares. Terapia personalizada com equipamentos de última geração para preservar e melhorar sua visão.",
-        "fullDescription": "A Clínica Saraiva Vision oferece tratamentos especializados para as principais doenças oculares utilizando protocolos médicos avançados e tecnologia de ponta. Para o glaucoma, realizamos diagnóstico precoce com paquimetria, gonioscopia e campimetria computadorizada, oferecendo tratamento medicamentoso personalizado com colírios hipotensores, laser YAG e trabeculoplastia seletiva a laser (SLT). No tratamento da catarata, utilizamos facoemulsificação com implante de lentes intraoculares premium, incluindo lentes multifocais, tóricas e de profundidade de campo estendida. Para doenças da retina como degeneração macular relacionada à idade (DMRI) e retinopatia diabética, empregamos injeções intravítreas de anti-VEGF, fotocoagulação a laser e acompanhamento com OCT de alta resolução. Também tratamos pterígio com técnica de enxerto conjuntival, distúrbios das pálpebras (ptose, entrópio, ectrópio), síndrome do olho seco com terapia lacrimal personalizada e tratamentos para uveítes e inflamações oculares. Todos os tratamentos são realizados em ambiente cirúrgico com padrão hospitalar e acompanhamento pós-operatório especializado. Seguimos protocolos internacionais atualizados garantindo o máximo de segurança e eficácia."
+        "description": "Tratamentos avançados para glaucoma, catarata, degeneração macular, retinopatia diabética e outras condições oculares. Terapia personalizada com equipamentos de última geração para preservar e melhorar sua visão."
       },
       "surgeries": {
         "title": "Cirurgias Oftalmológicas",
-        "description": "Cirurgias oftalmológicas de alta precisão incluindo catarata, correção de grau, pterígio e procedimentos de pálpebras. Centro cirúrgico moderno com tecnologia avançada e equipe especializada.",
-        "fullDescription": "O centro cirúrgico da Clínica Saraiva Vision está equipado com tecnologia de última geração para realizar cirurgias oftalmológicas com máxima segurança e precisão. Realizamos cirurgia de catarata com facoemulsificação e implante de lentes intraoculares premium (monofocais, multifocais, tóricas e EDOF), cirurgias refrativas para correção de miopia, hipermetropia e astigmatismo, incluindo LASIK e PRK com laser excimer de alta precisão. Também executamos cirurgia de pterígio com técnica de enxerto conjuntival para prevenir recidivas, cirurgias de pálpebras (blefaroplastia, correção de ptose, entrópio e ectrópio), cirurgia de canalículo lacrimal, remoção de tumores palpebrais e conjuntivais, e procedimentos para glaucoma como trabeculectomia e implantes de drenagem. Todos os procedimentos são realizados em ambiente com padrão hospitalar, utilizando anestesia tópica ou local, microscópio cirúrgico Carl Zeiss e instrumentação microcirúrgica de precisão. O acompanhamento pós-operatório é rigoroso, com consultas programadas e disponibilidade 24h para emergências, garantindo recuperação segura e resultados excepcionais. Nosso compromisso é com uma recuperação tranquila e resultados visuais superiores."
+        "description": "Cirurgias oftalmológicas de alta precisão incluindo catarata, correção de grau, pterígio e procedimentos de pálpebras. Centro cirúrgico moderno com tecnologia avançada e equipe especializada."
       },
       "pediatric": {
         "title": "Oftalmologia Pediátrica",
-        "description": "Cuidado especializado da saúde ocular infantil desde o nascimento até a adolescência. Diagnóstico precoce de ambliopia, estrabismo e erros refrativos com ambiente lúdico e acolhedor para as crianças.",
-        "fullDescription": "A oftalmologia pediátrica na Clínica Saraiva Vision é conduzida com expertise e sensibilidade especial para atender crianças desde os primeiros dias de vida até a adolescência. Realizamos o teste do olhinho (reflexo vermelho) em recém-nascidos para detecção precoce de catarata congênita, glaucoma congênito e outras malformações oculares. Para lactentes e pré-escolares, utilizamos técnicas especializadas de avaliação visual adequadas para cada faixa etária, incluindo teste de fixação preferencial, cartões de Teller e optotipos infantis. O diagnóstico e tratamento da ambliopia (olho preguiçoso) é uma de nossas especialidades, empregando oclusão terapêutica personalizada, exercícios ortópticos e acompanhamento rigoroso do desenvolvimento visual. Para estrabismo, oferecemos avaliação completa com cover test, medidas de desvio, avaliação da motilidade ocular e, quando necessário, coordenamos tratamento cirúrgico com equipe especializada. Também realizamos adaptação de óculos infantis com armações coloridas e resistentes, lentes com filtro de luz azul para proteção digital, e orientação familiar completa sobre cuidados oculares. Nosso ambiente é especialmente preparado para receber crianças, com decoração lúdica, brinquedos educativos e equipe treinada em abordagem pediátrica, garantindo experiência positiva e colaboração durante os exames. Pais recebem relatórios completos e orientações de estímulos visuais em casa."
+        "description": "Cuidado especializado da saúde ocular infantil desde o nascimento até a adolescência. Diagnóstico precoce de ambliopia, estrabismo e erros refrativos com ambiente lúdico e acolhedor para as crianças."
       },
       "reports": {
         "title": "Laudos Especializados",
-        "description": "Emissão de laudos técnicos detalhados para CNH, concursos públicos, laudos ocupacionais e pareceres médicos especializados. Documentação precisa e confiável.",
-        "fullDescription": "Oferecemos serviço completo de laudos oftalmológicos especializados: exames para CNH (categoria A, B, C, D, E), laudos para concursos públicos e militares, avaliações ocupacionais (NR-7, PCMSO), laudos para atividades esportivas, pareceres para seguros e planos de saúde. Todos os laudos seguem rigorosamente as normas do Conselho Federal de Medicina e são emitidos com assinatura digital para maior agilidade e segurança. Todo processo é rápido e totalmente digital, facilitando o acesso aos documentos."
+        "description": "Emissão de laudos técnicos detalhados para CNH, concursos públicos, laudos ocupacionais e pareceres médicos especializados. Documentação precisa e confiável."
+      },
+      "gonioscopy": {
+        "title": "Gonioscopia",
+        "description": "Exame que avalia o ângulo da câmara anterior do olho, essencial no diagnóstico e classificação do glaucoma."
+      },
+      "retinaMapping": {
+        "title": "Mapeamento de Retina",
+        "description": "Avaliação ampla da retina periférica e central para detectar lesões, roturas, degenerações ou complicações vasculares."
+      },
+      "cornealTopography": {
+        "title": "Topografia Corneana",
+        "description": "Mapeamento computadorizado da curvatura corneana para diagnóstico de ceratocone, astigmatismos irregulares e planejamento cirúrgico."
+      },
+      "pachymetry": {
+        "title": "Paquimetria",
+        "description": "Medição precisa da espessura corneana central. Essencial no cálculo da pressão intraocular e avaliação de ceratocone."
+      },
+      "retinography": {
+        "title": "Retinografia",
+        "description": "Fotografia digital de alta resolução da retina para documentação e acompanhamento de doenças oculares."
+      },
+      "visualField": {
+        "title": "Campo Visual Computadorizado",
+        "description": "Exame que avalia a sensibilidade visual periférica e central, vital para diagnóstico e seguimento do glaucoma."
       }
-    }
+    },
+    "benefits": {
+      "comprehensiveExam": "Exame completo da saúde ocular",
+      "earlyDiagnosis": "Diagnóstico precoce de doenças",
+      "personalizedCare": "Acompanhamento personalizado",
+      "modernEquipment": "Equipamentos de última geração",
+      "preventiveGuidance": "Orientação preventiva detalhada",
+      "preciseGrade": "Determinação precisa do grau",
+      "contactAdaptation": "Adaptação completa de lentes de contato",
+      "lensTypes": "Teste de diferentes tipos de lentes",
+      "specializedFollowup": "Acompanhamento especializado",
+      "careGuidance": "Orientação sobre uso e cuidados",
+      "glaucomaTreatment": "Tratamento de glaucoma avançado",
+      "diabetesControl": "Controle de diabetes ocular",
+      "dryEyeTherapy": "Terapia para olho seco",
+      "macularDegeneration": "Acompanhamento de degeneração macular",
+      "individualProtocol": "Protocolo individualizado",
+      "microinvasiveTechniques": "Técnicas microinvasivas",
+      "quickRecovery": "Recuperação rápida",
+      "equippedCenter": "Centro cirúrgico equipado",
+      "safeAnesthesia": "Anestesia local segura",
+      "postOpFollowup": "Acompanhamento pós-operatório",
+      "friendlyEnvironment": "Ambiente lúdico e acolhedor",
+      "earlyDetection": "Detecção precoce de problemas",
+      "adaptedTechniques": "Técnicas adaptadas para crianças",
+      "parentGuidance": "Orientação aos pais",
+      "developmentFollowup": "Acompanhamento do desenvolvimento",
+      "licenseReports": "Laudos para CNH todas as categorias",
+      "publicContests": "Concursos públicos e militares",
+      "occupationalEvals": "Avaliações ocupacionais",
+      "digitalSignature": "Assinatura digital",
+      "fastDelivery": "Entrega rápida e segura",
+      "preciseDiagnosis": "Diagnóstico preciso do glaucoma",
+      "glaucomaClassification": "Classificação do tipo de glaucoma",
+      "angleEvaluation": "Avaliação do ângulo iridocorneano",
+      "directedGuidance": "Orientação terapêutica direcionada",
+      "precisionEquipment": "Equipamento de alta precisão",
+      "earlyLesionDetection": "Detecção precoce de lesões retinianas",
+      "peripheralEvaluation": "Avaliação da retina periférica",
+      "detachmentDiagnosis": "Diagnóstico de descolamento de retina",
+      "diabeticMonitoring": "Monitoramento de retinopatia diabética",
+      "painlessExam": "Exame indolor e seguro",
+      "keratoconeDiagnosis": "Diagnóstico precoce de ceratocone",
+      "refractivePlanning": "Planejamento de cirurgia refrativa",
+      "specialLensAdaptation": "Adaptação de lentes especiais",
+      "ectasiaFollowup": "Acompanhamento de ectasias",
+      "coloredMaps": "Mapas coloridos detalhados",
+      "preciseThickness": "Medição precisa da espessura corneana",
+      "glaucomaAid": "Auxílio no diagnóstico de glaucoma",
+      "refractiveSurgeryEval": "Avaliação para cirurgia refrativa",
+      "keratoconeMonitoring": "Monitoramento de ceratocone",
+      "quickPainless": "Exame rápido e indolor",
+      "photographicDocumentation": "Documentação fotográfica da retina",
+      "diseaseFollowup": "Acompanhamento de doenças oculares",
+      "diabeticRetinaMonitoring": "Monitoramento de retinopatia diabética",
+      "maculatLesionDetection": "Detecção de lesões maculares",
+      "temporalComparison": "Comparação da evolução temporal",
+      "earlyGlaucomaDiagnosis": "Diagnóstico precoce de glaucoma",
+      "opticNeuropathyEval": "Avaliação de neuropatias ópticas",
+      "progressionMonitoring": "Monitoramento da progressão",
+      "scotomaDetection": "Detecção de escotomas",
+      "reliableProtocol": "Protocolo automatizado confiável"
+    },
+    "duration": {
+      "consultation": "45-60 minutos",
+      "refraction": "30-45 minutos",
+      "specialized": "60-90 minutos",
+      "surgeries": "45-90 minutos",
+      "pediatric": "30-45 minutos",
+      "reports": "20-30 minutos",
+      "gonioscopy": "15-20 minutos",
+      "retinaMapping": "20-30 minutos",
+      "cornealTopography": "10-15 minutos",
+      "pachymetry": "5-10 minutos",
+      "retinography": "10-15 minutos",
+      "visualField": "20-30 minutos por olho"
+    },
+    "preparation": {
+      "consultation": "Traga seus óculos atuais e exames anteriores",
+      "refraction": "Evite usar lentes de contato 24h antes do exame",
+      "specialized": "Traga todos os exames e medicamentos em uso",
+      "surgeries": "Jejum de 8 horas e acompanhante obrigatório",
+      "pediatric": "Criança descansada e alimentada",
+      "reports": "Traga documento de identidade e requisição",
+      "gonioscopy": "Evite usar lentes de contato no dia do exame",
+      "retinaMapping": "Dilatação pupilar necessária - evite dirigir após o exame",
+      "cornealTopography": "Suspender uso de lentes de contato conforme orientação médica",
+      "pachymetry": "Suspender lentes de contato 24h antes do exame",
+      "retinography": "Pode ser necessária dilatação pupilar",
+      "visualField": "Use seus óculos habituais e evite cansaço visual antes do exame"
+    },
+    "included": {
+      "anamnesis": "Anamnese detalhada",
+      "acuityTest": "Teste de acuidade visual",
+      "biomicroscopy": "Biomicroscopia",
+      "tonometry": "Tonometria (pressão ocular)",
+      "retinaMapping": "Mapeamento de retina",
+      "orientations": "Orientações e prescrições",
+      "computerizedRefraction": "Refração computadorizada",
+      "subjectiveRefraction": "Refração subjetiva",
+      "contactTest": "Teste de lentes de contato",
+      "personalizedAdaptation": "Adaptação personalizada",
+      "usageTraining": "Treinamento de uso",
+      "cleaningKit": "Kit inicial de limpeza",
+      "specializedEvaluation": "Avaliação especializada",
+      "complementaryExams": "Exames complementares",
+      "therapeuticPlan": "Plano terapêutico",
+      "medicationPrescription": "Prescrição medicamentosa",
+      "followupScheduling": "Agendamento de retornos",
+      "familyOrientation": "Orientação familiar",
+      "preOpConsultation": "Consulta pré-operatória",
+      "preOpExams": "Exames pré-cirúrgicos",
+      "surgicalProcedure": "Procedimento cirúrgico",
+      "postOpMedication": "Medicação pós-operatória",
+      "includedReturns": "Retornos inclusos",
+      "emergencySupport": "Suporte 24h emergencial",
+      "redReflexTest": "Teste do olhinho",
+      "visualDevelopment": "Avaliação do desenvolvimento visual",
+      "strabismusTest": "Teste de estrabismo",
+      "infantRefraction": "Refração infantil",
+      "familyGuidance": "Orientação familiar",
+      "returnSchedule": "Cronograma de retornos",
+      "completeExam": "Exame oftalmológico completo",
+      "specificEvaluation": "Avaliação específica solicitada",
+      "technicalReport": "Laudo técnico detalhado",
+      "digitalSig": "Assinatura digital",
+      "emailDelivery": "Envio por e-mail",
+      "printedCopy": "Via impressa quando necessário",
+      "topicalAnesthesia": "Anestesia tópica",
+      "bilateralExam": "Exame gonioscópico bilateral",
+      "angleClassification": "Classificação detalhada do ângulo",
+      "specializedReport": "Relatório técnico especializado",
+      "diagnosisGuidance": "Orientações sobre o diagnóstico",
+      "referralWhenNeeded": "Encaminhamento quando necessário",
+      "pupilDilation": "Dilatação pupilar com colírios",
+      "binocularOphthalmoscopy": "Oftalmoscopia indireta binocular",
+      "peripheralMapping": "Mapeamento da retina periférica",
+      "photographicDocumentation": "Documentação fotográfica quando indicado",
+      "detailedReport": "Relatório detalhado",
+      "postExamGuidance": "Orientações pós-exame",
+      "computerizedTopography": "Topografia computadorizada",
+      "elevationMaps": "Mapas de elevação e curvatura",
+      "aberrationAnalysis": "Análise de aberrações corneanas",
+      "completeReport": "Relatório técnico completo",
+      "coloredImages": "Imagens coloridas impressas",
+      "ultrasonicPachymetry": "Paquimetria ultrassônica bilateral",
+      "multiplePoints": "Medidas em múltiplos pontos",
+      "normalValues": "Valores de referência normais",
+      "clinicalInterpretation": "Interpretação clínica",
+      "techReport": "Relatório técnico",
+      "resultOrientation": "Orientações sobre resultados",
+      "highResPhotos": "Fotografias digitais de alta resolução",
+      "posteriorPole": "Imagens do pólo posterior",
+      "colorDocumentation": "Documentação colorida",
+      "digitalArchive": "Arquivo digital permanente",
+      "previousComparison": "Comparação com exames anteriores",
+      "photoReport": "Relatório fotográfico",
+      "computerizedField": "Campo visual computadorizado bilateral",
+      "sitaProtocol": "Protocolo SITA Standard ou Fast",
+      "progressionAnalysis": "Análise de progressão quando disponível",
+      "reliabilityIndexes": "Índices de confiabilidade",
+      "specializedInterpretation": "Interpretação especializada",
+      "resultGuidance": "Orientações sobre resultados"
+    },
+    "consultation": "Consulta Oftalmológica",
+    "refraction": "Refração",
+    "pachymetry": "Paquimetria",
+    "retinal_mapping": "Mapeamento de Retina",
+    "biometry": "Biometria",
+    "corneal_topography": "Topografia Corneana"
   },
   "contactLenses": {
     "main_title": "Lentes de Contato",
@@ -262,6 +516,7 @@
     "button": "Saiba Mais",
     "schedule_button": "Agendar Consulta para Lentes",
     "whatsapp_button": "Tirar Dúvidas no WhatsApp",
+    "brand_logo_alt": "Logo da marca {{brandName}} - Lentes de contato de qualidade",
     "process_steps": [
       {
         "title": "Avaliação Inicial",
@@ -332,14 +587,13 @@
       "experience": "15+ Anos de Experiência",
       "patients": "1000+ Adaptações Bem-sucedidas",
       "safety": "100% Procedimentos Estéreis",
-      "brands": "Marcas Premium Autorizadas",
-      "environment": "Empresa Amiga do Meio Ambiente"
+      "brands": "Marcas Premium Autorizadas"
     },
     "brands_section": {
       "title": "Marcas Premium Disponíveis",
       "subtitle": "Trabalhamos apenas com as marcas mais confiáveis e inovadoras do mercado"
     },
-    "brands": {
+    "brand_details": {
       "acuvue": {
         "description": "Líder mundial em lentes de contato, oferecendo tecnologia avançada para máximo conforto.",
         "specialty": "Lentes diárias e quinzenais",
@@ -383,28 +637,39 @@
   },
   "about": {
     "tag": "Sobre Nós",
-    "title": "Dedicados à Excelência em Cada Detalhe",
-    "p1": "A Saraiva Vision nasceu do sonho de oferecer um atendimento oftalmológico de alta qualidade, unindo tecnologia avançada a uma abordagem humana e personalizada.",
-    "p2": "Nossa missão é proporcionar diagnósticos precisos e tratamentos eficazes, priorizando sempre o bem-estar e a satisfação dos nossos pacientes.",
+    "title": "Dedicados à Excelência em Cada Detalhe da Sua Visão",
+    "p1": "A Saraiva Vision nasceu do sonho de oferecer um atendimento oftalmológico de alta qualidade em Caratinga e região, unindo tecnologia de ponta a uma abordagem humana e personalizada. Desde nossa fundação, construímos uma reputação sólida baseada na confiança, competência técnica e no compromisso inabalável com a saúde ocular de nossos pacientes.",
+    "p2": "Nossa missão transcende o simples tratamento de doenças oculares. Acreditamos na prevenção como o melhor caminho para preservar a visão, oferecemos diagnósticos precisos utilizando equipamentos de última geração, e desenvolvemos tratamentos eficazes e individualizados. Cada paciente é único, e nosso atendimento reflete essa filosofia, priorizando sempre o bem-estar, a satisfação e os resultados duradouros.",
+    "p3": "Como parceiros oficiais da rede Amor e Saúde, mantemos os mais altos padrões de qualidade e segurança. Nossa infraestrutura moderna, localizada estrategicamente no coração de Caratinga, foi projetada para oferecer conforto e tranquilidade durante todo o processo de cuidado com sua visão.",
     "features": [
-      "Infraestrutura Moderna",
-      "Profissionais Qualificados",
-      "Atendimento Humanizado",
-      "Compromisso com Resultados"
+      "Infraestrutura Moderna e Equipada",
+      "Profissionais Altamente Qualificados",
+      "Atendimento Humanizado e Personalizado",
+      "Compromisso com Resultados Duradouros",
+      "Tecnologia de Ponta em Diagnósticos",
+      "Parceria com Rede Amor e Saúde"
     ],
-    "alt1": "Consultório oftalmológico moderno",
-    "alt2": "Médico oftalmologista realizando exame de vista",
-    "alt3": "Paciente sorrindo satisfeito após consulta",
-    "alt4": "Equipamento oftalmológico avançado",
+    "alt1": "Consultório oftalmológico moderno da Saraiva Vision",
+    "alt2": "Dr. Philipe Saraiva realizando exame oftalmológico detalhado",
+    "alt3": "Paciente satisfeito após consulta na Saraiva Vision",
+    "alt4": "Equipamento oftalmológico de última geração",
     "doctor": {
-      "heading": "Quem sou eu",
-      "name": "Dr. Philipe Saraiva Cruz",
-      "title": "Oftalmologista",
-      "description": "Sou o Dr. Philipe Saraiva Cruz, médico oftalmologista (CRM-MG 69.870). Formei-me em Medicina em 2016 pela Faculdade de Ciências Médicas e da Saúde de Juiz de Fora. Em 2017 iniciei residência em Anestesiologia no Hospital Márcio Cunha – Ipatinga, experiência interrompida pela minha transição de área. Em 2020 iniciei a residência em Oftalmologia na Faculdade de Medicina de Jundiaí, mas a pandemia de COVID-19 levou à interrupção do programa. Mantendo meu compromisso com a especialidade, finalizei em 2023 a Pós-Graduação em Oftalmologia pelo CADECEU, consolidando minha formação acadêmica e prática clínica.",
-      "emotional": "Minha caminhada na Medicina começou em 2016, ao concluir a graduação na Faculdade de Ciências Médicas e da Saúde de Juiz de Fora. Passei pelo Hospital Márcio Cunha, em Ipatinga, onde iniciei residência em Anestesiologia em 2017, e em 2020 abracei minha verdadeira vocação ao ingressar na residência em Oftalmologia na Faculdade de Medicina de Jundiaí. Porém, a pandemia de COVID-19 interrompeu esse ciclo.\n\nNão desisti do meu propósito: em 2023 finalizei a Pós-Graduação em Oftalmologia pelo CADECEU, coroando anos de dedicação e esforço. Hoje, na Saraiva Vision, tenho a honra de cuidar da visão dos meus pacientes com carinho, tecnologia e compromisso com a vida."
+      "name": "Dr. Philipe Saraiva",
+      "title": "Oftalmologista CRM/MG 69.870",
+      "heading": "Conheça Nosso Especialista",
+      "description": "Médico oftalmologista com sólida formação acadêmica e vasta experiência em diagnósticos precisos, tratamentos personalizados e cirurgias oculares. Especializado em diversas áreas da oftalmologia, incluindo catarata, glaucoma, doenças da retina e refração.\n\nSua abordagem combina conhecimento técnico atualizado com um cuidado genuíno pelos pacientes, garantindo não apenas tratamentos eficazes, mas também uma experiência acolhedora e tranquilizadora durante todo o processo de cuidado com a visão.\n\nComprometido com a educação continuada e sempre atualizado com as mais recentes técnicas e tecnologias em oftalmologia, Dr. Philipe oferece o que há de mais moderno em cuidados oculares para a comunidade de Caratinga e região.",
+      "alt": "Dr. Philipe Saraiva - Oftalmologista especialista em saúde ocular CRM/MG 69.870"
+    },
+    "team_title": "Nossa Equipe Especializada",
+    "nurse": {
+      "name": "Eng. Ana Lúcia",
+      "title": "Enfermeira Responsável e Coordenadora",
+      "description": "Profissional experiente e dedicada, responsável pela coordenação do atendimento aos pacientes e apoio especializado em todos os procedimentos clínicos. Com ampla experiência em oftalmologia, Ana Lúcia garante que cada etapa do seu atendimento seja conduzida com máximo cuidado, segurança e conforto.\n\nSua atenção aos detalhes e habilidade em criar um ambiente acolhedor fazem dela uma peça fundamental na experiência positiva de nossos pacientes, desde a recepção até o acompanhamento pós-consulta.",
+      "alt": "Enfermeira Ana Lúcia - Coordenadora de atendimento da Saraiva Vision"
     }
   },
   "contact": {
+    "recaptcha_label": "Verificação de Segurança",
     "title": "Entre em Contato",
     "subtitle": "Estamos à disposição para tirar suas dúvidas e agendar sua consulta. Sua visão é nossa prioridade.",
     "form_title": "Envie uma Mensagem",
@@ -416,11 +681,6 @@
     "email_placeholder": "Seu melhor e-mail",
     "message_label": "Mensagem",
     "message_placeholder": "Escreva sua mensagem aqui...",
-    "recaptcha_label": "Verificação de Segurança",
-    "recaptcha_error_title": "Erro de Verificação",
-    "recaptcha_error_desc": "Falha na verificação reCAPTCHA. Tente novamente.",
-    "submission_error_title": "Erro no Envio",
-    "submission_error_desc": "Ocorreu um erro ao enviar a mensagem. Tente novamente.",
     "send_button": "Enviar Mensagem",
     "online_scheduling_title": "Agendamento Online",
     "online_scheduling_desc": "Agende sua consulta diretamente pela plataforma web",
@@ -448,26 +708,41 @@
     "toast_error_title": "Verifique os campos",
     "toast_error_desc": "Alguns dados precisam de ajuste.",
     "sending_label": "Enviando...",
+    "recaptcha_not_ready": "Verificação de segurança indisponível. Tente novamente.",
+    "recaptcha_error": "Falha na verificação de segurança. Tente novamente.",
+    "recaptcha_ready": "Proteção automática reCAPTCHA ativada",
+    "recaptcha": {
+      "disclosure_html": "Este site é protegido pelo reCAPTCHA e se aplicam a <a href=\"https://policies.google.com/privacy\" target=\"_blank\" rel=\"noopener noreferrer\">Política de Privacidade</a> e os <a href=\"https://policies.google.com/terms\" target=\"_blank\" rel=\"noopener noreferrer\">Termos de Serviço</a> do Google."
+    },
+    "server_error": "Não foi possível enviar. Tente novamente mais tarde.",
     "validation": {
       "name_min": "Informe pelo menos 3 caracteres.",
       "email_invalid": "E-mail inválido.",
       "phone_invalid": "Use apenas números com DDD (ex: 33998601427).",
       "message_min": "Mensagem muito curta (mín. 10 caracteres).",
-      "consent_required": "É necessário consentir com o tratamento dos dados.",
-      "recaptcha_required": "Por favor, complete a verificação reCAPTCHA.",
-      "recaptcha_expired": "reCAPTCHA expirado. Por favor, complete novamente.",
-      "recaptcha_error": "Erro no reCAPTCHA. Recarregue a página."
+      "consent_required": "É necessário consentir com o tratamento dos dados."
     },
     "external_redirect_warning": "Você será redirecionado para {serviceName}. Continuar?",
+    "call_number_aria": "Ligar para {{number}}",
     "phone_call_error": "Erro ao iniciar chamada. Ligue manualmente: {phoneDisplay}",
     "email_error": "Erro ao abrir cliente de email. Envie para: {email}",
     "rate_limit_title": "Aguarde um momento",
-    "rate_limit_desc": "Aguarde 30 segundos antes de enviar novamente."
+    "rate_limit_desc": "Aguarde 30 segundos antes de enviar novamente.",
+    "schedule_consultation": "Agendar Consulta",
+    "modal_description": "Escolha sua forma preferida de contato. Resposta em até 1 minuto no horário comercial.",
+    "whatsapp_title": "WhatsApp",
+    "whatsapp_fast_response": "Resposta em até 1 minuto • Mais rápido",
+    "phone_title": "Telefone",
+    "phone_call_now": "Ligue agora",
+    "email_title": "E-mail",
+    "email_details": "Envie detalhes e preferências de horário",
+    "whatsapp_footer_help": "Caso o WhatsApp não abra automaticamente, adicione o número manualmente:"
   },
   "footer": {
     "slogan": "Excelência no cuidado com a visão, perto de você.",
     "partner_of": "Parceiro da",
     "amor_saude_alt": "Logo da Clínica Amor e Saúde",
+    "partner_link_aria": "Abrir site do parceiro Amor e Saúde (nova aba)",
     "quick_links": "Links Rápidos",
     "services": "Serviços",
     "contact": "Contato",
@@ -489,21 +764,50 @@
     "title": "Podcast Saraiva Vision",
     "subtitle": "Saúde Ocular em Foco - Conteúdo especializado sobre saúde ocular para manter seus olhos sempre saudáveis.",
     "listen_spotify": "Ouvir no Spotify",
+    "visit_podcast": "Ver todos os episódios",
+    "spotify_embed_title": "Player do Spotify",
     "open_episode": "Abrir episódio",
     "cover_alt": "Capa do podcast",
-    "more_episodes": "Ouvir mais podcasts",
     "episodes": {
       "glaucoma": {
         "title": "Saúde Ocular em Foco: Glaucoma",
         "description": "Entenda o que é o glaucoma, como identificar sinais de alerta e as opções de tratamento para preservar sua visão. Um episódio essencial para quem quer prevenir esta doença silenciosa."
       },
       "catarata": {
-        "title": "Saúde Ocular em Foco: Catarata", 
+        "title": "Saúde Ocular em Foco: Catarata",
         "description": "Descubra tudo sobre catarata: causas, sintomas, tratamentos e como a cirurgia pode devolver sua qualidade de vida. Informações precisas para uma decisão consciente."
       },
       "ptergio": {
         "title": "Saúde Ocular em Foco: Pterígio",
         "description": "Conheça o pterígio, suas causas relacionadas à exposição solar e os tratamentos disponíveis. Saiba como proteger seus olhos e quando procurar ajuda médica."
+      },
+      "retina": {
+        "title": "Saúde Ocular em Foco: Retina",
+        "description": "Principais problemas que afetam a retina e como preveni-los para manter a saúde ocular em dia."
+      },
+      "olho_seco": {
+        "title": "Olho Seco: Sintomas e Tratamentos",
+        "description": "Causas, sintomas e opções de tratamento para aliviar o desconforto e melhorar a qualidade de vida."
+      },
+      "duvidas": {
+        "title": "Dúvidas Frequentes em Oftalmologia",
+        "description": "Respostas às perguntas mais comuns sobre consultas, exames e tratamentos oftalmológicos."
+      },
+      "ceratocone": {
+        "title": "Saúde Ocular em Foco: Ceratocone",
+        "description": "O que é ceratocone, sintomas, diagnóstico e opções de tratamento e adaptação de lentes para melhorar a qualidade visual."
+      },
+      "dmri": {
+        "title": "Saúde Ocular em Foco: DMRI — Quando a Mácula Decide se Aposentar",
+        "description": "Entenda a Degeneração Macular Relacionada à Idade (DMRI): sintomas, fatores de risco, formas de prevenção e quando procurar avaliação com o oftalmologista."
+      },
+      "lentes_contato": {
+        "title": "Saúde Ocular em Foco: Lentes de Contato — Rígidas vs Gelatinosas",
+        "description": "Diferenças, indicações e cuidados entre lentes rígidas e gelatinosas. Quando cada uma é indicada e como manter a adaptação com segurança."
+      },
+      "cirurgia_refrativa": {
+        "title": "Saúde Ocular em Foco: Cirurgia Refrativa — Liberdade dos Óculos",
+        "description": "Entenda tudo sobre cirurgia refrativa: LASIK, PRK e outras técnicas modernas para correção de miopia, hipermetropia e astigmatismo. Quando é indicada e o que esperar do procedimento."
       }
     }
   },
@@ -517,15 +821,15 @@
     "description": "Saiba mais sobre {{serviceTitleLowercase}} na Saraiva Vision. Oferecemos tratamentos e diagnósticos avançados para sua saúde ocular.",
     "keywords": "{{serviceTitleLowercase}}, oftalmologia, saúde ocular, clínica de olhos"
   },
-  "faqMeta": {
-    "title": "FAQ | Clínica Saraiva Vision",
-    "description": "Respostas para dúvidas comuns sobre consultas, exames, cirurgias e lentes de contato.",
-    "keywords": "faq oftalmologia, perguntas exame de vista, clinica de olhos faq, perguntas lentes de contato"
-  },
   "lensesMeta": {
     "title": "👁️ Lentes de Contato Caratinga | Adaptação Profissional | Saraiva Vision",
     "description": "🔍 Adaptação profissional de lentes de contato em Caratinga: Sólotica, Bioview, lentes rígidas. ⭐ Consulta especializada com CRM-MG 69.870. 📞 Agende!",
     "keywords": "lentes de contato Caratinga, adaptação lentes Caratinga MG, lentes Sólotica Caratinga, lentes Bioview, oftalmologista lentes contato, lentes rígidas Caratinga, consulta lentes"
+  },
+  "faqMeta": {
+    "title": "❓ Perguntas Frequentes | Clínica Oftalmológica Saraiva Vision",
+    "description": "🔍 Tire suas dúvidas sobre oftalmologia, tratamentos oculares, consultas e serviços da Clínica Saraiva Vision em Caratinga/MG. ✅ Respostas completas!",
+    "keywords": "perguntas frequentes oftalmologia, FAQ clínica olhos, dúvidas consulta oftalmologista, oftalmologia Caratinga dúvidas, FAQ Saraiva Vision, perguntas tratamento ocular"
   },
   "serviceDetail": {
     "back_link": "Voltar para Serviços",
@@ -705,21 +1009,31 @@
     "mockAuthor3": "Paciente C",
     "mockText1": "Atendimento excelente e rápido!",
     "mockText2": "Equipe muito atenciosa e estrutura moderna.",
-    "mockText3": "Ótima experiência, recomendo."
+    "mockText3": "Ótima experiência, recomendo.",
+    "view_all_aria": "Ver todas as avaliações no Google (abre em nova aba)"
   },
   "ui": {
     "details": "Ver detalhes",
     "close": "Fechar",
-    "close_menu": "Fechar menu", 
+    "prev": "Anterior",
+    "previous": "Anterior",
+    "next": "Próximo",
+    "carousel": "Carrossel",
+    "carousel_navigation": "Navegação do carrossel",
+    "go_to_item": "Ir para item {{index}}",
+    "recommended": "RECOMENDADO",
+    "available_24_7": "Disponível 24h • Confirmação instantânea",
+    "close_menu": "Fechar menu",
     "close_player": "Fechar player",
     "close_tip": "Fechar dica",
     "restart_episode": "Reiniciar episódio",
     "download_episode": "Baixar episódio",
+    "accessibility_menu": "Menu de Acessibilidade",
     "external_link": "link externo",
     "language_portuguese": "Mudar para Português",
-    "language_english": "Mudar para Inglês",
+    "language_english": "Switch to English",
     "readability_control": "Controle de Legibilidade",
-    "reading_support": "Apoio à Leitura", 
+    "reading_support": "Apoio à Leitura",
     "alternative_communication": "Comunicação Alternativa",
     "navigation_input": "Navegação e Entrada",
     "decrease_font": "Diminuir fonte",
@@ -727,14 +1041,77 @@
     "your_name": "Seu nome",
     "alt": {
       "consultations": "Consultas Oftalmológicas",
-      "refraction": "Exames de Refração", 
+      "refraction": "Exames de Refração",
       "specialized": "Tratamentos Especializados",
       "surgeries": "Cirurgias Oftalmológicas",
       "pediatric": "Acompanhamento Pediátrico",
       "reports": "Laudos Especializados",
-      "satisfied_patient_1": "Paciente satisfeito 1",
-      "satisfied_patient_2": "Paciente satisfeito 2",
-      "doctor": "Médico oftalmologista sorrindo para a câmera em uma clínica moderna"
+      "gonioscopy": "Gonioscopia",
+      "retina_mapping": "Mapeamento de Retina",
+      "corneal_topography": "Topografia Corneana",
+      "pachymetry": "Paquimetria",
+      "retinography": "Retinografia",
+      "visual_field": "Campo Visual",
+      "hero_image": "Dr. Philipe Saraiva, oftalmologista em Caratinga, com uma paciente.",
+      "satisfied_patient_1": "Paciente satisfeita sorrindo.",
+      "satisfied_patient_2": "Paciente satisfeito sorrindo.",
+      "doctor": "Médico oftalmologista sorrindo para a câmera em uma clínica moderna",
+      "contact_lenses_icon": "Ícone representativo de lentes de contato",
+      "blog_post": "Imagem ilustrativa do artigo",
+      "podcast_episode": "Capa do episódio de podcast sobre saúde ocular"
     }
+  },
+  "location": {
+    "title": "Encontre-nos",
+    "subtitle": "Localização verificada no Google. Facilite sua rota e avalie nosso atendimento.",
+    "reviews_realtime": "Avaliações em tempo real",
+    "google_maps_button": "Ver no Google Maps",
+    "review_button": "Avalie-nos no Google",
+    "google_maps_button_aria": "Abrir perfil da clínica no Google Maps (nova aba)",
+    "review_button_aria": "Abrir página de avaliações no Google (nova aba)"
+  },
+  "service": {
+    "about": "Sobre o Serviço",
+    "benefits": "Principais Benefícios",
+    "included": "O que está incluído",
+    "quickInfo": "Informações Rápidas",
+    "duration": "Duração",
+    "location": "Local",
+    "preparation": "Preparação",
+    "directContact": "Contato Direto"
+  },
+  "clinic": {
+    "name": "Clínica Saraiva Vision",
+    "location": "Caratinga-MG",
+    "staff": {
+      "doctor": "Dr. Philipe Saraiva Cruz (CRM-MG 69.870)",
+      "nurse": "Enfermeira Ana Lúcia"
+    }
+  },
+  "cta": {
+    "scheduleConsultation": "Agendar Consulta",
+    "scheduleNow": "Agendar Agora"
+  },
+  "navigation": {
+    "backToServices": "Voltar aos Serviços"
+  },
+  "podcastMeta": {
+    "title": "Podcast Saraiva Vision | Saúde Ocular em Áudio | Caratinga/MG",
+    "description": "Ouça episódios especializados sobre oftalmologia com Dr. Philipe Saraiva. Dicas, prevenção e tratamentos para manter seus olhos saudáveis.",
+    "keywords": "podcast oftalmologia, saúde ocular áudio, Dr Philipe Saraiva podcast, dicas visão, prevenção ocular, tratamento olhos, podcast médico Caratinga"
+  },
+  "admin": {
+    "pageTitle": "Área Administrativa | Saraiva Vision",
+    "pageDescription": "Acesso à área administrativa do blog da Saraiva Vision",
+    "title": "Área Administrativa",
+    "subtitle": "Faça login para gerenciar o conteúdo do blog",
+    "username": "Usuário",
+    "usernamePlaceholder": "Digite seu usuário",
+    "password": "Senha",
+    "passwordPlaceholder": "Digite sua senha",
+    "login": "Entrar",
+    "loggingIn": "Entrando...",
+    "loginError": "Erro ao fazer login. Verifique suas credenciais.",
+    "backToBlog": "Voltar ao Blog"
   }
 }

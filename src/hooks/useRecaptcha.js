@@ -1,57 +1,52 @@
-import { useState, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-/**
- * Custom hook for Google reCAPTCHA integration
- * Provides methods to execute and reset reCAPTCHA
- */
+// Loads Google reCAPTCHA v3 script and returns an executor for actions
 export const useRecaptcha = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const recaptchaRef = useRef(null);
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  const [ready, setReady] = useState(false);
+  const loadingRef = useRef(false);
 
-  const executeRecaptcha = useCallback(async () => {
-    if (!recaptchaRef.current) {
-      setError('reCAPTCHA não foi inicializado');
-      return null;
+  useEffect(() => {
+    if (!siteKey) return; // no-op if not configured
+
+    if (window.grecaptcha && window.grecaptcha.execute) {
+      setReady(true);
+      return;
     }
 
-    setIsLoading(true);
-    setError(null);
+    if (loadingRef.current) return;
+    loadingRef.current = true;
 
-    try {
-      const token = await recaptchaRef.current.executeAsync();
-      
-      if (!token) {
-        setError('Falha ao obter token do reCAPTCHA');
-        return null;
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(siteKey)}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      if (window.grecaptcha) {
+        window.grecaptcha.ready(() => setReady(true));
       }
+    };
+    script.onerror = () => {
+      // Keep ready=false; callers can handle fallback when not ready
+      loadingRef.current = false;
+    };
+    document.head.appendChild(script);
 
+    return () => {
+      // Do not remove the script to avoid reloading on route changes
+    };
+  }, [siteKey]);
+
+  const execute = useCallback(async (action = 'contact') => {
+    if (!siteKey || !window.grecaptcha || !ready) return null;
+    try {
+      const token = await window.grecaptcha.execute(siteKey, { action });
       return token;
-    } catch (err) {
-      setError('Erro ao executar reCAPTCHA: ' + err.message);
+    } catch {
       return null;
-    } finally {
-      setIsLoading(false);
     }
-  }, []);
+  }, [siteKey, ready]);
 
-  const resetRecaptcha = useCallback(() => {
-    if (recaptchaRef.current) {
-      recaptchaRef.current.reset();
-    }
-    setError(null);
-  }, []);
-
-  const setRecaptchaRef = useCallback((ref) => {
-    recaptchaRef.current = ref;
-  }, []);
-
-  return {
-    executeRecaptcha,
-    resetRecaptcha,
-    setRecaptchaRef,
-    recaptchaRef,
-    isLoading,
-    error
-  };
+  return { ready, execute, enabled: !!siteKey };
 };
+

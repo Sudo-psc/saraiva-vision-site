@@ -1,0 +1,121 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'production'
+        type: choice
+        options: [production]
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to ${{ inputs.environment || 'production' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: production
+      url: ${{ vars.SITE_URL || 'https://saraivavision.com.br' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download build artifact from CI
+        id: download-dist
+        continue-on-error: true
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: ci.yml
+          workflow_conclusion: success
+          commit: ${{ github.sha }}
+          name: dist
+          path: dist
+
+      - name: Check dist presence
+        id: check-dist
+        run: |
+          if [ -d dist ] && [ "$(ls -A dist 2>/dev/null | wc -l)" -gt 0 ]; then
+            echo "present=true" >> $GITHUB_OUTPUT
+          else
+            echo "present=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Node.js (fallback)
+        if: steps.check-dist.outputs.present != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies (fallback)
+        if: steps.check-dist.outputs.present != 'true'
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --include=dev
+          else
+            npm install --include=dev
+          fi
+
+      - name: Build (Vite) — fallback
+        if: steps.check-dist.outputs.present != 'true'
+        run: npm run build
+
+      - name: Package deploy bundle
+        run: |
+          mkdir -p deploy_bundle
+          cp -a dist deploy_bundle/
+          cp -a deploy.sh nginx.conf deploy_bundle/
+          if [ -d scripts ]; then cp -a scripts deploy_bundle/; fi
+          tar -C deploy_bundle -czf deploy_bundle.tgz .
+
+      - name: Upload bundle to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.PROD_SSH_HOST }}
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_SSH_PORT || 22 }}
+          source: 'deploy_bundle.tgz'
+          target: ${{ secrets.PROD_REMOTE_PATH || '/home/deploy/saraivavision' }}
+          fingerprint: ${{ secrets.PROD_HOST_FINGERPRINT }}
+          host_key_verification: true
+
+      - name: Remote deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_SSH_HOST }}
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_SSH_PORT || 22 }}
+          fingerprint: ${{ secrets.PROD_HOST_FINGERPRINT }}
+          host_key_verification: true
+          script: |
+            set -euo pipefail
+            BASE_DIR=${{ secrets.PROD_REMOTE_PATH || '/home/deploy/saraivavision' }}
+            cd "$BASE_DIR"
+            tar -xzf deploy_bundle.tgz -C "$BASE_DIR"
+            sudo bash -lc "cd '$BASE_DIR' && chmod +x deploy.sh && ./deploy.sh --no-build --prune 5 --wp-check --site-url '${{ vars.SITE_URL || 'https://saraivavision.com.br' }}'"
+
+      - name: Post-deploy verify (strict WP)
+        if: always()
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_SSH_HOST }}
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_SSH_PORT || 22 }}
+          fingerprint: ${{ secrets.PROD_HOST_FINGERPRINT }}
+          host_key_verification: true
+          script: |
+            set -euo pipefail
+            BASE_DIR=${{ secrets.PROD_REMOTE_PATH || '/home/deploy/saraivavision' }}
+            cd "$BASE_DIR"
+            sudo bash -lc "cd '$BASE_DIR' && ./deploy.sh --verify-only --site-url '${{ vars.SITE_URL || 'https://saraivavision.com.br' }}' --wp-strict"

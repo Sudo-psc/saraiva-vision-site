@@ -1,0 +1,17 @@
+<svg width="120" height="80" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="120" height="80" rx="8" fill="#f8fafc"/>
+  <rect x="4" y="4" width="112" height="72" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  
+  <!-- Eye Icon -->
+  <ellipse cx="60" cy="35" rx="16" ry="10" fill="none" stroke="#2563eb" stroke-width="2"/>
+  <circle cx="60" cy="35" r="6" fill="#2563eb"/>
+  <circle cx="62" cy="33" r="2" fill="white"/>
+  
+  <!-- Text -->
+  <text x="60" y="55" text-anchor="middle" fill="#1e293b" font-family="Arial, sans-serif" font-size="10" font-weight="600">
+    Bioview
+  </text>
+  <text x="60" y="65" text-anchor="middle" fill="#64748b" font-family="Arial, sans-serif" font-size="6">
+    Visão e Tecnologia
+  </text>
+</svg>

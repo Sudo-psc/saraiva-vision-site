@@ -9,6 +9,7 @@ import { useEffect, useState, useRef } from 'react';
 export const useIntersectionObserver = (options = {}) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const ref = useRef(null);
+  const { threshold = 0.1, rootMargin = '50px' } = options;
 
   useEffect(() => {
     if (!ref.current) return;
@@ -18,8 +19,8 @@ export const useIntersectionObserver = (options = {}) => {
         setIsIntersecting(entry.isIntersecting);
       },
       {
-        threshold: 0.1,
-        rootMargin: '50px',
+        threshold,
+        rootMargin,
         ...options
       }
     );
@@ -32,7 +33,7 @@ export const useIntersectionObserver = (options = {}) => {
         observer.unobserve(currentRef);
       }
     };
-  }, [options.threshold, options.rootMargin]);
+  }, [threshold, rootMargin, options]);
 
   return [ref, isIntersecting];
 };

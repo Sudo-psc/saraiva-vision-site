@@ -1,14 +1,14 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-// Mock Node.js crypto module
+// Mock Node.js crypto module (provide both named and default for ESM interop)
 vi.mock('node:crypto', () => {
   const createHash = vi.fn(() => ({
     update: vi.fn().mockReturnThis(),
-    digest: vi.fn().mockReturnValue('mockedhash123')
+    digest: vi.fn().mockReturnValue('mockedhash123'),
   }));
   return {
+    default: { createHash },
     createHash,
-    default: { createHash }
   };
 });
 
@@ -95,8 +95,9 @@ describe('Reviews API Handler', () => {
   });
 
   describe('Environment Configuration', () => {
-    it('returns 500 when API key is missing', async () => {
+        it('returns 500 when API key is missing', async () => {
       delete process.env.GOOGLE_MAPS_API_KEY;
+      delete process.env.GOOGLE_PLACES_API_KEY;
 
       await handler(mockReq, mockRes);
 

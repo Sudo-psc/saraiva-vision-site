@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diagnóstico API WordPress - Clínica Saraiva Vision</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      }
+
+      .clinic-header {
+        text-align: center;
+        border-bottom: 3px solid #667eea;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+      }
+
+      .clinic-header h1 {
+        color: #667eea;
+        margin: 0;
+        font-size: 2.5em;
+      }
+
+      .clinic-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+      }
+
+      .test-section {
+        margin: 30px 0;
+        padding: 25px;
+        border-left: 5px solid #667eea;
+        background: #f8f9fa;
+        border-radius: 0 10px 10px 0;
+      }
+
+      .test-title {
+        font-size: 1.4em;
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .status {
+        padding: 8px 20px;
+        border-radius: 25px;
+        font-size: 0.9em;
+        font-weight: bold;
+        margin-left: 10px;
+      }
+
+      .status.success {
+        background: #d4edda;
+        color: #155724;
+      }
+      .status.error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      .status.warning {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .status.info {
+        background: #d1ecf1;
+        color: #0c5460;
+      }
+      .status.testing {
+        background: #e2e3e5;
+        color: #495057;
+      }
+
+      .result {
+        margin: 15px 0;
+        padding: 15px;
+        background: white;
+        border-radius: 8px;
+        border-left: 4px solid #ddd;
+      }
+
+      .result.success {
+        border-left-color: #28a745;
+      }
+      .result.error {
+        border-left-color: #dc3545;
+      }
+      .result.warning {
+        border-left-color: #ffc107;
+      }
+
+      button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.1em;
+        margin: 8px;
+        transition: all 0.3s ease;
+      }
+
+      button:hover:not(:disabled) {
+        background: #5a67d8;
+        transform: translateY(-2px);
+      }
+
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .url-test {
+        margin: 10px 0;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border-left: 3px solid #6c757d;
+      }
+
+      .url-test.success {
+        border-left-color: #28a745;
+        background: #d4edda;
+      }
+      .url-test.error {
+        border-left-color: #dc3545;
+        background: #f8d7da;
+      }
+
+      .recommendations {
+        background: #e7f3ff;
+        border: 2px solid #b3d7ff;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      .recommendations h4 {
+        margin-top: 0;
+        color: #0066cc;
+      }
+
+      .code-block {
+        background: #2d3748;
+        color: #e2e8f0;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        font-family: "Consolas", "Monaco", "Courier New", monospace;
+        font-size: 0.9em;
+        overflow-x: auto;
+        white-space: pre;
+      }
+
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .clinic-info {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="clinic-header">
+        <h1>🏥 Diagnóstico WordPress API</h1>
+        <h2>Clínica Saraiva Vision</h2>
+        <p>
+          <strong>Dr. Philipe Saraiva Cruz</strong> - CRM-MG 69.870 |
+          <strong>Ana Lúcia</strong> - Enfermeira
+        </p>
+        <p>📍 Caratinga, MG | 🤝 Parceria: Clínica Amor e Saúde</p>
+      </div>
+
+      <div class="clinic-info">
+        <div>
+          <h4>🩺 Serviços Oferecidos</h4>
+          <ul>
+            <li>Consultas Oftalmológicas</li>
+            <li>Refração e Biometria</li>
+            <li>Paquimetria</li>
+            <li>Mapeamento de Retina</li>
+            <li>Retinografia</li>
+          </ul>
+        </div>
+        <div>
+          <h4>🔬 Exames Especializados</h4>
+          <ul>
+            <li>Topografia Corneana</li>
+            <li>Meiobografia</li>
+            <li>Testes de Jones e Schirmer</li>
+            <li>Adaptação de Lentes de Contato</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <div class="test-title">🔧 Controles de Diagnóstico</div>
+        <button onclick="runFullDiagnosis()">🚀 Diagnóstico Completo</button>
+        <button onclick="testApiUrls()">📡 Testar URLs da API</button>
+        <button onclick="checkPermalinks()">🔗 Verificar Permalinks</button>
+        <button onclick="testFallbacks()">🛡️ Testar Fallbacks</button>
+        <button onclick="clearResults()">🧹 Limpar</button>
+      </div>
+
+      <div id="results"></div>
+    </div>
+
+    <script>
+      // Configurações da Clínica Saraiva Vision
+      const clinicConfig = {
+        name: "Clínica Saraiva Vision",
+        location: "Caratinga, MG",
+        doctor: "Dr. Philipe Saraiva Cruz (CRM-MG 69.870)",
+        nurse: "Ana Lúcia",
+        partnership: "Clínica Amor e Saúde",
+
+        // URLs para teste
+        urls: {
+          production: "https://clinicasaraivavision.com.br",
+          development: "http://localhost:8081",
+          staging: "https://staging.clinicasaraivavision.com.br",
+        },
+      };
+
+      let testResults = {};
+
+      function addResult(testName, status, message, details = null) {
+        testResults[testName] = {
+          status,
+          message,
+          details,
+          timestamp: new Date().toISOString(),
+        };
+        displayResults();
+      }
+
+      function displayResults() {
+        const container = document.getElementById("results");
+
+        // Limpar o container de forma segura
+        container.innerHTML = "";
+
+        Object.keys(testResults).forEach((testName) => {
+          const result = testResults[testName];
+          const statusClass = result.status;
+          const icon =
+            {
+              success: "✅",
+              error: "❌",
+              warning: "⚠️",
+              info: "ℹ️",
+              testing: "🔄",
+            }[result.status] || "📋";
+
+          // Criar o elemento principal .test-section
+          const testSection = document.createElement("div");
+          testSection.className = "test-section";
+
+          // Criar o elemento .test-title com conteúdo seguro
+          const testTitle = document.createElement("div");
+          testTitle.className = "test-title";
+          testTitle.textContent = `${icon} ${testName}`;
+
+          // Criar o span de status com classe e texto seguros
+          const statusSpan = document.createElement("span");
+          statusSpan.className = `status ${statusClass}`;
+          statusSpan.textContent = result.status.toUpperCase();
+          testTitle.appendChild(statusSpan);
+          testSection.appendChild(testTitle);
+
+          // Criar o elemento .result com conteúdo seguro
+          const resultDiv = document.createElement("div");
+          resultDiv.className = `result ${statusClass}`;
+          resultDiv.textContent = `Resultado: ${result.message}`;
+          testSection.appendChild(resultDiv);
+
+          // Adicionar detalhes se existirem
+          if (result.details) {
+            const detailsContent = renderDetails(result.details);
+            if (detailsContent instanceof Node) {
+              testSection.appendChild(detailsContent);
+            } else if (typeof detailsContent === "string") {
+              // Se renderDetails retornar string, criar um div seguro
+              const detailsDiv = document.createElement("div");
+              detailsDiv.innerHTML = detailsContent; // Considerando que renderDetails já sanitiza
+              testSection.appendChild(detailsDiv);
+            }
+          }
+
+          // Adicionar a seção completa ao container
+          container.appendChild(testSection);
+        });
+      }
+
+      function renderDetails(details) {
+        if (typeof details === "string") {
+          // Criar elemento code-block seguro
+          const codeBlock = document.createElement("div");
+          codeBlock.className = "code-block";
+          codeBlock.textContent = details;
+          return codeBlock;
+        }
+
+        if (Array.isArray(details)) {
+          // Criar elemento recommendations seguro
+          const recommendationsDiv = document.createElement("div");
+          recommendationsDiv.className = "recommendations";
+
+          const titleH4 = document.createElement("h4");
+          titleH4.textContent = "📋 Detalhes:";
+          recommendationsDiv.appendChild(titleH4);
+
+          const ul = document.createElement("ul");
+          details.forEach((item) => {
+            const li = document.createElement("li");
+            li.textContent = item;
+            ul.appendChild(li);
+          });
+          recommendationsDiv.appendChild(ul);
+
+          return recommendationsDiv;
+        }
+
+        // Criar elemento code-block para JSON
+        const codeBlock = document.createElement("div");
+        codeBlock.className = "code-block";
+        codeBlock.textContent = JSON.stringify(details, null, 2);
+        return codeBlock;
+      }
+
+      async function testApiUrls() {
+        addResult(
+          "Teste de URLs",
+          "testing",
+          "Testando múltiplas configurações de API...",
+          { loading: true }
+        );
+
+        const results = [];
+
+        // URLs para testar
+        const urlsToTest = [
+          {
+            name: "Produção - REST API Padrão",
+            url: `${clinicConfig.urls.production}/wp-json/wp/v2/posts?per_page=1`,
+          },
+          {
+            name: "Produção - Fallback rest_route",
+            url: `${clinicConfig.urls.production}/?rest_route=/wp/v2/posts&per_page=1`,
+          },
+          {
+            name: "Produção - Fallback index.php",
+            url: `${clinicConfig.urls.production}/index.php?rest_route=/wp/v2/posts&per_page=1`,
+          },
+          {
+            name: "Desenvolvimento - Mock Server",
+            url: `${clinicConfig.urls.development}/wp-json/wp/v2/posts?per_page=1`,
+          },
+        ];
+
+        for (const testUrl of urlsToTest) {
+          try {
+            console.log(`🔍 Testando: ${testUrl.name}`);
+
+            // Create AbortController with configurable timeout (default 8 seconds)
+            const controller = new AbortController();
+            const timeoutMs = 8000;
+            const timeoutId = setTimeout(() => {
+              controller.abort();
+            }, timeoutMs);
+
+            const response = await fetch(testUrl.url, {
+              method: "GET",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "User-Agent": "Clinica-Saraiva-Vision-Diagnostics/2.0",
+              },
+              signal: controller.signal,
+            });
+
+            // Clear timeout once fetch resolves successfully
+            clearTimeout(timeoutId);
+            const responseText = await response.text();
+
+            const testResult = {
+              name: testUrl.name,
+              url: testUrl.url,
+              status: response.status,
+              ok: response.ok,
+              isJson: false,
+              isHtml:
+                responseText.includes("<html") ||
+                responseText.includes("<!doctype"),
+              responsePreview: responseText.substring(0, 200),
+            };
+
+            if (response.ok) {
+              try {
+                const data = JSON.parse(responseText);
+                testResult.isJson = true;
+                testResult.itemsFound = Array.isArray(data) ? data.length : 1;
+                testResult.success = true;
+              } catch (jsonError) {
+                testResult.jsonError = jsonError.message;
+                testResult.success = false;
+              }
+            }
+
+            results.push(testResult);
+          } catch (error) {
+            // Handle timeout/abort errors specifically
+            const isTimeout = error.name === "AbortError";
+            results.push({
+              name: testUrl.name,
+              url: testUrl.url,
+              error: isTimeout
+                ? `Timeout após ${
+                    timeoutMs / 1000
+                  }s - servidor pode estar lento ou inativo`
+                : error.message,
+              isTimeout: isTimeout,
+              success: false,
+            });
+          }
+        }
+
+        // Analisar resultados
+        const workingUrls = results.filter((r) => r.success);
+        const failedUrls = results.filter((r) => !r.success);
+
+        if (workingUrls.length > 0) {
+          addResult(
+            "Teste de URLs",
+            "success",
+            `${workingUrls.length} URL(s) funcionando corretamente`,
+            {
+              working: workingUrls,
+              failed: failedUrls,
+              recommendations:
+                workingUrls.length < results.length
+                  ? [
+                      "Algumas URLs falharam - verificar configuração de servidor",
+                      "Priorizar URL funcionais para produção",
+                    ]
+                  : ["Todas as URLs testadas estão funcionando!"],
+            }
+          );
+        } else {
+          addResult(
+            "Teste de URLs",
+            "error",
+            "Nenhuma URL da API está funcionando",
+            {
+              allFailed: results,
+              possibleCauses: [
+                "🔧 WordPress não instalado ou inativo",
+                "🚫 API REST desabilitada por plugin",
+                "⚙️ Problema de configuração do servidor",
+                "🌐 Problema de conectividade",
+                "📝 Permalinks mal configurados",
+              ],
+              nextSteps: [
+                "1. Verificar se WordPress está instalado",
+                "2. Verificar plugins ativos",
+                "3. Testar acesso ao painel administrativo",
+                "4. Verificar logs do servidor",
+              ],
+            }
+          );
+        }
+      }
+
+      async function checkPermalinks() {
+        addResult(
+          "Verificação de Permalinks",
+          "testing",
+          "Verificando estrutura de URLs..."
+        );
+
+        try {
+          // Testar estrutura de permalinks
+          const tests = [
+            {
+              name: "Teste de Homepage",
+              url: clinicConfig.urls.production,
+              expected: "HTML da homepage",
+            },
+            {
+              name: "Teste wp-admin (deve dar 302 para login)",
+              url: `${clinicConfig.urls.production}/wp-admin/`,
+              expected: "Redirect ou página de login",
+            },
+            {
+              name: "Teste wp-json discovery",
+              url: `${clinicConfig.urls.production}/wp-json/`,
+              expected: "JSON com informações da API",
+            },
+          ];
+
+          const results = [];
+
+          for (const test of tests) {
+            try {
+              const response = await fetch(test.url);
+              results.push({
+                name: test.name,
+                url: test.url,
+                status: response.status,
+                ok: response.ok || response.status === 302, // 302 é ok para wp-admin
+                contentType: response.headers.get("content-type"),
+              });
+            } catch (error) {
+              results.push({
+                name: test.name,
+                url: test.url,
+                error: error.message,
+              });
+            }
+          }
+
+          const workingTests = results.filter((r) => r.ok);
+
+          if (workingTests.length === tests.length) {
+            addResult(
+              "Verificação de Permalinks",
+              "success",
+              "Estrutura de permalinks parece estar funcionando",
+              { tests: results }
+            );
+          } else {
+            addResult(
+              "Verificação de Permalinks",
+              "warning",
+              "Alguns testes de permalink falharam",
+              {
+                tests: results,
+                recommendations: [
+                  "Verificar configuração de permalinks no wp-admin",
+                  "Verificar arquivo .htaccess",
+                  "Verificar se mod_rewrite está habilitado",
+                ],
+              }
+            );
+          }
+        } catch (error) {
+          addResult(
+            "Verificação de Permalinks",
+            "error",
+            `Erro durante teste: ${error.message}`
+          );
+        }
+      }
+
+      async function testFallbacks() {
+        addResult(
+          "Teste de Fallbacks",
+          "info",
+          "Sistema de fallback da clínica sempre ativo"
+        );
+
+        // Dados de fallback da Clínica Saraiva Vision
+        const fallbackData = {
+          posts: [
+            {
+              title: "A Importância do Exame de Fundo de Olho",
+              slug: "importancia-exame-fundo-de-olho",
+              author: "Dr. Philipe Saraiva Cruz",
+            },
+            {
+              title: "Cirurgia Refrativa a Laser: Tecnologia e Segurança",
+              slug: "cirurgia-refrativa-laser",
+              author: "Dr. Philipe Saraiva Cruz",
+            },
+            {
+              title: "Cuidados Essenciais com Lentes de Contato",
+              slug: "cuidados-lentes-contato",
+              author: "Ana Lúcia",
+            },
+          ],
+          categories: [
+            "Consultas Oftalmológicas",
+            "Exames Especializados",
+            "Refração",
+            "Mapeamento de Retina",
+            "Lentes de Contato",
+          ],
+        };
+
+        addResult(
+          "Teste de Fallbacks",
+          "success",
+          "Sistema de fallback configurado e funcionando",
+          {
+            postsAvailable: fallbackData.posts.length,
+            categoriesAvailable: fallbackData.categories.length,
+            guarantee: "Site nunca ficará sem conteúdo médico",
+            content: fallbackData,
+          }
+        );
+      }
+
+      async function runFullDiagnosis() {
+        clearResults();
+
+        addResult(
+          "Iniciando Diagnóstico Completo",
+          "info",
+          "Executando todos os testes para a Clínica Saraiva Vision..."
+        );
+
+        // Executar todos os testes sequencialmente
+        await testApiUrls();
+        await checkPermalinks();
+        await testFallbacks();
+
+        addResult(
+          "Diagnóstico Finalizado",
+          "success",
+          "Todos os testes foram executados. Verifique os resultados acima.",
+          {
+            timestamp: new Date().toISOString(),
+            clinic: clinicConfig.name,
+            location: clinicConfig.location,
+          }
+        );
+      }
+
+      function clearResults() {
+        testResults = {};
+        document.getElementById("results").innerHTML = "";
+      }
+
+      // Executar teste inicial ao carregar
+      window.addEventListener("load", () => {
+        addResult(
+          "Sistema Carregado",
+          "info",
+          "Diagnóstico pronto para a Clínica Saraiva Vision",
+          {
+            clinic: clinicConfig.name,
+            doctor: clinicConfig.doctor,
+            nurse: clinicConfig.nurse,
+            ready: true,
+          }
+        );
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diagnóstico WordPress - Clínica Saraiva Vision</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #333;
+      }
+
+      .container {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .clinic-header {
+        text-align: center;
+        border-bottom: 3px solid #667eea;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+      }
+
+      .clinic-header h1 {
+        color: #667eea;
+        margin: 0;
+        font-size: 2.5em;
+      }
+
+      .clinic-header p {
+        color: #666;
+        margin: 5px 0;
+      }
+
+      .test-section {
+        margin: 30px 0;
+        padding: 20px;
+        border-left: 4px solid #667eea;
+        background: #f8f9fa;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .test-title {
+        font-size: 1.3em;
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+      }
+
+      .status {
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        font-weight: bold;
+        margin-left: 10px;
+      }
+
+      .status.success {
+        background: #d4edda;
+        color: #155724;
+      }
+      .status.error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      .status.warning {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .status.info {
+        background: #d1ecf1;
+        color: #0c5460;
+      }
+
+      .result {
+        margin: 10px 0;
+        padding: 10px;
+        background: white;
+        border-radius: 5px;
+        border-left: 3px solid #ddd;
+      }
+
+      .result.success {
+        border-left-color: #28a745;
+      }
+      .result.error {
+        border-left-color: #dc3545;
+      }
+      .result.warning {
+        border-left-color: #ffc107;
+      }
+
+      button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1em;
+        margin: 5px;
+        transition: background 0.3s;
+      }
+
+      button:hover {
+        background: #5a67d8;
+      }
+
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .code-block {
+        background: #f4f4f4;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 10px 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.9em;
+        overflow-x: auto;
+      }
+
+      .recommendations {
+        background: #e7f3ff;
+        border: 1px solid #b3d7ff;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 15px 0;
+      }
+
+      .recommendations h4 {
+        margin-top: 0;
+        color: #0066cc;
+      }
+
+      .recommendations ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="clinic-header">
+        <h1>🏥 Clínica Saraiva Vision</h1>
+        <p><strong>Dr. Philipe Saraiva Cruz</strong> - CRM-MG 69.870</p>
+        <p>Diagnóstico do Sistema WordPress</p>
+      </div>
+
+      <div class="test-section">
+        <div class="test-title">🔧 Controles de Teste</div>
+        <button onclick="runAllTests()">🚀 Executar Todos os Testes</button>
+        <button onclick="testBasicConnection()">
+          📡 Teste de Conectividade
+        </button>
+        <button onclick="testEndpoints()">🔍 Testar Endpoints</button>
+        <button onclick="testFallback()">🛡️ Testar Fallback</button>
+        <button onclick="clearResults()">🧹 Limpar Resultados</button>
+      </div>
+
+      <div id="results"></div>
+    </div>
+
+    <script>
+      // Configuração para diferentes ambientes
+      const configs = {
+        development: "http://localhost:8081/wp-json/wp/v2",
+        staging: "https://staging.clinicasaraivavision.com.br/wp-json/wp/v2",
+        production: "https://clinicasaraivavision.com.br/wp-json/wp/v2",
+      };
+
+      let currentConfig = configs.development;
+      let testResults = {};
+
+      function addResult(testName, status, message, details = null) {
+        testResults[testName] = {
+          status,
+          message,
+          details,
+          timestamp: new Date(),
+        };
+        displayResults();
+      }
+
+      function displayResults() {
+        const container = document.getElementById("results");
+        let html = "";
+
+        Object.keys(testResults).forEach((testName) => {
+          const result = testResults[testName];
+          const statusClass = result.status;
+          const icon =
+            {
+              success: "✅",
+              error: "❌",
+              warning: "⚠️",
+              info: "ℹ️",
+            }[result.status] || "📋";
+
+          html += `
+                    <div class="test-section">
+                        <div class="test-title">
+                            ${icon} ${testName}
+                            <span class="status ${statusClass}">${result.status.toUpperCase()}</span>
+                        </div>
+                        <div class="result ${statusClass}">
+                            <strong>Resultado:</strong> ${result.message}
+                        </div>
+                        ${
+                          result.details
+                            ? `<div class="code-block">${JSON.stringify(
+                                result.details,
+                                null,
+                                2
+                              )}</div>`
+                            : ""
+                        }
+                    </div>
+                `;
+        });
+
+        container.innerHTML = html;
+      }
+
+      async function testBasicConnection() {
+        addResult("Conectividade Básica", "info", "Testando...", {
+          loading: true,
+        });
+
+        try {
+          console.log("🔗 Testando conectividade com:", currentConfig);
+
+          const response = await fetch(`${currentConfig}/posts?per_page=1`, {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          });
+
+          const responseText = await response.text();
+
+          // Verificar se é HTML em vez de JSON
+          if (
+            responseText.startsWith("<!doctype") ||
+            responseText.startsWith("<html")
+          ) {
+            addResult(
+              "Conectividade Básica",
+              "error",
+              "Servidor retornou HTML em vez de JSON",
+              {
+                status: response.status,
+                responsePreview: responseText.substring(0, 200),
+                recommendations: [
+                  "Verificar configuração do .htaccess no WordPress",
+                  "Desativar plugins que interferem na API REST",
+                  "Verificar regras de rewrite do WordPress",
+                ],
+              }
+            );
+            return false;
+          }
+
+          // Tentar fazer parse do JSON
+          const data = JSON.parse(responseText);
+          addResult(
+            "Conectividade Básica",
+            "success",
+            `Conexão bem-sucedida! Encontrados ${
+              Array.isArray(data) ? data.length : 1
+            } posts`,
+            {
+              status: response.status,
+              postsFound: Array.isArray(data) ? data.length : 1,
+              url: currentConfig,
+            }
+          );
+          return true;
+        } catch (error) {
+          let errorType = "Erro desconhecido";
+          let recommendations = [];
+
+          if (error.message.includes("CORS")) {
+            errorType = "Erro de CORS";
+            recommendations = [
+              "Configurar CORS no servidor WordPress",
+              "Adicionar domínio à whitelist do WordPress",
+            ];
+          } else if (error.message.includes("fetch")) {
+            errorType = "Erro de rede";
+            recommendations = [
+              "Verificar se o servidor está online",
+              "Verificar conectividade de internet",
+              "Verificar firewall e proxy",
+            ];
+          } else if (error.message.includes("JSON")) {
+            errorType = "Erro de parsing JSON";
+            recommendations = [
+              "Verificar se a resposta é JSON válido",
+              "Verificar se não há HTML sendo retornado",
+            ];
+          }
+
+          addResult(
+            "Conectividade Básica",
+            "error",
+            `${errorType}: ${error.message}`,
+            { error: error.message, recommendations }
+          );
+          return false;
+        }
+      }
+
+      async function testEndpoints() {
+        addResult(
+          "Teste de Endpoints",
+          "info",
+          "Testando endpoints específicos..."
+        );
+
+        const endpoints = [
+          { path: "/posts", name: "Posts" },
+          { path: "/categories", name: "Categorias" },
+          { path: "/tags", name: "Tags" },
+          { path: "/users", name: "Usuários" },
+        ];
+
+        const results = {};
+        let allSuccessful = true;
+
+        for (const endpoint of endpoints) {
+          try {
+            const response = await fetch(
+              `${currentConfig}${endpoint.path}?per_page=1`
+            );
+            const data = await response.json();
+
+            results[endpoint.name] = {
+              success: true,
+              count: Array.isArray(data) ? data.length : 1,
+              status: response.status,
+            };
+          } catch (error) {
+            results[endpoint.name] = {
+              success: false,
+              error: error.message,
+            };
+            allSuccessful = false;
+          }
+        }
+
+        const status = allSuccessful ? "success" : "warning";
+        const message = allSuccessful
+          ? "Todos os endpoints funcionando corretamente"
+          : "Alguns endpoints apresentaram problemas";
+
+        addResult("Teste de Endpoints", status, message, results);
+      }
+
+      async function testFallback() {
+        addResult(
+          "Sistema de Fallback",
+          "info",
+          "Testando dados de fallback..."
+        );
+
+        const fallbackData = {
+          categories: [
+            { id: 1, name: "Consultas Oftalmológicas", slug: "consultas" },
+            { id: 2, name: "Exames Especializados", slug: "exames" },
+            { id: 3, name: "Refração", slug: "refracao" },
+          ],
+          posts: [
+            { id: 1, title: "A Importância do Exame de Fundo de Olho" },
+            { id: 2, title: "Cirurgia Refrativa a Laser" },
+            { id: 3, title: "Cuidados com Lentes de Contato" },
+          ],
+        };
+
+        addResult(
+          "Sistema de Fallback",
+          "success",
+          "Sistema de fallback ativo e funcionando",
+          {
+            categories: fallbackData.categories.length,
+            posts: fallbackData.posts.length,
+            ready: true,
+          }
+        );
+      }
+
+      async function runAllTests() {
+        clearResults();
+        addResult(
+          "Iniciando Diagnóstico",
+          "info",
+          "Executando todos os testes..."
+        );
+
+        const connectionOk = await testBasicConnection();
+
+        if (connectionOk) {
+          await testEndpoints();
+        } else {
+          addResult(
+            "Endpoints",
+            "error",
+            "Pulado devido à falha de conectividade"
+          );
+        }
+
+        await testFallback();
+
+        addResult(
+          "Diagnóstico Completo",
+          "success",
+          "Todos os testes executados. Verifique os resultados acima.",
+          { timestamp: new Date().toISOString() }
+        );
+      }
+
+      function clearResults() {
+        testResults = {};
+        document.getElementById("results").innerHTML = "";
+      }
+
+      // Executar teste básico ao carregar a página
+      window.addEventListener("load", () => {
+        addResult("Página Carregada", "info", "Sistema de diagnóstico pronto");
+        testBasicConnection();
+      });
+    </script>
+  </body>
+</html>

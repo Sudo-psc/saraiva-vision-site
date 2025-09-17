@@ -37,7 +37,7 @@ export const useWhatsApp = () => {
   }, [generateWhatsAppUrl]);
   
   const openFloatingCTA = useCallback(() => {
-    window.dispatchEvent(new Event('open-floating-cta'));
+    window.dispatchEvent(new Event('open-cta-modal'));
   }, []);
   
   return {
