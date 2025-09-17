@@ -46,7 +46,7 @@ Port 8082           Port 8083        Port 3306
 
 ### WordPress Configuration
 - **Database**: wordpress_saraivavision (MySQL 8.0)
-- **Admin User**: admin / SaraivaBlog2024!
+- **Admin Access**: Managed via secret store (do not commit credentials).
 - **REST API**: Enabled with custom CORS headers
 - **Posts**: 5 sample posts available
 - **Categories**: Configured with medical content
