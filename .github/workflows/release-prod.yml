@@ -61,7 +61,8 @@ jobs:
           cd /var/www/site/current
           # Composer/WP-CLI hardening
           if [ -f composer.json ]; then composer install --no-dev --prefer-dist --no-interaction || true; fi
-          if command -v wp >/dev/null 2>&1; then
+          if command -v wp >/dev/null 2>&1;
+          then
             wp --allow-root core update-db || true
             bash ./infra/scripts/wp_hardening.sh || true
           fi
