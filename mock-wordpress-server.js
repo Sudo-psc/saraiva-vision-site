@@ -10,7 +10,7 @@ import cors from 'cors';
 
 
 const app = express();
-const PORT = 8081;
+const PORT = 8083;
 
 // Middleware
 app.use(cors());
@@ -378,6 +378,160 @@ app.get('/wp-json/wp/v2/categories', (req, res) => {
 app.get('/wp-json/wp/v2/tags', (req, res) => {
   console.log('🏷️  Tags request:', req.query);
   res.json(sampleTags);
+});
+
+// WordPress Admin Panel Mock (for development)
+app.get('/wp-admin', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>WordPress Admin - Clínica Saraiva Vision (Mock)</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                margin: 0;
+                padding: 40px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .container {
+                background: white;
+                padding: 40px;
+                border-radius: 12px;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+                max-width: 500px;
+                width: 100%;
+                text-align: center;
+            }
+            .logo {
+                width: 60px;
+                height: 60px;
+                background: #3b82f6;
+                border-radius: 12px;
+                margin: 0 auto 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                color: white;
+                font-weight: bold;
+            }
+            h1 {
+                color: #1f2937;
+                margin: 0 0 10px 0;
+                font-size: 24px;
+            }
+            .subtitle {
+                color: #6b7280;
+                margin-bottom: 30px;
+            }
+            .info-box {
+                background: #f3f4f6;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 20px;
+                margin: 20px 0;
+                text-align: left;
+            }
+            .info-box h3 {
+                margin: 0 0 10px 0;
+                color: #374151;
+                font-size: 16px;
+            }
+            .info-box p {
+                margin: 5px 0;
+                color: #6b7280;
+                font-size: 14px;
+            }
+            .endpoints {
+                background: #ecfdf5;
+                border: 1px solid #d1fae5;
+                border-radius: 8px;
+                padding: 15px;
+                margin: 20px 0;
+                text-align: left;
+            }
+            .endpoints h3 {
+                margin: 0 0 10px 0;
+                color: #065f46;
+                font-size: 16px;
+            }
+            .endpoints ul {
+                margin: 0;
+                padding-left: 20px;
+                color: #047857;
+            }
+            .endpoints li {
+                margin: 5px 0;
+                font-family: monospace;
+                font-size: 13px;
+            }
+            .btn {
+                display: inline-block;
+                padding: 12px 24px;
+                background: #3b82f6;
+                color: white;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: 500;
+                margin: 10px 5px;
+                transition: background 0.2s;
+            }
+            .btn:hover {
+                background: #2563eb;
+            }
+            .btn-secondary {
+                background: #6b7280;
+            }
+            .btn-secondary:hover {
+                background: #4b5563;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="logo">🏥</div>
+            <h1>WordPress Admin - Mock Server</h1>
+            <p class="subtitle">Servidor de desenvolvimento - Clínica Saraiva Vision</p>
+            
+            <div class="info-box">
+                <h3>⚠️ Ambiente de Desenvolvimento</h3>
+                <p>Este é um servidor mock do WordPress usado apenas para desenvolvimento.</p>
+                <p>Em produção, esta URL redirecionará para o painel real do WordPress.</p>
+            </div>
+            
+            <div class="endpoints">
+                <h3>📋 Endpoints Disponíveis:</h3>
+                <ul>
+                    <li>GET /wp-json/wp/v2/posts</li>
+                    <li>GET /wp-json/wp/v2/posts/:id</li>
+                    <li>GET /wp-json/wp/v2/categories</li>
+                    <li>GET /wp-json/wp/v2/tags</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>🔧 Para Desenvolvedores</h3>
+                <p><strong>API Base:</strong> http://localhost:8081/wp-json/wp/v2</p>
+                <p><strong>Posts:</strong> ${samplePosts.length} posts médicos disponíveis</p>
+                <p><strong>Categorias:</strong> ${sampleCategories.length} categorias</p>
+                <p><strong>Status:</strong> ✅ Funcionando</p>
+            </div>
+
+            <div>
+                <a href="http://localhost:3002/blog" class="btn">Ver Blog</a>
+                <a href="http://localhost:8081/wp-json/wp/v2/posts" class="btn btn-secondary">Ver API</a>
+            </div>
+        </div>
+    </body>
+    </html>
+  `);
 });
 
 // Health check

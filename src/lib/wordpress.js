@@ -16,7 +16,7 @@ const RAW_WORDPRESS_URL =
   '';
 
 function deriveApiBase(raw) {
-  const fallback = 'http://localhost:8081/wp-json/wp/v2'; // WordPress mock server in development
+  const fallback = 'http://localhost:8083/wp-json/wp/v2'; // WordPress mock server in development
   if (!raw || typeof raw !== 'string') return fallback;
   let base = raw.trim().replace(/\/$/, '');
 
@@ -38,9 +38,9 @@ function deriveApiBase(raw) {
   } catch {
     // Relative path base - but in development, convert to absolute
     if (base.startsWith('/')) {
-      // In development, convert relative paths to localhost:8081
+      // In development, convert relative paths to localhost:8083
       if (typeof window !== 'undefined' && import.meta?.env?.DEV) {
-        return `http://localhost:8081${base.replace(/\/$/, '')}/wp-json/wp/v2`;
+        return `http://localhost:8083${base.replace(/\/$/, '')}/wp-json/wp/v2`;
       }
       return `${base.replace(/\/$/, '')}/wp-json/wp/v2`;
     }
