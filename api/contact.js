@@ -112,8 +112,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'recaptcha_failed', details: verification });
   }
 
-  // NOTE: This is a stub. In production, you might enqueue an email/send to CRM.
-  // To avoid storing PII, we simply acknowledge receipt.
+  // Sanitize inputs
   const safe = {
     name: String(name || '').slice(0, 80),
     email: String(email || '').slice(0, 120),
@@ -121,9 +120,76 @@ export default async function handler(req, res) {
     message: String(message || '').slice(0, 1200)
   };
 
-  return res.status(200).json({
-    ok: true,
-    received: { ...safe },
-    recaptcha: { score: verification.score, action: verification.action }
-  });
+  // Validate required fields
+  if (!safe.name || !safe.email || !safe.message) {
+    return res.status(400).json({ error: 'missing_required_fields' });
+  }
+
+  // Send email via Resend
+  try {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      console.error('RESEND_API_KEY not configured');
+      return res.status(500).json({ error: 'email_service_unavailable' });
+    }
+
+    const emailPayload = {
+      from: 'noreply@saraivavision.com.br',
+      to: 'philipe_cruz@outlook.com',
+      subject: `Nova mensagem do site - ${safe.name}`,
+      html: `
+        <h2>Nova mensagem de contato - SaraivaVision</h2>
+        <p><strong>Nome:</strong> ${safe.name}</p>
+        <p><strong>Email:</strong> ${safe.email}</p>
+        ${safe.phone ? `<p><strong>Telefone:</strong> ${safe.phone}</p>` : ''}
+        <p><strong>Mensagem:</strong></p>
+        <p>${safe.message.replace(/\n/g, '<br>')}</p>
+        <hr>
+        <p><small>Data: ${new Date().toLocaleString('pt-BR')}</small></p>
+        <p><small>Score reCAPTCHA: ${verification.score}</small></p>
+      `,
+      text: `
+        Nova mensagem de contato - SaraivaVision
+        
+        Nome: ${safe.name}
+        Email: ${safe.email}
+        ${safe.phone ? `Telefone: ${safe.phone}` : ''}
+        
+        Mensagem:
+        ${safe.message}
+        
+        Data: ${new Date().toLocaleString('pt-BR')}
+        Score reCAPTCHA: ${verification.score}
+      `
+    };
+
+    const emailResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendApiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(emailPayload)
+    });
+
+    if (!emailResponse.ok) {
+      const errorData = await emailResponse.json().catch(() => ({}));
+      console.error('Resend API error:', errorData);
+      return res.status(500).json({ error: 'email_send_failed', details: errorData });
+    }
+
+    const emailResult = await emailResponse.json();
+    console.log('Email sent successfully:', emailResult.id);
+
+    return res.status(200).json({
+      ok: true,
+      message: 'Mensagem enviada com sucesso!',
+      emailId: emailResult.id,
+      recaptcha: { score: verification.score, action: verification.action }
+    });
+
+  } catch (emailError) {
+    console.error('Email sending error:', emailError);
+    return res.status(500).json({ error: 'email_service_error', message: emailError.message });
+  }
 }
