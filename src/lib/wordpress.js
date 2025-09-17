@@ -58,7 +58,7 @@ try {
     && (import.meta?.env?.MODE !== 'production');
   if (shouldLog && !window.__WP_API_LOGGED__) {
     // eslint-disable-next-line no-console
-    console.info('[WP] API base URL:', API_BASE_URL, '(raw:', RAW_WORDPRESS_URL || 'unset', ')');
+    if (import.meta.env.DEV) console.info('[WP] API base URL:', API_BASE_URL, '(raw:', RAW_WORDPRESS_URL || 'unset', ')');
     window.__WP_API_LOGGED__ = true;
   }
 } catch {}
@@ -77,20 +77,24 @@ async function wpApiFetch(endpoint, options = {}) {
   // 2. Caso contrário, use a URL de produção como fallback.
   const baseUrl = API_BASE_URL && API_BASE_URL.trim() !== ''
     ? API_BASE_URL
-    : 'https://clinicasaraivavision.com.br/wp-json/wp/v2';
+    : 'https://saraivavision.com.br/wp-json/wp/v2';
   
   const primaryUrl = `${baseUrl}${endpoint}`;
   const cacheKey = `${primaryUrl}-${JSON.stringify(options)}`;
 
-  // Debug: Log the exact URL being requested
-  console.log('[Clínica Saraiva Vision] Primary URL:', primaryUrl);
-  console.log('[WordPress] Environment:', import.meta.env.MODE || 'unknown');
+  // Debug: Log the exact URL being requested (only in development)
+  if (import.meta.env.DEV) {
+    console.log('[Clínica Saraiva Vision] Primary URL:', primaryUrl);
+    console.log('[WordPress] Environment:', import.meta.env.MODE || 'unknown');
+  }
 
   // Check cache first
   if (cache.has(cacheKey)) {
     const cached = cache.get(cacheKey);
     if (Date.now() - cached.timestamp < CACHE_DURATION) {
-      console.log('[WordPress] Cache hit for:', endpoint);
+      if (import.meta.env.DEV) {
+        console.log('[WordPress] Cache hit for:', endpoint);
+      }
       return cached.data;
     }
     cache.delete(cacheKey);
@@ -126,7 +130,7 @@ async function wpApiFetch(endpoint, options = {}) {
 
     for (const { url, description } of urlsToTry) {
       try {
-        console.log(`[Clínica Saraiva Vision] Tentando ${description}:`, url);
+        if (import.meta.env.DEV) console.log(`[Clínica Saraiva Vision] Tentando ${description}:`, url);
         
         const response = await fetch(url, {
           headers: {
@@ -145,25 +149,25 @@ async function wpApiFetch(endpoint, options = {}) {
           if (responseText.startsWith('<!doctype') || 
               responseText.startsWith('<html') || 
               responseText.includes('<title>')) {
-            console.warn(`[Clínica Saraiva Vision] ${description} retornou HTML:`, url);
+            if (import.meta.env.DEV) console.warn(`[Clínica Saraiva Vision] ${description} retornou HTML:`, url);
             continue; // Tentar próxima URL
           }
 
           // Tentar fazer parse do JSON
           try {
             const data = JSON.parse(responseText);
-            console.log(`[Clínica Saraiva Vision] ✅ Sucesso com ${description}`);
+            if (import.meta.env.DEV) console.log(`[Clínica Saraiva Vision] ✅ Sucesso com ${description}`);
             return { data, successUrl: url };
           } catch (jsonError) {
-            console.warn(`[Clínica Saraiva Vision] ${description} - JSON inválido:`, jsonError.message);
+            if (import.meta.env.DEV) console.warn(`[Clínica Saraiva Vision] ${description} - JSON inválido:`, jsonError.message);
             continue; // Tentar próxima URL
           }
         } else {
-          console.warn(`[Clínica Saraiva Vision] ${description} - Status ${response.status}:`, url);
+          if (import.meta.env.DEV) console.warn(`[Clínica Saraiva Vision] ${description} - Status ${response.status}:`, url);
           
           // Log detalhado para 404 especificamente
           if (response.status === 404) {
-            console.error(`[Clínica Saraiva Vision] 404 Error Details:`, {
+            if (import.meta.env.DEV) console.error(`[Clínica Saraiva Vision] 404 Error Details:`, {
               url,
               status: response.status,
               statusText: response.statusText,
@@ -179,7 +183,7 @@ async function wpApiFetch(endpoint, options = {}) {
           }
         }
       } catch (networkError) {
-        console.warn(`[Clínica Saraiva Vision] ${description} - Erro de rede:`, networkError.message);
+        if (import.meta.env.DEV) console.warn(`[Clínica Saraiva Vision] ${description} - Erro de rede:`, networkError.message);
       }
     }
 
@@ -196,10 +200,10 @@ async function wpApiFetch(endpoint, options = {}) {
       timestamp: Date.now()
     });
 
-    console.log(`[Clínica Saraiva Vision] API success: ${endpoint} (${Array.isArray(result.data) ? result.data.length : 1} items)`);
+    if (import.meta.env.DEV) console.log(`[Clínica Saraiva Vision] API success: ${endpoint} (${Array.isArray(result.data) ? result.data.length : 1} items)`);
     return result.data;
   } catch (error) {
-    console.error('[Clínica Saraiva Vision] WordPress API fetch error:', error);
+    if (import.meta.env.DEV) console.error('[Clínica Saraiva Vision] WordPress API fetch error:', error);
     throw error;
   }
 }
@@ -231,7 +235,7 @@ export async function fetchPosts(params = {}) {
   try {
     return await wpApiFetch(`/posts?${queryString}`);
   } catch (error) {
-    console.warn('[Clínica Saraiva Vision] Erro ao carregar posts do WordPress, usando dados de fallback:', error.message);
+    if (import.meta.env.DEV) console.warn('[Clínica Saraiva Vision] Erro ao carregar posts do WordPress, usando dados de fallback:', error.message);
     
     // Aplicar filtros nos posts de fallback
     let filteredPosts = [...fallbackPosts];
@@ -289,7 +293,7 @@ export async function fetchPostBySlug(slug) {
 
     return posts[0];
   } catch (error) {
-    console.warn('[Clínica Saraiva Vision] Erro ao carregar post do WordPress, verificando dados de fallback:', error.message);
+    if (import.meta.env.DEV) console.warn('[Clínica Saraiva Vision] Erro ao carregar post do WordPress, verificando dados de fallback:', error.message);
     
     // Buscar nos posts de fallback
     const fallbackPost = fallbackPosts.find(post => post.slug === slug);
@@ -298,7 +302,7 @@ export async function fetchPostBySlug(slug) {
       throw new Error(`Post não encontrado: ${slug}`);
     }
     
-    console.log('[Clínica Saraiva Vision] Retornando post de fallback:', fallbackPost.title.rendered);
+    if (import.meta.env.DEV) console.log('[Clínica Saraiva Vision] Retornando post de fallback:', fallbackPost.title.rendered);
     return fallbackPost;
   }
 }
@@ -496,7 +500,7 @@ export async function fetchCategories(params = {}) {
   try {
     return await wpApiFetch(`/categories?${queryString}`);
   } catch (error) {
-    console.warn('[Clínica Saraiva Vision] Erro ao carregar categorias do WordPress, usando dados de fallback:', error.message);
+    if (import.meta.env.DEV) console.warn('[Clínica Saraiva Vision] Erro ao carregar categorias do WordPress, usando dados de fallback:', error.message);
     
     // Aplicar filtros nos dados de fallback se necessário
     let filteredCategories = [...fallbackCategories];
@@ -739,7 +743,7 @@ export async function checkWordPressConnection() {
   // URLs para testar (mesmo sistema de fallback da wpApiFetch)
   const baseUrl = API_BASE_URL && API_BASE_URL.trim() !== ''
     ? API_BASE_URL
-    : 'https://clinicasaraivavision.com.br/wp-json/wp/v2';
+    : 'https://saraivavision.com.br/wp-json/wp/v2';
 
   const urlsToTest = [];
   
@@ -769,7 +773,7 @@ export async function checkWordPressConnection() {
 
   for (const { url, description } of urlsToTest) {
     try {
-      console.log(`[Clínica Saraiva Vision] Testando ${description}:`, url);
+      if (import.meta.env.DEV) console.log(`[Clínica Saraiva Vision] Testando ${description}:`, url);
       
       const response = await fetch(url, {
         headers: {
@@ -807,7 +811,7 @@ export async function checkWordPressConnection() {
           diagnosticResults.isConnected = true;
           diagnosticResults.workingUrl = url;
           diagnosticResults.postsFound = Array.isArray(data) ? data.length : 1;
-          console.log(`[Clínica Saraiva Vision] ✅ Conexão bem-sucedida com ${description}!`);
+          if (import.meta.env.DEV) console.log(`[Clínica Saraiva Vision] ✅ Conexão bem-sucedida com ${description}!`);
           break; // Sucesso! Parar de testar outras URLs
         } catch (jsonError) {
           diagnosticResults.errors.push(`${description}: Erro de JSON - ${jsonError.message}`);
@@ -838,7 +842,7 @@ export async function checkWordPressConnection() {
         diagnosticResults.recommendations.push('Configurar CORS no servidor WordPress');
       }
       
-      console.error(`[Clínica Saraiva Vision] Erro testando ${description}:`, error);
+      if (import.meta.env.DEV) console.error(`[Clínica Saraiva Vision] Erro testando ${description}:`, error);
     }
   }
 
@@ -856,7 +860,7 @@ export async function checkWordPressConnection() {
  * Monitoramento da saúde da API WordPress - Clínica Saraiva Vision
  */
 export async function logApiHealth() {
-  console.log('🏥 [Clínica Saraiva Vision] Verificando saúde da API WordPress...');
+  if (import.meta.env.DEV) console.log('🏥 [Clínica Saraiva Vision] Verificando saúde da API WordPress...');
   
   const healthCheck = {
     timestamp: new Date().toISOString(),
@@ -874,18 +878,18 @@ export async function logApiHealth() {
     healthCheck.testedUrls = connectionResult.testedUrls;
 
     if (connectionResult.isConnected) {
-      console.log('✅ [Clínica Saraiva Vision] API WordPress funcionando corretamente');
-      console.log(`📍 URL ativa: ${connectionResult.workingUrl}`);
+      if (import.meta.env.DEV) console.log('✅ [Clínica Saraiva Vision] API WordPress funcionando corretamente');
+      if (import.meta.env.DEV) console.log(`📍 URL ativa: ${connectionResult.workingUrl}`);
     } else {
-      console.warn('⚠️ [Clínica Saraiva Vision] Problemas detectados na API WordPress');
-      console.log('🔧 Recomendações:', connectionResult.recommendations);
+      if (import.meta.env.DEV) console.warn('⚠️ [Clínica Saraiva Vision] Problemas detectados na API WordPress');
+      if (import.meta.env.DEV) console.log('🔧 Recomendações:', connectionResult.recommendations);
     }
 
     return healthCheck;
   } catch (error) {
     healthCheck.status = 'error';
     healthCheck.error = error.message;
-    console.error('❌ [Clínica Saraiva Vision] Erro no monitoramento da API:', error);
+    if (import.meta.env.DEV) console.error('❌ [Clínica Saraiva Vision] Erro no monitoramento da API:', error);
     return healthCheck;
   }
 }
@@ -894,7 +898,7 @@ export async function logApiHealth() {
  * Diagnóstico completo do WordPress para resolução de problemas
  */
 export async function diagnosisWordPress() {
-  console.log('🏥 [Clínica Saraiva Vision] Iniciando diagnóstico completo do WordPress...');
+  if (import.meta.env.DEV) console.log('🏥 [Clínica Saraiva Vision] Iniciando diagnóstico completo do WordPress...');
   
   const diagnosis = {
     timestamp: new Date().toISOString(),
@@ -915,11 +919,11 @@ export async function diagnosisWordPress() {
   };
 
   // Teste 1: Conectividade básica
-  console.log('📡 Testando conectividade...');
+  if (import.meta.env.DEV) console.log('📡 Testando conectividade...');
   diagnosis.tests.connectivity = await checkWordPressConnection();
 
   // Teste 2: Endpoints específicos
-  console.log('🔍 Testando endpoints específicos...');
+  if (import.meta.env.DEV) console.log('🔍 Testando endpoints específicos...');
   const endpoints = ['/posts', '/categories', '/tags'];
   
   for (const endpoint of endpoints) {
@@ -938,14 +942,14 @@ export async function diagnosisWordPress() {
   }
 
   // Teste 3: Fallbacks
-  console.log('🛡️ Testando sistema de fallback...');
+  if (import.meta.env.DEV) console.log('🛡️ Testando sistema de fallback...');
   diagnosis.tests.fallback = {
     categories: fallbackCategories.length,
     posts: fallbackPosts.length,
     active: true
   };
 
-  console.log('✅ Diagnóstico concluído:', diagnosis);
+  if (import.meta.env.DEV) console.log('✅ Diagnóstico concluído:', diagnosis);
   return diagnosis;
 }
 
