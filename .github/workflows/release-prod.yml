@@ -18,14 +18,19 @@ jobs:
       VPS_USER: ${{ secrets.VPS_USER }}
       VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
       PROD_HOST: ${{ secrets.PROD_HOST }}
+      STAGING_HOST_FINGERPRINT: ${{ secrets.STAGING_HOST_FINGERPRINT }}
     steps:
       - uses: actions/checkout@v4
 
       # Backup pré-deploy (DB + uploads)
       - name: Pre-deploy backup
         run: |
-          mkdir -p ~/.ssh && echo "$VPS_SSH_KEY" > ~/.ssh/key && chmod 600 ~/.ssh/key
-          ssh -i ~/.ssh/key -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST 'bash -lc "cd /var/www/site/current && ./infra/scripts/backup_pre_deploy.sh"'
+          mkdir -p ~/.ssh
+          echo "$VPS_SSH_KEY" > ~/.ssh/key
+          chmod 600 ~/.ssh/key
+          printf "%s\n" "$STAGING_HOST_FINGERPRINT" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          ssh -i "$HOME/.ssh/key" -o UserKnownHostsFile="$HOME/.ssh/known_hosts" -o IdentitiesOnly=yes "$VPS_USER@$VPS_HOST" 'bash -lc "cd /var/www/site/current && ./infra/scripts/backup_pre_deploy.sh"'
 
       # Build frontend com Node 20 e deploy WP/Frontend por rsync
       - uses: actions/setup-node@v4
@@ -42,16 +47,16 @@ jobs:
 
       - name: Deploy frontend dist
         run: |
-          rsync -az --delete -e "ssh -i ~/.ssh/key -o StrictHostKeyChecking=no" ./frontend/dist/ $VPS_USER@$VPS_HOST:/var/www/site/releases/$(date +%Y%m%d_%H%M%S)/frontend/
+          rsync -az --delete -e "ssh -i \"$HOME/.ssh/key\" -o UserKnownHostsFile=\"~/.ssh/known_hosts\" -o IdentitiesOnly=yes" ./frontend/dist/ "$VPS_USER@$VPS_HOST:/var/www/site/releases/$(date +%Y%m%d_%H%M%S)/frontend/"
 
       - name: Deploy WP code (themes & plugins)
         run: |
-          rsync -az --delete -e "ssh -i ~/.ssh/key -o StrictHostKeyChecking=no" ./wp/wp-content/themes/ $VPS_USER@$VPS_HOST:/var/www/site/releases/latest/wp-content/themes/
-          rsync -az --delete -e "ssh -i ~/.ssh/key -o StrictHostKeyChecking=no" ./wp/wp-content/plugins/ $VPS_USER@$VPS_HOST:/var/www/site/releases/latest/wp-content/plugins/
+          rsync -az --delete -e "ssh -i \"$HOME/.ssh/key\" -o UserKnownHostsFile=\"~/.ssh/known_hosts\" -o IdentitiesOnly=yes" ./wp/wp-content/themes/ "$VPS_USER@$VPS_HOST:/var/www/site/releases/latest/wp-content/themes/"
+          rsync -az --delete -e "ssh -i \"$HOME/.ssh/key\" -o UserKnownHostsFile=\"~/.ssh/known_hosts\" -o IdentitiesOnly=yes" ./wp/wp-content/plugins/ "$VPS_USER@$VPS_HOST:/var/www/site/releases/latest/wp-content/plugins/"
 
       - name: Remote post-deploy + Canary 20%
         run: |
-          ssh -i ~/.ssh/key -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST << 'EOF'
+          ssh -i "$HOME/.ssh/key" -o UserKnownHostsFile="$HOME/.ssh/known_hosts" -o IdentitiesOnly=yes "$VPS_USER@$VPS_HOST" << 'EOF'
           set -euo pipefail
           cd /var/www/site/current
           # Composer/WP-CLI hardening
@@ -70,7 +75,7 @@ jobs:
         run: |
           # Loop 15-30 minutos: TODO ajustar limiar e checks Sentry/API
           for i in {1..15}; do
-            ssh -i ~/.ssh/key -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST "bash ./infra/scripts/health_check.sh $PROD_HOST" && pass=1 || pass=0
+            ssh -i "$HOME/.ssh/key" -o UserKnownHostsFile="$HOME/.ssh/known_hosts" -o IdentitiesOnly=yes "$VPS_USER@$VPS_HOST" "bash ./infra/scripts/health_check.sh $PROD_HOST" && pass=1 || pass=0
             # TODO: consultar erros Sentry via API; falhar se spikes > SLO
             if [ "$pass" -ne 1 ]; then echo "Health check failed in canary"; exit 1; fi
             sleep 60
@@ -78,7 +83,7 @@ jobs:
 
       - name: Promote 100%
         run: |
-          ssh -i ~/.ssh/key -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST "bash ./infra/scripts/switch_canary.sh 100"
+          ssh -i "$HOME/.ssh/key" -o UserKnownHostsFile="$HOME/.ssh/known_hosts" -o IdentitiesOnly=yes "$VPS_USER@$VPS_HOST" "bash ./infra/scripts/switch_canary.sh 100"
 
       - name: Post-deploy tasks
         run: |
@@ -88,5 +93,4 @@ jobs:
       - name: Rollback on failure
         if: failure()
         run: |
-          ssh -i ~/.ssh/key -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST "bash ./infra/scripts/rollback.sh"
-
+          ssh -i "$HOME/.ssh/key" -o UserKnownHostsFile="$HOME/.ssh/known_hosts" -o IdentitiesOnly=yes "$VPS_USER@$VPS_HOST" "bash ./infra/scripts/rollback.sh"
