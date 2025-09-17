@@ -60,3 +60,7 @@ test-*.jpg
 # Cache files
 .cache/
 coverage/.tmp
+
+# WordPress credentials (NEVER COMMIT!)
+WORDPRESS_ADMIN_CREDENTIALS.md
+wordpress-local/wp-cli.phar
