@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import { Lock, User, Eye, EyeOff, LogIn, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Lock, User, Eye, EyeOff, LogIn, AlertCircle, ArrowLeft, ExternalLink } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -91,21 +91,74 @@ const AdminLoginPage = () => {
 								</p>
 							</div>
 
-							{/* Direct Access to WordPress */}
-							<div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-								<h3 className="text-sm font-semibold text-blue-800 mb-2">
-									Acesso Direto ao WordPress
-								</h3>
-								<p className="text-blue-700 text-sm mb-3">
-									Clique no botão abaixo para acessar diretamente o painel administrativo do WordPress.
-								</p>
-								<Button
-									onClick={redirectToWordPressAdmin}
-									className="w-full bg-blue-600 hover:bg-blue-700"
-								>
-									<LogIn className="w-4 h-4 mr-2" />
-									Acessar WordPress Admin
-								</Button>
+							{/* Environment Info & Direct Access */}
+							<div className="mb-6 space-y-4">
+								{/* Development Environment Notice */}
+								{import.meta.env.DEV && (
+									<div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+										<h3 className="text-sm font-semibold text-yellow-800 mb-2">
+											🔧 Ambiente de Desenvolvimento
+										</h3>
+										<p className="text-yellow-700 text-sm mb-2">
+											Você está usando o servidor mock do WordPress. Este ambiente é apenas para desenvolvimento e testes.
+										</p>
+										<div className="text-xs text-yellow-600 bg-yellow-100 p-2 rounded mt-2">
+											<p><strong>Mock Server:</strong> http://localhost:8081</p>
+											<p><strong>Status:</strong> {import.meta.env.VITE_WORDPRESS_API_URL ? '✅ Configurado' : '❌ Não configurado'}</p>
+										</div>
+									</div>
+								)}
+
+								{/* Direct Access to WordPress */}
+								<div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+									<h3 className="text-sm font-semibold text-blue-800 mb-2">
+										{import.meta.env.DEV ? '🚀 Ferramentas de Desenvolvimento' : '🚀 Acesso ao WordPress'}
+									</h3>
+									<p className="text-blue-700 text-sm mb-3">
+										{import.meta.env.DEV 
+											? 'Acesse diretamente os recursos de desenvolvimento do blog médico:'
+											: 'Clique no botão abaixo para acessar o painel administrativo do WordPress:'
+										}
+									</p>
+									
+									{import.meta.env.DEV ? (
+										<div className="space-y-2">
+											<Button
+												onClick={redirectToWordPressAdmin}
+												className="w-full bg-blue-600 hover:bg-blue-700"
+											>
+												<LogIn className="w-4 h-4 mr-2" />
+												Acessar WordPress Admin (Mock)
+											</Button>
+											<Button
+												onClick={() => {
+													const apiUrl = import.meta.env.VITE_WORDPRESS_API_URL || 'http://localhost:8081/wp-json/wp/v2';
+													window.open(`${apiUrl}/posts`, '_blank');
+												}}
+												variant="outline"
+												className="w-full border-blue-300 text-blue-700 hover:bg-blue-50"
+											>
+												<ExternalLink className="w-4 h-4 mr-2" />
+												Ver API de Posts (JSON)
+											</Button>
+											<Button
+												onClick={() => navigate('/blog')}
+												variant="outline"
+												className="w-full border-green-300 text-green-700 hover:bg-green-50"
+											>
+												<Eye className="w-4 h-4 mr-2" />
+												Visualizar Blog Público
+											</Button>
+										</div>
+									) : (
+										<Button
+											onClick={redirectToWordPressAdmin}
+											className="w-full bg-blue-600 hover:bg-blue-700"
+										>
+											<LogIn className="w-4 h-4 mr-2" />
+											Acessar WordPress Admin
+										</Button>
+									)}</div>
 							</div>
 
 							{/* Login Form */}
@@ -197,14 +250,33 @@ const AdminLoginPage = () => {
 							{/* Info Section */}
 							<div className="mt-8 pt-6 border-t border-gray-200">
 								<div className="text-center text-sm text-gray-600">
-									<p className="mb-2">
-										Credenciais padrão de desenvolvimento:
-									</p>
-									<div className="bg-gray-50 p-3 rounded text-left">
-										<p><strong>URL:</strong> {import.meta.env.VITE_WORDPRESS_ADMIN_URL || `${window.location.origin}/wp-admin`}</p>
-										<p><strong>Usuário:</strong> admin</p>
-										<p><strong>Senha:</strong> Configurar durante instalação</p>
-									</div>
+									{import.meta.env.DEV ? (
+										<>
+											<p className="mb-2">
+												🔧 <strong>Informações de Desenvolvimento:</strong>
+											</p>
+											<div className="bg-gray-50 p-3 rounded text-left space-y-2">
+												<p><strong>Mock Server:</strong> {import.meta.env.VITE_WORDPRESS_ADMIN_URL || 'http://localhost:8081/wp-admin'}</p>
+												<p><strong>API Endpoint:</strong> {import.meta.env.VITE_WORDPRESS_API_URL || 'http://localhost:8081/wp-json/wp/v2'}</p>
+												<p><strong>Posts Disponíveis:</strong> 3 artigos médicos</p>
+												<p><strong>Ambiente:</strong> Desenvolvimento local</p>
+											</div>
+											<div className="mt-3 text-xs text-gray-500">
+												<p>💡 Este é um ambiente de teste. Em produção, será usado o WordPress real.</p>
+											</div>
+										</>
+									) : (
+										<>
+											<p className="mb-2">
+												Credenciais padrão de produção:
+											</p>
+											<div className="bg-gray-50 p-3 rounded text-left">
+												<p><strong>URL:</strong> {import.meta.env.VITE_WORDPRESS_ADMIN_URL || `${window.location.origin}/wp-admin`}</p>
+												<p><strong>Usuário:</strong> admin</p>
+												<p><strong>Senha:</strong> Definida durante configuração</p>
+											</div>
+										</>
+									)}
 								</div>
 							</div>
 
