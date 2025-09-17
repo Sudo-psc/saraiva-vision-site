@@ -85,6 +85,8 @@ jobs:
           port: ${{ secrets.PROD_SSH_PORT || 22 }}
           source: 'deploy_bundle.tgz'
           target: ${{ secrets.PROD_REMOTE_PATH || '/home/deploy/saraivavision' }}
+          fingerprint: ${{ secrets.PROD_HOST_FINGERPRINT }}
+          host_key_verification: true
 
       - name: Remote deploy
         uses: appleboy/ssh-action@v1.0.3
