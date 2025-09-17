@@ -171,8 +171,6 @@ Sistema integrado de agendamento
 ### Reviews Integration
 Exibição dinâmica de avaliações do Google
 
-### Accessibility Widget
-Ferramenta completa de acessibilidade
 
 ## 🔧 Configuração de Produção
 
