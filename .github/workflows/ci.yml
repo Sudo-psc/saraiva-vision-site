@@ -49,7 +49,12 @@ jobs:
           npx --yes http-server dist -p 4173 -s >/dev/null 2>&1 &
           SERVER_PID=$!
           # Aguarda servidor subir
-          for i in {1..20}; do curl -sSf http://127.0.0.1:4173 >/dev/null && break || sleep 0.5; done
+          for _ in {1..20}; do
+            if curl -sSf http://127.0.0.1:4173 >/dev/null; then
+              break
+            fi
+            sleep 0.5
+          done
           # Verifica index atende
           curl -sSfI http://127.0.0.1:4173 | head -n 1
           # Executa verificação GTM apenas no pacote (sem SITE_URL)
