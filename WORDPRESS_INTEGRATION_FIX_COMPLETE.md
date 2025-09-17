@@ -1,7 +1,7 @@
 # ✅ INTEGRAÇÃO WORDPRESS BLOG - CORREÇÕES APLICADAS
 
 ## 🎯 Problema Inicial Identificado
-O usuário reportou que o blog em `localhost:3004/blog` mostrava a mensagem "Conteúdo indisponível no momento. Estamos configurando a conexão com o nosso CMS" apesar do WordPress mock estar funcionando.
+O usuário reportou que o blog em `localhost:3003/blog` mostrava a mensagem "Conteúdo indisponível no momento. Estamos configurando a conexão com o nosso CMS" apesar do WordPress mock estar funcionando.
 
 ## 🔍 Diagnóstico Realizado
 
@@ -44,13 +44,13 @@ if (typeof window !== 'undefined' && import.meta?.env?.DEV) {
 
 ### 5. ✅ Servidores Executando
 - **WordPress Mock:** `http://localhost:8081` ✅ (Status 200)
-- **React Server:** `http://localhost:3002` ✅ (Status 200)
+- **React Server:** `http://localhost:3003` ✅ (Status 200)
 
 ## 📋 Arquivos de Debug Criados
 
 ### 1. `debug-wordpress-test.html`
 - **Função:** Interface web para testar conectividade WordPress
-- **URL:** `http://localhost:3002/debug-wordpress-test.html`
+- **URL:** `http://localhost:3003/debug-wordpress-test.html`
 - **Testes:** Conexão básica, busca de posts, simulação checkWordPressConnection()
 
 ### 2. `debug-blog-connection.js`
@@ -61,14 +61,14 @@ if (typeof window !== 'undefined' && import.meta?.env?.DEV) {
 
 ### ✅ Funcionando
 - [x] WordPress mock server com 3 posts médicos
-- [x] React dev server na porta 3002
+- [x] React dev server na porta 3003
 - [x] Função `checkWordPressConnection()` corrigida
 - [x] Logs de debug implementados
 - [x] Configuração de ambiente validada
 
 ### 🧪 Para Testar
-1. **Blog Principal:** `http://localhost:3002/blog`
-2. **Debug Interface:** `http://localhost:3002/debug-wordpress-test.html`
+1. **Blog Principal:** `http://localhost:3003/blog`
+2. **Debug Interface:** `http://localhost:3003/debug-wordpress-test.html`
 3. **WordPress API:** `http://localhost:8081/wp-json/wp/v2/posts`
 
 ## 📊 Métricas de Solução
