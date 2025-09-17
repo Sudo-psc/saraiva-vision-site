@@ -372,30 +372,24 @@
         ];
 
         for (const testUrl of urlsToTest) {
+          // Configurable timeout (default 8 seconds)
+          const timeoutMs = 8000;
+          let controller;
+          let timeoutId;
           try {
             console.log(`🔍 Testando: ${testUrl.name}`);
-
-            // Create AbortController with configurable timeout (default 8 seconds)
-            const controller = new AbortController();
-            const timeoutMs = 8000;
-            const timeoutId = setTimeout(() => {
-              controller.abort();
-            }, timeoutMs);
+            controller = new AbortController();
+            timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
             const response = await fetch(testUrl.url, {
               method: "GET",
               headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "User-Agent": "Clinica-Saraiva-Vision-Diagnostics/2.0",
+                Accept: "application/json"
               },
               signal: controller.signal,
             });
 
-            // Clear timeout once fetch resolves successfully
-            clearTimeout(timeoutId);
             const responseText = await response.text();
-
             const testResult = {
               name: testUrl.name,
               url: testUrl.url,
@@ -403,8 +397,8 @@
               ok: response.ok,
               isJson: false,
               isHtml:
-                responseText.includes("<html") ||
-                responseText.includes("<!doctype"),
+                /<html/i.test(responseText) ||
+                /<!doctype/i.test(responseText),
               responsePreview: responseText.substring(0, 200),
             };
 
@@ -428,13 +422,13 @@
               name: testUrl.name,
               url: testUrl.url,
               error: isTimeout
-                ? `Timeout após ${
-                    timeoutMs / 1000
-                  }s - servidor pode estar lento ou inativo`
+                ? `Timeout após ${timeoutMs / 1000}s - servidor pode estar lento ou inativo`
                 : error.message,
               isTimeout: isTimeout,
               success: false,
             });
+          } finally {
+            if (timeoutId) clearTimeout(timeoutId);
           }
         }
 
