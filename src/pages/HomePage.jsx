@@ -7,7 +7,7 @@ import { useHomeSEO } from '@/hooks/useSEO';
 import { initScrollSystem, scrollToHash, cleanupScrollSystem } from '@/utils/scrollUtils';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import Services from '@/components/ServicesFixed';
+import Services from '@/components/Services';
 import About from '@/components/About';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
