@@ -1,0 +1,97 @@
+name: Release - Production Canary
+
+on:
+  release:
+    types: [published]
+
+concurrency:
+  group: release-prod-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  prod:
+    name: Deploy Production (Canary)
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      VPS_HOST: ${{ secrets.VPS_HOST }}
+      VPS_USER: ${{ secrets.VPS_USER }}
+      VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+      PROD_HOST: ${{ secrets.PROD_HOST }}
+      STAGING_HOST_FINGERPRINT: ${{ secrets.STAGING_HOST_FINGERPRINT }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Backup pré-deploy (DB + uploads)
+      - name: Pre-deploy backup
+        run: |
+          mkdir -p ~/.ssh
+          echo "$VPS_SSH_KEY" > ~/.ssh/key
+          chmod 600 ~/.ssh/key
+          printf "%s\n" "$STAGING_HOST_FINGERPRINT" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          ssh -i "$HOME/.ssh/key" -o UserKnownHostsFile="$HOME/.ssh/known_hosts" -o IdentitiesOnly=yes "$VPS_USER@$VPS_HOST" 'bash -lc "cd /var/www/site/current && ./infra/scripts/backup_pre_deploy.sh"'
+
+      # Build frontend com Node 20 e deploy WP/Frontend por rsync
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: corepack enable
+      - name: Install deps (frontend)
+        working-directory: ./frontend
+        run: pnpm i --frozen-lockfile
+      - name: Build frontend
+        working-directory: ./frontend
+        run: pnpm build
+
+      - name: Deploy frontend dist
+        run: |
+          rsync -az --delete -e "ssh -i \"$HOME/.ssh/key\" -o UserKnownHostsFile=\"~/.ssh/known_hosts\" -o IdentitiesOnly=yes" ./frontend/dist/ "$VPS_USER@$VPS_HOST:/var/www/site/releases/$(date +%Y%m%d_%H%M%S)/frontend/"
+
+      - name: Deploy WP code (themes & plugins)
+        run: |
+          rsync -az --delete -e "ssh -i \"$HOME/.ssh/key\" -o UserKnownHostsFile=\"~/.ssh/known_hosts\" -o IdentitiesOnly=yes" ./wp/wp-content/themes/ "$VPS_USER@$VPS_HOST:/var/www/site/releases/latest/wp-content/themes/"
+          rsync -az --delete -e "ssh -i \"$HOME/.ssh/key\" -o UserKnownHostsFile=\"~/.ssh/known_hosts\" -o IdentitiesOnly=yes" ./wp/wp-content/plugins/ "$VPS_USER@$VPS_HOST:/var/www/site/releases/latest/wp-content/plugins/"
+
+      - name: Remote post-deploy + Canary 20%
+        run: |
+          ssh -i "$HOME/.ssh/key" -o UserKnownHostsFile="$HOME/.ssh/known_hosts" -o IdentitiesOnly=yes "$VPS_USER@$VPS_HOST" << 'EOF'
+          set -euo pipefail
+          cd /var/www/site/current
+          # Composer/WP-CLI hardening
+          if [ -f composer.json ]; then composer install --no-dev --prefer-dist --no-interaction || true; fi
+          if command -v wp >/dev/null 2>&1;
+          then
+            wp --allow-root core update-db || true
+            bash ./infra/scripts/wp_hardening.sh || true
+          fi
+          # Nginx test & reload
+          sudo nginx -t && sudo systemctl reload nginx
+          # Switch canary weight 20%
+          bash ./infra/scripts/switch_canary.sh 20
+          EOF
+
+      - name: Health checks & Sentry gate (canary window)
+        run: |
+          # Loop 15-30 minutos: TODO ajustar limiar e checks Sentry/API
+          for i in {1..15}; do
+            ssh -i "$HOME/.ssh/key" -o UserKnownHostsFile="$HOME/.ssh/known_hosts" -o IdentitiesOnly=yes "$VPS_USER@$VPS_HOST" "bash ./infra/scripts/health_check.sh $PROD_HOST" && pass=1 || pass=0
+            # TODO: consultar erros Sentry via API; falhar se spikes > SLO
+            if [ "$pass" -ne 1 ]; then echo "Health check failed in canary"; exit 1; fi
+            sleep 60
+          done
+
+      - name: Promote 100%
+        run: |
+          ssh -i "$HOME/.ssh/key" -o UserKnownHostsFile="$HOME/.ssh/known_hosts" -o IdentitiesOnly=yes "$VPS_USER@$VPS_HOST" "bash ./infra/scripts/switch_canary.sh 100"
+
+      - name: Post-deploy tasks
+        run: |
+          # CSP permanece em report-only durante janela inicial; abrir issue com relatório
+          echo "Post-deploy: abrir issue com violações CSP (report-only), revalidar sitemap/robots, revisar cache"
+
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          ssh -i "$HOME/.ssh/key" -o UserKnownHostsFile="$HOME/.ssh/known_hosts" -o IdentitiesOnly=yes "$VPS_USER@$VPS_HOST" "bash ./infra/scripts/rollback.sh"

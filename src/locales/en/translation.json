@@ -5,7 +5,6 @@
     "about": "About Us",
     "testimonials": "Testimonials",
     "contact": "Contact",
-    "blog": "Blog",
     "faq": "FAQ",
     "lenses": "Lenses",
     "schedule": "Schedule",
@@ -23,103 +22,304 @@
     "more_options_desc": "Phone, email and other methods",
     "scheduling_error": "Service unavailable. Use WhatsApp or call (33) 99860-1427",
     "external_link_warning": "You will be redirected to {serviceName}. Continue?",
-    "external_link_title": "Opens in new tab: {serviceName}"
+    "external_link_title": "Opens in new tab: {serviceName}",
+    "services_link": "View all services"
   },
   "common": {
     "logo_alt": "Saraiva Vision Logo"
   },
   "hero": {
     "partner": "Official Amor e Saúde Partner",
-    "title": "Caring for your <1>vision</1> with excellence",
-    "subtitle": "At Saraiva Vision, we combine cutting-edge technology with humanized care to offer the best in eye health. Your vision is our priority.",
-    "schedule_button": "Schedule Appointment",
+    "title": "Caring for your <1>vision</1> with excellence in Caratinga",
+    "subtitle": "Cutting-edge technology and humanized care with Dr. Philipe Saraiva (CRM-MG 69.870).",
+    "schedule_button": "Schedule Consultation",
+    "whatsapp_button": "Contact via WhatsApp",
     "services_button": "Our Services",
+    "trust_stats": "+5k patients • 4.9/5 rating • Amor e Saúde partner",
     "patients_served": "<0>Over 5,000 patients</0> served with satisfaction",
     "advanced_tech_title": "Advanced Technology",
     "advanced_tech_desc": "State-of-the-art equipment for accurate diagnoses.",
     "microcopy_fast_confirmation": "Fill your details and get confirmation in 1 minute. 100% secure.",
     "more_contact_options": "Other contact options"
   },
-  "trust": {
-    "badge": "Trust & Quality",
-    "title": "Why choose Saraiva Vision?",
-    "subtitle": "Our reputation is built on years of excellence, advanced technology and genuine care.",
-    "awards": {
-      "title": "Awards",
-      "description": "Recognition for excellence in ophthalmology"
+  "accessibility": {
+    "toggle": "Open accessibility menu",
+    "title": "Accessibility",
+    "close": "Close",
+    "fontSize": {
+      "label": "Font Size",
+      "normal": "Normal",
+      "large": "Large",
+      "extra-large": "Extra Large"
     },
-    "patients": {
-      "title": "5,000+ Patients",
-      "description": "Served with satisfaction and quality"
+    "contrast": {
+      "label": "Contrast",
+      "normal": "Normal",
+      "high": "High",
+      "dark": "Dark"
     },
-    "experience": {
-      "title": "15+ Years",
-      "description": "Of experience in eye care"
-    },
-    "iso": {
-      "title": "ISO 9001 Certified",
-      "description": "Recognized quality management system"
-    },
-    "partnerships": {
-      "sectionTitle": "Our Partners"
-    },
-    "stats": {
-      "satisfaction": "Satisfaction Rate",
-      "patients": "Patients Served",
-      "years": "Years of Experience"
-    }
-  },
-  "certificates": {
-    "badge": "Certifications & Memberships",
-    "title": "Our Credentials",
-    "items": {
-      "iso9001": {
-        "title": "ISO 9001 Certified",
-        "description": "International quality management standard"
-      },
-      "abo": {
-        "title": "ABO Member",
-        "description": "Brazilian Ophthalmology Association"
-      }
+    "readingMode": {
+      "on": "Reading Mode",
+      "off": "Exit Reading Mode"
     }
   },
   "services": {
     "title": "Our Services",
     "subtitle": "We offer a full range of ophthalmological services to care for your vision with the highest quality and technology.",
+    "badge": "Our Services",
     "learn_more": "Learn More",
+    "view_all": "View all 12 services",
+    "show_less": "Show less",
+    "carousel_navigation": "Service carousel navigation",
+    "go_to": "Go to service {{index}}",
     "schedule_button": "Schedule Your Appointment Now",
     "items": {
       "consultations": {
         "title": "Ophthalmological Consultations",
         "description": "Complete assessment of your eye health, with accurate diagnosis and treatment.",
-        "fullDescription": "Our consultation covers detailed medical history and a comprehensive exam with advanced equipment. Preventive guidance and continuous follow-up help maintain long-term visual health."
+        "fullDescription": "Our ophthalmological consultations provide comprehensive eye health assessment, combining clinical experience with state-of-the-art technology. Each consultation includes detailed medical history, complete eye examination, intraocular pressure measurement, and fundus evaluation to ensure accurate diagnosis and personalized treatment."
       },
       "refraction": {
         "title": "Refraction Exams",
         "description": "High-precision determination of prescription for glasses and contact lenses.",
-        "fullDescription": "We use cutting-edge technology to measure myopia, hyperopia, astigmatism and presbyopia with millimetric precision. After the exam, we review correction options and provide personalized recommendations."
+        "fullDescription": "Refraction exams utilize advanced technology to determine precise prescription for glasses and contact lenses. Our process includes computerized and subjective refraction, contact lens fitting with different materials and designs, and comprehensive adaptation training to ensure visual comfort and eye health."
       },
       "specialized": {
         "title": "Specialized Treatments",
         "description": "Treatment for glaucoma, cataracts, retinal diseases, and other eye conditions.",
-        "fullDescription": "Saraiva Vision delivers advanced care for major eye diseases using modern medical protocols and technology. Personalized plans address glaucoma, cataracts, retinal disorders and more, following international standards for safety and efficacy."
+        "fullDescription": "We offer advanced specialized treatments for various eye conditions, including clinical and surgical glaucoma management, diabetic retinopathy treatment, dry eye syndrome therapy, and macular degeneration follow-up. Each treatment plan is individualized based on patient needs and disease stage."
       },
       "surgeries": {
         "title": "Ophthalmological Surgeries",
         "description": "Advanced surgical procedures to correct vision problems.",
-        "fullDescription": "Our surgical center performs cataract, refractive, pterygium and eyelid surgeries with state-of-the-art equipment. Procedures occur in a hospital-grade environment with rigorous postoperative care, ensuring smooth recovery and superior visual results."
+        "fullDescription": "Our surgical procedures employ microinvasive techniques and modern technology to ensure safety and effectiveness. We perform cataract surgery with intraocular lens implantation, refractive procedures, and glaucoma surgeries in an equipped surgical center with comprehensive pre and post-operative care."
       },
       "pediatric": {
         "title": "Pediatric Follow-up",
         "description": "Specialized care for children's eye health, from birth.",
-        "fullDescription": "We monitor children's vision from the first days of life, performing red reflex tests and age-appropriate assessments. Parents receive detailed reports and tips for visual stimulation at home."
+        "fullDescription": "Pediatric ophthalmology requires specialized approach adapted to each child's age and development. Our service includes red reflex testing, visual development assessment, strabismus evaluation, and infant refraction in a playful and welcoming environment, ensuring early detection and treatment of visual problems."
       },
       "reports": {
         "title": "Specialized Reports",
         "description": "Issuance of ophthalmological reports for exams, expert opinions, and other purposes.",
-        "fullDescription": "We provide official ophthalmological reports for driver's licenses, public exams, occupational evaluations and insurance. The process is fast and fully digital, ensuring easy access to your documents."
+        "fullDescription": "We provide specialized ophthalmological reports for various purposes including driver's license exams, public contests, occupational health assessments, and expert opinions. Each report follows rigorous technical criteria and includes digital signature for legal validity and professional acceptance."
+      },
+      "gonioscopy": {
+        "title": "Gonioscopy",
+        "description": "Specialized exam to assess the drainage angle of the eye, essential for glaucoma diagnosis.",
+        "fullDescription": "Gonioscopy is a comprehensive examination that allows detailed visualization of the drainage angle structures of the eye. This exam is fundamental for glaucoma classification and treatment guidance, providing crucial information for therapeutic decision-making."
+      },
+      "retinaMapping": {
+        "title": "Retina Mapping",
+        "description": "Complete evaluation of the retina, including the peripheral region, to detect lesions and diseases.",
+        "fullDescription": "Retina mapping is a detailed examination that evaluates the entire retinal surface, from the central region to the periphery. This exam is essential for early detection of retinal detachment, diabetic retinopathy, and other conditions that may compromise vision."
+      },
+      "cornealTopography": {
+        "title": "Corneal Topography",
+        "description": "Detailed mapping of corneal curvature to diagnose keratoconus and plan refractive surgeries.",
+        "fullDescription": "Corneal topography is a precise examination that creates detailed maps of corneal curvature and elevation. This exam is essential for early diagnosis of keratoconus, refractive surgery planning, and specialized contact lens fitting."
+      },
+      "pachymetry": {
+        "title": "Pachymetry",
+        "description": "Precise measurement of corneal thickness, important for glaucoma diagnosis and refractive surgery evaluation.",
+        "fullDescription": "Pachymetry is a quick and painless exam that measures corneal thickness at multiple points. This measurement is crucial for accurate interpretation of intraocular pressure and evaluation of candidacy for refractive surgeries."
+      },
+      "retinography": {
+        "title": "Retinography",
+        "description": "High-resolution digital photography of the retina for documentation and follow-up of eye diseases.",
+        "fullDescription": "Retinography allows high-quality photographic documentation of the retina, enabling comparison over time and detailed monitoring of retinal diseases. It's essential for diabetic retinopathy follow-up and macular disease documentation."
+      },
+      "visualField": {
+        "title": "Visual Field",
+        "description": "Computerized exam that maps the field of vision to detect glaucoma and optic neuropathies.",
+        "fullDescription": "Visual field testing is a comprehensive computerized examination that maps peripheral vision and detects visual defects. It's fundamental for glaucoma diagnosis and monitoring, as well as evaluation of optic neuropathies and neurological conditions."
       }
+    },
+    "benefits": {
+      "comprehensiveExam": "Complete eye health examination",
+      "earlyDiagnosis": "Early disease diagnosis",
+      "personalizedCare": "Personalized follow-up care",
+      "modernEquipment": "State-of-the-art equipment",
+      "preventiveGuidance": "Detailed preventive guidance",
+      "preciseGrade": "Precise prescription determination",
+      "contactAdaptation": "Complete contact lens adaptation",
+      "lensTypes": "Testing of different lens types",
+      "specializedFollowup": "Specialized follow-up",
+      "careGuidance": "Guidance on use and care",
+      "glaucomaTreatment": "Advanced glaucoma treatment",
+      "diabetesControl": "Ocular diabetes control",
+      "dryEyeTherapy": "Dry eye therapy",
+      "macularDegeneration": "Macular degeneration follow-up",
+      "individualProtocol": "Individualized protocol",
+      "microinvasiveTechniques": "Microinvasive techniques",
+      "quickRecovery": "Quick recovery",
+      "equippedCenter": "Equipped surgical center",
+      "safeAnesthesia": "Safe local anesthesia",
+      "postOpFollowup": "Post-operative follow-up",
+      "friendlyEnvironment": "Playful and welcoming environment",
+      "earlyDetection": "Early problem detection",
+      "adaptedTechniques": "Child-adapted techniques",
+      "parentGuidance": "Parent guidance",
+      "developmentFollowup": "Development follow-up",
+      "licenseReports": "Driver's license reports for all categories",
+      "publicContests": "Public and military contests",
+      "occupationalEvals": "Occupational evaluations",
+      "digitalSignature": "Digital signature",
+      "fastDelivery": "Fast and secure delivery",
+      "preciseDiagnosis": "Precise glaucoma diagnosis",
+      "glaucomaClassification": "Glaucoma type classification",
+      "angleEvaluation": "Iridocorneal angle evaluation",
+      "directedGuidance": "Directed therapeutic guidance",
+      "precisionEquipment": "High precision equipment",
+      "earlyLesionDetection": "Early retinal lesion detection",
+      "peripheralEvaluation": "Peripheral retina evaluation",
+      "detachmentDiagnosis": "Retinal detachment diagnosis",
+      "diabeticMonitoring": "Diabetic retinopathy monitoring",
+      "painlessExam": "Painless and safe exam",
+      "keratoconeDiagnosis": "Early keratoconus diagnosis",
+      "refractivePlanning": "Refractive surgery planning",
+      "specialLensAdaptation": "Special lens adaptation",
+      "ectasiaFollowup": "Ectasia follow-up",
+      "coloredMaps": "Detailed colored maps",
+      "preciseThickness": "Precise corneal thickness measurement",
+      "glaucomaAid": "Aid in glaucoma diagnosis",
+      "refractiveSurgeryEval": "Refractive surgery evaluation",
+      "keratoconeMonitoring": "Keratoconus monitoring",
+      "quickPainless": "Quick and painless exam",
+      "photographicDocumentation": "Photographic documentation of the retina",
+      "diseaseFollowup": "Eye disease follow-up",
+      "diabeticRetinaMonitoring": "Diabetic retinopathy monitoring",
+      "maculatLesionDetection": "Macular lesion detection",
+      "temporalComparison": "Temporal evolution comparison",
+      "earlyGlaucomaDiagnosis": "Early glaucoma diagnosis",
+      "opticNeuropathyEval": "Optic neuropathy evaluation",
+      "progressionMonitoring": "Progression monitoring",
+      "scotomaDetection": "Scotoma detection",
+      "reliableProtocol": "Reliable automated protocol"
+    },
+    "duration": {
+      "consultation": "45-60 minutes",
+      "refraction": "30-45 minutes",
+      "specialized": "60-90 minutes",
+      "surgeries": "45-90 minutes",
+      "pediatric": "30-45 minutes",
+      "reports": "20-30 minutes",
+      "gonioscopy": "15-20 minutes",
+      "retinaMapping": "20-30 minutes",
+      "cornealTopography": "10-15 minutes",
+      "pachymetry": "5-10 minutes",
+      "retinography": "10-15 minutes",
+      "visualField": "20-30 minutes per eye"
+    },
+    "preparation": {
+      "consultation": "Bring your current glasses and previous exams",
+      "refraction": "Avoid using contact lenses 24h before the exam",
+      "specialized": "Bring all exams and medications in use",
+      "surgeries": "8-hour fasting and mandatory companion",
+      "pediatric": "Rested and fed child",
+      "reports": "Bring ID document and requisition",
+      "gonioscopy": "Avoid using contact lenses on the day of the exam",
+      "retinaMapping": "Pupil dilation necessary - avoid driving after the exam",
+      "cornealTopography": "Suspend contact lens use as per medical guidance",
+      "pachymetry": "Suspend contact lenses 24h before the exam",
+      "retinography": "Pupil dilation may be necessary",
+      "visualField": "Use your regular glasses and avoid visual fatigue before the exam"
+    },
+    "included": {
+      "anamnesis": "Detailed medical history",
+      "acuityTest": "Visual acuity test",
+      "biomicroscopy": "Biomicroscopy",
+      "tonometry": "Tonometry (eye pressure)",
+      "retinaMapping": "Retina mapping",
+      "orientations": "Guidance and prescriptions",
+      "computerizedRefraction": "Computerized refraction",
+      "subjectiveRefraction": "Subjective refraction",
+      "contactTest": "Contact lens test",
+      "personalizedAdaptation": "Personalized adaptation",
+      "usageTraining": "Usage training",
+      "cleaningKit": "Initial cleaning kit",
+      "specializedEvaluation": "Specialized evaluation",
+      "complementaryExams": "Complementary exams",
+      "therapeuticPlan": "Therapeutic plan",
+      "medicationPrescription": "Medication prescription",
+      "followupScheduling": "Follow-up scheduling",
+      "familyOrientation": "Family guidance",
+      "preOpConsultation": "Pre-operative consultation",
+      "preOpExams": "Pre-surgical exams",
+      "surgicalProcedure": "Surgical procedure",
+      "postOpMedication": "Post-operative medication",
+      "includedReturns": "Included returns",
+      "emergencySupport": "24h emergency support",
+      "redReflexTest": "Red reflex test",
+      "visualDevelopment": "Visual development assessment",
+      "strabismusTest": "Strabismus test",
+      "infantRefraction": "Infant refraction",
+      "familyGuidance": "Family guidance",
+      "returnSchedule": "Return schedule",
+      "completeExam": "Complete ophthalmological exam",
+      "specificEvaluation": "Specific requested evaluation",
+      "technicalReport": "Detailed technical report",
+      "digitalSig": "Digital signature",
+      "emailDelivery": "Email delivery",
+      "printedCopy": "Printed copy when necessary",
+      "topicalAnesthesia": "Topical anesthesia",
+      "bilateralExam": "Bilateral gonioscopic exam",
+      "angleClassification": "Detailed angle classification",
+      "specializedReport": "Specialized technical report",
+      "diagnosisGuidance": "Guidance on diagnosis",
+      "referralWhenNeeded": "Referral when necessary",
+      "pupilDilation": "Pupil dilation with eye drops",
+      "binocularOphthalmoscopy": "Binocular indirect ophthalmoscopy",
+      "peripheralMapping": "Peripheral retina mapping",
+      "photographicDocumentation": "Photographic documentation when indicated",
+      "detailedReport": "Detailed report",
+      "postExamGuidance": "Post-exam guidance",
+      "computerizedTopography": "Computerized topography",
+      "elevationMaps": "Elevation and curvature maps",
+      "aberrationAnalysis": "Corneal aberration analysis",
+      "completeReport": "Complete technical report",
+      "coloredImages": "Printed colored images",
+      "resultGuidance": "Guidance on results",
+      "ultrasonicPachymetry": "Bilateral ultrasonic pachymetry",
+      "multiplePoints": "Measurements at multiple points",
+      "normalValues": "Normal reference values",
+      "clinicalInterpretation": "Clinical interpretation",
+      "techReport": "Technical report",
+      "resultOrientation": "Guidance on results",
+      "highResPhotos": "High-resolution digital photographs",
+      "posteriorPole": "Posterior pole images",
+      "colorDocumentation": "Colored documentation",
+      "digitalArchive": "Permanent digital archive",
+      "previousComparison": "Comparison with previous exams",
+      "photoReport": "Photographic report",
+      "computerizedField": "Bilateral computerized visual field",
+      "sitaProtocol": "SITA Standard or Fast protocol",
+      "progressionAnalysis": "Progression analysis when available",
+      "reliabilityIndexes": "Reliability indices",
+      "specializedInterpretation": "Specialized interpretation",
+      "resultGuidance": "Guidance on results"
     }
+  },
+  "service": {
+    "about": "About the Service",
+    "benefits": "Main Benefits",
+    "included": "What's Included",
+    "quickInfo": "Quick Information",
+    "duration": "Duration",
+    "location": "Location",
+    "preparation": "Preparation",
+    "directContact": "Direct Contact"
+  },
+  "clinic": {
+    "name": "Saraiva Vision Clinic",
+    "location": "Caratinga/MG"
+  },
+  "cta": {
+    "scheduleConsultation": "Schedule Consultation",
+    "scheduleNow": "Schedule Now"
+  },
+  "navigation": {
+    "backToServices": "Back to Services"
   },
   "contactLenses": {
     "main_title": "Contact Lenses",
@@ -135,6 +335,7 @@
     "button": "Learn More",
     "schedule_button": "Schedule Lens Consultation",
     "whatsapp_button": "Ask Questions on WhatsApp",
+    "brand_logo_alt": "{{brandName}} brand logo - Quality contact lenses",
     "process_steps": [
       {
         "title": "Initial Evaluation",
@@ -205,8 +406,7 @@
       "experience": "15+ Years Experience",
       "patients": "1000+ Successful Adaptations",
       "safety": "100% Sterile Procedures",
-      "brands": "Authorized Premium Brands",
-      "environment": "Environment-Friendly Company"
+      "brands": "Authorized Premium Brands"
     },
     "brands_section": {
       "title": "Premium Brands Available",
@@ -258,26 +458,33 @@
     "tag": "About Us",
     "title": "Dedicated to Excellence in Every Detail",
     "p1": "Saraiva Vision was born from the dream of offering high-quality ophthalmological care, combining advanced technology with a human and personalized approach.",
-    "p2": "Our mission is to provide accurate diagnoses and effective treatments, always prioritizing our patients' well-being and satisfaction.",
+    "p2": "Our mission is to provide accurate diagnoses and effective treatments, always prioritizing the well-being and satisfaction of our patients.",
     "features": [
       "Modern Infrastructure",
       "Qualified Professionals",
       "Humanized Care",
       "Commitment to Results"
     ],
-    "alt1": "Modern ophthalmology office",
+    "alt1": "Modern ophthalmological office",
     "alt2": "Ophthalmologist performing eye exam",
-    "alt3": "Patient smiling after consultation",
-    "alt4": "Advanced ophthalmology equipment",
+    "alt3": "Satisfied patient smiling after consultation",
+    "alt4": "Advanced ophthalmological equipment",
     "doctor": {
-      "heading": "Who I Am",
-      "name": "Dr. Philipe Saraiva Cruz",
-      "title": "Ophthalmologist",
-      "description": "I am Dr. Philipe Saraiva Cruz, ophthalmologist (CRM-MG 69.870). I graduated in Medicine in 2016 from the Faculdade de Ciências Médicas e da Saúde de Juiz de Fora. In 2017 I began a residency in Anesthesiology at Hospital Márcio Cunha – Ipatinga, an experience interrupted by my change of specialty. In 2020 I started the Ophthalmology residency at Faculdade de Medicina de Jundiaí, but the COVID-19 pandemic interrupted the program. Remaining committed, I completed in 2023 the Ophthalmology postgraduate program at CADECEU, consolidating my academic and clinical training.",
-      "emotional": "My journey in medicine began in 2016 when I graduated from the Faculdade de Ciências Médicas e da Saúde de Juiz de Fora. I passed through Hospital Márcio Cunha in Ipatinga, where I started an Anesthesiology residency in 2017, and in 2020 I embraced my true vocation by entering the Ophthalmology residency at Faculdade de Medicina de Jundiaí. However, the COVID-19 pandemic interrupted this cycle.\n\nI didn't give up on my purpose: in 2023 I completed the Ophthalmology postgraduate program at CADECEU, crowning years of dedication and effort. Today at Saraiva Vision, I have the honor of caring for my patients' vision with affection, technology and commitment to life."
+      "name": "Dr. Philipe Saraiva",
+      "title": "Ophthalmologist CRM/MG",
+      "description": "Eye health specialist with solid training and experience in precise diagnoses and personalized treatments.",
+      "alt": "Dr. Philipe Saraiva - Ophthalmologist specialized in eye health"
+    },
+    "team_title": "Our Team",
+    "nurse": {
+      "name": "Ana Lúcia",
+      "title": "Head Nurse",
+      "description": "Dedicated patient care and support for clinical procedures.",
+      "alt": "Nurse Ana Lúcia"
     }
   },
   "contact": {
+    "recaptcha_label": "Security Verification",
     "title": "Get in Touch",
     "subtitle": "We are available to answer your questions and schedule your appointment. Your vision is our priority.",
     "form_title": "Send a Message",
@@ -289,11 +496,6 @@
     "email_placeholder": "Your best email",
     "message_label": "Message",
     "message_placeholder": "Write your message here...",
-    "recaptcha_label": "Security Verification",
-    "recaptcha_error_title": "Verification Error",
-    "recaptcha_error_desc": "reCAPTCHA verification failed. Please try again.",
-    "submission_error_title": "Submission Error",
-    "submission_error_desc": "An error occurred while sending the message. Please try again.",
     "send_button": "Send Message",
     "online_scheduling_title": "Online Scheduling",
     "online_scheduling_desc": "Schedule your appointment directly through the web platform",
@@ -321,17 +523,21 @@
     "toast_error_title": "Please check the fields",
     "toast_error_desc": "Some information needs correction.",
     "sending_label": "Sending...",
+    "recaptcha_not_ready": "Security verification unavailable. Please try again.",
+  "recaptcha_error": "Security verification failed. Please try again.",
+  "recaptcha": {
+    "disclosure_html": "This site is protected by reCAPTCHA and the Google <a href=\"https://policies.google.com/privacy\" target=\"_blank\" rel=\"noopener noreferrer\">Privacy Policy</a> and <a href=\"https://policies.google.com/terms\" target=\"_blank\" rel=\"noopener noreferrer\">Terms of Service</a> apply."
+  },
+    "server_error": "Could not send right now. Please try again later.",
     "validation": {
       "name_min": "Please enter at least 3 characters.",
       "email_invalid": "Invalid email.",
       "phone_invalid": "Use digits with area code (e.g., 33998601427).",
       "message_min": "Message too short (min. 10 characters).",
-      "consent_required": "You must consent to data processing.",
-      "recaptcha_required": "Please complete the reCAPTCHA verification.",
-      "recaptcha_expired": "reCAPTCHA expired. Please complete again.",
-      "recaptcha_error": "reCAPTCHA error. Please reload the page."
+      "consent_required": "You must consent to data processing."
     },
     "external_redirect_warning": "You will be redirected to {serviceName}. Continue?",
+    "call_number_aria": "Call {{number}}",
     "phone_call_error": "Error initiating call. Call manually: {phoneDisplay}",
     "email_error": "Error opening email client. Send to: {email}",
     "rate_limit_title": "Please wait",
@@ -341,6 +547,7 @@
     "slogan": "Excellence in eye care, close to you.",
     "partner_of": "Partner of",
     "amor_saude_alt": "Amor e Saúde Clinic Logo",
+    "partner_link_aria": "Open partner Amor e Saúde website (new tab)",
     "quick_links": "Quick Links",
     "services": "Services",
     "contact": "Contact",
@@ -362,9 +569,10 @@
     "title": "Saraiva Vision Podcast",
     "subtitle": "Eye Health in Focus - Specialized content on eye health to keep your eyes always healthy.",
     "listen_spotify": "Listen on Spotify",
+    "visit_podcast": "View all episodes",
+    "spotify_embed_title": "Spotify player",
     "open_episode": "Open episode",
     "cover_alt": "Podcast cover",
-    "more_episodes": "Listen to more podcasts",
     "episodes": {
       "glaucoma": {
         "title": "Eye Health in Focus: Glaucoma",
@@ -377,6 +585,34 @@
       "ptergio": {
         "title": "Eye Health in Focus: Pterygium",
         "description": "Learn about pterygium, its causes related to sun exposure and the available treatments. Know how to protect your eyes and when to seek medical help."
+      },
+      "retina": {
+        "title": "Eye Health in Focus: Retina",
+        "description": "Main retinal conditions and how to prevent them to maintain healthy vision."
+      },
+      "olho_seco": {
+        "title": "Dry Eye: Symptoms and Treatments",
+        "description": "Causes, symptoms and treatment options to relieve discomfort and improve quality of life."
+      },
+      "duvidas": {
+        "title": "Frequently Asked Questions in Ophthalmology",
+        "description": "Answers to the most common questions about consultations, exams, and treatments."
+      },
+      "ceratocone": {
+        "title": "Eye Health in Focus: Keratoconus",
+        "description": "What keratoconus is, symptoms, diagnosis, and treatment options including specialty contact lenses."
+      },
+      "dmri": {
+        "title": "Eye Health in Focus: AMD — When the Macula Decides to Retire",
+        "description": "Understand Age-related Macular Degeneration (AMD): main symptoms, risk factors, prevention tips and when to seek evaluation with your ophthalmologist."
+      },
+      "lentes_contato": {
+        "title": "Eye Health in Focus: Contact Lenses — Rigid vs Soft",
+        "description": "Differences, indications and care between rigid and soft contact lenses. When each is recommended and how to maintain a safe, comfortable fit."
+      },
+      "cirurgia_refrativa": {
+        "title": "Eye Health in Focus: Refractive Surgery — Freedom from Glasses",
+        "description": "Everything you need to know about refractive surgery: LASIK, PRK and other modern techniques to correct myopia, hyperopia and astigmatism. When it's indicated and what to expect from the procedure."
       }
     }
   },
@@ -390,15 +626,10 @@
     "description": "Learn more about {{serviceTitleLowercase}} at Saraiva Vision. We offer advanced treatments and diagnoses for your eye health.",
     "keywords": "{{serviceTitleLowercase}}, ophthalmology, eye health, eye clinic"
   },
-  "faqPreview": {
-    "badge": "Quick Answers",
-    "title": "Frequently Asked Questions",
-    "link": "See all questions"
-  },
   "faq": {
     "badge": "Frequently Asked Questions",
     "title": "Frequently Asked Questions",
-      "subtitle": "Clarify your questions about eye health in Caratinga: contact lenses, ophthalmological reports, glaucoma, insurance coverage and pediatric consultations.",
+    "subtitle": "Get answers about eye health in Caratinga: contact lenses, ophthalmological reports, glaucoma, insurance coverage and pediatric consultations.",
     "search": {
       "placeholder": "Search question...",
       "noResults": "No questions found for your search."
@@ -623,6 +854,18 @@
   "cfm": {
     "disclaimer": "Informational content without promise of outcomes. Consult the responsible physician for personalized assessment."
   },
+  "testimonials": {
+    "badge": "Testimonials",
+    "title": "What our patients say",
+    "subtitle": "Real experiences from people who trusted Saraiva Vision to take care of their vision.",
+    "patient": "Patient",
+    "previous": "Previous",
+    "next": "Next",
+    "avgRating": "Average Rating",
+    "totalReviews": "Reviews",
+    "satisfaction": "Satisfaction",
+    "viewAll": "View all testimonials"
+  },
   "testimonialsMeta": {
     "title": "⭐ Patient Testimonials | Saraiva Vision Clinic Caratinga",
     "description": "📝 Read real testimonials from Saraiva Vision Clinic patients in Caratinga. ⭐ Verified reviews about our ophthalmology services. 👁️ CRM-MG 69.870",
@@ -632,29 +875,6 @@
     "title": "📋 Privacy Policy | Saraiva Vision | LGPD Compliance",
     "description": "📄 Saraiva Vision Clinic Privacy Policy according to LGPD. 🔒 How we protect your personal data and medical information in Caratinga/MG Brazil.",
     "keywords": "Saraiva Vision privacy policy, LGPD ophthalmology clinic, medical data protection, patient privacy Caratinga Brazil"
-  },
-  "blog": {
-    "tag": "Health Education",
-    "title": "Saraiva Vision Blog in Caratinga",
-    "subtitle": "Articles about eye health, treatments and news in Caratinga, Brazil.",
-    "view_all": "View all articles",
-    "read_more": "Read more",
-    "placeholder_title": "Content coming soon",
-    "placeholder_desc": "Soon you'll read tips and news about eye care.",
-    "placeholder_desc_page": "We're preparing articles focused on Caratinga, MG.",
-    "page_title": "Eye Health Blog in Caratinga",
-    "page_description": "Ophthalmology tips and local news for Caratinga and nearby cities.",
-    "page_subtitle": "Learn more about eye care in our city.",
-    "post_error_title": "Post not found",
-    "post_error_desc": "We couldn't load this content.",
-    "back_to_blog": "Back to blog"
-  },
-  "comments": {
-    "title": "Comments",
-    "no_comments": "No comments yet",
-    "name_label": "Name",
-    "message_label": "Comment",
-    "submit": "Add Comment"
   },
   "reviews": {
     "title": "Google Reviews",
@@ -673,21 +893,31 @@
     "mockAuthor3": "Patient C",
     "mockText1": "Excellent and fast service!",
     "mockText2": "Very attentive staff and modern facilities.",
-    "mockText3": "Great experience, highly recommend."
+    "mockText3": "Great experience, highly recommend.",
+    "view_all_aria": "View all reviews on Google (opens in new tab)"
   },
   "ui": {
     "details": "View details",
     "close": "Close",
-    "close_menu": "Close menu", 
+    "prev": "Previous",
+    "previous": "Previous",
+    "next": "Next",
+    "carousel": "Carousel",
+    "carousel_navigation": "Carousel navigation",
+    "go_to_item": "Go to item {{index}}",
+    "recommended": "RECOMMENDED",
+    "available_24_7": "Available 24/7 • Instant confirmation",
+    "close_menu": "Close menu",
     "close_player": "Close player",
     "close_tip": "Close tip",
     "restart_episode": "Restart episode",
     "download_episode": "Download episode",
+    "accessibility_menu": "Accessibility Menu",
     "external_link": "external link",
-    "language_portuguese": "Switch to Portuguese",
+    "language_portuguese": "Mudar para Português",
     "language_english": "Switch to English",
     "readability_control": "Readability Control",
-    "reading_support": "Reading Support", 
+    "reading_support": "Reading Support",
     "alternative_communication": "Alternative Communication",
     "navigation_input": "Navigation and Input",
     "decrease_font": "Decrease font",
@@ -695,14 +925,97 @@
     "your_name": "Your name",
     "alt": {
       "consultations": "Ophthalmological Consultations",
-      "refraction": "Refraction Exams", 
+      "refraction": "Refraction Exams",
       "specialized": "Specialized Treatments",
       "surgeries": "Ophthalmological Surgeries",
       "pediatric": "Pediatric Follow-up",
       "reports": "Specialized Reports",
+      "gonioscopy": "Gonioscopy",
+      "retina_mapping": "Retina Mapping",
+      "corneal_topography": "Corneal Topography",
+      "pachymetry": "Pachymetry",
+      "retinography": "Retinography",
+      "visual_field": "Visual Field",
+      "hero_image": "Smiling family - Saraiva Vision",
       "satisfied_patient_1": "Satisfied patient 1",
       "satisfied_patient_2": "Satisfied patient 2",
-      "doctor": "Ophthalmologist smiling at the camera in a modern clinic"
+      "doctor": "Ophthalmologist smiling at the camera in a modern clinic",
+      "contact_lenses_icon": "Contact lenses representative icon",
+      "blog_post": "Article illustration image",
+      "podcast_episode": "Podcast episode cover about eye health"
     }
+  },
+  "location": {
+    "title": "Find us",
+    "subtitle": "Verified location on Google. Make your route easier and rate our service.",
+    "reviews_realtime": "Real-time reviews",
+    "google_maps_button": "View on Google Maps",
+    "review_button": "Rate us on Google",
+    "google_maps_button_aria": "Open clinic profile on Google Maps (new tab)",
+    "review_button_aria": "Open Google reviews page (new tab)"
+  },
+  "podcastMeta": {
+    "title": "Saraiva Vision Podcast | Eye Health Audio | Caratinga/MG",
+    "description": "Listen to specialized ophthalmology episodes with Dr. Philipe Saraiva. Tips, prevention and treatments to keep your eyes healthy.",
+    "keywords": "ophthalmology podcast, eye health audio, Dr Philipe Saraiva podcast, vision tips, eye prevention, eye treatment, medical podcast Caratinga"
+  },
+  "admin": {
+    "pageTitle": "Administrative Area | Saraiva Vision",
+    "pageDescription": "Access to the Saraiva Vision blog administrative area",
+    "title": "Administrative Area",
+    "subtitle": "Login to manage blog content",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "login": "Login",
+    "loggingIn": "Logging in...",
+    "loginError": "Login error. Check your credentials.",
+    "backToBlog": "Back to Blog"
+  },
+  "blog": {
+    "page_title": "Blog",
+    "page_description": "Articles and news about eye health.",
+    "page_subtitle": "Articles and news about eye health",
+    "search_placeholder": "Search articles...",
+    "all_categories": "All categories",
+    "categories": {
+      "all": "All",
+      "prevention": "Prevention",
+      "treatments": "Treatments",
+      "pediatric": "Pediatrics",
+      "technology": "Technology",
+      "exams": "Eye Exams",
+      "general": "General Information",
+      "consultas": "Ophthalmology Consultations",
+      "exames": "Specialized Exams",
+      "refracao": "Refraction",
+      "paquimetria": "Pachymetry",
+      "mapeamento-retina": "Retinal Mapping",
+      "biometria": "Biometry",
+      "retinografia": "Retinography",
+      "topografia-corneana": "Corneal Topography",
+      "lentes-contato": "Contact Lenses",
+      "testes-especiais": "Special Tests"
+    },
+    "read_more": "Read more",
+    "placeholder_title": "Content unavailable right now",
+    "placeholder_desc_page": "We are setting up the CMS connection. Please try again soon.",
+    "no_posts": "No articles found",
+    "no_posts_description": "Try adjusting filters or search.",
+    "back_to_blog": "Back to Blog",
+    "post_error_title": "Could not load the article",
+    "post_error_desc": "There was a problem loading this content. Go back to the blog and try again.",
+    "loading": "Loading blog posts...",
+    "search_description": "Type to search posts by title or content",
+    "category_filters": "Category filters",
+    "all_categories_label": "Show all posts",
+    "filter_by_category": "Filter by category: {{category}}",
+    "published_date": "Published on {{date}}",
+    "category_label": "Category: {{category}}",
+    "read_post": "Read the post: {{title}}",
+    "read_more_post": "Read more about: {{title}}",
+    "main_content_label": "Blog main content",
+    "posts_section_label": "Blog posts"
   }
 }

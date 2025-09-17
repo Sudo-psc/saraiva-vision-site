@@ -6,7 +6,7 @@
 ```bash
 # Clone repository
 git clone <repository-url>
-cd saraiva-vision-site
+cd saraivavision-site-v2
 
 # Install dependencies
 npm install

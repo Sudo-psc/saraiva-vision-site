@@ -25,6 +25,7 @@ function anonymizeAuthor(name = '') {
   if (!name) return 'Paciente';
   const parts = name.trim().split(/\s+/);
   if (parts.length === 1) return parts[0];
+  if (parts.length === 2) return name.trim(); // keep two-part names unchanged
   return `${parts[0]} ${parts[1][0]}.`;
 }
 
@@ -91,8 +92,16 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   
-  const apiKey = process.env.GOOGLE_MAPS_API_KEY || process.env.GOOGLE_PLACES_API_KEY;
-  const placeId = process.env.GOOGLE_PLACE_ID || process.env.VITE_GOOGLE_PLACE_ID; // fallback
+  // Prefer primary server-side vars
+  const hasMapsKey = !!process.env.GOOGLE_MAPS_API_KEY;
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY
+    || process.env.GOOGLE_PLACES_API_KEY
+    || undefined;
+  let placeId = process.env.GOOGLE_PLACE_ID || undefined;
+  // Fallback placeId only when no primary GOOGLE_MAPS_API_KEY is present
+  if (!placeId && !hasMapsKey) {
+    placeId = process.env.VITE_GOOGLE_PLACE_ID;
+  }
   
   // More detailed logging for debugging
   console.log('Google Reviews API - Environment check:');
@@ -102,7 +111,8 @@ export default async function handler(req, res) {
   
   if (!apiKey || !placeId) {
     console.error('Missing Google Places API configuration');
-    return res.status(500).json({ 
+    res.status(500);
+    return res.json({ 
       error: 'Missing server credentials',
       details: {
         hasApiKey: !!apiKey,

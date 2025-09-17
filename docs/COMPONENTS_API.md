@@ -284,7 +284,7 @@ const MyComponent = () => {
 | Método/Propriedade | Tipo | Descrição |
 |-------------------|------|-----------|
 | `generateWhatsAppUrl` | `(message?: string) => string` | Gera URL do WhatsApp com mensagem |
-| `openFloatingCTA` | `() => void` | Abre CTA flutuante do WhatsApp |
+| `openFloatingCTA` | `() => void` | Abre o modal de agendamento (dispara `open-cta-modal`) |
 
 ### useSEO
 

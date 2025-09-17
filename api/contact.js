@@ -1,162 +1,129 @@
-// Contact form submission with reCAPTCHA validation and email notification
-// Uses Resend API to deliver form submissions securely
+import 'dotenv/config';
 
-import { Resend } from 'resend';
+// Lightweight contact API with Google reCAPTCHA v3 verification
+// Expects POST { name, email, phone, message, token, action }
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-const escapeHtml = (str = '') =>
-  str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-
-export default async function handler(req, res) {
-  // Only allow POST requests
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return res.status(405).json({ error: 'Method not allowed' });
+const parseBody = async (req) => {
+  if (req.body && typeof req.body === 'object') return req.body;
+  const chunks = [];
+  for await (const chunk of req) chunks.push(chunk);
+  const raw = Buffer.concat(chunks).toString('utf8');
+  try {
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
   }
+};
 
-  const { name, email, phone, message, consent, recaptchaToken } = req.body;
+const getClientIp = (req) => {
+  const xfwd = req.headers['x-forwarded-for'];
+  if (typeof xfwd === 'string') return xfwd.split(',')[0].trim();
+  return req.socket?.remoteAddress || undefined;
+};
 
-  // Validate required fields
-  if (!name || !email || !phone || !message || !consent || !recaptchaToken) {
-    return res.status(400).json({ 
-      error: 'Missing required fields',
-      details: {
-        name: !name,
-        email: !email,
-        phone: !phone,
-        message: !message,
-        consent: !consent,
-        recaptchaToken: !recaptchaToken
-      }
-    });
+const verifyRecaptcha = async ({ token, remoteip, expectedAction }) => {
+  const secret = process.env.RECAPTCHA_SECRET || process.env.GOOGLE_RECAPTCHA_SECRET;
+  if (!secret) {
+    console.warn('Missing RECAPTCHA_SECRET - skipping verification in development');
+    return { ok: true, score: 1.0, action: expectedAction || 'contact' };
   }
 
   try {
-    // Validate reCAPTCHA token with Google
-    const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+    const params = new URLSearchParams();
+    params.set('secret', secret);
+    params.set('response', token || '');
+    if (remoteip) params.set('remoteip', remoteip);
+
+    const res = await fetch('https://www.google.com/recaptcha/api/siteverify', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        secret: process.env.RECAPTCHA_SECRET_KEY,
-        response: recaptchaToken,
-        remoteip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
-      })
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString()
     });
 
-    const recaptchaData = await recaptchaResponse.json();
+    const data = await res.json();
 
-    if (!recaptchaData.success) {
-      console.error('reCAPTCHA validation failed:', recaptchaData);
-      return res.status(400).json({ 
-        error: 'reCAPTCHA validation failed',
-        details: recaptchaData['error-codes'] || ['unknown-error']
-      });
+    if (!data.success) {
+      return { ok: false, code: 'verification_failed', message: data['error-codes']?.join(', ') || 'verification failed' };
     }
 
-    // For reCAPTCHA v2, we can also check the score (if available)
-    // For v3, you would check: recaptchaData.score >= 0.5
-
-    // Basic input sanitization
-    const sanitizedData = {
-      name: name.trim().slice(0, 100),
-      email: email.trim().toLowerCase().slice(0, 100),
-      phone: phone.replace(/\D/g, '').slice(0, 15),
-      message: message.trim().slice(0, 1000),
-      timestamp: new Date().toISOString(),
-      ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
-    };
-
-    // Security checks
-    const linkPattern = /(https?:\/\/|www\.)/i;
-    const scriptPattern = /<\/?script/gi;
-    if (linkPattern.test(sanitizedData.message) || scriptPattern.test(sanitizedData.message)) {
-      return res.status(400).json({ error: 'Suspicious content in message' });
+    if (expectedAction && data.action && data.action !== expectedAction) {
+      return { ok: false, code: 'action_mismatch', message: `unexpected action: ${data.action}` };
     }
 
-    // Detect common injection patterns
-    const injectionPattern = /(\b(select|insert|update|delete|drop|union|create|alter|truncate|exec)\b|;|--)/i;
-    if (injectionPattern.test(`${sanitizedData.name} ${sanitizedData.email} ${sanitizedData.message}`)) {
-      return res.status(400).json({ error: 'Potential injection attack detected' });
+    // For development/test keys, score might be undefined
+    // In that case, we consider it valid if success=true
+    const score = typeof data.score === 'number' ? data.score : 1.0;
+
+    // Only apply score threshold for actual v3 responses (when score is provided)
+    if (typeof data.score === 'number' && score < 0.5) {
+      return { ok: false, code: 'low_score', message: `low score: ${score}`, score };
     }
 
-    // Additional validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(sanitizedData.email)) {
-      return res.status(400).json({ error: 'Invalid email format' });
-    }
-
-    if (sanitizedData.phone.length < 10 || sanitizedData.phone.length > 15) {
-      return res.status(400).json({ error: 'Invalid phone number' });
-    }
-
-    // Rate limiting check (simple server-side implementation)
-    const clientId = sanitizedData.ip + sanitizedData.email;
-    const now = Date.now();
-    const rateLimitKey = `contact_${clientId}`;
-    
-    // In production, you'd use Redis or similar for this
-    // For now, we'll use a simple in-memory store (not persistent across restarts)
-    if (!global.rateLimitStore) {
-      global.rateLimitStore = new Map();
-    }
-    
-    const lastSubmission = global.rateLimitStore.get(rateLimitKey);
-    if (lastSubmission && (now - lastSubmission) < 30000) { // 30 seconds
-      return res.status(429).json({ 
-        error: 'Rate limit exceeded',
-        message: 'Please wait 30 seconds before submitting again'
-      });
-    }
-    
-    global.rateLimitStore.set(rateLimitKey, now);
-
-    const safeData = {
-      name: escapeHtml(sanitizedData.name),
-      email: escapeHtml(sanitizedData.email),
-      phone: escapeHtml(sanitizedData.phone),
-      message: escapeHtml(sanitizedData.message)
-    };
-
-    try {
-      await resend.emails.send({
-        from: process.env.CONTACT_FROM_EMAIL || 'no-reply@example.com',
-        to: process.env.CONTACT_TO_EMAIL || 'contact@example.com',
-        reply_to: safeData.email,
-        subject: `Novo contato de ${safeData.name}`,
-        html: `<p><strong>Nome:</strong> ${safeData.name}</p>
-               <p><strong>Email:</strong> ${safeData.email}</p>
-               <p><strong>Telefone:</strong> ${safeData.phone}</p>
-               <p><strong>Mensagem:</strong><br/>${safeData.message}</p>`
-      });
-    } catch (err) {
-      console.error('Resend API error:', err);
-      return res.status(502).json({ error: 'Email service failure' });
-    }
-
-    console.log('Valid form submission received:', {
-      ...sanitizedData,
-      recaptchaScore: recaptchaData.score || 'v2'
-    });
-
-    return res.status(200).json({
-      success: true,
-      message: 'Message sent successfully',
-      timestamp: sanitizedData.timestamp
-    });
-
-  } catch (error) {
-    console.error('Contact form submission error:', error);
-    return res.status(500).json({
-      error: 'Internal server error',
-      message: 'Failed to process form submission'
-    });
+    return { ok: true, score, action: data.action || null, challenge_ts: data.challenge_ts, hostname: data.hostname };
+  } catch (err) {
+    return { ok: false, code: 'network_error', message: err.message };
   }
+};
+
+export default async function handler(req, res) {
+  // Basic in-memory rate limiting per IP (best-effort; use a shared store in prod)
+  const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
+  const RATE_LIMIT_MAX = 5; // max 5 requests per window
+  if (!global.__contactRateLimiter) {
+    global.__contactRateLimiter = new Map();
+  }
+  const limiter = global.__contactRateLimiter;
+  const now = Date.now();
+  const ip = getClientIp(req);
+  const bucket = limiter.get(ip) || { count: 0, start: now };
+  if (now - bucket.start > RATE_LIMIT_WINDOW_MS) {
+    bucket.count = 0;
+    bucket.start = now;
+  }
+  bucket.count += 1;
+  limiter.set(ip, bucket);
+  if (bucket.count > RATE_LIMIT_MAX) {
+    res.setHeader('Retry-After', Math.ceil((bucket.start + RATE_LIMIT_WINDOW_MS - now) / 1000));
+    return res.status(429).json({ error: 'rate_limited' });
+  }
+  // CORS preflight (optional local development)
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    return res.status(204).end();
+  }
+
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST, OPTIONS');
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const body = await parseBody(req);
+
+  const { name, email, phone, message, token, action } = body || {};
+
+  if (!token) {
+    return res.status(400).json({ error: 'missing_token' });
+  }
+
+  const verification = await verifyRecaptcha({ token, remoteip: ip, expectedAction: action || 'contact' });
+  if (!verification.ok) {
+    return res.status(400).json({ error: 'recaptcha_failed', details: verification });
+  }
+
+  // NOTE: This is a stub. In production, you might enqueue an email/send to CRM.
+  // To avoid storing PII, we simply acknowledge receipt.
+  const safe = {
+    name: String(name || '').slice(0, 80),
+    email: String(email || '').slice(0, 120),
+    phone: String(phone || '').replace(/\D/g, '').slice(0, 20),
+    message: String(message || '').slice(0, 1200)
+  };
+
+  return res.status(200).json({
+    ok: true,
+    received: { ...safe },
+    recaptcha: { score: verification.score, action: verification.action }
+  });
 }

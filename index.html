@@ -1,9 +1,14 @@
 <!doctype html>
 <html lang="pt-BR">
 
-<head>
+  <head>
+    <!--
+      CSP is delivered via HTTP headers by the reverse proxy (see nginx.conf).
+      Avoid meta http-equiv for directives like frame-ancestors; browsers ignore it there.
+      Keep this document free of CSP meta to prevent conflicts with header policy.
+    -->
   <meta charset="UTF-8" />
-  <title>Dr. Philipe Saraiva - Oftalmologista em Caratinga/MG | Consultas e Cirurgias</title>
+  <title>Oftalmologista em Caratinga, MG | Clínica Saraiva Vision</title>
   <link rel="icon" type="image/png"
     href="https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png" />
   <meta name="generator" content="Hostinger Horizons" />
@@ -21,6 +26,7 @@
   <link rel="preconnect" href="https://storage.googleapis.com" crossorigin>
   <link rel="dns-prefetch" href="//www.google.com">
   <link rel="dns-prefetch" href="//maps.googleapis.com">
+  <link rel="dns-prefetch" href="//places.googleapis.com">
   <link rel="dns-prefetch" href="//api.whatsapp.com">
 
   <!-- PWA & Mobile Icons -->
@@ -33,7 +39,7 @@
 
 
   <!-- Mobile Performance Optimizations -->
-  <style nonce="2724b7pNRx1X">
+  <style>
     /* Critical CSS for mobile-first loading */
     body {
       margin: 0;
@@ -69,29 +75,50 @@
   </style>
 
   <meta name="description"
-    content="Dr. Philipe Saraiva - Oftalmologista em Caratinga, Vale do Rio Doce/MG. Consultas, cirurgias e exames oftalmológicos. Clínica Saraiva Vision atende Caratinga e região com tecnologia avançada. CRM-MG 69.870" />
+    content="Clínica oftalmológica em Caratinga, MG. Dr. Philipe Saraiva. Consultas, exames e cirurgias. Agende sua consulta pelo WhatsApp." />
   <meta name="keywords"
     content="Dr. Philipe Saraiva, Oftalmologista Caratinga, Cirurgias oftalmológicas Caratinga, Consultas oftalmológicas Caratinga MG, Vale do Rio Doce, Minas Gerais, Clínica Saraiva Vision Caratinga" />
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://saraivavision.com.br/">
-  <meta property="og:title" content="Dr. Philipe Saraiva - Oftalmologista em Caratinga/MG | Consultas e Cirurgias">
+  <meta property="og:title" content="Oftalmologista em Caratinga, MG | Clínica Saraiva Vision">
   <meta property="og:description"
-    content="Dr. Philipe Saraiva - Oftalmologista em Caratinga, Vale do Rio Doce/MG. Consultas, cirurgias e exames oftalmológicos. Clínica Saraiva Vision atende Caratinga e região de Minas Gerais com tecnologia avançada." />
+    content="Clínica oftalmológica em Caratinga, MG. Dr. Philipe Saraiva. Consultas, exames e cirurgias. Agende sua consulta pelo WhatsApp." />
   <meta property="og:image"
     content="https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png">
 
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://saraivavision.com.br/">
-  <meta property="twitter:title" content="Dr. Philipe Saraiva - Oftalmologista em Caratinga/MG | Consultas e Cirurgias">
+  <meta property="twitter:title" content="Oftalmologista em Caratinga, MG | Clínica Saraiva Vision">
   <meta property="twitter:description"
-    content="Dr. Philipe Saraiva - Oftalmologista em Caratinga, Vale do Rio Doce/MG. Consultas, cirurgias e exames oftalmológicos. Clínica Saraiva Vision atende Caratinga e região de Minas Gerais com tecnologia avançada." />
+    content="Clínica oftalmológica em Caratinga, MG. Dr. Philipe Saraiva. Consultas, exames e cirurgias. Agende sua consulta pelo WhatsApp." />
   <meta property="twitter:image"
     content="https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png">
   <meta name="geo.region" content="BR-MG" />
   <meta name="geo.placename" content="Caratinga" />
-  <meta name="geo.position" content="-19.7868;-42.1392" />
-  <meta name="ICBM" content="-19.7868, -42.1392" />
-  <script type="application/ld+json" nonce="2724b7pNRx1X">
+  <meta name="geo.position" content="-19.7897;-42.1392" />
+  <meta name="ICBM" content="-19.7897, -42.1392" />
+  
+  <!-- Google Consent Mode v2: default denied (privacy-first) -->
+  <script>
+    (function initConsentModeDefaults(){
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = window.gtag || gtag;
+      // Default: deny analytics/ads until opt-in
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        analytics_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        functionality_storage: 'granted',
+        security_storage: 'granted'
+      });
+      // Recommended safeguards for EEA
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
+    })();
+  </script>
+  <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": ["MedicalClinic", "LocalBusiness", "MedicalOrganization"],
@@ -120,8 +147,8 @@
         },
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": -19.7868,
-          "longitude": -42.1392
+          "latitude": -19.7890206,
+          "longitude": -42.1347583
         },
         "openingHoursSpecification": [{
           "@type": "OpeningHoursSpecification",
@@ -171,16 +198,46 @@
         ],
         "availableService": [],
         "medicalConditionTreated": [
-          "Myopia",
-          "Hyperopia", 
-          "Astigmatism",
-          "Presbyopia",
-          "Glaucoma",
-          "Cataract",
-          "Diabetic Retinopathy",
-          "Macular Degeneration",
-          "Dry Eye Syndrome",
-          "Strabismus"
+          {
+            "@type": "MedicalCondition",
+            "name": "Myopia"
+          },
+          {
+            "@type": "MedicalCondition",
+            "name": "Hyperopia"
+          },
+          {
+            "@type": "MedicalCondition",
+            "name": "Astigmatism"
+          },
+          {
+            "@type": "MedicalCondition",
+            "name": "Presbyopia"
+          },
+          {
+            "@type": "MedicalCondition",
+            "name": "Glaucoma"
+          },
+          {
+            "@type": "MedicalCondition",
+            "name": "Cataract"
+          },
+          {
+            "@type": "MedicalCondition",
+            "name": "Diabetic Retinopathy"
+          },
+          {
+            "@type": "MedicalCondition",
+            "name": "Macular Degeneration"
+          },
+          {
+            "@type": "MedicalCondition",
+            "name": "Dry Eye Syndrome"
+          },
+          {
+            "@type": "MedicalCondition",
+            "name": "Strabismus"
+          }
         ],
         "contactPoint": [
           {
@@ -214,14 +271,14 @@
             "value": true
           }
         ],
-        "accreditation": [
+        "memberOf": [
           {
-            "@type": "EducationalOrganization",
+            "@type": "Organization",
             "name": "Conselho Federal de Medicina",
             "url": "https://portal.cfm.org.br/"
           },
           {
-            "@type": "EducationalOrganization",
+            "@type": "Organization",
             "name": "Conselho Brasileiro de Oftalmologia",
             "url": "https://www.cbo.com.br/"
           }
@@ -260,7 +317,7 @@
               "@type": "Person",
               "name": "João Santos"
             },
-            "reviewBody": "Ótima experiência na consulta em Caratinga. Dr. Philipe é muito experiente e explica tudo detalhadamente. Melhor oftalmologista da região de Minas Gerais!",
+            "reviewBody": "Ótima experiência na consulta em Caratinga. Dr. Philipe é muito experiente e explica tudo detalhadamente. Considero um excelente oftalmologista na região de Minas Gerais.",
             "datePublished": "2024-11-02"
           },
           {
@@ -285,35 +342,125 @@
       }
     </script>
 
-  <!-- Consent-gated tracking scripts will be injected dynamically after user opt-in -->
-  <script nonce="2724b7pNRx1X">
-    const cspNonce = '2724b7pNRx1X';
-    window.__SV_PENDING_TAGS__ = [
-      { src: 'https://www.googletagmanager.com/gtag/js?id=G-LXWRK8ELS6', type: 'analytics' },
-      { inline: "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config','G-LXWRK8ELS6');", type: 'analytics' },
-      { src: 'https://www.googletagmanager.com/gtag/js?id=AW-11120453144', type: 'marketing' },
-      { inline: "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config','AW-11120453144');", type: 'marketing' }
-    ];
-    window.addEventListener('consent-updated', (e) => {
-      const consent = e.detail;
-      const head = document.head;
-      (window.__SV_PENDING_TAGS__ || []).forEach(tag => {
-        if ((tag.type === 'analytics' && consent.analytics) || (tag.type === 'marketing' && consent.marketing)) {
-          if (tag.src && !document.querySelector(`script[src='${tag.src}']`)) {
-            const s = document.createElement('script'); s.async = true; s.src = tag.src; s.setAttribute('nonce', cspNonce); head.appendChild(s);
-          }
-          if (tag.inline) {
-            const s = document.createElement('script'); s.setAttribute('nonce', cspNonce); s.text = tag.inline; head.appendChild(s);
-          }
+  <!-- Direct Google Analytics (GA4) - Consent-gated -->
+  <script>
+    (function() {
+      // GA4 Measurement ID - hardcoded to avoid Vite processing issues
+      const GA_MEASUREMENT_ID = 'G-LXWRK8ELS6';
+
+      // Helper: load GA4 gtag once
+      function loadGA4(id) {
+        if (!id) return;
+        if (window.__GA4_LOADED__) return;
+        window.__GA4_LOADED__ = true;
+        
+        // Load gtag script
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+        document.head.appendChild(script);
+
+        // Initialize gtag
+        script.onload = function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', id);
+        };
+      }
+
+      // Load GA4 when consent is granted
+      window.addEventListener('consent-updated', function(e) {
+        const consent = e.detail || {};
+        if (consent.analytics && !window.__GA4_LOADED__) {
+          loadGA4(GA_MEASUREMENT_ID);
         }
       });
+
+      // Auto-apply for returning visitors with stored consent
+      try {
+        const saved = JSON.parse(localStorage.getItem('sv_consent_v1'));
+        if (saved && saved.analytics && !window.__GA4_LOADED__) {
+          loadGA4(GA_MEASUREMENT_ID);
+        }
+      } catch (e) {
+        // Ignore localStorage errors
+      }
+    })();
+  </script>
+
+  <!-- Consent-gated GTM container (configure GA4/Meta inside GTM). ID from env. -->
+  <script type="module">
+    const GTM_ID = import.meta.env.VITE_GTM_ID; // e.g., GTM-XXXXXXX
+
+    // Helper: load GTM once
+    function loadGTM(id) {
+      if (!id) return;
+      if (window.__GTM_LOADED__) return;
+      window.__GTM_LOADED__ = true;
+      (function(w,d,s,l,i){
+        w[l]=w[l]||[]; w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+        const f=d.getElementsByTagName(s)[0];
+        const j=d.createElement(s); const dl=l!='dataLayer'?'&l='+l:'';
+        j.async=true; j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+        f.parentNode.insertBefore(j,f);
+      })(window, document, 'script', 'dataLayer', GTM_ID);
+
+      // Optional: noscript iframe (added dynamically for SPA)
+      const ns = document.createElement('noscript');
+      ns.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}"
+        title="Google Tag Manager"
+        referrerpolicy="no-referrer-when-downgrade"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+      document.body && document.body.appendChild(ns);
+    }
+
+    function updateConsentForVendors(consent){
+      // Keep Consent Mode in sync (GTM/GA4 will read this)
+      if (window.gtag) {
+        window.gtag('consent','update',{
+          ad_storage: consent.marketing ? 'granted' : 'denied',
+          analytics_storage: consent.analytics ? 'granted' : 'denied',
+          ad_user_data: consent.marketing ? 'granted' : 'denied',
+          ad_personalization: consent.marketing ? 'granted' : 'denied'
+        });
+      } else {
+        // Push to dataLayer so GTM reads the update even if gtag not present yet
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'consent_update',
+          'ad_storage': consent.marketing ? 'granted' : 'denied',
+          'analytics_storage': consent.analytics ? 'granted' : 'denied',
+          'ad_user_data': consent.marketing ? 'granted' : 'denied',
+          'ad_personalization': consent.marketing ? 'granted' : 'denied'
+        });
+      }
+    }
+
+    // Load GTM only when at least one non-essential category is granted
+    window.addEventListener('consent-updated', (e) => {
+      const consent = e.detail || {};
+      if ((consent.analytics || consent.marketing) && !window.__GTM_LOADED__) {
+        loadGTM(GTM_ID);
+      }
+      updateConsentForVendors(consent);
     });
+
+    // Auto-apply stored consent and load GTM on returning visitors
+    try {
+      const saved = JSON.parse(localStorage.getItem('sv_consent_v1'));
+      if (saved) {
+        if ((saved.analytics || saved.marketing) && !window.__GTM_LOADED__) loadGTM(GTM_ID);
+        window.dispatchEvent(new CustomEvent('consent-updated', { detail: saved }));
+      }
+    } catch (_) {}
   </script>
 </head>
 
 <body>
   <div id="root"></div>
-  <script type="module" nonce="2724b7pNRx1X" src="/src/main.jsx"></script>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
 
 </html>

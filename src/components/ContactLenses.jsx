@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Check, ExternalLink, Shield, Users, Award, Eye, ChevronDown, MessageCircle, Star, Clock, Heart, Zap, Globe, Sparkles, Leaf } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Check, ExternalLink, Shield, Users, Award, Eye, ChevronDown, MessageCircle, Star, Clock, Heart, Zap, Globe, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ContactLensesHeroImage from './ContactLensesHeroImage';
 
 const ContactLenses = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState(null);
 
   const lensTypes = [
@@ -16,7 +18,7 @@ const ContactLenses = () => {
       subtitle: t('contactLenses.types.soft.subtitle'),
       features: t('contactLenses.types.soft.features', { returnObjects: true }),
       icon: Heart,
-      color: 'bg-green-50 border-green-200'
+      color: 'bg-green-50/80 border-green-400/60 shadow-green-100/50'
     },
     {
       type: 'rigid',
@@ -24,7 +26,7 @@ const ContactLenses = () => {
       subtitle: t('contactLenses.types.rigid.subtitle'),
       features: t('contactLenses.types.rigid.features', { returnObjects: true }),
       icon: Shield,
-      color: 'bg-blue-50 border-blue-200'
+      color: 'bg-blue-50/80 border-blue-400/60 shadow-blue-100/50'
     },
     {
       type: 'multifocal',
@@ -32,31 +34,31 @@ const ContactLenses = () => {
       subtitle: t('contactLenses.types.multifocal.subtitle'),
       features: t('contactLenses.types.multifocal.features', { returnObjects: true }),
       icon: Zap,
-      color: 'bg-purple-50 border-purple-200'
+      color: 'bg-cyan-50/80 border-cyan-400/60 shadow-cyan-100/50'
     }
   ];
 
   const brands = [
     {
       name: 'Acuvue',
-      description: t('contactLenses.brands.acuvue.description'),
+      description: t('contactLenses.brand_details.acuvue.description'),
       image: '/img/acuvue2.jpeg',
-      features: t('contactLenses.brands.acuvue.features', { returnObjects: true }),
-      specialty: t('contactLenses.brands.acuvue.specialty')
+      features: t('contactLenses.brand_details.acuvue.features', { returnObjects: true }),
+      specialty: t('contactLenses.brand_details.acuvue.specialty')
     },
     {
       name: 'Sólotica',
-      description: t('contactLenses.brands.solotica.description'),
+      description: t('contactLenses.brand_details.solotica.description'),
       image: '/img/solotica-hidrocor.jpeg',
-      features: t('contactLenses.brands.solotica.features', { returnObjects: true }),
-      specialty: t('contactLenses.brands.solotica.specialty')
+      features: t('contactLenses.brand_details.solotica.features', { returnObjects: true }),
+      specialty: t('contactLenses.brand_details.solotica.specialty')
     },
     {
       name: 'Bioview',
-      description: t('contactLenses.brands.bioview.description'),
+      description: t('contactLenses.brand_details.bioview.description'),
       image: '/img/bivoview.png',
-      features: t('contactLenses.brands.bioview.features', { returnObjects: true }),
-      specialty: t('contactLenses.brands.bioview.specialty')
+      features: t('contactLenses.brand_details.bioview.features', { returnObjects: true }),
+      specialty: t('contactLenses.brand_details.bioview.specialty')
     }
   ];
 
@@ -69,8 +71,14 @@ const ContactLenses = () => {
 
 
   return (
-    <section id="lentes-de-contato" className="bg-gradient-to-b from-white via-blue-50/30 to-white py-16 lg:py-24">
-      <div className="container mx-auto px-4 md:px-6">
+    <section id="lentes-de-contato" className="relative bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30 py-16 lg:py-24 overflow-hidden">
+      {/* 3D Background Effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/60 via-cyan-50/40 to-teal-50/20"></div>
+      <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-gradient-radial from-blue-100/30 via-transparent to-transparent rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-indigo-100/20 via-transparent to-transparent rounded-full blur-3xl"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-gradient-conic from-blue-50/10 via-cyan-50/10 to-teal-50/10 rounded-full blur-2xl"></div>
+
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Título principal da seção */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -126,10 +134,10 @@ const ContactLenses = () => {
           >
             <div className="relative group">
               {/* Background gradient */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-300"></div>
 
               {/* Custom SVG Hero Image */}
-              <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-4 border border-white/60 shadow-2xl">
+              <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-4 border border-slate-200/80 shadow-2xl">
                 <ContactLensesHeroImage
                   alt={t('contactLenses.main_title')}
                   className="rounded-2xl w-full max-w-2xl h-auto shadow-lg"
@@ -139,8 +147,8 @@ const ContactLenses = () => {
                 <div className="absolute -top-6 -right-6 w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center animate-float">
                   <Eye className="w-6 h-6 text-blue-600" />
                 </div>
-                <div className="absolute -bottom-6 -left-6 w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center animate-float-delayed">
-                  <Sparkles className="w-5 h-5 text-purple-600" />
+                <div className="absolute -bottom-6 -left-6 w-10 h-10 bg-cyan-500/20 rounded-full flex items-center justify-center animate-float-delayed">
+                  <Sparkles className="w-5 h-5 text-cyan-600" />
                 </div>
                 <div className="absolute top-1/2 -right-8 w-8 h-8 bg-green-500/20 rounded-full animate-pulse"></div>
               </div>
@@ -158,7 +166,7 @@ const ContactLenses = () => {
                 </div>
                 <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
                 <div className="flex items-center gap-1 text-sm text-gray-600">
-                  <Users className="w-4 h-4 text-purple-600" />
+                  <Users className="w-4 h-4 text-cyan-600" />
                   <span className="font-medium">1000+ clientes</span>
                 </div>
               </div>
@@ -173,7 +181,7 @@ const ContactLenses = () => {
             transition={{ delay: 0.2 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
           >
-            <Button size="xl" variant="medical" className="w-full sm:w-auto gap-2">
+            <Button size="xl" variant="medical" className="w-full sm:w-auto gap-2" onClick={() => navigate('/contato')}>
               <Eye className="h-5 w-5" />
               {t('contactLenses.schedule_button')}
             </Button>
@@ -194,15 +202,14 @@ const ContactLenses = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-4xl mx-auto"
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
           >
             {Object.entries(trustBadges).map(([key, value], index) => {
               const icons = {
                 experience: Clock,
                 patients: Users,
                 safety: Shield,
-                brands: Award,
-                environment: Leaf
+                brands: Award
               };
               const Icon = icons[key] || Shield;
 
@@ -245,7 +252,7 @@ const ContactLenses = () => {
                 <div className="relative h-48 overflow-hidden">
                   <img loading="lazy" decoding="async"
                     src={brand.image}
-                    alt={`Lentes ${brand.name}`}
+                    alt={t('contactLenses.brand_logo_alt', 'Logo da marca {{brandName}} - Lentes de contato de qualidade', { brandName: brand.name })}
                     sizes="(min-width: 1024px) 33vw, 100vw"
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                   />
@@ -342,32 +349,37 @@ const ContactLenses = () => {
               return (
                 <motion.div
                   key={lens.type}
-                  className={`p-8 h-full rounded-3xl border-2 ${lens.color} hover:shadow-lg transition-all duration-300`}
+                  className={`p-8 h-full rounded-3xl border-2 ${lens.color} backdrop-blur-sm hover:shadow-xl hover:shadow-${lens.color.split('shadow-')[1]} hover:-translate-y-1 transition-all duration-300 relative overflow-hidden`}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <div className="text-center mb-6">
-                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-                      <Icon className="h-6 w-6 text-blue-600" />
-                    </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">
-                      {lens.title}
-                    </h3>
-                    <p className="text-sm text-slate-600 font-medium">
-                      {lens.subtitle}
-                    </p>
-                  </div>
+                  {/* 3D Card Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/5 pointer-events-none"></div>
 
-                  <ul className="space-y-3">
-                    {Array.isArray(lens.features) && lens.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
-                        <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-slate-700 leading-relaxed">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="relative z-10">
+                    <div className="text-center mb-6">
+                      <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg border border-slate-300/80">
+                        <Icon className="h-6 w-6 text-blue-600" />
+                      </div>
+                      <h3 className="text-xl font-bold text-slate-900 mb-2">
+                        {lens.title}
+                      </h3>
+                      <p className="text-sm text-slate-600 font-medium">
+                        {lens.subtitle}
+                      </p>
+                    </div>
+
+                    <ul className="space-y-3">
+                      {Array.isArray(lens.features) && lens.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-3">
+                          <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                          <span className="text-sm text-slate-700 leading-relaxed">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </motion.div>
               );
             })}

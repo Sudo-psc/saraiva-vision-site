@@ -6,36 +6,28 @@ import { Calendar, ArrowRight, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
+import { fetchPosts as fetchWPPosts } from '@/lib/wordpress';
 
-const Blog = ({ wordpressUrl }) => {
+const Blog = () => {
   const { t, i18n } = useTranslation();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!wordpressUrl) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchPosts = async () => {
+    let cancelled = false;
+    (async () => {
       try {
-        const response = await fetch(`${wordpressUrl}/wp-json/wp/v2/posts?per_page=3&_embed`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setPosts(data);
-      } catch (error) {
-        setError(error.message);
+        const data = await fetchWPPosts({ per_page: 3, _embed: true });
+        if (!cancelled) setPosts(data);
+      } catch (err) {
+        if (!cancelled) setError(err.message || 'Failed to load posts');
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
-    };
-
-    fetchPosts();
-  }, [wordpressUrl]);
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   const getDateLocale = () => {
     return i18n.language === 'pt' ? ptBR : enUS;
@@ -50,7 +42,7 @@ const Blog = ({ wordpressUrl }) => {
       );
     }
 
-    if (error || !wordpressUrl) {
+    if (error) {
       return (
         <div className="text-center p-8 bg-yellow-50 border border-yellow-200 rounded-2xl">
           <h3 className="text-xl font-semibold text-yellow-800">{t('blog.placeholder_title')}</h3>
@@ -75,13 +67,15 @@ const Blog = ({ wordpressUrl }) => {
                 loading="lazy"
                 decoding="async"
                 src={post._embedded?.['wp:featuredmedia']?.[0]?.source_url || 'https://placehold.co/600x400/e2e8f0/64748b?text=Image'}
-                alt={post.title.rendered}
+                alt={post._embedded?.['wp:featuredmedia']?.[0]?.alt_text ||
+                  t('ui.alt.blog_post', 'Imagem ilustrativa do artigo') + ': ' +
+                  (post.title?.rendered || '').replace(/<[^>]+>/g, '')}
                 sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                 className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
               />
             </Link>
             <div className="p-6 flex flex-col flex-grow">
-              <div className="flex items-center text-sm text-gray-500 mb-3">
+              <div className="flex items-center text-sm text-gray-700 mb-3">
                 <Calendar className="w-4 h-4 mr-2" />
                 <span>{format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })}</span>
               </div>

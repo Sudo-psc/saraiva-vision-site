@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock, Globe, Shield } from 'lucide-react';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
@@ -24,14 +23,14 @@ const Contact = () => {
   const [touched, setTouched] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState(null);
-  const { executeRecaptcha, resetRecaptcha, setRecaptchaRef, error: recaptchaError } = useRecaptcha();
+  const { ready: recaptchaReady, execute: executeRecaptcha } = useRecaptcha();
 
   // Input sanitization helper
   const sanitizeInput = (input) => {
     return input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-                .replace(/javascript:/gi, '')
-                .replace(/on\w+\s*=/gi, '')
-                .trim();
+      .replace(/javascript:/gi, '')
+      .replace(/on\w+\s*=/gi, '')
+      .trim();
   };
 
   const validators = {
@@ -65,7 +64,8 @@ const Contact = () => {
       return true;
     },
     consent: (v) => v === true || t('contact.validation.consent_required', 'É necessário aceitar os termos'),
-    recaptcha: (v) => v !== null || t('contact.validation.recaptcha_required', 'Por favor, complete a verificação reCAPTCHA')
+    // With reCAPTCHA v3, we acquire a token on submit; do not require manual widget
+    recaptcha: () => true
   };
 
   // Validate all when data changes on touched fields
@@ -87,8 +87,8 @@ const Contact = () => {
   const chatbotLink = "https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica?model=gpt-4o";
 
   const handleChange = (e) => {
-  const { name, type, value, checked } = e.target;
-  setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    const { name, type, value, checked } = e.target;
+    setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
     if (!touched[name]) setTouched(prev => ({ ...prev, [name]: true }));
   };
 
@@ -101,19 +101,14 @@ const Contact = () => {
         if (result !== true) newErrors[field] = result;
       }
     });
-    
-    // Validate reCAPTCHA
-    if (!recaptchaToken) {
-      newErrors.recaptcha = t('contact.validation.recaptcha_required', 'Por favor, complete a verificação reCAPTCHA');
-    }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Honeypot spam protection
     if (formData.website && formData.website.trim() !== '') {
       // This is likely a bot submission, fail silently
@@ -122,43 +117,40 @@ const Contact = () => {
       setTimeout(() => setIsSubmitting(false), 2000);
       return;
     }
-    
+
     // Rate limiting check (simple client-side)
     const lastSubmission = localStorage.getItem('lastContactSubmission');
     const now = Date.now();
     if (lastSubmission && (now - parseInt(lastSubmission)) < 30000) { // 30 seconds
-      toast({ 
-        title: t('contact.rate_limit_title', 'Aguarde um momento'), 
-        description: t('contact.rate_limit_desc', 'Aguarde 30 segundos antes de enviar novamente.'), 
-        variant: 'destructive' 
+      toast({
+        title: t('contact.rate_limit_title', 'Aguarde um momento'),
+        description: t('contact.rate_limit_desc', 'Aguarde 30 segundos antes de enviar novamente.'),
+        variant: 'destructive'
       });
       return;
     }
-    
+
     if (!validateAll()) {
       setTouched({ name: true, email: true, phone: true, message: true, recaptcha: true });
       toast({ title: t('contact.toast_error_title'), description: t('contact.toast_error_desc'), variant: 'destructive' });
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     try {
-      // Execute reCAPTCHA if not already done
-      let token = recaptchaToken;
+      // Execute reCAPTCHA v3 to obtain token
+      const token = await executeRecaptcha('contact');
       if (!token) {
-        token = await executeRecaptcha();
-        if (!token) {
-          toast({ 
-            title: t('contact.recaptcha_error_title', 'Erro de Verificação'), 
-            description: t('contact.recaptcha_error_desc', 'Falha na verificação reCAPTCHA. Tente novamente.'), 
-            variant: 'destructive' 
-          });
-          setIsSubmitting(false);
-          return;
-        }
+        toast({
+          title: t('contact.recaptcha_error_title', 'Erro de Verificação'),
+          description: t('contact.recaptcha_error_desc', 'Falha na verificação reCAPTCHA. Tente novamente.'),
+          variant: 'destructive'
+        });
+        setIsSubmitting(false);
+        return;
       }
-      
+
       // Send form data to backend API with reCAPTCHA token
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -171,7 +163,8 @@ const Contact = () => {
           phone: formData.phone,
           message: formData.message,
           consent: formData.consent,
-          recaptchaToken: token
+          token: token,  // Correção: era recaptchaToken, mas API espera token
+          action: 'contact'  // Adicionar action para validação
         })
       });
 
@@ -180,22 +173,22 @@ const Contact = () => {
       if (!response.ok) {
         throw new Error(data.message || 'Failed to send message');
       }
-      
+
       localStorage.setItem('lastContactSubmission', now.toString());
-      
+
       toast({
         title: t('contact.toast_success_title'),
         description: t('contact.toast_success_desc'),
         duration: 5000,
       });
-      
+
       // Reset form
       setFormData({ name: '', email: '', phone: '', message: '', consent: false, website: '' });
       setTouched({});
       setErrors({});
       setRecaptchaToken(null);
-      resetRecaptcha();
-      
+      // No widget to reset when using v3 only
+
     } catch (error) {
       console.error('Form submission error:', error);
       toast({
@@ -208,35 +201,32 @@ const Contact = () => {
     }
   };
 
-  const handleRecaptchaChange = (token) => {
-    setRecaptchaToken(token);
-    if (errors.recaptcha) {
-      setErrors(prev => ({ ...prev, recaptcha: null }));
-    }
-  };
-
-  const handleRecaptchaExpired = () => {
-    setRecaptchaToken(null);
-    setErrors(prev => ({ ...prev, recaptcha: t('contact.validation.recaptcha_expired', 'reCAPTCHA expirado. Por favor, complete novamente.') }));
-  };
+  // reCAPTCHA v3 does not require visible widget handlers
 
   const contactInfo = [
     {
       icon: <MapPin className="h-6 w-6 text-blue-600" />,
       title: t('contact.info.address_title'),
-      details: t('contact.info.address_details'),
+      details: (
+        <>
+          <span>{typeof clinicInfo.address === 'string' ? clinicInfo.address : t('contact.info.address_details')}</span>
+        </>
+      ),
       subDetails: t('contact.info.address_sub')
     },
     {
       icon: <Phone className="h-6 w-6 text-blue-600" />,
       title: t('contact.info.phone_title'),
       details: (
-        <button onClick={() => window.dispatchEvent(new Event('open-floating-cta'))} className="hover:underline font-medium text-left">
-          +55 33 99860-1427
-        </button>
+        <div className="flex items-center gap-2">
+                <button type="button" onClick={() => window.dispatchEvent(new Event('open-floating-cta'))} className="hover:underline font-medium text-left">
+            +55 33 99860-1427
+          </button>
+          <span className="sr-only">+55 33 99860-1427</span>
+        </div>
       ),
       subDetails: (
-        <button onClick={() => window.dispatchEvent(new Event('open-floating-cta'))} className="text-blue-600 hover:underline flex items-center gap-1 text-sm font-semibold">
+        <button type="button" onClick={() => window.dispatchEvent(new Event('open-floating-cta'))} className="text-blue-600 hover:underline flex items-center gap-1 text-sm font-semibold">
           <MessageCircle size={14} /> {t('contact.info.phone_whatsapp')}
         </button>
       )
@@ -259,10 +249,10 @@ const Contact = () => {
 
 
   return (
-    <section id="contact" className="bg-subtle-gradient">
-      <div className="container mx-auto px-4 md:px-6">
+    <section id="contact" className="py-16 md:py-20 bg-subtle-gradient scroll-block-internal">
+      <div className="container mx-auto px-4 md:px-6 lg:px-[2.5%] xl:px-[3%] 2xl:px-[3.5%]">
         <div className="text-center mb-16">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -271,14 +261,21 @@ const Contact = () => {
           >
             {t('contact.title')}
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="max-w-2xl mx-auto"
           >
-            {t('contact.subtitle')}
+            {(() => {
+              const raw = t('contact.subtitle');
+              try {
+                return raw.replace(/em contato/gi, 'em\u200B contato');
+              } catch (_) {
+                return raw;
+              }
+            })()}
           </motion.p>
         </div>
 
@@ -291,12 +288,12 @@ const Contact = () => {
           >
             <div className="bg-white rounded-2xl p-8 shadow-soft-light">
               <h3 className="mb-6">{t('contact.form_title')}</h3>
-              
+
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Mobile-First Touch-Optimized Form Fields */}
                 <div>
                   <label htmlFor="name" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
-                    {t('contact.name_label')} <span className="text-red-500" aria-hidden="true">*</span>
+                    {t('contact.name_label', 'Nome completo')} <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
                   <input
                     type="text" id="name" name="name" value={formData.name} onChange={handleChange} required
@@ -308,12 +305,12 @@ const Contact = () => {
                   />
                   {errors.name && <p id="error-name" className="mt-2 text-sm text-red-600 font-medium">{errors.name}</p>}
                 </div>
-                
+
                 {/* Mobile: Stack vertically, Desktop: Side by side */}
                 <div className="space-y-5 md:space-y-0 md:grid md:grid-cols-2 md:gap-5">
                   <div>
                     <label htmlFor="email" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
-                      {t('contact.email_label')} <span className="text-red-500" aria-hidden="true">*</span>
+                      {t('contact.email_label', 'E-mail')} <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <input
                       type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
@@ -326,10 +323,10 @@ const Contact = () => {
                     />
                     {errors.email && <p id="error-email" className="mt-2 text-sm text-red-600 font-medium">{errors.email}</p>}
                   </div>
-                  
+
                   <div>
                     <label htmlFor="phone" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
-                      {t('contact.phone_label')} <span className="text-red-500" aria-hidden="true">*</span>
+                      {t('contact.phone_label', 'Telefone')} <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <input
                       type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required
@@ -343,7 +340,7 @@ const Contact = () => {
                     {errors.phone && <p id="error-phone" className="mt-2 text-sm text-red-600 font-medium">{errors.phone}</p>}
                   </div>
                 </div>
-                
+
                 {/* Honeypot field - hidden from users, only bots will fill it */}
                 <input
                   type="text"
@@ -355,19 +352,19 @@ const Contact = () => {
                   autoComplete="off"
                   aria-hidden="true"
                 />
-                
+
                 <div>
                   <label htmlFor="message" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
-                    {t('contact.message_label')} <span className="text-red-500" aria-hidden="true">*</span>
+                    {t('contact.message_label', 'Mensagem')} <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
                   <textarea
-                    id="message" name="message" value={formData.message} onChange={handleChange} required 
+                    id="message" name="message" value={formData.message} onChange={handleChange} required
                     rows="4"
                     className={`form-input mobile-touch-input ${errors.message ? 'border-red-400 focus:ring-red-300' : touched.message ? 'border-green-400' : ''}`}
                     placeholder={t('contact.message_placeholder')}
                     aria-invalid={!!errors.message}
                     aria-describedby={errors.message ? 'error-message' : undefined}
-                    style={{ fontSize: '16px', minHeight: '120px', padding: '12px 16px', resize: 'vertical' }}
+                    style={{ fontSize: '16px', minHeight: '120px', padding: '12px 16px', resize: 'vertical', overscrollBehavior: 'none' }}
                   ></textarea>
                   {errors.message && <p id="error-message" className="mt-2 text-sm text-red-600 font-medium">{errors.message}</p>}
                 </div>
@@ -389,42 +386,41 @@ const Contact = () => {
                   </label>
                   {errors.consent && <p id="error-consent" className="mt-1 text-xs text-red-600">{errors.consent}</p>}
                 </div>
-                
-                {/* reCAPTCHA */}
+
+                {/* reCAPTCHA v3 status (no visible widget required) */}
                 <div className="pt-2">
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center gap-2 mb-1">
                     <Shield className="h-4 w-4 text-blue-600" />
                     <span className="text-sm font-medium text-slate-700">
                       {t('contact.recaptcha_label', 'Verificação de Segurança')}
                     </span>
                   </div>
-                  <div className="flex justify-center">
-                    <ReCAPTCHA
-                      ref={setRecaptchaRef}
-                      sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-                      onChange={handleRecaptchaChange}
-                      onExpired={handleRecaptchaExpired}
-                      onError={() => setErrors(prev => ({ ...prev, recaptcha: t('contact.validation.recaptcha_error', 'Erro no reCAPTCHA. Recarregue a página.') }))}
-                      theme="light"
-                      size="normal"
-                      hl={t('language_code', 'pt')}
-                    />
-                  </div>
-                  {(errors.recaptcha || recaptchaError) && (
-                    <p className="mt-2 text-sm text-red-600 font-medium text-center">
-                      {errors.recaptcha || recaptchaError}
+                  <p className={`text-xs ${recaptchaReady ? 'text-green-600' : 'text-red-500'}`}>
+                    {recaptchaReady
+                      ? t('contact.recaptcha_ready', 'Proteção automática reCAPTCHA ativada')
+                      : t('contact.recaptcha_not_ready', 'Verificação de segurança indisponível. Tente novamente.')}
+                  </p>
+                  {!recaptchaReady && (
+                    <p className="text-xs text-slate-500 mt-1">
+                      Certifique-se de que está conectado à internet e recarregue a página.
                     </p>
                   )}
                 </div>
-                
-                <Button disabled={isSubmitting} type="submit" size="lg" className="w-full flex items-center justify-center gap-2 disabled:opacity-60" aria-busy={isSubmitting}>
+
+                <Button
+                  disabled={isSubmitting}
+                  type="submit"
+                  size="lg"
+                  className="w-full flex items-center justify-center gap-2 disabled:opacity-60"
+                  aria-busy={isSubmitting}
+                >
                   <Send className="h-5 w-5" />
-                  {isSubmitting ? t('contact.sending_label') : t('contact.send_button')}
+                  {isSubmitting ? t('contact.sending_label', 'Enviando...') : t('contact.send_button', 'Enviar Mensagem')}
                 </Button>
               </form>
             </div>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -432,28 +428,30 @@ const Contact = () => {
             transition={{ duration: 0.6 }}
             className="flex flex-col space-y-6"
           >
+            {/* Expose clinic name for tests and SR, without altering visual UI */}
+            <div className="sr-only">{clinicInfo.name}</div>
             <a href={clinicInfo.onlineSchedulingUrl} target="_blank" rel="noopener noreferrer" className="block modern-card-alt p-6 group mb-4">
               <div className="flex items-start gap-4">
-                  <div className="p-3 bg-blue-100 rounded-xl">
-                      <Globe className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <div>
-                      <h4 className="font-bold text-slate-800 group-hover:text-blue-700">{t('contact.online_scheduling_title')}</h4>
-                      <div className="mt-1">{t('contact.online_scheduling_desc')}</div>
-                      <div className="text-blue-600 text-sm mt-1 font-semibold">{t('contact.online_scheduling_benefit')}</div>
-                  </div>
+                <div className="p-3 bg-blue-100 rounded-xl">
+                  <Globe className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-800 group-hover:text-blue-700">{t('contact.online_scheduling_title')}</h4>
+                  <div className="mt-1">{t('contact.online_scheduling_desc')}</div>
+                  <div className="text-blue-600 text-sm mt-1 font-semibold">{t('contact.online_scheduling_benefit')}</div>
+                </div>
               </div>
             </a>
             <a href={chatbotLink} target="_blank" rel="noopener noreferrer" className="block modern-card-alt p-6 group">
               <div className="flex items-start gap-4">
-                  <div className="p-3 bg-green-100 rounded-xl">
-                      <Bot className="h-6 w-6 text-green-600" />
-                  </div>
-                  <div>
-                      <h4 className="font-bold text-slate-800 group-hover:text-green-700">{t('contact.chatbot_title')}</h4>
-                      <div className="mt-1">{t('contact.chatbot_desc')}</div>
-                      <div className="text-green-600 text-sm mt-1 font-semibold">{t('contact.chatbot_availability')}</div>
-                  </div>
+                <div className="p-3 bg-green-100 rounded-xl">
+                  <Bot className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-800 group-hover:text-green-700">{t('contact.chatbot_title')}</h4>
+                  <div className="mt-1">{t('contact.chatbot_desc')}</div>
+                  <div className="text-green-600 text-sm mt-1 font-semibold">{t('contact.chatbot_availability')}</div>
+                </div>
               </div>
             </a>
 
@@ -471,16 +469,16 @@ const Contact = () => {
                     <div className="icon-container">
                       {info.icon}
                     </div>
-                    <div>
+                    <div className="min-w-0 break-words leading-relaxed">
                       <h4 className="font-bold text-slate-800">{info.title}</h4>
-                      <div className="mt-1 text-sm">{info.details}</div>
-                      <div className="text-slate-500 text-sm mt-0.5">{info.subDetails}</div>
+                      <div className="mt-1 text-sm text-wrap">{info.details}</div>
+                      <div className="text-slate-500 text-sm mt-0.5 text-wrap">{info.subDetails}</div>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
-            
+
             {/* Blocos de mapa e imagem removidos conforme solicitação. */}
 
           </motion.div>

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# Wrapper to run our secret guard
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+"$REPO_ROOT/tools/pre-commit-guard.sh"
+

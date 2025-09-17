@@ -5,6 +5,14 @@
 - **Tech Stack**: React + Vite + Tailwind CSS + i18next
 - **Language**: Bilingual (Portuguese/English) with i18next
 
+## Problemas de Scroll Corrigidos ✅ RESOLVIDO
+- **Dupla Rolagem Desktop**: Corrigido removendo overflow-x: hidden !important agressivo
+- **CSS Responsivo**: Separadas regras html/body para melhor controle
+- **Elementos Decorativos**: Reduzidos tamanhos w-[40rem] → w-80 com viewport constraints
+- **Viewport Safety**: Adicionado max-w-[50vw] max-h-[50vh] para conter elementos
+- **Scroll Management**: overflow-y: auto + position: relative para contexto adequado
+- **Performance**: Mantido design visual sem comprometer funcionalidade
+
 ## Deploy e Infraestrutura ✅ ATUALIZADO
 - **Modo Deploy**: Local nginx + Vite (migrado do Docker)  
 - **HTTPS/SSL**: ✅ Configurado com Let's Encrypt (válido até Nov 2025)

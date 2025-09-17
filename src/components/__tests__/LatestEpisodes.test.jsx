@@ -1,44 +1,52 @@
+import React from 'react';
+import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
-import LatestEpisodes from '../LatestEpisodes';
+import { MemoryRouter } from 'react-router-dom';
+import LatestEpisodes from '../../components/LatestEpisodes';
 
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key) => {
-      const translations = {
-        podcast: 'Podcast',
-        'podcast.title': 'Saraiva Vision Podcast',
-        'podcast.subtitle': 'Eye health in focus',
-        'podcast.episodes.glaucoma.title': 'Glaucoma Episode',
-        'podcast.episodes.catarata.title': 'Catarata Episode',
-        'podcast.episodes.ptergio.title': 'Pterygium Episode',
-        'podcast.more_episodes': 'Listen to more podcasts'
-      };
-      return translations[key] || key;
-    }
-  })
-}));
+describe('LatestEpisodes (mobile-first + design)', () => {
+  const renderComponent = () =>
+    render(
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <LatestEpisodes />
+      </MemoryRouter>
+    );
 
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }) => <div {...props}>{children}</div>,
-    h2: ({ children, ...props }) => <h2 {...props}>{children}</h2>,
-    p: ({ children, ...props }) => <p {...props}>{children}</p>
-  }
-}));
+  it('renders the podcast header text', () => {
+    renderComponent();
+    // Updated to match new featured episode title
+    expect(screen.getByText('Podcast em Destaque')).toBeInTheDocument();
+  });
 
-vi.mock('../AudioPlayer', () => ({
-  default: ({ episode }) => <div data-testid="audio-player">{episode.title}</div>
-}));
+  it('displays a single featured episode instead of carousel', () => {
+    const { container } = renderComponent();
+    // Should no longer have the scroll carousel
+    const scroll = container.querySelector('[data-testid="podcast-scroll"]');
+    expect(scroll).toBeFalsy();
 
-describe('LatestEpisodes', () => {
-  it('renders mini playlist with episodes', () => {
-    render(<LatestEpisodes />);
+    // Should have a single featured episode section
+    const featuredSection = container.querySelector('.max-w-4xl');
+    expect(featuredSection).toBeTruthy();
+  });
 
-    const players = screen.getAllByTestId('audio-player');
-    expect(players).toHaveLength(3);
-    expect(players[0]).toHaveTextContent('Glaucoma Episode');
-    expect(players[1]).toHaveTextContent('Catarata Episode');
+  it('applies glassmorphism and 3D card styles to the featured episode', () => {
+    const { container } = renderComponent();
+    const card3d = container.querySelector('.card-3d');
+    expect(card3d).toBeTruthy();
+    // Ensure glass variant applied
+    const glass = container.querySelector('.glass-blue');
+    expect(glass).toBeTruthy();
+  });
+
+  it('does not include Spotify embed on homepage', () => {
+    const { container } = renderComponent();
+    const spotifyEmbed = container.querySelector('iframe[src*="spotify.com/embed"]');
+    expect(spotifyEmbed).toBeFalsy();
+  });
+
+  it('links to the full podcast page', () => {
+    renderComponent();
+    const link = screen.getAllByRole('link').find(a => a.getAttribute('href') === '/podcast');
+    expect(link).toBeTruthy();
   });
 });
-

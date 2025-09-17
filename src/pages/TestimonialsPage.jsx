@@ -12,7 +12,7 @@ const TestimonialsPage = () => {
     <div className="min-h-screen flex flex-col bg-white">
       <SEOHead {...seoData} />
       <Navbar />
-      <main className="flex-1 pt-28">
+      <main className="flex-1 pt-28 mx-[7%]">
         <Testimonials />
       </main>
       <Footer />

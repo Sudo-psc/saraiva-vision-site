@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Badge Background -->
+  <circle cx="100" cy="100" r="95" fill="#ffffff" stroke="#059669" stroke-width="4"/>
+  <circle cx="100" cy="100" r="85" fill="#f0fdf4" stroke="#10b981" stroke-width="2"/>
+
+  <!-- Accessibility Symbol -->
+  <g transform="translate(100,70)">
+    <!-- Person icon -->
+    <circle cx="0" cy="-15" r="8" fill="#059669" stroke="#047857" stroke-width="1"/>
+    <!-- Body -->
+    <rect x="-8" y="-5" width="16" height="20" rx="8" fill="#059669"/>
+    <!-- Arms spread wide -->
+    <rect x="-15" y="-2" width="12" height="4" rx="2" fill="#059669"/>
+    <rect x="3" y="-2" width="12" height="4" rx="2" fill="#059669"/>
+    <!-- Legs -->
+    <rect x="-6" y="12" width="4" height="12" rx="2" fill="#059669"/>
+    <rect x="2" y="12" width="4" height="12" rx="2" fill="#059669"/>
+  </g>
+
+  <!-- Accessibility Text -->
+  <text x="100" y="120" text-anchor="middle" fill="#059669" font-family="Arial, sans-serif" font-size="14" font-weight="bold">ACESSÍVEL</text>
+  <text x="100" y="140" text-anchor="middle" fill="#047857" font-family="Arial, sans-serif" font-size="10">WCAG 2.1 AA</text>
+  <text x="100" y="155" text-anchor="middle" fill="#047857" font-family="Arial, sans-serif" font-size="10">COMPLIANT</text>
+
+  <!-- Certification Text -->
+  <text x="100" y="175" text-anchor="middle" fill="#059669" font-family="Arial, sans-serif" font-size="12" font-weight="bold">CERTIFICADO</text>
+
+  <!-- Decorative checkmark -->
+  <g transform="translate(70,160)">
+    <circle cx="0" cy="0" r="8" fill="#10b981"/>
+    <path d="M-3,0 L-1,2 L3,-2" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(130,160)">
+    <circle cx="0" cy="0" r="8" fill="#10b981"/>
+    <path d="M-3,0 L-1,2 L3,-2" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>
