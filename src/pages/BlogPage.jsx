@@ -39,11 +39,11 @@ const BlogPage = () => {
         console.log('[BlogPage] API_BASE_URL:', import.meta.env.VITE_WORDPRESS_API_URL);
 
         // Check if WordPress is available
-        const isConnected = await checkWordPressConnection();
-        console.log('[BlogPage] WordPress connection result:', isConnected);
-        setWordpressAvailable(isConnected);
+        const connectionResult = await checkWordPressConnection();
+        console.log('[BlogPage] WordPress connection result:', connectionResult);
+        setWordpressAvailable(connectionResult.isConnected);
 
-        if (!isConnected) {
+        if (!connectionResult.isConnected) {
           console.log('[BlogPage] WordPress not available, showing fallback');
           setLoading(false);
           return;
