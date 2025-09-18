@@ -1,35 +1,36 @@
-# Tasks: Complete Docker Containerization
+# Tasks: Docker Containerization Deployment
 
 **Input**: Design documents from `/specs/004-docker-containerization/`
-**Prerequisites**: plan.md (required), research.md, data-model.md, contracts/
+**Current State**: Partial containerization exists (frontend, API Dockerfiles; compose configs; missing WordPress, Nginx containers)
+**Prerequisites**: plan.md, research.md, data-model.md, contracts/, quickstart.md
 
 ## Execution Flow (main)
 ```
 1. Load plan.md from feature directory
-   → Extract: Node.js 18+, React 18, PHP 8.1+, Nginx 1.20+, Docker 20.10+
-   → Structure: web app (4 containers: frontend, api, wordpress, nginx)
+   → Extract: 4 containers (frontend, api, wordpress, nginx), Docker Compose, security hardening
 2. Load design documents:
-   → data-model.md: Extract 4 container entities → Dockerfile tasks
-   → contracts/: Health check contract → contract test tasks
-   → research.md: Extract Docker best practices → setup tasks
+   → data-model.md: Container entities, volumes, networks
+   → contracts/: Health check contracts, Dockerfile contracts, compose contracts
+   → research.md: Technical decisions and best practices
+   → quickstart.md: Validation scenarios and deployment workflows
 3. Generate tasks by category:
-   → Setup: Docker files, environment configuration
-   → Tests: health check contract tests, integration tests
-   → Core: Dockerfiles, Docker Compose configurations
-   → Integration: service communication, volume persistence
-   → Polish: security hardening, performance optimization, documentation
+   → Setup: Missing Dockerfiles, environment configuration, security validation
+   → Tests: Health checks, integration tests, E2E workflows
+   → Core: Complete WordPress container, Nginx container, SSL integration
+   → Integration: Service communication, volume mounting, networking
+   → Polish: Performance optimization, monitoring, documentation
 4. Apply task rules:
-   → Different containers = mark [P] for parallel
-   → Same Docker Compose file = sequential (no [P])
-   → Health check tests before Dockerfile implementation (TDD)
+   → Different files = mark [P] for parallel
+   → Same file = sequential (no [P])
+   → Tests before implementation (TDD)
 5. Number tasks sequentially (T001, T002...)
 6. Generate dependency graph
 7. Create parallel execution examples
 8. Validate task completeness:
-   → All containers have health check tests?
+   → All contracts have tests?
    → All containers have Dockerfiles?
-   → All services have integration tests?
-9. Return: SUCCESS (tasks ready for execution)
+   → All services have health checks?
+   → All integration scenarios covered?
 ```
 
 ## Format: `[ID] [P?] Description`
@@ -42,12 +43,12 @@
 - **Configuration**: docker-compose.dev.yml, docker-compose.prod.yml
 - **Documentation**: Updated CLAUDE.md, README updates
 
-## Phase 3.1: Setup
+## Phase 3.1: Setup & Missing Infrastructure
 
-- [ ] T001 Create Docker project structure with .dockerignore files
-- [ ] T002 [P] Create .dockerignore in repository root for common exclusions
-- [ ] T003 [P] Create .env.docker template with container-specific environment variables
-- [ ] T004 [P] Create scripts/docker-health-check.sh for container health validation
+- [ ] T001 Create missing WordPress Dockerfile following dockerfile-contract.md
+- [ ] T002 Create missing Nginx Dockerfile following dockerfile-contract.md
+- [ ] T003 [P] Create .dockerignore files for all containers (WordPress, Nginx)
+- [ ] T004 [P] Validate existing Dockerfiles against dockerfile-contract.md requirements
 
 ## Phase 3.2: Tests First (TDD) ⚠️ MUST COMPLETE BEFORE 3.3
 
@@ -67,29 +68,29 @@
 
 ## Phase 3.3: Core Implementation (ONLY after tests are failing)
 
-### Dockerfile Creation (One per container)
-- [ ] T013 [P] Frontend Dockerfile with multi-stage build (Node.js → Nginx) in Dockerfile.frontend
-- [ ] T014 [P] API Dockerfile with Node.js Alpine and non-root user in Dockerfile.api
-- [ ] T015 [P] WordPress Dockerfile with PHP-FPM and SQLite support in Dockerfile.wordpress
-- [ ] T016 [P] Nginx Dockerfile with custom configuration in Dockerfile.nginx
+### Complete Missing Dockerfiles
+- [ ] T013 Create WordPress Dockerfile with PHP-FPM and SQLite support in Dockerfile.wordpress
+- [ ] T014 Create Nginx Dockerfile with SSL support and reverse proxy in Dockerfile.nginx
+- [ ] T015 [P] Update existing frontend Dockerfile to meet contract requirements
+- [ ] T016 [P] Update existing API Dockerfile to meet contract requirements
 
 ### Container Health Check Implementation
-- [ ] T017 [P] Implement frontend health endpoint in src/utils/health.js
-- [ ] T018 [P] Implement API health endpoint enhancement in server.js
-- [ ] T019 [P] Implement WordPress health check script in wordpress-local/health-check.php
-- [ ] T020 [P] Implement Nginx health check configuration in nginx-configs/health.conf
+- [ ] T017 [P] Implement WordPress health check script in wordpress-local/health-check.php
+- [ ] T018 [P] Implement Nginx health check configuration in nginx-configs/health.conf
+- [ ] T019 [P] Enhance frontend health endpoint to meet contract specifications
+- [ ] T020 [P] Enhance API health endpoint to meet contract specifications
 
 ## Phase 3.4: Docker Compose Configuration
 
 ### Development Environment
-- [ ] T021 Create development Docker Compose in docker-compose.dev.yml
-- [ ] T022 Configure development volumes for hot reload in docker-compose.dev.yml
-- [ ] T023 Configure development networks and service dependencies in docker-compose.dev.yml
+- [ ] T021 Update docker-compose.dev.yml to include WordPress and Nginx services
+- [ ] T022 Configure development volumes for WordPress hot reload in docker-compose.dev.yml
+- [ ] T023 Validate development network configuration and service dependencies
 
 ### Production Environment
-- [ ] T024 Create production Docker Compose in docker-compose.prod.yml
+- [ ] T024 Update docker-compose.prod.yml with production optimization for all services
 - [ ] T025 Configure production volumes for data persistence in docker-compose.prod.yml
-- [ ] T026 Configure production SSL certificate mounting in docker-compose.prod.yml
+- [ ] T026 Validate production SSL certificate mounting in docker-compose.prod.yml
 
 ## Phase 3.5: Integration & Networking
 
@@ -167,7 +168,7 @@
 - Setup (T001-T004) before all other tasks
 - Contract tests (T005-T008) before Dockerfile implementation (T013-T016)
 - Health check tests before health check implementation (T017-T020)
-- Dockerfiles (T013-T016) before Docker Compose (T021-T026)
+- Missing Dockerfiles (T013-T014) before Docker Compose updates (T021-T026)
 - Docker Compose before integration testing (T027-T030)
 - Core implementation before security hardening (T035-T042)
 - Security before performance optimization (T043-T050)
@@ -175,13 +176,13 @@
 - Everything before documentation (T059-T066)
 
 ### Service-Specific Dependencies
-- T013 (Frontend Dockerfile) blocks T021 (dev compose) and T024 (prod compose)
-- T014 (API Dockerfile) blocks T028 (API config updates)
-- T015 (WordPress Dockerfile) blocks T031-T032 (WordPress volumes)
-- T016 (Nginx Dockerfile) blocks T029 (Nginx container config)
+- T013 (WordPress Dockerfile) blocks T021 (dev compose) and T024 (prod compose)
+- T014 (Nginx Dockerfile) blocks T025 (SSL configuration) and T029 (Nginx config)
+- T015-T016 (Existing Dockerfile updates) block T019-T020 (health endpoint enhancements)
+- T017-T018 (Health check scripts) block T027-T030 (service communication validation)
 
 ### Integration Dependencies
-- T021-T026 (Docker Compose) before T027-T030 (service communication)
+- T021-T026 (Docker Compose updates) before T027-T030 (service communication)
 - T027-T030 (networking) before T039-T042 (network security)
 - T031-T034 (volumes) before T051-T054 (deployment scripts)
 
@@ -195,20 +196,20 @@ Task: "Contract test WordPress health check in tests/contract/test_wordpress_hea
 Task: "Contract test Nginx health check in tests/contract/test_nginx_health.js"
 ```
 
-### Phase 3.3: Dockerfile Creation (Run Together)
+### Phase 3.3: Missing Dockerfile Creation (Run Together)
 ```
-Task: "Frontend Dockerfile with multi-stage build in Dockerfile.frontend"
-Task: "API Dockerfile with Node.js Alpine in Dockerfile.api"
-Task: "WordPress Dockerfile with PHP-FPM in Dockerfile.wordpress"
-Task: "Nginx Dockerfile with custom configuration in Dockerfile.nginx"
+Task: "Create WordPress Dockerfile with PHP-FPM and SQLite support in Dockerfile.wordpress"
+Task: "Create Nginx Dockerfile with SSL support and reverse proxy in Dockerfile.nginx"
+Task: "Update existing frontend Dockerfile to meet contract requirements"
+Task: "Update existing API Dockerfile to meet contract requirements"
 ```
 
 ### Phase 3.3: Health Check Implementation (Run Together)
 ```
-Task: "Implement frontend health endpoint in src/utils/health.js"
-Task: "Implement API health endpoint enhancement in server.js"
 Task: "Implement WordPress health check script in wordpress-local/health-check.php"
 Task: "Implement Nginx health check configuration in nginx-configs/health.conf"
+Task: "Enhance frontend health endpoint to meet contract specifications"
+Task: "Enhance API health endpoint to meet contract specifications"
 ```
 
 ### Phase 3.6: Security Hardening (Run Together)
@@ -230,21 +231,24 @@ Task: "Update troubleshooting documentation for container issues"
 ## Notes
 
 ### TDD Enforcement
-- All health check tests (T005-T008) MUST be written and MUST FAIL before implementing Dockerfiles (T013-T016)
+- All health check tests (T005-T008) MUST be written and MUST FAIL before implementing missing Dockerfiles (T013-T014)
 - All integration tests (T009-T012) MUST be written and MUST FAIL before implementing service communication (T027-T030)
 - Verify tests fail before implementing functionality
 - Commit after each task completion
 
-### Container-Specific Considerations
+### Current State Considerations
+- Frontend and API Dockerfiles already exist but need contract compliance validation
+- Docker Compose configurations exist but need WordPress and Nginx service integration
+- Focus on completing missing containers and validating existing implementations
 - [P] tasks operate on different containers or independent configuration files
-- Docker Compose tasks are sequential as they modify the same files
+- Docker Compose update tasks are sequential as they modify the same files
 - Security hardening is integrated throughout, not added as afterthought
 - Performance optimization comes after security to ensure optimal secure configuration
 
 ### File Path Specifications
-- All Dockerfile.* files in repository root
-- Docker Compose files in repository root
-- Container configuration in nginx-configs/, scripts/ directories
+- Dockerfile.* files in repository root (frontend, API exist; WordPress, Nginx missing)
+- Docker Compose files in repository root (exist but need service additions)
+- Container configuration in nginx-configs/, wordpress-local/, scripts/ directories
 - Tests follow standard structure in tests/contract/, tests/integration/
 - Documentation updates in existing files plus new Docker-specific guides
 
@@ -253,9 +257,10 @@ Task: "Update troubleshooting documentation for container issues"
 *GATE: Checked before considering tasks complete*
 
 - [x] All containers (4) have health check contract tests
-- [x] All containers (4) have Dockerfile implementation tasks
+- [x] Missing containers (WordPress, Nginx) have Dockerfile implementation tasks
+- [x] Existing containers (frontend, API) have validation and enhancement tasks
 - [x] All container communication paths have integration tests
-- [x] Both development and production Docker Compose configurations included
+- [x] Both development and production Docker Compose configurations need updates
 - [x] Security hardening tasks cover all containers
 - [x] Performance optimization includes all containers
 - [x] Documentation covers both development and production workflows

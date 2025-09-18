@@ -1,0 +1,17 @@
+<svg width="120" height="80" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="120" height="80" rx="8" fill="#f8fafc"/>
+  <rect x="4" y="4" width="112" height="72" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  
+  <!-- Contact Lens Icon -->
+  <circle cx="60" cy="35" r="12" fill="none" stroke="#16a34a" stroke-width="2"/>
+  <circle cx="60" cy="35" r="8" fill="none" stroke="#16a34a" stroke-width="1" opacity="0.6"/>
+  <circle cx="60" cy="35" r="4" fill="none" stroke="#16a34a" stroke-width="1" opacity="0.4"/>
+  
+  <!-- Text -->
+  <text x="60" y="55" text-anchor="middle" fill="#1e293b" font-family="Arial, sans-serif" font-size="10" font-weight="600">
+    Solótica
+  </text>
+  <text x="60" y="65" text-anchor="middle" fill="#64748b" font-family="Arial, sans-serif" font-size="6">
+    Lentes de Contato
+  </text>
+</svg>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Lentes</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .error { color: red; font-weight: bold; }
+        .success { color: green; font-weight: bold; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Debug - Página de Lentes</h1>
+    
+    <div class="test">
+        <h3>Teste 1: Acessar página lentes via fetch</h3>
+        <div id="fetch-result"></div>
+    </div>
+    
+    <div class="test">
+        <h3>Teste 2: Verificar JavaScript</h3>
+        <div id="js-result"></div>
+    </div>
+    
+    <div class="test">
+        <h3>Teste 3: Console errors</h3>
+        <div id="console-errors"></div>
+    </div>
+
+    <script>
+        // Test 1: Fetch lenses page
+        fetch('/lentes')
+            .then(response => response.text())
+            .then(html => {
+                const hasContent = html.includes('<div id="root">') && html.length > 1000;
+                const hasLoading = html.includes('loading...');
+                document.getElementById('fetch-result').innerHTML = 
+                    `<div class="${hasContent ? 'success' : 'error'}">
+                        Página carregou: ${hasContent ? 'SIM' : 'NÃO'}<br>
+                        Mostra loading: ${hasLoading ? 'SIM' : 'NÃO'}<br>
+                        Tamanho: ${html.length} chars
+                    </div>`;
+            })
+            .catch(err => {
+                document.getElementById('fetch-result').innerHTML = 
+                    `<div class="error">Erro: ${err.message}</div>`;
+            });
+
+        // Test 2: Check JavaScript loading
+        fetch('/src/main.jsx')
+            .then(response => response.text())
+            .then(js => {
+                const hasReact = js.includes('React');
+                const hasContactLenses = js.includes('ContactLenses');
+                document.getElementById('js-result').innerHTML = 
+                    `<div class="${hasReact ? 'success' : 'error'}">
+                        main.jsx carregou: ${hasReact ? 'SIM' : 'NÃO'}<br>
+                        Tem ContactLenses: ${hasContactLenses ? 'SIM' : 'NÃO'}<br>
+                        Tamanho: ${js.length} chars
+                    </div>`;
+            })
+            .catch(err => {
+                document.getElementById('js-result').innerHTML = 
+                    `<div class="error">Erro: ${err.message}</div>`;
+            });
+
+        // Test 3: Console errors monitoring
+        let errors = [];
+        
+        // Override console.error to capture errors
+        const originalError = console.error;
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            errors.push(args.join(' '));
+            updateErrorDisplay();
+        };
+
+        // Capture uncaught exceptions
+        window.addEventListener('error', function(e) {
+            errors.push(`Erro: ${e.message} em ${e.filename}:${e.lineno}`);
+            updateErrorDisplay();
+        });
+
+        function updateErrorDisplay() {
+            const div = document.getElementById('console-errors');
+            if (errors.length === 0) {
+                div.innerHTML = '<div class="success">Nenhum erro detectado</div>';
+            } else {
+                div.innerHTML = '<div class="error">Erros encontrados:</div><ul>' +
+                    errors.map(err => `<li>${err}</li>`).join('') + '</ul>';
+            }
+        }
+
+        // Initial display
+        updateErrorDisplay();
+
+        // Test navigation to lenses
+        setTimeout(() => {
+            const iframe = document.createElement('iframe');
+            iframe.src = '/lentes';
+            iframe.style.width = '100px';
+            iframe.style.height = '100px';
+            iframe.style.border = '1px solid #ccc';
+            iframe.onload = function() {
+                console.log('Iframe lentes carregado');
+            };
+            iframe.onerror = function(e) {
+                console.error('Erro ao carregar iframe lentes:', e);
+            };
+            document.body.appendChild(iframe);
+        }, 2000);
+    </script>
+</body>
+</html>

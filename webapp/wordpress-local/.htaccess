@@ -1,0 +1,33 @@
+# SaraivaVision Medical Clinic - WordPress .htaccess (Optimized)
+# Dr. Philipe Saraiva Cruz (CRM-MG 69.870)
+# Minimal configuration since router.php handles most routing
+
+RewriteEngine On
+RewriteBase /
+
+# Security - Block access to sensitive files
+<FilesMatch "^wp-config\.php$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^(wp-config\.php|\.htaccess)$">
+    Require all denied
+</FilesMatch>
+
+# Prevent directory listing
+Options -Indexes
+
+# CORS headers for API development (simplified)
+<IfModule mod_headers.c>
+    <FilesMatch "\.(php)$">
+        Header set Access-Control-Allow-Origin "http://localhost:3002"
+        Header set Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE"
+        Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+        Header set Access-Control-Allow-Credentials "true"
+    </FilesMatch>
+</IfModule>
+
+# WordPress pretty URLs fallback (only if not handled by router.php)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]

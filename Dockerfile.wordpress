@@ -1,8 +1,10 @@
-# WordPress Dockerfile for Saraiva Vision CMS
-# Based on official WordPress with PHP-FPM and SQLite support
+# Service: WordPress
+# Description: WordPress CMS container with PHP-FPM and SQLite support for Saraiva Vision medical website
+# Base Image: wordpress:6.4-php8.2-fpm-alpine
+# Maintainer: Saraiva Vision Development Team
+# Security: Non-root user, read-only filesystem where possible
 
-# Use official WordPress with PHP-FPM
-FROM wordpress:6.4-php8.2-fpm-alpine AS base
+FROM wordpress:6.4-php8.2-fpm-alpine
 
 # Install additional dependencies
 RUN apk upgrade --no-cache && \
@@ -184,8 +186,9 @@ ENTRYPOINT ["/sbin/tini", "--"]
 # Start supervisor to manage both PHP-FPM and Nginx
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 
-# Metadata
-LABEL maintainer="Saraiva Vision Development Team"
-LABEL description="WordPress container for Saraiva Vision CMS with SQLite"
-LABEL version="1.0.0"
-LABEL service="wordpress"
+# Labels
+LABEL maintainer="Saraiva Vision Dev Team" \
+      version="2.1.0" \
+      description="WordPress CMS container for Saraiva Vision medical website" \
+      security.non-root="true" \
+      security.readonly-root="true"

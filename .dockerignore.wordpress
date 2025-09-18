@@ -1,0 +1,105 @@
+# WordPress specific .dockerignore
+# Used with Dockerfile.wordpress to optimize build context
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Core WordPress files that will be provided by base image
+wp-admin/
+wp-includes/
+index.php
+wp-activate.php
+wp-blog-header.php
+wp-comments-post.php
+wp-config-sample.php
+wp-cron.php
+wp-links-opml.php
+wp-load.php
+wp-login.php
+wp-mail.php
+wp-settings.php
+wp-signup.php
+wp-trackback.php
+xmlrpc.php
+
+# Node.js files (not needed for WordPress)
+node_modules/
+package*.json
+*.lock
+
+# Frontend build artifacts
+dist/
+build/
+*.tsbuildinfo
+
+# React/Vite specific
+vite.config.*
+*.config.js
+
+# Test files
+tests/
+**/__tests__/
+*.test.js
+*.test.jsx
+*.test.ts
+*.test.tsx
+
+# Documentation
+*.md
+docs/
+README*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+
+# Cache
+.cache/
+
+# Docker files
+Dockerfile*
+docker-compose*
+.dockerignore*
+
+# Specs and development files
+specs/
+AGENTS.md
+
+# Development scripts
+dev.sh
+deploy.sh
+
+# Security files
+*.key
+*.pem
+*.crt
+
+# Saraiva Vision specific WordPress data
+wordpress-local/wp-content/uploads/*
+!wordpress-local/wp-content/uploads/.gitkeep
+wordpress-local/wp-content/cache/*
+wordpress-local/wp-content/upgrade/*
+wordpress-local/wp-content/databases/*.sqlite
+!wordpress-local/wp-content/databases/.gitkeep
+
+# WordPress plugins and themes that will be installed separately
+wordpress-local/wp-content/plugins/*
+wordpress-local/wp-content/themes/*
+!wordpress-local/wp-content/themes/saraiva-vision/
+
+# Backup files
+*.bak
+*.backup

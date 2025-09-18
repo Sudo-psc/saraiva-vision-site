@@ -88,6 +88,10 @@ nginx*.conf
 .nvmrc
 .dockerignore
 
+# Docker specific
+Dockerfile*
+docker-compose*.yml
+
 # CI/CD
 .gitlab-ci.yml
 .travis.yml

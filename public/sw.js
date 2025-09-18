@@ -7,7 +7,11 @@
   - API local (/api/): Network First com fallback ao cache (quando possível)
 */
 
+<<<<<<< HEAD
 const SW_VERSION = 'v1.0.4'; // Fixed: Handling partial responses (206)
+=======
+const SW_VERSION = 'v1.0.5'; // Fixed: SPA routing for service pages
+>>>>>>> 5c11c21a6ad5143d33bf829a361ce5bb121ae2c6
 const RUNTIME_CACHE = `sv-runtime-${SW_VERSION}`;
 const ASSETS_CACHE = `sv-assets-${SW_VERSION}`;
 const CORE_CACHE = `sv-core-${SW_VERSION}`;
@@ -57,7 +61,11 @@ self.addEventListener('activate', (event) => {
 });
 
 function isNavigationRequest(request) {
-  return request.mode === 'navigate';
+  // Check if it's a navigation request or a document request for HTML pages
+  return request.mode === 'navigate' || 
+         (request.method === 'GET' && 
+          request.headers.get('accept') && 
+          request.headers.get('accept').includes('text/html'));
 }
 
 function isAssetRequest(url) {
@@ -92,10 +100,16 @@ self.addEventListener('fetch', (event) => {
 
   // Navegações (SPA): Network First com fallback ao cache de index.html
   if (isNavigationRequest(request)) {
+    console.log('SW: Navigation request for:', url.pathname);
     event.respondWith(
       (async () => {
         try {
+<<<<<<< HEAD
           const fresh = await fetch(request);
+=======
+          // Always fetch index.html for navigation requests (SPA routing)
+          const fresh = await fetch('/index.html');
+>>>>>>> 5c11c21a6ad5143d33bf829a361ce5bb121ae2c6
           // Only cache successful responses (exclude partial responses)
           if (fresh.status === 200 && fresh.type !== 'opaque') {
             const cache = await caches.open(RUNTIME_CACHE);

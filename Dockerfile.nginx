@@ -1,7 +1,10 @@
-# Nginx Reverse Proxy Dockerfile for Saraiva Vision
-# Optimized for medical website with security and performance focus
+# Service: Nginx
+# Description: Nginx reverse proxy with SSL support and security headers for Saraiva Vision medical website
+# Base Image: nginx:1.25-alpine
+# Maintainer: Saraiva Vision Development Team
+# Security: Non-root user, read-only filesystem where possible
 
-FROM nginx:1.25-alpine AS production
+FROM nginx:1.25-alpine
 
 # Install security updates and additional tools
 RUN apk upgrade --no-cache && \
@@ -12,9 +15,9 @@ RUN apk upgrade --no-cache && \
     certbot \
     certbot-nginx
 
-# Create non-root user for nginx
-RUN addgroup -g 1001 -S nginx-proxy && \
-    adduser -S nginx-proxy -u 1001 -G nginx-proxy
+# Create non-root user for nginx (using standard nginx user for compatibility)
+RUN addgroup -g 101 -S nginx && \
+    adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx -g nginx nginx
 
 # Remove default nginx configuration
 RUN rm -f /etc/nginx/conf.d/default.conf
@@ -199,17 +202,18 @@ RUN echo '#!/bin/sh' > /usr/local/bin/health-check.sh && \
     echo 'curl -f http://localhost:80/nginx-health || exit 1' >> /usr/local/bin/health-check.sh && \
     chmod +x /usr/local/bin/health-check.sh
 
-# Create directories and set permissions
+# Create directories and set permissions for non-root operation
 RUN mkdir -p \
     /var/cache/nginx \
     /var/log/nginx \
+    /var/run \
     /etc/ssl/certs \
     /etc/ssl/private && \
-    chown -R nginx-proxy:nginx-proxy /var/cache/nginx && \
-    chown -R nginx-proxy:nginx-proxy /var/log/nginx && \
-    chown -R nginx-proxy:nginx-proxy /etc/nginx/conf.d && \
+    chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /var/log/nginx && \
+    chown -R nginx:nginx /etc/nginx/conf.d && \
     touch /var/run/nginx.pid && \
-    chown nginx-proxy:nginx-proxy /var/run/nginx.pid
+    chown nginx:nginx /var/run/nginx.pid
 
 # Security hardening
 RUN rm -rf /var/cache/apk/* && \
@@ -221,14 +225,14 @@ RUN rm -rf /var/cache/apk/* && \
 RUN nginx -t
 
 # Switch to non-root user
-USER nginx-proxy
+USER nginx
 
 # Expose ports
 EXPOSE 80 443
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
-    CMD /usr/local/bin/health-check.sh
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD nginx -t && curl -f http://localhost/nginx-health || exit 1
 
 # Use tini for proper signal handling
 ENTRYPOINT ["/sbin/tini", "--"]
@@ -236,8 +240,9 @@ ENTRYPOINT ["/sbin/tini", "--"]
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
 
-# Metadata
-LABEL maintainer="Saraiva Vision Development Team"
-LABEL description="Nginx reverse proxy for Saraiva Vision medical website"
-LABEL version="1.0.0"
-LABEL service="nginx"
+# Labels
+LABEL maintainer="Saraiva Vision Dev Team" \
+      version="2.1.0" \
+      description="Nginx reverse proxy for Saraiva Vision medical website" \
+      security.non-root="true" \
+      security.readonly-root="true"

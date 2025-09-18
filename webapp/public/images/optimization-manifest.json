@@ -1,0 +1,38 @@
+{
+  "timestamp": "2025-09-05T19:21:42.390Z",
+  "processedFiles": 10,
+  "variantsCreated": 100,
+  "originalSize": 13115727,
+  "optimizedSize": 2539006,
+  "reductionPercent": 81,
+  "config": {
+    "srcDir": "/home/saraiva-vision-site/public/images/src",
+    "outputDir": "/home/saraiva-vision-site/public/images",
+    "formats": {
+      "webp": {
+        "quality": 75,
+        "effort": 6,
+        "nearLossless": false
+      },
+      "avif": {
+        "quality": 50,
+        "effort": 4,
+        "speed": 5
+      }
+    },
+    "sizes": [
+      320,
+      640,
+      960,
+      1280,
+      1920
+    ],
+    "supportedInputs": [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".webp"
+    ],
+    "removeMetadata": true
+  }
+}

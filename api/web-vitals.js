@@ -3,7 +3,6 @@
  * Coleta métricas de performance para monitoramento da experiência do usuário
  */
 
-<<<<<<< HEAD
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
@@ -22,24 +21,11 @@ export default async function handler(req, res) {
   // Handle preflight
   if (req.method === 'OPTIONS') {
     return res.status(204).end();
-=======
-export default function handler(req, res) {
-  // Configurar CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  // Handle preflight
-  if (req.method === 'OPTIONS') {
-    res.status(204).end();
-    return;
->>>>>>> c7458a8623bcad083e2d57d24c95c61a6cd7df95
   }
 
   // GET: Retorna métricas atuais (mock para teste)
   if (req.method === 'GET') {
     res.status(200).json({
-<<<<<<< HEAD
       success: true,
       message: 'Web vital recorded',
       data: vitalsData
@@ -53,15 +39,6 @@ export default function handler(req, res) {
       error: 'Internal server error',
       message: process.env.NODE_ENV === 'development' ? error.message : 'Failed to process web vital',
       timestamp: new Date().toISOString()
-=======
-      cls: 0.05,  // Cumulative Layout Shift
-      fid: 100,   // First Input Delay (ms)
-      lcp: 2500,  // Largest Contentful Paint (ms)
-      fcp: 1800,  // First Contentful Paint (ms)
-      ttfb: 600,  // Time to First Byte (ms)
-      inp: 200,   // Interaction to Next Paint (ms)
-      timestamp: Date.now()
->>>>>>> c7458a8623bcad083e2d57d24c95c61a6cd7df95
     });
     return;
   }

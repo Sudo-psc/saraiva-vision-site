@@ -1,0 +1,14 @@
+0000000000000000000000000000000000000000 3071f17104a8be95cf94de4e8c80aa9ec023d283 0x4411 <genspark_dev@genspark.ai> 1758156960 +0000	clone: from https://github.com/Sudo-psc/saraiva-vision-site.git
+3071f17104a8be95cf94de4e8c80aa9ec023d283 035ad95d3832ba82e97ed3bc9746ecb57db602fb 0x4411 <genspark_dev@genspark.ai> 1758157459 +0000	commit: fix: Corrigir erros críticos do site Saraiva Vision
+035ad95d3832ba82e97ed3bc9746ecb57db602fb 7f10987ce2bda7492a3238fae69e831df6523916 0x4411 <genspark_dev@genspark.ai> 1758157644 +0000	commit: fix(nginx): Ajustar configuração SSL para evitar conflitos
+7f10987ce2bda7492a3238fae69e831df6523916 7aa807b131fba96b651c9006529e01117ba39497 0x4411 <genspark_dev@genspark.ai> 1758158512 +0000	commit: fix: Resolver todos os problemas de CSP e JavaScript da Clínica Saraiva Vision
+7aa807b131fba96b651c9006529e01117ba39497 ac56a290b516e34c164301d311765e2bd934526e 0x4411 <genspark_dev@genspark.ai> 1758159281 +0000	commit: fix: Corrigir integração WordPress/CMS para Clínica Saraiva Vision
+ac56a290b516e34c164301d311765e2bd934526e 9a4113c4edf8089c81dafa6c6a6d108b669261e1 0x4411 <genspark_dev@genspark.ai> 1758159916 +0000	commit: feat(deployment): Add production deployment scripts and optimized nginx config
+9a4113c4edf8089c81dafa6c6a6d108b669261e1 bf1f4163561b1676a4a689c666055c8797787043 0x4411 <genspark_dev@genspark.ai> 1758160488 +0000	commit: fix: Corrigir links dos cards de serviços não funcionando
+bf1f4163561b1676a4a689c666055c8797787043 c7458a8623bcad083e2d57d24c95c61a6cd7df95 0x4411 <genspark_dev@genspark.ai> 1758160503 +0000	pull --rebase origin main (finish): refs/heads/main onto e0321a80e0cdc5c5d694cfa51ccdf72af76d8ab3
+c7458a8623bcad083e2d57d24c95c61a6cd7df95 1adc1b86bacc980b9a9733577571e99f4829b4cc 0x4411 <genspark_dev@genspark.ai> 1758160781 +0000	commit: fix: Resolver problema 404 nas rotas de serviços
+1adc1b86bacc980b9a9733577571e99f4829b4cc 86625225b99248cb78340be5bd997ae600354443 0x4411 <genspark_dev@genspark.ai> 1758161158 +0000	commit: fix: Corrigir configuração do CMS WordPress
+86625225b99248cb78340be5bd997ae600354443 6e6bea592b23ef8d642a822926c72f685850222e 0x4411 <genspark_dev@genspark.ai> 1758161364 +0000	commit: fix: Resolver problemas de CORS no WordPress REST API
+6e6bea592b23ef8d642a822926c72f685850222e 83d7583f09799fb6b9bd805793c90c0d157e7a95 0x4411 <genspark_dev@genspark.ai> 1758161487 +0000	commit: feat: Melhorar página de status do CMS com timer de atualização
+83d7583f09799fb6b9bd805793c90c0d157e7a95 bae64e6a3fddcf9c7e7b2231e506d91544a91488 0x4411 <genspark_dev@genspark.ai> 1758161823 +0000	commit: feat: Adicionar página de teste para verificação de todos os posts do WordPress
+bae64e6a3fddcf9c7e7b2231e506d91544a91488 9cc377c94b64fb80ff0b081dabefb23cc52880b2 0x4411 <genspark_dev@genspark.ai> 1758162095 +0000	commit: fix: Corrigir URLs da API WordPress em produção

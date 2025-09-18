@@ -1,5 +1,8 @@
-# API Dockerfile for Saraiva Vision Node.js Backend
-# Multi-stage build for optimized production container
+# Service: API
+# Description: Node.js API backend container for Saraiva Vision medical website
+# Base Image: node:20-alpine
+# Maintainer: Saraiva Vision Development Team
+# Security: Non-root user, read-only filesystem where possible
 
 # Build stage
 FROM node:20-alpine AS build
@@ -91,8 +94,8 @@ ENV HOST=0.0.0.0
 EXPOSE 3001
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-    CMD /usr/local/bin/health-check.sh
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:3001/api/health || exit 1
 
 # Use dumb-init for proper signal handling
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
@@ -100,8 +103,9 @@ ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 # Start the API server
 CMD ["node", "server.js"]
 
-# Metadata
-LABEL maintainer="Saraiva Vision Development Team"
-LABEL description="API container for Saraiva Vision medical website backend"
-LABEL version="1.0.0"
-LABEL service="api"
+# Labels
+LABEL maintainer="Saraiva Vision Dev Team" \
+      version="2.1.0" \
+      description="API container for Saraiva Vision medical website backend" \
+      security.non-root="true" \
+      security.readonly-root="true"
