@@ -48,6 +48,31 @@ function resolveHostname(url) {
   }
 }
 
+/**
+ * Create an array of diagnostic check definitions for a WordPress site.
+ *
+ * Returns a list of diagnostic modules (objects with `id`, `defaultParams`, and an async `run()` function)
+ * that perform network and environment checks such as server reachability, REST API availability, DNS/IP lookups,
+ * SSL/no-CORS behavior, subdomain/protocol validation, basic database freshness, asset availability,
+ * security header inspection, and simple performance probes.
+ *
+ * The function merges the provided `customConfig` with sensible defaults (primaryDomain, wordpressDomain, checkHost,
+ * and optional dnsHostname) and derives derived endpoints (WordPress REST base, JSON root) used by the checks.
+ * Many checks are browser-only and will return a browser-only warning when executed outside a browser environment.
+ * Network requests use the module's shared `fetchWithTimeout` helper and follow the file's conventions for
+ * classifying opaque responses, timeouts (AbortError), HTTP errors, and fetch errors.
+ *
+ * @param {Object} [customConfig] - Optional overrides for the generated diagnostics.
+ *   Recognized properties:
+ *     - primaryDomain {string} — base site URL used for root and asset checks.
+ *     - wordpressDomain {string} — base WordPress URL (defaults to primaryDomain).
+ *     - checkHost {string} — expected hostname for subdomain checks.
+ *     - dnsHostname {string|null} — hostname used for DNS queries (defaults to the resolved hostname of primaryDomain).
+ * @return {Array<Object>} Array of diagnostic definitions. Each item contains:
+ *   - id {string}
+ *   - defaultParams {Object}
+ *   - run {Function} async function that performs the check and returns a result object.
+ */
 export function createDiagnostics(customConfig = {}) {
   const config = {
     primaryDomain: 'https://saraivavision.com.br',
