@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Todos os Posts do Blog - Saraiva Vision</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        h1 {
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+        .info {
+            background: #e0f2fe;
+            border: 1px solid #0284c7;
+            color: #075985;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        .stat-label {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .posts-grid {
+            display: grid;
+            gap: 20px;
+        }
+        .post-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+        .post-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+            flex: 1;
+        }
+        .post-id {
+            background: #f3f4f6;
+            color: #6b7280;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: monospace;
+            margin-left: 10px;
+        }
+        .post-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .post-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 13px;
+            word-break: break-all;
+        }
+        .post-link:hover {
+            text-decoration: underline;
+        }
+        .post-excerpt {
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+        .error {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background: #1d4ed8;
+        }
+        .btn-secondary {
+            background: #6b7280;
+        }
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body>
+    <h1>📝 Teste Completo - Posts do Blog WordPress</h1>
+    
+    <div class="info">
+        <strong>ℹ️ Esta página testa todos os posts disponíveis no WordPress</strong><br>
+        Carrega TODOS os posts publicados (sem limite de paginação) para verificação completa.
+    </div>
+
+    <div class="stats" id="stats">
+        <div class="stat-card">
+            <div class="stat-number" id="totalPosts">-</div>
+            <div class="stat-label">Total de Posts</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="totalCategories">-</div>
+            <div class="stat-label">Categorias</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="totalTags">-</div>
+            <div class="stat-label">Tags</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="apiStatus">⏳</div>
+            <div class="stat-label">Status da API</div>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <button class="btn" onclick="loadAllPosts()">🔄 Recarregar Todos os Posts</button>
+        <button class="btn btn-secondary" onclick="loadPaginated(10)">📄 Carregar 10</button>
+        <button class="btn btn-secondary" onclick="loadPaginated(20)">📄 Carregar 20</button>
+        <button class="btn btn-secondary" onclick="testDatabase()">🗄️ Verificar Banco de Dados</button>
+    </div>
+
+    <div id="loading" class="loading">Carregando posts...</div>
+    <div id="error" class="error" style="display: none;"></div>
+    <div id="postsContainer" class="posts-grid"></div>
+
+    <script>
+        const API_BASE = 'https://saraivavision.com.br/wp-json/wp/v2';
+        
+        async function loadAllPosts() {
+            const container = document.getElementById('postsContainer');
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const stats = {
+                total: document.getElementById('totalPosts'),
+                categories: document.getElementById('totalCategories'),
+                tags: document.getElementById('totalTags'),
+                status: document.getElementById('apiStatus')
+            };
+            
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            container.innerHTML = '';
+            
+            try {
+                // Test API first
+                const apiTest = await fetch(`${API_BASE}`);
+                if (apiTest.ok) {
+                    stats.status.textContent = '✅';
+                } else {
+                    stats.status.textContent = '⚠️';
+                }
+                
+                // Load ALL posts (up to 100)
+                const response = await fetch(`${API_BASE}/posts?per_page=100&_embed=true`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const posts = await response.json();
+                stats.total.textContent = posts.length;
+                
+                // Load categories and tags
+                const [catResponse, tagResponse] = await Promise.all([
+                    fetch(`${API_BASE}/categories`),
+                    fetch(`${API_BASE}/tags`)
+                ]);
+                
+                const categories = await catResponse.json();
+                const tags = await tagResponse.json();
+                
+                stats.categories.textContent = categories.length;
+                stats.tags.textContent = tags.length;
+                
+                // Display posts
+                if (posts.length === 0) {
+                    container.innerHTML = '<div class="error">Nenhum post encontrado</div>';
+                } else {
+                    container.innerHTML = posts.map((post, index) => {
+                        const date = new Date(post.date);
+                        const formattedDate = date.toLocaleDateString('pt-BR');
+                        const excerpt = post.excerpt?.rendered?.replace(/<[^>]*>/g, '').substring(0, 150) || '';
+                        
+                        // Get categories
+                        const categoryNames = post._embedded?.['wp:term']?.[0]?.map(cat => cat.name).join(', ') || 'Sem categoria';
+                        
+                        // Get featured image
+                        const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
+                        
+                        return `
+                            <div class="post-card">
+                                <div class="post-header">
+                                    <h3 class="post-title">${post.title.rendered}</h3>
+                                    <span class="post-id">ID: ${post.id}</span>
+                                </div>
+                                <div class="post-meta">
+                                    <span>📅 ${formattedDate}</span>
+                                    <span>📁 ${categoryNames}</span>
+                                    <span>🔢 #${index + 1}</span>
+                                </div>
+                                <a href="${post.link}" class="post-link" target="_blank">
+                                    ${post.link}
+                                </a>
+                                ${featuredImage ? `<div style="margin: 10px 0;"><img src="${featuredImage}" style="max-width: 200px; height: auto; border-radius: 8px;"></div>` : ''}
+                                <div class="post-excerpt">${excerpt}...</div>
+                                <div style="margin-top: 10px; font-size: 12px; color: #9ca3af;">
+                                    Slug: <code>${post.slug}</code> | 
+                                    Status: <code>${post.status}</code> | 
+                                    Tipo: <code>${post.type}</code>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    // Summary
+                    const summary = document.createElement('div');
+                    summary.className = 'info';
+                    summary.style.marginTop = '30px';
+                    summary.innerHTML = `
+                        <strong>📊 Resumo:</strong><br>
+                        • Total de posts carregados: ${posts.length}<br>
+                        • Posts com imagem destacada: ${posts.filter(p => p._embedded?.['wp:featuredmedia']?.[0]?.source_url).length}<br>
+                        • Posts com categorias: ${posts.filter(p => p._embedded?.['wp:term']?.[0]?.length > 0).length}<br>
+                        • Período: ${posts.length > 0 ? `${new Date(posts[posts.length - 1].date).toLocaleDateString('pt-BR')} até ${new Date(posts[0].date).toLocaleDateString('pt-BR')}` : 'N/A'}
+                    `;
+                    container.appendChild(summary);
+                }
+                
+            } catch (err) {
+                console.error('Error loading posts:', err);
+                error.textContent = `Erro ao carregar posts: ${err.message}`;
+                error.style.display = 'block';
+                stats.status.textContent = '❌';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+        
+        async function loadPaginated(perPage) {
+            const container = document.getElementById('postsContainer');
+            container.innerHTML = `<div class="loading">Carregando ${perPage} posts...</div>`;
+            
+            try {
+                const response = await fetch(`${API_BASE}/posts?per_page=${perPage}&_embed=true`);
+                const posts = await response.json();
+                
+                container.innerHTML = `
+                    <div class="info">
+                        Mostrando ${posts.length} de ${perPage} posts solicitados.
+                        ${posts.length < perPage ? 'Não há mais posts disponíveis.' : ''}
+                    </div>
+                `;
+                
+                await loadAllPosts();
+            } catch (err) {
+                container.innerHTML = `<div class="error">Erro: ${err.message}</div>`;
+            }
+        }
+        
+        async function testDatabase() {
+            const container = document.getElementById('postsContainer');
+            container.innerHTML = '<div class="loading">Verificando banco de dados via API customizada...</div>';
+            
+            try {
+                // Try custom endpoint
+                const response = await fetch('https://saraivavision.com.br/wp-json/saraiva-vision/v1/posts?per_page=100');
+                const posts = await response.json();
+                
+                container.innerHTML = `
+                    <div class="info">
+                        <strong>✅ API Customizada Funcionando!</strong><br>
+                        Posts retornados: ${posts.length}<br>
+                        Endpoint: /wp-json/saraiva-vision/v1/posts
+                    </div>
+                    <pre>${JSON.stringify(posts, null, 2)}</pre>
+                `;
+            } catch (err) {
+                container.innerHTML = `<div class="error">API customizada não disponível: ${err.message}</div>`;
+            }
+        }
+        
+        // Load on page load
+        window.addEventListener('load', () => {
+            loadAllPosts();
+        });
+    </script>
+</body>
+</html>
