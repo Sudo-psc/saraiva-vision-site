@@ -19,6 +19,7 @@ const BlogPage = lazy(() => import('@/pages/BlogPage'));
 const PostPage = lazy(() => import('@/pages/PostPage'));
 const CategoryPage = lazy(() => import('@/pages/CategoryPage'));
 const AdminLoginPage = lazy(() => import('@/pages/AdminLoginPage'));
+const CheckPage = lazy(() => import('@/pages/CheckPage'));
 import ScrollToTop from '@/components/ScrollToTop';
 import ServiceRedirect from '@/components/ServiceRedirect';
 import { Toaster } from '@/components/ui/toaster';
@@ -35,6 +36,8 @@ import ScrollDiagnostics from '@/components/ScrollDiagnostics';
 
 function App() {
   const { i18n } = useTranslation();
+  const isCheckSubdomain =
+    typeof window !== 'undefined' && window.location.hostname?.toLowerCase().startsWith('check.');
 
   useEffect(() => {
     document.documentElement.lang = i18n.language;
@@ -57,7 +60,8 @@ function App() {
           <ScrollToTop />
           <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={isCheckSubdomain ? <CheckPage /> : <HomePage />} />
+              <Route path="/check" element={<CheckPage />} />
               <Route path="/servicos" element={<ServicesPage />} />
               <Route path="/servicos/:serviceId" element={<ServiceDetailPage />} />
               {/* Redirecionamentos 301 para padronização de URLs */}
@@ -75,6 +79,7 @@ function App() {
               <Route path="/admin" element={<AdminLoginPage />} />
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
               <Route path="/wp-admin" element={<AdminPage />} />
+              {isCheckSubdomain ? <Route path="*" element={<Navigate to="/" replace />} /> : null}
             </Routes>
           </Suspense>
         </div>
