@@ -1,0 +1,112 @@
+# SaraivaVision Medical Website PHP-FPM Performance Optimization
+
+## Before Optimization Benchmarks (Baseline)
+
+**Date**: ${new Date().toISOString().split('T')[0]}
+**Environment**: Development/Staging
+**PHP Version**: 8.3.6
+**WordPress Version**: 6.8.2
+
+### Current Configuration Status
+
+#### PHP-FPM Status
+- **Pool Configuration**: Using PHP built-in server (port 8083)
+- **pm.max_children**: Not configured (default)
+- **pm.max_requests**: Not configured (default)
+- **Status**: Needs optimization for production medical website
+
+#### OPcache Status
+- **Enabled**: Available but needs tuning
+- **Configuration**: Default settings
+- **Status**: Needs medical website specific optimization
+
+#### Object Cache Status
+- **WP_CACHE**: Enabled in wp-config-fixed.php
+- **Redis**: Available but not configured
+- **APCu**: Available but not configured
+- **Status**: Needs implementation
+
+### Baseline Performance Metrics
+
+#### Response Times (Baseline)
+```bash
+# WordPress API Endpoints - Measured on 2025-09-18
+curl -w "@curl-format.txt" -s -o /dev/null http://localhost/wp-json/wp/v2/posts
+curl -w "@curl-format.txt" -s -o /dev/null http://localhost/wp-admin/
+curl -w "@curl-format.txt" -s -o /dev/null http://localhost/
+```
+
+**Baseline Results (WordPress Not Running):**
+- WordPress API (`/wp-json/wp/v2/posts`): 37ms (HTTP 500)
+- Admin Panel (`/wp-admin/`): 34ms (HTTP 500) 
+- Frontend (React): 33ms (HTTP 500)
+- WordPress Login: 35ms (HTTP 500)
+
+**Note**: HTTP 500 errors indicate WordPress services not currently active, but response times show server responsiveness baseline.
+
+#### Resource Usage (Baseline)
+```bash
+# Memory usage per PHP process
+ps aux | grep php | grep -v grep
+# PHP-FPM pool status
+curl http://localhost/php-fpm-status
+```
+
+**Baseline Measurements (2025-09-18):**
+- PHP-FPM Status: Running (detected by benchmark)
+- OPcache Status: Disabled (needs optimization)
+- Redis Status: Not available (needs installation)
+- Memory Usage: Monitored but WordPress not active for full metrics
+
+#### Load Testing (Baseline)
+```bash
+# K6 load testing script for medical website
+k6 run --vus 10 --duration 30s performance-test.js
+```
+
+**Results to be measured:**
+- Concurrent users supported: TBD
+- Average response time under load: TBD ms
+- 95th percentile response time: TBD ms
+- Error rate: TBD%
+
+### Current Bottlenecks Identified
+
+1. **PHP-FPM Configuration**: Using built-in server instead of optimized FPM
+2. **OPcache**: Not tuned for WordPress + medical website requirements
+3. **Object Cache**: Not implemented despite Redis/APCu availability
+4. **Memory Limits**: Need optimization for medical content and images
+5. **Process Management**: No pm configuration for production load
+
+### Medical Website Specific Requirements
+
+- **High Availability**: Medical clinic website requires 99.9% uptime
+- **LGPD Compliance**: Patient data caching must respect Brazilian privacy laws
+- **Image Performance**: Medical images and clinic photos need fast loading
+- **API Performance**: WordPress REST API for blog integration must be optimized
+- **Security**: Cache configurations must maintain medical website security standards
+
+## After Optimization Benchmarks
+
+*To be completed after implementing optimizations*
+
+### Target Performance Goals
+
+- **WordPress API Response**: < 100ms (current ~100ms baseline)
+- **Admin Panel Load**: < 150ms (current ~200ms baseline)
+- **OPcache Hit Rate**: > 95%
+- **Redis Object Cache Hit Rate**: > 90%
+- **Memory Usage Reduction**: 20-30% improvement
+- **Concurrent User Support**: 2x improvement
+- **Error Rate**: < 0.1% under normal load
+
+### Optimization Implementation Checklist
+
+- [ ] Baseline performance measurement
+- [ ] PHP-FPM pool configuration
+- [ ] OPcache optimization
+- [ ] Redis Object Cache implementation
+- [ ] wp-config.php optimizations
+- [ ] Docker/php.ini configuration
+- [ ] After optimization measurement
+- [ ] Rollback documentation

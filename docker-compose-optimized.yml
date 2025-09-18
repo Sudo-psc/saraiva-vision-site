@@ -1,0 +1,196 @@
+version: '3.8'
+
+services:
+  # Optimized WordPress with PHP-FPM for SaraivaVision Medical Website
+  wordpress-optimized:
+    image: wordpress:6.6-php8.3-fpm-alpine
+    container_name: saraiva-wordpress-optimized
+    restart: unless-stopped
+    ports:
+      - "9000:9000"  # PHP-FPM port
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: saraiva_user
+      WORDPRESS_DB_PASSWORD: saraiva_secure_2024
+      WORDPRESS_DB_NAME: saraiva_vision_db
+      WORDPRESS_TABLE_PREFIX: sv_
+      
+      # Performance environment variables
+      PHP_FPM_PM: dynamic
+      PHP_FPM_PM_MAX_CHILDREN: 20
+      PHP_FPM_PM_START_SERVERS: 5
+      PHP_FPM_PM_MIN_SPARE_SERVERS: 3
+      PHP_FPM_PM_MAX_SPARE_SERVERS: 8
+      PHP_FPM_PM_MAX_REQUESTS: 1000
+      
+      # Medical website specific configuration
+      WORDPRESS_CONFIG_EXTRA: |
+        // Performance Optimizations for Medical Website
+        define('WP_CACHE', true);
+        define('WP_MEMORY_LIMIT', '256M');
+        define('WP_MAX_MEMORY_LIMIT', '512M');
+        
+        // Redis Object Cache Configuration
+        define('WP_REDIS_HOST', 'redis');
+        define('WP_REDIS_PORT', 6379);
+        define('WP_REDIS_DATABASE', 0);
+        define('WP_REDIS_PREFIX', 'saraivavision:');
+        
+        // Medical Website Constants
+        define('CLINIC_NAME', 'Clínica Saraiva Vision');
+        define('DOCTOR_NAME', 'Dr. Philipe Saraiva Cruz');
+        define('DOCTOR_CRM', 'CRM-MG 69.870');
+        define('CLINIC_LOCATION', 'Caratinga, Minas Gerais');
+        
+        // Security for Medical Data (LGPD Compliance)
+        define('DISALLOW_FILE_EDIT', true);
+        define('FORCE_SSL_ADMIN', true);
+        define('LGPD_COMPLIANCE', true);
+        define('CACHE_PATIENT_DATA', false);
+        
+        // Performance settings
+        define('WP_POST_REVISIONS', 5);
+        define('EMPTY_TRASH_DAYS', 7);
+        define('DISABLE_WP_CRON', true);
+        
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./php-optimized.ini:/usr/local/etc/php/conf.d/99-optimized.ini
+      - ./php-fpm-saraivavision.conf:/usr/local/etc/php-fpm.d/saraivavision.conf
+      - ./wp-redis-object-cache.php:/var/www/html/wp-content/object-cache.php
+      - ./wp-config-performance-optimized.php:/var/www/html/wp-config.php
+    depends_on:
+      - db
+      - redis
+    networks:
+      - saraiva_network
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm -t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx optimized for medical website
+  nginx-optimized:
+    image: nginx:1.25-alpine
+    container_name: saraiva-nginx-optimized
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./nginx-medical-optimized.conf:/etc/nginx/nginx.conf
+      - ./nginx-includes:/etc/nginx/includes
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - wordpress-optimized
+    networks:
+      - saraiva_network
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis for Object Cache
+  redis:
+    image: redis:7-alpine
+    container_name: saraiva-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --save 900 1 --save 300 10
+    volumes:
+      - redis_data:/data
+      - ./redis-medical.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - saraiva_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # MySQL Database optimized for medical data
+  db:
+    image: mysql:8.0
+    container_name: saraiva-mysql-optimized
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: saraiva_vision_db
+      MYSQL_USER: saraiva_user
+      MYSQL_PASSWORD: saraiva_secure_2024
+      MYSQL_ROOT_PASSWORD: saraiva_root_2024
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./mysql-medical-optimized.cnf:/etc/mysql/conf.d/medical-optimized.cnf
+      - ./scripts/mysql-init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - saraiva_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis monitoring (optional)
+  redis-insight:
+    image: redislabs/redisinsight:latest
+    container_name: saraiva-redis-insight
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    depends_on:
+      - redis
+    networks:
+      - saraiva_network
+    profiles:
+      - monitoring
+
+  # Performance monitoring with Grafana (optional)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: saraiva-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=saraiva_grafana_2024
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - saraiva_network
+    profiles:
+      - monitoring
+
+volumes:
+  wordpress_data:
+    driver: local
+  db_data:
+    driver: local
+  redis_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  saraiva_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Optimized for SaraivaVision Medical Website
+# Dr. Philipe Saraiva Cruz - CRM-MG 69.870
+# Caratinga, Minas Gerais
+# 
+# Features:
+# - PHP-FPM with optimized process management
+# - Redis Object Cache for WordPress
+# - OPcache enabled with medical website tuning
+# - MySQL optimized for medical data storage
+# - Nginx with medical website security headers
+# - LGPD compliant caching (no patient data)
+# - Health checks for all services
+# - Optional monitoring stack
