@@ -1117,7 +1117,7 @@
   "check": {
     "badge": "Monitoramento de infraestrutura",
     "title": "Diagnóstico da infraestrutura Saraiva Vision",
-    "subtitle": "Execute verificações em tempo real para validar conectividade, DNS, SSL, serviços WordPress e o subdomínio check.saraivavision.com.br.",
+    "subtitle": "Execute verificações em tempo real para validar conectividade, DNS, SSL, serviços WordPress, segurança, performance e recursos do site.",
     "runButton": "Executar diagnósticos",
     "running": "Executando diagnósticos...",
     "resetButton": "Limpar resultados",
@@ -1134,8 +1134,8 @@
     },
     "seo": {
       "title": "Diagnóstico de Infraestrutura | Saraiva Vision",
-      "description": "Monitoramento em tempo real da infraestrutura digital da Saraiva Vision: DNS, SSL, API e serviços WordPress.",
-      "keywords": "monitoramento infraestrutura, verificação dns, verificação ssl, saúde api wordpress, saraiva vision"
+      "description": "Monitoramento em tempo real da infraestrutura digital da Saraiva Vision: DNS, SSL, API, WordPress, segurança, performance e recursos.",
+      "keywords": "monitoramento infraestrutura, verificação dns, verificação ssl, saúde api wordpress, segurança web, performance, saraiva vision"
     },
     "messages": {
       "browserOnly": "Os diagnósticos precisam ser executados em um navegador.",
@@ -1147,7 +1147,15 @@
       "hostMismatch": "Host atual é {{hostname}}. Aponte o DNS para {{expected}} para usar este painel.",
       "insecureProtocol": "A conexão está usando {{protocol}}. Habilite HTTPS para cobertura completa.",
       "hostnameUnavailable": "Não foi possível detectar o hostname atual.",
-      "unexpected": "Erro inesperado: {{message}}"
+      "unexpected": "Erro inesperado: {{message}}",
+      "partialAvailability": "{{successful}} de {{total}} recursos estão disponíveis.",
+      "allAssetsFailed": "Todos os recursos de teste falharam ao carregar.",
+      "missingSecurity": "Cabeçalhos de segurança ausentes: {{missing}}.",
+      "lowSecurity": "Apenas {{count}} cabeçalhos de segurança estão configurados.",
+      "corsRestricted": "Servidor alcançável, mas cabeçalhos bloqueados por CORS.",
+      "slowPerformance": "Performance degradada detectada.",
+      "partialPerformance": "{{successful}} de {{total}} testes de performance foram bem-sucedidos.",
+      "performanceTestFailed": "Todos os testes de performance falharam."
     },
     "diagnostics": {
       "server": {
@@ -1221,6 +1229,34 @@
         "warning": "Cabeçalhos ocultos por CORS; confirme a exposição no servidor.",
         "error": "Não foi possível inspecionar os cabeçalhos do Nginx.",
         "serverLabel": "Cabeçalho Server: {{server}}"
+      },
+      "database": {
+        "title": "Conectividade do banco de dados",
+        "description": "Testa a resposta do banco de dados através da API WordPress.",
+        "success": "Banco respondeu em {{latency}} (última modificação: {{lastModified}}).",
+        "warning": "Conexão estabelecida, mas não foi possível verificar os dados.",
+        "error": "Falha na conexão com o banco de dados via API."
+      },
+      "assets": {
+        "title": "Disponibilidade de recursos",
+        "description": "Verifica o carregamento de recursos estáticos críticos do site.",
+        "success": "Todos os {{assetsChecked}} recursos carregaram com sucesso ({{availability}}%).",
+        "warning": "{{successful}} de {{assetsChecked}} recursos disponíveis ({{availability}}%).",
+        "error": "Recursos críticos indisponíveis - verifique CDN e armazenamento."
+      },
+      "security": {
+        "title": "Cabeçalhos de segurança",
+        "description": "Analisa a presença de cabeçalhos HTTP de segurança essenciais.",
+        "success": "Todos os cabeçalhos de segurança estão configurados (pontuação: {{score}}%).",
+        "warning": "Configuração parcial de segurança (pontuação: {{score}}%) - considere adicionar: {{missing}}.",
+        "error": "Configuração de segurança inadequada ({{presentHeaders}}/{{totalHeaders}} cabeçalhos presentes)."
+      },
+      "performance": {
+        "title": "Análise de performance",
+        "description": "Mede latência e tempo de resposta de endpoints críticos.",
+        "success": "Performance excelente - média de {{averageLatency}}ms (nota {{grade}}).",
+        "warning": "Performance acceptable - média de {{averageLatency}}ms (nota {{grade}}).",
+        "error": "Performance degradada detectada - investigação necessária."
       }
     }
   }
