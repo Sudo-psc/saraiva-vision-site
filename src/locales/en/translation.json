@@ -1066,12 +1066,14 @@
         "title": "Server reachability",
         "description": "Checks if {{target}} responds over HTTPS.",
         "success": "The server responded successfully in {{latency}}.",
+        "running": "Testing server connectivity...",
         "error": "Unable to reach {{target}}. Investigate DNS and networking."
       },
       "services": {
         "title": "WordPress services",
         "description": "Tests the availability of published pages via the WordPress API.",
         "success": "API returned {{count}} page entries in {{latency}}.",
+        "running": "Querying WordPress pages...",
         "warning": "Service reached but the response could not be inspected (likely CORS).",
         "error": "The WordPress page endpoint did not respond correctly."
       },
@@ -1079,6 +1081,7 @@
         "title": "Blog/posts API",
         "description": "Requests the latest posts from the headless WordPress instance.",
         "success": "Received {{count}} post entry in {{latency}}.",
+        "running": "Fetching blog posts...",
         "warning": "Connection established but response details were blocked.",
         "error": "The posts endpoint is unavailable."
       },
@@ -1086,6 +1089,7 @@
         "title": "API route registry",
         "description": "Validates WordPress REST routes for posts, pages and categories.",
         "success": "All critical routes are registered ({{totalRoutes}} total).",
+        "running": "Checking API routes...",
         "warning": "Missing REST routes detected: {{missing}}.",
         "error": "Could not load the REST route registry."
       },
@@ -1093,6 +1097,7 @@
         "title": "DNS resolution",
         "description": "Queries public DNS for {{hostname}} A records.",
         "success": "DNS returned {{count}} record(s).",
+        "running": "Querying DNS servers...",
         "warning": "No DNS A records were returned.",
         "error": "DNS query failed.",
         "recordsLabel": "Resolved IP addresses"
@@ -1101,6 +1106,7 @@
         "title": "IP addresses",
         "description": "Collects IPv4 and IPv6 records for {{hostname}}.",
         "success": "Active IP addresses resolved.",
+        "running": "Resolving IP addresses...",
         "warning": "No IP addresses were returned by DNS.",
         "error": "Failed to resolve IP addresses.",
         "ipv4Label": "IPv4",
@@ -1110,18 +1116,21 @@
         "title": "SSL handshake",
         "description": "Ensures {{target}} accepts HTTPS connections.",
         "success": "Secure connection established.",
+        "running": "Testing SSL certificate...",
         "error": "HTTPS connection failed."
       },
       "subdomain": {
         "title": "Subdomain binding",
         "description": "Confirms that the dashboard is served from {{expected}}.",
         "success": "Dashboard served from {{hostname}}.",
+        "running": "Checking subdomain configuration...",
         "warning": "Subdomain not pointed to {{expected}} yet."
       },
       "php": {
         "title": "PHP routes / WordPress bootstrap",
         "description": "Calls the REST bootstrap endpoint to confirm PHP routing.",
         "success": "WordPress namespace {{namespace}} responded ({{routes}} routes available).",
+        "running": "Testing WordPress PHP bootstrap...",
         "warning": "Endpoint reachable but response details were hidden.",
         "error": "Unable to reach the PHP routing endpoint.",
         "routesLabel": "Routes exposed: {{routes}}"
@@ -1130,6 +1139,7 @@
         "title": "Nginx headers",
         "description": "Inspects response headers from the WordPress API endpoint.",
         "success": "Server header indicates {{server}}.",
+        "running": "Analyzing server headers...",
         "warning": "Headers hidden by CORS; confirm exposure on the server.",
         "error": "Unable to inspect Nginx headers.",
         "serverLabel": "Server header: {{server}}"
@@ -1138,13 +1148,16 @@
         "title": "Database connectivity",
         "description": "Tests database response through WordPress API.",
         "success": "Database responded in {{latency}} (last modified: {{lastModified}}).",
+        "running": "Testing database connection...",
         "warning": "Connection established but couldn't verify data.",
-        "error": "Failed to connect to database via API."
+        "error": "Failed to connect to database via API.",
+        "lastModifiedLabel": "Last modified: {{date}}"
       },
       "assets": {
         "title": "Asset availability",
         "description": "Checks loading of critical static site resources.",
         "success": "All {{assetsChecked}} assets loaded successfully ({{availability}}%).",
+        "running": "Checking static resources...",
         "warning": "{{successful}} of {{assetsChecked}} assets available ({{availability}}%).",
         "error": "Critical assets unavailable - check CDN and storage."
       },
@@ -1152,6 +1165,7 @@
         "title": "Security headers",
         "description": "Analyzes presence of essential HTTP security headers.",
         "success": "All security headers are configured (score: {{score}}%).",
+        "running": "Analyzing security headers...",
         "warning": "Partial security configuration (score: {{score}}%) - consider adding: {{missing}}.",
         "error": "Inadequate security configuration ({{presentHeaders}}/{{totalHeaders}} headers present)."
       },
@@ -1159,6 +1173,7 @@
         "title": "Performance analysis",
         "description": "Measures latency and response time of critical endpoints.",
         "success": "Excellent performance - average {{averageLatency}}ms (grade {{grade}}).",
+        "running": "Measuring endpoint performance...",
         "warning": "Acceptable performance - average {{averageLatency}}ms (grade {{grade}}).",
         "error": "Degraded performance detected - investigation required."
       }
