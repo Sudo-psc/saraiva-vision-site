@@ -240,7 +240,7 @@ const Services = ({ full = false, autoplay = true }) => {
     const clamped = Math.max(0, Math.min(serviceItems.length - 1, raw));
     // Update autoplay hook instead of local state
     if (clamped !== currentIndex) {
-      autoplayCarousel.goToSlide(clamped);
+      autoplayCarousel.goTo(clamped);
     }
   }, [serviceItems.length, currentIndex, autoplayCarousel]);
 
@@ -255,7 +255,7 @@ const Services = ({ full = false, autoplay = true }) => {
     });
 
     // Update autoplay hook
-    autoplayCarousel.goToSlide(i);
+    autoplayCarousel.goTo(i);
   }, [autoplayCarousel]);
 
   const scrollByAmount = useCallback((dir = 1) => {
@@ -509,7 +509,7 @@ const Services = ({ full = false, autoplay = true }) => {
                 role="tab"
                 aria-label={t('services.go_to_page', { index: i + 1, defaultValue: `Ir para página ${i + 1}` })}
                 aria-selected={i === currentPage}
-                onClick={() => autoplayCarousel.goToSlide(i * Math.max(1, itemsPerView))}
+                onClick={() => autoplayCarousel.goTo(i * Math.max(1, itemsPerView))}
                 className={`h-2.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 ${i === currentPage ? 'bg-blue-600 w-6 shadow' : 'bg-slate-300 hover:bg-slate-400 w-2.5'}`}
               />
             ))}
