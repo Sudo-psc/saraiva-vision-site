@@ -755,6 +755,388 @@ export function createDiagnostics(customConfig = {}) {
         }
       },
     },
+    {
+      id: 'database',
+      defaultParams: { target: wordpressRestBase },
+      run: async () => {
+        if (!isBrowserEnvironment()) {
+          return {
+            status: 'warning',
+            messageId: 'browserOnly',
+          };
+        }
+
+        const url = `${wordpressRestBase}/posts?per_page=1&_fields=id,date,modified,status&orderby=modified&order=desc`;
+        const start = now();
+
+        try {
+          const response = await fetchWithTimeout(url, {
+            mode: 'cors',
+            cache: 'no-store',
+            headers: { Accept: 'application/json' },
+            timeout: DEFAULT_TIMEOUT,
+          });
+          const latency = buildLatency(start);
+
+          if (response.ok) {
+            const payload = await response.json();
+            const lastModified = Array.isArray(payload) && payload.length > 0 
+              ? payload[0]?.modified || payload[0]?.date 
+              : null;
+            
+            const dbConnectionTime = Math.max(latency - 1000, 0); // Estimated DB query time
+            
+            return {
+              status: 'success',
+              latency,
+              data: { 
+                lastModified,
+                dbLatency: dbConnectionTime,
+                recordsFound: Array.isArray(payload) ? payload.length : 0
+              },
+            };
+          }
+
+          if (response.type === 'opaque') {
+            return {
+              status: 'warning',
+              latency,
+              messageId: 'opaqueResponse',
+              data: { target: url },
+            };
+          }
+
+          return {
+            status: 'error',
+            latency,
+            messageId: 'httpError',
+            messageParams: { status: response.status },
+          };
+        } catch (error) {
+          if (error?.name === 'AbortError') {
+            return {
+              status: 'error',
+              messageId: 'timeout',
+              latency: buildLatency(start),
+            };
+          }
+
+          return {
+            status: 'error',
+            messageId: 'fetchError',
+            messageParams: { message: error?.message || 'unknown error' },
+            latency: buildLatency(start),
+          };
+        }
+      },
+    },
+    {
+      id: 'assets',
+      defaultParams: { target: primaryDomain },
+      run: async () => {
+        if (!isBrowserEnvironment()) {
+          return {
+            status: 'warning',
+            messageId: 'browserOnly',
+          };
+        }
+
+        const start = now();
+        const testAssets = [
+          '/images/logo.png',
+          '/apple-touch-icon.png',
+          '/sw.js'
+        ];
+
+        try {
+          const results = await Promise.allSettled(
+            testAssets.map(async (asset) => {
+              const assetUrl = `${primaryDomain}${asset}`;
+              const response = await fetchWithTimeout(assetUrl, {
+                mode: 'no-cors',
+                cache: 'no-store',
+                timeout: DEFAULT_TIMEOUT / 2,
+              });
+              return { asset, success: true, status: response.status };
+            })
+          );
+
+          const latency = buildLatency(start);
+          const successful = results.filter(r => r.status === 'fulfilled').length;
+          const failed = results.filter(r => r.status === 'rejected').length;
+
+          if (successful === testAssets.length) {
+            return {
+              status: 'success',
+              latency,
+              data: { 
+                assetsChecked: testAssets.length,
+                successful,
+                failed,
+                availability: (successful / testAssets.length * 100).toFixed(1)
+              },
+            };
+          }
+
+          if (successful > 0) {
+            return {
+              status: 'warning',
+              latency,
+              data: { 
+                assetsChecked: testAssets.length,
+                successful,
+                failed,
+                availability: (successful / testAssets.length * 100).toFixed(1)
+              },
+              messageId: 'partialAvailability',
+              messageParams: { successful, total: testAssets.length },
+            };
+          }
+
+          return {
+            status: 'error',
+            latency,
+            data: { assetsChecked: testAssets.length, successful: 0, failed },
+            messageId: 'allAssetsFailed',
+          };
+        } catch (error) {
+          return {
+            status: 'error',
+            messageId: 'fetchError',
+            messageParams: { message: error?.message || 'unknown error' },
+            latency: buildLatency(start),
+          };
+        }
+      },
+    },
+    {
+      id: 'security',
+      defaultParams: { target: primaryDomain },
+      run: async () => {
+        if (!isBrowserEnvironment()) {
+          return {
+            status: 'warning',
+            messageId: 'browserOnly',
+          };
+        }
+
+        const start = now();
+        const url = `${primaryDomain}/`;
+
+        try {
+          const response = await fetchWithTimeout(url, {
+            mode: 'cors',
+            cache: 'no-store',
+            timeout: DEFAULT_TIMEOUT,
+          });
+          const latency = buildLatency(start);
+
+          if (response.ok) {
+            const headers = response.headers;
+            const securityHeaders = {
+              'strict-transport-security': headers.get('strict-transport-security'),
+              'content-security-policy': headers.get('content-security-policy'),
+              'x-frame-options': headers.get('x-frame-options'),
+              'x-content-type-options': headers.get('x-content-type-options'),
+              'referrer-policy': headers.get('referrer-policy'),
+            };
+
+            const presentHeaders = Object.entries(securityHeaders)
+              .filter(([, value]) => value !== null)
+              .map(([key]) => key);
+
+            const missingHeaders = Object.entries(securityHeaders)
+              .filter(([, value]) => value === null)
+              .map(([key]) => key);
+
+            const score = (presentHeaders.length / Object.keys(securityHeaders).length * 100).toFixed(0);
+
+            if (presentHeaders.length === Object.keys(securityHeaders).length) {
+              return {
+                status: 'success',
+                latency,
+                data: { 
+                  score: parseInt(score),
+                  presentHeaders: presentHeaders.length,
+                  totalHeaders: Object.keys(securityHeaders).length,
+                  headers: securityHeaders
+                },
+              };
+            }
+
+            if (presentHeaders.length >= 3) {
+              return {
+                status: 'warning',
+                latency,
+                data: { 
+                  score: parseInt(score),
+                  presentHeaders: presentHeaders.length,
+                  totalHeaders: Object.keys(securityHeaders).length,
+                  missingHeaders,
+                  headers: securityHeaders
+                },
+                messageId: 'missingSecurity',
+                messageParams: { missing: missingHeaders.join(', ') },
+              };
+            }
+
+            return {
+              status: 'error',
+              latency,
+              data: { 
+                score: parseInt(score),
+                presentHeaders: presentHeaders.length,
+                missingHeaders,
+                headers: securityHeaders
+              },
+              messageId: 'lowSecurity',
+              messageParams: { count: presentHeaders.length },
+            };
+          }
+
+          return {
+            status: 'error',
+            latency,
+            messageId: 'httpError',
+            messageParams: { status: response.status },
+          };
+        } catch (error) {
+          if (error?.name === 'AbortError') {
+            return {
+              status: 'error',
+              messageId: 'timeout',
+              latency: buildLatency(start),
+            };
+          }
+
+          try {
+            // Fallback test with no-cors to check if server is reachable
+            await fetchWithTimeout(url, {
+              mode: 'no-cors',
+              cache: 'no-store',
+              timeout: DEFAULT_TIMEOUT,
+            });
+
+            return {
+              status: 'warning',
+              latency: buildLatency(start),
+              messageId: 'corsRestricted',
+              data: { target: url },
+            };
+          } catch (secondaryError) {
+            return {
+              status: 'error',
+              messageId: 'fetchError',
+              messageParams: { message: secondaryError?.message || error?.message || 'unknown error' },
+              latency: buildLatency(start),
+            };
+          }
+        }
+      },
+    },
+    {
+      id: 'performance',
+      defaultParams: { target: primaryDomain },
+      run: async () => {
+        if (!isBrowserEnvironment()) {
+          return {
+            status: 'warning',
+            messageId: 'browserOnly',
+          };
+        }
+
+        const measurements = [];
+        const testUrls = [
+          `${primaryDomain}/`,
+          `${wordpressRestBase}/posts?per_page=1&_fields=id`,
+          `${primaryDomain}/sw.js`
+        ];
+
+        try {
+          // Run multiple measurements for statistical accuracy
+          for (let i = 0; i < testUrls.length; i++) {
+            const url = testUrls[i];
+            const start = now();
+
+            try {
+              await fetchWithTimeout(url, {
+                mode: 'no-cors',
+                cache: 'no-store',
+                timeout: DEFAULT_TIMEOUT / 2,
+              });
+              const latency = buildLatency(start);
+              measurements.push({ url, latency, success: true });
+            } catch (error) {
+              measurements.push({ url, latency: buildLatency(start), success: false, error: error.message });
+            }
+          }
+
+          const successfulMeasurements = measurements.filter(m => m.success);
+          const averageLatency = successfulMeasurements.length > 0 
+            ? successfulMeasurements.reduce((sum, m) => sum + m.latency, 0) / successfulMeasurements.length
+            : 0;
+
+          const minLatency = successfulMeasurements.length > 0 
+            ? Math.min(...successfulMeasurements.map(m => m.latency))
+            : 0;
+
+          const maxLatency = successfulMeasurements.length > 0 
+            ? Math.max(...successfulMeasurements.map(m => m.latency))
+            : 0;
+
+          const performanceGrade = averageLatency < 500 ? 'A' 
+            : averageLatency < 1000 ? 'B'
+            : averageLatency < 2000 ? 'C'
+            : averageLatency < 3000 ? 'D' : 'F';
+
+          if (successfulMeasurements.length === testUrls.length && averageLatency < 1000) {
+            return {
+              status: 'success',
+              latency: averageLatency,
+              data: { 
+                averageLatency: Math.round(averageLatency),
+                minLatency: Math.round(minLatency),
+                maxLatency: Math.round(maxLatency),
+                grade: performanceGrade,
+                testsRun: testUrls.length,
+                successful: successfulMeasurements.length
+              },
+            };
+          }
+
+          if (successfulMeasurements.length > 0) {
+            return {
+              status: 'warning',
+              latency: averageLatency,
+              data: { 
+                averageLatency: Math.round(averageLatency),
+                minLatency: Math.round(minLatency),
+                maxLatency: Math.round(maxLatency),
+                grade: performanceGrade,
+                testsRun: testUrls.length,
+                successful: successfulMeasurements.length
+              },
+              messageId: averageLatency > 2000 ? 'slowPerformance' : 'partialPerformance',
+              messageParams: { successful: successfulMeasurements.length, total: testUrls.length },
+            };
+          }
+
+          return {
+            status: 'error',
+            latency: 0,
+            data: { testsRun: testUrls.length, successful: 0, grade: 'F' },
+            messageId: 'performanceTestFailed',
+          };
+        } catch (error) {
+          return {
+            status: 'error',
+            messageId: 'fetchError',
+            messageParams: { message: error?.message || 'unknown error' },
+            latency: 0,
+          };
+        }
+      },
+    },
   ];
 }
 

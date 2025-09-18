@@ -1117,7 +1117,7 @@
   "check": {
     "badge": "Monitoramento de infraestrutura",
     "title": "Diagnóstico da infraestrutura Saraiva Vision",
-    "subtitle": "Execute verificações em tempo real para validar conectividade, DNS, SSL, serviços WordPress e o subdomínio check.saraivavision.com.br.",
+    "subtitle": "Execute verificações em tempo real para validar conectividade, DNS, SSL, serviços WordPress, segurança, performance e recursos do site.",
     "runButton": "Executar diagnósticos",
     "running": "Executando diagnósticos...",
     "resetButton": "Limpar resultados",
@@ -1134,8 +1134,8 @@
     },
     "seo": {
       "title": "Diagnóstico de Infraestrutura | Saraiva Vision",
-      "description": "Monitoramento em tempo real da infraestrutura digital da Saraiva Vision: DNS, SSL, API e serviços WordPress.",
-      "keywords": "monitoramento infraestrutura, verificação dns, verificação ssl, saúde api wordpress, saraiva vision"
+      "description": "Monitoramento em tempo real da infraestrutura digital da Saraiva Vision: DNS, SSL, API, WordPress, segurança, performance e recursos.",
+      "keywords": "monitoramento infraestrutura, verificação dns, verificação ssl, saúde api wordpress, segurança web, performance, saraiva vision"
     },
     "messages": {
       "browserOnly": "Os diagnósticos precisam ser executados em um navegador.",
@@ -1147,19 +1147,29 @@
       "hostMismatch": "Host atual é {{hostname}}. Aponte o DNS para {{expected}} para usar este painel.",
       "insecureProtocol": "A conexão está usando {{protocol}}. Habilite HTTPS para cobertura completa.",
       "hostnameUnavailable": "Não foi possível detectar o hostname atual.",
-      "unexpected": "Erro inesperado: {{message}}"
+      "unexpected": "Erro inesperado: {{message}}",
+      "partialAvailability": "{{successful}} de {{total}} recursos estão disponíveis.",
+      "allAssetsFailed": "Todos os recursos de teste falharam ao carregar.",
+      "missingSecurity": "Cabeçalhos de segurança ausentes: {{missing}}.",
+      "lowSecurity": "Apenas {{count}} cabeçalhos de segurança estão configurados.",
+      "corsRestricted": "Servidor alcançável, mas cabeçalhos bloqueados por CORS.",
+      "slowPerformance": "Performance degradada detectada.",
+      "partialPerformance": "{{successful}} de {{total}} testes de performance foram bem-sucedidos.",
+      "performanceTestFailed": "Todos os testes de performance falharam."
     },
     "diagnostics": {
       "server": {
         "title": "Disponibilidade do servidor",
         "description": "Verifica se {{target}} responde em HTTPS.",
         "success": "O servidor respondeu com sucesso em {{latency}}.",
+        "running": "Testando conectividade do servidor...",
         "error": "Não foi possível alcançar {{target}}. Verifique DNS e rede."
       },
       "services": {
         "title": "Serviços WordPress",
         "description": "Testa a disponibilidade das páginas publicadas via API do WordPress.",
         "success": "A API retornou {{count}} páginas em {{latency}}.",
+        "running": "Consultando páginas do WordPress...",
         "warning": "Serviço alcançado, mas não foi possível inspecionar a resposta (provável CORS).",
         "error": "O endpoint de páginas do WordPress não respondeu corretamente."
       },
@@ -1167,6 +1177,7 @@
         "title": "API de posts/blog",
         "description": "Solicita os posts mais recentes do WordPress headless.",
         "success": "Recebido {{count}} post em {{latency}}.",
+        "running": "Buscando posts do blog...",
         "warning": "Conexão estabelecida, mas os detalhes foram bloqueados.",
         "error": "O endpoint de posts está indisponível."
       },
@@ -1174,6 +1185,7 @@
         "title": "Registro de rotas da API",
         "description": "Valida as rotas REST do WordPress para posts, páginas e categorias.",
         "success": "Todas as rotas críticas estão registradas ({{totalRoutes}} no total).",
+        "running": "Verificando rotas da API...",
         "warning": "Rotas REST ausentes: {{missing}}.",
         "error": "Não foi possível carregar o registro de rotas REST."
       },
@@ -1181,6 +1193,7 @@
         "title": "Resolução DNS",
         "description": "Consulta servidores DNS públicos pelos registros A de {{hostname}}.",
         "success": "DNS retornou {{count}} registro(s).",
+        "running": "Consultando servidores DNS...",
         "warning": "Nenhum registro A foi retornado.",
         "error": "Falha na consulta DNS.",
         "recordsLabel": "IPs resolvidos"
@@ -1189,6 +1202,7 @@
         "title": "Endereços IP",
         "description": "Coleta registros IPv4 e IPv6 de {{hostname}}.",
         "success": "Endereços IP ativos resolvidos.",
+        "running": "Resolvendo endereços IP...",
         "warning": "Nenhum endereço IP foi retornado pelo DNS.",
         "error": "Falha ao resolver os endereços IP.",
         "ipv4Label": "IPv4",
@@ -1198,18 +1212,21 @@
         "title": "Handshake SSL",
         "description": "Garante que {{target}} aceita conexões HTTPS.",
         "success": "Conexão segura estabelecida.",
+        "running": "Testando certificado SSL...",
         "error": "Falha na conexão HTTPS."
       },
       "subdomain": {
         "title": "Vinculação do subdomínio",
         "description": "Confirma que o painel está servido por {{expected}}.",
         "success": "Painel servido a partir de {{hostname}}.",
+        "running": "Verificando configuração do subdomínio...",
         "warning": "Subdomínio ainda não aponta para {{expected}}."
       },
       "php": {
         "title": "Rotas PHP / bootstrap do WordPress",
         "description": "Chama o endpoint de bootstrap REST para confirmar o roteamento em PHP.",
         "success": "Namespace {{namespace}} respondeu ({{routes}} rotas disponíveis).",
+        "running": "Testando bootstrap PHP do WordPress...",
         "warning": "Endpoint acessível, mas sem acesso aos detalhes.",
         "error": "Não foi possível acessar o endpoint de roteamento PHP.",
         "routesLabel": "Rotas expostas: {{routes}}"
@@ -1218,9 +1235,43 @@
         "title": "Cabeçalhos do Nginx",
         "description": "Inspeciona os cabeçalhos da resposta no endpoint da API do WordPress.",
         "success": "Cabeçalho do servidor indica {{server}}.",
+        "running": "Analisando cabeçalhos do servidor...",
         "warning": "Cabeçalhos ocultos por CORS; confirme a exposição no servidor.",
         "error": "Não foi possível inspecionar os cabeçalhos do Nginx.",
         "serverLabel": "Cabeçalho Server: {{server}}"
+      },
+      "database": {
+        "title": "Conectividade do banco de dados",
+        "description": "Testa a resposta do banco de dados através da API WordPress.",
+        "success": "Banco respondeu em {{latency}} (última modificação: {{lastModified}}).",
+        "running": "Testando conexão com o banco de dados...",
+        "warning": "Conexão estabelecida, mas não foi possível verificar os dados.",
+        "error": "Falha na conexão com o banco de dados via API.",
+        "lastModifiedLabel": "Última modificação: {{date}}"
+      },
+      "assets": {
+        "title": "Disponibilidade de recursos",
+        "description": "Verifica o carregamento de recursos estáticos críticos do site.",
+        "success": "Todos os {{assetsChecked}} recursos carregaram com sucesso ({{availability}}%).",
+        "running": "Verificando recursos estáticos...",
+        "warning": "{{successful}} de {{assetsChecked}} recursos disponíveis ({{availability}}%).",
+        "error": "Recursos críticos indisponíveis - verifique CDN e armazenamento."
+      },
+      "security": {
+        "title": "Cabeçalhos de segurança",
+        "description": "Analisa a presença de cabeçalhos HTTP de segurança essenciais.",
+        "success": "Todos os cabeçalhos de segurança estão configurados (pontuação: {{score}}%).",
+        "running": "Analisando cabeçalhos de segurança...",
+        "warning": "Configuração parcial de segurança (pontuação: {{score}}%) - considere adicionar: {{missing}}.",
+        "error": "Configuração de segurança inadequada ({{presentHeaders}}/{{totalHeaders}} cabeçalhos presentes)."
+      },
+      "performance": {
+        "title": "Análise de performance",
+        "description": "Mede latência e tempo de resposta de endpoints críticos.",
+        "success": "Performance excelente - média de {{averageLatency}}ms (nota {{grade}}).",
+        "running": "Medindo performance dos endpoints...",
+        "warning": "Performance acceptable - média de {{averageLatency}}ms (nota {{grade}}).",
+        "error": "Performance degradada detectada - investigação necessária."
       }
     }
   }
