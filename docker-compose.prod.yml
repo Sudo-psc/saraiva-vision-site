@@ -1,0 +1,72 @@
+# Production overrides for Docker Compose
+# Use with: docker compose -f docker-compose.yml -f docker-compose.prod.yml up
+
+services:
+  # Production frontend optimizations
+  frontend:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Production backend optimizations
+  backend:
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - LOG_LEVEL=warn
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Production nginx with SSL support
+  nginx:
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Production SSL certificates
+      - /etc/letsencrypt/live/saraivavision.com.br:/etc/nginx/ssl:ro
+      # Production logs
+      - /var/log/nginx:/var/log/nginx
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Disable development services
+  frontend-dev:
+    profiles:
+      - disabled
+
+  wordpress:
+    profiles:
+      - disabled
+
+  db:
+    profiles:
+      - disabled

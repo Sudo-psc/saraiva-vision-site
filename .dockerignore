@@ -1,0 +1,114 @@
+# Docker ignore file for Saraiva Vision
+# Reduces build context size and improves build performance
+
+# Git and version control
+.git
+.gitignore
+.gitattributes
+.github/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Development files
+.env.local
+.env.development
+.env.development.local
+.env.test.local
+*.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build artifacts (keep dist for frontend builds)
+dist-old/
+build/
+*.tgz
+*.tar.gz
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Test files
+tests/
+test/
+spec/
+*.spec.js
+*.test.js
+__tests__/
+
+# Deployment scripts (not needed in containers)
+deploy*.sh
+*.sh
+!scripts/generate-apple-icon.mjs
+
+# SSL certificates (mounted as volumes)
+ssl/
+*.pem
+*.crt
+*.key
+
+# WordPress and CMS files (separate container)
+wordpress-local/
+wp/
+*.php
+!wordpress-api-fix.php
+!wp-config-fixed.php
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Configuration backups
+*.backup
+*.bak
+
+# Archive files
+docs/archive/
+
+# Nginx configs (using container-specific configs)
+nginx.conf
+nginx.local.conf
+nginx-configs/
+nginx-configs-backup*/
+
+# Monitoring and tools
+k6-v*/
+memory/
+
+# Environment specific
+.env.mcp

@@ -1,0 +1,51 @@
+# Development overrides for Docker Compose
+# Use with: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  # Development frontend with hot reload
+  frontend-dev:
+    build:
+      context: .
+      dockerfile: infra/docker/frontend/Dockerfile
+      target: builder
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+      - VITE_API_BASE_URL=http://localhost:3001
+    volumes:
+      # Mount source code for hot reload
+      - .:/app
+      - /app/node_modules
+      - /app/dist
+    command: npm run dev -- --host 0.0.0.0
+    networks:
+      - saraiva_network
+
+  # Backend with development configuration
+  backend:
+    environment:
+      - NODE_ENV=development
+      - DEBUG=1
+    volumes:
+      # Mount source for hot reload (if using nodemon)
+      - ./server.js:/app/server.js:ro
+      - ./api:/app/api:ro
+      - ./.env.development:/app/.env.development:ro
+    command: node --watch server.js
+
+  # Skip nginx proxy in development - access services directly
+  nginx:
+    profiles:
+      - disabled
+
+  # Enable WordPress for CMS development
+  wordpress:
+    profiles:
+      - dev
+    ports:
+      - "8083:80"
+
+  db:
+    profiles:
+      - dev

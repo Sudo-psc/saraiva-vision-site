@@ -51,6 +51,19 @@ const server = http.createServer(async (req, res) => {
   }
 
   const parsed = url.parse(req.url, true);
+  
+  // Health check endpoint for Docker health checks
+  if (parsed.pathname === '/health') {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ 
+      status: 'healthy', 
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime() 
+    }));
+    return;
+  }
+  
   // Route API endpoints
   if (parsed.pathname && parsed.pathname.startsWith('/api/')) {
     try {

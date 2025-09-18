@@ -29,7 +29,17 @@
     "audio:duration": "node tools/get-audio-duration.js",
     "images:build": "node tools/img-pipeline.mjs",
     "images:check": "node tools/img-pipeline.mjs check",
-    "images:optimize": "./scripts/optimize-images.sh"
+    "images:optimize": "./scripts/optimize-images.sh",
+    "docker:build": "./scripts/docker-build.sh",
+    "docker:build:dev": "./scripts/docker-build.sh dev",
+    "docker:build:prod": "./scripts/docker-build.sh prod",
+    "docker:deploy": "./scripts/docker-deploy.sh",
+    "docker:deploy:dev": "./scripts/docker-deploy.sh dev",
+    "docker:deploy:prod": "./scripts/docker-deploy.sh prod",
+    "docker:up:dev": "docker compose --profile dev up -d",
+    "docker:up:prod": "docker compose -f docker-compose.yml -f docker-compose.prod.yml --profile prod up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.1",
