@@ -82,7 +82,7 @@ describe('Docker Healthchecks', () => {
       const composeContent = await fs.readFile('docker-compose.yml', 'utf-8');
       const compose = yaml.parse(composeContent);
       
-      expect(compose.version).toBe('3.8');
+      // Docker Compose v3.8+ no longer requires version field
       expect(compose.services).toBeDefined();
       
       // Check all services have healthchecks
@@ -155,7 +155,7 @@ describe('Docker Healthchecks', () => {
       const stagingContent = await fs.readFile('docker-compose.staging.yml', 'utf-8');
       const staging = yaml.parse(stagingContent);
       
-      expect(staging.version).toBe('3.8');
+      // Modern Docker Compose doesn't require version field
       expect(staging.services).toBeDefined();
       
       // Check staging has faster intervals
