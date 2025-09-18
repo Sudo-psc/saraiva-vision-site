@@ -1113,5 +1113,115 @@
     "loggingIn": "Entrando...",
     "loginError": "Erro ao fazer login. Verifique suas credenciais.",
     "backToBlog": "Voltar ao Blog"
+  },
+  "check": {
+    "badge": "Monitoramento de infraestrutura",
+    "title": "Diagnóstico da infraestrutura Saraiva Vision",
+    "subtitle": "Execute verificações em tempo real para validar conectividade, DNS, SSL, serviços WordPress e o subdomínio check.saraivavision.com.br.",
+    "runButton": "Executar diagnósticos",
+    "running": "Executando diagnósticos...",
+    "resetButton": "Limpar resultados",
+    "lastUpdated": "Última execução concluída: {{timestamp}}",
+    "neverRun": "Os diagnósticos ainda não foram executados.",
+    "perCheckUpdated": "Atualizado em {{timestamp}}",
+    "waiting": "Aguardando execução.",
+    "status": {
+      "idle": "Parado",
+      "running": "Em execução",
+      "success": "Operacional",
+      "warning": "Atenção",
+      "error": "Erro"
+    },
+    "seo": {
+      "title": "Diagnóstico de Infraestrutura | Saraiva Vision",
+      "description": "Monitoramento em tempo real da infraestrutura digital da Saraiva Vision: DNS, SSL, API e serviços WordPress.",
+      "keywords": "monitoramento infraestrutura, verificação dns, verificação ssl, saúde api wordpress, saraiva vision"
+    },
+    "messages": {
+      "browserOnly": "Os diagnósticos precisam ser executados em um navegador.",
+      "timeout": "A requisição expirou antes de receber resposta.",
+      "fetchError": "Falha na requisição: {{message}}",
+      "httpError": "Status HTTP inesperado: {{status}}",
+      "opaqueResponse": "Conexão realizada, mas os detalhes foram bloqueados por CORS.",
+      "missingRoutes": "Algumas rotas da API não estão disponíveis: {{missing}}.",
+      "hostMismatch": "Host atual é {{hostname}}. Aponte o DNS para {{expected}} para usar este painel.",
+      "insecureProtocol": "A conexão está usando {{protocol}}. Habilite HTTPS para cobertura completa.",
+      "hostnameUnavailable": "Não foi possível detectar o hostname atual.",
+      "unexpected": "Erro inesperado: {{message}}"
+    },
+    "diagnostics": {
+      "server": {
+        "title": "Disponibilidade do servidor",
+        "description": "Verifica se {{target}} responde em HTTPS.",
+        "success": "O servidor respondeu com sucesso em {{latency}}.",
+        "error": "Não foi possível alcançar {{target}}. Verifique DNS e rede."
+      },
+      "services": {
+        "title": "Serviços WordPress",
+        "description": "Testa a disponibilidade das páginas publicadas via API do WordPress.",
+        "success": "A API retornou {{count}} páginas em {{latency}}.",
+        "warning": "Serviço alcançado, mas não foi possível inspecionar a resposta (provável CORS).",
+        "error": "O endpoint de páginas do WordPress não respondeu corretamente."
+      },
+      "api": {
+        "title": "API de posts/blog",
+        "description": "Solicita os posts mais recentes do WordPress headless.",
+        "success": "Recebido {{count}} post em {{latency}}.",
+        "warning": "Conexão estabelecida, mas os detalhes foram bloqueados.",
+        "error": "O endpoint de posts está indisponível."
+      },
+      "routes": {
+        "title": "Registro de rotas da API",
+        "description": "Valida as rotas REST do WordPress para posts, páginas e categorias.",
+        "success": "Todas as rotas críticas estão registradas ({{totalRoutes}} no total).",
+        "warning": "Rotas REST ausentes: {{missing}}.",
+        "error": "Não foi possível carregar o registro de rotas REST."
+      },
+      "dns": {
+        "title": "Resolução DNS",
+        "description": "Consulta servidores DNS públicos pelos registros A de {{hostname}}.",
+        "success": "DNS retornou {{count}} registro(s).",
+        "warning": "Nenhum registro A foi retornado.",
+        "error": "Falha na consulta DNS.",
+        "recordsLabel": "IPs resolvidos"
+      },
+      "ip": {
+        "title": "Endereços IP",
+        "description": "Coleta registros IPv4 e IPv6 de {{hostname}}.",
+        "success": "Endereços IP ativos resolvidos.",
+        "warning": "Nenhum endereço IP foi retornado pelo DNS.",
+        "error": "Falha ao resolver os endereços IP.",
+        "ipv4Label": "IPv4",
+        "ipv6Label": "IPv6"
+      },
+      "ssl": {
+        "title": "Handshake SSL",
+        "description": "Garante que {{target}} aceita conexões HTTPS.",
+        "success": "Conexão segura estabelecida.",
+        "error": "Falha na conexão HTTPS."
+      },
+      "subdomain": {
+        "title": "Vinculação do subdomínio",
+        "description": "Confirma que o painel está servido por {{expected}}.",
+        "success": "Painel servido a partir de {{hostname}}.",
+        "warning": "Subdomínio ainda não aponta para {{expected}}."
+      },
+      "php": {
+        "title": "Rotas PHP / bootstrap do WordPress",
+        "description": "Chama o endpoint de bootstrap REST para confirmar o roteamento em PHP.",
+        "success": "Namespace {{namespace}} respondeu ({{routes}} rotas disponíveis).",
+        "warning": "Endpoint acessível, mas sem acesso aos detalhes.",
+        "error": "Não foi possível acessar o endpoint de roteamento PHP.",
+        "routesLabel": "Rotas expostas: {{routes}}"
+      },
+      "nginx": {
+        "title": "Cabeçalhos do Nginx",
+        "description": "Inspeciona os cabeçalhos da resposta no endpoint da API do WordPress.",
+        "success": "Cabeçalho do servidor indica {{server}}.",
+        "warning": "Cabeçalhos ocultos por CORS; confirme a exposição no servidor.",
+        "error": "Não foi possível inspecionar os cabeçalhos do Nginx.",
+        "serverLabel": "Cabeçalho Server: {{server}}"
+      }
+    }
   }
 }
