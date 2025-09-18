@@ -7,6 +7,7 @@ import { getServiceIcon } from '@/components/icons/ServiceIcons';
 import { debounce } from '@/utils/componentUtils';
 import { smoothScrollHorizontal } from '@/utils/scrollUtils';
 import { useAutoplayCarousel } from '@/hooks/useAutoplayCarousel';
+import '@/styles/services-fix.css';
 
 const ServiceCard = React.forwardRef(({ service, index, lazy = true }, ref) => {
   const { t } = useTranslation();
@@ -96,7 +97,13 @@ const ServiceCard = React.forwardRef(({ service, index, lazy = true }, ref) => {
       {/* Saiba mais link styled as button */}
       <Link
         to={`/servicos/${service.id}`}
+        onClick={(e) => {
+          // Garantir que o link funcione mesmo durante drag
+          e.stopPropagation();
+          console.log(`Navigating to service: ${service.id}`);
+        }}
         className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-slate-700 bg-gradient-to-r from-slate-100 to-slate-50 hover:from-blue-50 hover:to-cyan-50 border border-slate-200/70 hover:border-blue-300/60 shadow-sm hover:shadow-md transition-all group/button overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+        style={{ pointerEvents: 'auto', zIndex: 10 }}
       >
         <span className="relative z-10 group-hover/button:text-blue-700 transition-colors">{t('services.learn_more')}</span>
         <ArrowRight className="w-4 h-4 relative z-10 transition-transform group-hover/button:translate-x-1" />
@@ -295,6 +302,19 @@ const Services = ({ full = false, autoplay = true }) => {
     const el = scrollerRef.current;
     if (!el) return;
 
+    // IMPORTANTE: Não iniciar drag se o clique foi em um link ou botão
+    const target = e.target;
+    const isInteractiveElement = 
+      target.tagName === 'A' || 
+      target.tagName === 'BUTTON' ||
+      target.closest('a') || 
+      target.closest('button');
+    
+    if (isInteractiveElement) {
+      // Permitir que links e botões funcionem normalmente
+      return;
+    }
+
     // Melhor detecção touch vs mouse
     const isTouch = e.pointerType === 'touch' || e.type === 'touchstart';
 
@@ -474,7 +494,7 @@ const Services = ({ full = false, autoplay = true }) => {
           <motion.div
             ref={scrollerRef}
             tabIndex={0}
-            className={`horizontal-scroll perspective-1000 flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-proximity scrollbar-none cursor-grab active:cursor-grabbing select-none ${isDragging ? 'dragging' : ''}`}
+            className={`horizontal-scroll perspective-1000 flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-proximity scrollbar-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'} select-none`}
             style={{
               scrollSnapType: isDragging ? 'none' : 'x proximity',
               isolation: 'isolate',
