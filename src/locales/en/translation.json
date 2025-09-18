@@ -1051,7 +1051,15 @@
       "hostMismatch": "Current host is {{hostname}}. Point the DNS to {{expected}} to use this dashboard.",
       "insecureProtocol": "Connection is using {{protocol}}. Enable HTTPS for full coverage.",
       "hostnameUnavailable": "Could not detect the current hostname.",
-      "unexpected": "Unexpected error: {{message}}"
+      "unexpected": "Unexpected error: {{message}}",
+      "partialAvailability": "{{successful}} of {{total}} resources are available.",
+      "allAssetsFailed": "All test resources failed to load.",
+      "missingSecurity": "Missing security headers: {{missing}}.",
+      "lowSecurity": "Only {{count}} security headers are configured.",
+      "corsRestricted": "Server reachable but headers blocked by CORS.",
+      "slowPerformance": "Degraded performance detected.",
+      "partialPerformance": "{{successful}} of {{total}} performance tests succeeded.",
+      "performanceTestFailed": "All performance tests failed."
     },
     "diagnostics": {
       "server": {
@@ -1125,6 +1133,34 @@
         "warning": "Headers hidden by CORS; confirm exposure on the server.",
         "error": "Unable to inspect Nginx headers.",
         "serverLabel": "Server header: {{server}}"
+      },
+      "database": {
+        "title": "Database connectivity",
+        "description": "Tests database response through WordPress API.",
+        "success": "Database responded in {{latency}} (last modified: {{lastModified}}).",
+        "warning": "Connection established but couldn't verify data.",
+        "error": "Failed to connect to database via API."
+      },
+      "assets": {
+        "title": "Asset availability",
+        "description": "Checks loading of critical static site resources.",
+        "success": "All {{assetsChecked}} assets loaded successfully ({{availability}}%).",
+        "warning": "{{successful}} of {{assetsChecked}} assets available ({{availability}}%).",
+        "error": "Critical assets unavailable - check CDN and storage."
+      },
+      "security": {
+        "title": "Security headers",
+        "description": "Analyzes presence of essential HTTP security headers.",
+        "success": "All security headers are configured (score: {{score}}%).",
+        "warning": "Partial security configuration (score: {{score}}%) - consider adding: {{missing}}.",
+        "error": "Inadequate security configuration ({{presentHeaders}}/{{totalHeaders}} headers present)."
+      },
+      "performance": {
+        "title": "Performance analysis",
+        "description": "Measures latency and response time of critical endpoints.",
+        "success": "Excellent performance - average {{averageLatency}}ms (grade {{grade}}).",
+        "warning": "Acceptable performance - average {{averageLatency}}ms (grade {{grade}}).",
+        "error": "Degraded performance detected - investigation required."
       }
     }
   }
