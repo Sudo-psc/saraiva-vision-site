@@ -6,7 +6,7 @@ import { Calendar, ArrowRight, Eye } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { safeOpenUrl } from '@/utils/safeNavigation';
-import { useHeroImagePreload } from '@/hooks/useResourcePreload';
+
 import { smoothScrollTo } from '@/utils/scrollUtils';
 import OptimizedPicture from '@/components/ui/OptimizedPicture';
 
@@ -14,8 +14,7 @@ const Hero = () => {
   const { t } = useTranslation();
   const { openFloatingCTA } = useWhatsApp();
 
-  // Preload hero image only on homepage
-  useHeroImagePreload();
+  
 
   const handleAgendarClick = () => {
     // Use validated scheduling URL with enhanced error handling

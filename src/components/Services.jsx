@@ -7,6 +7,7 @@ import { getServiceIcon } from '@/components/icons/ServiceIcons';
 import { debounce } from '@/utils/componentUtils';
 import { smoothScrollHorizontal } from '@/utils/scrollUtils';
 import { useAutoplayCarousel } from '@/hooks/useAutoplayCarousel';
+import '@/styles/services-fix.css';
 
 const ServiceCard = React.forwardRef(({ service, index, lazy = true }, ref) => {
   const { t } = useTranslation();
@@ -96,7 +97,13 @@ const ServiceCard = React.forwardRef(({ service, index, lazy = true }, ref) => {
       {/* Saiba mais link styled as button */}
       <Link
         to={`/servicos/${service.id}`}
+        onClick={(e) => {
+          // Garantir que o link funcione mesmo durante drag
+          e.stopPropagation();
+          console.log(`Navigating to service: ${service.id}`);
+        }}
         className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-slate-700 bg-gradient-to-r from-slate-100 to-slate-50 hover:from-blue-50 hover:to-cyan-50 border border-slate-200/70 hover:border-blue-300/60 shadow-sm hover:shadow-md transition-all group/button overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+        style={{ pointerEvents: 'auto', zIndex: 10 }}
       >
         <span className="relative z-10 group-hover/button:text-blue-700 transition-colors">{t('services.learn_more')}</span>
         <ArrowRight className="w-4 h-4 relative z-10 transition-transform group-hover/button:translate-x-1" />
@@ -116,6 +123,7 @@ const Services = ({ full = false, autoplay = true }) => {
   const { t } = useTranslation();
   const [serviceItems, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
   
   const loadServices = useCallback(async () => {
     setLoading(true);
@@ -148,9 +156,9 @@ const Services = ({ full = false, autoplay = true }) => {
   const dragStartXRef = useRef(0);
   const scrollStartRef = useRef(0);
 
-  // Autoplay carousel hook integration
+  // Autoplay carousel hook integration - só inicializa quando há serviços
   const autoplayCarousel = useAutoplayCarousel({
-    totalSlides: serviceItems.length,
+    totalSlides: Math.max(1, serviceItems.length), // Garante que nunca seja 0
     config: {
       defaultInterval: 4500,
       pauseOnHover: true,
@@ -158,7 +166,7 @@ const Services = ({ full = false, autoplay = true }) => {
       respectReducedMotion: true
     },
     onSlideChange: (newIndex, direction) => {
-      if (scrollerRef.current) {
+      if (scrollerRef.current && serviceItems.length > 0) {
         const targetScroll = newIndex * cardWidthRef.current;
         smoothScrollHorizontal(scrollerRef.current, targetScroll, 300);
       }
@@ -239,7 +247,7 @@ const Services = ({ full = false, autoplay = true }) => {
     const clamped = Math.max(0, Math.min(serviceItems.length - 1, raw));
     // Update autoplay hook instead of local state
     if (clamped !== currentIndex) {
-      autoplayCarousel.goToSlide(clamped);
+      autoplayCarousel.goTo(clamped);
     }
   }, [serviceItems.length, currentIndex, autoplayCarousel]);
 
@@ -254,7 +262,7 @@ const Services = ({ full = false, autoplay = true }) => {
     });
 
     // Update autoplay hook
-    autoplayCarousel.goToSlide(i);
+    autoplayCarousel.goTo(i);
   }, [autoplayCarousel]);
 
   const scrollByAmount = useCallback((dir = 1) => {
@@ -293,6 +301,19 @@ const Services = ({ full = false, autoplay = true }) => {
   const onPointerDown = useCallback((e) => {
     const el = scrollerRef.current;
     if (!el) return;
+
+    // IMPORTANTE: Não iniciar drag se o clique foi em um link ou botão
+    const target = e.target;
+    const isInteractiveElement = 
+      target.tagName === 'A' || 
+      target.tagName === 'BUTTON' ||
+      target.closest('a') || 
+      target.closest('button');
+    
+    if (isInteractiveElement) {
+      // Permitir que links e botões funcionem normalmente
+      return;
+    }
 
     // Melhor detecção touch vs mouse
     const isTouch = e.pointerType === 'touch' || e.type === 'touchstart';
@@ -355,14 +376,14 @@ const Services = ({ full = false, autoplay = true }) => {
     return () => el.removeEventListener('scroll', handleScroll);
   }, [serviceItems.length, updateIndex, debouncedSnap]);
 
-  // Start autoplay if enabled
+  // Start autoplay if enabled - apenas quando há serviços carregados
   useEffect(() => {
-    if (autoplay && autoplayCarousel.isEnabled) {
+    if (autoplay && autoplayCarousel.isEnabled && serviceItems.length > 0 && !loading) {
       autoplayCarousel.play();
     } else {
       autoplayCarousel.pause();
     }
-  }, [autoplay, autoplayCarousel]);
+  }, [autoplay, autoplayCarousel, serviceItems.length, loading]);
 
   // Use autoplay hook's built-in interaction handlers
   useEffect(() => {
@@ -473,7 +494,7 @@ const Services = ({ full = false, autoplay = true }) => {
           <motion.div
             ref={scrollerRef}
             tabIndex={0}
-            className={`horizontal-scroll perspective-1000 flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-proximity scrollbar-none cursor-grab active:cursor-grabbing select-none ${isDragging ? 'dragging' : ''}`}
+            className={`horizontal-scroll perspective-1000 flex gap-6 lg:gap-8 overflow-x-auto pb-4 pt-2 snap-x snap-proximity scrollbar-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'} select-none`}
             style={{
               scrollSnapType: isDragging ? 'none' : 'x proximity',
               isolation: 'isolate',
@@ -508,7 +529,7 @@ const Services = ({ full = false, autoplay = true }) => {
                 role="tab"
                 aria-label={t('services.go_to_page', { index: i + 1, defaultValue: `Ir para página ${i + 1}` })}
                 aria-selected={i === currentPage}
-                onClick={() => autoplayCarousel.goToSlide(i * Math.max(1, itemsPerView))}
+                onClick={() => autoplayCarousel.goTo(i * Math.max(1, itemsPerView))}
                 className={`h-2.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 ${i === currentPage ? 'bg-blue-600 w-6 shadow' : 'bg-slate-300 hover:bg-slate-400 w-2.5'}`}
               />
             ))}

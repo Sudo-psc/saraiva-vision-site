@@ -76,13 +76,26 @@ define('WP_DEBUG_DISPLAY', false);
 // Enable CORS for API
 define('WP_CORS_ENABLED', true);
 
-// WordPress URLs
-define('WP_HOME', 'http://localhost:8083');
-define('WP_SITEURL', 'http://localhost:8083');
+// WordPress URLs - configured for nginx proxy
+define('WP_HOME', 'http://localhost');
+define('WP_SITEURL', 'http://localhost');
+
+// Force admin SSL and cookies for proxy
+define('FORCE_SSL_ADMIN', false);
+define('COOKIE_DOMAIN', 'localhost');
 
 // Memory and execution limits
 ini_set('memory_limit', '512M');
 ini_set('max_execution_time', 300);
+
+// Proxy configuration
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+    $_SERVER['HTTPS'] = 'on';
+}
+
+// Fix admin URL redirects for proxy
+define('WP_ADMIN_DIR', 'wp-admin');
+define('ADMIN_COOKIE_PATH', '/wp-admin');
 
 /* Add any custom values between this line and the "stop editing" line. */
 

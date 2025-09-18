@@ -7,7 +7,7 @@
   - API local (/api/): Network First com fallback ao cache (quando possível)
 */
 
-const SW_VERSION = 'v1.0.3';
+const SW_VERSION = 'v1.0.4'; // Fixed: Handling partial responses (206)
 const RUNTIME_CACHE = `sv-runtime-${SW_VERSION}`;
 const ASSETS_CACHE = `sv-assets-${SW_VERSION}`;
 const CORE_CACHE = `sv-core-${SW_VERSION}`;
@@ -96,8 +96,8 @@ self.addEventListener('fetch', (event) => {
       (async () => {
         try {
           const fresh = await fetch(request);
-          // Only cache successful responses
-          if (fresh.status === 200) {
+          // Only cache successful responses (exclude partial responses)
+          if (fresh.status === 200 && fresh.type !== 'opaque') {
             const cache = await caches.open(RUNTIME_CACHE);
             cache.put('/index.html', fresh.clone());
           }
@@ -125,7 +125,8 @@ self.addEventListener('fetch', (event) => {
         try {
           const cache = await caches.open(RUNTIME_CACHE);
           const fresh = await fetch(request);
-          if (fresh.status === 200) {
+          // Exclude partial responses (206) from caching
+          if (fresh.status === 200 && fresh.type !== 'opaque') {
             cache.put(request, fresh.clone());
           }
           return fresh;
@@ -156,8 +157,12 @@ self.addEventListener('fetch', (event) => {
           const cached = await cache.match(request);
           const fetchAndUpdate = fetch(request)
             .then((response) => {
-              if (response.status === 200) {
+              // Exclude partial responses (206) and opaque responses from caching
+              if (response.status === 200 && response.type !== 'opaque') {
                 cache.put(request, response.clone());
+              } else if (response.status === 206) {
+                // Return partial response without caching
+                console.warn('SW: Partial response (206) not cached for:', request.url);
               }
               return response;
             })
@@ -181,8 +186,12 @@ self.addEventListener('fetch', (event) => {
         if (cached) return cached;
 
         const fresh = await fetch(request);
-        if (fresh.status === 200) {
+        // Exclude partial responses (206) and opaque responses from caching
+        if (fresh.status === 200 && fresh.type !== 'opaque') {
           cache.put(request, fresh.clone());
+        } else if (fresh.status === 206) {
+          // Log partial response without caching
+          console.warn('SW: Partial response (206) not cached for:', request.url);
         }
         return fresh;
       } catch (error) {

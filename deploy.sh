@@ -245,50 +245,7 @@ if [[ "${EUID:-$(id -u)}" -ne 0 ]]; then
   echo "❌ Run as root (sudo) to manage files under /var and nginx"; exit 1
 fi
 
-if $RUN_DIAGNOSTICS; then
-  collect_diagnostics
-else
-  logw DIAG "Skipping diagnostics (--skip-diagnostics)"
-  echo "⏭  Pulando diagnósticos (--skip-diagnostics)"
-fi
-
-# Optional: respect .nvmrc if available to ensure correct Node for build
-if [[ "$NO_BUILD" = false ]]; then
-  if [[ -f "$HOME/.nvm/nvm.sh" ]]; then
-    # shellcheck disable=SC1090
-    . "$HOME/.nvm/nvm.sh" || true
-  elif [[ -f "/etc/profile.d/nvm.sh" ]]; then
-    # shellcheck disable=SC1091
-    . "/etc/profile.d/nvm.sh" || true
-  fi
-  if command -v nvm >/dev/null 2>&1 && [[ -f .nvmrc ]]; then
-    logi BUILD "Using Node $(cat .nvmrc) via nvm"
-    echo "🔧 Using Node $(cat .nvmrc) via nvm"; nvm install >/dev/null || true; nvm use || true
-  fi
-fi
-
-run() {
-  if $DRY_RUN;
-  then
-    echo "[dry-run] $@"
-  else
-    eval "$@"
-  fi
-}
-
-# Command runner preserving arguments (for git/gh)
-run_cmd() {
-  if $DRY_RUN; then
-    printf "[dry-run]"
-    for arg in "$@"; do
-      printf " %q" "$arg"
-    done
-    printf "\n"
-    return 0
-  fi
-  "$@"
-}
-
+# Function definitions (must be before usage)
 collect_diagnostics() {
   logi DIAG "Collecting deployment diagnostics"
   echo "🩺 Coletando diagnósticos do ambiente"
@@ -345,6 +302,51 @@ collect_diagnostics() {
     [[ -n "$nginx_version" ]] && echo "   • $nginx_version"
   fi
 }
+
+run() {
+  if $DRY_RUN;
+  then
+    echo "[dry-run] $@"
+  else
+    eval "$@"
+  fi
+}
+
+# Command runner preserving arguments (for git/gh)
+run_cmd() {
+  if $DRY_RUN; then
+    printf "[dry-run]"
+    for arg in "$@"; do
+      printf " %q" "$arg"
+    done
+    printf "\n"
+    return 0
+  fi
+  "$@"
+}
+
+# Main execution flow
+if $RUN_DIAGNOSTICS; then
+  collect_diagnostics
+else
+  logw DIAG "Skipping diagnostics (--skip-diagnostics)"
+  echo "⏭  Pulando diagnósticos (--skip-diagnostics)"
+fi
+
+# Optional: respect .nvmrc if available to ensure correct Node for build
+if [[ "$NO_BUILD" = false ]]; then
+  if [[ -f "$HOME/.nvm/nvm.sh" ]]; then
+    # shellcheck disable=SC1090
+    . "$HOME/.nvm/nvm.sh" || true
+  elif [[ -f "/etc/profile.d/nvm.sh" ]]; then
+    # shellcheck disable=SC1091
+    . "/etc/profile.d/nvm.sh" || true
+  fi
+  if command -v nvm >/dev/null 2>&1 && [[ -f .nvmrc ]]; then
+    logi BUILD "Using Node $(cat .nvmrc) via nvm"
+    echo "🔧 Using Node $(cat .nvmrc) via nvm"; nvm install >/dev/null || true; nvm use || true
+  fi
+fi
 
 run_quality_gates() {
   logi TEST "Running lint/tests before build"
@@ -814,6 +816,12 @@ fi
 if [[ "$SKIP_NGINX" = false ]]; then
   logi NGINX "Ensuring nginx site configuration is linked"
   echo "⚙️  Ensuring nginx site configuration is linked"
+
+  logi NGINX "Syncing Nginx includes"
+  echo "📂 Syncing Nginx includes"
+  run "mkdir -p /etc/nginx/nginx-configs/includes"
+  run "rsync -a --delete '${PROJECT_ROOT}/nginx-configs/includes/' '/etc/nginx/nginx-configs/includes/'"
+
   # Copy config only if changed
   COPY_NGINX=false
   if [[ -f "$NGINX_SITE_CONFIG_SRC" ]]; then
