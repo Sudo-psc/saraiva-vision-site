@@ -1,0 +1,207 @@
+# Docker Compose Service Contract
+# Defines the expected structure and behavior for all Docker Compose services
+
+version: '3.8'
+
+# Service Contract Template
+# All services must implement this contract structure
+
+x-service-contract: &service-contract
+  # Build Configuration
+  build:
+    context: string  # Build context path
+    dockerfile: string  # Dockerfile name
+    args:
+      - NODE_ENV: string
+      - BUILD_VERSION: string
+
+  # Container Configuration
+  container_name: string  # Predictable container naming
+  restart: string  # Restart policy (always, unless-stopped, on-failure)
+  user: string  # Non-root user (required for security)
+
+  # Resource Limits (required for production)
+  deploy:
+    resources:
+      limits:
+        cpus: string  # CPU limit (e.g., '0.5')
+        memory: string  # Memory limit (e.g., '256M')
+      reservations:
+        cpus: string  # CPU reservation
+        memory: string  # Memory reservation
+
+  # Health Check Configuration (required)
+  healthcheck:
+    test: array  # Health check command
+    interval: string  # Check interval (e.g., '30s')
+    timeout: string  # Timeout (e.g., '10s')
+    retries: number  # Retry count
+    start_period: string  # Initial wait (e.g., '40s')
+
+  # Environment Configuration
+  environment:
+    - NODE_ENV: string
+    - LOG_LEVEL: string
+
+  # Network Configuration
+  networks:
+    - internal  # All services join internal network
+
+  # Volume Configuration
+  volumes:
+    - type: string  # bind, volume, tmpfs
+      source: string  # Host path or volume name
+      target: string  # Container path
+      read_only: boolean  # Security setting
+
+# Required Network Configuration
+networks:
+  internal:
+    driver: bridge
+    internal: true  # No external access except via proxy
+  external:
+    driver: bridge
+    internal: false  # Only for Nginx
+
+# Service-Specific Contracts
+
+# Frontend Service Contract
+frontend-contract:
+  <<: *service-contract
+  build:
+    context: .
+    dockerfile: Dockerfile.frontend
+    target: development  # or production
+  ports:
+    - "3002:3002"  # Development only
+  environment:
+    - VITE_API_URL=http://api:3001
+  healthcheck:
+    test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3002/health"]
+  depends_on:
+    api:
+      condition: service_healthy
+
+# API Service Contract
+api-contract:
+  <<: *service-contract
+  build:
+    context: .
+    dockerfile: Dockerfile.api
+  expose:
+    - "3001"  # Internal only
+  environment:
+    - NODE_ENV=development
+    - PORT=3001
+  healthcheck:
+    test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/health"]
+  volumes:
+    - type: bind
+      source: ./api
+      target: /app/api
+      read_only: false  # Development only
+
+# WordPress Service Contract
+wordpress-contract:
+  <<: *service-contract
+  build:
+    context: ./wordpress-local
+    dockerfile: ../Dockerfile.wordpress
+  expose:
+    - "9000"  # PHP-FPM port
+  environment:
+    - WORDPRESS_DB_NAME=wordpress
+    - WORDPRESS_TABLE_PREFIX=wp_
+  healthcheck:
+    test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
+  volumes:
+    - type: volume
+      source: wordpress_data
+      target: /var/www/html/wp-content/uploads
+    - type: volume
+      source: wordpress_db
+      target: /var/www/html/wp-content/databases
+
+# Nginx Service Contract
+nginx-contract:
+  <<: *service-contract
+  build:
+    context: .
+    dockerfile: Dockerfile.nginx
+  ports:
+    - "80:80"
+    - "443:443"
+  environment:
+    - NGINX_HOST=saraivavision.com.br
+  healthcheck:
+    test: ["CMD", "nginx", "-t"]
+  depends_on:
+    frontend:
+      condition: service_healthy
+    api:
+      condition: service_healthy
+    wordpress:
+      condition: service_healthy
+  volumes:
+    - type: bind
+      source: /etc/letsencrypt
+      target: /etc/letsencrypt
+      read_only: true
+  networks:
+    - internal
+    - external
+
+# Volume Contracts
+volumes:
+  # Development volumes
+  frontend_node_modules:
+    driver: local
+  api_node_modules:
+    driver: local
+
+  # Production volumes
+  wordpress_data:
+    driver: local
+  wordpress_db:
+    driver: local
+  nginx_logs:
+    driver: local
+
+# Security Requirements Contract
+security-requirements:
+  # All services must:
+  user: "non-root-user"  # Never run as root
+  read_only: true  # Root filesystem read-only where possible
+  no_new_privileges: true  # Prevent privilege escalation
+
+  # Secrets handling:
+  secrets:
+    - source: api_secrets
+      target: /run/secrets/api
+    - source: wp_secrets
+      target: /run/secrets/wordpress
+
+# Environment-Specific Overrides
+development-overrides:
+  # Volume mounts for live editing
+  volumes:
+    - type: bind
+      source: ./src
+      target: /app/src
+  # Debug settings
+  environment:
+    - DEBUG=true
+    - LOG_LEVEL=debug
+
+production-overrides:
+  # Built-in code (no volume mounts)
+  volumes: []
+  # Production settings
+  environment:
+    - DEBUG=false
+    - LOG_LEVEL=info
+  # Stricter resource limits
+  deploy:
+    resources:
+      limits:
+        memory: "256M"  # Tighter limits

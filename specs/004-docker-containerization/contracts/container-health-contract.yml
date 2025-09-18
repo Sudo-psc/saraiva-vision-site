@@ -1,0 +1,175 @@
+openapi: 3.0.3
+info:
+  title: Container Health Check Contract
+  description: Standardized health check endpoints for all containerized services
+  version: 1.0.0
+
+paths:
+  /health:
+    get:
+      summary: Basic health check
+      description: Returns service health status
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                  - timestamp
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy, unhealthy]
+                  timestamp:
+                    type: string
+                    format: date-time
+                  uptime:
+                    type: number
+                    description: Service uptime in seconds
+                  version:
+                    type: string
+                    description: Service version
+                example:
+                  status: healthy
+                  timestamp: "2025-09-18T10:30:00Z"
+                  uptime: 3600
+                  version: "2.1.0"
+        '503':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                  - timestamp
+                  - error
+                properties:
+                  status:
+                    type: string
+                    const: unhealthy
+                  timestamp:
+                    type: string
+                    format: date-time
+                  error:
+                    type: string
+                    description: Error description
+                example:
+                  status: unhealthy
+                  timestamp: "2025-09-18T10:30:00Z"
+                  error: "Database connection failed"
+
+  /health/ready:
+    get:
+      summary: Readiness probe
+      description: Returns whether service is ready to accept traffic
+      responses:
+        '200':
+          description: Service is ready
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - ready
+                properties:
+                  ready:
+                    type: boolean
+                    const: true
+                  dependencies:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        status:
+                          type: string
+                          enum: [connected, disconnected]
+                example:
+                  ready: true
+                  dependencies:
+                    - name: database
+                      status: connected
+        '503':
+          description: Service is not ready
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - ready
+                properties:
+                  ready:
+                    type: boolean
+                    const: false
+                  reason:
+                    type: string
+                example:
+                  ready: false
+                  reason: "Waiting for database connection"
+
+  /health/live:
+    get:
+      summary: Liveness probe
+      description: Returns whether service is alive and should not be restarted
+      responses:
+        '200':
+          description: Service is alive
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - alive
+                properties:
+                  alive:
+                    type: boolean
+                    const: true
+                  last_activity:
+                    type: string
+                    format: date-time
+                example:
+                  alive: true
+                  last_activity: "2025-09-18T10:29:45Z"
+        '503':
+          description: Service should be restarted
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - alive
+                properties:
+                  alive:
+                    type: boolean
+                    const: false
+                  reason:
+                    type: string
+                example:
+                  alive: false
+                  reason: "Memory leak detected"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy]
+        timestamp:
+          type: string
+          format: date-time
+        uptime:
+          type: number
+        version:
+          type: string
+        error:
+          type: string

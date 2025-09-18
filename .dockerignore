@@ -1,0 +1,99 @@
+# Version control
+.git
+.gitignore
+.github
+
+# Dependencies (will be installed in container)
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts (will be built in container)
+dist
+build
+coverage
+.nyc_output
+
+# Environment files (handled via Docker secrets/env)
+.env*
+!.env.example
+
+# Documentation (not needed in containers)
+*.md
+docs/
+specs/
+
+# Test files (not needed in production containers)
+tests/
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+cypress/
+playwright-report/
+test-results/
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary files
+tmp/
+temp/
+
+# WordPress specific (for WordPress container)
+wordpress-local/wp-content/uploads/*
+!wordpress-local/wp-content/uploads/.gitkeep
+wordpress-local/wp-content/cache/
+wordpress-local/wp-content/databases/*.sqlite
+!wordpress-local/wp-content/databases/.gitkeep
+
+# Build tools
+.cache
+.parcel-cache
+
+# Deployment and server files
+deploy.sh
+nginx*.conf
+!nginx-configs/
+
+# Backup files
+*.bak
+*.backup
+
+# Local development
+.nvmrc
+.dockerignore
+
+# CI/CD
+.gitlab-ci.yml
+.travis.yml
+circle.yml
+
+# Package managers
+package-lock.json
+yarn.lock
+!package.json

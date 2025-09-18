@@ -1,0 +1,107 @@
+# API Dockerfile for Saraiva Vision Node.js Backend
+# Multi-stage build for optimized production container
+
+# Build stage
+FROM node:20-alpine AS build
+
+# Set working directory
+WORKDIR /app
+
+# Add non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 -G nodejs
+
+# Install build dependencies
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    libc6-compat \
+    curl
+
+# Copy package files first for better layer caching
+COPY package.json package-lock.json ./
+
+# Install dependencies
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy API source code and configuration
+COPY server.js ./
+COPY api/ ./api/
+COPY lib/ ./lib/
+COPY .env.docker .env
+
+# Verify required files exist
+RUN test -f server.js && \
+    test -d api && \
+    ls -la api/
+
+# Production stage
+FROM node:20-alpine AS production
+
+# Install security updates and runtime dependencies
+RUN apk upgrade --no-cache && \
+    apk add --no-cache \
+    curl \
+    tini \
+    dumb-init
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 -G nodejs
+
+# Set working directory
+WORKDIR /app
+
+# Copy application from build stage
+COPY --from=build --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --from=build --chown=nodejs:nodejs /app/server.js ./
+COPY --from=build --chown=nodejs:nodejs /app/api ./api
+COPY --from=build --chown=nodejs:nodejs /app/lib ./lib
+COPY --from=build --chown=nodejs:nodejs /app/.env ./
+
+# Create logs directory
+RUN mkdir -p /app/logs && \
+    chown -R nodejs:nodejs /app/logs
+
+# Create health check script
+RUN echo '#!/bin/sh' > /usr/local/bin/health-check.sh && \
+    echo 'curl -f http://localhost:3001/api/health || exit 1' >> /usr/local/bin/health-check.sh && \
+    chmod +x /usr/local/bin/health-check.sh
+
+# Security hardening
+RUN rm -rf /var/cache/apk/* && \
+    rm -rf /tmp/* && \
+    rm -rf /usr/share/man/* && \
+    rm -rf /usr/share/doc/* && \
+    rm -rf /root/.npm
+
+# Set proper permissions
+RUN chown -R nodejs:nodejs /app
+
+# Switch to non-root user
+USER nodejs
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3001
+ENV HOST=0.0.0.0
+
+# Expose the port the app runs on
+EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD /usr/local/bin/health-check.sh
+
+# Use dumb-init for proper signal handling
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+
+# Start the API server
+CMD ["node", "server.js"]
+
+# Metadata
+LABEL maintainer="Saraiva Vision Development Team"
+LABEL description="API container for Saraiva Vision medical website backend"
+LABEL version="1.0.0"
+LABEL service="api"

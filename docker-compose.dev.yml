@@ -1,0 +1,199 @@
+# Docker Compose override for development environment
+# Run with: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+version: '3.8'
+
+services:
+  # Frontend Development Overrides
+  frontend:
+    build:
+      target: build  # Use build stage for development
+      cache_from:
+        - node:20-alpine
+    ports:
+      - "3002:3002"
+      - "5173:5173"  # Vite dev server port
+    volumes:
+      # Mount source code for hot reload
+      - ./src:/app/src:cached
+      - ./public:/app/public:cached
+      - ./index.html:/app/index.html:cached
+      - ./vite.config.js:/app/vite.config.js:cached
+      - ./package.json:/app/package.json:cached
+      # Node modules optimization for development
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_DEV_MODE=true
+      - CHOKIDAR_USEPOLLING=true  # For Windows/WSL compatibility
+      - WATCHPACK_POLLING=true
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5173"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'     # More CPU for development builds
+          memory: 512M    # More memory for development
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+  # API Development Overrides
+  api:
+    volumes:
+      # Mount source code for development
+      - ./server.js:/app/server.js:cached
+      - ./api:/app/api:cached
+      - ./lib:/app/lib:cached
+      - .env.local:/app/.env:cached  # Use local env for development
+      - ./package.json:/app/package.json:cached
+      # Node modules optimization
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DEBUG=*  # Enable debug logging
+      - LOG_LEVEL=debug
+    command: ["node", "--inspect=0.0.0.0:9229", "server.js"]  # Enable debugging
+    ports:
+      - "3001:3001"
+      - "9229:9229"  # Node.js debugging port
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+  # WordPress Development Overrides
+  wordpress:
+    volumes:
+      # Mount WordPress source for development
+      - ./wordpress-local:/var/www/html:cached
+      # Separate volume for uploads in development
+      - wordpress-uploads-dev:/var/www/html/wp-content/uploads
+    environment:
+      - WORDPRESS_DEBUG=true
+      - WP_DEBUG=true
+      - WP_DEBUG_LOG=true
+      - WP_DEBUG_DISPLAY=true
+      - SCRIPT_DEBUG=true
+      - SAVEQUERIES=true
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1024M  # More memory for development
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  # Nginx Development Overrides
+  nginx:
+    volumes:
+      # Mount nginx configs for live editing
+      - ./nginx-configs:/etc/nginx/conf.d:cached
+      - ./nginx-configs/development.conf:/etc/nginx/nginx.conf:cached
+    environment:
+      - NGINX_DEBUG=true
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 256M
+        reservations:
+          cpus: '0.2'
+          memory: 128M
+
+  # Development Tools Container
+  dev-tools:
+    image: node:20-alpine
+    container_name: saraiva-dev-tools
+    working_dir: /workspace
+    volumes:
+      - .:/workspace:cached
+      - /workspace/node_modules
+    networks:
+      - frontend-network
+      - backend-network
+    environment:
+      - NODE_ENV=development
+    command: >
+      sh -c "
+        echo 'Development tools container ready'
+        npm install -g nodemon concurrently
+        tail -f /dev/null
+      "
+    profiles:
+      - dev-tools
+    labels:
+      - "com.saraivavision.service=dev-tools"
+      - "com.saraivavision.environment=development"
+
+  # Database Administration (phpMyAdmin alternative for SQLite)
+  adminer:
+    image: adminer:4.8.1
+    container_name: saraiva-adminer
+    hostname: adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - database-network
+    environment:
+      - ADMINER_DEFAULT_SERVER=sqlite
+      - ADMINER_DESIGN=pepa-linha-dark
+    profiles:
+      - dev-tools
+    labels:
+      - "com.saraivavision.service=adminer"
+      - "com.saraivavision.environment=development"
+
+  # Remove backup service in development
+  backup:
+    profiles:
+      - production
+
+# Development-specific volumes
+volumes:
+  wordpress-uploads-dev:
+    name: saraiva-wordpress-uploads-dev
+    driver: local
+
+# Development-specific networks with debugging
+networks:
+  frontend-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
+      com.docker.network.bridge.enable_ip_masquerade: "true"
+  backend-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
+      com.docker.network.bridge.enable_ip_masquerade: "true"
+  database-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
+      com.docker.network.bridge.enable_ip_masquerade: "true"
