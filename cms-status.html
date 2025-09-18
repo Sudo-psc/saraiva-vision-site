@@ -108,6 +108,14 @@
     <div class="container">
         <h1>🏥 Status do CMS - Saraiva Vision</h1>
         
+        <div style="text-align: center; color: #6b7280; font-size: 14px; margin-bottom: 20px;">
+            <span id="updateStatus">Atualização automática a cada 2 minutos</span>
+            <span id="nextUpdate" style="margin-left: 10px;"></span>
+            <button onclick="forceUpdate()" style="margin-left: 20px; padding: 4px 12px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                🔄 Atualizar Agora
+            </button>
+        </div>
+        
         <div class="status-grid" id="statusGrid">
             <div class="status-item checking" data-check="blog">
                 <h3>
@@ -203,6 +211,11 @@
             }
         ];
 
+        function forceUpdate() {
+            checks.forEach(check => checkStatus(check));
+            nextUpdateTime = Date.now() + 120000;
+        }
+        
         async function checkStatus(check) {
             const item = document.querySelector(`[data-check="${check.id}"]`);
             const icon = item.querySelector('.status-icon');
@@ -247,16 +260,41 @@
             }
         }
 
+        // Timer for next update
+        let nextUpdateTime = Date.now() + 120000;
+        
+        function updateTimer() {
+            const now = Date.now();
+            const remaining = Math.max(0, nextUpdateTime - now);
+            const seconds = Math.floor(remaining / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            
+            const nextUpdateEl = document.getElementById('nextUpdate');
+            if (nextUpdateEl) {
+                if (remaining > 0) {
+                    nextUpdateEl.textContent = `(próxima em ${minutes}:${secs.toString().padStart(2, '0')})`;
+                } else {
+                    nextUpdateEl.textContent = '(atualizando...)';
+                }
+            }
+        }
+        
         // Run all checks on load
         window.addEventListener('load', () => {
             checks.forEach(check => {
                 setTimeout(() => checkStatus(check), Math.random() * 1000);
             });
             
-            // Re-check every 30 seconds
+            // Update timer display every second
+            setInterval(updateTimer, 1000);
+            updateTimer();
+            
+            // Re-check every 2 minutes (120 seconds)
             setInterval(() => {
                 checks.forEach(check => checkStatus(check));
-            }, 30000);
+                nextUpdateTime = Date.now() + 120000;
+            }, 120000);
         });
     </script>
 </body>
