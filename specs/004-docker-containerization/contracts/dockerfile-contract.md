@@ -92,13 +92,15 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 ```
 
 ### 6. Resource and Security Labels
+These labels must accurately reflect the container's runtime security posture.
 ```dockerfile
 LABEL maintainer="Saraiva Vision Dev Team" \
       version="2.1.0" \
       description="[Service Description]" \
-      security.non-root="true" \
-      security.readonly-root="true"
+      security.non-root="[true|false]" \
+      security.readonly-root="[true|false]"
 ```
+**Note:** While `true` is the required standard for all new services, legacy services or complex applications like WordPress may be temporarily exempted. In such cases, the labels must be set to `false` to reflect the actual runtime environment.
 
 ## Service-Specific Contracts
 
@@ -191,6 +193,8 @@ CMD ["node", "server.js"]
 
 ### WordPress Container (PHP-FPM)
 
+**Note:** The WordPress container is a current exception to the non-root and read-only filesystem requirements due to the complexities of the application. It runs with elevated privileges, and its security labels must be set to `false`.
+
 #### Requirements
 ```dockerfile
 FROM wordpress:php8.1-fpm-alpine
@@ -210,8 +214,8 @@ COPY wp-config.php /var/www/html/
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
   CMD php-fpm-healthcheck || exit 1
 
-# Switch to www-data user (default for WordPress)
-USER www-data
+# The base image runs as root, and supervisord is used to manage processes.
+# USER www-data is not used at the container level.
 
 EXPOSE 9000
 CMD ["php-fpm"]

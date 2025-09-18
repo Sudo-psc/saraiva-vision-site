@@ -23,7 +23,7 @@ volumes:
     name: saraiva-mysql-data
     driver: local
   redis-data:
-    name: saraiva-redis-data  
+    name: saraiva-redis-data
     driver: local
 
 services:

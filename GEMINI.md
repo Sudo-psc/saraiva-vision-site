@@ -1,57 +1,69 @@
-# Gemini - Nginx Update Instructions
+# Gemini - Containerized Development Workflow
 
-This document provides instructions for manually updating the Nginx configuration.
+This document provides instructions for setting up and using the containerized development environment for the Saraiva Vision project.
 
-**Note:** The preferred method for deploying this application, including Nginx updates, is by using the `./deploy.sh` script. These instructions are for manual updates or for situations where the deploy script is not used.
+## Overview
 
-## When to Update Nginx
+The development environment is fully containerized using Docker and Docker Compose. This ensures a consistent and reproducible environment for all developers.
 
-You should follow these steps if you have made any changes to the Nginx configuration files, such as:
+The following services are included:
 
-*   `nginx.conf`
-*   `nginx-site-minimal.conf`
-*   Files in the `nginx-includes/` directory
+*   **frontend:** The React/Vite frontend application with hot-reloading.
+*   **api:** The Node.js API server.
+*   **wordpress:** The WordPress CMS with PHP-FPM.
+*   **nginx:** The Nginx reverse proxy that routes traffic to the other services.
 
-## Update Procedure
+## Prerequisites
 
-These commands should be run as root (`sudo`).
+*   Docker Engine 20.10+
+*   Docker Compose 2.0+
 
-1.  **Copy the new configuration file:**
+## Getting Started
 
-    This project uses a canonical `nginx.conf` or `nginx-site-minimal.conf` in the project root. You must copy the appropriate file to the Nginx configuration directory.
-
-    ```bash
-    # Choose the correct source file
-    sudo cp nginx-site-minimal.conf /etc/nginx/sites-available/saraivavision
-    ```
-
-2.  **Test the Nginx configuration:**
-
-    Before reloading, always test the configuration to ensure there are no syntax errors.
+1.  **Build and start the development environment:**
 
     ```bash
-    sudo nginx -t
+    docker-compose -f docker-compose.dev.yml up --build
     ```
 
-    If the test is successful, you will see a message like:
-    `nginx: the configuration file /etc/nginx/nginx.conf syntax is ok`
-    `nginx: configuration file /etc/nginx/nginx.conf test is successful`
+2.  **Access the services:**
 
-3.  **Reload Nginx:**
+    *   **Frontend:** [http://localhost:3002](http://localhost:3002)
+    *   **API:** [http://localhost:3001](http://localhost:3001)
+    *   **WordPress Admin:** [http://localhost:8080/wp-admin](http://localhost:8080/wp-admin)
 
-    If the configuration test passes, you can safely reload Nginx to apply the changes without downtime.
+## Development Workflow
 
-    ```bash
-    sudo systemctl reload nginx
-    ```
+### Hot Reloading
 
-4.  **Verify the status:**
+The frontend service is configured with hot-reloading. Any changes you make to the source code in the `src` directory will be automatically reflected in your browser.
 
-    Check the status of the Nginx service to ensure it reloaded correctly.
+### Viewing Logs
 
-    ```bash
-    sudo systemctl status nginx
-    ```
+To view the logs for all services, run:
 
----
-*This is a guideline. Always refer to the `deploy.sh` script for the most current deployment logic.*
+```bash
+docker-compose -f docker-compose.dev.yml logs -f
+```
+
+To view the logs for a specific service, run:
+
+```bash
+docker-compose -f docker-compose.dev.yml logs -f <service_name>
+```
+
+### Troubleshooting
+
+*   **Containers not starting:** Check the logs for error messages.
+*   **Port conflicts:** Make sure the ports used by the containers are not already in use on your host machine.
+*   **Health check failures:** Check the health check logs for the failing service.
+
+## Deployment
+
+To deploy the application, use the `deploy.sh` script with the `--docker` flag:
+
+```bash
+sudo ./deploy.sh --docker
+```
+
+This will trigger a blue-green deployment of the Docker containers.

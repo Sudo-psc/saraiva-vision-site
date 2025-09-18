@@ -1,386 +1,122 @@
-# Docker Compose Production Configuration for Saraiva Vision
-# Medical Website Stack - Production Ready
-# Run with: docker-compose -f docker-compose.prod.yml up
 version: '3.8'
 
-# Define networks for service isolation
-networks:
-  frontend-network:
-    driver: bridge
-    name: saraiva-frontend
-  backend-network:
-    driver: bridge
-    name: saraiva-backend
-
-# Shared volumes for persistent data
-volumes:
-  wordpress-data:
-    name: saraiva-wordpress-data
-    driver: local
-  nginx-cache:
-    name: saraiva-nginx-cache
-    driver: local
-  mysql-data:
-    name: saraiva-mysql-data
-    driver: local
-  redis-data:
-    name: saraiva-redis-data
-    driver: local
-
 services:
-  # Frontend Production Overrides
   frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      target: production
     restart: always
     environment:
       - NODE_ENV=production
-      - NGINX_WORKER_PROCESSES=auto
-      - NGINX_WORKER_CONNECTIONS=1024
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
-        max-file: "5"
-        labels: "service=frontend,environment=production"
     deploy:
       resources:
         limits:
-          cpus: '1.0'
-          memory: 256M
-        reservations:
-          cpus: '0.2'
+          cpus: '0.5'
           memory: 128M
-      restart_policy:
-        condition: any
-        delay: 10s
-        max_attempts: 5
-        window: 120s
-    healthcheck:
-      interval: 60s
-      timeout: 15s
-      retries: 3
-      start_period: 60s
-    labels:
-      - "com.saraivavision.monitoring=enabled"
-      - "com.saraivavision.backup=static-assets"
+        reservations:
+          cpus: '0.25'
+          memory: 64M
+    networks:
+      - internal
 
-  # API Production Overrides
   api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
     restart: always
     environment:
       - NODE_ENV=production
-      - NODE_OPTIONS=--max-old-space-size=256
-      - UV_THREADPOOL_SIZE=4
-      - API_RATE_LIMIT_REQUESTS=60
-      - API_RATE_LIMIT_WINDOW=60000
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "5"
-        labels: "service=api,environment=production"
     deploy:
       resources:
         limits:
-          cpus: '2.0'
-          memory: 512M
-        reservations:
           cpus: '0.5'
           memory: 256M
-      restart_policy:
-        condition: any
-        delay: 10s
-        max_attempts: 5
-        window: 120s
+        reservations:
+          cpus: '0.25'
+          memory: 128M
     healthcheck:
-      interval: 60s
-      timeout: 15s
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
       retries: 3
-      start_period: 60s
-    labels:
-      - "com.saraivavision.monitoring=enabled"
-      - "com.saraivavision.backup=logs"
+      start_period: 40s
+    networks:
+      - internal
 
-  # WordPress Production Overrides
   wordpress:
+    build:
+      context: .
+      dockerfile: Dockerfile.wordpress
     restart: always
+    volumes:
+      - wordpress_data:/var/www/html/wp-content/uploads
+      - wordpress_db:/var/www/html/wp-content/databases
     environment:
       - WORDPRESS_DEBUG=false
-      - WP_DEBUG=false
-      - WP_DEBUG_LOG=false
-      - WP_DEBUG_DISPLAY=false
-      - SCRIPT_DEBUG=false
-      - SAVEQUERIES=false
-      - WP_MEMORY_LIMIT=256M
-      - WP_MAX_MEMORY_LIMIT=512M
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "5"
-        labels: "service=wordpress,environment=production"
     deploy:
       resources:
         limits:
-          cpus: '2.0'
-          memory: 1024M
-        reservations:
           cpus: '0.5'
           memory: 512M
-      restart_policy:
-        condition: any
-        delay: 15s
-        max_attempts: 5
-        window: 180s
+        reservations:
+          cpus: '0.25'
+          memory: 256M
     healthcheck:
-      interval: 120s
-      timeout: 20s
+      test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
+      interval: 30s
+      timeout: 10s
       retries: 3
-      start_period: 90s
-    labels:
-      - "com.saraivavision.monitoring=enabled"
-      - "com.saraivavision.backup=database"
+      start_period: 40s
+    networks:
+      - internal
 
-  # Nginx Production Overrides
   nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
     restart: always
+    ports:
+      - "80:80"
+      - "443:443"
     volumes:
-      # Production SSL certificates
-      - ssl-certificates:/etc/ssl/certs:ro
-      - ssl-private-keys:/etc/ssl/private:ro
-      # Custom production configs
-      - ./nginx-configs/production:/etc/nginx/conf.d:ro
-      - ./nginx-configs/security-headers.conf:/etc/nginx/includes/security-headers.conf:ro
-      - ./nginx-configs/ssl.conf:/etc/nginx/includes/ssl.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - nginx_logs:/var/log/nginx
     environment:
-      - NGINX_WORKER_PROCESSES=auto
-      - NGINX_WORKER_CONNECTIONS=2048
-      - NGINX_KEEPALIVE_TIMEOUT=75s
-      - NGINX_CLIENT_MAX_BODY_SIZE=10m
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "5"
-        labels: "service=nginx,environment=production"
+      - NGINX_HOST=saraivavision.com.br
     deploy:
       resources:
         limits:
-          cpus: '1.0'
-          memory: 256M
-        reservations:
-          cpus: '0.3'
-          memory: 128M
-      restart_policy:
-        condition: any
-        delay: 10s
-        max_attempts: 5
-        window: 120s
-    healthcheck:
-      interval: 60s
-      timeout: 15s
-      retries: 3
-      start_period: 30s
-    labels:
-      - "com.saraivavision.monitoring=enabled"
-      - "com.saraivavision.backup=configs"
-
-  # Enhanced Backup Service for Production
-  backup:
-    image: alpine:3.18
-    container_name: saraiva-backup-prod
-    restart: unless-stopped
-    networks:
-      - database-network
-    volumes:
-      - wordpress-data:/backup/wordpress:ro
-      - ssl-certificates:/backup/ssl:ro
-      - nginx-cache:/backup/nginx-cache:ro
-      - ./backups:/backup/output
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - BACKUP_SCHEDULE=0 2 * * *  # Daily at 2 AM
-      - BACKUP_RETENTION_DAYS=30   # Keep 30 days in production
-      - BACKUP_COMPRESSION=gzip
-      - BACKUP_ENCRYPTION_KEY=${BACKUP_ENCRYPTION_KEY}
-      - BACKUP_S3_BUCKET=${BACKUP_S3_BUCKET}
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-    command: >
-      sh -c "
-        echo 'Production backup service starting...'
-        apk add --no-cache aws-cli gnupg curl docker-cli
-        mkdir -p /backup/output
-
-        # Create backup function
-        create_backup() {
-          BACKUP_DATE=$$(date +%Y%m%d_%H%M%S)
-          BACKUP_FILE=\"saraiva-vision-$$BACKUP_DATE.tar.gz\"
-
-          echo 'Creating backup: $$BACKUP_FILE'
-
-          # Create compressed backup
-          tar -czf \"/backup/output/$$BACKUP_FILE\" \
-            -C /backup wordpress ssl nginx-cache
-
-          # Encrypt backup if key provided
-          if [ ! -z \"$$BACKUP_ENCRYPTION_KEY\" ]; then
-            echo \"$$BACKUP_ENCRYPTION_KEY\" | gpg --batch --yes --passphrase-fd 0 --cipher-algo AES256 --compress-algo 1 --symmetric --output \"/backup/output/$$BACKUP_FILE.gpg\" \"/backup/output/$$BACKUP_FILE\"
-            rm \"/backup/output/$$BACKUP_FILE\"
-            BACKUP_FILE=\"$$BACKUP_FILE.gpg\"
-          fi
-
-          # Upload to S3 if configured
-          if [ ! -z \"$$BACKUP_S3_BUCKET\" ]; then
-            aws s3 cp \"/backup/output/$$BACKUP_FILE\" \"s3://$$BACKUP_S3_BUCKET/saraiva-vision/$$BACKUP_FILE\"
-            echo 'Backup uploaded to S3'
-          fi
-
-          # Clean old backups
-          find /backup/output -name 'saraiva-vision-*.tar.gz*' -mtime +$$BACKUP_RETENTION_DAYS -delete
-
-          # Health check ping
-          curl -X POST http://nginx/api/backup-status -d '{\"status\":\"completed\",\"file\":\"'$$BACKUP_FILE'\",\"timestamp\":\"'$$(date -Iseconds)'\"}'
-
-          echo 'Backup completed: $$BACKUP_FILE'
-        }
-
-        # Initial backup
-        create_backup
-
-        # Schedule regular backups
-        echo '0 2 * * * create_backup' | crontab -
-
-        # Start cron daemon
-        crond -f -l 2
-      "
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 256M
-        reservations:
-          cpus: '0.1'
+          cpus: '0.25'
           memory: 64M
-    labels:
-      - "com.saraivavision.monitoring=enabled"
-      - "com.saraivavision.service=backup"
-
-  # Production Monitoring with Health Checks
-  healthcheck:
-    image: curlimages/curl:8.5.0
-    container_name: saraiva-healthcheck
-    restart: unless-stopped
-    networks:
-      - frontend-network
-      - backend-network
-    environment:
-      - CHECK_INTERVAL=300  # 5 minutes
-      - ALERT_WEBHOOK_URL=${ALERT_WEBHOOK_URL}
-      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
-    command: >
-      sh -c "
-        echo 'Health monitoring service starting...'
-
-        check_service() {
-          SERVICE=$$1
-          URL=$$2
-
-          if curl -sf $$URL > /dev/null 2>&1; then
-            echo \"$$SERVICE: OK\"
-            return 0
-          else
-            echo \"$$SERVICE: FAILED\"
-            # Send alert
-            if [ ! -z \"$$ALERT_WEBHOOK_URL\" ]; then
-              curl -X POST \"$$ALERT_WEBHOOK_URL\" \
-                -H 'Content-Type: application/json' \
-                -d '{\"service\":\"'$$SERVICE'\",\"status\":\"DOWN\",\"timestamp\":\"'$$(date -Iseconds)'\",\"url\":\"'$$URL'\"}'
-            fi
-            return 1
-          fi
-        }
-
-        while true; do
-          echo '=== Health Check Cycle: $$(date) ==='
-          check_service 'Frontend' 'http://frontend:3002/health'
-          check_service 'API' 'http://api:3001/api/health'
-          check_service 'WordPress' 'http://wordpress:9000/health'
-          check_service 'Nginx' 'http://nginx:80/nginx-health'
-          echo '=== Cycle Complete ==='
-          sleep $$CHECK_INTERVAL
-        done
-      "
-    deploy:
-      resources:
-        limits:
+        reservations:
           cpus: '0.1'
           memory: 32M
-        reservations:
-          cpus: '0.05'
-          memory: 16M
-    profiles:
-      - monitoring
-    labels:
-      - "com.saraivavision.service=healthcheck"
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on:
+      frontend:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+      wordpress:
+        condition: service_healthy
+    networks:
+      - internal
+      - external
 
-# Production-specific volumes with better performance
 volumes:
-  wordpress-data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /opt/saraiva-vision/data/wordpress
+  wordpress_data:
+  wordpress_db:
+  nginx_logs:
 
-  ssl-certificates:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /opt/saraiva-vision/ssl/certs
-
-  ssl-private-keys:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /opt/saraiva-vision/ssl/private
-
-  nginx-cache:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /opt/saraiva-vision/cache/nginx
-
-# Production networks with security
 networks:
-  frontend-network:
+  internal:
     driver: bridge
-    driver_opts:
-      com.docker.network.bridge.enable_icc: "false"
-      com.docker.network.bridge.enable_ip_masquerade: "true"
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.20.1.0/24
-
-  backend-network:
+    internal: true
+  external:
     driver: bridge
-    driver_opts:
-      com.docker.network.bridge.enable_icc: "true"
-      com.docker.network.bridge.enable_ip_masquerade: "false"
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.20.2.0/24
-
-  database-network:
-    driver: bridge
-    driver_opts:
-      com.docker.network.bridge.enable_icc: "true"
-      com.docker.network.bridge.enable_ip_masquerade: "false"
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.20.3.0/24

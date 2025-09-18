@@ -89,6 +89,7 @@ USER nodejs
 ENV NODE_ENV=production
 ENV PORT=3001
 ENV HOST=0.0.0.0
+ENV READONLY_ROOT=true
 
 # Expose the port the app runs on
 EXPOSE 3001

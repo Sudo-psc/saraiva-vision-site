@@ -85,10 +85,41 @@ saraivavision-site-v2/
 └── deploy.sh            # Script de deploy
 ```
 
-## 🛠️ Configuração e Instalação
+## 🛠️ Configuração e Instalação (com Docker)
 
 ### Pré-requisitos
-- Node.js 18+ 
+- Docker Engine 20.10+
+- Docker Compose 2.0+
+- Git
+
+### Instalação
+
+1. **Clone o repositório**
+```bash
+git clone https://github.com/Sudo-psc/saraivavision-site-v2.git
+cd saraivavision-site-v2
+```
+
+2. **Configure as variáveis de ambiente**
+```bash
+cp .env.example .env.development
+# Edite o arquivo .env.development com suas configurações
+```
+
+3. **Inicie o ambiente de desenvolvimento**
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+O site estará disponível em `http://localhost:3002`
+
+### Configuração (sem Docker)
+
+<details>
+<summary>Instruções para ambiente sem Docker (não recomendado)</summary>
+
+### Pré-requisitos
+- Node.js 18+
 - npm ou yarn
 - Git
 
@@ -117,6 +148,8 @@ npm run dev
 ```
 
 O site estará disponível em `http://localhost:5173`
+
+</details>
 
 ## 📝 Scripts Disponíveis
 
@@ -181,7 +214,7 @@ npm run build
 
 ### Deploy com Docker
 ```bash
-docker-compose up -d
+sudo ./deploy.sh --docker
 ```
 
 ### Servidor Nginx

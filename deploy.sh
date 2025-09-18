@@ -36,6 +36,7 @@ readonly NGINX_SYMLINK="${NGINX_SYMLINK:-/etc/nginx/sites-enabled/saraivavision}
 readonly TIMESTAMP="$(date +"%Y%m%d_%H%M%S")"
 readonly NEW_RELEASE="$RELEASES_DIR/$TIMESTAMP"
 
+DOCKER_DEPLOY=false
 DRY_RUN=false
 SKIP_NGINX=false
 NO_BUILD=false
@@ -86,6 +87,7 @@ loge() { local tag="$1"; shift; local msg="$*"; local line="$(ts) [ERROR] [$tag]
 usage() {
   cat << USAGE
 Usage: sudo ./deploy.sh [options]
+  --docker          Deploy the application using Docker containers
   --dry-run       Show actions without changing anything
   --skip-nginx    Do not copy/reload nginx config
   --no-build      Skip npm install/build (use existing dist/)
@@ -113,6 +115,10 @@ USAGE
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --docker)
+      DOCKER_DEPLOY=true
+      shift
+      ;;
     --dry-run)
       DRY_RUN=true
       shift
@@ -326,6 +332,13 @@ run_cmd() {
 }
 
 # Main execution flow
+if $DOCKER_DEPLOY; then
+  logi DOCKER "Starting Docker deployment"
+  echo "🚀 Starting Docker deployment..."
+  run "./scripts/docker-deploy.sh"
+  exit 0
+fi
+
 if $RUN_DIAGNOSTICS; then
   collect_diagnostics
 else

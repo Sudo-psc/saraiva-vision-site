@@ -25,9 +25,9 @@ function saraiva_vision_enable_cors() {
             'http://127.0.0.1:5173'
         );
         
-        // If origin is in allowed list or we want to allow all
-        if (in_array($origin, $allowed_origins) || true) { // Set to true to allow all origins
-            header('Access-Control-Allow-Origin: *');
+        // If origin is in allowed list, send specific CORS headers
+        if (in_array($origin, $allowed_origins)) {
+            header('Access-Control-Allow-Origin: ' . $origin);
             header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
             header('Access-Control-Allow-Headers: Authorization, Content-Type, X-WP-Nonce, X-Requested-With, Accept, Origin');
             header('Access-Control-Allow-Credentials: true');
@@ -43,11 +43,24 @@ add_action('rest_api_init', 'saraiva_vision_enable_cors', 15);
 // Handle OPTIONS requests
 function saraiva_vision_handle_options_request() {
     if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
-        header('Access-Control-Allow-Headers: Authorization, Content-Type, X-WP-Nonce, X-Requested-With, Accept, Origin');
-        header('Access-Control-Allow-Credentials: true');
-        header('Access-Control-Max-Age: 86400');
+        $origin = get_http_origin();
+        $allowed_origins = array(
+            'https://saraivavision.com.br',
+            'https://www.saraivavision.com.br',
+            'http://localhost:3000',
+            'http://localhost:5173',
+            'http://127.0.0.1:3000',
+            'http://127.0.0.1:5173'
+        );
+
+        if (in_array($origin, $allowed_origins)) {
+            header('Access-Control-Allow-Origin: ' . $origin);
+            header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+            header('Access-Control-Allow-Headers: Authorization, Content-Type, X-WP-Nonce, X-Requested-With, Accept, Origin');
+            header('Access-Control-Allow-Credentials: true');
+            header('Access-Control-Max-Age: 86400');
+        }
+        
         header('Content-Length: 0');
         header('Content-Type: text/plain');
         exit(0);

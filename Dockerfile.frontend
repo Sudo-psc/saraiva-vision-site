@@ -106,6 +106,9 @@ RUN rm -rf /var/cache/apk/* && \
 # Switch to non-root user
 USER nginx
 
+# Set environment variables
+ENV READONLY_ROOT=true
+
 # Expose the port the app runs on
 EXPOSE 3002
 
