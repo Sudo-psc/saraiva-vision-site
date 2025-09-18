@@ -221,7 +221,6 @@ class WebVitalsMonitor {
       }
       return success;
     } else {
-    } else {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000);
 

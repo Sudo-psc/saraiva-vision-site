@@ -30,17 +30,6 @@ export default async function handler(req, res) {
       message: 'Web vital recorded',
       data: vitalsData
     });
-
-  } catch (error) {
-    console.error('Web Vitals API error:', error);
-
-    // Graceful error response for client
-    res.status(500).json({
-      error: 'Internal server error',
-      message: process.env.NODE_ENV === 'development' ? error.message : 'Failed to process web vital',
-      timestamp: new Date().toISOString()
-    });
-    return;
   }
 
   // POST: Recebe e processa métricas do cliente

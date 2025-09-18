@@ -31,7 +31,7 @@ RUN npm ci --only=production && npm cache clean --force
 # Copy API source code and configuration
 COPY server.js ./
 COPY api/ ./api/
-COPY lib/ ./lib/
+COPY src/lib/ ./lib/
 COPY .env.docker .env
 
 # Verify required files exist

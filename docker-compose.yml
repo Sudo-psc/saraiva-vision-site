@@ -1,212 +1,130 @@
-# Docker Compose configuration for Saraiva Vision
-# Complete containerized medical website stack
 version: '3.8'
 
-# Define custom networks for service isolation
-networks:
-  frontend-network:
-    driver: bridge
-    name: saraiva-frontend
-  backend-network:
-    driver: bridge
-    name: saraiva-backend
-  database-network:
-    driver: bridge
-    name: saraiva-database
-
-# Shared volumes for persistent data
-volumes:
-  wordpress-data:
-    name: saraiva-wordpress-data
-    driver: local
-  ssl-certificates:
-    name: saraiva-ssl-certs
-    driver: local
-  nginx-cache:
-    name: saraiva-nginx-cache
-    driver: local
+# Load environment variables from .env.docker file
+env_file:
+  - .env.docker
 
 services:
-  # Frontend React Application Container
+  # Frontend Service with custom development server
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.frontend
-      target: production
+      target: build
     container_name: saraiva-frontend
-    hostname: frontend
-    restart: unless-stopped
     ports:
       - "3002:3002"
-    networks:
-      - frontend-network
+      - "5173:5173"
+    volumes:
+      - ./src:/app/src:cached
+      - ./public:/app/public:cached
+      - ./index.html:/app/index.html:cached
+      - ./vite.config.js:/app/vite.config.js:cached
+      - ./server-dev.js:/app/server-dev.js:cached
+      - ./package.json:/app/package.json:cached
+      - /app/node_modules
     environment:
-      - NODE_ENV=production
-      - DOCKER_CONTAINER=true
+      - NODE_ENV=development
+      - VITE_API_URL=http://api:3001
+      - VITE_WORDPRESS_URL=http://wordpress:8083
+      - FRONTEND_PORT=3002
+    command: ["node", "server-dev.js"]
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3002/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3002/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 30s
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
-      - "traefik.http.services.frontend.loadbalancer.server.port=3002"
-      - "com.saraivavision.service=frontend"
-      - "com.saraivavision.environment=production"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 128M
-        reservations:
-          cpus: '0.1'
-          memory: 64M
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+      start_period: 40s
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - internal
 
-  # API Backend Container
+  # API Service with health checks
   api:
     build:
       context: .
       dockerfile: Dockerfile.api
-      target: production
     container_name: saraiva-api
-    hostname: api
-    restart: unless-stopped
     ports:
       - "3001:3001"
-    networks:
-      - backend-network
-      - database-network
+      - "9229:9229"
+    volumes:
+      - ./server.js:/app/server.js:cached
+      - ./api:/app/api:cached
+      - ./.env.development:/app/.env:cached
+      - /app/node_modules
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - PORT=3001
-      - HOST=0.0.0.0
-      - DOCKER_CONTAINER=true
-      # Load environment variables from .env.docker
-      - VITE_GOOGLE_MAPS_API_KEY=${VITE_GOOGLE_MAPS_API_KEY}
-      - VITE_GOOGLE_PLACE_ID=${VITE_GOOGLE_PLACE_ID}
+      - WORDPRESS_URL=http://wordpress:8083
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
       - SUPABASE_URL=${SUPABASE_URL}
-      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-      - GTM_ID=${GTM_ID}
-    env_file:
-      - .env.docker
+      - SUPABASE_KEY=${SUPABASE_KEY}
+    command: ["node", "--inspect=0.0.0.0:9229", "server.js"]
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 30s
-    depends_on:
-      - wordpress
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=PathPrefix(`/api/`)"
-      - "traefik.http.services.api.loadbalancer.server.port=3001"
-      - "com.saraivavision.service=api"
-      - "com.saraivavision.environment=production"
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 256M
-        reservations:
-          cpus: '0.2'
-          memory: 128M
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+      start_period: 40s
+    networks:
+      - internal
 
-  # WordPress CMS Container
+  # WordPress Service with health check plugin
   wordpress:
     build:
       context: .
       dockerfile: Dockerfile.wordpress
-      target: base
     container_name: saraiva-wordpress
-    hostname: wordpress
-    restart: unless-stopped
-    ports:
-      - "9000:9000"
-    networks:
-      - backend-network
-      - database-network
     volumes:
-      - wordpress-data:/var/www/html/wp-content
-      - ./wordpress-local/wp-config.php:/var/www/html/wp-config.php:ro
-      - ./wordpress-local/.htaccess:/var/www/html/.htaccess:ro
+      - ./wordpress-local:/var/www/html:cached
+      - wordpress_data:/var/www/html/wp-content/uploads
+      - ./wordpress-plugins:/var/www/html/wp-content/plugins/saraiva-vision:cached
     environment:
-      - WORDPRESS_DB_HOST=
+      - WORDPRESS_DEBUG=true
+      - WORDPRESS_DB_HOST=localhost
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress
       - WORDPRESS_DB_NAME=wordpress
-      - WORDPRESS_DB_USER=
-      - WORDPRESS_DB_PASSWORD=
-      - WORDPRESS_TABLE_PREFIX=wp_
-      - WORDPRESS_DEBUG=false
-      - WORDPRESS_CONFIG_EXTRA=define('USE_MYSQL', false); define('DB_FILE', 'database.sqlite'); define('DB_DIR', '/var/www/html/wp-content/');
-      - DOCKER_CONTAINER=true
+      - WP_HOME=http://localhost:8083
+      - WP_SITEURL=http://localhost:8083
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8083/wp-json/saraiva-vision/v1/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 45s
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.wordpress.rule=PathPrefix(`/wp-admin/`, `/wp-json/`, `/wp-content/`, `/wp-includes/`)"
-      - "traefik.http.services.wordpress.loadbalancer.server.port=9000"
-      - "com.saraivavision.service=wordpress"
-      - "com.saraivavision.environment=production"
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 512M
-        reservations:
-          cpus: '0.2'
-          memory: 256M
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+      start_period: 40s
+    networks:
+      - internal
 
-  # Nginx Reverse Proxy Container
+  # Nginx Reverse Proxy with health monitoring
   nginx:
     build:
       context: .
       dockerfile: Dockerfile.nginx
-      target: production
     container_name: saraiva-nginx
-    hostname: nginx
-    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
-    networks:
-      - frontend-network
-      - backend-network
+      - "8080:8080"
     volumes:
-      - ssl-certificates:/etc/ssl:ro
-      - nginx-cache:/var/cache/nginx
-      - ./nginx-configs:/etc/nginx/conf.d:ro
+      - ./nginx-health.conf:/etc/nginx/nginx.conf:cached
+      - ./nginx-configs:/etc/nginx/conf.d:cached
+      - ./nginx-logs:/var/log/nginx:cached
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     environment:
-      - NGINX_FRONTEND_HOST=frontend
-      - NGINX_API_HOST=api
-      - NGINX_WORDPRESS_HOST=wordpress
-      - DOCKER_CONTAINER=true
+      - NGINX_HOST=localhost
+      - FRONTEND_HOST=frontend:3002
+      - API_HOST=api:3001
+      - WORDPRESS_HOST=wordpress:8083
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80/nginx-health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 15s
+      start_period: 40s
     depends_on:
       frontend:
         condition: service_healthy
@@ -214,71 +132,107 @@ services:
         condition: service_healthy
       wordpress:
         condition: service_healthy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.nginx.rule=Host(`localhost`)"
-      - "traefik.http.services.nginx.loadbalancer.server.port=80"
-      - "com.saraivavision.service=nginx"
-      - "com.saraivavision.environment=production"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 128M
-        reservations:
-          cpus: '0.1'
-          memory: 64M
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-
-  # Optional: Database backup service
-  backup:
-    image: alpine:3.18
-    container_name: saraiva-backup
-    hostname: backup
-    restart: "no"
     networks:
-      - database-network
-    volumes:
-      - wordpress-data:/backup/wordpress:ro
-      - ./backups:/backup/output
+      - internal
+
+  # Database Service (MySQL for production support)
+  db:
+    image: mysql:8.0
+    container_name: saraiva-db
+    restart: unless-stopped
     environment:
-      - BACKUP_SCHEDULE=0 2 * * *  # Daily at 2 AM
-      - RETENTION_DAYS=7
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=wordpress
+      - MYSQL_ROOT_PASSWORD=wordpress_root
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-backup:/backup:rw
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "wordpress", "-pwordpress"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - internal
+
+  # Redis Service for caching
+  redis:
+    image: redis:7-alpine
+    container_name: saraiva-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass redis_password
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - internal
+
+  # Health Monitoring Service
+  health-monitor:
+    image: curlimages/curl:latest
+    container_name: saraiva-health-monitor
+    depends_on:
+      frontend:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+      wordpress:
+        condition: service_healthy
+      nginx:
+        condition: service_healthy
     command: >
       sh -c "
-        echo 'Setting up backup service...'
-        mkdir -p /backup/output
+        echo 'Starting health monitoring...' &&
         while true; do
-          echo 'Starting backup: $$(date)'
-          tar -czf /backup/output/wordpress-$$(date +%Y%m%d_%H%M%S).tar.gz -C /backup/wordpress .
-          find /backup/output -name 'wordpress-*.tar.gz' -mtime +$$RETENTION_DAYS -delete
-          echo 'Backup completed: $$(date)'
-          sleep 86400  # Sleep for 24 hours
+          echo '=== Health Check at $$(date) ===' &&
+          curl -f http://nginx/health || echo 'Nginx unhealthy' &&
+          curl -f http://frontend:3002/health || echo 'Frontend unhealthy' &&
+          curl -f http://api:3001/api/health || echo 'API unhealthy' &&
+          curl -f http://wordpress:8083/wp-json/saraiva-vision/v1/health || echo 'WordPress unhealthy' &&
+          curl -f http://redis:6379/ping || echo 'Redis unhealthy' &&
+          echo '=== All checks completed ===' &&
+          sleep 30;
         done
       "
-    labels:
-      - "com.saraivavision.service=backup"
-      - "com.saraivavision.environment=production"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.1'
-          memory: 64M
-        reservations:
-          cpus: '0.05'
-          memory: 32M
+    networks:
+      - internal
 
-# Health check and monitoring
-x-health-check: &health-check
-  interval: 30s
-  timeout: 10s
-  retries: 3
+  # Development Tools
+  dev-tools:
+    image: alpine:latest
+    container_name: saraiva-dev-tools
+    command: >
+      sh -c "
+        apk add --no-cache curl wget dig telnet netcat-openbsd &&
+        echo 'Development tools container started...' &&
+        tail -f /dev/null
+      "
+    networks:
+      - internal
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
-# Common environment variables
-x-common-env: &common-env
-  DOCKER_CONTAINER: "true"
-  TZ: "America/Sao_Paulo"
+volumes:
+  wordpress_data:
+    driver: local
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+  nginx_logs:
+    driver: local
+
+networks:
+  internal:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1

@@ -10,8 +10,9 @@ npm-debug.log*
 dist
 build
 
-# Environment files
+# Environment files (except .env.docker)
 .env*
+!.env.docker
 
 # Documentation
 *.md
@@ -23,3 +24,31 @@ tests/
 
 # Specs
 specs/
+
+# Large directories and files
+webapp/
+!wordpress-local/wp-config.php
+coverage/
+logs/
+memory/
+wt/
+*.log
+*.png
+*.jpeg
+*.jpg
+*.zip
+*.tar.gz
+
+# Development files
+dev.sh
+deploy.sh
+*.backup
+*.bak
+
+# Nginx config files (except the ones we need)
+nginx-health.conf
+
+# Cache and temporary
+.cache/
+.tmp/
+.temp/
