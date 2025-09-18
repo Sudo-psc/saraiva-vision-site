@@ -31,17 +31,30 @@ const validateConfig = (config) => {
 };
 
 const validateParams = (params) => {
-  if (params.totalSlides <= 0) {
-    throw new Error('totalSlides must be > 0');
+  // Validate totalSlides only if it's a number
+  if (typeof params.totalSlides === 'number' && params.totalSlides <= 0) {
+    console.warn('useAutoplayCarousel: totalSlides must be > 0, defaulting to 0');
+    return { ...params, totalSlides: 0 };
   }
+  
+  // Handle undefined or null totalSlides
+  if (!params.totalSlides || params.totalSlides === null) {
+    console.warn('useAutoplayCarousel: totalSlides is undefined or null, defaulting to 0');
+    return { ...params, totalSlides: 0 };
+  }
+  
   if (params.initialIndex !== undefined) {
     if (params.initialIndex < 0) {
-      throw new Error('initialIndex must be >= 0');
+      console.warn('useAutoplayCarousel: initialIndex must be >= 0, defaulting to 0');
+      return { ...params, initialIndex: 0 };
     }
-    if (params.initialIndex >= params.totalSlides) {
-      throw new Error('initialIndex must be < totalSlides');
+    if (params.totalSlides && params.initialIndex >= params.totalSlides) {
+      console.warn('useAutoplayCarousel: initialIndex must be < totalSlides, adjusting to', params.totalSlides - 1);
+      return { ...params, initialIndex: Math.max(0, params.totalSlides - 1) };
     }
   }
+  
+  return params;
 };
 
 // Autoplay state reducer
@@ -158,13 +171,15 @@ const usePageVisibility = () => {
 };
 
 export const useAutoplayCarousel = ({
-  totalSlides,
+  totalSlides = 0,
   config: userConfig = {},
   onSlideChange,
   initialIndex = 0
 }) => {
-  // Validate parameters
-  validateParams({ totalSlides, initialIndex });
+  // Validate and normalize parameters
+  const validatedParams = validateParams({ totalSlides, initialIndex });
+  const safeTotal = validatedParams.totalSlides || 0;
+  const safeIndex = validatedParams.initialIndex || 0;
 
   // Merge and validate configuration
   const config = useMemo(() => {
@@ -179,13 +194,13 @@ export const useAutoplayCarousel = ({
   // Page visibility
   const { isVisible } = usePageVisibility();
 
-  // Initialize state
+  // Initialize state with validated parameters
   const initialState = {
     isPlaying: false,
     isPaused: false,
     isEnabled: config.respectReducedMotion ? !prefersReducedMotion : true,
-    currentIndex: initialIndex,
-    totalSlides,
+    currentIndex: safeIndex,
+    totalSlides: safeTotal,
     direction: 'forward',
     interval: config.defaultInterval,
     lastTransition: 0,
@@ -299,7 +314,13 @@ export const useAutoplayCarousel = ({
   }, []);
 
   const goTo = useCallback((index) => {
+    // Handle edge case where totalSlides is 0
+    if (state.totalSlides === 0) {
+      console.warn('useAutoplayCarousel: Cannot go to index when totalSlides is 0');
+      return;
+    }
     if (index < 0 || index >= state.totalSlides) {
+      console.warn('useAutoplayCarousel: Invalid index', index, 'for totalSlides', state.totalSlides);
       return; // Invalid index
     }
     dispatch({ type: 'GO_TO', index, manual: true });
