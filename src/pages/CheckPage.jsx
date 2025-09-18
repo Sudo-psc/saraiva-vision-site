@@ -63,6 +63,11 @@ const CheckPage = () => {
   const [results, setResults] = useState(() => createEmptyState(diagnostics));
   const [isRunning, setIsRunning] = useState(false);
   const [lastCompletedAt, setLastCompletedAt] = useState(null);
+  const [autoRefresh, setAutoRefresh] = useState(false);
+  const [refreshInterval, setRefreshInterval] = useState(30000); // 30 seconds
+  const [filterStatus, setFilterStatus] = useState('all'); // all, success, warning, error
+  const [showDetails, setShowDetails] = useState(false);
+  
   const seo = useMemo(
     () => ({
       title: t('check.seo.title'),
@@ -75,6 +80,21 @@ const CheckPage = () => {
   useEffect(() => {
     setResults(createEmptyState(diagnostics));
   }, [diagnostics]);
+
+  // Auto-refresh effect
+  useEffect(() => {
+    let intervalId;
+    if (autoRefresh && !isRunning && refreshInterval > 0) {
+      intervalId = setInterval(() => {
+        runDiagnostics();
+      }, refreshInterval);
+    }
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [autoRefresh, isRunning, refreshInterval]);
 
   const runDiagnostics = useCallback(async () => {
     if (isRunning) return;
@@ -137,6 +157,59 @@ const CheckPage = () => {
     setLastCompletedAt(null);
   };
 
+  const getOverallStatus = () => {
+    const statuses = Object.values(results).map(r => r.status);
+    if (statuses.some(s => s === 'error')) return 'error';
+    if (statuses.some(s => s === 'warning')) return 'warning';  
+    if (statuses.every(s => s === 'success')) return 'success';
+    if (statuses.some(s => s === 'running')) return 'running';
+    return 'idle';
+  };
+
+  const getStatusCounts = () => {
+    const counts = { success: 0, warning: 0, error: 0, idle: 0, running: 0 };
+    Object.values(results).forEach(r => {
+      counts[r.status] = (counts[r.status] || 0) + 1;
+    });
+    return counts;
+  };
+
+  const filteredDiagnostics = useMemo(() => {
+    if (filterStatus === 'all') return diagnostics;
+    return diagnostics.filter(d => {
+      const result = results[d.id];
+      return result?.status === filterStatus;
+    });
+  }, [diagnostics, results, filterStatus]);
+
+  const exportResults = () => {
+    const reportData = {
+      timestamp: new Date().toISOString(),
+      clinic: 'Clínica Saraiva Vision',
+      location: 'Caratinga, MG',
+      overallStatus: getOverallStatus(),
+      statusCounts: getStatusCounts(),
+      tests: Object.entries(results).map(([id, result]) => ({
+        id,
+        name: t(`check.diagnostics.${id}.title`),
+        status: result.status,
+        latency: result.latency,
+        data: result.data,
+        lastRun: result.lastRun,
+      })),
+    };
+
+    const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `saraiva-vision-diagnostics-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <SEOHead {...seo} />
@@ -156,12 +229,54 @@ const CheckPage = () => {
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="text-sm text-slate-600">
-                {lastCompletedAt
-                  ? t('check.lastUpdated', { timestamp: formatTimestamp(lastCompletedAt) })
-                  : t('check.neverRun')}
+              <div className="flex flex-col gap-2">
+                <div className="text-sm text-slate-600">
+                  {lastCompletedAt
+                    ? t('check.lastUpdated', { timestamp: formatTimestamp(lastCompletedAt) })
+                    : t('check.neverRun')}
+                </div>
+                
+                {/* Overall Status Summary */}
+                {Object.keys(results).length > 0 && (
+                  <div className="flex gap-4 text-xs text-slate-500">
+                    {Object.entries(getStatusCounts()).map(([status, count]) => 
+                      count > 0 ? (
+                        <span key={status} className="flex items-center gap-1">
+                          <span className={`h-2 w-2 rounded-full ${dotStyles[status] || dotStyles.idle}`} />
+                          {count} {t(`check.status.${status}`).toLowerCase()}
+                        </span>
+                      ) : null
+                    )}
+                  </div>
+                )}
               </div>
+              
               <div className="flex flex-col sm:flex-row gap-2">
+                {/* Auto-refresh controls */}
+                <div className="flex items-center gap-2 px-3 py-2 bg-slate-100 rounded-lg">
+                  <label className="flex items-center gap-2 text-sm cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={autoRefresh}
+                      onChange={(e) => setAutoRefresh(e.target.checked)}
+                      className="rounded"
+                    />
+                    Auto-refresh
+                  </label>
+                  {autoRefresh && (
+                    <select
+                      value={refreshInterval}
+                      onChange={(e) => setRefreshInterval(Number(e.target.value))}
+                      className="text-xs px-2 py-1 border rounded"
+                    >
+                      <option value={10000}>10s</option>
+                      <option value={30000}>30s</option>
+                      <option value={60000}>1min</option>
+                      <option value={300000}>5min</option>
+                    </select>
+                  )}
+                </div>
+                
                 <button
                   type="button"
                   onClick={runDiagnostics}
@@ -174,6 +289,16 @@ const CheckPage = () => {
                 >
                   {isRunning ? t('check.running') : t('check.runButton')}
                 </button>
+                
+                <button
+                  type="button"
+                  onClick={exportResults}
+                  disabled={isRunning || !lastCompletedAt}
+                  className="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-200 shadow-sm hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  Exportar relatório
+                </button>
+                
                 <button
                   type="button"
                   onClick={resetResults}
@@ -184,10 +309,35 @@ const CheckPage = () => {
                 </button>
               </div>
             </div>
+            
+            {/* Filter and Display Options */}
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between p-4 bg-slate-100 rounded-lg">
+              <div className="flex gap-2 items-center">
+                <label className="text-sm font-medium text-slate-700">Filtrar por status:</label>
+                <select
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                  className="px-3 py-1 text-sm border border-slate-300 rounded-lg"
+                >
+                  <option value="all">Todos os testes</option>
+                  <option value="success">✅ Operacionais</option>
+                  <option value="warning">⚠️ Com atenção</option>
+                  <option value="error">❌ Com erro</option>
+                </select>
+              </div>
+              
+              <button
+                type="button"
+                onClick={() => setShowDetails(!showDetails)}
+                className="text-sm text-slate-600 hover:text-slate-900 underline"
+              >
+                {showDetails ? 'Ocultar detalhes técnicos' : 'Mostrar detalhes técnicos'}
+              </button>
+            </div>
           </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {diagnostics.map((definition) => {
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            {filteredDiagnostics.map((definition) => {
               const result = results[definition.id];
               const status = result?.status || 'idle';
               const statusLabel = t(`check.status.${status}`);
@@ -336,11 +486,71 @@ const CheckPage = () => {
                     </p>
                   ) : null}
 
+                  {definition.id === 'database' && result?.data?.lastModified ? (
+                    <p className="text-xs text-slate-500">
+                      {t('check.diagnostics.database.lastModifiedLabel', { 
+                        date: new Date(result.data.lastModified).toLocaleDateString()
+                      })}
+                    </p>
+                  ) : null}
+
+                  {definition.id === 'assets' && typeof result?.data?.availability === 'string' ? (
+                    <div className="text-xs text-slate-500 space-y-1">
+                      <p>Disponibilidade: {result.data.availability}%</p>
+                      <p>{result.data.successful}/{result.data.assetsChecked} recursos funcionais</p>
+                    </div>
+                  ) : null}
+
+                  {definition.id === 'security' && typeof result?.data?.score === 'number' ? (
+                    <div className="text-xs text-slate-500 space-y-1">
+                      <p>Pontuação de segurança: {result.data.score}%</p>
+                      <p>{result.data.presentHeaders}/{result.data.totalHeaders} cabeçalhos presentes</p>
+                      {result?.data?.missingHeaders && result.data.missingHeaders.length > 0 ? (
+                        <p className="text-amber-600">
+                          Faltando: {result.data.missingHeaders.join(', ')}
+                        </p>
+                      ) : null}
+                    </div>
+                  ) : null}
+
+                  {definition.id === 'performance' && result?.data?.grade ? (
+                    <div className="text-xs text-slate-500 space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span>Nota de performance:</span>
+                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                          result.data.grade === 'A' ? 'bg-emerald-100 text-emerald-700' :
+                          result.data.grade === 'B' ? 'bg-blue-100 text-blue-700' :
+                          result.data.grade === 'C' ? 'bg-amber-100 text-amber-700' :
+                          'bg-rose-100 text-rose-700'
+                        }`}>
+                          {result.data.grade}
+                        </span>
+                      </div>
+                      <p>
+                        Média: {result.data.averageLatency}ms 
+                        (min: {result.data.minLatency}ms, max: {result.data.maxLatency}ms)
+                      </p>
+                    </div>
+                  ) : null}
+
                   {result?.lastRun ? (
                     <p className="text-xs text-slate-500">
                       {t('check.perCheckUpdated', { timestamp: formatTimestamp(result.lastRun) })}
                     </p>
                   ) : null}
+                  
+                  {showDetails && result?.data && (
+                    <details className="mt-3">
+                      <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-700">
+                        Dados técnicos
+                      </summary>
+                      <div className="mt-2 p-3 bg-slate-50 rounded-lg">
+                        <pre className="text-xs text-slate-600 whitespace-pre-wrap overflow-x-auto">
+                          {JSON.stringify(result.data, null, 2)}
+                        </pre>
+                      </div>
+                    </details>
+                  )}
                 </div>
               );
             })}
