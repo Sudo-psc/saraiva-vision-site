@@ -1,0 +1,34 @@
+# Staging overrides for faster development
+services:
+  nginx:
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_ENTRYPOINT_QUIET_LOGS=
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+  api:
+    environment:
+      - NODE_ENV=staging
+      - LOG_LEVEL=debug
+      - LOG_FORMAT=pretty
+      - ENABLE_ACCESS_LOGS=true
+      - HOT_RELOAD=true
+    volumes:
+      - .:/app:ro
+      - api_logs:/app/logs
+      - ./logs/api:/app/logs-host
+    command: ["npm", "run", "dev:api"]
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+  # Enable log collector in staging
+  log-collector:
+    profiles: []
+    environment:
+      - LOG_LEVEL=debug

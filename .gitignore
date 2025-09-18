@@ -12,11 +12,23 @@ build/
 .env.test.local
 .env.production.local
 
-# Logs
+# Logs and monitoring data
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+logs/*.log
+logs/**/*.log
+logs/export/
+logs/api/
+logs/nginx/
+*.jsonl
+*.gz
+
+# Docker volumes and data
+docker-data/
+nginx_logs/
+api_logs/
 
 # Runtime data
 pids

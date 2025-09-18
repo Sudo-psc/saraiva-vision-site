@@ -6,13 +6,28 @@
 
 ## 🚀 Início Rápido
 
-| Para desenvolvedores | Para designers | Para conteúdo |
-|---------------------|----------------|---------------|
-| [Setup em 5 min](./DEVELOPER_QUICK_START.md) | [Guia de Marca](./docs/BRAND_GUIDE.md) | [Estratégia Médica](./docs/MEDICAL_CONTENT_STRATEGY.md) |
-| [Troubleshooting](./TROUBLESHOOTING.md) | [Design System](./docs/DESIGN_SYSTEM_INDEX.md) | [SEO Plan](./docs/SEO_DESIGN_PLAN.md) |
-| [Comandos](./CLAUDE.md) | [Componentes](./docs/COMPONENT_DESIGN_SYSTEM.md) | [Guidelines](./docs/MEDICAL_CONTENT_STRATEGY.md) |
+| Para desenvolvedores | Para designers | Para conteúdo | Para DevOps |
+|---------------------|----------------|---------------|-------------|
+| [Setup em 5 min](./DEVELOPER_QUICK_START.md) | [Guia de Marca](./docs/BRAND_GUIDE.md) | [Estratégia Médica](./docs/MEDICAL_CONTENT_STRATEGY.md) | [Docker Logs](./DOCKER_LOGS_GUIDE.md) |
+| [Troubleshooting](./TROUBLESHOOTING.md) | [Design System](./docs/DESIGN_SYSTEM_INDEX.md) | [SEO Plan](./docs/SEO_DESIGN_PLAN.md) | `make troubleshoot` |
+| [Comandos](./CLAUDE.md) | [Componentes](./docs/COMPONENT_DESIGN_SYSTEM.md) | [Guidelines](./docs/MEDICAL_CONTENT_STRATEGY.md) | `make logs-monitor` |
 
-📚 **[Índice Completo de Documentação](./DOCUMENTATION_INDEX.md)** | 🏗️ **[Arquitetura do Sistema](./docs/SYSTEM_ARCHITECTURE.md)** | 🧪 **[Guia de Testes](./docs/TESTING_GUIDE.md)**
+📚 **[Índice Completo de Documentação](./DOCUMENTATION_INDEX.md)** | 🏗️ **[Arquitetura do Sistema](./docs/SYSTEM_ARCHITECTURE.md)** | 🧪 **[Guia de Testes](./docs/TESTING_GUIDE.md)** | 📊 **[Logs & Monitoring](./DOCKER_LOGS_GUIDE.md)**
+
+### 🐳 Docker Quick Commands
+```bash
+# Start with logging enabled
+make up
+
+# Monitor logs in real-time
+make logs-monitor
+
+# Analyze errors and performance
+make logs-analyze
+
+# Export logs for analysis
+make logs-export
+```
 
 ## 🏥 Sobre o Projeto
 
@@ -280,6 +295,7 @@ Para contribuir com o projeto, siga as diretrizes de desenvolvimento e abra um P
 ### 🚀 Deploy e Produção
 - **[✅ Checklist de Deploy](./DEPLOYMENT_CHECKLIST.md)** - Lista verificação para produção
 - **[🏠 Deploy Local](./README-LOCAL-DEPLOY.md)** - Instruções para ambiente local
+- **[🐳 Docker Logs Guide](./DOCKER_LOGS_GUIDE.md)** - Coleta e análise de logs com Docker
 - **[🔒 Playbook de Segurança](./SECURITY_ROTATION_PLAYBOOK.md)** - Rotação de credenciais
 
 ### 📈 SEO e Conteúdo
@@ -291,6 +307,7 @@ Para contribuir com o projeto, siga as diretrizes de desenvolvimento e abra um P
 - **[🛠️ Correções Console](./CONSOLE_FIXES.md)** - Fixes para problemas comuns
 - **[🌐 Nginx Updates](./NGINX_UPDATE_NOTES.md)** - Configuração do servidor
 - **[🔍 Auditoria URLs](./URL_AUDIT_REPORT.md)** - Relatório de links e SEO
+- **[📊 Troubleshooting Logs](./scripts/troubleshoot-logs.sh)** - Script de análise de logs
 
 ---
 
