@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev": "node server-dev.js",
     "prebuild": "node scripts/generate-apple-icon.mjs",
     "build": "vite build",
     "preview": "vite preview",

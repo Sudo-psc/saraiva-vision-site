@@ -71,7 +71,7 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
-      // Health check endpoint
+      // Health check endpoint - OpenAPI 3.0.3 compliant
       if (parsed.pathname === '/api/health' || parsed.pathname === '/api/health/') {
         const healthData = {
           status: 'healthy',
@@ -79,11 +79,8 @@ const server = http.createServer(async (req, res) => {
           uptime: process.uptime(),
           version: process.env.npm_package_version || '2.0.0',
           environment: process.env.NODE_ENV || 'development',
+          service: 'api',
           server: 'Saraiva Vision API',
-          services: {
-            database: 'connected',
-            external_apis: 'operational'
-          },
           checks: {
             memory: Math.round(process.memoryUsage().heapUsed / 1024 / 1024) + 'MB',
             requests: global.requestCounts?.size || 0,
@@ -92,6 +89,23 @@ const server = http.createServer(async (req, res) => {
               max_requests: RATE_LIMIT_MAX_REQUESTS,
               current_entries: global.requestCounts?.size || 0
             }
+          },
+          services: {
+            database: 'connected',
+            external_apis: 'operational',
+            wordpress: 'configured',
+            frontend: 'configured'
+          },
+          endpoints: {
+            health: '/api/health',
+            reviews: '/api/reviews',
+            contact: '/api/contact',
+            web_vitals: '/api/web-vitals'
+          },
+          openapi: {
+            version: '3.0.3',
+            title: 'Saraiva Vision API Health Check',
+            description: 'Health monitoring endpoint for Saraiva Vision API service'
           }
         };
 
@@ -99,6 +113,9 @@ const server = http.createServer(async (req, res) => {
         res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.setHeader('Pragma', 'no-cache');
         res.setHeader('Expires', '0');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
         res.end(JSON.stringify(healthData));
         return;
       }
@@ -136,6 +153,87 @@ const server = http.createServer(async (req, res) => {
         }
         await contactHandler(req, wrapRes(res));
         return;
+      }
+
+      // WordPress proxy endpoints
+      if (parsed.pathname.startsWith('/api/wordpress/')) {
+        const wordpressPath = parsed.pathname.replace('/api/wordpress', '');
+        const wordpressUrl = `http://wordpress:8083${wordpressPath}${parsed.search || ''}`;
+
+        try {
+          const headers = {
+            'User-Agent': 'Saraiva-Vision-API/1.0',
+            'Accept': 'application/json',
+            'Content-Type': req.headers['content-type'] || 'application/json',
+            'X-Forwarded-For': req.socket.remoteAddress,
+            'X-Forwarded-Proto': 'http'
+          };
+
+          // Copy WordPress authentication headers if present
+          if (req.headers.authorization) {
+            headers.Authorization = req.headers.authorization;
+          }
+
+          let body = null;
+          if (req.method !== 'GET' && req.method !== 'HEAD') {
+            const chunks = [];
+            for await (const chunk of req) chunks.push(chunk);
+            body = Buffer.concat(chunks);
+          }
+
+          const response = await fetch(wordpressUrl, {
+            method: req.method,
+            headers: headers,
+            body: body,
+            signal: AbortSignal.timeout(10000) // 10 second timeout
+          });
+
+          // Copy response headers
+          const responseHeaders = {};
+          for (const [key, value] of response.headers.entries()) {
+            // Skip problematic headers
+            if (!['content-length', 'transfer-encoding', 'connection'].includes(key.toLowerCase())) {
+              responseHeaders[key] = value;
+            }
+          }
+
+          // Add CORS headers
+          responseHeaders['Access-Control-Allow-Origin'] = '*';
+          responseHeaders['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';
+          responseHeaders['Access-Control-Allow-Headers'] = 'Content-Type, Authorization';
+
+          Object.entries(responseHeaders).forEach(([key, value]) => {
+            res.setHeader(key, value);
+          });
+
+          const responseData = await response.text();
+          res.statusCode = response.status;
+          res.end(responseData);
+          return;
+
+        } catch (error) {
+          console.error('WordPress proxy error:', error.message);
+
+          if (error.name === 'AbortError') {
+            res.statusCode = 504;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({
+              error: 'Gateway Timeout',
+              message: 'WordPress service timeout',
+              timestamp: new Date().toISOString()
+            }));
+            return;
+          }
+
+          res.statusCode = 502;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({
+            error: 'Bad Gateway',
+            message: 'WordPress service unavailable',
+            timestamp: new Date().toISOString()
+          }));
+          return;
+        }
       }
 
       // Unknown API route
