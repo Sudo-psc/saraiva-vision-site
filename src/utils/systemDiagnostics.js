@@ -852,18 +852,47 @@ export function createDiagnostics(customConfig = {}) {
           const results = await Promise.allSettled(
             testAssets.map(async (asset) => {
               const assetUrl = `${primaryDomain}${asset}`;
-              const response = await fetchWithTimeout(assetUrl, {
-                mode: 'no-cors',
-                cache: 'no-store',
-                timeout: DEFAULT_TIMEOUT / 2,
-              });
-              return { asset, success: true, status: response.status };
+              
+              try {
+                // Try CORS first to get proper status codes
+                const response = await fetchWithTimeout(assetUrl, {
+                  mode: 'cors',
+                  cache: 'no-store',
+                  timeout: DEFAULT_TIMEOUT / 2,
+                });
+                
+                const isSuccess = response.ok && response.status >= 200 && response.status < 300;
+                return { asset, success: isSuccess, status: response.status, type: response.type, method: 'cors' };
+                
+              } catch (corsError) {
+                // If CORS fails, try no-cors as fallback
+                try {
+                  const response = await fetchWithTimeout(assetUrl, {
+                    mode: 'no-cors',
+                    cache: 'no-store',
+                    timeout: DEFAULT_TIMEOUT / 2,
+                  });
+                  
+                  // With no-cors, we can only assume success if the request didn't throw
+                  // This is still imperfect but better than the previous approach
+                  return { asset, success: true, status: 0, type: response.type || 'opaque', method: 'no-cors' };
+                  
+                } catch (noCorsError) {
+                  // Both CORS and no-cors failed, definitely an error
+                  throw noCorsError;
+                }
+              }
             })
           );
 
           const latency = buildLatency(start);
-          const successful = results.filter(r => r.status === 'fulfilled').length;
-          const failed = results.filter(r => r.status === 'rejected').length;
+          
+          // Count successful responses based on actual response validation, not just Promise resolution
+          const successfulResults = results.filter(r => r.status === 'fulfilled' && r.value?.success === true);
+          const failedResults = results.filter(r => r.status === 'rejected' || (r.status === 'fulfilled' && r.value?.success === false));
+          
+          const successful = successfulResults.length;
+          const failed = failedResults.length;
 
           if (successful === testAssets.length) {
             return {
@@ -896,7 +925,12 @@ export function createDiagnostics(customConfig = {}) {
           return {
             status: 'error',
             latency,
-            data: { assetsChecked: testAssets.length, successful: 0, failed },
+            data: { 
+              assetsChecked: testAssets.length, 
+              successful: 0, 
+              failed,
+              availability: '0.0'
+            },
             messageId: 'allAssetsFailed',
           };
         } catch (error) {

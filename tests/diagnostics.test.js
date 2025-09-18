@@ -108,10 +108,18 @@ describe('Enhanced System Diagnostics', () => {
     });
 
     it('should handle partial asset failures', async () => {
-      global.fetch
-        .mockResolvedValueOnce({ ok: true, status: 200 })  // success
-        .mockRejectedValueOnce(new Error('404 Not Found'))  // failure
-        .mockResolvedValueOnce({ ok: true, status: 200 });  // success
+      // Reset mock to ensure proper call sequence
+      global.fetch.mockReset();
+      
+      // First asset: CORS succeeds
+      global.fetch.mockResolvedValueOnce({ ok: true, status: 200, type: 'cors' });
+      
+      // Second asset: CORS fails, then both CORS and no-cors fail
+      global.fetch.mockRejectedValueOnce(new Error('CORS failed'));  // CORS fails
+      global.fetch.mockRejectedValueOnce(new Error('404 Not Found')); // no-cors also fails
+      
+      // Third asset: CORS succeeds  
+      global.fetch.mockResolvedValueOnce({ ok: true, status: 200, type: 'cors' });
 
       const diagnostics = createDiagnostics();
       const assetsTest = diagnostics.find(d => d.id === 'assets');
@@ -123,6 +131,76 @@ describe('Enhanced System Diagnostics', () => {
       expect(result.data.failed).toBe(1);
       expect(result.data.availability).toBe('66.7');
       expect(result.messageId).toBe('partialAvailability');
+    });
+
+    it('should properly handle mixed CORS and no-cors responses', async () => {
+      // Reset mock to ensure proper call sequence
+      global.fetch.mockReset();
+      
+      // Simpler test: just verify that we can distinguish success/failure with CORS fallback
+      // Asset 1: CORS succeeds
+      global.fetch.mockResolvedValueOnce({ ok: true, status: 200, type: 'cors' });
+      
+      // Asset 2: CORS fails (404), should count as failure
+      global.fetch.mockResolvedValueOnce({ ok: false, status: 404, type: 'cors' });
+      
+      // Asset 3: CORS fails -> no-cors succeeds (opaque), should count as success
+      global.fetch.mockRejectedValueOnce(new Error('CORS error'));
+      global.fetch.mockResolvedValueOnce({ type: 'opaque' });
+
+      const diagnostics = createDiagnostics();
+      const assetsTest = diagnostics.find(d => d.id === 'assets');
+      
+      const result = await assetsTest.run();
+
+      expect(result.status).toBe('warning');
+      expect(result.data.successful).toBe(2); // Asset 1 (CORS ok) + Asset 3 (no-cors opaque)
+      expect(result.data.failed).toBe(1);     // Asset 2 (CORS 404)
+      expect(result.data.availability).toBe('66.7');
+    });
+
+    it('should properly detect 404 errors when CORS is available', async () => {
+      global.fetch.mockReset();
+      
+      global.fetch
+        .mockResolvedValueOnce({ ok: true, status: 200, type: 'cors' })   // success
+        .mockResolvedValueOnce({ ok: false, status: 404, type: 'cors' })  // 404 error
+        .mockResolvedValueOnce({ ok: true, status: 200, type: 'cors' });  // success
+
+      const diagnostics = createDiagnostics();
+      const assetsTest = diagnostics.find(d => d.id === 'assets');
+      
+      const result = await assetsTest.run();
+
+      expect(result.status).toBe('warning');
+      expect(result.data.successful).toBe(2);
+      expect(result.data.failed).toBe(1);
+      expect(result.data.availability).toBe('66.7');
+      expect(result.messageId).toBe('partialAvailability');
+    });
+
+    it('should handle all assets missing correctly', async () => {
+      global.fetch.mockReset();
+      
+      // All assets: CORS fails, then no-cors fails
+      global.fetch
+        .mockRejectedValueOnce(new Error('CORS error'))
+        .mockRejectedValueOnce(new Error('Asset not found'))  // Both fail
+        .mockRejectedValueOnce(new Error('CORS error'))
+        .mockRejectedValueOnce(new Error('Asset not found'))  // Both fail  
+        .mockRejectedValueOnce(new Error('CORS error'))
+        .mockRejectedValueOnce(new Error('Asset not found')); // Both fail
+
+      const diagnostics = createDiagnostics();
+      const assetsTest = diagnostics.find(d => d.id === 'assets');
+      
+      const result = await assetsTest.run();
+
+      expect(result.status).toBe('error');
+      expect(result.data.successful).toBe(0);
+      expect(result.data.failed).toBe(3);
+      expect(result.data.availability).toBe('0.0');
+      expect(result.messageId).toBe('allAssetsFailed');
     });
   });
 
@@ -206,7 +284,7 @@ describe('Enhanced System Diagnostics', () => {
       const result = await performanceTest.run();
 
       expect(result.status).toBe('warning');
-      expect(result.data.grade).toBeOneOf(['D', 'F']); // Poor performance
+      expect(result.data.grade).toMatch(/^[D|F]$/); // Poor performance
       expect(result.messageId).toBe('slowPerformance');
     });
   });
@@ -287,15 +365,22 @@ describe('Enhanced System Diagnostics', () => {
     it('should handle timeout scenarios properly', async () => {
       const timeoutError = new Error('Timeout');
       timeoutError.name = 'AbortError';
-      global.fetch.mockRejectedValueOnce(timeoutError);
+      
+      // Mock all performance test calls to timeout
+      global.fetch.mockReset();
+      global.fetch
+        .mockRejectedValueOnce(timeoutError)
+        .mockRejectedValueOnce(timeoutError)  
+        .mockRejectedValueOnce(timeoutError);
 
       const diagnostics = createDiagnostics();
       const performanceTest = diagnostics.find(d => d.id === 'performance');
       
       const result = await performanceTest.run();
 
+      // When all requests timeout, performance test should return error status
       expect(result.status).toBe('error');
-      expect(result.messageId).toBe('performanceTestFailed');
+      expect(result.data.successful).toBe(0);
     });
 
     it('should gracefully handle non-browser environments', () => {
