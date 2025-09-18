@@ -21,14 +21,14 @@ define('DB_FILE', 'database.sqlite');
  * Authentication unique keys and salts.
  * Generate new keys for production using: https://api.wordpress.org/secret-key/1.1/salt/
  */
-define('AUTH_KEY',         'put your unique phrase here');
-define('SECURE_AUTH_KEY',  'put your unique phrase here');
-define('LOGGED_IN_KEY',    'put your unique phrase here');
-define('NONCE_KEY',        'put your unique phrase here');
-define('AUTH_SALT',        'put your unique phrase here');
-define('SECURE_AUTH_SALT', 'put your unique phrase here');
-define('LOGGED_IN_SALT',   'put your unique phrase here');
-define('NONCE_SALT',       'put your unique phrase here');
+define('AUTH_KEY',         'z  &oEHaWNQt{Qv,L!9%Lgl/=rE-}%s|0i%0]4PRX8Wf&=4UNeELK)U?tr*#Y2h{');
+define('SECURE_AUTH_KEY',  'L]~=yc;_X) V |r$-|D@C?e{kGR!@ZYe_/+TS.QpOAPB#^UZE9l52U9+G29@t=V*');
+define('LOGGED_IN_KEY',    'MQr7Z>bs/Xr.tC]Q+iF|N~9=5}XSYJ>; eVi@xwB3ka<|Uyv1p%hD^g/|TLG7i{P');
+define('NONCE_KEY',        'F[KCuN7{-&Q1zC(z.7&u~W(-c}^X69T2++m|eUSWPTw?&89,AoR98Mn!wy32fUyt');
+define('AUTH_SALT',        ',`(bERQS[([U5ljoUF(ZdQ!T|bV^SH e1|Rxt*S]S8)sG&N-(0K[p[Ae RfM-Hil');
+define('SECURE_AUTH_SALT', '!0t:BogV@II3Eo{+Q~u%BeO!U<eDEmD,ZSiHN.S4{7i:?ugw!zaT-BkT3R(, _DY');
+define('LOGGED_IN_SALT',   'IX+AXyh8+i]4GoW,1O0pt<8}*6YG!t4|dkuDrlZA)9[y`LeM]VmFSgW66-t6o$|a');
+define('NONCE_SALT',       'X/Z?*r_3|V_2#he%1-A;k+ExU{NwDt,af7Fu.>|xh%KlOhh5nhDfCJElqZM1Ozo+');
 
 /**#@-*/
 
