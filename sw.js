@@ -316,26 +316,41 @@ async function staleWhileRevalidateStrategy(request) {
 async function syncMedicalForms() {
   console.log('[SW] Syncing medical forms...');
 
-  const db = await getIndexedDB();
-  const forms = await db.getAll('pendingForms');
+  try {
+    const db = await getIndexedDB();
 
-  for (const form of forms) {
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form.data)
-      });
-
-      if (response.ok) {
-        await db.delete('pendingForms', form.id);
-        console.log('[SW] Form synced successfully:', form.id);
-      }
-    } catch (error) {
-      console.error('[SW] Form sync failed:', form.id, error);
+    // Check if db is valid before proceeding
+    if (!db) {
+      console.error('[SW] Failed to get IndexedDB instance');
+      return;
     }
+
+    const forms = await db.getAll('pendingForms');
+
+    for (const form of forms) {
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(form.data)
+        });
+
+        if (response.ok) {
+          try {
+            await db.delete('pendingForms', form.id);
+            console.log('[SW] Form synced successfully:', form.id);
+          } catch (deleteError) {
+            console.error('[SW] Failed to delete synced form:', form.id, deleteError);
+          }
+        }
+      } catch (syncError) {
+        console.error('[SW] Form sync failed:', form.id, syncError);
+      }
+    }
+  } catch (dbError) {
+    console.error('[SW] Failed to access IndexedDB for form sync:', dbError);
   }
 }
 
@@ -343,26 +358,41 @@ async function syncMedicalForms() {
 async function syncAppointments() {
   console.log('[SW] Syncing appointments...');
 
-  const db = await getIndexedDB();
-  const appointments = await db.getAll('pendingAppointments');
+  try {
+    const db = await getIndexedDB();
 
-  for (const appointment of appointments) {
-    try {
-      const response = await fetch('/api/appointments', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(appointment.data)
-      });
-
-      if (response.ok) {
-        await db.delete('pendingAppointments', appointment.id);
-        console.log('[SW] Appointment synced successfully:', appointment.id);
-      }
-    } catch (error) {
-      console.error('[SW] Appointment sync failed:', appointment.id, error);
+    // Check if db is valid before proceeding
+    if (!db) {
+      console.error('[SW] Failed to get IndexedDB instance');
+      return;
     }
+
+    const appointments = await db.getAll('pendingAppointments');
+
+    for (const appointment of appointments) {
+      try {
+        const response = await fetch('/api/appointments', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(appointment.data)
+        });
+
+        if (response.ok) {
+          try {
+            await db.delete('pendingAppointments', appointment.id);
+            console.log('[SW] Appointment synced successfully:', appointment.id);
+          } catch (deleteError) {
+            console.error('[SW] Failed to delete synced appointment:', appointment.id, deleteError);
+          }
+        }
+      } catch (syncError) {
+        console.error('[SW] Appointment sync failed:', appointment.id, syncError);
+      }
+    }
+  } catch (dbError) {
+    console.error('[SW] Failed to access IndexedDB for appointment sync:', dbError);
   }
 }
 
@@ -372,7 +402,37 @@ async function getIndexedDB() {
     const request = indexedDB.open('SaraivaVisionOfflineDB', 1);
 
     request.onerror = () => reject(request.error);
-    request.onsuccess = () => resolve(request.result);
+    request.onsuccess = () => {
+      const db = request.result;
+      // Add transaction helper methods
+      db.getAll = async (storeName) => {
+        return new Promise((resolve, reject) => {
+          try {
+            const transaction = db.transaction(storeName, 'readonly');
+            const store = transaction.objectStore(storeName);
+            const request = store.getAll();
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+          } catch (error) {
+            reject(error);
+          }
+        });
+      };
+      db.delete = async (storeName, key) => {
+        return new Promise((resolve, reject) => {
+          try {
+            const transaction = db.transaction(storeName, 'readwrite');
+            const store = transaction.objectStore(storeName);
+            const request = store.delete(key);
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject(request.error);
+          } catch (error) {
+            reject(error);
+          }
+        });
+      };
+      resolve(db);
+    };
 
     request.onupgradeneeded = event => {
       const db = event.target.result;

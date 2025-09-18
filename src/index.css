@@ -541,6 +541,9 @@ html {
 
   /* Media elements optimization */
   img, video, canvas {
+    overflow: hidden;
+    max-width: 100%;
+    height: auto;
     display: block;
     border-style: none;
     box-sizing: border-box;
@@ -557,7 +560,6 @@ html {
     image-rendering: -moz-crisp-edges;
     image-rendering: -o-crisp-edges;
   }
-
   /* View transitions optimization */
   .view-transition {
     view-transition-name: root;

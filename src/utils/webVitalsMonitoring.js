@@ -215,7 +215,12 @@ class WebVitalsMonitor {
         connection: navigator.connection?.effectiveType || 'unknown'
       });
 
-      return navigator.sendBeacon(this.options.endpoint, data);
+      const success = navigator.sendBeacon(this.options.endpoint, data);
+      if (!success) {
+        throw new Error('sendBeacon failed to queue the data');
+      }
+      return success;
+    } else {
     } else {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000);
