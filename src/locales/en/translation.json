@@ -1017,5 +1017,116 @@
     "read_more_post": "Read more about: {{title}}",
     "main_content_label": "Blog main content",
     "posts_section_label": "Blog posts"
+  },
+  "check": {
+    "badge": "Infrastructure monitor",
+    "title": "Saraiva Vision infrastructure diagnostics",
+    "subtitle": "Run real-time checks to validate connectivity, DNS, SSL, WordPress services and the check.saraivavision.com.br subdomain.",
+    "runButton": "Run diagnostics",
+    "running": "Running diagnostics...",
+    "resetButton": "Reset results",
+    "lastUpdated": "Last completed run: {{timestamp}}",
+    "neverRun": "Diagnostics have not been executed yet.",
+    "perCheckUpdated": "Updated {{timestamp}}",
+    "waiting": "Awaiting execution.",
+    "status": {
+      "idle": "Idle",
+      "running": "Running",
+      "success": "Operational",
+      "warning": "Attention",
+      "error": "Error"
+    },
+    "seo": {
+      "title": "Infrastructure Diagnostics | Saraiva Vision",
+      "description": "Real-time infrastructure monitoring for Saraiva Vision covering DNS, SSL, API routes and WordPress services.",
+      "keywords": "infrastructure monitoring, dns check, ssl check, wordpress api health, saraiva vision"
+    },
+    "messages": {
+      "browserOnly": "Diagnostics require a browser environment.",
+      "timeout": "Request timed out before receiving a response.",
+      "fetchError": "Network request failed: {{message}}",
+      "httpError": "Unexpected HTTP status: {{status}}",
+      "opaqueResponse": "Connection succeeded but response details are hidden by CORS restrictions.",
+      "missingRoutes": "Some API routes are not available: {{missing}}.",
+      "hostMismatch": "Current host is {{hostname}}. Point the DNS to {{expected}} to use this dashboard.",
+      "insecureProtocol": "Connection is using {{protocol}}. Enable HTTPS for full coverage.",
+      "hostnameUnavailable": "Could not detect the current hostname.",
+      "unexpected": "Unexpected error: {{message}}"
+    },
+    "diagnostics": {
+      "server": {
+        "title": "Server reachability",
+        "description": "Checks if {{target}} responds over HTTPS.",
+        "success": "The server responded successfully in {{latency}}.",
+        "error": "Unable to reach {{target}}. Investigate DNS and networking."
+      },
+      "services": {
+        "title": "WordPress services",
+        "description": "Tests the availability of published pages via the WordPress API.",
+        "success": "API returned {{count}} page entries in {{latency}}.",
+        "warning": "Service reached but the response could not be inspected (likely CORS).",
+        "error": "The WordPress page endpoint did not respond correctly."
+      },
+      "api": {
+        "title": "Blog/posts API",
+        "description": "Requests the latest posts from the headless WordPress instance.",
+        "success": "Received {{count}} post entry in {{latency}}.",
+        "warning": "Connection established but response details were blocked.",
+        "error": "The posts endpoint is unavailable."
+      },
+      "routes": {
+        "title": "API route registry",
+        "description": "Validates WordPress REST routes for posts, pages and categories.",
+        "success": "All critical routes are registered ({{totalRoutes}} total).",
+        "warning": "Missing REST routes detected: {{missing}}.",
+        "error": "Could not load the REST route registry."
+      },
+      "dns": {
+        "title": "DNS resolution",
+        "description": "Queries public DNS for {{hostname}} A records.",
+        "success": "DNS returned {{count}} record(s).",
+        "warning": "No DNS A records were returned.",
+        "error": "DNS query failed.",
+        "recordsLabel": "Resolved IP addresses"
+      },
+      "ip": {
+        "title": "IP addresses",
+        "description": "Collects IPv4 and IPv6 records for {{hostname}}.",
+        "success": "Active IP addresses resolved.",
+        "warning": "No IP addresses were returned by DNS.",
+        "error": "Failed to resolve IP addresses.",
+        "ipv4Label": "IPv4",
+        "ipv6Label": "IPv6"
+      },
+      "ssl": {
+        "title": "SSL handshake",
+        "description": "Ensures {{target}} accepts HTTPS connections.",
+        "success": "Secure connection established.",
+        "error": "HTTPS connection failed."
+      },
+      "subdomain": {
+        "title": "Subdomain binding",
+        "description": "Confirms that the dashboard is served from {{expected}}.",
+        "success": "Dashboard served from {{hostname}}.",
+        "warning": "Subdomain not pointed to {{expected}} yet."
+      },
+      "php": {
+        "title": "PHP routes / WordPress bootstrap",
+        "description": "Calls the REST bootstrap endpoint to confirm PHP routing.",
+        "success": "WordPress namespace {{namespace}} responded ({{routes}} routes available).",
+        "warning": "Endpoint reachable but response details were hidden.",
+        "error": "Unable to reach the PHP routing endpoint.",
+        "routesLabel": "Routes exposed: {{routes}}"
+      },
+      "nginx": {
+        "title": "Nginx headers",
+        "description": "Inspects response headers from the WordPress API endpoint.",
+        "success": "Server header indicates {{server}}.",
+        "warning": "Headers hidden by CORS; confirm exposure on the server.",
+        "error": "Unable to inspect Nginx headers.",
+        "serverLabel": "Server header: {{server}}"
+      }
+    }
   }
 }
+
