@@ -814,6 +814,12 @@ fi
 if [[ "$SKIP_NGINX" = false ]]; then
   logi NGINX "Ensuring nginx site configuration is linked"
   echo "⚙️  Ensuring nginx site configuration is linked"
+
+  logi NGINX "Syncing Nginx includes"
+  echo "📂 Syncing Nginx includes"
+  run "mkdir -p /etc/nginx/nginx-configs/includes"
+  run "rsync -a --delete '${PROJECT_ROOT}/nginx-configs/includes/' '/etc/nginx/nginx-configs/includes/'"
+
   # Copy config only if changed
   COPY_NGINX=false
   if [[ -f "$NGINX_SITE_CONFIG_SRC" ]]; then

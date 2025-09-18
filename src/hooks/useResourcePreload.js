@@ -45,13 +45,3 @@ export const useCriticalImagePreload = (imageUrl, condition = true) => {
   }], condition);
 };
 
-// Hook para preload de imagens do hero apenas na homepage
-export const useHeroImagePreload = () => {
-  const isHomePage = typeof window !== 'undefined' && 
-    (window.location.pathname === '/' || window.location.pathname === '/index.html');
-  
-  useCriticalImagePreload(
-    '/img/hero.png',
-    isHomePage
-  );
-};
