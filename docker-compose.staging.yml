@@ -1,0 +1,43 @@
+version: '3.8'
+
+# Staging overrides for faster development
+services:
+  db:
+    # Faster health checks for development
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  wordpress:
+    environment:
+      WORDPRESS_DEBUG: 'true'
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  api:
+    environment:
+      NODE_ENV: staging
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  frontend:
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  nginx:
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s

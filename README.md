@@ -181,8 +181,32 @@ npm run build
 
 ### Deploy com Docker
 ```bash
-docker-compose up -d
+# Produção (com healthchecks completos)
+make up
+
+# Desenvolvimento (healthchecks mais rápidos)  
+make up-staging
 ```
+
+🏥 **[Guia Completo de Docker Healthchecks](./README-DOCKER-HEALTHCHECKS.md)**
+
+#### Verificação de Saúde dos Serviços
+```bash
+# Status rápido dos containers
+make health-check
+
+# Teste completo de todos os endpoints
+make health-test
+
+# Logs dos serviços
+make docker-logs
+```
+
+#### Endpoints de Saúde
+- **Nginx**: http://localhost:8082/health
+- **Frontend**: http://localhost:8082/health.json
+- **API**: http://localhost:8082/api/health
+- **WordPress**: http://localhost:8082/wp-json/wp/v2/
 
 ### Servidor Nginx
 Configuração otimizada incluída em `nginx.conf`

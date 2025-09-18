@@ -1,0 +1,11 @@
+{
+  "status": "healthy",
+  "service": "saraiva-vision-frontend",
+  "version": "2.0.0",
+  "timestamp": "{{BUILD_TIME}}",
+  "description": "Clínica Saraiva Vision - Frontend Health Check",
+  "checks": {
+    "static_files": "ok",
+    "build": "ok"
+  }
+}

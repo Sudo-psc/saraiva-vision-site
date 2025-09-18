@@ -54,6 +54,26 @@ const server = http.createServer(async (req, res) => {
   // Route API endpoints
   if (parsed.pathname && parsed.pathname.startsWith('/api/')) {
     try {
+      // Health check endpoint for Docker healthcheck
+      if (parsed.pathname === '/api/health') {
+        const healthStatus = {
+          status: 'healthy',
+          timestamp: new Date().toISOString(),
+          service: 'saraiva-vision-api',
+          version: '2.0.0',
+          uptime: process.uptime(),
+          memory: process.memoryUsage(),
+          checks: {
+            server: 'ok',
+            rateLimit: global.requestCounts ? 'ok' : 'disabled'
+          }
+        };
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.end(JSON.stringify(healthStatus));
+        return;
+      }
       if (parsed.pathname.startsWith('/api/reviews')) {
         await reviewsHandler(req, wrapRes(res));
         return;

@@ -29,7 +29,12 @@
     "audio:duration": "node tools/get-audio-duration.js",
     "images:build": "node tools/img-pipeline.mjs",
     "images:check": "node tools/img-pipeline.mjs check",
-    "images:optimize": "./scripts/optimize-images.sh"
+    "images:optimize": "./scripts/optimize-images.sh",
+    "docker:up": "docker compose up -d",
+    "docker:up-staging": "docker compose -f docker-compose.yml -f docker-compose.staging.yml up -d",
+    "docker:down": "docker compose down",
+    "docker:health": "./scripts/docker-health-test.sh",
+    "docker:logs": "docker compose logs -f"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.1",
