@@ -63,8 +63,6 @@ const CheckPage = () => {
   const [results, setResults] = useState(() => createEmptyState(diagnostics));
   const [isRunning, setIsRunning] = useState(false);
   const [lastCompletedAt, setLastCompletedAt] = useState(null);
-  const [autoRefresh, setAutoRefresh] = useState(false);
-  const [refreshInterval, setRefreshInterval] = useState(30000); // 30 seconds
   const [filterStatus, setFilterStatus] = useState('all'); // all, success, warning, error
   const [showDetails, setShowDetails] = useState(false);
   
@@ -81,20 +79,7 @@ const CheckPage = () => {
     setResults(createEmptyState(diagnostics));
   }, [diagnostics]);
 
-  // Auto-refresh effect
-  useEffect(() => {
-    let intervalId;
-    if (autoRefresh && !isRunning && refreshInterval > 0) {
-      intervalId = setInterval(() => {
-        runDiagnostics();
-      }, refreshInterval);
-    }
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-  }, [autoRefresh, isRunning, refreshInterval]);
+  
 
   const runDiagnostics = useCallback(async () => {
     if (isRunning) return;
@@ -149,7 +134,7 @@ const CheckPage = () => {
 
   useEffect(() => {
     runDiagnostics();
-  }, [runDiagnostics]);
+  }, []);
 
   const resetResults = () => {
     if (isRunning) return;
@@ -251,30 +236,7 @@ const CheckPage = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-2">
-                {/* Auto-refresh controls */}
-                <div className="flex items-center gap-2 px-3 py-2 bg-slate-100 rounded-lg">
-                  <label className="flex items-center gap-2 text-sm cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={autoRefresh}
-                      onChange={(e) => setAutoRefresh(e.target.checked)}
-                      className="rounded"
-                    />
-                    Auto-refresh
-                  </label>
-                  {autoRefresh && (
-                    <select
-                      value={refreshInterval}
-                      onChange={(e) => setRefreshInterval(Number(e.target.value))}
-                      className="text-xs px-2 py-1 border rounded"
-                    >
-                      <option value={10000}>10s</option>
-                      <option value={30000}>30s</option>
-                      <option value={60000}>1min</option>
-                      <option value={300000}>5min</option>
-                    </select>
-                  )}
-                </div>
+                
                 
                 <button
                   type="button"
