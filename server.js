@@ -275,6 +275,79 @@ const server = http.createServer(async (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || '0.0.0.0';
+
+// Graceful shutdown implementation
+let isShuttingDown = false;
+const activeConnections = new Set();
+
+// Track active connections
+server.on('connection', (socket) => {
+  activeConnections.add(socket);
+  socket.on('close', () => {
+    activeConnections.delete(socket);
+  });
+});
+
+// Graceful shutdown function
+function gracefulShutdown(signal) {
+  if (isShuttingDown) {
+    console.log(`${signal} received again, forcing exit...`);
+    process.exit(1);
+  }
+
+  isShuttingDown = true;
+  console.log(`${signal} received, starting graceful shutdown...`);
+
+  // Stop accepting new connections
+  server.close((err) => {
+    if (err) {
+      console.error('Error during server close:', err);
+      process.exit(1);
+    }
+    console.log('HTTP server closed');
+  });
+
+  // Set a timeout for forceful shutdown
+  const shutdownTimeout = setTimeout(() => {
+    console.log('Graceful shutdown timeout, forcing exit...');
+    
+    // Destroy all active connections
+    activeConnections.forEach((socket) => {
+      socket.destroy();
+    });
+    
+    process.exit(1);
+  }, 30000); // 30 seconds timeout
+
+  // Wait for all connections to close
+  const checkConnections = setInterval(() => {
+    if (activeConnections.size === 0) {
+      clearInterval(checkConnections);
+      clearTimeout(shutdownTimeout);
+      console.log('All connections closed, exiting gracefully');
+      process.exit(0);
+    } else {
+      console.log(`Waiting for ${activeConnections.size} active connections to close...`);
+    }
+  }, 1000);
+}
+
+// Register signal handlers
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+// Handle uncaught exceptions and unhandled rejections
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+  gracefulShutdown('UNCAUGHT_EXCEPTION');
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  gracefulShutdown('UNHANDLED_REJECTION');
+});
+
 server.listen(PORT, HOST, () => {
   console.log(`API server listening on http://${HOST}:${PORT}`);
+  console.log('Graceful shutdown handlers registered for SIGTERM and SIGINT');
 });
