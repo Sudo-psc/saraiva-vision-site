@@ -1,0 +1,524 @@
+version: '3.8'
+
+# Saraiva Vision Health Check and Restart Policy Configuration
+# This file defines comprehensive health checks and restart policies for all services
+
+# Health Check Templates
+x-health-check:
+  &health-check
+  healthcheck:
+    test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${SERVICE_PORT:-3000}/health"]
+    interval: ${HEALTH_CHECK_INTERVAL:-30s}
+    timeout: ${HEALTH_CHECK_TIMEOUT:-10s}
+    retries: ${HEALTH_CHECK_RETRIES:-3}
+    start_period: ${HEALTH_CHECK_START_PERIOD:-40s}
+
+# API Health Check Template
+x-api-health-check:
+  &api-health-check
+  healthcheck:
+    test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:${API_PORT:-3001}/api/health"]
+    interval: ${HEALTH_CHECK_INTERVAL:-30s}
+    timeout: ${HEALTH_CHECK_TIMEOUT:-10s}
+    retries: ${HEALTH_CHECK_RETRIES:-3}
+    start_period: ${HEALTH_CHECK_START_PERIOD:-40s}
+
+# WordPress Health Check Template
+x-wordpress-health-check:
+  &wordpress-health-check
+  healthcheck:
+    test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8083/wp-json/saraiva-vision/v1/health"]
+    interval: ${HEALTH_CHECK_INTERVAL:-30s}
+    timeout: ${HEALTH_CHECK_TIMEOUT:-10s}
+    retries: ${HEALTH_CHECK_RETRIES:-3}
+    start_period: ${HEALTH_CHECK_START_PERIOD:-40s}
+
+# Database Health Check Template
+x-database-health-check:
+  &database-health-check
+  healthcheck:
+    test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER:-wordpress}", "-p${MYSQL_PASSWORD}"]
+    interval: ${HEALTH_CHECK_INTERVAL:-30s}
+    timeout: ${HEALTH_CHECK_TIMEOUT:-10s}
+    retries: ${HEALTH_CHECK_RETRIES:-5}
+    start_period: ${HEALTH_CHECK_START_PERIOD:-60s}
+
+# Redis Health Check Template
+x-redis-health-check:
+  &redis-health-check
+  healthcheck:
+    test: ["CMD", "redis-cli", "ping"]
+    interval: ${HEALTH_CHECK_INTERVAL:-30s}
+    timeout: ${HEALTH_CHECK_TIMEOUT:-10s}
+    retries: ${HEALTH_CHECK_RETRIES:-3}
+    start_period: ${HEALTH_CHECK_START_PERIOD:-30s}
+
+# Nginx Health Check Template
+x-nginx-health-check:
+  &nginx-health-check
+  healthcheck:
+    test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/health"]
+    interval: ${HEALTH_CHECK_INTERVAL:-30s}
+    timeout: ${HEALTH_CHECK_TIMEOUT:-10s}
+    retries: ${HEALTH_CHECK_RETRIES:-3}
+    start_period: ${HEALTH_CHECK_START_PERIOD:-40s}
+
+# Restart Policy Templates
+x-restart-policy:
+  &restart-policy
+  restart: unless-stopped
+
+x-development-restart-policy:
+  &development-restart-policy
+  restart: on-failure
+
+x-production-restart-policy:
+  &production-restart-policy
+  restart: unless-stopped
+  deploy:
+    restart_policy:
+      condition: on-failure
+      delay: 5s
+      max_attempts: 3
+      window: 120s
+
+# Comprehensive Health Check Configuration
+x-comprehensive-health-check:
+  &comprehensive-health-check
+  healthcheck:
+    test: >
+      sh -c "
+        # Basic connectivity check
+        wget --no-verbose --tries=1 --spider http://localhost:${SERVICE_PORT:-3000}/health || exit 1
+
+        # Memory usage check
+        MEMORY_USAGE=$$(ps -o rss= -p $$) || exit 1
+        if [ $$MEMORY_USAGE -gt $${MAX_MEMORY_USAGE:-524288} ]; then
+          echo 'Memory usage too high: '$$MEMORY_USAGE'KB' >&2
+          exit 1
+        fi
+
+        # Disk space check
+        DISK_USAGE=$$(df / | tail -1 | awk '{print $$5}' | sed 's/%//') || exit 1
+        if [ $$DISK_USAGE -gt $${MAX_DISK_USAGE:-90} ]; then
+          echo 'Disk usage too high: '$$DISK_USAGE'%' >&2
+          exit 1
+        fi
+
+        # Process count check
+        PROCESS_COUNT=$$(ps aux | grep -v grep | wc -l) || exit 1
+        if [ $$PROCESS_COUNT -gt $${MAX_PROCESSES:-1000} ]; then
+          echo 'Too many processes: '$$PROCESS_COUNT >&2
+          exit 1
+        fi
+
+        # File descriptor check
+        FD_COUNT=$$(ls /proc/$$/fd | wc -l) || exit 1
+        if [ $$FD_COUNT -gt $${MAX_FILE_DESCRIPTORS:-1024} ]; then
+          echo 'Too many file descriptors: '$$FD_COUNT >&2
+          exit 1
+        fi
+
+        echo 'Health check passed'
+        exit 0
+      "
+    interval: ${HEALTH_CHECK_INTERVAL:-30s}
+    timeout: ${HEALTH_CHECK_TIMEOUT:-15s}
+    retries: ${HEALTH_CHECK_RETRIES:-3}
+    start_period: ${HEALTH_CHECK_START_PERIOD:-60s}
+
+# Service-specific Health Check Configurations
+services:
+  # Frontend Service Health Check
+  frontend:
+    <<: [*health-check, *restart-policy]
+    environment:
+      - SERVICE_PORT=${FRONTEND_PORT:-3002}
+      - MAX_MEMORY_USAGE=524288  # 512MB
+      - MAX_DISK_USAGE=90
+      - MAX_PROCESSES=100
+      - MAX_FILE_DESCRIPTORS=512
+    healthcheck:
+      test: >
+        sh -c "
+          # Application health check
+          wget --no-verbose --tries=1 --spider http://localhost:${FRONTEND_PORT:-3002}/health || exit 1
+
+          # Vite dev server check (development only)
+          if [ '$${NODE_ENV:-development}' = 'development' ]; then
+            wget --no-verbose --tries=1 --spider http://localhost:5173/ || exit 1
+          fi
+
+          # Static files accessibility
+          if [ -f /app/dist/index.html ]; then
+            cat /app/dist/index.html | grep -q '<!DOCTYPE html>' || exit 1
+          fi
+
+          echo 'Frontend health check passed'
+        "
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+  # API Service Health Check
+  api:
+    <<: [*api-health-check, *restart-policy]
+    environment:
+      - API_PORT=${API_PORT:-3001}
+      - MAX_MEMORY_USAGE=524288  # 512MB
+      - MAX_DISK_USAGE=90
+      - MAX_PROCESSES=50
+      - MAX_FILE_DESCRIPTORS=256
+    healthcheck:
+      test: >
+        sh -c "
+          # API health endpoint
+          wget --no-verbose --tries=1 --spider http://localhost:${API_PORT:-3001}/api/health || exit 1
+
+          # Database connectivity check
+          node -e \"
+            const mysql = require('mysql2/promise');
+            mysql.createConnection({
+              host: '${WORDPRESS_DB_HOST:-db:3306}',
+              user: '${WORDPRESS_DB_USER:-wordpress}',
+              password: '${WORDPRESS_DB_PASSWORD}',
+              database: '${WORDPRESS_DB_NAME:-wordpress}'
+            }).then(conn => {
+              conn.end();
+              console.log('Database connection successful');
+              process.exit(0);
+            }).catch(err => {
+              console.error('Database connection failed:', err.message);
+              process.exit(1);
+            });
+          \" || exit 1
+
+          # WordPress API proxy check
+          wget --no-verbose --tries=1 --spider http://localhost:${API_PORT:-3001}/api/wordpress/posts || exit 1
+
+          # Rate limiting check
+          node -e \"
+            const rateLimit = require('express-rate-limit');
+            const limiter = rateLimit({
+              windowMs: 60000,
+              max: 100
+            });
+            console.log('Rate limiting configured');
+            process.exit(0);
+          \" || exit 1
+
+          echo 'API health check passed'
+        "
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 40s
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+  # WordPress Service Health Check
+  wordpress:
+    <<: [*wordpress-health-check, *restart-policy]
+    environment:
+      - MAX_MEMORY_USAGE=786432  # 768MB
+      - MAX_DISK_USAGE=85
+      - MAX_PROCESSES=30
+      - MAX_FILE_DESCRIPTORS=256
+    healthcheck:
+      test: >
+        sh -c "
+          # WordPress health endpoint
+          wget --no-verbose --tries=1 --spider http://localhost:8083/wp-json/saraiva-vision/v1/health || exit 1
+
+          # Database connectivity
+          php -r \"
+            try {
+              \$conn = new PDO('mysql:host=${WORDPRESS_DB_HOST:-db:3306};dbname=${WORDPRESS_DB_NAME:-wordpress}', '${WORDPRESS_DB_USER:-wordpress}', '${WORDPRESS_DB_PASSWORD}');
+              \$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+              \$stmt = \$conn->query('SELECT 1');
+              echo 'Database connection successful';
+              \$conn = null;
+            } catch(PDOException \$e) {
+              echo 'Database connection failed: ' . \$e->getMessage();
+              exit(1);
+            }
+          \" || exit 1
+
+          # File system permissions
+          wp plugin list --status=active --format=json | grep -q 'saraiva-vision' || exit 1
+
+          # WordPress core files
+          wp core version | grep -q '[0-9]' || exit 1
+
+          # Theme functionality
+          wp theme list --status=active --format=json | grep -q 'active' || exit 1
+
+          echo 'WordPress health check passed'
+        "
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 60s
+    depends_on:
+      db:
+        condition: service_healthy
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 180s
+
+  # Database Service Health Check
+  db:
+    <<: [*database-health-check, *production-restart-policy]
+    environment:
+      - MYSQL_USER=${MYSQL_USER:-wordpress}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MAX_MEMORY_USAGE=1048576  # 1GB
+      - MAX_DISK_USAGE=85
+      - MAX_PROCESSES=50
+      - MAX_FILE_DESCRIPTORS=1024
+    healthcheck:
+      test: >
+        sh -c "
+          # MySQL connectivity
+          mysqladmin ping -h localhost -u '${MYSQL_USER:-wordpress}' -p'${MYSQL_PASSWORD}' || exit 1
+
+          # Database process check
+          pgrep mysqld > /dev/null || exit 1
+
+          # MySQL configuration check
+          mysql -u '${MYSQL_USER:-wordpress}' -p'${MYSQL_PASSWORD}' -e 'SHOW VARIABLES LIKE \"version\"' | grep -q 'version' || exit 1
+
+          # Database connectivity test
+          mysql -u '${MYSQL_USER:-wordpress}' -p'${MYSQL_PASSWORD}' -e 'SELECT 1' | grep -q '1' || exit 1
+
+          # Disk space check
+          DISK_USAGE=\$$(df /var/lib/mysql | tail -1 | awk '{print \$$5}' | sed 's/%//')
+          if [ \$$DISK_USAGE -gt 85 ]; then
+            echo 'MySQL disk usage too high: '\$$DISK_USAGE'%' >&2
+            exit 1
+          fi
+
+          echo 'Database health check passed'
+        "
+      interval: 30s
+      timeout: 20s
+      retries: 5
+      start_period: 60s
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 5
+        window: 300s
+
+  # Redis Service Health Check
+  redis:
+    <<: [*redis-health-check, *restart-policy]
+    environment:
+      - MAX_MEMORY_USAGE=262144  # 256MB
+      - MAX_DISK_USAGE=90
+      - MAX_PROCESSES=10
+      - MAX_FILE_DESCRIPTORS=128
+    healthcheck:
+      test: >
+        sh -c "
+          # Redis connectivity
+          redis-cli ping | grep -q 'PONG' || exit 1
+
+          # Redis process check
+          pgrep redis-server > /dev/null || exit 1
+
+          # Redis memory check
+          redis-cli info memory | grep -q 'used_memory_human' || exit 1
+
+          # Redis persistence check
+          redis-cli info persistence | grep -q 'aof_enabled' || exit 1
+
+          # Redis connection count
+          CONNECTION_COUNT=\$$(redis-cli info clients | grep connected_clients | awk '{print \$$2}')
+          if [ \$$CONNECTION_COUNT -gt 100 ]; then
+            echo 'Too many Redis connections: '\$$CONNECTION_COUNT >&2
+            exit 1
+          fi
+
+          echo 'Redis health check passed'
+        "
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 60s
+
+  # Nginx Service Health Check
+  nginx:
+    <<: [*nginx-health-check, *restart-policy]
+    environment:
+      - MAX_MEMORY_USAGE=131072  # 128MB
+      - MAX_DISK_USAGE=90
+      - MAX_PROCESSES=20
+      - MAX_FILE_DESCRIPTORS=512
+    healthcheck:
+      test: >
+        sh -c "
+          # Nginx process check
+          pgrep nginx > /dev/null || exit 1
+
+          # Nginx configuration test
+          nginx -t || exit 1
+
+          # Web server responsiveness
+          wget --no-verbose --tries=1 --spider http://localhost:80/health || exit 1
+
+          # SSL configuration check (if SSL enabled)
+          if [ -f /etc/letsencrypt/live/saraivavision.com.br/fullchain.pem ]; then
+            wget --no-verbose --tries=1 --spider https://localhost/health || exit 1
+          fi
+
+          # Load average check
+          LOAD_AVG=\$$(uptime | awk -F'load average:' '{print \$$2}' | awk -F',' '{print \$$1}' | sed 's/ //g')
+          if (( \$$(echo \$$LOAD_AVG '>' 2.0 | bc -l) )); then
+            echo 'Load average too high: '\$$LOAD_AVG >&2
+            exit 1
+          fi
+
+          echo 'Nginx health check passed'
+        "
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+  # Health Monitoring Service
+  health-monitor:
+    image: curlimages/curl:latest
+    container_name: comprehensive-health-monitor
+    <<: *restart-policy
+    depends_on:
+      frontend:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+      wordpress:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nginx:
+        condition: service_healthy
+    command: >
+      sh -c "
+        echo 'Starting comprehensive health monitoring...' &&
+        while true; do
+          echo '=== Comprehensive Health Check at $$(date) ===' &&
+
+          # Service health checks
+          echo '=== Frontend Health ===' &&
+          curl -f http://nginx/health || echo 'Frontend unhealthy via Nginx' &&
+          curl -f http://frontend:${FRONTEND_PORT:-3002}/health || echo 'Frontend unhealthy direct' &&
+
+          echo '=== API Health ===' &&
+          curl -f http://nginx/api/health || echo 'API unhealthy via Nginx' &&
+          curl -f http://api:${API_PORT:-3001}/api/health || echo 'API unhealthy direct' &&
+
+          echo '=== WordPress Health ===' &&
+          curl -f http://nginx/wp-json/saraiva-vision/v1/health || echo 'WordPress unhealthy via Nginx' &&
+          curl -f http://wordpress:8083/wp-json/saraiva-vision/v1/health || echo 'WordPress unhealthy direct' &&
+
+          echo '=== Database Health ===' &&
+          mysqladmin ping -h db -u '${MYSQL_USER:-wordpress}' -p'${MYSQL_PASSWORD}' || echo 'Database unhealthy' &&
+
+          echo '=== Redis Health ===' &&
+          redis-cli -h redis -a '${REDIS_PASSWORD}' ping || echo 'Redis unhealthy' &&
+
+          echo '=== Network Connectivity ===' &&
+          ping -c 1 frontend || echo 'Frontend unreachable' &&
+          ping -c 1 api || echo 'API unreachable' &&
+          ping -c 1 wordpress || echo 'WordPress unreachable' &&
+          ping -c 1 db || echo 'Database unreachable' &&
+          ping -c 1 redis || echo 'Redis unreachable' &&
+
+          echo '=== Resource Usage ===' &&
+          echo 'Container status:' &&
+          docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}' &&
+
+          echo '=== Disk Usage ===' &&
+          df -h | grep -E '(sda|nvme|xvda)' &&
+
+          echo '=== Memory Usage ===' &&
+          free -h &&
+
+          echo '=== All comprehensive health checks completed ===' &&
+          sleep 60;
+        done
+      "
+    networks:
+      - internal
+
+# Service Dependencies
+x-service-dependencies:
+  &service-dependencies
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+
+# Production-specific Health Check Enhancements
+x-production-health-enhancements:
+  &production-health-enhancements
+  deploy:
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 256M
+      reservations:
+        cpus: '0.25'
+        memory: 128M
+    restart_policy:
+      condition: on-failure
+      delay: 5s
+      max_attempts: 3
+      window: 120s
+    update_config:
+      parallelism: 1
+      delay: 10s
+      failure_action: rollback
+    rollback_config:
+      parallelism: 0
+      order: stop-first
+
+# Development-specific Health Check Configuration
+x-development-health-config:
+  &development-health-config
+  deploy:
+    restart_policy:
+      condition: on-failure
+      delay: 3s
+      max_attempts: 5
+      window: 60s
