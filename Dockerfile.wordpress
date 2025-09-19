@@ -1,23 +1,21 @@
-# Service: WordPress (PHP-FPM)
-# Description: Simplified WordPress container for Saraiva Vision
-# Base Image: wordpress:php8.1-fpm-alpine
+# WordPress PHP-FPM tuned for Saraiva Vision CMS workloads
+FROM wordpress:6.6-php8.3-fpm-alpine
 
-FROM wordpress:php8.1-fpm-alpine
+RUN apk add --no-cache fcgi
 
-# Install required PHP extensions
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# Copy PHP tuning and healthcheck helpers
+COPY infra/php/conf.d/ /usr/local/etc/php/conf.d/
+COPY infra/php/php-fpm.d/ /usr/local/etc/php-fpm.d/
+COPY infra/php/healthcheck.sh /usr/local/bin/php-fpm-healthcheck
 
-# Create directories and set permissions
-RUN mkdir -p /var/www/html/wp-content/uploads \
-    && mkdir -p /var/www/html/wp-content/databases \
-    && chown -R www-data:www-data /var/www/html/wp-content
+RUN chmod +x /usr/local/bin/php-fpm-healthcheck && \
+    mkdir -p /var/log/php-fpm && \
+    touch /var/log/php-fpm/error.log /var/log/php-fpm/slow.log && \
+    chown -R www-data:www-data /var/log/php-fpm
 
-# Simple PHP-FPM health check - test if port is listening
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD netstat -tulpn | grep ':9000' || exit 1
+  CMD /usr/local/bin/php-fpm-healthcheck
 
-# Expose PHP-FPM port
 EXPOSE 9000
 
-# Start PHP-FPM
 CMD ["php-fpm"]
