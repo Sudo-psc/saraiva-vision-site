@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # Frontend Service with custom development server
@@ -22,11 +22,19 @@ services:
     environment:
       - NODE_ENV=development
       - VITE_API_URL=http://api:3001
-      - VITE_WORDPRESS_URL=http://wordpress:8083
+      - VITE_WORDPRESS_URL=http://host.docker.internal:8083
       - FRONTEND_PORT=3002
     command: ["node", "server-dev.js"]
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3002/health"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3002/health",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -54,40 +62,21 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=3001
-      - WORDPRESS_URL=http://wordpress:8083
+      - WORDPRESS_URL=http://host.docker.internal:8083
       - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
       - SUPABASE_URL=${SUPABASE_URL}
       - SUPABASE_KEY=${SUPABASE_KEY}
     command: ["node", "--inspect=0.0.0.0:9229", "server.js"]
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    networks:
-      - internal
-
-  # WordPress Service with health check plugin
-  wordpress:
-    build:
-      context: .
-      dockerfile: Dockerfile.wordpress
-    container_name: saraiva-wordpress
-    volumes:
-      - ./wordpress-local:/var/www/html:cached
-      - wordpress_data:/var/www/html/wp-content/uploads
-      - ./wordpress-plugins:/var/www/html/wp-content/plugins/saraiva-vision:cached
-    environment:
-      - WORDPRESS_DEBUG=true
-      - WORDPRESS_DB_HOST=localhost
-      - WORDPRESS_DB_USER=wordpress
-      - WORDPRESS_DB_PASSWORD=wordpress
-      - WORDPRESS_DB_NAME=wordpress
-      - WP_HOME=http://localhost:8083
-      - WP_SITEURL=http://localhost:8083
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8083/wp-json/saraiva-vision/v1/health"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://0.0.0.0:3001/api/health",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -114,9 +103,17 @@ services:
       - NGINX_HOST=localhost
       - FRONTEND_HOST=frontend:3002
       - API_HOST=api:3001
-      - WORDPRESS_HOST=wordpress:8083
+      - WORDPRESS_HOST=host.docker.internal:8083
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/health"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:80/health",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -125,8 +122,6 @@ services:
       frontend:
         condition: service_healthy
       api:
-        condition: service_healthy
-      wordpress:
         condition: service_healthy
     networks:
       - internal
@@ -145,7 +140,17 @@ services:
       - mysql_data:/var/lib/mysql
       - ./mysql-backup:/backup:rw
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "wordpress", "-pwordpress"]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "wordpress",
+          "-pwordpress",
+        ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -179,8 +184,6 @@ services:
         condition: service_healthy
       api:
         condition: service_healthy
-      wordpress:
-        condition: service_healthy
       nginx:
         condition: service_healthy
     command: >
@@ -191,7 +194,7 @@ services:
           curl -f http://nginx/health || echo 'Nginx unhealthy' &&
           curl -f http://frontend:3002/health || echo 'Frontend unhealthy' &&
           curl -f http://api:3001/api/health || echo 'API unhealthy' &&
-          curl -f http://wordpress:8083/wp-json/saraiva-vision/v1/health || echo 'WordPress unhealthy' &&
+          curl -f http://host.docker.internal:8083/wp-json/wp/v2/posts || echo 'WordPress mock unhealthy' &&
           curl -f http://redis:6379/ping || echo 'Redis unhealthy' &&
           echo '=== All checks completed ===' &&
           sleep 30;
@@ -216,8 +219,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
 volumes:
-  wordpress_data:
-    driver: local
   mysql_data:
     driver: local
   redis_data:
