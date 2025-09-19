@@ -1,0 +1,68 @@
+# Simple Saraiva Vision Production Config
+server {
+    listen 80;
+    server_name saraivavision.com.br www.saraivavision.com.br;
+
+    # Health check
+    location /health {
+        access_log off;
+        return 200 '{"status":"healthy","service":"nginx","timestamp":"healthy"}';
+        add_header Content-Type application/json;
+    }
+
+    # API proxy
+    location /api/ {
+        proxy_pass http://api:3001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Frontend proxy (default)
+    location / {
+        proxy_pass http://frontend:3002;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# SSL redirect (simplified)
+server {
+    listen 443 ssl;
+    server_name saraivavision.com.br www.saraivavision.com.br;
+
+    ssl_certificate /etc/letsencrypt/live/saraivavision.com.br/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/saraivavision.com.br/privkey.pem;
+
+    # Basic SSL settings
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    # Health check
+    location /health {
+        access_log off;
+        return 200 '{"status":"healthy","service":"nginx-ssl","timestamp":"healthy"}';
+        add_header Content-Type application/json;
+    }
+
+    # API proxy
+    location /api/ {
+        proxy_pass http://api:3001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Frontend proxy (default)
+    location / {
+        proxy_pass http://frontend:3002;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
