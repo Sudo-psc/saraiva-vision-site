@@ -439,3 +439,7 @@ From `webapp/.github/copilot-instructions.md`:
 - Monitor Lighthouse scores regularly
 - Track Core Web Vitals in production
 - Optimize images before deployment
+- Key Memorization Points
+    •    Environment Setup: Containerized development environment using Docker and Docker Compose.     •    Technology Stack:     •    Nginx as a reverse proxy.     •    Frontend: React with Vite (supports hot-reload).     •    API: Node.js.     •    CMS: WordPress with PHP-FPM.     •    Host System: Linux.     •    Dependencies: Docker Engine version 20.10 or higher, and Docker Compose version 2.0 or higher.     •    Service Execution: All services run within containers.     •    Local Network Access:     •    Frontend: http://localhost:3002     •    API: http://localhost:3001     •    WordPress Admin: http://localhost:8080/wp-admin     •    Traffic Routing: Nginx handles routing between services.     •    Hardware Requirements: Not specified.
+Workflow Guidelines
+    •    Collaboration in Pull Requests:     •    Mention @codex to ask questions or initiate a task.     •    Mention @coderabbit specifically for code review tasks.     •    Best Practices:     •    Always commit changes and request a review.     •    Adopt a spec-driven development method (e.g., define specifications before coding).     •    Review code specifications and tasks thoroughly before taking action.
