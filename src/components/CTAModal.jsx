@@ -5,7 +5,7 @@ import { Globe, MessageCircle, Phone, Mail, X, Bot } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { CONTACT } from '@/lib/constants';
-import { trackConversion } from '@/utils/analytics';
+// importação dinâmica de analytics
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
@@ -90,7 +90,7 @@ const CTAModal = () => {
           {/* Online Scheduling */}
           <button
             type="button"
-            onClick={() => { try { trackConversion('schedule_start', { method: 'online' }); } catch (_) { }; safeOpenExternal(clinicInfo.onlineSchedulingUrl, 'Agendamento Online'); }}
+            onClick={async () => { try { (await import('@/utils/analytics')).trackConversion('schedule_start', { method: 'online' }); } catch (_) { }; safeOpenExternal(clinicInfo.onlineSchedulingUrl, 'Agendamento Online'); }}
             className="flex items-center gap-4 p-5 rounded-2xl border-2 border-blue-300 bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 transition-all duration-200 transform hover:scale-[1.02] shadow-lg w-full text-left"
           >
             <div className="p-4 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-md">
@@ -109,7 +109,7 @@ const CTAModal = () => {
           {/* WhatsApp */}
           <button
             type="button"
-            onClick={() => { try { trackConversion('whatsapp_click'); } catch (_) { }; safeOpenExternal(whatsappUrl, 'WhatsApp'); }}
+            onClick={async () => { try { (await import('@/utils/analytics')).trackConversion('whatsapp_click'); } catch (_) { }; safeOpenExternal(whatsappUrl, 'WhatsApp'); }}
             className="flex items-center gap-4 p-5 rounded-2xl border-2 border-green-300 bg-gradient-to-r from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 transition-all duration-200 transform hover:scale-[1.02] shadow-lg w-full text-left"
           >
             <div className="p-4 rounded-xl bg-gradient-to-br from-green-500 to-green-600 text-white shadow-md">
@@ -138,8 +138,8 @@ const CTAModal = () => {
           {/* Phone */}
           <button
             type="button"
-            onClick={() => {
-              try { trackConversion('phone_click'); } catch (_) { }
+            onClick={async () => {
+              try { (await import('@/utils/analytics')).trackConversion('phone_click'); } catch (_) { }
               try { window.location.href = phoneHref; } catch (e) { console.error('Error initiating phone call:', e); alert(t('contact.phone_call_error', `Erro ao iniciar chamada. Ligue manualmente: ${phoneDisplay}`)); }
             }}
             className="flex items-center gap-4 p-4 rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100 transition w-full text-left"
@@ -153,8 +153,8 @@ const CTAModal = () => {
 
           {/* Email */}
           <button
-            onClick={() => {
-              try { trackConversion('email_click'); } catch (_) { }
+            onClick={async () => {
+              try { (await import('@/utils/analytics')).trackConversion('email_click'); } catch (_) { }
               try {
                 const mailtoUrl = `mailto:${email}?subject=${encodeURIComponent(CONTACT.DEFAULT_MESSAGES.EMAIL_SUBJECT)}`;
                 window.location.href = mailtoUrl;

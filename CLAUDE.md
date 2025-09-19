@@ -6,6 +6,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 SaraivaVision is a React-based medical clinic website for an ophthalmology practice with strict requirements for accessibility, performance, and Brazilian medical compliance. The project uses modern web technologies with a focus on user experience, SEO optimization, and medical data handling.
 
+**IMPORTANT**: This project has a dual structure:
+- **Root level** (`/`): Main production project with complete Docker orchestration
+- **webapp level** (`/webapp/`): Legacy development structure with individual configurations
+
+Always work from the **root level** unless specifically directed to the webapp subdirectory.
+
 ## 🛠️ Development Commands
 
 ### Core Development
@@ -55,6 +61,23 @@ npm run start:api    # Start Node.js API server
 docker-compose up    # Start all services (frontend, API, WordPress, nginx, db, redis)
 ```
 
+### Additional Root-Level Commands
+```bash
+# Root level development (from /)
+npm run dev          # Development server using server-dev.js
+npm run start:api    # Start Node.js API server (server.js)
+npm run test         # Run Vitest tests  
+npm run test:run     # Run tests once
+npm run test:coverage # Generate coverage report
+npm run verify       # Complete verification pipeline
+npm run images:optimize # Optimize images via script
+
+# Docker orchestration scripts
+./docker-dev.sh      # Initialize full development stack
+./deploy.sh          # Production deployment
+./scripts/health-monitor.sh # Monitor service health
+```
+
 ## 🏗️ Architecture Overview
 
 ### Technology Stack
@@ -69,18 +92,29 @@ docker-compose up    # Start all services (frontend, API, WordPress, nginx, db, 
 
 ### Project Structure
 ```
-src/
-├── components/          # React components
-│   ├── ui/             # Base design system components
-│   ├── icons/          # Custom SVG icons
-│   └── __tests__/      # Component tests
-├── pages/              # Route components (lazy-loaded)
-├── hooks/              # Custom React hooks
-├── lib/                # Utilities and configurations
-├── contexts/           # React contexts
-├── locales/            # i18n translations (pt/en)
-├── utils/              # Helper functions
-└── styles/             # Global styles
+/ (root)
+├── src/                    # Main React application source
+│   ├── components/         # React components
+│   │   ├── ui/            # Base design system components
+│   │   ├── icons/         # Custom SVG icons
+│   │   └── __tests__/     # Component tests
+│   ├── pages/             # Route components (lazy-loaded)
+│   ├── hooks/             # Custom React hooks
+│   ├── lib/               # Utilities and configurations
+│   ├── contexts/          # React contexts
+│   ├── locales/           # i18n translations (pt/en)
+│   ├── utils/             # Helper functions
+│   └── styles/            # Global styles
+├── api/                   # API route handlers
+├── public/                # Static assets
+├── scripts/               # Build and utility scripts
+├── docs/                  # Project documentation
+├── tests/                 # Integration and contract tests
+├── docker-compose.yml     # Main Docker orchestration
+├── server-dev.js          # Development server
+├── server.js              # Production API server
+└── webapp/                # Legacy development structure
+    └── [similar structure] # Duplicate for backward compatibility
 ```
 
 ### Key Architectural Patterns
@@ -143,9 +177,16 @@ docker logs saraiva-health-monitor  # View health monitoring
 
 ### Test Organization
 ```
-src/__tests__/           # Integration tests
-src/components/__tests__/ # Component unit tests
-src/hooks/__tests__/     # Hook tests
+src/__tests__/              # Integration tests
+src/components/__tests__/   # Component unit tests  
+src/hooks/__tests__/        # Hook tests
+src/utils/__tests__/        # Utility function tests
+src/lib/__tests__/          # Library function tests
+src/pages/__tests__/        # Page component tests
+tests/                      # Root-level tests
+├── contract/              # Service contract tests
+├── integration/           # Integration tests
+└── utils/                 # Test utilities
 ```
 
 ### Running Specific Tests
@@ -153,7 +194,15 @@ src/hooks/__tests__/     # Hook tests
 npm test -- ComponentName     # Test specific component
 npm test -- --run pages       # Test all pages
 npm test -- --coverage        # Generate coverage report
+vitest run tests/contract/     # Run contract tests
+vitest run tests/integration/  # Run integration tests
 ```
+
+### Test Categories
+- **Unit Tests**: Component logic, hooks, utilities
+- **Integration Tests**: API endpoints, service interaction
+- **Contract Tests**: Service health checks, API contracts
+- **E2E Tests**: Manual verification scripts in `scripts/` directory
 
 ## 🎨 Medical Design System
 
@@ -345,13 +394,39 @@ curl http://localhost:3001/api/health  # API
 curl http://localhost:8083/wp-json/saraiva-vision/v1/health  # WordPress
 ```
 
+### File Location Guide
+- **Configuration files**: Use root-level versions (vite.config.js, package.json, docker-compose.yml)
+- **Source code**: Located in `/src/` (root level)
+- **API handlers**: Located in `/api/` (root level)
+- **Development scripts**: Located in `/scripts/` (root level)
+- **Legacy files**: `/webapp/` directory (avoid unless specifically needed)
+
+### Important Development Notes
+- Always run commands from the project root (`/`) unless specifically working in webapp
+- The webapp directory contains legacy development files - prefer root-level equivalents
+- Docker development uses root-level docker-compose.yml with comprehensive service orchestration
+- Health monitoring is built into the Docker stack with automated service checks
+
 ## 📖 Additional Resources
 
 ### Key Documentation Files
 - `DEVELOPER_QUICK_START.md` - Setup and first steps
-- `.github/copilot-instructions.md` - Detailed development patterns
+- `webapp/.github/copilot-instructions.md` - Detailed development patterns and medical compliance
 - `ROUTING_ANALYSIS_AND_RESOLUTION.md` - Route configuration
 - `WORDPRESS_INTEGRATION_FIX_COMPLETE.md` - WordPress setup
+- `docs/SYSTEM_ARCHITECTURE.md` - Technical architecture overview
+- `docs/TESTING_GUIDE.md` - Testing strategies and practices
+- `docs/MEDICAL_CONTENT_STRATEGY.md` - Medical content guidelines
+- `scripts/` - Utility scripts for deployment, optimization, and monitoring
+
+### Critical Development Patterns
+From `webapp/.github/copilot-instructions.md`:
+- **Medical Compliance**: CFM regulations, LGPD compliance, WCAG 2.1 AA accessibility
+- **Component Patterns**: Functional components with hooks, i18n integration
+- **Form Validation**: Zod schema validation with medical-specific requirements
+- **Performance Standards**: Lighthouse 90+, <1.5s FCP, <2.5s LCP, <0.1 CLS
+- **Image Optimization**: WebP format, lazy loading, responsive images
+- **Security**: Input validation, XSS prevention, environment variable protection
 
 ### Medical Content Guidelines
 - All medical terminology must be accurate

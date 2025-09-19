@@ -1,43 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { RefreshCw, Download, X } from 'lucide-react';
-import { swManager } from '../utils/serviceWorkerManager.js';
+// Importação dinâmica de swManager
 
 export default function ServiceWorkerUpdateNotification() {
 	const [updateAvailable, setUpdateAvailable] = useState(false);
 	const [isUpdating, setIsUpdating] = useState(false);
 	const [showNotification, setShowNotification] = useState(false);
 
-	useEffect(() => {
-		// Listener para updates disponíveis
-		swManager.on('updateAvailable', () => {
-			setUpdateAvailable(true);
-			setShowNotification(true);
-		});
+		useEffect(() => {
+			// variáveis removidas pois não são usadas
+			let mounted = true;
+			(async () => {
+				const mod = await import('../utils/serviceWorkerManager.js');
+				const swManager = mod.swManager || mod.default;
+				if (!mounted) return;
+				swManager.on('updateAvailable', () => {
+					setUpdateAvailable(true);
+					setShowNotification(true);
+				});
+				swManager.on('controllerChanged', () => {
+					setIsUpdating(false);
+					// Página será recarregada automaticamente
+				});
+			})();
+			return () => { mounted = false; };
+		}, []);
 
-		// Listener para quando controller muda (update aplicado)
-		swManager.on('controllerChanged', () => {
-			setIsUpdating(false);
-			// Página será recarregada automaticamente
-		});
-
-		return () => {
-			// Cleanup seria necessário se tivéssemos método de remove listeners
+		const handleUpdate = async () => {
+			setIsUpdating(true);
+			try {
+				const mod = await import('../utils/serviceWorkerManager.js');
+				const swManager = mod.swManager || mod.default;
+				await swManager.applyUpdate();
+				// Aguarda um pouco e recarrega se não acontecer automaticamente
+				setTimeout(() => {
+					window.location.reload();
+				}, 2000);
+			} catch (error) {
+				console.error('Erro ao aplicar update:', error);
+				setIsUpdating(false);
+			}
 		};
-	}, []);
-
-	const handleUpdate = async () => {
-		setIsUpdating(true);
-		try {
-			await swManager.applyUpdate();
-			// Aguarda um pouco e recarrega se não acontecer automaticamente
-			setTimeout(() => {
-				window.location.reload();
-			}, 2000);
-		} catch (error) {
-			console.error('Erro ao aplicar update:', error);
-			setIsUpdating(false);
-		}
-	};
 
 	const handleDismiss = () => {
 		setShowNotification(false);
