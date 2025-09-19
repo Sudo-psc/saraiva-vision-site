@@ -1,0 +1,13 @@
+upstream frontend_upstream {
+    server ${FRONTEND_SERVICE_HOST:-frontend}:${FRONTEND_SERVICE_PORT:-80};
+    keepalive 32;
+}
+
+upstream api_upstream {
+    server ${API_SERVICE_HOST:-api}:${API_SERVICE_PORT:-3001};
+    keepalive 32;
+}
+
+upstream wordpress_fpm {
+    server ${WORDPRESS_SERVICE_HOST:-cms}:${WORDPRESS_SERVICE_PORT:-9000};
+}

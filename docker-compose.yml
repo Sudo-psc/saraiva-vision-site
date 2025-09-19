@@ -1,235 +1,169 @@
-version: "3.8"
+version: "3.9"
+
+x-logging-defaults: &logging-defaults
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "5"
 
 services:
-  # Frontend Service with custom development server
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile.frontend
-      target: build
-    container_name: saraiva-frontend
-    ports:
-      - "3002:3002"
-      - "5173:5173"
-    volumes:
-      - ./src:/app/src:cached
-      - ./public:/app/public:cached
-      - ./index.html:/app/index.html:cached
-      - ./vite.config.js:/app/vite.config.js:cached
-      - ./server-dev.js:/app/server-dev.js:cached
-      - ./package.json:/app/package.json:cached
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - VITE_API_URL=http://api:3001
-      - VITE_WORDPRESS_URL=http://host.docker.internal:8083
-      - FRONTEND_PORT=3002
-    command: ["node", "server-dev.js"]
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--no-verbose",
-          "--tries=1",
-          "--spider",
-          "http://localhost:3002/health",
-        ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    depends_on:
-      api:
-        condition: service_healthy
-    networks:
-      - internal
-
-  # API Service with health checks
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile.api
-    container_name: saraiva-api
-    ports:
-      - "3001:3001"
-      - "9229:9229"
-    volumes:
-      - ./server.js:/app/server.js:cached
-      - ./api:/app/api:cached
-      - ./.env.development:/app/.env:cached
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - PORT=3001
-      - WORDPRESS_URL=http://host.docker.internal:8083
-      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
-      - SUPABASE_URL=${SUPABASE_URL}
-      - SUPABASE_KEY=${SUPABASE_KEY}
-    command: ["node", "--inspect=0.0.0.0:9229", "server.js"]
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--no-verbose",
-          "--tries=1",
-          "--spider",
-          "http://0.0.0.0:3001/api/health",
-        ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    networks:
-      - internal
-
-  # Nginx Reverse Proxy with health monitoring
   nginx:
     build:
       context: .
       dockerfile: Dockerfile.nginx
-    container_name: saraiva-nginx
+    image: saraivavision/nginx:latest
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      NGINX_AUTO_RELOAD: "false"
+      FRONTEND_SERVICE_HOST: frontend
+      FRONTEND_SERVICE_PORT: 80
+      API_SERVICE_HOST: api
+      API_SERVICE_PORT: 3001
+      WORDPRESS_SERVICE_HOST: cms
+      WORDPRESS_SERVICE_PORT: 9000
     ports:
       - "80:80"
       - "443:443"
       - "8080:8080"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:cached
-      - ./nginx-configs:/etc/nginx/conf.d:cached
-      - ./nginx-logs:/var/log/nginx:cached
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-    environment:
-      - NGINX_HOST=localhost
-      - FRONTEND_HOST=frontend:3002
-      - API_HOST=api:3001
-      - WORDPRESS_HOST=host.docker.internal:8083
     healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--no-verbose",
-          "--tries=1",
-          "--spider",
-          "http://localhost:80/health",
-        ]
+      test: ["CMD-SHELL", "curl -sf http://localhost/healthz || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 5
       start_period: 40s
     depends_on:
       frontend:
         condition: service_healthy
       api:
         condition: service_healthy
+      cms:
+        condition: service_healthy
+    volumes:
+      - wordpress_data:/var/www/html:ro
+      - ./logs/nginx:/var/log/nginx
+      - ./infra/nginx/certs:/etc/nginx/certs:ro
     networks:
-      - internal
+      - edge
+      - backend
+    logging: *logging-defaults
 
-  # Database Service (MySQL for production support)
-  db:
-    image: mysql:8.0
-    container_name: saraiva-db
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      target: production
+    image: saraivavision/frontend:latest
+    restart: unless-stopped
+    expose:
+      - "80"
+    environment:
+      NODE_ENV: production
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://127.0.0.1/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    networks:
+      - backend
+    logging: *logging-defaults
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+      target: production
+    image: saraivavision/api:latest
+    restart: unless-stopped
+    expose:
+      - "3001"
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      WORDPRESS_URL: http://nginx/cms
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://127.0.0.1:3001/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    depends_on:
+      cms:
+        condition: service_healthy
+    networks:
+      - backend
+    logging: *logging-defaults
+
+  cms:
+    build:
+      context: .
+      dockerfile: Dockerfile.wordpress
+    image: saraivavision/wordpress:latest
     restart: unless-stopped
     environment:
-      - MYSQL_DATABASE=wordpress
-      - MYSQL_USER=wordpress
-      - MYSQL_PASSWORD=wordpress
-      - MYSQL_ROOT_PASSWORD=wordpress_root
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: saraiva_wp
+      WORDPRESS_DB_PASSWORD: change_me
+      WORDPRESS_DB_NAME: saraivavision
+      WORDPRESS_TABLE_PREFIX: sv_
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'https://saraivavision.local');
+        define('WP_SITEURL', 'https://saraivavision.local/cms');
+        define('DISALLOW_FILE_EDIT', true);
+        define('FORCE_SSL_ADMIN', true);
+        define('WP_MEMORY_LIMIT', '256M');
+        define('AUTOSAVE_INTERVAL', 120);
+        define('WP_POST_REVISIONS', 10);
+        define('WP_DEBUG', false);
+        define('WP_DISABLE_FATAL_ERROR_HANDLER', false);
     volumes:
-      - mysql_data:/var/lib/mysql
-      - ./mysql-backup:/backup:rw
+      - wordpress_data:/var/www/html
+      - ./infra/php/conf.d/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+      - ./infra/php/conf.d/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini:ro
+      - ./infra/php/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/zz-www.conf:ro
+      - ./infra/php/healthcheck.sh:/usr/local/bin/php-fpm-healthcheck:ro
     healthcheck:
-      test:
-        [
-          "CMD",
-          "mysqladmin",
-          "ping",
-          "-h",
-          "localhost",
-          "-u",
-          "wordpress",
-          "-pwordpress",
-        ]
+      test: ["CMD-SHELL", "/usr/local/bin/php-fpm-healthcheck"]
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 60s
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
-      - internal
+      - backend
+    logging: *logging-defaults
 
-  # Redis Service for caching
-  redis:
-    image: redis:7-alpine
-    container_name: saraiva-redis
+  db:
+    image: mysql:8.0
     restart: unless-stopped
-    command: redis-server --appendonly yes --requirepass redis_password
+    command: --default-authentication-plugin=mysql_native_password --max-connections=200 --innodb-buffer-pool-size=256M
+    environment:
+      MYSQL_DATABASE: saraivavision
+      MYSQL_USER: saraiva_wp
+      MYSQL_PASSWORD: change_me
+      MYSQL_ROOT_PASSWORD: change_me_root
+      TZ: America/Sao_Paulo
     volumes:
-      - redis_data:/data
+      - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 30s
+      retries: 6
+      start_period: 60s
     networks:
-      - internal
+      - backend
+    logging: *logging-defaults
 
-  # Health Monitoring Service
-  health-monitor:
-    image: curlimages/curl:latest
-    container_name: saraiva-health-monitor
-    depends_on:
-      frontend:
-        condition: service_healthy
-      api:
-        condition: service_healthy
-      nginx:
-        condition: service_healthy
-    command: >
-      sh -c "
-        echo 'Starting health monitoring...' &&
-        while true; do
-          echo '=== Health Check at $$(date) ===' &&
-          curl -f http://nginx/health || echo 'Nginx unhealthy' &&
-          curl -f http://frontend:3002/health || echo 'Frontend unhealthy' &&
-          curl -f http://api:3001/api/health || echo 'API unhealthy' &&
-          curl -f http://host.docker.internal:8083/wp-json/wp/v2/posts || echo 'WordPress mock unhealthy' &&
-          curl -f http://redis:6379/ping || echo 'Redis unhealthy' &&
-          echo '=== All checks completed ===' &&
-          sleep 30;
-        done
-      "
-    networks:
-      - internal
-
-  # Development Tools
-  dev-tools:
-    image: alpine:latest
-    container_name: saraiva-dev-tools
-    command: >
-      sh -c "
-        apk add --no-cache curl wget dig telnet netcat-openbsd &&
-        echo 'Development tools container started...' &&
-        tail -f /dev/null
-      "
-    networks:
-      - internal
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+networks:
+  edge:
+    driver: bridge
+  backend:
+    driver: bridge
 
 volumes:
   mysql_data:
-    driver: local
-  redis_data:
-    driver: local
-  nginx_logs:
-    driver: local
-
-networks:
-  internal:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16
-          gateway: 172.20.0.1
+  wordpress_data:
