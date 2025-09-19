@@ -59,7 +59,7 @@ define('WP_DEBUG', false);
 define('WP_HOME', 'https://saraivavision.com.br/blog');
 define('WP_SITEURL', 'https://saraivavision.com.br/blog');
 
-// Configurações de proxy reverso
+// Configurações de proxy reverso - ajustado para Cloudflare
 if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
     $_SERVER['HTTPS'] = 'on';
 }
@@ -68,7 +68,10 @@ if (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
     $_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
 }
 
-if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+// Cloudflare specific: Use CF-Connecting-IP for real client IP
+if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+    $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+} elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
     $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
 }
 
@@ -93,8 +96,14 @@ define('COOKIE_DOMAIN', '.saraivavision.com.br');
 define('COOKIEPATH', '/blog/');
 define('SITECOOKIEPATH', '/blog/');
 
-// Configurações de cache
-define('WP_CACHE', true);
+// Configurações de cache - ajustado para Cloudflare
+// Desabilitar cache interno do WordPress para evitar conflitos com Cloudflare
+define('WP_CACHE', false);
+
+// Se precisar de cache, usar apenas para object cache (não page cache)
+// define('WP_REDIS_HOST', 'redis');
+// define('WP_REDIS_PORT', 6379);
+// define('WP_CACHE', true); // Comente esta linha quando usar Cloudflare
 
 // Desabilitar editor de arquivos por segurança
 define('DISALLOW_FILE_EDIT', true);
