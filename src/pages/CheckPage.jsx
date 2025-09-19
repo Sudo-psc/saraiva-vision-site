@@ -194,7 +194,7 @@ const CheckPage = () => {
         name: t(`check.diagnostics.${id}.title`),
         status: result.status,
         latency: result.latency,
-        data: result.data,
+        data: result.status === 'success' ? null : result.data, // Only include data for failed tests
         lastRun: result.lastRun,
       })),
     };
@@ -209,7 +209,6 @@ const CheckPage = () => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <SEOHead {...seo} />
@@ -296,7 +295,7 @@ const CheckPage = () => {
                   disabled={isRunning || !lastCompletedAt}
                   className="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-200 shadow-sm hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400 disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  Exportar relatório
+                  {t('check.exportReport')}
                 </button>
                 
                 <button
@@ -313,16 +312,16 @@ const CheckPage = () => {
             {/* Filter and Display Options */}
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between p-4 bg-slate-100 rounded-lg">
               <div className="flex gap-2 items-center">
-                <label className="text-sm font-medium text-slate-700">Filtrar por status:</label>
+                <label className="text-sm font-medium text-slate-700">{t('check.filterByStatus')}:</label>
                 <select
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
                   className="px-3 py-1 text-sm border border-slate-300 rounded-lg"
                 >
-                  <option value="all">Todos os testes</option>
-                  <option value="success">✅ Operacionais</option>
-                  <option value="warning">⚠️ Com atenção</option>
-                  <option value="error">❌ Com erro</option>
+                  <option value="all">{t('check.filter.all')}</option>
+                  <option value="success">{t('check.filter.success')}</option>
+                  <option value="warning">{t('check.filter.warning')}</option>
+                  <option value="error">{t('check.filter.error')}</option>
                 </select>
               </div>
               
@@ -331,7 +330,7 @@ const CheckPage = () => {
                 onClick={() => setShowDetails(!showDetails)}
                 className="text-sm text-slate-600 hover:text-slate-900 underline"
               >
-                {showDetails ? 'Ocultar detalhes técnicos' : 'Mostrar detalhes técnicos'}
+                {showDetails ? t('check.hideDetails') : t('check.showDetails')}
               </button>
             </div>
           </div>
@@ -496,18 +495,18 @@ const CheckPage = () => {
 
                   {definition.id === 'assets' && typeof result?.data?.availability === 'string' ? (
                     <div className="text-xs text-slate-500 space-y-1">
-                      <p>Disponibilidade: {result.data.availability}%</p>
-                      <p>{result.data.successful}/{result.data.assetsChecked} recursos funcionais</p>
+                      <p>{t('check.diagnostics.assets.availability')}: {result.data.availability}%</p>
+                      <p>{t('check.diagnostics.assets.functionalResources', { successful: result.data.successful, total: result.data.assetsChecked })}</p>
                     </div>
                   ) : null}
 
                   {definition.id === 'security' && typeof result?.data?.score === 'number' ? (
                     <div className="text-xs text-slate-500 space-y-1">
-                      <p>Pontuação de segurança: {result.data.score}%</p>
+                      <p>{t('check.diagnostics.security.score')}: {result.data.score}%</p>
                       <p>{result.data.presentHeaders}/{result.data.totalHeaders} cabeçalhos presentes</p>
                       {result?.data?.missingHeaders && result.data.missingHeaders.length > 0 ? (
                         <p className="text-amber-600">
-                          Faltando: {result.data.missingHeaders.join(', ')}
+                          {t('check.diagnostics.security.missing')}: {result.data.missingHeaders.join(', ')}
                         </p>
                       ) : null}
                     </div>
@@ -532,7 +531,6 @@ const CheckPage = () => {
                       </p>
                     </div>
                   ) : null}
-
                   {result?.lastRun ? (
                     <p className="text-xs text-slate-500">
                       {t('check.perCheckUpdated', { timestamp: formatTimestamp(result.lastRun) })}

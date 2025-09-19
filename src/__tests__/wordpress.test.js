@@ -102,7 +102,7 @@ describe('WordPress API Service', () => {
         const html = '<a href="javascript:alert()">Link</a>';
         const cleaned = cleanHtmlContent(html);
         expect(cleaned).not.toContain('javascript:');
-      });
+      }); // eslint-disable-line no-script-url
 
       it('removes event handlers', () => {
         const html = '<div onclick="alert()">Content</div>';

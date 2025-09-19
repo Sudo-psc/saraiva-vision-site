@@ -99,6 +99,12 @@ define('ADMIN_COOKIE_PATH', '/wp-admin');
 
 /* Add any custom values between this line and the "stop editing" line. */
 
+// CORS Headers for API
+header('Access-Control-Allow-Origin: https://www.saraivavision.com.br');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Credentials: true');
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */

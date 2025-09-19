@@ -2,333 +2,365 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Context
+## 🏥 Project Overview
 
-This is **Saraiva Vision** - a medical clinic website specializing in ophthalmology services. The site serves the Brazilian market with Portuguese as the primary language, focusing on accessibility, medical compliance, and trust signals for healthcare services.
+SaraivaVision is a React-based medical clinic website for an ophthalmology practice with strict requirements for accessibility, performance, and Brazilian medical compliance. The project uses modern web technologies with a focus on user experience, SEO optimization, and medical data handling.
 
-**Key Business Requirements:**
-- CFM (Medical Council) compliance for physician credentials
-- LGPD (Brazilian data protection law) compliance
-- WCAG 2.1 AA accessibility standards for healthcare
-- Google Business Profile integration for local SEO
-- WhatsApp Business integration for Brazilian communication patterns
-
-## 📚 Quick Navigation
-
-**New to the project?** Start here:
-- [🚀 Developer Quick Start](./DEVELOPER_QUICK_START.md) - 5-minute setup guide
-- [🌟 Complete Getting Started](./GETTING_STARTED.md) - Comprehensive beginner guide
-- [📚 Documentation Index](./DOCUMENTATION_INDEX.md) - Navigate all documentation
-
-**Need help?** Check these:
-- [🔧 Troubleshooting Guide](./TROUBLESHOOTING.md) - Solutions for common problems
-- [🔌 API Documentation](./docs/API_DESIGN_SPECIFICATION.md) - Complete API reference
-
-## Development Commands
+## 🛠️ Development Commands
 
 ### Core Development
-- `npm run dev` - Start development server on localhost:5173 (port 3002 in vite.config)
-- `npm run build` - Build for production (includes prebuild: generate-apple-icon)
-- `npm run preview` - Preview production build
-- `npm run serve` - Serve production build on port 3000
-
-### Full Stack Development
-- `npm run dev:full` - Interactive development menu via ./dev.sh script
-- `npm run start:api` - Start API server only on port 3001 (node server.js)
-- `npm run start` - Alias for vite development server
+```bash
+npm run dev          # Development server (localhost:5173)
+npm run dev:full     # Full development with Docker services
+npm run build        # Production build
+npm run preview      # Preview production build
+npm run start        # Vite dev server
+npm run serve        # Preview server on port 3000
+```
 
 ### Testing & Quality Assurance
-- `npm run test` - Run tests in watch mode (Vitest)
-- `npm run test:ui` - Run tests with UI interface
-- `npm run test:run` - Run all tests once
-- `npm run test:coverage` - Generate test coverage report with v8 provider
-- `npm run test:gtm` - Run GTM-specific tests
-- `npm run smoke:test` - Run smoke tests via bash script
+```bash
+npm test             # Run tests in watch mode (Vitest)
+npm run test:ui      # Test UI dashboard
+npm run test:run     # Run tests once
+npm run test:coverage # Generate coverage report
+npm run test:gtm     # Test Google Tag Manager
+```
 
-### Verification & Validation
-- `npm run verify` - Full verification suite (build + GTM + links + HTML + Lighthouse)
-- `npm run verify:gtm` - Verify Google Tag Manager integration
-- `npm run verify:links` - Check for broken links using linkinator
-- `npm run verify:html` - Validate HTML using html-validate
-- `npm run verify:lighthouse` - Run Lighthouse CI tests
-- `npm run verify:docs` - Validate documentation structure
+### Verification & Linting
+```bash
+npm run verify       # Complete verification (build + tests + checks)
+npm run verify:links # Check for broken links
+npm run verify:html  # Validate HTML output
+npm run verify:lighthouse # Lighthouse performance checks
+npm run verify:gtm   # Verify GTM implementation
+```
 
-### Image & Asset Pipeline
-- `npm run images:build` - Build optimized images using pipeline
-- `npm run images:check` - Check image optimization status
-- `npm run images:optimize` - Run image optimization script
-- `npm run audio:duration` - Calculate audio file durations
+### Image & Asset Optimization
+```bash
+npm run images:build    # Build optimized images
+npm run images:check    # Check image optimization
+npm run images:optimize # Optimize images via script
+npm run audio:duration  # Get audio file durations
+```
 
-### Deployment
-- `npm run deploy:local` - Deploy locally using sudo ./deploy.sh
-- `./dev.sh` - Interactive development environment setup
-- `sudo ./deploy.sh` - Production deployment with atomic releases
+### API & Backend
+```bash
+npm run start:api    # Start Node.js API server
+```
 
-## Project Architecture
+### Docker Development
+```bash
+./docker-dev.sh      # Start development environment with Docker
+docker-compose up    # Start all services (frontend, API, WordPress, nginx, db, redis)
+```
 
-### Tech Stack
-- **Frontend**: React 18 with Vite 7.1.3, Tailwind CSS 3.3.3, Framer Motion 10.16.4
-- **UI Components**: Radix UI primitives with custom design system (comprehensive palette)
-- **Routing**: React Router v6.16.0 with lazy loading for all pages
-- **Internationalization**: React i18next 23.11.5 with pt/en support
-- **Backend**: 
-  - Supabase 2.30.0 for data storage
-  - Node.js server (server.js) for API routes development
-  - Serverless functions in `/api` for production
-- **Testing**: Vitest 2.0.0 + React Testing Library 16.3.0 + jsdom
-- **Maps**: Google Maps API with @googlemaps/js-api-loader 1.16.10
-- **Analytics**: Web Vitals 5.1.0 monitoring + Google Tag Manager integration
-- **CMS**: WordPress headless integration for blog functionality
-- **PWA**: Workbox service worker with custom plugin
-- **Image Processing**: Sharp 0.33.5 for optimization pipeline
+## 🏗️ Architecture Overview
 
-### Code Organization
+### Technology Stack
+- **Frontend**: React 18 + Vite + TypeScript
+- **Styling**: Tailwind CSS with custom medical design system
+- **State Management**: React Context + Custom hooks
+- **Routing**: React Router v6 with lazy loading
+- **Testing**: Vitest + React Testing Library
+- **Backend**: Node.js Express API + WordPress headless CMS
+- **Database**: MySQL + Redis caching
+- **Infrastructure**: Docker containerization + Nginx reverse proxy
 
-#### `/src` Structure
-- `/components` - Reusable UI components
-  - `/ui` - Base components (Button, Toast, etc.)
-  - `/icons` - Custom icons (flags, service icons)
-  - `/ServiceDetail` - Service page specific components
-  - `/__tests__` - Component tests
-- `/pages` - Route components with lazy loading
-- `/hooks` - Custom React hooks
-- `/lib` - Core utilities and configurations
-- `/contexts` - React context providers
-- `/locales` - i18n translation files (pt.json, en.json)
-- `/utils` - Helper functions and utilities
+### Project Structure
+```
+src/
+├── components/          # React components
+│   ├── ui/             # Base design system components
+│   ├── icons/          # Custom SVG icons
+│   └── __tests__/      # Component tests
+├── pages/              # Route components (lazy-loaded)
+├── hooks/              # Custom React hooks
+├── lib/                # Utilities and configurations
+├── contexts/           # React contexts
+├── locales/            # i18n translations (pt/en)
+├── utils/              # Helper functions
+└── styles/             # Global styles
+```
 
-#### Key Architecture Patterns
+### Key Architectural Patterns
 
-**Lazy Loading**: All pages are lazy-loaded to optimize initial bundle size and TTI
+#### Lazy Loading & Code Splitting
+All pages use `React.lazy()` for optimal bundle splitting:
 ```javascript
 const HomePage = lazy(() => import('@/pages/HomePage'));
 ```
 
-**Design System**: Comprehensive design system with:
-- Brand colors (brand-blue, brand-green, medical-blue, trust-green)
-- Typography scale (display-xl to caption)
-- 8pt spacing grid system
-- Custom animations and keyframes
+#### Medical Design System
+- Custom Tailwind configuration with medical-specific colors
+- Accessibility-first component design (WCAG 2.1 AA compliant)
+- Professional typography and spacing scales
 
-**Internationalization**: 
-- Automatic language detection
-- URL structure maintains `/` for PT, future `/en` support
-- Centralized translations in `/locales`
+#### State Management
+- React Context for global state
+- Custom hooks for complex state logic
+- Local state for component-specific data
 
-**Performance Optimization**:
-- Code splitting by routes and features
-- Manual chunk configuration for vendor libraries
-- Asset optimization with organized output structure
-- Core Web Vitals monitoring
+#### Performance Optimization
+- Image optimization with WebP support
+- Service Worker with Workbox
+- Manual chunk splitting in Vite config
+- Lazy loading for all non-critical components
 
-### Component Patterns
+## 🔄 Docker Development Environment
 
-**Medical Clinic Focus**: 
-- Service-oriented components (Services, ServiceDetail)
-- Contact/scheduling integration (Contact, GoogleMap)
-- Trust signals (Testimonials, GoogleReviews)
-- Accessibility compliance (WCAG 2.1 AA)
+### Services Architecture
+- **frontend**: React development server (ports 3002, 5173)
+- **api**: Node.js Express API (port 3001)
+- **wordpress**: WordPress headless CMS (port 8083)
+- **nginx**: Reverse proxy (ports 80, 443, 8080)
+- **db**: MySQL database
+- **redis**: Caching layer
+- **health-monitor**: Service health monitoring
 
-**Responsive Design**:
+### Service Dependencies
+```
+nginx → frontend, api, wordpress
+frontend → api
+api → wordpress, db, redis
+wordpress → db
+```
+
+### Health Checks
+All services include comprehensive health checks with 30s intervals. Monitor via:
+```bash
+docker-compose ps  # Check service status
+docker logs saraiva-health-monitor  # View health monitoring
+```
+
+## 🧪 Testing Strategy
+
+### Test Framework
+- **Unit Tests**: Vitest + jsdom environment
+- **Component Tests**: React Testing Library
+- **Integration Tests**: API endpoint testing
+- **E2E Tests**: Manual verification via scripts
+
+### Test Organization
+```
+src/__tests__/           # Integration tests
+src/components/__tests__/ # Component unit tests
+src/hooks/__tests__/     # Hook tests
+```
+
+### Running Specific Tests
+```bash
+npm test -- ComponentName     # Test specific component
+npm test -- --run pages       # Test all pages
+npm test -- --coverage        # Generate coverage report
+```
+
+## 🎨 Medical Design System
+
+### Core Colors
+- `brand-blue`: Primary medical blue
+- `trust-green`: Success/trust indicators
+- `soft-gray`: Neutral backgrounds
+- `medical-*`: Specialized medical interface colors
+
+### Typography
+- `text-display-*`: Hero titles and large headings
+- `text-heading-*`: Section headings
+- `text-body-*`: Body text in various sizes
+- `text-caption`: Small text and metadata
+
+### Responsive Design
 - Mobile-first approach
-- Tailwind breakpoints (sm, md, lg, xl, 2xl)
-- Adaptive navigation (mobile menu in Navbar)
+- Breakpoint classes: `sm:`, `md:`, `lg:`, `xl:`
+- Fluid typography with `clamp()` values
 
-**SEO Optimization**:
-- React Helmet for meta tags
-- Schema markup for medical business
-- Sitemap generation during build
-- Social media meta tags
+## 📱 Key Features & Components
 
-### Data Management
+### Internationalization (i18n)
+- Default: Portuguese (pt)
+- Secondary: English (en)
+- All user-facing strings use `useTranslation()` hook
+- Medical content professionally translated
 
-**Centralized Configuration**: `/lib/clinicInfo.js` contains all clinic information
-- Address, contact details
-- Google Places integration
-- Social media links
-- Physician credentials (CFM compliance)
-- LGPD compliance data
+### Accessibility Features
+- WCAG 2.1 AA compliant
+- Screen reader optimized
+- Keyboard navigation support
+- High contrast support
+- Reduced motion support
 
-**External Integrations**:
-- Google Maps API (with fallback)
-- Google Reviews (serverless function)
-- WhatsApp Business integration
-- Supabase for contact forms
+### Medical-Specific Components
+- **ServiceDetail**: Medical procedure descriptions with schema markup
+- **GoogleMap**: Clinic location with fallback handling
+- **ContactForms**: LGPD-compliant patient inquiry forms
+- **CompactServices**: Service overview carousel
+- **Testimonials**: Patient testimonials with privacy protection
 
-### Testing Strategy
+### WordPress Integration
+- Headless CMS for blog content
+- Custom health check endpoints
+- CORS-enabled API access
+- Real-time content syncing
 
-**Test Organization**: Tests co-located in `__tests__` directories
-- Component tests for UI behavior
-- Integration tests for user flows
-- Coverage reporting with Vitest
+## 🔐 Security & Compliance
 
-**Key Test Patterns**:
-- React Testing Library for component testing
-- Mock external APIs (Google Maps, Supabase)
-- Accessibility testing included
+### Brazilian Medical Compliance
+- CFM (Conselho Federal de Medicina) regulations adherence
+- LGPD (Brazilian GDPR) data protection compliance
+- Professional medical content review process
+- Patient privacy protection measures
 
-### Deployment & Infrastructure
+### Security Measures
+- Environment variable protection
+- Input validation and sanitization
+- XSS prevention
+- CORS configuration
+- Rate limiting on forms
 
-**Build Configuration**:
-- Terser minification with console removal
-- CSS minification with esbuild
-- Asset organization by type
-- Source map disabled for production
+### Data Handling
+- No sensitive data logging
+- Secure form submission with Resend integration
+- Optional data storage with explicit consent
+- Patient information encryption
 
-**Nginx Configuration**: Included in repo root
-- Security headers
-- Gzip compression
-- SPA fallback routing
+## 🚀 Deployment & Production
 
-**Environment Variables**:
-- Google Maps API key
-- Supabase configuration
-- Google Place ID for reviews
+### Build Optimization
+- Vite production build with optimized chunks
+- Service Worker for offline capability
+- Image optimization pipeline
+- CSS purging and minification
 
-## Development Guidelines
+### Performance Targets
+- Lighthouse score 90+ on all metrics
+- First Contentful Paint < 1.5s
+- Largest Contentful Paint < 2.5s
+- Cumulative Layout Shift < 0.1
+
+### Monitoring & Analytics
+- Google Analytics 4 integration
+- Core Web Vitals tracking
+- Error boundary implementation
+- Performance monitoring hooks
+
+## 📋 Development Guidelines
+
+### Code Style
+- ESLint configuration for React/medical compliance
+- Prettier for code formatting
+- Functional components with hooks
+- TypeScript for type safety
 
 ### Component Development
-- Use functional components with hooks
-- Implement proper TypeScript-style prop destructuring
-- Follow accessibility patterns (WCAG 2.1 AA)
-- Use design system tokens from Tailwind config
+```javascript
+// Preferred pattern for medical components
+const MedicalComponent = ({ patientData }) => {
+  const { t } = useTranslation();
+  const [state, setState] = useState(initial);
 
-### Styling Conventions
-- Tailwind CSS utility-first approach
-- Custom design system colors and typography
-- Responsive design with mobile-first breakpoints
-- Consistent spacing using 8pt grid system
-
-### Performance Requirements
-- Lighthouse score 90+ on all metrics
-- Core Web Vitals compliance
-- Lazy loading for all routes
-- Image optimization with WebP
-
-### Medical Compliance
-- CFM (Conselho Federal de Medicina) compliance for physician info
-- LGPD (Brazilian data protection) compliance
-- Accessibility standards for healthcare websites
-- Professional medical content review required
-
-### Internationalization
-- All user-facing strings must use i18next
-- Default language: Portuguese (pt)
-- Secondary language: English (en)
-- Cultural considerations for medical terminology
-
-## API Endpoints
-
-### Development Server
-- `/api/reviews` - Google Reviews integration (dev proxy)
-- `/api/contact` - Contact form submission
-- `/api/env-debug` - Environment variable debug info
-
-### Serverless Functions (Production)
-- `/api/reviews.js` - Google Places API reviews
-- `/api/contact.js` - Contact form processing
-
-## Development Commands Details
-
-### Interactive Development
-```bash
-./dev.sh                    # Interactive menu: frontend only, full stack, or build+preview
+  return (
+    <div className="medical-card" role="region" aria-label={t('component.label')}>
+      {/* Accessible content */}
+    </div>
+  );
+};
 ```
 
-### Testing Commands
+### Form Handling
+- Zod schema validation
+- LGPD consent requirements
+- Honeypot spam protection
+- Professional error messaging
+
+### API Integration
+- Supabase for database operations
+- Resend for email delivery
+- Google Maps for location services
+- WordPress REST API for content
+
+## 🔧 Common Development Tasks
+
+### Adding a New Component
+1. Create component in `src/components/`
+2. Add corresponding test file
+3. Export from main components index
+4. Add to Storybook if applicable
+
+### Adding a New Page
+1. Create page component in `src/pages/`
+2. Add lazy import to `App.jsx`
+3. Define route in routing configuration
+4. Add i18n translations
+5. Implement SEO metadata
+
+### Updating Medical Content
+1. Ensure medical accuracy review
+2. Update i18n translations
+3. Add schema markup for SEO
+4. Include accessibility attributes
+5. Test with screen readers
+
+### Performance Optimization
+1. Analyze bundle with `npm run build`
+2. Optimize images with `npm run images:optimize`
+3. Check lighthouse scores with `npm run verify:lighthouse`
+4. Monitor Core Web Vitals
+
+## 🆘 Troubleshooting
+
+### Common Issues
+
+**Port 5173 already in use**
 ```bash
-npm run test                # Watch mode with Vitest
-npm run test:ui            # Visual test interface
-npm run test:run           # Single run, all tests
-npm run test:coverage      # Coverage report (v8 provider)
-npm run test:gtm           # GTM integration tests only
-npm run smoke:test         # Basic functionality smoke tests
+npm run dev -- --port 3000
 ```
 
-### Quality Assurance
+**Docker services not starting**
 ```bash
-npm run verify             # Complete verification suite
-npm run verify:gtm         # Google Tag Manager validation
-npm run verify:links       # Link checker (linkinator)
-npm run verify:html        # HTML validation
-npm run verify:lighthouse  # Performance audit
-npm run verify:docs        # Documentation validation
+docker-compose down
+docker system prune
+docker-compose up --build
 ```
 
-### Asset Pipeline
+**WordPress connection issues**
 ```bash
-npm run images:build       # Generate optimized images
-npm run images:check       # Verify image optimization
-npm run images:optimize    # Run optimization scripts
-npm run audio:duration     # Calculate audio file durations
+./test-wordpress-integration-complete.sh  # Check WordPress connectivity
 ```
 
-## Key Architectural Decisions
+**Test failures**
+```bash
+npm run test:run -- --reporter=verbose  # Detailed test output
+```
 
-1. **Lazy Loading All Pages**: Improves TTI for home page, all routes code-split in App.jsx
-2. **Centralized Clinic Info**: `/lib/clinicInfo.js` as single source of truth with validation
-3. **Widget System**: Fixed widgets outside transform container to avoid CSS positioning issues
-4. **Service Worker Integration**: Custom Workbox plugin for caching and offline functionality
-5. **Atomic Deployments**: Release-based deployment with symlinks for zero-downtime updates
-6. **WordPress Headless**: CMS integration via REST API for blog functionality
-7. **Medical Compliance First**: CFM/LGPD compliance built into data structures
-8. **Performance Monitoring**: Real User Metrics (RUM) with Web Vitals collection
-9. **Security-First**: CSP headers, input validation, API key restrictions
-10. **Accessibility Focus**: WCAG 2.1 AA compliance with dedicated accessibility component
+**Build size warnings**
+- Acceptable: chunks up to 600kB
+- Review manual chunk configuration in `vite.config.js`
+- Use lazy loading for heavy components
 
-## Important Configuration Files
-
-### Core Configuration
-- **`vite.config.js`** - Development server (port 3002), WordPress proxy, Workbox plugin
-- **`vitest.config.js`** - Test configuration with jsdom, coverage settings, path aliases
-- **`tailwind.config.js`** - Comprehensive design system with medical-focused color palette
-- **`server.js`** - Development API server for `/api/*` routes (port 3001)
-
-### Deployment & Infrastructure
-- **`deploy.sh`** - Production deployment script with atomic releases and verification
-- **`dev.sh`** - Interactive development environment setup
-- **`nginx*.conf`** - Various nginx configurations for different environments
-- **`package.json`** - Complete scripts including verification, image processing, testing
-
-### Environment & Secrets
-- **`.env.example`** - Template with all required environment variables
-- **`.env`** - Actual secrets (not in repo) - Google APIs, Supabase, GTM, etc.
-
-## Medical & Legal Compliance Notes
-
-**CRITICAL**: This is a medical clinic website serving Brazilian patients:
-
-1. **CFM Compliance**: All physician information must include CRM number and state registration
-2. **LGPD Compliance**: Data protection officer contact required, consent management implemented
-3. **Accessibility**: WCAG 2.1 AA minimum for healthcare accessibility requirements
-4. **Brazilian Standards**: Portuguese language, Brazilian phone formatting, local business schema
-5. **Security**: HTTPS only, CSP headers, input validation, secure cookie handling
-
-## WordPress Integration Architecture
-
-The project uses WordPress as a headless CMS for blog functionality:
-
-- **Development**: Proxy `/wp-json/*` to `localhost:8083`
-- **Production**: Direct API calls to WordPress REST API
-- **Components**: BlogPage, PostPage, CategoryPage consume WordPress data
-- **Admin**: Separate WordPress admin interface accessed via AdminLoginPage
-
-## Performance & Monitoring
-
-- **Web Vitals**: Real user metrics collection via `/api/web-vitals`
-- **GTM Integration**: Google Tag Manager with consent management
-- **Image Pipeline**: Sharp-based optimization with WebP conversion
-- **Service Worker**: Workbox caching strategies for offline functionality
-- **Lighthouse CI**: Automated performance auditing in verification suite
+### Health Check Debugging
+```bash
+# Check individual service health
+curl http://localhost:3002/health  # Frontend
+curl http://localhost:3001/api/health  # API
+curl http://localhost:8083/wp-json/saraiva-vision/v1/health  # WordPress
+```
 
 ## 📖 Additional Resources
 
-For comprehensive documentation and guides:
-- **[📚 Documentation Index](./DOCUMENTATION_INDEX.md)** - Complete documentation navigation
-- **[🚀 Quick Start Guide](./DEVELOPER_QUICK_START.md)** - Fast setup for experienced developers
-- **[🌟 Getting Started](./GETTING_STARTED.md)** - Complete guide for beginners
-- **[🔧 Troubleshooting](./TROUBLESHOOTING.md)** - Solutions for common development issues
-- **[🔌 API Reference](./docs/API_DESIGN_SPECIFICATION.md)** - Complete API documentation
-- **[🎨 Brand Guide](./docs/BRAND_GUIDE.md)** - Design system and visual guidelines
-- **[🧪 Testing Guide](./docs/TESTING_GUIDE.md)** - Comprehensive testing strategies
-- **[🏗️ System Architecture](./docs/SYSTEM_ARCHITECTURE.md)** - Technical architecture overview
+### Key Documentation Files
+- `DEVELOPER_QUICK_START.md` - Setup and first steps
+- `.github/copilot-instructions.md` - Detailed development patterns
+- `ROUTING_ANALYSIS_AND_RESOLUTION.md` - Route configuration
+- `WORDPRESS_INTEGRATION_FIX_COMPLETE.md` - WordPress setup
+
+### Medical Content Guidelines
+- All medical terminology must be accurate
+- Include professional disclaimers
+- Display physician credentials (CFM registration)
+- Follow medical website SEO best practices
+
+### Performance Monitoring
+- Use `npm run verify` before commits
+- Monitor Lighthouse scores regularly
+- Track Core Web Vitals in production
+- Optimize images before deployment

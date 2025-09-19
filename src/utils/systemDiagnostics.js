@@ -857,7 +857,8 @@ export function createDiagnostics(customConfig = {}) {
                 cache: 'no-store',
                 timeout: DEFAULT_TIMEOUT / 2,
               });
-              return { asset, success: true, status: response.status };
+              // Note: no-cors prevents status validation - assuming success if no network error
+              return { asset, success: true, status: 'opaque' };
             })
           );
 

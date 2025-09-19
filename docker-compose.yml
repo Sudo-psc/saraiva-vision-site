@@ -1,9 +1,5 @@
 version: '3.8'
 
-# Load environment variables from .env.docker file
-env_file:
-  - .env.docker
-
 services:
   # Frontend Service with custom development server
   frontend:
@@ -110,7 +106,7 @@ services:
       - "443:443"
       - "8080:8080"
     volumes:
-      - ./nginx-health.conf:/etc/nginx/nginx.conf:cached
+      - ./nginx.conf:/etc/nginx/nginx.conf:cached
       - ./nginx-configs:/etc/nginx/conf.d:cached
       - ./nginx-logs:/var/log/nginx:cached
       - /etc/letsencrypt:/etc/letsencrypt:ro
