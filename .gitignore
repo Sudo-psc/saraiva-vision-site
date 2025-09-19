@@ -66,3 +66,8 @@ coverage/.tmp
 # WordPress credentials (NEVER COMMIT!)
 WORDPRESS_ADMIN_CREDENTIALS.md
 wordpress-local/wp-cli.phar
+
+# Ignore large files and disabled git directories
+webapp/.git_disabled/
+*.pack
+*.idx

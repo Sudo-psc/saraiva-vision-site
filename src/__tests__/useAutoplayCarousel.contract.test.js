@@ -7,6 +7,7 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { useAutoplayCarousel } from '@/hooks/useAutoplayCarousel';
+import { setupCarouselTest } from '@/utils/__tests__/testUtils';
 
 // Mock framer-motion
 vi.mock('framer-motion', async (importOriginal) => {
