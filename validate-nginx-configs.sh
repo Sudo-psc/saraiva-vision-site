@@ -90,7 +90,13 @@ for config in "${MAIN_CONFIGS[@]}"; do
         fi
         
     else
-        print_status "ERROR" "$config missing"
+        # Check if config is disabled
+        disabled_path="$CONFIGS_DIR/$config.disabled"
+        if [[ -f "$disabled_path" ]]; then
+            print_status "INFO" "$config disabled ($config.disabled exists)"
+        else
+            print_status "ERROR" "$config missing"
+        fi
     fi
 done
 
