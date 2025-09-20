@@ -1,24 +1,18 @@
 {
-  "version": 2,
-  "buildCommand": "npm run build:vercel",
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ],
   "functions": {
-    "api/**/*.js": {
-      "runtime": "@vercel/node@20.x",
-      "maxDuration": 10
+    "api/**": {
+      "maxDuration": 60,
+      "memory": 1024
     }
   },
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/dist/$1"
-    }
-  ],
+  "regions": ["gru1", "iad1"],
+  "functionFailoverRegions": ["iad1", "cle1"],
   "headers": [
     {
       "source": "/api/(.*)",
