@@ -15,12 +15,17 @@ services:
       - ./vite.config.js:/app/vite.config.js:cached
       - ./server-dev.js:/app/server-dev.js:cached
       - ./package.json:/app/package.json:cached
+      - ./.env:/app/.env:cached
       - /app/node_modules
+    env_file:
+      - .env
     environment:
       - NODE_ENV=development
       - VITE_API_URL=http://api:3001
       - VITE_WORDPRESS_URL=http://host.docker.internal:8083
       - FRONTEND_PORT=3002
+      - VITE_GOOGLE_MAPS_API_KEY=AIzaSyDvio5w5mQVZWZGBnPrys1uTwTQBglmFms
+      - GOOGLE_MAPS_API_KEY=AIzaSyDvio5w5mQVZWZGBnPrys1uTwTQBglmFms
     command: ["node", "server-dev.js"]
     healthcheck:
       test:

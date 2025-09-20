@@ -30,7 +30,14 @@ const Footer = () => {
     { name: t('navbar.contact'), href: '/contato' },
   ];
 
-  const serviceLinks = t('footer.service_links', { returnObjects: true });
+  const serviceLinks = t('footer.service_links', { returnObjects: true }) || {
+    "consultations": "Consultas",
+    "refraction": "Refração",
+    "treatments": "Tratamentos",
+    "surgeries": "Cirurgias",
+    "pediatric": "Pediátrica",
+    "reports": "Laudos"
+  };
 
   const socialsForLinks = [
     {

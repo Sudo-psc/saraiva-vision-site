@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MapPin, Star, ExternalLink, Navigation } from 'lucide-react';
 import { clinicInfo, googleMapsProfileUrl, googleReviewUrl } from '@/lib/clinicInfo';
-import GoogleMap from '@/components/GoogleMap';
+import GoogleMap from '@/components/GoogleMapSimple';
 
 const GoogleLocalSection = () => {
   const { t } = useTranslation();

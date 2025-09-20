@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { clinicInfo } from '@/lib/clinicInfo';
 
 const GoogleMap = ({ height = 340 }) => {
     const containerRef = useRef(null);
@@ -9,14 +10,14 @@ const GoogleMap = ({ height = 340 }) => {
       const initMap = () => {
         if (containerRef.current && window.google) {
           map = new google.maps.Map(containerRef.current, {
-            center: { lat: -19.7939, lng: -42.1373 }, // Caratinga-MG
+            center: { lat: clinicInfo.latitude, lng: clinicInfo.longitude }, // Caratinga-MG
             zoom: 16
           });
-          
+
           new google.maps.Marker({
-            position: { lat: -19.7939, lng: -42.1373 },
+            position: { lat: clinicInfo.latitude, lng: clinicInfo.longitude },
             map: map,
-            title: "Clínica Saraiva Vision"
+            title: clinicInfo.name
           });
         }
       };
