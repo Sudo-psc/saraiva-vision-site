@@ -57,11 +57,8 @@ try {
 
 const RAW_WORDPRESS_URL =
   (hasImportMeta && viteEnv?.VITE_WORDPRESS_API_URL) ||
-  process.env?.VITE_WORDPRESS_API_URL ||
   (hasImportMeta && viteEnv?.VITE_WORDPRESS_URL) ||
-  process.env?.VITE_WORDPRESS_URL ||
   (hasImportMeta && viteEnv?.VITE_API_BASE_URL) ||
-  process.env?.VITE_API_BASE_URL ||
   '/wp-json/wp/v2';
 
 function deriveApiBase(raw) {
