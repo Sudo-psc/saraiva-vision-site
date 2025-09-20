@@ -6,7 +6,7 @@ import OptimizedPicture from '@/components/ui/OptimizedPicture';
 
 const About = () => {
   const { t } = useTranslation();
-  const features = t('about.features', { returnObjects: true });
+  const features = t('about.features', { returnObjects: true }) || [];
 
   const imageUrls = [
     "https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/40e4988427ac137c3d141857468774d6.jpg",
