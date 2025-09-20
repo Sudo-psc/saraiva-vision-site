@@ -5,6 +5,19 @@ import { sendContactEmail } from './email.js';
 
 const DEFAULT_ACTION = 'contact';
 
+/**
+ * HTTP handler for the contact form API route.
+ *
+ * Accepts POST requests containing a reCAPTCHA token and submission fields (name, email, phone, message).
+ * Applies CORS, enforces POST-only with OPTIONS support, and enforces per-IP rate limits.
+ * Verifies the provided reCAPTCHA token (expected action defaults to "contact"), sanitizes and validates the submission,
+ * and forwards the submission to the email service.
+ *
+ * On success returns 200 with { ok: true, message, emailId, recaptcha: { score, action } }.
+ * Returns appropriate HTTP error responses for: method not allowed (405), rate-limited (429),
+ * missing token (400 with error 'missing_token'), reCAPTCHA verification failure (400 with error 'recaptcha_failed'),
+ * validation failures (400 with error 'missing_required_fields'), and email service errors (propagated status or 500).
+ */
 export default async function handler(req, res) {
   applyCors(res);
 
