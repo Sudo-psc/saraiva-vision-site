@@ -1,0 +1,60 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs (keep dist for static files)
+src
+public
+!dist
+
+# Development files
+.env.local
+.env.development
+.env.test
+.env.production.local
+
+# Testing
+coverage
+.nyc_output
+test-results
+playwright-report
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Docker files (not needed for Vercel)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Documentation and development tools
+docs/
+scripts/
+tools/
+tests/
+*.md
+!README.md
+
+# Legacy files
+dist-old/
+wordpress-*
+nginx-*
+*.backup
+*.bak
+
+# Temporary files
+tmp/
+temp/
