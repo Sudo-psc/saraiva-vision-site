@@ -38,17 +38,17 @@ class VercelIntelligentDeployer {
             {
                 name: 'standard',
                 description: 'Standard Vercel deployment',
-                command: 'npx vercel --prod'
+                command: 'npx vercel --prod --yes'
             },
             {
                 name: 'force',
                 description: 'Force deployment with cache bypass',
-                command: 'npx vercel --prod --force'
+                command: 'npx vercel --prod --force --yes'
             },
             {
                 name: 'debug',
                 description: 'Debug deployment with verbose logs',
-                command: 'npx vercel --prod --debug'
+                command: 'npx vercel --prod --debug --yes'
             }
         ];
 
@@ -275,7 +275,7 @@ class VercelIntelligentDeployer {
         const staticConfigPath = await this.createStaticFallback();
 
         // Try static deployment
-        const staticResult = await this.executeCommand('npx vercel --prod', 'Static deployment');
+        const staticResult = await this.executeCommand('npx vercel --prod --yes', 'Static deployment');
 
         if (staticResult.success) {
             this.log('✅ STATIC DEPLOYMENT SUCCESSFUL!', 'success');
