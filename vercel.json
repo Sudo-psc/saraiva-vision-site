@@ -1,13 +1,77 @@
 {
-  "name": "Production",
+  "version": 2,
+  "name": "saraivavision-site",
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "dist",
   "framework": "vite",
-   "functions": {
-     "api/**/*.js": {
-       "runtime": "@vercel/node"
-     }
-   },
+  "functions": {
+    "api/contact/index.js": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 10
+    },
+    "api/health.js": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 5
+    },
+    "api/reviews.js": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 10
+    },
+    "api/web-vitals.js": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 5
+    },
+    "api/wordpress-proxy.js": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 10
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dist/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ],
   "env": {
     "NODE_ENV": "production",
     "VITE_API_URL": "https://saraivavision.com.br/api",
