@@ -25,7 +25,7 @@ echo "Inactive environment: $INACTIVE_ENV"
 
 # Build and start the inactive environment.
 echo "Building and starting the $INACTIVE_ENV environment..."
-docker compose -p "saraivavision_${INACTIVE_ENV}" -f docker-compose.prod.yml up -d --build
+docker compose -p "saraivavision_${INACTIVE_ENV}" -f docker-compose.production.yml up -d --build
 
 # Wait for the new environment to be healthy.
 echo "Waiting for the $INACTIVE_ENV environment to be healthy..."
@@ -39,6 +39,6 @@ echo "Switching Nginx to the $INACTIVE_ENV environment..."
 
 # Stop the old environment.
 echo "Stopping the $ACTIVE_ENV environment..."
-docker compose -p "saraivavision_${ACTIVE_ENV}" -f docker-compose.prod.yml down
+docker compose -p "saraivavision_${ACTIVE_ENV}" -f docker-compose.production.yml down
 
 echo "Deployment successful. The $INACTIVE_ENV environment is now active."
