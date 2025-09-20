@@ -16,7 +16,7 @@ const ContactLenses = () => {
       type: 'soft',
       title: t('contactLenses.types.soft.title'),
       subtitle: t('contactLenses.types.soft.subtitle'),
-      features: t('contactLenses.types.soft.features', { returnObjects: true }),
+      features: t('contactLenses.types.soft.features', { returnObjects: true }) || [],
       icon: Heart,
       color: 'bg-green-50/80 border-green-400/60 shadow-green-100/50'
     },
@@ -24,7 +24,7 @@ const ContactLenses = () => {
       type: 'rigid',
       title: t('contactLenses.types.rigid.title'),
       subtitle: t('contactLenses.types.rigid.subtitle'),
-      features: t('contactLenses.types.rigid.features', { returnObjects: true }),
+      features: t('contactLenses.types.rigid.features', { returnObjects: true }) || [],
       icon: Shield,
       color: 'bg-blue-50/80 border-blue-400/60 shadow-blue-100/50'
     },
@@ -32,7 +32,7 @@ const ContactLenses = () => {
       type: 'multifocal',
       title: t('contactLenses.types.multifocal.title'),
       subtitle: t('contactLenses.types.multifocal.subtitle'),
-      features: t('contactLenses.types.multifocal.features', { returnObjects: true }),
+      features: t('contactLenses.types.multifocal.features', { returnObjects: true }) || [],
       icon: Zap,
       color: 'bg-cyan-50/80 border-cyan-400/60 shadow-cyan-100/50'
     }
@@ -43,28 +43,28 @@ const ContactLenses = () => {
       name: 'Acuvue',
       description: t('contactLenses.brand_details.acuvue.description'),
       image: '/img/acuvue2.jpeg',
-      features: t('contactLenses.brand_details.acuvue.features', { returnObjects: true }),
+      features: t('contactLenses.brand_details.acuvue.features', { returnObjects: true }) || [],
       specialty: t('contactLenses.brand_details.acuvue.specialty')
     },
     {
       name: 'Sólotica',
       description: t('contactLenses.brand_details.solotica.description'),
       image: '/img/solotica-hidrocor.jpeg',
-      features: t('contactLenses.brand_details.solotica.features', { returnObjects: true }),
+      features: t('contactLenses.brand_details.solotica.features', { returnObjects: true }) || [],
       specialty: t('contactLenses.brand_details.solotica.specialty')
     },
     {
       name: 'Bioview',
       description: t('contactLenses.brand_details.bioview.description'),
       image: '/img/bivoview.png',
-      features: t('contactLenses.brand_details.bioview.features', { returnObjects: true }),
+      features: t('contactLenses.brand_details.bioview.features', { returnObjects: true }) || [],
       specialty: t('contactLenses.brand_details.bioview.specialty')
     }
   ];
 
-  const processSteps = t('contactLenses.process_steps', { returnObjects: true });
-  const faqItems = t('contactLenses.faq_items', { returnObjects: true });
-  const trustBadges = t('contactLenses.trust_badges', { returnObjects: true });
+  const processSteps = t('contactLenses.process_steps', { returnObjects: true }) || [];
+  const faqItems = t('contactLenses.faq_items', { returnObjects: true }) || [];
+  const trustBadges = t('contactLenses.trust_badges', { returnObjects: true }) || [];
 
   const whatsappMessage = encodeURIComponent('Olá! Gostaria de agendar uma consulta para adaptação de lentes de contato.');
   const whatsappUrl = `https://wa.me/5533999887766?text=${whatsappMessage}`;
@@ -407,7 +407,7 @@ const ContactLenses = () => {
                 {t('contactLenses.safety_desc')}
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto">
-                {t('contactLenses.safety_features', { returnObjects: true }).map((item, idx) => (
+                {(t('contactLenses.safety_features', { returnObjects: true }) || []).map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3 text-left">
                     <Check className="h-5 w-5 text-green-600" />
                     <span className="text-slate-700">{item}</span>

@@ -7,11 +7,11 @@ const FAQPreview = () => {
   const { t } = useTranslation();
 
   const faqs = [
-    t('faq.questions.lenses_cost', { returnObjects: true }),
-    t('faq.questions.pediatric_age', { returnObjects: true }),
-    t('faq.questions.medical_report', { returnObjects: true }),
-    t('faq.questions.glaucoma_treatment', { returnObjects: true }),
-    t('faq.questions.insurance', { returnObjects: true })
+    t('faq.questions.lenses_cost', { returnObjects: true }) || {},
+    t('faq.questions.pediatric_age', { returnObjects: true }) || {},
+    t('faq.questions.medical_report', { returnObjects: true }) || {},
+    t('faq.questions.glaucoma_treatment', { returnObjects: true }) || {},
+    t('faq.questions.insurance', { returnObjects: true }) || {}
   ];
 
   return (
