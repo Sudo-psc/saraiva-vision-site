@@ -1,13 +1,18 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "name": "Production",
-  "buildCommand": "npm run build:vercel",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-   "functions": {
-     "api/**/*.js": {
-       "runtime": "@vercel/node"
-     }
-   },
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ],
+  "functions": {
+    "api/**": {
+      "maxDuration": 60,
+      "memory": 1024
+    }
+  },
   "env": {
     "NODE_ENV": "production",
     "VITE_API_URL": "https://saraivavision.com.br/api",
