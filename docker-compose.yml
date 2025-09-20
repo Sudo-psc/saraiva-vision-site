@@ -1,12 +1,9 @@
-version: "3.8"
-
 services:
   # Frontend Service with custom development server
   frontend:
     build:
       context: .
-      dockerfile: Dockerfile.frontend
-      target: build
+      dockerfile: Dockerfile.frontend.dev
     container_name: saraiva-frontend
     ports:
       - "3002:3002"
@@ -91,9 +88,7 @@ services:
       dockerfile: Dockerfile.nginx
     container_name: saraiva-nginx
     ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
+      - "8080:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:cached
       - ./nginx-configs:/etc/nginx/conf.d:cached
@@ -112,7 +107,7 @@ services:
           "--no-verbose",
           "--tries=1",
           "--spider",
-          "http://localhost:80/health",
+          "http://127.0.0.1:80/health",
         ]
       interval: 30s
       timeout: 10s
@@ -123,6 +118,33 @@ services:
         condition: service_healthy
       api:
         condition: service_healthy
+    networks:
+      - internal
+
+  # WordPress Service
+  wordpress:
+    image: wordpress:6.4-apache
+    container_name: saraiva-wordpress
+    ports:
+      - "8083:80"
+    environment:
+      - WORDPRESS_DB_HOST=db:3306
+      - WORDPRESS_DB_NAME=wordpress
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress
+      - WORDPRESS_TABLE_PREFIX=wp_
+      - WORDPRESS_DEBUG=false
+    volumes:
+      - wordpress_data:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/wp-json/wp/v2/posts?per_page=1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
     networks:
       - internal
 
@@ -146,7 +168,7 @@ services:
           "mysqladmin",
           "ping",
           "-h",
-          "localhost",
+          "127.0.0.1",
           "-u",
           "wordpress",
           "-pwordpress",
@@ -224,6 +246,8 @@ volumes:
   redis_data:
     driver: local
   nginx_logs:
+    driver: local
+  wordpress_data:
     driver: local
 
 networks:
