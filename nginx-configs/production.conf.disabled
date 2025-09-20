@@ -3,8 +3,6 @@
 
 # Rate limiting zones - adjusted for Cloudflare compatibility
 # Reduced rates since Cloudflare WAF provides additional protection
-limit_req_zone $binary_remote_addr zone=api:10m rate=60r/m;
-limit_req_zone $binary_remote_addr zone=login:10m rate=10r/m;
 limit_req_zone $binary_remote_addr zone=contact:10m rate=20r/m;
 
 # HTTP to HTTPS redirect

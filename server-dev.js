@@ -3,13 +3,6 @@ import { createServer as createViteServer } from 'vite';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
-// ============================================================================
-// DEVELOPMENT SERVER CONFIGURATION
-// ============================================================================
-
-/**
- * Development server configuration constants
- */
 const DEV_SERVER_CONFIG = {
   DEFAULT_PORT: 3002,
   HEALTH_ENDPOINT: '/health',
@@ -29,18 +22,9 @@ const DEV_SERVER_CONFIG = {
   }
 };
 
-// Utility function to get current directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// ============================================================================
-// HEALTH CHECK FUNCTIONS
-// ============================================================================
-
-/**
- * Generates development server health check data
- * @returns {Object} Health check data for development environment
- */
 function generateDevHealthData() {
   return {
     status: 'healthy',
@@ -67,10 +51,6 @@ function generateDevHealthData() {
   };
 }
 
-/**
- * Sets development server health check headers
- * @param {http.ServerResponse} res - The response object
- */
 function setHealthCheckHeaders(res) {
   res.setHeader('Content-Type', 'application/json');
   Object.entries(DEV_SERVER_CONFIG.CACHE_HEADERS).forEach(([key, value]) => {
@@ -81,21 +61,12 @@ function setHealthCheckHeaders(res) {
   });
 }
 
-/**
- * Handles health check requests for development server
- * @param {http.ServerResponse} res - The response object
- */
 function handleDevHealthCheck(res) {
   const healthData = generateDevHealthData();
   setHealthCheckHeaders(res);
   res.end(JSON.stringify(healthData));
 }
 
-/**
- * Handles OPTIONS preflight requests for health check
- * @param {http.ServerResponse} res - The response object
- * @returns {boolean} True if request was handled, false otherwise
- */
 function handleDevPreflightRequest(res) {
   if (res.req?.method === 'OPTIONS') {
     Object.entries(DEV_SERVER_CONFIG.CORS_HEADERS).forEach(([key, value]) => {
@@ -108,104 +79,97 @@ function handleDevPreflightRequest(res) {
   return false;
 }
 
-// ============================================================================
-// SERVER CREATION
-// ============================================================================
-
-/**
- * Creates and configures the development server with Vite middleware
- * @returns {Promise<http.Server>} Configured HTTP server instance
- */
 async function createDevServer() {
-  // Initialize Vite development server with middleware mode
   const vite = await createViteServer(DEV_SERVER_CONFIG.VITE_CONFIG);
 
-  /**
-   * Main request handler for development server
-   * Handles health checks and routes all other requests to Vite middleware
-   */
   const server = createServer(async (req, res) => {
-    // Store request reference for preflight handler
     res.req = req;
-
-    // Health check endpoint
     if (req.url === DEV_SERVER_CONFIG.HEALTH_ENDPOINT || req.url === `${DEV_SERVER_CONFIG.HEALTH_ENDPOINT}/`) {
-      // Handle preflight requests
       if (handleDevPreflightRequest(res)) {
         return;
       }
-
-      // Handle health check
       handleDevHealthCheck(res);
       return;
     }
-
-    // Route all other requests to Vite middleware
     vite.middlewares(req, res);
   });
 
-  // Start the server with detailed logging
-  const PORT = process.env.FRONTEND_PORT || DEV_SERVER_CONFIG.DEFAULT_PORT;
-  server.listen(PORT, () => {
-    console.log(`🚀 Saraiva Vision Development Server started successfully`);
-    console.log(`📡 Frontend server listening on: http://localhost:${PORT}`);
-    console.log(`🏥 Health check endpoint: http://localhost:${PORT}${DEV_SERVER_CONFIG.HEALTH_ENDPOINT}`);
-    console.log(`🔥 Hot Module Replacement (HMR) enabled`);
-    console.log(`🌐 CORS enabled for development`);
-    console.log(`💻 Development environment: ${process.env.NODE_ENV || 'development'}`);
+  let isShuttingDown = false;
+  const activeConnections = new Set();
 
-    // Additional helpful information
-    console.log(`\n📝 Available endpoints:`);
-    console.log(`   • Health: http://localhost:${PORT}${DEV_SERVER_CONFIG.HEALTH_ENDPOINT}`);
-    console.log(`   • Frontend: http://localhost:${PORT}/`);
-    console.log(`   • API: http://localhost:${PORT}/api/* (proxied)`);
-    console.log(`   • WordPress: http://localhost:${PORT}/wp-json/* (proxied)`);
+  server.on('connection', (socket) => {
+    activeConnections.add(socket);
+    socket.on('close', () => {
+      activeConnections.delete(socket);
+    });
+  });
+
+  function gracefulShutdown(signal) {
+    if (isShuttingDown) {
+      console.log(`${signal} received again, forcing exit...`);
+      process.exit(1);
+    }
+    isShuttingDown = true;
+    console.log(`${signal} received, starting graceful shutdown...`);
+
+    vite.close().then(() => {
+      console.log('Vite server closed');
+      server.close((err) => {
+        if (err) {
+          console.error('Error during server close:', err);
+          process.exit(1);
+        }
+        console.log('HTTP server closed');
+      });
+
+      const shutdownTimeout = setTimeout(() => {
+        console.log('Graceful shutdown timeout, forcing exit...');
+        activeConnections.forEach((socket) => {
+          socket.destroy();
+        });
+        process.exit(1);
+      }, 30000);
+
+      const checkConnections = setInterval(() => {
+        if (activeConnections.size === 0) {
+          clearInterval(checkConnections);
+          clearTimeout(shutdownTimeout);
+          console.log('All connections closed, exiting gracefully');
+          process.exit(0);
+        } else {
+          console.log(`Waiting for ${activeConnections.size} active connections to close...`);
+        }
+      }, 1000);
+    }).catch((err) => {
+      console.error('Error closing Vite server:', err);
+      process.exit(1);
+    });
+  }
+
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+  process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+    gracefulShutdown('UNCAUGHT_EXCEPTION');
+  });
+
+  process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    gracefulShutdown('UNHANDLED_REJECTION');
+  });
+
+  const PORT = process.env.FRONTEND_PORT || 3002;
+  server.listen(PORT, () => {
+    console.log(`Frontend development server with health check listening on http://localhost:${PORT}`);
+    console.log(`Health check available at http://localhost:${PORT}/health`);
+    console.log('Graceful shutdown handlers registered for SIGTERM and SIGINT');
   });
 
   return server;
 }
 
-// ============================================================================
-// SERVER STARTUP AND ERROR HANDLING
-// ============================================================================
-
-/**
- * Initialize the development server with proper error handling
- */
-createDevServer()
-  .then((server) => {
-    console.log(`✅ Development server is ready for connections`);
-
-    // Handle server errors
-    server.on('error', (error) => {
-      if (error.code === 'EADDRINUSE') {
-        const usedPort = error.port || PORT;
-        console.error(`❌ Port ${usedPort} is already in use. Please try a different port.`);
-      } else {
-        console.error('❌ Server error:', error);
-      }
-      process.exit(1);
-    });
-  })
-  .catch((err) => {
-    console.error('❌ Failed to start development server:', err);
-    console.error('🔍 This might be due to:');
-    console.error('   • Port already in use');
-    console.error('   • Vite configuration issues');
-    console.error('   • Missing dependencies');
-    console.error('   • File permission issues');
-    process.exit(1);
-  });
-
-/**
- * Handle graceful shutdown
- */
-process.on('SIGTERM', () => {
-  console.log('🛑 Received SIGTERM, shutting down development server gracefully...');
-  process.exit(0);
-});
-
-process.on('SIGINT', () => {
-  console.log('🛑 Received SIGINT, shutting down development server gracefully...');
-  process.exit(0);
+createDevServer().catch((err) => {
+  console.error('Failed to start development server:', err);
+  process.exit(1);
 });

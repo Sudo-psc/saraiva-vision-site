@@ -446,56 +446,81 @@ const server = http.createServer(async (req, res) => {
   });
 });
 
-// ============================================================================
-// SERVER STARTUP
-// ============================================================================
+const PORT = process.env.PORT || 3001;
+const HOST = process.env.HOST || '0.0.0.0';
 
-const PORT = process.env.PORT || SERVER_CONFIG.DEFAULT_PORT;
-const HOST = process.env.HOST || SERVER_CONFIG.DEFAULT_HOST;
+// Graceful shutdown implementation
+let isShuttingDown = false;
+const activeConnections = new Set();
 
-/**
- * Start the API server with proper error handling
- */
+// Track active connections
+server.on('connection', (socket) => {
+  activeConnections.add(socket);
+  socket.on('close', () => {
+    activeConnections.delete(socket);
+  });
+});
+
+// Graceful shutdown function
+function gracefulShutdown(signal) {
+  if (isShuttingDown) {
+    console.log(`${signal} received again, forcing exit...`);
+    process.exit(1);
+  }
+
+  isShuttingDown = true;
+  console.log(`${signal} received, starting graceful shutdown...`);
+
+  // Stop accepting new connections
+  server.close((err) => {
+    if (err) {
+      console.error('Error during server close:', err);
+      process.exit(1);
+    }
+    console.log('HTTP server closed');
+  });
+
+  // Set a timeout for forceful shutdown
+  const shutdownTimeout = setTimeout(() => {
+    console.log('Graceful shutdown timeout, forcing exit...');
+    
+    // Destroy all active connections
+    activeConnections.forEach((socket) => {
+      socket.destroy();
+    });
+    
+    process.exit(1);
+  }, 30000); // 30 seconds timeout
+
+  // Wait for all connections to close
+  const checkConnections = setInterval(() => {
+    if (activeConnections.size === 0) {
+      clearInterval(checkConnections);
+      clearTimeout(shutdownTimeout);
+      console.log('All connections closed, exiting gracefully');
+      process.exit(0);
+    } else {
+      console.log(`Waiting for ${activeConnections.size} active connections to close...`);
+    }
+  }, 1000);
+}
+
+// Register signal handlers
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+// Handle uncaught exceptions and unhandled rejections
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+  gracefulShutdown('UNCAUGHT_EXCEPTION');
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  gracefulShutdown('UNHANDLED_REJECTION');
+});
+
 server.listen(PORT, HOST, () => {
-  console.log(`🚀 Saraiva Vision API Server started successfully`);
-  console.log(`📡 Listening on: http://${HOST}:${PORT}`);
-  console.log(`🏥 Health check: http://${HOST}:${PORT}${SERVER_CONFIG.HEALTH_ENDPOINT}`);
-  console.log(`🔒 Rate limiting: ${RATE_LIMITING.MAX_REQUESTS} requests per ${RATE_LIMITING.WINDOW_MS / 1000}s`);
-  console.log(`🌐 CORS enabled: ${CORS_CONFIG.ALLOWED_ORIGINS}`);
-
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`🛠️  Development mode enabled`);
-  }
-});
-
-/**
- * Handle server startup errors gracefully
- */
-server.on('error', (error) => {
-  if (error.code === 'EADDRINUSE') {
-    console.error(`❌ Port ${PORT} is already in use. Please choose a different port.`);
-    process.exit(1);
-  } else {
-    console.error('❌ Server error:', error);
-    process.exit(1);
-  }
-});
-
-/**
- * Handle graceful shutdown
- */
-process.on('SIGTERM', () => {
-  console.log('🛑 Received SIGTERM, shutting down gracefully...');
-  server.close(() => {
-    console.log('✅ Server closed successfully');
-    process.exit(0);
-  });
-});
-
-process.on('SIGINT', () => {
-  console.log('🛑 Received SIGINT, shutting down gracefully...');
-  server.close(() => {
-    console.log('✅ Server closed successfully');
-    process.exit(0);
-  });
+  console.log(`API server listening on http://${HOST}:${PORT}`);
+  console.log('Graceful shutdown handlers registered for SIGTERM and SIGINT');
 });

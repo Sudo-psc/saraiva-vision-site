@@ -29,22 +29,29 @@ const BlogPage = () => {
   const [wordpressAvailable, setWordpressAvailable] = useState(true);
 
   useEffect(() => {
-    const loadData = async () => {
+    const loadCategories = async () => {
+      try {
+        const categoriesData = await fetchCategories();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error('Error loading categories:', error);
+        // Do not set a page-level error for categories, as posts might still load
+      }
+    };
+
+    loadCategories();
+  }, []); // Runs only once on mount
+
+  useEffect(() => {
+    const loadPosts = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // Debug: Log API configuration
-        console.log('[BlogPage] Checking WordPress connection...');
-        console.log('[BlogPage] API_BASE_URL:', import.meta.env.VITE_WORDPRESS_API_URL);
-
-        // Check if WordPress is available
         const connectionResult = await checkWordPressConnection();
-        console.log('[BlogPage] WordPress connection result:', connectionResult);
         setWordpressAvailable(connectionResult.isConnected);
 
         if (!connectionResult.isConnected) {
-          console.log('[BlogPage] WordPress not available, showing fallback');
           setLoading(false);
           return;
         }
@@ -62,18 +69,11 @@ const BlogPage = () => {
           params.search = searchTerm;
         }
 
-        const [postsData, categoriesData] = await Promise.all([
-          fetchPosts(params),
-          categories.length === 0 ? fetchCategories() : Promise.resolve(categories)
-        ]);
-
+        const postsData = await fetchPosts(params);
         setPosts(postsData);
-        if (categories.length === 0) {
-          setCategories(categoriesData);
-        }
 
       } catch (error) {
-        console.error('Error loading blog data:', error);
+        console.error('Error loading blog posts:', error);
         setError(error.message);
         setWordpressAvailable(false);
       } finally {
@@ -81,8 +81,8 @@ const BlogPage = () => {
       }
     };
 
-    loadData();
-  }, [currentPage, selectedCategory, searchTerm, categories]);
+    loadPosts();
+  }, [currentPage, selectedCategory, searchTerm]);
 
   const getDateLocale = () => {
     return i18n.language === 'pt' ? ptBR : enUS;
