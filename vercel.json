@@ -1,19 +1,9 @@
 {
   "version": 2,
   "name": "saraiva-vision-site",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    },
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    }
-  ],
+  "buildCommand": "npm run build:vercel",
+  "outputDirectory": "dist",
+  "framework": "vite",
   "routes": [
     {
       "src": "/api/(.*)",
@@ -88,7 +78,7 @@
   ],
   "functions": {
     "api/**/*.js": {
-      "runtime": "nodejs18.x",
+      "runtime": "nodejs20.x",
       "maxDuration": 10
     }
   },
@@ -96,7 +86,5 @@
     "NODE_ENV": "production",
     "VITE_API_URL": "https://saraivavision.com.br/api",
     "VITE_WORDPRESS_URL": "https://saraivavision.com.br"
-  },
-  "regions": ["gru1"],
-  "outputDirectory": "dist"
+  }
 }
