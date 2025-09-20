@@ -5,6 +5,8 @@ import { Facebook, Instagram, Linkedin, ArrowUp, MessageCircle, Bot, Twitter } f
 import Logo from '@/components/Logo';
 import { clinicInfo } from '@/lib/clinicInfo';
 
+import { SocialLinks } from '@/components/ui/social-links';
+
 const Footer = () => {
   const { t } = useTranslation();
 
@@ -30,10 +32,22 @@ const Footer = () => {
 
   const serviceLinks = t('footer.service_links', { returnObjects: true });
 
-  const socialLinks = [
-    { href: clinicInfo.facebook, icon: <Facebook size={20} />, label: 'Facebook' },
-    { href: clinicInfo.instagram, icon: <Instagram size={20} />, label: 'Instagram' },
-    { href: clinicInfo.linkedin, icon: <Linkedin size={20} />, label: 'LinkedIn' },
+  const socialsForLinks = [
+    { 
+      name: "Facebook", 
+      href: clinicInfo.facebook, 
+      image: "https://link-hover-lndev.vercel.app/instagram.png" // Placeholder, ideally replace with Facebook logo
+    },
+    {
+      name: "Instagram",
+      href: clinicInfo.instagram,
+      image: "https://link-hover-lndev.vercel.app/instagram.png",
+    },
+    {
+      name: "LinkedIn",
+      href: clinicInfo.linkedin,
+      image: "https://link-hover-lndev.vercel.app/linkedin.png",
+    },
   ];
 
   return (
@@ -128,19 +142,7 @@ const Footer = () => {
           <div className="flex flex-col items-center gap-4 lg:items-end">
             {/* Social Links */}
             <div className="flex items-center space-x-4">
-              {socialLinks.map((link, index) => (
-                <a
-                  key={index}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-slate-400 hover:text-white transition-colors"
-                  aria-label={link.label}
-                  title={link.label}
-                >
-                  {link.icon}
-                </a>
-              ))}
+              <SocialLinks socials={socialsForLinks} />
               <button
                 onClick={scrollToTop}
                 className="p-2.5 bg-slate-700 rounded-full text-white hover:bg-blue-600 transition-colors"
