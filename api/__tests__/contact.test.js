@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-const { default: handler } = await import('../contact.js');
+const { default: handler } = await import('../contact/index.js');
+const { createRateLimiter } = await import('../contact/rateLimiter.js');
 
 describe('Contact API Handler (reCAPTCHA v3)', () => {
   let mockReq;
@@ -12,7 +13,7 @@ describe('Contact API Handler (reCAPTCHA v3)', () => {
     process.env = { ...originalEnv, NODE_ENV: 'test' };
 
     // Reset rate limiter for each test
-    global.__contactRateLimiter = new Map();
+    global.__contactRateLimiter = createRateLimiter();
 
     mockReq = {
       method: 'POST',
@@ -63,11 +64,15 @@ describe('Contact API Handler (reCAPTCHA v3)', () => {
 
   it('verifies reCAPTCHA and returns ok on success', async () => {
     process.env.RECAPTCHA_SECRET = 'secret';
+    process.env.RESEND_API_KEY = 'resend-api-key';
     mockReq.body = { token: 'abc123', action: 'contact', name: 'John', email: 'john@test.com', phone: '33998601427', message: 'Hello there' };
 
-    global.fetch.mockResolvedValue({
-      json: () => Promise.resolve({ success: true, score: 0.9, action: 'contact' })
-    });
+    global.fetch
+      .mockResolvedValueOnce({ json: () => Promise.resolve({ success: true, score: 0.9, action: 'contact' }) })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ id: 'email-id' })
+      });
 
     await handler(mockReq, mockRes);
     expect(mockRes.status).toHaveBeenCalledWith(200);
@@ -93,4 +98,3 @@ describe('Contact API Handler (reCAPTCHA v3)', () => {
     expect(mockRes.status).toHaveBeenCalledWith(400);
   });
 });
-
