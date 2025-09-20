@@ -1,54 +1,47 @@
-# Repository Guidelines
+# Agent Guidelines - SaraivaVision Medical Website
 
-## Project Structure & Module Organization
-- Source lives in `src/` (React 18 + Vite):
-  - `components/` reusable UI (e.g., `Navbar.jsx`, `Hero.jsx`)
-  - `pages/` route views
-  - `hooks/`, `contexts/`, `utils/` logic helpers
-  - `locales/` i18n JSON (`en/translation.json`, `pt/translation.json`)
-- Tests: `src/**/__tests__/*.(test|spec).(js|jsx)`.
-- Static assets: `public/`. Local API stubs: `api/`. App shell/SEO: `index.html`. Build output: `dist/`.
+## Build & Development Commands
+- `npm run dev` - Start Vite dev server with HMR
+- `npm run build` - Production build to `dist/`
+- `npm run preview` - Serve built app locally
+- `npm run start:api` - Start API server
+- `npm run lint` - Run ESLint (via `npx eslint src`)
 
-## Build, Test, and Development Commands
-- `npm install`: Install dependencies.
-- `nvm use` (Node `20.19.1` via `.nvmrc`).
-- `npm run dev`: Start Vite dev server with HMR.
-- `npm run build`: Production build to `dist/`.
-- `npm run preview`: Serve built app locally.
-- `npm test`: Run unit tests (Vitest + jsdom).
-- `npm run test:coverage`: Tests with coverage report.
-- `npx eslint src`: Lint before PRs.
+## Testing Commands
+- `npm test` - Run all tests (Vitest)
+- `npm run test:run` - Run tests once
+- `npm run test:coverage` - Tests with coverage
+- `npm run test:ui` - Run tests with UI
+- `npx vitest run src/components/__tests__/ComponentName.test.jsx` - Run single test file
 
-## Coding Style & Naming Conventions
-- Indentation: 2 spaces; modern functional React components and hooks.
-- Components: `PascalCase.jsx` (e.g., `ServiceCard.jsx`).
-- Hooks: `useThing.js`; utils: `camelCase.js`.
-- Routes/anchors: kebab-case (e.g., `/services/consultas-oftalmologicas`, `#contact`).
-- Styling: Tailwind utilities preferred; custom utilities in `src/index.css`.
-- i18n: Add keys to both locales; avoid hardcoded UI text.
+## Code Style Guidelines
+- **React**: Functional components with hooks, no class components
+- **Imports**: Group by React, external libs, internal components, utils
+- **Naming**: PascalCase for components, camelCase for hooks/utils, kebab-case for routes
+- **Formatting**: 2 spaces, max 120 chars/line, semicolons required
+- **Accessibility**: WCAG 2.1 AA, ARIA labels, semantic HTML, keyboard navigation
+- **i18n**: Use `t()` for all user-facing text, update both `pt` and `en` locales
+- **Styling**: Tailwind utilities first, custom CSS in `src/index.css`
 
-## Testing Guidelines
-- Framework: Vitest + Testing Library (React) with `jsdom`.
-- Location/pattern: `src/**/__tests__/*.(test|spec).(js|jsx)`.
-- Focus on behavior; mock network/time when needed.
-- Maintain stable coverage; add tests for changed paths.
+## Medical Compliance Requirements
+- **LGPD**: Patient data privacy, explicit consent for data collection
+- **CFM**: Brazilian medical standards, accurate medical terminology
+- **Security**: No sensitive data logging, input validation, XSS prevention
+- **Performance**: Lighthouse 90+ scores, lazy loading, image optimization
 
-## Commit & Pull Request Guidelines
-- Commits: Imperative subject; conventional scopes when useful.
-  - Examples: `feat(services): add reviews widget`, `fix(seo): correct JSON‑LD`.
-- PRs: Clear description, rationale, linked issue, and UI screenshots/GIFs when applicable.
-- Keep i18n/SEO/Accessibility intact; update both locales and preserve ARIA/alt/meta behavior.
+## Testing Standards
+- **Framework**: Vitest + Testing Library + jsdom
+- **Location**: `src/**/__tests__/*.(test|spec).(js|jsx)`
+- **Coverage**: Focus on behavior, mock APIs, test accessibility
+- **Patterns**: Contract tests for critical features, integration tests for user flows
 
-## Security & Configuration
-- Secrets: Never commit. Use `.env`/`.env.local` with `VITE_` prefix for client exposure.
-- Respect consent: Keep analytics/marketing behind consent (see `index.html`/ConsentManager).
-- Node version via `.nvmrc`; run `nvm use` before installing/running.
+## GitHub Copilot Instructions
+- Follow `.github/copilot-instructions.md` for detailed medical website guidelines
+- Prioritize accessibility, privacy, and Brazilian medical compliance
+- Use schema markup for medical services, lazy load components
+- Include error boundaries, professional error messages, LGPD consent
 
-## CI/CD & Deployment
-- GitHub Actions: Lint, test, and build on each pull request. Protect `main` with required checks.
-- Secrets: Store API keys and tokens in GitHub Secrets; never hardcode.
-- Nginx Configs: `nginx.conf`, `nginx.staging.conf`, and `nginx.local.conf` serve static builds.
-  - Validate configuration with `nginx -t` during CI before deploy.
-  - Enable HTTPS, HTTP/2, and gzip or brotli compression.
-  - Use long-term caching for `/dist` assets; set `Cache-Control` and `ETag` headers.
-- SSL: Obtain certificates via `ssl-setup.sh` (Let's Encrypt) and renew regularly.
+## Commit Standards
+- Imperative mood: `feat(services): add appointment booking`
+- Scope prefixes: `feat()`, `fix()`, `docs()`, `test()`, `refactor()`
+- Include UI screenshots for visual changes, test coverage for code changes

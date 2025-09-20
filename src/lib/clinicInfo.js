@@ -24,8 +24,8 @@ export const clinicInfo = {
   whatsapp: '+5533998601427',
   email: 'saraivavision@gmail.com',
   instagram: 'https://www.instagram.com/saraiva_vision/',
-  facebook: 'https://www.facebook.com/saraivavision',
-  linkedin: 'https://www.linkedin.com/company/saraiva-vision',
+  facebook: 'https://www.facebook.com/philipeoftalmo',
+  linkedin: 'https://www.linkedin.com/in/dr-philipe-saraiva/',
   chatbotUrl: 'https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica',
   onlineSchedulingUrl: 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613',
   // Security validation for external integrations
