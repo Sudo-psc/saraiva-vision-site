@@ -11,7 +11,14 @@
     "start": "vite",
     "dev:vercel": "npx vercel dev --listen 3000",
     "vercel:deploy": "npx vercel --prod",
-    "vercel:pull": "npx vercel pull --yes --environment=production"
+    "vercel:pull": "npx vercel pull --yes --environment=production",
+    "deploy:intelligent": "node scripts/vercel-intelligent-deploy.js",
+    "deploy:config": "node scripts/vercel-config-manager.js",
+    "deploy:production": "node scripts/vercel-config-manager.js apply production && npm run vercel:deploy",
+    "deploy:edge": "node scripts/vercel-config-manager.js apply edge && npm run vercel:deploy",
+    "deploy:node20": "node scripts/vercel-config-manager.js apply node20 && npm run vercel:deploy",
+    "deploy:static": "node scripts/vercel-config-manager.js apply static && npm run vercel:deploy",
+    "build:static": "vite build --mode static"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.1",
