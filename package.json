@@ -4,13 +4,13 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "dev": "node server-dev.js",
+    "dev": "vite dev --host",
     "prebuild": "node scripts/generate-apple-icon.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "gemini": "gemini",
     "start:api": "node server.js",
-    "start": "vite",
+    "start": "vite preview --host",
     "serve": "vite preview --port 3000",
     "deploy:local": "sudo ./deploy.sh",
     "dev:full": "./dev.sh",
@@ -29,7 +29,11 @@
     "audio:duration": "node tools/get-audio-duration.js",
     "images:build": "node tools/img-pipeline.mjs",
     "images:check": "node tools/img-pipeline.mjs check",
-    "images:optimize": "./scripts/optimize-images.sh"
+    "images:optimize": "./scripts/optimize-images.sh",
+    "dev:legacy": "node server-dev.js",
+    "dev:vercel": "npx vercel dev --listen 3000",
+    "vercel:deploy": "npx vercel --prod",
+    "vercel:pull": "npx vercel pull --yes --environment=production"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.1",

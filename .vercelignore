@@ -1,0 +1,35 @@
+# Dependencies & local build outputs
+node_modules
+pnpm-lock.yaml
+yarn.lock
+dist
+dist-old
+coverage
+logs
+memory
+.tmp
+.temp
+*.log
+
+# Legacy infrastructure not required for Vercel
+Dockerfile*
+docker-compose*.yml
+infra/
+nginx*/
+proxy-nginx.conf
+
+# Documentation and auxiliary tooling
+.docs
+.docs/**
+docs/
+tests/
+webapp/
+wordpress-*/
+wordpress-local/
+wordpress-plugins/
+wordpress-theme/
+wp/
+*.code-workspace
+*.zip
+*.bak
+*.backup
