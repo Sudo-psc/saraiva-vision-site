@@ -1,28 +1,11 @@
 {
   "version": 2,
-  "name": "saraivavision-site",
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "dist",
   "framework": "vite",
   "functions": {
-    "api/contact/index.js": {
-      "runtime": "nodejs20.x",
-      "maxDuration": 10
-    },
-    "api/health.js": {
-      "runtime": "nodejs20.x",
-      "maxDuration": 5
-    },
-    "api/reviews.js": {
-      "runtime": "nodejs20.x",
-      "maxDuration": 10
-    },
-    "api/web-vitals.js": {
-      "runtime": "nodejs20.x",
-      "maxDuration": 5
-    },
-    "api/wordpress-proxy.js": {
-      "runtime": "nodejs20.x",
+    "api/**/*.js": {
+      "runtime": "@vercel/node@20.x",
       "maxDuration": 10
     }
   },
@@ -71,10 +54,5 @@
         }
       ]
     }
-  ],
-  "env": {
-    "NODE_ENV": "production",
-    "VITE_API_URL": "https://saraivavision.com.br/api",
-    "VITE_WORDPRESS_URL": "https://saraivavision.com.br"
-  }
+  ]
 }
