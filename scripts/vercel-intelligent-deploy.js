@@ -14,22 +14,22 @@ class VercelIntelligentDeployer {
         this.buildVersions = [
             {
                 name: 'node18x',
-                runtime: '@vercel/node@18.x',
+                runtime: 'nodejs18.x',
                 description: 'Node.js 18.x runtime (recommended)'
             },
             {
                 name: 'node20x',
-                runtime: '@vercel/node@20.x',
+                runtime: 'nodejs20.x',
                 description: 'Node.js 20.x runtime (latest stable)'
             },
             {
                 name: 'node16x',
-                runtime: '@vercel/node@16.x',
+                runtime: 'nodejs16.x',
                 description: 'Node.js 16.x runtime (fallback)'
             },
             {
                 name: 'edge',
-                runtime: '@vercel/edge',
+                runtime: 'edge',
                 description: 'Edge runtime (lightweight functions)'
             }
         ];
