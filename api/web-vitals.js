@@ -3,9 +3,6 @@
  * Coleta métricas de performance para monitoramento da experiência do usuário
  */
 
-import { promises as fs } from 'node:fs';
-import path from 'node:path';
-
 export default async function handler(req, res) {
   // Only accept POST requests
   if (req.method !== 'POST') {
