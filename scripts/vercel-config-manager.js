@@ -19,7 +19,7 @@ class VercelConfigManager {
                 framework: 'vite',
                 functions: {
                     'api/**/*.js': {
-                        runtime: '@vercel/node@18.x'
+                        runtime: 'nodejs18.x'
                     }
                 },
                 env: {
@@ -36,7 +36,7 @@ class VercelConfigManager {
                 framework: 'vite',
                 functions: {
                     'api/**/*.js': {
-                        runtime: '@vercel/node@18.x'
+                        runtime: 'nodejs18.x'
                     }
                 },
                 env: {
@@ -53,7 +53,7 @@ class VercelConfigManager {
                 framework: 'vite',
                 functions: {
                     'api/**/*.js': {
-                        runtime: '@vercel/edge'
+                        runtime: 'edge'
                     }
                 },
                 env: {
@@ -70,7 +70,7 @@ class VercelConfigManager {
                 framework: 'vite',
                 functions: {
                     'api/**/*.js': {
-                        runtime: '@vercel/node@20.x'
+                        runtime: 'nodejs20.x'
                     }
                 },
                 env: {
@@ -99,10 +99,10 @@ class VercelConfigManager {
                 framework: 'vite',
                 functions: {
                     'api/health.js': {
-                        runtime: '@vercel/node@18.x'
+                        runtime: 'nodejs18.x'
                     },
                     'api/contact/index.js': {
-                        runtime: '@vercel/node@18.x'
+                        runtime: 'nodejs18.x'
                     }
                 },
                 env: {

@@ -54,12 +54,12 @@ node scripts/vercel-health-check.js quick  # Quick check (CLI + Auth + Build)
 
 | Configuration | Runtime | Description | Use Case |
 |---------------|---------|-------------|----------|
-| `production` | `@vercel/node@18.x` | Production environment | Default production deployment |
-| `development` | `@vercel/node@18.x` | Development environment | Development/testing |
-| `edge` | `@vercel/edge` | Edge Runtime | Lightweight functions |
-| `node20` | `@vercel/node@20.x` | Node.js 20.x | Latest Node.js version |
+| `production` | `nodejs18.x` | Production environment | Default production deployment |
+| `development` | `nodejs18.x` | Development environment | Development/testing |
+| `edge` | `edge` | Edge Runtime | Lightweight functions |
+| `node20` | `nodejs20.x` | Node.js 20.x | Latest Node.js version |
 | `static` | None | Static only | No serverless functions |
-| `minimal` | `@vercel/node@18.x` | Minimal functions | Only essential functions |
+| `minimal` | `nodejs18.x` | Minimal functions | Only essential functions |
 
 ## How It Works
 
