@@ -8,7 +8,10 @@
     "build": "vite build",
     "build:vercel": "vite build",
     "preview": "vite preview",
-    "start": "vite"
+    "start": "vite",
+    "dev:vercel": "npx vercel dev --listen 3000",
+    "vercel:deploy": "npx vercel --prod",
+    "vercel:pull": "npx vercel pull --yes --environment=production"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.1",

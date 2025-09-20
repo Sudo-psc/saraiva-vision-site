@@ -1,8 +1,18 @@
-# Dependencies
+# Dependencies & local build outputs
 node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-lock.yaml
+yarn.lock
+dist
+dist-old
+coverage
+logs
+memory
+.tmp
+.temp
+*.log
 
 # Build outputs (keep dist for static files)
 src
@@ -16,7 +26,6 @@ public
 .env.production.local
 
 # Testing
-coverage
 .nyc_output
 test-results
 playwright-report
@@ -31,29 +40,32 @@ playwright-report
 .DS_Store
 Thumbs.db
 
-# Logs
-logs
-*.log
-
-# Docker files (not needed for Vercel)
+# Legacy infrastructure not required for Vercel
 Dockerfile*
 docker-compose*.yml
-.dockerignore
+infra/
+nginx*/
+proxy-nginx.conf
 
-# Documentation and development tools
+# Documentation and auxiliary tooling
+.docs
+.docs/**
 docs/
 scripts/
 tools/
 tests/
+webapp/
+wordpress-*/
+wordpress-local/
+wordpress-plugins/
+wordpress-theme/
+wp/
+*.code-workspace
+*.zip
+*.bak
+*.backup
 *.md
 !README.md
-
-# Legacy files
-dist-old/
-wordpress-*
-nginx-*
-*.backup
-*.bak
 
 # Temporary files
 tmp/
