@@ -88,6 +88,8 @@ services:
       dockerfile: Dockerfile.nginx
     container_name: saraiva-nginx
     ports:
+      - "80:80"
+      - "443:443"
       - "8080:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:cached
@@ -103,11 +105,9 @@ services:
       test:
         [
           "CMD",
-          "wget",
-          "--no-verbose",
-          "--tries=1",
-          "--spider",
-          "http://127.0.0.1:80/health",
+          "curl",
+          "-fsk",
+          "https://127.0.0.1:443/health",
         ]
       interval: 30s
       timeout: 10s

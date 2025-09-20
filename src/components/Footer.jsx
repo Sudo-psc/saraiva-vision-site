@@ -33,20 +33,20 @@ const Footer = () => {
   const serviceLinks = t('footer.service_links', { returnObjects: true });
 
   const socialsForLinks = [
-    { 
-      name: "Facebook", 
-      href: clinicInfo.facebook, 
-      image: "https://link-hover-lndev.vercel.app/instagram.png" // Placeholder, ideally replace with Facebook logo
+    {
+      name: "Facebook",
+      href: clinicInfo.facebook,
+      image: "/icons_social/fb2.jpeg"
     },
     {
       name: "Instagram",
       href: clinicInfo.instagram,
-      image: "https://link-hover-lndev.vercel.app/instagram.png",
+      image: "/icons_social/insta2.jpeg",
     },
     {
       name: "LinkedIn",
       href: clinicInfo.linkedin,
-      image: "https://link-hover-lndev.vercel.app/linkedin.png",
+      image: "/icons_social/linkedln.jpeg",
     },
   ];
 

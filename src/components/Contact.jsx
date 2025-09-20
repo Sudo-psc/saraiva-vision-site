@@ -68,19 +68,7 @@ const Contact = () => {
     recaptcha: () => true
   };
 
-  // Validate all when data changes on touched fields
-  useEffect(() => {
-    const newErrors = {};
-    Object.keys(formData).forEach((field) => {
-      if (!touched[field]) return;
-      const rule = validators[field];
-      if (rule) {
-        const result = rule(formData[field]);
-        if (result !== true) newErrors[field] = result;
-      }
-    });
-    setErrors(newErrors);
-  }, [formData, touched]);
+
 
   const phoneNumber = "5533998601427";
   const whatsappLink = `https://wa.me/${phoneNumber}`;
@@ -89,7 +77,17 @@ const Contact = () => {
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
     setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
     if (!touched[name]) setTouched(prev => ({ ...prev, [name]: true }));
+
+    const rule = validators[name];
+    if (rule) {
+      const result = rule(value);
+      setErrors(prev => ({ ...prev, [name]: result === true ? undefined : result }));
+    }
   };
 
   const validateAll = () => {
@@ -296,7 +294,7 @@ const Contact = () => {
                     {t('contact.name_label', 'Nome completo')} <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
                   <input
-                    type="text" id="name" name="name" value={formData.name} onChange={handleChange} required
+                    type="text" id="name" name="name" value={formData.name} onChange={handleChange} onBlur={handleBlur} required
                     className={`form-input mobile-touch-input ${errors.name ? 'border-red-400 focus:ring-red-300' : touched.name ? 'border-green-400' : ''}`}
                     placeholder={t('contact.name_placeholder')}
                     aria-invalid={!!errors.name}
@@ -313,7 +311,7 @@ const Contact = () => {
                       {t('contact.email_label', 'E-mail')} <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <input
-                      type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
+                      type="email" id="email" name="email" value={formData.email} onChange={handleChange} onBlur={handleBlur} required
                       className={`form-input mobile-touch-input ${errors.email ? 'border-red-400 focus:ring-red-300' : touched.email ? 'border-green-400' : ''}`}
                       placeholder={t('contact.email_placeholder')}
                       aria-invalid={!!errors.email}
@@ -329,7 +327,7 @@ const Contact = () => {
                       {t('contact.phone_label', 'Telefone')} <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
                     <input
-                      type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required
+                      type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} onBlur={handleBlur} required
                       className={`form-input mobile-touch-input ${errors.phone ? 'border-red-400 focus:ring-red-300' : touched.phone ? 'border-green-400' : ''}`}
                       placeholder={t('contact.phone_placeholder')}
                       aria-invalid={!!errors.phone}
@@ -358,7 +356,7 @@ const Contact = () => {
                     {t('contact.message_label', 'Mensagem')} <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
                   <textarea
-                    id="message" name="message" value={formData.message} onChange={handleChange} required
+                    id="message" name="message" value={formData.message} onChange={handleChange} onBlur={handleBlur} required
                     rows="4"
                     className={`form-input mobile-touch-input ${errors.message ? 'border-red-400 focus:ring-red-300' : touched.message ? 'border-green-400' : ''}`}
                     placeholder={t('contact.message_placeholder')}
