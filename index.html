@@ -27,6 +27,16 @@
   <link rel="dns-prefetch" href="//www.google.com">
   <link rel="dns-prefetch" href="//maps.googleapis.com">
   <link rel="dns-prefetch" href="//places.googleapis.com">
+  
+  <!-- Google Maps API Script -->
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpSs8YGKdnzEWvQ2HpKwNaQSNqg0C4wCg&libraries=places&callback=initMap"
+    onerror="console.error('Failed to load Google Maps API')"></script>
+  <script>
+    window.initMap = function() {
+      console.log('Google Maps API loaded successfully');
+    };
+  </script>
   <link rel="dns-prefetch" href="//api.whatsapp.com">
 
   <!-- PWA & Mobile Icons -->

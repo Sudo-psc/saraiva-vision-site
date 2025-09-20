@@ -35,6 +35,12 @@ export default defineConfig({
 	server: {
 		port: 3002,
 		host: true,
+		allowedHosts: [
+			'localhost',
+			'127.0.0.1',
+			'www.saraivavision.com.br',
+			'saraivavision.com.br'
+		],
 		proxy: {
 			// WordPress proxy enabled for development mock server
 			'/wp-json': {

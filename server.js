@@ -377,7 +377,7 @@ const server = http.createServer(async (req, res) => {
     return; // Request was rate limited and response sent
   }
 
-  try {
+  try { // Added comment to force rewrite
     // Set CORS headers for all API routes
     setCORSHeaders(res);
 

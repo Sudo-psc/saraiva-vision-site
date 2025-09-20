@@ -62,10 +62,10 @@ const RAW_WORDPRESS_URL =
   process.env?.VITE_WORDPRESS_URL ||
   (hasImportMeta && viteEnv?.VITE_API_BASE_URL) ||
   process.env?.VITE_API_BASE_URL ||
-  '';
+  '/wp-json/wp/v2';
 
 function deriveApiBase(raw) {
-  const fallback = 'http://localhost:8083/wp-json/wp/v2'; // WordPress mock server in development
+  const fallback = '/wp-json/wp/v2'; // WordPress via same-origin nginx proxy
   if (!raw || typeof raw !== 'string') return fallback;
   let base = raw.trim().replace(/\/$/, '');
 
@@ -87,9 +87,9 @@ function deriveApiBase(raw) {
   } catch {
     // Relative path base - but in development, convert to absolute
     if (base.startsWith('/')) {
-      // In development, convert relative paths to localhost:8083
+      // In development, use same-origin relative paths via nginx proxy
       if (typeof window !== 'undefined' && import.meta?.env?.DEV) {
-        return `http://localhost:8083${base.replace(/\/$/, '')}/wp-json/wp/v2`;
+        return `${base.replace(/\/$/, '')}/wp-json/wp/v2`;
       }
       return `${base.replace(/\/$/, '')}/wp-json/wp/v2`;
     }
@@ -122,7 +122,7 @@ async function wpApiFetch(endpoint, options = {}) {
   // Defina a URL base da API com uma lógica mais flexível
   // 1. Use API_BASE_URL (do .env) se estiver definido.
   // 2. Caso contrário, use a URL de produção como fallback.
-  const baseUrl = API_BASE_URL && API_BASE_URL.trim() !== ''
+  const baseUrl = isDevEnvironment() && API_BASE_URL && API_BASE_URL.trim() !== ''
     ? API_BASE_URL
     : 'https://saraivavision.com.br/wp-json/wp/v2';
   

@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { HelmetProvider } from 'react-helmet-async';
 // Code splitting das rotas para melhorar TTI inicial da Home.
-const HomePage = lazy(() => import('@/pages/HomePage'));
+const HomePageLayout = lazy(() => import('@/pages/HomePageLayout'));
 const ServicesPage = lazy(() => import('@/pages/ServicesPage'));
 const AboutPage = lazy(() => import('@/pages/AboutPage'));
 const ContactPage = lazy(() => import('@/pages/ContactPage'));
@@ -60,7 +60,7 @@ function App() {
           <ScrollToTop />
           <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
             <Routes>
-              <Route path="/" element={isCheckSubdomain ? <CheckPage /> : <HomePage />} />
+              <Route path="/" element={isCheckSubdomain ? <CheckPage /> : <HomePageLayout />} />
               <Route path="/check" element={<CheckPage />} />
               <Route path="/servicos" element={<ServicesPage />} />
               <Route path="/servicos/:serviceId" element={<ServiceDetailPage />} />
