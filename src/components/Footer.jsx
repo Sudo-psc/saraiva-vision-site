@@ -43,22 +43,22 @@ const Footer = () => {
     {
       name: "Facebook",
       href: clinicInfo.facebook,
-      image: "/icons_social/fb2 Background Removed.png"
+      image: "/icons_social/facebook_icon.png"
     },
     {
       name: "Instagram",
       href: clinicInfo.instagram,
-      image: "/icons_social/insta2 Background Removed.png",
+      image: "/icons_social/instagram_icon.png",
     },
     {
       name: "LinkedIn",
       href: clinicInfo.linkedin,
-      image: "/icons_social/linkedln Background Removed.png",
+      image: "/icons_social/linkedln_icon.png",
     },
     {
       name: "TikTok",
       href: "https://www.tiktok.com/@saraivavision",
-      image: "/icons_social/tik2 Background Removed.png",
+      image: "/icons_social/tik_tok_icon.png",
     },
   ];
 
