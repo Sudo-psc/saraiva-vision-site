@@ -14,14 +14,20 @@ class VercelConfigManager {
         this.configurations = {
             production: {
                 name: 'Production',
-                buildCommand: 'npm run build:vercel',
+                buildCommand: 'npm run build',
                 outputDirectory: 'dist',
                 framework: 'vite',
                 functions: {
-                    'api/**/*.js': {
-                        runtime: 'nodejs18.x'
+                    'api/**': {
+                        maxDuration: 60,
+                        memory: 1024
                     }
                 },
+                rewrites: [
+                    { "source": "/(.*)", "destination": "/" }
+                ],
+                regions: ["gru1", "iad1"],
+                functionFailoverRegions: ["iad1", "cle1"],
                 env: {
                     NODE_ENV: 'production',
                     VITE_API_URL: 'https://saraivavision.com.br/api',
@@ -31,14 +37,19 @@ class VercelConfigManager {
 
             development: {
                 name: 'Development',
-                buildCommand: 'npm run build:vercel',
+                buildCommand: 'npm run build',
                 outputDirectory: 'dist',
                 framework: 'vite',
                 functions: {
-                    'api/**/*.js': {
-                        runtime: 'nodejs18.x'
+                    'api/**': {
+                        maxDuration: 60,
+                        memory: 1024
                     }
                 },
+                rewrites: [
+                    { "source": "/(.*)", "destination": "/" }
+                ],
+                regions: ["gru1", "iad1"],
                 env: {
                     NODE_ENV: 'development',
                     VITE_API_URL: 'https://dev.saraivavision.com.br/api',
@@ -48,14 +59,17 @@ class VercelConfigManager {
 
             edge: {
                 name: 'Edge Runtime',
-                buildCommand: 'npm run build:vercel',
+                buildCommand: 'npm run build',
                 outputDirectory: 'dist',
                 framework: 'vite',
                 functions: {
-                    'api/**/*.js': {
+                    'api/**': {
                         runtime: 'edge'
                     }
                 },
+                rewrites: [
+                    { "source": "/(.*)", "destination": "/" }
+                ],
                 env: {
                     NODE_ENV: 'production',
                     VITE_API_URL: 'https://saraivavision.com.br/api',
@@ -63,16 +77,22 @@ class VercelConfigManager {
                 }
             },
 
-            node20: {
-                name: 'Node.js 20',
-                buildCommand: 'npm run build:vercel',
+            node22: {
+                name: 'Node.js 22',
+                buildCommand: 'npm run build',
                 outputDirectory: 'dist',
                 framework: 'vite',
                 functions: {
-                    'api/**/*.js': {
-                        runtime: 'nodejs20.x'
+                    'api/**': {
+                        maxDuration: 60,
+                        memory: 1024
                     }
                 },
+                rewrites: [
+                    { "source": "/(.*)", "destination": "/" }
+                ],
+                regions: ["gru1", "iad1"],
+                functionFailoverRegions: ["cle1", "lax1"],
                 env: {
                     NODE_ENV: 'production',
                     VITE_API_URL: 'https://saraivavision.com.br/api',
@@ -85,6 +105,9 @@ class VercelConfigManager {
                 buildCommand: 'npm run build:static',
                 outputDirectory: 'dist',
                 framework: 'vite',
+                rewrites: [
+                    { "source": "/(.*)", "destination": "/" }
+                ],
                 env: {
                     NODE_ENV: 'production',
                     VITE_API_URL: 'https://saraivavision.com.br/api',
@@ -94,17 +117,23 @@ class VercelConfigManager {
 
             minimal: {
                 name: 'Minimal Functions',
-                buildCommand: 'npm run build:vercel',
+                buildCommand: 'npm run build',
                 outputDirectory: 'dist',
                 framework: 'vite',
                 functions: {
                     'api/health.js': {
-                        runtime: 'nodejs18.x'
+                        maxDuration: 60,
+                        memory: 1024
                     },
                     'api/contact/index.js': {
-                        runtime: 'nodejs18.x'
+                        maxDuration: 60,
+                        memory: 1024
                     }
                 },
+                rewrites: [
+                    { "source": "/(.*)", "destination": "/" }
+                ],
+                regions: ["gru1", "iad1"],
                 env: {
                     NODE_ENV: 'production',
                     VITE_API_URL: 'https://saraivavision.com.br/api',
@@ -311,7 +340,7 @@ Available configurations:
   production   - Production environment (default)
   development  - Development environment
   edge         - Edge runtime
-  node20       - Node.js 20.x runtime
+  node22       - Node.js 22.x runtime
   static       - Static only (no functions)
   minimal      - Minimal functions only
             `);

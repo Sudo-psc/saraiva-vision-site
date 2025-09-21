@@ -1,20 +1,30 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "name": "Node.js 22",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/"
-    }
-  ],
+  "framework": "vite",
   "functions": {
     "api/contact/**": {
       "maxDuration": 10,
       "memory": 256
     },
     "api/**": {
-      "maxDuration": 30
+      "maxDuration": 60,
+      "memory": 1024
     }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ],
+  "regions": [
+    "gru1"
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "VITE_API_URL": "https://saraivavision.com.br/api",
+    "VITE_WORDPRESS_URL": "https://saraivavision.com.br"
   }
 }

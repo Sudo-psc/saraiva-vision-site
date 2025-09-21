@@ -1,7 +1,7 @@
 import React, { useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { HelmetProvider } from 'react-helmet-async';
-
 // Code splitting das rotas para melhorar TTI inicial da Home.
 const HomePageLayout = lazy(() => import('@/pages/HomePageLayout'));
 const ServicesPage = lazy(() => import('@/pages/ServicesPage'));
@@ -20,7 +20,6 @@ const PostPage = lazy(() => import('@/pages/PostPage'));
 const CategoryPage = lazy(() => import('@/pages/CategoryPage'));
 const AdminLoginPage = lazy(() => import('@/pages/AdminLoginPage'));
 const CheckPage = lazy(() => import('@/pages/CheckPage'));
-
 import ScrollToTop from '@/components/ScrollToTop';
 import ServiceRedirect from '@/components/ServiceRedirect';
 import { Toaster } from '@/components/ui/toaster';
@@ -34,26 +33,33 @@ import Accessibility from '@/components/Accessibility';
 import { WidgetProvider } from '@/utils/widgetManager.jsx';
 import { initScrollTelemetry } from '@/utils/scrollTelemetry';
 import ScrollDiagnostics from '@/components/ScrollDiagnostics';
+import { initErrorTracking } from '@/utils/errorTracking';
 
 function App() {
+  const { i18n } = useTranslation();
   const isCheckSubdomain =
     typeof window !== 'undefined' && window.location.hostname?.toLowerCase().startsWith('check.');
 
   useEffect(() => {
-    // Set default language
-    document.documentElement.lang = 'pt';
+    document.documentElement.lang = i18n.language;
 
-    // Initialize scroll telemetry
-    try {
-      initScrollTelemetry();
-    } catch (error) {
-      console.warn('Failed to initialize scroll telemetry:', error);
-    }
-  }, []);
+    // Inicializa telemetria de scroll para monitorar preventDefault
+    initScrollTelemetry();
+
+    // Initialize error tracking for production
+    initErrorTracking();
+  }, [i18n.language]);
 
   return (
     <HelmetProvider>
       <WidgetProvider>
+        {/*
+          Envolvemos apenas o conteúdo da aplicação em um wrapper dedicado.
+          SCROLL NORMALIZADO: Container sem bloqueios que permite scroll fluido.
+          Isso permite aplicar zoom/transform no conteúdo sem afetar widgets
+          fixos (WhatsApp, Acessibilidade, toasts, modais), que permanecem
+          fora desse container e não sofrem com o bug de fixed + transform.
+        */}
         <div id="app-content">
           <ScrollToTop />
           <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
@@ -62,6 +68,7 @@ function App() {
               <Route path="/check" element={<CheckPage />} />
               <Route path="/servicos" element={<ServicesPage />} />
               <Route path="/servicos/:serviceId" element={<ServiceDetailPage />} />
+              {/* Redirecionamentos 301 para padronização de URLs */}
               <Route path="/servico/:serviceId" element={<ServiceRedirect />} />
               <Route path="/sobre" element={<AboutPage />} />
               <Route path="/depoimentos" element={<TestimonialsPage />} />
