@@ -2,7 +2,7 @@
 import { BeamsBackground } from "@/components/ui/beams-background";
 import HomePage from "@/pages/HomePage";
 
-export function HomePageLayout() {
+export default function HomePageLayout() {
     return (
         <BeamsBackground>
             <HomePage />

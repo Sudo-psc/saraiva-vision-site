@@ -4,6 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import enTranslation from '@/locales/en/translation.json';
 import ptTranslation from '@/locales/pt/translation.json';
 
+// Initialize i18n synchronously to prevent context issues
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -29,7 +30,10 @@ i18n
     },
     react: {
       useSuspense: false, // Disable suspense to prevent context issues
+      bindI18n: 'languageChanged', // Only bind to language changes
+      bindI18nStore: false, // Don't bind to store changes
     },
+    initImmediate: false, // Initialize immediately, don't wait
   });
 
 export default i18n;
