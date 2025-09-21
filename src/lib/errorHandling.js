@@ -355,7 +355,7 @@ export function classifyError(error) {
         return { type: ErrorTypes.NETWORK, code: 'network.timeout' };
     }
 
-    if (!navigator.onLine) {
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
         return { type: ErrorTypes.NETWORK, code: 'network.offline' };
     }
 

@@ -157,7 +157,7 @@ const About = () => {
                         onError={(e) => {
                           console.error('Erro ao carregar imagem do Dr. Philipe:', e);
                           // Fallback para imagem alternativa
-                          e.target.src = '/img/drphilipe_perfil.png';
+                          e.target.src = '/images/drphilipe/drphilipe_jaleco Medium.jpeg';
                         }}
                       />
                     </div>

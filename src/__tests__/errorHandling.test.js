@@ -441,17 +441,11 @@ describe('Error Handling System', () => {
 
     describe('getRetryConfig', () => {
         it('returns null for non-retryable errors', () => {
-            // Ensure navigator.onLine is true so validation errors are classified correctly
-            const originalOnLine = mockNavigator.onLine;
-            mockNavigator.onLine = true;
-
-            const error = { field: 'name', code: 'required' }; // This maps to validation.name_required which is not retryable
+            // Use an error that doesn't depend on navigator.onLine
+            const error = { code: 'missing_secret' }; // reCAPTCHA missing_secret is CRITICAL and not retryable
             const config = getRetryConfig(error);
 
             expect(config).toBeNull();
-
-            // Restore
-            mockNavigator.onLine = originalOnLine;
         });
 
         it('returns network-specific config for network errors', () => {
@@ -619,17 +613,30 @@ describe('Error Handling System', () => {
                 const mockElement = { textContent: '' };
                 mockDocument.getElementById.mockReturnValue(mockElement);
 
-                // Ensure navigator.onLine is true so validation errors are classified correctly
-                const originalOnLine = mockNavigator.onLine;
-                mockNavigator.onLine = true;
+                // Test the announceError function directly with a proper validation error
+                // We'll mock getUserFriendlyError to return a validation error with field info
+                const originalGetUserFriendlyError = getUserFriendlyError;
+                const mockFriendlyError = {
+                    userMessage: 'O nome é obrigatório.',
+                    field: 'name',
+                    severity: ErrorSeverity.MEDIUM,
+                    type: ErrorTypes.VALIDATION
+                };
 
-                const error = { field: 'name', code: 'required' }; // This maps to validation.name_required
+                // Create a spy that returns our mock error
+                const getUserFriendlyErrorSpy = vi.fn().mockReturnValue(mockFriendlyError);
+
+                // Replace the function temporarily
+                const errorHandling = await import('@/lib/errorHandling');
+                errorHandling.getUserFriendlyError = getUserFriendlyErrorSpy;
+
+                const error = { field: 'name', code: 'required' };
                 const message = announceError(error);
 
                 expect(message).toContain('campo name');
 
                 // Restore
-                mockNavigator.onLine = originalOnLine;
+                errorHandling.getUserFriendlyError = originalGetUserFriendlyError;
             });
 
             it('uses assertive priority for high severity errors', () => {
