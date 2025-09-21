@@ -17,6 +17,7 @@ if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
 
 export default defineConfig({
   plugins,
+  root: '.',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -28,6 +29,7 @@ export default defineConfig({
     sourcemap: false,
     chunkSizeWarningLimit: 600,
     rollupOptions: {
+      input: 'index.html',
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],

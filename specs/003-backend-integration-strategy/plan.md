@@ -31,7 +31,25 @@
 - Phase 3-4: Implementation execution (manual or via tools)
 
 ## Summary
-[Extract from feature spec: primary requirement + technical approach from research]
+
+**Primary Requirement**: Develop an integrated backend strategy for Saraiva Vision medical clinic website with CMS, podcast synchronization, contact management, WhatsApp integration, analytics, and dashboard functionality.
+
+**Technical Approach**: Hybrid architecture leveraging existing Vercel frontend deployment with new serverless backend services, integrated with VPS backend services. Uses Supabase as the primary database and unified backend-as-a-service platform.
+
+**Key Integration Points**:
+- **Content Management**: Supabase with custom admin interface
+- **Podcast Sync**: Spotify Web API with scheduled polling (6-hour intervals)
+- **Email System**: Resend API for transactional emails and notifications
+- **WhatsApp Business**: BSP integration with compliance framework for healthcare
+- **Analytics**: Vercel Analytics + custom event tracking
+- **Monitoring**: Sentry error tracking + custom health checks
+
+**Architecture Benefits**:
+- Leverages existing infrastructure and dependencies
+- Maintains healthcare compliance requirements
+- Enables real-time updates and modern developer experience
+- Provides scalable serverless architecture with VPS integration
+- Cost-effective for medical clinic scale (~$115-215/month operational cost)
 
 ## Technical Context
 **Language/Version**: Node.js 18+, TypeScript 5.x, React 18
