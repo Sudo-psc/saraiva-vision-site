@@ -9,6 +9,7 @@ import { safeOpenUrl } from '@/utils/safeNavigation';
 
 import { smoothScrollTo } from '@/utils/scrollUtils';
 import OptimizedPicture from '@/components/ui/OptimizedPicture';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 const Hero = () => {
   const { t } = useTranslation();
@@ -37,10 +38,7 @@ const Hero = () => {
     });
   };
 
-  const [heroSrc, setHeroSrc] = useState('/img/hero.png');
-  const handleHeroError = useCallback(() => {
-    if (heroSrc !== '/img/drphilipe_perfil.png') setHeroSrc('/img/drphilipe_perfil.png');
-  }, [heroSrc]);
+  // Remove manual state management, let ImageWithFallback handle it
 
   return (
     <section
@@ -99,15 +97,14 @@ const Hero = () => {
               <div className="flex -space-x-4">
                 <div className="relative group">
                   <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
-                    <OptimizedPicture
-                      src="/img/avatar-female-blonde.png"
+                    <ImageWithFallback
+                      src="/img/avatar-female-blonde.avif"
                       alt={t('ui.alt.satisfied_patient_1', 'Paciente satisfeito 1')}
-                      className="w-12 h-12 object-cover"
+                      className="w-12 h-12 object-cover rounded-full"
                       width={48}
                       height={48}
                       loading="lazy"
                       decoding="async"
-                      sizes="48px"
                     />
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
@@ -118,15 +115,14 @@ const Hero = () => {
                 </div>
                 <div className="relative group">
                   <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
-                    <OptimizedPicture
-                      src="/img/avatar-female-brunette.png"
+                    <ImageWithFallback
+                      src="/img/avatar-female-brunette.avif"
                       alt={t('ui.alt.satisfied_patient_2', 'Paciente satisfeito 2')}
-                      className="w-12 h-12 object-cover"
+                      className="w-12 h-12 object-cover rounded-full"
                       width={48}
                       height={48}
                       loading="lazy"
                       decoding="async"
-                      sizes="48px"
                     />
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center ring-2 ring-white">
@@ -170,17 +166,16 @@ const Hero = () => {
             className="relative"
           >
             <div className="hero-image-container relative z-10 rounded-3xl overflow-hidden shadow-3d hover:shadow-3d-hover transition-all duration-500 card-hover bg-gradient-to-br from-blue-50 to-cyan-50">
-              <OptimizedPicture
-                src={heroSrc}
+              <ImageWithFallback
+                src="/img/hero.avif"
                 alt={t('ui.alt.hero_image', 'Família sorrindo - Saraiva Vision')}
                 width={800}
                 height={640}
                 loading="eager"
                 decoding="async"
                 sizes="(min-width: 1024px) 800px, 100vw"
-                onError={handleHeroError}
                 className="block w-full h-auto aspect-[4/3] object-cover object-center rounded-3xl transition-transform duration-700 hover:scale-105"
-                fetchpriority="high"
+                priority={true}
               />
             </div>
 

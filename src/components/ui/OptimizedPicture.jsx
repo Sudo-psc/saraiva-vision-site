@@ -37,10 +37,9 @@ const OptimizedPicture = ({
 			return `${baseName}.${format}`;
 		}
 
-		const breakpoints = [320, 640, 960, 1280, 1920];
-		return breakpoints
-			.map(bp => `/images/${baseName.split('/').pop()}-${bp}w.${format} ${bp}w`)
-			.join(', ');
+		// For Vercel deployment, only return base format if responsive variants don't exist
+		// Responsive variants are not generated in this build process
+		return `${baseName}.${format}`;
 	};
 
 	return (

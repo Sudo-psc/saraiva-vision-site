@@ -25,11 +25,70 @@
           "value": "/"
         }
       ]
+    },
+    {
+      "source": "/img/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/Podcasts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ],
   "rewrites": [
     {
-      "source": "/((?!api/).*)",
+      "source": "/about",
+      "destination": "/"
+    },
+    {
+      "source": "/services/:path*",
+      "destination": "/"
+    },
+    {
+      "source": "/blog/:path*",
+      "destination": "/"
+    },
+    {
+      "source": "/contact",
+      "destination": "/"
+    },
+    {
+      "source": "/testimonials",
+      "destination": "/"
+    },
+    {
+      "source": "/faq",
+      "destination": "/"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/"
+    },
+    {
+      "source": "/podcast",
       "destination": "/"
     }
   ],
@@ -38,7 +97,7 @@
   ],
   "env": {
     "NODE_ENV": "production",
-    "VITE_API_URL": "https://saraivavision.com.br/api",
-    "VITE_WORDPRESS_URL": "https://saraivavision.com.br"
+    "VITE_API_URL": "https://31.97.129.78:3001/api",
+    "VITE_WORDPRESS_URL": "https://31.97.129.78"
   }
 }

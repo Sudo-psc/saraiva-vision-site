@@ -22,6 +22,7 @@ if (process.env.NODE_ENV === 'development') {
 
 export default defineConfig({
   plugins,
+  base: '/', // Ensure proper base path for Vercel deployment
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -30,8 +31,10 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true, // Ativar source maps para debug
+    sourcemap: true, // Source maps for debugging
     chunkSizeWarningLimit: 600,
+    assetsDir: 'assets', // Proper assets directory for Vercel
+    assetsInlineLimit: 4096, // Inline small assets as base64 for performance
     rollupOptions: {
       input: 'index.html',
       output: {
@@ -58,7 +61,10 @@ export default defineConfig({
         },
       },
     },
+    copyPublicDir: true, // Ensure public directory is copied including all assets
   },
+  // Ensure all asset types are properly handled
+  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.webp', '**/*.avif', '**/*.mp3', '**/*.wav', '**/*.mp4'],
   server: {
     port: 3002,
     host: true,
