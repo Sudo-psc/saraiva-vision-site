@@ -147,7 +147,7 @@ const About = () => {
                     <div className="absolute -inset-4 bg-gradient-to-r from-blue-400/30 via-cyan-400/30 to-teal-400/30 rounded-3xl blur-xl" style={{ transform: "translateZ(-50px)" }} />
                     <div className="relative aspect-[3/4] overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-b from-blue-50 to-white" style={{ transform: "translateZ(0)" }}>
                       <img
-                        src="/img/drphilipe_terno.jpeg"
+                        src="/images/drphilipe_jaleco Medium.jpeg"
                         alt={t('about.doctor.alt')}
                         width={300}
                         height={400}

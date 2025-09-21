@@ -439,3 +439,317 @@ describe('Brazilian Phone Number Edge Cases', () => {
         });
     });
 });
+
+describe('Advanced Validation Scenarios', () => {
+    describe('Real-world Input Patterns', () => {
+        it('should handle common name variations', () => {
+            const nameVariations = [
+                'João da Silva',
+                'Maria José Santos',
+                'Dr. Carlos Eduardo',
+                'Ana Luiza Costa-Pereira',
+                'José Carlos de Oliveira Jr.',
+                'Sra. Helena Aparecida'
+            ];
+
+            nameVariations.forEach(name => {
+                const result = validateField('name', name);
+                expect(result.success).toBe(true);
+                expect(result.value).toBe(name.trim());
+            });
+        });
+
+        it('should handle international email formats', () => {
+            const validEmails = [
+                'user@domain.com.br',
+                'test.email+tag@example.org',
+                'user.name@subdomain.domain.co.uk',
+                'firstname-lastname@domain-name.com'
+            ];
+
+            validEmails.forEach(email => {
+                const result = validateField('email', email);
+                expect(result.success).toBe(true);
+            });
+        });
+
+        it('should handle medical terminology in messages', () => {
+            const medicalMessages = [
+                'Tenho glaucoma e preciso de acompanhamento regular.',
+                'Sinto dores de cabeça frequentes e visão embaçada.',
+                'Gostaria de fazer cirurgia de catarata.',
+                'Preciso de exame de fundo de olho para diabetes.',
+                'Tenho miopia alta e uso lentes de contato.'
+            ];
+
+            medicalMessages.forEach(message => {
+                const result = validateField('message', message);
+                expect(result.success).toBe(true);
+                expect(result.value).toContain(message.split(' ')[0]);
+            });
+        });
+    });
+
+    describe('Security Edge Cases', () => {
+        it('should prevent various XSS attack vectors', () => {
+            const xssAttempts = [
+                '<script>alert("xss")</script>',
+                '<img src=x onerror=alert(1)>',
+                'javascript:alert("xss")',
+                '<svg onload=alert(1)>',
+                '<iframe src="javascript:alert(1)"></iframe>',
+                '"><script>alert("xss")</script>',
+                '\';alert(String.fromCharCode(88,83,83))//\';alert(String.fromCharCode(88,83,83))//";alert(String.fromCharCode(88,83,83))//";alert(String.fromCharCode(88,83,83))//--></SCRIPT>">\'><SCRIPT>alert(String.fromCharCode(88,83,83))</SCRIPT>'
+            ];
+
+            xssAttempts.forEach(xss => {
+                const result = validateField('message', `Normal message ${xss} continuation`);
+                expect(result.success).toBe(true);
+                expect(result.value).not.toContain('<script>');
+                expect(result.value).not.toContain('javascript:');
+                expect(result.value).not.toContain('onerror');
+                expect(result.value).not.toContain('onload');
+            });
+        });
+
+        it('should handle SQL injection attempts safely', () => {
+            const sqlInjections = [
+                "'; DROP TABLE users; --",
+                "' OR '1'='1",
+                "'; INSERT INTO users VALUES ('hacker', 'password'); --",
+                "' UNION SELECT * FROM users --"
+            ];
+
+            sqlInjections.forEach(sql => {
+                const result = validateField('name', `João${sql}`);
+                expect(result.success).toBe(true);
+                // Should not cause validation to fail, just sanitize
+                expect(result.value).toBeDefined();
+            });
+        });
+
+        it('should handle Unicode and special characters', () => {
+            const unicodeInputs = [
+                'José María Ñoño',
+                'François Müller',
+                'Владимир Петров',
+                '张三李四',
+                'محمد عبدالله',
+                'João 🏥 Silva'
+            ];
+
+            unicodeInputs.forEach(input => {
+                const result = validateField('name', input);
+                // Should handle Unicode gracefully
+                expect(result.success).toBe(true);
+                expect(result.value.length).toBeGreaterThan(0);
+            });
+        });
+    });
+
+    describe('Performance and Memory', () => {
+        it('should handle large valid inputs efficiently', () => {
+            const largeMessage = 'A'.repeat(1900) + ' valid message content';
+
+            const startTime = Date.now();
+            const result = validateField('message', largeMessage);
+            const processingTime = Date.now() - startTime;
+
+            expect(result.success).toBe(true);
+            expect(processingTime).toBeLessThan(100); // Should be fast
+        });
+
+        it('should handle many validation calls without memory leaks', () => {
+            const iterations = 1000;
+            const initialMemory = process.memoryUsage?.()?.heapUsed || 0;
+
+            for (let i = 0; i < iterations; i++) {
+                validateContactSubmission({
+                    name: `User ${i}`,
+                    email: `user${i}@example.com`,
+                    phone: '+55 11 99999-9999',
+                    message: `Message ${i} with sufficient length for validation.`,
+                    consent: true,
+                    honeypot: ''
+                });
+            }
+
+            const finalMemory = process.memoryUsage?.()?.heapUsed || 0;
+
+            // Memory growth should be reasonable
+            if (initialMemory > 0 && finalMemory > 0) {
+                const memoryGrowth = finalMemory - initialMemory;
+                expect(memoryGrowth).toBeLessThan(10 * 1024 * 1024); // Less than 10MB
+            }
+        });
+    });
+
+    describe('Concurrent Validation', () => {
+        it('should handle concurrent validation requests', async () => {
+            const concurrentRequests = 50;
+            const promises = [];
+
+            for (let i = 0; i < concurrentRequests; i++) {
+                const promise = new Promise(resolve => {
+                    const result = validateContactSubmission({
+                        name: `Concurrent User ${i}`,
+                        email: `user${i}@example.com`,
+                        phone: '+55 11 99999-9999',
+                        message: `Concurrent message ${i} with sufficient length.`,
+                        consent: true,
+                        honeypot: ''
+                    });
+                    resolve(result);
+                });
+                promises.push(promise);
+            }
+
+            const results = await Promise.all(promises);
+
+            // All should succeed
+            results.forEach((result, index) => {
+                expect(result.success).toBe(true);
+                expect(result.data.name).toBe(`Concurrent User ${index}`);
+            });
+        });
+    });
+
+    describe('Boundary Value Testing', () => {
+        it('should handle exact boundary values for name length', () => {
+            // Minimum length (2 characters)
+            const minName = 'AB';
+            const minResult = validateField('name', minName);
+            expect(minResult.success).toBe(true);
+
+            // Maximum length (100 characters)
+            const maxName = 'A'.repeat(100);
+            const maxResult = validateField('name', maxName);
+            expect(maxResult.success).toBe(true);
+
+            // Just below minimum (1 character)
+            const belowMin = 'A';
+            const belowMinResult = validateField('name', belowMin);
+            expect(belowMinResult.success).toBe(false);
+
+            // Just above maximum (101 characters)
+            const aboveMax = 'A'.repeat(101);
+            const aboveMaxResult = validateField('name', aboveMax);
+            expect(aboveMaxResult.success).toBe(false);
+        });
+
+        it('should handle exact boundary values for message length', () => {
+            // Minimum length (10 characters)
+            const minMessage = 'A'.repeat(10);
+            const minResult = validateField('message', minMessage);
+            expect(minResult.success).toBe(true);
+
+            // Maximum length (2000 characters)
+            const maxMessage = 'A'.repeat(2000);
+            const maxResult = validateField('message', maxMessage);
+            expect(maxResult.success).toBe(true);
+
+            // Just below minimum (9 characters)
+            const belowMin = 'A'.repeat(9);
+            const belowMinResult = validateField('message', belowMin);
+            expect(belowMinResult.success).toBe(false);
+
+            // Just above maximum (2001 characters)
+            const aboveMax = 'A'.repeat(2001);
+            const aboveMaxResult = validateField('message', aboveMax);
+            expect(aboveMaxResult.success).toBe(false);
+        });
+    });
+
+    describe('Error Message Localization', () => {
+        it('should provide Portuguese error messages', () => {
+            const invalidSubmission = {
+                name: '',
+                email: 'invalid',
+                phone: '123',
+                message: 'Hi',
+                consent: false
+            };
+
+            const result = validateContactSubmission(invalidSubmission);
+            expect(result.success).toBe(false);
+
+            // Verify Portuguese error messages
+            expect(result.errors.name).toMatch(/nome|obrigatório/i);
+            expect(result.errors.email).toMatch(/email|inválido/i);
+            expect(result.errors.phone).toMatch(/telefone|formato/i);
+            expect(result.errors.message).toMatch(/mensagem|caracteres/i);
+            expect(result.errors.consent).toMatch(/lgpd|consentimento/i);
+        });
+    });
+
+    describe('Integration with Sanitization', () => {
+        it('should sanitize and validate in correct order', () => {
+            const dirtyInput = {
+                name: '  <script>alert("xss")</script>João Silva  ',
+                email: '  JOAO@EXAMPLE.COM  ',
+                phone: '  +55 (11) 99999-9999  ',
+                message: '  Mensagem com   espaços   extras e <b>HTML</b> tags  ',
+                consent: true,
+                honeypot: ''
+            };
+
+            const result = validateContactSubmission(dirtyInput);
+
+            expect(result.success).toBe(true);
+            expect(result.data.name).toBe('João Silva'); // Sanitized and trimmed
+            expect(result.data.email).toBe('joao@example.com'); // Normalized
+            expect(result.data.phone).toBe('+55 (11) 99999-9999'); // Cleaned
+            expect(result.data.message).toBe('Mensagem com espaços extras e HTML tags'); // HTML removed, spaces normalized
+        });
+    });
+});
+
+describe('Validation Performance Benchmarks', () => {
+    it('should validate simple submission quickly', () => {
+        const submission = {
+            name: 'João Silva',
+            email: 'joao@example.com',
+            phone: '+55 11 99999-9999',
+            message: 'Mensagem de teste com tamanho adequado.',
+            consent: true,
+            honeypot: ''
+        };
+
+        const iterations = 1000;
+        const startTime = Date.now();
+
+        for (let i = 0; i < iterations; i++) {
+            validateContactSubmission(submission);
+        }
+
+        const totalTime = Date.now() - startTime;
+        const avgTime = totalTime / iterations;
+
+        // Should average less than 1ms per validation
+        expect(avgTime).toBeLessThan(1);
+    });
+
+    it('should validate complex submission with sanitization quickly', () => {
+        const complexSubmission = {
+            name: '  Dr. João <script>alert("xss")</script> Silva Santos  ',
+            email: '  JOAO.SILVA@HOSPITAL.COM.BR  ',
+            phone: '  +55 (11) 3456-7890  ',
+            message: '  Prezado colega, tenho um paciente com <img src="x" onerror="alert(1)"> glaucoma que necessita de avaliação especializada. O paciente apresenta pressão intraocular elevada e campo visual comprometido.  ',
+            consent: true,
+            honeypot: ''
+        };
+
+        const iterations = 100;
+        const startTime = Date.now();
+
+        for (let i = 0; i < iterations; i++) {
+            validateContactSubmission(complexSubmission);
+        }
+
+        const totalTime = Date.now() - startTime;
+        const avgTime = totalTime / iterations;
+
+        // Should average less than 5ms per complex validation
+        expect(avgTime).toBeLessThan(5);
+    });
+});
