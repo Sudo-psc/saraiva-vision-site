@@ -33,6 +33,7 @@ import Accessibility from '@/components/Accessibility';
 import { WidgetProvider } from '@/utils/widgetManager.jsx';
 import { initScrollTelemetry } from '@/utils/scrollTelemetry';
 import ScrollDiagnostics from '@/components/ScrollDiagnostics';
+import { initErrorTracking } from '@/utils/errorTracking';
 
 function App() {
   const { i18n } = useTranslation();
@@ -44,6 +45,9 @@ function App() {
 
     // Inicializa telemetria de scroll para monitorar preventDefault
     initScrollTelemetry();
+
+    // Initialize error tracking for production
+    initErrorTracking();
   }, [i18n.language]);
 
   return (

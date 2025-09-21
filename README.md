@@ -14,9 +14,21 @@
 
 📚 **[Índice Completo de Documentação](./DOCUMENTATION_INDEX.md)** | 🏗️ **[Arquitetura do Sistema](./docs/SYSTEM_ARCHITECTURE.md)** | 🧪 **[Guia de Testes](./docs/TESTING_GUIDE.md)**
 
+
 ## 🏥 Sobre o Projeto
 
-Site institucional desenvolvido para a Clínica Saraiva Vision, especializada em oftalmologia em Caratinga-MG. O projeto combina design moderno, performance otimizada e funcionalidades avançadas para oferecer a melhor experiência aos pacientes.
+Site institucional desenvolvido para a Clínica Saraiva Vision, especializada em oftalmologia em Caratinga-MG. O projeto foi recentemente adaptado para deploy na plataforma **Vercel**, aproveitando recursos de serverless, edge functions e automação inteligente de deploy. Agora, conta com estratégias avançadas de fallback, monitoramento e múltiplos ambientes de execução, garantindo alta disponibilidade, performance e facilidade de manutenção.
+
+### 🚀 Deploy Inteligente com Vercel
+
+O sistema de deploy utiliza scripts inteligentes que:
+- Testam múltiplas configurações de runtime (Node.js 18.x, 20.x, Edge, Static)
+- Realizam health checks automáticos antes do deploy
+- Fazem backup/restauração automática das configs
+- Aplicam fallback para deploy estático em caso de falha
+- Permitem gerenciamento dinâmico de configurações via scripts
+
+Veja detalhes em [`VERCEL_DEPLOYMENT_GUIDE.md`](./VERCEL_DEPLOYMENT_GUIDE.md) e status em [`DEPLOY_STATUS.md`](./DEPLOY_STATUS.md).
 
 ### 🎯 Características Principais
 
@@ -85,82 +97,73 @@ saraivavision-site-v2/
 └── deploy.sh            # Script de deploy
 ```
 
-## 🛠️ Configuração e Instalação (com Docker)
+git clone https://github.com/Sudo-psc/saraivavision-site-v2.git
+docker-compose -f docker-compose.dev.yml up --build
+git clone https://github.com/Sudo-psc/saraivavision-site-v2.git
+
+## 🛠️ Configuração e Deploy no Vercel
 
 ### Pré-requisitos
-- Docker Engine 20.10+
-- Docker Compose 2.0+
+- Conta no [Vercel](https://vercel.com/)
+- Vercel CLI (`npm i -g vercel`)
+- Node.js 18+ e npm
 - Git
 
-### Instalação
+### Instalação e Deploy
 
 1. **Clone o repositório**
 ```bash
-git clone https://github.com/Sudo-psc/saraivavision-site-v2.git
-cd saraivavision-site-v2
+git clone https://github.com/Sudo-psc/saraiva-vision-site.git
+cd saraiva-vision-site
 ```
 
 2. **Configure as variáveis de ambiente**
-```bash
-cp .env.example .env.development
-# Edite o arquivo .env.development com suas configurações
-```
-
-3. **Inicie o ambiente de desenvolvimento**
-```bash
-docker-compose -f docker-compose.dev.yml up --build
-```
-
-O site estará disponível em `http://localhost:3002`
-
-### Configuração (sem Docker)
-
-<details>
-<summary>Instruções para ambiente sem Docker (não recomendado)</summary>
-
-### Pré-requisitos
-- Node.js 18+
-- npm ou yarn
-- Git
-
-### Instalação
-
-1. **Clone o repositório**
-```bash
-git clone https://github.com/Sudo-psc/saraivavision-site-v2.git
-cd saraivavision-site-v2
-```
-
-2. **Instale as dependências**
-```bash
-npm install
-```
-
-3. **Configure as variáveis de ambiente**
 ```bash
 cp .env.example .env
 # Edite o arquivo .env com suas configurações
 ```
 
-4. **Inicie o servidor de desenvolvimento**
+3. **Faça login no Vercel**
 ```bash
-npm run dev
+npx vercel login
 ```
 
-O site estará disponível em `http://localhost:5173`
+4. **Deploy Simples (Recomendado)**
+```bash
+npm run deploy:simple
+```
 
-</details>
+5. **Deploy Inteligente (com fallback e auto-recuperação)**
+```bash
+npm run deploy:intelligent
+```
+
+6. **Deploy Manual**
+```bash
+# Teste o build
+npm run build
+# Deploy manual
+npx vercel --prod --yes
+```
+
+> Consulte [`VERCEL_DEPLOYMENT_GUIDE.md`](./VERCEL_DEPLOYMENT_GUIDE.md) para detalhes de estratégias, troubleshooting e comandos avançados.
+
+O site ficará disponível em uma URL do Vercel após o deploy.
+
 
 ## 📝 Scripts Disponíveis
 
 | Script | Descrição |
 |--------|-----------|
-| `npm run dev` | Inicia servidor de desenvolvimento |
+| `npm run dev` | Inicia servidor de desenvolvimento local |
 | `npm run build` | Gera build de produção |
 | `npm run preview` | Visualiza build de produção |
 | `npm run test` | Executa testes em modo watch |
 | `npm run test:run` | Executa todos os testes |
 | `npm run test:coverage` | Gera relatório de cobertura |
+| `npm run deploy:simple` | Deploy rápido no Vercel |
+| `npm run deploy:intelligent` | Deploy inteligente com fallback e auto-recuperação |
+| `npm run deploy:config` | Gerenciamento de configurações do Vercel |
 
 ## 🧪 Testes
 
@@ -205,6 +208,7 @@ Sistema integrado de agendamento
 Exibição dinâmica de avaliações do Google
 
 
+
 ## 🔧 Configuração de Produção
 
 ### Build para Produção
@@ -212,15 +216,18 @@ Exibição dinâmica de avaliações do Google
 npm run build
 ```
 
-### Deploy com Docker
+### Deploy no Vercel
 ```bash
-sudo ./deploy.sh --docker
+npm run deploy:simple
+# ou
+npm run deploy:intelligent
 ```
 
-### Servidor Nginx
-Configuração otimizada incluída em `nginx.conf`
+### Configuração Avançada
+O arquivo [`vercel.json`](./vercel.json) define rotas, headers de segurança, regiões e limites de funções serverless. Veja exemplos e opções no guia de deploy.
 
 ## 📊 SEO e Performance
+
 
 ### Otimizações Implementadas
 - **Core Web Vitals**: Métricas otimizadas
@@ -229,6 +236,7 @@ Configuração otimizada incluída em `nginx.conf`
 - **Sitemap XML**: Geração automática
 - **Robots.txt**: Configuração para crawlers
 - **Image Optimization**: Lazy loading e WebP
+- **Deploy Serverless/Edge**: Aproveitamento de edge functions e serverless para máxima performance
 
 ### Resultados de Performance
 - **Lighthouse Score**: 90+ em todas as métricas
@@ -238,14 +246,16 @@ Configuração otimizada incluída em `nginx.conf`
 
 ## 🔐 Segurança
 
+
 ### Medidas Implementadas
 - **HTTPS Enforced**: SSL/TLS obrigatório
-- **Security Headers**: Proteção contra XSS e CSRF
+- **Security Headers**: Proteção contra XSS e CSRF (configurado em `vercel.json`)
 - **Content Security Policy**: Política de segurança rigorosa
 - **Input Sanitization**: Validação de dados
 - **LGPD Compliance**: Conformidade com proteção de dados
 
 ## 🚀 Funcionalidades Avançadas
+
 
 ### WhatsApp Integration
 - Chat direto com a clínica
@@ -266,6 +276,10 @@ Configuração otimizada incluída em `nginx.conf`
 - Métricas em tempo real
 - Alertas de performance
 - Otimização automática
+
+### Vercel Intelligent Deploy
+- Deploy resiliente, com fallback automático e monitoramento de saúde
+- Suporte a múltiplos ambientes e estratégias de runtime
 
 ## 👥 Equipe de Desenvolvimento
 
@@ -310,9 +324,10 @@ Para contribuir com o projeto, siga as diretrizes de desenvolvimento e abra um P
 - **[🧪 Guia de Testes](./docs/TESTING_GUIDE.md)** - Estratégias e práticas de teste
 - **[📊 Testes GTM](./docs/GTM_TESTING.md)** - Validação de analytics
 
+
 ### 🚀 Deploy e Produção
-- **[✅ Checklist de Deploy](./DEPLOYMENT_CHECKLIST.md)** - Lista verificação para produção
-- **[🏠 Deploy Local](./README-LOCAL-DEPLOY.md)** - Instruções para ambiente local
+- **[✅ Guia de Deploy Vercel](./VERCEL_DEPLOYMENT_GUIDE.md)** - Estratégias, troubleshooting e comandos
+- **[📄 Status do Deploy](./DEPLOY_STATUS.md)** - Status e histórico de deploys
 - **[🔒 Playbook de Segurança](./SECURITY_ROTATION_PLAYBOOK.md)** - Rotação de credenciais
 
 ### 📈 SEO e Conteúdo
