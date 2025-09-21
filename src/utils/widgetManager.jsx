@@ -15,19 +15,19 @@ export const WIDGET_LAYERS = {
 
 // Classes responsivas padronizadas para widgets (evita inline @media incompatível)
 export const POSITION_CLASSES = {
-  BOTTOM_RIGHT: 'bottom-20 right-4 sm:bottom-28 sm:right-6',
-  BOTTOM_LEFT: 'bottom-20 left-4 sm:bottom-28 sm:left-6',
-  // Mantém o botão de acessibilidade acima do WhatsApp
-  ACCESSIBILITY: 'bottom-24 left-4 sm:bottom-32 sm:left-6',
-  // STICKY_CTA é tratado no próprio componente (precisa de left e right simultâneos)
+	BOTTOM_RIGHT: 'bottom-20 right-4 sm:bottom-28 sm:right-6',
+	BOTTOM_LEFT: 'bottom-20 left-4 sm:bottom-28 sm:left-6',
+	// Mantém o botão de acessibilidade acima do WhatsApp
+	ACCESSIBILITY: 'bottom-24 left-4 sm:bottom-32 sm:left-6',
+	// STICKY_CTA é tratado no próprio componente (precisa de left e right simultâneos)
 };
 
 // Classes CSS para widgets
 export const WIDGET_CLASSES = {
-  BASE: 'fixed pointer-events-auto',
-  SMOOTH: 'transition-transform duration-200 ease-out',
-  ISOLATED: 'isolation-isolate',
-  GPU_OPTIMIZED: 'transform-gpu will-change-transform backface-visibility-hidden'
+	BASE: 'fixed pointer-events-auto',
+	SMOOTH: 'transition-transform duration-200 ease-out',
+	ISOLATED: 'isolation-isolate',
+	GPU_OPTIMIZED: 'transform-gpu will-change-transform backface-visibility-hidden'
 };
 
 /**
@@ -67,7 +67,21 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 
 const WidgetContext = createContext({});
 
-export const useWidgetContext = () => useContext(WidgetContext);
+export const useWidgetContext = () => {
+	const context = useContext(WidgetContext);
+	if (context === undefined) {
+		console.warn('useWidgetContext must be used within a WidgetProvider');
+		// Return a safe fallback
+		return {
+			activeWidgets: new Set(),
+			widgetStates: {},
+			registerWidget: () => { },
+			unregisterWidget: () => { },
+			updateWidgetState: () => { }
+		};
+	}
+	return context;
+};
 
 export const WidgetProvider = ({ children }) => {
 	const [activeWidgets, setActiveWidgets] = useState(new Set());

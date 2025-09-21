@@ -54,31 +54,40 @@ if (!rootElement) {
 
 const root = ReactDOM.createRoot(rootElement);
 
-// Render the app directly since i18n is already initialized
-try {
-  root.render(
-    <React.StrictMode>
-      <ErrorBoundary>
-        <I18nextProvider i18n={i18n}>
-          <Router>
-            <Suspense fallback={<div>Carregando...</div>}>
-              <App />
-            </Suspense>
-          </Router>
-        </I18nextProvider>
-      </ErrorBoundary>
-    </React.StrictMode>
-  );
-} catch (error) {
-  console.error('Failed to render app:', error);
-  // Fallback render
-  root.render(
-    <div style={{ padding: '20px', textAlign: 'center' }}>
-      <h1>Erro ao carregar a aplicação</h1>
-      <p>Por favor, recarregue a página.</p>
-      <button onClick={() => window.location.reload()}>Recarregar</button>
-    </div>
-  );
+// Wait for i18n to be ready before rendering to prevent context issues
+const renderApp = () => {
+  try {
+    root.render(
+      <React.StrictMode>
+        <ErrorBoundary>
+          <I18nextProvider i18n={i18n}>
+            <Router>
+              <Suspense fallback={<div>Carregando...</div>}>
+                <App />
+              </Suspense>
+            </Router>
+          </I18nextProvider>
+        </ErrorBoundary>
+      </React.StrictMode>
+    );
+  } catch (error) {
+    console.error('Failed to render app:', error);
+    // Fallback render
+    root.render(
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <h1>Erro ao carregar a aplicação</h1>
+        <p>Por favor, recarregue a página.</p>
+        <button onClick={() => window.location.reload()}>Recarregar</button>
+      </div>
+    );
+  }
+};
+
+// Ensure i18n is ready before rendering
+if (i18n.isInitialized) {
+  renderApp();
+} else {
+  i18n.on('initialized', renderApp);
 }
 
 // Service Worker Registration - Temporarily disabled for Vercel deployment
