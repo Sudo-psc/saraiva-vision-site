@@ -7,5 +7,14 @@
       "source": "/(.*)",
       "destination": "/"
     }
-  ]
+  ],
+  "functions": {
+    "api/contact/**": {
+      "maxDuration": 10,
+      "memory": 256
+    },
+    "api/**": {
+      "maxDuration": 30
+    }
+  }
 }
