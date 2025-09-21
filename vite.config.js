@@ -40,7 +40,7 @@ export default defineConfig({
 
   build: {
     outDir: 'dist',
-    sourcemap: false,
+    sourcemap: true, // Ativar source maps para debug
     chunkSizeWarningLimit: 600,
     rollupOptions: {
       input: 'index.html',

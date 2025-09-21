@@ -16,9 +16,24 @@ class ErrorBoundary extends React.Component {
       error: error.message,
       stack: error.stack,
       componentStack: info.componentStack,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      isMinifiedError: error.message.includes('Minified React error'),
+      errorCode: error.message.match(/#(\d+)/)?.[1] || 'unknown'
     });
-    
+
+    // Para erros React minificados, tentar fornecer mais contexto
+    if (error.message.includes('Minified React error #306')) {
+      console.error('🔍 React #306 Debug: Element type is invalid. Check for:', {
+        commonCauses: [
+          'Undefined component import/export',
+          'Mixed default/named imports',
+          'Component not properly exported',
+          'Typo in component name'
+        ],
+        stackTrace: error.stack
+      });
+    }
+
     // Também salvar no sessionStorage para análise posterior
     try {
       const errorDetails = {
@@ -26,7 +41,9 @@ class ErrorBoundary extends React.Component {
         stack: error.stack,
         componentStack: info.componentStack,
         timestamp: new Date().toISOString(),
-        url: window.location.href
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+        isMinified: error.message.includes('Minified React error')
       };
       sessionStorage.setItem('lastError', JSON.stringify(errorDetails));
     } catch (e) {
