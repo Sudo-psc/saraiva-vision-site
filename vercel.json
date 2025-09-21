@@ -31,6 +31,7 @@
       ]
     },
     {
+<<<<<<< HEAD
       "source": "/api/(.*)",
       "headers": [
         {
@@ -44,13 +45,70 @@
         {
           "key": "Access-Control-Allow-Headers",
           "value": "Content-Type, Authorization"
+=======
+      "source": "/img/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/Podcasts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+>>>>>>> 80ced8840c0c4dfa09c273bac82d04063e5d3943
         }
       ]
     }
   ],
   "rewrites": [
     {
-      "source": "/((?!api/).*)",
+      "source": "/about",
+      "destination": "/"
+    },
+    {
+      "source": "/services/:path*",
+      "destination": "/"
+    },
+    {
+      "source": "/blog/:path*",
+      "destination": "/"
+    },
+    {
+      "source": "/contact",
+      "destination": "/"
+    },
+    {
+      "source": "/testimonials",
+      "destination": "/"
+    },
+    {
+      "source": "/faq",
+      "destination": "/"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/"
+    },
+    {
+      "source": "/podcast",
       "destination": "/"
     }
   ],
@@ -58,6 +116,7 @@
     "gru1"
   ],
   "env": {
+<<<<<<< HEAD
     "NODE_ENV": "@node-env",
     "VITE_API_URL": "@vite-api-url",
     "VITE_WORDPRESS_URL": "@vite-wordpress-url",
@@ -74,5 +133,10 @@
       "VITE_API_URL": "@vite-api-url-build",
       "VITE_WORDPRESS_URL": "@vite-wordpress-url-build"
     }
+=======
+    "NODE_ENV": "production",
+    "VITE_API_URL": "https://31.97.129.78:3001/api",
+    "VITE_WORDPRESS_URL": "https://31.97.129.78"
+>>>>>>> 80ced8840c0c4dfa09c273bac82d04063e5d3943
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 const ContactLensesHeroImage = ({ className = "", alt = "Lentes de Contato Premium" }) => {
     const { t } = useTranslation();
@@ -41,8 +42,8 @@ const ContactLensesHeroImage = ({ className = "", alt = "Lentes de Contato Premi
                             className="absolute inset-4 flex items-center justify-center"
                             style={{ transform: "translateZ(50px)" }}
                         >
-                            <img
-                                src="/img/icon_lentes.png"
+                            <ImageWithFallback
+                                src="/img/icon_lentes.webp"
                                 alt={t('ui.alt.contact_lenses_icon', 'Ícone representativo de lentes de contato')}
                                 className="w-32 h-32 object-contain shadow-lg"
                                 style={{

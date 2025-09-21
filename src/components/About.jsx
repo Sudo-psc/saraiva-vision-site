@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Check } from 'lucide-react';
 import OptimizedPicture from '@/components/ui/OptimizedPicture';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 const About = () => {
   const { t } = useTranslation();
@@ -146,19 +147,19 @@ const About = () => {
                   >
                     <div className="absolute -inset-4 bg-gradient-to-r from-blue-400/30 via-cyan-400/30 to-teal-400/30 rounded-3xl blur-xl" style={{ transform: "translateZ(-50px)" }} />
                     <div className="relative aspect-[3/4] overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-b from-blue-50 to-white" style={{ transform: "translateZ(0)" }}>
+<<<<<<< HEAD
                       <img
                         src="/images/drphilipe_jaleco Medium.jpeg"
+=======
+                      <ImageWithFallback
+                        src="/img/drphilipe_terno.jpeg"
+>>>>>>> 80ced8840c0c4dfa09c273bac82d04063e5d3943
                         alt={t('about.doctor.alt')}
                         width={300}
                         height={400}
                         className="w-full h-full object-cover object-top transition-transform duration-500"
                         loading="lazy"
                         decoding="async"
-                        onError={(e) => {
-                          console.error('Erro ao carregar imagem do Dr. Philipe:', e);
-                          // Fallback para imagem alternativa
-                          e.target.src = '/images/drphilipe/drphilipe_jaleco Medium.jpeg';
-                        }}
                       />
                     </div>
                     <div className="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full opacity-80 animate-pulse" style={{ transform: "translateZ(20px)" }} />
