@@ -4,6 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import enTranslation from '@/locales/en/translation.json';
 import ptTranslation from '@/locales/pt/translation.json';
 
+// Initialize i18n synchronously
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -26,6 +27,9 @@ i18n
       pt: {
         translation: ptTranslation,
       },
+    },
+    react: {
+      useSuspense: false, // Disable suspense to prevent context issues
     },
   });
 
