@@ -22,7 +22,8 @@
     "build:static": "vite build --mode static",
     "test": "node --test",
     "test:contact": "node --test api/contact/__tests__/*.test.js",
-    "test:watch": "node --test --watch"
+    "test:watch": "node --test --watch",
+    "setup:vercel": "node scripts/vercel-dev-setup.js"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.1",
