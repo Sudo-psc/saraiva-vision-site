@@ -2,6 +2,7 @@
  * Sistema Centralizado de Gerenciamento de Widgets Flutuantes
  * Previne conflitos de z-index e posicionamento entre widgets
  */
+import React, { createContext, useContext, useState, useCallback } from 'react';
 
 // Z-index layers centralizados
 export const WIDGET_LAYERS = {
@@ -63,8 +64,6 @@ export const useWidgetManager = () => {
 /**
  * Componente Provider para contexto de widgets
  */
-import React, { createContext, useContext, useState, useCallback } from 'react';
-
 const WidgetContext = createContext({});
 
 export const useWidgetContext = () => {
