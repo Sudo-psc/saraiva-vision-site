@@ -3,7 +3,7 @@
 ## Prerequisites
 
 ### System Requirements
-- Node.js 18+
+- Node.js 22+
 - TypeScript 5.x
 - Supabase account and project
 - Vercel account for deployment

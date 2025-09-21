@@ -52,7 +52,7 @@
 - Cost-effective for medical clinic scale (~$115-215/month operational cost)
 
 ## Technical Context
-**Language/Version**: Node.js 18+, TypeScript 5.x, React 18
+**Language/Version**: Node.js 22+, TypeScript 5.x, React 18
 **Primary Dependencies**: Vercel Functions, Next.js 14, Prisma/Drizzle ORM, WordPress Headless/Supabase, Resend API, Spotify Web API, WhatsApp Business API
 **Storage**: PostgreSQL/MySQL for primary data, Redis for caching, WordPress MySQL (if headless), Supabase (if chosen)
 **Testing**: Vitest, Playwright for E2E, Jest for API testing

@@ -56,6 +56,8 @@ O sistema suporta múltiplas configurações:
 
 - ✅ Build funcionando
 - ✅ Dependências instaladas
-- ✅ Runtime configurado
+- ✅ Runtime configurado (Node.js 22)
 - ✅ Scripts atualizados
-- ⏳ Awaiting Vercel authentication
+- ✅ Vercel authentication OK
+- ✅ Deploy funcionando
+- ✅ Node.js 22 upgrade completo
