@@ -15,8 +15,7 @@
     }
   },
   "regions": [
-    "gru1",
-    "iad1"
+    "gru1"
   ],
   "functionFailoverRegions": [
     "iad1",
