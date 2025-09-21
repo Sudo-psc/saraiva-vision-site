@@ -3,6 +3,7 @@
  * Provides robust API communication with fallback mechanisms
  */
 
+import React from 'react';
 import { withRetry, RetryConfig, classifyError, logError } from './errorHandling';
 
 // API configuration
