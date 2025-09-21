@@ -9,7 +9,13 @@ import {
     ErrorSeverity,
     ErrorMessages,
     withRetry,
+    withFormRetry,
     calculateRetryDelay,
+    getRetryConfig,
+    announceToScreenReader,
+    announceError,
+    announceRetry,
+    announceRetrySuccess,
     logError
 } from '@/lib/errorHandling';
 
@@ -187,16 +193,10 @@ describe('Error Handling System', () => {
         });
 
         it('returns false for critical errors', () => {
-            const criticalError = { name: 'CriticalError' };
-            // Mock classifyError to return CRITICAL type
-            vi.spyOn({ classifyError }, 'classifyError').mockReturnValue({
-                type: ErrorTypes.CRITICAL,
-                code: 'critical_error'
-            });
+            // Use an error that maps to a critical severity
+            const criticalError = { code: 'missing_secret' }; // This maps to CRITICAL severity
 
             expect(isRecoverable(criticalError)).toBe(false);
-
-            vi.restoreAllMocks();
         });
     });
 
@@ -422,9 +422,13 @@ describe('Error Handling System', () => {
             expect(errorMessage).toHaveProperty('userMessage');
             expect(errorMessage).toHaveProperty('severity');
             expect(errorMessage).toHaveProperty('recovery');
+            expect(errorMessage).toHaveProperty('ariaLabel');
+            expect(errorMessage).toHaveProperty('retryable');
             expect(typeof errorMessage.userMessage).toBe('string');
             expect(typeof errorMessage.severity).toBe('string');
             expect(typeof errorMessage.recovery).toBe('string');
+            expect(typeof errorMessage.ariaLabel).toBe('string');
+            expect(typeof errorMessage.retryable).toBe('boolean');
         });
 
         it('field-specific errors have field property', () => {
@@ -432,6 +436,300 @@ describe('Error Handling System', () => {
 
             expect(fieldError).toHaveProperty('field');
             expect(fieldError.field).toBe('name');
+        });
+    });
+
+    describe('getRetryConfig', () => {
+        it('returns null for non-retryable errors', () => {
+            // Use an error that doesn't depend on navigator.onLine
+            const error = { code: 'missing_secret' }; // reCAPTCHA missing_secret is CRITICAL and not retryable
+            const config = getRetryConfig(error);
+
+            expect(config).toBeNull();
+        });
+
+        it('returns network-specific config for network errors', () => {
+            const error = { name: 'NetworkError' };
+            const config = getRetryConfig(error);
+
+            expect(config).toBeDefined();
+            expect(config.maxAttempts).toBeGreaterThanOrEqual(3);
+            expect(config.shouldRetry).toBeDefined();
+        });
+
+        it('returns rate limit config for rate limit errors', () => {
+            const error = { error: 'rate_limited' };
+            const config = getRetryConfig(error);
+
+            expect(config).toBeDefined();
+            expect(config.baseDelay).toBeGreaterThanOrEqual(60000); // 1 minute
+        });
+
+        it('uses custom retry configuration from error message', () => {
+            // Mock an error message with custom retry config
+            const originalMessage = ErrorMessages['network.timeout'];
+            ErrorMessages['network.timeout'] = {
+                ...originalMessage,
+                maxRetries: 5,
+                retryDelay: 2000
+            };
+
+            const error = { name: 'TimeoutError' };
+            const config = getRetryConfig(error);
+
+            expect(config.maxAttempts).toBe(5);
+            expect(config.baseDelay).toBe(2000);
+
+            // Restore original
+            ErrorMessages['network.timeout'] = originalMessage;
+        });
+    });
+
+    describe('withFormRetry', () => {
+        let mockSubmitFn;
+        let mockFormData;
+
+        beforeEach(() => {
+            mockSubmitFn = vi.fn();
+            mockFormData = { name: 'Test', email: 'test@example.com' };
+        });
+
+        it('calls submit function with form data', async () => {
+            mockSubmitFn.mockResolvedValue({ success: true });
+
+            await withFormRetry(mockSubmitFn, mockFormData);
+
+            expect(mockSubmitFn).toHaveBeenCalledWith(mockFormData);
+        });
+
+        it('announces retry attempts to screen readers', async () => {
+            mockSubmitFn
+                .mockRejectedValueOnce(new Error('Network error'))
+                .mockResolvedValue({ success: true });
+
+            // Mock document for announcements
+            const mockElement = { textContent: '', setAttribute: vi.fn(), style: {} };
+            global.document = {
+                getElementById: vi.fn().mockReturnValue(null),
+                createElement: vi.fn().mockReturnValue(mockElement),
+                body: { appendChild: vi.fn() }
+            };
+
+            await withFormRetry(mockSubmitFn, mockFormData, { maxAttempts: 2 });
+
+            // Should have created announcer element
+            expect(global.document.createElement).toHaveBeenCalledWith('div');
+
+            // Cleanup
+            delete global.document;
+        });
+    });
+
+    describe('Accessibility Features', () => {
+        let mockDocument;
+
+        beforeEach(() => {
+            // Mock document for browser environment
+            mockDocument = {
+                getElementById: vi.fn(),
+                createElement: vi.fn(),
+                body: { appendChild: vi.fn() }
+            };
+            global.document = mockDocument;
+        });
+
+        afterEach(() => {
+            delete global.document;
+        });
+
+        describe('announceToScreenReader', () => {
+            it('creates announcer element if not exists', () => {
+                const mockElement = {
+                    setAttribute: vi.fn(),
+                    style: {},
+                    textContent: ''
+                };
+
+                mockDocument.getElementById.mockReturnValue(null);
+                mockDocument.createElement.mockReturnValue(mockElement);
+
+                announceToScreenReader('Test message');
+
+                expect(mockDocument.createElement).toHaveBeenCalledWith('div');
+                expect(mockElement.setAttribute).toHaveBeenCalledWith('aria-live', 'polite');
+                expect(mockElement.setAttribute).toHaveBeenCalledWith('aria-atomic', 'true');
+                expect(mockDocument.body.appendChild).toHaveBeenCalledWith(mockElement);
+            });
+
+            it('uses existing announcer element', () => {
+                const mockElement = { textContent: '' };
+                mockDocument.getElementById.mockReturnValue(mockElement);
+
+                announceToScreenReader('Test message');
+
+                expect(mockDocument.createElement).not.toHaveBeenCalled();
+            });
+
+            it('sets message with delay', async () => {
+                const mockElement = { textContent: '' };
+                mockDocument.getElementById.mockReturnValue(mockElement);
+
+                announceToScreenReader('Test message');
+
+                // Message should be set after timeout
+                await new Promise(resolve => setTimeout(resolve, 150));
+                expect(mockElement.textContent).toBe('Test message');
+            });
+
+            it('handles assertive priority', () => {
+                const mockElement = {
+                    setAttribute: vi.fn(),
+                    style: {},
+                    textContent: ''
+                };
+
+                mockDocument.getElementById.mockReturnValue(null);
+                mockDocument.createElement.mockReturnValue(mockElement);
+
+                announceToScreenReader('Urgent message', 'assertive');
+
+                expect(mockElement.setAttribute).toHaveBeenCalledWith('aria-live', 'assertive');
+            });
+        });
+
+        describe('announceError', () => {
+            it('announces error with proper context', () => {
+                const mockElement = { textContent: '' };
+                mockDocument.getElementById.mockReturnValue(mockElement);
+
+                const error = { name: 'NetworkError' };
+                const message = announceError(error, { action: 'Form submission' });
+
+                expect(message).toContain('Form submission');
+                expect(message).toContain('Aviso'); // Network errors are medium severity = "Aviso"
+            });
+
+            it('includes field information for validation errors', () => {
+                const mockElement = { textContent: '' };
+                mockDocument.getElementById.mockReturnValue(mockElement);
+
+                // Test the announceError function directly with a proper validation error
+                // We'll mock getUserFriendlyError to return a validation error with field info
+                const originalGetUserFriendlyError = getUserFriendlyError;
+                const mockFriendlyError = {
+                    userMessage: 'O nome é obrigatório.',
+                    field: 'name',
+                    severity: ErrorSeverity.MEDIUM,
+                    type: ErrorTypes.VALIDATION
+                };
+
+                // Create a spy that returns our mock error
+                const getUserFriendlyErrorSpy = vi.fn().mockReturnValue(mockFriendlyError);
+
+                // Replace the function temporarily
+                const errorHandling = await import('@/lib/errorHandling');
+                errorHandling.getUserFriendlyError = getUserFriendlyErrorSpy;
+
+                const error = { field: 'name', code: 'required' };
+                const message = announceError(error);
+
+                expect(message).toContain('campo name');
+
+                // Restore
+                errorHandling.getUserFriendlyError = originalGetUserFriendlyError;
+            });
+
+            it('uses assertive priority for high severity errors', () => {
+                const mockElement = {
+                    setAttribute: vi.fn(),
+                    style: {},
+                    textContent: ''
+                };
+
+                mockDocument.getElementById.mockReturnValue(null);
+                mockDocument.createElement.mockReturnValue(mockElement);
+
+                // Create a high severity error that will trigger assertive mode
+                const error = { error: 'email_service_error' }; // This is HIGH severity
+
+                announceError(error);
+
+                expect(mockElement.setAttribute).toHaveBeenCalledWith('aria-live', 'assertive');
+            });
+        });
+
+        describe('announceRetry', () => {
+            it('announces retry attempt with timing', () => {
+                const mockElement = { textContent: '' };
+                mockDocument.getElementById.mockReturnValue(mockElement);
+
+                announceRetry(2, 3, 5000);
+
+                // Should announce attempt and delay
+                setTimeout(() => {
+                    expect(mockElement.textContent).toContain('Tentativa 2 de 3');
+                    expect(mockElement.textContent).toContain('5 segundos');
+                }, 150);
+            });
+        });
+
+        describe('announceRetrySuccess', () => {
+            it('announces success after retry', () => {
+                const mockElement = { textContent: '' };
+                mockDocument.getElementById.mockReturnValue(mockElement);
+
+                announceRetrySuccess(3);
+
+                setTimeout(() => {
+                    expect(mockElement.textContent).toContain('Sucesso na tentativa 3');
+                }, 150);
+            });
+
+            it('announces simple success for first attempt', () => {
+                const mockElement = { textContent: '' };
+                mockDocument.getElementById.mockReturnValue(mockElement);
+
+                announceRetrySuccess(1);
+
+                setTimeout(() => {
+                    expect(mockElement.textContent).toContain('Formulário enviado com sucesso');
+                    expect(mockElement.textContent).not.toContain('tentativa');
+                }, 150);
+            });
+        });
+    });
+
+    describe('Enhanced Error Messages', () => {
+        it('includes accessibility labels for all error types', () => {
+            Object.values(ErrorMessages).forEach(errorMessage => {
+                expect(errorMessage).toHaveProperty('ariaLabel');
+                expect(typeof errorMessage.ariaLabel).toBe('string');
+                expect(errorMessage.ariaLabel.length).toBeGreaterThan(0);
+            });
+        });
+
+        it('includes retryable flag for all error types', () => {
+            Object.values(ErrorMessages).forEach(errorMessage => {
+                expect(errorMessage).toHaveProperty('retryable');
+                expect(typeof errorMessage.retryable).toBe('boolean');
+            });
+        });
+
+        it('includes retry configuration for retryable errors', () => {
+            const retryableErrors = Object.values(ErrorMessages).filter(msg => msg.retryable);
+
+            retryableErrors.forEach(errorMessage => {
+                // Should have either maxRetries or use default config
+                if (errorMessage.maxRetries !== undefined) {
+                    expect(typeof errorMessage.maxRetries).toBe('number');
+                    expect(errorMessage.maxRetries).toBeGreaterThan(0);
+                }
+
+                if (errorMessage.retryDelay !== undefined) {
+                    expect(typeof errorMessage.retryDelay).toBe('number');
+                    expect(errorMessage.retryDelay).toBeGreaterThan(0);
+                }
+            });
         });
     });
 
@@ -451,6 +749,25 @@ describe('Error Handling System', () => {
             expect(ErrorSeverity.MEDIUM).toBe('medium');
             expect(ErrorSeverity.HIGH).toBe('high');
             expect(ErrorSeverity.CRITICAL).toBe('critical');
+        });
+    });
+
+    describe('Enhanced Severity Indicators', () => {
+        it('includes accessibility properties', () => {
+            const indicator = getSeverityIndicator(ErrorSeverity.HIGH);
+
+            expect(indicator).toHaveProperty('ariaLabel');
+            expect(indicator).toHaveProperty('role');
+            expect(typeof indicator.ariaLabel).toBe('string');
+            expect(typeof indicator.role).toBe('string');
+        });
+
+        it('provides appropriate aria labels for all severities', () => {
+            Object.values(ErrorSeverity).forEach(severity => {
+                const indicator = getSeverityIndicator(severity);
+                expect(indicator.ariaLabel).toBeDefined();
+                expect(indicator.ariaLabel.length).toBeGreaterThan(0);
+            });
         });
     });
 });

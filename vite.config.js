@@ -8,6 +8,8 @@ const plugins = [react({
   jsxRuntime: 'automatic',
   // Include refresh for development
   include: '**/*.{jsx,tsx}',
+  // Ensure React is available globally for components that reference it directly
+  jsxImportSource: 'react'
 })]
 
 // Only load workbox plugin in development, never in production or Vercel
@@ -29,6 +31,14 @@ export default defineConfig({
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
   },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.js'],
+    include: ['**/*.{test,spec}.{js,jsx,ts,tsx}'],
+    exclude: ['node_modules', 'dist', '.vercel']
+  },
+
   build: {
     outDir: 'dist',
     sourcemap: true, // Source maps for debugging
@@ -60,6 +70,8 @@ export default defineConfig({
           }
         },
       },
+      // Externalize Sentry to avoid build issues with dynamic imports
+      external: ['@sentry/react', '@sentry/tracing']
     },
     copyPublicDir: true, // Ensure public directory is copied including all assets
   },

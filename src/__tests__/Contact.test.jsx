@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Contact } from '@/components/Contact';
+import Contact from '@/components/Contact';
 import { submitContactForm, FallbackStrategies, networkMonitor } from '@/lib/apiUtils';
 import { getUserFriendlyError, getRecoverySteps } from '@/lib/errorHandling';
 import ErrorFeedback from '@/components/ui/ErrorFeedback';
@@ -9,8 +9,12 @@ import ErrorFeedback from '@/components/ui/ErrorFeedback';
 // Mock dependencies
 vi.mock('@/lib/apiUtils');
 vi.mock('@/lib/errorHandling');
-vi.mock('@/hooks/useRecaptcha');
-vi.mock('@/components/ui/use-toast');
+vi.mock('@/hooks/useRecaptcha', () => ({
+    useRecaptcha: vi.fn()
+}));
+vi.mock('@/components/ui/use-toast', () => ({
+    useToast: vi.fn()
+}));
 
 describe('Contact Component Error Handling Integration', () => {
     const mockToast = {
@@ -41,17 +45,12 @@ describe('Contact Component Error Handling Integration', () => {
 
         getRecoverySteps.mockReturnValue(['Step 1', 'Step 2']);
 
-        // Mock toast hook
-        const useToastMock = vi.fn(() => mockToast);
-        vi.doMock('@/components/ui/use-toast', () => ({
-            useToast: useToastMock
-        }));
+        // Mock hooks
+        const { useToast } = await import('@/components/ui/use-toast');
+        const { useRecaptcha } = await import('@/hooks/useRecaptcha');
 
-        // Mock recaptcha hook
-        const useRecaptchaMock = vi.fn(() => mockRecaptcha);
-        vi.doMock('@/hooks/useRecaptcha', () => ({
-            useRecaptcha: useRecaptchaMock
-        }));
+        vi.mocked(useToast).mockReturnValue(mockToast);
+        vi.mocked(useRecaptcha).mockReturnValue(mockRecaptcha);
 
         // Mock network monitor
         networkMonitor.isOnline = vi.fn(() => true);

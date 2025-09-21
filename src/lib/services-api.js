@@ -28,7 +28,7 @@ export const mockServicesData = [
     id: 'consultas-oftalmologicas',
     title: 'Consultas Oftalmológicas',
     description: 'Avaliação completa da saúde ocular com equipamentos modernos.',
-    imageUrl: '/images/drphilipe_perfil.webp',
+    imageUrl: '/images/src/drphilipe_perfil.png',
     slug: 'consultas-oftalmologicas',
     category: 'Consultas'
   },
@@ -36,7 +36,7 @@ export const mockServicesData = [
     id: 'exames-diagnosticos',
     title: 'Exames Diagnósticos',
     description: 'Exames precisos para diagnóstico precoce de doenças oculares.',
-    imageUrl: '/images/retina.webp',
+    imageUrl: '/images/src/retina.jpeg',
     slug: 'exames-diagnosticos',
     category: 'Exames'
   },
@@ -44,7 +44,7 @@ export const mockServicesData = [
     id: 'cirurgias-especializadas',
     title: 'Cirurgias Especializadas',
     description: 'Procedimentos cirúrgicos com tecnologia de última geração.',
-    imageUrl: '/images/catarata_cover.webp',
+    imageUrl: '/images/src/catarata_cover.png',
     slug: 'cirurgias-especializadas',
     category: 'Cirurgias'
   },
@@ -52,7 +52,7 @@ export const mockServicesData = [
     id: 'oftalmologia-pediatrica',
     title: 'Oftalmologia Pediátrica',
     description: 'Cuidados especializados para a saúde ocular infantil.',
-    imageUrl: '/images/avatar-female-blonde.webp',
+    imageUrl: '/images/src/avatar-female-blonde.png',
     slug: 'oftalmologia-pediatrica',
     category: 'Pediatria'
   }
