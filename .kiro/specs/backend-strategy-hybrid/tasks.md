@@ -7,7 +7,7 @@
   - Install and configure WordPress plugins: WPGraphQL, Redis Object Cache, JWT Auth
   - _Requirements: 1.2, 1.3_
 
-- [ ] 2. Create Supabase database schema and RLS policies
+- [x] 2. Create Supabase database schema and RLS policies
   - Implement database tables: contact_messages, appointments, message_outbox, podcast_episodes, event_log
   - Create Row Level Security policies for service role and admin access
   - Set up database indexes for performance optimization
