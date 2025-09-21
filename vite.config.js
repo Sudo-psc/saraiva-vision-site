@@ -1,10 +1,22 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
-import { workboxVitePlugin } from './src/utils/workbox-vite-plugin.js'
+
+// Enable workbox plugin with Vercel environment check
+const plugins = [react()]
+
+// Only load workbox plugin in development or when not in Vercel build
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  try {
+    const { workboxVitePlugin } = require('./src/utils/workbox-vite-plugin')
+    plugins.push(workboxVitePlugin())
+  } catch (error) {
+    console.warn('Workbox plugin not loaded:', error.message)
+  }
+}
 
 export default defineConfig({
-  plugins: [react(), workboxVitePlugin()],
+  plugins,
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

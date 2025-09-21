@@ -26,54 +26,58 @@ This project includes an intelligent Vercel deployment system designed to handle
 
 ## Scripts
 
-### Deployment Commands
+
+## Exemplos Práticos de Uso
+
+### 🚦 Fluxo Básico de Deploy Inteligente
 
 ```bash
-# Intelligent deployment with automatic error recovery
-npm run deploy:intelligent
+# 1. Cheque o ambiente e variáveis (recomendado)
+npm run vercel:pull
+node scripts/vercel-health-check.js quick
 
-# Configuration management
-npm run deploy:config list              # List all configurations
-npm run deploy:config apply <name>       # Apply specific configuration
-npm run deploy:config test <name>        # Test configuration
-npm run deploy:config backup             # Backup current config
-npm run deploy:config restore            # Restore from backup
+# 2. Deploy inteligente (com fallback e auto-recuperação)
+   - Debug deployment with verbose logs
 
-# Specific deployment strategies
-npm run deploy:production               # Deploy with Node.js 18.x
-npm run deploy:edge                     # Deploy with Edge Runtime
-npm run deploy:node20                   # Deploy with Node.js 20.x
-npm run deploy:static                   # Deploy as static site
-
-# Health checks
-node scripts/vercel-health-check.js full   # Comprehensive health check
-node scripts/vercel-health-check.js quick  # Quick check (CLI + Auth + Build)
+# 3. Acompanhe o status no dashboard Vercel
 ```
 
-### Available Configurations
+### 🔄 Gerenciamento de Configurações
 
-| Configuration | Runtime | Description | Use Case |
-|---------------|---------|-------------|----------|
-| `production` | `@vercel/node@18.x` | Production environment | Default production deployment |
-| `development` | `@vercel/node@18.x` | Development environment | Development/testing |
-| `edge` | `@vercel/edge` | Edge Runtime | Lightweight functions |
-| `node20` | `@vercel/node@20.x` | Node.js 20.x | Latest Node.js version |
-| `static` | None | Static only | No serverless functions |
-| `minimal` | `@vercel/node@18.x` | Minimal functions | Only essential functions |
+```bash
+# Listar todas as configurações disponíveis
+npm run deploy:config list
 
-## How It Works
-
-### 1. Intelligent Deployment Process
-
-The `deploy:intelligent` script follows this process:
-
-1. **Backup Current Configuration**: Creates backup of existing `vercel.json`
-2. **Build Validation**: Tests multiple build configurations
-3. **Deployment Attempts**: Tries different strategies in this order:
-   - Standard deployment with different runtime versions
-   - Force deployment with cache bypass
-   - Debug deployment with verbose logs
+# Aplicar configuração edge (funções serverless edge)
 4. **Automatic Retry**: Up to 3 attempts for each strategy
+
+# Testar se a configuração node20 está buildando corretamente
+npm run deploy:config test node20
+
+# Criar uma configuração customizada
+node scripts/vercel-config-manager.js create custom-otimizacao
+
+# Backup e restore da configuração atual
+npm run deploy:config backup
+npm run deploy:config restore
+```
+
+### 🛠️ Troubleshooting e Dicas
+
+- Sempre rode `node scripts/vercel-health-check.js full` antes de deploys importantes.
+- Se ocorrer erro de runtime, use `npm run deploy:intelligent` para auto-recuperação.
+- Para problemas de variáveis de ambiente, revise o checklist em [`docs/VERCEL_ENV_CHECKLIST.md`](./docs/VERCEL_ENV_CHECKLIST.md).
+- Para builds locais, use `npm run build:vercel`.
+- Para deploy manual, use:
+    ```bash
+    npx vercel login
+    npm run build:vercel
+    npx vercel --prod --yes
+    ```
+
+### 📋 Checklist de Ambiente
+
+Consulte [`docs/VERCEL_ENV_CHECKLIST.md`](./docs/VERCEL_ENV_CHECKLIST.md) para garantir que todas as variáveis estejam corretamente configuradas no painel do Vercel.
 5. **Fallback to Static**: If all function strategies fail
 
 ### 2. Error Recovery Mechanisms

@@ -71,3 +71,4 @@ wordpress-local/wp-cli.phar
 webapp/.git_disabled/
 *.pack
 *.idx
+.vercel

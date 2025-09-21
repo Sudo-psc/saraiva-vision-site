@@ -1,0 +1,538 @@
+openapi: 3.0.3
+info:
+  title: WhatsApp Integration API
+  description: API for WhatsApp Business integration and chatbot functionality
+  version: 1.0.0
+  contact:
+    name: Saraiva Vision API Support
+    email: tech@saraivavision.com.br
+
+servers:
+  - url: https://saraivavision.com.br/api
+    description: Production server
+  - url: http://localhost:3000/api
+    description: Development server
+
+paths:
+  /whatsapp/webhook:
+    post:
+      summary: WhatsApp webhook endpoint
+      description: Receive incoming WhatsApp messages and status updates
+      operationId: handleWebhook
+      tags:
+        - WhatsApp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WhatsAppWebhook'
+      responses:
+        '200':
+          description: Webhook processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '400':
+          description: Invalid webhook payload
+        '401':
+          description: Invalid webhook signature
+
+    get:
+      summary: Verify webhook endpoint
+      description: Webhook verification for WhatsApp Business API setup
+      operationId: verifyWebhook
+      tags:
+        - WhatsApp
+      parameters:
+        - name: hub.mode
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Webhook verification mode
+        - name: hub.challenge
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Webhook verification challenge
+        - name: hub.verify_token
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Webhook verification token
+      responses:
+        '200':
+          description: Webhook verification successful
+          content:
+            text/plain:
+              schema:
+                type: string
+        '403':
+          description: Invalid verification token
+
+  /whatsapp/send:
+    post:
+      summary: Send WhatsApp message
+      description: Send a message via WhatsApp Business API
+      operationId: sendMessage
+      tags:
+        - WhatsApp
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+      responses:
+        '200':
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendMessageResponse'
+        '400':
+          description: Invalid message format
+        '401':
+          description: Unauthorized
+        '403':
+          description: Insufficient permissions
+
+  /whatsapp/conversations:
+    get:
+      summary: List conversations
+      description: Get list of WhatsApp conversations
+      operationId: listConversations
+      tags:
+        - WhatsApp
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: ["active", "resolved", "archived", "blocked"]
+          description: Filter by conversation status
+        - name: assigned_to
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by assigned user
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: List of conversations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conversations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Conversation'
+                  total:
+                    type: integer
+
+  /whatsapp/conversations/{id}:
+    get:
+      summary: Get conversation details
+      description: Get detailed conversation information including message history
+      operationId: getConversation
+      tags:
+        - WhatsApp
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Conversation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationDetails'
+        '404':
+          description: Conversation not found
+
+    patch:
+      summary: Update conversation
+      description: Update conversation status or assignment
+      operationId: updateConversation
+      tags:
+        - WhatsApp
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConversationUpdate'
+      responses:
+        '200':
+          description: Conversation updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationDetails'
+
+  /whatsapp/templates:
+    get:
+      summary: List message templates
+      description: Get available WhatsApp message templates
+      operationId: listTemplates
+      tags:
+        - WhatsApp
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of templates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  templates:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MessageTemplate'
+
+components:
+  schemas:
+    WhatsAppWebhook:
+      type: object
+      properties:
+        object:
+          type: string
+          example: "whatsapp_business_account"
+        entry:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              changes:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: object
+                      properties:
+                        messaging_product:
+                          type: string
+                          example: "whatsapp"
+                        metadata:
+                          type: object
+                        contacts:
+                          type: array
+                          items:
+                            type: object
+                        messages:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/IncomingMessage'
+                        statuses:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/MessageStatus'
+
+    IncomingMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "wamid.HBgNNTU1MTk5ODcwMDM4MxUCABIYFjNFQjBDNzFGRkUwNDE1QUQxMjNEOTkA"
+        from:
+          type: string
+          example: "5511998870038"
+        timestamp:
+          type: string
+          example: "1734567890"
+        type:
+          type: string
+          enum: ["text", "image", "document", "audio", "video"]
+        text:
+          type: object
+          properties:
+            body:
+              type: string
+              example: "Olá, gostaria de agendar uma consulta"
+        context:
+          type: object
+          properties:
+            from:
+              type: string
+            id:
+              type: string
+
+    MessageStatus:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum: ["sent", "delivered", "read", "failed"]
+        timestamp:
+          type: string
+        recipient_id:
+          type: string
+
+    SendMessageRequest:
+      type: object
+      required:
+        - to
+        - type
+      properties:
+        to:
+          type: string
+          pattern: '^55[1-9]\d{8,10}$'
+          example: "5511998870038"
+          description: Brazilian phone number without +
+        type:
+          type: string
+          enum: ["text", "template"]
+        text:
+          type: object
+          properties:
+            body:
+              type: string
+              maxLength: 4096
+              example: "Sua consulta está confirmada para amanhã às 14:00"
+        template:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "appointment_confirmation"
+            language:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: "pt_BR"
+            components:
+              type: array
+              items:
+                type: object
+
+    SendMessageResponse:
+      type: object
+      properties:
+        messaging_product:
+          type: string
+          example: "whatsapp"
+        contacts:
+          type: array
+          items:
+            type: object
+            properties:
+              input:
+                type: string
+              wa_id:
+                type: string
+        messages:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        phone_number:
+          type: string
+          example: "5511998870038"
+        contact_name:
+          type: string
+          example: "Maria Silva"
+        conversation_type:
+          type: string
+          enum: ["inquiry", "appointment", "support", "marketing", "emergency"]
+        status:
+          type: string
+          enum: ["active", "resolved", "archived", "blocked"]
+        last_message:
+          type: string
+          example: "Gostaria de agendar uma consulta"
+        last_message_at:
+          type: string
+          format: date-time
+        is_automated:
+          type: boolean
+        assigned_to:
+          type: string
+          format: uuid
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    ConversationDetails:
+      allOf:
+        - $ref: '#/components/schemas/Conversation'
+        - type: object
+          properties:
+            messages:
+              type: array
+              items:
+                $ref: '#/components/schemas/Message'
+            assigned_user:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                full_name:
+                  type: string
+                role:
+                  type: string
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        conversation_id:
+          type: string
+          format: uuid
+        message_id:
+          type: string
+          example: "wamid.HBgNNTU1MTk5ODcwMDM4MxUCABIYFjNFQjBDNzFGRkUwNDE1QUQxMjNEOTkA"
+        direction:
+          type: string
+          enum: ["inbound", "outbound"]
+        content:
+          type: string
+        message_type:
+          type: string
+          enum: ["text", "image", "document", "audio", "video", "template"]
+        status:
+          type: string
+          enum: ["sent", "delivered", "read", "failed"]
+        is_automated:
+          type: boolean
+        template_name:
+          type: string
+          nullable: true
+        sent_at:
+          type: string
+          format: date-time
+        delivered_at:
+          type: string
+          format: date-time
+          nullable: true
+        read_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    ConversationUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ["active", "resolved", "archived", "blocked"]
+        assigned_to:
+          type: string
+          format: uuid
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        notes:
+          type: string
+          maxLength: 1000
+
+    MessageTemplate:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "appointment_confirmation"
+        category:
+          type: string
+          enum: ["AUTHENTICATION", "MARKETING", "UTILITY"]
+        language:
+          type: string
+          example: "pt_BR"
+        status:
+          type: string
+          enum: ["APPROVED", "PENDING", "REJECTED"]
+        components:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: ["HEADER", "BODY", "FOOTER", "BUTTONS"]
+              text:
+                type: string
+              parameters:
+                type: array
+                items:
+                  type: object
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token from Supabase authentication
+
+tags:
+  - name: WhatsApp
+    description: WhatsApp Business API integration
