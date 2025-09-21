@@ -2,14 +2,27 @@ const DEFAULT_FROM = 'noreply@saraivavision.com.br';
 const DEFAULT_TO = 'philipe_cruz@outlook.com';
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 
+/**
+ * Retrieves the Resend API key from environment variables.
+ * @returns {string} The Resend API key.
+ */
 function getResendApiKey() {
   return (process.env.RESEND_API_KEY || '').trim();
 }
 
+/**
+ * Retrieves the sender email address from environment variables, with a fallback to a default.
+ * @returns {string} The sender email address.
+ */
 function getSenderAddress() {
   return (process.env.CONTACT_EMAIL_FROM || DEFAULT_FROM).trim();
 }
 
+/**
+ * Retrieves the recipient email address(es) from environment variables.
+ * It supports a comma-separated list of addresses.
+ * @returns {string} A string of one or more recipient email addresses.
+ */
 function getRecipientAddress() {
   const envValue = process.env.CONTACT_EMAIL_TO || process.env.CONTACT_NOTIFICATIONS_TO;
   if (!envValue) {
@@ -22,10 +35,21 @@ function getRecipientAddress() {
     .join(',');
 }
 
+/**
+ * Builds the subject line for the contact email.
+ * @param {string} name The name of the person who submitted the form.
+ * @returns {string} The email subject line.
+ */
 function buildEmailSubject(name) {
   return `Nova mensagem do site - ${name}`;
 }
 
+/**
+ * Builds the HTML body of the contact email.
+ * @param {object} submission The sanitized submission data.
+ * @param {object} verification The reCAPTCHA verification result.
+ * @returns {string} The HTML content of the email.
+ */
 function buildHtmlBody(submission, verification) {
   const formattedMessage = submission.message.replace(/\n/g, '<br>');
   const formattedPhone = submission.phone ? `<p><strong>Telefone:</strong> ${submission.phone}</p>` : '';
@@ -44,6 +68,12 @@ function buildHtmlBody(submission, verification) {
   `;
 }
 
+/**
+ * Builds the plain text body of the contact email.
+ * @param {object} submission The sanitized submission data.
+ * @param {object} verification The reCAPTCHA verification result.
+ * @returns {string} The plain text content of the email.
+ */
 function buildTextBody(submission, verification) {
   const timestamp = new Date().toLocaleString('pt-BR');
   return `
@@ -60,6 +90,15 @@ Score reCAPTCHA: ${verification.score}
 `;
 }
 
+/**
+ * Sends the contact form submission as an email using the Resend API.
+ *
+ * @param {object} params The email sending parameters.
+ * @param {object} params.submission The sanitized contact form data.
+ * @param {object} params.verification The reCAPTCHA verification result.
+ * @returns {Promise<{ok: boolean, id?: string, status?: number, error?: string, details?: object}>}
+ * A promise that resolves to an object indicating the result of the email sending operation.
+ */
 export async function sendContactEmail({ submission, verification }) {
   const apiKey = getResendApiKey();
 

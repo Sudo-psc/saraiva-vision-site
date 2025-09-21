@@ -1,7 +1,45 @@
 // Centralized clinic information to keep consistency with Google Business Profile.
 
+/**
+ * The Google Place ID for the clinic.
+ * Used for Google Maps and Reviews integrations.
+ * @type {string}
+ */
 export const CLINIC_PLACE_ID = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GOOGLE_PLACE_ID) || 'ChIJVUKww7WRugARF7u2lAe7BeE';
 
+/**
+ * An object containing all centralized information about the clinic.
+ * This ensures consistency across the application.
+ * @property {string} name - The public name of the clinic.
+ * @property {string} legalName - The legal name of the clinic.
+ * @property {string} streetAddress - The street address.
+ * @property {string} neighborhood - The neighborhood.
+ * @property {string} city - The city.
+ * @property {string} state - The state (e.g., 'MG').
+ * @property {string} postalCode - The postal code.
+ * @property {string} country - The country code (e.g., 'BR').
+ * @property {object} address - A structured address object.
+ * @property {string} phoneDisplay - The phone number formatted for display.
+ * @property {string} phone - The phone number in E.164 format.
+ * @property {string} whatsapp - The WhatsApp number in E.164 format.
+ * @property {string} email - The contact email address.
+ * @property {string} instagram - The URL for the Instagram profile.
+ * @property {string} facebook - The URL for the Facebook profile.
+ * @property {string} linkedin - The URL for the LinkedIn profile.
+ * @property {string} chatbotUrl - The URL for the clinic's chatbot.
+ * @property {string} onlineSchedulingUrl - The URL for the online scheduling platform.
+ * @property {function(): string | null} validateSchedulingUrl - A function to validate and return the scheduling URL.
+ * @property {string} responsiblePhysician - The name of the responsible physician.
+ * @property {string} responsiblePhysicianCRM - The CRM number of the responsible physician.
+ * @property {string} responsibleNurse - The name of the responsible nurse.
+ * @property {string} responsibleNursePhone - The phone number of the responsible nurse.
+ * @property {string} dpoEmail - The email for the Data Protection Officer (DPO).
+ * @property {string} taxId - The clinic's tax ID (CNPJ).
+ * @property {string} foundingDate - The founding date of the clinic.
+ * @property {number} latitude - The geographic latitude.
+ * @property {number} longitude - The geographic longitude.
+ * @property {string[]} servicesKeywords - A list of keywords for the services offered.
+ */
 export const clinicInfo = {
   name: 'Clínica Saraiva Vision',
   legalName: 'Saraiva Vision Care LTDA',
@@ -66,5 +104,14 @@ export const clinicInfo = {
   ]
 };
 
+/**
+ * The URL for the clinic's Google Maps profile.
+ * @type {string}
+ */
 export const googleMapsProfileUrl = `https://www.google.com/maps/place/?q=place_id:${CLINIC_PLACE_ID}`;
+
+/**
+ * A direct link for users to write a Google review for the clinic.
+ * @type {string}
+ */
 export const googleReviewUrl = `https://search.google.com/local/writereview?placeid=${CLINIC_PLACE_ID}`;
