@@ -160,13 +160,13 @@ const SEOHead = ({
       <link
         rel="preload"
         as="image"
-        href="/img/drphilipe_perfil.png"
-        imagesrcset="/img/drphilipe_perfil.png 800w"
+        href="/images/drphilipe/drphilipe_jaleco Medium.jpeg"
+        imagesrcset="/images/drphilipe/drphilipe_jaleco Medium.jpeg 800w"
         imagesizes="(min-width:1024px) 800px, 100vw"
       />
       {/* Optional future AVIF/WebP variants (placeholders if added later) */}
-      {/* <link rel="preload" as="image" href="/img/drphilipe_perfil.avif" type="image/avif" /> */}
-      {/* <link rel="preload" as="image" href="/img/drphilipe_perfil.webp" type="image/webp" /> */}
+      {/* <link rel="preload" as="image" href="/images/drphilipe/drphilipe_jaleco Medium.avif" type="image/avif" /> */}
+      {/* <link rel="preload" as="image" href="/images/drphilipe/drphilipe_jaleco Medium.webp" type="image/webp" /> */}
 
       {/* DNS Prefetch for External Resources */}
       <link rel="dns-prefetch" href="//www.googletagmanager.com" />

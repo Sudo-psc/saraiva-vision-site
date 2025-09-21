@@ -14,7 +14,7 @@ const Hero = () => {
   const { t } = useTranslation();
   const { openFloatingCTA } = useWhatsApp();
 
-  
+
 
   const handleAgendarClick = () => {
     // Use validated scheduling URL with enhanced error handling
@@ -39,7 +39,7 @@ const Hero = () => {
 
   const [heroSrc, setHeroSrc] = useState('/img/hero.png');
   const handleHeroError = useCallback(() => {
-    if (heroSrc !== '/img/drphilipe_perfil.png') setHeroSrc('/img/drphilipe_perfil.png');
+    if (heroSrc !== '/images/drphilipe/drphilipe_jaleco Medium.jpeg') setHeroSrc('/images/drphilipe/drphilipe_jaleco Medium.jpeg');
   }, [heroSrc]);
 
   return (
