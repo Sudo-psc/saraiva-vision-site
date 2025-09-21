@@ -77,8 +77,8 @@ class VercelConfigManager {
                 }
             },
 
-            node20: {
-                name: 'Node.js 20',
+            node22: {
+                name: 'Node.js 22',
                 buildCommand: 'npm run build',
                 outputDirectory: 'dist',
                 framework: 'vite',
@@ -340,7 +340,7 @@ Available configurations:
   production   - Production environment (default)
   development  - Development environment
   edge         - Edge runtime
-  node20       - Node.js 20.x runtime
+  node22       - Node.js 22.x runtime
   static       - Static only (no functions)
   minimal      - Minimal functions only
             `);

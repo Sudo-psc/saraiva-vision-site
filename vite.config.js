@@ -3,7 +3,12 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 // Enable workbox plugin with Vercel environment check
-const plugins = [react()]
+const plugins = [react({
+  // Ensure React is properly available for JSX transform
+  jsxRuntime: 'automatic',
+  // Include refresh for development
+  include: '**/*.{jsx,tsx}',
+})]
 
 // Only load workbox plugin in development or when not in Vercel build
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
@@ -31,12 +36,26 @@ export default defineConfig({
     rollupOptions: {
       input: 'index.html',
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-toast', '@radix-ui/react-visually-hidden'],
-          animation: ['framer-motion'],
-          utils: ['date-fns', 'clsx', 'class-variance-authority'],
+        manualChunks(id) {
+          // Keep React and React-DOM together in vendor chunk
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'vendor'
+            }
+            if (id.includes('react-router-dom')) {
+              return 'router'
+            }
+            if (id.includes('@radix-ui')) {
+              return 'ui'
+            }
+            if (id.includes('framer-motion')) {
+              return 'animation'
+            }
+            if (id.includes('date-fns') || id.includes('clsx') || id.includes('class-variance-authority')) {
+              return 'utils'
+            }
+            return 'vendor'
+          }
         },
       },
     },
