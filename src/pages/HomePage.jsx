@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import SchemaMarkup from '@/components/SchemaMarkup';
@@ -19,25 +19,39 @@ import LatestBlogPosts from '@/components/LatestBlogPosts';
 function HomePage() {
   const location = useLocation();
   const seoData = useHomeSEO();
+  const isInitialized = useRef(false);
 
   useEffect(() => {
+    let timer = null;
+
     try {
-      initScrollSystem();
+      // Only initialize once to prevent infinite loops
+      if (!isInitialized.current) {
+        initScrollSystem();
+        isInitialized.current = true;
+      }
 
       // Handle hash scrolling after component mount
       if (location.hash) {
-        const timer = setTimeout(() => {
+        timer = setTimeout(() => {
           scrollToHash(location.hash);
         }, 100);
-        return () => clearTimeout(timer);
       }
     } catch (error) {
       console.warn('Failed to initialize scroll system:', error);
     }
 
+    // Single cleanup function that handles both cases
     return () => {
       try {
-        cleanupScrollSystem();
+        if (timer) {
+          clearTimeout(timer);
+        }
+        // Only cleanup on unmount, not on hash changes
+        if (!location.hash) {
+          cleanupScrollSystem();
+          isInitialized.current = false;
+        }
       } catch (error) {
         console.warn('Failed to cleanup scroll system:', error);
       }
