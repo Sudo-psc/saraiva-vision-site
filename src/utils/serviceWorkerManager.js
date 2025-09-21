@@ -218,10 +218,11 @@ export class ServiceWorkerManager {
 // Instância singleton
 export const swManager = new ServiceWorkerManager();
 
-// Auto-inicialização quando módulo é importado - DESABILITADO EM DEV
-if (typeof window !== 'undefined' && import.meta.env.PROD) {
-	swManager.register();
-}
+// Auto-inicialização quando módulo é importado - TEMPORARIAMENTE DESABILITADO
+// Aguardando correção do deployment do service worker no Vercel
+// if (typeof window !== 'undefined' && import.meta.env.PROD) {
+//	swManager.register();
+// }
 
 // Export para uso direto
 export default swManager;

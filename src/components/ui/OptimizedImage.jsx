@@ -108,6 +108,11 @@ const OptimizedImage = ({
                     .map(w => `${baseSrc}${separator}format=${format}&width=${w}&quality=75 ${w}w`)
                     .join(', ');
             }
+
+            // For local images, don't generate responsive variants as they don't exist in build
+            if (baseSrc.startsWith('/img/') || baseSrc.startsWith('/public/')) {
+                return '';
+            }
         } catch (error) {
             console.warn('Error generating srcset:', error);
         }
