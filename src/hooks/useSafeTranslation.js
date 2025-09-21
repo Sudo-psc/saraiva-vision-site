@@ -1,17 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { useContext } from 'react';
-import { I18nextContext } from 'react-i18next';
 
 // Safe wrapper for useTranslation that handles context errors
 export const useSafeTranslation = () => {
     try {
-        // First check if the context is available
-        const context = useContext(I18nextContext);
-        if (!context) {
-            throw new Error('I18nextContext not available');
+        const translation = useTranslation();
+
+        // Check if translation is properly initialized
+        if (!translation || !translation.i18n) {
+            throw new Error('Translation not properly initialized');
         }
 
-        const translation = useTranslation();
         return translation;
     } catch (error) {
         console.warn('Translation context not available, using fallback:', error);
@@ -25,6 +23,7 @@ export const useSafeTranslation = () => {
             i18n: {
                 language: 'pt',
                 changeLanguage: () => Promise.resolve(),
+                isInitialized: false,
             },
             ready: false
         };
