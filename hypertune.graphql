@@ -1,5 +1,6 @@
-query InitializeHypertune {
+query FullQuery {
   root {
-    __typename
+    exampleFlag
+    enableDesignV2
   }
 }
