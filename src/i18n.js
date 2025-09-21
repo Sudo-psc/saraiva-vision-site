@@ -27,6 +27,9 @@ i18n
         translation: ptTranslation,
       },
     },
+    react: {
+      useSuspense: false, // Disable suspense to prevent context issues
+    },
   });
 
 export default i18n;
