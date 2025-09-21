@@ -374,3 +374,399 @@ describe('Email Service', () => {
         });
     });
 });
+
+describe('Advanced Email Service Tests', () => {
+    describe('Template Rendering Edge Cases', () => {
+        it('should handle very long messages with proper formatting', async () => {
+            mockSend.mockResolvedValue({
+                data: { id: 'email-long-message' },
+                error: null
+            });
+
+            const longMessage = 'Este é um teste de mensagem muito longa. '.repeat(50) +
+                'Gostaria de agendar uma consulta oftalmológica para avaliação completa da minha visão.';
+
+            const contactData = {
+                name: 'Paciente Teste',
+                email: 'paciente@example.com',
+                phone: '11999887766',
+                message: longMessage,
+                timestamp: new Date()
+            };
+
+            await sendContactEmail(contactData);
+
+            const emailCall = mockSend.mock.calls[0][0];
+
+            // Should handle long messages without truncation
+            expect(emailCall.html).toContain(longMessage);
+            expect(emailCall.text).toContain(longMessage);
+
+            // Should maintain proper formatting
+            expect(emailCall.html).toContain('white-space: pre-wrap');
+        });
+
+        it('should handle special characters in patient names', async () => {
+            mockSend.mockResolvedValue({
+                data: { id: 'email-special-chars' },
+                error: null
+            });
+
+            const specialNames = [
+                'José María Ñoño',
+                'François Müller',
+                'Ana-Luiza Costa',
+                'Dr. João Carlos Jr.',
+                'Maria José da Silva'
+            ];
+
+            for (const name of specialNames) {
+                const contactData = {
+                    name,
+                    email: 'test@example.com',
+                    phone: '11999887766',
+                    message: 'Mensagem de teste com caracteres especiais.',
+                    timestamp: new Date()
+                };
+
+                await sendContactEmail(contactData);
+
+                const emailCall = mockSend.mock.calls[mockSend.mock.calls.length - 1][0];
+                expect(emailCall.html).toContain(name);
+                expect(emailCall.subject).toContain(name);
+            }
+        });
+
+        it('should format different phone number patterns correctly', async () => {
+            mockSend.mockResolvedValue({
+                data: { id: 'email-phone-formats' },
+                error: null
+            });
+
+            const phoneFormats = [
+                { input: '11999887766', expected: '(11) 99988-7766' },
+                { input: '1133334444', expected: '(11) 3333-4444' },
+                { input: '+5511999887766', expected: '+5511999887766' }, // This doesn't get formatted as it has country code
+                { input: '+551133334444', expected: '+551133334444' }, // This doesn't get formatted as it has country code
+                { input: '(11) 99988-7766', expected: '(11) 99988-7766' },
+                { input: '11 99988-7766', expected: '(11) 99988-7766' }
+            ];
+
+            for (const { input, expected } of phoneFormats) {
+                const contactData = {
+                    name: 'Teste Telefone',
+                    email: 'teste@example.com',
+                    phone: input,
+                    message: 'Teste de formatação de telefone.',
+                    timestamp: new Date()
+                };
+
+                await sendContactEmail(contactData);
+
+                const emailCall = mockSend.mock.calls[mockSend.mock.calls.length - 1][0];
+                expect(emailCall.html).toContain(expected);
+                expect(emailCall.text).toContain(expected);
+            }
+        });
+    });
+
+    describe('Error Recovery and Resilience', () => {
+        it('should handle intermittent network failures', async () => {
+            // Simulate intermittent failures
+            mockSend
+                .mockRejectedValueOnce(new Error('ECONNRESET'))
+                .mockRejectedValueOnce(new Error('ETIMEDOUT'))
+                .mockResolvedValueOnce({
+                    data: { id: 'email-recovered' },
+                    error: null
+                });
+
+            const contactData = {
+                name: 'Resilience Test',
+                email: 'resilience@example.com',
+                phone: '11999887766',
+                message: 'Testing error recovery mechanism.',
+                timestamp: new Date()
+            };
+
+            const result = await sendContactEmail(contactData);
+
+            expect(result.success).toBe(true);
+            expect(result.messageId).toBe('email-recovered');
+            expect(mockSend).toHaveBeenCalledTimes(3); // 2 failures + 1 success
+        });
+
+        it('should handle API rate limiting from Resend', async () => {
+            const rateLimitError = new Error('Rate limit exceeded');
+            rateLimitError.status = 429;
+
+            mockSend
+                .mockRejectedValueOnce(rateLimitError)
+                .mockResolvedValueOnce({
+                    data: { id: 'email-after-rate-limit' },
+                    error: null
+                });
+
+            const contactData = {
+                name: 'Rate Limit Test',
+                email: 'ratelimit@example.com',
+                phone: '11999887766',
+                message: 'Testing rate limit handling.',
+                timestamp: new Date()
+            };
+
+            const result = await sendContactEmail(contactData);
+
+            expect(result.success).toBe(true);
+            expect(mockSend).toHaveBeenCalledTimes(2);
+        });
+
+        it('should fail gracefully after maximum retries', async () => {
+            mockSend.mockRejectedValue(new Error('Persistent failure'));
+
+            const contactData = {
+                name: 'Failure Test',
+                email: 'failure@example.com',
+                phone: '11999887766',
+                message: 'Testing maximum retry behavior.',
+                timestamp: new Date()
+            };
+
+            const result = await sendContactEmail(contactData);
+
+            expect(result.success).toBe(false);
+            expect(result.error.code).toBe('EMAIL_SEND_FAILED');
+            expect(mockSend).toHaveBeenCalledTimes(3); // Maximum retries
+        });
+    });
+
+    describe('Template Content Validation', () => {
+        it('should include all required medical practice information', async () => {
+            mockSend.mockResolvedValue({
+                data: { id: 'email-medical-info' },
+                error: null
+            });
+
+            const contactData = {
+                name: 'Paciente Médico',
+                email: 'medico@example.com',
+                phone: '11999887766',
+                message: 'Consulta sobre procedimento oftalmológico.',
+                timestamp: new Date('2024-01-15T10:30:00Z')
+            };
+
+            await sendContactEmail(contactData);
+
+            const emailCall = mockSend.mock.calls[0][0];
+
+            // Verify medical practice branding
+            expect(emailCall.html).toContain('Saraiva Vision');
+            expect(emailCall.html).toContain('Clínica Oftalmológica');
+
+            // Verify professional headers
+            expect(emailCall.headers['X-Mailer']).toBe('SaraivaVision-ContactForm');
+            expect(emailCall.headers['X-Priority']).toBe('1');
+            expect(emailCall.headers['X-Contact-ID']).toMatch(/^[a-f0-9]{32}$/);
+
+            // Verify structured patient information
+            expect(emailCall.html).toContain('Informações do Paciente');
+            expect(emailCall.html).toContain('Data/Hora:');
+            expect(emailCall.html).toContain('15/01/2024');
+        });
+
+        it('should include LGPD compliance information', async () => {
+            mockSend.mockResolvedValue({
+                data: { id: 'email-lgpd' },
+                error: null
+            });
+
+            const contactData = {
+                name: 'Teste LGPD',
+                email: 'lgpd@example.com',
+                phone: '11999887766',
+                message: 'Teste de conformidade LGPD.',
+                timestamp: new Date()
+            };
+
+            await sendContactEmail(contactData);
+
+            const emailCall = mockSend.mock.calls[0][0];
+
+            // Verify LGPD compliance notice
+            expect(emailCall.html).toContain('LGPD');
+            expect(emailCall.html).toContain('consentimento explícito');
+            expect(emailCall.html).toContain('Lei Geral de Proteção de Dados');
+
+            // Verify in text version too
+            expect(emailCall.text).toContain('LGPD');
+            expect(emailCall.text).toContain('consentimento explícito');
+        });
+
+        it('should format timestamps in Brazilian locale', async () => {
+            mockSend.mockResolvedValue({
+                data: { id: 'email-timestamp' },
+                error: null
+            });
+
+            const testDates = [
+                new Date('2024-01-15T14:30:00Z'),
+                new Date('2024-12-25T09:15:00Z'),
+                new Date('2024-06-10T18:45:00Z')
+            ];
+
+            for (const timestamp of testDates) {
+                const contactData = {
+                    name: 'Teste Data',
+                    email: 'data@example.com',
+                    phone: '11999887766',
+                    message: 'Teste de formatação de data.',
+                    timestamp
+                };
+
+                await sendContactEmail(contactData);
+
+                const emailCall = mockSend.mock.calls[mockSend.mock.calls.length - 1][0];
+
+                // Should format in Brazilian format (DD/MM/YYYY)
+                const expectedDate = timestamp.toLocaleDateString('pt-BR');
+                expect(emailCall.html).toContain(expectedDate);
+                expect(emailCall.text).toContain(expectedDate);
+            }
+        });
+    });
+
+    describe('Performance and Scalability', () => {
+        it('should handle concurrent email sending efficiently', async () => {
+            const concurrentEmails = 10;
+            const promises = [];
+
+            // Mock successful responses for all emails
+            mockSend.mockImplementation(async () => {
+                // Simulate realistic API delay
+                await new Promise(resolve => setTimeout(resolve, 100));
+                return {
+                    data: { id: `concurrent-${Date.now()}-${Math.random()}` },
+                    error: null
+                };
+            });
+
+            // Create concurrent email sending promises
+            for (let i = 0; i < concurrentEmails; i++) {
+                const contactData = {
+                    name: `Concurrent User ${i}`,
+                    email: `user${i}@example.com`,
+                    phone: '11999887766',
+                    message: `Concurrent message ${i} for testing.`,
+                    timestamp: new Date()
+                };
+
+                promises.push(sendContactEmail(contactData));
+            }
+
+            const startTime = Date.now();
+            const results = await Promise.all(promises);
+            const totalTime = Date.now() - startTime;
+
+            // All should succeed
+            results.forEach(result => {
+                expect(result.success).toBe(true);
+                expect(result.messageId).toBeDefined();
+            });
+
+            // Should complete concurrently (faster than sequential)
+            expect(totalTime).toBeLessThan(concurrentEmails * 150); // Allow some overhead
+            expect(mockSend).toHaveBeenCalledTimes(concurrentEmails);
+        });
+
+        it('should generate unique contact IDs under load', async () => {
+            const iterations = 100;
+            const contactIds = new Set();
+
+            mockSend.mockImplementation(async () => ({
+                data: { id: `load-test-${Date.now()}` },
+                error: null
+            }));
+
+            // Generate many emails quickly
+            const promises = [];
+            for (let i = 0; i < iterations; i++) {
+                const contactData = {
+                    name: `Load Test ${i}`,
+                    email: `load${i}@example.com`,
+                    phone: '11999887766',
+                    message: `Load test message ${i}.`,
+                    timestamp: new Date()
+                };
+
+                promises.push(sendContactEmail(contactData));
+            }
+
+            const results = await Promise.all(promises);
+
+            // Collect all contact IDs
+            results.forEach(result => {
+                expect(result.success).toBe(true);
+                contactIds.add(result.contactId);
+            });
+
+            // All contact IDs should be unique
+            expect(contactIds.size).toBe(iterations);
+        });
+    });
+
+    describe('Configuration Validation', () => {
+        it('should detect missing environment variables', () => {
+            delete process.env.RESEND_API_KEY;
+
+            const result = validateEmailServiceConfig();
+
+            expect(result.isValid).toBe(false);
+            expect(result.errors).toContain('RESEND_API_KEY environment variable is not set');
+        });
+
+        it('should validate doctor email format', () => {
+            process.env.DOCTOR_EMAIL = 'invalid-email-format';
+
+            const result = validateEmailServiceConfig();
+
+            expect(result.isValid).toBe(false);
+            expect(result.errors).toContain('DOCTOR_EMAIL environment variable is not a valid email address');
+        });
+
+        it('should pass with valid configuration', () => {
+            process.env.RESEND_API_KEY = 'test-key';
+            process.env.DOCTOR_EMAIL = 'valid@example.com';
+
+            const result = validateEmailServiceConfig();
+
+            expect(result.isValid).toBe(true);
+            expect(result.errors).toHaveLength(0);
+        });
+    });
+
+    describe('Health Check Functionality', () => {
+        it('should report healthy status with valid config', async () => {
+            process.env.RESEND_API_KEY = 'test-key';
+            process.env.DOCTOR_EMAIL = 'test@example.com';
+
+            const health = await checkEmailServiceHealth();
+
+            expect(health.healthy).toBe(true);
+            expect(health.message).toBe('Email service is configured correctly');
+            expect(health.config.doctorEmail).toBe('test@example.com');
+            expect(health.config.resendConfigured).toBe(true);
+        });
+
+        it('should report unhealthy status with invalid config', async () => {
+            delete process.env.RESEND_API_KEY;
+
+            const health = await checkEmailServiceHealth();
+
+            expect(health.healthy).toBe(false);
+            expect(health.error).toBe('Configuration error');
+            expect(health.details).toEqual(expect.arrayContaining([
+                expect.stringContaining('RESEND_API_KEY')
+            ]));
+        });
+    });
+});

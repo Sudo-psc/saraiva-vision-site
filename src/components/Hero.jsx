@@ -37,7 +37,7 @@ const Hero = () => {
     });
   };
 
-  const [heroSrc, setHeroSrc] = useState('/img/hero.png');
+  const [heroSrc, setHeroSrc] = useState('/images/hero-1920w.webp');
   const handleHeroError = useCallback(() => {
     if (heroSrc !== '/images/drphilipe/drphilipe_jaleco Medium.jpeg') setHeroSrc('/images/drphilipe/drphilipe_jaleco Medium.jpeg');
   }, [heroSrc]);
@@ -100,7 +100,7 @@ const Hero = () => {
                 <div className="relative group">
                   <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
                     <OptimizedPicture
-                      src="/img/avatar-female-blonde.png"
+                      src="/images/avatar-female-blonde-640w.webp"
                       alt={t('ui.alt.satisfied_patient_1', 'Paciente satisfeito 1')}
                       className="w-12 h-12 object-cover"
                       width={48}
@@ -119,7 +119,7 @@ const Hero = () => {
                 <div className="relative group">
                   <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
                     <OptimizedPicture
-                      src="/img/avatar-female-brunette.png"
+                      src="/images/avatar-female-brunette-640w.webp"
                       alt={t('ui.alt.satisfied_patient_2', 'Paciente satisfeito 2')}
                       className="w-12 h-12 object-cover"
                       width={48}

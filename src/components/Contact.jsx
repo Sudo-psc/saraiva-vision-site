@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock, Globe, Shield, Wifi, WifiOff, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
@@ -14,6 +14,14 @@ import { validateField, validateContactSubmission } from '@/lib/validation';
 const Contact = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
+
+  // Accessibility refs for focus management
+  const formRef = useRef(null);
+  const submitButtonRef = useRef(null);
+  const errorSummaryRef = useRef(null);
+  const successMessageRef = useRef(null);
+  const liveRegionRef = useRef(null);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -34,8 +42,20 @@ const Contact = () => {
   const [retryCount, setRetryCount] = useState(0);
   const [showAlternativeContacts, setShowAlternativeContacts] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
+  const [announceMessage, setAnnounceMessage] = useState('');
   const { ready: recaptchaReady, execute: executeRecaptcha } = useRecaptcha();
-  const { isOnline } = useConnectionStatus();
+  const connectionStatus = useConnectionStatus();
+  const { isOnline } = connectionStatus || { isOnline: true };
+
+  // Accessibility announcement function
+  const announceToScreenReader = (message, priority = 'polite') => {
+    setAnnounceMessage(message);
+    if (liveRegionRef.current) {
+      liveRegionRef.current.setAttribute('aria-live', priority);
+      // Clear after announcement to allow repeated messages
+      setTimeout(() => setAnnounceMessage(''), 100);
+    }
+  };
 
   // Real-time field validation using the validation library
   const validateFieldRealTime = async (fieldName, value) => {
@@ -54,22 +74,40 @@ const Contact = () => {
           ...prev,
           [fieldName]: result.error
         }));
+        // Announce validation error to screen readers
+        announceToScreenReader(`Erro no campo ${getFieldLabel(fieldName)}: ${result.error}`, 'assertive');
       } else {
         setErrors(prev => {
           const newErrors = { ...prev };
           delete newErrors[fieldName];
           return newErrors;
         });
+        // Announce successful validation
+        announceToScreenReader(`Campo ${getFieldLabel(fieldName)} válido`);
       }
     } catch (error) {
       console.error('Field validation error:', error);
+      const errorMessage = 'Erro de validação';
       setErrors(prev => ({
         ...prev,
-        [fieldName]: 'Erro de validação'
+        [fieldName]: errorMessage
       }));
+      announceToScreenReader(`Erro no campo ${getFieldLabel(fieldName)}: ${errorMessage}`, 'assertive');
     } finally {
       setIsValidating(false);
     }
+  };
+
+  // Helper function to get field labels for screen reader announcements
+  const getFieldLabel = (fieldName) => {
+    const labels = {
+      name: 'Nome',
+      email: 'E-mail',
+      phone: 'Telefone',
+      message: 'Mensagem',
+      consent: 'Consentimento'
+    };
+    return labels[fieldName] || fieldName;
   };
 
 
@@ -128,9 +166,14 @@ const Contact = () => {
     setSubmissionError(null);
     setShowAlternativeContacts(false);
 
+    // Announce form submission start
+    announceToScreenReader('Enviando formulário, aguarde...', 'assertive');
+
     // Check connection status first
     if (!isOnline) {
+      const errorMessage = 'Sem conexão com a internet. Verifique sua conexão e tente novamente.';
       setSubmissionError({ name: 'NetworkError', message: 'No internet connection' });
+      announceToScreenReader(errorMessage, 'assertive');
       return;
     }
 
@@ -147,7 +190,9 @@ const Contact = () => {
     const lastSubmission = localStorage.getItem('lastContactSubmission');
     const now = Date.now();
     if (lastSubmission && (now - parseInt(lastSubmission)) < 30000) { // 30 seconds
+      const errorMessage = 'Muitas tentativas. Aguarde 30 segundos antes de tentar novamente.';
       setSubmissionError({ error: 'rate_limited' });
+      announceToScreenReader(errorMessage, 'assertive');
       return;
     }
 
@@ -157,6 +202,22 @@ const Contact = () => {
         field: Object.keys(errors)[0] || 'validation',
         code: 'validation_failed'
       });
+
+      // Focus on first error field and announce validation errors
+      const firstErrorField = Object.keys(errors)[0];
+      if (firstErrorField) {
+        const fieldElement = document.getElementById(firstErrorField);
+        if (fieldElement) {
+          fieldElement.focus();
+        }
+        announceToScreenReader(`Erro de validação. Corrija o campo ${getFieldLabel(firstErrorField)} e tente novamente.`, 'assertive');
+      }
+
+      // Focus on error summary if available
+      if (errorSummaryRef.current) {
+        errorSummaryRef.current.focus();
+      }
+
       return;
     }
 
@@ -202,6 +263,16 @@ const Contact = () => {
       setRecaptchaToken(null);
       setSubmissionSuccess(true);
 
+      // Announce success to screen readers
+      announceToScreenReader('Formulário enviado com sucesso! Recebemos sua mensagem e entraremos em contato em breve.', 'assertive');
+
+      // Focus on success message for screen readers
+      setTimeout(() => {
+        if (successMessageRef.current) {
+          successMessageRef.current.focus();
+        }
+      }, 100);
+
       // Clear success state after 5 seconds
       setTimeout(() => setSubmissionSuccess(false), 5000);
 
@@ -216,6 +287,10 @@ const Contact = () => {
         formData: { name: formData.name, email: formData.email }
       });
 
+      // Announce error to screen readers
+      const errorMessage = getUserFriendlyError(error)?.userMessage || 'Erro ao enviar formulário. Tente novamente.';
+      announceToScreenReader(`Erro no envio: ${errorMessage}`, 'assertive');
+
       // Try to store for retry if it's a recoverable error
       if (retryCount < 3 && (error.name === 'NetworkError' || error.status >= 500)) {
         const stored = FallbackStrategies.storeForRetry(submissionData);
@@ -225,12 +300,14 @@ const Contact = () => {
             description: 'Sua mensagem foi salva e será enviada quando a conexão for restabelecida.',
             duration: 4000,
           });
+          announceToScreenReader('Mensagem salva para reenvio automático quando a conexão for restabelecida.');
         }
       }
 
       // Show alternative contacts for critical errors
       if (error.status === 500 || error.name === 'NetworkError') {
         setShowAlternativeContacts(true);
+        announceToScreenReader('Erro crítico detectado. Métodos de contato alternativos estão disponíveis abaixo do formulário.');
       }
 
     } finally {
@@ -290,6 +367,66 @@ const Contact = () => {
     return unsubscribe;
   }, [submissionError]);
 
+  // Keyboard navigation handler
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      // Handle Escape key to clear errors or cancel submission
+      if (event.key === 'Escape') {
+        if (submissionError) {
+          handleDismissError();
+          announceToScreenReader('Erro dismissado');
+        } else if (isSubmitting) {
+          // Note: We can't actually cancel the submission, but we can announce
+          announceToScreenReader('Não é possível cancelar o envio em andamento');
+        }
+      }
+
+      // Handle Enter key on error summary to focus first error field
+      if (event.key === 'Enter' && event.target === errorSummaryRef.current) {
+        event.preventDefault();
+        const firstErrorField = Object.keys(errors)[0];
+        if (firstErrorField) {
+          const fieldElement = document.getElementById(firstErrorField);
+          if (fieldElement) {
+            fieldElement.focus();
+          }
+        }
+      }
+    };
+
+    // Add event listener to form
+    if (formRef.current) {
+      formRef.current.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      if (formRef.current) {
+        formRef.current.removeEventListener('keydown', handleKeyDown);
+      }
+    };
+  }, [submissionError, isSubmitting, errors]);
+
+  // Focus management for form submission states
+  useEffect(() => {
+    if (Object.keys(errors).length > 0 && errorSummaryRef.current) {
+      // Focus error summary when validation errors appear
+      setTimeout(() => {
+        errorSummaryRef.current?.focus();
+      }, 100);
+    }
+  }, [errors]);
+
+  // Announce connection status changes
+  useEffect(() => {
+    if (isOnline !== undefined) {
+      announceToScreenReader(
+        isOnline
+          ? 'Conexão com a internet restabelecida'
+          : 'Conexão com a internet perdida'
+      );
+    }
+  }, [isOnline]);
+
   // reCAPTCHA v3 does not require visible widget handlers
 
   const contactInfo = [
@@ -338,10 +475,39 @@ const Contact = () => {
 
 
   return (
-    <section id="contact" className="py-16 md:py-20 bg-subtle-gradient scroll-block-internal">
+    <section
+      id="contact"
+      className="py-16 md:py-20 bg-subtle-gradient scroll-block-internal"
+      aria-labelledby="contact-heading"
+      role="region"
+    >
+      {/* Skip link for keyboard navigation */}
+      <a
+        href="#form-title"
+        className="skip-link sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded focus:no-underline"
+        onClick={(e) => {
+          e.preventDefault();
+          document.getElementById('name')?.focus();
+        }}
+      >
+        Pular para o formulário de contato
+      </a>
+
+      {/* Screen reader live region for announcements */}
+      <div
+        ref={liveRegionRef}
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+        role="status"
+      >
+        {announceMessage}
+      </div>
+
       <div className="container mx-auto px-4 md:px-6 lg:px-[2.5%] xl:px-[3%] 2xl:px-[3.5%]">
         <div className="text-center mb-16">
           <motion.h2
+            id="contact-heading"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -376,16 +542,28 @@ const Contact = () => {
             transition={{ duration: 0.6 }}
           >
             <div className="bg-white rounded-2xl p-8 shadow-soft-light">
-              <h3 className="mb-6">{t('contact.form_title')}</h3>
+              <h3 className="mb-6" id="form-title">{t('contact.form_title')}</h3>
 
-              <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+              <form
+                ref={formRef}
+                onSubmit={handleSubmit}
+                className="space-y-5"
+                noValidate
+                aria-labelledby="form-title"
+                aria-describedby="form-description"
+              >
+                <p id="form-description" className="sr-only">
+                  Formulário de contato para agendar consulta ou tirar dúvidas. Todos os campos marcados com asterisco são obrigatórios.
+                </p>
                 {/* Form Validation Summary for Screen Readers */}
                 {Object.keys(errors).length > 0 && (
                   <div
-                    className="p-3 bg-red-50 border border-red-200 rounded-lg"
+                    ref={errorSummaryRef}
+                    className="p-3 bg-red-50 border border-red-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                     role="alert"
-                    aria-live="polite"
+                    aria-live="assertive"
                     aria-labelledby="form-errors-title"
+                    tabIndex="-1"
                   >
                     <h4 id="form-errors-title" className="text-sm font-semibold text-red-800 mb-2">
                       Por favor, corrija os seguintes erros:
@@ -393,11 +571,16 @@ const Contact = () => {
                     <ul className="text-sm text-red-700 space-y-1">
                       {Object.entries(errors).map(([field, error]) => (
                         <li key={field}>
-                          • {field === 'name' ? 'Nome' :
-                            field === 'email' ? 'E-mail' :
-                              field === 'phone' ? 'Telefone' :
-                                field === 'message' ? 'Mensagem' :
-                                  field === 'consent' ? 'Consentimento' : field}: {error}
+                          <a
+                            href={`#${field}`}
+                            className="underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 rounded"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              document.getElementById(field)?.focus();
+                            }}
+                          >
+                            • {getFieldLabel(field)}: {error}
+                          </a>
                         </li>
                       ))}
                     </ul>
@@ -417,6 +600,7 @@ const Contact = () => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       required
+                      autoComplete="name"
                       className={`form-input mobile-touch-input pr-10 ${errors.name
                         ? 'border-red-400 focus:ring-red-300'
                         : fieldValidation.name?.success
@@ -425,9 +609,13 @@ const Contact = () => {
                         }`}
                       placeholder={t('contact.name_placeholder')}
                       aria-invalid={!!errors.name}
-                      aria-describedby={errors.name ? 'error-name' : fieldValidation.name?.success ? 'success-name' : undefined}
+                      aria-describedby={errors.name ? 'error-name' : fieldValidation.name?.success ? 'success-name' : 'name-help'}
+                      aria-required="true"
                       style={{ fontSize: '16px', minHeight: '48px', padding: '12px 16px' }}
                     />
+                    <div id="name-help" className="sr-only">
+                      Digite seu nome completo. Este campo é obrigatório.
+                    </div>
                     {/* Validation status icon */}
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                       {isValidating && touched.name ? (
@@ -466,6 +654,7 @@ const Contact = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         required
+                        autoComplete="email"
                         className={`form-input mobile-touch-input pr-10 ${errors.email
                           ? 'border-red-400 focus:ring-red-300'
                           : fieldValidation.email?.success
@@ -474,10 +663,14 @@ const Contact = () => {
                           }`}
                         placeholder={t('contact.email_placeholder')}
                         aria-invalid={!!errors.email}
-                        aria-describedby={errors.email ? 'error-email' : fieldValidation.email?.success ? 'success-email' : undefined}
+                        aria-describedby={errors.email ? 'error-email' : fieldValidation.email?.success ? 'success-email' : 'email-help'}
+                        aria-required="true"
                         inputMode="email"
                         style={{ fontSize: '16px', minHeight: '48px', padding: '12px 16px' }}
                       />
+                      <div id="email-help" className="sr-only">
+                        Digite um endereço de e-mail válido. Este campo é obrigatório.
+                      </div>
                       {/* Validation status icon */}
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                         {isValidating && touched.email ? (
@@ -514,6 +707,7 @@ const Contact = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         required
+                        autoComplete="tel"
                         className={`form-input mobile-touch-input pr-10 ${errors.phone
                           ? 'border-red-400 focus:ring-red-300'
                           : fieldValidation.phone?.success
@@ -522,10 +716,14 @@ const Contact = () => {
                           }`}
                         placeholder={t('contact.phone_placeholder')}
                         aria-invalid={!!errors.phone}
-                        aria-describedby={errors.phone ? 'error-phone' : fieldValidation.phone?.success ? 'success-phone' : undefined}
+                        aria-describedby={errors.phone ? 'error-phone' : fieldValidation.phone?.success ? 'success-phone' : 'phone-help'}
+                        aria-required="true"
                         inputMode="tel"
                         style={{ fontSize: '16px', minHeight: '48px', padding: '12px 16px' }}
                       />
+                      <div id="phone-help" className="sr-only">
+                        Digite seu número de telefone com DDD. Formato: (XX) XXXXX-XXXX. Este campo é obrigatório.
+                      </div>
                       {/* Validation status icon */}
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                         {isValidating && touched.phone ? (
@@ -575,6 +773,7 @@ const Contact = () => {
                       onBlur={handleBlur}
                       required
                       rows="4"
+                      maxLength="2000"
                       className={`form-input mobile-touch-input pr-10 ${errors.message
                         ? 'border-red-400 focus:ring-red-300'
                         : fieldValidation.message?.success
@@ -584,6 +783,7 @@ const Contact = () => {
                       placeholder={t('contact.message_placeholder')}
                       aria-invalid={!!errors.message}
                       aria-describedby={errors.message ? 'error-message' : fieldValidation.message?.success ? 'success-message' : 'message-help'}
+                      aria-required="true"
                       style={{ fontSize: '16px', minHeight: '120px', padding: '12px 16px', resize: 'vertical', overscrollBehavior: 'none' }}
                     ></textarea>
                     {/* Validation status icon */}
@@ -665,7 +865,8 @@ const Contact = () => {
                         onChange={handleChange}
                         aria-invalid={!!errors.consent}
                         aria-describedby={errors.consent ? 'error-consent' : 'consent-description'}
-                        className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 focus:ring-2"
+                        aria-required="true"
+                        className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 focus:ring-2 focus:ring-offset-2"
                         required
                       />
                       <div className="flex-1">
@@ -783,9 +984,15 @@ const Contact = () => {
 
                 {/* Success Message */}
                 {submissionSuccess && (
-                  <div className="p-4 bg-green-50 border border-green-200 rounded-lg" role="alert" aria-live="polite">
+                  <div
+                    ref={successMessageRef}
+                    className="p-4 bg-green-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    role="alert"
+                    aria-live="assertive"
+                    tabIndex="-1"
+                  >
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-600" />
+                      <CheckCircle className="h-5 w-5 text-green-600" aria-hidden="true" />
                       <div>
                         <h4 className="text-sm font-semibold text-green-800">
                           Mensagem enviada com sucesso!
@@ -800,22 +1007,36 @@ const Contact = () => {
                 )}
 
                 <Button
+                  ref={submitButtonRef}
                   disabled={isSubmitting || !isOnline || !recaptchaReady}
                   type="submit"
                   size="lg"
-                  className={`w-full flex items-center justify-center gap-2 transition-all duration-200 ${submissionSuccess
+                  className={`w-full flex items-center justify-center gap-2 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${submissionSuccess
                     ? 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
                     : 'disabled:opacity-60'
                     }`}
                   aria-busy={isSubmitting}
-                  aria-describedby="submit-status"
+                  aria-describedby="submit-status submit-help"
+                  aria-label={
+                    isRetrying
+                      ? `Tentando novamente, tentativa ${retryCount + 1} de 3`
+                      : isSubmitting
+                        ? 'Enviando mensagem, aguarde'
+                        : submissionSuccess
+                          ? 'Mensagem enviada com sucesso'
+                          : !isOnline
+                            ? 'Botão desabilitado: sem conexão com a internet'
+                            : !recaptchaReady
+                              ? 'Botão desabilitado: carregando verificação de segurança'
+                              : 'Enviar mensagem de contato'
+                  }
                 >
                   {isSubmitting ? (
-                    <Loader2 className="h-5 w-5 animate-spin" />
+                    <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
                   ) : submissionSuccess ? (
-                    <CheckCircle className="h-5 w-5" />
+                    <CheckCircle className="h-5 w-5" aria-hidden="true" />
                   ) : (
-                    <Send className="h-5 w-5" />
+                    <Send className="h-5 w-5" aria-hidden="true" />
                   )}
 
                   <span>
@@ -834,11 +1055,15 @@ const Contact = () => {
                   </span>
                 </Button>
 
-                {/* Submit Status for Screen Readers */}
+                {/* Submit Status and Help for Screen Readers */}
                 <div id="submit-status" className="sr-only" aria-live="polite" aria-atomic="true">
                   {isSubmitting && 'Enviando formulário, aguarde...'}
                   {submissionSuccess && 'Formulário enviado com sucesso'}
                   {submissionError && 'Erro no envio do formulário'}
+                </div>
+
+                <div id="submit-help" className="sr-only">
+                  Para enviar o formulário, certifique-se de que todos os campos obrigatórios estão preenchidos corretamente e que você tem conexão com a internet.
                 </div>
               </form>
             </div>
@@ -850,35 +1075,53 @@ const Contact = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="flex flex-col space-y-6"
+            role="complementary"
+            aria-labelledby="contact-options-heading"
           >
             {/* Expose clinic name for tests and SR, without altering visual UI */}
             <div className="sr-only">{clinicInfo.name}</div>
-            <a href={clinicInfo.onlineSchedulingUrl} target="_blank" rel="noopener noreferrer" className="block modern-card-alt p-6 group mb-4">
+
+            <h3 id="contact-options-heading" className="sr-only">Opções de contato e agendamento</h3>
+
+            <a
+              href={clinicInfo.onlineSchedulingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block modern-card-alt p-6 group mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-2xl"
+              aria-describedby="online-scheduling-desc"
+            >
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-blue-100 rounded-xl">
+                <div className="p-3 bg-blue-100 rounded-xl" aria-hidden="true">
                   <Globe className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-800 group-hover:text-blue-700">{t('contact.online_scheduling_title')}</h4>
-                  <div className="mt-1">{t('contact.online_scheduling_desc')}</div>
+                  <div className="mt-1" id="online-scheduling-desc">{t('contact.online_scheduling_desc')}</div>
                   <div className="text-blue-600 text-sm mt-1 font-semibold">{t('contact.online_scheduling_benefit')}</div>
                 </div>
               </div>
             </a>
-            <a href={chatbotLink} target="_blank" rel="noopener noreferrer" className="block modern-card-alt p-6 group">
+
+            <a
+              href={chatbotLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block modern-card-alt p-6 group focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded-2xl"
+              aria-describedby="chatbot-desc"
+            >
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-green-100 rounded-xl">
+                <div className="p-3 bg-green-100 rounded-xl" aria-hidden="true">
                   <Bot className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-800 group-hover:text-green-700">{t('contact.chatbot_title')}</h4>
-                  <div className="mt-1">{t('contact.chatbot_desc')}</div>
+                  <div className="mt-1" id="chatbot-desc">{t('contact.chatbot_desc')}</div>
                   <div className="text-green-600 text-sm mt-1 font-semibold">{t('contact.chatbot_availability')}</div>
                 </div>
               </div>
             </a>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5" role="list" aria-label="Informações de contato">
               {contactInfo.map((info, index) => (
                 <motion.div
                   key={index}
@@ -886,10 +1129,11 @@ const Contact = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="modern-card p-6"
+                  className="modern-card p-6 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
+                  role="listitem"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="icon-container">
+                    <div className="icon-container" aria-hidden="true">
                       {info.icon}
                     </div>
                     <div className="min-w-0 break-words leading-relaxed">

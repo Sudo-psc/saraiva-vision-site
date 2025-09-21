@@ -26,7 +26,7 @@ describe('Contact Component Error Handling Integration', () => {
         execute: vi.fn()
     };
 
-    beforeEach(() => {
+    beforeEach(async () => {
         vi.clearAllMocks();
 
         // Setup default mocks
