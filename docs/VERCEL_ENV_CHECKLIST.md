@@ -30,6 +30,6 @@ Use esta lista para configurar todas as variáveis do projeto no painel do Verce
 3. Clique em **Encrypt** para todas as variáveis sensíveis (`RESEND_API_KEY`, `RECAPTCHA_SECRET`, chaves Supabase etc.).
 4. Após salvar, utilize o botão **Redeploy** para aplicar as variáveis no ambiente desejado.
 5. Valide o endpoint `/api/contact` em produção utilizando `curl` ou o formulário do site. O payload deve retornar `200` com `ok: true`.
-6. Revise os logs do Vercel (aba *Functions*) para garantir que as funções estejam usando `nodejs20.x` e que não existam erros de permissão.
+6. Revise os logs do Vercel (aba *Functions*) para garantir que as funções estejam usando `nodejs22.x` e que não existam erros de permissão.
 
 > **Dica:** mantenha um documento interno com os valores originais criptografados (ex.: 1Password/Bitwarden) e limite o acesso somente à equipe autorizada conforme a LGPD.
