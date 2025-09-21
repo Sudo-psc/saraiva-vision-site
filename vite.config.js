@@ -1,10 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
-import { workboxVitePlugin } from './src/utils/workbox-vite-plugin.js'
 
 export default defineConfig({
-  plugins: [react(), workboxVitePlugin()],
+  plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
