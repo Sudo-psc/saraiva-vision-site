@@ -15,7 +15,7 @@ const Hero = () => {
   const { t } = useTranslation();
   const { openFloatingCTA } = useWhatsApp();
 
-  
+
 
   const handleAgendarClick = () => {
     // Use validated scheduling URL with enhanced error handling
@@ -38,7 +38,7 @@ const Hero = () => {
     });
   };
 
-  // Remove manual state management, let ImageWithFallback handle it
+// Remove manual state management, let ImageWithFallback handle it
 
   return (
     <section

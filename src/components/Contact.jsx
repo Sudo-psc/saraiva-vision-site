@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock, Globe, Shield, Wifi, WifiOff } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock, Globe, Shield, Wifi, WifiOff, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
@@ -9,6 +9,7 @@ import { useRecaptcha } from '@/hooks/useRecaptcha';
 import { submitContactForm, FallbackStrategies, useConnectionStatus, networkMonitor } from '@/lib/apiUtils';
 import { getUserFriendlyError, getRecoverySteps, logError } from '@/lib/errorHandling';
 import ErrorFeedback, { NetworkError, RateLimitError, RecaptchaError, EmailServiceError } from '@/components/ui/ErrorFeedback';
+import { validateField, validateContactSubmission } from '@/lib/validation';
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -20,60 +21,55 @@ const Contact = () => {
     message: '',
     consent: false,
     // Honeypot field for spam protection
-    website: ''
+    honeypot: ''
   });
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const [fieldValidation, setFieldValidation] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState(null);
   const [submissionError, setSubmissionError] = useState(null);
   const [isRetrying, setIsRetrying] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [showAlternativeContacts, setShowAlternativeContacts] = useState(false);
+  const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const { ready: recaptchaReady, execute: executeRecaptcha } = useRecaptcha();
   const { isOnline } = useConnectionStatus();
 
-  // Input sanitization helper
-  const sanitizeInput = (input) => {
-    return input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-      .replace(/javascript:/gi, '')
-      .replace(/on\w+\s*=/gi, '')
-      .trim();
-  };
+  // Real-time field validation using the validation library
+  const validateFieldRealTime = async (fieldName, value) => {
+    setIsValidating(true);
 
-  const validators = {
-    name: (v) => {
-      const sanitized = sanitizeInput(v);
-      if (sanitized.length < 3) return t('contact.validation.name_min', 'Nome deve ter pelo menos 3 caracteres');
-      if (sanitized.length > 50) return t('contact.validation.name_max', 'Nome muito longo (máximo 50 caracteres)');
-      if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(sanitized)) return t('contact.validation.name_invalid', 'Nome deve conter apenas letras');
-      return true;
-    },
-    email: (v) => {
-      const sanitized = sanitizeInput(v);
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(sanitized)) return t('contact.validation.email_invalid', 'Email inválido');
-      if (sanitized.length > 100) return t('contact.validation.email_max', 'Email muito longo');
-      return true;
-    },
-    phone: (v) => {
-      const cleaned = v.replace(/\D/g, '');
-      if (cleaned.length < 10 || cleaned.length > 13) return t('contact.validation.phone_invalid', 'Telefone inválido');
-      return true;
-    },
-    message: (v) => {
-      const sanitized = sanitizeInput(v);
-      if (sanitized.length < 10) return t('contact.validation.message_min', 'Mensagem deve ter pelo menos 10 caracteres');
-      if (sanitized.length > 1000) return t('contact.validation.message_max', 'Mensagem muito longa (máximo 1000 caracteres)');
-      // Check for suspicious patterns
-      if (/(https?:\/\/|www\.|\.com|\.org|\.net)/gi.test(sanitized)) {
-        return t('contact.validation.no_links', 'Links não são permitidos na mensagem');
+    try {
+      const result = validateField(fieldName, value, formData);
+
+      setFieldValidation(prev => ({
+        ...prev,
+        [fieldName]: result
+      }));
+
+      if (!result.success) {
+        setErrors(prev => ({
+          ...prev,
+          [fieldName]: result.error
+        }));
+      } else {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors[fieldName];
+          return newErrors;
+        });
       }
-      return true;
-    },
-    consent: (v) => v === true || t('contact.validation.consent_required', 'É necessário aceitar os termos'),
-    // With reCAPTCHA v3, we acquire a token on submit; do not require manual widget
-    recaptcha: () => true
+    } catch (error) {
+      console.error('Field validation error:', error);
+      setErrors(prev => ({
+        ...prev,
+        [fieldName]: 'Erro de validação'
+      }));
+    } finally {
+      setIsValidating(false);
+    }
   };
 
 
@@ -84,32 +80,45 @@ const Contact = () => {
 
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
-    setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    const newValue = type === 'checkbox' ? checked : value;
+
+    setFormData(prev => ({ ...prev, [name]: newValue }));
+
+    // Clear submission success state when user starts typing again
+    if (submissionSuccess) {
+      setSubmissionSuccess(false);
+    }
+
+    // Real-time validation for non-honeypot fields
+    if (name !== 'honeypot' && touched[name]) {
+      validateFieldRealTime(name, newValue);
+    }
   };
 
   const handleBlur = (e) => {
     const { name, value } = e.target;
-    if (!touched[name]) setTouched(prev => ({ ...prev, [name]: true }));
 
-    const rule = validators[name];
-    if (rule) {
-      const result = rule(value);
-      setErrors(prev => ({ ...prev, [name]: result === true ? undefined : result }));
+    // Mark field as touched
+    if (!touched[name]) {
+      setTouched(prev => ({ ...prev, [name]: true }));
+    }
+
+    // Validate field on blur (except honeypot)
+    if (name !== 'honeypot') {
+      validateFieldRealTime(name, value);
     }
   };
 
   const validateAll = () => {
-    const newErrors = {};
-    Object.keys(formData).forEach((field) => {
-      const rule = validators[field];
-      if (rule) {
-        const result = rule(formData[field]);
-        if (result !== true) newErrors[field] = result;
-      }
-    });
+    const validationResult = validateContactSubmission(formData);
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    if (!validationResult.success) {
+      setErrors(validationResult.errors);
+      return false;
+    }
+
+    setErrors({});
+    return true;
   };
 
   const handleSubmit = async (e) => {
@@ -126,7 +135,7 @@ const Contact = () => {
     }
 
     // Honeypot spam protection
-    if (formData.website && formData.website.trim() !== '') {
+    if (formData.honeypot && formData.honeypot.trim() !== '') {
       // This is likely a bot submission, fail silently
       console.warn('Spam attempt detected via honeypot field');
       setIsSubmitting(true);
@@ -185,11 +194,16 @@ const Contact = () => {
         duration: 5000,
       });
 
-      // Reset form
-      setFormData({ name: '', email: '', phone: '', message: '', consent: false, website: '' });
+      // Reset form and show success state
+      setFormData({ name: '', email: '', phone: '', message: '', consent: false, honeypot: '' });
       setTouched({});
       setErrors({});
+      setFieldValidation({});
       setRecaptchaToken(null);
+      setSubmissionSuccess(true);
+
+      // Clear success state after 5 seconds
+      setTimeout(() => setSubmissionSuccess(false), 5000);
 
     } catch (error) {
       console.error('Form submission error:', error);
@@ -364,21 +378,77 @@ const Contact = () => {
             <div className="bg-white rounded-2xl p-8 shadow-soft-light">
               <h3 className="mb-6">{t('contact.form_title')}</h3>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+                {/* Form Validation Summary for Screen Readers */}
+                {Object.keys(errors).length > 0 && (
+                  <div
+                    className="p-3 bg-red-50 border border-red-200 rounded-lg"
+                    role="alert"
+                    aria-live="polite"
+                    aria-labelledby="form-errors-title"
+                  >
+                    <h4 id="form-errors-title" className="text-sm font-semibold text-red-800 mb-2">
+                      Por favor, corrija os seguintes erros:
+                    </h4>
+                    <ul className="text-sm text-red-700 space-y-1">
+                      {Object.entries(errors).map(([field, error]) => (
+                        <li key={field}>
+                          • {field === 'name' ? 'Nome' :
+                            field === 'email' ? 'E-mail' :
+                              field === 'phone' ? 'Telefone' :
+                                field === 'message' ? 'Mensagem' :
+                                  field === 'consent' ? 'Consentimento' : field}: {error}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 {/* Mobile-First Touch-Optimized Form Fields */}
                 <div>
                   <label htmlFor="name" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
                     {t('contact.name_label', 'Nome completo')} <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
-                  <input
-                    type="text" id="name" name="name" value={formData.name} onChange={handleChange} onBlur={handleBlur} required
-                    className={`form-input mobile-touch-input ${errors.name ? 'border-red-400 focus:ring-red-300' : touched.name ? 'border-green-400' : ''}`}
-                    placeholder={t('contact.name_placeholder')}
-                    aria-invalid={!!errors.name}
-                    aria-describedby={errors.name ? 'error-name' : undefined}
-                    style={{ fontSize: '16px', minHeight: '48px', padding: '12px 16px' }}
-                  />
-                  {errors.name && <p id="error-name" className="mt-2 text-sm text-red-600 font-medium">{errors.name}</p>}
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                      className={`form-input mobile-touch-input pr-10 ${errors.name
+                        ? 'border-red-400 focus:ring-red-300'
+                        : fieldValidation.name?.success
+                          ? 'border-green-400 focus:ring-green-300'
+                          : ''
+                        }`}
+                      placeholder={t('contact.name_placeholder')}
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? 'error-name' : fieldValidation.name?.success ? 'success-name' : undefined}
+                      style={{ fontSize: '16px', minHeight: '48px', padding: '12px 16px' }}
+                    />
+                    {/* Validation status icon */}
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                      {isValidating && touched.name ? (
+                        <Loader2 className="h-4 w-4 text-gray-400 animate-spin" aria-hidden="true" />
+                      ) : errors.name ? (
+                        <AlertCircle className="h-4 w-4 text-red-500" aria-hidden="true" />
+                      ) : fieldValidation.name?.success ? (
+                        <CheckCircle className="h-4 w-4 text-green-500" aria-hidden="true" />
+                      ) : null}
+                    </div>
+                  </div>
+                  {errors.name && (
+                    <p id="error-name" className="mt-2 text-sm text-red-600 font-medium" role="alert">
+                      {errors.name}
+                    </p>
+                  )}
+                  {fieldValidation.name?.success && !errors.name && (
+                    <p id="success-name" className="mt-2 text-sm text-green-600 font-medium" role="status">
+                      Nome válido
+                    </p>
+                  )}
                 </div>
 
                 {/* Mobile: Stack vertically, Desktop: Side by side */}
@@ -387,40 +457,104 @@ const Contact = () => {
                     <label htmlFor="email" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
                       {t('contact.email_label', 'E-mail')} <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
-                    <input
-                      type="email" id="email" name="email" value={formData.email} onChange={handleChange} onBlur={handleBlur} required
-                      className={`form-input mobile-touch-input ${errors.email ? 'border-red-400 focus:ring-red-300' : touched.email ? 'border-green-400' : ''}`}
-                      placeholder={t('contact.email_placeholder')}
-                      aria-invalid={!!errors.email}
-                      aria-describedby={errors.email ? 'error-email' : undefined}
-                      inputMode="email"
-                      style={{ fontSize: '16px', minHeight: '48px', padding: '12px 16px' }}
-                    />
-                    {errors.email && <p id="error-email" className="mt-2 text-sm text-red-600 font-medium">{errors.email}</p>}
+                    <div className="relative">
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                        className={`form-input mobile-touch-input pr-10 ${errors.email
+                          ? 'border-red-400 focus:ring-red-300'
+                          : fieldValidation.email?.success
+                            ? 'border-green-400 focus:ring-green-300'
+                            : ''
+                          }`}
+                        placeholder={t('contact.email_placeholder')}
+                        aria-invalid={!!errors.email}
+                        aria-describedby={errors.email ? 'error-email' : fieldValidation.email?.success ? 'success-email' : undefined}
+                        inputMode="email"
+                        style={{ fontSize: '16px', minHeight: '48px', padding: '12px 16px' }}
+                      />
+                      {/* Validation status icon */}
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                        {isValidating && touched.email ? (
+                          <Loader2 className="h-4 w-4 text-gray-400 animate-spin" aria-hidden="true" />
+                        ) : errors.email ? (
+                          <AlertCircle className="h-4 w-4 text-red-500" aria-hidden="true" />
+                        ) : fieldValidation.email?.success ? (
+                          <CheckCircle className="h-4 w-4 text-green-500" aria-hidden="true" />
+                        ) : null}
+                      </div>
+                    </div>
+                    {errors.email && (
+                      <p id="error-email" className="mt-2 text-sm text-red-600 font-medium" role="alert">
+                        {errors.email}
+                      </p>
+                    )}
+                    {fieldValidation.email?.success && !errors.email && (
+                      <p id="success-email" className="mt-2 text-sm text-green-600 font-medium" role="status">
+                        E-mail válido
+                      </p>
+                    )}
                   </div>
 
                   <div>
                     <label htmlFor="phone" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
                       {t('contact.phone_label', 'Telefone')} <span className="text-red-500" aria-hidden="true">*</span>
                     </label>
-                    <input
-                      type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} onBlur={handleBlur} required
-                      className={`form-input mobile-touch-input ${errors.phone ? 'border-red-400 focus:ring-red-300' : touched.phone ? 'border-green-400' : ''}`}
-                      placeholder={t('contact.phone_placeholder')}
-                      aria-invalid={!!errors.phone}
-                      aria-describedby={errors.phone ? 'error-phone' : undefined}
-                      inputMode="tel"
-                      style={{ fontSize: '16px', minHeight: '48px', padding: '12px 16px' }}
-                    />
-                    {errors.phone && <p id="error-phone" className="mt-2 text-sm text-red-600 font-medium">{errors.phone}</p>}
+                    <div className="relative">
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                        className={`form-input mobile-touch-input pr-10 ${errors.phone
+                          ? 'border-red-400 focus:ring-red-300'
+                          : fieldValidation.phone?.success
+                            ? 'border-green-400 focus:ring-green-300'
+                            : ''
+                          }`}
+                        placeholder={t('contact.phone_placeholder')}
+                        aria-invalid={!!errors.phone}
+                        aria-describedby={errors.phone ? 'error-phone' : fieldValidation.phone?.success ? 'success-phone' : undefined}
+                        inputMode="tel"
+                        style={{ fontSize: '16px', minHeight: '48px', padding: '12px 16px' }}
+                      />
+                      {/* Validation status icon */}
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                        {isValidating && touched.phone ? (
+                          <Loader2 className="h-4 w-4 text-gray-400 animate-spin" aria-hidden="true" />
+                        ) : errors.phone ? (
+                          <AlertCircle className="h-4 w-4 text-red-500" aria-hidden="true" />
+                        ) : fieldValidation.phone?.success ? (
+                          <CheckCircle className="h-4 w-4 text-green-500" aria-hidden="true" />
+                        ) : null}
+                      </div>
+                    </div>
+                    {errors.phone && (
+                      <p id="error-phone" className="mt-2 text-sm text-red-600 font-medium" role="alert">
+                        {errors.phone}
+                      </p>
+                    )}
+                    {fieldValidation.phone?.success && !errors.phone && (
+                      <p id="success-phone" className="mt-2 text-sm text-green-600 font-medium" role="status">
+                        Telefone válido
+                      </p>
+                    )}
                   </div>
                 </div>
 
                 {/* Honeypot field - hidden from users, only bots will fill it */}
                 <input
                   type="text"
-                  name="website"
-                  value={formData.website}
+                  name="honeypot"
+                  value={formData.honeypot}
                   onChange={handleChange}
                   style={{ display: 'none' }}
                   tabIndex="-1"
@@ -432,34 +566,134 @@ const Contact = () => {
                   <label htmlFor="message" className="block text-base font-medium text-slate-700 mb-2 md:text-sm md:mb-1.5">
                     {t('contact.message_label', 'Mensagem')} <span className="text-red-500" aria-hidden="true">*</span>
                   </label>
-                  <textarea
-                    id="message" name="message" value={formData.message} onChange={handleChange} onBlur={handleBlur} required
-                    rows="4"
-                    className={`form-input mobile-touch-input ${errors.message ? 'border-red-400 focus:ring-red-300' : touched.message ? 'border-green-400' : ''}`}
-                    placeholder={t('contact.message_placeholder')}
-                    aria-invalid={!!errors.message}
-                    aria-describedby={errors.message ? 'error-message' : undefined}
-                    style={{ fontSize: '16px', minHeight: '120px', padding: '12px 16px', resize: 'vertical', overscrollBehavior: 'none' }}
-                  ></textarea>
-                  {errors.message && <p id="error-message" className="mt-2 text-sm text-red-600 font-medium">{errors.message}</p>}
+                  <div className="relative">
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                      rows="4"
+                      className={`form-input mobile-touch-input pr-10 ${errors.message
+                        ? 'border-red-400 focus:ring-red-300'
+                        : fieldValidation.message?.success
+                          ? 'border-green-400 focus:ring-green-300'
+                          : ''
+                        }`}
+                      placeholder={t('contact.message_placeholder')}
+                      aria-invalid={!!errors.message}
+                      aria-describedby={errors.message ? 'error-message' : fieldValidation.message?.success ? 'success-message' : 'message-help'}
+                      style={{ fontSize: '16px', minHeight: '120px', padding: '12px 16px', resize: 'vertical', overscrollBehavior: 'none' }}
+                    ></textarea>
+                    {/* Validation status icon */}
+                    <div className="absolute top-3 right-3">
+                      {isValidating && touched.message ? (
+                        <Loader2 className="h-4 w-4 text-gray-400 animate-spin" aria-hidden="true" />
+                      ) : errors.message ? (
+                        <AlertCircle className="h-4 w-4 text-red-500" aria-hidden="true" />
+                      ) : fieldValidation.message?.success ? (
+                        <CheckCircle className="h-4 w-4 text-green-500" aria-hidden="true" />
+                      ) : null}
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-start mt-1">
+                    <div className="flex-1">
+                      {errors.message && (
+                        <p id="error-message" className="text-sm text-red-600 font-medium" role="alert">
+                          {errors.message}
+                        </p>
+                      )}
+                      {fieldValidation.message?.success && !errors.message && (
+                        <p id="success-message" className="text-sm text-green-600 font-medium" role="status">
+                          Mensagem válida
+                        </p>
+                      )}
+                      {!errors.message && !fieldValidation.message?.success && (
+                        <p id="message-help" className="text-xs text-slate-500">
+                          Mínimo 10 caracteres, máximo 2000 caracteres
+                        </p>
+                      )}
+                    </div>
+                    <div className="text-xs text-slate-400 ml-2">
+                      {formData.message.length}/2000
+                    </div>
+                  </div>
                 </div>
 
+                {/* LGPD Consent Section */}
                 <div className="pt-2">
-                  <label className="inline-flex items-start gap-2 text-xs text-blue-800 bg-blue-50 border border-blue-200 p-3 rounded-md cursor-pointer">
-                    <input
-                      type="checkbox"
-                      name="consent"
-                      checked={formData.consent}
-                      onChange={handleChange}
-                      aria-invalid={!!errors.consent}
-                      aria-describedby={errors.consent ? 'error-consent' : undefined}
-                      className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                      required
-                    />
-                    <Lock size={14} className="mt-0.5 text-blue-600" />
-                    <span dangerouslySetInnerHTML={{ __html: t('privacy.form_consent_html') }} />
-                  </label>
-                  {errors.consent && <p id="error-consent" className="mt-1 text-xs text-red-600">{errors.consent}</p>}
+                  <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                    <div className="flex items-start gap-3 mb-3">
+                      <Shield className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h4 className="text-sm font-semibold text-blue-900 mb-1">
+                          Proteção de Dados Pessoais (LGPD)
+                        </h4>
+                        <p className="text-xs text-blue-800 leading-relaxed">
+                          Seus dados pessoais serão utilizados exclusivamente para responder à sua consulta médica.
+                          Coletamos apenas as informações necessárias (nome, e-mail, telefone e mensagem) para
+                          que Dr. Philipe possa entrar em contato e fornecer orientações oftalmológicas adequadas.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="bg-white p-3 rounded border border-blue-100 mb-3">
+                      <h5 className="text-xs font-medium text-slate-700 mb-2">Seus direitos:</h5>
+                      <ul className="text-xs text-slate-600 space-y-1">
+                        <li>• Acesso aos seus dados pessoais</li>
+                        <li>• Correção de dados incompletos ou incorretos</li>
+                        <li>• Exclusão dos dados quando solicitado</li>
+                        <li>• Portabilidade dos dados para outro prestador</li>
+                      </ul>
+                    </div>
+
+                    <label
+                      className={`inline-flex items-start gap-3 cursor-pointer p-3 rounded-md border-2 transition-colors ${errors.consent
+                        ? 'border-red-300 bg-red-50'
+                        : formData.consent
+                          ? 'border-green-300 bg-green-50'
+                          : 'border-blue-200 bg-white hover:bg-blue-25'
+                        }`}
+                      htmlFor="consent"
+                    >
+                      <input
+                        type="checkbox"
+                        id="consent"
+                        name="consent"
+                        checked={formData.consent}
+                        onChange={handleChange}
+                        aria-invalid={!!errors.consent}
+                        aria-describedby={errors.consent ? 'error-consent' : 'consent-description'}
+                        className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 focus:ring-2"
+                        required
+                      />
+                      <div className="flex-1">
+                        <span className="text-sm font-medium text-slate-800">
+                          Concordo com o tratamento dos meus dados pessoais *
+                        </span>
+                        <p id="consent-description" className="text-xs text-slate-600 mt-1">
+                          Ao marcar esta opção, você autoriza o uso dos seus dados conforme descrito acima,
+                          em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei 13.709/2018).
+                        </p>
+                      </div>
+                      {formData.consent && (
+                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" aria-hidden="true" />
+                      )}
+                    </label>
+
+                    {errors.consent && (
+                      <p id="error-consent" className="mt-2 text-sm text-red-600 font-medium" role="alert">
+                        <AlertCircle className="h-4 w-4 inline mr-1" />
+                        {errors.consent}
+                      </p>
+                    )}
+
+                    <p className="text-xs text-slate-500 mt-2">
+                      Para exercer seus direitos ou esclarecer dúvidas sobre o tratamento de dados,
+                      entre em contato conosco através do e-mail: saraivavision@gmail.com
+                    </p>
+                  </div>
                 </div>
 
                 {/* Connection Status */}
@@ -547,23 +781,65 @@ const Contact = () => {
                   </div>
                 )}
 
+                {/* Success Message */}
+                {submissionSuccess && (
+                  <div className="p-4 bg-green-50 border border-green-200 rounded-lg" role="alert" aria-live="polite">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5 text-green-600" />
+                      <div>
+                        <h4 className="text-sm font-semibold text-green-800">
+                          Mensagem enviada com sucesso!
+                        </h4>
+                        <p className="text-sm text-green-700 mt-1">
+                          Recebemos sua mensagem e entraremos em contato em breve.
+                          Obrigado por escolher a Saraiva Vision.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <Button
-                  disabled={isSubmitting || !isOnline}
+                  disabled={isSubmitting || !isOnline || !recaptchaReady}
                   type="submit"
                   size="lg"
-                  className="w-full flex items-center justify-center gap-2 disabled:opacity-60"
+                  className={`w-full flex items-center justify-center gap-2 transition-all duration-200 ${submissionSuccess
+                    ? 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
+                    : 'disabled:opacity-60'
+                    }`}
                   aria-busy={isSubmitting}
+                  aria-describedby="submit-status"
                 >
-                  <Send className="h-5 w-5" />
-                  {isRetrying
-                    ? `Tentando novamente (${retryCount + 1}/3)...`
-                    : isSubmitting
-                      ? t('contact.sending_label', 'Enviando...')
-                      : !isOnline
-                        ? 'Sem conexão'
-                        : t('contact.send_button', 'Enviar Mensagem')
-                  }
+                  {isSubmitting ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : submissionSuccess ? (
+                    <CheckCircle className="h-5 w-5" />
+                  ) : (
+                    <Send className="h-5 w-5" />
+                  )}
+
+                  <span>
+                    {isRetrying
+                      ? `Tentando novamente (${retryCount + 1}/3)...`
+                      : isSubmitting
+                        ? t('contact.sending_label', 'Enviando mensagem...')
+                        : submissionSuccess
+                          ? 'Mensagem enviada!'
+                          : !isOnline
+                            ? 'Sem conexão com a internet'
+                            : !recaptchaReady
+                              ? 'Carregando verificação de segurança...'
+                              : t('contact.send_button', 'Enviar Mensagem')
+                    }
+                  </span>
                 </Button>
+
+                {/* Submit Status for Screen Readers */}
+                <div id="submit-status" className="sr-only" aria-live="polite" aria-atomic="true">
+                  {isSubmitting && 'Enviando formulário, aguarde...'}
+                  {submissionSuccess && 'Formulário enviado com sucesso'}
+                  {submissionError && 'Erro no envio do formulário'}
+                </div>
               </form>
             </div>
           </motion.div>

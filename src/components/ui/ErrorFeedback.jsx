@@ -1,6 +1,13 @@
-import React from 'react';
-import { AlertTriangle, RefreshCw, WifiOff, Shield, Mail, Phone, X } from 'lucide-react';
-import { getUserFriendlyError, getRecoverySteps, getSeverityIndicator, isRecoverable } from '@/lib/errorHandling';
+import React, { useEffect, useRef } from 'react';
+import { AlertTriangle, RefreshCw, WifiOff, Shield, Mail, Phone, X, Loader2 } from 'lucide-react';
+import {
+    getUserFriendlyError,
+    getRecoverySteps,
+    getSeverityIndicator,
+    isRecoverable,
+    announceError,
+    getRetryConfig
+} from '@/lib/errorHandling';
 
 const ErrorFeedback = ({
     error,
@@ -9,43 +16,99 @@ const ErrorFeedback = ({
     className = '',
     showRecoverySteps = true,
     showContactInfo = true,
-    compact = false
+    compact = false,
+    retryAttempt = 0,
+    maxRetries = 3,
+    isRetrying = false,
+    autoAnnounce = true
 }) => {
+    const errorRef = useRef(null);
+    const previousError = useRef(null);
+
     if (!error) return null;
 
     const friendlyError = getUserFriendlyError(error);
     const recoverySteps = getRecoverySteps(error);
     const severityIndicator = getSeverityIndicator(friendlyError.severity);
     const canRecover = isRecoverable(error);
-    const canRetry = onRetry && canRecover;
+    const retryConfig = getRetryConfig(error);
+    const canRetry = onRetry && canRecover && retryConfig && retryAttempt < maxRetries;
+
+    // Announce error to screen readers when error changes
+    useEffect(() => {
+        if (autoAnnounce && error && error !== previousError.current) {
+            announceError(error, {
+                action: 'Erro no formulário',
+                retryAttempt: retryAttempt > 0 ? retryAttempt : undefined
+            });
+            previousError.current = error;
+        }
+    }, [error, autoAnnounce, retryAttempt]);
+
+    // Focus management for accessibility
+    useEffect(() => {
+        if (errorRef.current && !compact) {
+            errorRef.current.focus();
+        }
+    }, [error, compact]);
 
     if (compact) {
         return (
-            <div className={`p-3 rounded-lg border ${className}`} style={{
-                backgroundColor: `${severityIndicator.color}10`,
-                borderColor: `${severityIndicator.color}30`
-            }}>
+            <div
+                ref={errorRef}
+                className={`p-3 rounded-lg border ${className}`}
+                style={{
+                    backgroundColor: `${severityIndicator.color}10`,
+                    borderColor: `${severityIndicator.color}30`
+                }}
+                role="alert"
+                aria-live="polite"
+                aria-labelledby="error-message"
+                tabIndex={-1}
+            >
                 <div className="flex items-start gap-2">
-                    <span className="text-lg">{severityIndicator.icon}</span>
+                    <span
+                        className="text-lg"
+                        role={severityIndicator.role}
+                        aria-label={severityIndicator.ariaLabel}
+                    >
+                        {severityIndicator.icon}
+                    </span>
                     <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-800">
+                        <p id="error-message" className="text-sm font-medium text-gray-800">
                             {friendlyError.userMessage}
                         </p>
+                        {retryAttempt > 0 && (
+                            <p className="text-xs text-gray-600 mt-1">
+                                Tentativa {retryAttempt} de {maxRetries}
+                            </p>
+                        )}
                         {canRetry && (
                             <button
                                 onClick={onRetry}
-                                className="mt-1 text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                                disabled={isRetrying}
+                                className="mt-1 text-xs text-blue-600 hover:text-blue-800 disabled:text-gray-400 flex items-center gap-1"
+                                aria-describedby="retry-description"
                             >
-                                <RefreshCw size={12} />
-                                Tentar novamente
+                                {isRetrying ? (
+                                    <Loader2 size={12} className="animate-spin" />
+                                ) : (
+                                    <RefreshCw size={12} />
+                                )}
+                                {isRetrying ? 'Tentando...' : 'Tentar novamente'}
                             </button>
+                        )}
+                        {canRetry && (
+                            <span id="retry-description" className="sr-only">
+                                Clique para tentar enviar o formulário novamente
+                            </span>
                         )}
                     </div>
                     {onDismiss && (
                         <button
                             onClick={onDismiss}
                             className="text-gray-400 hover:text-gray-600 p-0.5"
-                            aria-label="Fechar"
+                            aria-label="Fechar mensagem de erro"
                         >
                             <X size={14} />
                         </button>
@@ -56,18 +119,33 @@ const ErrorFeedback = ({
     }
 
     return (
-        <div className={`p-4 rounded-lg border ${className}`} style={{
-            backgroundColor: `${severityIndicator.color}10`,
-            borderColor: `${severityIndicator.color}30`
-        }}>
+        <div
+            ref={errorRef}
+            className={`p-4 rounded-lg border ${className}`}
+            style={{
+                backgroundColor: `${severityIndicator.color}10`,
+                borderColor: `${severityIndicator.color}30`
+            }}
+            role="alert"
+            aria-live="assertive"
+            aria-labelledby="error-title"
+            aria-describedby="error-description"
+            tabIndex={-1}
+        >
             {/* Error Header */}
             <div className="flex items-start gap-3 mb-3">
                 <div className="flex-shrink-0">
-                    <span className="text-2xl">{severityIndicator.icon}</span>
+                    <span
+                        className="text-2xl"
+                        role={severityIndicator.role}
+                        aria-label={severityIndicator.ariaLabel}
+                    >
+                        {severityIndicator.icon}
+                    </span>
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                        <h4 className="text-lg font-semibold text-gray-800">
+                        <h4 id="error-title" className="text-lg font-semibold text-gray-800">
                             {severityIndicator.label}
                         </h4>
                         {friendlyError.field && (
@@ -75,10 +153,18 @@ const ErrorFeedback = ({
                                 Campo: {friendlyError.field}
                             </span>
                         )}
+                        {retryAttempt > 0 && (
+                            <span className="text-xs px-2 py-1 rounded-full bg-orange-100 text-orange-700">
+                                Tentativa {retryAttempt}/{maxRetries}
+                            </span>
+                        )}
                     </div>
-                    <p className="text-gray-700">
+                    <p id="error-description" className="text-gray-700">
                         {friendlyError.userMessage}
                     </p>
+                    {friendlyError.ariaLabel && (
+                        <span className="sr-only">{friendlyError.ariaLabel}</span>
+                    )}
                 </div>
                 {onDismiss && (
                     <button
@@ -114,17 +200,33 @@ const ErrorFeedback = ({
                 {canRetry && (
                     <button
                         onClick={onRetry}
-                        className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                        disabled={isRetrying}
+                        className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                        aria-describedby="retry-info"
                     >
-                        <RefreshCw size={16} />
-                        Tentar novamente
+                        {isRetrying ? (
+                            <Loader2 size={16} className="animate-spin" />
+                        ) : (
+                            <RefreshCw size={16} />
+                        )}
+                        {isRetrying ? 'Tentando...' : 'Tentar novamente'}
                     </button>
+                )}
+
+                {canRetry && (
+                    <div id="retry-info" className="sr-only">
+                        {retryConfig ?
+                            `Tentativa ${retryAttempt + 1} de ${maxRetries}. ${retryConfig.maxAttempts - retryAttempt - 1} tentativas restantes.` :
+                            'Clique para tentar novamente'
+                        }
+                    </div>
                 )}
 
                 {friendlyError.type === 'network' && (
                     <button
                         onClick={() => window.location.reload()}
                         className="flex items-center gap-2 px-3 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium"
+                        aria-label="Recarregar a página para tentar resolver problemas de conexão"
                     >
                         <WifiOff size={16} />
                         Recarregar página

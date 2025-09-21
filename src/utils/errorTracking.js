@@ -1,15 +1,29 @@
 // Error Tracking Configuration
 // Initialize Sentry for production error monitoring
 
+// Helper function to safely import Sentry
+async function loadSentry() {
+  try {
+    const module = await import('@sentry/react');
+    return module;
+  } catch (error) {
+    console.warn('Sentry module not available:', error.message);
+    return null;
+  }
+}
+
 export function initErrorTracking() {
   // Only initialize in production and browser environment
   if (process.env.NODE_ENV !== 'production' || typeof window === 'undefined') {
     return;
   }
 
-  try {
-    // Dynamic import to avoid bundling in development
-    import('@sentry/react').then((Sentry) => {
+  // Use setTimeout to defer the import until after the initial bundle load
+  setTimeout(async () => {
+    try {
+      const Sentry = await loadSentry();
+      if (!Sentry) return;
+
       Sentry.init({
         dsn: process.env.REACT_APP_SENTRY_DSN || process.env.VITE_SENTRY_DSN,
         tracesSampleRate: 1.0,
@@ -26,17 +40,18 @@ export function initErrorTracking() {
       });
 
       console.log('✅ Sentry error tracking initialized');
-    });
-  } catch (error) {
-    console.warn('Failed to initialize error tracking:', error);
-  }
+    } catch (error) {
+      console.warn('Failed to initialize error tracking:', error);
+    }
+  }, 100);
 }
 
 // Utility function to manually capture errors
-export function captureError(error, context = {}) {
+export async function captureError(error, context = {}) {
   if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
     try {
-      import('@sentry/react').then((Sentry) => {
+      const Sentry = await loadSentry();
+      if (Sentry) {
         Sentry.captureException(error, {
           tags: {
             component: context.component || 'unknown',
@@ -44,7 +59,7 @@ export function captureError(error, context = {}) {
           },
           extra: context,
         });
-      });
+      }
     } catch (e) {
       console.error('Failed to capture error:', e);
     }
@@ -54,12 +69,13 @@ export function captureError(error, context = {}) {
 }
 
 // Utility function to capture user feedback
-export function captureUserFeedback(feedback) {
+export async function captureUserFeedback(feedback) {
   if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
     try {
-      import('@sentry/react').then((Sentry) => {
+      const Sentry = await loadSentry();
+      if (Sentry) {
         Sentry.captureMessage(`User Feedback: ${feedback}`, 'info');
-      });
+      }
     } catch (e) {
       console.warn('Failed to capture feedback:', e);
     }
