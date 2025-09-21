@@ -15,7 +15,6 @@ memory
 *.log
 
 # Build outputs (keep dist for static files)
-src
 public
 !dist
 

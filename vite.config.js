@@ -10,8 +10,8 @@ const plugins = [react({
   include: '**/*.{jsx,tsx}',
 })]
 
-// Only load workbox plugin in development or when not in Vercel build
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+// Only load workbox plugin in development, never in production or Vercel
+if (process.env.NODE_ENV === 'development') {
   try {
     const { workboxVitePlugin } = require('./src/utils/workbox-vite-plugin')
     plugins.push(workboxVitePlugin())
@@ -22,7 +22,6 @@ if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
 
 export default defineConfig({
   plugins,
-  root: '.',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

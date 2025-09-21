@@ -7,13 +7,13 @@ This project includes an intelligent Vercel deployment system designed to handle
 ## Features
 
 ### 🚀 **Intelligent Deployment Strategies**
-- **Multiple Runtime Support**: Node.js 16.x, 18.x, 20.x, Edge Runtime
+- **Multiple Runtime Support**: Node.js 22.x, 20.x, 18.x, 16.x, Edge Runtime
 - **Automatic Fallback**: Switches between configurations when errors occur
 - **Retry Mechanism**: Up to 3 retries with exponential backoff
 - **Static Fallback**: Falls back to static deployment if all function strategies fail
 
 ### 🛠️ **Configuration Management**
-- **Multiple Environments**: Production, Development, Edge, Node.js 20, Static
+- **Multiple Environments**: Production, Development, Edge, Node.js 22, Static
 - **Dynamic Configuration**: Apply different runtime configurations on demand
 - **Backup & Restore**: Automatic backup and restore of configurations
 - **Validation**: Built-in configuration validation and testing
@@ -82,7 +82,7 @@ Consulte [`docs/VERCEL_ENV_CHECKLIST.md`](./docs/VERCEL_ENV_CHECKLIST.md) para g
 
 ### 2. Error Recovery Mechanisms
 
-- **Runtime Version Fallback**: Tries Node.js 22.x → 18.x → 20.x → 16.x → Edge
+- **Runtime Version Fallback**: Tries Node.js 22.x → 20.x → 18.x → 16.x → Edge
 - **Strategy Rotation**: Standard → Force → Debug deployment methods
 - **Static Deployment**: Final fallback when functions fail
 - **Configuration Restore**: Restores original config on failure

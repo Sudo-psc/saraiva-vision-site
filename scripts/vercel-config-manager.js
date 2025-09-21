@@ -92,7 +92,7 @@ class VercelConfigManager {
                     { "source": "/(.*)", "destination": "/" }
                 ],
                 regions: ["gru1", "iad1"],
-                functionFailoverRegions: ["iad1", "cle1"],
+                functionFailoverRegions: ["cle1", "lax1"],
                 env: {
                     NODE_ENV: 'production',
                     VITE_API_URL: 'https://saraivavision.com.br/api',

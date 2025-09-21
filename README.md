@@ -106,7 +106,7 @@ git clone https://github.com/Sudo-psc/saraivavision-site-v2.git
 ### Pré-requisitos
 - Conta no [Vercel](https://vercel.com/)
 - Vercel CLI (`npm i -g vercel`)
-- Node.js 18+ e npm
+- Node.js 22+ e npm
 - Git
 
 ### Instalação e Deploy
