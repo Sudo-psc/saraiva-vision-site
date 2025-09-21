@@ -4,6 +4,59 @@
 const express = require('express');
 const router = express.Router();
 
+// CORS Middleware for VPS deployment
+function corsMiddleware(req, res, next) {
+    const origin = req.headers.origin;
+    const allowedOrigins = [
+        'https://saraivavision.com.br',
+        'https://www.saraivavision.com.br',
+        'https://saraivavision.vercel.app',
+        'https://saraivavision-git-*.vercel.app',
+        'https://31.97.129.78:3000',
+        'http://localhost:3000',
+        'http://localhost:3001'
+    ];
+
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        res.setHeader('Access-Control-Allow-Origin', origin || 'https://saraivavision.com.br');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-Vercel-*');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Max-Age', '86400');
+        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+        res.setHeader('Content-Length', '0');
+        return res.status(204).end();
+    }
+
+    // Add CORS headers for regular requests
+    if (origin) {
+        const isAllowed = allowedOrigins.some(allowedOrigin => {
+            if (allowedOrigin.includes('*')) {
+                const regex = new RegExp(allowedOrigin.replace('*', '.*'));
+                return regex.test(origin);
+            }
+            return origin === allowedOrigin;
+        });
+
+        if (isAllowed) {
+            res.setHeader('Access-Control-Allow-Origin', origin);
+        } else {
+            res.setHeader('Access-Control-Allow-Origin', 'https://saraivavision.com.br');
+        }
+    }
+
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-Vercel-*');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Max-Age', '86400');
+
+    next();
+}
+
+// Apply CORS middleware to all routes
+router.use(corsMiddleware);
+
 // Mock services data - you can replace this with database queries
 const servicesData = {
   services: [
