@@ -34,9 +34,9 @@ npx vercel --prod --yes
 ## 🔧 Configurações Disponíveis
 
 O sistema suporta múltiplas configurações:
-- **production**: Node.js 18.x (padrão)
+- **production**: Node.js 22.x (padrão)
 - **edge**: Edge Runtime
-- **node20**: Node.js 20.x
+- **node22**: Node.js 22.x
 - **static**: Static apenas (sem funções)
 - **minimal**: Funções mínimas apenas
 

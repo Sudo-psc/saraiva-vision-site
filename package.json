@@ -17,7 +17,7 @@
     "deploy:simple": "./scripts/deploy.sh",
     "deploy:production": "node scripts/vercel-config-manager.js apply production && npm run vercel:deploy",
     "deploy:edge": "node scripts/vercel-config-manager.js apply edge && npm run vercel:deploy",
-    "deploy:node20": "node scripts/vercel-config-manager.js apply node20 && npm run vercel:deploy",
+    "deploy:node22": "node scripts/vercel-config-manager.js apply node22 && npm run vercel:deploy",
     "deploy:static": "node scripts/vercel-config-manager.js apply static && npm run vercel:deploy",
     "build:static": "vite build --mode static"
   },
@@ -65,7 +65,7 @@
     "workbox-build": "^7.3.0"
   },
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.3",

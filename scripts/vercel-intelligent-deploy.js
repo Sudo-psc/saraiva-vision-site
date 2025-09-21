@@ -13,8 +13,8 @@ class VercelIntelligentDeployer {
     constructor() {
         this.buildVersions = [
             {
-                name: 'node20x',
-                description: 'Node.js 20.x runtime (recommended - configured via engines)'
+                name: 'node22x',
+                description: 'Node.js 22.x runtime (recommended - configured via engines)'
             },
             {
                 name: 'static',

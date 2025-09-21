@@ -22,7 +22,7 @@ Site institucional desenvolvido para a Clínica Saraiva Vision, especializada em
 ### 🚀 Deploy Inteligente com Vercel
 
 O sistema de deploy utiliza scripts inteligentes que:
-- Testam múltiplas configurações de runtime (Node.js 18.x, 20.x, Edge, Static)
+- Testam múltiplas configurações de runtime (Node.js 22.x, 18.x, 20.x, Edge, Static)
 - Realizam health checks automáticos antes do deploy
 - Fazem backup/restauração automática das configs
 - Aplicam fallback para deploy estático em caso de falha

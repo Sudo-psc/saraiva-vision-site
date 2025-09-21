@@ -51,8 +51,8 @@ npm run deploy:config list
 # Aplicar configuração edge (funções serverless edge)
 4. **Automatic Retry**: Up to 3 attempts for each strategy
 
-# Testar se a configuração node20 está buildando corretamente
-npm run deploy:config test node20
+# Testar se a configuração node22 está buildando corretamente
+npm run deploy:config test node22
 
 # Criar uma configuração customizada
 node scripts/vercel-config-manager.js create custom-otimizacao
@@ -82,7 +82,7 @@ Consulte [`docs/VERCEL_ENV_CHECKLIST.md`](./docs/VERCEL_ENV_CHECKLIST.md) para g
 
 ### 2. Error Recovery Mechanisms
 
-- **Runtime Version Fallback**: Tries Node.js 18.x → 20.x → 16.x → Edge
+- **Runtime Version Fallback**: Tries Node.js 22.x → 18.x → 20.x → 16.x → Edge
 - **Strategy Rotation**: Standard → Force → Debug deployment methods
 - **Static Deployment**: Final fallback when functions fail
 - **Configuration Restore**: Restores original config on failure
@@ -118,7 +118,7 @@ npm run deploy:config list
 
 ```bash
 # Test a specific configuration
-npm run deploy:config test node20
+npm run deploy:config test node22
 
 # Apply edge runtime configuration
 npm run deploy:config apply edge
@@ -137,10 +137,10 @@ node scripts/vercel-config-manager.js create custom-optimization
 npm run deploy:config backup
 
 # Apply different runtime
-npm run deploy:config apply node20
+npm run deploy:config apply node22
 
 # Test if configuration works
-npm run deploy:config test node20
+npm run deploy:config test node22
 
 # Restore if needed
 npm run deploy:config restore
@@ -167,7 +167,7 @@ npm run deploy:config restore
 ```
 Deployment Error
     ↓
-Try Next Runtime Version (18.x → 20.x → 16.x → Edge)
+Try Next Runtime Version (22.x → 18.x → 20.x → 16.x → Edge)
     ↓
 Try Next Strategy (Standard → Force → Debug)
     ↓
