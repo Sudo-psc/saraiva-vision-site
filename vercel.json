@@ -4,6 +4,10 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "functions": {
+    "api/contact/index.js": {
+      "maxDuration": 10,
+      "memory": 256
+    },
     "api/contact/**": {
       "maxDuration": 10,
       "memory": 256
@@ -25,6 +29,10 @@
   "env": {
     "NODE_ENV": "production",
     "VITE_API_URL": "https://saraivavision.com.br/api",
-    "VITE_WORDPRESS_URL": "https://saraivavision.com.br"
+    "VITE_WORDPRESS_URL": "https://saraivavision.com.br",
+    "RESEND_API_KEY": "@resend-api-key",
+    "DOCTOR_EMAIL": "@doctor-email",
+    "RATE_LIMIT_WINDOW": "15",
+    "RATE_LIMIT_MAX": "5"
   }
 }

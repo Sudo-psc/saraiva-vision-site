@@ -4,7 +4,15 @@
  */
 
 import React from 'react';
-import { withRetry, RetryConfig, classifyError, logError } from './errorHandling';
+import {
+    withRetry,
+    withFormRetry,
+    getRetryConfig,
+    classifyError,
+    logError,
+    announceError,
+    announceRetrySuccess
+} from './errorHandling';
 
 // API configuration
 export const ApiConfig = {
@@ -97,7 +105,7 @@ export async function fetchWithTimeout(url, options = {}, timeout = ApiConfig.ti
     }
 }
 
-// API request with retry logic and graceful degradation
+// Enhanced API request with comprehensive retry logic and error handling
 export async function apiRequest(endpoint, options = {}) {
     const url = `${ApiConfig.baseUrl}${endpoint}`;
     const config = {
@@ -109,42 +117,54 @@ export async function apiRequest(endpoint, options = {}) {
         ...options
     };
 
-    // Retry configuration for API calls
-    const retryConfig = {
-        maxAttempts: ApiConfig.retries,
-        shouldRetry: (error) => {
-            const errorType = classifyError(error);
-            // Don't retry on client errors (4xx) except for rate limiting
-            if (error.status && error.status >= 400 && error.status < 500) {
-                return error.status === 429; // Only retry rate limit errors
-            }
-            // Retry on network errors and server errors
-            return ['network', 'unknown'].includes(errorType.type);
-        }
-    };
-
     try {
         return await withRetry(
             async () => {
                 const response = await fetchWithTimeout(url, config);
                 return await response.json();
             },
-            retryConfig
+            {
+                errorType: 'api',
+                onRetry: (retryInfo) => {
+                    logError(retryInfo.error, {
+                        endpoint,
+                        method: config.method,
+                        attempt: retryInfo.attempt,
+                        maxAttempts: retryInfo.maxAttempts
+                    });
+                },
+                shouldRetry: (error) => {
+                    const errorType = classifyError(error);
+                    // Don't retry on client errors (4xx) except for rate limiting
+                    if (error.status && error.status >= 400 && error.status < 500) {
+                        return error.status === 429; // Only retry rate limit errors
+                    }
+                    // Retry on network errors and server errors
+                    return ['network', 'api', 'unknown'].includes(errorType.type);
+                }
+            }
         );
     } catch (error) {
-        logError(error, { endpoint, method: config.method });
+        logError(error, {
+            endpoint,
+            method: config.method,
+            finalFailure: true
+        });
+        announceError(error, { action: 'Falha na comunicação com o servidor' });
         throw error;
     }
 }
 
-// Contact form API with enhanced error handling
-export async function submitContactForm(formData) {
+// Enhanced contact form API with comprehensive error handling and retry logic
+export async function submitContactForm(formData, options = {}) {
     if (!networkMonitor.isOnline()) {
-        throw {
+        const offlineError = {
             name: 'NetworkError',
             message: 'No internet connection',
             code: 'NETWORK_OFFLINE'
         };
+        announceError(offlineError, { action: 'Envio do formulário' });
+        throw offlineError;
     }
 
     // Validate required fields
@@ -152,24 +172,24 @@ export async function submitContactForm(formData) {
     const missingFields = requiredFields.filter(field => !formData[field]);
 
     if (missingFields.length > 0) {
-        throw {
+        const validationError = {
             name: 'ValidationError',
             message: 'Missing required fields',
             field: missingFields[0],
             code: 'missing_required_fields'
         };
+        announceError(validationError, { action: 'Validação do formulário' });
+        throw validationError;
     }
 
     // Prepare payload with security headers
     const payload = {
         ...formData,
-        // Add timestamp for tracking
         timestamp: new Date().toISOString(),
-        // Add user agent for debugging
         userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown'
     };
 
-    try {
+    const submitFunction = async () => {
         const response = await apiRequest('/contact', {
             method: 'POST',
             body: JSON.stringify(payload)
@@ -180,6 +200,39 @@ export async function submitContactForm(formData) {
             data: response,
             timestamp: new Date().toISOString()
         };
+    };
+
+    try {
+        // Use form-specific retry logic with accessibility announcements
+        const result = await withFormRetry(
+            () => submitFunction(),
+            formData,
+            {
+                errorType: 'api',
+                onRetry: (retryInfo) => {
+                    logError(retryInfo.error, {
+                        endpoint: '/contact',
+                        method: 'POST',
+                        attempt: retryInfo.attempt,
+                        maxAttempts: retryInfo.maxAttempts,
+                        formData: sanitizeFormData(formData)
+                    });
+
+                    if (options.onRetry) {
+                        options.onRetry(retryInfo);
+                    }
+                },
+                shouldRetry: (error) => {
+                    const retryConfig = getRetryConfig(error);
+                    return retryConfig && retryConfig.shouldRetry(error);
+                }
+            }
+        );
+
+        // Announce success
+        announceRetrySuccess(options.attempt || 1);
+
+        return result;
     } catch (error) {
         // Enhance error with additional context
         const enhancedError = {
@@ -189,11 +242,17 @@ export async function submitContactForm(formData) {
                 method: 'POST',
                 timestamp: new Date().toISOString(),
                 hasRecaptcha: !!formData.token,
-                formFields: Object.keys(formData)
+                formFields: Object.keys(formData),
+                attempt: options.attempt || 1
             }
         };
 
-        logError(enhancedError, { formData: sanitizeFormData(formData) });
+        logError(enhancedError, {
+            formData: sanitizeFormData(formData),
+            finalFailure: true
+        });
+
+        announceError(enhancedError, { action: 'Envio do formulário falhou' });
         throw enhancedError;
     }
 }
