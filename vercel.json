@@ -10,15 +10,8 @@
   ],
   "functions": {
     "api/**": {
-      "maxDuration": 60,
-      "memory": 1024
+      "maxDuration": 30,
+      "memory": 512
     }
-  },
-  "regions": [
-    "gru1"
-  ],
-  "functionFailoverRegions": [
-    "iad1",
-    "cle1"
-  ]
+  }
 }
