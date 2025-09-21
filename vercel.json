@@ -101,11 +101,7 @@
   ],
   "env": {
     "NODE_ENV": "production",
-    "VITE_API_URL": "https://api.saraivavision.com.br/api",
-    "VITE_WORDPRESS_URL": "https://saraivavision.com.br",
-    "RESEND_API_KEY": "@resend-api-key",
-    "DOCTOR_EMAIL": "@doctor-email",
-    "RATE_LIMIT_WINDOW": "15",
-    "RATE_LIMIT_MAX": "5"
+    "VITE_API_URL": "https://31.97.129.78:3001/api",
+    "VITE_WORDPRESS_URL": "https://31.97.129.78"
   }
 }
