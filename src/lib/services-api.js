@@ -1,5 +1,5 @@
 // API client for services data
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://api.saraivavision.com.br/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://31.97.129.78:3001/api';
 
 export async function getServicesData() {
   try {
