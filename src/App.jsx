@@ -1,6 +1,6 @@
 import React, { useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useSafeTranslation } from '@/hooks/useSafeTranslation';
 import { HelmetProvider } from 'react-helmet-async';
 // Code splitting das rotas para melhorar TTI inicial da Home.
 const HomePageLayout = lazy(() => import('@/pages/HomePageLayout'));
@@ -35,7 +35,7 @@ import { initScrollTelemetry } from '@/utils/scrollTelemetry';
 import ScrollDiagnostics from '@/components/ScrollDiagnostics';
 
 function App() {
-  const { i18n } = useTranslation();
+  const { i18n } = useSafeTranslation();
   const isCheckSubdomain =
     typeof window !== 'undefined' && window.location.hostname?.toLowerCase().startsWith('check.');
 

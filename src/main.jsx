@@ -1,8 +1,9 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '@/i18n';
 import App from '@/App';
-import '@/i18n';
 import '@/index.css';
 import { setupGlobalErrorHandlers } from '@/utils/setupGlobalErrorHandlers';
 import ErrorBoundary from '@/components/ErrorBoundary';
@@ -53,29 +54,44 @@ if (!rootElement) {
 
 const root = ReactDOM.createRoot(rootElement);
 
-try {
-  root.render(
-    <React.StrictMode>
-      <ErrorBoundary>
-        <Router>
-          <Suspense fallback={<div>Carregando...</div>}>
-            <App />
-          </Suspense>
-        </Router>
-      </ErrorBoundary>
-    </React.StrictMode>
-  );
-} catch (error) {
-  console.error('Failed to render app:', error);
-  // Fallback render
+// Wait for i18n to be ready before rendering
+i18n.init().then(() => {
+  try {
+    root.render(
+      <React.StrictMode>
+        <ErrorBoundary>
+          <I18nextProvider i18n={i18n}>
+            <Router>
+              <Suspense fallback={<div>Carregando...</div>}>
+                <App />
+              </Suspense>
+            </Router>
+          </I18nextProvider>
+        </ErrorBoundary>
+      </React.StrictMode>
+    );
+  } catch (error) {
+    console.error('Failed to render app:', error);
+    // Fallback render
+    root.render(
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <h1>Erro ao carregar a aplicação</h1>
+        <p>Por favor, recarregue a página.</p>
+        <button onClick={() => window.location.reload()}>Recarregar</button>
+      </div>
+    );
+  }
+}).catch((error) => {
+  console.error('Failed to initialize i18n:', error);
+  // Fallback render without i18n
   root.render(
     <div style={{ padding: '20px', textAlign: 'center' }}>
-      <h1>Erro ao carregar a aplicação</h1>
+      <h1>Erro ao inicializar tradução</h1>
       <p>Por favor, recarregue a página.</p>
       <button onClick={() => window.location.reload()}>Recarregar</button>
     </div>
   );
-}
+});
 
 // Service Worker Registration - Temporarily disabled for Vercel deployment
 // TODO: Re-enable after fixing authentication issues
