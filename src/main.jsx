@@ -20,14 +20,15 @@ if (typeof window !== 'undefined') {
   window.addEventListener('load', () => {
     idle(async () => {
       try {
-        const [vitals, analytics] = await Promise.all([
-          import('@/utils/webVitalsMonitoring'),
+        const [analytics] = await Promise.all([
           import('@/utils/analytics')
         ]);
-        vitals.initWebVitals?.({
-          debug: import.meta.env.DEV,
-          endpoint: '/api/web-vitals'
-        });
+        // Temporarily disable web vitals for Vercel deployment
+        // const vitals = await import('@/utils/webVitalsMonitoring');
+        // vitals.initWebVitals?.({
+        //   debug: import.meta.env.DEV,
+        //   endpoint: '/api/web-vitals'
+        // });
         // Bind consent updates and persist UTMs
         analytics.bindConsentUpdates?.();
         analytics.persistUTMParameters?.();
@@ -44,23 +45,44 @@ if (typeof window !== 'undefined') {
 // sem mascarar erros reais da aplicação
 setupGlobalErrorHandlers();
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Router>
-      <Suspense fallback="loading...">
-        <ErrorBoundary>
-          <App />
-        </ErrorBoundary>
-      </Suspense>
-    </Router>
-  </React.StrictMode>
-);
-
-// Service Worker Registration - PROD only
-if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-  import('./utils/serviceWorkerManager.js').then(({ default: swManager }) => {
-    console.log('[SW] Workbox service worker manager loaded');
-  }).catch(error => {
-    console.error('[SW] Error loading service worker manager:', error);
-  });
+// Render with better error handling for production
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error('Root element not found');
 }
+
+const root = ReactDOM.createRoot(rootElement);
+
+try {
+  root.render(
+    <React.StrictMode>
+      <ErrorBoundary>
+        <Router>
+          <Suspense fallback={<div>Carregando...</div>}>
+            <App />
+          </Suspense>
+        </Router>
+      </ErrorBoundary>
+    </React.StrictMode>
+  );
+} catch (error) {
+  console.error('Failed to render app:', error);
+  // Fallback render
+  root.render(
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h1>Erro ao carregar a aplicação</h1>
+      <p>Por favor, recarregue a página.</p>
+      <button onClick={() => window.location.reload()}>Recarregar</button>
+    </div>
+  );
+}
+
+// Service Worker Registration - Temporarily disabled for Vercel deployment
+// TODO: Re-enable after fixing authentication issues
+// if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+//   import('./utils/serviceWorkerManager.js').then(({ default: swManager }) => {
+//     console.log('[SW] Workbox service worker manager loaded');
+//   }).catch(error => {
+//     console.error('[SW] Error loading service worker manager:', error);
+//   });
+// }
