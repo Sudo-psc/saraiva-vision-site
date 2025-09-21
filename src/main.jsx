@@ -2,65 +2,53 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from '@/App';
-import '@/i18n';
 import '@/index.css';
-import { setupGlobalErrorHandlers } from '@/utils/setupGlobalErrorHandlers';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
-// Defer costly, non-critical modules to idle (post-load)
-if (typeof window !== 'undefined') {
-  const idle = (cb) => {
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(cb, { timeout: 2000 });
-    } else {
-      setTimeout(cb, 1200);
-    }
-  };
-
-  window.addEventListener('load', () => {
-    idle(async () => {
-      try {
-        const [vitals, analytics] = await Promise.all([
-          import('@/utils/webVitalsMonitoring'),
-          import('@/utils/analytics')
-        ]);
-        vitals.initWebVitals?.({
-          debug: import.meta.env.DEV,
-          endpoint: '/api/web-vitals'
-        });
-        // Bind consent updates and persist UTMs
-        analytics.bindConsentUpdates?.();
-        analytics.persistUTMParameters?.();
-        // Initialize global event trackers for automatic analytics
-        analytics.initGlobalTrackers?.();
-      } catch (e) {
-        if (import.meta.env.DEV) console.warn('Deferred init failed:', e);
-      }
-    });
+// Simple error handler setup
+const setupGlobalErrorHandlers = () => {
+  window.addEventListener('error', (event) => {
+    console.error('Global error:', event.error);
   });
-}
 
-// Reduz ruído no console oriundo de extensões/ad blockers,
-// sem mascarar erros reais da aplicação
+  window.addEventListener('unhandledrejection', (event) => {
+    console.error('Unhandled promise rejection:', event.reason);
+  });
+};
+
 setupGlobalErrorHandlers();
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Router>
-      <Suspense fallback="loading...">
-        <ErrorBoundary>
-          <App />
-        </ErrorBoundary>
-      </Suspense>
-    </Router>
-  </React.StrictMode>
-);
+// Get root element
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error('Root element not found');
+}
 
-// Service Worker Registration - PROD only
-if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-  import('./utils/serviceWorkerManager.js').then(({ default: swManager }) => {
-    console.log('[SW] Workbox service worker manager loaded');
-  }).catch(error => {
-    console.error('[SW] Error loading service worker manager:', error);
-  });
+const root = ReactDOM.createRoot(rootElement);
+
+// Simple render without i18n for now to get the app working
+try {
+  root.render(
+    <React.StrictMode>
+      <ErrorBoundary>
+        <Router>
+          <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
+            <App />
+          </Suspense>
+        </Router>
+      </ErrorBoundary>
+    </React.StrictMode>
+  );
+} catch (error) {
+  console.error('Failed to render app:', error);
+  // Fallback render
+  root.render(
+    <div style={{ padding: '20px', textAlign: 'center', fontFamily: 'Arial, sans-serif' }}>
+      <h1>Erro ao carregar a aplicação</h1>
+      <p>Por favor, recarregue a página.</p>
+      <button onClick={() => window.location.reload()} style={{ padding: '10px 20px', fontSize: '16px' }}>
+        Recarregar
+      </button>
+    </div>
+  );
 }
