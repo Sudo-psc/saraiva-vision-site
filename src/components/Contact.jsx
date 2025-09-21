@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock, Globe, Shield } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock, Globe, Shield, Wifi, WifiOff } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { useRecaptcha } from '@/hooks/useRecaptcha';
+import { submitContactForm, FallbackStrategies, useConnectionStatus, networkMonitor } from '@/lib/apiUtils';
+import { getUserFriendlyError, getRecoverySteps, logError } from '@/lib/errorHandling';
+import ErrorFeedback, { NetworkError, RateLimitError, RecaptchaError, EmailServiceError } from '@/components/ui/ErrorFeedback';
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -23,7 +26,12 @@ const Contact = () => {
   const [touched, setTouched] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const [submissionError, setSubmissionError] = useState(null);
+  const [isRetrying, setIsRetrying] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const [showAlternativeContacts, setShowAlternativeContacts] = useState(false);
   const { ready: recaptchaReady, execute: executeRecaptcha } = useRecaptcha();
+  const { isOnline } = useConnectionStatus();
 
   // Input sanitization helper
   const sanitizeInput = (input) => {
@@ -107,6 +115,16 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Clear previous errors
+    setSubmissionError(null);
+    setShowAlternativeContacts(false);
+
+    // Check connection status first
+    if (!isOnline) {
+      setSubmissionError({ name: 'NetworkError', message: 'No internet connection' });
+      return;
+    }
+
     // Honeypot spam protection
     if (formData.website && formData.website.trim() !== '') {
       // This is likely a bot submission, fail silently
@@ -120,17 +138,16 @@ const Contact = () => {
     const lastSubmission = localStorage.getItem('lastContactSubmission');
     const now = Date.now();
     if (lastSubmission && (now - parseInt(lastSubmission)) < 30000) { // 30 seconds
-      toast({
-        title: t('contact.rate_limit_title', 'Aguarde um momento'),
-        description: t('contact.rate_limit_desc', 'Aguarde 30 segundos antes de enviar novamente.'),
-        variant: 'destructive'
-      });
+      setSubmissionError({ error: 'rate_limited' });
       return;
     }
 
     if (!validateAll()) {
       setTouched({ name: true, email: true, phone: true, message: true, recaptcha: true });
-      toast({ title: t('contact.toast_error_title'), description: t('contact.toast_error_desc'), variant: 'destructive' });
+      setSubmissionError({
+        field: Object.keys(errors)[0] || 'validation',
+        code: 'validation_failed'
+      });
       return;
     }
 
@@ -140,39 +157,27 @@ const Contact = () => {
       // Execute reCAPTCHA v3 to obtain token
       const token = await executeRecaptcha('contact');
       if (!token) {
-        toast({
-          title: t('contact.recaptcha_error_title', 'Erro de Verificação'),
-          description: t('contact.recaptcha_error_desc', 'Falha na verificação reCAPTCHA. Tente novamente.'),
-          variant: 'destructive'
-        });
+        setSubmissionError({ code: 'missing_token' });
         setIsSubmitting(false);
         return;
       }
 
-      // Send form data to backend API with reCAPTCHA token
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          message: formData.message,
-          consent: formData.consent,
-          token: token,  // Correção: era recaptchaToken, mas API espera token
-          action: 'contact'  // Adicionar action para validação
-        })
-      });
+      // Use the enhanced API utility
+      const submissionData = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        consent: formData.consent,
+        token: token,
+        action: 'contact'
+      };
 
-      const data = await response.json();
+      const result = await submitContactForm(submissionData);
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to send message');
-      }
-
+      // Success
       localStorage.setItem('lastContactSubmission', now.toString());
+      setRetryCount(0);
 
       toast({
         title: t('contact.toast_success_title'),
@@ -185,19 +190,91 @@ const Contact = () => {
       setTouched({});
       setErrors({});
       setRecaptchaToken(null);
-      // No widget to reset when using v3 only
 
     } catch (error) {
       console.error('Form submission error:', error);
-      toast({
-        title: t('contact.submission_error_title', 'Erro no Envio'),
-        description: t('contact.submission_error_desc', 'Ocorreu um erro ao enviar a mensagem. Tente novamente.'),
-        variant: 'destructive'
+      setSubmissionError(error);
+
+      // Log the error for debugging
+      logError(error, {
+        action: 'contact_form_submission',
+        retryCount,
+        formData: { name: formData.name, email: formData.email }
       });
+
+      // Try to store for retry if it's a recoverable error
+      if (retryCount < 3 && (error.name === 'NetworkError' || error.status >= 500)) {
+        const stored = FallbackStrategies.storeForRetry(submissionData);
+        if (stored) {
+          toast({
+            title: 'Mensagem salva',
+            description: 'Sua mensagem foi salva e será enviada quando a conexão for restabelecida.',
+            duration: 4000,
+          });
+        }
+      }
+
+      // Show alternative contacts for critical errors
+      if (error.status === 500 || error.name === 'NetworkError') {
+        setShowAlternativeContacts(true);
+      }
+
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Retry submission with exponential backoff
+  const handleRetry = async () => {
+    if (retryCount >= 3) {
+      setShowAlternativeContacts(true);
+      return;
+    }
+
+    setIsRetrying(true);
+    setRetryCount(prev => prev + 1);
+
+    try {
+      // Try to retry failed submissions first
+      const retryResult = await FallbackStrategies.retryFailedSubmissions();
+
+      if (retryResult.success && retryResult.retried > 0) {
+        toast({
+          title: 'Sucesso!',
+          description: `${retryResult.retried} mensagem(ns) enviada(s) com sucesso.`,
+          duration: 4000,
+        });
+        setSubmissionError(null);
+        setRetryCount(0);
+      } else {
+        // If no failed submissions to retry, retry the current error
+        await handleSubmit(new Event('submit'));
+      }
+    } catch (error) {
+      console.error('Retry failed:', error);
+      setSubmissionError(error);
+    } finally {
+      setIsRetrying(false);
+    }
+  };
+
+  // Dismiss error
+  const handleDismissError = () => {
+    setSubmissionError(null);
+    setRetryCount(0);
+  };
+
+  // Network status change handler
+  useEffect(() => {
+    const unsubscribe = networkMonitor.subscribe((online) => {
+      if (online && submissionError?.name === 'NetworkError') {
+        // Auto-retry when coming back online
+        handleRetry();
+      }
+    });
+
+    return unsubscribe;
+  }, [submissionError]);
 
   // reCAPTCHA v3 does not require visible widget handlers
 
@@ -217,7 +294,7 @@ const Contact = () => {
       title: t('contact.info.phone_title'),
       details: (
         <div className="flex items-center gap-2">
-                <button type="button" onClick={() => window.dispatchEvent(new Event('open-floating-cta'))} className="hover:underline font-medium text-left">
+          <button type="button" onClick={() => window.dispatchEvent(new Event('open-floating-cta'))} className="hover:underline font-medium text-left">
             +55 33 99860-1427
           </button>
           <span className="sr-only">+55 33 99860-1427</span>
@@ -385,6 +462,30 @@ const Contact = () => {
                   {errors.consent && <p id="error-consent" className="mt-1 text-xs text-red-600">{errors.consent}</p>}
                 </div>
 
+                {/* Connection Status */}
+                <div className="pt-2">
+                  <div className="flex items-center gap-2 mb-1">
+                    {isOnline ? (
+                      <Wifi className="h-4 w-4 text-green-600" />
+                    ) : (
+                      <WifiOff className="h-4 w-4 text-red-500" />
+                    )}
+                    <span className="text-sm font-medium text-slate-700">
+                      Conexão
+                    </span>
+                  </div>
+                  <p className={`text-xs ${isOnline ? 'text-green-600' : 'text-red-500'}`}>
+                    {isOnline
+                      ? 'Conectado à internet'
+                      : 'Sem conexão com a internet'}
+                  </p>
+                  {!isOnline && (
+                    <p className="text-xs text-slate-500 mt-1">
+                      Verifique sua conexão para enviar o formulário.
+                    </p>
+                  )}
+                </div>
+
                 {/* reCAPTCHA v3 status (no visible widget required) */}
                 <div className="pt-2">
                   <div className="flex items-center gap-2 mb-1">
@@ -405,15 +506,63 @@ const Contact = () => {
                   )}
                 </div>
 
+                {/* Error Feedback */}
+                {submissionError && (
+                  <div className="mb-4">
+                    <ErrorFeedback
+                      error={submissionError}
+                      onRetry={retryCount < 3 ? handleRetry : undefined}
+                      onDismiss={handleDismissError}
+                      compact={true}
+                    />
+                  </div>
+                )}
+
+                {/* Alternative Contact Methods */}
+                {showAlternativeContacts && (
+                  <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Phone className="h-4 w-4 text-yellow-600" />
+                      <span className="text-sm font-medium text-yellow-800">
+                        Contato Alternativo
+                      </span>
+                    </div>
+                    <p className="text-xs text-yellow-700 mb-2">
+                      Não foi possível enviar sua mensagem. Entre em contato diretamente:
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <a
+                        href="tel:+5533998601427"
+                        className="text-xs text-yellow-600 hover:text-yellow-800 underline"
+                      >
+                        +55 33 99860-1427
+                      </a>
+                      <a
+                        href="mailto:saraivavision@gmail.com"
+                        className="text-xs text-yellow-600 hover:text-yellow-800 underline"
+                      >
+                        saraivavision@gmail.com
+                      </a>
+                    </div>
+                  </div>
+                )}
+
                 <Button
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !isOnline}
                   type="submit"
                   size="lg"
                   className="w-full flex items-center justify-center gap-2 disabled:opacity-60"
                   aria-busy={isSubmitting}
                 >
                   <Send className="h-5 w-5" />
-                  {isSubmitting ? t('contact.sending_label', 'Enviando...') : t('contact.send_button', 'Enviar Mensagem')}
+                  {isRetrying
+                    ? `Tentando novamente (${retryCount + 1}/3)...`
+                    : isSubmitting
+                      ? t('contact.sending_label', 'Enviando...')
+                      : !isOnline
+                        ? 'Sem conexão'
+                        : t('contact.send_button', 'Enviar Mensagem')
+                  }
                 </Button>
               </form>
             </div>

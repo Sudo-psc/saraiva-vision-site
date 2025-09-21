@@ -9,8 +9,19 @@
     }
   ],
   "functions": {
+    "api/contact/**": {
+      "maxDuration": 10,
+      "memory": 256
+    },
     "api/**": {
       "maxDuration": 30
     }
+  },
+  "env": {
+    "RESEND_API_KEY": "@resend-api-key",
+    "DOCTOR_EMAIL": "@doctor-email",
+    "NODE_ENV": "@node-env",
+    "RATE_LIMIT_WINDOW": "@rate-limit-window",
+    "RATE_LIMIT_MAX": "@rate-limit-max"
   }
 }

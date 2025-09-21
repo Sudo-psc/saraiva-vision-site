@@ -1,70 +1,55 @@
-# Dependencies & local build outputs
-node_modules
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-lock.yaml
-yarn.lock
-dist
-dist-old
-coverage
-logs
-memory
-.tmp
-.temp
-*.log
-
-# Build outputs (keep dist for static files)
-!dist
-
 # Development files
 .env.local
 .env.development
 .env.test
-.env.production.local
 
-# Testing
-.nyc_output
-test-results
-playwright-report
-
-# IDE
-.vscode
-.idea
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Legacy infrastructure not required for Vercel
-Dockerfile*
-docker-compose*.yml
-infra/
-nginx*/
-proxy-nginx.conf
-
-# Documentation and auxiliary tooling
-.docs
-.docs/**
+# Documentation
 docs/
-scripts/
-tools/
-tests/
-webapp/
-wordpress-*/
-wordpress-local/
-wordpress-plugins/
-wordpress-theme/
-wp/
-*.code-workspace
-*.zip
-*.bak
-*.backup
 *.md
 !README.md
 
-# Temporary files
-tmp/
-temp/
+# Test files
+**/__tests__/
+**/*.test.js
+**/*.test.ts
+**/*.spec.js
+**/*.spec.ts
+
+# Development tools
+.vscode/
+.claude/
+.serena/
+
+# Backup files
+*.backup
+*.bak
+
+# Local development
+mysql-backup/
+nginx-logs/
+wordpress-local/
+scripts/
+
+# Git
+.git/
+.gitignore
+
+# Node modules (handled by Vercel)
+node_modules/
+
+# Build artifacts (except dist)
+.cache/
+.temp/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+*.swp
+*.swo
+*~
