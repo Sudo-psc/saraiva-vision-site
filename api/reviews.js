@@ -21,6 +21,12 @@ const PII_PATTERNS = [
   /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi,            // e-mails
 ];
 
+/**
+ * Anonymizes an author's name for privacy.
+ * It keeps single names, keeps two-part names, and abbreviates the second name for longer names.
+ * @param {string} [name=''] The original author name.
+ * @returns {string} The anonymized name.
+ */
 function anonymizeAuthor(name = '') {
   if (!name) return 'Paciente';
   const parts = name.trim().split(/\s+/);
@@ -29,18 +35,36 @@ function anonymizeAuthor(name = '') {
   return `${parts[0]} ${parts[1][0]}.`;
 }
 
+/**
+ * Removes Personally Identifiable Information (PII) from a string.
+ * It replaces patterns like phone numbers and email addresses with a placeholder.
+ * @param {string} [text=''] The text to sanitize.
+ * @returns {string} The sanitized text.
+ */
 function stripPII(text = '') {
   let cleaned = text;
   PII_PATTERNS.forEach(r => { cleaned = cleaned.replace(r, '[removido]'); });
   return cleaned;
 }
 
+/**
+ * Redacts sensitive clinical terms from a string to protect patient privacy.
+ * @param {string} [text=''] The text to redact.
+ * @returns {string} The redacted text.
+ */
 function removeSensitiveClinicalDetail(text = '') {
   let redacted = text;
   SENSITIVE_TERMS.forEach(r => { redacted = redacted.replace(r, '[termo clínico]'); });
   return redacted;
 }
 
+/**
+ * Sanitizes a single raw review object from the Google Places API.
+ * It anonymizes the author, sanitizes the text, and selects relevant fields.
+ * @param {object} r The raw review object.
+ * @param {number} idx The index of the review, used as a fallback ID.
+ * @returns {object} A sanitized review object safe for public display.
+ */
 function sanitizeReview(r, idx) {
   const safeText = removeSensitiveClinicalDetail(stripPII(r.text || '')).slice(0, 400);
   return {
@@ -59,6 +83,14 @@ const IS_PROD = process.env.NODE_ENV === 'production';
 const FETCH_INTERVAL_MS = Number(process.env.REVIEWS_POLL_INTERVAL_MS || (IS_PROD ? 60000 : 10000));
 const HEARTBEAT_INTERVAL_MS = Number(process.env.REVIEWS_HEARTBEAT_MS || (IS_PROD ? 25000 : 10000));
 
+/**
+ * Fetches reviews from the Google Places API and returns a sanitized payload.
+ * @param {object} params The function parameters.
+ * @param {string} params.apiKey The Google Maps API key.
+ * @param {string} params.placeId The Google Place ID for the location.
+ * @returns {Promise<object>} A promise that resolves to a sanitized payload containing reviews and metadata.
+ * @throws {Error} If the API call fails or returns a non-OK status.
+ */
 async function fetchAndSanitize({ apiKey, placeId }) {
   const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews,rating,user_ratings_total&key=${apiKey}`;
   const response = await fetch(url);
@@ -81,11 +113,32 @@ async function fetchAndSanitize({ apiKey, placeId }) {
   return payload;
 }
 
+/**
+ * Creates a weak ETag hash from a JSON payload.
+ * This is used for HTTP caching.
+ * @param {object} payload The JSON payload to hash.
+ * @returns {string} The ETag string.
+ */
 function hashPayload(payload) {
   const body = JSON.stringify(payload);
   return 'W/"' + createHash('sha1').update(body).digest('hex') + '"';
 }
 
+/**
+ * Handles requests for fetching Google Reviews.
+ * This serverless function can operate in two modes:
+ * 1.  **JSON Snapshot**: (Default) Fetches reviews, sanitizes them, and returns a JSON payload.
+ *     Supports ETag-based caching.
+ * 2.  **Server-Sent Events (SSE)**: If the client requests `text/event-stream`, it opens a
+ *     persistent connection, sending initial data and then periodic updates if reviews change.
+ *
+ * It requires `GOOGLE_MAPS_API_KEY` and `GOOGLE_PLACE_ID` to be set in environment variables.
+ *
+ * @param {import('http').IncomingMessage} req The incoming request object.
+ * @param {import('http').ServerResponse} res The server response object.
+ * @returns {Promise<void>} A promise that resolves when the response is sent, or it may not resolve
+ * if an SSE connection is established.
+ */
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');

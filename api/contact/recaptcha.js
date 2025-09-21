@@ -1,5 +1,11 @@
 const VERIFY_ENDPOINT = 'https://www.google.com/recaptcha/api/siteverify';
 
+/**
+ * Retrieves the reCAPTCHA secret key from environment variables.
+ * It supports a primary and a fallback variable name for flexibility.
+ *
+ * @returns {string} The reCAPTCHA secret key.
+ */
 function getRecaptchaSecret() {
   const primary = process.env.RECAPTCHA_SECRET;
   const fallback = process.env.GOOGLE_RECAPTCHA_SECRET;
@@ -7,10 +13,26 @@ function getRecaptchaSecret() {
   return value;
 }
 
+/**
+ * Checks if reCAPTCHA verification should be skipped.
+ * This is controlled by an environment variable and should only be used for testing.
+ *
+ * @returns {boolean} True if verification should be skipped, otherwise false.
+ */
 function shouldSkipVerification() {
   return process.env.CONTACT_ALLOW_INSECURE_RECAPTCHA === 'true';
 }
 
+/**
+ * Verifies a reCAPTCHA v3 token with Google's siteverify API.
+ *
+ * @param {object} params The verification parameters.
+ * @param {string} params.token The reCAPTCHA token from the client.
+ * @param {string} [params.expectedAction] The expected action name for the token.
+ * @param {string} [params.remoteip] The user's IP address.
+ * @returns {Promise<object>} A promise that resolves to a verification result object.
+ * The object contains an `ok` property indicating success, and other details like score and action.
+ */
 export async function verifyRecaptcha({ token, expectedAction, remoteip }) {
   const secret = getRecaptchaSecret();
   const actionToCompare = expectedAction || 'contact';

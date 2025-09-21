@@ -1,5 +1,26 @@
 import { clinicInfo } from './clinicInfo';
 
+/**
+ * @typedef {object} Translation
+ * @property {string} title - The translated title of the blog post.
+ * @property {string} excerpt - A short, translated summary of the blog post.
+ * @property {string} content - The full, translated HTML content of the blog post.
+ */
+
+/**
+ * @typedef {object} BlogPost
+ * @property {number} id - The unique identifier for the blog post.
+ * @property {string} slug - The URL-friendly slug for the blog post.
+ * @property {string} date - The publication date in YYYY-MM-DD format.
+ * @property {string} image - The URL for the blog post's feature image.
+ * @property {string} author - The name of the author.
+ * @property {{pt: Translation, en: Translation}} translations - An object containing the Portuguese and English translations.
+ */
+
+/**
+ * An array of static blog post data for the website.
+ * @type {BlogPost[]}
+ */
 const blogPosts = [
   {
     id: 1,

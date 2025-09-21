@@ -9,4 +9,11 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
+/**
+ * The singleton Supabase client instance.
+ * This client is used to interact with the Supabase backend for database, auth, and storage operations.
+ * It is initialized with credentials from environment variables.
+ *
+ * @type {import('@supabase/supabase-js').SupabaseClient}
+ */
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);

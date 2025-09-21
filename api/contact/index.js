@@ -5,6 +5,16 @@ import { sendContactEmail } from './email.js';
 
 const DEFAULT_ACTION = 'contact';
 
+/**
+ * Handles incoming contact form submissions.
+ * This serverless function processes POST requests from the contact form.
+ * It performs CORS checks, rate limiting, reCAPTCHA verification, input validation,
+ * and finally sends a contact email.
+ *
+ * @param {import('http').IncomingMessage} req The incoming request object.
+ * @param {import('http').ServerResponse} res The server response object.
+ * @returns {Promise<void>} A promise that resolves when the response is sent.
+ */
 export default async function handler(req, res) {
   applyCors(res);
 

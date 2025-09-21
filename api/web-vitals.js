@@ -3,6 +3,15 @@
  * Coleta métricas de performance para monitoramento da experiência do usuário
  */
 
+/**
+ * Handles incoming Web Vitals reports from the client.
+ * This endpoint receives performance metrics (like LCP, FID, CLS) sent from the front-end,
+ * logs them for monitoring, and performs a basic analysis.
+ *
+ * @param {import('http').IncomingMessage} req The incoming request object, expecting a JSON body with Web Vitals data.
+ * @param {import('http').ServerResponse} res The server response object.
+ * @returns {Promise<void>} A promise that resolves when the response is sent.
+ */
 export default async function handler(req, res) {
   // Only accept POST requests
   if (req.method !== 'POST') {
@@ -69,7 +78,10 @@ export default async function handler(req, res) {
 }
 
 /**
- * Analisa as métricas e retorna recomendações
+ * Analyzes a set of Web Vitals metrics and provides a score and recommendations.
+ *
+ * @param {object} vitals An object containing Web Vitals metrics (e.g., { lcp, cls, fid, inp }).
+ * @returns {{score: string, issues: string[], recommendations: string[]}} An analysis object with a score ('good', 'needs-improvement', 'poor'), a list of identified issues, and suggested recommendations.
  */
 function analyzeVitals(vitals) {
   const thresholds = {

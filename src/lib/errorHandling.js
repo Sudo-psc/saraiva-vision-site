@@ -3,26 +3,46 @@
  * Provides structured error mapping, user-friendly messages, and recovery mechanisms
  */
 
-// Error type definitions
+/**
+ * A dictionary of defined error types.
+ * @enum {string}
+ */
 export const ErrorTypes = {
+    /** An error related to data validation. */
     VALIDATION: 'validation',
+    /** An error related to network connectivity. */
     NETWORK: 'network',
+    /** An error originating from the server-side API. */
     API: 'api',
+    /** A rate-limiting error. */
     RATE_LIMIT: 'rate_limit',
+    /** An error from the reCAPTCHA service. */
     RECAPTCHA: 'recaptcha',
+    /** An error from the email sending service. */
     EMAIL_SERVICE: 'email_service',
+    /** An unknown or unclassified error. */
     UNKNOWN: 'unknown'
 };
 
-// Error severity levels
+/**
+ * A dictionary of defined error severity levels.
+ * @enum {string}
+ */
 export const ErrorSeverity = {
+    /** The user can continue; a minor, often recoverable issue. */
     LOW: 'low',      // User can continue, minor issue
+    /** User action is required, but the error is recoverable. */
     MEDIUM: 'medium', // User action required, but recoverable
+    /** A critical error that blocks a specific functionality. */
     HIGH: 'high',    // Critical error, blocks functionality
+    /** A system-level failure that requires immediate attention. */
     CRITICAL: 'critical' // System failure, requires immediate attention
 };
 
-// Error mapping with user-friendly messages
+/**
+ * A map of error codes to user-friendly messages, severity levels, and recovery suggestions.
+ * @type {Object<string, {userMessage: string, field?: string, severity: ErrorSeverity, recovery: string}>}
+ */
 export const ErrorMessages = {
     // Validation errors
     'validation.name_too_short': {
@@ -177,7 +197,12 @@ export const ErrorMessages = {
     }
 };
 
-// Error classification helper
+/**
+ * Classifies an error object into a structured type and code.
+ *
+ * @param {object} error The error object to classify.
+ * @returns {{type: ErrorTypes, code: string}} An object containing the classified error type and code.
+ */
 export function classifyError(error) {
     if (!error) return { type: ErrorTypes.UNKNOWN, code: 'unknown' };
 
@@ -239,7 +264,13 @@ export function classifyError(error) {
     return { type: ErrorTypes.UNKNOWN, code: 'unknown' };
 }
 
-// Get user-friendly error message
+/**
+ * Gets a user-friendly error object based on a raw error.
+ * It classifies the error and retrieves the corresponding message, severity, and recovery steps.
+ *
+ * @param {object} error The raw error object.
+ * @returns {object} A comprehensive, user-friendly error object.
+ */
 export function getUserFriendlyError(error) {
     const { type, code } = classifyError(error);
     const errorConfig = ErrorMessages[code] || ErrorMessages['unknown'];
@@ -252,7 +283,10 @@ export function getUserFriendlyError(error) {
     };
 }
 
-// Retry configuration
+/**
+ * Default configuration for retry logic.
+ * @type {{maxAttempts: number, baseDelay: number, maxDelay: number, backoffFactor: number}}
+ */
 export const RetryConfig = {
     maxAttempts: 3,
     baseDelay: 1000, // 1 second
@@ -260,7 +294,12 @@ export const RetryConfig = {
     backoffFactor: 2
 };
 
-// Exponential backoff helper
+/**
+ * Calculates the delay for the next retry attempt using exponential backoff with jitter.
+ *
+ * @param {number} attempt The current attempt number (starting from 1).
+ * @returns {number} The calculated delay in milliseconds.
+ */
 export function calculateRetryDelay(attempt) {
     const delay = Math.min(
         RetryConfig.baseDelay * Math.pow(RetryConfig.backoffFactor, attempt - 1),
@@ -269,7 +308,16 @@ export function calculateRetryDelay(attempt) {
     return delay + Math.random() * 1000; // Add jitter
 }
 
-// Retry function with exponential backoff
+/**
+ * A higher-order function that wraps an async function with retry logic.
+ *
+ * @param {() => Promise<any>} fn The async function to execute.
+ * @param {object} [options={}] Configuration for the retry logic.
+ * @param {number} [options.maxAttempts] The maximum number of attempts.
+ * @param {(error: object) => boolean} [options.shouldRetry] A function that determines if a retry should be attempted based on the error.
+ * @returns {Promise<any>} A promise that resolves with the result of the wrapped function.
+ * @throws {object} Throws the last error if all retry attempts fail.
+ */
 export async function withRetry(fn, options = {}) {
     const maxAttempts = options.maxAttempts || RetryConfig.maxAttempts;
     const shouldRetry = options.shouldRetry || (() => true);
@@ -294,7 +342,15 @@ export async function withRetry(fn, options = {}) {
     throw lastError;
 }
 
-// Error logging utility
+/**
+ * Logs an error with its classification and context.
+ * In development, it logs to the console. In production, this can be extended
+ * to send data to an external error tracking service.
+ *
+ * @param {object} error The error object to log.
+ * @param {object} [context={}] Additional context to include with the log.
+ * @returns {{timestamp: string, type: ErrorTypes, code: string, message: string, context: object}} The structured log object.
+ */
 export function logError(error, context = {}) {
     const errorInfo = classifyError(error);
     const timestamp = new Date().toISOString();
@@ -320,7 +376,12 @@ export function logError(error, context = {}) {
     };
 }
 
-// Error recovery suggestions
+/**
+ * Provides a list of suggested recovery steps for a given error.
+ *
+ * @param {object} error The error object.
+ * @returns {string[]} An array of suggested recovery steps for the user.
+ */
 export function getRecoverySteps(error) {
     const friendlyError = getUserFriendlyError(error);
     const steps = [];
@@ -358,7 +419,12 @@ export function getRecoverySteps(error) {
     return steps.filter(step => step && step.trim() !== '');
 }
 
-// Create error boundary compatible error object
+/**
+ * Creates an error object that is compatible with React Error Boundaries.
+ *
+ * @param {object} error The original error.
+ * @returns {{error: object, errorInfo: object}} An object suitable for being passed to an error boundary component.
+ */
 export function createErrorBoundaryError(error) {
     const friendlyError = getUserFriendlyError(error);
     return {
@@ -370,7 +436,12 @@ export function createErrorBoundaryError(error) {
     };
 }
 
-// Check if error is recoverable
+/**
+ * Checks if an error is considered recoverable from a user's perspective.
+ *
+ * @param {object} error The error object.
+ * @returns {boolean} True if the error is recoverable, otherwise false.
+ */
 export function isRecoverable(error) {
     const { type } = classifyError(error);
     const nonRecoverableTypes = [ErrorTypes.CRITICAL];
@@ -378,7 +449,12 @@ export function isRecoverable(error) {
     return !nonRecoverableTypes.includes(type);
 }
 
-// Error severity indicator for UI
+/**
+ * Gets UI indicators (color, icon, label) for a given error severity.
+ *
+ * @param {ErrorSeverity} severity The severity level of the error.
+ * @returns {{color: string, icon: string, label: string}} An object with UI indicators.
+ */
 export function getSeverityIndicator(severity) {
     switch (severity) {
         case ErrorSeverity.LOW:

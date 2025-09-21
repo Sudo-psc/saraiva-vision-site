@@ -3,6 +3,16 @@
  * Handles WordPress API requests and serves as a proxy to external WordPress instance
  */
 
+/**
+ * Acts as a proxy for requests to a headless WordPress instance.
+ * It forwards GET requests from `/api/wp-json/...` to the configured WordPress URL,
+ * allowing the front-end to query the WordPress API without CORS issues or exposing the
+ * WordPress URL directly to the client.
+ *
+ * @param {import('http').IncomingMessage} req The incoming request object.
+ * @param {import('http').ServerResponse} res The server response object.
+ * @returns {Promise<void>} A promise that resolves when the response is sent.
+ */
 export default async function handler(req, res) {
   const { pathname, search } = new URL(req.url, `http://${req.headers.host}`);
   const wordpressUrl = process.env.WORDPRESS_URL || 'https://saraivavision.com.br';
