@@ -1,0 +1,5 @@
+query InitializeHypertune {
+  root {
+    __typename
+  }
+}
