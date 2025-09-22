@@ -1,6 +1,11 @@
 import { validateContactSubmission } from '../../src/lib/validation.js';
 import { sendContactEmail } from './emailService.js';
+import { addToOutbox } from './outboxService.js';
+import { supabaseAdmin } from '../../src/lib/supabase.ts';
 import { applyRateLimiting, sanitizeFormData, createErrorResponse, createSuccessResponse, logRequest } from './utils.js';
+import { getClientIP } from './rateLimiter.js';
+import { createLogger } from '../../src/lib/logger.js';
+import { alertingSystem } from '../../src/lib/alertingSystem.js';
 
 /**
  * Apply CORS headers for cross-origin requests
@@ -45,8 +50,14 @@ async function parseJsonBody(req) {
  */
 export default async function handler(req, res) {
   const startTime = Date.now();
+  const logger = createLogger('contact-api', req.headers['x-request-id']);
 
   try {
+    await logger.info('Contact form submission started', {
+      method: req.method,
+      user_agent: req.headers['user-agent'],
+      ip: getClientIP(req)
+    });
     // Apply CORS headers
     applyCors(res);
 
@@ -104,42 +115,146 @@ export default async function handler(req, res) {
       id: generateContactId()
     };
 
-    // Send email using Resend API
-    const emailResult = await sendContactEmail(contactData);
+    // Store contact message in database first (transactional)
+    const { data: contactRecord, error: dbError } = await supabaseAdmin
+      .from('contact_messages')
+      .insert({
+        name: contactData.name,
+        email: contactData.email,
+        phone: contactData.phone,
+        message: contactData.message,
+        consent_given: contactData.consent,
+        ip_hash: require('crypto').createHash('sha256').update(getClientIP(req)).digest('hex')
+      })
+      .select('id')
+      .single();
 
-    if (!emailResult.success) {
-      logRequest(req, 'email_failed', {
+    if (dbError) {
+      logRequest(req, 'database_error', {
         contactId: contactData.id,
-        error: emailResult.error?.code
+        error: dbError.message
       });
       return res.status(500).json(
-        createErrorResponse(
-          emailResult.error?.code || 'email_service_error',
-          emailResult.error?.message || 'Failed to send email'
-        )
+        createErrorResponse('database_error', 'Failed to store contact information')
+      );
+    }
+
+    // Add email to outbox for reliable delivery
+    const outboxResult = await addToOutbox({
+      message_type: 'email',
+      recipient: process.env.DOCTOR_EMAIL || 'philipe_cruz@outlook.com',
+      subject: `Novo contato do site - ${contactData.name}`,
+      content: `Contact form submission from ${contactData.name}`,
+      template_data: {
+        name: contactData.name,
+        email: contactData.email,
+        phone: contactData.phone,
+        message: contactData.message,
+        timestamp: contactData.timestamp,
+        id: contactRecord.id
+      },
+      max_retries: 3,
+      send_after: new Date()
+    });
+
+    if (!outboxResult.success) {
+      logRequest(req, 'outbox_failed', {
+        contactId: contactData.id,
+        dbId: contactRecord.id,
+        error: outboxResult.error?.code
+      });
+
+      // Even if outbox fails, we still have the contact stored
+      // Return success but log the issue for manual follow-up
+      console.error('Failed to queue email for delivery:', outboxResult.error);
+    }
+
+    // Try immediate delivery (best effort)
+    let immediateDelivery = null;
+    try {
+      immediateDelivery = await sendContactEmail({
+        ...contactData,
+        id: contactRecord.id
+      });
+
+      // Track email delivery
+      await alertingSystem.trackEmailDelivery(
+        outboxResult.messageId,
+        process.env.DOCTOR_EMAIL || 'philipe_cruz@outlook.com',
+        immediateDelivery.success,
+        immediateDelivery.success ? null : new Error(immediateDelivery.error || 'Unknown error'),
+        {
+          contact_id: contactRecord.id,
+          delivery_method: 'immediate'
+        }
+      );
+
+      if (immediateDelivery.success && outboxResult.success) {
+        // Mark outbox message as sent since immediate delivery succeeded
+        await supabaseAdmin
+          .from('message_outbox')
+          .update({
+            status: 'sent',
+            sent_at: new Date().toISOString()
+          })
+          .eq('id', outboxResult.messageId);
+      }
+    } catch (error) {
+      await logger.warn('Immediate email delivery failed, will retry via outbox', {
+        contact_id: contactRecord.id,
+        error_message: error.message
+      });
+
+      // Track failed delivery
+      await alertingSystem.trackEmailDelivery(
+        outboxResult.messageId,
+        process.env.DOCTOR_EMAIL || 'philipe_cruz@outlook.com',
+        false,
+        error,
+        {
+          contact_id: contactRecord.id,
+          delivery_method: 'immediate'
+        }
       );
     }
 
     // Log successful submission (without PII)
     const processingTime = Date.now() - startTime;
+    await logger.info('Contact form submission completed successfully', {
+      contact_id: contactRecord.id,
+      outbox_id: outboxResult.messageId,
+      immediate_delivery: immediateDelivery?.success || false,
+      processing_time_ms: processingTime
+    });
+
     logRequest(req, 'contact_submitted', {
       contactId: contactData.id,
-      messageId: emailResult.messageId,
+      dbId: contactRecord.id,
+      outboxId: outboxResult.messageId,
+      immediateDelivery: immediateDelivery?.success || false,
       processingTime: `${processingTime}ms`
     });
 
     // Return success response
     return res.status(200).json(
       createSuccessResponse('Mensagem enviada com sucesso! Entraremos em contato em breve.', {
-        contactId: contactData.id,
-        messageId: emailResult.messageId,
-        timestamp: contactData.timestamp.toISOString()
+        contactId: contactRecord.id,
+        messageId: immediateDelivery?.messageId || outboxResult.messageId,
+        timestamp: contactData.timestamp.toISOString(),
+        deliveryMethod: immediateDelivery?.success ? 'immediate' : 'queued'
       })
     );
 
   } catch (error) {
     // Handle unexpected errors
     const processingTime = Date.now() - startTime;
+
+    await logger.error('Contact API unexpected error', {
+      error_message: error.message,
+      error_stack: error.stack,
+      processing_time_ms: processingTime
+    });
+
     console.error('Contact API unexpected error:', {
       error: error.message,
       stack: error.stack,

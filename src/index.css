@@ -7,6 +7,16 @@
 /* IMPORTA ACCESSIBILITY ENHANCEMENTS - WCAG 2.1 AA Compliance */
 @import './styles/accessibility.css';
 
+/* IMPORTA GLASS MORPHISM UTILITIES */
+@import './styles/glassMorphism.css';
+
+/* IMPORTA ANALYTICS STYLES */
+@import './styles/analytics.css';
+@import './styles/consent.css';
+
+/* IMPORTA WHATSAPP WIDGET STYLES */
+@import './styles/whatsapp-widget.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

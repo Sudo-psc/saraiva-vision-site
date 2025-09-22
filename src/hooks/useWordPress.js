@@ -1,53 +1,82 @@
-/**
- * Custom React hooks for WordPress API integration
- * Provides reactive data fetching with loading states, error handling, and caching
- */
-
+// React hooks for consuming WordPress content
 import { useState, useEffect, useCallback } from 'react';
 import {
-  fetchPosts,
-  fetchPostBySlug,
-  fetchPostById,
-  fetchCategories,
-  fetchPostsByCategory,
-  fetchTags,
-  searchPosts,
-  fetchFeaturedPosts,
-  fetchRecentPosts,
-  fetchRelatedPosts,
-  checkWordPressConnection
-} from '@/lib/wordpress';
+  getAllPosts,
+  getPostBySlug,
+  getAllPages,
+  getPageBySlug,
+  getAllServices,
+  getServiceBySlug,
+  getPopularServices,
+  getAllTeamMembers,
+  getTeamMemberBySlug,
+  getFeaturedTestimonials,
+  getAllTestimonials,
+  getRecentPosts,
+  getSiteSettings,
+  getNavigationMenus,
+} from '../lib/wordpress-api.js';
 
-/**
- * Generic hook for WordPress API calls
- */
-function useWordPressApi(apiCall, dependencies = []) {
+// Generic hook for WordPress content fetching
+const useWordPressContent = (fetchFunction, dependencies = [], options = {}) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
+
+  const {
+    enabled = true,
+    refetchOnWindowFocus = false,
+    staleTime = 5 * 60 * 1000, // 5 minutes
+  } = options;
 
   const fetchData = useCallback(async () => {
-    if (!apiCall) {
-      setLoading(false);
-      return;
-    }
+    if (!enabled) return;
 
     try {
       setLoading(true);
       setError(null);
-      const result = await apiCall();
-      setData(result);
+
+      const result = await fetchFunction();
+
+      if (result.error) {
+        setError(result.error);
+        setData(null);
+      } else {
+        setData(result);
+        setLastUpdated(Date.now());
+      }
     } catch (err) {
-      setError(err.message || 'Failed to fetch data');
-      console.error('WordPress API error:', err);
+      console.error('WordPress content fetch error:', err);
+      setError({
+        type: 'FETCH_ERROR',
+        message: err.message || 'Failed to fetch content',
+      });
+      setData(null);
     } finally {
       setLoading(false);
     }
-  }, dependencies);
+  }, [fetchFunction, enabled]);
 
+  // Initial fetch
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [fetchData, ...dependencies]);
+
+  // Refetch on window focus if enabled
+  useEffect(() => {
+    if (!refetchOnWindowFocus) return;
+
+    const handleFocus = () => {
+      const now = Date.now();
+      if (!lastUpdated || now - lastUpdated > staleTime) {
+        fetchData();
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [refetchOnWindowFocus, staleTime, lastUpdated, fetchData]);
 
   const refetch = useCallback(() => {
     fetchData();
@@ -57,300 +86,187 @@ function useWordPressApi(apiCall, dependencies = []) {
     data,
     loading,
     error,
-    refetch
+    refetch,
+    lastUpdated,
   };
-}
+};
 
-/**
- * Hook to fetch posts with filtering and pagination
- */
-export function usePosts(params = {}) {
-  return useWordPressApi(
-    () => fetchPosts(params),
-    [JSON.stringify(params)]
+// Hook for fetching all posts with pagination
+export const usePosts = (options = {}) => {
+  const { first = 10, after = null, ...hookOptions } = options;
+
+  const fetchFunction = useCallback(
+    () => getAllPosts({ first, after }),
+    [first, after]
   );
-}
 
-/**
- * Hook to fetch a single post by slug
- */
-export function usePost(slug) {
-  return useWordPressApi(
-    slug ? () => fetchPostBySlug(slug) : null,
+  return useWordPressContent(fetchFunction, [first, after], hookOptions);
+};
+
+// Hook for fetching a single post by slug
+export const usePost = (slug, options = {}) => {
+  const fetchFunction = useCallback(
+    () => getPostBySlug(slug),
     [slug]
   );
-}
 
-/**
- * Hook to fetch a single post by ID
- */
-export function usePostById(id) {
-  return useWordPressApi(
-    id ? () => fetchPostById(id) : null,
-    [id]
-  );
-}
+  return useWordPressContent(fetchFunction, [slug], {
+    enabled: !!slug,
+    ...options,
+  });
+};
 
-/**
- * Hook to fetch categories
- */
-export function useCategories(params = {}) {
-  return useWordPressApi(
-    () => fetchCategories(params),
-    [JSON.stringify(params)]
-  );
-}
-
-/**
- * Hook to fetch posts by category
- */
-export function usePostsByCategory(categorySlug, params = {}) {
-  return useWordPressApi(
-    categorySlug ? () => fetchPostsByCategory(categorySlug, params) : null,
-    [categorySlug, JSON.stringify(params)]
-  );
-}
-
-/**
- * Hook to fetch tags
- */
-export function useTags(params = {}) {
-  return useWordPressApi(
-    () => fetchTags(params),
-    [JSON.stringify(params)]
-  );
-}
-
-/**
- * Hook for search functionality
- */
-export function usePostSearch(searchTerm, params = {}) {
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const search = useCallback(async (term) => {
-    if (!term || term.trim().length < 2) {
-      setResults([]);
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError(null);
-      const searchResults = await searchPosts(term.trim(), params);
-      setResults(searchResults);
-    } catch (err) {
-      setError(err.message || 'Search failed');
-      console.error('WordPress search error:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [JSON.stringify(params)]);
-
-  useEffect(() => {
-    if (searchTerm) {
-      search(searchTerm);
-    } else {
-      setResults([]);
-    }
-  }, [searchTerm, search]);
-
-  return {
-    results,
-    loading,
-    error,
-    search
-  };
-}
-
-/**
- * Hook to fetch featured posts
- */
-export function useFeaturedPosts(params = {}) {
-  return useWordPressApi(
-    () => fetchFeaturedPosts(params),
-    [JSON.stringify(params)]
-  );
-}
-
-/**
- * Hook to fetch recent posts
- */
-export function useRecentPosts(count = 5) {
-  return useWordPressApi(
-    () => fetchRecentPosts(count),
+// Hook for fetching recent posts
+export const useRecentPosts = (count = 3, options = {}) => {
+  const fetchFunction = useCallback(
+    () => getRecentPosts(count),
     [count]
   );
-}
 
-/**
- * Hook to fetch related posts
- */
-export function useRelatedPosts(post, count = 3) {
-  return useWordPressApi(
-    post ? () => fetchRelatedPosts(post, count) : null,
-    [post?.id, count]
-  );
-}
+  return useWordPressContent(fetchFunction, [count], options);
+};
 
-/**
- * Hook to check WordPress connection status
- */
-export function useWordPressConnection() {
-  const [isConnected, setIsConnected] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const checkConnection = useCallback(async () => {
-    try {
-      setLoading(true);
-      const connected = await checkWordPressConnection();
-      setIsConnected(connected);
-    } catch (error) {
-      setIsConnected(false);
-      console.error('WordPress connection check failed:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    checkConnection();
-  }, [checkConnection]);
-
-  return {
-    isConnected,
-    loading,
-    checkConnection
-  };
-}
-
-/**
- * Hook for infinite scrolling/pagination
- */
-export function useInfinitePosts(params = {}) {
-  const [allPosts, setAllPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [error, setError] = useState(null);
-  const [page, setPage] = useState(1);
-
-  const loadMore = useCallback(async () => {
-    if (loading || !hasMore) return;
-
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const newPosts = await fetchPosts({
-        ...params,
-        page: page,
-        per_page: params.per_page || 10
-      });
-
-      if (newPosts.length === 0) {
-        setHasMore(false);
-      } else {
-        setAllPosts(prev => page === 1 ? newPosts : [...prev, ...newPosts]);
-        setPage(prev => prev + 1);
-        
-        // If we got fewer posts than requested, we've reached the end
-        if (newPosts.length < (params.per_page || 10)) {
-          setHasMore(false);
-        }
-      }
-    } catch (err) {
-      setError(err.message || 'Failed to load posts');
-      console.error('WordPress infinite scroll error:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [loading, hasMore, page, JSON.stringify(params)]);
-
-  const reset = useCallback(() => {
-    setAllPosts([]);
-    setPage(1);
-    setHasMore(true);
-    setError(null);
-  }, []);
-
-  useEffect(() => {
-    reset();
-    loadMore();
-  }, [JSON.stringify(params)]);
-
-  return {
-    posts: allPosts,
-    loading,
-    error,
-    hasMore,
-    loadMore,
-    reset
-  };
-}
-
-/**
- * Hook for post pagination with navigation
- */
-export function usePaginatedPosts(params = {}) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalPosts, setTotalPosts] = useState(0);
-  
-  const postsPerPage = params.per_page || 10;
-  
-  const { data: posts, loading, error, refetch } = useWordPressApi(
-    () => fetchPosts({
-      ...params,
-      page: currentPage,
-      per_page: postsPerPage
-    }),
-    [currentPage, JSON.stringify(params)]
+// Hook for fetching all pages
+export const usePages = (options = {}) => {
+  const fetchFunction = useCallback(
+    () => getAllPages(),
+    []
   );
 
-  // Extract pagination info from WordPress headers would require custom fetch
-  // For now, we'll estimate based on results
-  useEffect(() => {
-    if (posts) {
-      // This is a simplified approach - in a real implementation,
-      // you'd want to get total count from the API response headers
-      if (posts.length < postsPerPage) {
-        setTotalPages(currentPage);
-      }
-    }
-  }, [posts, postsPerPage, currentPage]);
+  return useWordPressContent(fetchFunction, [], options);
+};
 
-  const goToPage = useCallback((page) => {
-    setCurrentPage(page);
-  }, []);
+// Hook for fetching a single page by slug
+export const usePage = (slug, options = {}) => {
+  const fetchFunction = useCallback(
+    () => getPageBySlug(slug),
+    [slug]
+  );
 
-  const nextPage = useCallback(() => {
-    if (currentPage < totalPages) {
-      setCurrentPage(prev => prev + 1);
-    }
-  }, [currentPage, totalPages]);
+  return useWordPressContent(fetchFunction, [slug], {
+    enabled: !!slug,
+    ...options,
+  });
+};
 
-  const prevPage = useCallback(() => {
-    if (currentPage > 1) {
-      setCurrentPage(prev => prev - 1);
-    }
-  }, [currentPage]);
+// Hook for fetching all services
+export const useServices = (options = {}) => {
+  const fetchFunction = useCallback(
+    () => getAllServices(),
+    []
+  );
+
+  return useWordPressContent(fetchFunction, [], options);
+};
+
+// Hook for fetching a single service by slug
+export const useService = (slug, options = {}) => {
+  const fetchFunction = useCallback(
+    () => getServiceBySlug(slug),
+    [slug]
+  );
+
+  return useWordPressContent(fetchFunction, [slug], {
+    enabled: !!slug,
+    ...options,
+  });
+};
+
+// Hook for fetching popular services
+export const usePopularServices = (count = 6, options = {}) => {
+  const fetchFunction = useCallback(
+    () => getPopularServices(count),
+    [count]
+  );
+
+  return useWordPressContent(fetchFunction, [count], options);
+};
+
+// Hook for fetching all team members
+export const useTeamMembers = (options = {}) => {
+  const fetchFunction = useCallback(
+    () => getAllTeamMembers(),
+    []
+  );
+
+  return useWordPressContent(fetchFunction, [], options);
+};
+
+// Hook for fetching a single team member by slug
+export const useTeamMember = (slug, options = {}) => {
+  const fetchFunction = useCallback(
+    () => getTeamMemberBySlug(slug),
+    [slug]
+  );
+
+  return useWordPressContent(fetchFunction, [slug], {
+    enabled: !!slug,
+    ...options,
+  });
+};
+
+// Hook for fetching featured testimonials
+export const useFeaturedTestimonials = (count = 6, options = {}) => {
+  const fetchFunction = useCallback(
+    () => getFeaturedTestimonials(count),
+    [count]
+  );
+
+  return useWordPressContent(fetchFunction, [count], options);
+};
+
+// Hook for fetching all testimonials
+export const useTestimonials = (options = {}) => {
+  const fetchFunction = useCallback(
+    () => getAllTestimonials(),
+    []
+  );
+
+  return useWordPressContent(fetchFunction, [], options);
+};
+
+// Hook for fetching site settings
+export const useSiteSettings = (options = {}) => {
+  const fetchFunction = useCallback(
+    () => getSiteSettings(),
+    []
+  );
+
+  return useWordPressContent(fetchFunction, [], {
+    staleTime: 60 * 60 * 1000, // 1 hour - settings don't change often
+    ...options,
+  });
+};
+
+// Hook for fetching navigation menus
+export const useNavigationMenus = (options = {}) => {
+  const fetchFunction = useCallback(
+    () => getNavigationMenus(),
+    []
+  );
+
+  return useWordPressContent(fetchFunction, [], {
+    staleTime: 60 * 60 * 1000, // 1 hour - navigation doesn't change often
+    ...options,
+  });
+};
+
+// Hook for fetching homepage data (combines multiple content types)
+export const useHomepageData = (options = {}) => {
+  const recentPosts = useRecentPosts(3, options);
+  const popularServices = usePopularServices(6, options);
+  const featuredTestimonials = useFeaturedTestimonials(6, options);
 
   return {
-    posts: posts || [],
-    loading,
-    error,
-    refetch,
-    pagination: {
-      currentPage,
-      totalPages,
-      totalPosts,
-      postsPerPage,
-      goToPage,
-      nextPage,
-      prevPage,
-      hasNext: currentPage < totalPages,
-      hasPrev: currentPage > 1
-    }
+    recentPosts,
+    popularServices,
+    featuredTestimonials,
+    loading: recentPosts.loading || popularServices.loading || featuredTestimonials.loading,
+    error: recentPosts.error || popularServices.error || featuredTestimonials.error,
+    refetch: () => {
+      recentPosts.refetch();
+      popularServices.refetch();
+      featuredTestimonials.refetch();
+    },
   };
-}
+};

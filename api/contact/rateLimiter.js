@@ -133,7 +133,7 @@ function checkRateLimit(req) {
 }
 
 /**
- * Detect honeypot field spam
+ * Detect honeypot field spam and advanced spam patterns
  * @param {Object} formData - Form submission data
  * @returns {Object} - Spam detection result
  */
@@ -153,20 +153,73 @@ function detectHoneypot(formData) {
   const suspiciousPatterns = [
     // Check for excessive links in message
     /(https?:\/\/[^\s]+.*){3,}/i,
-    // Check for common spam phrases
-    /\b(viagra|cialis|casino|lottery|winner|congratulations|click here|free money)\b/i,
+    // Check for common spam phrases (Portuguese and English)
+    /\b(viagra|cialis|casino|lottery|winner|congratulations|click here|free money|ganhe dinheiro|clique aqui|promoção|oferta imperdível)\b/i,
     // Check for excessive capitalization
     /[A-Z]{10,}/,
+    // Check for suspicious email patterns
+    /\b[a-z0-9._%+-]+@(tempmail|10minutemail|guerrillamail|mailinator|throwaway)\./i,
+    // Check for repeated characters (keyboard mashing)
+    /(.)\1{5,}/,
+    // Check for suspicious phone patterns (too many repeated digits)
+    /(\d)\1{6,}/
   ];
 
   const message = formData.message || '';
+  const email = formData.email || '';
+  const name = formData.name || '';
+
+  // Check message content
   for (const pattern of suspiciousPatterns) {
-    if (pattern.test(message)) {
+    if (pattern.test(message) || pattern.test(email) || pattern.test(name)) {
       return {
         isSpam: true,
         reason: 'suspicious_content',
         message: 'Spam detected: suspicious content patterns'
       };
+    }
+  }
+
+  // Check for submission speed (too fast indicates bot)
+  const submissionTime = formData._submissionTime;
+  if (submissionTime && (Date.now() - submissionTime) < 3000) { // Less than 3 seconds
+    return {
+      isSpam: true,
+      reason: 'submission_too_fast',
+      message: 'Spam detected: submission too fast'
+    };
+  }
+
+  // Check for duplicate content (simple hash check)
+  const contentHash = require('crypto')
+    .createHash('md5')
+    .update(`${name}${email}${message}`)
+    .digest('hex');
+
+  // Store recent hashes in memory (simple duplicate detection)
+  if (!global.recentSubmissions) {
+    global.recentSubmissions = new Map();
+  }
+
+  if (global.recentSubmissions.has(contentHash)) {
+    const lastSubmission = global.recentSubmissions.get(contentHash);
+    if (Date.now() - lastSubmission < 300000) { // 5 minutes
+      return {
+        isSpam: true,
+        reason: 'duplicate_content',
+        message: 'Spam detected: duplicate submission'
+      };
+    }
+  }
+
+  // Store this submission hash
+  global.recentSubmissions.set(contentHash, Date.now());
+
+  // Clean old hashes (keep only last hour)
+  const oneHourAgo = Date.now() - 3600000;
+  for (const [hash, timestamp] of global.recentSubmissions.entries()) {
+    if (timestamp < oneHourAgo) {
+      global.recentSubmissions.delete(hash);
     }
   }
 

@@ -10,10 +10,15 @@ import { submitContactForm, FallbackStrategies, useConnectionStatus, networkMoni
 import { getUserFriendlyError, getRecoverySteps, logError } from '@/lib/errorHandling';
 import ErrorFeedback, { NetworkError, RateLimitError, RecaptchaError, EmailServiceError } from '@/components/ui/ErrorFeedback';
 import { validateField, validateContactSubmission } from '@/lib/validation';
+import { useAnalytics, useVisibilityTracking } from '@/hooks/useAnalytics';
 
 const Contact = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
+
+  // Analytics integration
+  const { trackFormView, trackFormSubmit, trackInteraction } = useAnalytics();
+  const contactFormRef = useVisibilityTracking('contact_form_view');
 
   // Accessibility refs for focus management
   const formRef = useRef(null);
@@ -46,6 +51,11 @@ const Contact = () => {
   const { ready: recaptchaReady, execute: executeRecaptcha } = useRecaptcha();
   const connectionStatus = useConnectionStatus();
   const { isOnline } = connectionStatus || { isOnline: true };
+
+  // Track form view on component mount
+  useEffect(() => {
+    trackFormView('contact');
+  }, [trackFormView]);
 
   // Accessibility announcement function
   const announceToScreenReader = (message, priority = 'polite') => {
@@ -248,6 +258,15 @@ const Contact = () => {
       // Success
       localStorage.setItem('lastContactSubmission', now.toString());
       setRetryCount(0);
+
+      // Track successful form submission
+      trackFormSubmit('contact', {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        consent: formData.consent
+      });
 
       toast({
         title: t('contact.toast_success_title'),
@@ -545,7 +564,10 @@ const Contact = () => {
               <h3 className="mb-6" id="form-title">{t('contact.form_title')}</h3>
 
               <form
-                ref={formRef}
+                ref={(el) => {
+                  formRef.current = el;
+                  contactFormRef.current = el;
+                }}
                 onSubmit={handleSubmit}
                 className="space-y-5"
                 noValidate

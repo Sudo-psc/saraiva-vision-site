@@ -9,13 +9,14 @@ import { Calendar, Loader2, AlertTriangle, ArrowRight, Search } from 'lucide-rea
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import {
-  fetchPosts,
-  fetchCategories,
-  getFeaturedImageUrl,
-  extractPlainText,
-  checkWordPressConnection
-} from '../lib/wordpress';
+// WordPress functions temporarily disabled for build
+// import {
+//   fetchPosts,
+//   fetchCategories,
+//   getFeaturedImageUrl,
+//   extractPlainText,
+//   checkWordPressConnection
+// } from '../lib/wordpress';
 
 const BlogPage = () => {
   const { t, i18n } = useTranslation();
@@ -112,8 +113,8 @@ const BlogPage = () => {
         role="article"
         aria-labelledby={`post-title-${post.id}`}
       >
-        <Link 
-          to={`/blog/${post.slug}`} 
+        <Link
+          to={`/blog/${post.slug}`}
           className="block overflow-hidden focus:outline-none"
           aria-label={t('blog.read_post', 'Ler o post: {{title}}', { title: (post.title?.rendered || '').replace(/<[^>]+>/g, '') })}
         >
@@ -130,27 +131,27 @@ const BlogPage = () => {
         <div className="p-4 sm:p-6 flex flex-col flex-grow">
           <div className="flex items-center text-sm text-gray-600 mb-3">
             <Calendar className="w-4 h-4 mr-2" aria-hidden="true" />
-            <time 
+            <time
               dateTime={post.date}
-              aria-label={t('blog.published_date', 'Publicado em {{date}}', { 
-                date: format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() }) 
+              aria-label={t('blog.published_date', 'Publicado em {{date}}', {
+                date: format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })
               })}
             >
               {format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })}
             </time>
             {post._embedded?.['wp:term']?.[0]?.length > 0 && (
-              <span 
+              <span
                 className="ml-4 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
                 role="note"
-                aria-label={t('blog.category_label', 'Categoria: {{category}}', { 
-                  category: post._embedded['wp:term'][0][0].name 
+                aria-label={t('blog.category_label', 'Categoria: {{category}}', {
+                  category: post._embedded['wp:term'][0][0].name
                 })}
               >
                 {post._embedded['wp:term'][0][0].name}
               </span>
             )}
           </div>
-          <h3 
+          <h3
             id={`post-title-${post.id}`}
             className="text-xl font-bold mb-3 text-gray-900 flex-grow"
           >
@@ -165,11 +166,11 @@ const BlogPage = () => {
               {excerpt}
             </div>
           )}
-          <Link 
-            to={`/blog/${post.slug}`} 
+          <Link
+            to={`/blog/${post.slug}`}
             className="mt-auto focus:outline-none"
-            aria-label={t('blog.read_more_post', 'Leia mais sobre: {{title}}', { 
-              title: (post.title?.rendered || '').replace(/<[^>]+>/g, '') 
+            aria-label={t('blog.read_more_post', 'Leia mais sobre: {{title}}', {
+              title: (post.title?.rendered || '').replace(/<[^>]+>/g, '')
             })}
           >
             <Button variant="link" className="p-0 text-blue-600 font-semibold group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded">
@@ -194,7 +195,7 @@ const BlogPage = () => {
 
     if (error || !wordpressAvailable) {
       return (
-        <div 
+        <div
           className="text-center p-12 bg-yellow-50 border border-yellow-200 rounded-2xl max-w-2xl mx-auto"
           role="alert"
           aria-live="assertive"
@@ -208,7 +209,7 @@ const BlogPage = () => {
 
     if (posts.length === 0) {
       return (
-        <div 
+        <div
           className="text-center p-12"
           role="status"
           aria-live="polite"
@@ -253,8 +254,8 @@ const BlogPage = () => {
                 aria-pressed={selectedCategory === null}
                 aria-label={t('blog.all_categories_label', 'Mostrar todos os posts')}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${selectedCategory === null
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}
               >
                 {t('blog.all_categories')}
@@ -267,8 +268,8 @@ const BlogPage = () => {
                   aria-pressed={selectedCategory === category.id}
                   aria-label={t('blog.filter_by_category', 'Filtrar por categoria: {{category}}', { category: category.name })}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${selectedCategory === category.id
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                     }`}
                 >
                   {category.name}
@@ -293,7 +294,7 @@ const BlogPage = () => {
         <meta name="description" content={t('blog.page_description')} />
       </Helmet>
       <Navbar />
-      <main 
+      <main
         className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%]"
         role="main"
         aria-label={t('blog.main_content_label', 'Conteúdo principal do blog')}

@@ -39,12 +39,6 @@ const Hero = () => {
   };
 
   // Remove manual state management, let ImageWithFallback handle it
->>>>>>> 80ced8840c0c4dfa09c273bac82d04063e5d3943
-  // Remove manual state management, let ImageWithFallback handle it
->>>>>>> 80ced8840c0c4dfa09c273bac82d04063e5d3943
-=======
-// Remove manual state management, let ImageWithFallback handle it
->>>>>>> 80ced8840c0c4dfa09c273bac82d04063e5d3943
 
   return (
     <section
@@ -103,115 +97,105 @@ const Hero = () => {
               <div className="flex -space-x-4">
                 <div className="relative group">
                   <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
-<<<<<<< HEAD
-  <OptimizedPicture
-    src="/images/avatar-female-blonde-640w.webp"
-=======
                     <ImageWithFallback
                       src="/img/avatar-female-blonde.avif"
->>>>>>> 80ced8840c0c4dfa09c273bac82d04063e5d3943
-    alt={t('ui.alt.satisfied_patient_1', 'Paciente satisfeito 1')}
-    className="w-12 h-12 object-cover rounded-full"
-    width={48}
-    height={48}
-    loading="lazy"
-    decoding="async"
-  />
+                      alt={t('ui.alt.satisfied_patient_1', 'Paciente satisfeito 1')}
+                      className="w-12 h-12 object-cover rounded-full"
+                      width={48}
+                      height={48}
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </div >
-  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
-    <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-    </svg>
-  </div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                    <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
                 </div >
-  <div className="relative group">
-    <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
-<<<<<<< HEAD
-<OptimizedPicture
-  src="/images/avatar-female-brunette-640w.webp"
-=======
+                <div className="relative group">
+                  <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
                     <ImageWithFallback
                       src="/img/avatar-female-brunette.avif"
->>>>>>> 80ced8840c0c4dfa09c273bac82d04063e5d3943
-  alt={t('ui.alt.satisfied_patient_2', 'Paciente satisfeito 2')}
-  className="w-12 h-12 object-cover rounded-full"
-  width={48}
-  height={48}
-  loading="lazy"
-  decoding="async"
-/>
+                      alt={t('ui.alt.satisfied_patient_2', 'Paciente satisfeito 2')}
+                      className="w-12 h-12 object-cover rounded-full"
+                      width={48}
+                      height={48}
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </div >
-  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center ring-2 ring-white">
-    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-    </svg>
-  </div>
+                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center ring-2 ring-white">
+                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
                 </div >
-  <div className="relative">
-    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500 flex items-center justify-center text-white font-bold border-2 border-white shadow-lg text-sm hover:scale-110 transition-all duration-300 ring-2 ring-white/50 hover:ring-4 hover:ring-amber-200">
-      <div className="flex flex-col items-center">
-        <span className="text-xs font-extrabold">+5k</span>
-        <div className="flex -mt-0.5">
-          {[...Array(5)].map((_, i) => (
-            <svg key={i} className="w-2 h-2 text-white drop-shadow-sm" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-            </svg>
-          ))}
-        </div>
-      </div>
-    </div>
-    <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center ring-1 ring-white">
-      <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
-        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-      </svg>
-    </div>
-  </div>
+                <div className="relative">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500 flex items-center justify-center text-white font-bold border-2 border-white shadow-lg text-sm hover:scale-110 transition-all duration-300 ring-2 ring-white/50 hover:ring-4 hover:ring-amber-200">
+                    <div className="flex flex-col items-center">
+                      <span className="text-xs font-extrabold">+5k</span>
+                      <div className="flex -mt-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-2 h-2 text-white drop-shadow-sm" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center ring-1 ring-white">
+                    <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
               </div >
-  <p className="text-slate-600 text-sm">
-    <Trans i18nKey="hero.patients_served">
-      <span className="font-semibold text-slate-700">Mais de 5.000 pacientes</span> atendidos com satisfação
-    </Trans>
-  </p>
+              <p className="text-slate-600 text-sm">
+                <Trans i18nKey="hero.patients_served">
+                  <span className="font-semibold text-slate-700">Mais de 5.000 pacientes</span> atendidos com satisfação
+                </Trans>
+              </p>
             </div >
           </motion.div >
 
-  <motion.div
-    initial={{ opacity: 0, scale: 0.9 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.8, delay: 0.2 }}
-    className="relative"
-  >
-    <div className="hero-image-container relative z-10 rounded-3xl overflow-hidden shadow-3d hover:shadow-3d-hover transition-all duration-500 card-hover bg-gradient-to-br from-blue-50 to-cyan-50">
-      <ImageWithFallback
-        src="/img/hero.avif"
-        alt={t('ui.alt.hero_image', 'Família sorrindo - Saraiva Vision')}
-        width={800}
-        height={640}
-        loading="eager"
-        decoding="async"
-        sizes="(min-width: 1024px) 800px, 100vw"
-        className="block w-full h-auto aspect-[4/3] object-cover object-center rounded-3xl transition-transform duration-700 hover:scale-105"
-        priority={true}
-      />
-    </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative"
+          >
+            <div className="hero-image-container relative z-10 rounded-3xl overflow-hidden shadow-3d hover:shadow-3d-hover transition-all duration-500 card-hover bg-gradient-to-br from-blue-50 to-cyan-50">
+              <ImageWithFallback
+                src="/img/hero.avif"
+                alt={t('ui.alt.hero_image', 'Família sorrindo - Saraiva Vision')}
+                width={800}
+                height={640}
+                loading="eager"
+                decoding="async"
+                sizes="(min-width: 1024px) 800px, 100vw"
+                className="block w-full h-auto aspect-[4/3] object-cover object-center rounded-3xl transition-transform duration-700 hover:scale-105"
+                priority={true}
+              />
+            </div>
 
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.6 }}
-      className="absolute -bottom-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:-left-12 md:-bottom-4 glass-card p-4 max-w-xs"
-    >
-      <div className="flex items-start gap-4">
-        <div className="icon-container bg-blue-100">
-          <Eye size={24} />
-        </div>
-        <div>
-          <h3 className="text-base font-semibold text-slate-900">{t('hero.advanced_tech_title')}</h3>
-          <p className="text-sm">{t('hero.advanced_tech_desc')}</p>
-        </div>
-      </div>
-    </motion.div>
-  </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="absolute -bottom-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:-left-12 md:-bottom-4 glass-card p-4 max-w-xs"
+            >
+              <div className="flex items-start gap-4">
+                <div className="icon-container bg-blue-100">
+                  <Eye size={24} />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-slate-900">{t('hero.advanced_tech_title')}</h3>
+                  <p className="text-sm">{t('hero.advanced_tech_desc')}</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
         </div >
       </div >
     </section >
