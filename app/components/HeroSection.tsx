@@ -107,6 +107,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ data, error }) => {
                 height={400}
                 className="w-full h-auto object-cover"
                 priority
+                unoptimized
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.src = '/images/hero.webp';

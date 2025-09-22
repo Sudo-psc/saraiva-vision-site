@@ -15,16 +15,12 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-    localPatterns: [
-      {
-        pathname: '/images/**',
-      },
-      {
-        pathname: '/img/**',
-      },
-    ],
     formats: ['image/webp', 'image/avif'],
-    qualities: [75, 100],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: false,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://31.97.129.78:3001',
