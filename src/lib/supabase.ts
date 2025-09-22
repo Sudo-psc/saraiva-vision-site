@@ -343,14 +343,29 @@ if (import.meta.env.DEV) {
     console.groupEnd();
 }
 
+// Helper to validate Supabase URL structure safely
+function isValidHttpUrl(url: string): boolean {
+    if (!url) return false;
+    try {
+        const u = new URL(url);
+        return u.protocol === 'http:' || u.protocol === 'https:';
+    } catch {
+        return false;
+    }
+}
+
 // Client for frontend operations (with RLS)
-export const supabase = supabaseUrl && supabaseAnonKey
+export const supabase = supabaseUrl && supabaseAnonKey &&
+    !supabaseUrl.includes('your_supabase') && !supabaseAnonKey.includes('your_supabase') &&
+    isValidHttpUrl(supabaseUrl)
     ? createClient<Database>(supabaseUrl, supabaseAnonKey)
     : null
 
 // Admin client for backend operations (bypasses RLS)
 // Only create if we have the service key (typically only available server-side)
-export const supabaseAdmin = supabaseUrl && supabaseServiceKey
+export const supabaseAdmin = supabaseUrl && supabaseServiceKey &&
+    !supabaseUrl.includes('your_supabase') && !supabaseServiceKey.includes('your_supabase') &&
+    isValidHttpUrl(supabaseUrl)
     ? createClient<Database>(supabaseUrl, supabaseServiceKey, {
         auth: {
             autoRefreshToken: false,

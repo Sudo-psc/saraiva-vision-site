@@ -14,8 +14,10 @@ import {
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import instagramService from '../../services/instagramService';
+import instagramErrorHandler from '../../services/instagramErrorHandler';
 import useInstagramAccessibility from '../../hooks/useInstagramAccessibility';
 import useAccessibilityPreferences from '../../hooks/useAccessibilityPreferences';
+import useInstagramAccessibilityEnhanced from '../../hooks/useInstagramAccessibilityEnhanced';
 
 /**
  * InstagramStats - Real-time statistics display component
@@ -67,6 +69,21 @@ const InstagramStats = ({
         getAccessibleColors
     } = useAccessibilityPreferences();
 
+    // Enhanced Instagram accessibility hook
+    const {
+        instagramHighContrast,
+        instagramReducedMotion,
+        getInstagramHighContrastColors,
+        getInstagramAnimationConfig,
+        getInstagramAccessibilityClasses,
+        getInstagramAccessibilityStyles,
+        shouldDisableInstagramFeature
+    } = useInstagramAccessibilityEnhanced({
+        enableHighContrast: enableAccessibility,
+        enableReducedMotion: enableAccessibility,
+        enableSystemDetection: true
+    });
+
     // Validate required props
     if (!postId) {
         console.warn('InstagramStats: postId is required');
@@ -116,13 +133,24 @@ const InstagramStats = ({
         return `${rate.toFixed(1)}%`;
     };
 
-    // Fetch statistics from API
+    // Fetch statistics from API with error handling
     const fetchStats = async () => {
+        const operationContext = instagramErrorHandler.createContext(
+            'fetchStats',
+            `/api/instagram/stats/${postId}`
+        );
+
         try {
             setLoading(true);
             setError(null);
 
-            const result = await instagramService.fetchPostStats(postId, true);
+            // Wrap the API call with error handling
+            const wrappedFetch = instagramErrorHandler.withErrorHandling(
+                () => instagramService.fetchPostStats(postId, true),
+                operationContext
+            );
+
+            const result = await wrappedFetch();
 
             if (result.success && result.stats) {
                 // Store previous stats for trend calculation
@@ -143,12 +171,31 @@ const InstagramStats = ({
                 if (enableAccessibility) {
                     announce(`Statistics updated: ${result.stats.likes} likes, ${result.stats.comments} comments`);
                 }
+            } else if (result.error) {
+                // Handle error response from error handler
+                const errorMessage = result.userMessage?.message || 'Failed to fetch statistics';
+                setError(errorMessage);
+
+                // Keep displaying last known stats with timestamp
+                if (stats && enableAccessibility) {
+                    announce(`Statistics update failed: ${errorMessage}. Showing last known data.`, 'assertive');
+                }
             } else {
                 throw new Error('No statistics received');
             }
         } catch (err) {
             console.error(`Failed to fetch stats for post ${postId}:`, err);
-            setError(err.message);
+
+            // Use error handler to process the error
+            const errorResult = await instagramErrorHandler.handleError(err, operationContext);
+            const errorMessage = errorResult.userMessage?.message || err.message;
+
+            setError(errorMessage);
+
+            // Keep displaying last known stats if available
+            if (stats && enableAccessibility) {
+                announce(`Statistics unavailable: ${errorMessage}. Showing last known data.`, 'assertive');
+            }
         } finally {
             setLoading(false);
         }
@@ -319,8 +366,8 @@ const InstagramStats = ({
     } = stats;
 
     // Animation variants with accessibility support
-    const animationConfig = getAnimationConfig();
-    const containerVariants = shouldReduceMotion() ? {
+    const animationConfig = getInstagramAnimationConfig();
+    const containerVariants = instagramReducedMotion ? {
         hidden: { opacity: 1 },
         visible: { opacity: 1 }
     } : {
@@ -335,7 +382,7 @@ const InstagramStats = ({
         }
     };
 
-    const statVariants = shouldReduceMotion() ? {
+    const statVariants = instagramReducedMotion || shouldDisableInstagramFeature('scaleAnimations') ? {
         hidden: { opacity: 1 },
         visible: { opacity: 1 }
     } : {
@@ -347,7 +394,7 @@ const InstagramStats = ({
         }
     };
 
-    const tooltipVariants = shouldReduceMotion() ? {
+    const tooltipVariants = instagramReducedMotion || shouldDisableInstagramFeature('tooltipAnimations') ? {
         hidden: { opacity: 0 },
         visible: { opacity: 1 }
     } : {
@@ -363,14 +410,21 @@ const InstagramStats = ({
     return (
         <motion.div
             ref={statsContainerRef}
-            className={`instagram-stats relative ${getAccessibilityClasses()} ${className}`}
+            className={`instagram-stats relative ${getInstagramAccessibilityClasses()} ${className}
+                ${instagramHighContrast ? 'high-contrast' : ''}
+                ${instagramReducedMotion ? 'reduced-motion' : ''}`}
             style={{
-                ...getAccessibilityStyles(),
-                ...(isHighContrast ? getAccessibleColors('#f8f9fa', 'secondary') : {})
+                ...getInstagramAccessibilityStyles(),
+                ...(instagramHighContrast ? {
+                    backgroundColor: getInstagramHighContrastColors()?.postBg,
+                    color: getInstagramHighContrastColors()?.postText,
+                    border: `1px solid ${getInstagramHighContrastColors()?.postBorder}`,
+                    padding: '8px'
+                } : {})
             }}
             variants={containerVariants}
-            initial={shouldReduceMotion() ? false : "hidden"}
-            animate={shouldReduceMotion() ? false : "visible"}
+            initial={instagramReducedMotion ? false : "hidden"}
+            animate={instagramReducedMotion ? false : "visible"}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onKeyDown={handleKeyDown}

@@ -6,11 +6,39 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase client for logging
-const supabase = createClient(
-    process.env.SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-);
+// Lazy/Safe Supabase client for logging (works in browser and server)
+let supabase = null;
+function getSupabaseClient() {
+    if (supabase) return supabase;
+
+    // Prefer Vite env on client, fall back to process.env on server
+    const supabaseUrl =
+        (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_URL) ||
+        process.env.SUPABASE_URL ||
+        '';
+    const supabaseServiceKey =
+        (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY) ||
+        process.env.SUPABASE_SERVICE_ROLE_KEY ||
+        '';
+
+    const hasValidUrl = typeof supabaseUrl === 'string' && /^https?:\/\//.test(supabaseUrl);
+    const hasKey = !!supabaseServiceKey;
+
+    if (hasValidUrl && hasKey) {
+        supabase = createClient(supabaseUrl, supabaseServiceKey, {
+            auth: { autoRefreshToken: false, persistSession: false }
+        });
+    } else {
+        // In browser builds without env, avoid constructing an invalid client.
+        supabase = null;
+        if (typeof window !== 'undefined' && import.meta?.env?.DEV) {
+            console.warn(
+                'Supabase logging disabled: missing VITE_SUPABASE_URL or VITE_SUPABASE_SERVICE_ROLE_KEY'
+            );
+        }
+    }
+    return supabase;
+}
 
 // Log levels with numeric values for filtering
 export const LOG_LEVELS = {
@@ -113,7 +141,14 @@ class Logger {
      */
     async storeLog(logEntry) {
         try {
-            const { error } = await supabase
+            const client = getSupabaseClient();
+            if (!client) {
+                // Fallback to console logging when Supabase is unavailable (e.g., client build without env)
+                console.log('LOG_FALLBACK:', JSON.stringify(logEntry));
+                return;
+            }
+
+            const { error } = await client
                 .from('event_log')
                 .insert({
                     event_type: 'application_log',
@@ -125,7 +160,6 @@ class Logger {
 
             if (error) {
                 console.error('Failed to store log in database:', error);
-                // Fallback to console logging
                 console.log('LOG_FALLBACK:', JSON.stringify(logEntry));
             }
         } catch (err) {
@@ -189,8 +223,11 @@ class Logger {
      */
     async sendAlert(logEntry) {
         try {
+            const client = getSupabaseClient();
+            if (!client) return;
+
             // Store alert in outbox for reliable delivery
-            await supabase
+            await client
                 .from('message_outbox')
                 .insert({
                     message_type: 'email',

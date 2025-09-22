@@ -12,6 +12,7 @@ import OptimizedImage from './OptimizedImage';
 import useInstagramPerformance from '../../hooks/useInstagramPerformance';
 import useInstagramAccessibility from '../../hooks/useInstagramAccessibility';
 import useAccessibilityPreferences from '../../hooks/useAccessibilityPreferences';
+import useInstagramAccessibilityEnhanced from '../../hooks/useInstagramAccessibilityEnhanced';
 
 /**
  * InstagramPost - Individual post display component
@@ -69,6 +70,22 @@ const InstagramPost = ({
         getAccessibleColors,
         getFocusStyles
     } = useAccessibilityPreferences();
+
+    // Enhanced Instagram accessibility hook
+    const {
+        instagramHighContrast,
+        instagramReducedMotion,
+        getInstagramHighContrastColors,
+        getInstagramAnimationConfig,
+        getInstagramAccessibilityClasses,
+        getInstagramAccessibilityStyles,
+        getInstagramFocusStyles,
+        shouldDisableInstagramFeature
+    } = useInstagramAccessibilityEnhanced({
+        enableHighContrast: enableAccessibility,
+        enableReducedMotion: enableAccessibility,
+        enableSystemDetection: true
+    });
 
     // Refs
     const imageRef = useRef(null);
@@ -265,8 +282,8 @@ const InstagramPost = ({
     const displayCaption = formatCaption(caption, maxCaptionLength, captionExpanded);
 
     // Animation variants with accessibility support
-    const animationConfig = getAnimationConfig();
-    const cardVariants = shouldReduceMotion() ? {
+    const animationConfig = getInstagramAnimationConfig();
+    const cardVariants = instagramReducedMotion || shouldDisableInstagramFeature('hoverEffects') ? {
         hidden: { opacity: 1 },
         visible: { opacity: 1 },
         hover: { opacity: 1 }
@@ -281,7 +298,9 @@ const InstagramPost = ({
                 ease: animationConfig.ease
             }
         },
-        hover: {
+        hover: shouldDisableInstagramFeature('scaleAnimations') ? {
+            opacity: 1
+        } : {
             y: -2,
             scale: 1.01,
             transition: {
@@ -313,17 +332,27 @@ const InstagramPost = ({
         instagram-post group relative bg-white rounded-xl shadow-md overflow-hidden 
         border border-gray-100 hover:border-gray-200 hover:shadow-lg
         focus:outline-none transition-all duration-300 cursor-pointer
-        ${getAccessibilityClasses()} ${className}
+        ${getInstagramAccessibilityClasses()} ${className}
+        ${instagramReducedMotion ? 'reduced-motion' : ''}
+        ${instagramHighContrast ? 'high-contrast' : ''}
       `}
             style={{
-                ...getAccessibilityStyles(),
-                ...(isHighContrast ? getAccessibleColors('#ffffff', 'secondary') : {}),
-                ...getFocusStyles()
+                ...getInstagramAccessibilityStyles(),
+                ...(instagramHighContrast ? {
+                    backgroundColor: getInstagramHighContrastColors()?.postBg,
+                    color: getInstagramHighContrastColors()?.postText,
+                    borderColor: getInstagramHighContrastColors()?.postBorder,
+                    ...getInstagramFocusStyles()
+                } : {}),
+                ...(instagramReducedMotion ? {
+                    transition: 'none',
+                    transform: 'none'
+                } : {})
             }}
             variants={cardVariants}
-            initial={shouldReduceMotion() ? false : "hidden"}
-            animate={shouldReduceMotion() ? false : "visible"}
-            whileHover={shouldReduceMotion() ? false : "hover"}
+            initial={instagramReducedMotion ? false : "hidden"}
+            animate={instagramReducedMotion ? false : "visible"}
+            whileHover={instagramReducedMotion || shouldDisableInstagramFeature('hoverEffects') ? false : "hover"}
             onClick={handleClick}
             onKeyDown={handleKeyDown}
             tabIndex={tabIndex}
@@ -342,7 +371,14 @@ const InstagramPost = ({
                             ? `Instagram ${media_type.toLowerCase().replace('_', ' ')}: ${formatCaption(caption, 100) || `Post by ${username}`}`
                             : ''
                     }
-                    className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
+                    className={`w-full h-full object-cover ${instagramReducedMotion || shouldDisableInstagramFeature('imageHover')
+                            ? ''
+                            : 'transition-all duration-300 group-hover:scale-105'
+                        } ${instagramHighContrast ? 'high-contrast-image' : ''}`}
+                    style={instagramHighContrast ? {
+                        border: `1px solid ${getInstagramHighContrastColors()?.postBorder}`,
+                        filter: 'contrast(1.2) brightness(1.1)'
+                    } : {}}
                     enableLazyLoading={enableLazyLoading}
                     enableFormatOptimization={true}
                     enableProgressiveLoading={true}

@@ -62,6 +62,11 @@ const Footer = () => {
       image: "/icons_social/linkedln_icon.png",
     },
     {
+      name: "X",
+      href: clinicInfo.x || "https://x.com/philipe_saraiva",
+      image: "/icons_social/X_icon.png",
+    },
+    {
       name: "TikTok",
       href: "https://www.tiktok.com/@saraivavision",
       image: "/icons_social/tik_tok_icon.png",

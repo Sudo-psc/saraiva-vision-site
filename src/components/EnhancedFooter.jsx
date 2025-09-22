@@ -123,6 +123,12 @@ const EnhancedFooter = ({
             color: "#0A66C2"
         },
         {
+            name: "X",
+            href: clinicInfo.x || "https://x.com/philipe_saraiva",
+            image: "/icons_social/X_icon.png",
+            color: "#000000"
+        },
+        {
             name: "TikTok",
             href: "https://www.tiktok.com/@saraivavision",
             image: "/icons_social/tik_tok_icon.png",

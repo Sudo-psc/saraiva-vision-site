@@ -26,6 +26,7 @@ export const clinicInfo = {
   instagram: 'https://www.instagram.com/saraiva_vision/',
   facebook: 'https://www.facebook.com/philipeoftalmo',
   linkedin: 'https://www.linkedin.com/in/dr-philipe-saraiva/',
+  x: 'https://x.com/philipe_saraiva',
   chatbotUrl: 'https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica',
   onlineSchedulingUrl: 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613',
   // Security validation for external integrations

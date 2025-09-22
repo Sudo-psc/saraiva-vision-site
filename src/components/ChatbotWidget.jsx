@@ -144,7 +144,7 @@ const ChatbotWidget = () => {
     }
 
     return (
-        <div className="fixed bottom-6 right-6 z-50 w-96 max-w-[calc(100vw-2rem)] h-[500px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col">
+        <div className="fixed bottom-6 right-6 z-50 w-96 max-w-[calc(100vw-2rem)] h-[500px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col text-gray-900">
             {/* Header */}
             <div className="bg-blue-600 text-white p-4 rounded-t-lg flex items-center justify-between">
                 <div className="flex items-center space-x-3">
@@ -185,7 +185,7 @@ const ChatbotWidget = () => {
                                 ? 'bg-blue-600 text-white'
                                 : message.isError
                                     ? 'bg-red-100 text-red-800 border border-red-200'
-                                    : 'bg-white text-gray-800 border border-gray-200'
+                                    : 'bg-white text-gray-900 border border-gray-200'
                                 }`}>
                                 <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                                 {message.suggestsBooking && (
@@ -211,10 +211,10 @@ const ChatbotWidget = () => {
                                 <Bot size={12} />
                             </div>
                             <div className="bg-white rounded-lg p-3 border border-gray-200">
-                                <div className="flex space-x-1">
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                                <div className="flex space-x-1" aria-label="Digitando">
+                                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                                    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                                 </div>
                             </div>
                         </div>
@@ -241,9 +241,10 @@ const ChatbotWidget = () => {
                         onChange={(e) => setInputMessage(e.target.value)}
                         onKeyPress={handleKeyPress}
                         placeholder="Digite sua mensagem..."
-                        className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         disabled={isLoading}
                         maxLength={1000}
+                        aria-label="Campo de mensagem"
                     />
                     <button
                         onClick={sendMessage}
@@ -259,21 +260,21 @@ const ChatbotWidget = () => {
                 <div className="mt-2 flex space-x-2">
                     <button
                         onClick={handleContactRedirect}
-                        className="inline-flex items-center space-x-1 text-xs text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors"
+                        className="inline-flex items-center space-x-1 text-xs text-gray-700 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors"
                     >
                         <Phone size={10} />
                         <span>WhatsApp</span>
                     </button>
                     <button
                         onClick={handleBookingRedirect}
-                        className="inline-flex items-center space-x-1 text-xs text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded transition-colors"
+                        className="inline-flex items-center space-x-1 text-xs text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded transition-colors"
                     >
                         <ExternalLink size={10} />
                         <span>Agendar</span>
                     </button>
                 </div>
 
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-gray-700 mt-2">
                     Pressione Enter para enviar • Máximo 1000 caracteres
                 </p>
             </div>

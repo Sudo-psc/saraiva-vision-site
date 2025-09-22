@@ -6,10 +6,37 @@
 import { createClient } from '@supabase/supabase-js';
 import { createLogger } from './logger.js';
 
-const supabase = createClient(
-    process.env.SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-);
+// Lazy/Safe Supabase client for alerting (works in browser and server)
+let supabase = null;
+function getSupabaseClient() {
+    if (supabase) return supabase;
+
+    const supabaseUrl =
+        (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_URL) ||
+        process.env.SUPABASE_URL ||
+        '';
+    const supabaseServiceKey =
+        (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY) ||
+        process.env.SUPABASE_SERVICE_ROLE_KEY ||
+        '';
+
+    const hasValidUrl = typeof supabaseUrl === 'string' && /^https?:\/\//.test(supabaseUrl);
+    const hasKey = !!supabaseServiceKey;
+
+    if (hasValidUrl && hasKey) {
+        supabase = createClient(supabaseUrl, supabaseServiceKey, {
+            auth: { autoRefreshToken: false, persistSession: false }
+        });
+    } else {
+        supabase = null;
+        if (typeof window !== 'undefined' && import.meta?.env?.DEV) {
+            console.warn(
+                'Supabase alerting disabled: missing VITE_SUPABASE_URL or VITE_SUPABASE_SERVICE_ROLE_KEY'
+            );
+        }
+    }
+    return supabase;
+}
 
 /**
  * Alert severity levels
@@ -131,13 +158,16 @@ class AlertingSystem {
      */
     async updateOutboxStatus(messageId, status, errorMessage = null) {
         try {
+            const client = getSupabaseClient();
+            if (!client) return;
+
             const updateData = {
                 status,
                 sent_at: status === 'sent' ? new Date().toISOString() : null,
                 error_message: errorMessage
             };
 
-            await supabase
+            await client
                 .from('message_outbox')
                 .update(updateData)
                 .eq('id', messageId);
@@ -154,7 +184,10 @@ class AlertingSystem {
      */
     async checkEmailDeliveryFailures() {
         try {
-            const { data: recentLogs } = await supabase
+            const client = getSupabaseClient();
+            if (!client) return;
+
+            const { data: recentLogs } = await client
                 .from('event_log')
                 .select('event_data')
                 .eq('event_type', 'application_log')
@@ -195,7 +228,10 @@ class AlertingSystem {
      */
     async checkSmsDeliveryFailures() {
         try {
-            const { data: recentLogs } = await supabase
+            const client = getSupabaseClient();
+            if (!client) return;
+
+            const { data: recentLogs } = await client
                 .from('event_log')
                 .select('event_data')
                 .eq('event_type', 'application_log')
@@ -277,13 +313,16 @@ class AlertingSystem {
      */
     async sendAlertNotification(alert) {
         try {
+            const client = getSupabaseClient();
+            if (!client) return;
+
             const adminEmail = process.env.ADMIN_EMAIL || 'admin@saraivavision.com.br';
 
             // Determine urgency based on severity
             const isUrgent = alert.severity === ALERT_SEVERITY.CRITICAL || alert.severity === ALERT_SEVERITY.HIGH;
 
             // Create email notification
-            await supabase
+            await client
                 .from('message_outbox')
                 .insert({
                     message_type: 'email',
@@ -297,7 +336,7 @@ class AlertingSystem {
 
             // For critical alerts, also try to send SMS if configured
             if (alert.severity === ALERT_SEVERITY.CRITICAL && process.env.ADMIN_PHONE) {
-                await supabase
+                await client
                     .from('message_outbox')
                     .insert({
                         message_type: 'sms',
@@ -344,7 +383,10 @@ Para mais detalhes, acesse o dashboard administrativo.
      */
     async getRecentAlerts(hours = 24) {
         try {
-            const { data: logs } = await supabase
+            const client = getSupabaseClient();
+            if (!client) return [];
+
+            const { data: logs } = await client
                 .from('event_log')
                 .select('*')
                 .eq('event_type', 'application_log')
@@ -371,7 +413,15 @@ Para mais detalhes, acesse o dashboard administrativo.
      */
     async getDeliveryStats(hours = 24) {
         try {
-            const { data: logs } = await supabase
+            const client = getSupabaseClient();
+            if (!client) {
+                return {
+                    email: { total: 0, successful: 0, failed: 0, failure_rate: 0 },
+                    sms: { total: 0, successful: 0, failed: 0, failure_rate: 0 }
+                };
+            }
+
+            const { data: logs } = await client
                 .from('event_log')
                 .select('event_data')
                 .eq('event_type', 'application_log')
