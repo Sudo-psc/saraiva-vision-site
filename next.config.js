@@ -131,10 +131,13 @@ const nextConfig = {
     ];
   },
 
-  // Rewrites for SPA fallback (if needed during migration)
+  // WordPress API integration rewrites
   async rewrites() {
     return [
-      // Add any necessary rewrites here
+      {
+        source: '/api/:path*',
+        destination: 'https://saraivavision.com.br/wp-json/:path*',
+      },
     ];
   },
 
