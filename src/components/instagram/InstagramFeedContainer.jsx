@@ -5,6 +5,8 @@ import instagramService from '../../services/instagramService';
 import instagramErrorHandler from '../../services/instagramErrorHandler';
 import InstagramErrorBoundary from './InstagramErrorBoundary';
 import InstagramFallback from './InstagramFallback';
+import InstagramOfflineIndicator from './InstagramOfflineIndicator';
+import useInstagramOffline from '../../hooks/useInstagramOffline';
 import InstagramPost from './InstagramPost';
 import InstagramStats from './InstagramStats';
 import InstagramResponsiveGrid from './InstagramResponsiveGrid';
@@ -116,6 +118,23 @@ const InstagramFeedContainer = ({
         enableHighContrast: enableAccessibility,
         enableReducedMotion: enableAccessibility,
         enableSystemDetection: true
+    });
+
+    // Offline functionality hook
+    const {
+        isOnline: isOnlineOffline,
+        isServiceWorkerReady,
+        contentAvailableOffline,
+        syncStatus,
+        cachePosts,
+        getOfflinePosts,
+        handleAutoCacheUpdate,
+        shouldCachePosts
+    } = useInstagramOffline({
+        enableOfflineSupport: true,
+        enableAutoCache: true,
+        enableBackgroundSync: true,
+        cacheThreshold: maxPosts
     });
 
     // Cache management
