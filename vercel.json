@@ -101,7 +101,7 @@
   ],
   "env": {
     "NODE_ENV": "production",
-    "VITE_API_URL": "https://31.97.129.78:3001/api",
+    "VITE_API_URL": "https://31.97.129.78:3002/api",
     "VITE_WORDPRESS_URL": "https://31.97.129.78"
   }
 }
