@@ -31,7 +31,6 @@
       ]
     },
     {
-<<<<<<< HEAD
       "source": "/api/(.*)",
       "headers": [
         {
@@ -45,7 +44,10 @@
         {
           "key": "Access-Control-Allow-Headers",
           "value": "Content-Type, Authorization"
-=======
+        }
+      ]
+    },
+    {
       "source": "/img/(.*)",
       "headers": [
         {
@@ -69,7 +71,6 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
->>>>>>> 80ced8840c0c4dfa09c273bac82d04063e5d3943
         }
       ]
     }
@@ -116,27 +117,8 @@
     "gru1"
   ],
   "env": {
-<<<<<<< HEAD
-    "NODE_ENV": "@node-env",
-    "VITE_API_URL": "@vite-api-url",
-    "VITE_WORDPRESS_URL": "@vite-wordpress-url",
-    "RESEND_API_KEY": "@resend-api-key",
-    "DOCTOR_EMAIL": "@doctor-email",
-    "CONTACT_EMAIL_FROM": "@contact-email-from",
-    "RATE_LIMIT_WINDOW": "@rate-limit-window",
-    "RATE_LIMIT_MAX": "@rate-limit-max",
-    "RECAPTCHA_SECRET_KEY": "@recaptcha-secret-key"
-  },
-  "build": {
-    "env": {
-      "NODE_ENV": "@node-env-build",
-      "VITE_API_URL": "@vite-api-url-build",
-      "VITE_WORDPRESS_URL": "@vite-wordpress-url-build"
-    }
-=======
     "NODE_ENV": "production",
     "VITE_API_URL": "https://31.97.129.78:3002/api",
     "VITE_WORDPRESS_URL": "https://31.97.129.78"
->>>>>>> 80ced8840c0c4dfa09c273bac82d04063e5d3943
   }
 }
