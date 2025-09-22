@@ -540,11 +540,7 @@ html {
     height: auto;
   }
 
-  /* Para view transitions específicas */
-  .view-transition img {
-    overflow: clip;
-    contain: layout style paint;
-  }
+
 
   /* Media elements optimization */
   img,

@@ -1,6 +1,7 @@
 export default function handler(req, res) {
   // Log request for monitoring
-  console.log(`Health check from ${req.headers['x-forwarded-for'] || 'unknown'}`);
+  const clientIp = (req.headers['x-forwarded-for'] || 'unknown').toString().slice(0, 45).replace(/[^\w.:,\s-]/g, '');
+  console.log(`Health check from ${clientIp}`);
 
   // Check contact form service configuration without importing emailService
   // to avoid Resend initialization errors when API key is missing
@@ -33,11 +34,8 @@ export default function handler(req, res) {
       }
     },
     config: {
-      nodeEnv: process.env.NODE_ENV,
-      hasResendKey: !!process.env.RESEND_API_KEY,
-      hasDoctorEmail: !!process.env.DOCTOR_EMAIL,
-      rateLimitWindow: process.env.RATE_LIMIT_WINDOW || '15',
-      rateLimitMax: process.env.RATE_LIMIT_MAX || '5'
+      // Only expose non-sensitive configuration
+      environment: process.env.NODE_ENV === 'production' ? 'production' : 'non-production'
     }
   };
 

@@ -70,16 +70,17 @@ vercel env add NODE_ENV development
 
 ### 4. Set Sensitive Variables
 
-```bash
 # Set Resend API Key (get from https://resend.com/api-keys)
-echo "re_your_api_key_here" | vercel env add RESEND_API_KEY production preview development
+vercel env add RESEND_API_KEY production preview development
+# Paste your key when securely prompted
 
 # Set Doctor Email
-echo "philipe_cruz@outlook.com" | vercel env add DOCTOR_EMAIL production preview development
+vercel env add DOCTOR_EMAIL production preview development
+# Enter email when prompted
 
 # Set reCAPTCHA Secret (if using)
-echo "your_recaptcha_secret" | vercel env add RECAPTCHA_SECRET_KEY production preview development
-```
+vercel env add RECAPTCHA_SECRET_KEY production preview development
+# Paste secret when securely prompted
 
 ## Environment-Specific Configuration
 
