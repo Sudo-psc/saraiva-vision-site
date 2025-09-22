@@ -229,6 +229,11 @@ const InstagramFeedContainer = ({
                 // Cache the data locally
                 setCachedData(result.posts);
 
+                // Cache for offline use if service worker is ready
+                if (isServiceWorkerReady && shouldCachePosts(result.posts)) {
+                    handleAutoCacheUpdate(result.posts);
+                }
+
                 // Preload images for better performance
                 const imageUrls = result.posts
                     .map(post => post.media_url || post.thumbnail_url)
@@ -276,6 +281,20 @@ const InstagramFeedContainer = ({
                     setLastFetch(cachedData.timestamp);
                     setCached(true);
                     setCacheAge(cachedData.age);
+                }
+            } else if (!isOnline && contentAvailableOffline) {
+                // Try to get offline posts from service worker
+                try {
+                    const offlinePosts = await getOfflinePosts();
+                    if (offlinePosts && offlinePosts.length > 0) {
+                        setFallbackPosts(offlinePosts);
+                        if (!errorResult.shouldShowFallback) {
+                            setPosts(offlinePosts);
+                            setCached(true);
+                        }
+                    }
+                } catch (offlineError) {
+                    console.warn('Failed to get offline posts:', offlineError);
                 }
             }
 
@@ -663,6 +682,15 @@ const InstagramFeedContainer = ({
                         showRetryOptions={true}
                     />
                 )}
+
+                {/* Offline Indicator */}
+                <InstagramOfflineIndicator
+                    showWhenOnline={syncStatus !== 'idle'}
+                    showCacheStatus={true}
+                    showSyncStatus={true}
+                    position="top-right"
+                    compact={false}
+                />
 
                 {/* Posts responsive grid */}
                 {posts.length > 0 && (
