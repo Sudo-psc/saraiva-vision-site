@@ -11,6 +11,31 @@ class InstagramService {
         this.reconnectAttempts = 0;
         this.maxReconnectAttempts = 5;
         this.reconnectDelay = 1000; // Start with 1 second
+        this.apiToken = null; // Store API token for authenticated requests
+        this.defaultHeaders = {
+            'Content-Type': 'application/json'
+        };
+    }
+
+    /**
+     * Set API token for authenticated requests
+     * @param {string} token - API token
+     */
+    setApiToken(token) {
+        this.apiToken = token;
+        if (token) {
+            this.defaultHeaders['Authorization'] = `Bearer ${token}`;
+        } else {
+            delete this.defaultHeaders['Authorization'];
+        }
+    }
+
+    /**
+     * Get API token
+     * @returns {string|null} Current API token
+     */
+    getApiToken() {
+        return this.apiToken;
     }
 
     /**
@@ -19,13 +44,15 @@ class InstagramService {
      * @param {number} options.limit - Number of posts to fetch (default: 4)
      * @param {boolean} options.includeStats - Include engagement statistics (default: true)
      * @param {string} options.fields - Custom fields to fetch
+     * @param {string} options.apiToken - Optional API token for this request
      * @returns {Promise<Object>} Posts data with metadata
      */
     async fetchPosts(options = {}) {
         const {
             limit = 4,
             includeStats = true,
-            fields = 'id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username'
+            fields = 'id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username',
+            apiToken = null
         } = options;
 
         try {
@@ -35,16 +62,27 @@ class InstagramService {
                 fields
             });
 
+            const headers = { ...this.defaultHeaders };
+            if (apiToken) {
+                headers['Authorization'] = `Bearer ${apiToken}`;
+            }
+
             const response = await fetch(`${this.baseUrl}/posts?${params}`, {
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers
             });
 
             const data = await response.json();
 
             if (!response.ok) {
+                // Handle security-related errors
+                if (response.status === 429) {
+                    throw new Error(`Rate limit exceeded. Retry after ${data.retryAfter || 60} seconds`);
+                } else if (response.status === 401) {
+                    throw new Error('Authentication required. Please provide a valid API token');
+                } else if (response.status === 400) {
+                    throw new Error(`Invalid request: ${data.error || data.message}`);
+                }
                 throw new Error(data.message || `HTTP error! status: ${response.status}`);
             }
 
@@ -54,7 +92,12 @@ class InstagramService {
                 cached: data.cached || false,
                 cacheAge: data.cache_age || 0,
                 total: data.total || 0,
-                statsIncluded: data.stats_included || false
+                statsIncluded: data.stats_included || false,
+                rateLimitInfo: {
+                    limit: response.headers.get('x-ratelimit-limit'),
+                    remaining: response.headers.get('x-ratelimit-remaining'),
+                    reset: response.headers.get('x-ratelimit-reset')
+                }
             };
         } catch (error) {
             console.error('Failed to fetch Instagram posts:', error);
@@ -66,25 +109,37 @@ class InstagramService {
      * Fetch statistics for a single post
      * @param {string} postId - Instagram post ID
      * @param {boolean} includeInsights - Include detailed insights (default: false)
+     * @param {string} apiToken - Optional API token for this request
      * @returns {Promise<Object>} Post statistics
      */
-    async fetchPostStats(postId, includeInsights = false) {
+    async fetchPostStats(postId, includeInsights = false, apiToken = null) {
         try {
             const params = new URLSearchParams({
                 postId,
                 includeInsights: includeInsights.toString()
             });
 
+            const headers = { ...this.defaultHeaders };
+            if (apiToken) {
+                headers['Authorization'] = `Bearer ${apiToken}`;
+            }
+
             const response = await fetch(`${this.baseUrl}/stats?${params}`, {
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers
             });
 
             const data = await response.json();
 
             if (!response.ok) {
+                // Handle security-related errors
+                if (response.status === 429) {
+                    throw new Error(`Rate limit exceeded. Retry after ${data.retryAfter || 60} seconds`);
+                } else if (response.status === 401) {
+                    throw new Error('Authentication required. Please provide a valid API token');
+                } else if (response.status === 400) {
+                    throw new Error(`Invalid request: ${data.error || data.message}`);
+                }
                 throw new Error(data.message || `HTTP error! status: ${response.status}`);
             }
 
@@ -93,7 +148,12 @@ class InstagramService {
                 stats: data.data,
                 cached: data.cached || false,
                 cacheAge: data.cache_age || 0,
-                timestamp: data.timestamp
+                timestamp: data.timestamp,
+                rateLimitInfo: {
+                    limit: response.headers.get('x-ratelimit-limit'),
+                    remaining: response.headers.get('x-ratelimit-remaining'),
+                    reset: response.headers.get('x-ratelimit-reset')
+                }
             };
         } catch (error) {
             console.error(`Failed to fetch stats for post ${postId}:`, error);
@@ -105,15 +165,30 @@ class InstagramService {
      * Fetch statistics for multiple posts
      * @param {string[]} postIds - Array of Instagram post IDs
      * @param {boolean} includeInsights - Include detailed insights (default: false)
+     * @param {string} apiToken - Optional API token for this request
      * @returns {Promise<Object>} Bulk statistics data
      */
-    async fetchBulkStats(postIds, includeInsights = false) {
+    async fetchBulkStats(postIds, includeInsights = false, apiToken = null) {
         try {
+            const headers = { ...this.defaultHeaders };
+            if (apiToken) {
+                headers['Authorization'] = `Bearer ${apiToken}`;
+            }
+
+            // Validate input for security
+            if (!Array.isArray(postIds) || postIds.length === 0) {
+                throw new Error('postIds must be a non-empty array');
+            }
+            if (postIds.length > 50) {
+                throw new Error('Cannot fetch stats for more than 50 posts at once');
+            }
+            if (!postIds.every(id => typeof id === 'string' && id.length > 0)) {
+                throw new Error('All postIds must be non-empty strings');
+            }
+
             const response = await fetch(`${this.baseUrl}/stats`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers,
                 body: JSON.stringify({
                     postIds,
                     includeInsights
@@ -123,6 +198,14 @@ class InstagramService {
             const data = await response.json();
 
             if (!response.ok) {
+                // Handle security-related errors
+                if (response.status === 429) {
+                    throw new Error(`Rate limit exceeded. Retry after ${data.retryAfter || 60} seconds`);
+                } else if (response.status === 401) {
+                    throw new Error('Authentication required. Please provide a valid API token');
+                } else if (response.status === 400) {
+                    throw new Error(`Invalid request: ${data.error || data.message}`);
+                }
                 throw new Error(data.message || `HTTP error! status: ${response.status}`);
             }
 
@@ -130,7 +213,12 @@ class InstagramService {
                 success: data.success,
                 results: data.data || [],
                 timestamp: data.timestamp,
-                total: data.total || 0
+                total: data.total || 0,
+                rateLimitInfo: {
+                    limit: response.headers.get('x-ratelimit-limit'),
+                    remaining: response.headers.get('x-ratelimit-remaining'),
+                    reset: response.headers.get('x-ratelimit-reset')
+                }
             };
         } catch (error) {
             console.error('Failed to fetch bulk statistics:', error);
@@ -370,8 +458,85 @@ class InstagramService {
             connected: this.websocket && this.websocket.readyState === WebSocket.OPEN,
             subscribedPosts: Array.from(this.subscribers.keys()),
             totalSubscribers: Array.from(this.subscribers.values()).reduce((total, set) => total + set.size, 0),
-            reconnectAttempts: this.reconnectAttempts
+            reconnectAttempts: this.reconnectAttempts,
+            hasApiToken: !!this.apiToken
         };
+    }
+
+    /**
+     * Sanitize input to prevent security issues
+     * @param {string} input - Input string to sanitize
+     * @param {string} context - Context for sanitization (username, hashtag, caption, etc.)
+     * @returns {string} Sanitized string
+     */
+    sanitizeInput(input, context = 'general') {
+        if (typeof input !== 'string') return '';
+
+        // Remove potentially dangerous characters and patterns
+        let sanitized = input
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
+            .replace(/javascript:/gi, '') // Remove javascript protocol
+            .replace(/on\w+\s*=/gi, '') // Remove event handlers
+            .trim();
+
+        // Context-specific sanitization
+        switch (context) {
+            case 'username':
+                // Keep only alphanumeric, underscores, and periods
+                sanitized = sanitized.replace(/[^A-Za-z0-9._]/g, '');
+                break;
+            case 'hashtag':
+                // Keep only alphanumeric and underscores
+                sanitized = sanitized.replace(/[^A-Za-z0-9_]/g, '');
+                break;
+            case 'caption':
+                // Allow basic HTML but remove dangerous elements
+                sanitized = sanitized
+                    .replace(/<(?!\/?(b|i|u|strong|em|br|p))[^>]*>/gi, ''); // Allow only safe HTML tags
+                break;
+        }
+
+        return sanitized;
+    }
+
+    /**
+     * Validate post ID format
+     * @param {string} postId - Post ID to validate
+     * @returns {boolean} True if valid
+     */
+    validatePostId(postId) {
+        return typeof postId === 'string' &&
+            postId.length > 0 &&
+            /^[A-Za-z0-9_-]+$/.test(postId);
+    }
+
+    /**
+     * Handle rate limiting with exponential backoff
+     * @param {Function} fn - Function to execute
+     * @param {number} maxRetries - Maximum number of retries
+     * @returns {Promise} Result of the function
+     */
+    async withRetry(fn, maxRetries = 3) {
+        let lastError;
+
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                return await fn();
+            } catch (error) {
+                lastError = error;
+
+                // Check if it's a rate limit error
+                if (error.message.includes('Rate limit exceeded') && attempt < maxRetries) {
+                    const delay = Math.pow(2, attempt) * 1000; // Exponential backoff
+                    console.log(`Rate limited, retrying in ${delay}ms (attempt ${attempt + 1}/${maxRetries})`);
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                } else {
+                    throw error; // Re-throw non-rate-limit errors or final attempt
+                }
+            }
+        }
+
+        throw lastError;
     }
 }
 

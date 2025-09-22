@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import createInstagramSecurityMiddleware from '../../src/middleware/instagramSecurityMiddleware.js';
 
 // Environment variables
 const INSTAGRAM_ACCESS_TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN;
@@ -17,94 +18,99 @@ let cache = {
   timestamp: null
 };
 
+// Create security middleware for this endpoint
+const securityMiddleware = createInstagramSecurityMiddleware('/api/instagram/posts');
+
 export default async function handler(req, res) {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  // Apply security middleware
+  securityMiddleware(req, res, async () => {
+    // Set CORS headers
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
 
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  try {
-    // Validate request parameters
-    const validation = postsRequestSchema.safeParse({
-      limit: parseInt(req.query.limit) || 4,
-      fields: req.query.fields,
-      includeStats: req.query.includeStats !== 'false'
-    });
-
-    if (!validation.success) {
-      return res.status(400).json({
-        error: 'Invalid request parameters',
-        details: validation.error.errors
-      });
+    if (req.method === 'OPTIONS') {
+      res.status(200).end();
+      return;
     }
 
-    const { limit, fields, includeStats } = validation.data;
+    if (req.method !== 'GET') {
+      return res.status(405).json({ error: 'Method not allowed' });
+    }
 
-    // Check if we have valid cached data
-    if (cache.data && cache.timestamp && (Date.now() - cache.timestamp < CACHE_DURATION)) {
-      return res.status(200).json({
+    try {
+      // Validate request parameters
+      const validation = postsRequestSchema.safeParse({
+        limit: parseInt(req.query.limit) || 4,
+        fields: req.query.fields,
+        includeStats: req.query.includeStats !== 'false'
+      });
+
+      if (!validation.success) {
+        return res.status(400).json({
+          error: 'Invalid request parameters',
+          details: validation.error.errors
+        });
+      }
+
+      const { limit, fields, includeStats } = validation.data;
+
+      // Check if we have valid cached data
+      if (cache.data && cache.timestamp && (Date.now() - cache.timestamp < CACHE_DURATION)) {
+        return res.status(200).json({
+          success: true,
+          data: cache.data.slice(0, limit),
+          cached: true,
+          cache_age: Math.floor((Date.now() - cache.timestamp) / 1000)
+        });
+      }
+
+      // Check if access token is configured
+      if (!INSTAGRAM_ACCESS_TOKEN) {
+        return res.status(500).json({
+          error: 'Instagram access token not configured',
+          fallback: getFallbackPosts(limit)
+        });
+      }
+
+      // Fetch posts from Instagram API
+      const posts = await fetchInstagramPosts(fields, limit);
+
+      // Enhance posts with statistics if requested
+      const enhancedPosts = includeStats ? await enhancePostsWithStats(posts) : posts;
+
+      // Update cache
+      cache.data = enhancedPosts;
+      cache.timestamp = Date.now();
+
+      res.status(200).json({
         success: true,
-        data: cache.data.slice(0, limit),
-        cached: true,
-        cache_age: Math.floor((Date.now() - cache.timestamp) / 1000)
+        data: enhancedPosts,
+        cached: false,
+        total: enhancedPosts.length,
+        stats_included: includeStats
       });
-    }
 
-    // Check if access token is configured
-    if (!INSTAGRAM_ACCESS_TOKEN) {
-      return res.status(500).json({
-        error: 'Instagram access token not configured',
-        fallback: getFallbackPosts(limit)
+    } catch (error) {
+      console.error('Instagram posts fetch error:', error);
+
+      // Return cached data if available, otherwise fallback
+      if (cache.data) {
+        return res.status(200).json({
+          success: true,
+          data: cache.data.slice(0, validation.data?.limit || 4),
+          cached: true,
+          error: 'API temporarily unavailable, serving cached data'
+        });
+      }
+
+      res.status(500).json({
+        error: 'Failed to fetch Instagram posts',
+        message: error.message,
+        fallback: getFallbackPosts(validation.data?.limit || 4)
       });
-    }
-
-    // Fetch posts from Instagram API
-    const posts = await fetchInstagramPosts(fields, limit);
-
-    // Enhance posts with statistics if requested
-    const enhancedPosts = includeStats ? await enhancePostsWithStats(posts) : posts;
-
-    // Update cache
-    cache.data = enhancedPosts;
-    cache.timestamp = Date.now();
-
-    res.status(200).json({
-      success: true,
-      data: enhancedPosts,
-      cached: false,
-      total: enhancedPosts.length,
-      stats_included: includeStats
     });
-
-  } catch (error) {
-    console.error('Instagram posts fetch error:', error);
-
-    // Return cached data if available, otherwise fallback
-    if (cache.data) {
-      return res.status(200).json({
-        success: true,
-        data: cache.data.slice(0, validation.data?.limit || 4),
-        cached: true,
-        error: 'API temporarily unavailable, serving cached data'
-      });
-    }
-
-    res.status(500).json({
-      error: 'Failed to fetch Instagram posts',
-      message: error.message,
-      fallback: getFallbackPosts(validation.data?.limit || 4)
-    });
-  }
 }
 
 // Fetch posts from Instagram Basic Display API

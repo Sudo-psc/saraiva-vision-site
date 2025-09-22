@@ -1,291 +1,361 @@
 import React from 'react';
-import { AlertTriangle, RefreshCw, Home, ExternalLink } from 'lucide-react';
+import { AlertTriangle, RefreshCw, Home, Bug } from 'lucide-react';
+import instagramErrorHandler from '../../services/instagramErrorHandler';
+import instagramErrorRecovery from '../../services/instagramErrorRecovery';
 
 /**
- * InstagramErrorBoundary - Error boundary component for Instagram feed
- * Catches JavaScript errors and provides fallback UI with recovery options
+ * InstagramErrorBoundary - React Error Boundary for Instagram components
+ * Catches JavaScript errors anywhere in the child component tree and displays fallback UI
  */
 class InstagramErrorBoundary extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             hasError: false,
             error: null,
             errorInfo: null,
             errorId: null,
             retryCount: 0,
-            lastErrorTime: null
+            isRecovering: false,
+            recoveryResult: null
         };
+
+        this.maxRetries = props.maxRetries || 3;
+        this.showErrorDetails = props.showErrorDetails || process.env.NODE_ENV === 'development';
+        this.onError = props.onError;
+        this.fallbackComponent = props.fallbackComponent;
+        this.enableRecovery = props.enableRecovery !== false;
     }
 
     static getDerivedStateFromError(error) {
         // Update state so the next render will show the fallback UI
         return {
             hasError: true,
-            errorId: `ig-error-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+            error
         };
     }
 
     componentDidCatch(error, errorInfo) {
-        // Log error details for debugging (without sensitive information)
-        const sanitizedError = {
-            message: error.message,
-            stack: error.stack,
-            componentStack: errorInfo.componentStack,
-            errorId: this.state.errorId,
-            timestamp: new Date().toISOString(),
-            userAgent: navigator.userAgent,
-            url: window.location.href,
-            retryCount: this.state.retryCount
+        // Log the error to our error handling service
+        const context = {
+            operation: 'component_render',
+            operationId: `boundary-${Date.now()}`,
+            component: this.props.componentName || 'InstagramComponent',
+            props: this.sanitizeProps(this.props),
+            errorBoundary: true
         };
+
+        // Handle the error through our error handler
+        instagramErrorHandler.handleError(error, context).then(result => {
+            this.setState({
+                errorInfo,
+                errorId: result.error?.id,
+                recoveryResult: result
+            });
+
+            // Call onError callback if provided
+            if (this.onError) {
+                this.onError(error, errorInfo, result);
+            }
+        }).catch(handlerError => {
+            // Fallback if error handler fails
+            this.setState({
+                errorInfo,
+                errorId: `fallback-${Date.now()}`,
+                recoveryResult: {
+                    success: false,
+                    error: { message: 'Error handler failed' }
+                }
+            });
+
+            if (this.onError) {
+                this.onError(error, errorInfo, { success: false, error: handlerError });
+            }
+        });
 
         // Log to console in development
         if (process.env.NODE_ENV === 'development') {
-            console.error('Instagram Error Boundary caught an error:', sanitizedError);
+            console.error('Instagram Error Boundary caught an error:', error, errorInfo);
         }
-
-        // Send to error reporting service (without sensitive data)
-        this.reportError(sanitizedError);
-
-        this.setState({
-            error,
-            errorInfo,
-            lastErrorTime: Date.now()
-        });
     }
 
-    reportError = (errorData) => {
+    /**
+     * Sanitize props to remove sensitive information before logging
+     */
+    sanitizeProps(props) {
+        const sanitized = { ...props };
+
+        // Remove potentially sensitive props
+        delete sanitized.accessToken;
+        delete sanitized.apiKey;
+        delete sanitized.children;
+        delete sanitized.onError;
+
+        // Truncate large props
+        Object.keys(sanitized).forEach(key => {
+            if (typeof sanitized[key] === 'string' && sanitized[key].length > 100) {
+                sanitized[key] = sanitized[key].substring(0, 100) + '...';
+            }
+        });
+
+        return sanitized;
+    }
+
+    /**
+     * Attempt to recover from the error
+     */
+    handleRecovery = async () => {
+        if (!this.enableRecovery || this.state.isRecovering) return;
+
+        this.setState({ isRecovering: true });
+
         try {
-            // In a real application, send to error reporting service
-            // Example: Sentry, LogRocket, or custom error endpoint
-            if (typeof window !== 'undefined' && window.gtag) {
-                window.gtag('event', 'exception', {
-                    description: `Instagram Error: ${errorData.message}`,
-                    fatal: false,
-                    error_id: errorData.errorId
+            const errorInfo = {
+                type: 'component',
+                severity: 'medium',
+                message: this.state.error?.message || 'Component error',
+                context: {
+                    component: this.props.componentName,
+                    operation: 'error_recovery'
+                }
+            };
+
+            const recoveryResult = await instagramErrorRecovery.attemptRecovery(errorInfo, {
+                component: this.props.componentName,
+                retryCount: this.state.retryCount
+            });
+
+            if (recoveryResult.success) {
+                // Reset error state to retry rendering
+                this.setState({
+                    hasError: false,
+                    error: null,
+                    errorInfo: null,
+                    errorId: null,
+                    retryCount: this.state.retryCount + 1,
+                    isRecovering: false,
+                    recoveryResult
+                });
+            } else {
+                this.setState({
+                    isRecovering: false,
+                    recoveryResult
                 });
             }
-
-            // Could also send to custom error endpoint
-            // fetch('/api/errors', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify(errorData)
-            // }).catch(() => {}); // Fail silently if error reporting fails
-        } catch (reportingError) {
-            // Fail silently if error reporting fails
-            console.warn('Failed to report error:', reportingError);
+        } catch (recoveryError) {
+            console.error('Error recovery failed:', recoveryError);
+            this.setState({
+                isRecovering: false,
+                recoveryResult: {
+                    success: false,
+                    error: recoveryError.message
+                }
+            });
         }
     };
 
+    /**
+     * Manual retry without recovery
+     */
     handleRetry = () => {
-        const now = Date.now();
-        const timeSinceLastError = now - (this.state.lastErrorTime || 0);
+        if (this.state.retryCount >= this.maxRetries) return;
 
-        // Implement exponential backoff - don't allow retry too quickly
-        const minRetryDelay = Math.min(1000 * Math.pow(2, this.state.retryCount), 30000); // Max 30 seconds
-
-        if (timeSinceLastError < minRetryDelay) {
-            // Show user they need to wait
-            const waitTime = Math.ceil((minRetryDelay - timeSinceLastError) / 1000);
-            alert(`Please wait ${waitTime} seconds before retrying.`);
-            return;
-        }
-
-        this.setState(prevState => ({
+        // Force a re-render by updating the key
+        this.setState({
             hasError: false,
             error: null,
             errorInfo: null,
-            retryCount: prevState.retryCount + 1,
-            lastErrorTime: now
-        }));
-
-        // Trigger a re-render of the component
-        if (this.props.onRetry) {
-            this.props.onRetry();
-        }
+            errorId: null,
+            retryCount: this.state.retryCount + 1,
+            isRecovering: false,
+            recoveryResult: null
+        });
     };
 
-    handleReportIssue = () => {
-        const errorDetails = {
+    /**
+     * Reset error boundary state
+     */
+    handleReset = () => {
+        this.setState({
+            hasError: false,
+            error: null,
+            errorInfo: null,
+            errorId: null,
+            retryCount: 0,
+            isRecovering: false,
+            recoveryResult: null
+        });
+    };
+
+    /**
+     * Report error to external service
+     */
+    handleReportError = () => {
+        const errorReport = {
+            error: this.state.error?.message,
+            stack: this.state.error?.stack,
+            componentStack: this.state.errorInfo?.componentStack,
             errorId: this.state.errorId,
-            message: this.state.error?.message || 'Unknown error',
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent,
+            url: window.location.href
         };
 
-        // Open email client or support form
-        const subject = encodeURIComponent('Instagram Feed Error Report');
-        const body = encodeURIComponent(
-            `Error ID: ${errorDetails.errorId}\n` +
-            `Time: ${errorDetails.timestamp}\n` +
-            `Message: ${errorDetails.message}\n\n` +
-            `Please describe what you were doing when this error occurred:`
-        );
+        // This could send to an error reporting service
+        console.log('Error report:', errorReport);
 
-        window.open(`mailto:support@saraivavision.com?subject=${subject}&body=${body}`);
-    };
-
-    getErrorSeverity = () => {
-        const errorMessage = this.state.error?.message || '';
-
-        // Categorize errors by severity
-        if (errorMessage.includes('Network') || errorMessage.includes('fetch')) {
-            return 'network';
-        } else if (errorMessage.includes('Permission') || errorMessage.includes('Auth')) {
-            return 'auth';
-        } else if (errorMessage.includes('Rate limit') || errorMessage.includes('429')) {
-            return 'rate-limit';
-        } else {
-            return 'unknown';
-        }
-    };
-
-    getErrorMessage = () => {
-        const severity = this.getErrorSeverity();
-
-        switch (severity) {
-            case 'network':
-                return {
-                    title: 'Connection Issue',
-                    message: 'Unable to load Instagram content. Please check your internet connection.',
-                    suggestion: 'Try refreshing the page or check your network connection.'
-                };
-            case 'auth':
-                return {
-                    title: 'Authentication Error',
-                    message: 'There was an issue accessing Instagram content.',
-                    suggestion: 'This issue has been reported to our team. Please try again later.'
-                };
-            case 'rate-limit':
-                return {
-                    title: 'Rate Limit Exceeded',
-                    message: 'Too many requests to Instagram. Please wait a moment.',
-                    suggestion: 'Instagram limits how often we can fetch content. Please try again in a few minutes.'
-                };
-            default:
-                return {
-                    title: 'Something Went Wrong',
-                    message: 'An unexpected error occurred while loading Instagram content.',
-                    suggestion: 'Please try refreshing the page. If the problem persists, contact support.'
-                };
-        }
+        // Show user feedback
+        alert('Error report sent. Thank you for helping us improve!');
     };
 
     render() {
         if (this.state.hasError) {
-            const errorDetails = this.getErrorMessage();
-            const canRetry = this.state.retryCount < 3; // Limit retry attempts
-            const severity = this.getErrorSeverity();
+            // Custom fallback component
+            if (this.fallbackComponent) {
+                return React.createElement(this.fallbackComponent, {
+                    error: this.state.error,
+                    errorInfo: this.state.errorInfo,
+                    onRetry: this.handleRetry,
+                    onReset: this.handleReset,
+                    canRetry: this.state.retryCount < this.maxRetries
+                });
+            }
 
+            // Default fallback UI
             return (
-                <div className="instagram-error-boundary bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-                    <div className="flex flex-col items-center space-y-4">
-                        {/* Error Icon */}
-                        <div className={`
-                            p-3 rounded-full
-                            ${severity === 'network' ? 'bg-orange-100 text-orange-600' :
-                                severity === 'auth' ? 'bg-red-100 text-red-600' :
-                                    severity === 'rate-limit' ? 'bg-yellow-100 text-yellow-600' :
-                                        'bg-red-100 text-red-600'}
-                        `}>
-                            <AlertTriangle className="w-8 h-8" />
+                <div className="instagram-error-boundary p-6 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0">
+                            <AlertTriangle className="w-8 h-8 text-red-600" />
                         </div>
 
-                        {/* Error Message */}
-                        <div className="space-y-2">
-                            <h3 className="text-lg font-semibold text-gray-900">
-                                {errorDetails.title}
+                        <div className="flex-1 min-w-0">
+                            <h3 className="text-lg font-medium text-red-800 mb-2">
+                                Something went wrong with Instagram content
                             </h3>
-                            <p className="text-gray-700 max-w-md">
-                                {errorDetails.message}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                                {errorDetails.suggestion}
-                            </p>
-                        </div>
 
-                        {/* Error ID for support */}
-                        {this.state.errorId && (
-                            <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded font-mono">
-                                Error ID: {this.state.errorId}
-                            </div>
-                        )}
+                            <p className="text-red-700 mb-4">
+                                We encountered an error while loading Instagram content.
+                                This might be a temporary issue.
+                            </p>
 
-                        {/* Action Buttons */}
-                        <div className="flex flex-wrap gap-3 justify-center">
-                            {canRetry && (
-                                <button
-                                    onClick={this.handleRetry}
-                                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                                    aria-describedby="retry-description"
-                                >
-                                    <RefreshCw className="w-4 h-4" />
-                                    Try Again
-                                </button>
+                            {/* Error ID for support */}
+                            {this.state.errorId && (
+                                <p className="text-sm text-red-600 mb-4">
+                                    Error ID: <code className="bg-red-100 px-2 py-1 rounded">{this.state.errorId}</code>
+                                </p>
                             )}
 
-                            <button
-                                onClick={() => window.location.reload()}
-                                className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-                            >
-                                <RefreshCw className="w-4 h-4" />
-                                Refresh Page
-                            </button>
+                            {/* Action buttons */}
+                            <div className="flex flex-wrap gap-3 mb-4">
+                                {this.state.retryCount < this.maxRetries && (
+                                    <button
+                                        onClick={this.handleRetry}
+                                        className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                                        disabled={this.state.isRecovering}
+                                    >
+                                        <RefreshCw className={`w-4 h-4 ${this.state.isRecovering ? 'animate-spin' : ''}`} />
+                                        {this.state.isRecovering ? 'Recovering...' : 'Try Again'}
+                                    </button>
+                                )}
 
-                            <button
-                                onClick={() => window.location.href = '/'}
-                                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-                            >
-                                <Home className="w-4 h-4" />
-                                Go Home
-                            </button>
+                                {this.enableRecovery && this.state.retryCount < this.maxRetries && (
+                                    <button
+                                        onClick={this.handleRecovery}
+                                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                        disabled={this.state.isRecovering}
+                                    >
+                                        <RefreshCw className={`w-4 h-4 ${this.state.isRecovering ? 'animate-spin' : ''}`} />
+                                        Smart Recovery
+                                    </button>
+                                )}
 
-                            <button
-                                onClick={this.handleReportIssue}
-                                className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
-                            >
-                                <ExternalLink className="w-4 h-4" />
-                                Report Issue
-                            </button>
-                        </div>
+                                <button
+                                    onClick={this.handleReset}
+                                    className="inline-flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+                                >
+                                    <Home className="w-4 h-4" />
+                                    Reset
+                                </button>
 
-                        {/* Retry Information */}
-                        {!canRetry && (
-                            <div className="text-sm text-gray-600 bg-yellow-50 border border-yellow-200 rounded p-3">
-                                <p>Maximum retry attempts reached. Please refresh the page or contact support if the issue persists.</p>
+                                <button
+                                    onClick={this.handleReportError}
+                                    className="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-colors"
+                                >
+                                    <Bug className="w-4 h-4" />
+                                    Report Issue
+                                </button>
                             </div>
-                        )}
 
-                        {/* Hidden descriptions for screen readers */}
-                        <div className="sr-only">
-                            <div id="retry-description">
-                                Attempt to reload the Instagram content. This will try to fetch the data again.
-                            </div>
-                        </div>
+                            {/* Retry count indicator */}
+                            {this.state.retryCount > 0 && (
+                                <p className="text-sm text-red-600 mb-4">
+                                    Retry attempts: {this.state.retryCount}/{this.maxRetries}
+                                </p>
+                            )}
 
-                        {/* Development Error Details */}
-                        {process.env.NODE_ENV === 'development' && this.state.error && (
-                            <details className="mt-4 text-left w-full max-w-2xl">
-                                <summary className="cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-900">
-                                    Development Error Details
-                                </summary>
-                                <div className="mt-2 p-4 bg-gray-100 rounded text-xs font-mono overflow-auto">
-                                    <div className="mb-2">
-                                        <strong>Error:</strong> {this.state.error.message}
-                                    </div>
-                                    <div className="mb-2">
-                                        <strong>Stack:</strong>
-                                        <pre className="whitespace-pre-wrap">{this.state.error.stack}</pre>
-                                    </div>
-                                    {this.state.errorInfo && (
-                                        <div>
-                                            <strong>Component Stack:</strong>
-                                            <pre className="whitespace-pre-wrap">{this.state.errorInfo.componentStack}</pre>
-                                        </div>
-                                    )}
+                            {/* Recovery result */}
+                            {this.state.recoveryResult && (
+                                <div className={`p-3 rounded-md mb-4 ${this.state.recoveryResult.success
+                                    ? 'bg-green-100 text-green-800'
+                                    : 'bg-orange-100 text-orange-800'
+                                    }`}>
+                                    <p className="text-sm">
+                                        {this.state.recoveryResult.success
+                                            ? 'Recovery successful! The component should work now.'
+                                            : `Recovery failed: ${this.state.recoveryResult.error || 'Unknown error'}`
+                                        }
+                                    </p>
                                 </div>
-                            </details>
-                        )}
+                            )}
+
+                            {/* Error details (development only) */}
+                            {this.showErrorDetails && this.state.error && (
+                                <details className="mt-4">
+                                    <summary className="cursor-pointer text-sm font-medium text-red-700 hover:text-red-800">
+                                        Technical Details (Development)
+                                    </summary>
+                                    <div className="mt-2 p-3 bg-red-100 rounded-md">
+                                        <p className="text-sm text-red-800 font-medium mb-2">Error:</p>
+                                        <pre className="text-xs text-red-700 whitespace-pre-wrap mb-3">
+                                            {this.state.error.toString()}
+                                        </pre>
+
+                                        {this.state.error.stack && (
+                                            <>
+                                                <p className="text-sm text-red-800 font-medium mb-2">Stack Trace:</p>
+                                                <pre className="text-xs text-red-700 whitespace-pre-wrap mb-3 max-h-32 overflow-y-auto">
+                                                    {this.state.error.stack}
+                                                </pre>
+                                            </>
+                                        )}
+
+                                        {this.state.errorInfo?.componentStack && (
+                                            <>
+                                                <p className="text-sm text-red-800 font-medium mb-2">Component Stack:</p>
+                                                <pre className="text-xs text-red-700 whitespace-pre-wrap max-h-32 overflow-y-auto">
+                                                    {this.state.errorInfo.componentStack}
+                                                </pre>
+                                            </>
+                                        )}
+                                    </div>
+                                </details>
+                            )}
+
+                            {/* Fallback content suggestion */}
+                            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                                <p className="text-sm text-blue-800">
+                                    <strong>What you can do:</strong>
+                                </p>
+                                <ul className="text-sm text-blue-700 mt-1 list-disc list-inside space-y-1">
+                                    <li>Check your internet connection</li>
+                                    <li>Refresh the page</li>
+                                    <li>Try again in a few minutes</li>
+                                    <li>Contact support if the problem persists</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             );

@@ -46,7 +46,7 @@ class InstagramErrorHandler {
      */
     analyzeError(error, context = {}) {
         const errorInfo = {
-            id: `ig-error-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            id: `ig-error-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
             timestamp: new Date().toISOString(),
             type: 'unknown',
             severity: 'medium',
