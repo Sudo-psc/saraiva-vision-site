@@ -32,8 +32,8 @@ export default defineConfig({
   esbuild: {
     charset: 'utf8',
     // Ensure consistent parsing and prevent encoding issues
-    loader: 'jsx',
-    include: /\.(js|jsx|ts|tsx)$/
+    jsxFactory: 'React.createElement',
+    jsxFragment: 'React.Fragment'
   },
   resolve: {
     alias: {
