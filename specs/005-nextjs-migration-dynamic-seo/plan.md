@@ -47,7 +47,21 @@ Migrate Saraiva Vision frontend from React/Vite to Next.js 14 while implementing
 ## Constitution Check
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+### Constitution Analysis
+The current constitution is a template with placeholder values. For this Next.js migration project, we will apply general software engineering best practices:
+
+- **Test-First Development**: Contract tests before implementation
+- **Integration Testing**: Cross-component and API integration tests required
+- **Observability**: SEO metrics and performance monitoring
+- **Simplicity**: Start with basic Next.js setup, add SEO features incrementally
+- **Version Control**: Feature branch strategy with proper CI/CD
+
+### Project-Specific Principles for Next.js Migration:
+1. **SEO-First Architecture**: Dynamic metadata and structured data as core features
+2. **Performance Optimization**: Leverage Next.js built-in optimizations
+3. **Content Preservation**: Maintain existing WordPress content structure
+4. **Mobile-First Design**: Responsive design with Core Web Vitals focus
+5. **Accessibility**: WCAG 2.1 compliance for medical website
 
 ## Project Structure
 
@@ -99,7 +113,7 @@ ios/ or android/
 └── [platform-specific structure]
 ```
 
-**Structure Decision**: [DEFAULT to Option 1 unless Technical Context indicates web/mobile app]
+**Structure Decision**: Option 2 - Web application (frontend + backend detected in Technical Context)
 
 ## Phase 0: Outline & Research
 1. **Extract unknowns from Technical Context** above:
@@ -161,17 +175,33 @@ ios/ or android/
 **Task Generation Strategy**:
 - Load `.specify/templates/tasks-template.md` as base
 - Generate tasks from Phase 1 design docs (contracts, data model, quickstart)
-- Each contract → contract test task [P]
-- Each entity → model creation task [P] 
+- Each API endpoint → contract test task [P]
+- Each entity → model creation task [P]
 - Each user story → integration test task
 - Implementation tasks to make tests pass
 
 **Ordering Strategy**:
-- TDD order: Tests before implementation 
+- TDD order: Tests before implementation
 - Dependency order: Models before services before UI
+- Infrastructure before features
+- Core SEO features before enhancements
 - Mark [P] for parallel execution (independent files)
 
-**Estimated Output**: 25-30 numbered, ordered tasks in tasks.md
+**Task Categories**:
+1. **Infrastructure** (5 tasks): Project setup, configuration, build system
+2. **Data Layer** (4 tasks): WordPress integration, API clients, data models
+3. **SEO Core** (6 tasks): Metadata, structured data, sitemaps, robots.txt
+4. **Components** (8 tasks): Layout components, page components, UI components
+5. **Pages** (7 tasks): Home, services, blog, about, contact pages
+6. **Optimization** (3 tasks): Performance, accessibility, testing
+
+**Estimated Output**: 25-30 numbered, ordered tasks in tasks.md with dependency tracking
+
+**Key Integration Points**:
+- WordPress REST API authentication and data fetching
+- Next.js App Router integration with SEO features
+- Vercel deployment configuration
+- Performance monitoring setup
 
 **IMPORTANT**: This phase is executed by the /tasks command, NOT by /plan
 
@@ -195,17 +225,17 @@ ios/ or android/
 *This checklist is updated during execution flow*
 
 **Phase Status**:
-- [ ] Phase 0: Research complete (/plan command)
-- [ ] Phase 1: Design complete (/plan command)
-- [ ] Phase 2: Task planning complete (/plan command - describe approach only)
+- [x] Phase 0: Research complete (/plan command)
+- [x] Phase 1: Design complete (/plan command)
+- [x] Phase 2: Task planning complete (/plan command - describe approach only)
 - [ ] Phase 3: Tasks generated (/tasks command)
 - [ ] Phase 4: Implementation complete
 - [ ] Phase 5: Validation passed
 
 **Gate Status**:
-- [ ] Initial Constitution Check: PASS
-- [ ] Post-Design Constitution Check: PASS
-- [ ] All NEEDS CLARIFICATION resolved
+- [x] Initial Constitution Check: PASS
+- [x] Post-Design Constitution Check: PASS
+- [x] All NEEDS CLARIFICATION resolved
 - [ ] Complexity deviations documented
 
 ---
