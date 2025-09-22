@@ -1,0 +1,191 @@
+/**
+ * Scroll Fix for Testimonials and Google Reviews
+ * Prevents double scroll and scroll blocking issues
+ */
+
+/* Global scroll section fix class */
+.scroll-section-fix {
+    /* Ensure no internal scroll context */
+    overflow: visible !important;
+    /* Allow natural page scroll */
+    overscroll-behavior: auto !important;
+    /* Remove any scroll blocking */
+    scroll-behavior: auto !important;
+    /* Ensure proper width containment */
+    width: 100%;
+    max-width: 100vw;
+    /* Prevent any transform issues */
+    transform: none !important;
+    /* Ensure proper positioning */
+    position: relative;
+}
+
+/* Fix for testimonials section */
+#testimonials {
+    /* Ensure no internal scroll context */
+    overflow: visible !important;
+    /* Allow natural page scroll */
+    overscroll-behavior: auto !important;
+    /* Remove any scroll blocking */
+    scroll-behavior: auto !important;
+    /* Ensure proper width containment */
+    width: 100%;
+    max-width: 100vw;
+}
+
+/* Fix for container classes */
+.testimonials-container,
+.reviews-container,
+.scroll-section-fix .max-w-7xl,
+.scroll-section-fix .max-w-4xl {
+    /* Remove any overflow restrictions that could cause scroll issues */
+    overflow: visible !important;
+    /* Ensure proper width */
+    width: 100%;
+    max-width: 100%;
+    /* Remove any positioning issues */
+    position: relative;
+}
+
+/* Fix for testimonials container */
+#testimonials .testimonials-container,
+#testimonials .max-w-7xl,
+#testimonials .max-w-4xl {
+    /* Remove any overflow restrictions that could cause scroll issues */
+    overflow: visible !important;
+    /* Ensure proper width */
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Fix for testimonials carousel/grid */
+#testimonials .grid,
+#testimonials .testimonial-card-3d {
+    /* Prevent internal scroll contexts */
+    overflow: visible !important;
+    /* Allow content to flow naturally */
+    overscroll-behavior: auto !important;
+}
+
+/* Fix for Google Reviews section */
+.compact-google-reviews,
+section[class*="py-12"] {
+    /* Ensure no internal scroll context */
+    overflow: visible !important;
+    /* Allow natural page scroll */
+    overscroll-behavior: auto !important;
+    /* Remove any scroll blocking */
+    scroll-behavior: auto !important;
+    /* Ensure proper width containment */
+    width: 100%;
+    max-width: 100vw;
+}
+
+/* Fix for Google Reviews container */
+.compact-google-reviews .max-w-7xl,
+.compact-google-reviews .container {
+    /* Remove any overflow restrictions */
+    overflow: visible !important;
+    /* Ensure proper width */
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Fix for Google Reviews grid */
+.compact-google-reviews .grid {
+    /* Prevent internal scroll contexts */
+    overflow: visible !important;
+    /* Allow content to flow naturally */
+    overscroll-behavior: auto !important;
+}
+
+/* Global fix for sections with testimonials or reviews */
+section[id*="testimonial"],
+section[class*="testimonial"],
+section[class*="review"] {
+    /* Ensure sections don't create scroll contexts */
+    overflow: visible !important;
+    overscroll-behavior: auto !important;
+    scroll-behavior: auto !important;
+    /* Proper containment */
+    width: 100%;
+    max-width: 100vw;
+}
+
+/* Fix for any nested containers in these sections */
+section[id*="testimonial"]>div,
+section[class*="testimonial"]>div,
+section[class*="review"]>div {
+    overflow: visible !important;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Specific fix for motion/animation containers */
+.motion-div,
+[class*="motion-"],
+.animate-presence {
+    /* Ensure animations don't interfere with scroll */
+    overflow: visible !important;
+    /* Allow proper scroll propagation */
+    overscroll-behavior: auto !important;
+}
+
+/* Fix for carousel/slider components */
+.testimonial-carousel,
+.reviews-carousel,
+[class*="carousel"],
+[class*="slider"] {
+    /* Allow horizontal scroll only where needed */
+    overflow-x: auto;
+    overflow-y: visible !important;
+    /* Prevent vertical scroll blocking */
+    overscroll-behavior-y: auto !important;
+    /* Allow horizontal scroll containment */
+    overscroll-behavior-x: contain;
+}
+
+/* Mobile-specific fixes */
+@media (max-width: 768px) {
+
+    #testimonials,
+    .compact-google-reviews {
+        /* Ensure mobile scroll works properly */
+        -webkit-overflow-scrolling: touch;
+        overflow: visible !important;
+        overscroll-behavior: auto !important;
+    }
+
+    /* Fix for mobile touch interactions */
+    #testimonials .testimonial-card-3d,
+    .compact-google-reviews .review-card {
+        /* Prevent touch scroll blocking */
+        touch-action: auto !important;
+        /* Allow natural scroll */
+        overflow: visible !important;
+    }
+}
+
+/* Fix for any fixed/absolute positioned elements in these sections */
+#testimonials .absolute,
+#testimonials .fixed,
+.compact-google-reviews .absolute,
+.compact-google-reviews .fixed {
+    /* Ensure they don't interfere with scroll */
+    pointer-events: none;
+    /* Allow scroll events to pass through */
+    touch-action: none;
+}
+
+/* Re-enable pointer events for interactive elements */
+#testimonials .absolute button,
+#testimonials .fixed button,
+.compact-google-reviews .absolute button,
+.compact-google-reviews .fixed button,
+#testimonials .absolute a,
+#testimonials .fixed a,
+.compact-google-reviews .absolute a,
+.compact-google-reviews .fixed a {
+    pointer-events: auto;
+    touch-action: auto;
+}

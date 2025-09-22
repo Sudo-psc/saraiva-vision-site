@@ -30,10 +30,8 @@ export default defineConfig({
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
   },
   esbuild: {
-    charset: 'utf8',
-    // Ensure consistent parsing and prevent encoding issues
-    jsxFactory: 'React.createElement',
-    jsxFragment: 'React.Fragment'
+    charset: 'utf8'
+    // Let React plugin handle JSX transformation with automatic runtime
   },
   resolve: {
     alias: {

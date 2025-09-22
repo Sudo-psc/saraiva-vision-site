@@ -84,14 +84,14 @@ const Testimonials = ({ limit }) => {
   };
 
   return (
-    <section id="testimonials" className="section-padding-large testimonials-3d-bg relative overflow-hidden">
+    <section id="testimonials" className="py-16 md:py-20 testimonials-3d-bg relative scroll-section-fix">
       {/* Background Effects */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-20 left-20 w-64 h-64 bg-gradient-to-br from-blue-400/6 to-cyan-400/6 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-20 right-20 w-48 h-48 bg-gradient-to-br from-purple-400/6 to-pink-400/6 rounded-full blur-3xl animate-float-delayed" />
       </div>
-      
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
+
+      <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 testimonials-container">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

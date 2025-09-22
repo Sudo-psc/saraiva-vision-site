@@ -3,6 +3,7 @@
  * Provides comprehensive security measures for Instagram API integration
  */
 
+import crypto from 'crypto';
 import instagramRateLimiter from './instagramRateLimiter';
 import instagramTokenManager from './instagramTokenManager';
 import instagramInputValidator from './instagramInputValidator';
@@ -365,20 +366,36 @@ class InstagramSecurityMiddleware {
     }
 
     /**
-     * Compare tokens securely
+     * Compare tokens securely using crypto.timingSafeEqual
      */
     compareTokens(token1, token2) {
-        // Use constant-time comparison to prevent timing attacks
-        if (token1.length !== token2.length) {
+        // Handle null/undefined inputs safely
+        if (!token1 || !token2) {
             return false;
         }
 
-        let result = 0;
-        for (let i = 0; i < token1.length; i++) {
-            result |= token1.charCodeAt(i) ^ token2.charCodeAt(i);
+        // Ensure both inputs are strings
+        const str1 = String(token1);
+        const str2 = String(token2);
+
+        // Convert to Buffers for timingSafeEqual
+        const buf1 = Buffer.from(str1, 'utf8');
+        const buf2 = Buffer.from(str2, 'utf8');
+
+        // If lengths differ, pad the shorter buffer with zeros
+        if (buf1.length !== buf2.length) {
+            const maxLength = Math.max(buf1.length, buf2.length);
+            const paddedBuf1 = Buffer.alloc(maxLength);
+            const paddedBuf2 = Buffer.alloc(maxLength);
+            
+            buf1.copy(paddedBuf1);
+            buf2.copy(paddedBuf2);
+            
+            return crypto.timingSafeEqual(paddedBuf1, paddedBuf2);
         }
 
-        return result === 0;
+        // Use crypto.timingSafeEqual for constant-time comparison
+        return crypto.timingSafeEqual(buf1, buf2);
     }
 
     /**

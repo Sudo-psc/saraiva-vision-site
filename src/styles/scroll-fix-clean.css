@@ -20,11 +20,17 @@ body {
 /* CONTAINERS: Apenas overflow-x bloqueado */
 .view-container,
 .page-container,
-.route-container,
+.route-container {
+	overflow-x: hidden !important;
+	/* overflow-y permitido para scroll natural */
+}
+
+/* CONTAINERS ESPECÍFICOS: Permitir overflow natural */
 .container,
 main,
 section {
 	overflow-x: hidden !important;
+	overflow-y: visible !important;
 	/* overflow-y permitido para scroll natural */
 }
 
@@ -68,10 +74,15 @@ body {
 	overflow: hidden !important;
 	overscroll-behavior: none !important;
 	/* Ensure no inner scrollbar is ever shown */
-	scrollbar-width: none; /* Firefox */
-	-ms-overflow-style: none; /* IE/Edge */
+	scrollbar-width: none;
+	/* Firefox */
+	-ms-overflow-style: none;
+	/* IE/Edge */
 }
-.hero-no-scroll::-webkit-scrollbar { display: none; }
+
+.hero-no-scroll::-webkit-scrollbar {
+	display: none;
+}
 
 /* Ensure homepage sections don't create their own scroll contexts */
 .homepage-section {

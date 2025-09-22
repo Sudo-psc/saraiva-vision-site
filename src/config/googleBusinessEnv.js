@@ -1,170 +1,241 @@
 /**
  * Google Business Environment Configuration
- * Handles environment variables and configuration for Google Business API integration
+ * Handles secure credential storage and environment setup
  */
 
-/**
- * Get environment configuration for Google Business integration
- */
-export const getGoogleBusinessEnvConfig = () => {
-    return {
-        // API Configuration
-        apiKey: import.meta.env.VITE_GOOGLE_BUSINESS_API_KEY || null,
-        accessToken: import.meta.env.VITE_GOOGLE_BUSINESS_ACCESS_TOKEN || null,
-        refreshToken: import.meta.env.VITE_GOOGLE_BUSINESS_REFRESH_TOKEN || null,
+import crypto from 'crypto';
 
-        // Location Configuration
-        locationId: import.meta.env.VITE_GOOGLE_BUSINESS_LOCATION_ID || null,
+class GoogleBusinessConfig {
+    constructor() {
+        this.encryptionKey = this._getEncryptionKey();
+        this.credentials = null;
+    }
 
-        // Security Configuration
-        encryptionKey: import.meta.env.VITE_GOOGLE_BUSINESS_ENCRYPTION_KEY || null,
+    /**
+     * Get encryption key from environment
+     * @private
+     */
+    _getEncryptionKey() {
+        const key = process.env.GOOGLE_BUSINESS_ENCRYPTION_KEY;
+        if (!key) {
+            throw new Error('GOOGLE_BUSINESS_ENCRYPTION_KEY environment variable is required');
+        }
+        return key;
+    }
 
-        // Feature Flags
-        enableAutoSync: import.meta.env.VITE_GOOGLE_BUSINESS_AUTO_SYNC !== 'false',
-        enableCaching: import.meta.env.VITE_GOOGLE_BUSINESS_CACHING !== 'false',
-        enableMonitoring: import.meta.env.VITE_GOOGLE_BUSINESS_MONITORING !== 'false',
+    /**
+     * Get normalized 32-byte encryption key
+     * @private
+     */
+    _getNormalizedKey() {
+        return crypto.createHash('sha256').update(this.encryptionKey).digest();
+    }
 
-        // Performance Configuration
-        requestTimeout: parseInt(import.meta.env.VITE_GOOGLE_BUSINESS_TIMEOUT) || 10000,
-        maxRetries: parseInt(import.meta.env.VITE_GOOGLE_BUSINESS_MAX_RETRIES) || 3,
-        rateLimitBuffer: parseInt(import.meta.env.VITE_GOOGLE_BUSINESS_RATE_LIMIT_BUFFER) || 100,
+    /**
+     * Encrypt sensitive data using AES-256-GCM with explicit IV
+     * @private
+     */
+    _encrypt(text) {
+        const algorithm = 'aes-256-gcm';
+        const key = this._getNormalizedKey(); // 32-byte key
+        const iv = crypto.randomBytes(12); // 12-byte IV for GCM
+        const cipher = crypto.createCipheriv(algorithm, key, iv);
 
-        // Cache Configuration
-        cacheDefaultTTL: parseInt(import.meta.env.VITE_GOOGLE_BUSINESS_CACHE_TTL) || 86400, // 24 hours
-        maxCachedReviews: parseInt(import.meta.env.VITE_GOOGLE_BUSINESS_MAX_CACHED_REVIEWS) || 50,
+        let encrypted = cipher.update(text, 'utf8', 'hex');
+        encrypted += cipher.final('hex');
 
-        // Sync Configuration
-        syncInterval: parseInt(import.meta.env.VITE_GOOGLE_BUSINESS_SYNC_INTERVAL) || 24, // hours
+        const authTag = cipher.getAuthTag();
 
-        // Display Configuration
-        defaultMaxReviews: parseInt(import.meta.env.VITE_GOOGLE_BUSINESS_DEFAULT_MAX_REVIEWS) || 5,
-        defaultMinRating: parseInt(import.meta.env.VITE_GOOGLE_BUSINESS_DEFAULT_MIN_RATING) || 1,
+        return {
+            encrypted,
+            iv: iv.toString('hex'),
+            authTag: authTag.toString('hex'),
+        };
+    }
 
-        // Development/Debug Configuration
-        isDevelopment: import.meta.env.DEV || false,
-        enableDebugLogging: import.meta.env.VITE_GOOGLE_BUSINESS_DEBUG === 'true',
-        enableMockData: import.meta.env.VITE_GOOGLE_BUSINESS_MOCK_DATA === 'true'
-    };
-};
+    /**
+     * Decrypt sensitive data using AES-256-GCM with explicit IV
+     * @private
+     */
+    _decrypt(encryptedData) {
+        const algorithm = 'aes-256-gcm';
+        const key = this._getNormalizedKey(); // 32-byte key
+        const iv = Buffer.from(encryptedData.iv, 'hex');
+        const authTag = Buffer.from(encryptedData.authTag, 'hex');
+        
+        const decipher = crypto.createDecipheriv(algorithm, key, iv);
+        decipher.setAuthTag(authTag);
 
-/**
- * Validate environment configuration
- */
-export const validateGoogleBusinessEnvConfig = () => {
-    const config = getGoogleBusinessEnvConfig();
-    const errors = [];
-    const warnings = [];
+        let decrypted = decipher.update(encryptedData.encrypted, 'hex', 'utf8');
+        decrypted += decipher.final('utf8');
 
-    // Required for production
-    if (!config.isDevelopment) {
-        if (!config.apiKey) {
-            errors.push('VITE_GOOGLE_BUSINESS_API_KEY is required in production');
+        return decrypted;
+    }
+
+    /**
+     * Get Google Business API credentials
+     * @returns {Promise<Object>} Decrypted credentials
+     */
+    async getCredentials() {
+        if (this.credentials) {
+            return this.credentials;
         }
 
-        if (!config.accessToken) {
-            errors.push('VITE_GOOGLE_BUSINESS_ACCESS_TOKEN is required in production');
+        try {
+            // Try to get from environment variables first
+            const envCredentials = this._getCredentialsFromEnv();
+            if (envCredentials) {
+                this.credentials = envCredentials;
+                return this.credentials;
+            }
+
+            // If not in env, try to get from encrypted storage
+            const storedCredentials = await this._getStoredCredentials();
+            if (storedCredentials) {
+                this.credentials = storedCredentials;
+                return this.credentials;
+            }
+
+            throw new Error('No Google Business API credentials found');
+        } catch (error) {
+            console.error('Failed to retrieve Google Business credentials:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Get credentials from environment variables
+     * @private
+     */
+    _getCredentialsFromEnv() {
+        const clientId = process.env.GOOGLE_BUSINESS_CLIENT_ID;
+        const clientSecret = process.env.GOOGLE_BUSINESS_CLIENT_SECRET;
+        const refreshToken = process.env.GOOGLE_BUSINESS_REFRESH_TOKEN;
+
+        if (!clientId || !clientSecret || !refreshToken) {
+            return null;
         }
 
-        if (!config.locationId) {
-            errors.push('VITE_GOOGLE_BUSINESS_LOCATION_ID is required in production');
+        return {
+            clientId,
+            clientSecret,
+            refreshToken,
+        };
+    }
+
+    /**
+     * Get credentials from encrypted storage
+     * @private
+     */
+    async _getStoredCredentials() {
+        // This would typically read from a secure database
+        // For now, we'll return null as we're using env vars
+        return null;
+    }
+
+    /**
+     * Store encrypted credentials
+     * @param {Object} credentials - Credentials to store
+     * @returns {Promise<void>}
+     */
+    async storeCredentials(credentials) {
+        try {
+            const encryptedClientId = this._encrypt(credentials.clientId);
+            const encryptedClientSecret = this._encrypt(credentials.clientSecret);
+            const encryptedRefreshToken = this._encrypt(credentials.refreshToken);
+
+            // Store encrypted credentials (implementation would depend on storage method)
+            const encryptedCredentials = {
+                clientId: encryptedClientId,
+                clientSecret: encryptedClientSecret,
+                refreshToken: encryptedRefreshToken,
+                createdAt: new Date().toISOString(),
+            };
+
+            // In a real implementation, this would be stored in a secure database
+            console.log('Credentials encrypted and ready for storage');
+
+            // Update in-memory cache
+            this.credentials = credentials;
+
+            return true;
+        } catch (error) {
+            console.error('Failed to store credentials:', error);
+            throw new Error('Failed to store encrypted credentials');
+        }
+    }
+
+    /**
+     * Validate environment configuration
+     * @returns {Object} Validation results
+     */
+    validateEnvironment() {
+        const validation = {
+            isValid: true,
+            errors: [],
+            warnings: [],
+        };
+
+        // Check required environment variables
+        const requiredVars = [
+            'GOOGLE_BUSINESS_CLIENT_ID',
+            'GOOGLE_BUSINESS_CLIENT_SECRET',
+            'GOOGLE_BUSINESS_REFRESH_TOKEN',
+            'GOOGLE_BUSINESS_ENCRYPTION_KEY',
+        ];
+
+        requiredVars.forEach(varName => {
+            if (!process.env[varName]) {
+                validation.isValid = false;
+                validation.errors.push(`Missing required environment variable: ${varName}`);
+            }
+        });
+
+        // Check optional configuration
+        const optionalVars = [
+            'GOOGLE_BUSINESS_LOCATION_ID',
+            'GOOGLE_BUSINESS_API_TIMEOUT',
+            'GOOGLE_BUSINESS_CACHE_TTL',
+        ];
+
+        optionalVars.forEach(varName => {
+            if (!process.env[varName]) {
+                validation.warnings.push(`Optional environment variable not set: ${varName}`);
+            }
+        });
+
+        // Validate encryption key length
+        if (process.env.GOOGLE_BUSINESS_ENCRYPTION_KEY &&
+            process.env.GOOGLE_BUSINESS_ENCRYPTION_KEY.length < 32) {
+            validation.isValid = false;
+            validation.errors.push('GOOGLE_BUSINESS_ENCRYPTION_KEY must be at least 32 characters long');
         }
 
-        if (!config.encryptionKey) {
-            warnings.push('VITE_GOOGLE_BUSINESS_ENCRYPTION_KEY not set, using generated key');
-        }
+        return validation;
     }
 
-    // Validate numeric values
-    if (config.requestTimeout < 1000 || config.requestTimeout > 60000) {
-        warnings.push('VITE_GOOGLE_BUSINESS_TIMEOUT should be between 1000 and 60000ms');
+    /**
+     * Get configuration settings
+     * @returns {Object} Configuration object
+     */
+    getConfig() {
+        return {
+            locationId: process.env.GOOGLE_BUSINESS_LOCATION_ID,
+            apiTimeout: parseInt(process.env.GOOGLE_BUSINESS_API_TIMEOUT || '10000', 10),
+            cacheTtl: parseInt(process.env.GOOGLE_BUSINESS_CACHE_TTL || '86400', 10), // 24 hours
+            maxRetries: parseInt(process.env.GOOGLE_BUSINESS_MAX_RETRIES || '3', 10),
+            rateLimitBuffer: parseInt(process.env.GOOGLE_BUSINESS_RATE_LIMIT_BUFFER || '50', 10),
+        };
     }
 
-    if (config.maxRetries < 1 || config.maxRetries > 10) {
-        warnings.push('VITE_GOOGLE_BUSINESS_MAX_RETRIES should be between 1 and 10');
+    /**
+     * Clear cached credentials (for testing or security)
+     */
+    clearCredentials() {
+        this.credentials = null;
     }
+}
 
-    if (config.syncInterval < 1 || config.syncInterval > 168) {
-        warnings.push('VITE_GOOGLE_BUSINESS_SYNC_INTERVAL should be between 1 and 168 hours');
-    }
-
-    if (config.defaultMaxReviews < 1 || config.defaultMaxReviews > 50) {
-        warnings.push('VITE_GOOGLE_BUSINESS_DEFAULT_MAX_REVIEWS should be between 1 and 50');
-    }
-
-    if (config.defaultMinRating < 1 || config.defaultMinRating > 5) {
-        warnings.push('VITE_GOOGLE_BUSINESS_DEFAULT_MIN_RATING should be between 1 and 5');
-    }
-
-    return {
-        isValid: errors.length === 0,
-        errors,
-        warnings,
-        config
-    };
-};
-
-/**
- * Get configuration with fallbacks and validation
- */
-export const getValidatedGoogleBusinessConfig = () => {
-    const validation = validateGoogleBusinessEnvConfig();
-
-    if (validation.warnings.length > 0) {
-        console.warn('Google Business configuration warnings:', validation.warnings);
-    }
-
-    if (!validation.isValid) {
-        console.error('Google Business configuration errors:', validation.errors);
-        throw new Error(`Invalid Google Business configuration: ${validation.errors.join(', ')}`);
-    }
-
-    return validation.config;
-};
-
-/**
- * Environment configuration template for documentation
- */
-export const getEnvTemplate = () => {
-    return `
-# Google Business API Configuration
-VITE_GOOGLE_BUSINESS_API_KEY=your_google_api_key_here
-VITE_GOOGLE_BUSINESS_ACCESS_TOKEN=your_oauth_access_token_here
-VITE_GOOGLE_BUSINESS_REFRESH_TOKEN=your_oauth_refresh_token_here
-VITE_GOOGLE_BUSINESS_LOCATION_ID=accounts/your_account_id/locations/your_location_id
-
-# Security Configuration
-VITE_GOOGLE_BUSINESS_ENCRYPTION_KEY=your_32_character_encryption_key_here
-
-# Feature Flags (optional)
-VITE_GOOGLE_BUSINESS_AUTO_SYNC=true
-VITE_GOOGLE_BUSINESS_CACHING=true
-VITE_GOOGLE_BUSINESS_MONITORING=true
-
-# Performance Configuration (optional)
-VITE_GOOGLE_BUSINESS_TIMEOUT=10000
-VITE_GOOGLE_BUSINESS_MAX_RETRIES=3
-VITE_GOOGLE_BUSINESS_RATE_LIMIT_BUFFER=100
-
-# Cache Configuration (optional)
-VITE_GOOGLE_BUSINESS_CACHE_TTL=86400
-VITE_GOOGLE_BUSINESS_MAX_CACHED_REVIEWS=50
-
-# Sync Configuration (optional)
-VITE_GOOGLE_BUSINESS_SYNC_INTERVAL=24
-
-# Display Configuration (optional)
-VITE_GOOGLE_BUSINESS_DEFAULT_MAX_REVIEWS=5
-VITE_GOOGLE_BUSINESS_DEFAULT_MIN_RATING=1
-
-# Development Configuration (optional)
-VITE_GOOGLE_BUSINESS_DEBUG=false
-VITE_GOOGLE_BUSINESS_MOCK_DATA=false
-`;
-};
-
-export default {
-    getGoogleBusinessEnvConfig,
-    validateGoogleBusinessEnvConfig,
-    getValidatedGoogleBusinessConfig,
-    getEnvTemplate
-};
+// Export singleton instance
+export const googleBusinessConfig = new GoogleBusinessConfig();
+export default GoogleBusinessConfig;

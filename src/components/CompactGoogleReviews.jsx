@@ -58,8 +58,8 @@ const CompactGoogleReviews = () => {
     };
 
     return (
-        <section className="py-12 bg-white">
-            <div className="container mx-auto px-4 md:px-6">
+        <section className="py-12 bg-white compact-google-reviews scroll-section-fix">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 reviews-container">
                 {/* Section Title */}
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
