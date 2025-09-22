@@ -1,0 +1,1140 @@
+openapi: 3.0.3
+info:
+  title: Saraiva Vision API
+  description: REST API for Saraiva Vision medical clinic website
+  version: 1.0.0
+  contact:
+    name: Saraiva Vision
+    url: https://saraivavision.com.br
+
+servers:
+  - url: https://api.saraivavision.com.br/api/v1
+    description: Production server
+  - url: http://localhost:3001/api/v1
+    description: Development server
+
+security:
+  - BearerAuth: []
+
+paths:
+  # Authentication endpoints
+  /auth/login:
+    post:
+      summary: User login
+      tags: [Authentication]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+                      token:
+                        type: string
+                      refresh_token:
+                        type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /auth/logout:
+    post:
+      summary: User logout
+      tags: [Authentication]
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+
+  /auth/profile:
+    get:
+      summary: Get current user profile
+      tags: [Authentication]
+      responses:
+        '200':
+          description: User profile retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+    put:
+      summary: Update user profile
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                display_name:
+                  type: string
+                user_email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+      responses:
+        '200':
+          description: Profile updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  # Appointments endpoints
+  /appointments:
+    get:
+      summary: Get appointments (with filtering)
+      tags: [Appointments]
+      parameters:
+        - $ref: '#/components/parameters/QueryParamPage'
+        - $ref: '#/components/parameters/QueryParamLimit'
+        - name: status
+          in: query
+          description: Filter by appointment status
+          schema:
+            type: string
+            enum: [pending, confirmed, cancelled, completed, no-show]
+        - name: patient_id
+          in: query
+          description: Filter by patient ID (admin only)
+          schema:
+            type: integer
+        - name: doctor_id
+          in: query
+          description: Filter by doctor ID
+          schema:
+            type: integer
+        - name: start_date
+          in: query
+          description: Filter by start date (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: Filter by end date (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Appointments retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Appointment'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+    post:
+      summary: Create new appointment
+      tags: [Appointments]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAppointmentRequest'
+      responses:
+        '201':
+          description: Appointment created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Appointment'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '409':
+          description: Time slot not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /appointments/{id}:
+    get:
+      summary: Get appointment by ID
+      tags: [Appointments]
+      parameters:
+        - $ref: '#/components/parameters/PathParamId'
+      responses:
+        '200':
+          description: Appointment retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Appointment'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    put:
+      summary: Update appointment
+      tags: [Appointments]
+      parameters:
+        - $ref: '#/components/parameters/PathParamId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAppointmentRequest'
+      responses:
+        '200':
+          description: Appointment updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Appointment'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+    delete:
+      summary: Cancel appointment
+      tags: [Appointments]
+      parameters:
+        - $ref: '#/components/parameters/PathParamId'
+      responses:
+        '200':
+          description: Appointment cancelled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  # Services endpoints
+  /services:
+    get:
+      summary: Get all services
+      tags: [Services]
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/QueryParamPage'
+        - $ref: '#/components/parameters/QueryParamLimit'
+        - name: category
+          in: query
+          description: Filter by service category
+          schema:
+            type: string
+            enum: [consultation, exam, surgery, treatment]
+      responses:
+        '200':
+          description: Services retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Service'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+  /services/{id}:
+    get:
+      summary: Get service by ID
+      tags: [Services]
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/PathParamId'
+      responses:
+        '200':
+          description: Service retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Service'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /services/{id}/doctors:
+    get:
+      summary: Get doctors for a specific service
+      tags: [Services]
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/PathParamId'
+      responses:
+        '200':
+          description: Doctors retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Doctor'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  # Doctors endpoints
+  /doctors:
+    get:
+      summary: Get all doctors
+      tags: [Doctors]
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/QueryParamPage'
+        - $ref: '#/components/parameters/QueryParamLimit'
+        - name: specialty
+          in: query
+          description: Filter by specialty
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Doctors retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Doctor'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+  /doctors/{id}:
+    get:
+      summary: Get doctor by ID
+      tags: [Doctors]
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/PathParamId'
+      responses:
+        '200':
+          description: Doctor retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Doctor'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /doctors/{id}/schedule:
+    get:
+      summary: Get doctor's schedule
+      tags: [Doctors]
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/PathParamId'
+        - name: start_date
+          in: query
+          description: Start date (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: End date (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Schedule retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DoctorSchedule'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /doctors/{id}/services:
+    get:
+      summary: Get services offered by doctor
+      tags: [Doctors]
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/PathParamId'
+      responses:
+        '200':
+          description: Services retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Service'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  # Contact endpoints
+  /contact:
+    post:
+      summary: Submit contact form
+      tags: [Contact]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContactRequest'
+      responses:
+        '201':
+          description: Contact message submitted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/ContactMessage'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+
+  /contact/admin:
+    get:
+      summary: Get contact messages (admin only)
+      tags: [Contact]
+      parameters:
+        - $ref: '#/components/parameters/QueryParamPage'
+        - $ref: '#/components/parameters/QueryParamLimit'
+        - name: status
+          in: query
+          description: Filter by status
+          schema:
+            type: string
+            enum: [new, read, responded, archived]
+      responses:
+        '200':
+          description: Contact messages retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ContactMessage'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # Podcast endpoints
+  /podcast:
+    get:
+      summary: Get podcast episodes
+      tags: [Podcast]
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/QueryParamPage'
+        - $ref: '#/components/parameters/QueryParamLimit'
+        - name: category
+          in: query
+          description: Filter by category
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Episodes retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PodcastEpisode'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+  /podcast/{id}:
+    get:
+      summary: Get podcast episode by ID
+      tags: [Podcast]
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/PathParamId'
+      responses:
+        '200':
+          description: Episode retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/PodcastEpisode'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /podcast/latest:
+    get:
+      summary: Get latest podcast episodes
+      tags: [Podcast]
+      security: []
+      parameters:
+        - name: limit
+          in: query
+          description: Number of episodes to return
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+            default: 5
+      responses:
+        '200':
+          description: Latest episodes retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PodcastEpisode'
+
+  # Admin endpoints
+  /admin/stats:
+    get:
+      summary: Get dashboard statistics (admin only)
+      tags: [Admin]
+      responses:
+        '200':
+          description: Statistics retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/DashboardStats'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /admin/logs:
+    get:
+      summary: Get system logs (admin only)
+      tags: [Admin]
+      parameters:
+        - $ref: '#/components/parameters/QueryParamPage'
+        - $ref: '#/components/parameters/QueryParamLimit'
+        - name: level
+          in: query
+          description: Filter by log level
+          schema:
+            type: string
+            enum: [info, warning, error, critical]
+      responses:
+        '200':
+          description: Logs retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EventLog'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    PathParamId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+
+    QueryParamPage:
+      name: page
+      in: query
+      description: Page number
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+
+    QueryParamLimit:
+      name: limit
+      in: query
+      description: Items per page
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+
+  schemas:
+    # User schemas
+    User:
+      type: object
+      properties:
+        ID:
+          type: integer
+        user_login:
+          type: string
+        user_email:
+          type: string
+          format: email
+        display_name:
+          type: string
+        user_registered:
+          type: string
+          format: date-time
+        roles:
+          type: array
+          items:
+            type: string
+        capabilities:
+          type: object
+          additionalProperties:
+            type: boolean
+
+    # Appointment schemas
+    Appointment:
+      type: object
+      properties:
+        ID:
+          type: integer
+        post_title:
+          type: string
+        patient_name:
+          type: string
+        patient_email:
+          type: string
+          format: email
+        patient_phone:
+          type: string
+        doctor_id:
+          type: integer
+        doctor_name:
+          type: string
+        service_id:
+          type: integer
+        service_name:
+          type: string
+        appointment_datetime:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+          description: Duration in minutes
+        status:
+          type: string
+          enum: [pending, confirmed, cancelled, completed, no-show]
+        price:
+          type: number
+          format: decimal
+        notes:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CreateAppointmentRequest:
+      type: object
+      required: [patient_name, patient_email, patient_phone, doctor_id, service_id, appointment_datetime]
+      properties:
+        patient_name:
+          type: string
+          minLength: 3
+          maxLength: 100
+        patient_email:
+          type: string
+          format: email
+        patient_phone:
+          type: string
+        doctor_id:
+          type: integer
+          minimum: 1
+        service_id:
+          type: integer
+          minimum: 1
+        appointment_datetime:
+          type: string
+          format: date-time
+        notes:
+          type: string
+          maxLength: 1000
+
+    UpdateAppointmentRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [pending, confirmed, cancelled, completed, no-show]
+        notes:
+          type: string
+          maxLength: 1000
+
+    # Service schemas
+    Service:
+      type: object
+      properties:
+        ID:
+          type: integer
+        post_title:
+          type: string
+        post_content:
+          type: string
+        post_excerpt:
+          type: string
+        service_data:
+          type: object
+          properties:
+            duration:
+              type: integer
+            price:
+              type: number
+            category:
+              type: string
+              enum: [consultation, exam, surgery, treatment]
+            requires_appointment:
+              type: boolean
+            age_group:
+              type: string
+              enum: [children, adults, seniors, all]
+            insurance_accepted:
+              type: array
+              items:
+                type: string
+
+    # Doctor schemas
+    Doctor:
+      type: object
+      properties:
+        ID:
+          type: integer
+        post_title:
+          type: string
+        post_content:
+          type: string
+        doctor_data:
+          type: object
+          properties:
+            specialty:
+              type: string
+            crm:
+              type: string
+            experience_years:
+              type: integer
+            languages:
+              type: array
+              items:
+                type: string
+            consultation_types:
+              type: array
+              items:
+                type: string
+                enum: [in-person, online]
+
+    DoctorSchedule:
+      type: object
+      properties:
+        id:
+          type: integer
+        doctor_id:
+          type: integer
+        day_of_week:
+          type: string
+          enum: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+        is_available:
+          type: boolean
+        max_appointments:
+          type: integer
+
+    # Contact schemas
+    ContactMessage:
+      type: object
+      properties:
+        ID:
+          type: integer
+        post_title:
+          type: string
+        contact_data:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+              format: email
+            phone:
+              type: string
+            subject:
+              type: string
+            message:
+              type: string
+            source:
+              type: string
+              enum: [website, whatsapp, email]
+            status:
+              type: string
+              enum: [new, read, responded, archived]
+        created_at:
+          type: string
+          format: date-time
+
+    CreateContactRequest:
+      type: object
+      required: [name, email, subject, message]
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 100
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        subject:
+          type: string
+          minLength: 5
+          maxLength: 200
+        message:
+          type: string
+          minLength: 10
+          maxLength: 5000
+
+    # Podcast schemas
+    PodcastEpisode:
+      type: object
+      properties:
+        ID:
+          type: integer
+        post_title:
+          type: string
+        post_content:
+          type: string
+        post_excerpt:
+          type: string
+        podcast_data:
+          type: object
+          properties:
+            episode_number:
+              type: integer
+            duration:
+              type: integer
+            audio_url:
+              type: string
+              format: uri
+            spotify_url:
+              type: string
+              format: uri
+            apple_podcasts_url:
+              type: string
+              format: uri
+            google_podcasts_url:
+              type: string
+              format: uri
+            published_at:
+              type: string
+              format: date-time
+            guests:
+              type: array
+              items:
+                type: string
+            topics:
+              type: array
+              items:
+                type: string
+
+    # Admin schemas
+    DashboardStats:
+      type: object
+      properties:
+        total_appointments:
+          type: integer
+        appointments_today:
+          type: integer
+        appointments_this_week:
+          type: integer
+        new_contacts_this_week:
+          type: integer
+        active_doctors:
+          type: integer
+        total_services:
+          type: integer
+        recent_podcast_episodes:
+          type: integer
+        system_health:
+          type: object
+          properties:
+            database:
+              type: string
+            api:
+              type: string
+            wordpress:
+              type: string
+
+    EventLog:
+      type: object
+      properties:
+        id:
+          type: integer
+        event_type:
+          type: string
+        event_name:
+          type: string
+        user_id:
+          type: integer
+        ip_address:
+          type: string
+        user_agent:
+          type: string
+        payload:
+          type: object
+        severity:
+          type: string
+          enum: [info, warning, error, critical]
+        source:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    # Common schemas
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        pages:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    ConflictError:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    ServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
