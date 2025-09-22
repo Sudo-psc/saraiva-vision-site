@@ -5,7 +5,7 @@ import { MapPin, Phone, Clock } from 'lucide-react';
  * Google Maps Loader Component for Saraiva Vision
  * Carrega o Google Maps de forma otimizada e segura
  */
-const GoogleMapsLoader = ({ apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY }) => {
+const GoogleMapsLoader = ({ apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState(null);
 

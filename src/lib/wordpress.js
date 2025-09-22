@@ -5,7 +5,7 @@ import {
 } from './wordpress-queries.js';
 
 // WordPress GraphQL endpoint configuration
-const WORDPRESS_GRAPHQL_ENDPOINT = process.env.WORDPRESS_GRAPHQL_ENDPOINT || 'https://cms.saraivavision.com.br/graphql';
+const WORDPRESS_GRAPHQL_ENDPOINT = import.meta.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT || 'https://cms.saraivavision.com.br/graphql';
 
 // Create GraphQL client instance
 export const wpClient = new GraphQLClient(WORDPRESS_GRAPHQL_ENDPOINT, {
@@ -14,7 +14,7 @@ export const wpClient = new GraphQLClient(WORDPRESS_GRAPHQL_ENDPOINT, {
     'User-Agent': 'SaraivaVision-NextJS/1.0',
   },
   // Enable request/response logging in development
-  ...(process.env.NODE_ENV === 'development' && {
+  ...(import.meta.env.MODE === 'development' && {
     requestMiddleware: (request) => {
       console.log('WordPress GraphQL Request:', request);
       return request;

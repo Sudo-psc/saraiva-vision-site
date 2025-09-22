@@ -3,15 +3,15 @@ import { createClient } from "@vercel/edge-config";
 import { createSource } from "../../generated/hypertune";
 
 const hypertuneSource = createSource({
-  token: process.env.VITE_HYPERTUNE_TOKEN!,
+  token: import.meta.env.VITE_HYPERTUNE_TOKEN!,
   initDataProvider:
-    process.env.EXPERIMENTATION_CONFIG &&
-    process.env.EXPERIMENTATION_CONFIG_ITEM_KEY
+    import.meta.env.VITE_EXPERIMENTATION_CONFIG &&
+    import.meta.env.VITE_EXPERIMENTATION_CONFIG_ITEM_KEY
       ? new VercelEdgeConfigInitDataProvider({
           edgeConfigClient: createClient(
-            process.env.EXPERIMENTATION_CONFIG,
+            import.meta.env.VITE_EXPERIMENTATION_CONFIG,
           ),
-          itemKey: process.env.EXPERIMENTATION_CONFIG_ITEM_KEY,
+          itemKey: import.meta.env.VITE_EXPERIMENTATION_CONFIG_ITEM_KEY,
         })
       : undefined,
 });
@@ -22,7 +22,7 @@ export default async function getHypertune() {
   return hypertuneSource.root({
     args: {
       context: {
-        environment: process.env.NODE_ENV as any,
+        environment: import.meta.env.MODE as any,
         // Pass current user details here
         user: { id: "1", name: "Test", email: "test@example.com" },
       },

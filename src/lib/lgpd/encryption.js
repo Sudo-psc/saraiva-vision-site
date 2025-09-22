@@ -8,7 +8,7 @@ import CryptoJS from 'crypto-js';
 export class DataEncryption {
     constructor() {
         // In production, these should come from environment variables
-        this.encryptionKey = process.env.VITE_ENCRYPTION_KEY;
+        this.encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
         if (!this.encryptionKey) {
             throw new Error('VITE_ENCRYPTION_KEY environment variable is required');
         }

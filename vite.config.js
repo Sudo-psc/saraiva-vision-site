@@ -25,6 +25,10 @@ if (process.env.NODE_ENV === 'development') {
 export default defineConfig({
   plugins,
   base: '/', // Ensure proper base path for Vercel deployment
+  define: {
+    // Fallback for legacy process.env usage in libraries
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

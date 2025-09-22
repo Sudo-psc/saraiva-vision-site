@@ -29,7 +29,7 @@ const AnalyticsProvider = ({ children }) => {
 
     useEffect(() => {
         // Get PostHog API key from environment
-        const apiKey = import.meta.env.VITE_POSTHOG_KEY || process.env.REACT_APP_POSTHOG_KEY;
+        const apiKey = import.meta.env.VITE_POSTHOG_KEY;
 
         if (!apiKey) {
             console.warn('PostHog API key not found in environment variables');

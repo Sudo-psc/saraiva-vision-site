@@ -5,6 +5,7 @@ import App from '@/App';
 import '@/index.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { AuthProvider } from '@/contexts/AuthContext';
+import './i18n'; // Initialize i18n
 
 // Simple error handler setup
 const setupGlobalErrorHandlers = () => {
@@ -32,7 +33,7 @@ try {
   root.render(
     <React.StrictMode>
       <ErrorBoundary>
-        <Router>
+        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <AuthProvider>
             <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
               <App />

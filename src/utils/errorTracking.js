@@ -14,7 +14,7 @@ async function loadSentry() {
 
 export function initErrorTracking() {
   // Only initialize in production and browser environment
-  if (process.env.NODE_ENV !== 'production' || typeof window === 'undefined') {
+  if (import.meta.env.MODE !== 'production' || typeof window === 'undefined') {
     return;
   }
 
@@ -25,10 +25,10 @@ export function initErrorTracking() {
       if (!Sentry) return;
 
       Sentry.init({
-        dsn: process.env.REACT_APP_SENTRY_DSN || process.env.VITE_SENTRY_DSN,
+        dsn: import.meta.env.VITE_SENTRY_DSN,
         tracesSampleRate: 1.0,
-        environment: process.env.VERCEL_ENV || 'production',
-        release: process.env.VERCEL_GIT_COMMIT_SHA || '1.0.0',
+        environment: import.meta.env.VITE_VERCEL_ENV || 'production',
+        release: import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA || '1.0.0',
         // Capture console errors and unhandled promise rejections
         beforeSend: (event) => {
           // Filter out development errors
@@ -48,7 +48,7 @@ export function initErrorTracking() {
 
 // Utility function to manually capture errors
 export async function captureError(error, context = {}) {
-  if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
+  if (import.meta.env.MODE === 'production' && typeof window !== 'undefined') {
     try {
       const Sentry = await loadSentry();
       if (Sentry) {
@@ -70,7 +70,7 @@ export async function captureError(error, context = {}) {
 
 // Utility function to capture user feedback
 export async function captureUserFeedback(feedback) {
-  if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
+  if (import.meta.env.MODE === 'production' && typeof window !== 'undefined') {
     try {
       const Sentry = await loadSentry();
       if (Sentry) {
