@@ -84,6 +84,8 @@ function App() {
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:slug" element={<PostPage />} />
                 <Route path="/categoria/:slug" element={<CategoryPage />} />
+                <Route path="/admin/login" element={<AdminLoginPage />} />
+                <Route path="/admin/*" element={<DashboardPage />} />
                 <Route path="/admin" element={<AdminLoginPage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/privacy" element={<PrivacyPolicyPage />} />

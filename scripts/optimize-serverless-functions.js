@@ -115,7 +115,7 @@ class ServerlessFunctionOptimizer {
 
             // Count imports and dependencies
             const imports = (content.match(/import .* from/g) || []).length;
-            const requires = (content.match(/require\\(/g) || []).length;
+            const requires = (content.match(/require\(/g) || []).length;
             const totalDeps = imports + requires;
 
             analysis.push({
@@ -219,7 +219,7 @@ class ServerlessFunctionOptimizer {
 
         cacheableEndpoints.forEach(endpoint => {
             optimizedConfig.headers.push({
-                source: `/${endpoint}/(.*)`,,
+                source: `/${endpoint}/(.*)`,
                 headers: [
                     {
                         key: 'Cache-Control',
@@ -528,3 +528,125 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 }
 
 export default ServerlessFunctionOptimizer;
+
+/**
+  * Generate performance test commands for deployed functions
+  */
+performanceTest() {
+    console.log('🚀 Generating performance test commands for serverless functions...\n');
+
+    const testEndpoints = [
+        { path: '/api/health', expectedTime: 1000, method: 'GET' },
+        { path: '/api/ping', expectedTime: 500, method: 'GET' },
+        {
+            path: '/api/contact', method: 'POST', expectedTime: 3000,
+            body: '{"name":"Test","email":"test@example.com","phone":"11999999999","message":"Test message","consent":true}'
+        },
+        { path: '/api/appointments/availability', expectedTime: 2000, method: 'GET' },
+        { path: '/api/podcast/episodes', expectedTime: 1500, method: 'GET' },
+        { path: '/api/dashboard/health', expectedTime: 2000, method: 'GET' },
+        { path: '/api/outbox/drain', expectedTime: 5000, method: 'POST' }
+    ];
+
+    console.log('Performance test commands (replace YOUR_DOMAIN with actual domain):\n');
+
+    testEndpoints.forEach(endpoint => {
+        const url = `https://YOUR_DOMAIN${endpoint.path}`;
+
+        console.log(`# Test ${endpoint.path} (expected: <${endpoint.expectedTime}ms)`);
+
+        if (endpoint.method === 'GET') {
+            console.log(`curl -w "\\nTime: %{time_total}s | Status: %{http_code}\\n" -s "${url}"`);
+        } else if (endpoint.method === 'POST') {
+            const headers = '-H "Content-Type: application/json"';
+            const body = endpoint.body ? `-d '${endpoint.body}'` : '';
+            console.log(`curl -X POST ${headers} ${body} -w "\\nTime: %{time_total}s | Status: %{http_code}\\n" -s "${url}"`);
+        }
+        console.log('');
+    });
+
+    // Generate load testing script
+    this.generateLoadTestScript();
+}
+
+/**
+ * Generate a load testing script using curl
+ */
+generateLoadTestScript() {
+    const loadTestScript = `#!/bin/bash
+
+# Serverless Function Load Testing Script
+# Tests concurrent requests to validate function performance under load
+
+DOMAIN="YOUR_DOMAIN_HERE"
+CONCURRENT_REQUESTS=10
+TEST_DURATION=30
+
+echo "🚀 Starting load test for $CONCURRENT_REQUESTS concurrent requests over ${TEST_DURATION}s"
+
+# Test critical endpoints
+ENDPOINTS=(
+    "GET /api/health"
+    "GET /api/ping" 
+    "GET /api/appointments/availability"
+    "GET /api/podcast/episodes"
+)
+
+# Function to test single endpoint
+test_endpoint() {
+    local method=$1
+    local path=$2
+    local url="https://$DOMAIN$path"
+    
+    echo "Testing $method $path..."
+    
+    # Run concurrent requests
+    for i in $(seq 1 $CONCURRENT_REQUESTS); do
+        (
+            start_time=$(date +%s.%N)
+            if [ "$method" = "GET" ]; then
+                response=$(curl -s -w "%{http_code}" -o /dev/null "$url")
+            else
+                response=$(curl -s -w "%{http_code}" -o /dev/null -X "$method" "$url")
+            fi
+            end_time=$(date +%s.%N)
+            duration=$(echo "$end_time - $start_time" | bc)
+            echo "Request $i: ${duration}s (Status: $response)"
+        ) &
+    done
+    
+    # Wait for all background jobs to complete
+    wait
+    echo "Completed testing $method $path"
+    echo "---"
+}
+
+# Run tests for each endpoint
+for endpoint in "\${ENDPOINTS[@]}"; do
+    method=$(echo $endpoint | cut -d' ' -f1)
+    path=$(echo $endpoint | cut -d' ' -f2)
+    test_endpoint "$method" "$path"
+    sleep 2
+done
+
+echo "✅ Load testing completed!"
+echo "Review the response times and status codes above."
+echo "Expected response times:"
+echo "- /api/health: <1s"
+echo "- /api/ping: <0.5s"
+echo "- /api/appointments/availability: <2s"
+echo "- /api/podcast/episodes: <1.5s"
+`;
+
+    writeFileSync('scripts/load-test-functions.sh', loadTestScript);
+    execSync('chmod +x scripts/load-test-functions.sh');
+    console.log('📄 Generated scripts/load-test-functions.sh');
+    console.log('   Update DOMAIN variable and run: ./scripts/load-test-functions.sh');
+}
+}
+
+// Add performance testing to CLI
+if (process.argv.includes('--performance')) {
+    const optimizer = new ServerlessFunctionOptimizer();
+    optimizer.performanceTest();
+}

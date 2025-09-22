@@ -1,4 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
+import { applyCorsHeaders, applySecurityHeaders } from './utils/securityHeaders.js';
+import { validateSecurity, sanitizeXSS } from './utils/inputValidation.js';
+import { validateRequest, getClientIP } from './contact/rateLimiter.js';
+import { handleApiError, createErrorResponse, createSuccessResponse } from './utils/errorHandler.js';
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -214,46 +218,114 @@ async function callOpenAI(messages, contextualPrompt) {
 }
 
 export default async function handler(req, res) {
-    // CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    const requestId = `chat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+    // Apply comprehensive security measures
+    applyCorsHeaders(req, res);
+    applySecurityHeaders(res, { requestId });
 
     if (req.method === 'OPTIONS') {
-        return res.status(200).end();
+        return res.status(204).end();
     }
 
     if (req.method !== 'POST') {
-        return res.status(405).json({
-            success: false,
-            error: 'Method not allowed'
-        });
+        const methodError = new Error('Only POST requests are allowed');
+        methodError.code = 'METHOD_NOT_ALLOWED';
+        return await handleApiError(
+            methodError,
+            req,
+            res,
+            {
+                source: 'chatbot-api',
+                requestId,
+                context: { method: req.method, allowedMethods: ['POST'] }
+            }
+        );
     }
 
     try {
+        // Apply rate limiting with enhanced spam detection
+        const rateLimitResult = validateRequest(req, req.body || {});
+        if (!rateLimitResult.allowed) {
+            // Set rate limit headers
+            Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
+                res.setHeader(key, value);
+            });
+
+            return res.status(rateLimitResult.type === 'rate_limit' ? 429 : 400).json({
+                success: false,
+                error: {
+                    code: rateLimitResult.type.toUpperCase(),
+                    message: rateLimitResult.message,
+                    retryAfter: rateLimitResult.retryAfter,
+                    timestamp: new Date().toISOString(),
+                    requestId
+                }
+            });
+        }
+
+        // Validate input security
+        const securityResult = validateSecurity(req.body);
+        if (!securityResult.safe) {
+            console.log(`Chatbot security threat detected: ${JSON.stringify({
+                threats: securityResult.threats,
+                confidence: securityResult.confidence,
+                clientIP: getClientIP(req),
+                userAgent: req.headers['user-agent']?.substring(0, 100),
+                timestamp: new Date().toISOString(),
+                requestId
+            })}`);
+
+            return res.status(400).json({
+                success: false,
+                error: {
+                    code: 'SECURITY_THREAT_DETECTED',
+                    message: 'Request blocked due to security threat detection',
+                    timestamp: new Date().toISOString(),
+                    requestId
+                }
+            });
+        }
+
         const { message, sessionId: providedSessionId, conversationHistory = [] } = req.body;
 
-        // Validation
+        // Enhanced input validation with XSS prevention
         if (!message || typeof message !== 'string' || message.trim().length === 0) {
             return res.status(400).json({
                 success: false,
-                error: 'Message is required and must be a non-empty string'
+                error: {
+                    code: 'INVALID_MESSAGE',
+                    message: 'Message is required and must be a non-empty string',
+                    timestamp: new Date().toISOString(),
+                    requestId
+                }
             });
         }
 
-        if (message.length > 1000) {
+        // Sanitize message input
+        const sanitizedMessage = sanitizeXSS(message.trim(), { maxLength: 1000 });
+
+        if (sanitizedMessage.length === 0) {
             return res.status(400).json({
                 success: false,
-                error: 'Message too long. Maximum 1000 characters allowed.'
+                error: {
+                    code: 'INVALID_MESSAGE_CONTENT',
+                    message: 'Message contains invalid or malicious content',
+                    timestamp: new Date().toISOString(),
+                    requestId
+                }
             });
         }
 
-        // Rate limiting based on IP
-        const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'unknown';
-        if (!checkRateLimit(clientIp, 10, 60000)) {
-            return res.status(429).json({
+        if (sanitizedMessage.length > 1000) {
+            return res.status(400).json({
                 success: false,
-                error: 'Rate limit exceeded. Please wait before sending another message.'
+                error: {
+                    code: 'MESSAGE_TOO_LONG',
+                    message: 'Message too long. Maximum 1000 characters allowed.',
+                    timestamp: new Date().toISOString(),
+                    requestId
+                }
             });
         }
 

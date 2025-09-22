@@ -2,44 +2,80 @@ import { validateContactSubmission } from '../../src/lib/validation.js';
 import { sendContactEmail } from './emailService.js';
 import { addToOutbox } from './outboxService.js';
 import { supabaseAdmin } from '../../src/lib/supabase.ts';
-import { applyRateLimiting, sanitizeFormData, createErrorResponse, createSuccessResponse, logRequest } from './utils.js';
+import { applyRateLimiting, sanitizeFormData, logRequest } from './utils.js';
 import { getClientIP } from './rateLimiter.js';
 import { createLogger } from '../../src/lib/logger.js';
 import { alertingSystem } from '../../src/lib/alertingSystem.js';
+import { serverEncryption } from '../utils/encryption.js';
+import { accessControl } from '../../src/lib/lgpd/accessControl.js';
+import { securityHeadersMiddleware, applyCorsHeaders, applySecurityHeaders } from '../utils/securityHeaders.js';
+import { handleApiError, createErrorResponse, createSuccessResponse } from '../utils/errorHandler.js';
 
 /**
- * Apply CORS headers for cross-origin requests
- * @param {Response} res - Response object
+ * Apply comprehensive security headers and CORS
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
  */
-function applyCors(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours
+function applySecurityMeasures(req, res) {
+  // Apply CORS headers
+  applyCorsHeaders(req, res);
+
+  // Apply security headers
+  applySecurityHeaders(res, {
+    requestId: req.security?.requestId || `contact_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`
+  });
 }
 
 /**
- * Parse JSON body from request with error handling
+ * Parse JSON body from request with enhanced error handling and debugging
  * @param {Request} req - Request object
  * @returns {Promise<Object>} Parsed JSON body
  */
 async function parseJsonBody(req) {
   try {
+    // Log incoming request for debugging (without sensitive data)
+    console.log('Contact API - Request details:', {
+      method: req.method,
+      contentType: req.headers['content-type'],
+      hasBody: !!req.body,
+      bodyType: typeof req.body
+    });
+
     if (!req.body) {
+      console.log('Contact API - No body found in request');
       return {};
     }
 
     // Handle different body formats
+    let parsedBody;
     if (typeof req.body === 'string') {
-      return JSON.parse(req.body);
+      console.log('Contact API - Parsing string body');
+      parsedBody = JSON.parse(req.body);
+    } else if (typeof req.body === 'object') {
+      console.log('Contact API - Using object body directly');
+      parsedBody = req.body;
+    } else {
+      console.log('Contact API - Unexpected body type, converting to string first');
+      parsedBody = JSON.parse(String(req.body));
     }
 
-    if (typeof req.body === 'object') {
-      return req.body;
+    // Log parsed fields for debugging (without sensitive data)
+    const fieldNames = Object.keys(parsedBody);
+    console.log('Contact API - Parsed fields:', fieldNames);
+
+    // Ensure required fields exist or set defaults
+    if (!parsedBody.consent && !parsedBody.consent_given) {
+      console.log('Contact API - Missing consent field, setting default to false');
+      parsedBody.consent = false;
     }
 
-    return {};
+    return parsedBody;
   } catch (error) {
+    console.error('Contact API - JSON parsing error:', {
+      error: error.message,
+      bodyType: typeof req.body,
+      bodyPreview: typeof req.body === 'string' ? req.body.substring(0, 100) : 'non-string body'
+    });
     throw new Error('Invalid JSON in request body');
   }
 }
@@ -58,8 +94,9 @@ export default async function handler(req, res) {
       user_agent: req.headers['user-agent'],
       ip: getClientIP(req)
     });
-    // Apply CORS headers
-    applyCors(res);
+
+    // Apply comprehensive security measures
+    applySecurityMeasures(req, res);
 
     // Handle preflight OPTIONS request
     if (req.method === 'OPTIONS') {
@@ -70,8 +107,15 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') {
       res.setHeader('Allow', 'POST, OPTIONS');
       logRequest(req, 'method_not_allowed', { method: req.method });
-      return res.status(405).json(
-        createErrorResponse('method_not_allowed', 'Only POST requests are allowed')
+      return await handleApiError(
+        new Error('Method not allowed'),
+        req,
+        res,
+        {
+          source: 'contact-api',
+          requestId: req.security?.requestId || `contact_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
+          context: { method: req.method, allowedMethods: ['POST', 'OPTIONS'] }
+        }
       );
     }
 
@@ -81,8 +125,17 @@ export default async function handler(req, res) {
       formData = await parseJsonBody(req);
     } catch (error) {
       logRequest(req, 'invalid_json', { error: error.message });
-      return res.status(400).json(
-        createErrorResponse('invalid_json', 'Invalid JSON in request body')
+      const jsonError = new Error('Invalid JSON in request body');
+      jsonError.code = 'INVALID_JSON';
+      return await handleApiError(
+        jsonError,
+        req,
+        res,
+        {
+          source: 'contact-api',
+          requestId: req.security?.requestId || `contact_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
+          context: { parseError: error.message }
+        }
       );
     }
 
@@ -96,6 +149,25 @@ export default async function handler(req, res) {
       return res.status(rateLimitResult.statusCode).json(JSON.parse(rateLimitResult.body));
     }
 
+    // LGPD Compliance: Check consent requirement (accept both 'consent' and 'consent_given' for compatibility)
+    if (!sanitizedData.consent_given && !sanitizedData.consent) {
+      await logger.warn('Contact form submission without LGPD consent', {
+        ip_hash: serverEncryption.hash(getClientIP(req)).hash
+      });
+      const consentError = new Error('LGPD consent required');
+      consentError.code = 'CONSENT_REQUIRED';
+      return await handleApiError(
+        consentError,
+        req,
+        res,
+        {
+          source: 'contact-api',
+          requestId: req.security?.requestId || `contact_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
+          field: 'consent'
+        }
+      );
+    }
+
     // Validate form data using Zod schema
     const validation = validateContactSubmission(sanitizedData);
     if (!validation.success) {
@@ -103,8 +175,17 @@ export default async function handler(req, res) {
         errorCount: Object.keys(validation.errors).length,
         fields: Object.keys(validation.errors)
       });
-      return res.status(400).json(
-        createErrorResponse('validation_error', 'Form validation failed', null, null, validation.errors)
+      const validationError = new Error('Form validation failed');
+      validationError.code = 'VALIDATION_ERROR';
+      return await handleApiError(
+        validationError,
+        req,
+        res,
+        {
+          source: 'contact-api',
+          requestId: req.security?.requestId || `contact_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
+          validationErrors: validation.errors
+        }
       );
     }
 
@@ -115,16 +196,20 @@ export default async function handler(req, res) {
       id: generateContactId()
     };
 
-    // Store contact message in database first (transactional)
+    // Store contact message in database first (transactional) with encryption
+    const encryptedContactData = serverEncryption.encryptPersonalData({
+      name: contactData.name,
+      email: contactData.email,
+      phone: contactData.phone,
+      message: contactData.message
+    });
+
     const { data: contactRecord, error: dbError } = await supabaseAdmin
       .from('contact_messages')
       .insert({
-        name: contactData.name,
-        email: contactData.email,
-        phone: contactData.phone,
-        message: contactData.message,
+        ...encryptedContactData,
         consent_given: contactData.consent,
-        ip_hash: require('crypto').createHash('sha256').update(getClientIP(req)).digest('hex')
+        ip_hash: serverEncryption.hash(getClientIP(req)).hash
       })
       .select('id')
       .single();
@@ -134,8 +219,17 @@ export default async function handler(req, res) {
         contactId: contactData.id,
         error: dbError.message
       });
-      return res.status(500).json(
-        createErrorResponse('database_error', 'Failed to store contact information')
+      const databaseError = new Error('Failed to store contact information');
+      databaseError.code = 'DATABASE_CONNECTION_ERROR';
+      return await handleApiError(
+        databaseError,
+        req,
+        res,
+        {
+          source: 'contact-api',
+          requestId: req.security?.requestId || `contact_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
+          context: { contactId: contactData.id, dbError: dbError.message }
+        }
       );
     }
 
@@ -266,8 +360,15 @@ export default async function handler(req, res) {
       processingTime: `${processingTime}ms`
     });
 
-    return res.status(500).json(
-      createErrorResponse('internal_server_error', 'An unexpected error occurred. Please try again.')
+    return await handleApiError(
+      error,
+      req,
+      res,
+      {
+        source: 'contact-api',
+        requestId: req.security?.requestId || `contact_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
+        context: { processingTime: `${processingTime}ms` }
+      }
     );
   }
 }

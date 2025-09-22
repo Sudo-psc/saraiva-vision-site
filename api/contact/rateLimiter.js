@@ -133,100 +133,239 @@ function checkRateLimit(req) {
 }
 
 /**
- * Detect honeypot field spam and advanced spam patterns
+ * Enhanced honeypot detection with multiple spam detection techniques
  * @param {Object} formData - Form submission data
+ * @param {Object} req - Request object for additional context
  * @returns {Object} - Spam detection result
  */
-function detectHoneypot(formData) {
-  // Check for honeypot field (should be empty)
-  const honeypotField = formData.website || formData.url || formData.honeypot;
+function detectHoneypot(formData, req = {}) {
+  const userAgent = req.headers?.['user-agent'] || '';
+  const acceptLanguage = req.headers?.['accept-language'] || '';
+  const referer = req.headers?.referer || '';
 
-  if (honeypotField && honeypotField.trim() !== '') {
-    return {
-      isSpam: true,
-      reason: 'honeypot_filled',
-      message: 'Spam detected: honeypot field filled'
-    };
-  }
+  // 1. Traditional honeypot fields (should be empty)
+  const honeypotFields = ['website', 'url', 'honeypot', 'bot_field', 'email_confirm', 'phone_confirm'];
 
-  // Additional spam indicators
-  const suspiciousPatterns = [
-    // Check for excessive links in message
-    /(https?:\/\/[^\s]+.*){3,}/i,
-    // Check for common spam phrases (Portuguese and English)
-    /\b(viagra|cialis|casino|lottery|winner|congratulations|click here|free money|ganhe dinheiro|clique aqui|promoção|oferta imperdível)\b/i,
-    // Check for excessive capitalization
-    /[A-Z]{10,}/,
-    // Check for suspicious email patterns
-    /\b[a-z0-9._%+-]+@(tempmail|10minutemail|guerrillamail|mailinator|throwaway)\./i,
-    // Check for repeated characters (keyboard mashing)
-    /(.)\1{5,}/,
-    // Check for suspicious phone patterns (too many repeated digits)
-    /(\d)\1{6,}/
-  ];
-
-  const message = formData.message || '';
-  const email = formData.email || '';
-  const name = formData.name || '';
-
-  // Check message content
-  for (const pattern of suspiciousPatterns) {
-    if (pattern.test(message) || pattern.test(email) || pattern.test(name)) {
+  for (const field of honeypotFields) {
+    const value = formData[field];
+    if (value && value.toString().trim() !== '') {
       return {
         isSpam: true,
-        reason: 'suspicious_content',
-        message: 'Spam detected: suspicious content patterns'
+        reason: 'honeypot_filled',
+        message: `Spam detected: honeypot field '${field}' filled`,
+        confidence: 0.95,
+        field: field
       };
     }
   }
 
-  // Check for submission speed (too fast indicates bot)
-  const submissionTime = formData._submissionTime;
-  if (submissionTime && (Date.now() - submissionTime) < 3000) { // Less than 3 seconds
+  // 2. Time-based detection (enhanced)
+  const submissionTime = formData._submissionTime || formData.submissionTime;
+  const formLoadTime = formData._formLoadTime || formData.formLoadTime;
+
+  if (submissionTime) {
+    const now = Date.now();
+    const timeSinceSubmission = now - submissionTime;
+
+    // Too fast (less than 2 seconds)
+    if (timeSinceSubmission < 2000) {
+      return {
+        isSpam: true,
+        reason: 'submission_too_fast',
+        message: 'Spam detected: submission too fast',
+        confidence: 0.9,
+        timeTaken: timeSinceSubmission
+      };
+    }
+
+    // Form expired (more than 30 minutes)
+    if (timeSinceSubmission > 1800000) {
+      return {
+        isSpam: true,
+        reason: 'form_expired',
+        message: 'Spam detected: form submission expired',
+        confidence: 0.7,
+        timeTaken: timeSinceSubmission
+      };
+    }
+  }
+
+  // 3. User agent analysis
+  const suspiciousUserAgents = [
+    /bot|crawler|spider|scraper|automation/i,
+    /curl|wget|python|php|java|node|axios|fetch/i,
+    /^$/,
+    /mozilla\/4\.0.*compatible.*msie/i, // Old IE patterns
+    /headless|phantom|selenium|webdriver/i,
+    /postman|insomnia|httpie/i
+  ];
+
+  if (suspiciousUserAgents.some(pattern => pattern.test(userAgent))) {
     return {
       isSpam: true,
-      reason: 'submission_too_fast',
-      message: 'Spam detected: submission too fast'
+      reason: 'suspicious_user_agent',
+      message: 'Spam detected: suspicious user agent',
+      confidence: 0.85,
+      userAgent: userAgent.substring(0, 100)
     };
   }
 
-  // Check for duplicate content (simple hash check)
-  const contentHash = require('crypto')
-    .createHash('md5')
-    .update(`${name}${email}${message}`)
+  // 4. Missing browser headers (legitimate browsers send these)
+  if (!acceptLanguage || acceptLanguage.length < 2) {
+    return {
+      isSpam: true,
+      reason: 'missing_browser_headers',
+      message: 'Spam detected: missing browser headers',
+      confidence: 0.8
+    };
+  }
+
+  // 5. Enhanced content analysis
+  const textFields = ['name', 'message', 'subject', 'comment'];
+  const combinedText = textFields
+    .map(field => formData[field] || '')
+    .join(' ')
+    .toLowerCase();
+
+  const enhancedSpamPatterns = [
+    // URLs and suspicious links
+    /(https?:\/\/[^\s]+.*){3,}/i,
+    /\b(bit\.ly|tinyurl|t\.co|goo\.gl|short\.link|tiny\.cc)\b/i,
+
+    // Common spam phrases (multilingual)
+    /\b(viagra|cialis|casino|lottery|winner|congratulations|click here|free money)\b/i,
+    /\b(ganhe dinheiro|clique aqui|promoção|oferta imperdível|dinheiro fácil|renda extra)\b/i,
+    /\b(bitcoin|cryptocurrency|investment|forex|trading|profit|roi)\b/i,
+    /\b(weight loss|diet pills|male enhancement|enlargement)\b/i,
+
+    // Excessive capitalization or repeated characters
+    /[A-Z]{15,}/,
+    /(.)\1{8,}/,
+
+    // Suspicious email domains
+    /\b[a-z0-9._%+-]+@(tempmail|10minutemail|guerrillamail|mailinator|throwaway|temp-mail|yopmail|sharklasers)\./i,
+
+    // Phone spam patterns
+    /(\d)\1{7,}/,
+    /\+1-?800-?\d{3}-?\d{4}/i, // US toll-free spam pattern
+
+    // SEO spam patterns
+    /\b(seo|backlinks|link building|page rank|google ranking)\b/i,
+
+    // Medical spam
+    /\b(prescription|pharmacy|medication|pills|drugs)\b/i,
+
+    // Financial spam
+    /\b(loan|credit|debt|mortgage|insurance|investment)\b.*\b(approved|guaranteed|instant|fast)\b/i
+  ];
+
+  for (const pattern of enhancedSpamPatterns) {
+    if (pattern.test(combinedText)) {
+      return {
+        isSpam: true,
+        reason: 'suspicious_content_pattern',
+        message: 'Spam detected: suspicious content patterns',
+        confidence: 0.85,
+        pattern: pattern.source.substring(0, 50)
+      };
+    }
+  }
+
+  // 6. Enhanced duplicate detection with fuzzy matching
+  const normalizedContent = combinedText
+    .replace(/[^\w\s]/g, '') // Remove punctuation
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .trim();
+
+  const contentHash = crypto
+    .createHash('sha256')
+    .update(normalizedContent + (formData.email || '') + (formData.phone || ''))
     .digest('hex');
 
-  // Store recent hashes in memory (simple duplicate detection)
   if (!global.recentSubmissions) {
     global.recentSubmissions = new Map();
   }
 
+  const now = Date.now();
+  const duplicateWindow = 300000; // 5 minutes
+
   if (global.recentSubmissions.has(contentHash)) {
     const lastSubmission = global.recentSubmissions.get(contentHash);
-    if (Date.now() - lastSubmission < 300000) { // 5 minutes
+    if (now - lastSubmission < duplicateWindow) {
       return {
         isSpam: true,
         reason: 'duplicate_content',
-        message: 'Spam detected: duplicate submission'
+        message: 'Spam detected: duplicate submission',
+        confidence: 0.9,
+        lastSubmission: new Date(lastSubmission).toISOString()
       };
     }
   }
 
   // Store this submission hash
-  global.recentSubmissions.set(contentHash, Date.now());
+  global.recentSubmissions.set(contentHash, now);
 
-  // Clean old hashes (keep only last hour)
-  const oneHourAgo = Date.now() - 3600000;
+  // Clean old hashes (keep only last 2 hours)
+  const twoHoursAgo = now - 7200000;
   for (const [hash, timestamp] of global.recentSubmissions.entries()) {
-    if (timestamp < oneHourAgo) {
+    if (timestamp < twoHoursAgo) {
       global.recentSubmissions.delete(hash);
     }
+  }
+
+  // 7. Field length and structure analysis
+  const name = formData.name || '';
+  const email = formData.email || '';
+  const message = formData.message || '';
+
+  // Check for suspicious field lengths
+  if (name.length > 100 || email.length > 254 || message.length > 5000) {
+    return {
+      isSpam: true,
+      reason: 'field_too_long',
+      message: 'Spam detected: field exceeds maximum length',
+      confidence: 0.8
+    };
+  }
+
+  // Check for suspicious patterns in name field
+  if (name && (/\d{5,}/.test(name) || /[^\w\s\-'.]/.test(name))) {
+    return {
+      isSpam: true,
+      reason: 'suspicious_name_pattern',
+      message: 'Spam detected: suspicious name pattern',
+      confidence: 0.75
+    };
+  }
+
+  // 8. Behavioral analysis
+  const fieldCount = Object.keys(formData).length;
+  if (fieldCount > 20) { // Too many fields might indicate automated submission
+    return {
+      isSpam: true,
+      reason: 'too_many_fields',
+      message: 'Spam detected: too many form fields',
+      confidence: 0.7,
+      fieldCount: fieldCount
+    };
+  }
+
+  // 9. Referrer analysis
+  if (referer && !referer.includes('saraivavision.com.br') && !referer.includes('localhost') && !referer.includes('vercel.app')) {
+    return {
+      isSpam: true,
+      reason: 'suspicious_referrer',
+      message: 'Spam detected: suspicious referrer',
+      confidence: 0.6,
+      referrer: referer.substring(0, 100)
+    };
   }
 
   return {
     isSpam: false,
     reason: null,
-    message: null
+    message: null,
+    confidence: 0
   };
 }
 
@@ -237,7 +376,7 @@ function detectHoneypot(formData) {
  * @returns {Object} - Combined validation result
  */
 function validateRequest(req, formData) {
-  // Check rate limiting
+  // Check rate limiting first
   const rateLimitResult = checkRateLimit(req);
 
   if (!rateLimitResult.allowed) {
@@ -255,22 +394,43 @@ function validateRequest(req, formData) {
     };
   }
 
-  // Check for spam
-  const spamResult = detectHoneypot(formData);
+  // Check for spam using enhanced detection
+  const spamResult = detectHoneypot(formData, req);
 
   if (spamResult.isSpam) {
-    // Log spam attempt (without exposing IP)
-    console.log(`Spam detected: ${spamResult.reason} - ${spamResult.message}`);
+    // Log spam attempt with details (without exposing PII)
+    const clientIP = getClientIP(req);
+    const hashedIP = hashIP(clientIP);
+
+    console.log(`Enhanced spam detection: ${JSON.stringify({
+      reason: spamResult.reason,
+      confidence: spamResult.confidence,
+      hashedIP: hashedIP.substring(0, 16) + '...',
+      userAgent: req.headers?.['user-agent']?.substring(0, 50) || 'unknown',
+      timestamp: new Date().toISOString(),
+      field: spamResult.field || null,
+      pattern: spamResult.pattern || null
+    })}`);
+
+    // Increase rate limit penalty for spam attempts
+    const entry = rateLimitStore.get(hashedIP);
+    if (entry) {
+      entry.attempts += 2; // Penalty for spam
+      rateLimitStore.set(hashedIP, entry);
+    }
 
     return {
       allowed: false,
       type: 'spam',
       message: 'Request blocked due to spam detection.',
+      reason: spamResult.reason,
+      confidence: spamResult.confidence,
       retryAfter: null,
       headers: {
         'X-RateLimit-Limit': RATE_LIMIT_CONFIG.maxRequests,
-        'X-RateLimit-Remaining': rateLimitResult.remaining,
-        'X-RateLimit-Reset': new Date(rateLimitResult.resetTime).toISOString()
+        'X-RateLimit-Remaining': Math.max(0, rateLimitResult.remaining - 2),
+        'X-RateLimit-Reset': new Date(rateLimitResult.resetTime).toISOString(),
+        'X-Spam-Detection': 'blocked'
       }
     };
   }
@@ -284,7 +444,8 @@ function validateRequest(req, formData) {
     headers: {
       'X-RateLimit-Limit': RATE_LIMIT_CONFIG.maxRequests,
       'X-RateLimit-Remaining': rateLimitResult.remaining,
-      'X-RateLimit-Reset': new Date(rateLimitResult.resetTime).toISOString()
+      'X-RateLimit-Reset': new Date(rateLimitResult.resetTime).toISOString(),
+      'X-Spam-Detection': 'passed'
     }
   };
 }

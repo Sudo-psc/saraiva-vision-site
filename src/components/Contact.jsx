@@ -11,6 +11,8 @@ import { getUserFriendlyError, getRecoverySteps, logError } from '@/lib/errorHan
 import ErrorFeedback, { NetworkError, RateLimitError, RecaptchaError, EmailServiceError } from '@/components/ui/ErrorFeedback';
 import { validateField, validateContactSubmission } from '@/lib/validation';
 import { useAnalytics, useVisibilityTracking } from '@/hooks/useAnalytics';
+import { consentManager } from '../lib/lgpd/consentManager.js';
+import { ConsentBanner } from './lgpd/ConsentBanner.jsx';
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -175,6 +177,18 @@ const Contact = () => {
     // Clear previous errors
     setSubmissionError(null);
     setShowAlternativeContacts(false);
+
+    // Check LGPD consent before processing
+    if (!consentManager.hasValidConsent()) {
+      const errorMessage = 'É necessário aceitar os termos de privacidade antes de enviar o formulário.';
+      setSubmissionError({
+        name: 'ConsentError',
+        message: 'LGPD consent required',
+        userMessage: errorMessage
+      });
+      announceToScreenReader(errorMessage, 'assertive');
+      return;
+    }
 
     // Announce form submission start
     announceToScreenReader('Enviando formulário, aguarde...', 'assertive');
@@ -1173,6 +1187,13 @@ const Contact = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* LGPD Consent Banner */}
+      <ConsentBanner onConsentChange={(hasConsent) => {
+        if (hasConsent) {
+          announceToScreenReader('Consentimento registrado com sucesso', 'polite');
+        }
+      }} />
     </section>
   );
 };

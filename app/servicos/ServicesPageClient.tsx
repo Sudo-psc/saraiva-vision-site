@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, MessageCircle, Phone } from 'lucide-react';
 import ServicesCard from '@/components/ServicesCard';
@@ -66,11 +65,10 @@ export default function ServicesPageClient({ services }: ServicesPageClientProps
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
-                  selectedCategory === category
+                className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${selectedCategory === category
                     ? 'bg-blue-600 text-white shadow-lg'
                     : 'bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-200'
-                }`}
+                  }`}
               >
                 {category === 'all' ? 'Todos os Serviços' : category}
               </button>

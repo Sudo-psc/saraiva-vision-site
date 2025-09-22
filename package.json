@@ -41,7 +41,14 @@
     "deploy:test:preview": "node scripts/test-deployment.js preview",
     "deploy:test:dev": "node scripts/test-deployment.js development",
     "deploy:full": "npm run deploy:setup:full && npm run deploy:optimize && npm run vercel:deploy && npm run deploy:test",
-    "deploy:verify": "node scripts/verify-deployment-config.js"
+    "deploy:verify": "node scripts/verify-deployment-config.js",
+    "production:check": "node scripts/production-readiness-check.js",
+    "production:security": "node scripts/security-audit.js",
+    "production:performance": "node scripts/performance-optimizer.js",
+    "production:ssl": "node scripts/ssl-certificate-manager.js",
+    "production:backup": "node scripts/backup-recovery-test.js",
+    "production:deploy": "node scripts/deploy-production.js",
+    "production:deploy:fast": "node scripts/deploy-production.js --skip-backup --skip-performance"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.1",
@@ -65,6 +72,7 @@
     "@vercel/edge-config": "^1.4.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "crypto-js": "^4.2.0",
     "date-fns": "^3.6.0",
     "dompurify": "^3.2.6",
     "dotenv": "^17.2.1",
@@ -111,6 +119,7 @@
     "jsdom": "^23.0.1",
     "node-mocks-http": "^1.17.2",
     "postcss": "^8.4.31",
+    "supertest": "^7.1.4",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.9.2",
     "vite": "^7.1.3",

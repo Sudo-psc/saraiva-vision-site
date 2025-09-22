@@ -10,29 +10,77 @@ import { validateAppointmentData } from './validation.js'
 import { generateConfirmationToken } from './utils.js'
 import { addToOutbox, scheduleReminderNotifications } from './notifications.js'
 import { logEvent } from '../../src/lib/eventLogger.js'
-
-// CORS headers
-const corsHeaders = {
-    'Access-Control-Allow-Origin': process.env.NODE_ENV === 'production'
-        ? 'https://saraivavision.com.br'
-        : '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    'Access-Control-Max-Age': '86400',
-}
+import { securityHeadersMiddleware, applyCorsHeaders, applySecurityHeaders } from '../utils/securityHeaders.js'
+import { inputValidationMiddleware, validateSecurity } from '../utils/inputValidation.js'
+import { rateLimitMiddleware } from '../middleware/security.js'
+import { validateRequest, getClientIP } from '../contact/rateLimiter.js'
+import { handleApiError, createErrorResponse, createSuccessResponse } from '../utils/errorHandler.js'
 
 export default async function handler(req, res) {
+    const requestId = `appt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+
+    // Apply comprehensive security measures
+    applyCorsHeaders(req, res);
+    applySecurityHeaders(res, { requestId });
+
     // Handle CORS preflight
     if (req.method === 'OPTIONS') {
-        return res.status(200).json({})
+        return res.status(204).end();
     }
 
-    // Set CORS headers
-    Object.entries(corsHeaders).forEach(([key, value]) => {
-        res.setHeader(key, value)
-    })
+    // Apply rate limiting for appointment booking
+    const rateLimitResult = validateRequest(req, req.body || {});
+    if (!rateLimitResult.allowed) {
+        // Set rate limit headers
+        Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
+            res.setHeader(key, value);
+        });
 
-    const requestId = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+        const rateLimitError = new Error(rateLimitResult.message);
+        rateLimitError.code = rateLimitResult.type === 'rate_limit' ? 'RATE_LIMIT_EXCEEDED' : 'SPAM_DETECTED';
+        return await handleApiError(
+            rateLimitError,
+            req,
+            res,
+            {
+                source: 'appointments-api',
+                requestId,
+                context: { retryAfter: rateLimitResult.retryAfter }
+            }
+        );
+    }
+
+    // Validate input security for POST requests
+    if (req.method === 'POST' && req.body) {
+        const securityResult = validateSecurity(req.body);
+        if (!securityResult.safe) {
+            await logEvent({
+                eventType: 'security_threat_detected',
+                severity: 'warn',
+                source: 'appointments_api',
+                requestId,
+                eventData: {
+                    threats: securityResult.threats,
+                    confidence: securityResult.confidence,
+                    clientIP: getClientIP(req),
+                    userAgent: req.headers['user-agent']?.substring(0, 100)
+                }
+            });
+
+            const securityError = new Error('Request blocked due to security threat detection');
+            securityError.code = 'SECURITY_THREAT_DETECTED';
+            return await handleApiError(
+                securityError,
+                req,
+                res,
+                {
+                    source: 'appointments-api',
+                    requestId,
+                    context: { threats: securityResult.threats.map(t => t.type) }
+                }
+            );
+        }
+    }
 
     try {
         if (req.method === 'POST') {
@@ -40,15 +88,18 @@ export default async function handler(req, res) {
         } else if (req.method === 'GET') {
             return await handleGetAppointments(req, res, requestId)
         } else {
-            return res.status(405).json({
-                success: false,
-                error: {
-                    code: 'METHOD_NOT_ALLOWED',
-                    message: 'Method not allowed',
-                    timestamp: new Date().toISOString(),
-                    requestId
+            const methodError = new Error('Method not allowed');
+            methodError.code = 'METHOD_NOT_ALLOWED';
+            return await handleApiError(
+                methodError,
+                req,
+                res,
+                {
+                    source: 'appointments-api',
+                    requestId,
+                    context: { method: req.method, allowedMethods: ['GET', 'POST'] }
                 }
-            })
+            );
         }
     } catch (error) {
         console.error('Appointments API error:', error)
@@ -66,15 +117,16 @@ export default async function handler(req, res) {
             }
         })
 
-        return res.status(500).json({
-            success: false,
-            error: {
-                code: 'INTERNAL_SERVER_ERROR',
-                message: 'An unexpected error occurred',
-                timestamp: new Date().toISOString(),
-                requestId
+        return await handleApiError(
+            error,
+            req,
+            res,
+            {
+                source: 'appointments-api',
+                requestId,
+                context: { method: req.method, url: req.url }
             }
-        })
+        )
     }
 }
 

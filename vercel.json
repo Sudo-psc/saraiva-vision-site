@@ -15,9 +15,17 @@
       "maxDuration": 15,
       "memory": 512
     },
+    "api/appointments/reminders.js": {
+      "maxDuration": 60,
+      "memory": 1024
+    },
     "api/podcast/**": {
       "maxDuration": 30,
       "memory": 512
+    },
+    "api/podcast/sync.js": {
+      "maxDuration": 60,
+      "memory": 1024
     },
     "api/chatbot.js": {
       "maxDuration": 20,
@@ -31,9 +39,25 @@
       "maxDuration": 30,
       "memory": 512
     },
+    "api/outbox/drain.js": {
+      "maxDuration": 60,
+      "memory": 1024
+    },
     "api/webhooks/**": {
       "maxDuration": 10,
       "memory": 256
+    },
+    "api/monitoring/**": {
+      "maxDuration": 15,
+      "memory": 512
+    },
+    "api/health.js": {
+      "maxDuration": 5,
+      "memory": 128
+    },
+    "api/ping.js": {
+      "maxDuration": 5,
+      "memory": 128
     },
     "api/**": {
       "maxDuration": 60,
@@ -176,6 +200,10 @@
     {
       "path": "/api/appointments/reminders",
       "schedule": "0 */2 * * *"
+    },
+    {
+      "path": "/api/monitoring/health",
+      "schedule": "*/10 * * * *"
     }
   ]
 }
