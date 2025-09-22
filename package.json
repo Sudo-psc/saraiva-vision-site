@@ -27,7 +27,13 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "dev:contact": "npx vercel dev --listen 3000",
-    "test:contact": "vitest run --reporter=verbose api/contact"
+    "test:contact": "vitest run --reporter=verbose api/contact",
+    "deploy:setup": "node scripts/vercel-env-setup.js",
+    "deploy:test": "node scripts/test-deployment.js",
+    "deploy:test:preview": "node scripts/test-deployment.js preview",
+    "deploy:test:dev": "node scripts/test-deployment.js development",
+    "deploy:full": "npm run deploy:setup && npm run vercel:deploy && npm run deploy:test",
+    "deploy:verify": "node scripts/verify-deployment-config.js"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "^1.2.1",
