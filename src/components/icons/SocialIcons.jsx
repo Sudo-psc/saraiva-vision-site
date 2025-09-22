@@ -24,43 +24,43 @@ const socialLinks = [
   {
     name: 'TikTok',
     href: 'https://www.tiktok.com/@saraivavision', // Placeholder
-    iconPath: '/icons/tiktok.svg', // Caminho padronizado em /public/icons/
+    iconPath: '/icons_social/tik_tok_icon.png', // Caminho correto em /public/icons_social/
     alt: 'TikTok da Clínica Saraiva Vision'
   },
   {
     name: 'Facebook',
     href: 'https://www.facebook.com/saraivavision',
-    iconPath: '/icons/facebook.svg',
+    iconPath: '/icons_social/facebook_icon.png',
     alt: 'Facebook da Clínica Saraiva Vision'
   },
   {
     name: 'Instagram',
     href: 'https://www.instagram.com/saraivavision',
-    iconPath: '/icons/instagram.svg',
+    iconPath: '/icons_social/instagram_icon.png',
     alt: 'Instagram da Clínica Saraiva Vision'
   },
   {
     name: 'Spotify',
     href: 'https://open.spotify.com/show/saraivavision', // Ex: podcast ou playlist da clínica
-    iconPath: '/icons/spotify.svg',
+    iconPath: '/icons_social/spotify_icon.png',
     alt: 'Spotify da Clínica Saraiva Vision'
   },
   {
     name: 'WhatsApp',
     href: 'https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta', // Placeholder com mensagem
-    iconPath: '/icons/whatsapp.svg',
+    iconPath: '/icons_social/whatsapp_icon.png',
     alt: 'WhatsApp da Clínica Saraiva Vision'
   },
   {
     name: 'Twitter',
     href: 'https://twitter.com/saraivavision',
-    iconPath: '/icons/twitter.svg', // Ou 'x.svg' para rebrand
+    iconPath: '/icons_social/X_icon.png', // Usando X_icon.png para Twitter/X
     alt: 'Twitter da Clínica Saraiva Vision'
   },
   {
     name: 'LinkedIn',
     href: 'https://www.linkedin.com/company/saraivavision',
-    iconPath: '/icons/linkedin.svg',
+    iconPath: '/icons_social/linkedln_icon.png',
     alt: 'LinkedIn da Clínica Saraiva Vision'
   },
 ];
@@ -68,7 +68,7 @@ const socialLinks = [
 // Componente principal
 const SocialMediaLinks = () => {
   // Função para lidar com cliques e rastrear erros via Sentry (opcional, para depuração)
-  const handleLinkClick = (e: React.MouseEvent, href: string) => {
+  const handleLinkClick = (e, href) => {
     try {
       // Lógica adicional se necessário (ex: analytics)
       console.log(`Clicou em: ${href}`);
@@ -152,7 +152,7 @@ export default SocialMediaLinks;
 
 // Como usar: Importe em uma página/componente, ex: <SocialMediaLinks /> no footer de saraivavision.com.br
 // Notas: 
-// - Baixe ícones SVGs otimizados (ex: de react-icons ou Font Awesome) e coloque em /public/icons/
+// - Ícones PNG estão localizados em /public/icons_social/
 // - Para produção no Vercel: Certifique-se de que Sentry está configurado
 // - Teste responsividade: Funciona em desktop, tablet e mobile (flex-wrap garante quebra de linha)
 // - SEO: Alt texts e links externos otimizados
