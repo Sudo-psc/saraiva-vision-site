@@ -58,7 +58,7 @@
   - Implement retry mechanisms with exponential backoff
   - _Requirements: 1.4, 2.4, 3.4_
 
-- [ ] 5.2 Build offline support
+- [-] 5.2 Build offline support
   - Add service worker integration
   - Implement offline content caching
   - Create offline indicators and messaging
