@@ -1,0 +1,140 @@
+/* Glass Morphism Utility Classes */
+
+:root {
+    --glass-bg-light: rgba(255, 255, 255, 0.1);
+    --glass-bg-medium: rgba(255, 255, 255, 0.15);
+    --glass-bg-strong: rgba(255, 255, 255, 0.2);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: rgba(0, 0, 0, 0.1);
+    --glass-blur-subtle: 10px;
+    --glass-blur-medium: 20px;
+    --glass-blur-strong: 30px;
+}
+
+/* Base glass morphism class */
+.glass-morphism {
+    position: relative;
+    background: linear-gradient(135deg,
+            var(--glass-bg-light),
+            rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(var(--glass-blur-medium)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-medium)) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+        0 8px 32px var(--glass-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Intensity variations */
+.glass-subtle {
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.05),
+            rgba(255, 255, 255, 0.02));
+    backdrop-filter: blur(var(--glass-blur-subtle)) saturate(120%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-subtle)) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.glass-medium {
+    background: linear-gradient(135deg,
+            var(--glass-bg-medium),
+            rgba(255, 255, 255, 0.08));
+    backdrop-filter: blur(var(--glass-blur-medium)) saturate(150%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-medium)) saturate(150%);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+        0 8px 32px var(--glass-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.glass-strong {
+    background: linear-gradient(135deg,
+            var(--glass-bg-strong),
+            rgba(255, 255, 255, 0.1));
+    backdrop-filter: blur(var(--glass-blur-strong)) saturate(200%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Responsive glass effects */
+@media (max-width: 768px) {
+
+    .glass-morphism,
+    .glass-medium,
+    .glass-strong {
+        backdrop-filter: blur(var(--glass-blur-subtle)) saturate(120%);
+        -webkit-backdrop-filter: blur(var(--glass-blur-subtle)) saturate(120%);
+        background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.08),
+                rgba(255, 255, 255, 0.04));
+    }
+}
+
+@media (max-width: 480px) {
+
+    .glass-morphism,
+    .glass-medium,
+    .glass-strong,
+    .glass-subtle {
+        backdrop-filter: blur(8px) saturate(110%);
+        -webkit-backdrop-filter: blur(8px) saturate(110%);
+        background: rgba(255, 255, 255, 0.06);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+}
+
+/* Fallback for browsers without backdrop-filter support */
+.no-backdrop-filter .glass-morphism,
+.no-backdrop-filter .glass-subtle,
+.no-backdrop-filter .glass-medium,
+.no-backdrop-filter .glass-strong {
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.9),
+            rgba(255, 255, 255, 0.8));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+    .glass-morphism,
+    .glass-subtle,
+    .glass-medium,
+    .glass-strong {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Dark theme variations */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --glass-bg-light: rgba(0, 0, 0, 0.1);
+        --glass-bg-medium: rgba(0, 0, 0, 0.15);
+        --glass-bg-strong: rgba(0, 0, 0, 0.2);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --glass-shadow: rgba(0, 0, 0, 0.3);
+    }
+
+    .glass-morphism {
+        background: linear-gradient(135deg,
+                rgba(0, 0, 0, 0.1),
+                rgba(0, 0, 0, 0.05));
+    }
+
+    .no-backdrop-filter .glass-morphism,
+    .no-backdrop-filter .glass-subtle,
+    .no-backdrop-filter .glass-medium,
+    .no-backdrop-filter .glass-strong {
+        background: linear-gradient(135deg,
+                rgba(0, 0, 0, 0.8),
+                rgba(0, 0, 0, 0.7));
+    }
+}

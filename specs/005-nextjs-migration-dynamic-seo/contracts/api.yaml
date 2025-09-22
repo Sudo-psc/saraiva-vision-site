@@ -1,0 +1,694 @@
+openapi: 3.0.3
+info:
+  title: Saraiva Vision Next.js SEO API
+  description: API contracts for Next.js frontend with dynamic SEO capabilities
+  version: 1.0.0
+  contact:
+    name: Saraiva Vision Development Team
+    email: dev@saraivavision.com.br
+
+servers:
+  - url: https://api.saraivavision.com.br
+    description: Production API server
+  - url: https://staging-api.saraivavision.com.br
+    description: Staging API server
+
+paths:
+  # WordPress API Integration
+  /api/posts:
+    get:
+      summary: Get blog posts with SEO metadata
+      description: Retrieve paginated blog posts with enhanced SEO data
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+          description: Number of posts per page
+        - name: category
+          in: query
+          schema:
+            type: string
+          description: Filter by category slug
+        - name: tag
+          in: query
+          schema:
+            type: string
+          description: Filter by tag slug
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search term in title or content
+        - name: orderby
+          in: query
+          schema:
+            type: string
+            enum: [date, title, modified]
+            default: date
+          description: Order posts by field
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+          description: Order direction
+      responses:
+        '200':
+          description: Successfully retrieved blog posts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BlogPost'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+                  seo:
+                    $ref: '#/components/schemas/SEOMetadata'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/posts/{slug}:
+    get:
+      summary: Get single blog post by slug
+      description: Retrieve a specific blog post with full SEO metadata
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Post slug
+      responses:
+        '200':
+          description: Successfully retrieved blog post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogPostDetail'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/services:
+    get:
+      summary: Get medical services with SEO data
+      description: Retrieve all medical services with enhanced SEO information
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+          description: Filter by service category
+        - name: featured
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: Filter featured services only
+      responses:
+        '200':
+          description: Successfully retrieved services
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Service'
+                  categories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServiceCategory'
+                  seo:
+                    $ref: '#/components/schemas/SEOMetadata'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/services/{slug}:
+    get:
+      summary: Get single service by slug
+      description: Retrieve a specific medical service with complete SEO data
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Service slug
+      responses:
+        '200':
+          description: Successfully retrieved service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceDetail'
+        '404':
+          description: Service not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/pages:
+    get:
+      summary: Get static pages
+      description: Retrieve static pages like About, Contact, etc.
+      responses:
+        '200':
+          description: Successfully retrieved pages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/pages/{slug}:
+    get:
+      summary: Get single page by slug
+      description: Retrieve a specific static page
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Page slug
+      responses:
+        '200':
+          description: Successfully retrieved page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageDetail'
+        '404':
+          description: Page not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/seo/metadata:
+    get:
+      summary: Get SEO configuration
+      description: Retrieve global SEO configuration and metadata
+      responses:
+        '200':
+          description: Successfully retrieved SEO configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SEOConfig'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/seo/sitemap:
+    get:
+      summary: Generate sitemap
+      description: Generate XML sitemap for search engines
+      parameters:
+        - name: format
+          in: query
+          schema:
+            type: string
+            enum: [xml, json]
+            default: xml
+          description: Output format
+      responses:
+        '200':
+          description: Successfully generated sitemap
+          content:
+            application/xml:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/health:
+    get:
+      summary: Health check endpoint
+      description: Check API health and connectivity
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+                  timestamp:
+                    type: string
+                    format: date-time
+                  version:
+                    type: string
+                    example: 1.0.0
+        '500':
+          description: API is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    # Base SEO Metadata
+    SEOMetadata:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Saraiva Vision - Clínica Oftalmológica"
+        description:
+          type: string
+          example: "Especializada em cirurgia de catarata, glaucoma e tratamento de retina"
+        keywords:
+          type: array
+          items:
+            type: string
+          example: ["oftalmologia", "catarata", "glaucoma", "retina"]
+        ogImage:
+          type: string
+          example: "https://saraivavision.com.br/images/og-default.jpg"
+        canonicalUrl:
+          type: string
+          example: "https://saraivavision.com.br/"
+        noIndex:
+          type: boolean
+          default: false
+        locale:
+          type: string
+          example: "pt-BR"
+
+    # Blog Post
+    BlogPost:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        title:
+          type: string
+          example: "Novas técnicas de cirurgia de catarata"
+        slug:
+          type: string
+          example: "novas-tecnicas-cirurgia-catarata"
+        excerpt:
+          type: string
+          example: "Conheça as técnicas mais modernas para cirurgia de catarata..."
+        featuredImage:
+          type: object
+          properties:
+            url:
+              type: string
+              example: "https://saraivavision.com.br/images/catarata-surgery.jpg"
+            alt:
+              type: string
+              example: "Cirurgia de catarata moderna"
+            width:
+              type: integer
+              example: 1200
+            height:
+              type: integer
+              example: 800
+        author:
+          $ref: '#/components/schemas/Author'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["catarata", "cirurgia", "tecnologia"]
+        publishedAt:
+          type: string
+          format: date-time
+          example: "2024-01-15T10:30:00Z"
+        readTime:
+          type: integer
+          example: 5
+        seo:
+          $ref: '#/components/schemas/SEOMetadata'
+
+    # Blog Post Detail
+    BlogPostDetail:
+      allOf:
+        - $ref: '#/components/schemas/BlogPost'
+        - type: object
+          properties:
+            content:
+              type: string
+              example: "<h2>Introdução</h2><p>A cirurgia de catarata evoluiu muito...</p>"
+            structuredData:
+              type: object
+              description: JSON-LD structured data for article
+            relatedPosts:
+              type: array
+              items:
+                $ref: '#/components/schemas/BlogPost'
+
+    # Service
+    Service:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 456
+        title:
+          type: string
+          example: "Cirurgia de Catarata"
+        slug:
+          type: string
+          example: "cirurgia-de-catarata"
+        excerpt:
+          type: string
+          example: "Cirurgia moderna e segura para tratamento de catarata"
+        featured:
+          type: boolean
+          default: false
+        category:
+          $ref: '#/components/schemas/ServiceCategory'
+        price:
+          type: string
+          example: "A partir de R$ 3.500"
+        duration:
+          type: string
+          example: "30 minutos"
+        featuredImage:
+          type: object
+          properties:
+            url:
+              type: string
+              example: "https://saraivavision.com.br/images/catarata-service.jpg"
+            alt:
+              type: string
+              example: "Cirurgia de catarata"
+            width:
+              type: integer
+              example: 1200
+            height:
+              type: integer
+              example: 800
+        seo:
+          $ref: '#/components/schemas/SEOMetadata'
+
+    # Service Detail
+    ServiceDetail:
+      allOf:
+        - $ref: '#/components/schemas/Service'
+        - type: object
+          properties:
+            content:
+              type: string
+              example: "<h2>Sobre o procedimento</h2><p>A cirurgia de catarata é um procedimento...</p>"
+            requirements:
+              type: array
+              items:
+                type: string
+              example: ["Exames pré-operatórios", "Acompanhamento pós-cirúrgico"]
+            structuredData:
+              type: object
+              description: JSON-LD structured data for medical service
+            relatedServices:
+              type: array
+              items:
+                $ref: '#/components/schemas/Service'
+
+    # Page
+    Page:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 789
+        title:
+          type: string
+          example: "Sobre Nós"
+        slug:
+          type: string
+          example: "sobre-nos"
+        excerpt:
+          type: string
+          example: "Conheça a história da Saraiva Vision"
+        featuredImage:
+          type: object
+          properties:
+            url:
+              type: string
+              example: "https://saraivavision.com.br/images/clinic.jpg"
+            alt:
+              type: string
+              example: "Clínica Saraiva Vision"
+            width:
+              type: integer
+              example: 1200
+            height:
+              type: integer
+              example: 800
+        seo:
+          $ref: '#/components/schemas/SEOMetadata'
+
+    # Page Detail
+    PageDetail:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            content:
+              type: string
+              example: "<h1>Sobre a Saraiva Vision</h1><p>Fundada em 1990, a Saraiva Vision...</p>"
+
+    # Author
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Dr. João Saraiva"
+        bio:
+          type: string
+          example: "Oftalmologista com mais de 20 anos de experiência"
+        avatar:
+          type: string
+          example: "https://saraivavision.com.br/images/dr-joao.jpg"
+
+    # Category
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 5
+        name:
+          type: string
+          example: "Notícias"
+        slug:
+          type: string
+          example: "noticias"
+        description:
+          type: string
+          example: "Últimas notícias sobre oftalmologia"
+
+    # Service Category
+    ServiceCategory:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Cirurgias"
+        slug:
+          type: string
+          example: "cirurgias"
+        description:
+          type: string
+          example: "Procedimentos cirúrgicos oftalmológicos"
+
+    # SEO Configuration
+    SEOConfig:
+      type: object
+      properties:
+        siteName:
+          type: string
+          example: "Saraiva Vision"
+        siteUrl:
+          type: string
+          example: "https://saraivavision.com.br"
+        defaultLocale:
+          type: string
+          example: "pt-BR"
+        locales:
+          type: array
+          items:
+            type: string
+          example: ["pt-BR", "en-US"]
+        defaultMetadata:
+          type: object
+          properties:
+            title:
+              type: string
+              example: "Saraiva Vision - Clínica Oftalmológica"
+            description:
+              type: string
+              example: "Especializada em cirurgia de catarata, glaucoma e retina"
+            ogImage:
+              type: string
+              example: "https://saraivavision.com.br/images/og-default.jpg"
+        robots:
+          type: object
+          properties:
+            userAgent:
+              type: string
+              example: "*"
+            allow:
+              type: array
+              items:
+                type: string
+              example: ["/"]
+            disallow:
+              type: array
+              items:
+                type: string
+              example: ["/wp-admin/", "/wp-json/"]
+            sitemap:
+              type: string
+              example: "https://saraivavision.com.br/sitemap.xml"
+        structuredData:
+          type: object
+          properties:
+            organization:
+              type: object
+              description: JSON-LD structured data for organization
+            website:
+              type: object
+              description: JSON-LD structured data for website
+
+    # Pagination
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          example: 1
+        totalPages:
+          type: integer
+          example: 10
+        totalItems:
+          type: integer
+          example: 100
+        itemsPerPage:
+          type: integer
+          example: 10
+        hasNext:
+          type: boolean
+          example: true
+        hasPrev:
+          type: boolean
+          example: false
+
+    # Error
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Internal server error"
+        message:
+          type: string
+          example: "An unexpected error occurred"
+        code:
+          type: integer
+          example: 500
+        timestamp:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: API key for WordPress REST API authentication
+
+security:
+  - ApiKeyAuth: []
+
+tags:
+  - name: Blog
+    description: Blog post operations
+  - name: Services
+    description: Medical service operations
+  - name: Pages
+    description: Static page operations
+  - name: SEO
+    description: SEO and metadata operations
+  - name: Health
+    description: Health check operations

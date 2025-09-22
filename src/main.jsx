@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from '@/App';
 import '@/index.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 // Simple error handler setup
 const setupGlobalErrorHandlers = () => {
@@ -32,9 +33,11 @@ try {
     <React.StrictMode>
       <ErrorBoundary>
         <Router>
-          <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
-            <App />
-          </Suspense>
+          <AuthProvider>
+            <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
+              <App />
+            </Suspense>
+          </AuthProvider>
         </Router>
       </ErrorBoundary>
     </React.StrictMode>

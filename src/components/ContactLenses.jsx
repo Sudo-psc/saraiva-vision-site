@@ -1,14 +1,16 @@
+'use client';
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+
 import { Check, ExternalLink, Shield, Users, Award, Eye, ChevronDown, MessageCircle, Star, Clock, Heart, Zap, Globe, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ContactLensesHeroImage from './ContactLensesHeroImage';
 
 const ContactLenses = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+
   const [openFaq, setOpenFaq] = useState(null);
 
   const lensTypes = [

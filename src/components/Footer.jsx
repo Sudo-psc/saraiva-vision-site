@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Facebook, Instagram, Linkedin, ArrowUp, MessageCircle, Bot, Twitter } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { clinicInfo } from '@/lib/clinicInfo';
@@ -130,7 +132,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {navLinks.map(link => (
                 <li key={link.href}>
-                  <Link to={link.href} className="hover:text-white transition-colors inline-block">
+                  <Link href={link.href} className="hover:text-white transition-colors inline-block">
                     {link.name}
                   </Link>
                 </li>
@@ -142,7 +144,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {Object.entries(serviceLinks).map(([key, serviceName]) => (
                 <li key={key}>
-                  <Link to="/servicos" className="hover:text-white transition-colors inline-block">
+                  <Link href="/servicos" className="hover:text-white transition-colors inline-block">
                     {serviceName}
                   </Link>
                 </li>

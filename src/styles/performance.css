@@ -1,0 +1,210 @@
+/* Performance-aware CSS utilities */
+/* Implements graceful degradation and reduced motion support */
+
+:root {
+    /* Default performance settings */
+    --animation-duration: 300ms;
+    --animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
+    --glass-blur: 20px;
+    --glass-opacity: 0.1;
+    --beam-particles: 50;
+    --transform-3d: translateZ(0);
+    --will-change: transform, opacity;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --animation-duration: 0ms;
+        --animation-easing: none;
+        --glass-blur: 0px;
+        --beam-particles: 0;
+        --transform-3d: none;
+        --will-change: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .beam-background,
+    .glass-morphism-animated,
+    .social-icon-3d {
+        animation: none !important;
+        transform: none !important;
+    }
+}
+
+/* Performance level classes */
+.performance-high {
+    --animation-duration: 300ms;
+    --glass-blur: 20px;
+    --glass-opacity: 0.1;
+    --beam-particles: 50;
+    --will-change: transform, opacity;
+}
+
+.performance-medium {
+    --animation-duration: 200ms;
+    --glass-blur: 10px;
+    --glass-opacity: 0.15;
+    --beam-particles: 25;
+    --will-change: transform;
+}
+
+.performance-low {
+    --animation-duration: 100ms;
+    --glass-blur: 5px;
+    --glass-opacity: 0.2;
+    --beam-particles: 10;
+    --will-change: auto;
+}
+
+/* Hardware acceleration utilities */
+.gpu-accelerated {
+    transform: var(--transform-3d);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: var(--will-change);
+}
+
+.no-gpu-acceleration {
+    transform: none;
+    backface-visibility: visible;
+    perspective: none;
+    will-change: auto;
+}
+
+/* Fallback styles for unsupported features */
+.no-backdrop-filter .glass-morphism {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.no-transform-3d .social-icon-3d {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.no-webgl .beam-background {
+    background: linear-gradient(45deg,
+            rgba(59, 130, 246, 0.1) 0%,
+            rgba(147, 51, 234, 0.1) 100%);
+}
+
+/* Error boundary fallback styles */
+.animation-fallback {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+}
+
+.performance-fallback {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Battery saving mode */
+.battery-saving {
+    --animation-duration: 0ms;
+    --glass-blur: 0px;
+    --beam-particles: 0;
+    --will-change: auto;
+}
+
+.battery-saving * {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+}
+
+/* Connection-aware styles */
+.slow-connection .beam-background {
+    display: none;
+}
+
+.slow-connection .glass-morphism {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* Memory-conscious styles */
+.low-memory .complex-animation {
+    animation: none;
+    transform: none;
+}
+
+.low-memory .particle-system {
+    display: none;
+}
+
+/* Performance monitoring indicators (dev mode) */
+.performance-monitor {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 12px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.performance-monitor.hidden {
+    display: none;
+}
+
+.fps-good {
+    color: #10b981;
+}
+
+.fps-medium {
+    color: #f59e0b;
+}
+
+.fps-poor {
+    color: #ef4444;
+}
+
+/* Accessibility enhancements */
+@media (prefers-contrast: high) {
+    .glass-morphism {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: none;
+        border: 2px solid #000;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .performance-fallback {
+        background: rgba(0, 0, 0, 0.95);
+        border-color: rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+}
+
+/* Print styles */
+@media print {
+
+    .beam-background,
+    .glass-morphism-animated,
+    .social-icon-3d {
+        display: none !important;
+    }
+
+    .performance-aware-wrapper {
+        background: white !important;
+        box-shadow: none !important;
+    }
+}
