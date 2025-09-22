@@ -1,0 +1,367 @@
+/* Enhanced Footer Responsive Design System */
+
+/* CSS Custom Properties for Responsive Design */
+:root {
+    /* Default desktop values */
+    --footer-glass-opacity: 0.12;
+    --footer-glass-blur: 25px;
+    --footer-glass-saturation: 180%;
+
+    --footer-beam-particle-count: 40;
+    --footer-beam-intensity: 1.0;
+    --footer-beam-speed: 1.0;
+
+    --footer-social-scale: 1.2;
+    --footer-social-rotate-x: -15deg;
+    --footer-social-rotate-y: 15deg;
+    --footer-social-translate-z: 50px;
+    --footer-social-duration: 0.3s;
+
+    --footer-padding: 2rem;
+    --footer-spacing: 1.25rem;
+    --footer-icon-size: 2.5rem;
+    --footer-font-size: 1rem;
+
+    /* Animation easing */
+    --footer-ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --footer-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Base Enhanced Footer Styles */
+.enhanced-footer {
+    position: relative;
+    padding: var(--footer-padding);
+    font-size: var(--footer-font-size);
+    transition: all var(--footer-social-duration) var(--footer-ease-out);
+}
+
+/* Glass Morphism Base */
+.enhanced-footer .glass-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, var(--footer-glass-opacity)),
+            rgba(255, 255, 255, calc(var(--footer-glass-opacity) * 0.5)));
+    backdrop-filter: blur(var(--footer-glass-blur)) saturate(var(--footer-glass-saturation));
+    -webkit-backdrop-filter: blur(var(--footer-glass-blur)) saturate(var(--footer-glass-saturation));
+    border: 1px solid rgba(255, 255, 255, calc(var(--footer-glass-opacity) * 2));
+    border-radius: 0;
+    pointer-events: none;
+}
+
+/* Fallback for browsers without backdrop-filter support */
+.no-backdrop-filter .enhanced-footer .glass-layer {
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, calc(var(--footer-glass-opacity) * 3)),
+            rgba(255, 255, 255, calc(var(--footer-glass-opacity) * 1.5)));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+/* Social Icons Responsive Styles */
+.enhanced-footer .social-icons-container {
+    display: flex;
+    gap: var(--footer-spacing);
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.enhanced-footer .social-icon-3d {
+    width: var(--footer-icon-size);
+    height: var(--footer-icon-size);
+    transition: transform var(--footer-social-duration) var(--footer-ease-bounce);
+    cursor: pointer;
+}
+
+/* 3D Transform Effects (Desktop) */
+.enhanced-footer .social-icon-3d:hover {
+    transform: perspective(1000px) rotateX(var(--footer-social-rotate-x)) rotateY(var(--footer-social-rotate-y)) translateZ(var(--footer-social-translate-z)) scale(var(--footer-social-scale));
+}
+
+/* Disable 3D effects on devices without support */
+.no-transform-3d .enhanced-footer .social-icon-3d:hover {
+    transform: scale(var(--footer-social-scale));
+}
+
+/* Content Spacing */
+.enhanced-footer .footer-content {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: var(--footer-spacing);
+}
+
+/* ===== MOBILE STYLES (< 768px) ===== */
+@media (max-width: 767px) {
+    .device-mobile {
+        --footer-glass-opacity: 0.03;
+        --footer-glass-blur: 8px;
+        --footer-glass-saturation: 110%;
+
+        --footer-beam-particle-count: 8;
+        --footer-beam-intensity: 0.3;
+        --footer-beam-speed: 0.5;
+
+        --footer-social-scale: 1.05;
+        --footer-social-rotate-x: 0deg;
+        --footer-social-rotate-y: 0deg;
+        --footer-social-translate-z: 0px;
+        --footer-social-duration: 0.2s;
+
+        --footer-padding: 1rem;
+        --footer-spacing: 0.75rem;
+        --footer-icon-size: 2rem;
+        --footer-font-size: 0.875rem;
+    }
+
+    /* Mobile-specific layout */
+    .device-mobile .enhanced-footer .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    /* Disable 3D effects on mobile */
+    .device-mobile .enhanced-footer .social-icon-3d:hover {
+        transform: scale(var(--footer-social-scale));
+    }
+
+    /* Touch-friendly interactions */
+    .device-mobile.touch-device .enhanced-footer .social-icon-3d:active {
+        transform: scale(0.95);
+        transition-duration: 0.1s;
+    }
+
+    /* Reduce glass effects on low-performance mobile devices */
+    .device-mobile.performance-low .enhanced-footer .glass-layer {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.02);
+    }
+}
+
+/* ===== TABLET STYLES (768px - 1023px) ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .device-tablet {
+        --footer-glass-opacity: 0.08;
+        --footer-glass-blur: 15px;
+        --footer-glass-saturation: 140%;
+
+        --footer-beam-particle-count: 15;
+        --footer-beam-intensity: 0.6;
+        --footer-beam-speed: 0.7;
+
+        --footer-social-scale: 1.15;
+        --footer-social-rotate-x: -10deg;
+        --footer-social-rotate-y: 10deg;
+        --footer-social-translate-z: 25px;
+        --footer-social-duration: 0.25s;
+
+        --footer-padding: 1.5rem;
+        --footer-spacing: 1rem;
+        --footer-icon-size: 2.25rem;
+        --footer-font-size: 0.9375rem;
+    }
+
+    /* Tablet layout */
+    .device-tablet .enhanced-footer .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: calc(var(--footer-spacing) * 1.5);
+    }
+
+    /* Tablet portrait adjustments */
+    .device-tablet.orientation-portrait {
+        --footer-beam-particle-count: 12;
+        --footer-padding: 1.25rem;
+    }
+
+    .device-tablet.orientation-portrait .enhanced-footer .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    /* Touch optimizations for tablet */
+    .device-tablet.touch-device .enhanced-footer .social-icon-3d {
+        touch-action: manipulation;
+    }
+
+    .device-tablet.touch-device .enhanced-footer .social-icon-3d:active {
+        transform: perspective(1000px) rotateX(calc(var(--footer-social-rotate-x) * 0.5)) rotateY(calc(var(--footer-social-rotate-y) * 0.5)) translateZ(calc(var(--footer-social-translate-z) * 0.5)) scale(calc(var(--footer-social-scale) * 0.9));
+    }
+}
+
+/* ===== DESKTOP STYLES (≥ 1024px) ===== */
+@media (min-width: 1024px) {
+    .device-desktop {
+        --footer-glass-opacity: 0.12;
+        --footer-glass-blur: 25px;
+        --footer-glass-saturation: 180%;
+
+        --footer-beam-particle-count: 25;
+        --footer-beam-intensity: 1.0;
+        --footer-beam-speed: 1.0;
+
+        --footer-social-scale: 1.2;
+        --footer-social-rotate-x: -15deg;
+        --footer-social-rotate-y: 15deg;
+        --footer-social-translate-z: 50px;
+        --footer-social-duration: 0.3s;
+
+        --footer-padding: 2rem;
+        --footer-spacing: 1.25rem;
+        --footer-icon-size: 2.5rem;
+        --footer-font-size: 1rem;
+    }
+
+    /* Desktop layout */
+    .device-desktop .enhanced-footer .footer-content {
+        grid-template-columns: repeat(4, 1fr);
+        gap: calc(var(--footer-spacing) * 2);
+    }
+
+    /* High-performance desktop effects */
+    .device-desktop.performance-high {
+        --footer-beam-particle-count: 40;
+        --footer-glass-blur: 30px;
+    }
+
+    /* Glass bubble effect for desktop */
+    .device-desktop .enhanced-footer .social-icon-3d::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: radial-gradient(circle,
+                rgba(255, 255, 255, 0.2) 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 100%);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: all var(--footer-social-duration) var(--footer-ease-out);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .device-desktop .enhanced-footer .social-icon-3d:hover::before {
+        width: 120%;
+        height: 120%;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+}
+
+/* ===== LARGE DESKTOP STYLES (≥ 1440px) ===== */
+@media (min-width: 1440px) {
+    .device-desktop {
+        --footer-padding: 2.5rem;
+        --footer-spacing: 1.5rem;
+        --footer-icon-size: 3rem;
+        --footer-font-size: 1.125rem;
+    }
+
+    .device-desktop.performance-high {
+        --footer-beam-particle-count: 50;
+        --footer-glass-opacity: 0.15;
+    }
+}
+
+/* ===== ACCESSIBILITY & REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+    .reduced-motion {
+        --footer-social-duration: 0s;
+        --footer-beam-intensity: 0;
+        --footer-beam-speed: 0;
+    }
+
+    .reduced-motion .enhanced-footer .social-icon-3d,
+    .reduced-motion .enhanced-footer .glass-layer,
+    .reduced-motion .enhanced-footer .beam-background {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .reduced-motion .enhanced-footer .social-icon-3d:hover {
+        transform: scale(1.05);
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .enhanced-footer .glass-layer {
+        background: rgba(0, 0, 0, 0.1);
+        border: 2px solid currentColor;
+    }
+
+    .enhanced-footer .social-icon-3d {
+        border: 1px solid currentColor;
+    }
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+
+/* GPU acceleration for supported devices */
+.performance-high .enhanced-footer .social-icon-3d,
+.performance-high .enhanced-footer .glass-layer {
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* Disable GPU acceleration on low-performance devices */
+.performance-low .enhanced-footer .social-icon-3d,
+.performance-low .enhanced-footer .glass-layer {
+    will-change: auto;
+}
+
+/* Reduce effects on low-performance devices */
+.performance-low .enhanced-footer .glass-layer {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.performance-low .enhanced-footer .social-icon-3d:hover {
+    transform: scale(1.05);
+}
+
+/* ===== ORIENTATION HANDLING ===== */
+
+/* Landscape orientation optimizations */
+.orientation-landscape .enhanced-footer {
+    min-height: auto;
+}
+
+/* Portrait orientation adjustments */
+.orientation-portrait .enhanced-footer .footer-content {
+    grid-template-columns: 1fr;
+    gap: var(--footer-spacing);
+}
+
+.orientation-portrait.device-tablet {
+    --footer-beam-particle-count: 12;
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+
+    .enhanced-footer .glass-layer,
+    .enhanced-footer .beam-background {
+        display: none;
+    }
+
+    .enhanced-footer .social-icon-3d {
+        transform: none !important;
+    }
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+@media (prefers-color-scheme: dark) {
+    .enhanced-footer .glass-layer {
+        background: linear-gradient(135deg,
+                rgba(0, 0, 0, var(--footer-glass-opacity)),
+                rgba(0, 0, 0, calc(var(--footer-glass-opacity) * 0.5)));
+        border-color: rgba(255, 255, 255, calc(var(--footer-glass-opacity) * 1.5));
+    }
+}
