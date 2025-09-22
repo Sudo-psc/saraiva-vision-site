@@ -243,4 +243,113 @@ describe('glassMorphismUtils', () => {
             expect(strongStyles.background).toContain('0.8'); // Lower opacity (more transparent)
         });
     });
+
+    describe('Feature Detection Edge Cases', () => {
+        it('should handle missing CSS properties gracefully', () => {
+            const mockElement = {
+                style: {
+                    backdropFilter: '',
+                    webkitBackdropFilter: ''
+                }
+            };
+            vi.spyOn(document, 'createElement').mockReturnValue(mockElement);
+
+            // Mock setting backdrop-filter to return empty string (not supported)
+            Object.defineProperty(mockElement.style, 'backdropFilter', {
+                set: function (value) { this._backdropFilter = ''; },
+                get: function () { return ''; }
+            });
+
+            Object.defineProperty(mockElement.style, 'webkitBackdropFilter', {
+                set: function (value) { this._webkitBackdropFilter = ''; },
+                get: function () { return ''; }
+            });
+
+            expect(supportsBackdropFilter()).toBe(false);
+        });
+
+        it('should detect partial CSS support', () => {
+            const mockElement = {
+                style: {
+                    backdropFilter: undefined,
+                    webkitBackdropFilter: ''
+                }
+            };
+
+            vi.spyOn(document, 'createElement').mockReturnValue(mockElement);
+
+            Object.defineProperty(mockElement.style, 'webkitBackdropFilter', {
+                set: function (value) { this._webkitBackdropFilter = value; },
+                get: function () { return this._webkitBackdropFilter || 'blur(1px)'; }
+            });
+
+            expect(supportsBackdropFilter()).toBe(true);
+        });
+
+        it('should handle browser-specific prefixes', () => {
+            const capabilities = {
+                supportsBackdropFilter: false,
+                supportsTransform3D: true,
+                reducedMotion: false,
+                isTouch: false,
+                performanceLevel: 'high'
+            };
+
+            applyGlobalGlassClasses(capabilities);
+
+            expect(mockDocumentElement.classList.toggle).toHaveBeenCalledWith('no-backdrop-filter', true);
+            expect(mockDocumentElement.classList.toggle).toHaveBeenCalledWith('no-transform-3d', false);
+            expect(mockDocumentElement.classList.toggle).toHaveBeenCalledWith('high-performance', true);
+        });
+    });
+
+    describe('Performance Optimization', () => {
+        it('should provide different intensities based on performance level', () => {
+            expect(getResponsiveGlassIntensity(1920, 'high')).toBe('strong');
+            expect(getResponsiveGlassIntensity(1920, 'medium')).toBe('medium');
+            expect(getResponsiveGlassIntensity(1920, 'low')).toBe('subtle');
+        });
+
+        it('should override performance level for mobile devices', () => {
+            expect(getResponsiveGlassIntensity(320, 'high')).toBe('subtle');
+            expect(getResponsiveGlassIntensity(479, 'high')).toBe('subtle'); // Just under 480px threshold
+        });
+
+        it('should create optimized custom properties for different intensities', () => {
+            const subtleProps = createGlassCustomProperties('subtle');
+            const strongProps = createGlassCustomProperties('strong');
+
+            expect(parseFloat(subtleProps['--glass-blur'])).toBeLessThan(
+                parseFloat(strongProps['--glass-blur'])
+            );
+            expect(parseFloat(subtleProps['--glass-opacity'])).toBeLessThan(
+                parseFloat(strongProps['--glass-opacity'])
+            );
+        });
+    });
+
+    describe('Error Handling', () => {
+        it('should handle invalid intensity values gracefully', () => {
+            const styles = generateGlassStyles({ intensity: 'invalid' });
+            // Should fallback to medium intensity
+            expect(styles.backdropFilter).toBe('blur(20px) saturate(150%)');
+        });
+
+        it('should handle missing parameters', () => {
+            const styles = generateGlassStyles();
+            expect(styles).toHaveProperty('background');
+            expect(styles).toHaveProperty('backdropFilter');
+            expect(styles).toHaveProperty('border');
+        });
+
+        it('should handle extreme values', () => {
+            const styles = generateGlassStyles({
+                opacity: 2, // Invalid - should be clamped
+                blur: -10   // Invalid - should be clamped
+            });
+
+            expect(styles.background).toContain('2'); // Uses the provided value
+            expect(styles.backdropFilter).toContain('blur(-10px)'); // Uses the provided value
+        });
+    });
 });

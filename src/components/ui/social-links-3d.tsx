@@ -1,7 +1,15 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import SocialIcon3D from '@/components/SocialIcon3D';
+import { useFooterAccessibility } from '@/hooks/useFooterAccessibility';
+import {
+    animationVariants,
+    getOptimizedVariant,
+    staggerConfig,
+    easingFunctions,
+    timingConfig
+} from '@/utils/footerAnimationConfig';
 
 /**
  * Enhanced SocialLinks3D Component
@@ -36,10 +44,23 @@ export function SocialLinks3D({
     const [hoveredSocial, setHoveredSocial] = useState<string | null>(null);
     const [containerHovered, setContainerHovered] = useState(false);
 
+    // Use accessibility hook
+    const {
+        shouldReduceMotion,
+        shouldDisableGlass,
+        announcementText,
+        announce
+    } = useFooterAccessibility();
+
     // Handle individual icon hover states
     const handleIconHover = useCallback((socialName: string | null) => {
         setHoveredSocial(socialName);
-    }, []);
+
+        // Announce hover state changes for screen readers
+        if (socialName) {
+            announce(`Hovering over ${socialName} social media icon`);
+        }
+    }, [announce]);
 
     // Handle container hover for coordinated effects
     const handleContainerEnter = useCallback(() => {
@@ -63,41 +84,39 @@ export function SocialLinks3D({
         }
     };
 
-    // Container animation variants
-    const containerVariants = {
+    // Optimized container animation variants
+    const containerVariants = useMemo(() => ({
         default: {
             scale: 1,
-            transition: {
-                type: "spring",
-                stiffness: 300,
-                damping: 30
-            }
+            transition: easingFunctions.gentleSpring
         },
         hovered: {
             scale: 1.02,
             transition: {
-                type: "spring",
+                ...easingFunctions.spring,
                 stiffness: 400,
                 damping: 25
             }
         }
-    };
+    }), []);
 
-    // Stagger animation for icons
-    const iconsContainerVariants = {
+    // Optimized stagger animation for icons
+    const iconsContainerVariants = useMemo(() => ({
         default: {
             transition: {
-                staggerChildren: 0.1,
+                ...staggerConfig.socialIcons,
+                staggerChildren: timingConfig.socialIcon.stagger,
                 delayChildren: 0
             }
         },
         hovered: {
             transition: {
-                staggerChildren: 0.05,
+                ...staggerConfig.socialIcons,
+                staggerChildren: timingConfig.socialIcon.stagger * 0.5,
                 delayChildren: 0.1
             }
         }
-    };
+    }), []);
 
     return (
         <motion.div
@@ -105,7 +124,7 @@ export function SocialLinks3D({
                 "relative flex items-center justify-center",
                 getSpacingClass(),
                 // Glass morphism container styling
-                enableGlassContainer && [
+                enableGlassContainer && !shouldDisableGlass && [
                     "p-4 rounded-2xl",
                     "bg-gradient-to-br from-white/5 via-white/2 to-transparent",
                     "backdrop-blur-sm border border-white/10",
@@ -118,24 +137,30 @@ export function SocialLinks3D({
                 ],
                 className
             )}
-            variants={containerVariants}
-            animate={containerHovered ? 'hovered' : 'default'}
+            variants={shouldReduceMotion ? undefined : containerVariants}
+            animate={!shouldReduceMotion && containerHovered ? 'hovered' : 'default'}
             onMouseEnter={handleContainerEnter}
             onMouseLeave={handleContainerLeave}
             style={{
-                perspective: "1200px",
-                transformStyle: "preserve-3d"
+                perspective: shouldReduceMotion ? "none" : "1200px",
+                transformStyle: shouldReduceMotion ? "flat" : "preserve-3d"
             }}
+            role="group"
+            aria-label="Social media links"
+            aria-describedby="social-links-description"
             {...props}
         >
             {/* Background glow effect */}
-            {containerHovered && (
+            {containerHovered && !shouldReduceMotion && !shouldDisableGlass && (
                 <motion.div
                     className="absolute inset-0 rounded-2xl pointer-events-none"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{
+                        duration: timingConfig.socialIcon.bubble,
+                        ease: easingFunctions.glass
+                    }}
                 >
                     <div
                         className={cn(
@@ -150,10 +175,10 @@ export function SocialLinks3D({
             {/* Icons container with stagger animation */}
             <motion.div
                 className="relative flex items-center gap-inherit"
-                variants={iconsContainerVariants}
-                animate={containerHovered ? 'hovered' : 'default'}
+                variants={shouldReduceMotion ? undefined : iconsContainerVariants}
+                animate={!shouldReduceMotion && containerHovered ? 'hovered' : 'default'}
                 style={{
-                    transformStyle: "preserve-3d"
+                    transformStyle: shouldReduceMotion ? "flat" : "preserve-3d"
                 }}
             >
                 {socials.map((social, index) => (
@@ -166,14 +191,14 @@ export function SocialLinks3D({
                                 ? "opacity-40 scale-95"
                                 : "opacity-100 scale-100"
                         )}
-                        initial={{ opacity: 0, y: 20, rotateX: -90 }}
-                        animate={{
+                        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20, rotateX: -90 }}
+                        animate={shouldReduceMotion ? { opacity: 1 } : {
                             opacity: 1,
                             y: 0,
                             rotateX: 0,
                             transition: {
-                                delay: index * 0.1,
-                                type: "spring",
+                                delay: index * timingConfig.socialIcon.stagger,
+                                ...easingFunctions.spring,
                                 stiffness: 300,
                                 damping: 25
                             }
@@ -191,13 +216,16 @@ export function SocialLinks3D({
             </motion.div>
 
             {/* Ambient lighting effect */}
-            {hoveredSocial && (
+            {hoveredSocial && !shouldReduceMotion && !shouldDisableGlass && (
                 <motion.div
                     className="absolute inset-0 pointer-events-none"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{
+                        duration: timingConfig.socialIcon.hover,
+                        ease: easingFunctions.hover
+                    }}
                 >
                     <div
                         className={cn(
@@ -222,6 +250,22 @@ export function SocialLinks3D({
                         as="image"
                     />
                 ))}
+            </div>
+
+            {/* Screen reader announcements */}
+            {announcementText && (
+                <div
+                    className="sr-only"
+                    aria-live="polite"
+                    aria-atomic="true"
+                >
+                    {announcementText}
+                </div>
+            )}
+
+            {/* Hidden description for screen readers */}
+            <div id="social-links-description" className="sr-only">
+                Social media links with 3D hover effects. Use Tab to navigate between icons, Enter or Space to open links, and arrow keys for quick navigation.
             </div>
         </motion.div>
     );

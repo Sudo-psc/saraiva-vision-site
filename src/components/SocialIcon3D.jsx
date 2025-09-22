@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useFooterAccessibility } from '@/hooks/useFooterAccessibility';
 
 /**
  * SocialIcon3D Component
@@ -22,6 +23,23 @@ const SocialIcon3D = ({
 }) => {
     const [isClicked, setIsClicked] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [isFocused, setIsFocused] = useState(false);
+    const iconRef = useRef(null);
+
+    // Use accessibility hook
+    const {
+        getSocialAriaProps,
+        handleSocialKeyDown,
+        handleSocialFocus,
+        handleSocialBlur,
+        getFocusIndicatorStyles,
+        getHighContrastStyles,
+        isNavigatingWithKeyboard,
+        focusedSocialIndex,
+        shouldReduceMotion,
+        shouldDisableGlass,
+        registerSocialIcon
+    } = useFooterAccessibility();
 
     // Handle mouse movement for dynamic 3D rotation based on cursor position
     const handleMouseMove = useCallback((e) => {
@@ -37,6 +55,11 @@ const SocialIcon3D = ({
         setMousePosition({ x: mouseX, y: mouseY });
     }, [isHovered]);
 
+    // Register this icon for keyboard navigation
+    useEffect(() => {
+        registerSocialIcon(index, iconRef.current);
+    }, [index, registerSocialIcon]);
+
     // Handle hover state changes
     const handleMouseEnter = useCallback(() => {
         onHover(social.name);
@@ -46,6 +69,32 @@ const SocialIcon3D = ({
         onHover(null);
         setMousePosition({ x: 0, y: 0 });
     }, [onHover]);
+
+    // Handle focus events
+    const handleFocus = useCallback((e) => {
+        setIsFocused(true);
+        handleSocialFocus(index, social.name);
+
+        // Trigger hover effect for keyboard users
+        if (isNavigatingWithKeyboard) {
+            onHover(social.name);
+        }
+    }, [index, social.name, handleSocialFocus, isNavigatingWithKeyboard, onHover]);
+
+    const handleBlur = useCallback((e) => {
+        setIsFocused(false);
+        handleSocialBlur();
+
+        // Remove hover effect when losing focus
+        if (isNavigatingWithKeyboard) {
+            onHover(null);
+        }
+    }, [handleSocialBlur, isNavigatingWithKeyboard, onHover]);
+
+    // Handle keyboard navigation
+    const handleKeyDown = useCallback((e) => {
+        handleSocialKeyDown(e, index, social.name, social.href);
+    }, [handleSocialKeyDown, index, social.name, social.href]);
 
     // Handle click animation
     const handleClick = useCallback((e) => {
@@ -62,9 +111,22 @@ const SocialIcon3D = ({
         }, 200);
     }, [social.href]);
 
-    // Calculate dynamic rotation based on mouse position
-    const rotateX = isHovered ? (mousePosition.y / 10) * -1 : 0;
-    const rotateY = isHovered ? (mousePosition.x / 10) : 0;
+    // Calculate dynamic rotation based on mouse position (disabled for reduced motion)
+    const rotateX = (isHovered && !shouldReduceMotion) ? (mousePosition.y / 10) * -1 : 0;
+    const rotateY = (isHovered && !shouldReduceMotion) ? (mousePosition.x / 10) : 0;
+
+    // Determine if 3D effects should be active
+    const is3DActive = (isHovered || isFocused) && !shouldReduceMotion && !shouldDisableGlass;
+    const isKeyboardFocused = isFocused && isNavigatingWithKeyboard;
+
+    // Get accessibility props
+    const ariaProps = getSocialAriaProps(social, index, isHovered);
+
+    // Get focus indicator styles
+    const focusStyles = getFocusIndicatorStyles(isKeyboardFocused, is3DActive);
+
+    // Get high contrast styles
+    const highContrastStyles = getHighContrastStyles();
 
     // Animation variants for the main icon container
     const iconVariants = {
@@ -109,25 +171,33 @@ const SocialIcon3D = ({
     // Get current animation state
     const getCurrentVariant = () => {
         if (isClicked) return 'clicked';
-        if (isHovered) return 'hovered';
+        if (is3DActive) return 'hovered';
         return 'default';
     };
 
     return (
         <div
+            ref={iconRef}
             className={cn(
                 "relative cursor-pointer select-none",
                 "transform-gpu", // Enable GPU acceleration
+                "focus:outline-none", // Custom focus styling
                 className
             )}
             style={{
-                perspective: "1000px",
-                transformStyle: "preserve-3d"
+                perspective: shouldReduceMotion ? "none" : "1000px",
+                transformStyle: shouldReduceMotion ? "flat" : "preserve-3d",
+                ...focusStyles,
+                ...highContrastStyles
             }}
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
             onClick={handleClick}
+            {...ariaProps}
             {...props}
         >
             {/* Main Icon Container with 3D transforms */}
@@ -153,21 +223,25 @@ const SocialIcon3D = ({
                 >
                     <img
                         src={social.image}
-                        alt={social.name}
+                        alt="" // Empty alt since parent has aria-label
                         className="w-full h-full object-cover"
                         loading="lazy"
                         decoding="async"
+                        role="presentation"
                     />
 
                     {/* Glass overlay effect */}
-                    <div
-                        className={cn(
-                            "absolute inset-0",
-                            "bg-gradient-to-br from-white/20 via-transparent to-transparent",
-                            "opacity-0 transition-opacity duration-300",
-                            isHovered && "opacity-100"
-                        )}
-                    />
+                    {!shouldDisableGlass && (
+                        <div
+                            className={cn(
+                                "absolute inset-0",
+                                "bg-gradient-to-br from-white/20 via-transparent to-transparent",
+                                "opacity-0 transition-opacity duration-300",
+                                is3DActive && "opacity-100"
+                            )}
+                            aria-hidden="true"
+                        />
+                    )}
                 </motion.div>
 
                 {/* Icon label */}
@@ -177,8 +251,9 @@ const SocialIcon3D = ({
                         "text-xs font-medium text-white/80",
                         "whitespace-nowrap pointer-events-none",
                         "transition-all duration-300",
-                        isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+                        (is3DActive || isKeyboardFocused) ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
                     )}
+                    aria-hidden="true" // Handled by aria-label on parent
                 >
                     {social.name}
                 </motion.span>
@@ -186,7 +261,7 @@ const SocialIcon3D = ({
 
             {/* Glass Bubble Effect */}
             <AnimatePresence>
-                {isHovered && (
+                {is3DActive && !shouldDisableGlass && (
                     <motion.div
                         className="absolute inset-0 pointer-events-none"
                         style={{
@@ -258,33 +333,44 @@ const SocialIcon3D = ({
             </AnimatePresence>
 
             {/* Depth shadows - multiple layers for realistic 3D appearance */}
+            {!shouldDisableGlass && (
+                <div
+                    className={cn(
+                        "absolute inset-0 pointer-events-none",
+                        "transition-all duration-300",
+                        is3DActive ? "opacity-100" : "opacity-0"
+                    )}
+                    style={{
+                        transform: shouldReduceMotion ? "none" : `translateZ(-60px) scale(0.8)`,
+                    }}
+                    aria-hidden="true"
+                >
+                    {/* Primary shadow */}
+                    <div
+                        className="absolute inset-0 rounded-full bg-black/20 blur-md"
+                        style={{ transform: "translateY(10px)" }}
+                    />
+
+                    {/* Secondary shadow for more depth */}
+                    <div
+                        className="absolute inset-0 rounded-full bg-black/10 blur-lg"
+                        style={{ transform: "translateY(20px) scale(1.2)" }}
+                    />
+
+                    {/* Tertiary shadow for maximum depth */}
+                    <div
+                        className="absolute inset-0 rounded-full bg-black/5 blur-xl"
+                        style={{ transform: "translateY(30px) scale(1.4)" }}
+                    />
+                </div>
+            )}
+
+            {/* Hidden description for screen readers */}
             <div
-                className={cn(
-                    "absolute inset-0 pointer-events-none",
-                    "transition-all duration-300",
-                    isHovered ? "opacity-100" : "opacity-0"
-                )}
-                style={{
-                    transform: `translateZ(-60px) scale(0.8)`,
-                }}
+                id={`social-${social.name.toLowerCase()}-description`}
+                className="sr-only"
             >
-                {/* Primary shadow */}
-                <div
-                    className="absolute inset-0 rounded-full bg-black/20 blur-md"
-                    style={{ transform: "translateY(10px)" }}
-                />
-
-                {/* Secondary shadow for more depth */}
-                <div
-                    className="absolute inset-0 rounded-full bg-black/10 blur-lg"
-                    style={{ transform: "translateY(20px) scale(1.2)" }}
-                />
-
-                {/* Tertiary shadow for maximum depth */}
-                <div
-                    className="absolute inset-0 rounded-full bg-black/5 blur-xl"
-                    style={{ transform: "translateY(30px) scale(1.4)" }}
-                />
+                {`${social.name} social media profile. Press Enter or Space to open in new tab. Use arrow keys to navigate between social icons.`}
             </div>
         </div>
     );

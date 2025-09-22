@@ -15,6 +15,8 @@ import {
   getRecentPosts,
   getSiteSettings,
   getNavigationMenus,
+  getPostsByCategory,
+  getAllCategories,
 } from '../lib/wordpress-api.js';
 
 // Generic hook for WordPress content fetching
@@ -269,4 +271,32 @@ export const useHomepageData = (options = {}) => {
       featuredTestimonials.refetch();
     },
   };
+};
+
+// Hook for fetching posts by category
+export const usePostsByCategory = (categorySlug, options = {}) => {
+  const { per_page = 12, ...hookOptions } = options;
+
+  const fetchFunction = useCallback(
+    () => getPostsByCategory(categorySlug, { first: per_page }),
+    [categorySlug, per_page]
+  );
+
+  return useWordPressContent(fetchFunction, [categorySlug, per_page], {
+    enabled: !!categorySlug,
+    ...hookOptions,
+  });
+};
+
+// Hook for fetching all categories
+export const useCategories = (options = {}) => {
+  const fetchFunction = useCallback(
+    () => getAllCategories(),
+    []
+  );
+
+  return useWordPressContent(fetchFunction, [], {
+    staleTime: 60 * 60 * 1000, // 1 hour - categories don't change often
+    ...options,
+  });
 };

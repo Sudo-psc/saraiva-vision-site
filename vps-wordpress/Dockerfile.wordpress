@@ -1,0 +1,68 @@
+# Custom WordPress Dockerfile with optimizations for headless CMS
+FROM wordpress:6.5-php8.2-fpm
+
+# Install additional PHP extensions and tools
+RUN apt-get update && apt-get install -y \
+    # Image processing
+    libwebp-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libxpm-dev \
+    libfreetype6-dev \
+    # Redis support
+    libzstd-dev \
+    # Additional tools
+    wget \
+    curl \
+    unzip \
+    git \
+    # Cleanup
+    && rm -rf /var/lib/apt/lists/*
+
+# Configure and install PHP extensions
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg \
+    --with-webp \
+    --with-xpm \
+    && docker-php-ext-install -j$(nproc) gd
+
+# Install Redis extension
+RUN pecl install redis-5.3.7 \
+    && docker-php-ext-enable redis
+
+# Install OPcache for performance
+RUN docker-php-ext-install opcache
+
+# Install additional extensions
+RUN docker-php-ext-install \
+    exif \
+    bcmath \
+    mysqli \
+    pdo_mysql
+
+# Install WP-CLI
+RUN curl -O https://raw.githubusercontent.com/wp-cli/wp-cli/v2.8.1/wp-cli.phar \
+    && chmod +x wp-cli.phar \
+    && mv wp-cli.phar /usr/local/bin/wp
+
+# Copy custom PHP configuration
+COPY php.ini /usr/local/etc/php/conf.d/custom.ini
+COPY opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
+# Copy WordPress configuration
+COPY wp-config-extra.php /var/www/html/wp-config-extra.php
+
+# Copy custom entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Set proper permissions
+RUN chown -R www-data:www-data /var/www/html
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:9000/ping || exit 1
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["php-fpm"]

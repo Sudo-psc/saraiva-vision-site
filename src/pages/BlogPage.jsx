@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import { Calendar, Loader2, AlertTriangle, ArrowRight, Search } from 'lucide-react';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
 // WordPress functions temporarily disabled for build
 // import {
@@ -314,7 +314,7 @@ const BlogPage = () => {
           </section>
         </div>
       </main>
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

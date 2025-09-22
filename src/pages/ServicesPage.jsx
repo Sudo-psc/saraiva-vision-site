@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import SEOHead from '@/components/SEOHead';
 import ServicesEnhanced from '@/components/ServicesEnhanced';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +20,7 @@ const ServicesPage = () => {
       <main className="flex-1 pt-28 scroll-block-internal mx-[5%] lg:mx-[10%]">
         <ServicesEnhanced full grid />
       </main>
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

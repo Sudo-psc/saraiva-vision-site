@@ -9,7 +9,7 @@ import Hero from '@/components/Hero';
 import Services from '@/components/Services';
 import About from '@/components/About';
 import Contact from '@/components/Contact';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import CompactGoogleReviews from '@/components/CompactGoogleReviews';
 import GoogleLocalSection from '@/components/GoogleLocalSection';
 import FAQ from '@/components/FAQ';
@@ -71,7 +71,7 @@ function HomePage() {
           <Hero />
           <Services />
           <About />
-          <InstagramFeed 
+          <InstagramFeed
             limit={4}
             className="bg-gray-50"
             autoRefresh={true}
@@ -86,7 +86,7 @@ function HomePage() {
           <Contact />
         </main>
 
-        <Footer />
+        <EnhancedFooter />
       </div>
     </>
   );

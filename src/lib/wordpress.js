@@ -1,4 +1,8 @@
 import { GraphQLClient } from 'graphql-request';
+import {
+  GET_POST_BY_SLUG,
+  GET_RELATED_POSTS,
+} from './wordpress-queries.js';
 
 // WordPress GraphQL endpoint configuration
 const WORDPRESS_GRAPHQL_ENDPOINT = process.env.WORDPRESS_GRAPHQL_ENDPOINT || 'https://cms.saraivavision.com.br/graphql';
@@ -91,5 +95,113 @@ export const checkWordPressHealth = async () => {
         message: error.message,
       },
     };
+  }
+};
+
+// Post functions for PostPage component
+export const fetchPostBySlug = async (slug) => {
+  const { data, error } = await executeGraphQLQuery(GET_POST_BY_SLUG, { slug });
+
+  if (error) {
+    throw new Error(error.message || 'Failed to fetch post');
+  }
+
+  if (!data.post) {
+    throw new Error('Post not found');
+  }
+
+  return data.post;
+};
+
+export const fetchRelatedPosts = async (post, limit = 3) => {
+  // Get related posts by category
+  const categories = post.categories?.nodes || [];
+  const categoryIds = categories.map(cat => cat.id);
+
+  if (categoryIds.length === 0) {
+    return [];
+  }
+
+  const relatedPostsQuery = `
+    query GetRelatedPosts($categoryIds: [ID!], $excludeId: ID!, $first: Int) {
+      posts(
+        first: $first,
+        where: {
+          status: PUBLISH,
+          categoryId: $categoryIds,
+          notIn: [$excludeId]
+        }
+      ) {
+        nodes {
+          id
+          title
+          slug
+          excerpt
+          date
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const { data, error } = await executeGraphQLQuery(relatedPostsQuery, {
+    categoryIds,
+    excludeId: post.id,
+    first: limit,
+  });
+
+  if (error) {
+    console.warn('Could not fetch related posts:', error);
+    return [];
+  }
+
+  return data.posts.nodes || [];
+};
+
+export const getFeaturedImageUrl = (post) => {
+  return post.featuredImage?.node?.sourceUrl || null;
+};
+
+export const getAuthorInfo = (post) => {
+  return post.author?.node || null;
+};
+
+export const cleanHtmlContent = (html) => {
+  if (!html) return '';
+
+  // Remove potentially dangerous content
+  const cleaned = html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/on\w+="[^"]*"/g, '')
+    .replace(/on\w+='[^']*'/g, '');
+
+  return cleaned;
+};
+
+export const extractPlainText = (html, maxLength = null) => {
+  if (!html) return '';
+
+  // Remove HTML tags
+  const plainText = html.replace(/<[^>]+>/g, '').trim();
+
+  // Limit length if specified
+  if (maxLength && plainText.length > maxLength) {
+    return plainText.substring(0, maxLength) + '...';
+  }
+
+  return plainText;
+};
+
+// Cache management
+export const clearWordPressCache = () => {
+  // Clear any cached data
+  if (typeof window !== 'undefined' && window.wordpressCache) {
+    window.wordpressCache.clear();
   }
 };

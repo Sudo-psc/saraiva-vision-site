@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import Testimonials from '@/components/Testimonials';
 import SEOHead from '@/components/SEOHead';
 import { useTestimonialsSEO } from '@/hooks/useSEO';
@@ -15,7 +15,7 @@ const TestimonialsPage = () => {
       <main className="flex-1 pt-28 mx-[7%]">
         <Testimonials />
       </main>
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

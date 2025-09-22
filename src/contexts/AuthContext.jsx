@@ -18,6 +18,13 @@ export const AuthProvider = ({ children }) => {
     const [session, setSession] = useState(null);
 
     useEffect(() => {
+        // Check if supabase client is available
+        if (!supabase) {
+            console.warn('Supabase client not available. Authentication will not work.');
+            setLoading(false);
+            return;
+        }
+
         // Get initial session
         const getInitialSession = async () => {
             try {
@@ -67,6 +74,11 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const fetchUserProfile = async (userId) => {
+        if (!supabase) {
+            console.warn('Supabase client not available for profile fetch');
+            return;
+        }
+
         try {
             const { data, error } = await supabase
                 .from('profiles')
@@ -86,6 +98,12 @@ export const AuthProvider = ({ children }) => {
     };
 
     const signIn = async (email, password) => {
+        if (!supabase) {
+            const error = new Error('Supabase client not available');
+            console.error('Sign in error:', error);
+            return { data: null, error };
+        }
+
         try {
             setLoading(true);
 
@@ -108,6 +126,12 @@ export const AuthProvider = ({ children }) => {
     };
 
     const signOut = async () => {
+        if (!supabase) {
+            const error = new Error('Supabase client not available');
+            console.error('Sign out error:', error);
+            return { error };
+        }
+
         try {
             setLoading(true);
 
@@ -131,6 +155,12 @@ export const AuthProvider = ({ children }) => {
     };
 
     const updateProfile = async (updates) => {
+        if (!supabase) {
+            const error = new Error('Supabase client not available');
+            console.error('Update profile error:', error);
+            return { data: null, error };
+        }
+
         try {
             if (!user) {
                 throw new Error('No user logged in');

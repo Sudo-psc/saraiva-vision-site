@@ -466,3 +466,54 @@ export const GET_NAVIGATION_MENUS = `
     }
   }
 `;
+
+// Query to get related posts by category (excluding current post)
+export const GET_RELATED_POSTS = `
+  ${POST_FIELDS}
+  query GetRelatedPosts($categoryIds: [ID!], $excludeId: ID!, $first: Int) {
+    posts(
+      first: $first,
+      where: {
+        status: PUBLISH,
+        categoryId: $categoryIds,
+        notIn: [$excludeId]
+      }
+    ) {
+      nodes {
+        ...PostFields
+      }
+    }
+  }
+`;
+
+// Query to get posts by category slug
+export const GET_POSTS_BY_CATEGORY = `
+  ${POST_FIELDS}
+  query GetPostsByCategory($slug: ID!, $first: Int) {
+    category(id: $slug, idType: SLUG) {
+      name
+      description
+      slug
+      posts(first: $first, where: { status: PUBLISH }) {
+        nodes {
+          ...PostFields
+        }
+      }
+    }
+  }
+`;
+
+// Query to get all categories
+export const GET_ALL_CATEGORIES = `
+  query GetAllCategories {
+    categories(first: 100, where: { hideEmpty: false }) {
+      nodes {
+        id
+        name
+        slug
+        description
+        count
+      }
+    }
+  }
+`;

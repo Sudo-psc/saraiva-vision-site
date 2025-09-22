@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import SEOHead from '@/components/SEOHead';
 import Contact from '@/components/Contact';
 import GoogleLocalSection from '@/components/GoogleLocalSection';
@@ -23,7 +23,7 @@ const ContactPage = () => {
       </main>
       {/* Encontre-nos Section */}
       <GoogleLocalSection />
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

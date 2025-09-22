@@ -1,6 +1,6 @@
 # Saraiva Vision - Clínica Oftalmológica
 
-![Saraiva Vision Logo](https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png)
+![Saraiva Vision Logo](https://raw.githubusercontent.com/sudo-psc/saraiva-vision-site/kiro-branch/public/favicon-32x32.png)
 
 **Site institucional moderno da Clínica Saraiva Vision em Caratinga, MG**
 

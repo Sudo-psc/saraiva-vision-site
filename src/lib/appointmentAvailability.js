@@ -6,6 +6,11 @@
 
 import { supabaseAdmin } from './supabase.ts'
 
+// Check if supabaseAdmin is available
+if (!supabaseAdmin) {
+    console.warn('Supabase admin client not available. Appointment availability features may not work.');
+}
+
 // Business hours configuration
 export const BUSINESS_HOURS = {
     start: '08:00',
@@ -51,6 +56,11 @@ export function generateTimeSlots(date) {
  * @returns {Promise<boolean>} True if slot is available
  */
 export async function isSlotAvailable(date, time, excludeAppointmentId = null) {
+    if (!supabaseAdmin) {
+        console.warn('Supabase admin client not available for slot availability check');
+        return false;
+    }
+
     try {
         // Use Supabase function for availability check
         const { data, error } = await supabaseAdmin.rpc('check_appointment_availability', {
@@ -78,6 +88,11 @@ export async function isSlotAvailable(date, time, excludeAppointmentId = null) {
  * @returns {Promise<Array>} Array of available slots with date and time
  */
 export async function getAvailableSlots(startDate, endDate = null) {
+    if (!supabaseAdmin) {
+        console.warn('Supabase admin client not available for getting available slots');
+        return [];
+    }
+
     try {
         const { data, error } = await supabaseAdmin.rpc('get_available_slots', {
             p_start_date: startDate,

@@ -14,6 +14,8 @@ import {
     GET_RECENT_POSTS,
     GET_SITE_SETTINGS,
     GET_NAVIGATION_MENUS,
+    GET_POSTS_BY_CATEGORY,
+    GET_ALL_CATEGORIES,
 } from './wordpress-queries.js';
 
 // Cache duration in seconds (5 minutes for most content, 1 hour for static content)
@@ -429,6 +431,63 @@ export const getNavigationMenus = async (useCache = true) => {
 
     if (useCache) {
         setCachedData(cacheKey, result, CACHE_DURATION.NAVIGATION);
+    }
+
+    return result;
+};
+
+// Category API functions
+export const getPostsByCategory = async (categorySlug, options = {}) => {
+    const { first = 12, useCache = true } = options;
+    const cacheKey = getCacheKey('posts_by_category', { categorySlug, first });
+
+    if (useCache) {
+        const cached = getCachedData(cacheKey);
+        if (cached) return cached;
+    }
+
+    const { data, error } = await executeGraphQLQuery(GET_POSTS_BY_CATEGORY, {
+        slug: categorySlug,
+        first
+    });
+
+    if (error) {
+        return { posts: [], error };
+    }
+
+    const result = {
+        posts: data.category?.posts?.nodes || [],
+        error: null,
+    };
+
+    if (useCache) {
+        setCachedData(cacheKey, result, CACHE_DURATION.POSTS);
+    }
+
+    return result;
+};
+
+export const getAllCategories = async (useCache = true) => {
+    const cacheKey = getCacheKey('all_categories');
+
+    if (useCache) {
+        const cached = getCachedData(cacheKey);
+        if (cached) return cached;
+    }
+
+    const { data, error } = await executeGraphQLQuery(GET_ALL_CATEGORIES);
+
+    if (error) {
+        return { categories: [], error };
+    }
+
+    const result = {
+        categories: data.categories?.nodes || [],
+        error: null,
+    };
+
+    if (useCache) {
+        setCachedData(cacheKey, result, CACHE_DURATION.POSTS);
     }
 
     return result;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import SEOHead from '@/components/SEOHead';
 import ServicesCard from '@/components/ServicesCard';
 import { mockServicesData, getServicesData } from '@/lib/services-api';
@@ -61,7 +61,7 @@ const ServicesPageCorrected = () => {
             <p className="text-gray-600">Carregando serviços...</p>
           </div>
         </main>
-        <Footer />
+        <EnhancedFooter />
       </div>
     );
   }
@@ -82,7 +82,7 @@ const ServicesPageCorrected = () => {
             </button>
           </div>
         </main>
-        <Footer />
+        <EnhancedFooter />
       </div>
     );
   }
@@ -124,11 +124,10 @@ const ServicesPageCorrected = () => {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
-                    selectedCategory === category
-                      ? 'bg-blue-600 text-white shadow-lg'
-                      : 'bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-200'
-                  }`}
+                  className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${selectedCategory === category
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-200'
+                    }`}
                 >
                   {category === 'all' ? 'Todos os Serviços' : category}
                 </button>
@@ -209,7 +208,7 @@ const ServicesPageCorrected = () => {
           </div>
         </section>
       </main>
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

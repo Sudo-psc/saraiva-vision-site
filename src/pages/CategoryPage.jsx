@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import { Calendar, User, ArrowLeft, Loader2, AlertTriangle, ArrowRight, Tag, Grid, List } from 'lucide-react';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { usePostsByCategory, useCategories } from '@/hooks/useWordPress';
@@ -17,11 +17,11 @@ const CategoryPage = () => {
   const { slug } = useParams();
   const { t, i18n } = useTranslation();
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
-  
+
   const { data: posts, loading: postsLoading, error: postsError } = usePostsByCategory(slug, {
     per_page: 12
   });
-  
+
   const { data: categories } = useCategories();
 
   const getDateLocale = () => {
@@ -42,7 +42,7 @@ const CategoryPage = () => {
             </div>
           </div>
         </main>
-        <Footer />
+        <EnhancedFooter />
       </div>
     );
   }
@@ -70,7 +70,7 @@ const CategoryPage = () => {
             </div>
           </div>
         </main>
-        <Footer />
+        <EnhancedFooter />
       </div>
     );
   }
@@ -120,21 +120,21 @@ const CategoryPage = () => {
                   </div>
                 )}
               </div>
-              
+
               <h3 className="text-xl font-bold mb-3 text-gray-900 flex-grow">
-                <Link 
-                  to={`/blog/${post.slug}`} 
-                  className="hover:text-blue-600 transition-colors" 
-                  dangerouslySetInnerHTML={{ __html: post.title.rendered }} 
+                <Link
+                  to={`/blog/${post.slug}`}
+                  className="hover:text-blue-600 transition-colors"
+                  dangerouslySetInnerHTML={{ __html: post.title.rendered }}
                 />
               </h3>
-              
+
               {excerpt && (
                 <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-4">
                   {excerpt}
                 </p>
               )}
-              
+
               <Link to={`/blog/${post.slug}`} className="mt-auto">
                 <Button variant="link" className="p-0 text-blue-600 font-semibold group/btn">
                   {t('blog.read_more')}
@@ -189,21 +189,21 @@ const CategoryPage = () => {
                   </div>
                 )}
               </div>
-              
+
               <h3 className="text-2xl font-bold mb-3 text-gray-900">
-                <Link 
-                  to={`/blog/${post.slug}`} 
-                  className="hover:text-blue-600 transition-colors" 
-                  dangerouslySetInnerHTML={{ __html: post.title.rendered }} 
+                <Link
+                  to={`/blog/${post.slug}`}
+                  className="hover:text-blue-600 transition-colors"
+                  dangerouslySetInnerHTML={{ __html: post.title.rendered }}
                 />
               </h3>
-              
+
               {excerpt && (
                 <p className="text-gray-600 mb-4 leading-relaxed line-clamp-4">
                   {excerpt}
                 </p>
               )}
-              
+
               <Link to={`/blog/${post.slug}`} className="mt-auto">
                 <Button variant="link" className="p-0 text-blue-600 font-semibold group/btn">
                   {t('blog.read_more')}
@@ -221,18 +221,18 @@ const CategoryPage = () => {
     <div className="min-h-screen bg-gray-50">
       <Helmet>
         <title>{currentCategory.name} - {t('blog.page_title')} | Saraiva Vision</title>
-        <meta name="description" content={currentCategory.description || 
+        <meta name="description" content={currentCategory.description ||
           t('blog.category_description', 'Artigos sobre {{category}} - Saraiva Vision', { category: currentCategory.name })} />
         <meta name="keywords" content={`${currentCategory.name}, ${t('blog.keywords', 'oftalmologia, saúde ocular')}`} />
         <meta property="og:title" content={`${currentCategory.name} - ${t('blog.page_title')} | Saraiva Vision`} />
-        <meta property="og:description" content={currentCategory.description || 
+        <meta property="og:description" content={currentCategory.description ||
           t('blog.category_description', 'Artigos sobre {{category}} - Saraiva Vision', { category: currentCategory.name })} />
         <meta property="og:type" content="website" />
         <link rel="canonical" href={`https://saraivavision.com.br/categoria/${slug}`} />
       </Helmet>
 
       <Navbar />
-      
+
       <main className="py-32 md:py-40 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         <div className="container mx-auto px-4 md:px-6">
           {/* Breadcrumbs */}
@@ -273,13 +273,13 @@ const CategoryPage = () => {
                 {currentCategory.name}
               </h1>
             </div>
-            
+
             {currentCategory.description && (
               <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
                 {currentCategory.description}
               </p>
             )}
-            
+
             <div className="mt-6 text-sm text-gray-500">
               {posts?.length || 0} {t('blog.articles_count', 'artigos encontrados')}
             </div>
@@ -295,21 +295,19 @@ const CategoryPage = () => {
             <div className="flex bg-white rounded-lg shadow-sm border">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`px-4 py-2 rounded-l-lg transition-colors ${
-                  viewMode === 'grid' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'text-gray-600 hover:bg-gray-50'
-                }`}
+                className={`px-4 py-2 rounded-l-lg transition-colors ${viewMode === 'grid'
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-600 hover:bg-gray-50'
+                  }`}
               >
                 <Grid className="w-5 h-5" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`px-4 py-2 rounded-r-lg transition-colors ${
-                  viewMode === 'list' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'text-gray-600 hover:bg-gray-50'
-                }`}
+                className={`px-4 py-2 rounded-r-lg transition-colors ${viewMode === 'list'
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-600 hover:bg-gray-50'
+                  }`}
               >
                 <List className="w-5 h-5" />
               </button>
@@ -357,7 +355,7 @@ const CategoryPage = () => {
                   .filter(cat => cat.slug !== slug)
                   .slice(0, 8)
                   .map((category) => (
-                    <Link 
+                    <Link
                       key={category.id}
                       to={`/categoria/${category.slug}`}
                       className="px-4 py-2 bg-white text-gray-700 rounded-lg border hover:border-blue-300 hover:text-blue-600 transition-all duration-200 shadow-sm hover:shadow-md"
@@ -373,8 +371,8 @@ const CategoryPage = () => {
           )}
         </div>
       </main>
-      
-      <Footer />
+
+      <EnhancedFooter />
     </div>
   );
 };

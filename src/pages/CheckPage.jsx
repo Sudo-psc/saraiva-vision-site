@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import SEOHead from '@/components/SEOHead';
 import { useTranslation } from 'react-i18next';
 import createDiagnostics from '@/utils/systemDiagnostics';
@@ -65,7 +65,7 @@ const CheckPage = () => {
   const [lastCompletedAt, setLastCompletedAt] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all'); // all, success, warning, error
   const [showDetails, setShowDetails] = useState(false);
-  
+
   const seo = useMemo(
     () => ({
       title: t('check.seo.title'),
@@ -79,7 +79,7 @@ const CheckPage = () => {
     setResults(createEmptyState(diagnostics));
   }, [diagnostics]);
 
-  
+
 
   const runDiagnostics = useCallback(async () => {
     if (isRunning) return;
@@ -145,7 +145,7 @@ const CheckPage = () => {
   const getOverallStatus = () => {
     const statuses = Object.values(results).map(r => r.status);
     if (statuses.some(s => s === 'error')) return 'error';
-    if (statuses.some(s => s === 'warning')) return 'warning';  
+    if (statuses.some(s => s === 'warning')) return 'warning';
     if (statuses.every(s => s === 'success')) return 'success';
     if (statuses.some(s => s === 'running')) return 'running';
     return 'idle';
@@ -219,11 +219,11 @@ const CheckPage = () => {
                     ? t('check.lastUpdated', { timestamp: formatTimestamp(lastCompletedAt) })
                     : t('check.neverRun')}
                 </div>
-                
+
                 {/* Overall Status Summary */}
                 {Object.keys(results).length > 0 && (
                   <div className="flex gap-4 text-xs text-slate-500">
-                    {Object.entries(getStatusCounts()).map(([status, count]) => 
+                    {Object.entries(getStatusCounts()).map(([status, count]) =>
                       count > 0 ? (
                         <span key={status} className="flex items-center gap-1">
                           <span className={`h-2 w-2 rounded-full ${dotStyles[status] || dotStyles.idle}`} />
@@ -234,23 +234,22 @@ const CheckPage = () => {
                   </div>
                 )}
               </div>
-              
+
               <div className="flex flex-col sm:flex-row gap-2">
-                
-                
+
+
                 <button
                   type="button"
                   onClick={runDiagnostics}
                   disabled={isRunning}
-                  className={`inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold shadow-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 ${
-                    isRunning
-                      ? 'bg-emerald-200 text-emerald-700 cursor-not-allowed'
-                      : 'bg-emerald-600 text-white hover:bg-emerald-500'
-                  }`}
+                  className={`inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold shadow-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 ${isRunning
+                    ? 'bg-emerald-200 text-emerald-700 cursor-not-allowed'
+                    : 'bg-emerald-600 text-white hover:bg-emerald-500'
+                    }`}
                 >
                   {isRunning ? t('check.running') : t('check.runButton')}
                 </button>
-                
+
                 <button
                   type="button"
                   onClick={exportResults}
@@ -259,7 +258,7 @@ const CheckPage = () => {
                 >
                   {t('check.exportReport')}
                 </button>
-                
+
                 <button
                   type="button"
                   onClick={resetResults}
@@ -270,7 +269,7 @@ const CheckPage = () => {
                 </button>
               </div>
             </div>
-            
+
             {/* Filter and Display Options */}
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between p-4 bg-slate-100 rounded-lg">
               <div className="flex gap-2 items-center">
@@ -286,7 +285,7 @@ const CheckPage = () => {
                   <option value="error">{t('check.filter.error')}</option>
                 </select>
               </div>
-              
+
               <button
                 type="button"
                 onClick={() => setShowDetails(!showDetails)}
@@ -338,12 +337,12 @@ const CheckPage = () => {
 
               const messageText = result?.messageId
                 ? t(`check.messages.${result.messageId}`, {
-                    ...definition.defaultParams,
-                    ...(result?.messageParams || {}),
-                    ...(result?.data || {}),
-                    missing: translationParams.missing,
-                    hostname: result?.data?.hostname || definition.defaultParams?.expected,
-                  })
+                  ...definition.defaultParams,
+                  ...(result?.messageParams || {}),
+                  ...(result?.data || {}),
+                  missing: translationParams.missing,
+                  hostname: result?.data?.hostname || definition.defaultParams?.expected,
+                })
                 : null;
 
               return (
@@ -361,9 +360,8 @@ const CheckPage = () => {
                       </p>
                     </div>
                     <span
-                      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${
-                        statusStyles[status] || statusStyles.idle
-                      }`}
+                      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${statusStyles[status] || statusStyles.idle
+                        }`}
                     >
                       <span className={`h-2 w-2 rounded-full ${dotStyles[status] || dotStyles.idle}`} />
                       {statusLabel}
@@ -449,7 +447,7 @@ const CheckPage = () => {
 
                   {definition.id === 'database' && result?.data?.lastModified ? (
                     <p className="text-xs text-slate-500">
-                      {t('check.diagnostics.database.lastModifiedLabel', { 
+                      {t('check.diagnostics.database.lastModifiedLabel', {
                         date: new Date(result.data.lastModified).toLocaleDateString()
                       })}
                     </p>
@@ -478,17 +476,16 @@ const CheckPage = () => {
                     <div className="text-xs text-slate-500 space-y-1">
                       <div className="flex items-center gap-2">
                         <span>Nota de performance:</span>
-                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                          result.data.grade === 'A' ? 'bg-emerald-100 text-emerald-700' :
+                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${result.data.grade === 'A' ? 'bg-emerald-100 text-emerald-700' :
                           result.data.grade === 'B' ? 'bg-blue-100 text-blue-700' :
-                          result.data.grade === 'C' ? 'bg-amber-100 text-amber-700' :
-                          'bg-rose-100 text-rose-700'
-                        }`}>
+                            result.data.grade === 'C' ? 'bg-amber-100 text-amber-700' :
+                              'bg-rose-100 text-rose-700'
+                          }`}>
                           {result.data.grade}
                         </span>
                       </div>
                       <p>
-                        Média: {result.data.averageLatency}ms 
+                        Média: {result.data.averageLatency}ms
                         (min: {result.data.minLatency}ms, max: {result.data.maxLatency}ms)
                       </p>
                     </div>
@@ -498,7 +495,7 @@ const CheckPage = () => {
                       {t('check.perCheckUpdated', { timestamp: formatTimestamp(result.lastRun) })}
                     </p>
                   ) : null}
-                  
+
                   {showDetails && result?.data && (
                     <details className="mt-3">
                       <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-700">
@@ -517,7 +514,7 @@ const CheckPage = () => {
           </div>
         </div>
       </main>
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };
