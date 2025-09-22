@@ -3,6 +3,14 @@ const nextConfig = {
   images: {
     domains: ['saraivavision.com.br', '31.97.129.78'],
     formats: ['image/webp', 'image/avif'],
+    localPatterns: [
+      {
+        pathname: '/images/**',
+      },
+      {
+        pathname: '/img/**',
+      },
+    ],
   },
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://31.97.129.78:3001',
