@@ -15,7 +15,8 @@ import GoogleLocalSection from '@/components/GoogleLocalSection';
 import FAQ from '@/components/FAQ';
 import LatestEpisodes from '@/components/LatestEpisodes';
 import LatestBlogPosts from '@/components/LatestBlogPosts';
-import InstagramFeed from '@/components/InstagramFeed';
+import InstagramEmbedWidget from '@/components/InstagramEmbedWidget';
+import { InstagramEmbedProvider } from '@/hooks/useInstagramEmbed.jsx';
 
 function HomePage() {
   const location = useLocation();
@@ -71,13 +72,49 @@ function HomePage() {
           <Hero />
           <Services />
           <About />
-          <InstagramFeed
-            limit={4}
-            className="bg-gray-50"
-            autoRefresh={true}
-            pollingInterval={5 * 60 * 1000}
-            gridCols={{ default: 2, md: 4 }}
-          />
+          
+          {/* Instagram Feed sem API */}
+          <section className="py-16 bg-gray-50">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                  📸 Siga-nos no Instagram
+                </h2>
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                  Acompanhe os bastidores da Saraiva Vision e fique por dentro das novidades em saúde ocular
+                </p>
+              </div>
+              
+              <div className="max-w-4xl mx-auto">
+                <InstagramEmbedProvider maxPosts={6} enableAutoRefresh={false}>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* Widget principal */}
+                    <div className="lg:col-span-1">
+                      <InstagramEmbedWidget
+                        maxPosts={4}
+                        showHeader={true}
+                        showCaption={true}
+                        className="h-full"
+                        height="500px"
+                      />
+                    </div>
+                    
+                    {/* Grid de posts adicionais */}
+                    <div className="lg:col-span-1">
+                      <InstagramEmbedWidget
+                        maxPosts={4}
+                        showHeader={false}
+                        showCaption={false}
+                        className="instagram-grid"
+                        height="500px"
+                      />
+                    </div>
+                  </div>
+                </InstagramEmbedProvider>
+              </div>
+            </div>
+          </section>
+          
           <CompactGoogleReviews />
           <GoogleLocalSection />
           <FAQ />
