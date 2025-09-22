@@ -1,31 +1,107 @@
 {
-  "name": "Node.js 22",
   "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "framework": "vite",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
   "functions": {
+    "api/contact/index.js": {
+      "maxDuration": 10,
+      "memory": 256
+    },
+    "api/contact/**": {
+      "maxDuration": 10,
+      "memory": 256
+    },
     "api/**": {
       "maxDuration": 60,
       "memory": 1024
     }
   },
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
+      ]
+    },
+    {
+      "source": "/img/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/Podcasts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/about",
+      "destination": "/"
+    },
+    {
+      "source": "/services/:path*",
+      "destination": "/"
+    },
+    {
+      "source": "/blog/:path*",
+      "destination": "/"
+    },
+    {
+      "source": "/contact",
+      "destination": "/"
+    },
+    {
+      "source": "/testimonials",
+      "destination": "/"
+    },
+    {
+      "source": "/faq",
+      "destination": "/"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/"
+    },
+    {
+      "source": "/podcast",
       "destination": "/"
     }
   ],
   "regions": [
-    "gru1",
-    "iad1"
-  ],
-  "functionFailoverRegions": [
-    "iad1",
-    "cle1"
+    "gru1"
   ],
   "env": {
     "NODE_ENV": "production",
-    "VITE_API_URL": "https://saraivavision.com.br/api",
-    "VITE_WORDPRESS_URL": "https://saraivavision.com.br"
+    "VITE_API_URL": "https://31.97.129.78:3001/api",
+    "VITE_WORDPRESS_URL": "https://31.97.129.78"
   }
 }

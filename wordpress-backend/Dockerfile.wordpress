@@ -1,0 +1,82 @@
+# WordPress with PHP-FPM 8.2
+FROM wordpress:php8.2-fpm-alpine
+
+# Install system dependencies
+RUN apk add --no-cache \
+    $PHPIZE_DEPS \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    libwebp-dev \
+    libzip-dev \
+    icu-dev \
+    oniguruma-dev \
+    curl-dev \
+    imagemagick-dev \
+    ghostscript \
+    && rm -rf /var/cache/apk/*
+
+# Install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install -j$(nproc) \
+        gd \
+        mysqli \
+        pdo_mysql \
+        zip \
+        intl \
+        mbstring \
+        exif \
+        bcmath \
+        curl \
+        fileinfo \
+        dom \
+        xml \
+        xmlwriter \
+        simplexml
+
+# Install Redis extension
+RUN pecl install redis && docker-php-ext-enable redis
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Install WP-CLI
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    && chmod +x wp-cli.phar \
+    && mv wp-cli.phar /usr/local/bin/wp
+
+# Create wordpress user and set permissions
+RUN addgroup -g 1000 wordpress \
+    && adduser -D -u 1000 -s /bin/bash -G wordpress wordpress
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy custom PHP configuration
+COPY php/custom.ini /usr/local/etc/php/conf.d/custom.ini
+COPY php/www.conf /usr/local/etc/php-fpm.d/www.conf
+
+# Copy custom scripts
+COPY scripts/ /usr/local/bin/
+RUN chmod +x /usr/local/bin/*.sh
+
+# Install custom plugins and themes
+COPY plugins/ /var/www/html/wp-content/plugins/custom/
+COPY themes/ /var/www/html/wp-content/themes/custom/
+
+# Set proper permissions
+RUN chown -R wordpress:wordpress /var/www/html \
+    && chmod -R 755 /var/www/html/wp-content
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD php-fpm -t || exit 1
+
+# Expose port 9000 for PHP-FPM
+EXPOSE 9000
+
+# Use wordpress user
+USER wordpress
+
+# Start PHP-FPM
+CMD ["php-fpm"]
