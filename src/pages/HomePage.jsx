@@ -15,6 +15,7 @@ import GoogleLocalSection from '@/components/GoogleLocalSection';
 import FAQ from '@/components/FAQ';
 import LatestEpisodes from '@/components/LatestEpisodes';
 import LatestBlogPosts from '@/components/LatestBlogPosts';
+import InstagramFeed from '@/components/InstagramFeed';
 
 function HomePage() {
   const location = useLocation();
@@ -70,6 +71,13 @@ function HomePage() {
           <Hero />
           <Services />
           <About />
+          <InstagramFeed 
+            limit={4}
+            className="bg-gray-50"
+            autoRefresh={true}
+            pollingInterval={5 * 60 * 1000}
+            gridCols={{ default: 2, md: 4 }}
+          />
           <CompactGoogleReviews />
           <GoogleLocalSection />
           <FAQ />
