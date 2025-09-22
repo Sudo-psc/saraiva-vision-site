@@ -110,7 +110,8 @@ export default async function handler(req, res) {
         message: error.message,
         fallback: getFallbackPosts(validation.data?.limit || 4)
       });
-    });
+    }
+  }); // Close securityMiddleware callback
 }
 
 // Fetch posts from Instagram Basic Display API
