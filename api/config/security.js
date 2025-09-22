@@ -319,8 +319,8 @@ export const THREAT_DETECTION = {
     // Path traversal patterns
     pathTraversal: [
         /\.\.\//g,
-    /\.\.\\g,
-        /% 2e % 2e % 2f / gi,
+        /\.\.\\/g,
+        /%2e%2e%2f/gi,
         /%2e%2e%5c/gi,
         /\.\.%2f/gi,
         /\.\.%5c/gi

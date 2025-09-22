@@ -29,6 +29,12 @@ export default defineConfig({
     // Fallback for legacy process.env usage in libraries
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
   },
+  esbuild: {
+    charset: 'utf8',
+    // Ensure consistent parsing and prevent encoding issues
+    loader: 'jsx',
+    include: /\.(js|jsx|ts|tsx)$/
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
