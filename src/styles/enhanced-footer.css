@@ -1,0 +1,441 @@
+/* Enhanced Footer Glass Effects */
+
+.enhanced-footer-container {
+    position: relative;
+    isolation: isolate;
+}
+
+.enhanced-footer-glass-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Responsive glass effects */
+.enhanced-footer-glass {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile optimizations (< 768px) */
+@media (max-width: 767px) {
+    .enhanced-footer-glass-layer {
+        backdrop-filter: blur(8px) saturate(110%) !important;
+        -webkit-backdrop-filter: blur(8px) saturate(110%) !important;
+    }
+
+    .enhanced-footer-container {
+        /* Reduce complexity on mobile for performance */
+        transform: translateZ(0);
+        will-change: auto;
+    }
+}
+
+/* Tablet optimizations (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .enhanced-footer-glass-layer {
+        backdrop-filter: blur(15px) saturate(140%);
+        -webkit-backdrop-filter: blur(15px) saturate(140%);
+    }
+}
+
+/* Desktop full effects (>= 1024px) */
+@media (min-width: 1024px) {
+    .enhanced-footer-glass-layer {
+        backdrop-filter: blur(25px) saturate(170%);
+        -webkit-backdrop-filter: blur(25px) saturate(170%);
+    }
+
+    .enhanced-footer-container:hover .enhanced-footer-glass-layer {
+        backdrop-filter: blur(30px) saturate(180%);
+        -webkit-backdrop-filter: blur(30px) saturate(180%);
+        transition: all 0.3s ease-out;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .enhanced-footer-glass-layer {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: 2px solid #000 !important;
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+    .enhanced-footer-container,
+    .enhanced-footer-glass-layer {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    .enhanced-footer-glass-layer {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(255, 255, 255, 0.9) !important;
+    }
+}
+
+/* Fallback for browsers without backdrop-filter support */
+.no-backdrop-filter .enhanced-footer-glass-layer {
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.9),
+            rgba(255, 255, 255, 0.7)) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .enhanced-footer-glass-layer {
+        background: linear-gradient(135deg,
+                rgba(0, 0, 0, var(--glass-opacity, 0.1)),
+                rgba(0, 0, 0, calc(var(--glass-opacity, 0.1) * 0.5)));
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .no-backdrop-filter .enhanced-footer-glass-layer {
+        background: linear-gradient(135deg,
+                rgba(0, 0, 0, 0.8),
+                rgba(0, 0, 0, 0.6)) !important;
+    }
+}
+
+/* Performance optimizations */
+.enhanced-footer-container {
+    contain: layout style paint;
+    transform: translateZ(0);
+}
+
+.enhanced-footer-glass-layer {
+    contain: strict;
+    transform: translateZ(0);
+}
+
+/* Low performance device optimizations */
+.performance-low .enhanced-footer-glass-layer {
+    backdrop-filter: blur(5px) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Touch device optimizations */
+.touch-device .enhanced-footer-container:hover .enhanced-footer-glass-layer {
+    /* Disable hover effects on touch devices */
+    backdrop-filter: inherit;
+    -webkit-backdrop-filter: inherit;
+    transition: none;
+}
+
+/* Orientation change handling */
+@media (orientation: landscape) and (max-height: 500px) {
+    .enhanced-footer-glass-layer {
+        backdrop-filter: blur(10px) saturate(120%) !important;
+        -webkit-backdrop-filter: blur(10px) saturate(120%) !important;
+    }
+}
+
+/* Print styles */
+@media print {
+
+    .enhanced-footer-container,
+    .enhanced-footer-glass-layer {
+        background: white !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+    }
+}
+
+/* ===== A
+CCESSIBILITY ENHANCEMENTS ===== */
+
+/* Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0.5rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    background: #000;
+    color: #fff;
+    z-index: 9999;
+}
+
+/* High contrast mode support */
+.high-contrast .enhanced-footer-container {
+    background: Canvas !important;
+    color: CanvasText !important;
+    border: 2px solid CanvasText !important;
+}
+
+.high-contrast .enhanced-footer-glass-layer {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid CanvasText !important;
+}
+
+/* Keyboard navigation indicators */
+.keyboard-user .social-icons-3d-container button:focus,
+.keyboard-user .scroll-to-top-enhanced:focus {
+    outline: 2px solid #4F46E5;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
+}
+
+.high-contrast.keyboard-user .social-icons-3d-container button:focus,
+.high-contrast.keyboard-user .scroll-to-top-enhanced:focus {
+    outline: 2px solid ButtonText !important;
+    outline-offset: 2px;
+    background: ButtonFace !important;
+    color: ButtonText !important;
+    box-shadow: none !important;
+}
+
+/* ===== 3D SOCIAL ICONS ACCESSIBILITY ===== */
+
+.social-icons-3d-container {
+    perspective: 1000px;
+}
+
+.social-icon-3d {
+    transform-style: preserve-3d;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus indicators for 3D elements */
+.social-icon-3d:focus {
+    transform: perspective(1000px) rotateX(-5deg) rotateY(5deg) translateZ(15px) scale(1.05);
+    box-shadow:
+        0 0 0 2px #4F46E5,
+        0 4px 12px rgba(79, 70, 229, 0.3),
+        0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.social-icon-3d:focus-visible {
+    outline: none;
+}
+
+/* High contrast focus for 3D icons */
+.high-contrast .social-icon-3d:focus {
+    outline: 2px solid ButtonText !important;
+    outline-offset: 2px;
+    background: ButtonFace !important;
+    color: ButtonText !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Glass bubble accessibility */
+.social-icon-3d .glass-bubble {
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Reduced motion for 3D effects */
+@media (prefers-reduced-motion: reduce) {
+    .social-icon-3d {
+        transform: none !important;
+        transition: background-color 0.2s ease, color 0.2s ease !important;
+    }
+
+    .social-icon-3d:hover,
+    .social-icon-3d:focus {
+        transform: none !important;
+        background-color: #4F46E5 !important;
+    }
+}
+
+/* ===== SCROLL TO TOP ACCESSIBILITY ===== */
+
+.scroll-to-top-enhanced {
+    transform-style: preserve-3d;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-to-top-enhanced:focus {
+    transform: perspective(1000px) rotateX(-3deg) rotateY(3deg) translateZ(10px) scale(1.03);
+    box-shadow:
+        0 0 0 2px #4F46E5,
+        0 4px 12px rgba(79, 70, 229, 0.3),
+        0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-to-top-enhanced:focus-visible {
+    outline: none;
+}
+
+/* High contrast focus for scroll button */
+.high-contrast .scroll-to-top-enhanced:focus {
+    outline: 2px solid ButtonText !important;
+    outline-offset: 2px;
+    background: ButtonFace !important;
+    color: ButtonText !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Loading state accessibility */
+.scroll-to-top-enhanced:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.scroll-to-top-enhanced:disabled:focus {
+    box-shadow: 0 0 0 2px #6B7280;
+}
+
+/* ===== GLASS EFFECTS ACCESSIBILITY ===== */
+
+/* Ensure text readability over glass effects */
+.enhanced-footer-container .text-white {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.enhanced-footer-container .text-slate-300,
+.enhanced-footer-container .text-slate-400 {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* High contrast text override */
+.high-contrast .enhanced-footer-container * {
+    text-shadow: none !important;
+    color: CanvasText !important;
+}
+
+.high-contrast .enhanced-footer-container a {
+    color: LinkText !important;
+}
+
+.high-contrast .enhanced-footer-container a:visited {
+    color: VisitedText !important;
+}
+
+/* ===== RESPONSIVE ACCESSIBILITY ===== */
+
+/* Mobile accessibility improvements */
+@media (max-width: 767px) {
+    .social-icons-3d-container {
+        gap: 1rem;
+    }
+
+    .social-icon-3d {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 0.75rem;
+    }
+
+    .scroll-to-top-enhanced {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 0.75rem;
+    }
+}
+
+/* Touch target improvements */
+@media (pointer: coarse) {
+
+    .social-icon-3d,
+    .scroll-to-top-enhanced {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* ===== ANIMATION SAFETY ===== */
+
+/* Prevent seizure-inducing animations */
+@media (prefers-reduced-motion: no-preference) {
+
+    .social-icon-3d,
+    .scroll-to-top-enhanced {
+        animation-duration: 0.3s;
+        animation-timing-function: ease-out;
+    }
+}
+
+/* Vestibular disorder considerations */
+@media (prefers-reduced-motion: reduce) {
+    .enhanced-footer-container * {
+        animation: none !important;
+        transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease !important;
+    }
+}
+
+/* ===== FORCED COLORS MODE ===== */
+
+@media (forced-colors: active) {
+    .enhanced-footer-container {
+        background: Canvas !important;
+        color: CanvasText !important;
+        border: 1px solid CanvasText !important;
+    }
+
+    .enhanced-footer-glass-layer {
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .social-icon-3d,
+    .scroll-to-top-enhanced {
+        background: ButtonFace !important;
+        color: ButtonText !important;
+        border: 1px solid ButtonText !important;
+        transform: none !important;
+    }
+
+    .social-icon-3d:hover,
+    .social-icon-3d:focus,
+    .scroll-to-top-enhanced:hover,
+    .scroll-to-top-enhanced:focus {
+        background: Highlight !important;
+        color: HighlightText !important;
+        border-color: HighlightText !important;
+    }
+}
+
+/* ===== PRINT ACCESSIBILITY ===== */
+
+@media print {
+    .enhanced-footer-container {
+        background: white !important;
+        color: black !important;
+    }
+
+    .social-icons-3d-container::after {
+        content: "Social media links: " attr(aria-label);
+        display: block;
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+    }
+
+    .scroll-to-top-enhanced {
+        display: none !important;
+    }
+}
