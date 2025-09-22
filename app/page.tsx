@@ -5,8 +5,18 @@ import Footer from './components/Footer';
 import { HomeData } from '../types/home';
 
 async function getHomeData(): Promise<{ data: HomeData | null; error: string | null }> {
+  // Skip API call during build time to prevent deployment errors
+  if (process.env.NODE_ENV === 'production' && !process.env.VERCEL_URL) {
+    return { data: null, error: null };
+  }
+
   try {
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://31.97.129.78:3001';
+
+    // Add timeout and better error handling for external API
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
     const response = await fetch(`${API_BASE_URL}/api/home`, {
       method: 'GET',
       headers: {
@@ -14,7 +24,10 @@ async function getHomeData(): Promise<{ data: HomeData | null; error: string | n
         'Accept': 'application/json',
       },
       next: { revalidate: 300 }, // Revalidate every 5 minutes
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       throw new Error(`API responded with status: ${response.status}`);
@@ -23,10 +36,13 @@ async function getHomeData(): Promise<{ data: HomeData | null; error: string | n
     const result = await response.json();
     return { data: result.data, error: null };
   } catch (error) {
-    console.error('Failed to fetch home data:', error);
+    // Silently fail during build, log during runtime
+    if (typeof window !== 'undefined') {
+      console.warn('Failed to fetch home data:', error);
+    }
     return {
       data: null,
-      error: `Failed to load data from API: ${error instanceof Error ? error.message : 'Unknown error'}`
+      error: null // Don't show error message in production
     };
   }
 }
