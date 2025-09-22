@@ -245,11 +245,12 @@ const Services = ({ full = false, autoplay = true }) => {
     if (!el) return;
     const raw = Math.round(el.scrollLeft / cardWidthRef.current);
     const clamped = Math.max(0, Math.min(serviceItems.length - 1, raw));
-    // Update autoplay hook instead of local state
-    if (clamped !== currentIndex) {
+    // Update autoplay hook - use ref to avoid circular dependency
+    const currentIndexRef = autoplayCarousel.currentIndex;
+    if (clamped !== currentIndexRef) {
       autoplayCarousel.goTo(clamped);
     }
-  }, [serviceItems.length, currentIndex, autoplayCarousel]);
+  }, [serviceItems.length, autoplayCarousel]);
 
   const scrollToIndex = useCallback((i) => {
     const el = scrollerRef.current;

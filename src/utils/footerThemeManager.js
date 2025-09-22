@@ -4,6 +4,8 @@
  * Requirements: 1.4, 2.4, 3.4
  */
 
+import { useState, useEffect, useMemo } from 'react';
+
 /**
  * Theme configurations for different contexts
  */
@@ -108,18 +110,26 @@ export const responsiveAdjustments = {
 export const getCurrentTheme = () => {
     if (typeof window === 'undefined') return 'auto';
 
-    // Check for high contrast preference
-    if (window.matchMedia('(prefers-contrast: high)').matches) {
-        return 'highContrast';
-    }
+    // Check if matchMedia is available (may not be in testing environments)
+    if (!window.matchMedia) return 'auto';
 
-    // Check for color scheme preference
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return 'dark';
-    }
+    try {
+        // Check for high contrast preference
+        if (window.matchMedia('(prefers-contrast: high)').matches) {
+            return 'highContrast';
+        }
 
-    if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-        return 'light';
+        // Check for color scheme preference
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark';
+        }
+
+        if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+            return 'light';
+        }
+    } catch (error) {
+        // Fallback if matchMedia queries fail
+        console.warn('Failed to query media preferences:', error);
     }
 
     return 'auto';
@@ -131,15 +141,21 @@ export const getCurrentTheme = () => {
 export const getResponsiveContext = () => {
     if (typeof window === 'undefined') return 'desktop';
 
-    const width = window.innerWidth;
-
-    if (width < 768) return 'mobile';
-    if (width < 1024) return 'tablet';
-    return 'desktop';
+    try {
+        const width = window.innerWidth || 1024; // fallback width
+        
+        if (width < 768) return 'mobile';
+        if (width < 1024) return 'tablet';
+        return 'desktop';
+    } catch (error) {
+        // Fallback if window access fails
+        console.warn('Failed to get responsive context:', error);
+        return 'desktop';
+    }
 };
 
 /**
- * Calculate optimized theme values based on context
+ * Calculate optimized theme values based on context with null safety
  */
 export const calculateOptimizedTheme = (
     baseTheme = 'auto',
@@ -151,48 +167,87 @@ export const calculateOptimizedTheme = (
     const perfAdjustment = performanceAdjustments[performanceLevel] || performanceAdjustments.high;
     const respAdjustment = responsiveAdjustments[responsiveContext] || responsiveAdjustments.desktop;
 
-    // Apply performance multiplier
+    // Apply performance multiplier with null safety
     const perfAdjustedConfig = {
         ...baseConfig,
-        glassOpacity: baseConfig.glassOpacity * perfAdjustment.multiplier,
-        glassBlur: baseConfig.glassBlur * perfAdjustment.multiplier,
-        beamIntensity: baseConfig.beamIntensity * perfAdjustment.multiplier,
-        beamParticleCount: Math.round(baseConfig.beamParticleCount * perfAdjustment.multiplier)
+        glassOpacity: Math.max(0, (baseConfig.glassOpacity || 0.1) * (perfAdjustment.multiplier || 1)),
+        glassBlur: Math.max(0, (baseConfig.glassBlur || 20) * (perfAdjustment.multiplier || 1)),
+        beamIntensity: Math.max(0, (baseConfig.beamIntensity || 0.6) * (perfAdjustment.multiplier || 1)),
+        beamParticleCount: Math.max(0, Math.round((baseConfig.beamParticleCount || 50) * (perfAdjustment.multiplier || 1)))
     };
 
-    // Apply responsive adjustments
+    // Apply responsive adjustments with null safety
     const finalConfig = {
         ...perfAdjustedConfig,
-        glassBlur: perfAdjustedConfig.glassBlur * respAdjustment.glassBlurMultiplier,
-        socialScale: perfAdjustedConfig.socialScale * respAdjustment.socialScaleMultiplier,
-        beamParticleCount: Math.round(perfAdjustedConfig.beamParticleCount * respAdjustment.beamParticleMultiplier),
-        animationDuration: 0.6 * respAdjustment.animationDurationMultiplier
+        glassBlur: Math.max(0, (perfAdjustedConfig.glassBlur || 20) * (respAdjustment.glassBlurMultiplier || 1)),
+        socialScale: Math.max(0.5, (perfAdjustedConfig.socialScale || 1.1) * (respAdjustment.socialScaleMultiplier || 1)),
+        beamParticleCount: Math.max(0, Math.round((perfAdjustedConfig.beamParticleCount || 50) * (respAdjustment.beamParticleMultiplier || 1))),
+        animationDuration: Math.max(0.1, (0.6 * (respAdjustment.animationDurationMultiplier || 1)))
     };
 
-    // Apply custom overrides
-    return {
+    // Apply custom overrides with validation
+    const mergedConfig = {
         ...finalConfig,
-        ...customOverrides,
-        // Ensure performance constraints are respected
-        ...(perfAdjustment.disableGlass && { glassOpacity: 0, glassBlur: 0 }),
-        ...(perfAdjustment.disableBeams && { beamIntensity: 0, beamParticleCount: 0 })
+        ...customOverrides
     };
+
+    // Ensure performance constraints are respected and no null values
+    const result = {
+        ...mergedConfig,
+        // Ensure no null values with explicit defaults
+        glassOpacity: mergedConfig.glassOpacity ?? 0.1,
+        glassBlur: mergedConfig.glassBlur ?? 20,
+        glassSaturation: mergedConfig.glassSaturation ?? 150,
+        glassBorderOpacity: mergedConfig.glassBorderOpacity ?? 0.15,
+        glassShadowOpacity: mergedConfig.glassShadowOpacity ?? 0.3,
+        socialScale: mergedConfig.socialScale ?? 1.1,
+        beamIntensity: mergedConfig.beamIntensity ?? 0.6,
+        beamParticleCount: mergedConfig.beamParticleCount ?? 50,
+        animationDuration: mergedConfig.animationDuration ?? 0.6
+    };
+
+    // Apply performance constraints that can zero out values
+    if (perfAdjustment.disableGlass) {
+        result.glassOpacity = 0;
+        result.glassBlur = 0;
+    }
+    
+    if (perfAdjustment.disableBeams) {
+        result.beamIntensity = 0;
+        result.beamParticleCount = 0;
+    }
+
+    return result;
 };
 
 /**
- * Generate CSS custom properties object
+ * Generate CSS custom properties object with null-safe fallbacks
  */
 export const generateCSSCustomProperties = (themeConfig) => {
+    // Provide fallback values for null/undefined properties
+    const safeTheme = {
+        glassOpacity: 0.1,
+        glassBlur: 20,
+        glassSaturation: 150,
+        glassBorderOpacity: 0.15,
+        glassShadowOpacity: 0.3,
+        socialScale: 1.1,
+        beamIntensity: 0.6,
+        beamParticleCount: 50,
+        animationDuration: 0.6,
+        ...themeConfig
+    };
+
     return {
-        '--footer-glass-opacity': themeConfig.glassOpacity.toString(),
-        '--footer-glass-blur': `${themeConfig.glassBlur}px`,
-        '--footer-glass-saturation': `${themeConfig.glassSaturation}%`,
-        '--footer-glass-border-opacity': themeConfig.glassBorderOpacity.toString(),
-        '--footer-glass-shadow-opacity': themeConfig.glassShadowOpacity.toString(),
-        '--footer-social-scale': themeConfig.socialScale.toString(),
-        '--footer-beam-intensity': themeConfig.beamIntensity.toString(),
-        '--footer-beam-particle-count': themeConfig.beamParticleCount.toString(),
-        '--footer-animation-duration': `${themeConfig.animationDuration || 0.6}s`,
+        '--footer-glass-opacity': (safeTheme.glassOpacity ?? 0.1).toString(),
+        '--footer-glass-blur': `${safeTheme.glassBlur ?? 20}px`,
+        '--footer-glass-saturation': `${safeTheme.glassSaturation ?? 150}%`,
+        '--footer-glass-border-opacity': (safeTheme.glassBorderOpacity ?? 0.15).toString(),
+        '--footer-glass-shadow-opacity': (safeTheme.glassShadowOpacity ?? 0.3).toString(),
+        '--footer-social-scale': (safeTheme.socialScale ?? 1.1).toString(),
+        '--footer-beam-intensity': (safeTheme.beamIntensity ?? 0.6).toString(),
+        '--footer-beam-particle-count': Math.round(safeTheme.beamParticleCount ?? 50).toString(),
+        '--footer-animation-duration': `${safeTheme.animationDuration ?? 0.6}s`,
         '--footer-animation-delay': '0.2s',
         '--footer-animation-easing': 'cubic-bezier(0.4, 0, 0.2, 1)'
     };
@@ -219,40 +274,70 @@ export const applyThemeToElement = (element, themeConfig) => {
  * React hook for dynamic theme management
  */
 export const useFooterTheme = (customOverrides = {}) => {
-    const [theme, setTheme] = React.useState(() => getCurrentTheme());
-    const [responsiveContext, setResponsiveContext] = React.useState(() => getResponsiveContext());
+    const [theme, setTheme] = useState(() => getCurrentTheme());
+    const [responsiveContext, setResponsiveContext] = useState(() => getResponsiveContext());
 
     // Listen for theme changes
-    React.useEffect(() => {
-        const mediaQueries = [
-            window.matchMedia('(prefers-color-scheme: dark)'),
-            window.matchMedia('(prefers-color-scheme: light)'),
-            window.matchMedia('(prefers-contrast: high)')
-        ];
+    useEffect(() => {
+        if (typeof window === 'undefined' || !window.matchMedia) return;
 
-        const handleThemeChange = () => {
-            setTheme(getCurrentTheme());
-        };
+        try {
+            const mediaQueries = [
+                window.matchMedia('(prefers-color-scheme: dark)'),
+                window.matchMedia('(prefers-color-scheme: light)'),
+                window.matchMedia('(prefers-contrast: high)')
+            ];
 
-        mediaQueries.forEach(mq => mq.addEventListener('change', handleThemeChange));
+            const handleThemeChange = () => {
+                setTheme(getCurrentTheme());
+            };
 
-        return () => {
-            mediaQueries.forEach(mq => mq.removeEventListener('change', handleThemeChange));
-        };
+            mediaQueries.forEach(mq => {
+                if (mq && mq.addEventListener) {
+                    mq.addEventListener('change', handleThemeChange);
+                }
+            });
+
+            return () => {
+                mediaQueries.forEach(mq => {
+                    if (mq && mq.removeEventListener) {
+                        mq.removeEventListener('change', handleThemeChange);
+                    }
+                });
+            };
+        } catch (error) {
+            console.warn('Failed to set up media query listeners:', error);
+        }
     }, []);
 
     // Listen for responsive changes
-    React.useEffect(() => {
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
         const handleResize = () => {
             setResponsiveContext(getResponsiveContext());
         };
 
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        try {
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        } catch (error) {
+            console.warn('Failed to set up resize listener:', error);
+        }
     }, []);
 
-    // Calculate optimized theme
-    const optimizedTheme = React.useMemo(() => {
+    // Calculate optimized theme with null safety
+    const optimizedTheme = useMemo(() => {
+        // Guard against null/undefined theme
+        if (!theme) {
+            return calculateOptimizedTheme(
+                'auto', // fallback theme
+                'high',
+                responsiveContext || 'desktop',
+                customOverrides || {}
+            );
+        }
+        
         return calculateOptimizedTheme(
             theme,
             'high', // This should come from performance monitoring
@@ -261,8 +346,13 @@ export const useFooterTheme = (customOverrides = {}) => {
         );
     }, [theme, responsiveContext, customOverrides]);
 
-    // Generate CSS custom properties
-    const cssCustomProperties = React.useMemo(() => {
+    // Generate CSS custom properties with null safety
+    const cssCustomProperties = useMemo(() => {
+        // Guard against null/undefined optimizedTheme
+        if (!optimizedTheme) {
+            return generateCSSCustomProperties({});
+        }
+        
         return generateCSSCustomProperties(optimizedTheme);
     }, [optimizedTheme]);
 

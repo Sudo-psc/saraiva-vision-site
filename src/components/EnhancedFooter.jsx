@@ -218,12 +218,15 @@ const EnhancedFooter = ({
     // Get compatibility configuration
     const compatibilityConfig = useMemo(() => getCompatibilityConfig(), []);
 
-    // Use theme manager for dynamic theming
-    const { cssCustomProperties: themeProperties } = useFooterTheme({
+    // Use theme manager for dynamic theming with null safety
+    const footerThemeResult = useFooterTheme({
         glassOpacity,
         glassBlur,
         enableAnimations: enableAnimations && !shouldReduceMotion
     });
+    
+    // Extract with fallback for safety
+    const themeProperties = footerThemeResult?.cssCustomProperties || {};
 
     // CSS custom properties for dynamic theming
     const customProperties = useMemo(() => {

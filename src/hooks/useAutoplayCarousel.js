@@ -251,6 +251,7 @@ export const useAutoplayCarousel = ({
 
     // Progress update interval (using setTimeout instead of rAF for better test compatibility)
     const updateProgress = () => {
+      // Check playing state from ref to avoid stale closure
       if (!state.isPlaying) return;
       
       const elapsed = Date.now() - progressStartRef.current;
@@ -274,7 +275,7 @@ export const useAutoplayCarousel = ({
       // The useEffect cleanup function handles pausing, so we can dispatch directly.
       dispatch({ type: 'NEXT', manual: false });
     }, state.interval);
-  }, [state.interval, clearTimers, dispatch, setProgress, setTimeRemaining, state.isPlaying]);
+  }, [state.interval, state.isPlaying, clearTimers]);
 
   // Control methods
   const play = useCallback(() => {
@@ -405,13 +406,60 @@ export const useAutoplayCarousel = ({
   // Handle autoplay timer
   useEffect(() => {
     if (state.isPlaying && state.isEnabled && state.tabVisible) {
-      startTimer();
+      // Call startTimer directly without dependency to avoid loop
+      clearTimers();
+
+      const startTime = Date.now();
+      progressStartRef.current = startTime;
+      progressDurationRef.current = state.interval;
+
+      // Set initial progress values
+      setProgress(0);
+      setTimeRemaining(state.interval);
+
+      // Progress update interval
+      const updateProgress = () => {
+        if (!state.isPlaying) return;
+        
+        const elapsed = Date.now() - progressStartRef.current;
+        const newProgress = Math.min(elapsed / progressDurationRef.current, 1);
+        const remaining = Math.max(progressDurationRef.current - elapsed, 0);
+        
+        setProgress(newProgress);
+        setTimeRemaining(remaining);
+
+        if (newProgress < 1 && state.isPlaying) {
+          progressTimerIdRef.current = setTimeout(updateProgress, 50);
+        }
+      };
+
+      // Start progress updates
+      progressTimerIdRef.current = setTimeout(updateProgress, 50);
+
+      // Main autoplay timer
+      timerRef.current = setTimeout(() => {
+        if (progressTimerIdRef.current) clearTimeout(progressTimerIdRef.current);
+        dispatch({ type: 'NEXT', manual: false });
+      }, state.interval);
     } else {
       clearTimers();
+      // Clear progress state immediately when not playing
+      if (progressTimerIdRef.current) {
+        clearTimeout(progressTimerIdRef.current);
+        progressTimerIdRef.current = null;
+      }
+      setProgress(0);
+      setTimeRemaining(state.interval);
     }
 
-    return clearTimers;
-  }, [state.isPlaying, state.isEnabled, state.tabVisible, startTimer, clearTimers]);
+    return () => {
+      clearTimers();
+      if (progressTimerIdRef.current) {
+        clearTimeout(progressTimerIdRef.current);
+        progressTimerIdRef.current = null;
+      }
+    };
+  }, [state.isPlaying, state.isEnabled, state.tabVisible, state.interval, clearTimers]);
 
   // Handle slide changes for callback - both manual and automatic
   const lastCallbackTransitionRef = useRef(0);

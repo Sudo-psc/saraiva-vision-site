@@ -20,9 +20,6 @@ export default [
       'src/__tests__/**',
       'src/test/**',
       'src/sw.workbox.js',
-      'src/components/ui/**',
-      'src/hooks/**',
-      'src/lib/**',
     ],
   },
   {
@@ -60,8 +57,10 @@ export default [
     rules: {
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
-      'no-unused-vars': 'off',
-      'no-undef': 'off',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      'no-unused-vars': 'warn',
+      'no-undef': 'error',
       'no-empty': 'off',
       'no-useless-catch': 'off',
       'no-case-declarations': 'off',

@@ -1,0 +1,320 @@
+/* Instagram Responsive Grid Styles */
+
+.instagram-responsive-grid {
+    /* Base grid styles */
+    display: grid;
+    width: 100%;
+
+    /* Smooth transitions for layout changes */
+    transition: gap 0.3s ease, grid-template-columns 0.3s ease;
+
+    /* Ensure proper spacing */
+    box-sizing: border-box;
+}
+
+/* Grid layout variants */
+.instagram-responsive-grid.grid-layout {
+    display: grid;
+}
+
+.instagram-responsive-grid.carousel-layout {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.instagram-responsive-grid.carousel-layout::-webkit-scrollbar {
+    display: none;
+}
+
+.instagram-responsive-grid.masonry-layout {
+    display: grid;
+    grid-auto-rows: max-content;
+
+    /* Experimental masonry support */
+    grid-template-rows: masonry;
+}
+
+/* Responsive grid columns */
+.instagram-responsive-grid.cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.instagram-responsive-grid.cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.instagram-responsive-grid.cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.instagram-responsive-grid.cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.instagram-responsive-grid.cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.instagram-responsive-grid.cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+/* Responsive gaps */
+.instagram-responsive-grid.gap-xs {
+    gap: 0.75rem;
+    /* 12px */
+}
+
+.instagram-responsive-grid.gap-sm {
+    gap: 1rem;
+    /* 16px */
+}
+
+.instagram-responsive-grid.gap-md {
+    gap: 1.5rem;
+    /* 24px */
+}
+
+.instagram-responsive-grid.gap-lg {
+    gap: 2rem;
+    /* 32px */
+}
+
+/* Carousel item styles */
+.instagram-responsive-grid.carousel-layout>* {
+    flex-shrink: 0;
+    scroll-snap-align: center;
+}
+
+/* Touch gesture support */
+.instagram-responsive-grid.touch-enabled {
+    touch-action: pan-y pinch-zoom;
+}
+
+.instagram-responsive-grid.carousel-layout.touch-enabled {
+    touch-action: pan-x pan-y pinch-zoom;
+}
+
+/* Breakpoint-specific styles */
+@media (max-width: 639px) {
+
+    /* xs breakpoint */
+    .instagram-responsive-grid {
+        gap: 0.75rem;
+    }
+
+    .instagram-responsive-grid.carousel-layout>* {
+        width: 20rem;
+        /* 320px */
+        max-width: 90vw;
+    }
+
+    /* Ensure single column on very small screens */
+    .instagram-responsive-grid.grid-layout {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (min-width: 640px) and (max-width: 767px) {
+
+    /* sm breakpoint */
+    .instagram-responsive-grid {
+        gap: 1rem;
+    }
+
+    .instagram-responsive-grid.carousel-layout>* {
+        width: 18rem;
+        /* 288px */
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+
+    /* md breakpoint */
+    .instagram-responsive-grid {
+        gap: 1.5rem;
+    }
+
+    .instagram-responsive-grid.carousel-layout>* {
+        width: 16rem;
+        /* 256px */
+    }
+}
+
+@media (min-width: 1024px) {
+
+    /* lg breakpoint and up */
+    .instagram-responsive-grid {
+        gap: 2rem;
+    }
+
+    .instagram-responsive-grid.carousel-layout>* {
+        width: 16rem;
+        /* 256px */
+    }
+}
+
+/* High DPI / Retina display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+    .instagram-responsive-grid {
+        /* Slightly reduce gaps on high DPI displays for better density */
+        gap: calc(var(--grid-gap, 1.5rem) * 0.9);
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .instagram-responsive-grid {
+        transition: none;
+    }
+
+    .instagram-responsive-grid.carousel-layout {
+        scroll-behavior: auto;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .instagram-responsive-grid {
+        /* Increase spacing for better separation in high contrast */
+        gap: calc(var(--grid-gap, 1.5rem) * 1.2);
+    }
+}
+
+/* Print styles */
+@media print {
+    .instagram-responsive-grid.carousel-layout {
+        display: grid !important;
+        overflow: visible !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .instagram-responsive-grid {
+        gap: 1rem !important;
+        page-break-inside: avoid;
+    }
+}
+
+/* Focus and interaction states */
+.instagram-responsive-grid:focus-within {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+}
+
+/* Loading state styles */
+.instagram-responsive-grid.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.instagram-responsive-grid.loading>* {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Error state styles */
+.instagram-responsive-grid.error {
+    border: 2px dashed #ef4444;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background-color: #fef2f2;
+}
+
+/* Accessibility enhancements */
+.instagram-responsive-grid[role="grid"] {
+    /* Ensure proper ARIA grid semantics */
+}
+
+.instagram-responsive-grid[role="grid"]>[role="gridcell"] {
+    /* Grid cell styling */
+    position: relative;
+}
+
+/* Keyboard navigation support */
+.instagram-responsive-grid[role="grid"]>[role="gridcell"]:focus-within {
+    z-index: 10;
+    transform: scale(1.02);
+    transition: transform 0.2s ease;
+}
+
+/* Container queries support (experimental) */
+@supports (container-type: inline-size) {
+    .instagram-responsive-grid {
+        container-type: inline-size;
+    }
+
+    @container (max-width: 400px) {
+        .instagram-responsive-grid.grid-layout {
+            grid-template-columns: 1fr !important;
+        }
+    }
+
+    @container (min-width: 401px) and (max-width: 600px) {
+        .instagram-responsive-grid.grid-layout {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+
+    @container (min-width: 601px) and (max-width: 900px) {
+        .instagram-responsive-grid.grid-layout {
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+    }
+
+    @container (min-width: 901px) {
+        .instagram-responsive-grid.grid-layout {
+            grid-template-columns: repeat(4, 1fr) !important;
+        }
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .instagram-responsive-grid.error {
+        border-color: #dc2626;
+        background-color: #450a0a;
+    }
+}
+
+/* Orientation-specific styles */
+@media (orientation: portrait) {
+    .instagram-responsive-grid.carousel-layout>* {
+        /* Slightly wider items in portrait mode */
+        width: calc(var(--carousel-item-width, 16rem) * 1.1);
+    }
+}
+
+@media (orientation: landscape) {
+    .instagram-responsive-grid.carousel-layout>* {
+        /* Standard width in landscape mode */
+        width: var(--carousel-item-width, 16rem);
+    }
+}
+
+/* Safe area support for mobile devices */
+@supports (padding: max(0px)) {
+    .instagram-responsive-grid {
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+    }
+}
