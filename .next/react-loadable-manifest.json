@@ -1,0 +1,30 @@
+{
+  "../node_modules/@supabase/functions-js/dist/module/helper.js -> @supabase/node-fetch": {
+    "id": 90785,
+    "files": []
+  },
+  "../node_modules/@supabase/gotrue-js/dist/module/lib/helpers.js -> cross-fetch": {
+    "id": 55541,
+    "files": []
+  },
+  "../node_modules/@supabase/realtime-js/dist/module/RealtimeClient.js -> @supabase/node-fetch": {
+    "id": 90785,
+    "files": []
+  },
+  "../node_modules/@supabase/storage-js/dist/module/lib/helpers.js -> @supabase/node-fetch": {
+    "id": 90785,
+    "files": []
+  },
+  "../node_modules/@vitest/snapshot/dist/index.js -> magic-string": {
+    "id": 24543,
+    "files": [
+      "static/chunks/4543.f9e29b8ae7436a58.js"
+    ]
+  },
+  "hooks/useAnalytics.js -> web-vitals": {
+    "id": 70788,
+    "files": [
+      "static/chunks/788.eac5519bd4e2e79c.js"
+    ]
+  }
+}

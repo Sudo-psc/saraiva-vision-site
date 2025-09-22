@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, Calendar, Headphones, Instagram, User } from 'lucide-react';
@@ -13,7 +16,7 @@ const Navbar = () => {
   const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // Prevent double-scroll: lock body when mobile menu is open
   useBodyScrollLock(mobileMenuOpen);
@@ -39,12 +42,12 @@ const Navbar = () => {
     setMobileMenuOpen(false);
     if (link.internal) {
       e.preventDefault();
-      navigate(link.href);
+      router.push(link.href);
     } else {
       e.preventDefault();
       window.open(link.href, '_blank');
     }
-  }, [navigate]);
+  }, [router]);
 
   return (
     <header
@@ -60,7 +63,7 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Link to="/" aria-label={t('navbar.home_link_label', 'Ir para a página inicial')}><Logo /></Link>
+            <Link href="/" aria-label={t('navbar.home_link_label', 'Ir para a página inicial')}><Logo /></Link>
           </motion.div>
 
           {/* Accessibility-friendly global nav landmark for tests and SR readers */}
@@ -75,7 +78,7 @@ const Navbar = () => {
             {navLinks.map((link, index) => (
               <Link
                 key={link.name}
-                to={link.href}
+                href={link.href}
                 className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100"
               >
                 {link.name}
@@ -87,7 +90,7 @@ const Navbar = () => {
             <LanguageSwitcher />
 
             <Link
-              to="/podcast"
+              href="/podcast"
               className="p-2 text-slate-700 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
               aria-label="Podcast"
             >
@@ -95,7 +98,7 @@ const Navbar = () => {
             </Link>
 
             <Button
-              onClick={() => navigate('/contato')}
+              onClick={() => router.push('/contato')}
               className="flex items-center gap-2"
             >
               <Calendar size={18} />
@@ -126,7 +129,7 @@ const Navbar = () => {
             {navLinks.map((link) => (
               <Link
                 key={link.name}
-                to={link.href}
+                href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-slate-800 hover:text-blue-700 py-2 font-medium text-lg"
               >
@@ -137,7 +140,7 @@ const Navbar = () => {
               <Button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  navigate('/contato');
+                  router.push('/contato');
                 }}
                 className="flex items-center gap-2 w-full justify-center"
               >

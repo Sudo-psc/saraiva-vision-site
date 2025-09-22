@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
@@ -96,7 +98,7 @@ const ServiceCard = React.forwardRef(({ service, index, lazy = true }, ref) => {
 
       {/* Saiba mais link styled as button */}
       <Link
-        to={`/servicos/${service.id}`}
+        href={`/servicos/${service.id}`}
         onClick={(e) => {
           // Garantir que o link funcione mesmo durante drag
           e.stopPropagation();

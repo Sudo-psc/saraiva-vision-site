@@ -1,85 +1,69 @@
+import { Metadata } from 'next';
 import { Suspense } from 'react';
-import HeroSection from '@/components/HeroSection';
+import Hero from '@/components/Hero';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import SEOHead from '@/components/SEOHead';
-import { getHomeData } from '@/lib/api/home';
-import { HomeData } from '@/types/home';
 
-// Server Component - Fetch data at build/request time
-export default async function HomePage() {
-  let homeData: HomeData | null = null;
-  let error: string | null = null;
-
-  try {
-    // Fetch data from VPS API with timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home`, {
-      signal: controller.signal,
-      headers: {
-        'Content-Type': 'application/json',
+export const metadata: Metadata = {
+  title: 'Saraiva Vision - Clínica Oftalmológica | Cuidando da sua visão com excelência',
+  description: 'Clínica oftalmológica especializada em cuidados visuais completos. Agende sua consulta hoje mesmo.',
+  keywords: 'oftalmologia, clínica, visão, consultas, exames, cirurgias, catarata, glaucoma, retina',
+  authors: [{ name: 'Saraiva Vision' }],
+  creator: 'Saraiva Vision',
+  publisher: 'Saraiva Vision',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://saraivavision.com.br'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Saraiva Vision - Clínica Oftalmológica',
+    description: 'Clínica oftalmológica especializada em cuidados visuais completos.',
+    url: 'https://saraivavision.com.br',
+    siteName: 'Saraiva Vision',
+    locale: 'pt_BR',
+    type: 'website',
+    images: [
+      {
+        url: '/images/hero.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Saraiva Vision - Clínica Oftalmológica',
       },
-      // Use 'no-store' for fresh data, or 'force-cache' for ISR
-      cache: 'no-store',
-    });
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Saraiva Vision - Clínica Oftalmológica',
+    description: 'Clínica oftalmológica especializada em cuidados visuais completos.',
+    images: ['/images/hero.webp'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+};
 
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      throw new Error(`API responded with status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    homeData = data.data || data; // Handle different response structures
-
-  } catch (err) {
-    console.error('Failed to fetch home data:', err);
-    error = err instanceof Error ? err.message : 'Unknown error';
-
-    // Fallback to mock data for development
-    homeData = {
-      title: 'Cuidando da sua visão com excelência',
-      subtitle: 'Agende sua consulta hoje mesmo e tenha acesso aos melhores cuidados oftalmológicos.',
-      imageUrl: '/images/hero.webp',
-      ctaButtons: [
-        { label: 'Agendar Consulta', link: '/contato', primary: true },
-        { label: 'Saiba Mais', link: '#services', primary: false }
-      ],
-      promoText: 'Mês de Setembro com 50% de desconto em consultas iniciais!'
-    };
-  }
-
-  const seo = {
-    title: 'Saraiva Vision - Clínica Oftalmológica | Cuidando da sua visão com excelência',
-    description: homeData?.subtitle || 'Clínica oftalmológica especializada em cuidados visuais completos.',
-    keywords: 'oftalmologia, clínica, visão, consultas, exames, cirurgias',
-  };
-
+export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <SEOHead {...seo} />
       <Navbar />
 
       <main className="flex-1">
-        <Suspense fallback={<HeroSkeleton />}>
-          <HeroSection
-            data={homeData}
-            error={error}
-          />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Hero />
         </Suspense>
-
-        {/* Additional sections can be added here */}
-        {homeData?.promoText && (
-          <section className="py-8 bg-blue-50">
-            <div className="container mx-auto px-4 text-center">
-              <p className="text-lg font-semibold text-blue-800">
-                {homeData.promoText}
-              </p>
-            </div>
-          </section>
-        )}
       </main>
 
       <Footer />

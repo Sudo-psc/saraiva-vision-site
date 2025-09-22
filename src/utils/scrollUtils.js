@@ -11,8 +11,6 @@
 export const smoothScrollTo = (target, options = {}) => {
 	const {
 		behavior = 'smooth',
-		block = 'start',
-		inline = 'nearest',
 		offset = 0
 	} = options;
 
@@ -62,7 +60,7 @@ export const scrollToHash = (hash, options = {}) => {
  * @param {number} position - Target scroll position
  * @param {Object} options - Scroll options
  */
-export const smoothScrollHorizontal = (container, position, options = {}) => {
+export const smoothScrollHorizontal = (container, position) => {
 	if (!container) return Promise.resolve();
 
 	// USA SCROLL NATIVO HORIZONTAL - mais eficiente

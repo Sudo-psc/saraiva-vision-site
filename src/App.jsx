@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, Suspense } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { HelmetProvider } from 'react-helmet-async';

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';

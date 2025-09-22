@@ -7,9 +7,8 @@ import { getClientIP } from './rateLimiter.js';
 import { createLogger } from '../../src/lib/logger.js';
 import { alertingSystem } from '../../src/lib/alertingSystem.js';
 import { serverEncryption } from '../utils/encryption.js';
-import { accessControl } from '../../src/lib/lgpd/accessControl.js';
-import { securityHeadersMiddleware, applyCorsHeaders, applySecurityHeaders } from '../utils/securityHeaders.js';
-import { handleApiError, createErrorResponse, createSuccessResponse } from '../utils/errorHandler.js';
+import { applyCorsHeaders, applySecurityHeaders } from '../utils/securityHeaders.js';
+import { handleApiError, createSuccessResponse } from '../utils/errorHandler.js';
 
 /**
  * Apply comprehensive security headers and CORS

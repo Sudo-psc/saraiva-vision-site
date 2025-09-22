@@ -11,30 +11,12 @@ export { default as OptimizedImage } from './OptimizedImage';
 export { Button } from './button';
 export { toast, useToast } from './toast';
 export { Toaster } from './toaster';
+export { default as Badge } from './Badge';
 
 // Component-specific exports
 export { default as PodcastEpisodeCard } from '../PodcastEpisodeCard';
 export { default as ServicesEnhanced } from '../ServicesEnhanced';
 export { default as PodcastPageEnhanced } from '../../pages/PodcastPageEnhanced';
-
-// Type exports for TypeScript support
-export type {
-  BaseCardProps,
-  MediaContent,
-  ActionButton,
-  PodcastEpisode,
-  AudioPlayerProps,
-  InteractiveCarouselProps,
-  ServiceItem,
-  MedicalSEOProps,
-  Size,
-  Variant,
-  ColorTheme,
-  BorderRadius,
-  HoverEffect,
-  MotionPreset,
-  AspectRatio
-} from '../../types/components';
 
 // Utility exports
 export {
