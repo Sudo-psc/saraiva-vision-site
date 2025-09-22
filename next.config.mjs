@@ -1,8 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['saraivavision.com.br', '31.97.129.78'],
-    formats: ['image/webp', 'image/avif'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'saraivavision.com.br',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '31.97.129.78',
+        port: '',
+        pathname: '/**',
+      },
+    ],
     localPatterns: [
       {
         pathname: '/images/**',
@@ -11,6 +23,8 @@ const nextConfig = {
         pathname: '/img/**',
       },
     ],
+    formats: ['image/webp', 'image/avif'],
+    qualities: [75, 100],
   },
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://31.97.129.78:3001',
