@@ -95,10 +95,17 @@ When creating this spec from a user prompt:
 
 ### Requirement Completeness
 - [ ] No [NEEDS CLARIFICATION] markers remain
-- [ ] Requirements are testable and unambiguous  
+- [ ] Requirements are testable and unambiguous
 - [ ] Success criteria are measurable
 - [ ] Scope is clearly bounded
 - [ ] Dependencies and assumptions identified
+
+### Constitutional Compliance
+- [ ] Accessibility requirements addressed (WCAG 2.1 AA)
+- [ ] Medical content compliance verified (if applicable)
+- [ ] Performance standards considered (Lighthouse 90+)
+- [ ] Internationalization requirements included
+- [ ] Hybrid architecture integrity maintained
 
 ---
 
