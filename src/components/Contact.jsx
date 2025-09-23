@@ -10,10 +10,19 @@ import { submitContactForm, FallbackStrategies, useConnectionStatus, networkMoni
 import { getUserFriendlyError, getRecoverySteps, logError } from '@/lib/errorHandling';
 import ErrorFeedback, { NetworkError, RateLimitError, RecaptchaError, EmailServiceError } from '@/components/ui/ErrorFeedback';
 import { validateField, validateContactSubmission } from '@/lib/validation';
+import { useAnalytics, useVisibilityTracking } from '@/hooks/useAnalytics';
+import { useSaraivaTracking } from '@/hooks/usePostHog';
+import { consentManager } from '../lib/lgpd/consentManager.js';
+import { ConsentBanner } from './lgpd/ConsentBanner.jsx';
 
 const Contact = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
+
+  // Analytics integration
+  const { trackFormView, trackFormSubmit, trackInteraction } = useAnalytics();
+  const { trackContactInteraction, trackAppointmentRequest } = useSaraivaTracking();
+  const contactFormRef = useVisibilityTracking('contact_form_view');
 
   // Accessibility refs for focus management
   const formRef = useRef(null);
@@ -46,6 +55,11 @@ const Contact = () => {
   const { ready: recaptchaReady, execute: executeRecaptcha } = useRecaptcha();
   const connectionStatus = useConnectionStatus();
   const { isOnline } = connectionStatus || { isOnline: true };
+
+  // Track form view on component mount
+  useEffect(() => {
+    trackFormView('contact');
+  }, [trackFormView]);
 
   // Accessibility announcement function
   const announceToScreenReader = (message, priority = 'polite') => {
@@ -166,6 +180,18 @@ const Contact = () => {
     setSubmissionError(null);
     setShowAlternativeContacts(false);
 
+    // Check LGPD consent before processing
+    if (!consentManager.hasValidConsent()) {
+      const errorMessage = 'É necessário aceitar os termos de privacidade antes de enviar o formulário.';
+      setSubmissionError({
+        name: 'ConsentError',
+        message: 'LGPD consent required',
+        userMessage: errorMessage
+      });
+      announceToScreenReader(errorMessage, 'assertive');
+      return;
+    }
+
     // Announce form submission start
     announceToScreenReader('Enviando formulário, aguarde...', 'assertive');
 
@@ -248,6 +274,15 @@ const Contact = () => {
       // Success
       localStorage.setItem('lastContactSubmission', now.toString());
       setRetryCount(0);
+
+      // Track successful form submission
+      trackFormSubmit('contact', {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        consent: formData.consent
+      });
 
       toast({
         title: t('contact.toast_success_title'),
@@ -545,7 +580,10 @@ const Contact = () => {
               <h3 className="mb-6" id="form-title">{t('contact.form_title')}</h3>
 
               <form
-                ref={formRef}
+                ref={(el) => {
+                  formRef.current = el;
+                  contactFormRef.current = el;
+                }}
                 onSubmit={handleSubmit}
                 className="space-y-5"
                 noValidate
@@ -1151,6 +1189,13 @@ const Contact = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* LGPD Consent Banner */}
+      <ConsentBanner onConsentChange={(hasConsent) => {
+        if (hasConsent) {
+          announceToScreenReader('Consentimento registrado com sucesso', 'polite');
+        }
+      }} />
     </section>
   );
 };

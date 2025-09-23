@@ -1,6 +1,6 @@
 # Saraiva Vision - Clínica Oftalmológica
 
-![Saraiva Vision Logo](https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png)
+![Saraiva Vision Logo](https://raw.githubusercontent.com/sudo-psc/saraiva-vision-site/kiro-branch/public/favicon-32x32.png)
 
 **Site institucional moderno da Clínica Saraiva Vision em Caratinga, MG**
 
@@ -14,29 +14,30 @@
 
 📚 **[Índice Completo de Documentação](./DOCUMENTATION_INDEX.md)** | 🏗️ **[Arquitetura do Sistema](./docs/SYSTEM_ARCHITECTURE.md)** | 🧪 **[Guia de Testes](./docs/TESTING_GUIDE.md)**
 
-
 ## 🏥 Sobre o Projeto
 
-Site institucional desenvolvido para a Clínica Saraiva Vision, especializada em oftalmologia em Caratinga-MG. O projeto foi recentemente adaptado para deploy na plataforma **Vercel**, aproveitando recursos de serverless, edge functions e automação inteligente de deploy. Agora, conta com estratégias avançadas de fallback, monitoramento e múltiplos ambientes de execução, garantindo alta disponibilidade, performance e facilidade de manutenção.
+Site institucional desenvolvido para a Clínica Saraiva Vision, especializada em oftalmologia em Caratinga-MG. O projeto foi completamente modernizado com as mais recentes tecnologias web, incluindo componentes UI avançados, sistema de performance monitoring, integração com redes sociais e conformidade total com LGPD e acessibilidade.
 
-### 🚀 Deploy Inteligente com Vercel
+### 🚀 Arquitetura Moderna
 
-O sistema de deploy utiliza scripts inteligentes que:
-- Testam múltiplas configurações de runtime (Node.js 22.x, 18.x, 20.x, Edge, Static)
-- Realizam health checks automáticos antes do deploy
-- Fazem backup/restauração automática das configs
-- Aplicam fallback para deploy estático em caso de falha
-- Permitem gerenciamento dinâmico de configurações via scripts
-
-Veja detalhes em [`VERCEL_DEPLOYMENT_GUIDE.md`](./VERCEL_DEPLOYMENT_GUIDE.md) e status em [`DEPLOY_STATUS.md`](./DEPLOY_STATUS.md).
+O projeto utiliza uma arquitetura modular e escalável:
+- **Frontend**: React 18 com Vite para build otimizado
+- **UI Components**: Sistema de design avançado com componentes 3D e animações
+- **Performance**: Monitoramento em tempo real e otimização automática
+- **Acessibilidade**: WCAG 2.1 AA compliance com hooks dedicados
+- **Integrações**: Instagram, WhatsApp, Google Maps e muito mais
 
 ### 🎯 Características Principais
 
 - **Design Responsivo**: Interface moderna que se adapta a qualquer dispositivo
-- **Performance Otimizada**: Carregamento rápido e experiência fluida
+- **Performance Otimizada**: Carregamento rápido e experiência fluida com monitoring
 - **SEO Avançado**: Otimização completa para motores de busca
 - **Multilíngue**: Suporte a português e inglês com i18next
-- **Acessibilidade**: Conformidade com WCAG 2.1 AA
+- **Acessibilidade Total**: Conformidade com WCAG 2.1 AA e hooks de acessibilidade
+- **Componentes 3D**: Ícones sociais e elementos UI com efeitos 3D avançados
+- **Performance Monitoring**: Sistema completo de monitoramento em tempo real
+- **LGPD Compliance**: Sistema completo de consentimento e proteção de dados
+- **Integração Social**: Instagram Feed, WhatsApp Business e redes sociais
 - **PWA Ready**: Funcionalidades de aplicativo web progressivo
 
 ## 🚀 Tecnologias Utilizadas
@@ -48,28 +49,52 @@ Veja detalhes em [`VERCEL_DEPLOYMENT_GUIDE.md`](./VERCEL_DEPLOYMENT_GUIDE.md) e 
 - **Framer Motion** - Animações fluidas
 - **React Router** - Roteamento SPA
 
-### UI/UX
+### UI/UX Avançado
 - **Radix UI** - Componentes acessíveis
 - **Lucide React** - Ícones modernos
 - **Class Variance Authority** - Gerenciamento de variantes CSS
 - **Tailwind Merge** - Merge inteligente de classes CSS
+- **Three.js/React Three Fiber** - Componentes 3D e efeitos visuais
+- **Framer Motion** - Animações avançadas e micro-interações
 
-### Internacionalização
-- **React i18next** - Sistema de tradução
-- **i18next Browser LanguageDetector** - Detecção automática de idioma
+### Performance & Monitoramento
+- **Web Vitals** - Métricas de performance do Core Web
+- **PerformanceObserver API** - Monitoramento em tempo real
+- **IntersectionObserver** - Lazy loading e otimizações
+- **RequestAnimationFrame** - Animações otimizadas
 
-### Backend & Integrações
-- **Supabase** - Backend as a Service
+### Acessibilidade
+- **React Aria** - Hooks de acessibilidade
+- **WCAG 2.1 AA** - Compliance total
+- **Focus Management** - Navegação por teclado
+- **Screen Reader Support** - Suporte a leitores de tela
+
+### LGPD & Privacidade
+- **Consent Management** - Sistema de consentimento
+- **Data Anonymization** - Anonimização de dados
+- **Encryption** - Criptografia de dados sensíveis
+- **Access Control** - Controle de acesso a dados
+
+### Integrações Sociais
+- **Instagram Graph API** - Feed de posts e stories
+- **WhatsApp Business API** - Chat e agendamento
 - **Google Maps API** - Mapas e localização
 - **Google Reviews API** - Exibição de avaliações
-- **WhatsApp Business API** - Integração direta
+
+### Backend & APIs
+- **Supabase** - Backend as a Service
+- **Vercel Serverless Functions** - Funções serverless
+- **Edge Functions** - Processamento na edge
+- **WebSockets** - Comunicação em tempo real
 
 ### Ferramentas de Desenvolvimento
 - **Vitest** - Framework de testes
 - **Testing Library** - Testes de componentes React
+- **Playwright** - Testes E2E
 - **ESLint** - Linting de código
 - **PostCSS** - Processamento de CSS
 - **Autoprefixer** - Prefixos CSS automáticos
+- **Prettier** - Formatação de código
 
 ## 📁 Estrutura do Projeto
 
@@ -193,19 +218,62 @@ Arquivos de tradução localizados em `src/locales/`
 ## 📱 Componentes Principais
 
 ### Hero Section
-Landing principal com call-to-actions otimizados
+Landing principal com call-to-actions otimizados e animações avançadas
 
 ### Navigation (Navbar)
-Navegação responsiva com menu mobile
+Navegação responsiva com menu mobile e efeitos 3D
 
 ### Services
-Apresentação dos serviços oftalmológicos
+Apresentação dos serviços oftalmológicos com cards interativos
 
 ### Contact & Scheduling
-Sistema integrado de agendamento
+Sistema integrado de agendamento com validação em tempo real
 
 ### Reviews Integration
-Exibição dinâmica de avaliações do Google
+Exibição dinâmica de avaliações do Google com filtragem
+
+### 🆕 Componentes Avançados
+
+#### Enhanced Footer
+- Footer avançado com múltiplas colunas e links sociais
+- Animações suaves e efeitos hover
+- Totalmente responsivo e acessível
+- [Documentação](./src/components/ui/enhanced-footer.md)
+
+#### SocialIcon3D
+- Ícones sociais 3D com efeitos de profundidade
+- Animações interativas e hover effects
+- Suporte a múltiplas redes sociais
+- [Exemplo](./src/components/SocialIcon3D.demo.jsx)
+
+#### FooterBeamBackground
+- Background animado com feixes de luz
+- Efeitos visuais impressionantes
+- Performance otimizada com GPU acceleration
+- [Exemplo](./src/components/examples/FooterBeamExample.jsx)
+
+#### PerformanceMonitor
+- Monitoramento de performance em tempo real
+- Métricas Core Web Vitals
+- Alertas e otimizações automáticas
+- [Exemplo](./src/components/examples/PerformanceMonitoringExample.jsx)
+
+#### InstagramFeed
+- Integração completa com Instagram Graph API
+- Exibição de posts e stories
+- Carregamento lazy e cache otimizado
+- [Setup](./docs/INSTAGRAM_SETUP.md)
+
+#### Accessibility Components
+- EnhancedFooter com suporte completo a screen readers
+- ScrollToTopEnhanced com navegação por teclado
+- useAccessibility hook para gestão de preferências
+- [Guia](./src/components/ui/ACCESSIBILITY_GUIDE.md)
+
+#### Error Boundaries
+- AnimationErrorBoundary para tratamento de erros em animações
+- PerformanceAwareWrapper para otimização de performance
+- Recuperação automática e fallbacks inteligentes
 
 
 

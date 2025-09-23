@@ -311,20 +311,68 @@ export interface Database {
 }
 
 // Supabase client configuration
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+// Use import.meta.env for Vite environment variables
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
+const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || ''
+
+// Validate required environment variables
+if (!supabaseUrl) {
+    console.warn('VITE_SUPABASE_URL is not set. Supabase client will not work properly.')
+}
+
+if (!supabaseAnonKey) {
+    console.warn('VITE_SUPABASE_ANON_KEY is not set. Supabase client will not work properly.')
+}
+
+// Log configuration status in development
+if (import.meta.env.DEV) {
+    const hasClient = !!(supabaseUrl && supabaseAnonKey);
+    const hasAdmin = !!(supabaseUrl && supabaseServiceKey);
+
+    console.group('Supabase Configuration');
+    console.log('Client configured:', hasClient);
+    console.log('Admin configured:', hasAdmin);
+
+    if (!hasClient) {
+        console.warn('To enable Supabase features, add these to your .env file:');
+        console.warn('VITE_SUPABASE_URL=your_supabase_project_url');
+        console.warn('VITE_SUPABASE_ANON_KEY=your_supabase_anon_key');
+    }
+
+    console.groupEnd();
+}
+
+// Helper to validate Supabase URL structure safely
+function isValidHttpUrl(url: string): boolean {
+    if (!url) return false;
+    try {
+        const u = new URL(url);
+        return u.protocol === 'http:' || u.protocol === 'https:';
+    } catch {
+        return false;
+    }
+}
 
 // Client for frontend operations (with RLS)
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
+export const supabase = supabaseUrl && supabaseAnonKey &&
+    !supabaseUrl.includes('your_supabase') && !supabaseAnonKey.includes('your_supabase') &&
+    isValidHttpUrl(supabaseUrl)
+    ? createClient<Database>(supabaseUrl, supabaseAnonKey)
+    : null
 
 // Admin client for backend operations (bypasses RLS)
-export const supabaseAdmin = createClient<Database>(supabaseUrl, supabaseServiceKey, {
-    auth: {
-        autoRefreshToken: false,
-        persistSession: false
-    }
-})
+// Only create if we have the service key (typically only available server-side)
+export const supabaseAdmin = supabaseUrl && supabaseServiceKey &&
+    !supabaseUrl.includes('your_supabase') && !supabaseServiceKey.includes('your_supabase') &&
+    isValidHttpUrl(supabaseUrl)
+    ? createClient<Database>(supabaseUrl, supabaseServiceKey, {
+        auth: {
+            autoRefreshToken: false,
+            persistSession: false
+        }
+    })
+    : null
 
 // Type exports for use in other files
 export type ContactMessage = Database['public']['Tables']['contact_messages']['Row']

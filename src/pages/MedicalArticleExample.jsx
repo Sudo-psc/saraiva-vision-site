@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import { useSEO } from '@/hooks/useSEO';
 
 function MedicalArticleExample() {
@@ -67,7 +67,7 @@ function MedicalArticleExample() {
             <section className="mt-8 space-y-4 md:space-y-5">
               <h2 className="text-heading-xl text-soft-gray-900">Diagnóstico e exames</h2>
               <p className="text-body-lg text-soft-gray-800">
-                O diagnóstico é feito pelo oftalmologista por meio de exame clínico completo com lâmpada de fenda, 
+                O diagnóstico é feito pelo oftalmologista por meio de exame clínico completo com lâmpada de fenda,
                 avaliação de acuidade visual e, quando necessário, exames complementares para planejamento cirúrgico.
               </p>
             </section>
@@ -75,7 +75,7 @@ function MedicalArticleExample() {
             <section className="mt-8 space-y-4 md:space-y-5">
               <h2 className="text-heading-xl text-soft-gray-900">Tratamento</h2>
               <p className="text-body-lg text-soft-gray-800">
-                O tratamento definitivo é cirúrgico, com remoção do cristalino opacificado e implante de lente 
+                O tratamento definitivo é cirúrgico, com remoção do cristalino opacificado e implante de lente
                 intraocular. A indicação é individualizada, considerando impacto funcional e avaliação clínica.
               </p>
             </section>
@@ -92,7 +92,7 @@ function MedicalArticleExample() {
           </article>
         </div>
       </main>
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 }

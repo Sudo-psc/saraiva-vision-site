@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import SEOHead from '@/components/SEOHead';
 import About from '@/components/About';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +20,7 @@ const AboutPage = () => {
       <main className="flex-1 pt-28 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         <About />
       </main>
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import SEOHead from '@/components/SEOHead';
 import { useFAQSEO } from '@/hooks/useSEO';
 import Navbar from '@/components/Navbar';
 import FAQ from '@/components/FAQ';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import { HelpCircle } from 'lucide-react';
 
 function FAQPage() {
@@ -39,7 +39,7 @@ function FAQPage() {
         <FAQ />
       </main>
 
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 }

@@ -8,7 +8,7 @@ import { ptBR, enUS } from 'date-fns/locale';
 import { Calendar, User, ArrowLeft, Loader2, AlertTriangle, Share2, Clock } from 'lucide-react';
 import DOMPurify from 'dompurify';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
 import {
   fetchPostBySlug,
@@ -109,7 +109,7 @@ const PostPage = () => {
             </Link>
           </div>
         </main>
-        <Footer />
+        <EnhancedFooter />
       </div>
     );
   }
@@ -167,7 +167,7 @@ const PostPage = () => {
           </motion.div>
         </div>
       </main>
-      <Footer />
+      <EnhancedFooter />
 
       {/* Aviso de construção removido nesta subpágina */}
     </div>

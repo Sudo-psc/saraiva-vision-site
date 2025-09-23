@@ -1,0 +1,394 @@
+/* Glass Morphism Utility Classes */
+
+:root {
+    --glass-bg-light: rgba(255, 255, 255, 0.1);
+    --glass-bg-medium: rgba(255, 255, 255, 0.15);
+    --glass-bg-strong: rgba(255, 255, 255, 0.2);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: rgba(0, 0, 0, 0.1);
+    --glass-blur-subtle: 10px;
+    --glass-blur-medium: 20px;
+    --glass-blur-strong: 30px;
+}
+
+/* Base glass morphism class */
+.glass-morphism {
+    position: relative;
+    background: linear-gradient(135deg,
+            var(--glass-bg-light),
+            rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(var(--glass-blur-medium)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-medium)) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+        0 8px 32px var(--glass-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Intensity variations */
+.glass-subtle {
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.05),
+            rgba(255, 255, 255, 0.02));
+    backdrop-filter: blur(var(--glass-blur-subtle)) saturate(120%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-subtle)) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.glass-medium {
+    background: linear-gradient(135deg,
+            var(--glass-bg-medium),
+            rgba(255, 255, 255, 0.08));
+    backdrop-filter: blur(var(--glass-blur-medium)) saturate(150%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-medium)) saturate(150%);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+        0 8px 32px var(--glass-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.glass-strong {
+    background: linear-gradient(135deg,
+            var(--glass-bg-strong),
+            rgba(255, 255, 255, 0.1));
+    backdrop-filter: blur(var(--glass-blur-strong)) saturate(200%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Responsive glass effects */
+@media (max-width: 768px) {
+
+    .glass-morphism,
+    .glass-medium,
+    .glass-strong {
+        backdrop-filter: blur(var(--glass-blur-subtle)) saturate(120%);
+        -webkit-backdrop-filter: blur(var(--glass-blur-subtle)) saturate(120%);
+        background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.08),
+                rgba(255, 255, 255, 0.04));
+    }
+}
+
+@media (max-width: 480px) {
+
+    .glass-morphism,
+    .glass-medium,
+    .glass-strong,
+    .glass-subtle {
+        backdrop-filter: blur(8px) saturate(110%);
+        -webkit-backdrop-filter: blur(8px) saturate(110%);
+        background: rgba(255, 255, 255, 0.06);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+}
+
+/* Fallback for browsers without backdrop-filter support */
+.no-backdrop-filter .glass-morphism,
+.no-backdrop-filter .glass-subtle,
+.no-backdrop-filter .glass-medium,
+.no-backdrop-filter .glass-strong {
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.9),
+            rgba(255, 255, 255, 0.8));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+    .glass-morphism,
+    .glass-subtle,
+    .glass-medium,
+    .glass-strong {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Dark theme variations */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --glass-bg-light: rgba(0, 0, 0, 0.1);
+        --glass-bg-medium: rgba(0, 0, 0, 0.15);
+        --glass-bg-strong: rgba(0, 0, 0, 0.2);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --glass-shadow: rgba(0, 0, 0, 0.3);
+    }
+
+    .glass-morphism {
+        background: linear-gradient(135deg,
+                rgba(0, 0, 0, 0.1),
+                rgba(0, 0, 0, 0.05));
+    }
+
+    .no-backdrop-filter .glass-morphism,
+    .no-backdrop-filter .glass-subtle,
+    .no-backdrop-filter .glass-medium,
+    .no-backdrop-filter .glass-strong {
+        background: linear-gradient(135deg,
+                rgba(0, 0, 0, 0.8),
+                rgba(0, 0, 0, 0.7));
+    }
+}
+
+/* Enhanced Footer Glass Morphism Styles */
+.enhanced-footer {
+    position: relative;
+    overflow: hidden;
+
+    /* Dynamic theming custom properties */
+    --footer-glass-opacity: 0.1;
+    --footer-glass-blur: 20px;
+    --footer-glass-saturation: 150%;
+    --footer-glass-border-opacity: 0.15;
+    --footer-glass-shadow-opacity: 0.3;
+    --footer-animation-duration: 0.6s;
+    --footer-animation-delay: 0.2s;
+    --footer-animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Social icon theming */
+    --footer-social-scale: 1.1;
+    --footer-social-rotate-x: -15deg;
+    --footer-social-rotate-y: 15deg;
+    --footer-social-translate-z: 50px;
+    --footer-social-hover-duration: 0.2s;
+    --footer-social-transform-duration: 0.3s;
+
+    /* Beam background theming */
+    --footer-beam-intensity: 0.6;
+    --footer-beam-particle-count: 50;
+    --footer-beam-animation-duration: 2s;
+
+    /* Scroll button theming */
+    --footer-scroll-button-scale: 1.1;
+    --footer-scroll-button-rotate: 10deg;
+    --footer-scroll-button-duration: 0.2s;
+}
+
+.enhanced-footer-glass-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Footer-specific glass morphism with dark theme optimizations */
+.footer-glass-morphism {
+    background: linear-gradient(135deg,
+            rgba(0, 0, 0, var(--glass-opacity, 0.1)),
+            rgba(0, 0, 0, calc(var(--glass-opacity, 0.1) * 0.5)));
+    backdrop-filter: blur(var(--glass-blur, 20px)) saturate(var(--glass-saturation, 150%));
+    -webkit-backdrop-filter: blur(var(--glass-blur, 20px)) saturate(var(--glass-saturation, 150%));
+    border: 1px solid rgba(255, 255, 255, var(--glass-border-opacity, 0.15));
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, var(--glass-shadow-opacity, 0.3)),
+        inset 0 1px 0 rgba(255, 255, 255, calc(var(--glass-border-opacity, 0.15) * 0.5));
+}
+
+/* Footer glass intensity variations */
+.footer-glass-subtle {
+    --glass-opacity: 0.05;
+    --glass-blur: 10px;
+    --glass-saturation: 120%;
+    --glass-border-opacity: 0.1;
+    --glass-shadow-opacity: 0.2;
+}
+
+.footer-glass-medium {
+    --glass-opacity: 0.1;
+    --glass-blur: 20px;
+    --glass-saturation: 150%;
+    --glass-border-opacity: 0.15;
+    --glass-shadow-opacity: 0.3;
+}
+
+.footer-glass-strong {
+    --glass-opacity: 0.15;
+    --glass-blur: 30px;
+    --glass-saturation: 180%;
+    --glass-border-opacity: 0.2;
+    --glass-shadow-opacity: 0.4;
+}
+
+/* Responsive footer glass effects */
+@media (max-width: 1024px) {
+    .enhanced-footer {
+        --footer-glass-blur: 15px;
+        --footer-glass-saturation: 130%;
+        --footer-social-scale: 1.08;
+        --footer-beam-particle-count: 35;
+    }
+
+    .footer-glass-morphism {
+        --glass-blur: 15px;
+        --glass-saturation: 130%;
+    }
+}
+
+@media (max-width: 768px) {
+    .enhanced-footer {
+        --footer-glass-opacity: 0.08;
+        --footer-glass-blur: 12px;
+        --footer-glass-saturation: 120%;
+        --footer-glass-border-opacity: 0.12;
+        --footer-glass-shadow-opacity: 0.25;
+        --footer-social-scale: 1.05;
+        --footer-social-hover-duration: 0.25s;
+        --footer-beam-particle-count: 25;
+        --footer-animation-duration: 0.5s;
+    }
+
+    .footer-glass-morphism {
+        --glass-opacity: 0.08;
+        --glass-blur: 12px;
+        --glass-saturation: 120%;
+        --glass-border-opacity: 0.12;
+        --glass-shadow-opacity: 0.25;
+    }
+}
+
+@media (max-width: 480px) {
+    .enhanced-footer {
+        --footer-glass-opacity: 0.06;
+        --footer-glass-blur: 8px;
+        --footer-glass-saturation: 110%;
+        --footer-glass-border-opacity: 0.1;
+        --footer-glass-shadow-opacity: 0.2;
+        --footer-social-scale: 1.03;
+        --footer-social-hover-duration: 0.3s;
+        --footer-beam-particle-count: 15;
+        --footer-animation-duration: 0.4s;
+    }
+
+    .footer-glass-morphism {
+        --glass-opacity: 0.06;
+        --glass-blur: 8px;
+        --glass-saturation: 110%;
+        --glass-border-opacity: 0.1;
+        --glass-shadow-opacity: 0.2;
+    }
+}
+
+/* Performance optimizations for low-end devices */
+.low-performance .enhanced-footer {
+    --footer-glass-opacity: 0;
+    --footer-glass-blur: 0px;
+    --footer-social-scale: 1.02;
+    --footer-social-hover-duration: 0.1s;
+    --footer-beam-particle-count: 0;
+    --footer-animation-duration: 0.3s;
+}
+
+.low-performance .footer-glass-morphism {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(30, 41, 59, 0.95);
+    /* Fallback to slate-800 */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Fallback for browsers without backdrop-filter support */
+.no-backdrop-filter .footer-glass-morphism {
+    background: rgba(30, 41, 59, 0.95);
+    /* Fallback to slate-800 */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+/* Reduced motion preferences for footer */
+.reduced-motion .enhanced-footer {
+    --footer-animation-duration: 0s;
+    --footer-animation-delay: 0s;
+    --footer-social-hover-duration: 0s;
+    --footer-social-transform-duration: 0s;
+    --footer-scroll-button-duration: 0s;
+    --footer-beam-animation-duration: 0s;
+}
+
+.reduced-motion .footer-glass-morphism {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(30, 41, 59, 0.9);
+    transition: none;
+}
+
+/* Touch device optimizations */
+.touch-device .enhanced-footer {
+    --footer-glass-blur: 15px;
+    --footer-glass-saturation: 130%;
+    --footer-social-scale: 1.08;
+    --footer-social-hover-duration: 0.25s;
+}
+
+.touch-device .footer-glass-morphism {
+    --glass-blur: 15px;
+    --glass-saturation: 130%;
+}
+
+/* Theme-specific custom properties */
+.enhanced-footer[data-theme="light"] {
+    --footer-glass-opacity: 0.15;
+    --footer-glass-border-opacity: 0.2;
+    --footer-glass-shadow-opacity: 0.2;
+}
+
+.enhanced-footer[data-theme="dark"] {
+    --footer-glass-opacity: 0.08;
+    --footer-glass-border-opacity: 0.12;
+    --footer-glass-shadow-opacity: 0.4;
+}
+
+.enhanced-footer[data-theme="auto"] {
+    --footer-glass-opacity: 0.1;
+    --footer-glass-border-opacity: 0.15;
+    --footer-glass-shadow-opacity: 0.3;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .enhanced-footer {
+        --footer-glass-opacity: 0.2;
+        --footer-glass-border-opacity: 0.3;
+        --footer-social-scale: 1.15;
+    }
+}
+
+/* Animation classes for enhanced footer */
+.enhanced-footer-enter {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+}
+
+.enhanced-footer-enter-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition:
+        opacity var(--footer-animation-duration) ease-out,
+        transform calc(var(--footer-animation-duration) * 1.33) var(--footer-animation-easing);
+}
+
+.enhanced-footer-glass-enter {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+}
+
+.enhanced-footer-glass-enter-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition:
+        opacity calc(var(--footer-animation-duration) * 1.33) ease-out,
+        transform calc(var(--footer-animation-duration) * 1.33) var(--footer-animation-easing);
+    transition-delay: var(--footer-animation-delay);
+}

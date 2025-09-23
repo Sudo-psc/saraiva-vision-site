@@ -1,9 +1,12 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { PostHogProvider } from 'posthog-js/react';
 import App from '@/App';
 import '@/index.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import { AuthProvider } from '@/contexts/AuthContext';
+import './i18n'; // Initialize i18n
 
 // Simple error handler setup
 const setupGlobalErrorHandlers = () => {
@@ -18,6 +21,9 @@ const setupGlobalErrorHandlers = () => {
 
 setupGlobalErrorHandlers();
 
+// PostHog configuration
+import POSTHOG_CONFIG from '@/utils/posthogConfig';
+
 // Get root element
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -26,17 +32,27 @@ if (!rootElement) {
 
 const root = ReactDOM.createRoot(rootElement);
 
-// Simple render without i18n for now to get the app working
+// Render with PostHog integration
 try {
   root.render(
     <React.StrictMode>
-      <ErrorBoundary>
-        <Router>
-          <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
-            <App />
-          </Suspense>
-        </Router>
-      </ErrorBoundary>
+      <PostHogProvider
+        apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
+        options={{
+          ...POSTHOG_CONFIG,
+          defaults: '2025-05-24',
+        }}
+      >
+        <ErrorBoundary>
+          <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <AuthProvider>
+              <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
+                <App />
+              </Suspense>
+            </AuthProvider>
+          </Router>
+        </ErrorBoundary>
+      </PostHogProvider>
     </React.StrictMode>
   );
 } catch (error) {

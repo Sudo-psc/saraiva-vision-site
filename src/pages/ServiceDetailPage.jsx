@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import SEOHead from '@/components/SEOHead';
 import ServiceDetailedContent from '@/components/ServiceDetailedContent';
 import { useTranslation } from 'react-i18next';
@@ -14,11 +14,11 @@ const ServiceDetailPage = () => {
   const { serviceId } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  
+
   // Busca o serviço específico
   const serviceConfig = createServiceConfig(t);
   const service = serviceConfig[serviceId];
-  
+
   // Se o serviço não for encontrado, mostra página de erro
   if (!service) {
     return (
@@ -38,7 +38,7 @@ const ServiceDetailPage = () => {
             </button>
           </div>
         </main>
-        <Footer />
+        <EnhancedFooter />
       </div>
     );
   }
@@ -75,7 +75,7 @@ const ServiceDetailPage = () => {
           if (existingSchema) {
             existingSchema.remove();
           }
-          
+
           // Add new FAQ schema
           const script = document.createElement('script');
           script.type = 'application/ld+json';
@@ -105,7 +105,7 @@ const ServiceDetailPage = () => {
     <div className="min-h-screen flex flex-col bg-white">
       <SEOHead {...seo} />
       <Navbar />
-      
+
       <main className="flex-1 pt-28 scroll-block-internal mx-[5%] lg:mx-[10%]">
         <div className="container mx-auto px-4 md:px-6 py-12">
           {/* Breadcrumb e voltar */}
@@ -121,7 +121,7 @@ const ServiceDetailPage = () => {
               <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
               Voltar para Serviços
             </button>
-            
+
             <nav className="text-sm text-slate-500">
               <span>Serviços</span> / <span className="text-slate-900">{service.title}</span>
             </nav>
@@ -252,8 +252,8 @@ const ServiceDetailPage = () => {
           </div>
         </div>
       </main>
-      
-      <Footer />
+
+      <EnhancedFooter />
     </div>
   );
 };

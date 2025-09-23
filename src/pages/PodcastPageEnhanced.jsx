@@ -18,7 +18,7 @@ import {
 import SEOHead from '@/components/SEOHead';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import AudioPlayer from '@/components/AudioPlayer';
 import SpotifyEmbed from '@/components/SpotifyEmbed';
 import { Button } from '@/components/ui/button';
@@ -37,7 +37,7 @@ import { useAnimationConfig } from '@/hooks/useUnifiedComponents';
 function PodcastPageEnhanced() {
   const { t } = useTranslation();
   const seoData = usePodcastSEO();
-  
+
   // Animation configuration
   const animationConfig = useAnimationConfig({
     respectReducedMotion: true,
@@ -441,17 +441,17 @@ function PodcastPageEnhanced() {
                       items={filteredEpisodes}
                       renderItem={renderEpisodeCard}
                       keyExtractor={(episode) => episode.id}
-                      
+
                       gap={20}
                       cardWidth="responsive"
                       minWidth={280}
                       maxWidth={320}
-                      
+
                       dragToScroll
                       touchSwipe
                       showIndicators
                       fadeEdges
-                      
+
                       aria-label="Episódios do podcast"
                       announceChanges
                       respectReducedMotion
@@ -492,7 +492,7 @@ function PodcastPageEnhanced() {
         </section>
       </main>
 
-      <Footer />
+      <EnhancedFooter />
 
       {/* Audio Player Modal */}
       <AnimatePresence>
