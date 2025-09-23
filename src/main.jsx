@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { PostHogProvider } from 'posthog-js/react';
 import App from '@/App';
 import '@/index.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
@@ -21,9 +20,6 @@ const setupGlobalErrorHandlers = () => {
 
 setupGlobalErrorHandlers();
 
-// PostHog configuration
-import POSTHOG_CONFIG from '@/utils/posthogConfig';
-
 // Get root element
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -32,27 +28,19 @@ if (!rootElement) {
 
 const root = ReactDOM.createRoot(rootElement);
 
-// Render with PostHog integration
+// Render without PostHog integration
 try {
   root.render(
     <React.StrictMode>
-      <PostHogProvider
-        apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
-        options={{
-          ...POSTHOG_CONFIG,
-          defaults: '2025-05-24',
-        }}
-      >
-        <ErrorBoundary>
-          <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-            <AuthProvider>
-              <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
-                <App />
-              </Suspense>
-            </AuthProvider>
-          </Router>
-        </ErrorBoundary>
-      </PostHogProvider>
+      <ErrorBoundary>
+        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <AuthProvider>
+            <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
+              <App />
+            </Suspense>
+          </AuthProvider>
+        </Router>
+      </ErrorBoundary>
     </React.StrictMode>
   );
 } catch (error) {
