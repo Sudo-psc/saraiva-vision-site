@@ -144,7 +144,7 @@ const ChatbotWidget = () => {
     }
 
     return (
-        <div className="fixed bottom-6 right-6 z-50 w-96 max-w-[calc(100vw-2rem)] h-[500px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col text-gray-900">
+        <div className="fixed bottom-6 right-6 z-50 w-96 max-w-[calc(100vw-2rem)] h-[500px] bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col text-black">
             {/* Header */}
             <div className="bg-blue-600 text-white p-4 rounded-t-lg flex items-center justify-between">
                 <div className="flex items-center space-x-3">
@@ -152,7 +152,7 @@ const ChatbotWidget = () => {
                         <Bot size={18} />
                     </div>
                     <div>
-                        <h3 className="font-semibold text-sm">Assistente Saraiva Vision</h3>
+                        <h3 className="font-semibold text-sm text-white">Assistente Saraiva Vision</h3>
                         <p className="text-xs text-blue-100">Online agora</p>
                     </div>
                 </div>
@@ -184,8 +184,8 @@ const ChatbotWidget = () => {
                             <div className={`rounded-lg p-3 ${message.role === 'user'
                                 ? 'bg-blue-600 text-white'
                                 : message.isError
-                                    ? 'bg-red-100 text-red-800 border border-red-200'
-                                    : 'bg-white text-gray-900 border border-gray-200'
+                                    ? 'bg-red-100 text-red-900 border border-red-200'
+                                    : 'bg-white text-black border border-gray-200'
                                 }`}>
                                 <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                                 {message.suggestsBooking && (
@@ -241,7 +241,7 @@ const ChatbotWidget = () => {
                         onChange={(e) => setInputMessage(e.target.value)}
                         onKeyPress={handleKeyPress}
                         placeholder="Digite sua mensagem..."
-                        className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         disabled={isLoading}
                         maxLength={1000}
                         aria-label="Campo de mensagem"
@@ -260,21 +260,21 @@ const ChatbotWidget = () => {
                 <div className="mt-2 flex space-x-2">
                     <button
                         onClick={handleContactRedirect}
-                        className="inline-flex items-center space-x-1 text-xs text-gray-700 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors"
+                        className="inline-flex items-center space-x-1 text-xs text-gray-800 hover:text-black bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors"
                     >
                         <Phone size={10} />
                         <span>WhatsApp</span>
                     </button>
                     <button
                         onClick={handleBookingRedirect}
-                        className="inline-flex items-center space-x-1 text-xs text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded transition-colors"
+                        className="inline-flex items-center space-x-1 text-xs text-blue-800 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded transition-colors"
                     >
                         <ExternalLink size={10} />
                         <span>Agendar</span>
                     </button>
                 </div>
 
-                <p className="text-xs text-gray-700 mt-2">
+                <p className="text-xs text-gray-800 mt-2">
                     Pressione Enter para enviar • Máximo 1000 caracteres
                 </p>
             </div>

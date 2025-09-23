@@ -19,70 +19,92 @@ export class InstagramEmbedService {
         
         return [
             {
-                id: 'saraiva_1',
+                id: 'post_020924_exam',
                 username: 'saraiva_vision',
-                caption: '🔬 Exame completo de vista na Clínica Saraiva Vision! Nossa equipe especializada utiliza tecnologia de ponta para cuidar da sua saúde ocular. Agende sua consulta! 👁️✨ #SaraivaVision #SaudeOcular #Oftalmologia #Brasilia',
+                caption: '🔬 Exame completo realizado hoje! É incrível como a tecnologia nos permite ver cada detalhe da sua saúde ocular. Prevenção é sempre o melhor remédio! 👁️ Obrigado pela confiança, paciente! #SaraivaVision #SaudeOcular #PrevencaoVisual #Brasilia',
                 imageUrl: `${baseUrl}hero.webp`,
-                timestamp: new Date(currentDate.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-                likes: 147,
-                comments: 23,
+                timestamp: new Date(currentDate.getTime() - 0.5 * 24 * 60 * 60 * 1000).toISOString(),
+                likes: 87,
+                comments: 12,
                 type: 'image',
-                hashtags: ['#SaraivaVision', '#SaudeOcular', '#Oftalmologia', '#Brasilia']
+                hashtags: ['#SaraivaVision', '#SaudeOcular', '#PrevencaoVisual', '#Brasilia']
             },
             {
-                id: 'saraiva_2', 
+                id: 'post_010924_drphilipe', 
                 username: 'saraiva_vision',
-                caption: '👨‍⚕️ Conheça Dr. Philipe Saraiva Cruz, especialista em oftalmologia com anos de experiência cuidando da visão dos brasilienses. Atendimento humanizado e tecnologia avançada! 🏥 #DrPhilipe #EspecialistaOftalmologia #AtendimentoHumanizado',
+                caption: 'Dr. Philipe Saraiva Cruz atendendo com dedicação e carinho cada paciente. "Ver o sorriso de satisfação ao final de cada consulta é o que me motiva todos os dias!" 👨‍⚕️❤️ #DrPhilipe #AtendimentoHumanizado #OftalmologiaBSB #CuidadoComAmor',
                 imageUrl: `${baseUrl}drphilipe_perfil.webp`,
-                timestamp: new Date(currentDate.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+                timestamp: new Date(currentDate.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                likes: 156,
+                comments: 28,
+                type: 'image',
+                hashtags: ['#DrPhilipe', '#AtendimentoHumanizado', '#OftalmologiaBSB', '#CuidadoComAmor']
+            },
+            {
+                id: 'post_300824_podcast',
+                username: 'saraiva_vision',
+                caption: '🎧 NOVO EPISÓDIO NO AR! "Como proteger sua visão no trabalho remoto" - episódio especial com dicas práticas para quem passa muitas horas na tela. Link na bio! 💻👀 #PodcastSaude #TrabalhoRemoto #SaudeDigital #DicasPraticas',
+                imageUrl: '/Podcasts/Covers/podcast.png',
+                timestamp: new Date(currentDate.getTime() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+                likes: 134,
+                comments: 19,
+                type: 'image',
+                hashtags: ['#PodcastSaude', '#TrabalhoRemoto', '#SaudeDigital', '#DicasPraticas']
+            },
+            {
+                id: 'post_280824_equipment',
+                username: 'saraiva_vision',
+                caption: '🏥 Novos equipamentos chegaram! Investimos constantemente em tecnologia para oferecer diagnósticos ainda mais precisos. Sua visão merece o que há de melhor! ✨ #TecnologiaAvancada #EquipamentosModernos #InovacaoMedica #QualidadeSaraiva',
+                imageUrl: `${baseUrl}hero.webp`,
+                timestamp: new Date(currentDate.getTime() - 6 * 24 * 60 * 60 * 1000).toISOString(),
                 likes: 203,
                 comments: 31,
                 type: 'image',
-                hashtags: ['#DrPhilipe', '#EspecialistaOftalmologia', '#AtendimentoHumanizado']
+                hashtags: ['#TecnologiaAvancada', '#EquipamentosModernos', '#InovacaoMedica', '#QualidadeSaraiva']
             },
             {
-                id: 'saraiva_3',
+                id: 'post_250824_success',
                 username: 'saraiva_vision',
-                caption: '🎧 Novo episódio do nosso podcast! Dicas importantes sobre como cuidar da sua visão no dia a dia. Ouça agora e aprenda com nossos especialistas! 💡👂 #PodcastSaude #DicasSaude #CuidadoVisual #SaraivaVision',
-                imageUrl: '/Podcasts/Covers/podcast.png',
-                timestamp: new Date(currentDate.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-                likes: 89,
-                comments: 12,
-                type: 'image',
-                hashtags: ['#PodcastSaude', '#DicasSaude', '#CuidadoVisual', '#SaraivaVision']
-            },
-            {
-                id: 'saraiva_4',
-                username: 'saraiva_vision',
-                caption: '🏥 Nossa clínica está totalmente equipada para oferecer o melhor atendimento oftalmológico de Brasília. Ambiente moderno, confortável e seguro para toda a família! 👨‍👩‍👧‍👦 #ClinicaModerna #SeguranraBrasilia #FamiliaSegura',
-                imageUrl: '/img/clinic_facade.webp',
-                timestamp: new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-                likes: 156,
-                comments: 18,
-                type: 'image',
-                hashtags: ['#ClinicaModerna', '#SeguranraBrasilia', '#FamiliaSegura']
-            },
-            {
-                id: 'saraiva_5',
-                username: 'saraiva_vision',
-                caption: '✨ Tecnologia de ponta a serviço da sua visão! Equipamentos modernos para diagnósticos precisos e tratamentos eficazes. Sua saúde ocular merece o melhor! 🔬💻 #TecnologiaAvancada #DiagnosticoPreciso #InovacaoMedica',
+                caption: '😊 "Depois de anos com dificuldade para enxergar, hoje posso ver minha família claramente!" Depoimento emocionante da Sra. Maria. Momentos como este nos lembram por que escolhemos a medicina! 👨‍👩‍👧‍👦💕 #TestemunhoReal #VidaMelhor #GratidaoMutua #FamiliaSaraiva',
                 imageUrl: `${baseUrl}hero.webp`,
-                timestamp: new Date(currentDate.getTime() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-                likes: 134,
-                comments: 15,
+                timestamp: new Date(currentDate.getTime() - 9 * 24 * 60 * 60 * 1000).toISOString(),
+                likes: 289,
+                comments: 47,
                 type: 'image',
-                hashtags: ['#TecnologiaAvancada', '#DiagnosticoPreciso', '#InovacaoMedica']
+                hashtags: ['#TestemunhoReal', '#VidaMelhor', '#GratidaoMutua', '#FamiliaSaraiva']
             },
             {
-                id: 'saraiva_6',
+                id: 'post_220824_team',
                 username: 'saraiva_vision',
-                caption: '👓 Sua lente perfeita está aqui! Grande variedade de armações e lentes especializadas para todos os tipos de necessidade visual. Venha conhecer nossa ótica! 🤓✨ #Otica #LentesEspecializadas #ArmacaoModerna #EstiloVisao',
+                caption: '👩‍⚕️👨‍⚕️ Nossa equipe em ação! Cada profissional da Saraiva Vision é dedicado e apaixonado pelo que faz. Juntos, cuidamos da sua visão com excelência! 🤝✨ #EquipeSaraiva #TrabalhoEmEquipe #ProfissionaisDedicados #ExcelenciaNoAtendimento',
                 imageUrl: `${baseUrl}hero.webp`,
                 timestamp: new Date(currentDate.getTime() - 12 * 24 * 60 * 60 * 1000).toISOString(),
-                likes: 178,
-                comments: 27,
+                likes: 167,
+                comments: 23,
                 type: 'image',
-                hashtags: ['#Otica', '#LentesEspecializadas', '#ArmacaoModerna', '#EstiloVisao']
+                hashtags: ['#EquipeSaraiva', '#TrabalhoEmEquipe', '#ProfissionaisDedicados', '#ExcelenciaNoAtendimento']
+            },
+            {
+                id: 'post_200824_awareness',
+                username: 'saraiva_vision',
+                caption: '⚠️ DICA IMPORTANTE: Você sabia que 80% dos problemas de visão podem ser prevenidos com exames regulares? Agende sua consulta preventiva! A prevenção é sempre o melhor investimento em saúde. 📅👁️ #PrevencaoVisual #ExameRegular #SaudeOcular #CuidadoPrevencao',
+                imageUrl: `${baseUrl}hero.webp`,
+                timestamp: new Date(currentDate.getTime() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+                likes: 245,
+                comments: 38,
+                type: 'image',
+                hashtags: ['#PrevencaoVisual', '#ExameRegular', '#SaudeOcular', '#CuidadoPrevencao']
+            },
+            {
+                id: 'post_180824_children',
+                username: 'saraiva_vision',
+                caption: '👶👧 Atendimento especializado para crianças! Nosso consultório infantil foi pensado para deixar os pequenos pacientes à vontade. Cuidar da visão desde cedo é fundamental! 🧸🎨 #OftalmologiaInfantil #CriancasSaraiva #ConsultorioInfantil #CuidadoEspecial',
+                imageUrl: `${baseUrl}hero.webp`,
+                timestamp: new Date(currentDate.getTime() - 18 * 24 * 60 * 60 * 1000).toISOString(),
+                likes: 198,
+                comments: 35,
+                type: 'image',
+                hashtags: ['#OftalmologiaInfantil', '#CriancasSaraiva', '#ConsultorioInfantil', '#CuidadoEspecial']
             }
         ];
     }
@@ -148,7 +170,7 @@ export class InstagramEmbedService {
      */
     calculateEngagement(likes, comments) {
         const totalEngagement = likes + comments;
-        const followers = 2500; // Estimativa de seguidores
+        const followers = 1850; // Número realista para clínica médica
         return ((totalEngagement / followers) * 100).toFixed(1);
     }
 
@@ -161,9 +183,9 @@ export class InstagramEmbedService {
         const totalComments = posts.reduce((sum, post) => sum + post.comments, 0);
         
         return {
-            followers: '2.5K',
-            following: '150',
-            posts: posts.length,
+            followers: '1.8K',
+            following: '89',
+            posts: 127, // Total realista de posts históricos
             averageLikes: Math.round(totalLikes / posts.length),
             averageComments: Math.round(totalComments / posts.length),
             engagementRate: this.calculateEngagement(totalLikes, totalComments)

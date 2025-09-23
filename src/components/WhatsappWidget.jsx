@@ -128,7 +128,7 @@ const WhatsappWidget = ({
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-2 mb-1">
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-sm font-medium text-black">
                     {whatsappConfig.greeting.title}
                   </p>
                   {!businessHours && (
@@ -136,7 +136,7 @@ const WhatsappWidget = ({
                   )}
                 </div>
 
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm text-gray-800 leading-relaxed">
                   {customGreeting || whatsappConfig.greeting.message}
                 </p>
 
@@ -181,10 +181,10 @@ const WhatsappWidget = ({
         {/* Tooltip for desktop */}
         {whatsappConfig.widget.showTooltip && (
           <div className="absolute bottom-full right-0 mb-2 hidden sm:group-hover:block">
-            <div className="bg-gray-900 text-white text-sm rounded-lg px-3 py-2 whitespace-nowrap">
+            <div className="bg-black text-white text-sm rounded-lg px-3 py-2 whitespace-nowrap">
               {businessHours ? whatsappConfig.accessibility.tooltip : 'Fora do horário (responderemos em breve)'}
               <div className="absolute top-full right-4 transform -translate-x-1/2">
-                <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-gray-900"></div>
+                <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-black"></div>
               </div>
             </div>
           </div>

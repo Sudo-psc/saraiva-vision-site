@@ -85,31 +85,15 @@ function HomePage() {
                 </p>
               </div>
               
-              <div className="max-w-4xl mx-auto">
+              <div className="max-w-3xl mx-auto">
                 <InstagramEmbedProvider maxPosts={6} enableAutoRefresh={false}>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Widget principal */}
-                    <div className="lg:col-span-1">
-                      <InstagramEmbedWidget
-                        maxPosts={4}
-                        showHeader={true}
-                        showCaption={true}
-                        className="h-full"
-                        height="500px"
-                      />
-                    </div>
-                    
-                    {/* Grid de posts adicionais */}
-                    <div className="lg:col-span-1">
-                      <InstagramEmbedWidget
-                        maxPosts={4}
-                        showHeader={false}
-                        showCaption={false}
-                        className="instagram-grid"
-                        height="500px"
-                      />
-                    </div>
-                  </div>
+                  <InstagramEmbedWidget
+                    maxPosts={6}
+                    showHeader={true}
+                    showCaption={true}
+                    height="600px"
+                    className="w-full"
+                  />
                 </InstagramEmbedProvider>
               </div>
             </div>

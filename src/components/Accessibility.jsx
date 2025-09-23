@@ -237,7 +237,7 @@ const Accessibility = () => {
 
   const Section = ({ title, icon: Icon, children }) => (
     <div className="mb-6">
-      <h4 className="flex items-center gap-2 font-semibold text-sm text-slate-700 mb-3">
+      <h4 className="flex items-center gap-2 font-semibold text-sm text-black mb-3">
         <Icon size={16} className="text-cyan-600" /> {title}
       </h4>
       <div className="space-y-2">{children}</div>
@@ -250,7 +250,7 @@ const Accessibility = () => {
       onClick={onClick}
       aria-pressed={active}
       aria-label={ariaLabel}
-      className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white flex items-center gap-1 ${active ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white border-transparent shadow' : 'bg-white/60 backdrop-blur border-slate-300 text-slate-700 hover:bg-white'}`}
+      className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white flex items-center gap-1 ${active ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white border-transparent shadow' : 'bg-white/80 backdrop-blur border-slate-300 text-black hover:bg-white'}`}
     >
       {children}
     </button>
@@ -275,7 +275,7 @@ const Accessibility = () => {
           >
             <AccessibilityIcon size={22} className="text-white drop-shadow" />
           </motion.button>
-          <div className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
+          <div className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 bg-black text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
             Acessibilidade
           </div>
         </div>
@@ -299,7 +299,7 @@ const Accessibility = () => {
             }}
           >
             <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-purple-200/50 bg-white/60 backdrop-blur-sm">
-              <h3 className="text-lg font-bold flex items-center gap-2 text-slate-800">
+              <h3 className="text-lg font-bold flex items-center gap-2 text-black">
                 <AccessibilityIcon size={20} className="text-purple-600" />
                 Menu de Acessibilidade
               </h3>
@@ -311,7 +311,7 @@ const Accessibility = () => {
                 <X size={20} />
               </button>
             </div>
-            <div className="overflow-y-auto px-6 py-4 text-slate-700 text-sm scroll-container scrollbar-none touch-scroll" style={{ scrollbarWidth: 'none' }}>
+            <div className="overflow-y-auto px-6 py-4 text-black text-sm scroll-container scrollbar-none touch-scroll" style={{ scrollbarWidth: 'none' }}>
               {/* Controle de Legibilidade */}
               <Section title="Controle de Legibilidade" icon={Type}>
                 <div className="flex flex-wrap gap-2">
@@ -340,7 +340,7 @@ const Accessibility = () => {
                   <ToggleButton active={state.libras} ariaLabel="Ativar Libras" onClick={() => updateState({ libras: !state.libras })}>Libras</ToggleButton>
                   <ToggleButton active={state.muteMedia} ariaLabel="Silenciar mídia" onClick={() => updateState({ muteMedia: !state.muteMedia })}>{state.muteMedia ? <VolumeX size={14} /> : <Volume2 size={14} />} Som</ToggleButton>
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1">Integração Libras via VLibras (carrega script externo).</p>
+                <p className="text-[11px] text-gray-700 mt-1">Integração Libras via VLibras (carrega script externo).</p>
               </Section>
 
               {/* Navegação e Entrada */}
@@ -360,7 +360,7 @@ const Accessibility = () => {
                     <ToggleButton key={p} active={state.profile === p} ariaLabel={`Aplicar perfil ${p}`} onClick={() => applyProfile(p)}>{p}</ToggleButton>
                   ))}
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1">Aplica combinações recomendadas (pode sobrepor suas escolhas).</p>
+                <p className="text-[11px] text-gray-700 mt-1">Aplica combinações recomendadas (pode sobrepor suas escolhas).</p>
               </Section>
 
               {/* Outros Recursos */}
@@ -373,7 +373,7 @@ const Accessibility = () => {
                   <ToggleButton active={state.colorBlindMode} ariaLabel="Modo daltonismo" onClick={() => updateState({ colorBlindMode: !state.colorBlindMode })}>Daltonismo</ToggleButton>
                   <ToggleButton active={state.epilepsySafe} ariaLabel="Modo epilepsia" onClick={() => updateState({ epilepsySafe: !state.epilepsySafe })}><Zap size={14} /> Epilepsia</ToggleButton>
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1">Todos os recursos podem combinar-se. Use ESC para fechar rapidamente.</p>
+                <p className="text-[11px] text-gray-700 mt-1">Todos os recursos podem combinar-se. Use ESC para fechar rapidamente.</p>
               </Section>
             </div>
           </motion.aside>
@@ -396,7 +396,7 @@ const Accessibility = () => {
             }}
           >
             {'1234567890qwertyuiopasdfghjklçzxcvbnm'.split('').map(k => (
-              <button type="button" key={k} className="px-2 py-2 rounded bg-blue-100 hover:bg-blue-200 text-slate-700 font-medium" onClick={() => {
+              <button type="button" key={k} className="px-2 py-2 rounded bg-blue-100 hover:bg-blue-200 text-black font-medium" onClick={() => {
                 const a = document.activeElement; if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) { a.value += k; a.dispatchEvent(new Event('input', { bubbles: true })); }
               }}>{k}</button>
             ))}
