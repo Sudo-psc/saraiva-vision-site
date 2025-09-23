@@ -15,8 +15,6 @@ import GoogleLocalSection from '@/components/GoogleLocalSection';
 import FAQ from '@/components/FAQ';
 import LatestEpisodes from '@/components/LatestEpisodes';
 import LatestBlogPosts from '@/components/LatestBlogPosts';
-import InstagramEmbedWidget from '@/components/InstagramEmbedWidget';
-import { InstagramEmbedProvider } from '@/hooks/useInstagramEmbed.jsx';
 
 function HomePage() {
   const location = useLocation();
@@ -72,33 +70,6 @@ function HomePage() {
           <Hero />
           <Services />
           <About />
-          
-          {/* Instagram Feed sem API */}
-          <section className="py-16 bg-gray-50">
-            <div className="container mx-auto px-4">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                  📸 Siga-nos no Instagram
-                </h2>
-                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                  Acompanhe os bastidores da Saraiva Vision e fique por dentro das novidades em saúde ocular
-                </p>
-              </div>
-              
-              <div className="max-w-3xl mx-auto">
-                <InstagramEmbedProvider maxPosts={6} enableAutoRefresh={false}>
-                  <InstagramEmbedWidget
-                    maxPosts={6}
-                    showHeader={true}
-                    showCaption={true}
-                    height="600px"
-                    className="w-full"
-                  />
-                </InstagramEmbedProvider>
-              </div>
-            </div>
-          </section>
-          
           <CompactGoogleReviews />
           <GoogleLocalSection />
           <FAQ />

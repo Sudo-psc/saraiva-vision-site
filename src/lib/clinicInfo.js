@@ -49,7 +49,9 @@ export const clinicInfo = {
   // Responsible physician (CFM compliance)
   responsiblePhysician: 'Dr. Philipe Saraiva Cruz',
   responsiblePhysicianCRM: 'CRM-MG 69.870',
+  responsiblePhysicianTitle: 'Responsável Técnico Médico',
   responsibleNurse: 'Ana Lúcia',
+  responsibleNurseTitle: 'Enfermeira',
   responsibleNursePhone: '+55 33 98420-7437',
   // Data Protection Officer contact (LGPD Art.41)
   dpoEmail: 'saraivavision@gmail.com',

@@ -16,6 +16,7 @@ import useInstagramPerformance from '../../hooks/useInstagramPerformance';
 import useInstagramAccessibility from '../../hooks/useInstagramAccessibility';
 import useAccessibilityPreferences from '../../hooks/useAccessibilityPreferences';
 import useInstagramAccessibilityEnhanced from '../../hooks/useInstagramAccessibilityEnhanced';
+import { useInstagramFeatureFlags } from '../../contexts/PostHogContext';
 import '../../styles/responsiveGrid.css';
 import '../../styles/accessibility.css';
 
@@ -48,6 +49,15 @@ const InstagramFeedContainer = ({
     const [fallbackPosts, setFallbackPosts] = useState([]);
     const [errorType, setErrorType] = useState('unknown');
     const [showFallback, setShowFallback] = useState(false);
+
+    // PostHog feature flags for Instagram integration
+    const {
+        isLoaded: featureFlagsLoaded,
+        isEnabled: isInstagramEnabled,
+        isWebCrawlerEnabled,
+        isRealDataEnabled,
+        trackEvent: trackInstagramEvent
+    } = useInstagramFeatureFlags();
 
     // Refs
     const containerRef = useRef(null);
@@ -179,6 +189,31 @@ const InstagramFeedContainer = ({
 
     // Fetch posts from API with comprehensive error handling
     const fetchPosts = useCallback(async (force = false) => {
+        // Check if Instagram integration is enabled via feature flag
+        if (!featureFlagsLoaded) {
+            console.log('Feature flags not loaded yet, waiting...');
+            return { success: false, message: 'Feature flags loading...' };
+        }
+
+        if (!isInstagramEnabled()) {
+            console.log('Instagram integration disabled via feature flag');
+            trackInstagramEvent('integration_disabled', { 
+                reason: 'feature_flag',
+                timestamp: new Date().toISOString()
+            });
+            setShowFallback(true);
+            setLoading(false);
+            return { success: false, message: 'Instagram integration disabled' };
+        }
+
+        // Track fetch attempt
+        trackInstagramEvent('fetch_attempt', {
+            force,
+            webCrawlerEnabled: isWebCrawlerEnabled(),
+            realDataEnabled: isRealDataEnabled(),
+            timestamp: new Date().toISOString()
+        });
+
         const operationContext = instagramErrorHandler.createContext(
             'fetchPosts',
             '/api/instagram/posts'
@@ -248,6 +283,15 @@ const InstagramFeedContainer = ({
                     announce(`${result.posts.length} Instagram posts loaded successfully`);
                 }
 
+                // Track successful fetch
+                trackInstagramEvent('fetch_success', {
+                    source: result.source,
+                    postCount: result.posts.length,
+                    cached: result.cached || false,
+                    webCrawlerUsed: result.source?.includes('crawler') || false,
+                    timestamp: new Date().toISOString()
+                });
+
                 if (onSuccess) {
                     onSuccess(result.posts, result);
                 }
@@ -269,6 +313,15 @@ const InstagramFeedContainer = ({
             setError(errorResult.userMessage?.message || err.message);
             setErrorType(errorResult.error?.type || 'unknown');
             setShowFallback(errorResult.shouldShowFallback);
+
+            // Track fetch error
+            trackInstagramEvent('fetch_error', {
+                error: err.message,
+                errorType: errorResult.error?.type || 'unknown',
+                shouldShowFallback: errorResult.shouldShowFallback,
+                hasFallbackData: fallbackPosts.length > 0,
+                timestamp: new Date().toISOString()
+            });
 
             // Try to use cached data as fallback
             const cachedData = getCachedData();
@@ -313,7 +366,7 @@ const InstagramFeedContainer = ({
             setLoading(false);
             setRefreshing(false);
         }
-    }, [maxPosts, showStats, getCachedData, setCachedData, onSuccess, onError, preloadImages, enableAccessibility, announce]);
+    }, [maxPosts, showStats, getCachedData, setCachedData, onSuccess, onError, preloadImages, enableAccessibility, announce, featureFlagsLoaded, isInstagramEnabled, isWebCrawlerEnabled, isRealDataEnabled, trackInstagramEvent, fallbackPosts.length]);
 
     // Manual refresh
     const handleRefresh = useCallback(async () => {
@@ -344,6 +397,16 @@ const InstagramFeedContainer = ({
 
     // Handle post click
     const handlePostClick = useCallback((post, index) => {
+        // Track post interaction
+        trackInstagramEvent('post_click', {
+            postId: post.id,
+            postIndex: index,
+            username: post.username,
+            hasPermalink: !!post.permalink,
+            source: post.source || 'unknown',
+            timestamp: new Date().toISOString()
+        });
+
         // Announce action to screen readers
         if (enableAccessibility) {
             announce(`Opening Instagram post by ${post.username || 'user'} in new tab`);
@@ -357,7 +420,7 @@ const InstagramFeedContainer = ({
                 window.open(post.permalink, '_blank', 'noopener,noreferrer');
             }
         }
-    }, [onPostClick, enableAccessibility, announce]);
+    }, [onPostClick, enableAccessibility, announce, trackInstagramEvent]);
 
     // Network status monitoring
     useEffect(() => {
@@ -533,6 +596,30 @@ const InstagramFeedContainer = ({
             }
         }
     };
+
+    // Don't render if feature flags haven't loaded yet
+    if (!featureFlagsLoaded) {
+        return (
+            <div className="instagram-feed-container p-4 bg-gray-50 rounded-lg">
+                <div className="animate-pulse">
+                    <div className="h-4 bg-gray-300 rounded w-1/4 mb-4"></div>
+                    <div className="h-32 bg-gray-300 rounded"></div>
+                </div>
+            </div>
+        );
+    }
+
+    // Don't render if Instagram integration is disabled
+    if (!isInstagramEnabled()) {
+        return (
+            <div className="instagram-feed-container p-4 bg-gray-50 rounded-lg text-center">
+                <div className="text-gray-500">
+                    <Instagram className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                    <p>Instagram integration is currently disabled.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <InstagramErrorBoundary onRetry={() => fetchPosts(true)}>

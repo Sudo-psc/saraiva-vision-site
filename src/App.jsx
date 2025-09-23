@@ -37,6 +37,7 @@ import { WidgetProvider } from '@/utils/widgetManager.jsx';
 import { initScrollTelemetry } from '@/utils/scrollTelemetry';
 import ScrollDiagnostics from '@/components/ScrollDiagnostics';
 import { initErrorTracking } from '@/utils/errorTracking';
+import { PostHogProvider } from '@/contexts/PostHogContext';
 
 function App() {
   const { i18n } = useTranslation();
@@ -55,8 +56,9 @@ function App() {
 
   return (
     <HelmetProvider>
-      <AnalyticsProvider>
-        <WidgetProvider>
+      <PostHogProvider>
+        <AnalyticsProvider>
+          <WidgetProvider>
           {/*
           Envolvemos apenas o conteúdo da aplicação em um wrapper dedicado.
           SCROLL NORMALIZADO: Container sem bloqueios que permite scroll fluido.
@@ -102,8 +104,9 @@ function App() {
           <ChatbotWidget />
           <Accessibility />
           <ScrollDiagnostics />
-        </WidgetProvider>
-      </AnalyticsProvider>
+          </WidgetProvider>
+        </AnalyticsProvider>
+      </PostHogProvider>
     </HelmetProvider>
   );
 }

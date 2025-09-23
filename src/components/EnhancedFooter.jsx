@@ -230,7 +230,7 @@ const EnhancedFooter = ({
         glassBlur,
         enableAnimations: enableAnimations && !shouldReduceMotion
     });
-    
+
     // Extract with fallback for safety
     const themeProperties = footerThemeResult?.cssCustomProperties || {};
 
@@ -410,8 +410,8 @@ const EnhancedFooter = ({
                         <div className="flex flex-col lg:flex-row justify-between items-start gap-6 lg:gap-8">
                             <div className="flex-1 space-y-2">
                                 <p className="text-slate-400 text-xs leading-snug">
-                                    <span className="block font-medium text-slate-300">{clinicInfo.responsiblePhysician} • {clinicInfo.responsiblePhysicianCRM}</span>
-                                    <span className="block">{clinicInfo.responsibleNurse}</span>
+                                    <span className="block font-medium text-slate-300">{clinicInfo.responsiblePhysician} • {clinicInfo.responsiblePhysicianCRM} • {clinicInfo.responsiblePhysicianTitle}</span>
+                                    <span className="block">{clinicInfo.responsibleNurse} • {clinicInfo.responsibleNurseTitle}</span>
                                     <span className="block">CNPJ: {clinicInfo.taxId}</span>
                                     <span className="block">DPO: <a href={`mailto:${clinicInfo.dpoEmail}`} className="underline hover:text-white transition-colors">{clinicInfo.dpoEmail}</a></span>
                                     <span className="block space-x-3">
