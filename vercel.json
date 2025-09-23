@@ -59,6 +59,14 @@
       "maxDuration": 5,
       "memory": 128
     },
+    "api/instagram/**": {
+      "maxDuration": 30,
+      "memory": 512
+    },
+    "api/instagram/fetch.js": {
+      "maxDuration": 60,
+      "memory": 1024
+    },
     "api/**": {
       "maxDuration": 60,
       "memory": 1024
@@ -204,6 +212,10 @@
     {
       "path": "/api/monitoring/health",
       "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/instagram/fetch",
+      "schedule": "0 6 * * *"
     }
   ]
 }

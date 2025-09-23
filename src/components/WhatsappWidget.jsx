@@ -63,12 +63,16 @@ const WhatsappWidget = ({
         });
       }
 
-      // PostHog Analytics
+      // PostHog Analytics (Enhanced)
       if (window.posthog) {
         window.posthog.capture('whatsapp_click', {
           source: 'widget',
           message_type: messageType,
-          business_hours: businessHours
+          business_hours: businessHours,
+          widget_position: position,
+          greeting_shown: isGreetingVisible,
+          formatted_number: formattedNumber,
+          message_length: finalMessage.length,
         });
       }
     }

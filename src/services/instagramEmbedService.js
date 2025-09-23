@@ -110,12 +110,37 @@ export class InstagramEmbedService {
     }
 
     /**
-     * Simula busca de posts do Instagram
+     * Busca posts reais do Instagram via API
      */
     async fetchPosts(limit = 6) {
-        // Simular delay de rede para realismo
-        await new Promise(resolve => setTimeout(resolve, 500));
+        try {
+            // Tentar buscar dados reais da API
+            const response = await fetch(`/api/instagram/posts?limit=${limit}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
 
+            if (response.ok) {
+                const data = await response.json();
+                
+                if (data.success && data.posts && data.posts.length > 0) {
+                    return {
+                        success: true,
+                        posts: data.posts,
+                        profileStats: data.profileStats,
+                        source: data.source,
+                        fromCache: data.fromCache,
+                        timestamp: data.timestamp
+                    };
+                }
+            }
+        } catch (error) {
+            console.warn('Failed to fetch real Instagram data:', error);
+        }
+
+        // Fallback para dados estáticos se a API falhar
         const posts = this.fallbackPosts.slice(0, limit);
         
         return {
