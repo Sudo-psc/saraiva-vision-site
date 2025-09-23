@@ -38,7 +38,10 @@ try {
     <React.StrictMode>
       <PostHogProvider
         apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
-        options={POSTHOG_CONFIG}
+        options={{
+          ...POSTHOG_CONFIG,
+          defaults: '2025-05-24',
+        }}
       >
         <ErrorBoundary>
           <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>

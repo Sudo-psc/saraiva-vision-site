@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { PostHogProvider } from 'posthog-js/react';
 
 // Componente simples para teste
 const SimpleApp = () => {
@@ -35,8 +36,18 @@ const SimpleApp = () => {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Router>
-      <SimpleApp />
-    </Router>
+    <PostHogProvider
+      apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
+      options={{
+        api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+        defaults: '2025-05-24',
+        capture_exceptions: true,
+        debug: import.meta.env.MODE === 'development',
+      }}
+    >
+      <Router>
+        <SimpleApp />
+      </Router>
+    </PostHogProvider>
   </React.StrictMode>
 );

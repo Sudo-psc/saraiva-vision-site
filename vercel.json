@@ -67,6 +67,10 @@
       "maxDuration": 60,
       "memory": 1024
     },
+    "api/instagram/crawler.js": {
+      "maxDuration": 90,
+      "memory": 1024
+    },
     "api/**": {
       "maxDuration": 60,
       "memory": 1024

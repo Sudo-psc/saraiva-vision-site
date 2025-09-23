@@ -27,6 +27,7 @@ class InstagramServerService {
     async fetchRealInstagramData() {
         const methods = [
             () => this.tryPublicAPI(),
+            () => this.tryWebCrawler(),
             () => this.tryRSSFeed(),
             () => this.tryOEmbedBatch()
         ];
@@ -44,6 +45,36 @@ class InstagramServerService {
         }
 
         return null;
+    }
+
+    async tryWebCrawler() {
+        try {
+            // Chamar o endpoint do web crawler
+            const response = await fetch(`${process.env.VERCEL_URL || 'http://localhost:3000'}/api/instagram/crawler`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${process.env.CRON_SECRET || 'default-secret'}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && data.posts > 0) {
+                    // O crawler já salva no cache, então só retornamos sucesso
+                    return {
+                        success: true,
+                        posts: [], // Os posts já estão no cache
+                        source: data.source || 'web_crawler',
+                        timestamp: data.timestamp
+                    };
+                }
+            }
+        } catch (error) {
+            console.warn('Web crawler method failed:', error.message);
+        }
+
+        throw new Error('Web crawler not available');
     }
 
     async tryPublicAPI() {
