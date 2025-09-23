@@ -338,6 +338,7 @@ app.use('/api/servicos', require('./routes/servicos'));
 app.use('/api/wordpress', require('./routes/wordpress'));
 app.use('/api/health', require('./routes/health'));
 app.use('/api/reviews', require('./routes/reviews'));
+app.use('/api/agendamento', require('./routes/agendamento'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
