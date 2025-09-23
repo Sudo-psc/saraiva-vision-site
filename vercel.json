@@ -15,10 +15,7 @@
       "maxDuration": 15,
       "memory": 512
     },
-    "api/appointments/reminders.js": {
-      "maxDuration": 60,
-      "memory": 1024
-    },
+    
     "api/podcast/**": {
       "maxDuration": 30,
       "memory": 512

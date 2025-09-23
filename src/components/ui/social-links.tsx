@@ -59,30 +59,21 @@ export function SocialLinks({ socials, className, ...props }: SocialLinksProps) 
           }}
         >
           <span className="block text-lg font-medium">{social.name}</span>
-          <AnimatePresence>
-            {hoveredSocial === social.name && (
-              <motion.div
-                className="absolute bottom-0 left-0 right-0 flex h-full w-full items-center justify-center"
-                animate={animation}
-              >
-                <motion.img
-                  key={social.name}
-                  src={social.image}
-                  alt={social.name}
-                  className="size-16"
-                  initial={{
-                    y: -40,
-                    rotate: rotation,
-                    opacity: 0,
-                    filter: "blur(2px)",
-                  }}
-                  animate={{ y: -50, opacity: 1, filter: "blur(0px)" }}
-                  exit={{ y: -40, opacity: 0, filter: "blur(2px)" }}
-                  transition={{ duration: 0.2 }}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <motion.div
+            className="absolute bottom-0 left-0 right-0 flex h-full w-full items-center justify-center"
+            animate={animation}
+          >
+            <motion.img
+              key={social.name}
+              src={social.image}
+              alt={social.name}
+              className="size-16"
+              
+              animate={{ y: -50, opacity: 1, filter: "blur(0px)" }}
+              exit={{ y: -40, opacity: 0, filter: "blur(2px)" }}
+              transition={{ duration: 0.2 }}
+            />
+          </motion.div>
         </div>
       ))}
     </div>

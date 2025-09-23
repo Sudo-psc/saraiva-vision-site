@@ -106,8 +106,9 @@ export const USER_PROPERTIES = {
 
 // PostHog configuration options
 export const POSTHOG_CONFIG = {
-    // Basic configuration
-    api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
+    // Basic configuration - Using reverse proxy for better tracking reliability
+    api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST || 'https://analytics.yourdomain.com',
+    ui_host: 'https://us.posthog.com', // Keep UI pointing to PostHog for toolbar/admin access
     person_profiles: 'identified_only',
 
     // Privacy and compliance

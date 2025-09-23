@@ -21,6 +21,7 @@ const CategoryPage = lazy(() => import('@/pages/CategoryPage'));
 const AdminLoginPage = lazy(() => import('@/pages/AdminLoginPage'));
 const CheckPage = lazy(() => import('@/pages/CheckPage'));
 const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
+const GoogleReviewsTestPage = lazy(() => import('@/pages/GoogleReviewsTestPage'));
 import ScrollToTop from '@/components/ScrollToTop';
 import ServiceRedirect from '@/components/ServiceRedirect';
 import { Toaster } from '@/components/ui/toaster';
@@ -59,51 +60,52 @@ function App() {
       <PostHogProvider>
         <AnalyticsProvider>
           <WidgetProvider>
-          {/*
+            {/*
           Envolvemos apenas o conteúdo da aplicação em um wrapper dedicado.
           SCROLL NORMALIZADO: Container sem bloqueios que permite scroll fluido.
           Isso permite aplicar zoom/transform no conteúdo sem afetar widgets
           fixos (WhatsApp, Acessibilidade, toasts, modais), que permanecem
           fora desse container e não sofrem com o bug de fixed + transform.
         */}
-          <div id="app-content">
-            <ScrollToTop />
-            <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
-              <Routes>
-                <Route path="/" element={isCheckSubdomain ? <CheckPage /> : <HomePageLayout />} />
-                <Route path="/check" element={<CheckPage />} />
-                <Route path="/servicos" element={<ServicesPage />} />
-                <Route path="/servicos/:serviceId" element={<ServiceDetailPage />} />
-                {/* Redirecionamentos 301 para padronização de URLs */}
-                <Route path="/servico/:serviceId" element={<ServiceRedirect />} />
-                <Route path="/sobre" element={<AboutPage />} />
-                <Route path="/depoimentos" element={<TestimonialsPage />} />
-                <Route path="/contato" element={<ContactPage />} />
-                <Route path="/lentes" element={<LensesPage />} />
-                <Route path="/faq" element={<FAQPage />} />
-                <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
-                <Route path="/podcast" element={<PodcastPage />} />
-                <Route path="/blog" element={<BlogPage />} />
-                <Route path="/blog/:slug" element={<PostPage />} />
-                <Route path="/categoria/:slug" element={<CategoryPage />} />
-                <Route path="/admin/login" element={<AdminLoginPage />} />
-                <Route path="/admin/*" element={<DashboardPage />} />
-                <Route path="/admin" element={<AdminLoginPage />} />
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/privacy" element={<PrivacyPolicyPage />} />
-                <Route path="/wp-admin" element={<AdminPage />} />
-                {isCheckSubdomain ? <Route path="*" element={<Navigate to="/" replace />} /> : null}
-              </Routes>
-            </Suspense>
-          </div>
-          <Toaster />
-          <ConsentManager />
-          <CTAModal />
-          <ServiceWorkerUpdateNotification />
-          <WhatsappWidget phoneNumber={safePhoneFormat(clinicInfo.whatsapp || clinicInfo.phone)} />
-          <ChatbotWidget />
-          <Accessibility />
-          <ScrollDiagnostics />
+            <div id="app-content">
+              <ScrollToTop />
+              <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
+                <Routes>
+                  <Route path="/" element={isCheckSubdomain ? <CheckPage /> : <HomePageLayout />} />
+                  <Route path="/check" element={<CheckPage />} />
+                  <Route path="/servicos" element={<ServicesPage />} />
+                  <Route path="/servicos/:serviceId" element={<ServiceDetailPage />} />
+                  {/* Redirecionamentos 301 para padronização de URLs */}
+                  <Route path="/servico/:serviceId" element={<ServiceRedirect />} />
+                  <Route path="/sobre" element={<AboutPage />} />
+                  <Route path="/depoimentos" element={<TestimonialsPage />} />
+                  <Route path="/contato" element={<ContactPage />} />
+                  <Route path="/lentes" element={<LensesPage />} />
+                  <Route path="/faq" element={<FAQPage />} />
+                  <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
+                  <Route path="/podcast" element={<PodcastPage />} />
+                  <Route path="/blog" element={<BlogPage />} />
+                  <Route path="/blog/:slug" element={<PostPage />} />
+                  <Route path="/categoria/:slug" element={<CategoryPage />} />
+                  <Route path="/admin/login" element={<AdminLoginPage />} />
+                  <Route path="/admin/*" element={<DashboardPage />} />
+                  <Route path="/admin" element={<AdminLoginPage />} />
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/privacy" element={<PrivacyPolicyPage />} />
+                  <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />
+                  <Route path="/wp-admin" element={<AdminPage />} />
+                  {isCheckSubdomain ? <Route path="*" element={<Navigate to="/" replace />} /> : null}
+                </Routes>
+              </Suspense>
+            </div>
+            <Toaster />
+            <ConsentManager />
+            <CTAModal />
+            <ServiceWorkerUpdateNotification />
+            <WhatsappWidget phoneNumber={safePhoneFormat(clinicInfo.whatsapp || clinicInfo.phone)} />
+            <ChatbotWidget />
+            <Accessibility />
+            <ScrollDiagnostics />
           </WidgetProvider>
         </AnalyticsProvider>
       </PostHogProvider>

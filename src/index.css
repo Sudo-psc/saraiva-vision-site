@@ -13,6 +13,10 @@
 /* IMPORTA GLASS MORPHISM UTILITIES */
 @import './styles/glassMorphism.css';
 
+/* IMPORTA LIQUID GLASS SYSTEM */
+@import './styles/liquidGlass.css';
+@import './styles/liquidGlassExtensions.css';
+
 /* IMPORTA ANALYTICS STYLES */
 @import './styles/analytics.css';
 @import './styles/consent.css';

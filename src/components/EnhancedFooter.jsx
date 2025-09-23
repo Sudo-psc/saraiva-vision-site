@@ -2,7 +2,7 @@ import React, { useMemo, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { ArrowUp, MessageCircle, Bot } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { SocialLinks3D } from '@/components/ui/social-links-3d';
@@ -10,15 +10,14 @@ import { useGlassMorphism } from '@/hooks/useGlassMorphism';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { generateDarkGlassStyles, createGlassCustomProperties } from '@/utils/glassMorphismUtils';
 import { useFooterAccessibility } from '@/hooks/useFooterAccessibility';
+import { useLiquidClasses } from '@/hooks/useLiquidTheme';
 import { cn } from '@/lib/utils';
 import {
     animationVariants,
     getOptimizedVariant,
-    getResponsiveTimings,
-    staggerConfig
+    getResponsiveTimings
 } from '@/utils/footerAnimationConfig';
 import {
-    generateCSSCustomProperties,
     useFooterTheme
 } from '@/utils/footerThemeManager';
 import {
@@ -125,7 +124,7 @@ const EnhancedFooter = ({
         {
             name: "X",
             href: clinicInfo.x || "https://x.com/philipe_saraiva",
-            image: "/icons_social/X_icon.png",
+            image: "/icons_social/x2 Background Removed.png",
             color: "#000000"
         },
         {
@@ -133,6 +132,12 @@ const EnhancedFooter = ({
             href: "https://www.tiktok.com/@saraivavision",
             image: "/icons_social/tik_tok_icon.png",
             color: "#000000"
+        },
+        {
+            name: "Spotify",
+            href: clinicInfo.spotify,
+            image: "/icons_social/spotify_icon.png",
+            color: "#1DB954"
         },
     ], []);
 
@@ -291,10 +296,16 @@ const EnhancedFooter = ({
         [capabilities, shouldReduceMotion]
     );
 
+    // Liquid Glass classes for footer
+    const footerClasses = useLiquidClasses('enhanced-footer relative overflow-hidden', {
+        variant: 'secondary',
+        responsive: true
+    });
+
     return (
         <motion.div
             ref={footerRef}
-            className={cn('enhanced-footer relative overflow-hidden', className)}
+            className={cn(footerClasses, 'footer-liquid', className)}
             variants={isAnimationEnabled && !shouldReduceMotion ? containerVariants : undefined}
             initial={isAnimationEnabled && !shouldReduceMotion ? 'hidden' : false}
             animate={isAnimationEnabled && !shouldReduceMotion && isFooterVisible ? 'visible' : 'hidden'}
@@ -386,20 +397,40 @@ const EnhancedFooter = ({
                                 <ContactLink href={`mailto:${clinicInfo.email}`}>
                                     {clinicInfo.email}
                                 </ContactLink>
-                                <ContactLink
-                                    href={footerData.whatsappLink}
-                                    external
-                                    icon={MessageCircle}
-                                >
-                                    {clinicInfo.phoneDisplay}
-                                </ContactLink>
-                                <ContactLink
-                                    href={footerData.chatbotUrl}
-                                    external
-                                    icon={Bot}
-                                >
-                                    {t('contact.chatbot_title')}
-                                </ContactLink>
+                                <ContactItem>
+                                    <a
+                                        href={footerData.whatsappLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform"
+                                    >
+                                        <img
+                                            src="/icons_social/whatsapp_icon.png"
+                                            alt="WhatsApp"
+                                            className="w-8 h-8 object-contain"
+                                            loading="lazy"
+                                            decoding="async"
+                                        />
+                                        {clinicInfo.phoneDisplay}
+                                    </a>
+                                </ContactItem>
+                                <ContactItem>
+                                    <a
+                                        href={footerData.chatbotUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform"
+                                    >
+                                        <img
+                                            src="/icons_social/IA.png"
+                                            alt="IA Chatbot"
+                                            className="w-8 h-8 object-contain"
+                                            loading="lazy"
+                                            decoding="async"
+                                        />
+                                        {t('contact.chatbot_title')}
+                                    </a>
+                                </ContactItem>
                                 <ContactItem>{t('footer.hours')}</ContactItem>
                             </ul>
                         </FooterSection>
