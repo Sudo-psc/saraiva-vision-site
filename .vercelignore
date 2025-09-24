@@ -1,0 +1,21 @@
+# Directories to exclude from Vercel deployment
+node_modules/
+dist/
+build/
+.git/
+.github/
+wordpress-backend/
+api/
+nginx-logs/
+scripts/
+*.log
+*.tmp
+.DS_Store
+.vscode/
+.idea/
+coverage/
+.nyc_output/
+.cache/
+.temp/
+*.tgz
+*.tar.gz
