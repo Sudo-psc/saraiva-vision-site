@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saraiva Vision - Clínica Oftalmológica</title>
+    <meta name="description" content="Clínica oftalmológica especializada em catarata, glaucoma, retina e cirurgia refrativa. Atendimento médico de qualidade em São Paulo." />
+  </head>
+  <body>
+    <div id="root">
+      <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: Arial, sans-serif;">
+        <div style="text-align: center;">
+          <h1 style="color: #2563eb; margin-bottom: 16px;">Saraiva Vision</h1>
+          <p style="color: #64748b; margin-bottom: 24px;">Clínica Oftalmológica</p>
+          <p style="color: #64748b; font-size: 14px;">Carregando aplicação...</p>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Fallback message if JavaScript fails to load
+      setTimeout(() => {
+        const root = document.getElementById('root');
+        if (root && root.innerHTML.includes('Carregando')) {
+          root.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: Arial, sans-serif;">
+              <div style="text-align: center;">
+                <h1 style="color: #dc3545; margin-bottom: 16px;">Erro no Carregamento</h1>
+                <p style="color: #64748b; margin-bottom: 24px;">Não foi possível carregar a aplicação.</p>
+                <button onclick="window.location.reload()" style="padding: 12px 24px; background: #2563eb; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                  Tentar Novamente
+                </button>
+              </div>
+            </div>
+          `;
+        }
+      }, 10000); // Wait 10 seconds before showing error
+    </script>
+  </body>
+</html>

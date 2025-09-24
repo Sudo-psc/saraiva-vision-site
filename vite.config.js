@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
-// Enable workbox plugin with Vercel environment check
+// Enable workbox plugin with VPS environment check
 const plugins = [react({
   // Ensure React is properly available for JSX transform
   jsxRuntime: 'automatic',
@@ -12,7 +12,7 @@ const plugins = [react({
   jsxImportSource: 'react'
 })]
 
-// Only load workbox plugin in development, never in production or Vercel
+// Only load workbox plugin in development, never in production
 if (process.env.NODE_ENV === 'development') {
   try {
     const { workboxVitePlugin } = require('./src/utils/workbox-vite-plugin')
@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'development') {
 
 export default defineConfig({
   plugins,
-  base: '/', // Ensure proper base path for Vercel deployment
+  base: '/', // Ensure proper base path for VPS deployment
   define: {
     // Fallback for legacy process.env usage in libraries
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
@@ -44,14 +44,14 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/__tests__/setup.js'],
     include: ['**/*.{test,spec}.{js,jsx,ts,tsx}'],
-    exclude: ['node_modules', 'dist', '.vercel']
+    exclude: ['node_modules', 'dist']
   },
 
   build: {
     outDir: 'dist',
     sourcemap: true, // Source maps for debugging
     chunkSizeWarningLimit: 600,
-    assetsDir: 'assets', // Proper assets directory for Vercel
+    assetsDir: 'assets', // Proper assets directory for VPS
     assetsInlineLimit: 4096, // Inline small assets as base64 for performance
     rollupOptions: {
       input: 'index.html',

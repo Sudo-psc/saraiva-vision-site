@@ -1,0 +1,40 @@
+{
+  "name": "saraiva-vision-api",
+  "version": "1.0.0",
+  "description": "Saraiva Vision Backend API",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "compression": "^1.7.4",
+    "dotenv": "^16.3.1",
+    "express-rate-limit": "^7.1.5",
+    "mysql2": "^3.6.3",
+    "redis": "^4.6.8",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "joi": "^17.11.0",
+    "nodemailer": "^6.9.7",
+    "resend": "^3.2.0",
+    "winston": "^3.11.0",
+    "axios": "^1.6.2",
+    "supertest": "^6.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "vitest": "^1.0.4",
+    "eslint": "^8.54.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -529,26 +529,7 @@ const EnhancedFooter = ({
                 Enhanced footer with modern glass morphism effects and 3D interactive social media icons. All functionality remains accessible via keyboard navigation.
             </div>
 
-            {/* Performance & Compatibility Indicator (Development Only) */}
-            {process.env.NODE_ENV === 'development' && (
-                <div className="fixed bottom-4 right-4 z-50 text-xs bg-black/80 text-white p-3 rounded-lg font-mono max-w-xs">
-                    <div className="font-bold mb-2 text-blue-300">Enhanced Footer Debug</div>
-                    <div className="grid grid-cols-2 gap-1 text-xs">
-                        <div>Glass: {shouldEnableGlass() ? '✓' : '✗'}</div>
-                        <div>3D: {compatibilityConfig.shouldUse3D ? '✓' : '✗'}</div>
-                        <div>Canvas: {compatibilityConfig.shouldUseCanvas ? '✓' : '✗'}</div>
-                        <div>Touch: {compatibilityConfig.isTouch ? '✓' : '✗'}</div>
-                        <div>Backdrop: {compatibilityConfig.capabilities.supportsBackdropFilter ? '✓' : '✗'}</div>
-                        <div>Motion: {!shouldReduceMotion ? '✓' : '✗'}</div>
-                    </div>
-                    <div className="mt-2 pt-2 border-t border-gray-600">
-                        <div>Intensity: {glassIntensity}</div>
-                        <div>Performance: {capabilities.performanceLevel}</div>
-                        <div>Visible: {isFooterVisible ? 'YES' : 'NO'}</div>
-                        <div>Animations: {isAnimationEnabled ? 'ON' : 'OFF'}</div>
-                    </div>
-                </div>
-            )}
+
         </motion.div>
     );
 };

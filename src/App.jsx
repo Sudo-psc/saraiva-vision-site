@@ -35,7 +35,7 @@ import { clinicInfo } from '@/lib/clinicInfo';
 import { safePhoneFormat } from '@/utils/phoneFormatter';
 import Accessibility from '@/components/Accessibility';
 import { WidgetProvider } from '@/utils/widgetManager.jsx';
-import { initScrollTelemetry } from '@/utils/scrollTelemetry';
+
 import ScrollDiagnostics from '@/components/ScrollDiagnostics';
 import { initErrorTracking } from '@/utils/errorTracking';
 import { PostHogProvider } from '@/contexts/PostHogContext';
@@ -48,8 +48,7 @@ function App() {
   useEffect(() => {
     document.documentElement.lang = i18n.language;
 
-    // Inicializa telemetria de scroll para monitorar preventDefault
-    initScrollTelemetry();
+
 
     // Initialize error tracking for production
     initErrorTracking();

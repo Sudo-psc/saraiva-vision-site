@@ -1,0 +1,23 @@
+{
+  "description": "Template configuration for this project. See https://www.codebuff.com/config for all options.",
+  "startupProcesses": [
+    {
+      "name": "frontend",
+      "command": "npm run dev",
+      "stdoutFile": "logs/frontend.log"
+    },
+    {
+      "name": "wordpress-backend",
+      "command": "docker-compose up",
+      "cwd": "wordpress-backend",
+      "stdoutFile": "logs/wordpress-backend.log"
+    }
+  ],
+  "fileChangeHooks": [
+    {
+      "name": "build-check",
+      "command": "npm run build",
+      "filePattern": "src/**/*.{js,jsx,ts,tsx}"
+    }
+  ]
+}
