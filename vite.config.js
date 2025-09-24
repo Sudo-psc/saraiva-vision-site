@@ -88,6 +88,7 @@ export default defineConfig({
   server: {
     port: 3002,
     host: true,
+    open: false,
     allowedHosts: [
       'localhost',
       '127.0.0.1',
