@@ -4,6 +4,7 @@
   "framework": "vite",
   "functions": {
     "api/**": {
+      "runtime": "nodejs22.x",
       "maxDuration": 60,
       "memory": 1024
     }
