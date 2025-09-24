@@ -89,6 +89,7 @@ export default defineConfig({
     port: 3002,
     host: true,
     open: false,
+    historyApiFallback: true, // Enable SPA routing support for React Router
     allowedHosts: [
       'localhost',
       '127.0.0.1',
