@@ -4,16 +4,6 @@
   "outputDirectory": "dist",
   "installCommand": "npm ci",
   "regions": ["gru1"],
-  "functions": {
-    "api/google-reviews.js": {
-      "memory": 256,
-      "maxDuration": 30
-    },
-    "api/google-reviews-stats.js": {
-      "memory": 256,
-      "maxDuration": 30
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
