@@ -44,7 +44,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx-main.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/sites-available:/etc/nginx/sites-available:ro
       - ./nginx/sites-enabled:/etc/nginx/sites-enabled:ro
       - /var/www/html:/var/www/html:ro
@@ -74,7 +74,7 @@ services:
       dockerfile: Dockerfile
     container_name: saraiva-api
     ports:
-      - "3002:3002"
+      - "3003:3002"
     environment:
       - NODE_ENV=production
       - PORT=3002
@@ -88,10 +88,8 @@ services:
       - /app/node_modules
       - ./logs/api:/app/logs
     depends_on:
-      redis:
-        condition: service_healthy
-      mysql:
-        condition: service_healthy
+       redis:
+         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3002/api/health"]
       interval: 30s
@@ -140,7 +138,7 @@ services:
     image: mysql:8.0
     container_name: saraiva-mysql
     ports:
-      - "3306:3306"
+      - "3307:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -190,35 +188,6 @@ services:
     networks:
       - saraiva-network
 
-  # Health Check Service (Medical System Monitoring)
-  health-monitor:
-    build:
-      context: ./monitoring
-      dockerfile: Dockerfile
-    container_name: saraiva-health-monitor
-    environment:
-      - MONITOR_INTERVAL=60
-      - ALERT_WEBHOOK_URL=${ALERT_WEBHOOK_URL}
-      - MEDICAL_SYSTEM_MODE=true
-    volumes:
-      - ./logs/health-monitor:/app/logs
-    depends_on:
-      - nginx
-      - frontend
-      - api
-      - wordpress
-      - mysql
-      - redis
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/monitor-health"]
-      interval: 60s
-      timeout: 15s
-      retries: 2
-      start_period: 30s
-    restart: unless-stopped
-    networks:
-      - saraiva-network
-
   # Log Aggregation (for Medical Audit Trail)
   log-aggregator:
     image: fluent/fluent-bit:2.2
@@ -237,6 +206,9 @@ services:
       - SMTP_USER=${SMTP_USER}
       - SMTP_PASSWORD=${SMTP_PASSWORD}
       - DATADOG_API_KEY=${DATADOG_API_KEY}
+    depends_on:
+      redis:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "pidof", "fluent-bit"]
       interval: 60s
@@ -259,3 +231,9 @@ networks:
   saraiva-network:
     driver: bridge
     name: saraiva-vision-network
+    driver_opts:
+      com.docker.network.bridge.name: saraiva-bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1

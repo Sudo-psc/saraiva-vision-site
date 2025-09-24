@@ -35,7 +35,7 @@ cleanupOutdatedCaches();
 // ========================
 // APP SHELL STRATEGY
 // ========================
-// SPA Navigation - Network First com fallback para index.html cached
+// SPA Navigation - Network First with no-cache for HTML (always fresh)
 const navigationHandler = new NetworkFirst({
 	cacheName: `sv-navigation-${SW_VERSION}`,
 	networkTimeoutSeconds: 10,
@@ -44,8 +44,8 @@ const navigationHandler = new NetworkFirst({
 			statuses: [0, 200]
 		}),
 		new ExpirationPlugin({
-			maxEntries: 50,
-			maxAgeSeconds: 24 * 60 * 60, // 24h
+			maxEntries: 10, // Reduced entries for HTML
+			maxAgeSeconds: 5 * 60, // 5 minutes - minimal caching for HTML
 			purgeOnQuotaError: true
 		})
 	]
@@ -61,7 +61,7 @@ registerRoute(navigationRoute);
 // STATIC ASSETS STRATEGIES
 // ========================
 
-// 1. ASSETS COM HASH (immutable) - Cache First com long-term caching
+// 1. ASSETS COM HASH (immutable) - Cache First com 30-day caching
 registerRoute(
 	({ request, url }) => {
 		return url.pathname.startsWith('/assets/') &&
@@ -76,7 +76,7 @@ registerRoute(
 			}),
 			new ExpirationPlugin({
 				maxEntries: 200,
-				maxAgeSeconds: 365 * 24 * 60 * 60, // 1 ano
+				maxAgeSeconds: 30 * 24 * 60 * 60, // 30 dias
 				purgeOnQuotaError: true
 			})
 		]

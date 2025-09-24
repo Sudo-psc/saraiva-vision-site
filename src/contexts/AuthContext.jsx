@@ -18,12 +18,14 @@ export const AuthProvider = ({ children }) => {
     const [session, setSession] = useState(null);
 
     useEffect(() => {
-        // Check if supabase client is available
-        if (!supabase) {
-            console.warn('Supabase client not available. Authentication will not work.');
+        // Check if supabase client is available and properly configured
+        if (!supabase || typeof supabase.auth?.getSession !== 'function') {
+            console.warn('Supabase client not available or not properly configured. Authentication will not work.');
             setLoading(false);
             return;
         }
+
+        let mounted = true;
 
         // Get initial session
         const getInitialSession = async () => {
@@ -32,49 +34,79 @@ export const AuthProvider = ({ children }) => {
 
                 if (error) {
                     console.error('Error getting session:', error);
+                    if (mounted) {
+                        setSession(null);
+                        setUser(null);
+                        setProfile(null);
+                    }
                     return;
                 }
 
-                setSession(session);
-                setUser(session?.user ?? null);
+                if (mounted) {
+                    setSession(session);
+                    setUser(session?.user ?? null);
 
-                if (session?.user) {
-                    await fetchUserProfile(session.user.id);
+                    if (session?.user) {
+                        await fetchUserProfile(session.user.id);
+                    } else {
+                        setProfile(null);
+                    }
                 }
             } catch (error) {
                 console.error('Error in getInitialSession:', error);
+                if (mounted) {
+                    setSession(null);
+                    setUser(null);
+                    setProfile(null);
+                }
             } finally {
-                setLoading(false);
+                if (mounted) {
+                    setLoading(false);
+                }
             }
         };
 
         getInitialSession();
 
         // Listen for auth changes
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(
-            async (event, session) => {
-                console.log('Auth state changed:', event, session?.user?.email);
+        let subscription = null;
+        try {
+            const authSubscription = supabase.auth.onAuthStateChange(
+                async (event, session) => {
+                    console.log('Auth state changed:', event, session?.user?.email);
 
-                setSession(session);
-                setUser(session?.user ?? null);
+                    if (mounted) {
+                        setSession(session);
+                        setUser(session?.user ?? null);
 
-                if (session?.user) {
-                    await fetchUserProfile(session.user.id);
-                } else {
-                    setProfile(null);
+                        if (session?.user) {
+                            await fetchUserProfile(session.user.id);
+                        } else {
+                            setProfile(null);
+                        }
+
+                        setLoading(false);
+                    }
                 }
-
+            );
+            subscription = authSubscription.data?.subscription;
+        } catch (error) {
+            console.error('Error setting up auth state change listener:', error);
+            if (mounted) {
                 setLoading(false);
             }
-        );
+        }
 
         return () => {
-            subscription.unsubscribe();
+            mounted = false;
+            if (subscription?.unsubscribe) {
+                subscription.unsubscribe();
+            }
         };
     }, []);
 
     const fetchUserProfile = async (userId) => {
-        if (!supabase) {
+        if (!supabase || typeof supabase.from !== 'function') {
             console.warn('Supabase client not available for profile fetch');
             return;
         }
