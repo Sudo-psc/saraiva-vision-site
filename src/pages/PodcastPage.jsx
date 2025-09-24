@@ -15,17 +15,17 @@ import {
 } from 'lucide-react';
 
 // Components
-import SEOHead from '@/components/SEOHead';
-import SchemaMarkup from '@/components/SchemaMarkup';
-import Navbar from '@/components/Navbar';
-import EnhancedFooter from '@/components/EnhancedFooter';
-import SpotifyEmbed from '@/components/SpotifyEmbed';
-import AudioPlayer from '@/components/AudioPlayer';
-import { Button } from '@/components/ui/button';
-import OptimizedImage from '@/components/ui/OptimizedImage';
+import SEOHead from '../components/SEOHead';
+import SchemaMarkup from '../components/SchemaMarkup';
+import Navbar from '../components/Navbar';
+import EnhancedFooter from '../components/EnhancedFooter';
+import SpotifyEmbed from '../components/SpotifyEmbed';
+import AudioPlayer from '../components/AudioPlayer';
+import { Button } from '../components/ui/button';
+import OptimizedImage from '../components/ui/OptimizedImage';
 
 // Hooks and utils
-import { usePodcastSEO } from '@/hooks/useSEO';
+import { usePodcastSEO } from '../hooks/useSEO';
 
 // Episodes list will be built inside the component with i18n
 

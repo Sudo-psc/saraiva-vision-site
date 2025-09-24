@@ -2,9 +2,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Menu, X, Calendar, ExternalLink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Logo from '@/components/Logo';
-import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import { Button } from '../components/ui/button.jsx';
+import Logo from '../components/Logo.jsx';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -39,7 +39,7 @@ const Navbar = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-        ? 'bg-header-gradient shadow-md py-2'
+        ? 'bg-white/95 backdrop-blur-sm shadow-md py-2'
         : 'bg-white/90 backdrop-blur border-b border-slate-200/60 md:bg-transparent md:border-0 py-3'
         }`}
     >
@@ -53,15 +53,8 @@ const Navbar = () => {
             <Link to="/" aria-label="Ir para a página inicial"><Logo /></Link>
           </motion.div>
 
-          {/* Accessibility-friendly global nav landmark for tests and SR readers */}
-          <nav
-            className="sr-only"
-            aria-label="Navegação principal"
-            aria-hidden={mobileMenuOpen ? true : undefined}
-            role={mobileMenuOpen ? 'presentation' : undefined}
-          />
-
-          <nav className="hidden md:flex items-center space-x-1">
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-1" aria-label="Navegação principal">
             {navLinks.map((link) => (
               link.internal ? (
                 <Link

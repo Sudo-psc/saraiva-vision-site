@@ -1,8 +1,8 @@
 import React from 'react';
-import Navbar from '@/components/Navbar';
-import EnhancedFooter from '@/components/EnhancedFooter';
-import SEOHead from '@/components/SEOHead';
-import ServicesEnhanced from '@/components/ServicesEnhanced';
+import Navbar from '../components/Navbar.jsx';
+import EnhancedFooter from '../components/EnhancedFooter.jsx';
+import SEOHead from '../components/SEOHead.jsx';
+import ServicesEnhanced from '../components/ServicesEnhanced.jsx';
 import { useTranslation } from 'react-i18next';
 
 const ServicesPage = () => {

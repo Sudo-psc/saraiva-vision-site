@@ -1,9 +1,9 @@
 import React from 'react';
-import Navbar from '@/components/Navbar';
-import EnhancedFooter from '@/components/EnhancedFooter';
-import SEOHead from '@/components/SEOHead';
-import Contact from '@/components/Contact';
-import GoogleLocalSection from '@/components/GoogleLocalSection';
+import Navbar from '../components/Navbar';
+import EnhancedFooter from '../components/EnhancedFooter';
+import SEOHead from '../components/SEOHead';
+import Contact from '../components/Contact';
+import GoogleLocalSection from '../components/GoogleLocalSection';
 import { useTranslation } from 'react-i18next';
 
 const ContactPage = () => {

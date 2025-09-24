@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import SEOHead from '@/components/SEOHead';
-import { useFAQSEO } from '@/hooks/useSEO';
-import Navbar from '@/components/Navbar';
-import FAQ from '@/components/FAQ';
-import EnhancedFooter from '@/components/EnhancedFooter';
+import SEOHead from '../components/SEOHead';
+import { useFAQSEO } from '../hooks/useSEO';
+import Navbar from '../components/Navbar';
+import FAQ from '../components/FAQ';
+import EnhancedFooter from '../components/EnhancedFooter';
 import { HelpCircle } from 'lucide-react';
 
 function FAQPage() {

@@ -1,10 +1,10 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
-import App from '@/App';
-import '@/index.css';
-import ErrorBoundary from '@/components/ErrorBoundary';
-import { AuthProvider } from '@/contexts/AuthContext';
+import App from './App';
+import './index.css';
+import ErrorBoundary from './components/ErrorBoundary';
+import { AuthProvider } from './contexts/AuthContext';
 import './i18n'; // Initialize i18n
 
 // Simple error handler setup

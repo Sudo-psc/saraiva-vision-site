@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import SEOHead from '@/components/SEOHead';
-import { useLensesSEO } from '@/hooks/useSEO';
-import Navbar from '@/components/Navbar';
-import EnhancedFooter from '@/components/EnhancedFooter';
-import ContactLenses from '@/components/ContactLenses';
+import SEOHead from '../components/SEOHead';
+import { useLensesSEO } from '../hooks/useSEO';
+import Navbar from '../components/Navbar';
+import EnhancedFooter from '../components/EnhancedFooter';
+import ContactLenses from '../components/ContactLenses';
 
 const LensesPage = () => {
   const { t } = useTranslation();

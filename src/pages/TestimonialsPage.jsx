@@ -1,9 +1,9 @@
 import React from 'react';
-import Navbar from '@/components/Navbar';
-import EnhancedFooter from '@/components/EnhancedFooter';
-import Testimonials from '@/components/Testimonials';
-import SEOHead from '@/components/SEOHead';
-import { useTestimonialsSEO } from '@/hooks/useSEO';
+import Navbar from '../components/Navbar';
+import EnhancedFooter from '../components/EnhancedFooter';
+import Testimonials from '../components/Testimonials';
+import SEOHead from '../components/SEOHead';
+import { useTestimonialsSEO } from '../hooks/useSEO';
 
 const TestimonialsPage = () => {
   const seoData = useTestimonialsSEO();

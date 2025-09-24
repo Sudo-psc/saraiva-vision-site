@@ -6,9 +6,9 @@ import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import { Calendar, Loader2, AlertTriangle, ArrowRight, Search } from 'lucide-react';
-import Navbar from '@/components/Navbar';
-import EnhancedFooter from '@/components/EnhancedFooter';
-import { Button } from '@/components/ui/button';
+import Navbar from '../components/Navbar';
+import EnhancedFooter from '../components/EnhancedFooter';
+import { Button } from '../components/ui/button';
 // WordPress functions temporarily disabled for build
 // import {
 //   fetchPosts,

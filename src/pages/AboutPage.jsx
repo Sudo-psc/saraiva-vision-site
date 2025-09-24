@@ -1,8 +1,8 @@
 import React from 'react';
-import Navbar from '@/components/Navbar';
-import EnhancedFooter from '@/components/EnhancedFooter';
-import SEOHead from '@/components/SEOHead';
-import About from '@/components/About';
+import Navbar from '../components/Navbar.jsx';
+import EnhancedFooter from '../components/EnhancedFooter.jsx';
+import SEOHead from '../components/SEOHead.jsx';
+import About from '../components/About.jsx';
 import { useTranslation } from 'react-i18next';
 
 const AboutPage = () => {

@@ -3,28 +3,28 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
-import Logo from '@/components/Logo';
-import { clinicInfo } from '@/lib/clinicInfo';
-import { SocialLinks3D } from '@/components/ui/social-links-3d';
-import { useGlassMorphism } from '@/hooks/useGlassMorphism';
-import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
-import { generateDarkGlassStyles, createGlassCustomProperties } from '@/utils/glassMorphismUtils';
-import { useFooterAccessibility } from '@/hooks/useFooterAccessibility';
-import { useLiquidClasses } from '@/hooks/useLiquidTheme';
-import { cn } from '@/lib/utils';
+import Logo from './Logo';
+import { clinicInfo } from '../lib/clinicInfo';
+import { SocialLinks3D } from './ui/social-links-3d';
+import { useGlassMorphism } from '../hooks/useGlassMorphism';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import { generateDarkGlassStyles, createGlassCustomProperties } from '../utils/glassMorphismUtils';
+import { useFooterAccessibility } from '../hooks/useFooterAccessibility';
+import { useLiquidClasses } from '../hooks/useLiquidTheme';
+import { cn } from '../lib/utils';
 import {
     animationVariants,
     getOptimizedVariant,
     getResponsiveTimings
-} from '@/utils/footerAnimationConfig';
+} from '../utils/footerAnimationConfig';
 import {
     useFooterTheme
-} from '@/utils/footerThemeManager';
+} from '../utils/footerThemeManager';
 import {
     initializeCompatibility,
     applyCompatibilityFixes,
     getCompatibilityConfig
-} from '@/utils/footerCompatibility';
+} from '../utils/footerCompatibility';
 
 /**
  * Enhanced Footer component with glass morphism effects and 3D social icons

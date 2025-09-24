@@ -2,8 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Check } from 'lucide-react';
-import OptimizedPicture from '@/components/ui/OptimizedPicture';
-import ImageWithFallback from '@/components/ui/ImageWithFallback';
+import OptimizedPicture from './ui/OptimizedPicture.jsx';
+import ImageWithFallback from './ui/ImageWithFallback.jsx';
 
 const About = () => {
   const { t } = useTranslation();

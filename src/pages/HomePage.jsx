@@ -1,20 +1,20 @@
 import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import SEOHead from '@/components/SEOHead';
-import SchemaMarkup from '@/components/SchemaMarkup';
-import { useHomeSEO } from '@/hooks/useSEO';
-import { initScrollSystem, scrollToHash, cleanupScrollSystem } from '@/utils/scrollUtils';
-import Navbar from '@/components/Navbar';
-import Hero from '@/components/Hero';
-import Services from '@/components/Services';
-import About from '@/components/About';
-import Contact from '@/components/Contact';
-import EnhancedFooter from '@/components/EnhancedFooter';
-import GoogleReviewsIntegration from '@/components/GoogleReviewsIntegration';
-import GoogleLocalSection from '@/components/GoogleLocalSection';
-import FAQ from '@/components/FAQ';
-import LatestEpisodes from '@/components/LatestEpisodes';
-import LatestBlogPosts from '@/components/LatestBlogPosts';
+import SEOHead from '../components/SEOHead';
+import SchemaMarkup from '../components/SchemaMarkup';
+import { useHomeSEO } from '../hooks/useSEO';
+import { initScrollSystem, scrollToHash, cleanupScrollSystem } from '../utils/scrollUtils';
+import Navbar from '../components/Navbar';
+import Hero from '../components/Hero';
+import Services from '../components/Services';
+import About from '../components/About';
+import Contact from '../components/Contact';
+import EnhancedFooter from '../components/EnhancedFooter';
+import GoogleReviewsIntegration from '../components/GoogleReviewsIntegration';
+import GoogleLocalSection from '../components/GoogleLocalSection';
+import FAQ from '../components/FAQ';
+import LatestEpisodes from '../components/LatestEpisodes';
+import LatestBlogPosts from '../components/LatestBlogPosts';
 
 function HomePage() {
   const location = useLocation();
