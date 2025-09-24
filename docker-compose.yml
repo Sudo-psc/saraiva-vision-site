@@ -82,6 +82,7 @@ services:
       - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
       - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
       - RESEND_API_KEY=${RESEND_API_KEY}
+      - DOCTOR_EMAIL=${DOCTOR_EMAIL}
       - REDIS_URL=${REDIS_URL:-redis://redis:6379}
     volumes:
       - ./api:/app
@@ -235,5 +236,5 @@ networks:
       com.docker.network.bridge.name: saraiva-bridge
     ipam:
       config:
-        - subnet: 172.20.0.0/16
-          gateway: 172.20.0.1
+        - subnet: 172.25.0.0/16
+          gateway: 172.25.0.1
