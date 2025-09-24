@@ -1,6 +1,5 @@
 import React, { useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { HelmetProvider } from 'react-helmet-async';
 // Code splitting das rotas para melhorar TTI inicial da Home.
 const HomePageLayout = lazy(() => import('@/pages/HomePageLayout'));
@@ -40,18 +39,15 @@ import { initErrorTracking } from '@/utils/errorTracking';
 import { PostHogProvider } from '@/contexts/PostHogContext';
 
 function App() {
-  const { i18n } = useTranslation();
   const isCheckSubdomain =
     typeof window !== 'undefined' && window.location.hostname?.toLowerCase().startsWith('check.');
 
   useEffect(() => {
-    document.documentElement.lang = i18n.language;
-
-
+    document.documentElement.lang = 'pt-BR';
 
     // Initialize error tracking for production
     initErrorTracking();
-  }, [i18n.language]);
+  }, []);
 
   return (
     <HelmetProvider>
@@ -85,9 +81,9 @@ function App() {
                   <Route path="/blog" element={<BlogPage />} />
                   <Route path="/blog/:slug" element={<PostPage />} />
                   <Route path="/categoria/:slug" element={<CategoryPage />} />
-                  <Route path="/admin/login" element={<AdminLoginPage />} />
-                  <Route path="/admin/*" element={<DashboardPage />} />
-                  <Route path="/admin" element={<AdminLoginPage />} />
+                   <Route path="/admin/login" element={<AdminLoginPage />} />
+                   <Route path="/admin" element={<AdminLoginPage />} />
+                   <Route path="/admin/*" element={<DashboardPage />} />
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/privacy" element={<PrivacyPolicyPage />} />
                   <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />

@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { Menu, X, Calendar, Headphones, ExternalLink } from 'lucide-react';
+import { Menu, X, Calendar, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/Logo';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 const Navbar = () => {
-  const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -29,7 +26,9 @@ const Navbar = () => {
   const navLinks = useMemo(() => [
     { name: 'Home', href: '/', internal: true },
     { name: 'Serviços', href: '/servicos', internal: true },
+    { name: 'Lentes', href: '/lentes', internal: true },
     { name: 'Blog', href: '/blog', internal: true },
+    { name: 'Podcast', href: '/podcast', internal: true },
     { name: 'Sobre', href: '/sobre', internal: true },
     { name: 'Depoimentos', href: '/depoimentos', internal: true },
     { name: 'FAQ', href: '/faq', internal: true },
@@ -51,13 +50,13 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Link to="/" aria-label={t('navbar.home_link_label', 'Ir para a página inicial')}><Logo /></Link>
+            <Link to="/" aria-label="Ir para a página inicial"><Logo /></Link>
           </motion.div>
 
           {/* Accessibility-friendly global nav landmark for tests and SR readers */}
           <nav
             className="sr-only"
-            aria-label={t('navbar.primary_navigation', 'Navegação principal')}
+            aria-label="Navegação principal"
             aria-hidden={mobileMenuOpen ? true : undefined}
             role={mobileMenuOpen ? 'presentation' : undefined}
           />
@@ -87,34 +86,23 @@ const Navbar = () => {
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-4">
-            <LanguageSwitcher />
-
-            <Link
-              to="/podcast"
-              className="p-2 text-slate-700 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
-              aria-label="Podcast"
-            >
-              <Headphones size={20} />
-            </Link>
-
-            <Button
-              onClick={() => navigate('/contato')}
-              className="flex items-center gap-2"
-            >
-              <Calendar size={18} />
-              <span>Agendar</span>
-            </Button>
-          </div>
+           <div className="hidden md:flex items-center gap-4">
+             <Button
+               onClick={() => navigate('/contato')}
+               className="flex items-center gap-2"
+             >
+               <Calendar size={18} />
+               <span>Agendar</span>
+             </Button>
+           </div>
 
           <div className="md:hidden flex items-center gap-2">
-            <LanguageSwitcher />
             <Button
               variant="outline"
               size="icon"
               className="!h-12 !w-12 rounded-2xl border-blue-500 text-blue-700 bg-white shadow-3d hover:shadow-3d-hover"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={mobileMenuOpen ? t('navbar.close_menu') : t('navbar.open_menu')}
+              aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-primary-navigation"
             >
