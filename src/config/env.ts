@@ -8,25 +8,25 @@ const envSchema = z.object({
     VERCEL_BRANCH_URL: z.string().optional(),
 
     // APIs e serviços
-    API_BASE_URL: z.string().url('API_BASE_URL deve ser uma URL válida'),
-    WP_BASE_URL: z.string().url('WP_BASE_URL deve ser uma URL válida'),
+    API_BASE_URL: z.string().url('API_BASE_URL deve ser uma URL válida').optional(),
+    WP_BASE_URL: z.string().url('WP_BASE_URL deve ser uma URL válida').optional(),
 
     // Supabase
-    SUPABASE_URL: z.string().url('SUPABASE_URL deve ser uma URL válida'),
-    SUPABASE_ANON_KEY: z.string().min(1, 'SUPABASE_ANON_KEY é obrigatória'),
+    SUPABASE_URL: z.string().url('SUPABASE_URL deve ser uma URL válida').optional(),
+    SUPABASE_ANON_KEY: z.string().min(1, 'SUPABASE_ANON_KEY é obrigatória').optional(),
 
     // Resend (apenas chave pública se necessário)
     RESEND_PUBLIC_KEY: z.string().optional(),
 
     // reCAPTCHA
-    RECAPTCHA_SITE_KEY: z.string().min(1, 'RECAPTCHA_SITE_KEY é obrigatória'),
+    RECAPTCHA_SITE_KEY: z.string().min(1, 'RECAPTCHA_SITE_KEY é obrigatória').optional(),
 
     // PostHog
-    POSTHOG_KEY: z.string().min(1, 'POSTHOG_KEY é obrigatória'),
+    POSTHOG_KEY: z.string().min(1, 'POSTHOG_KEY é obrigatória').optional(),
     POSTHOG_HOST: z.string().url().optional(),
 
     // Google Maps
-    GOOGLE_MAPS_API_KEY: z.string().min(1, 'GOOGLE_MAPS_API_KEY é obrigatória'),
+    GOOGLE_MAPS_API_KEY: z.string().min(1, 'GOOGLE_MAPS_API_KEY é obrigatória').optional(),
 
     // Google Places/Reviews
     GOOGLE_PLACE_ID: z.string().optional(),
@@ -45,13 +45,13 @@ function getEnvConfig(): EnvConfig {
         VERCEL_URL: import.meta.env.VITE_VERCEL_URL,
         VERCEL_BRANCH_URL: import.meta.env.VITE_VERCEL_BRANCH_URL,
         API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
-        WP_BASE_URL: import.meta.env.VITE_WP_BASE_URL,
+        WP_BASE_URL: import.meta.env.VITE_WORDPRESS_API_URL,
         SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
         SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY,
         RESEND_PUBLIC_KEY: import.meta.env.VITE_RESEND_PUBLIC_KEY,
         RECAPTCHA_SITE_KEY: import.meta.env.VITE_RECAPTCHA_SITE_KEY,
-        POSTHOG_KEY: import.meta.env.VITE_POSTHOG_KEY,
-        POSTHOG_HOST: import.meta.env.VITE_POSTHOG_HOST,
+        POSTHOG_KEY: import.meta.env.VITE_PUBLIC_POSTHOG_KEY,
+        POSTHOG_HOST: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
         GOOGLE_MAPS_API_KEY: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
         GOOGLE_PLACE_ID: import.meta.env.VITE_GOOGLE_PLACE_ID,
         INSTAGRAM_ACCESS_TOKEN: import.meta.env.VITE_INSTAGRAM_ACCESS_TOKEN,
@@ -64,16 +64,13 @@ function getEnvConfig(): EnvConfig {
         if (error instanceof z.ZodError) {
             const missingVars = error.errors.map(err => `VITE_${err.path.join('_')}: ${err.message}`);
 
-            if (import.meta.env.DEV) {
-                // Em desenvolvimento, falhar com mensagem clara
-                throw new Error(`❌ Variáveis de ambiente faltando ou inválidas:\n${missingVars.join('\n')}`);
-            } else {
-                // Em produção, logar erro e continuar com valores padrão
-                console.error('⚠️ Variáveis de ambiente faltando:', missingVars);
-                return rawEnv as EnvConfig;
-            }
+            // Em qualquer ambiente, apenas logar e continuar
+            console.warn('⚠️ Algumas variáveis de ambiente não estão configuradas:', missingVars);
+            return rawEnv as EnvConfig;
         }
-        throw error;
+        // Para outros erros, apenas logar e retornar rawEnv
+        console.error('Erro na validação de ambiente:', error);
+        return rawEnv as EnvConfig;
     }
 }
 

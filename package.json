@@ -89,7 +89,9 @@
     "xai:setup:bash": "./scripts/configure-vercel-xai.sh",
     "xai:test": "node test-xai-chatbot.js",
     "xai:test:fallback": "node test-chatbot-fallback.js",
-    "xai:verify": "vercel env ls | grep XAI"
+    "xai:verify": "vercel env ls | grep XAI",
+    "check:env": "node scripts/check-env.js",
+    "check:env:example": "node scripts/check-env.js --generate-example"
   },
   "dependencies": {
     "@ai-sdk/xai": "^1.2.18",
