@@ -1,368 +1,310 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Star, TrendingUp, RefreshCw, AlertCircle, Info, Loader2 } from 'lucide-react';
-import ReviewCard from './ReviewCard';
-import ReviewsContainer from './ReviewsContainer';
-import BusinessStats from './BusinessStats';
-import CachedGoogleBusinessService from '../services/cachedGoogleBusinessService';
-import GoogleBusinessConfig from '../services/googleBusinessConfig';
-
 /**
- * GoogleReviewsWidget Component
- * Main widget for displaying Google Business reviews with real-time data
- * Refactored to use actual services and advanced components
+ * Simple Google Reviews Widget
+ * Reliable component for displaying Google Places reviews
  */
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Star, ExternalLink, MessageCircle, RefreshCw, AlertCircle } from 'lucide-react';
+import { useGoogleReviews } from '@/hooks/useGoogleReviews';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/badge';
+
+// Reliable fallback data
+const fallbackReviews = [
+    {
+        id: 'fallback-1',
+        reviewer: {
+            displayName: 'Elis R.',
+            profilePhotoUrl: '/images/avatar-female-blonde-640w.avif'
+        },
+        starRating: 5,
+        comment: 'Que atendimento maravilhoso! Tem pessoa que realmente nasce para exalar gentileza... Minha avó foi extremamente bem atendida, da chegada a saída da clínica.',
+        createTime: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+        relativeTimeDescription: 'há uma semana'
+    },
+    {
+        id: 'fallback-2', 
+        reviewer: {
+            displayName: 'Lais S.',
+            profilePhotoUrl: '/images/avatar-female-brunette-640w.avif'
+        },
+        starRating: 5,
+        comment: 'Ótimo atendimento, excelente espaço. Profissionais muito competentes. Recomendo!',
+        createTime: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+        relativeTimeDescription: 'há 10 dias'
+    },
+    {
+        id: 'fallback-3',
+        reviewer: {
+            displayName: 'Junia B.',
+            profilePhotoUrl: '/images/avatar-female-brunette-960w.avif'
+        },
+        starRating: 5,
+        comment: 'Profissional extremamente competente e atencioso. Recomendo!',
+        createTime: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+        relativeTimeDescription: 'há 2 semanas'
+    }
+];
+
 const GoogleReviewsWidget = ({
-  locationId,
-  variant = 'full', // 'full', 'compact', 'stats', 'reviews'
-  displayCount = 5,
-  showStats = true,
-  showFilters = true,
-  autoRefresh = false,
-  refreshInterval = 300000, // 5 minutes
-  showHeader = true,
-  showActions = true,
-  className = '',
-  onReviewShare,
-  onReviewLike,
-  onError
+    maxReviews = 3,
+    showHeader = true,
+    showStats = true,
+    showViewAllButton = true,
+    className = ''
 }) => {
-  // State management
-  const [config, setConfig] = useState(null);
-  const [service, setService] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState('reviews'); // 'reviews', 'stats', 'all'
-
-  // Initialize services
-  useEffect(() => {
-    const initializeServices = async () => {
-      try {
-        // Initialize configuration
-        const googleConfig = new GoogleBusinessConfig();
-        setConfig(googleConfig);
-
-        // Initialize cached service
-        const cachedService = new CachedGoogleBusinessService();
-        setService(cachedService);
-
-        // Load configuration (in real app, this would come from secure storage)
-        const mockConfig = {
-          locationId: locationId || 'accounts/123456789/locations/987654321',
-          isActive: true
-        };
-
-        if (mockConfig.locationId) {
-          setLoading(false);
+    const {
+        reviews: apiReviews,
+        stats: apiStats,
+        loading,
+        error,
+        refresh,
+        isRetrying,
+        retryCount
+    } = useGoogleReviews({
+        limit: maxReviews,
+        autoFetch: true,
+        onError: (err) => {
+            console.info('Using fallback reviews due to API error:', err.message);
         }
-      } catch (error) {
-        console.error('Failed to initialize services:', error);
-        setError('Falha ao inicializar serviços');
-        setLoading(false);
-      }
+    });
+
+    // Use API data if available and valid, otherwise use fallback
+    const reviews = (apiReviews && apiReviews.length > 0) ? apiReviews.slice(0, maxReviews) : fallbackReviews.slice(0, maxReviews);
+    const stats = apiStats || {
+        overview: {
+            averageRating: 4.9,
+            totalReviews: 102,
+            recentReviews: 12
+        }
     };
 
-    initializeServices();
-  }, [locationId]);
+    const isUsingFallback = !apiReviews || apiReviews.length === 0;
 
-  // Handle review share
-  const handleReviewShare = (review) => {
-    if (onReviewShare) {
-      onReviewShare(review);
-    } else {
-      // Default share behavior
-      if (navigator.share) {
+    const renderStars = (rating, size = 'sm') => {
+        const sizeClass = size === 'lg' ? 'w-5 h-5' : size === 'md' ? 'w-4 h-4' : 'w-3 h-3';
+        
+        return (
+            <div className="flex items-center gap-0.5">
+                {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                        key={star}
+                        className={`${sizeClass} ${star <= rating
+                            ? 'text-yellow-400 fill-yellow-400'
+                            : 'text-gray-300'
+                        }`}
+                    />
+                ))}
+            </div>
+        );
+    };
+
+    const formatDate = (dateString) => {
+        if (!dateString) return 'recentemente';
+        
         try {
-          navigator.share({
-            title: `Avaliação de ${review.reviewer.displayName}`,
-            text: review.comment,
-            url: window.location.href
-          });
-        } catch (error) {
-          // Fallback to copying to clipboard
-          navigator.clipboard.writeText(review.comment);
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) return 'hoje';
+            if (diffDays === 1) return 'ontem';
+            if (diffDays < 7) return `há ${diffDays} dias`;
+            if (diffDays < 30) return `há ${Math.floor(diffDays / 7)} semanas`;
+            if (diffDays < 365) return `há ${Math.floor(diffDays / 30)} meses`;
+            return `há ${Math.floor(diffDays / 365)} anos`;
+        } catch {
+            return 'recentemente';
         }
-      } else {
-        // Fallback to copying to clipboard
-        navigator.clipboard.writeText(review.comment);
-      }
-    }
-  };
+    };
 
-  // Handle review like
-  const handleReviewLike = (review, isLiked) => {
-    if (onReviewLike) {
-      onReviewLike(review, isLiked);
-    }
-  };
+    const googleUrl = 'https://www.google.com/maps/place/Saraiva+Vision+-+Oftalmologia/@-19.9166667,-43.9555556,17z';
 
-  // Handle errors
-  const handleError = (error) => {
-    console.error('Google Reviews Widget Error:', error);
-    setError(error.message || 'Erro ao carregar avaliações');
+    return (
+        <section className={`py-12 bg-white ${className}`}>
+            <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-[6%] xl:px-[7%] 2xl:px-[8%]">
+                {/* Header */}
+                {showHeader && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-8"
+                    >
+                        <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-50 text-blue-700 mb-4">
+                            <MessageCircle className="w-4 h-4" />
+                            <span className="font-semibold text-sm">Avaliações Google</span>
+                        </div>
+                        
+                        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
+                            O que nossos pacientes dizem
+                        </h2>
+                        
+                        <p className="text-slate-600 max-w-2xl mx-auto">
+                            Experiências reais de quem confia na Saraiva Vision
+                        </p>
+                    </motion.div>
+                )}
 
-    if (onError) {
-      onError(error);
-    }
-  };
+                {/* Stats Overview */}
+                {showStats && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                        className="flex flex-wrap items-center justify-center gap-6 mb-8"
+                    >
+                        <div className="flex items-center gap-2">
+                            {renderStars(Math.round(stats.overview.averageRating), 'md')}
+                            <span className="text-2xl font-bold text-slate-900">
+                                {stats.overview.averageRating}
+                            </span>
+                            <span className="text-slate-600">({stats.overview.totalReviews}+ avaliações)</span>
+                        </div>
+                        
+                        {stats.overview.recentReviews && (
+                            <Badge variant="success" className="px-3 py-1">
+                                {stats.overview.recentReviews} novas este mês
+                            </Badge>
+                        )}
+                    </motion.div>
+                )}
 
-  // Loading skeleton
-  const WidgetSkeleton = () => (
-    <div className="animate-pulse space-y-6">
-      {/* Header skeleton */}
-      {showHeader && (
-        <div className="flex items-center justify-between">
-          <div className="space-y-2">
-            <div className="h-8 bg-slate-300 dark:bg-slate-600 rounded w-48"></div>
-            <div className="h-4 bg-slate-300 dark:bg-slate-600 rounded w-64"></div>
-          </div>
-          <div className="h-10 bg-slate-300 dark:bg-slate-600 rounded w-24"></div>
-        </div>
-      )}
+                {/* Status Indicators */}
+                {(loading || error || isRetrying) && (
+                    <div className="mb-6 flex items-center justify-center gap-4">
+                        {loading && (
+                            <div className="flex items-center gap-2 text-blue-600">
+                                <RefreshCw className="w-4 h-4 animate-spin" />
+                                <span className="text-sm">Carregando avaliações...</span>
+                            </div>
+                        )}
+                        
+                        {isRetrying && (
+                            <div className="flex items-center gap-2 text-orange-600">
+                                <RefreshCw className="w-4 h-4 animate-spin" />
+                                <span className="text-sm">Tentativa {retryCount}/3...</span>
+                            </div>
+                        )}
+                        
+                        {error && !loading && (
+                            <div className="flex items-center gap-2">
+                                <AlertCircle className="w-4 h-4 text-orange-500" />
+                                <span className="text-sm text-orange-700">
+                                    Usando dados de backup - API temporariamente indisponível
+                                </span>
+                                <Button
+                                    onClick={refresh}
+                                    size="sm"
+                                    variant="outline"
+                                    className="ml-2"
+                                >
+                                    <RefreshCw className="w-3 h-3 mr-1" />
+                                    Tentar novamente
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                )}
 
-      {/* Tabs skeleton */}
-      {variant === 'full' && (
-        <div className="flex gap-2 border-b border-slate-200 dark:border-slate-700">
-          <div className="h-10 bg-slate-300 dark:bg-slate-600 rounded w-24"></div>
-          <div className="h-10 bg-slate-300 dark:bg-slate-600 rounded w-20"></div>
-          <div className="h-10 bg-slate-300 dark:bg-slate-600 rounded w-16"></div>
-        </div>
-      )}
+                {/* Reviews Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    {reviews.map((review, index) => (
+                        <motion.div
+                            key={review.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 * index }}
+                        >
+                            <Card className="h-full hover:shadow-lg transition-all duration-300">
+                                <CardContent className="p-6">
+                                    {/* Rating */}
+                                    <div className="mb-4">
+                                        {renderStars(review.starRating, 'md')}
+                                    </div>
 
-      {/* Content skeleton */}
-      <div className="space-y-4">
-        {[...Array(displayCount)].map((_, i) => (
-          <div key={i} className="bg-slate-100 dark:bg-slate-800 rounded-xl p-5">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-slate-300 dark:bg-slate-600 rounded-full"></div>
-              <div className="flex-1">
-                <div className="h-4 bg-slate-300 dark:bg-slate-600 rounded w-1/3 mb-2"></div>
-                <div className="flex gap-1">
-                  {[...Array(5)].map((_, j) => (
-                    <div key={j} className="w-3 h-3 bg-slate-300 dark:bg-slate-600 rounded"></div>
-                  ))}
+                                    {/* Review Text */}
+                                    <p className="text-slate-700 leading-relaxed mb-6 line-clamp-3">
+                                        "{review.comment}"
+                                    </p>
+
+                                    {/* Reviewer Info */}
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="font-semibold text-slate-800">
+                                                {review.reviewer.displayName}
+                                            </p>
+                                            <p className="text-slate-500 text-sm">
+                                                {review.relativeTimeDescription || formatDate(review.createTime)}
+                                            </p>
+                                        </div>
+                                        
+                                        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
+                                            <img
+                                                src={review.reviewer.profilePhotoUrl}
+                                                alt={review.reviewer.displayName}
+                                                className="w-full h-full object-cover"
+                                                loading="lazy"
+                                                onError={(e) => {
+                                                    e.target.src = '/images/avatar-female-brunette-320w.avif';
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                    ))}
                 </div>
-              </div>
+
+                {/* View All Button */}
+                {showViewAllButton && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center"
+                    >
+                        <a
+                            href={googleUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Ver todas as avaliações no Google (abre em nova aba)"
+                        >
+                            <Button
+                                size="lg"
+                                className="bg-blue-600 hover:bg-blue-700 text-white gap-2 px-6 py-3 shadow-lg hover:shadow-xl transition-all duration-300"
+                            >
+                                Ver Todas no Google
+                                <ExternalLink className="w-4 h-4" />
+                            </Button>
+                        </a>
+                    </motion.div>
+                )}
+
+                {/* Development Info */}
+                {process.env.NODE_ENV === 'development' && (
+                    <div className="mt-8 text-center">
+                        <Badge
+                            variant={isUsingFallback ? 'warning' : 'success'}
+                            className="text-xs"
+                        >
+                            {isUsingFallback ? 'Using Fallback Data' : 'Live Google Reviews'}
+                        </Badge>
+                        {error && (
+                            <p className="text-xs text-gray-500 mt-2">
+                                Error: {error.message}
+                            </p>
+                        )}
+                    </div>
+                )}
             </div>
-            <div className="space-y-2">
-              <div className="h-3 bg-slate-300 dark:bg-slate-600 rounded w-full"></div>
-              <div className="h-3 bg-slate-300 dark:bg-slate-600 rounded w-4/5"></div>
-              <div className="h-3 bg-slate-300 dark:bg-slate-600 rounded w-3/5"></div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  // Render compact variant
-  const renderCompact = () => (
-    <div className="space-y-4">
-      <ReviewsContainer
-        locationId={locationId}
-        displayCount={Math.min(displayCount, 3)}
-        showStats={false}
-        enableFiltering={false}
-        enableSorting={false}
-        autoRefresh={autoRefresh}
-        refreshInterval={refreshInterval}
-        onReviewShare={handleReviewShare}
-        onReviewLike={handleReviewLike}
-        onError={handleError}
-      />
-    </div>
-  );
-
-  // Render stats variant
-  const renderStats = () => (
-    <BusinessStats
-      locationId={locationId}
-      showTrends={true}
-      showDistribution={true}
-      showRecentActivity={true}
-      autoRefresh={autoRefresh}
-      refreshInterval={refreshInterval}
-      onError={handleError}
-    />
-  );
-
-  // Render reviews variant
-  const renderReviews = () => (
-    <ReviewsContainer
-      locationId={locationId}
-      displayCount={displayCount}
-      showStats={showStats}
-      enableFiltering={showFilters}
-      enableSorting={true}
-      autoRefresh={autoRefresh}
-      refreshInterval={refreshInterval}
-      onReviewShare={handleReviewShare}
-      onReviewLike={handleReviewLike}
-      onError={handleError}
-    />
-  );
-
-  // Render full variant with tabs
-  const renderFull = () => (
-    <div className="space-y-6">
-      {/* Tab navigation */}
-      <div className="flex gap-2 border-b border-slate-200 dark:border-slate-700">
-        {[
-          { id: 'all', label: 'Tudo', icon: Star },
-          { id: 'reviews', label: 'Avaliações', icon: Star },
-          { id: 'stats', label: 'Estatísticas', icon: TrendingUp }
-        ].map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`
-              flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-t-lg transition-colors
-              ${activeTab === tab.id
-                ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800'
-              }
-            `}
-          >
-            <tab.icon size={16} />
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Tab content */}
-      <div className="min-h-[400px]">
-        {activeTab === 'all' && (
-          <div className="space-y-6">
-            <BusinessStats
-              locationId={locationId}
-              showTrends={true}
-              showDistribution={true}
-              showRecentActivity={false}
-              autoRefresh={autoRefresh}
-              refreshInterval={refreshInterval}
-              onError={handleError}
-            />
-            <ReviewsContainer
-              locationId={locationId}
-              displayCount={displayCount}
-              showStats={false}
-              enableFiltering={showFilters}
-              enableSorting={true}
-              autoRefresh={autoRefresh}
-              refreshInterval={refreshInterval}
-              onReviewShare={handleReviewShare}
-              onReviewLike={handleReviewLike}
-              onError={handleError}
-            />
-          </div>
-        )}
-
-        {activeTab === 'reviews' && renderReviews()}
-        {activeTab === 'stats' && renderStats()}
-      </div>
-    </div>
-  );
-
-  return (
-    <div className={`bg-white dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700 ${className}`}>
-      {/* Header */}
-      {showHeader && (
-        <div className="p-6 border-b border-slate-200 dark:border-slate-700">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                <Star size={24} className="text-yellow-400 fill-yellow-400" />
-                Avaliações Google Business
-              </h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                Avaliações autênticas e estatísticas em tempo real
-              </p>
-            </div>
-
-            {showActions && (
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => config?.locationId && service && service.refreshReviews(config.locationId)}
-                  disabled={loading}
-                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? (
-                    <Loader2 size={16} className="animate-spin" />
-                  ) : (
-                    <RefreshCw size={16} />
-                  )}
-                  Atualizar
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Content */}
-      <div className="p-6">
-        {/* Error message */}
-        {error && (
-          <div className="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30 rounded-lg p-4 flex items-start gap-3">
-            <AlertCircle size={20} className="text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm font-medium text-red-800 dark:text-red-200">
-                Erro ao carregar avaliações
-              </p>
-              <p className="text-sm text-red-600 dark:text-red-300 mt-1">
-                {error}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Loading state */}
-        {loading && <WidgetSkeleton />}
-
-        {/* Content based on variant */}
-        {!loading && !error && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            {variant === 'compact' && renderCompact()}
-            {variant === 'stats' && renderStats()}
-            {variant === 'reviews' && renderReviews()}
-            {variant === 'full' && renderFull()}
-          </motion.div>
-        )}
-
-        {/* Info message when no data */}
-        {!loading && !error && !config?.locationId && (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Info size={32} className="text-slate-400" />
-            </div>
-            <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-2">
-              Configuração Necessária
-            </h3>
-            <p className="text-slate-600 dark:text-slate-400">
-              Por favor, configure o ID do local do Google Business para exibir as avaliações.
-            </p>
-          </div>
-        )}
-      </div>
-
-      {/* Footer */}
-      <div className="px-6 py-4 border-t border-slate-200 dark:border-slate-700">
-        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-          <div className="flex items-center gap-2">
-            <Star size={12} className="text-yellow-400 fill-yellow-400" />
-            <span>Dados fornecidos pelo Google Business</span>
-          </div>
-          <div>
-            Atualizado em {new Date().toLocaleDateString('pt-BR')}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+        </section>
+    );
 };
 
 export default GoogleReviewsWidget;

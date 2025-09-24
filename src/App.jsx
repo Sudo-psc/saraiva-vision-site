@@ -102,7 +102,7 @@ function App() {
             <CTAModal />
             <ServiceWorkerUpdateNotification />
             <WhatsappWidget phoneNumber={safePhoneFormat(clinicInfo.whatsapp || clinicInfo.phone)} />
-            <ChatbotWidget />
+            {/* <ChatbotWidget /> */}
             <Accessibility />
             <ScrollDiagnostics />
           </WidgetProvider>

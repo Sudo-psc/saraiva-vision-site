@@ -35,11 +35,11 @@ export default async function handler(req, res) {
             });
         }
 
-        const apiKey = process.env.VITE_GOOGLE_PLACES_API_KEY;
+        const apiKey = process.env.VITE_GOOGLE_PLACES_API_KEY || process.env.VITE_GOOGLE_MAPS_API_KEY;
         if (!apiKey) {
             return res.status(500).json({
                 success: false,
-                error: 'Google Places API key not configured'
+                error: 'Google Places API key not configured. Please check VITE_GOOGLE_PLACES_API_KEY or VITE_GOOGLE_MAPS_API_KEY environment variable.'
             });
         }
 
@@ -52,16 +52,36 @@ export default async function handler(req, res) {
             key: apiKey
         });
 
-        const response = await fetch(`${baseUrl}?${params.toString()}`);
+        // Fetch with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        
+        const response = await fetch(`${baseUrl}?${params.toString()}`, {
+            signal: controller.signal,
+            headers: {
+                'User-Agent': 'SaraivaVision/1.0'
+            }
+        });
+        
+        clearTimeout(timeoutId);
 
         if (!response.ok) {
-            throw new Error(`Google Places API error: ${response.status}`);
+            throw new Error(`Google Places API error: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
 
         if (data.status !== 'OK') {
-            throw new Error(`Google Places API error: ${data.status}`);
+            // Handle specific error cases
+            if (data.status === 'REQUEST_DENIED') {
+                throw new Error('API request denied. Please check your API key and ensure Places API is enabled.');
+            } else if (data.status === 'INVALID_REQUEST') {
+                throw new Error('Invalid request. Please check the place ID format.');
+            } else if (data.status === 'NOT_FOUND') {
+                throw new Error('Place not found. Please verify the place ID.');
+            } else {
+                throw new Error(`Google Places API error: ${data.status} - ${data.error_message || 'Unknown error'}`);
+            }
         }
 
         const place = data.result;

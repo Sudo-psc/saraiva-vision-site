@@ -1,0 +1,303 @@
+version: '3.8'
+
+# WordPress Integration & Nginx Configuration
+# Unified Docker Compose for Saraiva Vision Medical Website
+# Orchestrates: React Frontend + WordPress CMS + Node.js API + MySQL + Redis + Nginx Proxy
+
+services:
+  # MySQL Database - Shared by WordPress and API
+  mysql:
+    image: mysql:8.0
+    container_name: saraiva-mysql-wp
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-saraiva_root_2024!}
+      MYSQL_DATABASE: ${WORDPRESS_DB_NAME:-saraiva_wordpress}
+      MYSQL_USER: ${WORDPRESS_DB_USER:-saraiva_wp_user}
+      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD:-saraiva_wp_pass_2024!}
+    volumes:
+      - mysql_wp_data:/var/lib/mysql
+      - ./wordpress-backend/mysql/conf.d:/etc/mysql/conf.d:ro
+      - ./logs/mysql:/var/log/mysql
+    ports:
+      - "3306:3306"
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --sql-mode=STRICT_TRANS_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO
+      --max-connections=500
+      --innodb-buffer-pool-size=256M
+      --slow-query-log=1
+      --slow-query-log-file=/var/log/mysql/slow.log
+      --long-query-time=2
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-saraiva_root_2024!}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - saraiva-network
+
+  # Redis Cache - Shared by WordPress and API
+  redis:
+    image: redis:7.2-alpine
+    container_name: saraiva-redis-wp
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD:-saraiva_redis_2024!}
+    volumes:
+      - redis_wp_data:/data
+      - ./logs/redis:/var/log/redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-saraiva_redis_2024!}", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - saraiva-network
+
+  # WordPress CMS with PHP-FPM
+  wordpress:
+    image: wordpress:6.4-php8.2-fpm
+    container_name: saraiva-wordpress
+    restart: unless-stopped
+    environment:
+      # Database Configuration
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-saraiva_wordpress}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER:-saraiva_wp_user}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-saraiva_wp_pass_2024!}
+
+      # WordPress Configuration
+      WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX:-sv_}
+      WORDPRESS_DEBUG: ${WORDPRESS_DEBUG:-false}
+
+      # Medical Website Specific
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_MEMORY_LIMIT', '512M');
+        define('WP_MAX_MEMORY_LIMIT', '512M');
+        define('FORCE_SSL_ADMIN', true);
+        define('WP_AUTO_UPDATE_CORE', false);
+        define('DISALLOW_FILE_EDIT', true);
+        define('WP_POST_REVISIONS', 5);
+
+        /* Medical Website LGPD Compliance */
+        define('WP_LGPD_COMPLIANCE', true);
+        define('WP_AUDIT_LOG', true);
+
+        /* Performance & Security */
+        define('WP_CACHE', true);
+        define('WP_REDIS_HOST', 'redis');
+        define('WP_REDIS_PORT', 6379);
+        define('WP_REDIS_PASSWORD', '${REDIS_PASSWORD:-saraiva_redis_2024!}');
+        define('WP_REDIS_DATABASE', 1);
+
+        /* API Integration */
+        define('SARAIVA_API_URL', 'http://api:3002');
+        define('SARAIVA_FRONTEND_URL', 'https://saraivavision.com.br');
+
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./wordpress-backend/themes:/var/www/html/wp-content/themes/custom:ro
+      - ./wordpress-backend/plugins:/var/www/html/wp-content/plugins/custom:ro
+      - ./wordpress-backend/uploads:/var/www/html/wp-content/uploads
+      - ./wordpress-backend/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+      - ./logs/wordpress:/var/log/wordpress
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
+      interval: 60s
+      timeout: 15s
+      retries: 3
+      start_period: 120s
+    networks:
+      - saraiva-network
+
+  # Node.js API Backend
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: production
+    container_name: saraiva-api
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
+
+      # Database
+      - DATABASE_URL=mysql://${WORDPRESS_DB_USER:-saraiva_wp_user}:${WORDPRESS_DB_PASSWORD:-saraiva_wp_pass_2024!}@mysql:3306/${WORDPRESS_DB_NAME:-saraiva_wordpress}
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-saraiva_redis_2024!}@redis:6379
+
+      # External APIs
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
+
+      # WordPress Integration
+      - WORDPRESS_URL=http://nginx/wp-json
+      - WORDPRESS_API_USER=${WORDPRESS_API_USER:-api_user}
+      - WORDPRESS_API_PASSWORD=${WORDPRESS_API_PASSWORD:-api_pass_2024!}
+
+      # Medical Compliance
+      - LGPD_COMPLIANCE_MODE=true
+      - AUDIT_LOG_ENABLED=true
+      - MEDICAL_DATA_ENCRYPTION=true
+
+    volumes:
+      - ./api:/app:ro
+      - ./logs/api:/app/logs
+      - api_node_modules:/app/node_modules
+    working_dir: /app
+    command: ["npm", "start"]
+    ports:
+      - "3002:3002"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      wordpress:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3002/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - saraiva-network
+
+  # Nginx Reverse Proxy & Static File Server
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: saraiva-nginx-wp
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Nginx Configuration
+      - ./nginx-wordpress.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/wordpress-sites.conf:/etc/nginx/conf.d/default.conf:ro
+
+      # Static Files & Build
+      - ./dist:/var/www/html:ro
+      - wordpress_data:/var/www/wordpress:ro
+
+      # SSL Certificates
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./nginx/ssl-config:/etc/nginx/ssl-config:ro
+
+      # Logs
+      - ./logs/nginx:/var/log/nginx
+
+    environment:
+      - NGINX_WORKER_PROCESSES=auto
+      - NGINX_WORKER_CONNECTIONS=1024
+      - NGINX_KEEPALIVE_TIMEOUT=65
+    depends_on:
+      wordpress:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - saraiva-network
+
+  # Nginx Helper for WordPress Integration
+  nginx-helper:
+    image: nginx:1.25-alpine
+    container_name: saraiva-nginx-helper
+    restart: "no"
+    command: >
+      sh -c "
+      echo 'Setting up Nginx configuration for WordPress integration...' &&
+      mkdir -p /etc/nginx/conf.d/wordpress &&
+      echo 'WordPress integration setup complete.'
+      "
+    volumes:
+      - ./nginx/wordpress-conf:/etc/nginx/conf.d/wordpress
+    depends_on:
+      - nginx
+    networks:
+      - saraiva-network
+
+  # Health Monitor for Medical System
+  health-monitor:
+    build:
+      context: ./monitoring
+      dockerfile: Dockerfile.health
+    container_name: saraiva-health-monitor
+    restart: unless-stopped
+    environment:
+      - MONITOR_INTERVAL=60
+      - MEDICAL_SYSTEM_MODE=true
+      - WORDPRESS_HEALTH_URL=http://nginx/wp-json/wp/v2/
+      - API_HEALTH_URL=http://api:3002/api/health
+      - NGINX_HEALTH_URL=http://nginx/health
+      - ALERT_WEBHOOK_URL=${HEALTH_ALERT_WEBHOOK_URL}
+    volumes:
+      - ./logs/health-monitor:/app/logs
+    depends_on:
+      - nginx
+      - wordpress
+      - api
+      - mysql
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/monitor-health"]
+      interval: 60s
+      timeout: 15s
+      retries: 2
+      start_period: 30s
+    networks:
+      - saraiva-network
+
+volumes:
+  mysql_wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/mysql
+
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/wordpress
+
+  redis_wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/redis
+
+  api_node_modules:
+    driver: local
+
+networks:
+  saraiva-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.25.0.0/16
+          gateway: 172.25.0.1

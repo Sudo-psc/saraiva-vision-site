@@ -21,18 +21,20 @@ export function useGoogleReviews(options = {}) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [lastFetch, setLastFetch] = useState(null);
+    const [retryCount, setRetryCount] = useState(0);
 
     const abortControllerRef = useRef(null);
     const refreshIntervalRef = useRef(null);
+    const maxRetries = 3;
 
     /**
-     * Fetch reviews from Google Places API
+     * Fetch reviews from Google Places API with retry logic
      */
     const fetchReviews = useCallback(async (fetchOptions = {}) => {
         const placeId = fetchOptions.placeId || config.placeId || process.env.VITE_GOOGLE_PLACE_ID;
 
         if (!placeId) {
-            const error = new Error('Place ID is required');
+            const error = new Error('Place ID is required. Please configure VITE_GOOGLE_PLACE_ID in your environment variables.');
             setError(error);
             if (config.onError) config.onError(error);
             return;
@@ -46,6 +48,8 @@ export function useGoogleReviews(options = {}) {
         abortControllerRef.current = new AbortController();
         setLoading(true);
         setError(null);
+        
+        const currentRetry = fetchOptions.retryAttempt || 0;
 
         try {
             const params = new URLSearchParams({
@@ -91,17 +95,33 @@ export function useGoogleReviews(options = {}) {
                 return; // Request was cancelled
             }
 
-            const error = new Error(err.message || 'Failed to fetch reviews');
+            console.error('Google Reviews fetch error:', err);
+            
+            // Retry logic for network errors
+            if (currentRetry < maxRetries && (err.message.includes('network') || err.message.includes('timeout') || err.message.includes('fetch'))) {
+                console.log(`Retrying request (${currentRetry + 1}/${maxRetries})...`);
+                setRetryCount(currentRetry + 1);
+                
+                // Exponential backoff: wait 1s, 2s, 4s
+                const delay = Math.pow(2, currentRetry) * 1000;
+                setTimeout(() => {
+                    fetchReviews({ ...fetchOptions, retryAttempt: currentRetry + 1 });
+                }, delay);
+                return;
+            }
+
+            const error = new Error(err.message || 'Failed to fetch reviews from Google Places API');
             setError(error);
+            setRetryCount(0);
 
             // Call error callback
             if (config.onError) {
                 config.onError(error);
             }
-
-            console.error('Google Reviews fetch error:', error);
         } finally {
-            setLoading(false);
+            if (currentRetry === 0) { // Only set loading false on the final attempt
+                setLoading(false);
+            }
         }
     }, [config]);
 
@@ -247,6 +267,8 @@ export function useGoogleReviews(options = {}) {
         loading,
         error,
         lastFetch,
+        retryCount,
+        isRetrying: retryCount > 0,
 
         // Actions
         fetchReviews,

@@ -314,14 +314,14 @@ const GoogleReviewsTest = ({ placeId = process.env.VITE_GOOGLE_PLACE_ID }) => {
                             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
                                 <h4 className="font-medium text-yellow-800 mb-2">Setup Required</h4>
                                 <p className="text-yellow-700 text-sm mb-2">
-                                    Your environment variables are already configured in .env:
+                                    To use live Google Reviews, configure these environment variables:
                                 </p>
                                 <div className="bg-yellow-100 rounded p-2 font-mono text-xs">
-                                    VITE_GOOGLE_PLACES_API_KEY={process.env.VITE_GOOGLE_PLACES_API_KEY || 'your_api_key'}<br />
-                                    VITE_GOOGLE_PLACE_ID={process.env.VITE_GOOGLE_PLACE_ID || 'your_place_id'}
+                                    VITE_GOOGLE_PLACES_API_KEY=your_google_places_api_key<br />
+                                    VITE_GOOGLE_PLACE_ID=your_place_id
                                 </div>
                                 <p className="text-yellow-700 text-sm mt-2">
-                                    The API should work automatically with your existing Google Places API key.
+                                    Until configured, the component will use reliable fallback data.
                                 </p>
                             </div>
                         )}
@@ -331,7 +331,7 @@ const GoogleReviewsTest = ({ placeId = process.env.VITE_GOOGLE_PLACE_ID }) => {
                                 <h4 className="font-medium text-green-800 mb-2">✅ Ready to Use!</h4>
                                 <p className="text-green-700 text-sm">
                                     Your Google Places API is properly configured. The reviews should load automatically.
-                                    You can now use the GoogleReviewsIntegration component in your application.
+                                    The GoogleReviewsWidget component is ready for production use.
                                 </p>
                             </div>
                         )}

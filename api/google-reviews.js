@@ -31,15 +31,15 @@ export default async function handler(req, res) {
         if (!placeId) {
             return res.status(400).json({
                 success: false,
-                error: 'placeId parameter is required'
+                error: 'placeId parameter is required. Please check VITE_GOOGLE_PLACE_ID environment variable.'
             });
         }
 
-        const apiKey = process.env.VITE_GOOGLE_PLACES_API_KEY;
+        const apiKey = process.env.VITE_GOOGLE_PLACES_API_KEY || process.env.VITE_GOOGLE_MAPS_API_KEY;
         if (!apiKey) {
             return res.status(500).json({
                 success: false,
-                error: 'Google Places API key not configured'
+                error: 'Google Places API key not configured. Please check VITE_GOOGLE_PLACES_API_KEY or VITE_GOOGLE_MAPS_API_KEY environment variable.'
             });
         }
 
@@ -52,15 +52,22 @@ export default async function handler(req, res) {
             key: apiKey
         });
 
-        console.log('Fetching from Google Places API:', baseUrl);
+        console.log('Fetching reviews from Google Places API for place:', placeId);
 
-        // Fetch from Google Places API
+        // Fetch from Google Places API with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+        
         const response = await fetch(`${baseUrl}?${params.toString()}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
-            }
+                'User-Agent': 'SaraivaVision/1.0'
+            },
+            signal: controller.signal
         });
+        
+        clearTimeout(timeoutId);
 
         if (!response.ok) {
             throw new Error(`Google Places API error: ${response.status} ${response.statusText}`);
@@ -70,7 +77,19 @@ export default async function handler(req, res) {
 
         if (data.status !== 'OK') {
             console.error('Google Places API error:', data);
-            throw new Error(`Google Places API error: ${data.status} - ${data.error_message || 'Unknown error'}`);
+            
+            // Handle specific error cases
+            if (data.status === 'REQUEST_DENIED') {
+                throw new Error('API request denied. Please check your API key and ensure Places API is enabled.');
+            } else if (data.status === 'INVALID_REQUEST') {
+                throw new Error('Invalid request. Please check the place ID format.');
+            } else if (data.status === 'NOT_FOUND') {
+                throw new Error('Place not found. Please verify the place ID.');
+            } else if (data.status === 'OVER_QUERY_LIMIT') {
+                throw new Error('API quota exceeded. Please try again later.');
+            } else {
+                throw new Error(`Google Places API error: ${data.status} - ${data.error_message || 'Unknown error'}`);
+            }
         }
 
         const place = data.result;
