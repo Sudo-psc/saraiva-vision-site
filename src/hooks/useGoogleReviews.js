@@ -33,8 +33,8 @@ export function useGoogleReviews(options = {}) {
     const fetchReviews = useCallback(async (fetchOptions = {}) => {
         const placeId = fetchOptions.placeId || config.placeId || process.env.VITE_GOOGLE_PLACE_ID;
 
-        if (!placeId) {
-            const error = new Error('Place ID is required. Please configure VITE_GOOGLE_PLACE_ID in your environment variables.');
+        if (!placeId || placeId === 'your_google_place_id_here') {
+            const error = new Error('Google Place ID not configured. Please check your environment variables.');
             setError(error);
             if (config.onError) config.onError(error);
             return;
@@ -69,7 +69,15 @@ export function useGoogleReviews(options = {}) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
 
-            const result = await response.json();
+            let result;
+            try {
+                result = await response.json();
+            } catch (jsonError) {
+                console.error('JSON parsing error:', jsonError);
+                const text = await response.text();
+                console.error('Response text:', text);
+                throw new Error('Invalid response format from server');
+            }
 
             if (!result.success) {
                 throw new Error(result.error || 'Failed to fetch reviews');

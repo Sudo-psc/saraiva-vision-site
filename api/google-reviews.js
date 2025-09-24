@@ -28,18 +28,20 @@ export default async function handler(req, res) {
         } = req.query;
 
         // Validate required parameters
-        if (!placeId) {
+        if (!placeId || placeId === 'your_google_place_id_here') {
+            console.error('Google Place ID not configured or using placeholder value');
             return res.status(400).json({
                 success: false,
-                error: 'placeId parameter is required. Please check VITE_GOOGLE_PLACE_ID environment variable.'
+                error: 'Google Place ID not configured. Please check your environment variables.'
             });
         }
 
-        const apiKey = process.env.VITE_GOOGLE_PLACES_API_KEY || process.env.VITE_GOOGLE_MAPS_API_KEY;
-        if (!apiKey) {
+        const apiKey = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY || process.env.VITE_GOOGLE_PLACES_API_KEY || process.env.VITE_GOOGLE_MAPS_API_KEY;
+        if (!apiKey || apiKey === 'your_google_maps_api_key_here' || apiKey === 'your_google_places_api_key_here') {
+            console.error('Google Places API key not configured or using placeholder value');
             return res.status(500).json({
                 success: false,
-                error: 'Google Places API key not configured. Please check VITE_GOOGLE_PLACES_API_KEY or VITE_GOOGLE_MAPS_API_KEY environment variable.'
+                error: 'Google Places API key not configured. Please check your environment variables.'
             });
         }
 
@@ -71,6 +73,14 @@ export default async function handler(req, res) {
 
         if (!response.ok) {
             throw new Error(`Google Places API error: ${response.status} ${response.statusText}`);
+        }
+
+        // Check if response is actually JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            console.error('Non-JSON response from Google Places API:', text);
+            throw new Error('Invalid response format from Google Places API');
         }
 
         const data = await response.json();

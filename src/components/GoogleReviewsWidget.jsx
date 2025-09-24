@@ -69,7 +69,11 @@ const GoogleReviewsWidget = ({
         limit: maxReviews,
         autoFetch: true,
         onError: (err) => {
-            console.info('Using fallback reviews due to API error:', err.message);
+            if (err.message.includes('not configured')) {
+                console.info('Google Reviews not configured, using fallback data:', err.message);
+            } else {
+                console.info('Using fallback reviews due to API error:', err.message);
+            }
         }
     });
 
