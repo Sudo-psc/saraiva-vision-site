@@ -25,7 +25,7 @@ const GoogleReviewsTestPage = lazy(() => import('@/pages/GoogleReviewsTestPage')
 import ScrollToTop from '@/components/ScrollToTop';
 import ServiceRedirect from '@/components/ServiceRedirect';
 import { Toaster } from '@/components/ui/toaster';
-import ConsentManager from '@/components/ConsentManager';
+
 import CTAModal from '@/components/CTAModal';
 import WhatsappWidget from '@/components/WhatsappWidget';
 import ChatbotWidget from '@/components/ChatbotWidget';
@@ -35,8 +35,8 @@ import { clinicInfo } from '@/lib/clinicInfo';
 import { safePhoneFormat } from '@/utils/phoneFormatter';
 import Accessibility from '@/components/Accessibility';
 import { WidgetProvider } from '@/utils/widgetManager.jsx';
-import { initScrollTelemetry } from '@/utils/scrollTelemetry';
-import ScrollDiagnostics from '@/components/ScrollDiagnostics';
+
+
 import { initErrorTracking } from '@/utils/errorTracking';
 import { PostHogProvider } from '@/contexts/PostHogContext';
 
@@ -48,8 +48,7 @@ function App() {
   useEffect(() => {
     document.documentElement.lang = i18n.language;
 
-    // Inicializa telemetria de scroll para monitorar preventDefault
-    initScrollTelemetry();
+
 
     // Initialize error tracking for production
     initErrorTracking();
@@ -99,13 +98,11 @@ function App() {
               </Suspense>
             </div>
             <Toaster />
-            <ConsentManager />
             <CTAModal />
             <ServiceWorkerUpdateNotification />
             <WhatsappWidget phoneNumber={safePhoneFormat(clinicInfo.whatsapp || clinicInfo.phone)} />
             <ChatbotWidget />
             <Accessibility />
-            <ScrollDiagnostics />
           </WidgetProvider>
         </AnalyticsProvider>
       </PostHogProvider>

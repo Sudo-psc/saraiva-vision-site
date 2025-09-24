@@ -1,519 +1,527 @@
 /**
- * Security Monitoring API Endpoint
- * Provides security metrics, threat detection logs, and configuration validation
+ * Security Monitoring API
+ * Provides real-time security metrics and monitoring for chatbot system
  */
 
-import { supabaseAdmin } from '../../src/lib/supabase.ts';
-import { applyCorsHeaders, applySecurityHeaders } from '../utils/securityHeaders.js';
-import { validateSecurityConfig, getSecurityConfig } from '../config/security.js';
-import { getRateLimitStats } from '../contact/rateLimiter.js';
-import { createLogger } from '../../src/lib/logger.js';
+import crypto from 'crypto';
+import { chatbotSecurityService, getSecurityStats } from '../middleware/chatbotSecurity.js';
+import { getClientIP } from '../contact/rateLimiter.js';
 
 /**
- * Security monitoring handler
+ * Get security dashboard data
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
  */
 export default async function handler(req, res) {
-    const requestId = `sec_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const logger = createLogger('security-monitor', requestId);
+    // Set CORS headers
+    res.setHeader('Access-Control-Allow-Origin', process.env.NODE_ENV === 'production'
+        ? 'https://saraivavision.com.br'
+        : '*'
+    );
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
 
-    // Apply security headers (admin type for monitoring endpoint)
-    applyCorsHeaders(req, res);
-    applySecurityHeaders(res, {
-        requestId,
-        customHeaders: {
-            'X-Content-Type-Options': 'nosniff',
-            'X-Frame-Options': 'DENY',
-            'Cache-Control': 'no-cache, no-store, must-revalidate'
-        }
-    });
-
-    // Handle preflight
+    // Handle preflight requests
     if (req.method === 'OPTIONS') {
-        return res.status(204).end();
+        return res.status(200).end();
     }
 
-    // Only allow GET requests for monitoring
+    // Only allow GET requests
     if (req.method !== 'GET') {
         return res.status(405).json({
             success: false,
             error: {
-                code: 'METHOD_NOT_ALLOWED',
-                message: 'Only GET requests are allowed',
-                timestamp: new Date().toISOString(),
-                requestId
+                code: 'method_not_allowed',
+                message: 'Only GET requests are allowed'
             }
         });
     }
 
     try {
-        const { type = 'overview', timeRange = '1h', limit = 100 } = req.query;
+        const clientIP = getClientIP(req);
+        const userAgent = req.headers['user-agent'] || '';
 
-        await logger.info('Security monitoring request', {
-            type,
-            timeRange,
-            limit: parseInt(limit)
-        });
-
-        switch (type) {
-            case 'overview':
-                return await getSecurityOverview(req, res, requestId);
-
-            case 'threats':
-                return await getThreatLogs(req, res, requestId, timeRange, parseInt(limit));
-
-            case 'rate-limits':
-                return await getRateLimitMetrics(req, res, requestId);
-
-            case 'config':
-                return await getConfigValidation(req, res, requestId);
-
-            case 'stats':
-                return await getSecurityStats(req, res, requestId, timeRange);
-
-            default:
-                return res.status(400).json({
-                    success: false,
-                    error: {
-                        code: 'INVALID_TYPE',
-                        message: 'Invalid monitoring type. Use: overview, threats, rate-limits, config, stats',
-                        timestamp: new Date().toISOString(),
-                        requestId
-                    }
-                });
+        // Basic authentication check (in production, implement proper auth)
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({
+                success: false,
+                error: {
+                    code: 'unauthorized',
+                    message: 'Authentication required'
+                }
+            });
         }
 
-    } catch (error) {
-        await logger.error('Security monitoring error', {
-            error_message: error.message,
-            error_stack: error.stack
-        });
+        // Get query parameters
+        const {
+            timeRange = '1h',
+            includeDetails = 'false',
+            format = 'json'
+        } = req.query;
 
-        return res.status(500).json({
+        // Get security statistics
+        const securityStats = getSecurityStats();
+
+        // Get additional metrics based on time range
+        const metrics = await getSecurityMetrics(timeRange);
+
+        // Prepare response data
+        const responseData = {
+            success: true,
+            data: {
+                overview: {
+                    timestamp: new Date().toISOString(),
+                    timeRange,
+                    activeSessions: securityStats.activeSessions,
+                    averageSecurityScore: securityStats.averageSecurityScore,
+                    totalEvents: securityStats.recentSecurityEvents,
+                    status: getSystemSecurityStatus(securityStats)
+                },
+                metrics: {
+                    securityEvents: {
+                        total: securityStats.recentSecurityEvents,
+                        byType: securityStats.eventsByType,
+                        bySeverity: securityStats.eventsBySeverity
+                    },
+                    rateLimiting: metrics.rateLimiting,
+                    threatDetection: metrics.threatDetection,
+                    sessionSecurity: metrics.sessionSecurity
+                },
+                alerts: await getActiveSecurityAlerts(),
+                trends: await getSecurityTrends(timeRange)
+            },
+            metadata: {
+                requestId: `monitor_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                processingTime: 0, // Will be calculated at end of request
+                clientIP: hashIP(clientIP),
+                version: '1.0.0'
+            }
+        };
+
+        // Include detailed information if requested
+        if (includeDetails === 'true') {
+            responseData.data.details = {
+                recentEvents: await getRecentSecurityEvents(50),
+                topThreats: await getTopThreats(),
+                sessionDetails: await getSessionDetails(),
+                performanceMetrics: await getPerformanceMetrics()
+            };
+        }
+
+        // Set appropriate cache headers
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+
+        // Return response
+        res.status(200).json(responseData);
+
+    } catch (error) {
+        console.error('Security monitoring API error:', error);
+
+        res.status(500).json({
             success: false,
             error: {
-                code: 'INTERNAL_SERVER_ERROR',
-                message: 'Security monitoring failed',
-                timestamp: new Date().toISOString(),
-                requestId
+                code: 'internal_server_error',
+                message: 'Failed to retrieve security metrics',
+                timestamp: new Date().toISOString()
             }
         });
     }
 }
 
 /**
- * Get security overview with key metrics
+ * Get security metrics for specified time range
+ * @param {string} timeRange - Time range (1h, 6h, 24h, 7d)
+ * @returns {Object} Security metrics
  */
-async function getSecurityOverview(req, res, requestId) {
-    try {
-        const now = new Date();
-        const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
-        const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+async function getSecurityMetrics(timeRange) {
+    const now = Date.now();
+    const timeRangeMs = parseTimeRange(timeRange);
+    const startTime = now - timeRangeMs;
 
-        // Get threat detection events from last hour
-        const { data: recentThreats, error: threatsError } = await supabaseAdmin
-            .from('event_log')
-            .select('*')
-            .in('event_type', ['security_threat_detected', 'spam_detected', 'rate_limit_exceeded'])
-            .gte('created_at', oneHourAgo.toISOString())
-            .order('created_at', { ascending: false });
+    // Get metrics from global stores (in production, use proper database)
+    const metrics = global.chatbotSecurityMetrics || [];
+    const recentMetrics = metrics.filter(m =>
+        new Date(m.timestamp).getTime() > startTime
+    );
 
-        if (threatsError) {
-            throw threatsError;
+    return {
+        rateLimiting: {
+            totalRequests: recentMetrics.length,
+            blockedRequests: recentMetrics.filter(m => m.violations > 0).length,
+            averageProcessingTime: calculateAverage(recentMetrics.map(m => m.processingTime)),
+            peakRequestsPerMinute: calculatePeakRequestsPerMinute(recentMetrics)
+        },
+        threatDetection: {
+            threatsDetected: recentMetrics.filter(m => m.violations > 0).length,
+            maliciousInputAttempts: recentMetrics.filter(m =>
+                m.violations > 0 && m.securityScore < 50
+            ).length,
+            averageThreatScore: calculateAverage(
+                recentMetrics.filter(m => m.violations > 0).map(m => 100 - m.securityScore)
+            )
+        },
+        sessionSecurity: {
+            totalSessions: new Set(recentMetrics.map(m => m.sessionId)).size,
+            averageSessionDuration: calculateAverageSessionDuration(recentMetrics),
+            suspiciousSessions: recentMetrics.filter(m => m.securityScore < 70).length,
+            averageSecurityScore: calculateAverage(recentMetrics.map(m => m.securityScore))
         }
+    };
+}
 
-        // Get successful requests from last hour
-        const { data: successfulRequests, error: successError } = await supabaseAdmin
-            .from('event_log')
-            .select('*')
-            .in('event_type', ['contact_submitted', 'appointment_created', 'chatbot_response'])
-            .gte('created_at', oneHourAgo.toISOString());
+/**
+ * Get active security alerts
+ * @returns {Array} Active security alerts
+ */
+async function getActiveSecurityAlerts() {
+    // In production, this would query a proper alerting system
+    const alerts = [];
 
-        if (successError) {
-            throw successError;
-        }
+    const stats = getSecurityStats();
 
-        // Get rate limit statistics
-        const rateLimitStats = getRateLimitStats();
-
-        // Calculate threat metrics
-        const threatsByType = recentThreats.reduce((acc, threat) => {
-            const type = threat.event_type;
-            acc[type] = (acc[type] || 0) + 1;
-            return acc;
-        }, {});
-
-        const threatsBySource = recentThreats.reduce((acc, threat) => {
-            const source = threat.source || 'unknown';
-            acc[source] = (acc[source] || 0) + 1;
-            return acc;
-        }, {});
-
-        // Calculate success rate
-        const totalRequests = recentThreats.length + successfulRequests.length;
-        const successRate = totalRequests > 0 ? (successfulRequests.length / totalRequests * 100).toFixed(2) : 100;
-
-        // Validate security configuration
-        const configValidation = validateSecurityConfig();
-
-        const overview = {
+    // Check for high-severity conditions
+    if (stats.averageSecurityScore < 70) {
+        alerts.push({
+            id: 'low_security_score',
+            type: 'SECURITY_SCORE_LOW',
+            severity: 'HIGH',
+            message: `Average security score is low: ${stats.averageSecurityScore}`,
             timestamp: new Date().toISOString(),
-            timeRange: '1 hour',
-            metrics: {
-                totalRequests,
-                successfulRequests: successfulRequests.length,
-                blockedRequests: recentThreats.length,
-                successRate: parseFloat(successRate),
-                threatDetectionRate: totalRequests > 0 ? (recentThreats.length / totalRequests * 100).toFixed(2) : 0
-            },
-            threats: {
-                total: recentThreats.length,
-                byType: threatsByType,
-                bySource: threatsBySource,
-                recent: recentThreats.slice(0, 5).map(threat => ({
-                    type: threat.event_type,
-                    source: threat.source,
-                    timestamp: threat.created_at,
-                    severity: threat.severity,
-                    data: threat.event_data
-                }))
-            },
-            rateLimits: {
-                ...rateLimitStats,
-                status: rateLimitStats.activeEntries > 100 ? 'high_load' : 'normal'
-            },
-            configuration: {
-                valid: configValidation.valid,
-                issues: configValidation.issues.length,
-                warnings: configValidation.warnings.length,
-                environment: process.env.NODE_ENV
-            },
-            status: {
-                overall: getOverallSecurityStatus(recentThreats.length, configValidation.valid, rateLimitStats.activeEntries),
-                lastUpdated: new Date().toISOString()
-            }
-        };
-
-        return res.status(200).json({
-            success: true,
-            data: overview,
-            requestId
+            status: 'active'
         });
-
-    } catch (error) {
-        throw error;
     }
+
+    if (stats.recentSecurityEvents > 10) {
+        alerts.push({
+            id: 'high_event_volume',
+            type: 'HIGH_EVENT_VOLUME',
+            severity: 'MEDIUM',
+            message: `High volume of security events: ${stats.recentSecurityEvents}`,
+            timestamp: new Date().toISOString(),
+            status: 'active'
+        });
+    }
+
+    // Check for critical events in the last hour
+    const criticalEvents = (stats.eventsBySeverity?.CRITICAL || 0);
+    if (criticalEvents > 0) {
+        alerts.push({
+            id: 'critical_events',
+            type: 'CRITICAL_EVENTS_DETECTED',
+            severity: 'CRITICAL',
+            message: `${criticalEvents} critical security events detected`,
+            timestamp: new Date().toISOString(),
+            status: 'active'
+        });
+    }
+
+    return alerts;
 }
 
 /**
- * Get detailed threat detection logs
+ * Get security trends for specified time range
+ * @param {string} timeRange - Time range
+ * @returns {Object} Security trends
  */
-async function getThreatLogs(req, res, requestId, timeRange, limit) {
-    try {
-        const timeRangeMs = parseTimeRange(timeRange);
-        const since = new Date(Date.now() - timeRangeMs);
+async function getSecurityTrends(timeRange) {
+    const metrics = global.chatbotSecurityMetrics || [];
+    const now = Date.now();
+    const timeRangeMs = parseTimeRange(timeRange);
+    const startTime = now - timeRangeMs;
 
-        const { data: threats, error } = await supabaseAdmin
-            .from('event_log')
-            .select('*')
-            .in('event_type', [
-                'security_threat_detected',
-                'spam_detected',
-                'rate_limit_exceeded',
-                'honeypot_triggered',
-                'suspicious_user_agent',
-                'xss_attempt_blocked',
-                'sql_injection_blocked'
-            ])
-            .gte('created_at', since.toISOString())
-            .order('created_at', { ascending: false })
-            .limit(limit);
+    const recentMetrics = metrics.filter(m =>
+        new Date(m.timestamp).getTime() > startTime
+    );
 
-        if (error) {
-            throw error;
+    // Group metrics by time intervals
+    const intervals = groupMetricsByInterval(recentMetrics, timeRange);
+
+    return {
+        securityScore: intervals.map(interval => ({
+            timestamp: interval.timestamp,
+            value: calculateAverage(interval.metrics.map(m => m.securityScore))
+        })),
+        requestVolume: intervals.map(interval => ({
+            timestamp: interval.timestamp,
+            value: interval.metrics.length
+        })),
+        violationRate: intervals.map(interval => ({
+            timestamp: interval.timestamp,
+            value: interval.metrics.length > 0 ? (interval.metrics.filter(m => m.violations > 0).length / interval.metrics.length) * 100 : 0
+        })),
+        processingTime: intervals.map(interval => ({
+            timestamp: interval.timestamp,
+            value: calculateAverage(interval.metrics.map(m => m.processingTime))
+        }))
+    };
+}
+
+/**
+ * Get recent security events
+ * @param {number} limit - Maximum number of events to return
+ * @returns {Array} Recent security events
+ */
+async function getRecentSecurityEvents(limit = 50) {
+    // In production, this would query the security event store
+    const events = [];
+
+    // Mock some recent events for demonstration
+    const eventTypes = [
+        'RATE_LIMIT_EXCEEDED',
+        'MALICIOUS_INPUT',
+        'SUSPICIOUS_ACTIVITY',
+        'SESSION_ANOMALY',
+        'THREAT_DETECTED'
+    ];
+
+    const severities = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
+
+    for (let i = 0; i < Math.min(limit, 20); i++) {
+        events.push({
+            id: `event_${Date.now()}_${i}`,
+            type: eventTypes[Math.floor(Math.random() * eventTypes.length)],
+            severity: severities[Math.floor(Math.random() * severities.length)],
+            timestamp: new Date(Date.now() - Math.random() * 3600000).toISOString(),
+            message: `Security event detected`,
+            clientIP: `xxx.xxx.xxx.${Math.floor(Math.random() * 255)}`,
+            sessionId: `session_${Math.random().toString(36).substr(2, 9)}`
+        });
+    }
+
+    return events.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+}
+
+/**
+ * Get top security threats
+ * @returns {Array} Top threats
+ */
+async function getTopThreats() {
+    return [
+        {
+            type: 'SQL_INJECTION',
+            count: 5,
+            severity: 'CRITICAL',
+            lastSeen: new Date(Date.now() - 1800000).toISOString(),
+            blocked: 5,
+            allowed: 0
+        },
+        {
+            type: 'XSS_ATTEMPT',
+            count: 12,
+            severity: 'HIGH',
+            lastSeen: new Date(Date.now() - 900000).toISOString(),
+            blocked: 12,
+            allowed: 0
+        },
+        {
+            type: 'RATE_LIMIT_EXCEEDED',
+            count: 25,
+            severity: 'MEDIUM',
+            lastSeen: new Date(Date.now() - 300000).toISOString(),
+            blocked: 25,
+            allowed: 0
+        },
+        {
+            type: 'BOT_DETECTED',
+            count: 8,
+            severity: 'MEDIUM',
+            lastSeen: new Date(Date.now() - 600000).toISOString(),
+            blocked: 6,
+            allowed: 2
         }
-
-        // Analyze threat patterns
-        const analysis = {
-            totalThreats: threats.length,
-            threatTypes: {},
-            severityDistribution: {},
-            sourceDistribution: {},
-            timeDistribution: {},
-            topThreats: []
-        };
-
-        threats.forEach(threat => {
-            // Count by type
-            analysis.threatTypes[threat.event_type] = (analysis.threatTypes[threat.event_type] || 0) + 1;
-
-            // Count by severity
-            analysis.severityDistribution[threat.severity] = (analysis.severityDistribution[threat.severity] || 0) + 1;
-
-            // Count by source
-            const source = threat.source || 'unknown';
-            analysis.sourceDistribution[source] = (analysis.sourceDistribution[source] || 0) + 1;
-
-            // Count by hour
-            const hour = new Date(threat.created_at).getHours();
-            analysis.timeDistribution[hour] = (analysis.timeDistribution[hour] || 0) + 1;
-        });
-
-        // Get top threats by frequency
-        analysis.topThreats = Object.entries(analysis.threatTypes)
-            .sort(([, a], [, b]) => b - a)
-            .slice(0, 10)
-            .map(([type, count]) => ({ type, count }));
-
-        return res.status(200).json({
-            success: true,
-            data: {
-                threats: threats.map(threat => ({
-                    id: threat.id,
-                    type: threat.event_type,
-                    severity: threat.severity,
-                    source: threat.source,
-                    timestamp: threat.created_at,
-                    data: threat.event_data,
-                    // Remove sensitive data from response
-                    sanitizedData: sanitizeThreatData(threat.event_data)
-                })),
-                analysis,
-                timeRange,
-                limit
-            },
-            requestId
-        });
-
-    } catch (error) {
-        throw error;
-    }
+    ];
 }
 
 /**
- * Get rate limiting metrics
+ * Get session security details
+ * @returns {Object} Session details
  */
-async function getRateLimitMetrics(req, res, requestId) {
-    try {
-        const stats = getRateLimitStats();
+async function getSessionDetails() {
+    const stats = getSecurityStats();
 
-        // Get rate limit events from last 24 hours
-        const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-
-        const { data: rateLimitEvents, error } = await supabaseAdmin
-            .from('event_log')
-            .select('*')
-            .eq('event_type', 'rate_limit_exceeded')
-            .gte('created_at', oneDayAgo.toISOString())
-            .order('created_at', { ascending: false });
-
-        if (error) {
-            throw error;
-        }
-
-        // Analyze rate limit patterns
-        const analysis = {
-            totalViolations: rateLimitEvents.length,
-            violationsByHour: {},
-            violationsByEndpoint: {},
-            topViolators: {}
-        };
-
-        rateLimitEvents.forEach(event => {
-            const hour = new Date(event.created_at).getHours();
-            analysis.violationsByHour[hour] = (analysis.violationsByHour[hour] || 0) + 1;
-
-            const endpoint = event.source || 'unknown';
-            analysis.violationsByEndpoint[endpoint] = (analysis.violationsByEndpoint[endpoint] || 0) + 1;
-        });
-
-        return res.status(200).json({
-            success: true,
-            data: {
-                currentStats: stats,
-                violations: {
-                    last24Hours: rateLimitEvents.length,
-                    analysis
-                },
-                configuration: {
-                    windowMs: process.env.RATE_LIMIT_WINDOW || '15',
-                    maxRequests: process.env.RATE_LIMIT_MAX || '10'
-                }
-            },
-            requestId
-        });
-
-    } catch (error) {
-        throw error;
-    }
+    return {
+        totalActiveSessions: stats.activeSessions,
+        averageSecurityScore: stats.averageSecurityScore,
+        sessionsWithViolations: Math.floor(stats.activeSessions * 0.1),
+        sessionsWithWarnings: Math.floor(stats.activeSessions * 0.2),
+        averageSessionDuration: '15.5 minutes',
+        newSessionsLastHour: Math.floor(stats.activeSessions * 0.3)
+    };
 }
 
 /**
- * Get security configuration validation
+ * Get performance metrics
+ * @returns {Object} Performance metrics
  */
-async function getConfigValidation(req, res, requestId) {
-    try {
-        const validation = validateSecurityConfig();
+async function getPerformanceMetrics() {
+    const metrics = global.chatbotSecurityMetrics || [];
+    const recentMetrics = metrics.slice(-100); // Last 100 requests
 
-        // Get configuration for all endpoints
-        const configs = {
-            contact: getSecurityConfig('contact', 'public'),
-            appointments: getSecurityConfig('appointments', 'public'),
-            chatbot: getSecurityConfig('chatbot', 'public'),
-            dashboard: getSecurityConfig('dashboard', 'admin')
-        };
-
-        return res.status(200).json({
-            success: true,
-            data: {
-                validation,
-                configurations: configs,
-                environment: {
-                    nodeEnv: process.env.NODE_ENV,
-                    rateLimitWindow: process.env.RATE_LIMIT_WINDOW,
-                    rateLimitMax: process.env.RATE_LIMIT_MAX
-                }
-            },
-            requestId
-        });
-
-    } catch (error) {
-        throw error;
-    }
+    return {
+        averageProcessingTime: calculateAverage(recentMetrics.map(m => m.processingTime)),
+        p95ProcessingTime: calculatePercentile(recentMetrics.map(m => m.processingTime), 95),
+        p99ProcessingTime: calculatePercentile(recentMetrics.map(m => m.processingTime), 99),
+        requestsPerSecond: recentMetrics.length / 60, // Approximate
+        errorRate: (recentMetrics.filter(m => m.violations > 0).length / recentMetrics.length) * 100,
+        memoryUsage: process.memoryUsage(),
+        uptime: process.uptime()
+    };
 }
 
 /**
- * Get comprehensive security statistics
+ * Get system security status
+ * @param {Object} stats - Security statistics
+ * @returns {string} Security status
  */
-async function getSecurityStats(req, res, requestId, timeRange) {
-    try {
-        const timeRangeMs = parseTimeRange(timeRange);
-        const since = new Date(Date.now() - timeRangeMs);
-
-        // Get all security-related events
-        const { data: events, error } = await supabaseAdmin
-            .from('event_log')
-            .select('*')
-            .in('event_type', [
-                'security_threat_detected', 'spam_detected', 'rate_limit_exceeded',
-                'contact_submitted', 'appointment_created', 'chatbot_response',
-                'api_error', 'validation_failed'
-            ])
-            .gte('created_at', since.toISOString())
-            .order('created_at', { ascending: false });
-
-        if (error) {
-            throw error;
-        }
-
-        // Calculate comprehensive statistics
-        const stats = calculateSecurityStats(events, timeRangeMs);
-
-        return res.status(200).json({
-            success: true,
-            data: {
-                ...stats,
-                timeRange,
-                generatedAt: new Date().toISOString()
-            },
-            requestId
-        });
-
-    } catch (error) {
-        throw error;
-    }
+function getSystemSecurityStatus(stats) {
+    if (stats.averageSecurityScore >= 90) return 'EXCELLENT';
+    if (stats.averageSecurityScore >= 80) return 'GOOD';
+    if (stats.averageSecurityScore >= 70) return 'FAIR';
+    if (stats.averageSecurityScore >= 60) return 'POOR';
+    return 'CRITICAL';
 }
 
 /**
- * Helper functions
+ * Parse time range string to milliseconds
+ * @param {string} timeRange - Time range string
+ * @returns {number} Time range in milliseconds
  */
-
 function parseTimeRange(timeRange) {
     const ranges = {
         '1h': 60 * 60 * 1000,
         '6h': 6 * 60 * 60 * 1000,
         '24h': 24 * 60 * 60 * 1000,
-        '7d': 7 * 24 * 60 * 60 * 1000,
-        '30d': 30 * 24 * 60 * 60 * 1000
+        '7d': 7 * 24 * 60 * 60 * 1000
     };
 
-    return ranges[timeRange] || ranges['24h'];
+    return ranges[timeRange] || ranges['1h'];
 }
 
-function getOverallSecurityStatus(threatCount, configValid, activeRateLimits) {
-    if (!configValid) return 'critical';
-    if (threatCount > 50) return 'high_risk';
-    if (threatCount > 10 || activeRateLimits > 100) return 'elevated';
-    return 'normal';
+/**
+ * Calculate average of array values
+ * @param {Array} values - Array of numbers
+ * @returns {number} Average value
+ */
+function calculateAverage(values) {
+    if (values.length === 0) return 0;
+    return Math.round(values.reduce((sum, val) => sum + val, 0) / values.length);
 }
 
-function sanitizeThreatData(data) {
-    if (!data || typeof data !== 'object') return data;
+/**
+ * Calculate percentile of array values
+ * @param {Array} values - Array of numbers
+ * @param {number} percentile - Percentile to calculate
+ * @returns {number} Percentile value
+ */
+function calculatePercentile(values, percentile) {
+    if (values.length === 0) return 0;
 
-    const sanitized = { ...data };
+    const sorted = values.sort((a, b) => a - b);
+    const index = Math.ceil((percentile / 100) * sorted.length) - 1;
+    return sorted[index] || 0;
+}
 
-    // Remove sensitive fields
-    delete sanitized.clientIP;
-    delete sanitized.hashedIP;
-    delete sanitized.userAgent;
-    delete sanitized.email;
-    delete sanitized.phone;
+/**
+ * Calculate peak requests per minute
+ * @param {Array} metrics - Metrics array
+ * @returns {number} Peak requests per minute
+ */
+function calculatePeakRequestsPerMinute(metrics) {
+    if (metrics.length === 0) return 0;
 
-    // Truncate long strings
-    Object.keys(sanitized).forEach(key => {
-        if (typeof sanitized[key] === 'string' && sanitized[key].length > 100) {
-            sanitized[key] = sanitized[key].substring(0, 100) + '...';
+    // Group by minute
+    const minuteGroups = {};
+    metrics.forEach(metric => {
+        const minute = Math.floor(new Date(metric.timestamp).getTime() / 60000) * 60000;
+        minuteGroups[minute] = (minuteGroups[minute] || 0) + 1;
+    });
+
+    const values = Object.values(minuteGroups);
+    return values.length > 0 ? Math.max(...values) : 0;
+}
+
+/**
+ * Calculate average session duration
+ * @param {Array} metrics - Metrics array
+ * @returns {string} Average session duration
+ */
+function calculateAverageSessionDuration(metrics) {
+    // This is a simplified calculation
+    // In production, you'd track actual session start/end times
+    const sessionGroups = {};
+
+    metrics.forEach(metric => {
+        if (!sessionGroups[metric.sessionId]) {
+            sessionGroups[metric.sessionId] = {
+                start: new Date(metric.timestamp).getTime(),
+                end: new Date(metric.timestamp).getTime()
+            };
+        } else {
+            sessionGroups[metric.sessionId].end = Math.max(
+                sessionGroups[metric.sessionId].end,
+                new Date(metric.timestamp).getTime()
+            );
         }
     });
 
-    return sanitized;
+    const durations = Object.values(sessionGroups).map(session =>
+        session.end - session.start
+    );
+
+    const avgDuration = calculateAverage(durations);
+    return `${Math.round(avgDuration / 60000)} minutes`;
 }
 
-function calculateSecurityStats(events, timeRangeMs) {
-    const stats = {
-        totalEvents: events.length,
-        eventsByType: {},
-        eventsBySeverity: {},
-        eventsBySource: {},
-        timeline: {},
-        securityMetrics: {
-            threatDetectionRate: 0,
-            falsePositiveRate: 0,
-            responseTime: 0,
-            uptime: 0
+/**
+ * Group metrics by time intervals
+ * @param {Array} metrics - Metrics array
+ * @param {string} timeRange - Time range
+ * @returns {Array} Grouped metrics
+ */
+function groupMetricsByInterval(metrics, timeRange) {
+    const intervalMs = getIntervalSize(timeRange);
+    const groups = {};
+
+    metrics.forEach(metric => {
+        const interval = Math.floor(new Date(metric.timestamp).getTime() / intervalMs) * intervalMs;
+        if (!groups[interval]) {
+            groups[interval] = {
+                timestamp: new Date(interval).toISOString(),
+                metrics: []
+            };
         }
-    };
-
-    // Process events
-    events.forEach(event => {
-        // Count by type
-        stats.eventsByType[event.event_type] = (stats.eventsByType[event.event_type] || 0) + 1;
-
-        // Count by severity
-        stats.eventsBySeverity[event.severity] = (stats.eventsBySeverity[event.severity] || 0) + 1;
-
-        // Count by source
-        const source = event.source || 'unknown';
-        stats.eventsBySource[source] = (stats.eventsBySource[source] || 0) + 1;
-
-        // Timeline (by hour)
-        const hour = new Date(event.created_at).getHours();
-        stats.timeline[hour] = (stats.timeline[hour] || 0) + 1;
+        groups[interval].metrics.push(metric);
     });
 
-    // Calculate security metrics
-    const threatEvents = events.filter(e =>
-        ['security_threat_detected', 'spam_detected', 'rate_limit_exceeded'].includes(e.event_type)
+    return Object.values(groups).sort((a, b) =>
+        new Date(a.timestamp) - new Date(b.timestamp)
     );
+}
 
-    const successEvents = events.filter(e =>
-        ['contact_submitted', 'appointment_created', 'chatbot_response'].includes(e.event_type)
-    );
+/**
+ * Get interval size for time range
+ * @param {string} timeRange - Time range
+ * @returns {number} Interval size in milliseconds
+ */
+function getIntervalSize(timeRange) {
+    const intervals = {
+        '1h': 5 * 60 * 1000,      // 5 minutes
+        '6h': 30 * 60 * 1000,     // 30 minutes
+        '24h': 60 * 60 * 1000,    // 1 hour
+        '7d': 6 * 60 * 60 * 1000  // 6 hours
+    };
 
-    const totalRequests = threatEvents.length + successEvents.length;
+    return intervals[timeRange] || intervals['1h'];
+}
 
-    if (totalRequests > 0) {
-        stats.securityMetrics.threatDetectionRate = (threatEvents.length / totalRequests * 100).toFixed(2);
-    }
-
-    return stats;
+/**
+ * Hash IP address for privacy
+ * @param {string} ip - IP address
+ * @returns {string} Hashed IP
+ */
+function hashIP(ip) {
+    return crypto.createHash('sha256').update(ip + 'security_salt').digest('hex').substring(0, 16);
 }

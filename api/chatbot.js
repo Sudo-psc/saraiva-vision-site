@@ -189,32 +189,75 @@ async function logConversation(sessionId, userMessage, botResponse, metadata = {
     }
 }
 
-// OpenAI API call
-async function callOpenAI(messages, contextualPrompt) {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+// Gemini API call
+async function callGemini(messages, contextualPrompt) {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${process.env.GOOGLE_GEMINI_API_KEY}`, {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            model: 'gpt-3.5-turbo',
-            messages: [
-                { role: 'system', content: contextualPrompt },
-                ...messages
+            contents: [
+                {
+                    parts: [{
+                        text: contextualPrompt + '\n\nConversation:\n' + messages.map(m => `${m.role}: ${m.content}`).join('\n')
+                    }]
+                }
             ],
-            max_tokens: 500,
-            temperature: 0.7,
-            presence_penalty: 0.1,
-            frequency_penalty: 0.1
+            generationConfig: {
+                temperature: 0.7,
+                topK: 40,
+                topP: 0.95,
+                maxOutputTokens: 500,
+            },
+            safetySettings: [
+                {
+                    category: 'HARM_CATEGORY_HARASSMENT',
+                    threshold: 'BLOCK_MEDIUM_AND_ABOVE'
+                },
+                {
+                    category: 'HARM_CATEGORY_HATE_SPEECH',
+                    threshold: 'BLOCK_MEDIUM_AND_ABOVE'
+                },
+                {
+                    category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+                    threshold: 'BLOCK_MEDIUM_AND_ABOVE'
+                },
+                {
+                    category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+                    threshold: 'BLOCK_MEDIUM_AND_ABOVE'
+                }
+            ]
         }),
     });
 
     if (!response.ok) {
-        throw new Error(`OpenAI API error: ${response.status}`);
+        throw new Error(`Gemini API error: ${response.status}`);
     }
 
-    return response.json();
+    const data = await response.json();
+    
+    // Validate Gemini response structure
+    if (!data || !data.candidates || data.candidates.length === 0) {
+        throw new Error('Gemini API returned empty response');
+    }
+    
+    const content = data.candidates[0]?.content?.parts?.[0]?.text;
+    if (!content || content.trim() === '') {
+        throw new Error('Gemini API returned empty content');
+    }
+    
+    // Transform Gemini response to match expected format
+    return {
+        choices: [{
+            message: {
+                content: content.trim()
+            }
+        }],
+        usage: {
+            total_tokens: data.usageMetadata?.totalTokenCount || 0
+        }
+    };
 }
 
 export default async function handler(req, res) {
@@ -356,22 +399,25 @@ export default async function handler(req, res) {
             contextualPrompt += '\n\nNOTA: O usuário tem feito várias perguntas médicas. Reforce a importância de uma consulta presencial para avaliação adequada.';
         }
 
-        // Call OpenAI API
-        const openaiResponse = await callOpenAI(contextMessages, contextualPrompt);
+        // Call Gemini API
+        const geminiResponse = await callGemini(contextMessages, contextualPrompt);
 
-        if (!openaiResponse.choices || openaiResponse.choices.length === 0) {
-            throw new Error('No response from OpenAI');
+        if (!geminiResponse.choices || geminiResponse.choices.length === 0) {
+            throw new Error('No response from Gemini');
         }
 
-        let botResponse = openaiResponse.choices[0].message.content;
+        let botResponse = geminiResponse.choices[0].message.content;
 
         // Apply medical guardrails to the response
         botResponse = sanitizeBotResponse(botResponse, message);
 
+        // Get client IP for logging
+        const clientIp = getClientIP(req);
+        
         // Log the conversation (anonymized)
         await logConversation(sessionId, message, botResponse, {
-            model_used: 'gpt-3.5-turbo',
-            tokens_used: openaiResponse.usage?.total_tokens || 0,
+            model_used: 'gemini-2.0-flash-exp',
+            tokens_used: geminiResponse.usage?.total_tokens || 0,
             client_ip_hash: require('crypto').createHash('sha256').update(clientIp).digest('hex').substring(0, 16),
             medical_topic_count: medicalTopicCount
         });
@@ -379,6 +425,10 @@ export default async function handler(req, res) {
         // Check if response suggests booking appointment
         const suggestsBooking = /agendar|consulta|horário|disponível|marcar/i.test(botResponse);
 
+        // Set proper JSON headers
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Cache-Control', 'no-cache');
+        
         return res.status(200).json({
             success: true,
             data: {
@@ -411,9 +461,17 @@ export default async function handler(req, res) {
             console.error('Failed to log error:', logError);
         }
 
+        // Ensure proper JSON headers for error responses
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Cache-Control', 'no-cache');
+        
         return res.status(500).json({
             success: false,
-            error: 'Desculpe, ocorreu um erro interno. Tente novamente em alguns instantes ou entre em contato conosco diretamente.',
+            error: {
+                code: 'INTERNAL_SERVER_ERROR',
+                message: 'Desculpe, ocorreu um erro interno. Tente novamente em alguns instantes ou entre em contato conosco diretamente.',
+                timestamp: new Date().toISOString()
+            },
             fallback: {
                 message: 'Para agendamentos e dúvidas, entre em contato pelo telefone (33) 99860-1427 ou WhatsApp.',
                 contactInfo: {

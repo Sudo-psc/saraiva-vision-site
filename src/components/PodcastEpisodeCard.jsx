@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
+import GlassContainer from './ui/GlassContainer';
 import { Play, Clock, Calendar, ExternalLink, Volume2 } from 'lucide-react';
 
 const PodcastEpisodeCard = ({
@@ -63,11 +64,10 @@ const PodcastEpisodeCard = ({
   } = episode;
 
   return (
-    <div className={`
-      bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300
-      border border-gray-100 overflow-hidden
-      ${compact ? 'p-4' : 'p-6'}
-    `}>
+    <GlassContainer
+      intensity={compact ? 'subtle' : 'medium'}
+      className={`rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden ${compact ? 'p-4' : 'p-6'}`}
+    >
       {/* Episode Header */}
       <div className="flex items-start gap-4 mb-4">
         {/* Episode Image */}
@@ -191,7 +191,7 @@ const PodcastEpisodeCard = ({
           <p>{truncateDescription(description, 100)}</p>
         </div>
       )}
-    </div>
+  </GlassContainer>
   );
 };
 

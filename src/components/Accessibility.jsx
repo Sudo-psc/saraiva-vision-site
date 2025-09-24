@@ -270,11 +270,13 @@ const Accessibility = () => {
             aria-haspopup="dialog"
             aria-expanded={open}
             aria-label={t('accessibility.toggle', 'Acessibilidade')}
+            aria-describedby="a11y-widget-open-desc"
             className="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-blue-600/35 via-cyan-500/35 to-teal-500/35 hover:from-blue-500/70 hover:via-cyan-400/70 hover:to-teal-400/70 text-white border border-white/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600/50 backdrop-blur-md transition-all duration-300 ease-in-out"
             style={{ touchAction: 'manipulation' }}
           >
             <AccessibilityIcon size={22} className="text-white drop-shadow" />
           </motion.button>
+          <span id="a11y-widget-open-desc" className="sr-only">Abrir menu de acessibilidade e recursos de inclusão</span>
           <div className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 bg-black text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
             Acessibilidade
           </div>
@@ -306,10 +308,12 @@ const Accessibility = () => {
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Fechar menu"
+                aria-describedby="a11y-widget-close-desc"
                 className="p-2 rounded-md hover:bg-blue-100 text-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
                 <X size={20} />
               </button>
+              <span id="a11y-widget-close-desc" className="sr-only">Fechar painel de acessibilidade</span>
             </div>
             <div className="overflow-y-auto px-6 py-4 text-black text-sm scroll-container scrollbar-none touch-scroll" style={{ scrollbarWidth: 'none' }}>
               {/* Controle de Legibilidade */}

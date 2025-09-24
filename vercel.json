@@ -28,6 +28,10 @@
       "maxDuration": 20,
       "memory": 512
     },
+    "api/chatbot/**": {
+      "maxDuration": 20,
+      "memory": 512
+    },
     "api/dashboard/**": {
       "maxDuration": 10,
       "memory": 256
@@ -66,6 +70,10 @@
     },
     "api/instagram/crawler.js": {
       "maxDuration": 90,
+      "memory": 1024
+    },
+    "api/google-reviews-stats.js": {
+      "maxDuration": 60,
       "memory": 1024
     },
     "api/**": {

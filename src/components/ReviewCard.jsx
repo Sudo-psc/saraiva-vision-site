@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import GlassContainer from './ui/GlassContainer';
 import { Star, Clock, MessageSquare, ThumbsUp, Share2, ChevronDown, ChevronUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -123,16 +124,13 @@ const ReviewCard = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className={`
-        relative bg-white dark:bg-slate-800/40 rounded-xl border
-        ${isFeatured
-                    ? 'border-yellow-200 dark:border-yellow-800/50 ring-2 ring-yellow-100 dark:ring-yellow-900/20'
-                    : 'border-slate-200 dark:border-slate-700'
-                }
-        ${isFeatured ? 'shadow-lg' : 'shadow-sm'}
-        ${className}
-      `}
         >
+            <GlassContainer
+                intensity={isFeatured ? 'strong' : 'medium'}
+                className={`relative rounded-xl border ${isFeatured
+                    ? 'border-yellow-200 dark:border-yellow-800/50 ring-2 ring-yellow-100 dark:ring-yellow-900/20'
+                    : 'border-slate-200 dark:border-slate-700'} ${isFeatured ? 'shadow-lg' : 'shadow-sm'} ${className}`}
+            >
             {/* Featured badge */}
             {isFeatured && (
                 <div className="absolute -top-2 -right-2 z-10">
@@ -219,7 +217,7 @@ const ReviewCard = ({
 
                 {/* Business reply */}
                 {showReply && reviewReply && reviewReply.comment && (
-                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-100 dark:border-blue-800/30">
+                    <GlassContainer intensity="subtle" className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-100 dark:border-blue-800/30">
                         <div className="flex items-center gap-2 mb-2">
                             <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
                                 <MessageSquare size={12} className="text-white" />
@@ -236,7 +234,7 @@ const ReviewCard = ({
                         <p className="text-sm text-blue-800 dark:text-blue-200 leading-relaxed">
                             {reviewReply.comment}
                         </p>
-                    </div>
+                    </GlassContainer>
                 )}
 
                 {/* Actions */}
@@ -274,6 +272,7 @@ const ReviewCard = ({
                     </div>
                 )}
             </div>
+            </GlassContainer>
         </motion.div>
     );
 };

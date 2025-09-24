@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import GlassContainer from './ui/GlassContainer';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock, Globe, Shield, Wifi, WifiOff, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
@@ -13,7 +14,7 @@ import { validateField, validateContactSubmission } from '@/lib/validation';
 import { useAnalytics, useVisibilityTracking } from '@/hooks/useAnalytics';
 import { useSaraivaTracking } from '@/hooks/usePostHog';
 import { consentManager } from '../lib/lgpd/consentManager.js';
-import { ConsentBanner } from './lgpd/ConsentBanner.jsx';
+
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -576,7 +577,7 @@ const Contact = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="bg-white rounded-2xl p-8 shadow-soft-light">
+            <GlassContainer intensity="medium" className="rounded-2xl p-8 shadow-soft-light">
               <h3 className="mb-6" id="form-title">{t('contact.form_title')}</h3>
 
               <form
@@ -646,6 +647,7 @@ const Contact = () => {
                           : ''
                         }`}
                       placeholder={t('contact.name_placeholder')}
+                      aria-label={t('contact.name_aria_label') || 'Nome completo'}
                       aria-invalid={!!errors.name}
                       aria-describedby={errors.name ? 'error-name' : fieldValidation.name?.success ? 'success-name' : 'name-help'}
                       aria-required="true"
@@ -698,8 +700,9 @@ const Contact = () => {
                           : fieldValidation.email?.success
                             ? 'border-green-400 focus:ring-green-300'
                             : ''
-                          }`}
+                        }`}
                         placeholder={t('contact.email_placeholder')}
+                        aria-label="E-mail"
                         aria-invalid={!!errors.email}
                         aria-describedby={errors.email ? 'error-email' : fieldValidation.email?.success ? 'success-email' : 'email-help'}
                         aria-required="true"
@@ -751,8 +754,9 @@ const Contact = () => {
                           : fieldValidation.phone?.success
                             ? 'border-green-400 focus:ring-green-300'
                             : ''
-                          }`}
+                        }`}
                         placeholder={t('contact.phone_placeholder')}
+                        aria-label="Telefone"
                         aria-invalid={!!errors.phone}
                         aria-describedby={errors.phone ? 'error-phone' : fieldValidation.phone?.success ? 'success-phone' : 'phone-help'}
                         aria-required="true"
@@ -819,6 +823,7 @@ const Contact = () => {
                           : ''
                         }`}
                       placeholder={t('contact.message_placeholder')}
+                      aria-label="Mensagem"
                       aria-invalid={!!errors.message}
                       aria-describedby={errors.message ? 'error-message' : fieldValidation.message?.success ? 'success-message' : 'message-help'}
                       aria-required="true"
@@ -1104,7 +1109,7 @@ const Contact = () => {
                   Para enviar o formulário, certifique-se de que todos os campos obrigatórios estão preenchidos corretamente e que você tem conexão com a internet.
                 </div>
               </form>
-            </div>
+            </GlassContainer>
           </motion.div>
 
           <motion.div
@@ -1121,43 +1126,47 @@ const Contact = () => {
 
             <h3 id="contact-options-heading" className="sr-only">Opções de contato e agendamento</h3>
 
-            <a
-              href={clinicInfo.onlineSchedulingUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block modern-card-alt p-6 group mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-2xl"
-              aria-describedby="online-scheduling-desc"
-            >
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-blue-100 rounded-xl" aria-hidden="true">
-                  <Globe className="h-6 w-6 text-blue-600" />
+            <GlassContainer intensity="subtle" className="mb-4 p-0 rounded-2xl">
+              <a
+                href={clinicInfo.onlineSchedulingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block modern-card-alt p-6 group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-2xl"
+                aria-describedby="online-scheduling-desc"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-blue-100 rounded-xl" aria-hidden="true">
+                    <Globe className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-800 group-hover:text-blue-700">{t('contact.online_scheduling_title')}</h4>
+                    <div className="mt-1" id="online-scheduling-desc">{t('contact.online_scheduling_desc')}</div>
+                    <div className="text-blue-600 text-sm mt-1 font-semibold">{t('contact.online_scheduling_benefit')}</div>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-bold text-slate-800 group-hover:text-blue-700">{t('contact.online_scheduling_title')}</h4>
-                  <div className="mt-1" id="online-scheduling-desc">{t('contact.online_scheduling_desc')}</div>
-                  <div className="text-blue-600 text-sm mt-1 font-semibold">{t('contact.online_scheduling_benefit')}</div>
-                </div>
-              </div>
-            </a>
+              </a>
+            </GlassContainer>
 
-            <a
-              href={chatbotLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block modern-card-alt p-6 group focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded-2xl"
-              aria-describedby="chatbot-desc"
-            >
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-green-100 rounded-xl" aria-hidden="true">
-                  <Bot className="h-6 w-6 text-green-600" />
+            <GlassContainer intensity="subtle" className="rounded-2xl">
+              <a
+                href={chatbotLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block modern-card-alt p-6 group focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded-2xl"
+                aria-describedby="chatbot-desc"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-green-100 rounded-xl" aria-hidden="true">
+                    <Bot className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-slate-800 group-hover:text-green-700">{t('contact.chatbot_title')}</h4>
+                    <div className="mt-1" id="chatbot-desc">{t('contact.chatbot_desc')}</div>
+                    <div className="text-green-600 text-sm mt-1 font-semibold">{t('contact.chatbot_availability')}</div>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-bold text-slate-800 group-hover:text-green-700">{t('contact.chatbot_title')}</h4>
-                  <div className="mt-1" id="chatbot-desc">{t('contact.chatbot_desc')}</div>
-                  <div className="text-green-600 text-sm mt-1 font-semibold">{t('contact.chatbot_availability')}</div>
-                </div>
-              </div>
-            </a>
+              </a>
+            </GlassContainer>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5" role="list" aria-label="Informações de contato">
               {contactInfo.map((info, index) => (
@@ -1167,19 +1176,20 @@ const Contact = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="modern-card p-6 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
                   role="listitem"
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="icon-container" aria-hidden="true">
-                      {info.icon}
+                  <GlassContainer intensity="subtle" className="modern-card p-6 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2">
+                    <div className="flex items-start gap-4">
+                      <div className="icon-container" aria-hidden="true">
+                        {info.icon}
+                      </div>
+                      <div className="min-w-0 break-words leading-relaxed">
+                        <h4 className="font-bold text-slate-800">{info.title}</h4>
+                        <div className="mt-1 text-sm text-wrap">{info.details}</div>
+                        <div className="text-slate-500 text-sm mt-0.5 text-wrap">{info.subDetails}</div>
+                      </div>
                     </div>
-                    <div className="min-w-0 break-words leading-relaxed">
-                      <h4 className="font-bold text-slate-800">{info.title}</h4>
-                      <div className="mt-1 text-sm text-wrap">{info.details}</div>
-                      <div className="text-slate-500 text-sm mt-0.5 text-wrap">{info.subDetails}</div>
-                    </div>
-                  </div>
+                  </GlassContainer>
                 </motion.div>
               ))}
             </div>
@@ -1190,12 +1200,7 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* LGPD Consent Banner */}
-      <ConsentBanner onConsentChange={(hasConsent) => {
-        if (hasConsent) {
-          announceToScreenReader('Consentimento registrado com sucesso', 'polite');
-        }
-      }} />
+
     </section>
   );
 };

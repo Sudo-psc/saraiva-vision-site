@@ -18,8 +18,8 @@ export const WIDGET_LAYERS = {
 export const POSITION_CLASSES = {
 	BOTTOM_RIGHT: 'bottom-20 right-4 sm:bottom-28 sm:right-6',
 	BOTTOM_LEFT: 'bottom-20 left-4 sm:bottom-28 sm:left-6',
-	// Mantém o botão de acessibilidade acima do WhatsApp
-	ACCESSIBILITY: 'bottom-24 left-4 sm:bottom-32 sm:left-6',
+	// Mantém o botão de acessibilidade acima do WhatsApp e do Chatbot
+	ACCESSIBILITY: 'bottom-40 left-4 sm:bottom-48 sm:left-6',
 	// STICKY_CTA é tratado no próprio componente (precisa de left e right simultâneos)
 };
 

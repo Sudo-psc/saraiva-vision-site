@@ -5,7 +5,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import analytics from '../lib/analytics';
-import AnalyticsConsent from './AnalyticsConsent';
+
 
 const AnalyticsContext = createContext({
     isInitialized: false,
@@ -74,7 +74,6 @@ const AnalyticsProvider = ({ children }) => {
     return (
         <AnalyticsContext.Provider value={contextValue}>
             {children}
-            <AnalyticsConsent />
         </AnalyticsContext.Provider>
     );
 };
