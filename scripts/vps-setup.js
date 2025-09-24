@@ -7,9 +7,14 @@
  * including system packages, Node.js, Docker, Nginx, and SSL certificates.
  */
 
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Get current directory for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class VPSSetup {
     constructor() {
@@ -418,9 +423,9 @@ NODE_ENV=production`;
 }
 
 // Run setup if called directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
     const setup = new VPSSetup();
     setup.setup().catch(console.error);
 }
 
-module.exports = VPSSetup;
+export default VPSSetup;
