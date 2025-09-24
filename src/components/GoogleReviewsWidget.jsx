@@ -179,25 +179,6 @@ const GoogleReviewsWidget = ({
                     </motion.div>
                 )}
 
-                {/* Status Indicators */}
-                {(loading || error || isRetrying) && (
-                    <div className="mb-6 flex items-center justify-center gap-4">
-                        {loading && (
-                            <div className="flex items-center gap-2 text-blue-600">
-                                <RefreshCw className="w-4 h-4 animate-spin" />
-                                <span className="text-sm">{t('reviews.loading')}</span>
-                            </div>
-                        )}
-                        
-                        {isRetrying && (
-                            <div className="flex items-center gap-2 text-orange-600">
-                                <RefreshCw className="w-4 h-4 animate-spin" />
-                                <span className="text-sm">{t('ui.retry')} {retryCount}/3...</span>
-                            </div>
-                        )}
-                        
-                      </div>
-                )}
 
                 {/* Reviews Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -284,11 +265,6 @@ const GoogleReviewsWidget = ({
                         >
                             {isUsingFallback ? 'Using Fallback Data' : 'Live Google Reviews'}
                         </Badge>
-                        {error && (
-                            <p className="text-xs text-gray-500 mt-2">
-                                Error: {error.message}
-                            </p>
-                        )}
                     </div>
                 )}
             </div>
