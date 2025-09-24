@@ -4,7 +4,7 @@
   "outputDirectory": "dist",
   "installCommand": "npm ci",
   "regions": ["gru1"],
-    "headers": [
+  "headers": [
     {
       "source": "/(.*)",
       "headers": [
@@ -42,5 +42,5 @@
       "destination": "https://31.97.129.78/wp-json/:path*",
       "permanent": false
     }
-  ],
-  }
+  ]
+}
