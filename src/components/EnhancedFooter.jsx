@@ -91,14 +91,7 @@ const EnhancedFooter = ({
 
     // Service links (preserved from original Footer)
     const serviceLinks = useMemo(() =>
-        t('footer.service_links', { returnObjects: true }) || {
-            "consultations": "Consultations",
-            "refraction": "Refraction",
-            "treatments": "Treatments",
-            "surgeries": "Surgeries",
-            "pediatric": "Pediatric",
-            "reports": "Reports"
-        }
+        t('footer.service_links', { returnObjects: true }) || {}
         , [t]);
 
     // Enhanced social media data for 3D icons
