@@ -1,4 +1,5 @@
 import { executeGraphQLQuery } from './wordpress.js';
+import { executeWordPressQueryWithFallback } from './wordpress-health.js';
 import {
     GET_ALL_POSTS,
     GET_POST_BY_SLUG,
@@ -61,7 +62,7 @@ const setCachedData = (cacheKey, data, duration) => {
     });
 };
 
-// Posts API functions
+// Posts API functions with health monitoring
 export const getAllPosts = async (options = {}) => {
     const { first = 10, after = null, useCache = true } = options;
     const cacheKey = getCacheKey('posts', { first, after });
@@ -71,23 +72,40 @@ export const getAllPosts = async (options = {}) => {
         if (cached) return cached;
     }
 
-    const { data, error } = await executeGraphQLQuery(GET_ALL_POSTS, { first, after });
+    const queryFunction = async () => {
+        const { data, error } = await executeGraphQLQuery(GET_ALL_POSTS, { first, after });
 
-    if (error) {
-        return { posts: [], pageInfo: null, error };
-    }
+        if (error) {
+            return { posts: [], pageInfo: null, error };
+        }
 
-    const result = {
-        posts: data.posts.nodes || [],
-        pageInfo: data.posts.pageInfo || null,
-        error: null,
+        const result = {
+            posts: data.posts.nodes || [],
+            pageInfo: data.posts.pageInfo || null,
+            error: null,
+        };
+
+        if (useCache) {
+            setCachedData(cacheKey, result, CACHE_DURATION.POSTS);
+        }
+
+        return result;
     };
 
-    if (useCache) {
-        setCachedData(cacheKey, result, CACHE_DURATION.POSTS);
+    // Use health monitoring with fallback
+    const healthResult = await executeWordPressQueryWithFallback(queryFunction, 'posts', { first, after });
+
+    if (healthResult.isFallback) {
+        return {
+            posts: healthResult.data.posts || [],
+            pageInfo: null,
+            error: healthResult.error,
+            isFallback: true,
+            healthState: healthResult.healthState,
+        };
     }
 
-    return result;
+    return healthResult.data;
 };
 
 export const getPostBySlug = async (slug, useCache = true) => {
@@ -124,22 +142,38 @@ export const getRecentPosts = async (first = 3, useCache = true) => {
         if (cached) return cached;
     }
 
-    const { data, error } = await executeGraphQLQuery(GET_RECENT_POSTS, { first });
+    const queryFunction = async () => {
+        const { data, error } = await executeGraphQLQuery(GET_RECENT_POSTS, { first });
 
-    if (error) {
-        return { posts: [], error };
-    }
+        if (error) {
+            return { posts: [], error };
+        }
 
-    const result = {
-        posts: data.posts.nodes || [],
-        error: null,
+        const result = {
+            posts: data.posts.nodes || [],
+            error: null,
+        };
+
+        if (useCache) {
+            setCachedData(cacheKey, result, CACHE_DURATION.POSTS);
+        }
+
+        return result;
     };
 
-    if (useCache) {
-        setCachedData(cacheKey, result, CACHE_DURATION.POSTS);
+    // Use health monitoring with fallback
+    const healthResult = await executeWordPressQueryWithFallback(queryFunction, 'posts', { first });
+
+    if (healthResult.isFallback) {
+        return {
+            posts: healthResult.data.posts || [],
+            error: healthResult.error,
+            isFallback: true,
+            healthState: healthResult.healthState,
+        };
     }
 
-    return result;
+    return healthResult.data;
 };
 
 // Pages API functions

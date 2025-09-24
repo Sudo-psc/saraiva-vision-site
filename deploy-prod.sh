@@ -185,16 +185,19 @@ run_tests() {
 }
 
 run_production_readiness_check() {
+    if [ "$FORCE_DEPLOY" = true ]; then
+        log "WARNING" "Skipping production readiness check (--force enabled)"
+        return 0
+    fi
+
     log "HEADER" "✅ Running Production Readiness Check..."
-    
+
     if [ -f "scripts/production-readiness-check.js" ]; then
         if node scripts/production-readiness-check.js; then
             log "SUCCESS" "Production readiness check passed"
         else
             log "ERROR" "Production readiness check failed"
-            if [ "$FORCE_DEPLOY" = false ]; then
-                exit 1
-            fi
+            exit 1
         fi
     else
         log "WARNING" "Production readiness check script not found"

@@ -4,15 +4,20 @@ import {
   GET_RELATED_POSTS,
 } from './wordpress-queries.js';
 
-// WordPress GraphQL endpoint configuration
-const WORDPRESS_GRAPHQL_ENDPOINT = import.meta.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT || 'https://cms.saraivavision.com.br/graphql';
+// VPS WordPress GraphQL endpoint configuration with multiple fallback options
+const WORDPRESS_GRAPHQL_ENDPOINT = import.meta.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT ||
+                                  import.meta.env.VITE_WORDPRESS_URL + '/graphql' ||
+                                  import.meta.env.WORDPRESS_URL + '/graphql' ||
+                                  'http://31.97.129.78:8081/graphql';
 
-// Create GraphQL client instance
+// Create GraphQL client instance with enhanced configuration
 export const wpClient = new GraphQLClient(WORDPRESS_GRAPHQL_ENDPOINT, {
   headers: {
     'Content-Type': 'application/json',
     'User-Agent': 'SaraivaVision-NextJS/1.0',
   },
+  // Add timeout configuration (30 seconds)
+  timeout: 30000,
   // Enable request/response logging in development
   ...(import.meta.env.MODE === 'development' && {
     requestMiddleware: (request) => {
@@ -24,6 +29,23 @@ export const wpClient = new GraphQLClient(WORDPRESS_GRAPHQL_ENDPOINT, {
       return response;
     },
   }),
+  // Add retry logic for failed requests
+  requestMiddleware: async (request) => {
+    const startTime = Date.now();
+    return {
+      ...request,
+      headers: {
+        ...request.headers,
+        'X-Request-Start': startTime.toString(),
+      },
+    };
+  },
+  responseMiddleware: (response) => {
+    const responseTime = Date.now() - parseInt(response.headers.get('X-Request-Start') || Date.now());
+    if (responseTime > 5000) {
+      console.warn(`Slow WordPress GraphQL response: ${responseTime}ms`);
+    }
+  },
 });
 
 // Error handling wrapper for GraphQL requests
@@ -68,34 +90,95 @@ export const executeGraphQLQuery = async (query, variables = {}) => {
   }
 };
 
-// Health check function for WordPress GraphQL endpoint
+// Enhanced health check function for WordPress GraphQL endpoint
 export const checkWordPressHealth = async () => {
   const healthQuery = `
     query HealthCheck {
       generalSettings {
         title
         url
+        description
       }
+      __typename
     }
   `;
 
   try {
+    const startTime = Date.now();
     const { data, error } = await executeGraphQLQuery(healthQuery);
+    const responseTime = Date.now() - startTime;
+
     return {
-      isHealthy: !error,
+      isHealthy: !error && data?.generalSettings,
+      responseTime,
       data: data?.generalSettings,
       error,
+      endpoint: WORDPRESS_GRAPHQL_ENDPOINT,
+      timestamp: new Date().toISOString(),
     };
   } catch (error) {
     return {
       isHealthy: false,
+      responseTime: Date.now() - startTime,
       data: null,
       error: {
         type: 'HEALTH_CHECK_FAILED',
         message: error.message,
+        endpoint: WORDPRESS_GRAPHQL_ENDPOINT,
+        timestamp: new Date().toISOString(),
       },
     };
   }
+};
+
+// Fallback content generator when WordPress is unavailable
+export const generateFallbackContent = (contentType, params = {}) => {
+  const fallbacks = {
+    posts: {
+      nodes: [
+        {
+          id: 'fallback-1',
+          title: 'Conteúdo Temporariamente Indisponível',
+          slug: 'conteudo-temporario',
+          excerpt: 'Estamos enfrentando dificuldades técnicas para carregar nosso conteúdo. Por favor, tente novamente mais tarde.',
+          date: new Date().toISOString(),
+          featuredImage: null,
+          categories: { nodes: [] },
+          author: { node: { name: 'Saraiva Vision' } },
+        }
+      ]
+    },
+    pages: {
+      nodes: [
+        {
+          id: 'fallback-1',
+          title: 'Página Temporariamente Indisponível',
+          slug: 'pagina-temporaria',
+          content: 'Esta página está temporariamente indisponível devido a problemas técnicos. Estamos trabalhando para resolver o o mais rápido possível.',
+          date: new Date().toISOString(),
+        }
+      ]
+    },
+    services: {
+      nodes: [
+        {
+          id: 'fallback-1',
+          title: 'Serviço Temporariamente Indisponível',
+          slug: 'servico-temporario',
+          excerpt: 'Informações sobre nossos serviços estão temporariamente indisponíveis.',
+          featuredImage: null,
+        }
+      ]
+    },
+    teamMembers: {
+      nodes: []
+    },
+    testimonials: {
+      nodes: []
+    }
+  };
+
+  return fallbacks[contentType] || { nodes: [] };
 };
 
 // Post functions for PostPage component

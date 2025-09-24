@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Globe, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { BrazilFlag, UsaFlag } from '@/components/icons/BrazilFlag';
+import BrazilFlag from '@/components/icons/BrazilFlag';
+import UsaFlag from '@/components/icons/UsaFlag';
 
 const LanguageSwitcher = ({ compact = false, className = '' }) => {
   const { i18n, t } = useTranslation();
