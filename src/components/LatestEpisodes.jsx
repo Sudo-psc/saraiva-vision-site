@@ -41,7 +41,7 @@ const LatestEpisodes = () => {
                 }} />
             </div>
 
-            <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="container mx-auto px-[7%] relative z-10">
                 {/* Enhanced Header */}
                 <div className="text-center mb-10 md:mb-12">
                     <motion.div

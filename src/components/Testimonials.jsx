@@ -91,7 +91,7 @@ const Testimonials = ({ limit }) => {
         <div className="absolute bottom-20 right-20 w-48 h-48 bg-gradient-to-br from-purple-400/6 to-pink-400/6 rounded-full blur-3xl animate-float-delayed" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 testimonials-container">
+      <div className="max-w-7xl mx-auto px-[7%] relative z-10 testimonials-container">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

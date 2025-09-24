@@ -33,7 +33,7 @@ const About = () => {
         <div className="absolute bottom-10 left-20 w-24 h-24 bg-gradient-to-br from-green-300/6 to-emerald-400/6 rounded-full blur-2xl animate-float-delayed" />
       </div>
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10 scroll-block-internal">
+      <div className="container mx-auto px-[7%] relative z-10 scroll-block-internal">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center mb-20">
           <motion.div
             initial={{ opacity: 0, x: -50 }}

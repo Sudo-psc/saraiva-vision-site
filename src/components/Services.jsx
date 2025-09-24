@@ -422,7 +422,7 @@ const Services = ({ full = false, autoplay = true }) => {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-cyan-400/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-cyan-400/10 to-teal-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
+      <div className="container mx-auto px-[7%] relative z-10">
         {/* Enhanced Header Section */}
         <div className="text-center mb-20">
           {/* Badge visível para manter compatibilidade com fluxo de integração que busca 'Nossos Serviços' */}

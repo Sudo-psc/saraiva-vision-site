@@ -239,7 +239,7 @@ const LatestBlogPosts = () => {
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/5 to-indigo-400/5 rounded-full blur-3xl" />
             <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-indigo-400/5 to-blue-400/5 rounded-full blur-3xl" />
 
-            <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="container mx-auto px-[7%] relative z-10">
                 {/* Header Section */}
                 <div className="text-center mb-10 md:mb-12">
                     <motion.div

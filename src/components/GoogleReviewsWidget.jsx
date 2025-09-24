@@ -124,7 +124,7 @@ const GoogleReviewsWidget = ({
 
     return (
         <section className={`py-12 bg-white ${className}`}>
-            <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-[6%] xl:px-[7%] 2xl:px-[8%]">
+            <div className="max-w-7xl mx-auto px-[7%]">
                 {/* Header */}
                 {showHeader && (
                     <motion.div
