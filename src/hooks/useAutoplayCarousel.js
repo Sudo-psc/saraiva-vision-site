@@ -406,41 +406,7 @@ export const useAutoplayCarousel = ({
   // Handle autoplay timer
   useEffect(() => {
     if (state.isPlaying && state.isEnabled && state.tabVisible) {
-      // Call startTimer directly without dependency to avoid loop
-      clearTimers();
-
-      const startTime = Date.now();
-      progressStartRef.current = startTime;
-      progressDurationRef.current = state.interval;
-
-      // Set initial progress values
-      setProgress(0);
-      setTimeRemaining(state.interval);
-
-      // Progress update interval
-      const updateProgress = () => {
-        if (!state.isPlaying) return;
-        
-        const elapsed = Date.now() - progressStartRef.current;
-        const newProgress = Math.min(elapsed / progressDurationRef.current, 1);
-        const remaining = Math.max(progressDurationRef.current - elapsed, 0);
-        
-        setProgress(newProgress);
-        setTimeRemaining(remaining);
-
-        if (newProgress < 1 && state.isPlaying) {
-          progressTimerIdRef.current = setTimeout(updateProgress, 50);
-        }
-      };
-
-      // Start progress updates
-      progressTimerIdRef.current = setTimeout(updateProgress, 50);
-
-      // Main autoplay timer
-      timerRef.current = setTimeout(() => {
-        if (progressTimerIdRef.current) clearTimeout(progressTimerIdRef.current);
-        dispatch({ type: 'NEXT', manual: false });
-      }, state.interval);
+      startTimer();
     } else {
       clearTimers();
       // Clear progress state immediately when not playing
@@ -459,7 +425,7 @@ export const useAutoplayCarousel = ({
         progressTimerIdRef.current = null;
       }
     };
-  }, [state.isPlaying, state.isEnabled, state.tabVisible, state.interval, clearTimers]);
+  }, [state.isPlaying, state.isEnabled, state.tabVisible, state.interval, clearTimers, startTimer]);
 
   // Handle slide changes for callback - both manual and automatic
   const lastCallbackTransitionRef = useRef(0);

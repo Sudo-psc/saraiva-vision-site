@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS = {
 };
 
 export function useGoogleReviews(options = {}) {
-    const config = { ...DEFAULT_OPTIONS, ...options };
+    const config = useMemo(() => ({ ...DEFAULT_OPTIONS, ...options }), [options]);
     const [reviews, setReviews] = useState([]);
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -71,11 +71,18 @@ export function useGoogleReviews(options = {}) {
 
             let result;
             try {
+                // Check content-type before parsing
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await response.text();
+                    console.error('Expected JSON but got:', contentType, text.substring(0, 200));
+                    throw new Error('Server returned non-JSON response');
+                }
                 result = await response.json();
             } catch (jsonError) {
                 console.error('JSON parsing error:', jsonError);
                 const text = await response.text();
-                console.error('Response text:', text);
+                console.error('Response text:', text.substring(0, 500));
                 throw new Error('Invalid response format from server');
             }
 
