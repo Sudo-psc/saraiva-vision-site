@@ -84,9 +84,15 @@
     "domain:check": "node scripts/verify-domain-setup.js",
     "domain:fix": "node scripts/fix-redirect-loop.js",
     "domain:diagnose": "node scripts/diagnose-redirects.js",
-    "test:routes": "node scripts/test-routes.js"
+    "test:routes": "node scripts/test-routes.js",
+    "xai:setup": "node scripts/setup-vercel-xai.js",
+    "xai:setup:bash": "./scripts/configure-vercel-xai.sh",
+    "xai:test": "node test-xai-chatbot.js",
+    "xai:test:fallback": "node test-chatbot-fallback.js",
+    "xai:verify": "vercel env ls | grep XAI"
   },
   "dependencies": {
+    "@ai-sdk/xai": "^1.2.18",
     "@emotion/is-prop-valid": "^1.2.1",
     "@flags-sdk/hypertune": "^0.3.0",
     "@google/generative-ai": "^0.24.1",
@@ -106,6 +112,7 @@
     "@supabase/supabase-js": "^2.30.0",
     "@vercel/analytics": "^1.5.0",
     "@vercel/edge-config": "^1.4.0",
+    "ai": "^4.3.19",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "crypto-js": "^4.2.0",

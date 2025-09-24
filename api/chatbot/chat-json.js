@@ -1,19 +1,17 @@
 /**
- * Next.js Chatbot API with xAI (Grok) Integration
- * Uses AI SDK for streaming responses
+ * Next.js Chatbot API with xAI (Grok) Integration - JSON Response
+ * Uses AI SDK with structured JSON response for compatibility
  */
 
 import { xai } from "@ai-sdk/xai";
-import { streamText } from "ai";
+import { generateText } from "ai";
 
 export default async function handler(req, res) {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Content-Type', 'application/json');
 
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
@@ -75,7 +73,7 @@ DIRETRIZES:
 3. Para agendamentos, sempre direcione para o telefone/WhatsApp
 4. Para sintomas ou emergências, recomende consulta presencial urgente
 5. Não forneça diagnósticos ou conselhos médicos específicos
-6. Mantenha respostas concisas e úteis
+6. Mantenha respostas concisas e úteis (máximo 200 palavras)
 7. Use linguagem acessível e clara
 
 IMPORTANTE: Para qualquer sintoma ocular, dor, perda de visão ou emergência, sempre recomende procurar atendimento médico imediato.`;
@@ -83,8 +81,8 @@ IMPORTANTE: Para qualquer sintoma ocular, dor, perda de visão ou emergência, s
         // Configure xAI model
         const model = xai(process.env.XAI_MODEL || "grok-2-1212");
 
-        // Create streaming response
-        const result = await streamText({
+        // Generate response
+        const result = await generateText({
             model: model,
             system: systemPrompt,
             prompt: message,
@@ -92,37 +90,42 @@ IMPORTANTE: Para qualquer sintoma ocular, dor, perda de visão ou emergência, s
             temperature: parseFloat(process.env.XAI_TEMPERATURE) || 0.1,
         });
 
-        // Set up streaming response
-        res.writeHead(200, {
-            'Content-Type': 'text/plain; charset=utf-8',
-            'Transfer-Encoding': 'chunked',
-            'Cache-Control': 'no-cache',
-            'Connection': 'keep-alive'
+        // Generate session ID if not provided
+        const currentSessionId = sessionId || `session_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+
+        // Analyze response for booking suggestions
+        const lowerMessage = message.toLowerCase();
+        const lowerResponse = result.text.toLowerCase();
+        const suggestsBooking = lowerMessage.includes('agendar') ||
+            lowerMessage.includes('consulta') ||
+            lowerMessage.includes('horário') ||
+            lowerResponse.includes('agendar') ||
+            lowerResponse.includes('consulta');
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                response: result.text,
+                sessionId: currentSessionId,
+                timestamp: new Date().toISOString(),
+                suggestsBooking: suggestsBooking,
+                model: process.env.XAI_MODEL || "grok-2-1212",
+                tokensUsed: result.usage?.totalTokens || 0
+            }
         });
-
-        // Stream the response
-        for await (const textPart of result.textStream) {
-            res.write(textPart);
-        }
-
-        // End the response
-        res.end();
 
     } catch (error) {
         console.error('Chatbot API error:', error);
 
-        // If response hasn't been sent yet, send error response
-        if (!res.headersSent) {
-            return res.status(500).json({
-                success: false,
-                error: 'Internal server error',
-                message: 'Desculpe, ocorreu um erro interno. Tente novamente ou entre em contato conosco pelo telefone (33) 99860-1427.',
-                fallback: {
-                    phone: '(33) 99860-1427',
-                    whatsapp: 'https://wa.me/5533998601427',
-                    address: 'Rua Catarina Maria Passos, 97 - Santa Zita, Caratinga-MG'
-                }
-            });
-        }
+        return res.status(500).json({
+            success: false,
+            error: 'Internal server error',
+            message: 'Desculpe, ocorreu um erro interno. Tente novamente ou entre em contato conosco pelo telefone (33) 99860-1427.',
+            fallback: {
+                phone: '(33) 99860-1427',
+                whatsapp: 'https://wa.me/5533998601427',
+                address: 'Rua Catarina Maria Passos, 97 - Santa Zita, Caratinga-MG'
+            }
+        });
     }
 }

@@ -1,6 +1,6 @@
 /**
- * Next.js Chatbot API with xAI (Grok) Integration
- * Uses AI SDK for streaming responses
+ * Next.js Streaming Chatbot API with xAI (Grok) Integration
+ * Uses AI SDK for streaming text responses
  */
 
 import { xai } from "@ai-sdk/xai";
@@ -11,9 +11,6 @@ export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
 
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
@@ -22,8 +19,7 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({
             success: false,
-            error: 'Method not allowed',
-            message: 'Only POST requests are supported'
+            error: 'Method not allowed'
         });
     }
 
@@ -33,8 +29,7 @@ export default async function handler(req, res) {
         if (!message || typeof message !== 'string') {
             return res.status(400).json({
                 success: false,
-                error: 'Invalid message',
-                message: 'Message is required and must be a string'
+                error: 'Message is required'
             });
         }
 
@@ -43,13 +38,12 @@ export default async function handler(req, res) {
             console.error('XAI_API_KEY not configured');
             return res.status(500).json({
                 success: false,
-                error: 'Configuration error',
-                message: 'Chatbot service temporarily unavailable'
+                error: 'Service temporarily unavailable'
             });
         }
 
-        // Create system prompt for Clínica Saraiva Vision
-        const systemPrompt = `Você é o assistente virtual da Clínica Saraiva Vision, uma clínica oftalmológica em Caratinga-MG. 
+        // System prompt for Clínica Saraiva Vision
+        const systemPrompt = `Você é o assistente virtual da Clínica Saraiva Vision, uma clínica oftalmológica em Caratinga-MG.
 
 INFORMAÇÕES DA CLÍNICA:
 - Nome: Clínica Saraiva Vision
@@ -83,6 +77,14 @@ IMPORTANTE: Para qualquer sintoma ocular, dor, perda de visão ou emergência, s
         // Configure xAI model
         const model = xai(process.env.XAI_MODEL || "grok-2-1212");
 
+        // Set up streaming response headers
+        res.writeHead(200, {
+            'Content-Type': 'text/plain; charset=utf-8',
+            'Transfer-Encoding': 'chunked',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive'
+        });
+
         // Create streaming response
         const result = await streamText({
             model: model,
@@ -90,14 +92,6 @@ IMPORTANTE: Para qualquer sintoma ocular, dor, perda de visão ou emergência, s
             prompt: message,
             maxTokens: parseInt(process.env.XAI_MAX_TOKENS) || 1000,
             temperature: parseFloat(process.env.XAI_TEMPERATURE) || 0.1,
-        });
-
-        // Set up streaming response
-        res.writeHead(200, {
-            'Content-Type': 'text/plain; charset=utf-8',
-            'Transfer-Encoding': 'chunked',
-            'Cache-Control': 'no-cache',
-            'Connection': 'keep-alive'
         });
 
         // Stream the response
@@ -109,19 +103,14 @@ IMPORTANTE: Para qualquer sintoma ocular, dor, perda de visão ou emergência, s
         res.end();
 
     } catch (error) {
-        console.error('Chatbot API error:', error);
+        console.error('Chatbot streaming error:', error);
 
         // If response hasn't been sent yet, send error response
         if (!res.headersSent) {
             return res.status(500).json({
                 success: false,
                 error: 'Internal server error',
-                message: 'Desculpe, ocorreu um erro interno. Tente novamente ou entre em contato conosco pelo telefone (33) 99860-1427.',
-                fallback: {
-                    phone: '(33) 99860-1427',
-                    whatsapp: 'https://wa.me/5533998601427',
-                    address: 'Rua Catarina Maria Passos, 97 - Santa Zita, Caratinga-MG'
-                }
+                message: 'Desculpe, ocorreu um erro. Tente novamente ou entre em contato pelo telefone (33) 99860-1427.'
             });
         }
     }

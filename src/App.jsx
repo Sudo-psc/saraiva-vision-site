@@ -22,6 +22,7 @@ const AdminLoginPage = lazy(() => import('@/pages/AdminLoginPage'));
 const CheckPage = lazy(() => import('@/pages/CheckPage'));
 const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
 const GoogleReviewsTestPage = lazy(() => import('@/pages/GoogleReviewsTestPage'));
+const ChatbotTestPage = lazy(() => import('@/pages/ChatbotTestPage'));
 import ScrollToTop from '@/components/ScrollToTop';
 import ServiceRedirect from '@/components/ServiceRedirect';
 import { Toaster } from '@/components/ui/toaster';
@@ -92,6 +93,7 @@ function App() {
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/privacy" element={<PrivacyPolicyPage />} />
                   <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />
+                  <Route path="/chatbot-test" element={<ChatbotTestPage />} />
                   <Route path="/wp-admin" element={<AdminPage />} />
                   {isCheckSubdomain ? <Route path="*" element={<Navigate to="/" replace />} /> : null}
                 </Routes>

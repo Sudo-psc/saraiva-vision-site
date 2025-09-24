@@ -92,6 +92,7 @@ export default defineConfig({
   server: {
     port: 3002,
     host: true,
+    historyApiFallback: true,
     allowedHosts: [
       'localhost',
       '127.0.0.1',
