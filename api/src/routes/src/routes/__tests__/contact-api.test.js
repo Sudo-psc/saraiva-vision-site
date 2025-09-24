@@ -19,7 +19,7 @@ vi.mock('../contact/rateLimiter.js', () => ({
     checkRateLimit: vi.fn()
 }))
 
-vi.mock('../../../../../../..../../../../src/lib/supabase.ts', () => ({
+vi.mock('../../../../../../..../../../../src/lib/supabase.js', () => ({
     supabase: {
         from: vi.fn(() => ({
             insert: vi.fn(() => ({

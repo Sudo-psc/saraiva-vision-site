@@ -9,7 +9,7 @@ import availabilityHandler from '../appointments/availability.js'
 import confirmHandler from '../appointments/confirm.js'
 
 // Mock Supabase
-vi.mock('../../src/lib/supabase.ts', () => ({
+vi.mock('../../src/lib/supabase.js', () => ({
     supabaseAdmin: {
         from: vi.fn(() => ({
             insert: vi.fn(() => ({
@@ -94,7 +94,7 @@ describe('Appointments API', () => {
 
     describe('POST /api/appointments', () => {
         it('creates appointment successfully', async () => {
-            const { supabaseAdmin } = await import('../../src/lib/supabase.ts')
+            const { supabaseAdmin } = await import('../../src/lib/supabase.js')
             const { validateAppointmentData } = await import('../appointments/validation.js')
             const { validateAppointmentDateTime, isSlotAvailable } = await import('../../src/lib/appointmentAvailability.js')
             const { addToOutbox } = await import('../appointments/notifications.js')
@@ -209,7 +209,7 @@ describe('Appointments API', () => {
         })
 
         it('handles database constraint violation', async () => {
-            const { supabaseAdmin } = await import('../../src/lib/supabase.ts')
+            const { supabaseAdmin } = await import('../../src/lib/supabase.js')
             const { validateAppointmentData } = await import('../appointments/validation.js')
             const { validateAppointmentDateTime, isSlotAvailable } = await import('../../src/lib/appointmentAvailability.js')
 
@@ -333,7 +333,7 @@ describe('Appointments API', () => {
         })
 
         it('returns appointment details for valid token', async () => {
-            const { supabaseAdmin } = await import('../../src/lib/supabase.ts')
+            const { supabaseAdmin } = await import('../../src/lib/supabase.js')
             const { validateConfirmationToken } = await import('../appointments/validation.js')
 
             validateConfirmationToken.mockReturnValue({ isValid: true })
@@ -395,7 +395,7 @@ describe('Appointments API', () => {
         })
 
         it('returns error for expired appointment', async () => {
-            const { supabaseAdmin } = await import('../../src/lib/supabase.ts')
+            const { supabaseAdmin } = await import('../../src/lib/supabase.js')
             const { validateConfirmationToken } = await import('../appointments/validation.js')
 
             validateConfirmationToken.mockReturnValue({ isValid: true })
@@ -439,7 +439,7 @@ describe('Appointments API', () => {
         })
 
         it('confirms appointment successfully', async () => {
-            const { supabaseAdmin } = await import('../../src/lib/supabase.ts')
+            const { supabaseAdmin } = await import('../../src/lib/supabase.js')
             const { validateConfirmationToken, validateStatusTransition } = await import('../appointments/validation.js')
 
             validateConfirmationToken.mockReturnValue({ isValid: true })
@@ -495,7 +495,7 @@ describe('Appointments API', () => {
         })
 
         it('cancels appointment successfully', async () => {
-            const { supabaseAdmin } = await import('../../src/lib/supabase.ts')
+            const { supabaseAdmin } = await import('../../src/lib/supabase.js')
             const { validateConfirmationToken, validateStatusTransition } = await import('../appointments/validation.js')
 
             validateConfirmationToken.mockReturnValue({ isValid: true })

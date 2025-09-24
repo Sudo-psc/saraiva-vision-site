@@ -18,6 +18,15 @@ vi.mock('resend', () => ({
 
 // Mock crypto for consistent IDs in tests
 vi.mock('crypto', () => ({
+    default: {
+        randomBytes: vi.fn(() => Buffer.from('test-random-bytes-123456789012')),
+        createHmac: vi.fn(() => ({
+            update: vi.fn(() => ({
+                digest: vi.fn(() => 'test-hmac-digest')
+            }))
+        })),
+        timingSafeEqual: vi.fn(() => true)
+    },
     randomBytes: vi.fn(() => Buffer.from('test-random-bytes-123456789012')),
     createHmac: vi.fn(() => ({
         update: vi.fn(() => ({

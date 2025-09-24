@@ -36,7 +36,7 @@ const mockSupabaseAdmin = {
     raw: vi.fn((sql) => sql)
 };
 
-vi.mock('../../src/lib/supabase.ts', () => ({
+vi.mock('../../src/lib/supabase.js', () => ({
     supabaseAdmin: mockSupabaseAdmin
 }));
 

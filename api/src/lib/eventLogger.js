@@ -4,7 +4,7 @@
  * Requirement 9.1: Structured logging with appropriate detail levels
  */
 
-import { supabaseAdmin } from './supabase.ts'
+import { supabaseAdmin } from 'from 'from './supabase.js'' ' 
 
 /**
  * Log an event to the database

@@ -4,7 +4,7 @@
  * Requirements: 4.1, 4.2, 4.3, 4.4, 4.5
  */
 
-import { supabaseAdmin } from '../../../../../../..../../../../src/lib/supabase.ts'
+import { supabaseAdmin } from 'from 'from '../../../../../../..../../../../src/lib/supabase.js'' ' 
 import { validateAppointmentDateTime, isSlotAvailable } from '../../../../../../..../../../../src/lib/appointmentAvailability.js'
 import { validateAppointmentData } from './validation.js'
 import { generateConfirmationToken } from './utils.js'

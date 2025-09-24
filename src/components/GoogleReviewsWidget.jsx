@@ -6,6 +6,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Star, ExternalLink, MessageCircle, RefreshCw, AlertCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useGoogleReviews } from '@/hooks/useGoogleReviews';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/Card';
@@ -55,6 +56,7 @@ const GoogleReviewsWidget = ({
     showViewAllButton = true,
     className = ''
 }) => {
+    const { t } = useTranslation();
     const {
         reviews: apiReviews,
         stats: apiStats,
@@ -135,15 +137,15 @@ const GoogleReviewsWidget = ({
                     >
                         <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-50 text-blue-700 mb-4">
                             <MessageCircle className="w-4 h-4" />
-                            <span className="font-semibold text-sm">Avaliações Google</span>
+                            <span className="font-semibold text-sm">{t('reviews.section_title')}</span>
                         </div>
                         
                         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
-                            O que nossos pacientes dizem
+                            {t('reviews.main_title')}
                         </h2>
                         
                         <p className="text-slate-600 max-w-2xl mx-auto">
-                            Experiências reais de quem confia na Saraiva Vision
+                            {t('reviews.subtitle')}
                         </p>
                     </motion.div>
                 )}
@@ -162,12 +164,12 @@ const GoogleReviewsWidget = ({
                             <span className="text-2xl font-bold text-slate-900">
                                 {stats.overview.averageRating}
                             </span>
-                            <span className="text-slate-600">({stats.overview.totalReviews}+ avaliações)</span>
+                            <span className="text-slate-600">({stats.overview.totalReviews}+ {t('reviews.total_reviews')})</span>
                         </div>
                         
                         {stats.overview.recentReviews && (
                             <Badge variant="success" className="px-3 py-1">
-                                {stats.overview.recentReviews} novas este mês
+                                {stats.overview.recentReviews} {t('reviews.recent_reviews')}
                             </Badge>
                         )}
                     </motion.div>
@@ -179,14 +181,14 @@ const GoogleReviewsWidget = ({
                         {loading && (
                             <div className="flex items-center gap-2 text-blue-600">
                                 <RefreshCw className="w-4 h-4 animate-spin" />
-                                <span className="text-sm">Carregando avaliações...</span>
+                                <span className="text-sm">{t('reviews.loading')}</span>
                             </div>
                         )}
                         
                         {isRetrying && (
                             <div className="flex items-center gap-2 text-orange-600">
                                 <RefreshCw className="w-4 h-4 animate-spin" />
-                                <span className="text-sm">Tentativa {retryCount}/3...</span>
+                                <span className="text-sm">{t('ui.retry')} {retryCount}/3...</span>
                             </div>
                         )}
                         
@@ -194,7 +196,7 @@ const GoogleReviewsWidget = ({
                             <div className="flex items-center gap-2">
                                 <AlertCircle className="w-4 h-4 text-orange-500" />
                                 <span className="text-sm text-orange-700">
-                                    Usando dados de backup - API temporariamente indisponível
+                                    {t('reviews.fallback_notice')} - API temporariamente indisponível
                                 </span>
                                 <Button
                                     onClick={refresh}
@@ -203,7 +205,7 @@ const GoogleReviewsWidget = ({
                                     className="ml-2"
                                 >
                                     <RefreshCw className="w-3 h-3 mr-1" />
-                                    Tentar novamente
+                                    {t('reviews.retry')}
                                 </Button>
                             </div>
                         )}
@@ -279,7 +281,7 @@ const GoogleReviewsWidget = ({
                                 size="lg"
                                 className="bg-blue-600 hover:bg-blue-700 text-white gap-2 px-6 py-3 shadow-lg hover:shadow-xl transition-all duration-300"
                             >
-                                Ver Todas no Google
+                                {t('reviews.view_all_button')}
                                 <ExternalLink className="w-4 h-4" />
                             </Button>
                         </a>

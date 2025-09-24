@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '../../../../../../..../../../../src/lib/supabase.ts';
+import { supabaseAdmin } from 'from 'from '../../../../../../..../../../../src/lib/supabase.js'' ' ;
 import { validateMessageOutbox } from '../../../../../../../..../../../../src/lib/validation.js';
 import { sendContactEmail } from './emailService.js';
 import { sendSMS } from './smsService.js';

@@ -3,7 +3,7 @@
  * Provides security metrics, threat detection logs, and configuration validation
  */
 
-import { supabaseAdmin } from '../../../../../../..../../../../src/lib/supabase.ts';
+import { supabaseAdmin } from 'from 'from '../../../../../../..../../../../src/lib/supabase.js'' ' ;
 import { applyCorsHeaders, applySecurityHeaders } from '../utils/securityHeaders.js';
 import { validateSecurityConfig, getSecurityConfig } from '../config/security.js';
 import { getRateLimitStats } from '../contact/rateLimiter.js';

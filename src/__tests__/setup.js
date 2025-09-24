@@ -82,6 +82,14 @@ vi.mock('../lib/appointmentAvailability.js', () => ({
 // Mock fetch globally
 global.fetch = vi.fn()
 
+// Mock IntersectionObserver for Framer Motion
+global.IntersectionObserver = class IntersectionObserver {
+    constructor() {}
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+}
+
 // Mock console methods to reduce noise in tests
 global.console = {
     ...console,

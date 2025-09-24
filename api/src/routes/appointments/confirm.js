@@ -4,7 +4,7 @@
  * Requirement 4.3: Appointment confirmation system with unique tokens
  */
 
-import { supabaseAdmin } from '../../../../../../..../../../../src/lib/supabase.ts'
+import { supabaseAdmin } from 'from 'from '../../../../../../..../../../../src/lib/supabase.js'' ' 
 import { validateConfirmationToken, validateStatusTransition } from './validation.js'
 import { logEvent } from '../../../../../../..../../../../src/lib/eventLogger.js'
 

@@ -23,7 +23,7 @@ const mockSupabaseAdmin = {
     }))
 }
 
-vi.mock('../../../../../../..../../../../src/lib/supabase.ts', () => ({
+vi.mock('../../../../../../..../../../../src/lib/supabase.js', () => ({
     supabaseAdmin: mockSupabaseAdmin
 }))
 

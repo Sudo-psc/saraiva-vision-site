@@ -4,7 +4,7 @@
  * Requirement 4.1: Show open slots Monday-Friday 08:00-18:00 in 30-minute intervals
  */
 
-import { supabaseAdmin } from './supabase.ts'
+import { supabaseAdmin } from 'from 'from './supabase.js'' ' 
 
 // Check if supabaseAdmin is available
 if (!supabaseAdmin) {

@@ -7,7 +7,18 @@ import { useLocation } from 'react-router-dom';
  */
 export const usePostHog = () => {
     const posthog = usePostHogReact();
-    const location = useLocation();
+    let location = null;
+
+    try {
+        location = useLocation();
+    } catch (error) {
+        // Handle case where hook is used outside Router context (e.g., in tests)
+        location = {
+            pathname: window.location?.pathname || '/',
+            search: window.location?.search || '',
+            hash: window.location?.hash || '',
+        };
+    }
 
     // Track page views automatically
     useEffect(() => {

@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import handler from '../admin/auth.js';
-import { supabaseAdmin } from '../../../../../../..../../../../src/lib/supabase.ts';
+import { supabaseAdmin } from 'from 'from '../../../../../../..../../../../src/lib/supabase.js'' ' ;
 
 // Mock Supabase
-vi.mock('../../../../../../..../../../../src/lib/supabase.ts', () => ({
+vi.mock('../../../../../../..../../../../src/lib/supabase.js', () => ({
     supabaseAdmin: {
         from: vi.fn(),
         rpc: vi.fn()

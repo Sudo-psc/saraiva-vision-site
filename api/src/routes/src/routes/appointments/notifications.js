@@ -4,7 +4,7 @@
  * Requirements: 4.2, 4.3 - Automated confirmations and reminders
  */
 
-import { supabaseAdmin } from '../../../../../../..../../../../src/lib/supabase.ts'
+import { supabaseAdmin } from 'from 'from '../../../../../../..../../../../src/lib/supabase.js'' ' 
 import { generateAppointmentSummary } from './utils.js'
 import { logEvent } from '../../../../../../../..../../../../src/lib/eventLogger.js'
 
