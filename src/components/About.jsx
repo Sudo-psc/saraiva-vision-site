@@ -72,7 +72,7 @@ const About = () => {
             transition={{ duration: 0.6 }}
             className="flex flex-col space-y-8"
           >
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 text-white mb-4 w-fit shadow-md border border-slate-700/50"
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 text-white mb-4 w-fit shadow-md border border-slate-700/50">
               <span className="text-xl">✦</span>
               <span className="font-bold text-sm tracking-wide uppercase">{t('about.tag')}</span>
             </div>
