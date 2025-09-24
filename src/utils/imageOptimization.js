@@ -83,7 +83,7 @@ class ImageLazyLoader {
     tempImg.onerror = () => {
       console.error('Erro ao carregar imagem:', src);
       // Usa imagem fallback
-      img.src = '/img/placeholder-medical.png';
+      img.src = '/img/placeholder.svg';
     };
     
     tempImg.src = src;

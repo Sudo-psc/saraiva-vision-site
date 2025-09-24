@@ -9,8 +9,8 @@ import Hero from '@/components/Hero';
 import Services from '@/components/Services';
 import About from '@/components/About';
 import Contact from '@/components/Contact';
-import Footer from '@/components/Footer';
-import CompactGoogleReviews from '@/components/CompactGoogleReviews';
+import EnhancedFooter from '@/components/EnhancedFooter';
+import GoogleReviewsIntegration from '@/components/GoogleReviewsIntegration';
 import GoogleLocalSection from '@/components/GoogleLocalSection';
 import FAQ from '@/components/FAQ';
 import LatestEpisodes from '@/components/LatestEpisodes';
@@ -70,7 +70,10 @@ function HomePage() {
           <Hero />
           <Services />
           <About />
-          <CompactGoogleReviews />
+          <GoogleReviewsIntegration
+            maxReviews={3}
+            showViewAllButton={true}
+          />
           <GoogleLocalSection />
           <FAQ />
           <LatestEpisodes />
@@ -78,7 +81,7 @@ function HomePage() {
           <Contact />
         </main>
 
-        <Footer />
+        <EnhancedFooter />
       </div>
     </>
   );

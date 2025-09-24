@@ -1,0 +1,490 @@
+/* Instagram Embed Widget Styles */
+
+.instagram-widget {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  border: 1px solid #e1e5e9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  color: #000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.instagram-widget:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark theme */
+.instagram-widget[data-theme="dark"] {
+  background: #000;
+  color: #fff;
+  border-color: #333;
+}
+
+/* Loading state */
+.instagram-widget.loading {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-container {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f0f0f0;
+  border-top: 3px solid #1877f2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error state */
+.instagram-widget.error {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+/* Widget Header */
+.widget-header {
+  padding: 16px;
+  border-bottom: 1px solid #e1e5e9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: white;
+}
+
+.instagram-widget[data-theme="dark"] .widget-header {
+  border-bottom-color: #333;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.verified-badge {
+  font-size: 12px;
+  color: #1da1f2;
+  background: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-stats {
+  font-size: 12px;
+  opacity: 0.9;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.follow-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.follow-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Posts Container */
+.posts-container {
+  overflow-y: auto;
+  max-height: 600px;
+}
+
+.posts-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.posts-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.posts-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+/* Instagram Post */
+.instagram-post {
+  padding: 16px;
+  border-bottom: 1px solid #e1e5e9;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.instagram-post:hover {
+  background-color: #f8f9fa;
+}
+
+.instagram-post:last-child {
+  border-bottom: none;
+}
+
+.instagram-widget[data-theme="dark"] .instagram-post {
+  border-bottom-color: #333;
+}
+
+.instagram-widget[data-theme="dark"] .instagram-post:hover {
+  background-color: #111;
+}
+
+/* Post Header */
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.post-profile-pic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.post-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-username {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.post-time {
+  color: #65676b;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.instagram-widget[data-theme="dark"] .post-time {
+  color: #b0b3b8;
+}
+
+/* Post Image */
+.post-image-container {
+  position: relative;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.instagram-post:hover .post-image {
+  transform: scale(1.02);
+}
+
+/* Post Actions */
+.post-actions {
+  margin: 12px 0;
+}
+
+.engagement-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  align-items: center;
+}
+
+.likes, .comments, .engagement-rate {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.emoji {
+  font-size: 16px;
+}
+
+.engagement-rate {
+  color: #65676b;
+  font-size: 12px;
+  margin-left: auto;
+}
+
+.instagram-widget[data-theme="dark"] .engagement-rate {
+  color: #b0b3b8;
+}
+
+/* Post Caption */
+.post-caption {
+  font-size: 14px;
+  line-height: 1.4;
+  margin-top: 8px;
+}
+
+.caption-username {
+  font-weight: 600;
+}
+
+.caption-text {
+  color: #1c1e21;
+}
+
+.instagram-widget[data-theme="dark"] .caption-text {
+  color: #e4e6ea;
+}
+
+/* Widget Footer */
+.widget-footer {
+  padding: 16px;
+  border-top: 1px solid #e1e5e9;
+  text-align: center;
+  background: #f8f9fa;
+}
+
+.instagram-widget[data-theme="dark"] .widget-footer {
+  background: #111;
+  border-top-color: #333;
+}
+
+.view-more-btn {
+  background: transparent;
+  border: none;
+  color: #1877f2;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.view-more-btn:hover {
+  color: #166fe5;
+  text-decoration: underline;
+}
+
+/* Mini Widget */
+.instagram-mini-widget {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 16px 0;
+}
+
+.mini-header {
+  padding: 12px 16px;
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: white;
+}
+
+.mini-header h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: #e1e5e9;
+}
+
+.mini-post {
+  position: relative;
+  aspect-ratio: 1;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.mini-post img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.mini-post:hover img {
+  transform: scale(1.1);
+}
+
+.mini-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mini-post:hover .mini-overlay {
+  opacity: 1;
+}
+
+.mini-loading {
+  padding: 20px;
+  text-align: center;
+  color: #65676b;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .instagram-widget {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    max-width: none;
+  }
+  
+  .widget-header {
+    padding: 12px 16px;
+  }
+  
+  .instagram-post {
+    padding: 12px 16px;
+  }
+  
+  .engagement-stats {
+    gap: 12px;
+  }
+  
+  .engagement-rate {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-stats {
+    display: none;
+  }
+  
+  .follow-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .post-caption {
+    font-size: 13px;
+  }
+}
+
+/* Accessibility */
+.instagram-post:focus {
+  outline: 2px solid #1877f2;
+  outline-offset: 2px;
+}
+
+.follow-btn:focus,
+.view-more-btn:focus {
+  outline: 2px solid #1877f2;
+  outline-offset: 2px;
+}
+
+/* Animation for new posts */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.instagram-post {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+/* Instagram-like gradient */
+.instagram-gradient {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+/* Loading skeleton animation */
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}

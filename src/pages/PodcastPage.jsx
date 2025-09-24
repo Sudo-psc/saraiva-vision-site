@@ -18,7 +18,7 @@ import {
 import SEOHead from '@/components/SEOHead';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import SpotifyEmbed from '@/components/SpotifyEmbed';
 import AudioPlayer from '@/components/AudioPlayer';
 import { Button } from '@/components/ui/button';
@@ -445,7 +445,7 @@ function PodcastPage() {
         </section>
       </main>
 
-      <Footer />
+      <EnhancedFooter />
 
       {/* Test marker to stabilize i18n-dependent tests */}
       {isTestEnv && (

@@ -1,81 +1,200 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X } from 'lucide-react';
-import { useWidgetManager } from '../utils/widgetManager.jsx';
+import { FaWhatsapp, FaTimes, FaClock } from 'react-icons/fa';
+import { whatsappConfig, getWhatsAppMessage, formatWhatsAppNumber, isWithinBusinessHours } from '../config/whatsapp.js';
 
-const WhatsappWidget = ({ phoneNumber }) => {
-  const whatsappLink = `https://wa.me/${phoneNumber}`;
-  const [showTooltip, setShowTooltip] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const { getWidgetProps } = useWidgetManager();
-  const widgetProps = getWidgetProps('whatsapp');
+const WhatsappWidget = ({
+  phoneNumber = whatsappConfig.phoneNumber,
+  message = null,
+  messageType = 'default',
+  position = whatsappConfig.widget.position,
+  showGreeting = whatsappConfig.widget.showGreeting,
+  greetingDelay = whatsappConfig.widget.greetingDelay,
+  className = "",
+  customGreeting = null
+}) => {
+  const [isGreetingVisible, setIsGreetingVisible] = useState(false);
+  const [isWidgetVisible, setIsWidgetVisible] = useState(true);
+  const [businessHours, setBusinessHours] = useState(true);
+
+  // Get the appropriate message
+  const whatsappMessage = message || getWhatsAppMessage(messageType);
 
   useEffect(() => {
-    setMounted(true);
-    // Show tooltip after 3 seconds to draw attention
-    const timer = setTimeout(() => setShowTooltip(true), 3000);
-    return () => clearTimeout(timer);
-  }, []);
+    // Check business hours
+    setBusinessHours(isWithinBusinessHours());
 
-  const hideTooltip = () => setShowTooltip(false);
+    // Set up greeting timer
+    if (showGreeting) {
+      const timer = setTimeout(() => {
+        setIsGreetingVisible(true);
+      }, greetingDelay);
+
+      // Auto-hide greeting after configured time
+      const autoHideTimer = setTimeout(() => {
+        setIsGreetingVisible(false);
+      }, greetingDelay + whatsappConfig.widget.greetingAutoHide);
+
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(autoHideTimer);
+      };
+    }
+  }, [showGreeting, greetingDelay]);
+
+  const handleWhatsAppClick = () => {
+    const formattedNumber = formatWhatsAppNumber(phoneNumber);
+    let finalMessage = whatsappMessage;
+
+    // Add after-hours message if outside business hours
+    if (!businessHours && whatsappConfig.businessHours.enabled) {
+      finalMessage += `\n\n${whatsappConfig.businessHours.afterHoursMessage}`;
+    }
+
+    const encodedMessage = encodeURIComponent(finalMessage);
+    const whatsappUrl = `https://wa.me/${formattedNumber}?text=${encodedMessage}`;
+
+    // Track analytics event
+    if (typeof window !== 'undefined') {
+      // Google Analytics
+      if (window.gtag) {
+        window.gtag('event', whatsappConfig.analytics.eventAction, {
+          event_category: whatsappConfig.analytics.eventCategory,
+          event_label: whatsappConfig.analytics.eventLabel
+        });
+      }
+
+      // PostHog Analytics (Enhanced)
+      if (window.posthog) {
+        window.posthog.capture('whatsapp_click', {
+          source: 'widget',
+          message_type: messageType,
+          business_hours: businessHours,
+          widget_position: position,
+          greeting_shown: isGreetingVisible,
+          formatted_number: formattedNumber,
+          message_length: finalMessage.length,
+        });
+      }
+    }
+
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleGreetingClose = () => {
+    setIsGreetingVisible(false);
+  };
+
+  const positionClasses = {
+    'bottom-right': 'bottom-4 right-4 sm:bottom-6 sm:right-6',
+    'bottom-left': 'bottom-4 left-4 sm:bottom-6 sm:left-6',
+    'top-right': 'top-4 right-4 sm:top-6 sm:right-6',
+    'top-left': 'top-4 left-4 sm:top-6 sm:left-6'
+  };
+
+  if (!isWidgetVisible) return null;
 
   return (
-    <>
-      {/* Enhanced Mobile-First WhatsApp Widget */}
-      <motion.div
-        className={`floating-widget widget-smooth ${widgetProps.className} ${widgetProps.positionClass} ${widgetProps.zIndexClass} widget-lower-10`}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 1.5 }}
-      >
-        {/* Tooltip for better visibility */}
-        <AnimatePresence>
-          {showTooltip && (
-            <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.9 }}
-              className="absolute bottom-full right-0 mb-3 bg-white text-slate-800 px-4 py-3 rounded-2xl shadow-xl border border-green-200 max-w-xs text-sm font-medium whitespace-nowrap"
+    <div className={`fixed z-50 ${positionClasses[position]} ${className}`}>
+      {/* Greeting Message */}
+      {isGreetingVisible && (
+        <div className="mb-4 max-w-xs sm:max-w-sm whatsapp-greeting">
+          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 relative animate-fade-in">
+            <button
+              onClick={handleGreetingClose}
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-green-300 rounded"
+              aria-label={whatsappConfig.accessibility.closeButtonLabel}
             >
-              <button type="button"
-                onClick={hideTooltip}
-                className="absolute -top-1 -right-1 p-1 bg-slate-100 rounded-full text-slate-400 hover:text-slate-600"
-                aria-label="Fechar dica"
-              >
-                <X size={12} />
-              </button>
-              <div className="flex items-center gap-2">
-                <span>Fale conosco agora!</span>
+              <FaTimes size={14} />
+            </button>
+
+            <div className="flex items-start space-x-3">
+              <div className="flex-shrink-0">
+                {whatsappConfig.greeting.showAvatar && whatsappConfig.greeting.avatar ? (
+                  <img
+                    src={whatsappConfig.greeting.avatar}
+                    alt="Dr. Philipe Saraiva"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                    <FaWhatsapp className="text-white text-lg" />
+                  </div>
+                )}
+
+                {/* Online status indicator */}
+                {whatsappConfig.greeting.showOnlineStatus && (
+                  <div className="relative -mt-2 -ml-2">
+                    <div className={`w-3 h-3 rounded-full border-2 border-white ${businessHours ? 'bg-green-400' : 'bg-gray-400'
+                      }`}></div>
+                  </div>
+                )}
               </div>
-              <div className="absolute bottom-[-6px] right-4 w-3 h-3 bg-white border-r border-b border-green-200 transform rotate-45"></div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
-        {/* Enhanced WhatsApp Button */}
-        <motion.a
-          href={whatsappLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full shadow-2xl flex items-center justify-center relative overflow-hidden group"
-          // Melhor responsividade ao toque e rolagem em mobile
-          style={{ minHeight: '64px', minWidth: '64px', padding: '16px', touchAction: 'manipulation' }}
-          whileHover={{ scale: 1.1, rotate: 5 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={hideTooltip}
-          aria-label="Fale conosco pelo WhatsApp - Resposta rápida garantida"
-        >
-          {/* Pulse animation background */}
-          <div className="absolute inset-0 bg-green-400 rounded-full animate-ping opacity-20"></div>
-          <div className="absolute inset-0 bg-green-400 rounded-full animate-pulse opacity-10"></div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center space-x-2 mb-1">
+                  <p className="text-sm font-medium text-black">
+                    {whatsappConfig.greeting.title}
+                  </p>
+                  {!businessHours && (
+                    <FaClock className="text-gray-400 text-xs" title="Fora do horário comercial" />
+                  )}
+                </div>
 
-          <MessageCircle size={32} className="relative z-10 animate-bounce sm:animate-none group-hover:animate-bounce" />
+                <p className="text-sm text-gray-800 leading-relaxed">
+                  {customGreeting || whatsappConfig.greeting.message}
+                </p>
 
-          {/* Online indicator */}
-          <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
-        </motion.a>
-      </motion.div>
-    </>
+                {!businessHours && whatsappConfig.businessHours.enabled && (
+                  <p className="text-xs text-orange-600 mt-2">
+                    Horário: Seg-Sex, 8h-18h
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Speech bubble tail */}
+            <div className="absolute bottom-0 right-6 transform translate-y-full">
+              <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white"></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* WhatsApp Button */}
+      <button
+        onClick={handleWhatsAppClick}
+        className={`group relative text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-green-300 focus:ring-opacity-50 whatsapp-widget ${businessHours ? 'bg-green-500 hover:bg-green-600' : 'bg-green-600 hover:bg-green-700'
+          }`}
+        aria-label={whatsappConfig.accessibility.ariaLabel}
+        title={whatsappConfig.accessibility.tooltip}
+      >
+        <FaWhatsapp size={24} className="sm:w-6 sm:h-6" />
+
+        {/* Pulse animation - only during business hours */}
+        {businessHours && whatsappConfig.widget.pulseAnimation && (
+          <div className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-20"></div>
+        )}
+
+        {/* Business hours indicator */}
+        {!businessHours && (
+          <div className="absolute -top-1 -right-1 w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
+            <FaClock className="text-white text-xs" />
+          </div>
+        )}
+
+        {/* Tooltip for desktop */}
+        {whatsappConfig.widget.showTooltip && (
+          <div className="absolute bottom-full right-0 mb-2 hidden sm:group-hover:block">
+            <div className="bg-black text-white text-sm rounded-lg px-3 py-2 whitespace-nowrap">
+              {businessHours ? whatsappConfig.accessibility.tooltip : 'Fora do horário (responderemos em breve)'}
+              <div className="absolute top-full right-4 transform -translate-x-1/2">
+                <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-black"></div>
+              </div>
+            </div>
+          </div>
+        )}
+      </button>
+    </div>
   );
 };
 

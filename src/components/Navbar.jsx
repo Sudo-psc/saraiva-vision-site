@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, Calendar, Headphones, Instagram, User } from 'lucide-react';
+import { Menu, X, Calendar, Headphones, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/Logo';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
-import { safeOpenUrl } from '@/utils/safeNavigation';
 
 const Navbar = () => {
   const { t } = useTranslation();
@@ -30,27 +29,19 @@ const Navbar = () => {
   const navLinks = useMemo(() => [
     { name: 'Home', href: '/', internal: true },
     { name: 'Serviços', href: '/servicos', internal: true },
+    { name: 'Blog', href: '/blog', internal: true },
     { name: 'Sobre', href: '/sobre', internal: true },
+    { name: 'Depoimentos', href: '/depoimentos', internal: true },
+    { name: 'FAQ', href: '/faq', internal: true },
     { name: 'Contato', href: '/contato', internal: true },
     { name: 'Instagram', href: 'https://www.instagram.com/saraiva_vision/', internal: false },
   ], []);
 
-  const handleNavClick = useCallback((e, link) => {
-    setMobileMenuOpen(false);
-    if (link.internal) {
-      e.preventDefault();
-      navigate(link.href);
-    } else {
-      e.preventDefault();
-      window.open(link.href, '_blank');
-    }
-  }, [navigate]);
-
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-          ? 'bg-header-gradient shadow-md py-2'
-          : 'bg-white/90 backdrop-blur border-b border-slate-200/60 md:bg-transparent md:border-0 py-3'
+        ? 'bg-header-gradient shadow-md py-2'
+        : 'bg-white/90 backdrop-blur border-b border-slate-200/60 md:bg-transparent md:border-0 py-3'
         }`}
     >
       <div className="container mx-auto px-4 md:px-6 no-scrollbar-x">
@@ -72,14 +63,27 @@ const Navbar = () => {
           />
 
           <nav className="hidden md:flex items-center space-x-1">
-            {navLinks.map((link, index) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100"
-              >
-                {link.name}
-              </Link>
+            {navLinks.map((link) => (
+              link.internal ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-1"
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-1"
+                >
+                  {link.name}
+                  <ExternalLink size={14} className="text-slate-500" />
+                </a>
+              )
             ))}
           </nav>
 
@@ -124,14 +128,28 @@ const Navbar = () => {
         <div className="md:hidden bg-white border-t">
           <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4">
             {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-slate-800 hover:text-blue-700 py-2 font-medium text-lg"
-              >
-                {link.name}
-              </Link>
+              link.internal ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-slate-800 hover:text-blue-700 py-2 font-medium text-lg flex items-center gap-2"
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-slate-800 hover:text-blue-700 py-2 font-medium text-lg flex items-center gap-2"
+                >
+                  {link.name}
+                  <ExternalLink size={16} className="text-slate-500" />
+                </a>
+              )
             ))}
             <div className="pt-4">
               <Button

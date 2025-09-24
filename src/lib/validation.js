@@ -361,9 +361,83 @@ export const validateField = (field, value, allData = {}) => {
     }
 };
 
+/**
+ * Message Outbox validation schema for reliable email delivery
+ */
+export const messageOutboxSchema = z.object({
+    message_type: z.enum(['email', 'sms'], {
+        errorMap: () => ({ message: 'Tipo de mensagem deve ser email ou sms' })
+    }),
+    recipient: z
+        .string()
+        .min(1, 'Destinatário é obrigatório')
+        .transform(sanitize.email)
+        .refine(
+            (email) => {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            },
+            { message: 'Email do destinatário inválido' }
+        ),
+    subject: z
+        .string()
+        .min(1, 'Assunto é obrigatório')
+        .max(255, 'Assunto deve ter no máximo 255 caracteres')
+        .transform(sanitize.text),
+    content: z
+        .string()
+        .min(1, 'Conteúdo é obrigatório')
+        .transform(sanitize.html),
+    template_data: z
+        .record(z.any())
+        .optional(),
+    max_retries: z
+        .number()
+        .int()
+        .min(0)
+        .max(10)
+        .default(3),
+    send_after: z
+        .date()
+        .optional()
+        .default(() => new Date())
+});
+
+/**
+ * Validates message outbox data for reliable delivery
+ * @param {Object} data - Outbox message data
+ * @returns {Object} Validation result
+ */
+export const validateMessageOutbox = (data) => {
+    try {
+        const validatedData = messageOutboxSchema.parse(data);
+        return {
+            success: true,
+            data: validatedData,
+            errors: null
+        };
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            return {
+                success: false,
+                data: null,
+                errors: mapValidationErrors(error)
+            };
+        }
+
+        return {
+            success: false,
+            data: null,
+            errors: { general: validationErrorMap.VALIDATION_ERROR }
+        };
+    }
+};
+
 export default {
     contactSubmissionSchema,
+    messageOutboxSchema,
     validateContactSubmission,
+    validateMessageOutbox,
     validateField,
     mapValidationErrors,
     validationErrorMap,

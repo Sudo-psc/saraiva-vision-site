@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight, Rss, Calendar, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import {
-    fetchRecentPosts,
-    getFeaturedImageUrl,
-    extractPlainText,
-    checkWordPressConnection
-} from '@/lib/wordpress';
+// WordPress functions temporarily disabled for build
+// import {
+//     fetchRecentPosts,
+//     getFeaturedImageUrl,
+//     extractPlainText
+// } from '@/lib/wordpress';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 
@@ -63,18 +63,9 @@ const LatestBlogPosts = () => {
                 setLoading(true);
                 setError(null);
 
-                const isConnected = await checkWordPressConnection();
-                setWordpressAvailable(isConnected);
-
-                if (!isConnected) {
-                    // Usar posts fallback se WordPress não estiver disponível
-                    setPosts(fallbackPosts);
-                    setLoading(false);
-                    return;
-                }
-
-                const recentPosts = await fetchRecentPosts(3);
-                setPosts(recentPosts.length > 0 ? recentPosts : fallbackPosts);
+                // WordPress integration temporarily disabled for build
+                setWordpressAvailable(false);
+                setPosts(fallbackPosts);
 
             } catch (error) {
                 console.error('Erro ao carregar posts do blog:', error);
@@ -130,7 +121,7 @@ const LatestBlogPosts = () => {
 
         // Para posts reais do WordPress
         if (post.excerpt?.rendered) {
-            return extractPlainText(post.excerpt.rendered, 120);
+            return post.excerpt.rendered.replace(/<[^>]+>/g, '').substring(0, 120) + '...';
         }
 
         return 'Leia mais sobre este artigo...';
@@ -149,7 +140,7 @@ const LatestBlogPosts = () => {
             return null;
         }
 
-        return getFeaturedImageUrl(post) || null;
+        return post.featured_media_url || null;
     };
 
     const renderPost = (post, index) => {

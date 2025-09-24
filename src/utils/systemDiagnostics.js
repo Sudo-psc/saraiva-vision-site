@@ -843,8 +843,8 @@ export function createDiagnostics(customConfig = {}) {
 
         const start = now();
         const testAssets = [
-          '/images/logo.png',
           '/apple-touch-icon.png',
+          '/favicon.ico',
           '/sw.js'
         ];
 

@@ -4,6 +4,15 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from '@/App';
 import '@/index.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import { AuthProvider } from '@/contexts/AuthContext';
+import './i18n'; // Initialize i18n
+
+// Importar configurações essenciais
+import '@/config/env'; // Validar variáveis de ambiente
+import '@/utils/error-interceptor'; // Interceptador específico de erros
+import '@/utils/global-error-prevention'; // Prevenção global de erros
+import '@/lib/posthog-init'; // Inicializar PostHog
+import '@/utils/supabaseConfig'; // Configurar Supabase
 
 // Simple error handler setup
 const setupGlobalErrorHandlers = () => {
@@ -26,15 +35,17 @@ if (!rootElement) {
 
 const root = ReactDOM.createRoot(rootElement);
 
-// Simple render without i18n for now to get the app working
+// Render without PostHog integration
 try {
   root.render(
     <React.StrictMode>
       <ErrorBoundary>
-        <Router>
-          <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
-            <App />
-          </Suspense>
+        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <AuthProvider>
+            <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
+              <App />
+            </Suspense>
+          </AuthProvider>
         </Router>
       </ErrorBoundary>
     </React.StrictMode>

@@ -1,0 +1,210 @@
+/**
+ * Liquid Glass Extensions CSS
+ * Additional utilities and extensions for the liquid glass system
+ */
+
+/* Enhanced Liquid Glass Variants */
+.liquid-glass-gradient {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.liquid-glass-frosted {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.liquid-glass-crystal {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(25px) brightness(110%);
+    -webkit-backdrop-filter: blur(25px) brightness(110%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Liquid Container Utilities */
+.liquid-container {
+    position: relative;
+    isolation: isolate;
+}
+
+.liquid-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Liquid Text Effects */
+.liquid-text-glow {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.liquid-text-shimmer {
+    background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 50%, #ffffff 100%);
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textShimmer 3s ease-in-out infinite;
+}
+
+@keyframes textShimmer {
+
+    0%,
+    100% {
+        background-position: 200% 0;
+    }
+
+    50% {
+        background-position: -200% 0;
+    }
+}
+
+/* Liquid Border Effects */
+.liquid-border-glow {
+    position: relative;
+}
+
+.liquid-border-glow::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    padding: 1px;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    border-radius: inherit;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+}
+
+/* Liquid Hover States */
+.liquid-hover-lift:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.liquid-hover-glow:hover {
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.liquid-hover-blur:hover {
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+}
+
+/* Liquid Loading States */
+.liquid-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.liquid-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: liquidLoading 2s infinite;
+}
+
+@keyframes liquidLoading {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* Liquid Focus States */
+.liquid-focus:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+/* Liquid Gradient Backgrounds */
+.liquid-bg-gradient-1 {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+}
+
+.liquid-bg-gradient-2 {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+}
+
+.liquid-bg-gradient-3 {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+}
+
+/* Liquid Responsive Breakpoints */
+@media (max-width: 640px) {
+    .liquid-responsive-sm {
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+    }
+}
+
+@media (max-width: 768px) {
+    .liquid-responsive-md {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+}
+
+@media (max-width: 1024px) {
+    .liquid-responsive-lg {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+}
+
+/* Liquid Performance Optimizations */
+.liquid-will-change {
+    will-change: transform, opacity, backdrop-filter;
+}
+
+.liquid-gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Liquid Accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+    .liquid-hover-lift:hover,
+    .liquid-animated,
+    .liquid-shimmer::after,
+    .liquid-loading::after,
+    .liquid-text-shimmer {
+        animation: none;
+        transform: none;
+        transition: none;
+    }
+}
+
+@media (prefers-contrast: high) {
+
+    .liquid-glass-primary,
+    .liquid-glass-secondary,
+    .liquid-glass-tertiary,
+    .liquid-glass-accent {
+        border-width: 2px;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.9);
+        color: #000;
+    }
+}

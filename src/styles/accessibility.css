@@ -1,50 +1,495 @@
-/* WCAG 2.1 AA Accessibility Enhancements */
+/* Accessibility Styles for Instagram Components */
 
-/* High Contrast Mode Support */
-@media (prefers-contrast: high) {
-    .form-input {
-        border-width: 2px;
-        border-color: #000000;
-    }
-
-    .form-input:focus {
-        border-color: #0066cc;
-        box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.5);
-    }
-
-    .modern-card {
-        border-width: 2px;
-        border-color: #333333;
-    }
-
-    .text-slate-600,
-    .text-slate-500 {
-        color: #333333 !important;
-    }
+/* High Contrast Mode */
+.high-contrast {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --text-muted: #666666;
+    --border-color: #000000;
+    --border-secondary: #333333;
+    --focus-color: #ff0000;
+    --accent-color: #0000ff;
+    --accent-hover: #000080;
+    --error-color: #ff0000;
+    --success-color: #008000;
+    --warning-color: #ff8c00;
+    --visited-color: #800080;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --gradient-start: #ffffff;
+    --gradient-end: #f0f0f0;
 }
 
-/* Reduced Motion Support */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-
-    .motion-div {
-        transform: none !important;
-    }
+.high-contrast.dark-mode {
+    --bg-primary: #000000;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #999999;
+    --border-color: #ffffff;
+    --border-secondary: #cccccc;
+    --focus-color: #ffff00;
+    --accent-color: #00ffff;
+    --accent-hover: #0099cc;
+    --error-color: #ff6666;
+    --success-color: #66ff66;
+    --warning-color: #ffcc66;
+    --visited-color: #ff66ff;
+    --shadow-color: rgba(255, 255, 255, 0.3);
+    --gradient-start: #000000;
+    --gradient-end: #1a1a1a;
 }
 
-/* Focus Management Enhancements */
-.focus-trap {
-    position: relative;
+/* High contrast Instagram components */
+.high-contrast .instagram-feed-container {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--border-color) !important;
+    box-shadow: 0 4px 8px var(--shadow-color) !important;
 }
 
-.focus-trap:focus-within {
-    outline: 2px solid #2563eb;
+.high-contrast .instagram-post {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--border-color) !important;
+    box-shadow: 0 2px 4px var(--shadow-color) !important;
+}
+
+.high-contrast .instagram-post:hover {
+    border-color: var(--accent-color) !important;
+    box-shadow: 0 0 0 2px var(--accent-color), 0 4px 8px var(--shadow-color) !important;
+    background-color: var(--bg-secondary) !important;
+}
+
+.high-contrast .instagram-post:focus,
+.high-contrast .instagram-post:focus-within {
+    outline: 3px solid var(--focus-color) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 3px var(--focus-color), 0 4px 12px var(--shadow-color) !important;
+    border-color: var(--focus-color) !important;
+}
+
+/* High contrast image containers */
+.high-contrast .instagram-post img {
+    border: 1px solid var(--border-secondary) !important;
+}
+
+.high-contrast .instagram-post .aspect-square {
+    background-color: var(--bg-tertiary) !important;
+    border: 1px solid var(--border-secondary) !important;
+}
+
+/* High contrast gradients and overlays */
+.high-contrast .bg-gradient-to-br {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end)) !important;
+    border: 2px solid var(--border-color) !important;
+}
+
+.high-contrast .group-hover\:bg-black\/5:hover {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.high-contrast .bg-black\/70 {
+    background-color: var(--text-primary) !important;
+    color: var(--bg-primary) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.high-contrast .bg-white\/90 {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.high-contrast .bg-orange-500\/90 {
+    background-color: var(--warning-color) !important;
+    color: var(--bg-primary) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* High contrast buttons */
+.high-contrast button {
+    background-color: var(--accent-color);
+    color: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    font-weight: bold;
+}
+
+.high-contrast button:hover {
+    background-color: var(--text-primary);
+    color: var(--bg-primary);
+    border-color: var(--accent-color);
+}
+
+.high-contrast button:focus {
+    outline: 3px solid var(--focus-color);
     outline-offset: 2px;
+}
+
+.high-contrast button:disabled {
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    border-color: var(--text-secondary);
+    opacity: 1;
+}
+
+/* High contrast links */
+.high-contrast a {
+    color: var(--accent-color);
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.high-contrast a:visited {
+    color: var(--visited-color);
+}
+
+.high-contrast a:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-primary);
+    text-decoration: none;
+}
+
+.high-contrast a:focus {
+    outline: 3px solid var(--focus-color);
+    outline-offset: 2px;
+}
+
+/* High contrast statistics */
+.high-contrast .instagram-stats {
+    background-color: var(--bg-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    padding: 8px !important;
+    color: var(--text-primary) !important;
+}
+
+.high-contrast .instagram-stats svg {
+    stroke: var(--text-primary) !important;
+    fill: var(--text-primary) !important;
+}
+
+.high-contrast .instagram-stats .text-red-500 {
+    color: var(--error-color) !important;
+}
+
+.high-contrast .instagram-stats .text-blue-500 {
+    color: var(--accent-color) !important;
+}
+
+.high-contrast .instagram-stats .text-green-500 {
+    color: var(--success-color) !important;
+}
+
+.high-contrast .instagram-stats .text-gray-400,
+.high-contrast .instagram-stats .text-gray-500,
+.high-contrast .instagram-stats .text-gray-600 {
+    color: var(--text-muted) !important;
+}
+
+/* High contrast tooltip */
+.high-contrast .instagram-stats [role="tooltip"] {
+    background-color: var(--text-primary) !important;
+    color: var(--bg-primary) !important;
+    border: 2px solid var(--border-color) !important;
+    box-shadow: 0 4px 8px var(--shadow-color) !important;
+}
+
+.high-contrast .instagram-stats .text-gray-300 {
+    color: var(--text-secondary) !important;
+}
+
+.high-contrast .instagram-stats .border-gray-700 {
+    border-color: var(--border-secondary) !important;
+}
+
+.high-contrast .instagram-stats .text-gray-400 {
+    color: var(--text-muted) !important;
+}
+
+/* High contrast icons with semantic colors */
+.high-contrast .text-red-500,
+.high-contrast .text-red-600 {
+    color: var(--error-color) !important;
+}
+
+.high-contrast .text-green-500,
+.high-contrast .text-green-600 {
+    color: var(--success-color) !important;
+}
+
+.high-contrast .text-blue-500,
+.high-contrast .text-blue-600 {
+    color: var(--accent-color) !important;
+}
+
+.high-contrast .text-yellow-500,
+.high-contrast .text-orange-500 {
+    color: var(--warning-color) !important;
+}
+
+/* High contrast text colors */
+.high-contrast .text-gray-900,
+.high-contrast .text-gray-800,
+.high-contrast .text-gray-700 {
+    color: var(--text-primary) !important;
+}
+
+.high-contrast .text-gray-600,
+.high-contrast .text-gray-500 {
+    color: var(--text-secondary) !important;
+}
+
+.high-contrast .text-gray-400,
+.high-contrast .text-gray-300 {
+    color: var(--text-muted) !important;
+}
+
+.high-contrast .text-white {
+    color: var(--bg-primary) !important;
+}
+
+/* High contrast background colors */
+.high-contrast .bg-white {
+    background-color: var(--bg-primary) !important;
+}
+
+.high-contrast .bg-gray-100,
+.high-contrast .bg-gray-50 {
+    background-color: var(--bg-secondary) !important;
+}
+
+.high-contrast .bg-gray-900 {
+    background-color: var(--text-primary) !important;
+}
+
+/* High contrast Instagram feed specific elements */
+.high-contrast .instagram-feed-container .text-xl {
+    color: var(--text-primary) !important;
+    font-weight: bold !important;
+}
+
+.high-contrast .instagram-post .text-sm {
+    color: var(--text-secondary) !important;
+}
+
+.high-contrast .instagram-post .text-xs {
+    color: var(--text-muted) !important;
+}
+
+.high-contrast .instagram-post .font-medium {
+    font-weight: bold !important;
+}
+
+/* High contrast skip links */
+.high-contrast .skip-link {
+    background-color: var(--accent-color) !important;
+    color: var(--bg-primary) !important;
+    border: 2px solid var(--border-color) !important;
+    font-weight: bold !important;
+}
+
+.high-contrast .skip-link:focus {
+    background-color: var(--focus-color) !important;
+    color: var(--bg-primary) !important;
+    outline: 3px solid var(--border-color) !important;
+}
+
+/* Reduced Motion */
+.reduced-motion,
+.reduced-motion * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+    transform: none !important;
+}
+
+.reduced-motion .motion-safe\:animate-spin {
+    animation: none !important;
+}
+
+.reduced-motion .motion-safe\:animate-pulse {
+    animation: none !important;
+}
+
+.reduced-motion .motion-safe\:animate-bounce {
+    animation: none !important;
+}
+
+.reduced-motion .animate-spin {
+    animation: none !important;
+}
+
+.reduced-motion .animate-pulse {
+    animation: none !important;
+    opacity: 0.7 !important;
+}
+
+/* Disable Framer Motion animations */
+.reduced-motion [data-framer-motion] {
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+}
+
+.reduced-motion .motion-reduce\:transform-none {
+    transform: none !important;
+}
+
+/* Disable hover effects that involve motion */
+.reduced-motion .group-hover\:scale-105,
+.reduced-motion .hover\:scale-105,
+.reduced-motion .group-hover\:scale-110,
+.reduced-motion .hover\:scale-110 {
+    transform: none !important;
+}
+
+.reduced-motion .hover\:-translate-y-1,
+.reduced-motion .hover\:-translate-y-2,
+.reduced-motion .group-hover\:-translate-y-1,
+.reduced-motion .group-hover\:-translate-y-2 {
+    transform: none !important;
+}
+
+.reduced-motion .hover\:rotate-3,
+.reduced-motion .hover\:rotate-6,
+.reduced-motion .group-hover\:rotate-3,
+.reduced-motion .group-hover\:rotate-6 {
+    transform: none !important;
+}
+
+/* Instagram specific motion reductions */
+.reduced-motion .instagram-post {
+    transition: none !important;
+}
+
+.reduced-motion .instagram-post:hover {
+    transform: none !important;
+}
+
+.reduced-motion .instagram-post img {
+    transition: none !important;
+}
+
+.reduced-motion .instagram-post .group-hover\:scale-105 {
+    transform: none !important;
+}
+
+/* Tooltip animations */
+.reduced-motion [role="tooltip"] {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* Loading indicators with reduced motion */
+.reduced-motion .loading-indicator {
+    animation: none !important;
+}
+
+.reduced-motion .loading-indicator::after {
+    content: "Loading...";
+    animation: none !important;
+}
+
+/* Large Text Support */
+.large-text {
+    font-size: 125%;
+    line-height: 1.5;
+}
+
+.large-text .text-xs {
+    font-size: 0.875rem;
+}
+
+.large-text .text-sm {
+    font-size: 1rem;
+}
+
+.large-text .text-base {
+    font-size: 1.125rem;
+}
+
+.large-text .text-lg {
+    font-size: 1.25rem;
+}
+
+.large-text .text-xl {
+    font-size: 1.5rem;
+}
+
+/* Force Focus Indicators */
+.force-focus *:focus {
+    outline: 3px solid #3b82f6 !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 3px #3b82f6 !important;
+}
+
+.force-focus.high-contrast *:focus {
+    outline: 3px solid var(--focus-color) !important;
+    box-shadow: 0 0 0 3px var(--focus-color) !important;
+}
+
+/* Colorblind Friendly Patterns */
+.colorblind-friendly .text-red-500::before {
+    content: "⚠ ";
+}
+
+.colorblind-friendly .text-green-500::before {
+    content: "✓ ";
+}
+
+.colorblind-friendly .text-yellow-500::before,
+.colorblind-friendly .text-orange-500::before {
+    content: "⚡ ";
+}
+
+.colorblind-friendly .text-blue-500::before {
+    content: "ℹ ";
+}
+
+/* Keyboard Navigation Indicators */
+.keyboard-navigation {
+    --focus-ring-width: 2px;
+    --focus-ring-color: #3b82f6;
+    --focus-ring-offset: 2px;
+}
+
+.keyboard-navigation.high-contrast {
+    --focus-ring-width: 3px;
+    --focus-ring-color: var(--focus-color);
+    --focus-ring-offset: 2px;
+}
+
+.keyboard-navigation *:focus {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+}
+
+/* Skip Links */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: #3b82f6;
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    z-index: 1000;
+    font-weight: bold;
+}
+
+.skip-link:focus {
+    top: 6px;
+}
+
+.high-contrast .skip-link {
+    background: var(--accent-color);
+    color: var(--bg-primary);
+    border: 2px solid var(--border-color);
 }
 
 /* Screen Reader Only Content */
@@ -60,377 +505,1187 @@
     border: 0;
 }
 
-/* Skip Links */
-.skip-link {
-    position: absolute;
-    top: -40px;
-    left: 6px;
-    background: #000000;
-    color: #ffffff;
-    padding: 8px;
-    text-decoration: none;
-    border-radius: 4px;
-    z-index: 1000;
+.focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+}
+
+/* Loading States with Accessibility */
+.reduced-motion .animate-spin {
+    animation: none;
+}
+
+.reduced-motion .animate-pulse {
+    animation: none;
+    opacity: 0.7;
+}
+
+/* High Contrast Loading Indicators */
+.high-contrast .animate-spin {
+    border-color: var(--border-color);
+    border-top-color: var(--accent-color);
+}
+
+/* Tooltip Accessibility */
+.high-contrast [role="tooltip"] {
+    background-color: var(--text-primary);
+    color: var(--bg-primary);
+    border: 2px solid var(--border-color);
     font-weight: bold;
 }
 
-.skip-link:focus {
-    top: 6px;
+/* Error States */
+.high-contrast .text-red-500,
+.high-contrast .bg-red-500 {
+    color: var(--error-color) !important;
+    background-color: var(--error-color) !important;
 }
 
-/* Enhanced Focus Indicators */
-.enhanced-focus:focus-visible {
-    outline: 3px solid #2563eb;
-    outline-offset: 2px;
-    border-radius: 4px;
+.high-contrast .border-red-500 {
+    border-color: var(--error-color) !important;
 }
 
-/* Form Field Focus Enhancements */
-.form-input:focus-visible {
-    outline: 2px solid #2563eb;
-    outline-offset: 2px;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+/* Success States */
+.high-contrast .text-green-500,
+.high-contrast .bg-green-500 {
+    color: var(--success-color) !important;
+    background-color: var(--success-color) !important;
 }
 
-/* Button Focus Enhancements */
-button:focus-visible,
-.btn:focus-visible {
-    outline: 2px solid #2563eb;
-    outline-offset: 2px;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+.high-contrast .border-green-500 {
+    border-color: var(--success-color) !important;
 }
 
-/* Link Focus Enhancements */
-a:focus-visible {
-    outline: 2px solid #2563eb;
-    outline-offset: 2px;
-    border-radius: 2px;
+/* Warning States */
+.high-contrast .text-yellow-500,
+.high-contrast .text-orange-500,
+.high-contrast .bg-yellow-500,
+.high-contrast .bg-orange-500 {
+    color: var(--warning-color) !important;
+    background-color: var(--warning-color) !important;
 }
 
-/* Error State Accessibility */
-.error-field {
-    border-color: #dc2626 !important;
-    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+.high-contrast .border-yellow-500,
+.high-contrast .border-orange-500 {
+    border-color: var(--warning-color) !important;
 }
 
-.error-field:focus {
-    border-color: #dc2626 !important;
-    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.3);
-}
-
-/* Success State Accessibility */
-.success-field {
-    border-color: #16a34a !important;
-    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
-}
-
-.success-field:focus {
-    border-color: #16a34a !important;
-    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.3);
-}
-
-/* Loading State Accessibility */
-.loading-field {
-    position: relative;
-}
-
-.loading-field::after {
-    content: '';
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    border: 2px solid #e5e7eb;
-    border-top: 2px solid #3b82f6;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: translateY(-50%) rotate(0deg);
+/* Media Queries for System Preferences */
+@media (prefers-contrast: high) {
+    .instagram-feed-container {
+        border: 2px solid currentColor !important;
+        background-color: Canvas !important;
+        color: CanvasText !important;
     }
 
-    100% {
-        transform: translateY(-50%) rotate(360deg);
+    .instagram-post {
+        border: 2px solid currentColor !important;
+        background-color: Canvas !important;
+        color: CanvasText !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .instagram-post:hover {
+        border-color: Highlight !important;
+        box-shadow: 0 0 0 2px Highlight !important;
+    }
+
+    .instagram-post:focus,
+    .instagram-post:focus-within {
+        outline: 3px solid Highlight !important;
+        outline-offset: 2px !important;
+    }
+
+    button,
+    a {
+        border: 1px solid currentColor !important;
+        background-color: ButtonFace !important;
+        color: ButtonText !important;
+    }
+
+    button:hover,
+    a:hover {
+        background-color: Highlight !important;
+        color: HighlightText !important;
+    }
+
+    button:focus,
+    a:focus {
+        outline: 2px solid Highlight !important;
+        outline-offset: 2px !important;
+    }
+
+    /* Instagram specific high contrast */
+    .instagram-stats {
+        background-color: Canvas !important;
+        color: CanvasText !important;
+        border: 1px solid currentColor !important;
+    }
+
+    [role="tooltip"] {
+        background-color: CanvasText !important;
+        color: Canvas !important;
+        border: 2px solid currentColor !important;
     }
 }
 
-/* Color Contrast Enhancements */
-.text-high-contrast {
-    color: #1f2937 !important;
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+        transform: none !important;
+    }
+
+    /* Framer Motion specific */
+    [data-framer-motion] {
+        transform: none !important;
+        animation: none !important;
+        transition: none !important;
+    }
+
+    /* Instagram specific motion reduction */
+    .instagram-post,
+    .instagram-post *,
+    .instagram-stats,
+    .instagram-stats * {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+
+    .instagram-post:hover {
+        transform: none !important;
+    }
+
+    .instagram-post img {
+        transform: none !important;
+    }
+
+    /* Loading indicators */
+    .animate-spin {
+        animation: none !important;
+    }
+
+    .animate-pulse {
+        animation: none !important;
+        opacity: 0.7 !important;
+    }
 }
 
-.text-medium-contrast {
-    color: #374151 !important;
+@media (prefers-color-scheme: dark) {
+    .instagram-feed-container {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+        border-color: #404040 !important;
+    }
+
+    .instagram-post {
+        background-color: #2d2d2d !important;
+        color: #ffffff !important;
+        border-color: #404040 !important;
+    }
+
+    .instagram-post:hover {
+        background-color: #3d3d3d !important;
+        border-color: #606060 !important;
+    }
+
+    .instagram-stats {
+        background-color: #2d2d2d !important;
+        color: #ffffff !important;
+        border-color: #404040 !important;
+    }
+
+    [role="tooltip"] {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+        border-color: #404040 !important;
+    }
 }
 
-.bg-high-contrast {
-    background-color: #ffffff !important;
-    color: #1f2937 !important;
-}
+/* Windows High Contrast Mode Detection */
+@media (-ms-high-contrast: active) {
 
-/* Touch Target Size Compliance (minimum 44px) */
-.touch-target {
-    min-height: 44px;
-    min-width: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Keyboard Navigation Indicators */
-.keyboard-nav:focus-visible {
-    outline: 3px solid #2563eb;
-    outline-offset: 2px;
-    background-color: rgba(37, 99, 235, 0.1);
-}
-
-/* Live Region Styling */
-.live-region {
-    position: absolute;
-    left: -10000px;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-}
-
-/* Error Summary Styling */
-.error-summary {
-    border: 2px solid #dc2626;
-    background-color: #fef2f2;
-    padding: 16px;
-    border-radius: 8px;
-    margin-bottom: 16px;
-}
-
-.error-summary:focus {
-    outline: 2px solid #dc2626;
-    outline-offset: 2px;
-}
-
-.error-summary h4 {
-    color: #991b1b;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.error-summary ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.error-summary li {
-    margin-bottom: 4px;
-}
-
-.error-summary a {
-    color: #991b1b;
-    text-decoration: underline;
-}
-
-.error-summary a:hover,
-.error-summary a:focus {
-    text-decoration: none;
-    background-color: rgba(153, 27, 27, 0.1);
-    padding: 2px 4px;
-    border-radius: 2px;
-}
-
-/* Success Message Styling */
-.success-message {
-    border: 2px solid #16a34a;
-    background-color: #f0fdf4;
-    padding: 16px;
-    border-radius: 8px;
-    margin-bottom: 16px;
-}
-
-.success-message:focus {
-    outline: 2px solid #16a34a;
-    outline-offset: 2px;
-}
-
-.success-message h4 {
-    color: #15803d;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-/* Form Fieldset and Legend Styling */
-fieldset {
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 16px;
-}
-
-legend {
-    font-weight: 600;
-    color: #374151;
-    padding: 0 8px;
-}
-
-/* Checkbox and Radio Button Enhancements */
-input[type="checkbox"],
-input[type="radio"] {
-    width: 18px;
-    height: 18px;
-    margin-right: 8px;
-}
-
-input[type="checkbox"]:focus,
-input[type="radio"]:focus {
-    outline: 2px solid #2563eb;
-    outline-offset: 2px;
-}
-
-/* Label Enhancements */
-label {
-    cursor: pointer;
-    display: block;
-    font-weight: 500;
-    color: #374151;
-}
-
-label.required::after {
-    content: " *";
-    color: #dc2626;
-    font-weight: bold;
-}
-
-/* Help Text Styling */
-.help-text {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-top: 4px;
-}
-
-/* Status Messages */
-.status-message {
-    padding: 12px 16px;
-    border-radius: 6px;
-    margin-bottom: 16px;
-    font-weight: 500;
-}
-
-.status-message.info {
-    background-color: #dbeafe;
-    border: 1px solid #3b82f6;
-    color: #1e40af;
-}
-
-.status-message.warning {
-    background-color: #fef3c7;
-    border: 1px solid #f59e0b;
-    color: #92400e;
-}
-
-.status-message.error {
-    background-color: #fef2f2;
-    border: 1px solid #ef4444;
-    color: #991b1b;
-}
-
-.status-message.success {
-    background-color: #f0fdf4;
-    border: 1px solid #22c55e;
-    color: #15803d;
-}
-
-/* Progress Indicators */
-.progress-indicator {
-    width: 100%;
-    height: 8px;
-    background-color: #e5e7eb;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.progress-bar {
-    height: 100%;
-    background-color: #3b82f6;
-    transition: width 0.3s ease;
-}
-
-/* Responsive Text Scaling */
-@media (max-width: 768px) {
-    .form-input {
-        font-size: 16px;
-        /* Prevents zoom on iOS */
-        padding: 12px 16px;
-        min-height: 48px;
+    .instagram-feed-container,
+    .instagram-post,
+    .instagram-stats {
+        border: 2px solid WindowText !important;
+        background-color: Window !important;
+        color: WindowText !important;
     }
 
     button {
-        min-height: 48px;
-        padding: 12px 24px;
+        border: 1px solid ButtonText !important;
+        background-color: ButtonFace !important;
+        color: ButtonText !important;
     }
 
-    .touch-target {
-        min-height: 48px;
-        min-width: 48px;
-    }
-}
-
-/* Print Styles for Accessibility */
-@media print {
-    .sr-only {
-        position: static;
-        width: auto;
-        height: auto;
-        padding: 0;
-        margin: 0;
-        overflow: visible;
-        clip: auto;
-        white-space: normal;
+    button:hover,
+    button:focus {
+        background-color: Highlight !important;
+        color: HighlightText !important;
     }
 
-    .no-print {
-        display: none !important;
+    a {
+        color: LinkText !important;
     }
 
-    a[href^="http"]:after {
-        content: " (" attr(href) ")";
+    a:visited {
+        color: VisitedText !important;
+    }
+
+    a:hover,
+    a:focus {
+        background-color: Highlight !important;
+        color: HighlightText !important;
     }
 }
 
-/* Dark Mode Accessibility */
+@media (-ms-high-contrast: black-on-white) {
+
+    .instagram-feed-container,
+    .instagram-post,
+    .instagram-stats {
+        background-color: white !important;
+        color: black !important;
+        border-color: black !important;
+    }
+}
+
+@media (-ms-high-contrast: white-on-black) {
+
+    .instagram-feed-container,
+    .instagram-post,
+    .instagram-stats {
+        background-color: black !important;
+        color: white !important;
+        border-color: white !important;
+    }
+}
+
+/* Focus Management for Grid Navigation */
+.instagram-posts-grid [role="gridcell"]:focus-within {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.high-contrast .instagram-posts-grid [role="gridcell"]:focus-within {
+    outline: 3px solid var(--focus-color);
+    outline-offset: 2px;
+}
+
+/* Instagram-specific high contrast enhancements */
+.instagram-high-contrast .instagram-feed-container {
+    background-color: var(--instagram-container-bg, var(--bg-primary)) !important;
+    color: var(--instagram-container-text, var(--text-primary)) !important;
+    border: 3px solid var(--instagram-container-border, var(--border-color)) !important;
+    box-shadow: 0 4px 12px var(--instagram-shadow-color, var(--shadow-color)) !important;
+    border-radius: 8px !important;
+}
+
+.instagram-high-contrast .instagram-post {
+    background-color: var(--instagram-post-bg, var(--bg-primary)) !important;
+    color: var(--instagram-post-text, var(--text-primary)) !important;
+    border: 3px solid var(--instagram-post-border, var(--border-color)) !important;
+    box-shadow: 0 2px 8px var(--instagram-shadow-color, var(--shadow-color)) !important;
+    border-radius: 6px !important;
+    position: relative !important;
+}
+
+.instagram-high-contrast .instagram-post::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border: 1px solid var(--instagram-post-border, var(--border-color));
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.instagram-high-contrast .instagram-post:hover {
+    background-color: var(--instagram-post-hover-bg, var(--bg-secondary)) !important;
+    border-color: var(--instagram-accent-color, var(--accent-color)) !important;
+    box-shadow: 0 0 0 3px var(--instagram-accent-color, var(--accent-color)),
+        0 4px 16px var(--instagram-shadow-color, var(--shadow-color)) !important;
+    transform: none !important;
+    /* Ensure no transform in high contrast */
+}
+
+.instagram-high-contrast .instagram-post:focus,
+.instagram-high-contrast .instagram-post:focus-within {
+    outline: 4px solid var(--instagram-focus-color, var(--focus-color)) !important;
+    outline-offset: 3px !important;
+    border-color: var(--instagram-focus-color, var(--focus-color)) !important;
+    box-shadow: 0 0 0 4px var(--instagram-focus-color, var(--focus-color)),
+        0 6px 20px var(--instagram-shadow-color, var(--shadow-color)) !important;
+    z-index: 10 !important;
+}
+
+.instagram-high-contrast .instagram-post:active {
+    background-color: var(--instagram-accent-color, var(--accent-color)) !important;
+    color: var(--instagram-container-bg, var(--bg-primary)) !important;
+    border-color: var(--instagram-focus-color, var(--focus-color)) !important;
+}
+
+.instagram-high-contrast .instagram-stats {
+    background-color: var(--instagram-post-bg, var(--bg-secondary)) !important;
+    color: var(--instagram-post-text, var(--text-primary)) !important;
+    border: 2px solid var(--instagram-post-border, var(--border-color)) !important;
+    border-radius: 4px !important;
+    padding: 12px !important;
+    margin-top: 8px !important;
+    box-shadow: 0 2px 6px var(--instagram-shadow-color, var(--shadow-color)) !important;
+}
+
+.instagram-high-contrast .instagram-stats .text-red-500,
+.instagram-high-contrast .instagram-stats .likes-count {
+    color: var(--instagram-likes-color, var(--error-color)) !important;
+    font-weight: bold !important;
+}
+
+.instagram-high-contrast .instagram-stats .text-blue-500,
+.instagram-high-contrast .instagram-stats .comments-count {
+    color: var(--instagram-comments-color, var(--accent-color)) !important;
+    font-weight: bold !important;
+}
+
+.instagram-high-contrast .instagram-stats .text-green-500,
+.instagram-high-contrast .instagram-stats .engagement-rate {
+    color: var(--instagram-engagement-color, var(--success-color)) !important;
+    font-weight: bold !important;
+}
+
+.instagram-high-contrast .instagram-stats .text-gray-400,
+.instagram-high-contrast .instagram-stats .text-gray-500,
+.instagram-high-contrast .instagram-stats .text-gray-600 {
+    color: var(--instagram-post-text, var(--text-primary)) !important;
+    font-weight: normal !important;
+}
+
+/* Enhanced Instagram high contrast images */
+.instagram-high-contrast .instagram-post img {
+    border: 2px solid var(--instagram-post-border, var(--border-color)) !important;
+    border-radius: 4px !important;
+    filter: contrast(1.3) brightness(1.1) !important;
+}
+
+.instagram-high-contrast .instagram-post .aspect-square {
+    background-color: var(--instagram-post-bg, var(--bg-tertiary)) !important;
+    border: 2px solid var(--instagram-post-border, var(--border-secondary)) !important;
+    border-radius: 4px !important;
+}
+
+/* Instagram high contrast gradients */
+.instagram-high-contrast .bg-gradient-to-br {
+    background: var(--instagram-container-bg, var(--bg-primary)) !important;
+    border: 3px solid var(--instagram-container-border, var(--border-color)) !important;
+    border-radius: 6px !important;
+}
+
+.instagram-high-contrast .instagram-post .bg-gradient-to-br {
+    background: var(--instagram-post-bg, var(--bg-primary)) !important;
+}
+
+/* Instagram high contrast overlays */
+.instagram-high-contrast .group-hover\:bg-black\/5:hover,
+.instagram-high-contrast .hover\:bg-black\/5:hover {
+    background-color: var(--instagram-post-hover-bg, var(--bg-tertiary)) !important;
+}
+
+.instagram-high-contrast .bg-black\/70,
+.instagram-high-contrast .bg-white\/90,
+.instagram-high-contrast .bg-orange-500\/90 {
+    background-color: var(--instagram-post-text, var(--text-primary)) !important;
+    color: var(--instagram-post-bg, var(--bg-primary)) !important;
+    border: 2px solid var(--instagram-post-border, var(--border-color)) !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
+}
+
+/* Instagram high contrast buttons and interactive elements */
+.instagram-high-contrast button {
+    background-color: var(--instagram-accent-color, var(--accent-color)) !important;
+    color: var(--instagram-container-bg, var(--bg-primary)) !important;
+    border: 3px solid var(--instagram-container-border, var(--border-color)) !important;
+    font-weight: bold !important;
+    border-radius: 4px !important;
+    padding: 8px 16px !important;
+    min-height: 44px !important;
+    /* WCAG touch target size */
+}
+
+.instagram-high-contrast button:hover {
+    background-color: var(--instagram-post-text, var(--text-primary)) !important;
+    color: var(--instagram-container-bg, var(--bg-primary)) !important;
+    border-color: var(--instagram-accent-color, var(--accent-color)) !important;
+    box-shadow: 0 0 0 2px var(--instagram-accent-color, var(--accent-color)) !important;
+}
+
+.instagram-high-contrast button:focus {
+    outline: 4px solid var(--instagram-focus-color, var(--focus-color)) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 4px var(--instagram-focus-color, var(--focus-color)) !important;
+}
+
+.instagram-high-contrast button:disabled {
+    background-color: var(--instagram-post-bg, var(--bg-secondary)) !important;
+    color: var(--instagram-post-text, var(--text-secondary)) !important;
+    border-color: var(--instagram-post-text, var(--text-secondary)) !important;
+    opacity: 1 !important;
+    cursor: not-allowed !important;
+}
+
+/* Instagram high contrast links */
+.instagram-high-contrast a {
+    color: var(--instagram-accent-color, var(--accent-color)) !important;
+    text-decoration: underline !important;
+    font-weight: bold !important;
+    text-decoration-thickness: 2px !important;
+    text-underline-offset: 2px !important;
+}
+
+.instagram-high-contrast a:visited {
+    color: var(--instagram-engagement-color, var(--visited-color)) !important;
+}
+
+.instagram-high-contrast a:hover {
+    background-color: var(--instagram-accent-color, var(--accent-color)) !important;
+    color: var(--instagram-container-bg, var(--bg-primary)) !important;
+    text-decoration: none !important;
+    padding: 2px 4px !important;
+    border-radius: 2px !important;
+}
+
+.instagram-high-contrast a:focus {
+    outline: 4px solid var(--instagram-focus-color, var(--focus-color)) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 4px var(--instagram-focus-color, var(--focus-color)) !important;
+}
+
+/* Instagram high contrast tooltips */
+.instagram-high-contrast [role="tooltip"] {
+    background-color: var(--instagram-post-text, var(--text-primary)) !important;
+    color: var(--instagram-container-bg, var(--bg-primary)) !important;
+    border: 3px solid var(--instagram-container-border, var(--border-color)) !important;
+    box-shadow: 0 6px 16px var(--instagram-shadow-color, var(--shadow-color)) !important;
+    border-radius: 6px !important;
+    padding: 12px !important;
+    font-weight: bold !important;
+    font-size: 1rem !important;
+    line-height: 1.4 !important;
+}
+
+/* Instagram high contrast icons */
+.instagram-high-contrast svg {
+    stroke: currentColor !important;
+    fill: currentColor !important;
+    stroke-width: 2 !important;
+}
+
+.instagram-high-contrast .instagram-stats svg {
+    stroke: var(--instagram-post-text, var(--text-primary)) !important;
+    fill: var(--instagram-post-text, var(--text-primary)) !important;
+}
+
+/* Instagram high contrast loading states */
+.instagram-high-contrast .loading-indicator {
+    border: 3px solid var(--instagram-post-border, var(--border-color)) !important;
+    border-top-color: var(--instagram-accent-color, var(--accent-color)) !important;
+    background-color: var(--instagram-container-bg, var(--bg-primary)) !important;
+}
+
+.instagram-high-contrast .skeleton {
+    background-color: var(--instagram-post-bg, var(--bg-secondary)) !important;
+    border: 2px solid var(--instagram-post-border, var(--border-color)) !important;
+}
+
+/* Instagram high contrast error states */
+.instagram-high-contrast .error-message {
+    background-color: var(--instagram-likes-color, var(--error-color)) !important;
+    color: var(--instagram-container-bg, var(--bg-primary)) !important;
+    border: 3px solid var(--instagram-container-border, var(--border-color)) !important;
+    border-radius: 6px !important;
+    padding: 16px !important;
+    font-weight: bold !important;
+}
+
+.instagram-high-contrast .success-message {
+    background-color: var(--instagram-engagement-color, var(--success-color)) !important;
+    color: var(--instagram-container-bg, var(--bg-primary)) !important;
+    border: 3px solid var(--instagram-container-border, var(--border-color)) !important;
+    border-radius: 6px !important;
+    padding: 16px !important;
+    font-weight: bold !important;
+}
+
+.instagram-high-contrast .warning-message {
+    background-color: var(--instagram-comments-color, var(--warning-color)) !important;
+    color: var(--instagram-container-bg, var(--bg-primary)) !important;
+    border: 3px solid var(--instagram-container-border, var(--border-color)) !important;
+    border-radius: 6px !important;
+    padding: 16px !important;
+    font-weight: bold !important;
+}
+
+/* Instagram-specific reduced motion */
+.instagram-reduced-motion,
+.instagram-reduced-motion * {
+    animation: var(--instagram-animation-duration, 0.01ms) !important;
+    animation-iteration-count: 1 !important;
+    transition: var(--instagram-transition-duration, 0.01ms) !important;
+    transform: var(--instagram-transform, none) !important;
+    scroll-behavior: auto !important;
+}
+
+.instagram-reduced-motion .instagram-post,
+.instagram-reduced-motion .instagram-post *,
+.instagram-reduced-motion .instagram-stats,
+.instagram-reduced-motion .instagram-stats * {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+}
+
+.instagram-reduced-motion .instagram-post:hover,
+.instagram-reduced-motion .instagram-post:focus {
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+}
+
+.instagram-reduced-motion .instagram-post img {
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+}
+
+.instagram-reduced-motion .group-hover\:scale-105,
+.instagram-reduced-motion .hover\:scale-105,
+.instagram-reduced-motion .group-hover\:scale-110,
+.instagram-reduced-motion .hover\:scale-110 {
+    transform: none !important;
+}
+
+.instagram-reduced-motion .hover\:-translate-y-1,
+.instagram-reduced-motion .hover\:-translate-y-2,
+.instagram-reduced-motion .group-hover\:-translate-y-1,
+.instagram-reduced-motion .group-hover\:-translate-y-2 {
+    transform: none !important;
+}
+
+.instagram-reduced-motion .hover\:rotate-3,
+.instagram-reduced-motion .hover\:rotate-6,
+.instagram-reduced-motion .group-hover\:rotate-3,
+.instagram-reduced-motion .group-hover\:rotate-6 {
+    transform: none !important;
+}
+
+/* Disable Framer Motion animations for Instagram */
+.instagram-reduced-motion [data-framer-motion] {
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+}
+
+.instagram-reduced-motion .motion-safe\:animate-spin,
+.instagram-reduced-motion .motion-safe\:animate-pulse,
+.instagram-reduced-motion .motion-safe\:animate-bounce {
+    animation: none !important;
+}
+
+.instagram-reduced-motion .animate-spin,
+.instagram-reduced-motion .animate-pulse,
+.instagram-reduced-motion .animate-bounce {
+    animation: none !important;
+}
+
+/* Instagram loading states with reduced motion */
+.instagram-reduced-motion .loading-indicator {
+    animation: none !important;
+}
+
+.instagram-reduced-motion .loading-indicator::after {
+    content: "Loading..." !important;
+    animation: none !important;
+}
+
+.instagram-reduced-motion .animate-pulse {
+    animation: none !important;
+    opacity: 0.7 !important;
+}
+
+/* Instagram tooltip animations with reduced motion */
+.instagram-reduced-motion [role="tooltip"] {
+    transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* Instagram skeleton animations with reduced motion */
+.instagram-reduced-motion .skeleton {
+    animation: none !important;
+    background: linear-gradient(90deg,
+            var(--bg-secondary) 25%,
+            var(--bg-tertiary) 50%,
+            var(--bg-secondary) 75%) !important;
+}
+
+/* Instagram stats animations with reduced motion */
+.instagram-reduced-motion .instagram-stats {
+    transition: none !important;
+    animation: none !important;
+}
+
+.instagram-reduced-motion .instagram-stats:hover {
+    transform: none !important;
+}
+
+/* Instagram image lazy loading with reduced motion */
+.instagram-reduced-motion .lazy-image {
+    transition: none !important;
+    opacity: 1 !important;
+}
+
+.instagram-reduced-motion .lazy-image.loading {
+    opacity: 0.7 !important;
+}
+
+/* Instagram grid animations with reduced motion */
+.instagram-reduced-motion .instagram-grid {
+    transition: none !important;
+}
+
+.instagram-reduced-motion .instagram-grid-item {
+    transition: none !important;
+    transform: none !important;
+}
+
+/* Instagram refresh button with reduced motion */
+.instagram-reduced-motion .refresh-button {
+    animation: none !important;
+    transition: none !important;
+}
+
+.instagram-reduced-motion .refresh-button.refreshing {
+    animation: none !important;
+    opacity: 0.7 !important;
+}
+
+.instagram-reduced-motion .refresh-button.refreshing::after {
+    content: " (Refreshing...)" !important;
+}
+
+/* Instagram error states with reduced motion */
+.instagram-reduced-motion .error-bounce,
+.instagram-reduced-motion .success-slide,
+.instagram-reduced-motion .warning-fade {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* Instagram focus indicators with reduced motion */
+.instagram-reduced-motion *:focus {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* Instagram modal/overlay animations with reduced motion */
+.instagram-reduced-motion .modal-overlay,
+.instagram-reduced-motion .tooltip-overlay {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+}
+
+/* Instagram carousel/slider with reduced motion */
+.instagram-reduced-motion .carousel,
+.instagram-reduced-motion .slider {
+    scroll-behavior: auto !important;
+    transition: none !important;
+}
+
+.instagram-reduced-motion .carousel-item,
+.instagram-reduced-motion .slider-item {
+    transition: none !important;
+    transform: none !important;
+}
+
+/* Instagram parallax effects with reduced motion */
+.instagram-reduced-motion .parallax {
+    transform: none !important;
+    transition: none !important;
+}
+
+/* Instagram auto-play features with reduced motion */
+.instagram-reduced-motion .auto-play {
+    animation-play-state: paused !important;
+}
+
+.instagram-reduced-motion video[autoplay] {
+    animation: none !important;
+}
+
+/* Instagram progress indicators with reduced motion */
+.instagram-reduced-motion .progress-bar {
+    transition: none !important;
+}
+
+.instagram-reduced-motion .progress-indicator {
+    animation: none !important;
+}
+
+/* High contrast image enhancements */
+.high-contrast-image {
+    filter: contrast(1.2) brightness(1.1) !important;
+}
+
+.high-contrast .high-contrast-image {
+    border: 1px solid var(--border-secondary) !important;
+}
+
+/* Ensure sufficient color contrast for all text */
+.high-contrast * {
+    color: var(--text-primary);
+}
+
+.high-contrast .text-gray-500,
+.high-contrast .text-gray-600,
+.high-contrast .text-gray-700 {
+    color: var(--text-primary) !important;
+}
+
+/* Improve button accessibility */
+.high-contrast button[disabled] {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-secondary) !important;
+    border-color: var(--text-secondary) !important;
+    cursor: not-allowed;
+}
+
+/* Ensure icons are visible in high contrast */
+.high-contrast svg {
+    stroke: currentColor;
+    fill: currentColor;
+}
+
+/* Animation preferences respect */
+@media (prefers-reduced-motion: reduce) {
+    .motion-reduce\:animate-none {
+        animation: none !important;
+    }
+
+    .motion-reduce\:transition-none {
+        transition: none !important;
+    }
+}
+
+/* Enhanced system preference detection */
+@media (prefers-contrast: more) {
+
+    .instagram-feed-container,
+    .instagram-post,
+    .instagram-stats {
+        border-width: 4px !important;
+        font-weight: bold !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+    }
+
+    .instagram-post:focus,
+    .instagram-post:focus-within {
+        outline-width: 5px !important;
+        outline-offset: 3px !important;
+    }
+
+    .instagram-stats {
+        padding: 16px !important;
+        font-size: 1.1rem !important;
+    }
+
+    button {
+        border-width: 4px !important;
+        font-weight: bold !important;
+        min-height: 48px !important;
+    }
+}
+
+@media (prefers-contrast: less) {
+
+    .instagram-feed-container,
+    .instagram-post,
+    .instagram-stats {
+        border-width: 1px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .instagram-post {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .instagram-post:hover {
+        transform: translateY(-2px) scale(1.02) !important;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .instagram-stats {
+        transition: all 0.2s ease !important;
+    }
+
+    .instagram-stats:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .loading-indicator {
+        animation: spin 1s linear infinite !important;
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .skeleton {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+    }
+}
+
+/* Enhanced Windows High Contrast Mode Detection */
+@media (-ms-high-contrast: active) {
+
+    .instagram-feed-container,
+    .instagram-post,
+    .instagram-stats {
+        border: 3px solid WindowText !important;
+        background-color: Window !important;
+        color: WindowText !important;
+        box-shadow: none !important;
+    }
+
+    .instagram-post:hover,
+    .instagram-post:focus {
+        background-color: Highlight !important;
+        color: HighlightText !important;
+        border-color: HighlightText !important;
+    }
+
+    button {
+        border: 2px solid ButtonText !important;
+        background-color: ButtonFace !important;
+        color: ButtonText !important;
+        font-weight: bold !important;
+    }
+
+    button:hover,
+    button:focus {
+        background-color: Highlight !important;
+        color: HighlightText !important;
+        border-color: HighlightText !important;
+    }
+
+    a {
+        color: LinkText !important;
+        text-decoration: underline !important;
+        text-decoration-thickness: 2px !important;
+    }
+
+    a:visited {
+        color: VisitedText !important;
+    }
+
+    a:hover,
+    a:focus {
+        background-color: Highlight !important;
+        color: HighlightText !important;
+        text-decoration: none !important;
+    }
+
+    svg {
+        fill: currentColor !important;
+        stroke: currentColor !important;
+    }
+
+    .instagram-stats .text-red-500,
+    .instagram-stats .text-blue-500,
+    .instagram-stats .text-green-500 {
+        color: WindowText !important;
+        font-weight: bold !important;
+    }
+
+    [role="tooltip"] {
+        background-color: InfoBackground !important;
+        color: InfoText !important;
+        border: 2px solid WindowText !important;
+    }
+}
+
+@media (-ms-high-contrast: black-on-white) {
+
+    .instagram-feed-container,
+    .instagram-post,
+    .instagram-stats {
+        background-color: white !important;
+        color: black !important;
+        border-color: black !important;
+    }
+
+    .instagram-post img {
+        filter: contrast(1.5) brightness(1.2) !important;
+        border: 2px solid black !important;
+    }
+}
+
+@media (-ms-high-contrast: white-on-black) {
+
+    .instagram-feed-container,
+    .instagram-post,
+    .instagram-stats {
+        background-color: black !important;
+        color: white !important;
+        border-color: white !important;
+    }
+
+    .instagram-post img {
+        filter: contrast(1.5) brightness(0.8) !important;
+        border: 2px solid white !important;
+    }
+}
+
+/* Enhanced forced-colors mode support */
+@media (forced-colors: active) {
+
+    .instagram-feed-container,
+    .instagram-post,
+    .instagram-stats {
+        border: 2px solid !important;
+        background-color: Canvas !important;
+        color: CanvasText !important;
+        forced-color-adjust: none !important;
+    }
+
+    .instagram-post:hover,
+    .instagram-post:focus {
+        background-color: Highlight !important;
+        color: HighlightText !important;
+        border-color: Highlight !important;
+    }
+
+    button {
+        border: 1px solid !important;
+        background-color: ButtonFace !important;
+        color: ButtonText !important;
+        forced-color-adjust: none !important;
+    }
+
+    button:hover,
+    button:focus {
+        background-color: Highlight !important;
+        color: HighlightText !important;
+    }
+
+    a {
+        color: LinkText !important;
+        forced-color-adjust: none !important;
+    }
+
+    a:visited {
+        color: VisitedText !important;
+    }
+
+    svg {
+        fill: currentColor !important;
+        stroke: currentColor !important;
+        forced-color-adjust: auto !important;
+    }
+}
+
+/* Enhanced prefers-color-scheme support */
 @media (prefers-color-scheme: dark) {
-    .form-input {
-        background-color: #1f2937;
-        border-color: #4b5563;
-        color: #f9fafb;
+    .instagram-feed-container {
+        background-color: #0f0f0f !important;
+        color: #f5f5f5 !important;
+        border-color: #404040 !important;
     }
 
-    .form-input:focus {
-        border-color: #60a5fa;
-        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
+    .instagram-post {
+        background-color: #1a1a1a !important;
+        color: #f5f5f5 !important;
+        border-color: #404040 !important;
     }
 
-    .modern-card {
-        background-color: #1f2937;
-        border-color: #4b5563;
-        color: #f9fafb;
+    .instagram-post:hover {
+        background-color: #2a2a2a !important;
+        border-color: #606060 !important;
     }
 
-    .text-slate-600,
-    .text-slate-500 {
-        color: #d1d5db !important;
+    .instagram-stats {
+        background-color: #1a1a1a !important;
+        color: #f5f5f5 !important;
+        border-color: #404040 !important;
     }
 
-    .error-summary {
-        background-color: #7f1d1d;
-        border-color: #dc2626;
-        color: #fecaca;
+    [role="tooltip"] {
+        background-color: #0f0f0f !important;
+        color: #f5f5f5 !important;
+        border-color: #404040 !important;
     }
 
-    .success-message {
-        background-color: #14532d;
-        border-color: #16a34a;
-        color: #bbf7d0;
+    .skeleton {
+        background-color: #2a2a2a !important;
+    }
+
+    .loading-indicator {
+        border-color: #404040 !important;
+        border-top-color: #606060 !important;
+    }
+}
+
+/* Enhanced light mode support */
+@media (prefers-color-scheme: light) {
+    .instagram-feed-container {
+        background-color: #ffffff !important;
+        color: #1a1a1a !important;
+        border-color: #e5e5e5 !important;
+    }
+
+    .instagram-post {
+        background-color: #ffffff !important;
+        color: #1a1a1a !important;
+        border-color: #e5e5e5 !important;
+    }
+
+    .instagram-post:hover {
+        background-color: #f8f9fa !important;
+        border-color: #d1d5db !important;
+    }
+
+    .instagram-stats {
+        background-color: #f8f9fa !important;
+        color: #1a1a1a !important;
+        border-color: #e5e5e5 !important;
+    }
+
+    [role="tooltip"] {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+        border-color: #e5e5e5 !important;
+    }
+}
+
+/* Accessibility feature combinations */
+@media (prefers-contrast: high) and (prefers-reduced-motion: reduce) {
+
+    .instagram-post,
+    .instagram-stats {
+        border-width: 4px !important;
+        font-weight: bold !important;
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+
+    .instagram-post:hover,
+    .instagram-post:focus {
+        transform: none !important;
+        animation: none !important;
+    }
+}
+
+@media (prefers-contrast: high) and (prefers-color-scheme: dark) {
+
+    .instagram-feed-container,
+    .instagram-post,
+    .instagram-stats {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        border-color: #ffffff !important;
+        border-width: 3px !important;
+    }
+
+    .instagram-post:hover,
+    .instagram-post:focus {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border-color: #ffff00 !important;
+    }
+
+    button {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border: 3px solid #ffffff !important;
+    }
+
+    button:hover,
+    button:focus {
+        background-color: #ffff00 !important;
+        color: #000000 !important;
+        border-color: #ffffff !important;
+    }
+}
+
+@media (prefers-contrast: high) and (prefers-color-scheme: light) {
+
+    .instagram-feed-container,
+    .instagram-post,
+    .instagram-stats {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border-color: #000000 !important;
+        border-width: 3px !important;
+    }
+
+    .instagram-post:hover,
+    .instagram-post:focus {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        border-color: #ff0000 !important;
+    }
+
+    button {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        border: 3px solid #000000 !important;
+    }
+
+    button:hover,
+    button:focus {
+        background-color: #ff0000 !important;
+        color: #ffffff !important;
+        border-color: #000000 !important;
     }
 }

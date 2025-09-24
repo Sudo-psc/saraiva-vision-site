@@ -389,7 +389,7 @@ export const generatePodcastSchema = (podcastData, language = 'pt', forGraph = f
       ? 'Conteúdo especializado sobre saúde ocular para manter seus olhos sempre saudáveis com o Dr. Philipe Saraiva.'
       : 'Specialized content on eye health to keep your eyes always healthy with Dr. Philipe Saraiva.',
     url: 'https://saraivavision.com.br/podcast',
-    image: episodes[0]?.cover || 'https://saraivavision.com.br/images/podcast-cover.jpg',
+    image: episodes[0]?.cover || 'https://saraivavision.com.br/Podcasts/Covers/podcast.jpg',
     author: {
       '@type': 'Person',
       name: 'Dr. Philipe Saraiva',

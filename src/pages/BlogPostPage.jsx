@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
-import { 
-  Calendar, 
-  Clock, 
-  User, 
-  ArrowLeft, 
-  Loader2, 
+import {
+  Calendar,
+  Clock,
+  User,
+  ArrowLeft,
+  Loader2,
   AlertTriangle,
   Share2,
   Tag,
@@ -18,9 +18,9 @@ import {
 } from 'lucide-react';
 import DOMPurify from 'dompurify';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/Badge.jsx';
 import {
   fetchPostBySlug,
   getFeaturedImageUrl,
@@ -31,7 +31,7 @@ const BlogPostPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  
+
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -56,7 +56,7 @@ const BlogPostPage = () => {
         }
 
         const postData = await fetchPostBySlug(slug);
-        
+
         if (!postData) {
           setError('Post not found');
           setLoading(false);
@@ -121,7 +121,7 @@ const BlogPostPage = () => {
             </div>
           </div>
         </main>
-        <Footer />
+        <EnhancedFooter />
       </div>
     );
   }
@@ -140,8 +140,8 @@ const BlogPostPage = () => {
               <p className="text-yellow-700 mb-6">
                 {error || t('blog.connection_error', 'Não foi possível conectar ao sistema de blog.')}
               </p>
-              <Button 
-                onClick={() => navigate('/blog')} 
+              <Button
+                onClick={() => navigate('/blog')}
                 variant="outline"
                 className="mr-4"
               >
@@ -151,7 +151,7 @@ const BlogPostPage = () => {
             </div>
           </div>
         </main>
-        <Footer />
+        <EnhancedFooter />
       </div>
     );
   }
@@ -176,7 +176,7 @@ const BlogPostPage = () => {
             </div>
           </div>
         </main>
-        <Footer />
+        <EnhancedFooter />
       </div>
     );
   }
@@ -206,9 +206,9 @@ const BlogPostPage = () => {
           <meta key={tag.id} property="article:tag" content={tag.name} />
         ))}
       </Helmet>
-      
+
       <Navbar />
-      
+
       <main className="py-32 md:py-40">
         <article className="container mx-auto px-4 max-w-4xl">
           {/* Back Button */}
@@ -217,8 +217,8 @@ const BlogPostPage = () => {
             animate={{ opacity: 1, x: 0 }}
             className="mb-8"
           >
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               onClick={() => navigate('/blog')}
               className="text-gray-600 hover:text-gray-900"
             >
@@ -237,7 +237,7 @@ const BlogPostPage = () => {
               <div className="mb-8 rounded-2xl overflow-hidden shadow-lg">
                 <img
                   src={featuredImage}
-                  alt={post._embedded?.['wp:featuredmedia']?.[0]?.alt_text || 
+                  alt={post._embedded?.['wp:featuredmedia']?.[0]?.alt_text ||
                     t('ui.alt.blog_post_image', 'Imagem do artigo')}
                   className="w-full h-64 md:h-96 object-cover"
                   loading="eager"
@@ -257,7 +257,7 @@ const BlogPostPage = () => {
               </div>
             )}
 
-            <h1 
+            <h1
               className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight"
               dangerouslySetInnerHTML={{ __html: post.title.rendered }}
             />
@@ -296,9 +296,9 @@ const BlogPostPage = () => {
             {/* Medical Difficulty Level */}
             {post.medical_difficulty && (
               <div className="mb-6">
-                <Badge 
-                  variant={post.medical_difficulty === 'advanced' ? 'destructive' : 
-                           post.medical_difficulty === 'intermediate' ? 'default' : 'secondary'}
+                <Badge
+                  variant={post.medical_difficulty === 'advanced' ? 'destructive' :
+                    post.medical_difficulty === 'intermediate' ? 'default' : 'secondary'}
                   className="text-xs"
                 >
                   {t(`blog.difficulty.${post.medical_difficulty}`, post.medical_difficulty)}
@@ -322,10 +322,10 @@ const BlogPostPage = () => {
             transition={{ delay: 0.2 }}
             className="prose prose-lg max-w-none mb-12"
           >
-            <div 
+            <div
               className="blog-content text-gray-700 leading-relaxed"
-              dangerouslySetInnerHTML={{ 
-                __html: sanitizeContent(post.content.rendered) 
+              dangerouslySetInnerHTML={{
+                __html: sanitizeContent(post.content.rendered)
               }}
             />
           </motion.div>
@@ -422,8 +422,8 @@ const BlogPostPage = () => {
           </motion.div>
         </article>
       </main>
-      
-      <Footer />
+
+      <EnhancedFooter />
     </div>
   );
 };

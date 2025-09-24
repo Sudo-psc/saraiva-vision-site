@@ -25,6 +25,18 @@ if (process.env.NODE_ENV === 'development') {
 export default defineConfig({
   plugins,
   base: '/', // Ensure proper base path for Vercel deployment
+  define: {
+    // Fallback for legacy process.env usage in libraries
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+    // Expose Vercel environment variables
+    __VERCEL_ENV__: JSON.stringify(process.env.VERCEL_ENV || 'development'),
+    __VERCEL_URL__: JSON.stringify(process.env.VERCEL_URL || ''),
+    __VERCEL_BRANCH_URL__: JSON.stringify(process.env.VERCEL_BRANCH_URL || ''),
+  },
+  esbuild: {
+    charset: 'utf8'
+    // Let React plugin handle JSX transformation with automatic runtime
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -34,7 +46,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./src/test/setup.js'],
+    setupFiles: ['./src/__tests__/setup.js'],
     include: ['**/*.{test,spec}.{js,jsx,ts,tsx}'],
     exclude: ['node_modules', 'dist', '.vercel']
   },

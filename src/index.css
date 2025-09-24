@@ -4,8 +4,25 @@
 /* IMPORTA SCROLL SYSTEM LIMPO - Previne conflitos de rolagem dupla */
 @import './styles/scroll-fix-clean.css';
 
+/* IMPORTA FIX ESPECÍFICO PARA TESTIMONIALS E REVIEWS */
+@import './styles/scroll-testimonials-fix.css';
+
 /* IMPORTA ACCESSIBILITY ENHANCEMENTS - WCAG 2.1 AA Compliance */
 @import './styles/accessibility.css';
+
+/* IMPORTA GLASS MORPHISM UTILITIES */
+@import './styles/glassMorphism.css';
+
+/* IMPORTA LIQUID GLASS SYSTEM */
+@import './styles/liquidGlass.css';
+@import './styles/liquidGlassExtensions.css';
+
+/* IMPORTA ANALYTICS STYLES */
+@import './styles/analytics.css';
+@import './styles/consent.css';
+
+/* IMPORTA WHATSAPP WIDGET STYLES */
+@import './styles/whatsapp-widget.css';
 
 @tailwind base;
 @tailwind components;

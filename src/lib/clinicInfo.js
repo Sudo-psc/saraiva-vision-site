@@ -26,6 +26,8 @@ export const clinicInfo = {
   instagram: 'https://www.instagram.com/saraiva_vision/',
   facebook: 'https://www.facebook.com/philipeoftalmo',
   linkedin: 'https://www.linkedin.com/in/dr-philipe-saraiva/',
+  x: 'https://x.com/philipe_saraiva',
+  spotify: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
   chatbotUrl: 'https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica',
   onlineSchedulingUrl: 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613',
   // Security validation for external integrations
@@ -48,7 +50,9 @@ export const clinicInfo = {
   // Responsible physician (CFM compliance)
   responsiblePhysician: 'Dr. Philipe Saraiva Cruz',
   responsiblePhysicianCRM: 'CRM-MG 69.870',
+  responsiblePhysicianTitle: 'Responsável Técnico Médico',
   responsibleNurse: 'Ana Lúcia',
+  responsibleNurseTitle: 'Enfermeira',
   responsibleNursePhone: '+55 33 98420-7437',
   // Data Protection Officer contact (LGPD Art.41)
   dpoEmail: 'saraivavision@gmail.com',
