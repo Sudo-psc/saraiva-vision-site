@@ -6,7 +6,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/Badge.jsx';
 import { useGoogleReviews } from '@/hooks/useGoogleReviews';
 import { Star, RefreshCw, AlertCircle, CheckCircle, MapPin } from 'lucide-react';
 
@@ -31,8 +31,8 @@ const GoogleReviewsTest = ({ placeId = process.env.VITE_GOOGLE_PLACE_ID }) => {
                     <Star
                         key={star}
                         className={`w-4 h-4 ${star <= rating
-                                ? 'text-yellow-400 fill-yellow-400'
-                                : 'text-gray-300'
+                            ? 'text-yellow-400 fill-yellow-400'
+                            : 'text-gray-300'
                             }`}
                     />
                 ))}

@@ -647,7 +647,7 @@ const Contact = () => {
                           : ''
                         }`}
                       placeholder={t('contact.name_placeholder')}
-                      aria-label={t('contact.name_aria_label') || 'Nome completo'}
+                      aria-label={t('contact.name_aria_label', 'Nome completo')}
                       aria-invalid={!!errors.name}
                       aria-describedby={errors.name ? 'error-name' : fieldValidation.name?.success ? 'success-name' : 'name-help'}
                       aria-required="true"
@@ -700,7 +700,7 @@ const Contact = () => {
                           : fieldValidation.email?.success
                             ? 'border-green-400 focus:ring-green-300'
                             : ''
-                        }`}
+                          }`}
                         placeholder={t('contact.email_placeholder')}
                         aria-label="E-mail"
                         aria-invalid={!!errors.email}
@@ -754,7 +754,7 @@ const Contact = () => {
                           : fieldValidation.phone?.success
                             ? 'border-green-400 focus:ring-green-300'
                             : ''
-                        }`}
+                          }`}
                         placeholder={t('contact.phone_placeholder')}
                         aria-label="Telefone"
                         aria-invalid={!!errors.phone}

@@ -37,6 +37,8 @@ export default async function handler(req, res) {
         });
     }
 
+    const startTime = Date.now();
+    
     try {
         const clientIP = getClientIP(req);
         const userAgent = req.headers['user-agent'] || '';
@@ -92,8 +94,8 @@ export default async function handler(req, res) {
                 trends: await getSecurityTrends(timeRange)
             },
             metadata: {
-                requestId: `monitor_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                processingTime: 0, // Will be calculated at end of request
+                requestId: `monitor_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
+                processingTime: Date.now() - startTime,
                 clientIP: hashIP(clientIP),
                 version: '1.0.0'
             }
@@ -287,7 +289,7 @@ async function getRecentSecurityEvents(limit = 50) {
             timestamp: new Date(Date.now() - Math.random() * 3600000).toISOString(),
             message: `Security event detected`,
             clientIP: `xxx.xxx.xxx.${Math.floor(Math.random() * 255)}`,
-            sessionId: `session_${Math.random().toString(36).substr(2, 9)}`
+            sessionId: `session_${Math.random().toString(36).substring(2, 11)}`
         });
     }
 
@@ -365,7 +367,7 @@ async function getPerformanceMetrics() {
         p95ProcessingTime: calculatePercentile(recentMetrics.map(m => m.processingTime), 95),
         p99ProcessingTime: calculatePercentile(recentMetrics.map(m => m.processingTime), 99),
         requestsPerSecond: recentMetrics.length / 60, // Approximate
-        errorRate: (recentMetrics.filter(m => m.violations > 0).length / recentMetrics.length) * 100,
+        errorRate: recentMetrics.length > 0 ? (recentMetrics.filter(m => m.violations > 0).length / recentMetrics.length) * 100 : 0,
         memoryUsage: process.memoryUsage(),
         uptime: process.uptime()
     };
@@ -430,17 +432,26 @@ function calculatePercentile(values, percentile) {
  * @returns {number} Peak requests per minute
  */
 function calculatePeakRequestsPerMinute(metrics) {
-    if (metrics.length === 0) return 0;
+    if (!Array.isArray(metrics) || metrics.length === 0) return 0;
 
-    // Group by minute
-    const minuteGroups = {};
-    metrics.forEach(metric => {
-        const minute = Math.floor(new Date(metric.timestamp).getTime() / 60000) * 60000;
-        minuteGroups[minute] = (minuteGroups[minute] || 0) + 1;
-    });
+    try {
+        // Group by minute
+        const minuteGroups = {};
+        metrics.forEach(metric => {
+            if (!metric || !metric.timestamp) return;
+            const timestamp = new Date(metric.timestamp).getTime();
+            if (isNaN(timestamp)) return;
+            
+            const minute = Math.floor(timestamp / 60000) * 60000;
+            minuteGroups[minute] = (minuteGroups[minute] || 0) + 1;
+        });
 
-    const values = Object.values(minuteGroups);
-    return values.length > 0 ? Math.max(...values) : 0;
+        const values = Object.values(minuteGroups);
+        return values.length > 0 ? Math.max(...values) : 0;
+    } catch (error) {
+        console.error('Error calculating peak requests per minute:', error);
+        return 0;
+    }
 }
 
 /**

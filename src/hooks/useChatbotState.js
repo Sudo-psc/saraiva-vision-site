@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { ChatbotMockService } from '../services/chatbotMockService.js';
 
 /**
  * Custom hook for managing chatbot state
@@ -124,91 +125,65 @@ export const useChatbotState = ({ initialMessage, complianceMode = 'strict' }) =
         abortControllerRef.current = new AbortController();
 
         try {
-            // Prepare request data
-            const requestData = {
-                message: currentInput,
-                sessionId: sessionId,
-                conversationHistory: messages.map(msg => ({
-                    role: msg.role,
-                    content: msg.content,
-                    timestamp: msg.timestamp
-                })),
-                context: {
-                    complianceMode,
-                    userConsent: userConsent,
-                    conversationContext: conversationContext
-                }
-            };
-
             // Update message status to sent
             setMessageStatuses(prev => new Map(prev.set(userMessage.id, {
                 status: 'sent',
                 timestamp: new Date().toISOString()
             })));
 
-            // Make API request
-            const response = await fetch('/api/chatbot/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestData),
-                signal: abortControllerRef.current.signal
-            });
-
-            if (!response.ok) {
-                // Try to get error details from response
-                let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
-                try {
-                    const errorData = await response.json();
-                    if (errorData.message) {
-                        errorMessage = errorData.message;
-                    }
-                } catch (jsonError) {
-                    // If JSON parsing fails, use the original error message
-                    console.warn('Failed to parse error response JSON:', jsonError);
-                }
-                throw new Error(errorMessage);
-            }
-
-            // Check if response has content before parsing JSON
-            const contentType = response.headers.get('content-type');
-            if (!contentType || !contentType.includes('application/json')) {
-                throw new Error('Resposta inválida do servidor. Tente novamente.');
-            }
-
-            // Get response text first to check if it's empty
-            const responseText = await response.text();
-            if (!responseText || responseText.trim() === '') {
-                throw new Error('Resposta vazia do servidor. Tente novamente.');
-            }
-
-            // Parse JSON safely
             let data;
+
             try {
+                // Try API first
+                const requestData = {
+                    message: currentInput,
+                    sessionId: sessionId,
+                    conversationHistory: messages.map(msg => ({
+                        role: msg.role,
+                        content: msg.content,
+                        timestamp: msg.timestamp
+                    })),
+                    context: {
+                        complianceMode,
+                        userConsent: userConsent,
+                        conversationContext: conversationContext
+                    }
+                };
+
+                const response = await fetch('/api/chatbot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData),
+                    signal: abortControllerRef.current.signal
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Invalid response type');
+                }
+
+                const responseText = await response.text();
+                if (!responseText || responseText.trim() === '') {
+                    throw new Error('Empty response');
+                }
+
                 data = JSON.parse(responseText);
-            } catch (jsonError) {
-                console.error('JSON parsing error:', jsonError);
-                console.error('Response text:', responseText);
-                throw new Error('Resposta malformada do servidor. Tente novamente.');
-            }
 
-            // Validate response structure
-            if (typeof data !== 'object' || data === null) {
-                throw new Error('Estrutura de resposta inválida do servidor.');
-            }
+                if (!data.success || !data.data || !data.data.response) {
+                    throw new Error('Invalid response structure');
+                }
 
-            if (!data.success) {
-                throw new Error(data.error || data.message || 'Erro na comunicação com o servidor');
-            }
+            } catch (apiError) {
+                console.warn('API request failed, using mock service:', apiError.message);
 
-            // Validate required data fields
-            if (!data.data || typeof data.data !== 'object') {
-                throw new Error('Dados de resposta ausentes ou inválidos.');
-            }
-
-            if (!data.data.response || typeof data.data.response !== 'string') {
-                throw new Error('Resposta do assistente ausente ou inválida.');
+                // Fallback to mock service
+                data = await ChatbotMockService.generateResponse(currentInput, sessionId);
             }
 
             // Update session ID if provided

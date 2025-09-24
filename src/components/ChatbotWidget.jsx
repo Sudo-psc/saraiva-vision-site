@@ -156,7 +156,6 @@ const ChatbotWidget = () => {
                 <button
                     onClick={() => setIsOpen(true)}
                     className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                    aria-label="Abrir chat de atendimento"
                     aria-label="Abrir chat de atendimento - Assistente virtual Saraiva Vision"
                 >
                     <MessageCircle size={24} />
@@ -181,7 +180,6 @@ const ChatbotWidget = () => {
                 <button
                     onClick={() => setIsOpen(false)}
                     className="text-blue-100 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-blue-300 rounded"
-                    aria-label="Fechar chat"
                     aria-label="Fechar chat - Assistente virtual Saraiva Vision"
                 >
                     <X size={20} />
@@ -216,7 +214,6 @@ const ChatbotWidget = () => {
                                         <button
                                             onClick={handleBookingRedirect}
                                             className="inline-flex items-center space-x-1 text-xs text-blue-600 hover:text-blue-800 font-medium"
-                                            aria-label="Agendar consulta"
                                             aria-label="Agendar consulta - Abrir página de agendamento"
                                         >
                                             <ExternalLink size={12} />
@@ -275,7 +272,6 @@ const ChatbotWidget = () => {
                         onClick={sendMessage}
                         disabled={!inputMessage.trim() || isLoading}
                         className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg px-3 py-2 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        aria-label="Enviar mensagem"
                         aria-label="Enviar mensagem para o assistente virtual"
                     >
                         <Send size={16} />
@@ -287,7 +283,6 @@ const ChatbotWidget = () => {
                     <button
                         onClick={handleContactRedirect}
                         className="inline-flex items-center space-x-1 text-xs text-gray-800 hover:text-black bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors"
-                        aria-label="Abrir WhatsApp"
                         aria-label="Abrir WhatsApp - Conversa direta com a clínica"
                     >
                         <Phone size={10} />
@@ -296,7 +291,6 @@ const ChatbotWidget = () => {
                     <button
                         onClick={handleBookingRedirect}
                         className="inline-flex items-center space-x-1 text-xs text-blue-800 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded transition-colors"
-                        aria-label="Agendar consulta"
                         aria-label="Agendar consulta - Abrir página de agendamento"
                     >
                         <ExternalLink size={10} />

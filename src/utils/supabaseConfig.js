@@ -1,3 +1,6 @@
+import { createClient } from '@supabase/supabase-js'
+import { ENV, isDevelopment } from '@/config/env'
+
 /**
  * Supabase Configuration Utility
  * Provides helper functions to check if Supabase is properly configured
@@ -8,21 +11,7 @@
  * @returns {boolean} True if Supabase is properly configured
  */
 export function isSupabaseConfigured() {
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-    return !!(supabaseUrl && supabaseAnonKey);
-}
-
-/**
- * Check if Supabase admin client is configured
- * @returns {boolean} True if Supabase admin is properly configured
- */
-export function isSupabaseAdminConfigured() {
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
-
-    return !!(supabaseUrl && supabaseServiceKey);
+    return !!(ENV.SUPABASE_URL && ENV.SUPABASE_ANON_KEY);
 }
 
 /**
@@ -30,17 +19,10 @@ export function isSupabaseAdminConfigured() {
  * @returns {object} Configuration status object
  */
 export function getSupabaseConfigStatus() {
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-    const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
-
     return {
-        hasUrl: !!supabaseUrl,
-        hasAnonKey: !!supabaseAnonKey,
-        hasServiceKey: !!supabaseServiceKey,
-        isClientConfigured: !!(supabaseUrl && supabaseAnonKey),
-        isAdminConfigured: !!(supabaseUrl && supabaseServiceKey),
-        isFullyConfigured: !!(supabaseUrl && supabaseAnonKey && supabaseServiceKey)
+        hasUrl: !!ENV.SUPABASE_URL,
+        hasAnonKey: !!ENV.SUPABASE_ANON_KEY,
+        isClientConfigured: !!(ENV.SUPABASE_URL && ENV.SUPABASE_ANON_KEY),
     };
 }
 
@@ -48,24 +30,54 @@ export function getSupabaseConfigStatus() {
  * Log Supabase configuration status (for development)
  */
 export function logSupabaseConfigStatus() {
-    if (import.meta.env.DEV) {
+    if (isDevelopment) {
         const status = getSupabaseConfigStatus();
         console.group('Supabase Configuration Status');
         console.log('Client configured:', status.isClientConfigured);
-        console.log('Admin configured:', status.isAdminConfigured);
-        console.log('Fully configured:', status.isFullyConfigured);
 
         if (!status.isClientConfigured) {
             console.warn('Missing Supabase client configuration. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env file.');
         }
 
-        if (!status.isAdminConfigured) {
-            console.warn('Missing Supabase admin configuration. Set VITE_SUPABASE_SERVICE_ROLE_KEY in your .env file for admin features.');
-        }
-
         console.groupEnd();
     }
 }
+
+// Criar cliente Supabase com configurações seguras
+export const supabase = ENV.SUPABASE_URL && ENV.SUPABASE_ANON_KEY
+    ? createClient(ENV.SUPABASE_URL, ENV.SUPABASE_ANON_KEY, {
+        auth: {
+            autoRefreshToken: true,
+            persistSession: true,
+            detectSessionInUrl: true,
+        },
+        realtime: {
+            params: {
+                eventsPerSecond: 10,
+            },
+        },
+    })
+    : null;
+
+// Utilitário para verificar se Supabase está disponível
+export const isSupabaseAvailable = () => Boolean(supabase);
+
+// Wrapper seguro para operações Supabase
+export const safeSupabaseOperation = async (operation) => {
+    if (!supabase) {
+        if (isDevelopment) {
+            console.warn('Supabase não está disponível');
+        }
+        return { data: null, error: new Error('Supabase não configurado') };
+    }
+
+    try {
+        return await operation(supabase);
+    } catch (error) {
+        console.error('Erro na operação Supabase:', error);
+        return { data: null, error };
+    }
+};
 
 export default {
     isSupabaseConfigured,

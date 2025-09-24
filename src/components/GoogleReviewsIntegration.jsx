@@ -11,7 +11,7 @@ import { Star, ExternalLink, MessageCircle, TrendingUp } from 'lucide-react';
 import { useGoogleReviews } from '@/hooks/useGoogleReviews';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/Badge.jsx';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import FeatureFlag, { ABTest, withFeatureFlag } from '@/components/FeatureFlag';
 import { useFeatureFlag, useABTest, useSaraivaTracking } from '@/hooks/usePostHog';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/Badge.jsx';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 /**

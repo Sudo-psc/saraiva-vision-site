@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/Badge.jsx';
 import { usePostHog, useSaraivaTracking, useFeatureFlag } from '@/hooks/usePostHog';
 import FeatureFlag, { ABTest } from '@/components/FeatureFlag';
 import { FEATURE_FLAGS, EVENTS } from '@/utils/posthogConfig';

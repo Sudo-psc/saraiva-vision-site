@@ -243,13 +243,12 @@ const ReviewCard = ({
                         <div className="flex items-center gap-3">
                             <button
                                 onClick={handleLike}
-                                className={`
-                  flex items-center gap-1 text-xs font-medium transition-colors
-                  ${isLiked
+                                className={[
+                                    'flex items-center gap-1 text-xs font-medium transition-colors',
+                                    isLiked
                                         ? 'text-red-600 dark:text-red-400'
                                         : 'text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400'
-                                    }
-                `}
+                                ].join(' ')}
                             >
                                 <ThumbsUp size={14} className={isLiked ? 'fill-current' : ''} />
                                 Útil
@@ -272,7 +271,7 @@ const ReviewCard = ({
                     </div>
                 )}
             </div>
-            </GlassContainer>
+        </GlassContainer>
         </motion.div>
     );
 };

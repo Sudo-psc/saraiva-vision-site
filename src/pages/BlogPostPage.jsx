@@ -20,7 +20,7 @@ import DOMPurify from 'dompurify';
 import Navbar from '@/components/Navbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/Badge.jsx';
 import {
   fetchPostBySlug,
   getFeaturedImageUrl,

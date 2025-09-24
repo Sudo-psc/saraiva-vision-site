@@ -171,7 +171,7 @@ export const POSTHOG_CONFIG = {
     property_blacklist: ['$current_url', '$referrer'],
 
     // Custom sanitization
-    sanitize_properties: (properties, event) => {
+    sanitize_properties: (properties) => {
         // Remove query parameters from URLs for privacy
         if (properties['$current_url']) {
             properties['$current_url'] = properties['$current_url'].split('?')[0];

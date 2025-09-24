@@ -7,6 +7,13 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import { AuthProvider } from '@/contexts/AuthContext';
 import './i18n'; // Initialize i18n
 
+// Importar configurações essenciais
+import '@/config/env'; // Validar variáveis de ambiente
+import '@/utils/error-interceptor'; // Interceptador específico de erros
+import '@/utils/global-error-prevention'; // Prevenção global de erros
+import '@/lib/posthog-init'; // Inicializar PostHog
+import '@/utils/supabaseConfig'; // Configurar Supabase
+
 // Simple error handler setup
 const setupGlobalErrorHandlers = () => {
   window.addEventListener('error', (event) => {
