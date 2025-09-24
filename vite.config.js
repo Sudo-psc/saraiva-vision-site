@@ -12,15 +12,15 @@ const plugins = [react({
   jsxImportSource: 'react'
 })]
 
-// Only load workbox plugin in development, never in production
-if (process.env.NODE_ENV === 'development') {
-  try {
-    const { workboxVitePlugin } = require('./src/utils/workbox-vite-plugin')
-    plugins.push(workboxVitePlugin())
-  } catch (error) {
-    console.warn('Workbox plugin not loaded:', error.message)
-  }
-}
+// Workbox plugin disabled for stable deployment
+// if (process.env.NODE_ENV === 'development') {
+//   try {
+//     const { workboxVitePlugin } = require('./src/utils/workbox-vite-plugin')
+//     plugins.push(workboxVitePlugin())
+//   } catch (error) {
+//     console.warn('Workbox plugin not loaded:', error.message)
+//   }
+// }
 
 export default defineConfig({
   plugins,

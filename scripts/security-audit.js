@@ -157,10 +157,10 @@ class SecurityAuditor {
     async checkAPIEndpointSecurity() {
         this.log('🛡️  Auditing API Endpoint Security...', 'header');
 
-        const apiFiles = execSync('find api/ -name "*.js" 2>/dev/null || true', { encoding: 'utf8' }).split('\n').filter(f => f);
+        const apiFiles = execSync('find api/ -name "*.js" -type f -not -path "*/node_modules/*" 2>/dev/null || true', { encoding: 'utf8' }).split('\n').filter(f => f);
 
         for (const file of apiFiles) {
-            if (fs.existsSync(file)) {
+            if (fs.existsSync(file) && fs.statSync(file).isFile()) {
                 const content = fs.readFileSync(file, 'utf8');
 
                 // Check for input validation
