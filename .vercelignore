@@ -18,3 +18,11 @@ coverage/
 .temp/
 *.tgz
 *.tar.gz
+
+# Exclude most API functions to stay under Hobby plan 12 function limit
+# Only allow essential functions for Google Reviews functionality
+api/
+!api/google-reviews.js
+!api/google-reviews-stats.js
+!api/contact/
+!api/health.js
