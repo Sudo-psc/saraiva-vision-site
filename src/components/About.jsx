@@ -78,7 +78,7 @@ const About = () => {
             </div>
 
             <h2 className="text-4xl md:text-5xl font-black leading-tight text-slate-900">
-              <span className="bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 bg-clip-text text-transparent"
+              <span className="bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 bg-clip-text text-transparent">
                 {t('about.title')}
               </span>
             </h2>
