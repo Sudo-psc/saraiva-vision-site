@@ -32,7 +32,6 @@ import { safePhoneFormat } from './utils/phoneFormatter.js';
 import Accessibility from './components/Accessibility.jsx';
 import { WidgetProvider } from './utils/widgetManager.jsx';
 
-import ScrollDiagnostics from './components/ScrollDiagnostics.jsx';
 import { initErrorTracking } from './utils/errorTracking.js';
 
 function App() {
@@ -92,7 +91,6 @@ function App() {
             <ServiceWorkerUpdateNotification />
             <WhatsappWidget phoneNumber={safePhoneFormat(clinicInfo.whatsapp || clinicInfo.phone)} />
               <Accessibility />
-            <ScrollDiagnostics />
           </WidgetProvider>
     </HelmetProvider>
   );

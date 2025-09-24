@@ -15,7 +15,7 @@ export const whatsappConfig = {
     // Widget appearance settings
     widget: {
         position: "bottom-right", // bottom-right, bottom-left, top-right, top-left
-        showGreeting: true,
+        showGreeting: false,
         greetingDelay: 3000, // 3 seconds
         greetingAutoHide: 10000, // 10 seconds
         pulseAnimation: true,
