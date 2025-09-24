@@ -196,24 +196,7 @@ const GoogleReviewsWidget = ({
                             </div>
                         )}
                         
-                        {error && !loading && (
-                            <div className="flex items-center gap-2">
-                                <AlertCircle className="w-4 h-4 text-orange-500" />
-                                <span className="text-sm text-orange-700">
-                                    {t('reviews.fallback_notice')} - API temporariamente indisponível
-                                </span>
-                                <Button
-                                    onClick={refresh}
-                                    size="sm"
-                                    variant="outline"
-                                    className="ml-2"
-                                >
-                                    <RefreshCw className="w-3 h-3 mr-1" />
-                                    {t('reviews.retry')}
-                                </Button>
-                            </div>
-                        )}
-                    </div>
+                      </div>
                 )}
 
                 {/* Reviews Grid */}

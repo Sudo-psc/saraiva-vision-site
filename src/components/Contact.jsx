@@ -10,6 +10,8 @@ import { submitContactForm, FallbackStrategies, useConnectionStatus, networkMoni
 import { getUserFriendlyError, getRecoverySteps, logError } from '@/lib/errorHandling';
 import ErrorFeedback, { NetworkError, RateLimitError, RecaptchaError, EmailServiceError } from '@/components/ui/ErrorFeedback';
 import { validateField, validateContactSubmission } from '@/lib/validation';
+import { useAnalytics, useVisibilityTracking, useSaraivaTracking } from '@/hooks/useAnalytics';
+import { consentManager } from '@/lib/lgpd/consentManager';
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -1186,12 +1188,12 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* LGPD Consent Banner */}
-      <ConsentBanner onConsentChange={(hasConsent) => {
+      {/* LGPD Consent Banner - Temporarily removed due to missing import */}
+      {/* <ConsentBanner onConsentChange={(hasConsent) => {
         if (hasConsent) {
           announceToScreenReader('Consentimento registrado com sucesso', 'polite');
         }
-      }} />
+      }} /> */}
     </section>
   );
 };

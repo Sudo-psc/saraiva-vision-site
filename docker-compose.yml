@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.frontend
-      target: production
+      target: runner
     container_name: saraiva-frontend
     ports:
       - "3000:80"
