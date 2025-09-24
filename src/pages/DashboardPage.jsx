@@ -16,7 +16,6 @@ import {
     Search,
     Flag
 } from 'lucide-react';
-import FeatureFlagsDemo from '../components/FeatureFlagsDemo';
 
 const DashboardPage = () => {
     const { user, profile, signOut, isAdmin, isSuperAdmin } = useAuth();
@@ -146,7 +145,6 @@ const DashboardPage = () => {
                                     <Route path="/users" element={<UserManagement />} />
                                 )}
                                 <Route path="/settings" element={<SettingsPlaceholder />} />
-                                <Route path="/feature-flags" element={<FeatureFlagsDemo />} />
                                 <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
                             </Routes>
                         </div>

@@ -17,9 +17,6 @@
 @import './styles/liquidGlass.css';
 @import './styles/liquidGlassExtensions.css';
 
-/* IMPORTA ANALYTICS STYLES */
-@import './styles/analytics.css';
-@import './styles/consent.css';
 
 /* IMPORTA WHATSAPP WIDGET STYLES */
 @import './styles/whatsapp-widget.css';

@@ -24,10 +24,8 @@ const GoogleReviewsTestPage = lazy(() => import('./pages/GoogleReviewsTestPage.j
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
 import { Toaster } from './components/ui/toaster.jsx';
-import ConsentManager from './components/ConsentManager.jsx';
 import CTAModal from './components/CTAModal.jsx';
 import WhatsappWidget from './components/WhatsappWidget.jsx';
-import AnalyticsProvider from './components/AnalyticsProvider.jsx';
 import ServiceWorkerUpdateNotification from './components/ServiceWorkerUpdateNotification.jsx';
 import { clinicInfo } from './lib/clinicInfo.js';
 import { safePhoneFormat } from './utils/phoneFormatter.js';
@@ -36,7 +34,6 @@ import { WidgetProvider } from './utils/widgetManager.jsx';
 
 import ScrollDiagnostics from './components/ScrollDiagnostics.jsx';
 import { initErrorTracking } from './utils/errorTracking.js';
-import { PostHogProvider } from './contexts/PostHogContext.jsx';
 
 function App() {
   const isCheckSubdomain =
@@ -51,8 +48,6 @@ function App() {
 
   return (
     <HelmetProvider>
-      <PostHogProvider>
-        <AnalyticsProvider>
           <WidgetProvider>
             {/*
           Envolvemos apenas o conteúdo da aplicação em um wrapper dedicado.
@@ -93,15 +88,12 @@ function App() {
               </Suspense>
             </div>
             <Toaster />
-            <ConsentManager />
             <CTAModal />
             <ServiceWorkerUpdateNotification />
             <WhatsappWidget phoneNumber={safePhoneFormat(clinicInfo.whatsapp || clinicInfo.phone)} />
               <Accessibility />
             <ScrollDiagnostics />
           </WidgetProvider>
-        </AnalyticsProvider>
-      </PostHogProvider>
     </HelmetProvider>
   );
 }

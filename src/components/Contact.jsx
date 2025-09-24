@@ -10,10 +10,6 @@ import { submitContactForm, FallbackStrategies, useConnectionStatus, networkMoni
 import { getUserFriendlyError, getRecoverySteps, logError } from '@/lib/errorHandling';
 import ErrorFeedback, { NetworkError, RateLimitError, RecaptchaError, EmailServiceError } from '@/components/ui/ErrorFeedback';
 import { validateField, validateContactSubmission } from '@/lib/validation';
-import { useAnalytics, useVisibilityTracking } from '@/hooks/useAnalytics';
-import { useSaraivaTracking } from '@/hooks/usePostHog';
-import { consentManager } from '../lib/lgpd/consentManager.js';
-import { ConsentBanner } from './lgpd/ConsentBanner.jsx';
 
 const Contact = () => {
   const { t } = useTranslation();
