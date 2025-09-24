@@ -1,0 +1,218 @@
+version: '3.8'
+
+services:
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: saraiva-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/sites-available:/etc/nginx/sites-available:ro
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled:ro
+      - /var/www/html:/var/www/html:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      api:
+        condition: service_healthy
+      wordpress:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - saraiva-network
+
+  # Node.js API Backend
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: saraiva-api
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+      - ./logs/api:/app/logs
+    depends_on:
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3002/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - saraiva-network
+
+  # WordPress CMS
+  wordpress:
+    image: wordpress:6.4-php8.2-apache
+    container_name: saraiva-wordpress
+    ports:
+      - "8080:80"
+    environment:
+      - WORDPRESS_DB_HOST=mysql
+      - WORDPRESS_DB_USER=${MYSQL_USER}
+      - WORDPRESS_DB_PASSWORD=${MYSQL_PASSWORD}
+      - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
+      - WORDPRESS_CONFIG_EXTRA=
+          define('WP_DEBUG', false);
+          define('WP_DEBUG_LOG', true);
+          define('WP_MEMORY_LIMIT', '512M');
+          define('FORCE_SSL_ADMIN', true);
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./wordpress/uploads:/var/www/html/wp-content/uploads
+      - ./logs/wordpress:/var/log/wordpress
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/wp-json/wp/v2/"]
+      interval: 60s
+      timeout: 15s
+      retries: 2
+      start_period: 120s
+    restart: unless-stopped
+    networks:
+      - saraiva-network
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: saraiva-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d:ro
+      - ./mysql/conf:/etc/mysql/conf.d:ro
+      - ./logs/mysql:/var/log/mysql
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --sql-mode=STRICT_TRANS_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO
+      --max-connections=1000
+      --innodb-buffer-pool-size=512M
+      --slow-query-log=1
+      --slow-query-log-file=/var/log/mysql/slow.log
+      --long-query-time=2
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - saraiva-network
+
+  # Redis Cache
+  redis:
+    image: redis:7.2-alpine
+    container_name: saraiva-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./redis/redis.conf:/etc/redis/redis.conf:ro
+      - ./logs/redis:/var/log/redis
+    command: redis-server /etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - saraiva-network
+
+  # Health Check Service (Medical System Monitoring)
+  health-monitor:
+    build:
+      context: ./monitoring
+      dockerfile: Dockerfile
+    container_name: saraiva-health-monitor
+    environment:
+      - MONITOR_INTERVAL=60
+      - ALERT_WEBHOOK_URL=${ALERT_WEBHOOK_URL}
+      - MEDICAL_SYSTEM_MODE=true
+    volumes:
+      - ./logs/health-monitor:/app/logs
+    depends_on:
+      - nginx
+      - api
+      - wordpress
+      - mysql
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/monitor-health"]
+      interval: 60s
+      timeout: 15s
+      retries: 2
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - saraiva-network
+
+  # Log Aggregation (for Medical Audit Trail)
+  log-aggregator:
+    image: fluent/fluent-bit:2.2
+    container_name: saraiva-logs
+    volumes:
+      - ./fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - ./logs:/var/log/saraiva:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - FLUENTBIT_CONFIG_PATH=/fluent-bit/etc/fluent-bit.conf
+    healthcheck:
+      test: ["CMD", "pidof", "fluent-bit"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - saraiva-network
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+  wordpress_data:
+    driver: local
+
+networks:
+  saraiva-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

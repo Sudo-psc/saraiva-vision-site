@@ -189,28 +189,104 @@ echo "🔄 Restarting nginx..."
 systemctl restart nginx
 print_status "Nginx restarted"
 
-# 12. Check if services are running
-echo "🔍 Checking service status..."
-if systemctl is-active --quiet nginx; then
-    print_status "Nginx is running"
-else
-    print_error "Nginx is not running"
-fi
-
-if systemctl is-active --quiet saraiva-api; then
-    print_status "API service is running"
-else
-    print_warning "API service (saraiva-api) is not running - start it with: systemctl start saraiva-api"
-fi
-
-if systemctl is-active --quiet docker; then
-    if docker ps | grep -q "wordpress"; then
-        print_status "WordPress containers are running"
+# 12. Start Docker services with health checks
+echo "🐳 Starting Docker services..."
+if [ -f "docker-compose.yml" ]; then
+    if docker-compose up -d; then
+        print_status "Docker services started"
     else
-        print_warning "WordPress containers are not running - check Docker"
+        print_error "Failed to start Docker services"
+        exit 1
     fi
 else
-    print_warning "Docker service is not running"
+    print_warning "No docker-compose.yml found, checking individual services"
+fi
+
+# 13. Comprehensive health checks
+echo "🔍 Running comprehensive health checks..."
+
+# Check Nginx with health endpoint
+echo "Checking Nginx..."
+for i in {1..30}; do
+    if curl -f -s http://localhost/health > /dev/null 2>&1; then
+        print_status "Nginx health check passed"
+        break
+    elif [ $i -eq 30 ]; then
+        print_error "Nginx health check failed after 30 attempts"
+        exit 1
+    else
+        echo "Attempt $i/30: Waiting for Nginx to be healthy..."
+        sleep 2
+    fi
+done
+
+# Check API service
+echo "Checking API service..."
+for i in {1..30}; do
+    if curl -f -s http://localhost:3002/api/health > /dev/null 2>&1; then
+        print_status "API service health check passed"
+        break
+    elif [ $i -eq 30 ]; then
+        print_error "API service health check failed after 30 attempts"
+        exit 1
+    else
+        echo "Attempt $i/30: Waiting for API service to be healthy..."
+        sleep 2
+    fi
+done
+
+# Check WordPress (if containerized)
+echo "Checking WordPress..."
+if docker ps --format 'table {{.Names}}' | grep -q "wordpress"; then
+    for i in {1..30}; do
+        if curl -f -s http://localhost:8080/wp-json/wp/v2/ > /dev/null 2>&1; then
+            print_status "WordPress health check passed"
+            break
+        elif [ $i -eq 30 ]; then
+            print_warning "WordPress health check failed - may need manual verification"
+            break
+        else
+            echo "Attempt $i/30: Waiting for WordPress to be healthy..."
+            sleep 2
+        fi
+    done
+else
+    print_warning "WordPress container not found - checking systemctl"
+    if systemctl is-active --quiet apache2 || systemctl is-active --quiet httpd; then
+        print_status "WordPress (Apache) is running"
+    else
+        print_warning "WordPress service status unclear"
+    fi
+fi
+
+# Check MySQL connection
+echo "Checking MySQL connection..."
+if docker ps --format 'table {{.Names}}' | grep -q "mysql"; then
+    if docker exec saraiva-mysql mysqladmin ping -h localhost --silent 2>/dev/null; then
+        print_status "MySQL health check passed"
+    else
+        print_error "MySQL health check failed"
+        exit 1
+    fi
+elif systemctl is-active --quiet mysql || systemctl is-active --quiet mysqld; then
+    print_status "MySQL system service is running"
+else
+    print_warning "MySQL status unclear"
+fi
+
+# Check Redis connection
+echo "Checking Redis connection..."
+if docker ps --format 'table {{.Names}}' | grep -q "redis"; then
+    if docker exec saraiva-redis redis-cli ping 2>/dev/null | grep -q "PONG"; then
+        print_status "Redis health check passed"
+    else
+        print_error "Redis health check failed"
+        exit 1
+    fi
+elif systemctl is-active --quiet redis || systemctl is-active --quiet redis-server; then
+    print_status "Redis system service is running"
+else
+    print_warning "Redis status unclear"
 fi
 
 # 13. Final verification
