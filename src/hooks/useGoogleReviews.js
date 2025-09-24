@@ -3,7 +3,7 @@
  * Provides easy access to Google Places reviews with error handling
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 
 const DEFAULT_OPTIONS = {
     placeId: null,
