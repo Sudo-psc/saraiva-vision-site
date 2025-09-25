@@ -1999,21 +1999,130 @@ html {
   white-space: normal;
 }
 
-/* Fix footer gray margin issue */
-footer {
-  margin: 0 !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-}
+/* ===== CORREÇÃO COMPLETA DA MOLDURA CINZA DO FOOTER ===== */
 
-/* Ensure body has no default margins */
+/* 1. Reset completo do HTML e Body */
+html,
 body {
-  margin: 0 !important;
-  padding: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
 }
 
-/* Ensure no container margins affect footer */
-#root {
-  margin: 0 !important;
-  padding: 0 !important;
+/* 2. Reset do wrapper principal da aplicação */
+#root,
+#app-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+}
+
+/* 3. Reset do container da página */
+.min-h-screen.bg-white,
+.page-container,
+.view-container,
+.route-container {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+}
+
+/* 4. Footer full-bleed específico */
+footer,
+[class*="footer"],
+.footer-liquid,
+.enhanced-footer {
+    /* Remove margens e padding laterais */
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    
+    /* Força largura total */
+    width: 100vw !important;
+    max-width: 100vw !important;
+    
+    /* Remove bordas e sombras */
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    
+    /* Técnica full-bleed para layouts centralizados */
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    
+    /* Background consistente */
+    background: #1e293b !important; /* slate-800 */
+}
+
+/* 5. Remove glass layers que podem criar moldura */
+.enhanced-footer-glass-layer {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* 6. Ajusta containers internos do footer */
+footer .container,
+footer .mx-auto {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    max-width: none !important;
+}
+
+/* 7. Responsive padding interno */
+@media (min-width: 640px) {
+    footer .container,
+    footer .mx-auto {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    footer .container,
+    footer .mx-auto {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+}
+
+/* 8. Remove gradientes que podem criar bordas visuais */
+footer .bg-gradient-to-t,
+footer .bg-gradient-to-br {
+    background: transparent !important;
+}
+
+/* 9. Remove backgrounds cinzas suspeitos */
+.bg-slate-100,
+.bg-gray-100,
+.bg-gray-50,
+.bg-slate-50 {
+    background: transparent !important;
+}
+
+/* 10. Remove border-radius que pode criar moldura */
+footer .rounded-lg,
+footer .rounded-xl {
+    border-radius: 0 !important;
 }

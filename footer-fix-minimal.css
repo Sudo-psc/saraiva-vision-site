@@ -1,0 +1,76 @@
+/* ===== CORREÇÃO MÍNIMA - FOOTER FULL-BLEED ===== */
+/* Remove apenas a moldura do footer, mantendo o resto do layout */
+
+/* 1. Reset do footer para full-bleed */
+footer,
+[class*="footer"],
+.footer-liquid,
+.enhanced-footer {
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    /* Força full-bleed em layouts centralizados */
+}
+
+/* 2. Remove backgrounds cinzas do footer */
+footer,
+[class*="footer"],
+.footer-liquid,
+.enhanced-footer {
+    background: #1e293b !important; /* slate-800 - cor do footer */
+}
+
+/* 3. Remove glass layers que podem criar moldura */
+.enhanced-footer-glass-layer {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* 4. Remove gradientes que podem criar bordas visuais */
+footer .bg-gradient-to-t,
+footer .bg-gradient-to-br,
+footer .bg-gradient-to-r {
+    background: transparent !important;
+}
+
+/* 5. Garante que containers internos não criem margens */
+footer .container,
+footer .mx-auto,
+footer .px-6,
+footer .px-4,
+footer .sm\\:px-6,
+footer .lg\\:px-8 {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    max-width: none !important;
+}
+
+/* 6. Responsive adjustments */
+@media (min-width: 640px) {
+    footer .container,
+    footer .mx-auto {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    footer .container,
+    footer .mx-auto {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+}
