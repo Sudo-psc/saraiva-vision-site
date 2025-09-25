@@ -5,9 +5,11 @@ const GoogleMapSimple = ({ height = 340 }) => {
     const containerRef = useRef(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const callbackNameRef = useRef(`initMap${Date.now()}`);
 
     useEffect(() => {
         const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+        const callbackName = callbackNameRef.current;
         console.log('🔑 API Key:', apiKey ? `${apiKey.substring(0, 10)}...` : 'MISSING');
 
         if (!apiKey) {
@@ -27,9 +29,6 @@ const GoogleMapSimple = ({ height = 340 }) => {
             createMap();
             return;
         }
-
-        // Create a unique callback name
-        const callbackName = `initMap${Date.now()}`;
 
         // Define the callback function
         window[callbackName] = () => {

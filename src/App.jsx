@@ -31,6 +31,7 @@ import { clinicInfo } from './lib/clinicInfo.js';
 import { safePhoneFormat } from './utils/phoneFormatter.js';
 import Accessibility from './components/Accessibility.jsx';
 import { WidgetProvider } from './utils/widgetManager.jsx';
+import MainLayout from './pages/MainLayout.jsx'; // Importar o novo layout
 
 import { initErrorTracking } from './utils/errorTracking.js';
 
@@ -59,30 +60,32 @@ function App() {
               <ScrollToTop />
               <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
                 <Routes>
-                  <Route path="/" element={isCheckSubdomain ? <CheckPage /> : <HomePageLayout />} />
-                  <Route path="/check" element={<CheckPage />} />
-                  <Route path="/servicos" element={<ServicesPage />} />
-                  <Route path="/servicos/:serviceId" element={<ServiceDetailPage />} />
-                  {/* Redirecionamentos 301 para padronização de URLs */}
-                  <Route path="/servico/:serviceId" element={<ServiceRedirect />} />
-                  <Route path="/sobre" element={<AboutPage />} />
-                  <Route path="/depoimentos" element={<TestimonialsPage />} />
-                  <Route path="/contato" element={<ContactPage />} />
-                  <Route path="/lentes" element={<LensesPage />} />
-                  <Route path="/faq" element={<FAQPage />} />
-                  <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
-                  <Route path="/podcast" element={<PodcastPage />} />
-                  <Route path="/blog" element={<BlogPage />} />
-                  <Route path="/blog/:slug" element={<PostPage />} />
-                  <Route path="/categoria/:slug" element={<CategoryPage />} />
-                   <Route path="/admin/login" element={<AdminLoginPage />} />
-                   <Route path="/admin" element={<AdminLoginPage />} />
-                   <Route path="/admin/*" element={<DashboardPage />} />
-                  <Route path="/dashboard" element={<DashboardPage />} />
-                  <Route path="/privacy" element={<PrivacyPolicyPage />} />
-                  <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />
-                  <Route path="/wp-admin" element={<AdminPage />} />
-                  {isCheckSubdomain ? <Route path="*" element={<Navigate to="/" replace />} /> : null}
+                  <Route path="/" element={<MainLayout />}> {/* Usar MainLayout como layout principal */}
+                    <Route index element={isCheckSubdomain ? <CheckPage /> : <HomePageLayout />} />
+                    <Route path="check" element={<CheckPage />} />
+                    <Route path="servicos" element={<ServicesPage />} />
+                    <Route path="servicos/:serviceId" element={<ServiceDetailPage />} />
+                    {/* Redirecionamentos 301 para padronização de URLs */}
+                    <Route path="servico/:serviceId" element={<ServiceRedirect />} />
+                    <Route path="sobre" element={<AboutPage />} />
+                    <Route path="depoimentos" element={<TestimonialsPage />} />
+                    <Route path="contato" element={<ContactPage />} />
+                    <Route path="lentes" element={<LensesPage />} />
+                    <Route path="faq" element={<FAQPage />} />
+                    <Route path="artigos/catarata" element={<MedicalArticleExample />} />
+                    <Route path="podcast" element={<PodcastPage />} />
+                    <Route path="blog" element={<BlogPage />} />
+                    <Route path="blog/:slug" element={<PostPage />} />
+                    <Route path="categoria/:slug" element={<CategoryPage />} />
+                    <Route path="admin/login" element={<AdminLoginPage />} />
+                    <Route path="admin" element={<AdminLoginPage />} />
+                    <Route path="admin/*" element={<DashboardPage />} />
+                    <Route path="dashboard" element={<DashboardPage />} />
+                    <Route path="privacy" element={<PrivacyPolicyPage />} />
+                    <Route path="google-reviews-test" element={<GoogleReviewsTestPage />} />
+                    <Route path="wp-admin" element={<AdminPage />} />
+                    {isCheckSubdomain ? <Route path="*" element={<Navigate to="/" replace />} /> : null}
+                  </Route>
                 </Routes>
               </Suspense>
             </div>

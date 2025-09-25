@@ -1,5 +1,10 @@
-import HomePage from "./HomePage";
+import React from 'react';
+import { Outlet } from 'react-router-dom';
 
-export default function HomePageLayout() {
-    return <HomePage />;
-}
+const HomePageLayout = () => {
+  return (
+    <Outlet />
+  );
+};
+
+export default HomePageLayout;

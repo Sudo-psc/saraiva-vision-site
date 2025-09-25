@@ -305,7 +305,7 @@ const Services = ({ full = false, autoplay = true }) => {
     if (!isTouch && el.setPointerCapture) {
       try { el.setPointerCapture(e.pointerId); } catch (_) { }
     }
-  }, [autoplayCarousel]);
+  }, []);
 
   const onPointerMove = useCallback((e) => {
     if (!isDragging) return;
