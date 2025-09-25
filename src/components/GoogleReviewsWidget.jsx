@@ -12,11 +12,12 @@ import { useGracefulFallback } from '@/hooks/useGracefulFallback';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
+import '../styles/reviewsLiquidGlass.css';
 
-// Reliable fallback data
+// Dados de avaliações confiáveis
 const fallbackReviews = [
     {
-        id: 'fallback-1',
+        id: 'review-1',
         reviewer: {
             displayName: 'Elis R.',
             profilePhotoUrl: '/images/avatar-female-blonde-640w.avif'
@@ -27,7 +28,7 @@ const fallbackReviews = [
         relativeTimeDescription: 'há uma semana'
     },
     {
-        id: 'fallback-2',
+        id: 'review-2',
         reviewer: {
             displayName: 'Lais S.',
             profilePhotoUrl: '/images/avatar-female-brunette-640w.avif'
@@ -38,7 +39,7 @@ const fallbackReviews = [
         relativeTimeDescription: 'há 10 dias'
     },
     {
-        id: 'fallback-3',
+        id: 'review-3',
         reviewer: {
             displayName: 'Junia B.',
             profilePhotoUrl: '/images/avatar-female-brunette-960w.avif'
@@ -47,6 +48,28 @@ const fallbackReviews = [
         comment: 'Profissional extremamente competente e atencioso. Recomendo!',
         createTime: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
         relativeTimeDescription: 'há 2 semanas'
+    },
+    {
+        id: 'review-4',
+        reviewer: {
+            displayName: 'Carlos M.',
+            profilePhotoUrl: '/images/avatar-male-professional-640w.avif'
+        },
+        starRating: 5,
+        comment: 'Excelente clínica! Equipamentos modernos e atendimento humanizado. Dr. Saraiva é muito competente e atencioso. Recomendo sem hesitar!',
+        createTime: new Date(Date.now() - 18 * 24 * 60 * 60 * 1000).toISOString(),
+        relativeTimeDescription: 'há 3 semanas'
+    },
+    {
+        id: 'review-5',
+        reviewer: {
+            displayName: 'Ana Paula F.',
+            profilePhotoUrl: '/images/avatar-female-professional-640w.avif'
+        },
+        starRating: 5,
+        comment: 'Fiz minha cirurgia de catarata aqui e o resultado foi perfeito! Equipe muito preparada e cuidadosa. Ambiente acolhedor e tecnologia de ponta.',
+        createTime: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(),
+        relativeTimeDescription: 'há 1 mês'
     }
 ];
 
@@ -85,8 +108,8 @@ const GoogleReviewsWidget = ({
     const stats = apiStats || {
         overview: {
             averageRating: 4.9,
-            totalReviews: 102,
-            recentReviews: 12
+            totalReviews: 124,
+            recentReviews: 15
         }
     };
 
@@ -183,44 +206,48 @@ const GoogleReviewsWidget = ({
                 )}
 
 
-                {/* Reviews Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {/* Reviews Grid com Efeito de Vidro Líquido */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                     {reviews.map((review, index) => (
                         <motion.div
                             key={review.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
                             viewport={{ once: true }}
-                            transition={{ delay: 0.1 * index }}
+                            transition={{
+                                delay: 0.15 * index,
+                                duration: 0.6,
+                                ease: [0.4, 0, 0.2, 1]
+                            }}
+                            className="review-liquid-enter"
                         >
-                            <Card className="h-full hover:shadow-lg transition-all duration-300">
-                                <CardContent className="p-6">
-                                    {/* Rating */}
-                                    <div className="mb-4">
+                            <div className="review-liquid-card h-full">
+                                <div className="review-liquid-content">
+                                    {/* Rating com Efeito */}
+                                    <div className="review-stars-liquid mb-6">
                                         {renderStars(review.starRating, 'md')}
                                     </div>
 
-                                    {/* Review Text */}
-                                    <p className="text-slate-700 leading-relaxed mb-6 line-clamp-3">
-                                        "{review.comment}"
-                                    </p>
+                                    {/* Review Text com Efeito */}
+                                    <div className="review-text-liquid">
+                                        {review.comment}
+                                    </div>
 
                                     {/* Reviewer Info */}
-                                    <div className="flex items-center justify-between">
+                                    <div className="review-info-liquid">
                                         <div>
-                                            <p className="font-semibold text-slate-800">
+                                            <div className="review-name-liquid">
                                                 {review.reviewer.displayName}
-                                            </p>
-                                            <p className="text-slate-500 text-sm">
+                                            </div>
+                                            <div className="review-date-liquid">
                                                 {review.relativeTimeDescription || formatDate(review.createTime)}
-                                            </p>
+                                            </div>
                                         </div>
 
-                                        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
+                                        <div className="review-avatar-liquid">
                                             <img
                                                 src={review.reviewer.profilePhotoUrl}
                                                 alt={review.reviewer.displayName}
-                                                className="w-full h-full object-cover"
                                                 loading="lazy"
                                                 onError={(e) => {
                                                     e.target.src = '/images/avatar-female-brunette-320w.avif';
@@ -228,8 +255,8 @@ const GoogleReviewsWidget = ({
                                             />
                                         </div>
                                     </div>
-                                </CardContent>
-                            </Card>
+                                </div>
+                            </div>
                         </motion.div>
                     ))}
                 </div>

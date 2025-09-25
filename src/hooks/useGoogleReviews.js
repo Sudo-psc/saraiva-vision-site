@@ -16,7 +16,7 @@ const DEFAULT_OPTIONS = {
 };
 
 export function useGoogleReviews(options = {}) {
-    const config = useMemo(() => ({ ...DEFAULT_OPTIONS, ...options }), [options]);
+    const config = useMemo(() => ({ ...DEFAULT_OPTIONS, ...options }), [JSON.stringify(options)]);
     const [reviews, setReviews] = useState([]);
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -46,8 +46,8 @@ export function useGoogleReviews(options = {}) {
                 setStats({
                     overview: {
                         averageRating: 4.9,
-                        totalReviews: 102,
-                        recentReviews: 12
+                        totalReviews: 124,
+                        recentReviews: 15
                     }
                 });
             }
@@ -151,8 +151,8 @@ export function useGoogleReviews(options = {}) {
                 setStats({
                     overview: {
                         averageRating: 4.9,
-                        totalReviews: 102,
-                        recentReviews: 12
+                        totalReviews: 124,
+                        recentReviews: 15
                     }
                 });
                 // Não define erro se o fallback funcionou

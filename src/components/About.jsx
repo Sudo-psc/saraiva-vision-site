@@ -24,7 +24,7 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="section-padding bg-gray-petrol relative overflow-hidden scroll-block-internal">
+    <section id="about" className="section-padding bg-gray-petrol bg-grid-soft relative overflow-hidden scroll-block-internal">
       {/* Enhanced Background Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-petrol-500/10 to-petrol-700/10 rounded-full blur-3xl animate-pulse-soft" />
@@ -46,23 +46,24 @@ const About = () => {
 
             <div className="grid grid-cols-2 gap-4 relative z-10">
               <div className="space-y-4">
-                <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-64">
+                <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-64 glass-liquid glass-liquid-hover ring-petrol-soft border border-white/40">
                   <img loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt={imageAlts[0]} src={imageUrls[0]} sizes="(min-width: 1024px) 33vw, 50vw" />
                 </div>
-                <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-40">
+                <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-40 glass-liquid glass-liquid-hover ring-petrol-soft border border-white/40">
                   <img loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt={imageAlts[1]} src={imageUrls[1]} sizes="(min-width: 1024px) 33vw, 50vw" />
                 </div>
               </div>
 
               <div className="space-y-4 mt-8">
-                <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-40">
+                <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-40 glass-liquid glass-liquid-hover ring-petrol-soft border border-white/40">
                   <img loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt={imageAlts[2]} src={imageUrls[2]} sizes="(min-width: 1024px) 33vw, 50vw" />
                 </div>
-                <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-64">
+                <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-64 glass-liquid glass-liquid-hover ring-petrol-soft border border-white/40">
                   <img loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt={imageAlts[3]} src={imageUrls[3]} sizes="(min-width: 1024px) 33vw, 50vw" />
                 </div>
               </div>
             </div>
+
           </motion.div>
 
           <motion.div
@@ -72,7 +73,7 @@ const About = () => {
             transition={{ duration: 0.6 }}
             className="flex flex-col space-y-8"
           >
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-petrol-700 via-petrol-800 to-petrol-900 text-white mb-4 w-fit shadow-md border border-petrol-700/50">
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass-liquid glass-liquid-hover ring-petrol-soft border border-white/40 text-petrol-900 mb-4 w-fit shadow-md">
               <span className="text-xl">✦</span>
               <span className="font-bold text-sm tracking-wide uppercase">{t('about.tag')}</span>
             </div>
@@ -129,7 +130,7 @@ const About = () => {
           <motion.div
             whileHover={{ scale: 1.03 }}
             transition={{ type: "spring", stiffness: 200, damping: 30 }}
-            className="relative glass-liquid glass-liquid-hover rounded-3xl shadow-2xl ring-petrol-soft"
+            className="relative glass-liquid glass-liquid-hover rounded-3xl shadow-2xl ring-petrol-soft border border-white/40"
           >
             <div className="absolute -inset-px rounded-3xl border border-transparent bg-gradient-to-br from-petrol-600/20 via-petrol-700/20 to-petrol-900/20 blur-lg group-hover:blur-xl transition-all duration-500" />
 

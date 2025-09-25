@@ -1014,7 +1014,9 @@
     "mockText1": "Atendimento excelente e rápido!",
     "mockText2": "Equipe muito atenciosa e estrutura moderna.",
     "mockText3": "Ótima experiência, recomendo.",
-    "view_all_aria": "Ver todas as avaliações no Google (abre em nova aba)"
+    "view_all_aria": "Ver todas as avaliações no Google (abre em nova aba)",
+    "total_reviews": "avaliações",
+    "recent_reviews": "avaliações recentes"
   },
   "ui": {
     "details": "Ver detalhes",

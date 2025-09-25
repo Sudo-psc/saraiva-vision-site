@@ -1,4 +1,4 @@
-import { createSource } from "../../generated/hypertune";
+import { createSource } from "../../../generated/hypertune";
 
 const hypertuneSource = createSource({
   token: import.meta.env.VITE_HYPERTUNE_TOKEN!,

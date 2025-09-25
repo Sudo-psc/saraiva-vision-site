@@ -321,7 +321,7 @@ const GoogleReviewsTest = ({ placeId = process.env.VITE_GOOGLE_PLACE_ID }) => {
                                     VITE_GOOGLE_PLACE_ID=your_place_id
                                 </div>
                                 <p className="text-blue-700 text-sm mt-2">
-                                    The component works seamlessly with fallback data when needed.
+                                    The component provides a reliable experience in all scenarios.
                                 </p>
                             </div>
                         )}

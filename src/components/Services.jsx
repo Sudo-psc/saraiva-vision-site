@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 import { debounce } from '@/utils/componentUtils';
 import { smoothScrollHorizontal } from '@/utils/scrollUtils';
-import { useAutoplayCarousel } from '@/hooks/useAutoplayCarousel';
+// import { useAutoplayCarousel } from '@/hooks/useAutoplayCarousel'; // Removido temporariamente
 import '@/styles/services-fix.css';
 
 const ServiceCard = React.forwardRef(({ service, index, lazy = true }, ref) => {
@@ -154,25 +154,8 @@ const Services = ({ full = false, autoplay = true }) => {
   const dragStartXRef = useRef(0);
   const scrollStartRef = useRef(0);
 
-  // Autoplay carousel hook integration - só inicializa quando há serviços
-  const autoplayCarousel = useAutoplayCarousel({
-    totalSlides: Math.max(1, serviceItems.length), // Garante que nunca seja 0
-    config: {
-      defaultInterval: 4500,
-      pauseOnHover: true,
-      pauseOnFocus: true,
-      respectReducedMotion: true
-    },
-    onSlideChange: (newIndex, direction) => {
-      if (scrollerRef.current && serviceItems.length > 0) {
-        const targetScroll = newIndex * cardWidthRef.current;
-        smoothScrollHorizontal(scrollerRef.current, targetScroll, 300);
-      }
-    }
-  });
-
-  // Use currentIndex from autoplay hook
-  const currentIndex = autoplayCarousel.currentIndex;
+  // Autoplay removido temporariamente para resolver problemas de build
+  const currentIndex = 0;
 
   // Função para verificar se o container pode rolar mais
   const canScrollFurther = useCallback((el, deltaX) => {
@@ -243,12 +226,9 @@ const Services = ({ full = false, autoplay = true }) => {
     if (!el) return;
     const raw = Math.round(el.scrollLeft / cardWidthRef.current);
     const clamped = Math.max(0, Math.min(serviceItems.length - 1, raw));
-    // Update autoplay hook - use ref to avoid circular dependency
-    const currentIndexRef = autoplayCarousel.currentIndex;
-    if (clamped !== currentIndexRef) {
-      autoplayCarousel.goTo(clamped);
-    }
-  }, [serviceItems.length, autoplayCarousel]);
+    // Autoplay temporarily disabled
+    // TODO: Re-enable autoplay functionality
+  }, [serviceItems.length]);
 
   const scrollToIndex = useCallback((i) => {
     const el = scrollerRef.current;
@@ -260,9 +240,8 @@ const Services = ({ full = false, autoplay = true }) => {
       easing: 'easeOutQuart'
     });
 
-    // Update autoplay hook
-    autoplayCarousel.goTo(i);
-  }, [autoplayCarousel]);
+    // Autoplay temporarily disabled
+  }, []);
 
   const scrollByAmount = useCallback((dir = 1) => {
     const el = scrollerRef.current;
@@ -318,7 +297,7 @@ const Services = ({ full = false, autoplay = true }) => {
     const isTouch = e.pointerType === 'touch' || e.type === 'touchstart';
 
     setIsDragging(true);
-    autoplayCarousel.pause(); // Use hook's pause method
+    // autoplayCarousel.pause(); // Temporarily disabled
     dragStartXRef.current = e.clientX ?? (e.touches?.[0]?.clientX || 0);
     scrollStartRef.current = el.scrollLeft;
 
@@ -348,12 +327,12 @@ const Services = ({ full = false, autoplay = true }) => {
   const endDrag = useCallback(() => {
     if (!isDragging) return;
     setIsDragging(false);
-    // Resume autoplay after delay
+    // Resume autoplay after delay (temporarily disabled)
     setTimeout(() => {
-      autoplayCarousel.resume();
+      // autoplayCarousel.resume();
       snapToNearest();
     }, 300);
-  }, [isDragging, snapToNearest, autoplayCarousel]);
+  }, [isDragging, snapToNearest]);
 
 
 
@@ -373,41 +352,41 @@ const Services = ({ full = false, autoplay = true }) => {
     };
     el.addEventListener('scroll', handleScroll, { passive: true });
     return () => el.removeEventListener('scroll', handleScroll);
-  }, [serviceItems.length, updateIndex, debouncedSnap]);
+  }, [updateIndex, debouncedSnap]);
 
-  // Start autoplay if enabled - apenas quando há serviços carregados
-  useEffect(() => {
-    if (autoplay && autoplayCarousel.isEnabled && serviceItems.length > 0 && !loading) {
-      autoplayCarousel.play();
-    } else {
-      autoplayCarousel.pause();
-    }
-  }, [autoplay, autoplayCarousel, serviceItems.length, loading]);
+  // Start autoplay if enabled - temporarily disabled
+  // useEffect(() => {
+  //   if (autoplay && autoplayCarousel.isEnabled && serviceItems.length > 0 && !loading) {
+  //     autoplayCarousel.play();
+  //   } else {
+  //     autoplayCarousel.pause();
+  //   }
+  // }, [autoplay, autoplayCarousel, serviceItems.length, loading]);
 
-  // Use autoplay hook's built-in interaction handlers
-  useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-
-    // Attach hook's event handlers for hover/focus pause behavior
-    const handlers = autoplayCarousel.handlers;
-    
-    el.addEventListener('mouseenter', handlers.onMouseEnter);
-    el.addEventListener('mouseleave', handlers.onMouseLeave);
-    el.addEventListener('focusin', handlers.onFocus);
-    el.addEventListener('focusout', handlers.onBlur);
-    el.addEventListener('touchstart', handlers.onTouchStart, { passive: true });
-    el.addEventListener('touchend', handlers.onTouchEnd, { passive: true });
-
-    return () => {
-      el.removeEventListener('mouseenter', handlers.onMouseEnter);
-      el.removeEventListener('mouseleave', handlers.onMouseLeave);
-      el.removeEventListener('focusin', handlers.onFocus);
-      el.removeEventListener('focusout', handlers.onBlur);
-      el.removeEventListener('touchstart', handlers.onTouchStart);
-      el.removeEventListener('touchend', handlers.onTouchEnd);
-    };
-  }, [autoplayCarousel.handlers]);
+  // Use autoplay hook's built-in interaction handlers - temporarily disabled
+  // useEffect(() => {
+  //   const el = scrollerRef.current;
+  //   if (!el) return;
+  //
+  //   // Attach hook's event handlers for hover/focus pause behavior
+  //   const handlers = autoplayCarousel.handlers;
+  //   
+  //   el.addEventListener('mouseenter', handlers.onMouseEnter);
+  //   el.addEventListener('mouseleave', handlers.onMouseLeave);
+  //   el.addEventListener('focusin', handlers.onFocus);
+  //   el.addEventListener('focusout', handlers.onBlur);
+  //   el.addEventListener('touchstart', handlers.onTouchStart, { passive: true });
+  //   el.addEventListener('touchend', handlers.onTouchEnd, { passive: true });
+  //
+  //   return () => {
+  //     el.removeEventListener('mouseenter', handlers.onMouseEnter);
+  //     el.removeEventListener('mouseleave', handlers.onMouseLeave);
+  //     el.removeEventListener('focusin', handlers.onFocus);
+  //     el.removeEventListener('focusout', handlers.onBlur);
+  //     el.removeEventListener('touchstart', handlers.onTouchStart);
+  //     el.removeEventListener('touchend', handlers.onTouchEnd);
+  //   };
+  // }, []); // Autoplay handlers removidos temporariamente
 
   // Métricas de paginação para indicadores
   const pageCount = Math.max(1, Math.ceil(serviceItems.length / Math.max(1, itemsPerView)));
@@ -470,7 +449,7 @@ const Services = ({ full = false, autoplay = true }) => {
           <button
             type="button"
             aria-label={t('ui.prev', 'Anterior')}
-            onClick={() => autoplayCarousel.previous()}
+            onClick={() => scrollByAmount(-1)}
             className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/80 hover:bg-white shadow-lg ring-1 ring-slate-200 backdrop-blur justify-center items-center transition focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <svg className="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
@@ -480,7 +459,7 @@ const Services = ({ full = false, autoplay = true }) => {
           <button
             type="button"
             aria-label={t('ui.next', 'Próximo')}
-            onClick={() => autoplayCarousel.next()}
+            onClick={() => scrollByAmount(1)}
             className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/80 hover:bg-white shadow-lg ring-1 ring-slate-200 backdrop-blur justify-center items-center transition focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <svg className="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
@@ -528,7 +507,7 @@ const Services = ({ full = false, autoplay = true }) => {
                 role="tab"
                 aria-label={t('services.go_to_page', { index: i + 1, defaultValue: `Ir para página ${i + 1}` })}
                 aria-selected={i === currentPage}
-                onClick={() => autoplayCarousel.goTo(i * Math.max(1, itemsPerView))}
+                onClick={() => scrollToIndex(i * Math.max(1, itemsPerView))}
                 className={`h-2.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 ${i === currentPage ? 'bg-blue-600 w-6 shadow' : 'bg-slate-300 hover:bg-slate-400 w-2.5'}`}
               />
             ))}

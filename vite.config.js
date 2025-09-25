@@ -1,6 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Enable workbox plugin with VPS environment check
 const plugins = [react({
@@ -78,8 +82,6 @@ export default defineConfig({
           }
         },
       },
-      // Externalize Sentry to avoid build issues with dynamic imports
-      external: ['@sentry/react', '@sentry/tracing']
     },
     copyPublicDir: true, // Ensure public directory is copied including all assets
   },

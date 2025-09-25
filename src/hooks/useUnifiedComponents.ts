@@ -11,7 +11,7 @@ export const useAnimationConfig = (config?: Partial<AnimationConfig>) => {
   const animationConfig: AnimationConfig = {
     reduceMotion: prefersReducedMotion || config?.reduceMotion || false,
     staggerChildren: config?.staggerChildren || 0.05,
-    viewport: config?.viewport || { once: true, margin: '50px' },
+    viewport: config?.viewport || { rootMargin: '50px' },
     choreography: config?.choreography || 'entrance',
     duration: config?.duration || 0.55,
     delay: config?.delay || 0,
@@ -87,7 +87,7 @@ export const useCarousel = <T>(
   const [isDragging, setIsDragging] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const pauseRef = useRef(false);
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number>(0);
   const dragStartXRef = useRef(0);
   const scrollStartRef = useRef(0);
   const cardWidthRef = useRef(320);

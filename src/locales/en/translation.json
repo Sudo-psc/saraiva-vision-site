@@ -894,7 +894,9 @@
     "mockText1": "Excellent and fast service!",
     "mockText2": "Very attentive staff and modern facilities.",
     "mockText3": "Great experience, highly recommend.",
-    "view_all_aria": "View all reviews on Google (opens in new tab)"
+    "view_all_aria": "View all reviews on Google (opens in new tab)",
+    "total_reviews": "reviews",
+    "recent_reviews": "recent reviews"
   },
   "ui": {
     "details": "View details",

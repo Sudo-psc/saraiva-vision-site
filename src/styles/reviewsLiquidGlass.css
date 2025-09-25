@@ -1,0 +1,236 @@
+/**
+ * Reviews Liquid Glass Styles
+ * Estilos específicos para cards de avaliações com efeito de vidro líquido
+ */
+
+/* Card de Review com Vidro Líquido */
+.review-liquid-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.review-liquid-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0.1) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.review-liquid-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.review-liquid-card:hover::before {
+    background: linear-gradient(135deg,
+            rgba(59, 130, 246, 0.1) 0%,
+            rgba(255, 255, 255, 0.1) 50%,
+            rgba(59, 130, 246, 0.1) 100%);
+}
+
+/* Conteúdo do Card */
+.review-liquid-content {
+    position: relative;
+    z-index: 2;
+    padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Efeito de Brilho nas Estrelas */
+.review-stars-liquid {
+    filter: drop-shadow(0 2px 4px rgba(255, 193, 7, 0.3));
+    transition: filter 0.3s ease;
+}
+
+.review-liquid-card:hover .review-stars-liquid {
+    filter: drop-shadow(0 4px 8px rgba(255, 193, 7, 0.5));
+}
+
+/* Texto do Review com Efeito */
+.review-text-liquid {
+    position: relative;
+    color: rgba(51, 65, 85, 0.9);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+.review-text-liquid::before {
+    content: '"';
+    position: absolute;
+    top: -0.5rem;
+    left: -0.5rem;
+    font-size: 3rem;
+    color: rgba(59, 130, 246, 0.2);
+    font-family: serif;
+    line-height: 1;
+    z-index: -1;
+}
+
+/* Avatar com Efeito de Vidro */
+.review-avatar-liquid {
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.review-liquid-card:hover .review-avatar-liquid {
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.review-avatar-liquid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.review-liquid-card:hover .review-avatar-liquid img {
+    transform: scale(1.1);
+}
+
+/* Informações do Reviewer */
+.review-info-liquid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+}
+
+.review-name-liquid {
+    font-weight: 600;
+    color: rgba(15, 23, 42, 0.9);
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+}
+
+.review-date-liquid {
+    color: rgba(100, 116, 139, 0.8);
+    font-size: 0.8rem;
+}
+
+/* Efeito de Ondulação no Hover */
+.review-liquid-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: all 0.6s ease;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.review-liquid-card:hover::after {
+    width: 200%;
+    height: 200%;
+}
+
+/* Animação de Entrada */
+.review-liquid-enter {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    animation: reviewLiquidEnter 0.6s ease-out forwards;
+}
+
+@keyframes reviewLiquidEnter {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .review-liquid-card {
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 16px;
+    }
+
+    .review-liquid-content {
+        padding: 1.25rem;
+    }
+
+    .review-avatar-liquid {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+/* Modo Escuro */
+@media (prefers-color-scheme: dark) {
+    .review-liquid-card {
+        background: rgba(15, 23, 42, 0.8);
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .review-text-liquid {
+        color: rgba(226, 232, 240, 0.9);
+    }
+
+    .review-name-liquid {
+        color: rgba(248, 250, 252, 0.9);
+    }
+
+    .review-date-liquid {
+        color: rgba(148, 163, 184, 0.8);
+    }
+}
+
+/* Redução de Movimento */
+@media (prefers-reduced-motion: reduce) {
+
+    .review-liquid-card,
+    .review-avatar-liquid,
+    .review-avatar-liquid img,
+    .review-liquid-card::after {
+        transition: none;
+        animation: none;
+        transform: none;
+    }
+
+    .review-liquid-card:hover {
+        transform: none;
+    }
+}

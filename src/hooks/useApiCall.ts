@@ -64,14 +64,15 @@ export function useApiCall<T = any>(
     let attemptCount = 0;
     const maxAttempts = (finalOptions.retries || 0) + 1;
 
+    // Construct proper URL outside the loop
+    const url = endpoint.startsWith('http')
+      ? endpoint
+      : endpoint.startsWith('/api/')
+        ? apiUrl(endpoint) // Use apiUrl for /api/ routes
+        : apiUrl(`/${endpoint.replace(/^\//, '')}`); // Ensure proper path
+
     while (attemptCount < maxAttempts) {
       try {
-        // Construct proper URL
-        const url = endpoint.startsWith('http')
-          ? endpoint
-          : endpoint.startsWith('/api/')
-            ? apiUrl(endpoint) // Use apiUrl for /api/ routes
-            : apiUrl(`/${endpoint.replace(/^\//, '')}`); // Ensure proper path
 
         if (isDevelopment) {
           console.log(`API Call [${finalOptions.method}]:`, url);

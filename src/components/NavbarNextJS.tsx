@@ -7,8 +7,7 @@
  */
 
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import {
@@ -143,8 +142,9 @@ const LanguageSwitcherComponent: React.FC = () => {
 // Componente principal do Navbar
 const NavbarNextJS: React.FC<NavbarProps> = ({ className = "" }) => {
   const { t } = useTranslation();
-  const router = useRouter();
-  const pathname = usePathname();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = location.pathname;
 
   // Estados
   const [isScrolled, setIsScrolled] = useState(false);

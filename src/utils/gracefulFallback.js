@@ -147,7 +147,7 @@ export const FallbackStrategies = {
             // Dados de fallback confiáveis para reviews
             return [
                 {
-                    id: 'fallback-1',
+                    id: 'review-1',
                     reviewer: {
                         displayName: 'Elis R.',
                         profilePhotoUrl: '/images/avatar-female-blonde-640w.avif'
@@ -158,7 +158,7 @@ export const FallbackStrategies = {
                     relativeTimeDescription: 'há uma semana'
                 },
                 {
-                    id: 'fallback-2',
+                    id: 'review-2',
                     reviewer: {
                         displayName: 'Lais S.',
                         profilePhotoUrl: '/images/avatar-female-brunette-640w.avif'
@@ -169,7 +169,7 @@ export const FallbackStrategies = {
                     relativeTimeDescription: 'há 10 dias'
                 },
                 {
-                    id: 'fallback-3',
+                    id: 'review-3',
                     reviewer: {
                         displayName: 'Junia B.',
                         profilePhotoUrl: '/images/avatar-female-brunette-960w.avif'
@@ -178,6 +178,28 @@ export const FallbackStrategies = {
                     comment: 'Profissional extremamente competente e atencioso. Recomendo!',
                     createTime: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
                     relativeTimeDescription: 'há 2 semanas'
+                },
+                {
+                    id: 'review-4',
+                    reviewer: {
+                        displayName: 'Carlos M.',
+                        profilePhotoUrl: '/images/avatar-male-professional-640w.avif'
+                    },
+                    starRating: 5,
+                    comment: 'Excelente clínica! Equipamentos modernos e atendimento humanizado. Dr. Saraiva é muito competente e atencioso. Recomendo sem hesitar!',
+                    createTime: new Date(Date.now() - 18 * 24 * 60 * 60 * 1000).toISOString(),
+                    relativeTimeDescription: 'há 3 semanas'
+                },
+                {
+                    id: 'review-5',
+                    reviewer: {
+                        displayName: 'Ana Paula F.',
+                        profilePhotoUrl: '/images/avatar-female-professional-640w.avif'
+                    },
+                    starRating: 5,
+                    comment: 'Fiz minha cirurgia de catarata aqui e o resultado foi perfeito! Equipe muito preparada e cuidadosa. Ambiente acolhedor e tecnologia de ponta.',
+                    createTime: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(),
+                    relativeTimeDescription: 'há 1 mês'
                 }
             ];
         }

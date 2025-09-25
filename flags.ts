@@ -1,4 +1,5 @@
-import { Identify } from "flags";
+// import { Identify } from "flags"; // Circular import fixed
+type Identify<T> = any; // Temporary type definition
 import { dedupe, flag } from "flags/next";
 import { createHypertuneAdapter } from "@flags-sdk/hypertune";
 import {
