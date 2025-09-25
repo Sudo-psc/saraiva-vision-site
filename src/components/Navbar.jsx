@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Menu, X, Calendar, ExternalLink } from 'lucide-react';
 import { Button } from '../components/ui/button.jsx';
@@ -9,7 +9,6 @@ import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const navigate = useNavigate();
 
   // Prevent double-scroll: lock body when mobile menu is open
   useBodyScrollLock(mobileMenuOpen);
@@ -36,6 +35,7 @@ const Navbar = () => {
     { name: 'Instagram', href: 'https://www.instagram.com/saraiva_vision/', internal: false },
   ], []);
 
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
@@ -61,6 +61,7 @@ const Navbar = () => {
                   key={link.name}
                   to={link.href}
                   className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-1"
+                  onClick={() => console.log(`🔗 Link clicado: ${link.name} -> ${link.href}`)}
                 >
                   {link.name}
                 </Link>
@@ -71,6 +72,7 @@ const Navbar = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-1"
+                  onClick={() => console.log(`🔗 Link clicado: ${link.name} -> ${link.href}`)}
                 >
                   {link.name}
                   <ExternalLink size={14} className="text-slate-500" />
@@ -80,13 +82,14 @@ const Navbar = () => {
           </nav>
 
            <div className="hidden md:flex items-center gap-4">
-             <Button
-               onClick={() => navigate('/contato')}
-               className="flex items-center gap-2"
+             <Link
+               to="/contato"
+               className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+               onClick={() => console.log(`🔗 Botão Agendar clicado -> /contato`)}
              >
                <Calendar size={18} />
                <span>Agendar</span>
-             </Button>
+             </Link>
            </div>
 
           <div className="md:hidden flex items-center gap-2">
@@ -113,7 +116,10 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    console.log(`🔗 Link mobile clicado: ${link.name} -> ${link.href}`);
+                  }}
                   className="text-slate-800 hover:text-blue-700 py-2 font-medium text-lg flex items-center gap-2"
                 >
                   {link.name}
@@ -124,7 +130,10 @@ const Navbar = () => {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    console.log(`🔗 Link mobile clicado: ${link.name} -> ${link.href}`);
+                  }}
                   className="text-slate-800 hover:text-blue-700 py-2 font-medium text-lg flex items-center gap-2"
                 >
                   {link.name}
@@ -133,16 +142,17 @@ const Navbar = () => {
               )
             ))}
             <div className="pt-4">
-              <Button
+              <Link
+                to="/contato"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  navigate('/contato');
+                  console.log(`🔗 Botão Agendar mobile clicado -> /contato`);
                 }}
-                className="flex items-center gap-2 w-full justify-center"
+                className="inline-flex items-center gap-2 w-full justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >
                 <Calendar size={18} />
                 <span>Agendar Consulta</span>
-              </Button>
+              </Link>
             </div>
           </nav>
         </div>
