@@ -4,7 +4,6 @@ import { useTranslation, Trans } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Calendar, ArrowRight, Eye } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
-import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { safeOpenUrl } from '@/utils/safeNavigation';
 
 import { smoothScrollTo } from '@/utils/scrollUtils';
@@ -13,7 +12,10 @@ import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 const Hero = () => {
   const { t } = useTranslation();
-  const { openFloatingCTA } = useWhatsApp();
+
+  const openFloatingCTA = () => {
+    window.dispatchEvent(new Event('open-cta-modal'));
+  };
 
 
 

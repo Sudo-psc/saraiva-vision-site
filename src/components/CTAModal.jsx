@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { Globe, MessageCircle, Phone, Mail, X, Bot } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
-import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { CONTACT } from '@/lib/constants';
 // importação dinâmica de analytics
 import { useFocusTrap } from '@/hooks/useFocusTrap';
@@ -14,7 +13,12 @@ const CTAModal = () => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const { generateWhatsAppUrl } = useWhatsApp();
+
+  // Simple WhatsApp URL generator
+  const generateWhatsAppUrl = (message) => {
+    const encodedMessage = encodeURIComponent(message);
+    return `https://wa.me/${CONTACT.PHONE.NUMBER}?text=${encodedMessage}`;
+  };
 
   const modalRef = useFocusTrap(open, {
     onEscape: () => setOpen(false),

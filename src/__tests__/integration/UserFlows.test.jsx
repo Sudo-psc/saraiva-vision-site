@@ -18,9 +18,6 @@ vi.mock('@/components/GoogleReviewsWidget', () => ({
   default: () => <div data-testid="google-reviews">Reviews Widget</div>
 }));
 
-vi.mock('@/components/WhatsappWidget', () => ({
-  default: () => <div data-testid="whatsapp-widget">WhatsApp Widget</div>
-}));
 
 vi.mock('@/lib/loadGoogleMaps', () => ({
   loadGoogleMaps: vi.fn(() => Promise.resolve())
@@ -215,24 +212,6 @@ describe('Critical User Flows Integration Tests', () => {
     });
   });
 
-  describe('WhatsApp Integration Flow', () => {
-    it('displays WhatsApp widget and allows interaction', () => {
-      renderWithRouter(<HomePage />);
-      
-      const whatsappWidget = screen.getByTestId('whatsapp-widget');
-      expect(whatsappWidget).toBeInTheDocument();
-    });
-
-    it('provides WhatsApp contact options in contact section', () => {
-      renderWithRouter(<ContactPage />);
-      
-      // Look for WhatsApp contact buttons
-      const whatsappButton = screen.queryByText(i18n.t('contact.info.phone_whatsapp'));
-      if (whatsappButton) {
-        expect(whatsappButton).toBeInTheDocument();
-      }
-    });
-  });
 
   describe('Responsive Design Flow', () => {
     it('displays mobile-friendly form elements', () => {

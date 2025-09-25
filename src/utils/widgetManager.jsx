@@ -7,7 +7,6 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 // Z-index layers centralizados
 export const WIDGET_LAYERS = {
 	BASE: 50,
-	WHATSAPP: 80,
 	ACCESSIBILITY: 90,
 	CONSENT: 95,
 	MODAL: 100,
@@ -18,7 +17,6 @@ export const WIDGET_LAYERS = {
 export const POSITION_CLASSES = {
 	BOTTOM_RIGHT: 'bottom-20 right-4 sm:bottom-28 sm:right-6',
 	BOTTOM_LEFT: 'bottom-20 left-4 sm:bottom-28 sm:left-6',
-	// Mantém o botão de acessibilidade acima do WhatsApp
 	ACCESSIBILITY: 'bottom-24 left-4 sm:bottom-32 sm:left-6',
 	// STICKY_CTA é tratado no próprio componente (precisa de left e right simultâneos)
 };
@@ -37,15 +35,13 @@ export const WIDGET_CLASSES = {
 export const useWidgetManager = () => {
 	const getWidgetProps = (widgetType) => {
 		const typeMap = {
-			'whatsapp': 'WHATSAPP',
 			'accessibility': 'ACCESSIBILITY',
 			'sticky_cta': 'BASE',
 			'consent': 'CONSENT'
 		};
 
 		const layerKey = typeMap[widgetType] || 'BASE';
-		const positionKey = widgetType === 'whatsapp' ? 'BOTTOM_RIGHT' :
-			widgetType === 'accessibility' ? 'ACCESSIBILITY' :
+		const positionKey = widgetType === 'accessibility' ? 'ACCESSIBILITY' :
 				widgetType === 'sticky_cta' ? 'STICKY_CTA' : 'BOTTOM_RIGHT';
 
 		const zIndexClass = `z-[${WIDGET_LAYERS[layerKey]}]`;

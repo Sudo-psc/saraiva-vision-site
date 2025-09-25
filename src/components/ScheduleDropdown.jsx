@@ -2,18 +2,27 @@ import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Globe, MessageCircle, Calendar } from 'lucide-react';
-import { useWhatsApp } from '@/hooks/useWhatsApp';
 import { clinicInfo } from '@/lib/clinicInfo';
+import { CONTACT } from '@/lib/constants';
 
-const ScheduleDropdown = ({ 
-  isOpen, 
-  onClose, 
+const ScheduleDropdown = ({
+  isOpen,
+  onClose,
   triggerRef,
   className = ""
 }) => {
   const { t } = useTranslation();
   const dropdownRef = useRef(null);
-  const { generateWhatsAppUrl, openFloatingCTA } = useWhatsApp();
+
+  const generateWhatsAppUrl = (message = CONTACT.DEFAULT_MESSAGES.WHATSAPP) => {
+    const encodedMessage = encodeURIComponent(message);
+    return `https://wa.me/${CONTACT.PHONE.NUMBER}?text=${encodedMessage}`;
+  };
+
+  const openFloatingCTA = () => {
+    window.dispatchEvent(new Event('open-cta-modal'));
+  };
+
   const whatsappLink = generateWhatsAppUrl();
 
   // Position calculation

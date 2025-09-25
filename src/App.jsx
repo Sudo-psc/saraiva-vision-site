@@ -25,7 +25,6 @@ import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
 import { Toaster } from './components/ui/toaster.jsx';
 import CTAModal from './components/CTAModal.jsx';
-import AIChatbotWidget from './components/AIChatbotWidget.jsx';
 import ServiceWorkerUpdateNotification from './components/ServiceWorkerUpdateNotification.jsx';
 import Navbar from './components/Navbar.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
@@ -102,7 +101,6 @@ function App() {
             <Toaster />
             <CTAModal />
             <ServiceWorkerUpdateNotification />
-            <AIChatbotWidget position="bottom-right" />
               <Accessibility />
           </WidgetProvider>
     </HelmetProvider>
