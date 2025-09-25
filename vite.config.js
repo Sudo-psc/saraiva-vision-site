@@ -27,7 +27,7 @@ export default defineConfig({
   base: '/', // Ensure proper base path for VPS deployment
   define: {
     // Fallback for legacy process.env usage in libraries
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
   },
   esbuild: {
     charset: 'utf8'
@@ -49,10 +49,11 @@ export default defineConfig({
 
   build: {
     outDir: 'dist',
-    sourcemap: true, // Source maps for debugging
+    sourcemap: false, // Disable source maps for production
     chunkSizeWarningLimit: 600,
     assetsDir: 'assets', // Proper assets directory for VPS
     assetsInlineLimit: 4096, // Inline small assets as base64 for performance
+    minify: 'esbuild', // Enable minification for production
     rollupOptions: {
       input: 'index.html',
       output: {

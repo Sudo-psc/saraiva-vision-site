@@ -8,13 +8,13 @@ const GoogleMap = ({ height = 340 }) => {
       let map = null;
       
       const initMap = () => {
-        if (containerRef.current && window.google) {
-          map = new google.maps.Map(containerRef.current, {
+        if (containerRef.current && window.google && window.google.maps) {
+          map = new window.google.maps.Map(containerRef.current, {
             center: { lat: clinicInfo.latitude, lng: clinicInfo.longitude }, // Caratinga-MG
             zoom: 16
           });
 
-          new google.maps.Marker({
+          new window.google.maps.Marker({
             position: { lat: clinicInfo.latitude, lng: clinicInfo.longitude },
             map: map,
             title: clinicInfo.name

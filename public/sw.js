@@ -90,13 +90,19 @@ self.addEventListener('fetch', (event) => {
 
   // Safari fix: handle errors more gracefully
   const handleError = (error) => {
-    console.warn('SW fetch error:', error);
+    // Only log in development, avoid console spam in production
+    if (self.location.hostname.includes('localhost') || self.location.hostname.includes('127.0.0.1')) {
+      console.warn('SW fetch error:', error);
+    }
     return Response.error();
   };
 
   // Navegações (SPA): Network First com fallback ao cache de index.html
   if (isNavigationRequest(request)) {
-    console.log('SW: Navigation request for:', url.pathname);
+    // Only log in development
+    if (self.location.hostname.includes('localhost') || self.location.hostname.includes('127.0.0.1')) {
+      console.log('SW: Navigation request for:', url.pathname);
+    }
     event.respondWith(
       (async () => {
         try {

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 
-const CompactServiceCard = React.forwardRef(({ service, index }, ref) => {
+const CompactServiceCard = React.forwardRef(({ service, index, t }, ref) => {
   // Enhanced gradient backgrounds for visual variety
   const gradients = [
     'bg-gradient-to-br from-blue-50 via-blue-25 to-indigo-50',
@@ -204,7 +204,7 @@ const CompactServices = () => {
         >
           <AnimatePresence mode="popLayout">
             {visibleItems.map((service, index) => (
-              <CompactServiceCard key={service.id} service={service} index={index} />
+              <CompactServiceCard key={service.id} service={service} index={index} t={t} />
             ))}
           </AnimatePresence>
         </motion.div>

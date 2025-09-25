@@ -247,6 +247,9 @@ const Contact = () => {
 
     setIsSubmitting(true);
 
+    // Prepare submission data (available in both try and catch)
+    let submissionData = null;
+
     try {
       // Execute reCAPTCHA v3 to obtain token
       const token = await executeRecaptcha('contact');
@@ -257,7 +260,7 @@ const Contact = () => {
       }
 
       // Use the enhanced API utility
-      const submissionData = {
+      submissionData = {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
