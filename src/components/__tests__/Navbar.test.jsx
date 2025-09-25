@@ -46,7 +46,7 @@ vi.mock('framer-motion', () => ({
 
 const renderWithRouter = (component) => {
   return render(
-    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <BrowserRouter>
       {component}
     </BrowserRouter>
   )
@@ -69,10 +69,15 @@ describe('Navbar Component', () => {
 
   it('shows navigation links', () => {
     renderWithRouter(<Navbar />)
-    
+
     expect(screen.getByText('Início')).toBeInTheDocument()
     expect(screen.getByText('Serviços')).toBeInTheDocument()
+    expect(screen.getByText('Lentes')).toBeInTheDocument()
+    expect(screen.getByText('Blog')).toBeInTheDocument()
+    expect(screen.getByText('Podcast')).toBeInTheDocument()
     expect(screen.getByText('Sobre Nós')).toBeInTheDocument()
+    expect(screen.getByText('Depoimentos')).toBeInTheDocument()
+    expect(screen.getByText('FAQ')).toBeInTheDocument()
     expect(screen.getByText('Contato')).toBeInTheDocument()
   })
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '../components/Navbar.jsx';
+
 import EnhancedFooter from '../components/EnhancedFooter.jsx';
 import SEOHead from '../components/SEOHead.jsx';
 import ServicesEnhanced from '../components/ServicesEnhanced.jsx';
@@ -16,7 +16,6 @@ const ServicesPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <SEOHead {...seo} />
-      <Navbar />
       <main className="flex-1 pt-28 scroll-block-internal mx-[5%] lg:mx-[10%]">
         <ServicesEnhanced full grid />
       </main>

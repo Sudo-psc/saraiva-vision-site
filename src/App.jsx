@@ -27,6 +27,8 @@ import { Toaster } from './components/ui/toaster.jsx';
 import CTAModal from './components/CTAModal.jsx';
 import WhatsappWidget from './components/WhatsappWidget.jsx';
 import ServiceWorkerUpdateNotification from './components/ServiceWorkerUpdateNotification.jsx';
+import Navbar from './components/Navbar.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { clinicInfo } from './lib/clinicInfo.js';
 import { safePhoneFormat } from './utils/phoneFormatter.js';
 import Accessibility from './components/Accessibility.jsx';
@@ -55,10 +57,17 @@ function App() {
           fixos (WhatsApp, Acessibilidade, toasts, modais), que permanecem
           fora desse container e não sofrem com o bug de fixed + transform.
         */}
-            <div id="app-content">
-              <ScrollToTop />
-              <Suspense fallback={<div className="w-full py-20 text-center text-sm text-slate-700">Carregando...</div>}>
-                <Routes>
+             <div id="app-content">
+               <Navbar />
+               <ScrollToTop />
+               <ErrorBoundary>
+                 <Suspense fallback={
+                   <div className="w-full py-20 text-center">
+                     <div className="text-sm text-slate-700 mb-2">Carregando página...</div>
+                     <div className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"></div>
+                   </div>
+                 }>
+                  <Routes>
                   <Route path="/" element={isCheckSubdomain ? <CheckPage /> : <HomePageLayout />} />
                   <Route path="/check" element={<CheckPage />} />
                   <Route path="/servicos" element={<ServicesPage />} />
@@ -82,9 +91,14 @@ function App() {
                   <Route path="/privacy" element={<PrivacyPolicyPage />} />
                   <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />
                   <Route path="/wp-admin" element={<AdminPage />} />
-                  {isCheckSubdomain ? <Route path="*" element={<Navigate to="/" replace />} /> : null}
-                </Routes>
-              </Suspense>
+                  {isCheckSubdomain ? (
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                  ) : (
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                  )}
+                  </Routes>
+                 </Suspense>
+               </ErrorBoundary>
             </div>
             <Toaster />
             <CTAModal />

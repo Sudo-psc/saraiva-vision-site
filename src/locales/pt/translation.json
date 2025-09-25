@@ -24,7 +24,8 @@
     "scheduling_error": "Serviço indisponível. Use WhatsApp ou ligue para (33) 99860-1427",
     "external_link_warning": "Você será redirecionado para {serviceName}. Continuar?",
     "external_link_title": "Abre em nova aba: {serviceName}",
-    "services_link": "Ver todos os serviços"
+    "services_link": "Ver todos os serviços",
+    "brand": "Saraiva Vision"
   },
   "common": {
     "logo_alt": "Saraiva Vision Logo",

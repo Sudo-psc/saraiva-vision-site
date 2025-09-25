@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
+
 import EnhancedFooter from '../components/EnhancedFooter';
 import SEOHead from '../components/SEOHead';
 import Contact from '../components/Contact';
@@ -17,7 +17,6 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <SEOHead {...seo} />
-      <Navbar />
       <main className="flex-1 pt-28 mx-[2%] md:mx-[3%] lg:mx-[3%] xl:mx-[3.5%]">
         <Contact />
       </main>

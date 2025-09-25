@@ -4,7 +4,7 @@ import SEOHead from '../components/SEOHead';
 import SchemaMarkup from '../components/SchemaMarkup';
 import { useHomeSEO } from '../hooks/useSEO';
 import { initScrollSystem, scrollToHash, cleanupScrollSystem } from '../utils/scrollUtils';
-import Navbar from '../components/Navbar';
+
 import Hero from '../components/Hero';
 import Services from '../components/Services';
 import About from '../components/About';
@@ -63,10 +63,8 @@ function HomePage() {
       <SEOHead {...seoData} />
       <SchemaMarkup type="organization" />
 
-      <div className="min-h-screen bg-white">
-        <Navbar />
-
-        <main>
+       <div className="min-h-screen bg-white">
+         <main>
           <Hero />
           <Services />
           <About />

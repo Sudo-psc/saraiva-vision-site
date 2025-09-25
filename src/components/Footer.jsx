@@ -102,8 +102,8 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-slate-800 text-slate-300 pt-16 pb-8">
-      <div className="container mx-auto">
+    <footer className="bg-slate-800 text-slate-300 pb-8 w-full">
+      <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div>
             <Logo isWhite />

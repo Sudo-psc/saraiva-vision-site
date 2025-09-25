@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Menu, X, Calendar, ExternalLink } from 'lucide-react';
 import { Button } from '../components/ui/button.jsx';
@@ -10,6 +11,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // Prevent double-scroll: lock body when mobile menu is open
   useBodyScrollLock(mobileMenuOpen);
@@ -24,17 +26,17 @@ const Navbar = () => {
   }, []);
 
   const navLinks = useMemo(() => [
-    { name: 'Home', href: '/', internal: true },
-    { name: 'Serviços', href: '/servicos', internal: true },
-    { name: 'Lentes', href: '/lentes', internal: true },
-    { name: 'Blog', href: '/blog', internal: true },
-    { name: 'Podcast', href: '/podcast', internal: true },
-    { name: 'Sobre', href: '/sobre', internal: true },
-    { name: 'Depoimentos', href: '/depoimentos', internal: true },
-    { name: 'FAQ', href: '/faq', internal: true },
-    { name: 'Contato', href: '/contato', internal: true },
+    { name: t('navbar.home'), href: '/', internal: true },
+    { name: t('navbar.services'), href: '/servicos', internal: true },
+    { name: t('navbar.lenses'), href: '/lentes', internal: true },
+    { name: t('navbar.blog'), href: '/blog', internal: true },
+    { name: t('navbar.podcast'), href: '/podcast', internal: true },
+    { name: t('navbar.about'), href: '/sobre', internal: true },
+    { name: t('navbar.testimonials'), href: '/depoimentos', internal: true },
+    { name: t('navbar.faq'), href: '/faq', internal: true },
+    { name: t('navbar.contact'), href: '/contato', internal: true },
     { name: 'Instagram', href: 'https://www.instagram.com/saraiva_vision/', internal: false },
-  ], []);
+  ], [t]);
 
   return (
     <header
@@ -50,11 +52,11 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Link to="/" aria-label="Ir para a página inicial"><Logo /></Link>
+            <Link to="/" aria-label={t('navbar.home_link_label')}><Logo /></Link>
           </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1" aria-label="Navegação principal">
+          <nav className="hidden md:flex items-center space-x-1" aria-label={t('navbar.primary_navigation')}>
             {navLinks.map((link) => (
               link.internal ? (
                 <Link
@@ -85,7 +87,7 @@ const Navbar = () => {
                className="flex items-center gap-2"
              >
                <Calendar size={18} />
-               <span>Agendar</span>
+               <span>{t('navbar.schedule')}</span>
              </Button>
            </div>
 
@@ -95,7 +97,7 @@ const Navbar = () => {
               size="icon"
               className="!h-12 !w-12 rounded-2xl border-blue-500 text-blue-700 bg-white shadow-3d hover:shadow-3d-hover"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+              aria-label={mobileMenuOpen ? t('navbar.close_menu') : t('navbar.open_menu')}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-primary-navigation"
             >
@@ -141,7 +143,7 @@ const Navbar = () => {
                 className="flex items-center gap-2 w-full justify-center"
               >
                 <Calendar size={18} />
-                <span>Agendar Consulta</span>
+                <span>{t('navbar.schedule_consultation')}</span>
               </Button>
             </div>
           </nav>
