@@ -820,6 +820,64 @@ html {
   display: none !important;
 }
 
+/* ===== CHATBOT DE IA - PULSE.LIVE ===== */
+/* Estilos para garantir compatibilidade com outros widgets */
+
+/* Garante que o chatbot não interfira com outros widgets flutuantes */
+[data-live-chat-id] {
+  z-index: 70 !important; /* Abaixo do WhatsApp (80) e Acessibilidade (90) */
+  position: fixed !important;
+  isolation: isolate !important;
+}
+
+/* Posicionamento responsivo do chatbot */
+@media (max-width: 768px) {
+  [data-live-chat-id] {
+    bottom: 1rem !important;
+    right: 1rem !important;
+  }
+}
+
+@media (min-width: 769px) {
+  [data-live-chat-id] {
+    bottom: 1.5rem !important;
+    right: 1.5rem !important;
+  }
+}
+
+/* Garante que o chatbot não cause conflitos de scroll */
+[data-live-chat-id] * {
+  touch-action: pan-y !important;
+  -ms-touch-action: pan-y !important;
+}
+
+/* Estilo para o botão do chatbot */
+[data-live-chat-id] button,
+[data-live-chat-id] .chat-button,
+[data-live-chat-id] .livechat-button {
+  transition: all 0.3s ease !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-live-chat-id] button:hover,
+[data-live-chat-id] .chat-button:hover,
+[data-live-chat-id] .livechat-button:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Garante que o chatbot não interfira com o footer */
+footer ~ [data-live-chat-id] {
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+@media (min-width: 769px) {
+  footer ~ [data-live-chat-id] {
+    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
 @layer components {
   .modern-card {
     @apply bg-white rounded-2xl p-6 shadow-soft-light border-2 border-slate-300 transition-all duration-300 ease-in-out;

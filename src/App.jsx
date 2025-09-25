@@ -26,6 +26,7 @@ import ServiceRedirect from './components/ServiceRedirect.jsx';
 import { Toaster } from './components/ui/toaster.jsx';
 import CTAModal from './components/CTAModal.jsx';
 import WhatsappWidget from './components/WhatsappWidget.jsx';
+import AIChatbotWidget from './components/AIChatbotWidget.jsx';
 import ServiceWorkerUpdateNotification from './components/ServiceWorkerUpdateNotification.jsx';
 import Navbar from './components/Navbar.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
@@ -104,6 +105,7 @@ function App() {
             <CTAModal />
             <ServiceWorkerUpdateNotification />
             <WhatsappWidget phoneNumber={safePhoneFormat(clinicInfo.whatsapp || clinicInfo.phone)} />
+            <AIChatbotWidget position="bottom-right" />
               <Accessibility />
           </WidgetProvider>
     </HelmetProvider>

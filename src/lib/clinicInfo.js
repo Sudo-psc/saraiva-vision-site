@@ -29,6 +29,7 @@ export const clinicInfo = {
   x: 'https://x.com/philipe_saraiva',
   spotify: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
   chatbotUrl: 'https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica',
+  aiChatbotId: '68d52f7bf91669800d0923ac', // Pulse.live chatbot ID
   onlineSchedulingUrl: 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613',
   // Security validation for external integrations
   validateSchedulingUrl: () => {
