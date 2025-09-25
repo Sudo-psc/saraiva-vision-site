@@ -25,13 +25,11 @@ import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
 import { Toaster } from './components/ui/toaster.jsx';
 import CTAModal from './components/CTAModal.jsx';
-import WhatsappWidget from './components/WhatsappWidget.jsx';
 import AIChatbotWidget from './components/AIChatbotWidget.jsx';
 import ServiceWorkerUpdateNotification from './components/ServiceWorkerUpdateNotification.jsx';
 import Navbar from './components/Navbar.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { clinicInfo } from './lib/clinicInfo.js';
-import { safePhoneFormat } from './utils/phoneFormatter.js';
 import Accessibility from './components/Accessibility.jsx';
 import { WidgetProvider } from './utils/widgetManager.jsx';
 
@@ -55,7 +53,7 @@ function App() {
           Envolvemos apenas o conteúdo da aplicação em um wrapper dedicado.
           SCROLL NORMALIZADO: Container sem bloqueios que permite scroll fluido.
           Isso permite aplicar zoom/transform no conteúdo sem afetar widgets
-          fixos (WhatsApp, Acessibilidade, toasts, modais), que permanecem
+          fixos (Chatbot IA, Acessibilidade, toasts, modais), que permanecem
           fora desse container e não sofrem com o bug de fixed + transform.
         */}
              <div id="app-content">
@@ -104,7 +102,6 @@ function App() {
             <Toaster />
             <CTAModal />
             <ServiceWorkerUpdateNotification />
-            <WhatsappWidget phoneNumber={safePhoneFormat(clinicInfo.whatsapp || clinicInfo.phone)} />
             <AIChatbotWidget position="bottom-right" />
               <Accessibility />
           </WidgetProvider>

@@ -825,7 +825,7 @@ html {
 
 /* Garante que o chatbot não interfira com outros widgets flutuantes */
 [data-live-chat-id] {
-  z-index: 70 !important; /* Abaixo do WhatsApp (80) e Acessibilidade (90) */
+  z-index: 80 !important; /* Abaixo da Acessibilidade (90) */
   position: fixed !important;
   isolation: isolate !important;
 }
