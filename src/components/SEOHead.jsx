@@ -156,17 +156,8 @@ const SEOHead = ({
       <link rel="preconnect" href="https://www.google-analytics.com" />
       <link rel="preconnect" href="https://connect.facebook.net" />
 
-      {/* Hero Image Preload (Dr. Philipe) */}
-      <link
-        rel="preload"
-        as="image"
-        href="/images/drphilipe/drphilipe_jaleco_medium.jpeg"
-        imagesrcset="/images/drphilipe/drphilipe_jaleco_medium.jpeg 800w"
-        imagesizes="(min-width:1024px) 800px, 100vw"
-      />
-      {/* Optional future AVIF/WebP variants (placeholders if added later) */}
-      {/* <link rel="preload" as="image" href="/images/drphilipe/drphilipe_jaleco_medium.avif" type="image/avif" /> */}
-      {/* <link rel="preload" as="image" href="/images/drphilipe/drphilipe_jaleco_medium.webp" type="image/webp" /> */}
+      {/* Preload critical images only when actually used */}
+      {/* Removed unused doctor image preload to prevent console warnings */}
 
       {/* DNS Prefetch for External Resources */}
       <link rel="dns-prefetch" href="//www.googletagmanager.com" />

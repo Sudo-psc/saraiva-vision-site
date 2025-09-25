@@ -63,7 +63,7 @@ function HomePage() {
       <SEOHead {...seoData} />
       <SchemaMarkup type="organization" />
 
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white m-0 p-0 w-full">
         <Navbar />
 
         <main>

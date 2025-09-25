@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saraiva Vision - Clínica Oftalmológica</title>
+    <meta name="description"
+        content="Clínica oftalmológica especializada em catarata, glaucoma, retina e cirurgia refrativa. Atendimento médico de qualidade em São Paulo." />
+
+    <!-- React via CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script>
+        console.log('🚀 Iniciando com React CDN...');
+
+        // Verificar se React está disponível
+        if (typeof React === 'undefined') {
+            console.error('❌ React não carregou via CDN');
+            document.getElementById('root').innerHTML = `
+          <div style="padding: 20px; font-family: Arial; background: #f0f0f0; min-height: 100vh;">
+            <h1>🏥 Clínica Saraiva Vision</h1>
+            <p>Erro: React não carregou via CDN</p>
+          </div>
+        `;
+        } else {
+            console.log('✅ React carregado via CDN');
+
+            function App() {
+                const [status, setStatus] = React.useState('Carregando...');
+
+                React.useEffect(() => {
+                    setStatus('React funcionando via CDN!');
+                }, []);
+
+                return React.createElement('div', {
+                    style: {
+                        padding: '20px',
+                        fontFamily: 'Arial, sans-serif',
+                        background: '#f0f0f0',
+                        minHeight: '100vh'
+                    }
+                }, [
+                    React.createElement('h1', {
+                        key: 'title',
+                        style: { color: '#333' }
+                    }, '🏥 Clínica Saraiva Vision'),
+                    React.createElement('p', {
+                        key: 'status',
+                        style: { color: '#666' }
+                    }, status),
+                    React.createElement('div', {
+                        key: 'info',
+                        style: {
+                            background: 'white',
+                            padding: '15px',
+                            borderRadius: '8px',
+                            marginTop: '20px'
+                        }
+                    }, [
+                        React.createElement('h2', { key: 'h2' }, 'Status do Sistema:'),
+                        React.createElement('ul', { key: 'ul' }, [
+                            React.createElement('li', { key: 'li1' }, '✅ HTML carregado'),
+                            React.createElement('li', { key: 'li2' }, '✅ JavaScript executando'),
+                            React.createElement('li', { key: 'li3' }, '✅ React carregado via CDN'),
+                            React.createElement('li', { key: 'li4' }, '✅ Hooks funcionando'),
+                            React.createElement('li', { key: 'li5' }, '✅ Site funcionando!')
+                        ]),
+                        React.createElement('button', {
+                            key: 'btn',
+                            onClick: () => alert('Botão funcionando!'),
+                            style: {
+                                marginTop: '10px',
+                                padding: '10px 20px',
+                                backgroundColor: '#007bff',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: 'pointer'
+                            }
+                        }, 'Testar Interação')
+                    ])
+                ]);
+            }
+
+            // Renderizar quando DOM estiver pronto
+            document.addEventListener('DOMContentLoaded', () => {
+                const root = document.getElementById('root');
+                if (root && typeof ReactDOM !== 'undefined') {
+                    console.log('✅ Renderizando com ReactDOM');
+                    const reactRoot = ReactDOM.createRoot(root);
+                    reactRoot.render(React.createElement(App));
+                } else {
+                    console.error('❌ ReactDOM não disponível');
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

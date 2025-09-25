@@ -1,0 +1,48 @@
+/* 
+ * Fix for Chrome 108+ overflow warnings on img, video and canvas elements
+ * Based on: https://github.com/WICG/view-transitions/blob/main/debugging_overflow_on_images.md
+ */
+
+/* Ensure images respect overflow clipping by default */
+img, video, canvas {
+  overflow: clip !important;
+  overflow-clip-margin: content-box;
+}
+
+/* Specific fixes for images with object-fit */
+img[style*="object-fit"] {
+  overflow: clip !important;
+}
+
+/* Fix for images with border-radius */
+img[style*="border-radius"] {
+  overflow: clip !important;
+}
+
+/* Fix for any images that might have overflow: visible set */
+img[style*="overflow: visible"] {
+  overflow: clip !important;
+}
+
+/* Ensure all images in the application follow the clipping rule */
+.hero img,
+.services img,
+.testimonials img,
+.about img,
+.blog img,
+.footer img {
+  overflow: clip !important;
+  overflow-clip-margin: content-box;
+}
+
+/* Special handling for logo and icon images */
+.logo img,
+.icon img,
+[class*="icon"] img {
+  overflow: clip !important;
+}
+
+/* Fix for any images that inherit overflow properties */
+img[style*="all: inherit"] {
+  overflow: clip !important;
+}

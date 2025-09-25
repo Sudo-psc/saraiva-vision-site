@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { Star, ExternalLink, MessageCircle, RefreshCw, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useGoogleReviews } from '@/hooks/useGoogleReviews';
+import { useGracefulFallback } from '@/hooks/useGracefulFallback';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
@@ -26,7 +27,7 @@ const fallbackReviews = [
         relativeTimeDescription: 'há uma semana'
     },
     {
-        id: 'fallback-2', 
+        id: 'fallback-2',
         reviewer: {
             displayName: 'Lais S.',
             profilePhotoUrl: '/images/avatar-female-brunette-640w.avif'
@@ -57,6 +58,8 @@ const GoogleReviewsWidget = ({
     className = ''
 }) => {
     const { t } = useTranslation();
+    const { isUsingFallback } = useGracefulFallback('googleReviews');
+
     const {
         reviews: apiReviews,
         stats: apiStats,
@@ -69,11 +72,11 @@ const GoogleReviewsWidget = ({
         limit: maxReviews,
         autoFetch: true,
         onError: (err) => {
-            if (err.message.includes('not configured')) {
-                console.info('Google Reviews not configured, using fallback data:', err.message);
-            } else {
-                console.info('Using fallback reviews due to API error:', err.message);
-            }
+            // Log silencioso - sem avisos visuais para o usuário
+            console.info('🔄 Google Reviews: Graceful fallback active', {
+                reason: err.message,
+                timestamp: new Date().toISOString()
+            });
         }
     });
 
@@ -87,11 +90,11 @@ const GoogleReviewsWidget = ({
         }
     };
 
-    const isUsingFallback = !apiReviews || apiReviews.length === 0;
+    // isUsingFallback agora vem do hook useGracefulFallback
 
     const renderStars = (rating, size = 'sm') => {
         const sizeClass = size === 'lg' ? 'w-5 h-5' : size === 'md' ? 'w-4 h-4' : 'w-3 h-3';
-        
+
         return (
             <div className="flex items-center gap-0.5">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -100,7 +103,7 @@ const GoogleReviewsWidget = ({
                         className={`${sizeClass} ${star <= rating
                             ? 'text-yellow-400 fill-yellow-400'
                             : 'text-gray-300'
-                        }`}
+                            }`}
                     />
                 ))}
             </div>
@@ -109,12 +112,12 @@ const GoogleReviewsWidget = ({
 
     const formatDate = (dateString) => {
         if (!dateString) return 'recentemente';
-        
+
         try {
             const date = new Date(dateString);
             const now = new Date();
             const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
-            
+
             if (diffDays === 0) return 'hoje';
             if (diffDays === 1) return 'ontem';
             if (diffDays < 7) return `há ${diffDays} dias`;
@@ -143,11 +146,11 @@ const GoogleReviewsWidget = ({
                             <MessageCircle className="w-4 h-4" />
                             <span className="font-semibold text-sm">{t('reviews.section_title')}</span>
                         </div>
-                        
+
                         <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
                             {t('reviews.main_title')}
                         </h2>
-                        
+
                         <p className="text-slate-600 max-w-2xl mx-auto">
                             {t('reviews.subtitle')}
                         </p>
@@ -170,7 +173,7 @@ const GoogleReviewsWidget = ({
                             </span>
                             <span className="text-slate-600">({stats.overview.totalReviews}+ {t('reviews.total_reviews')})</span>
                         </div>
-                        
+
                         {stats.overview.recentReviews && (
                             <Badge variant="success" className="px-3 py-1">
                                 {stats.overview.recentReviews} {t('reviews.recent_reviews')}
@@ -212,7 +215,7 @@ const GoogleReviewsWidget = ({
                                                 {review.relativeTimeDescription || formatDate(review.createTime)}
                                             </p>
                                         </div>
-                                        
+
                                         <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
                                             <img
                                                 src={review.reviewer.profilePhotoUrl}
@@ -256,17 +259,8 @@ const GoogleReviewsWidget = ({
                     </motion.div>
                 )}
 
-                {/* Development Info */}
-                {process.env.NODE_ENV === 'development' && (
-                    <div className="mt-8 text-center">
-                        <Badge
-                            variant={isUsingFallback ? 'warning' : 'success'}
-                            className="text-xs"
-                        >
-                            {isUsingFallback ? 'Using Fallback Data' : 'Live Google Reviews'}
-                        </Badge>
-                    </div>
-                )}
+                {/* Fallback gracioso - apenas log no console */}
+                {isUsingFallback && console.info('🔄 Google Reviews: Using fallback data for graceful user experience')}
             </div>
         </section>
     );

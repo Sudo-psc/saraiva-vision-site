@@ -125,29 +125,27 @@ const Services = ({ full = false, autoplay = true }) => {
   const [loading, setLoading] = useState(true);
   const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
   
-  const loadServices = useCallback(async () => {
-    setLoading(true);
-    const clinicServices = [
-        { id: 'consultas-oftalmologicas', icon: getServiceIcon('consultas-oftalmologicas', { className: 'w-full h-full object-contain' }), title: t('services.items.consultations.title'), description: t('services.items.consultations.description') },
-        { id: 'exames-de-refracao', icon: getServiceIcon('exames-de-refracao', { className: 'w-full h-full object-contain' }), title: t('services.items.refraction.title'), description: t('services.items.refraction.description') },
-        { id: 'tratamentos-especializados', icon: getServiceIcon('tratamentos-especializados', { className: 'w-full h-full object-contain' }), title: t('services.items.specialized.title'), description: t('services.items.specialized.description') },
-        { id: 'cirurgias-oftalmologicas', icon: getServiceIcon('cirurgias-oftalmologicas', { className: 'w-full h-full object-contain' }), title: t('services.items.surgeries.title'), description: t('services.items.surgeries.description') },
-        { id: 'acompanhamento-pediatrico', icon: getServiceIcon('acompanhamento-pediatrico', { className: 'w-full h-full object-contain' }), title: t('services.items.pediatric.title'), description: t('services.items.pediatric.description') },
-        { id: 'laudos-especializados', icon: getServiceIcon('laudos-especializados', { className: 'w-full h-full object-contain' }), title: t('services.items.reports.title'), description: t('services.items.reports.description') },
-        { id: 'gonioscopia', icon: getServiceIcon('gonioscopia', { className: 'w-full h-full object-contain' }), title: t('services.items.gonioscopy.title'), description: t('services.items.gonioscopy.description') },
-        { id: 'mapeamento-de-retina', icon: getServiceIcon('mapeamento-de-retina', { className: 'w-full h-full object-contain' }), title: t('services.items.retinaMapping.title'), description: t('services.items.retinaMapping.description') },
-        { id: 'topografia-corneana', icon: getServiceIcon('topografia-corneana', { className: 'w-full h-full object-contain' }), title: t('services.items.cornealTopography.title'), description: t('services.items.cornealTopography.description') },
-        { id: 'paquimetria', icon: getServiceIcon('paquimetria', { className: 'w-full h-full object-contain' }), title: t('services.items.pachymetry.title'), description: t('services.items.pachymetry.description') },
-        { id: 'retinografia', icon: getServiceIcon('retinografia', { className: 'w-full h-full object-contain' }), title: t('services.items.retinography.title'), description: t('services.items.retinography.description') },
-        { id: 'campo-visual', icon: getServiceIcon('campo-visual', { className: 'w-full h-full object-contain' }), title: t('services.items.visualField.title'), description: t('services.items.visualField.description') }
-    ];
-    setServices(clinicServices);
-    setLoading(false);
-  }, [t]);
+  // Memoizar os serviços para evitar recriação desnecessária
+  const clinicServices = useMemo(() => [
+    { id: 'consultas-oftalmologicas', icon: getServiceIcon('consultas-oftalmologicas', { className: 'w-full h-full object-contain' }), title: t('services.items.consultations.title'), description: t('services.items.consultations.description') },
+    { id: 'exames-de-refracao', icon: getServiceIcon('exames-de-refracao', { className: 'w-full h-full object-contain' }), title: t('services.items.refraction.title'), description: t('services.items.refraction.description') },
+    { id: 'tratamentos-especializados', icon: getServiceIcon('tratamentos-especializados', { className: 'w-full h-full object-contain' }), title: t('services.items.specialized.title'), description: t('services.items.specialized.description') },
+    { id: 'cirurgias-oftalmologicas', icon: getServiceIcon('cirurgias-oftalmologicas', { className: 'w-full h-full object-contain' }), title: t('services.items.surgeries.title'), description: t('services.items.surgeries.description') },
+    { id: 'acompanhamento-pediatrico', icon: getServiceIcon('acompanhamento-pediatrico', { className: 'w-full h-full object-contain' }), title: t('services.items.pediatric.title'), description: t('services.items.pediatric.description') },
+    { id: 'laudos-especializados', icon: getServiceIcon('laudos-especializados', { className: 'w-full h-full object-contain' }), title: t('services.items.reports.title'), description: t('services.items.reports.description') },
+    { id: 'gonioscopia', icon: getServiceIcon('gonioscopia', { className: 'w-full h-full object-contain' }), title: t('services.items.gonioscopy.title'), description: t('services.items.gonioscopy.description') },
+    { id: 'mapeamento-de-retina', icon: getServiceIcon('mapeamento-de-retina', { className: 'w-full h-full object-contain' }), title: t('services.items.retinaMapping.title'), description: t('services.items.retinaMapping.description') },
+    { id: 'topografia-corneana', icon: getServiceIcon('topografia-corneana', { className: 'w-full h-full object-contain' }), title: t('services.items.cornealTopography.title'), description: t('services.items.cornealTopography.description') },
+    { id: 'paquimetria', icon: getServiceIcon('paquimetria', { className: 'w-full h-full object-contain' }), title: t('services.items.pachymetry.title'), description: t('services.items.pachymetry.description') },
+    { id: 'retinografia', icon: getServiceIcon('retinografia', { className: 'w-full h-full object-contain' }), title: t('services.items.retinography.title'), description: t('services.items.retinography.description') },
+    { id: 'campo-visual', icon: getServiceIcon('campo-visual', { className: 'w-full h-full object-contain' }), title: t('services.items.visualField.title'), description: t('services.items.visualField.description') }
+  ], [t]);
   
   useEffect(() => {
-    loadServices();
-  }, [loadServices]);
+    setLoading(true);
+    setServices(clinicServices);
+    setLoading(false);
+  }, [clinicServices]);
   const scrollerRef = useRef(null);
   const cardWidthRef = useRef(320); // width + gap
   const itemsPerViewRef = useRef(1);

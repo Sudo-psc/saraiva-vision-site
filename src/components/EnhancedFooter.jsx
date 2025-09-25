@@ -305,11 +305,11 @@ const EnhancedFooter = ({
     return (
         <motion.div
             ref={footerRef}
-            className={cn(footerClasses, 'footer-liquid', className)}
+            className={cn(footerClasses, 'footer-liquid', className, 'w-full m-0 p-0')}
             variants={isAnimationEnabled && !shouldReduceMotion ? containerVariants : undefined}
             initial={isAnimationEnabled && !shouldReduceMotion ? 'hidden' : false}
             animate={isAnimationEnabled && !shouldReduceMotion && isFooterVisible ? 'visible' : 'hidden'}
-            style={customProperties}
+            style={{...customProperties, margin: 0, padding: 0, width: '100%'}}
             {...getFooterAriaProps()}
             {...props}
         >
@@ -333,9 +333,9 @@ const EnhancedFooter = ({
             />
 
             {/* Enhanced Footer Content with all original functionality preserved */}
-            <div className="relative z-10 bg-slate-800 text-slate-300 pt-16 pb-8">
-                <div className="container mx-auto px-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+            <div className="relative z-10 bg-slate-800 text-slate-300 pt-16 pb-8 w-full m-0 p-0">
+                <div className="w-full max-w-none mx-0 px-0">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12 px-6">
                         {/* Logo and Partner Section */}
                         <div>
                             <Logo isWhite />
@@ -437,7 +437,7 @@ const EnhancedFooter = ({
                     </div>
 
                     {/* Bottom Section with Enhanced Social Icons */}
-                    <div className="border-t border-slate-700 pt-8">
+                    <div className="border-t border-slate-700 pt-8 px-6">
                         <div className="flex flex-col lg:flex-row justify-between items-start gap-6 lg:gap-8">
                             <div className="flex-1 space-y-2">
                                 <p className="text-slate-400 text-xs leading-snug">

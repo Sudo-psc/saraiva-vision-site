@@ -31,8 +31,8 @@ const GoogleReviewsTest = ({ placeId = process.env.VITE_GOOGLE_PLACE_ID }) => {
                     <Star
                         key={star}
                         className={`w-4 h-4 ${star <= rating
-                                ? 'text-yellow-400 fill-yellow-400'
-                                : 'text-gray-300'
+                            ? 'text-yellow-400 fill-yellow-400'
+                            : 'text-gray-300'
                             }`}
                     />
                 ))}
@@ -311,17 +311,17 @@ const GoogleReviewsTest = ({ placeId = process.env.VITE_GOOGLE_PLACE_ID }) => {
                         </div>
 
                         {(!process.env.VITE_GOOGLE_PLACES_API_KEY || !process.env.VITE_GOOGLE_PLACE_ID) && (
-                            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
-                                <h4 className="font-medium text-yellow-800 mb-2">Setup Required</h4>
-                                <p className="text-yellow-700 text-sm mb-2">
-                                    To use live Google Reviews, configure these environment variables:
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+                                <h4 className="font-medium text-blue-800 mb-2">Configuration Status</h4>
+                                <p className="text-blue-700 text-sm mb-2">
+                                    Configure these environment variables for live Google Reviews:
                                 </p>
-                                <div className="bg-yellow-100 rounded p-2 font-mono text-xs">
+                                <div className="bg-blue-100 rounded p-2 font-mono text-xs">
                                     VITE_GOOGLE_PLACES_API_KEY=your_google_places_api_key<br />
                                     VITE_GOOGLE_PLACE_ID=your_place_id
                                 </div>
-                                <p className="text-yellow-700 text-sm mt-2">
-                                    Until configured, the component will use reliable fallback data.
+                                <p className="text-blue-700 text-sm mt-2">
+                                    The component works seamlessly with fallback data when needed.
                                 </p>
                             </div>
                         )}

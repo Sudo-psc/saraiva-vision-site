@@ -5,6 +5,7 @@ import instagramService from '../../services/instagramService';
 import instagramErrorHandler from '../../services/instagramErrorHandler';
 import InstagramErrorBoundary from './InstagramErrorBoundary';
 import InstagramFallback from './InstagramFallback';
+import InstagramGracefulFallback from './InstagramGracefulFallback';
 import InstagramOfflineIndicator from './InstagramOfflineIndicator';
 import useInstagramOffline from '../../hooks/useInstagramOffline';
 import InstagramPost from './InstagramPost';
@@ -197,7 +198,7 @@ const InstagramFeedContainer = ({
 
         if (!isInstagramEnabled()) {
             console.log('Instagram integration disabled via feature flag');
-            trackInstagramEvent('integration_disabled', { 
+            trackInstagramEvent('integration_disabled', {
                 reason: 'feature_flag',
                 timestamp: new Date().toISOString()
             });
@@ -751,22 +752,14 @@ const InstagramFeedContainer = ({
                     />
                 )}
 
-                {/* Error state with fallback */}
+                {/* Fallback gracioso - sem avisos visuais */}
                 {(error || showFallback) && posts.length === 0 && (
-                    <InstagramFallback
-                        fallbackPosts={fallbackPosts}
-                        errorMessage={error}
-                        errorType={errorType}
-                        lastSuccessfulFetch={lastFetch}
-                        cacheAge={cacheAge}
+                    <InstagramGracefulFallback
                         onRetry={handleRefresh}
-                        onClearCache={() => {
-                            localStorage.removeItem(getCacheKey());
-                            setFallbackPosts([]);
-                            setCacheAge(0);
-                        }}
-                        showCachedContent={true}
-                        showRetryOptions={true}
+                        showRetryButton={true}
+                        maxRetries={3}
+                        retryCount={0}
+                        className="py-8"
                     />
                 )}
 

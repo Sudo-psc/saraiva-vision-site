@@ -251,9 +251,6 @@ export const useAutoplayCarousel = ({
 
     // Progress update interval (using setTimeout instead of rAF for better test compatibility)
     const updateProgress = () => {
-      // Check playing state from ref to avoid stale closure
-      if (!state.isPlaying) return;
-      
       const elapsed = Date.now() - progressStartRef.current;
       const newProgress = Math.min(elapsed / progressDurationRef.current, 1);
       const remaining = Math.max(progressDurationRef.current - elapsed, 0);
@@ -261,7 +258,7 @@ export const useAutoplayCarousel = ({
       setProgress(newProgress);
       setTimeRemaining(remaining);
 
-      if (newProgress < 1 && state.isPlaying) {
+      if (newProgress < 1) {
         progressTimerIdRef.current = setTimeout(updateProgress, 50); // Update every 50ms
       }
     };
@@ -275,7 +272,7 @@ export const useAutoplayCarousel = ({
       // The useEffect cleanup function handles pausing, so we can dispatch directly.
       dispatch({ type: 'NEXT', manual: false });
     }, state.interval);
-  }, [state.interval, state.isPlaying, clearTimers]);
+  }, [state.interval, clearTimers]);
 
   // Control methods
   const play = useCallback(() => {

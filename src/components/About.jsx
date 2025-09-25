@@ -24,13 +24,13 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="section-padding bg-section-gradient relative overflow-hidden scroll-block-internal">
+    <section id="about" className="section-padding bg-gray-petrol relative overflow-hidden scroll-block-internal">
       {/* Enhanced Background Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/8 to-cyan-400/8 rounded-full blur-3xl animate-pulse-soft" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-cyan-400/8 to-teal-400/8 rounded-full blur-3xl animate-pulse-soft" style={{ animationDelay: '1000ms' }} />
-        <div className="absolute top-10 right-20 w-32 h-32 bg-gradient-to-br from-cyan-300/6 to-blue-400/6 rounded-full blur-2xl animate-float" />
-        <div className="absolute bottom-10 left-20 w-24 h-24 bg-gradient-to-br from-green-300/6 to-emerald-400/6 rounded-full blur-2xl animate-float-delayed" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-petrol-500/10 to-petrol-700/10 rounded-full blur-3xl animate-pulse-soft" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-petrol-300/10 to-petrol-600/10 rounded-full blur-3xl animate-pulse-soft" style={{ animationDelay: '1000ms' }} />
+        <div className="absolute top-10 right-20 w-32 h-32 bg-gradient-to-br from-petrol-400/10 to-petrol-700/10 rounded-full blur-2xl animate-float" />
+        <div className="absolute bottom-10 left-20 w-24 h-24 bg-gradient-to-br from-secondary-500/10 to-petrol-600/10 rounded-full blur-2xl animate-float-delayed" />
       </div>
 
       <div className="container mx-auto px-[7%] relative z-10 scroll-block-internal">
@@ -42,7 +42,7 @@ const About = () => {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="absolute -top-12 -left-12 w-72 h-72 bg-gradient-to-br from-blue-200/30 to-indigo-200/30 rounded-full filter blur-3xl"></div>
+            <div className="absolute -top-12 -left-12 w-72 h-72 bg-gradient-to-br from-petrol-300/30 to-petrol-600/30 rounded-full filter blur-3xl"></div>
 
             <div className="grid grid-cols-2 gap-4 relative z-10">
               <div className="space-y-4">
@@ -72,13 +72,13 @@ const About = () => {
             transition={{ duration: 0.6 }}
             className="flex flex-col space-y-8"
           >
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 text-white mb-4 w-fit shadow-md border border-slate-700/50">
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-petrol-700 via-petrol-800 to-petrol-900 text-white mb-4 w-fit shadow-md border border-petrol-700/50">
               <span className="text-xl">✦</span>
               <span className="font-bold text-sm tracking-wide uppercase">{t('about.tag')}</span>
             </div>
 
             <h2 className="text-4xl md:text-5xl font-black leading-tight text-slate-900">
-              <span className="bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 bg-clip-text text-transparent">
+              <span className="petrol-gradient-text">
                 {t('about.title')}
               </span>
             </h2>
@@ -105,9 +105,9 @@ const About = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: 0.1 * index }}
-                  className="flex items-center gap-4 p-3 rounded-xl bg-white/60 backdrop-blur-sm border border-slate-200/50 shadow-sm hover:shadow-md transition-shadow duration-300"
+                  className="flex items-center gap-4 p-3 rounded-xl glass-liquid glass-liquid-hover ring-petrol-soft transition-shadow duration-300"
                 >
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r from-slate-600 to-slate-800 flex items-center justify-center shadow-md">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r from-petrol-600 to-petrol-800 flex items-center justify-center shadow-md">
                     <Check className="h-5 w-5 text-white" />
                   </div>
                   <span className="text-slate-800 font-semibold">{feature}</span>
@@ -129,9 +129,9 @@ const About = () => {
           <motion.div
             whileHover={{ scale: 1.03 }}
             transition={{ type: "spring", stiffness: 200, damping: 30 }}
-            className="relative bg-slate-100/80 backdrop-blur-xl rounded-3xl shadow-2xl border-t border-l border-slate-200/50"
+            className="relative glass-liquid glass-liquid-hover rounded-3xl shadow-2xl ring-petrol-soft"
           >
-            <div className="absolute -inset-px rounded-3xl border border-transparent bg-gradient-to-br from-slate-700/20 via-slate-800/20 to-slate-900/20 blur-lg group-hover:blur-xl transition-all duration-500" />
+            <div className="absolute -inset-px rounded-3xl border border-transparent bg-gradient-to-br from-petrol-600/20 via-petrol-700/20 to-petrol-900/20 blur-lg group-hover:blur-xl transition-all duration-500" />
 
             <div className="relative p-8 md:p-12">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
@@ -145,7 +145,7 @@ const About = () => {
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
-                    <div className="absolute -inset-4 bg-gradient-to-r from-slate-600/30 via-slate-700/30 to-slate-800/30 rounded-3xl blur-xl" style={{ transform: "translateZ(-50px)" }} />
+                    <div className="absolute -inset-4 bg-gradient-to-r from-petrol-600/30 via-petrol-700/30 to-petrol-800/30 rounded-3xl blur-xl" style={{ transform: "translateZ(-50px)" }} />
                     <div className="relative aspect-[3/4] overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-b from-slate-50 to-white" style={{ transform: "translateZ(0)" }}>
                       <ImageWithFallback
                         src="/img/drphilipe_terno.jpeg"
@@ -157,8 +157,8 @@ const About = () => {
                         decoding="async"
                       />
                     </div>
-                    <div className="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-br from-slate-600 to-slate-800 rounded-full opacity-80 animate-pulse" style={{ transform: "translateZ(20px)" }} />
-                    <div className="absolute -bottom-4 -left-4 w-8 h-8 bg-gradient-to-br from-slate-500 to-slate-700 rounded-full opacity-70 animate-bounce" style={{ animationDuration: '3s', transform: "translateZ(-20px)" }} />
+                    <div className="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-br from-petrol-600 to-petrol-800 rounded-full opacity-80 animate-pulse" style={{ transform: "translateZ(20px)" }} />
+                    <div className="absolute -bottom-4 -left-4 w-8 h-8 bg-gradient-to-br from-petrol-500 to-petrol-700 rounded-full opacity-70 animate-bounce" style={{ animationDuration: '3s', transform: "translateZ(-20px)" }} />
                   </motion.div>
                 </motion.div>
 
@@ -166,7 +166,7 @@ const About = () => {
                 <div className="lg:col-span-2 space-y-6 text-center lg:text-left">
                   <div>
                     <h3 className="text-3xl md:text-4xl font-black text-slate-900 mb-2">{t('about.doctor.heading')}</h3>
-                    <p className="text-xl font-bold bg-gradient-to-r from-slate-600 to-slate-800 bg-clip-text text-transparent mb-4">
+                    <p className="text-xl font-bold petrol-gradient-text mb-4">
                       {t('about.doctor.name')} – {t('about.doctor.title')}
                     </p>
                   </div>
