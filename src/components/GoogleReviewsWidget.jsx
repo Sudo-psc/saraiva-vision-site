@@ -3,11 +3,13 @@
  * Reliable component for displaying Google Places reviews
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Star, ExternalLink, MessageCircle, RefreshCw, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useGoogleReviews } from '@/hooks/useGoogleReviews';
+import { fetchPlaceDetails } from '@/lib/fetchPlaceDetails';
+import { clinicInfo } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
@@ -57,6 +59,10 @@ const GoogleReviewsWidget = ({
     className = ''
 }) => {
     const { t } = useTranslation();
+    const [placeData, setPlaceData] = useState(null);
+    const [placeLoading, setPlaceLoading] = useState(true);
+    const [placeError, setPlaceError] = useState(null);
+
     const {
         reviews: apiReviews,
         stats: apiStats,
@@ -77,17 +83,70 @@ const GoogleReviewsWidget = ({
         }
     });
 
-    // Use API data if available and valid, otherwise use fallback
-    const reviews = (apiReviews && apiReviews.length > 0) ? apiReviews.slice(0, maxReviews) : fallbackReviews.slice(0, maxReviews);
-    const stats = apiStats || {
+    // Fetch real place details
+    useEffect(() => {
+        const fetchRealPlaceData = async () => {
+            try {
+                setPlaceLoading(true);
+                setPlaceError(null);
+                
+                const data = await fetchPlaceDetails(clinicInfo.CLINIC_PLACE_ID);
+                setPlaceData(data);
+                
+                console.log('✅ [DEBUG] Dados reais do Google Places obtidos:', {
+                    name: data.name,
+                    rating: data.rating,
+                    userRatingCount: data.userRatingCount,
+                    reviewsCount: data.reviews?.length || 0
+                });
+                
+            } catch (error) {
+                console.error('❌ [ERROR] Erro ao buscar dados do Google Places:', error);
+                setPlaceError(error.message);
+            } finally {
+                setPlaceLoading(false);
+            }
+        };
+
+        if (clinicInfo.CLINIC_PLACE_ID) {
+            fetchRealPlaceData();
+        } else {
+            console.warn('⚠️ [WARNING] CLINIC_PLACE_ID não configurado');
+            setPlaceLoading(false);
+        }
+    }, []);
+
+    // Determine which data to use
+    const hasRealPlaceData = placeData && !placeData.error && placeData.rating > 0;
+    const hasRealReviews = placeData && placeData.reviews && placeData.reviews.length > 0;
+    
+    // Use real reviews if available, otherwise fallback to API reviews, then fallback data
+    let reviews;
+    if (hasRealReviews) {
+        reviews = placeData.reviews.slice(0, maxReviews);
+    } else if (apiReviews && apiReviews.length > 0) {
+        reviews = apiReviews.slice(0, maxReviews);
+    } else {
+        reviews = fallbackReviews.slice(0, maxReviews);
+    }
+
+    // Use real stats if available, otherwise fallback
+    const stats = hasRealPlaceData ? {
+        overview: {
+            averageRating: placeData.rating,
+            totalReviews: placeData.userRatingCount,
+            recentReviews: placeData.reviews?.length || 0
+        }
+    } : (apiStats || {
         overview: {
             averageRating: 4.9,
             totalReviews: 102,
             recentReviews: 12
         }
-    };
+    });
 
-    const isUsingFallback = !apiReviews || apiReviews.length === 0;
+    const isUsingFallback = !hasRealPlaceData && (!apiReviews || apiReviews.length === 0);
+    const dataSource = hasRealPlaceData ? 'Google Places' : (apiReviews?.length > 0 ? 'API Reviews' : 'Fallback Data');
 
     const renderStars = (rating, size = 'sm') => {
         const sizeClass = size === 'lg' ? 'w-5 h-5' : size === 'md' ? 'w-4 h-4' : 'w-3 h-3';
@@ -126,7 +185,11 @@ const GoogleReviewsWidget = ({
         }
     };
 
-    const googleUrl = 'https://www.google.com/maps/place/Saraiva+Vision+-+Oftalmologia/@-19.9166667,-43.9555556,17z';
+    // Use real Google Maps URL if available
+    const googleUrl = hasRealPlaceData && placeData.url 
+        ? placeData.url 
+        : `https://www.google.com/maps/place/?q=place_id:${clinicInfo.CLINIC_PLACE_ID}` || 
+          'https://www.google.com/maps/place/Saraiva+Vision+-+Oftalmologia/@-19.9166667,-43.9555556,17z';
 
     return (
         <section className={`py-12 bg-white ${className}`}>
@@ -258,13 +321,33 @@ const GoogleReviewsWidget = ({
 
                 {/* Development Info */}
                 {process.env.NODE_ENV === 'development' && (
-                    <div className="mt-8 text-center">
-                        <Badge
-                            variant={isUsingFallback ? 'warning' : 'success'}
-                            className="text-xs"
-                        >
-                            {isUsingFallback ? 'Using Fallback Data' : 'Live Google Reviews'}
-                        </Badge>
+                    <div className="mt-8 text-center space-y-2">
+                        <div className="flex flex-wrap justify-center gap-2">
+                            <Badge
+                                variant={hasRealPlaceData ? 'success' : isUsingFallback ? 'warning' : 'info'}
+                                className="text-xs"
+                            >
+                                Data Source: {dataSource}
+                            </Badge>
+                            
+                            {placeLoading && (
+                                <Badge variant="info" className="text-xs">
+                                    Loading Place Data...
+                                </Badge>
+                            )}
+                            
+                            {placeError && (
+                                <Badge variant="destructive" className="text-xs">
+                                    Place Error: {placeError}
+                                </Badge>
+                            )}
+                            
+                            {hasRealPlaceData && (
+                                <Badge variant="success" className="text-xs">
+                                    ⭐ {placeData.rating} ({placeData.userRatingCount} reviews)
+                                </Badge>
+                            )}
+                        </div>
                     </div>
                 )}
             </div>

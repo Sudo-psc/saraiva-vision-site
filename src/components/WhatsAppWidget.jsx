@@ -17,107 +17,55 @@ const WhatsAppWidget = ({
 
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
+  const floatButtonStyle = {
+    width: '56px',
+    height: '56px',
+    bottom: '20px',
+    right: '20px',
+    borderRadius: '100%',
+    position: 'fixed',
+    zIndex: 99999,
+    display: 'flex',
+    transition: 'all .3s',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: '#25D366',
+    boxShadow: '0 2px 10px rgba(37, 211, 102, 0.3)',
+    textDecoration: 'none'
+  };
+
+  const imgStyle = {
+    width: '24px',
+    height: '24px',
+    position: 'relative',
+    filter: 'brightness(0) invert(1)'
+  };
+
   return (
     <>
       <a
         href={whatsappUrl}
-        className="wa-float-img-circle"
+        style={floatButtonStyle}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Contatar via WhatsApp"
+        onMouseEnter={(e) => {
+          e.target.style.boxShadow = '0px 3px 16px rgba(37, 211, 102, 0.4)';
+          e.target.style.transform = 'scale(1.05)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.boxShadow = '0 2px 10px rgba(37, 211, 102, 0.3)';
+          e.target.style.transform = 'scale(1)';
+        }}
         {...props}
       >
         <img
           src="https://cdn.sendpulse.com/img/messengers/sp-i-small-forms-wa.svg"
           alt="WhatsApp"
           loading="lazy"
+          style={imgStyle}
         />
       </a>
-      <style jsx>{`
-        .wa-float-img-circle {
-          width: 56px;
-          height: 56px;
-          bottom: 20px;
-          right: 20px;
-          border-radius: 100%;
-          position: fixed;
-          z-index: 99999;
-          display: flex;
-          transition: all .3s;
-          align-items: center;
-          justify-content: center;
-          background: #25D366;
-          box-shadow: 0 2px 10px rgba(37, 211, 102, 0.3);
-        }
-
-        .wa-float-img-circle img {
-          width: 24px;
-          height: 24px;
-          position: relative;
-          filter: brightness(0) invert(1);
-        }
-
-        .wa-float-img-circle:before {
-          position: absolute;
-          content: '';
-          background-color: #25D366;
-          width: 70px;
-          height: 70px;
-          bottom: -7px;
-          right: -7px;
-          border-radius: 100%;
-          animation: wa-float-circle-fill-anim 2.3s infinite ease-in-out;
-          transform-origin: center;
-          opacity: .2;
-        }
-
-        .wa-float-img-circle:hover {
-          box-shadow: 0px 3px 16px rgba(37, 211, 102, 0.4);
-          transform: scale(1.05);
-        }
-
-        .wa-float-img-circle:focus {
-          box-shadow: 0px 0 0 3px rgba(37, 211, 102, 0.3);
-          outline: none;
-        }
-
-        .wa-float-img-circle:hover:before,
-        .wa-float-img-circle:focus:before {
-          display: none;
-        }
-
-        @keyframes wa-float-circle-fill-anim {
-          0% {
-            transform: rotate(0deg) scale(0.7) skew(1deg);
-          }
-          50% {
-            transform: rotate(0deg) scale(1) skew(1deg);
-          }
-          100% {
-            transform: rotate(0deg) scale(0.7) skew(1deg);
-          }
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 640px) {
-          .wa-float-img-circle {
-            width: 50px;
-            height: 50px;
-            bottom: 15px;
-            right: 15px;
-          }
-
-          .wa-float-img-circle img {
-            width: 20px;
-            height: 20px;
-          }
-        }
-
-        /* Ensure widget stays above other elements */
-        .wa-float-img-circle {
-          z-index: 99999 !important;
-        }
-      `}</style>
     </>
   );
 };

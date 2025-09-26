@@ -149,7 +149,7 @@ const About = () => {
                     <div className="absolute -inset-4 bg-gradient-to-r from-slate-600/30 via-slate-700/30 to-slate-800/30 rounded-3xl blur-xl" style={{ transform: "translateZ(-50px)" }} />
                     <div className="relative aspect-[3/4] overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-b from-slate-50 to-white" style={{ transform: "translateZ(0)" }}>
                       <ImageWithMultipleFallbacks
-                        sources={["/img/drphilipe_novo.jpg", "/img/drphilipe_terno.jpeg"]}
+                        sources={["/images/drphilipe/drphilipe_jaleco Medium.jpeg", "/img/drphilipe_novo.jpg", "/img/drphilipe_terno.jpeg"]}
                         alt={t('about.doctor.alt')}
                         width={300}
                         height={400}
