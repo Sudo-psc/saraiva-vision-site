@@ -11,8 +11,6 @@ build/
 .env.development.local
 .env.test.local
 .env.production.local
-.env.docker
-.env.docker.local
 
 # Logs
 *.log
@@ -71,4 +69,6 @@ wordpress-local/wp-cli.phar
 webapp/.git_disabled/
 *.pack
 *.idx
-.vercel
+
+# Nginx only deployment - clean architecture
+# No Vercel, Docker or deployment artifacts needed

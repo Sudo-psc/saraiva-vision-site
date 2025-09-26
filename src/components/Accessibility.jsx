@@ -77,6 +77,7 @@ const profiles = {
 const Accessibility = () => {
   const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [state, setState] = useState(() => {
     try {
       const saved = localStorage.getItem('accessibility-settings');
@@ -88,6 +89,7 @@ const Accessibility = () => {
   const panelRef = useRef(null);
   const rulerRef = useRef(null);
   const speechRef = useRef(null);
+  const hideTimerRef = useRef(null);
   const { getWidgetProps } = useWidgetManager();
   const widgetProps = getWidgetProps('accessibility');
 
@@ -209,11 +211,41 @@ const Accessibility = () => {
     ariaAnnounce('Configurações de acessibilidade restauradas');
   };
 
+  // Auto-hide timer - 5 seconds after component mount
+  useEffect(() => {
+    hideTimerRef.current = setTimeout(() => {
+      setVisible(false);
+    }, 5000);
+
+    return () => {
+      if (hideTimerRef.current) {
+        clearTimeout(hideTimerRef.current);
+      }
+    };
+  }, []);
+
+  // Reset visibility on user interaction
+  const handleUserInteraction = () => {
+    if (hideTimerRef.current) {
+      clearTimeout(hideTimerRef.current);
+    }
+    setVisible(true);
+
+    // Set new hide timer
+    hideTimerRef.current = setTimeout(() => {
+      setVisible(false);
+    }, 5000);
+  };
+
   // Keyboard shortcuts
   useEffect(() => {
     const handler = (e) => {
       if (e.key === 'Escape' && open) setOpen(false);
-      if (e.altKey && e.key.toLowerCase() === 'a') { e.preventDefault(); setOpen(o => !o); }
+      if (e.altKey && e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        handleUserInteraction();
+        setOpen(o => !o);
+      }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
@@ -259,27 +291,38 @@ const Accessibility = () => {
   return (
     <>
       {/* Floating Button - bottom-left small bubble */}
-      <div className={`floating-widget widget-smooth ${widgetProps.className} ${widgetProps.positionClass} ${widgetProps.zIndexClass} widget-lower-10`}>
-        <div className="relative group">
-          <motion.button
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            whileHover={{ scale: 1.07 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setOpen(o => !o)}
-            aria-haspopup="dialog"
-            aria-expanded={open}
-            aria-label={t('accessibility.toggle', 'Acessibilidade')}
-            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-blue-600/35 via-cyan-500/35 to-teal-500/35 hover:from-blue-500/70 hover:via-cyan-400/70 hover:to-teal-400/70 text-white border border-white/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600/50 backdrop-blur-md transition-all duration-300 ease-in-out"
-            style={{ touchAction: 'manipulation' }}
-          >
-            <AccessibilityIcon size={22} className="text-white drop-shadow" />
-          </motion.button>
-          <div className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 bg-black text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
-            Acessibilidade
+      <AnimatePresence>
+        {visible && (
+          <div className={`floating-widget widget-smooth ${widgetProps.className} ${widgetProps.positionClass} ${widgetProps.zIndexClass} widget-lower-10`}>
+            <div className="relative group">
+              <motion.button
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                whileHover={{ scale: 1.07 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  handleUserInteraction();
+                  setOpen(o => !o);
+                }}
+                onMouseEnter={handleUserInteraction}
+                onFocus={handleUserInteraction}
+                aria-haspopup="dialog"
+                aria-expanded={open}
+                aria-label={t('accessibility.toggle', 'Acessibilidade')}
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-blue-600/35 via-cyan-500/35 to-teal-500/35 hover:from-blue-500/70 hover:via-cyan-400/70 hover:to-teal-400/70 text-white border border-white/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600/50 backdrop-blur-md transition-all duration-300 ease-in-out"
+                style={{ touchAction: 'manipulation' }}
+              >
+                <AccessibilityIcon size={22} className="text-white drop-shadow" />
+              </motion.button>
+              <div className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 bg-black text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
+                Acessibilidade
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        )}
+      </AnimatePresence>
 
       {/* Side Panel */}
       <AnimatePresence>
