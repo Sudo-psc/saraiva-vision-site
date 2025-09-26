@@ -1,39 +1,72 @@
 import React, { useEffect, useRef } from 'react';
 import { clinicInfo } from '@/lib/clinicInfo';
+import { loadGoogleMaps } from '@/lib/loadGoogleMaps';
 
 const GoogleMap = ({ height = 340 }) => {
     const containerRef = useRef(null);
+    const mapRef = useRef(null);
+    const markerRef = useRef(null);
 
     useEffect(() => {
-      let map = null;
+      let isMounted = true;
       
-      const initMap = () => {
-        if (containerRef.current && window.google && window.google.maps) {
-          map = new window.google.maps.Map(containerRef.current, {
-            center: { lat: clinicInfo.latitude, lng: clinicInfo.longitude }, // Caratinga-MG
-            zoom: 16
+      const initMap = async () => {
+        try {
+          // Ensure Google Maps is loaded with required libraries
+          await loadGoogleMaps();
+          
+          if (!isMounted || !containerRef.current) return;
+
+          // Create map instance
+          const { Map } = await window.google.maps.importLibrary('maps');
+          const { AdvancedMarkerElement } = await window.google.maps.importLibrary('marker');
+          
+          const map = new Map(containerRef.current, {
+            center: { lat: clinicInfo.latitude, lng: clinicInfo.longitude },
+            zoom: 16,
+            mapId: 'SARAIVA_VISION_MAP', // Required for AdvancedMarkerElement
+            disableDefaultUI: false,
+            zoomControl: true,
+            mapTypeControl: false,
+            scaleControl: true,
+            streetViewControl: true,
+            rotateControl: false,
+            fullscreenControl: true
           });
 
-          new window.google.maps.Marker({
-            position: { lat: clinicInfo.latitude, lng: clinicInfo.longitude },
+          // Create advanced marker
+          const marker = new AdvancedMarkerElement({
             map: map,
-            title: clinicInfo.name
+            position: { lat: clinicInfo.latitude, lng: clinicInfo.longitude },
+            title: clinicInfo.name,
+            gmpDraggable: false
           });
+
+          // Store references for cleanup
+          mapRef.current = map;
+          markerRef.current = marker;
+
+          console.log('✅ [DEBUG] Mapa inicializado com AdvancedMarkerElement');
+          
+        } catch (error) {
+          console.error('❌ [ERROR] Erro ao inicializar mapa:', error);
         }
       };
       
-      // The Google Maps script is assumed to be loaded globally
-      if (window.google && window.google.maps) {
-        initMap();
-      } else {
-        console.error("Google Maps script not loaded. Please ensure it's included in your index.html.");
-      }
+      initMap();
       
       return () => { 
-        // Cleanup logic if needed
-        if (map) {
-          // Potentially unmount or clear map instance listeners here
-          map = null; 
+        isMounted = false;
+        
+        // Cleanup marker
+        if (markerRef.current) {
+          markerRef.current.map = null;
+          markerRef.current = null;
+        }
+        
+        // Cleanup map
+        if (mapRef.current) {
+          mapRef.current = null;
         }
       };
     }, []);
