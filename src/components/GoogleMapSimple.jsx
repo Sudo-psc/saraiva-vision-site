@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { clinicInfo } from '@/lib/clinicInfo';
+import { loadGoogleMaps } from '@/lib/loadGoogleMaps';
 
 const GoogleMapSimple = ({ height = 340 }) => {
     const containerRef = useRef(null);
@@ -21,55 +22,21 @@ const GoogleMapSimple = ({ height = 340 }) => {
             return;
         }
 
-        // Check if Google Maps is already loaded
-        if (window.google && window.google.maps) {
-            console.log('✅ Google Maps já carregado, criando mapa...');
-            createMap();
-            return;
-        }
-
-        // Create a unique callback name
-        const callbackName = `initMap${Date.now()}`;
-
-        // Define the callback function
-        window[callbackName] = () => {
-            console.log('✅ Callback executado, criando mapa...');
-            createMap();
-            // Clean up the callback
-            delete window[callbackName];
+        // Use the centralized loading system
+        const initializeMap = async () => {
+            try {
+                console.log('🚀 Iniciando carregamento do Google Maps...');
+                await loadGoogleMaps(apiKey);
+                console.log('✅ Google Maps carregado, criando mapa...');
+                createMap();
+            } catch (mapError) {
+                console.error('❌ Erro ao carregar Google Maps:', mapError);
+                setError(`Erro ao carregar Google Maps: ${mapError.message}`);
+                setLoading(false);
+            }
         };
 
-        // Check if script already exists to avoid duplicates
-        const existingScript = document.querySelector('script[src*="maps.googleapis.com"]');
-        if (existingScript) {
-            console.log('⚠️ Script já existe, aguardando callback...');
-            // If script exists but callback hasn't been called, wait a bit
-            setTimeout(() => {
-                if (window.google && window.google.maps) {
-                    createMap();
-                } else {
-                    setError('Google Maps não carregou após timeout');
-                    setLoading(false);
-                }
-            }, 3000);
-            return;
-        }
-
-        // Create script element
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=${callbackName}`;
-        script.async = true;
-        script.defer = true;
-
-        script.onerror = (error) => {
-            console.error('❌ Erro ao carregar script:', error);
-            setError('Erro ao carregar Google Maps API');
-            setLoading(false);
-            delete window[callbackName];
-        };
-
-        console.log('📝 Adicionando script ao DOM...');
-        document.head.appendChild(script);
+        initializeMap();
 
         function createMap() {
             try {
@@ -106,12 +73,7 @@ const GoogleMapSimple = ({ height = 340 }) => {
             }
         }
 
-        return () => {
-            // Cleanup callback if component unmounts
-            if (window[callbackName]) {
-                delete window[callbackName];
-            }
-        };
+        // No cleanup needed since we're using the centralized loading system
     }, []);
 
     if (error) {
