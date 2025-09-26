@@ -1,6 +1,0 @@
-query FullQuery {
-  root {
-    exampleFlag
-    enableDesignV2
-  }
-}

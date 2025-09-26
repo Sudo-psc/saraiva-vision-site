@@ -83,7 +83,7 @@ O projeto utiliza uma arquitetura modular e escalável:
 
 ### Backend & APIs
 - **Supabase** - Backend as a Service
-- **Vercel Serverless Functions** - Funções serverless
+- **Node.js REST API** - API backend com Express.js
 - **Edge Functions** - Processamento na edge
 - **WebSockets** - Comunicação em tempo real
 
@@ -126,12 +126,12 @@ git clone https://github.com/Sudo-psc/saraivavision-site-v2.git
 docker-compose -f docker-compose.dev.yml up --build
 git clone https://github.com/Sudo-psc/saraivavision-site-v2.git
 
-## 🛠️ Configuração e Deploy no Vercel
+## 🛠️ Configuração e Deploy do Servidor
 
 ### Pré-requisitos
-- Conta no [Vercel](https://vercel.com/)
-- Vercel CLI (`npm i -g vercel`)
-- Node.js 22+ e npm
+- Servidor Linux com Nginx
+- Node.js 18+ e npm
+- PM2 para gerenciamento de processos
 - Git
 
 ### Instalação e Deploy
@@ -148,32 +148,35 @@ cp .env.example .env
 # Edite o arquivo .env com suas configurações
 ```
 
-3. **Faça login no Vercel**
+3. **Instale as dependências**
 ```bash
-npx vercel login
+npm install
 ```
 
-4. **Deploy Simples (Recomendado)**
+4. **Build do projeto**
 ```bash
-npm run deploy:simple
-```
-
-5. **Deploy Inteligente (com fallback e auto-recuperação)**
-```bash
-npm run deploy:intelligent
-```
-
-6. **Deploy Manual**
-```bash
-# Teste o build
 npm run build
-# Deploy manual
-npx vercel --prod --yes
 ```
 
-> Consulte [`VERCEL_DEPLOYMENT_GUIDE.md`](./VERCEL_DEPLOYMENT_GUIDE.md) para detalhes de estratégias, troubleshooting e comandos avançados.
+5. **Deploy para o servidor**
+```bash
+# Deploy para produção
+npm run deploy:production
 
-O site ficará disponível em uma URL do Vercel após o deploy.
+# Deploy para staging
+npm run deploy:preview
+```
+
+6. **Configurar Nginx (no servidor)**
+```bash
+# Copiar arquivos para o diretório web
+sudo cp -r dist/* /var/www/html/
+
+# Recarregar Nginx
+sudo systemctl reload nginx
+```
+
+O site ficará disponível no domínio configurado no servidor após o deploy.
 
 
 ## 📝 Scripts Disponíveis
@@ -186,9 +189,9 @@ O site ficará disponível em uma URL do Vercel após o deploy.
 | `npm run test` | Executa testes em modo watch |
 | `npm run test:run` | Executa todos os testes |
 | `npm run test:coverage` | Gera relatório de cobertura |
-| `npm run deploy:simple` | Deploy rápido no Vercel |
-| `npm run deploy:intelligent` | Deploy inteligente com fallback e auto-recuperação |
-| `npm run deploy:config` | Gerenciamento de configurações do Vercel |
+| `npm run deploy:production` | Deploy completo para produção |
+| `npm run deploy:preview` | Deploy para ambiente de staging |
+| `npm run deploy:health` | Verificação de saúde do servidor |
 
 ## 🧪 Testes
 
@@ -284,15 +287,15 @@ Exibição dinâmica de avaliações do Google com filtragem
 npm run build
 ```
 
-### Deploy no Vercel
+### Deploy para Servidor
 ```bash
-npm run deploy:simple
+npm run deploy:production
 # ou
-npm run deploy:intelligent
+npm run deploy:preview
 ```
 
 ### Configuração Avançada
-O arquivo [`vercel.json`](./vercel.json) define rotas, headers de segurança, regiões e limites de funções serverless. Veja exemplos e opções no guia de deploy.
+O Nginx é configurado para servir arquivos estáticos e fazer proxy das requisições da API. Headers de segurança e cache são configurados diretamente no servidor web.
 
 ## 📊 SEO e Performance
 
@@ -317,7 +320,7 @@ O arquivo [`vercel.json`](./vercel.json) define rotas, headers de segurança, re
 
 ### Medidas Implementadas
 - **HTTPS Enforced**: SSL/TLS obrigatório
-- **Security Headers**: Proteção contra XSS e CSRF (configurado em `vercel.json`)
+- **Security Headers**: Proteção contra XSS e CSRF (configurado no Nginx)
 - **Content Security Policy**: Política de segurança rigorosa
 - **Input Sanitization**: Validação de dados
 - **LGPD Compliance**: Conformidade com proteção de dados
@@ -345,9 +348,10 @@ O arquivo [`vercel.json`](./vercel.json) define rotas, headers de segurança, re
 - Alertas de performance
 - Otimização automática
 
-### Vercel Intelligent Deploy
-- Deploy resiliente, com fallback automático e monitoramento de saúde
-- Suporte a múltiplos ambientes e estratégias de runtime
+### Deploy Inteligente
+- Deploy resiliente com verificação de saúde automática
+- Suporte a múltiplos ambientes (produção/staging)
+- Rollback automático em caso de falhas
 
 ## 👥 Equipe de Desenvolvimento
 
@@ -394,7 +398,7 @@ Para contribuir com o projeto, siga as diretrizes de desenvolvimento e abra um P
 
 
 ### 🚀 Deploy e Produção
-- **[✅ Guia de Deploy Vercel](./VERCEL_DEPLOYMENT_GUIDE.md)** - Estratégias, troubleshooting e comandos
+- **[✅ Guia de Deploy](./DEPLOYMENT_GUIDE.md)** - Estratégias, troubleshooting e comandos
 - **[📄 Status do Deploy](./DEPLOY_STATUS.md)** - Status e histórico de deploys
 - **[🔒 Playbook de Segurança](./SECURITY_ROTATION_PLAYBOOK.md)** - Rotação de credenciais
 

@@ -8,7 +8,7 @@ import { ImageIcon, AlertCircle } from 'lucide-react';
  */
 const OptimizedImage = ({
     src,
-    alt = '',
+    alt = 'Imagem',
     width,
     height,
     className = '',

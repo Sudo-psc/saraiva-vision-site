@@ -30,7 +30,6 @@ import Navbar from './components/Navbar.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { clinicInfo } from './lib/clinicInfo.js';
 import Accessibility from './components/Accessibility.jsx';
-import WhatsAppWidget from './components/WhatsAppWidget.jsx';
 import { WidgetProvider } from './utils/widgetManager.jsx';
 
 import { initErrorTracking } from './utils/errorTracking.js';
@@ -103,7 +102,6 @@ function App() {
             <CTAModal />
             <ServiceWorkerUpdateNotification />
               <Accessibility />
-              <WhatsAppWidget />
           </WidgetProvider>
     </HelmetProvider>
   );
