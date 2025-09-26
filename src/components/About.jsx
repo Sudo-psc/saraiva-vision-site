@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Check } from 'lucide-react';
 import OptimizedPicture from './ui/OptimizedPicture.jsx';
 import ImageWithFallback from './ui/ImageWithFallback.jsx';
+import ImageWithMultipleFallbacks from './ui/ImageWithMultipleFallbacks.jsx';
 
 const About = () => {
   const { t } = useTranslation();
@@ -147,8 +148,8 @@ const About = () => {
                   >
                     <div className="absolute -inset-4 bg-gradient-to-r from-slate-600/30 via-slate-700/30 to-slate-800/30 rounded-3xl blur-xl" style={{ transform: "translateZ(-50px)" }} />
                     <div className="relative aspect-[3/4] overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-b from-slate-50 to-white" style={{ transform: "translateZ(0)" }}>
-                      <ImageWithFallback
-                        src="/img/drphilipe_terno.jpeg"
+                      <ImageWithMultipleFallbacks
+                        sources={["/img/drphilipe_novo.jpg", "/img/drphilipe_terno.jpeg"]}
                         alt={t('about.doctor.alt')}
                         width={300}
                         height={400}

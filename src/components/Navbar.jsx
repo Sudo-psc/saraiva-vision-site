@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Menu, X, Calendar, ExternalLink } from 'lucide-react';
+import { Menu, X, Calendar, ExternalLink, Home, Stethoscope, Eye, FileText, Headphones, User, Star, HelpCircle, Phone } from 'lucide-react';
 import { Button } from '../components/ui/button.jsx';
 import Logo from '../components/Logo.jsx';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
@@ -26,16 +26,16 @@ const Navbar = () => {
   }, []);
 
   const navLinks = useMemo(() => [
-    { name: t('navbar.home'), href: '/', internal: true },
-    { name: t('navbar.services'), href: '/servicos', internal: true },
-    { name: t('navbar.lenses'), href: '/lentes', internal: true },
-    { name: t('navbar.blog'), href: '/blog', internal: true },
-    { name: t('navbar.podcast'), href: '/podcast', internal: true },
-    { name: t('navbar.about'), href: '/sobre', internal: true },
-    { name: t('navbar.testimonials'), href: '/depoimentos', internal: true },
-    { name: t('navbar.faq'), href: '/faq', internal: true },
-    { name: t('navbar.contact'), href: '/contato', internal: true },
-    { name: 'Instagram', href: 'https://www.instagram.com/saraiva_vision/', internal: false },
+    { name: t('navbar.home'), href: '/', internal: true, icon: Home },
+    { name: t('navbar.services'), href: '/servicos', internal: true, icon: Stethoscope },
+    { name: t('navbar.lenses'), href: '/lentes', internal: true, icon: Eye },
+    { name: t('navbar.blog'), href: '/blog', internal: true, icon: FileText },
+    { name: t('navbar.podcast'), href: '/podcast', internal: true, icon: Headphones },
+    { name: t('navbar.about'), href: '/sobre', internal: true, icon: User },
+    { name: t('navbar.testimonials'), href: '/depoimentos', internal: true, icon: Star },
+    { name: t('navbar.faq'), href: '/faq', internal: true, icon: HelpCircle },
+    { name: t('navbar.contact'), href: '/contato', internal: true, icon: Phone },
+    { name: 'Instagram', href: 'https://www.instagram.com/saraiva_vision/', internal: false, icon: ExternalLink },
   ], [t]);
 
   return (
@@ -57,13 +57,15 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1" aria-label={t('navbar.primary_navigation')}>
-            {navLinks.map((link) => (
-              link.internal ? (
+            {navLinks.map((link) => {
+              const IconComponent = link.icon;
+              return link.internal ? (
                 <Link
                   key={link.name}
                   to={link.href}
-                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-1"
+                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2"
                 >
+                  <IconComponent size={16} className="text-slate-600" />
                   {link.name}
                 </Link>
               ) : (
@@ -72,13 +74,13 @@ const Navbar = () => {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-1"
+                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2"
                 >
+                  <IconComponent size={16} className="text-slate-600" />
                   {link.name}
-                  <ExternalLink size={14} className="text-slate-500" />
                 </a>
-              )
-            ))}
+              );
+            })}
           </nav>
 
            <div className="hidden md:flex items-center gap-4">
@@ -110,14 +112,16 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-t">
           <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-            {navLinks.map((link) => (
-              link.internal ? (
+            {navLinks.map((link) => {
+              const IconComponent = link.icon;
+              return link.internal ? (
                 <Link
                   key={link.name}
                   to={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-slate-800 hover:text-blue-700 py-2 font-medium text-lg flex items-center gap-2"
+                  className="text-slate-800 hover:text-blue-700 py-2 font-medium text-lg flex items-center gap-3"
                 >
+                  <IconComponent size={18} className="text-slate-600" />
                   {link.name}
                 </Link>
               ) : (
@@ -127,13 +131,13 @@ const Navbar = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-slate-800 hover:text-blue-700 py-2 font-medium text-lg flex items-center gap-2"
+                  className="text-slate-800 hover:text-blue-700 py-2 font-medium text-lg flex items-center gap-3"
                 >
+                  <IconComponent size={18} className="text-slate-600" />
                   {link.name}
-                  <ExternalLink size={16} className="text-slate-500" />
                 </a>
-              )
-            ))}
+              );
+            })}
             <div className="pt-4">
               <Button
                 onClick={() => {
