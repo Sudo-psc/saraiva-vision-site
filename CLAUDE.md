@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Saraiva Vision is a modern medical clinic website built with React 18, Vite, and TypeScript. It's a full-stack application featuring a healthcare-focused frontend with comprehensive backend API integration using Vercel Functions and Supabase as the database.
+Saraiva Vision is a modern medical clinic website built with React 18, Vite, and TypeScript. It's a full-stack application featuring a healthcare-focused frontend with comprehensive backend API integration using Node.js APIs and Supabase as the database.
 
 ## Tech Stack & Architecture
 
@@ -17,10 +17,10 @@ Saraiva Vision is a modern medical clinic website built with React 18, Vite, and
 - **Radix UI** for accessible component primitives
 
 ### Backend & APIs
-- **Vercel Functions** (Serverless) for API endpoints
+- **Node.js 22+** REST API with Express.js framework
 - **Supabase** as primary database and auth provider
-- **Node.js 22+** runtime with ES modules
-- **Edge Functions** for performance-critical operations
+- **Nginx** as web server and reverse proxy
+- **ES modules** with modern JavaScript features
 
 ### Key Integration Points
 - Instagram Graph API for social feed
@@ -33,37 +33,61 @@ Saraiva Vision is a modern medical clinic website built with React 18, Vite, and
 
 ### Development
 ```bash
-npm run dev              # Start development server (port 3002)
+npm run dev              # Start development server (default port 3002)
 npm run build            # Build for production
 npm run preview          # Preview production build
-npm run dev:vercel       # Start Vercel dev environment
+npm run start            # Alternative start command (same as dev)
 ```
 
 ### Testing
 ```bash
 npm test                 # Run tests in watch mode
 npm run test:run         # Run all tests once
+npm run test:ui          # Run tests with Vitest UI
 npm run test:coverage    # Generate coverage report
-npm run test:comprehensive  # Run full test suite including integration
+npm run test:comprehensive  # Run unit, integration, API and frontend tests
+npm run test:unit        # Run unit tests only
+npm run test:integration # Run integration tests only
+npm run test:e2e         # Run end-to-end tests only
+npm run test:performance # Run performance tests only
 npm run test:api         # Test API functions only
 npm run test:frontend    # Test React components only
+npm run test:watch       # Run tests in watch mode (alias for npm test)
 ```
 
 ### Deployment
 ```bash
-npm run deploy:simple       # Quick Vercel deployment
-npm run deploy:intelligent  # Smart deployment with health checks
+npm run deploy              # Deploy to production server
+npm run deploy:preview      # Deploy to staging environment
+npm run deploy:production   # Copy dist/ to server and reload nginx
+npm run deploy:health       # Run server health checks
 npm run production:check    # Production readiness validation
-npm run production:deploy   # Full production deployment
 ```
 
-### Linting & Type Checking
+### Linting & Validation
 ```bash
-npm run lint             # Run ESLint (when available)
-npm run typecheck        # Run TypeScript compiler check (when available)
+npm run lint                # Run ESLint for code quality
+npm run lint:syntax-api     # Check API syntax errors
+npm run lint:encoding-api   # Check API file encoding (UTF-8)
+npm run validate:api        # Complete API validation (syntax + encoding)
 ```
 
 ## Project Architecture
+
+### Server Architecture Overview
+Saraiva Vision uses a **unified server architecture** deployed directly on Nginx for optimal performance:
+
+- **Frontend (React SPA)**: Static files served by Nginx with efficient caching
+- **Backend (Node.js API)**: REST API services running on the same server
+- **Communication Flow**: User → Nginx → Static Files (frontend) / API Proxy (backend) → Node.js Services
+
+### Server Services
+The server runs native services without containerization:
+- **Web Server**: Nginx serving static files and proxying API requests
+- **API Service**: Node.js application with Express.js for business logic
+- **CMS Service**: WordPress with PHP-FPM for content management (optional)
+- **Database**: MySQL for relational data storage
+- **Cache**: Redis for performance optimization
 
 ### Directory Structure
 ```
@@ -79,7 +103,7 @@ src/
 ├── utils/              # Helper functions
 └── styles/             # Global CSS files
 
-api/                    # Vercel Functions (backend)
+api/                    # Node.js API endpoints (backend)
 ├── contact/            # Contact form endpoints
 ├── appointments/       # Appointment booking system
 ├── podcast/            # Podcast management
@@ -95,7 +119,7 @@ api/                    # Vercel Functions (backend)
 - Custom hooks in `src/hooks/` for shared stateful logic
 
 #### API Architecture
-- RESTful APIs in `api/` directory using Vercel Functions
+- RESTful APIs in `api/` directory using Express.js framework
 - Database operations through Supabase client with TypeScript types
 - Authentication handled via Supabase Auth with role-based access control
 - Message queue system using Supabase `message_outbox` table
@@ -148,7 +172,7 @@ Key tables defined in `src/lib/supabase.ts`:
 
 ### Environment Configuration
 - Development: `.env` file with local configurations
-- Production: Vercel environment variables
+- Production: Environment variables on server
 - Required vars defined in `src/lib/supabase.ts`
 
 ## Performance Considerations
@@ -188,16 +212,42 @@ Key tables defined in `src/lib/supabase.ts`:
 ### API Security
 - Input validation using Zod schemas
 - Rate limiting on contact forms
-- CORS configuration in `vercel.json`
+- CORS configuration in Express.js middleware
 - Security headers for production
+
+## SEO & Schema.org Implementation
+
+### Structured Data Markup
+The project includes comprehensive Schema.org structured markup for medical SEO:
+
+#### Medical Schema Types Implemented
+- **MedicalClinic**: Primary business entity with location, services, and contact info
+- **Physician**: Medical professionals with credentials and specialties
+- **MedicalOrganization**: Organizational structure and certifications
+- **LocalBusiness**: Local search optimization with geo-coordinates
+- **MedicalProcedure**: Available services and treatments
+- **FAQPage**: Structured FAQ content for rich snippets
+
+#### Schema Files
+- `src/lib/schemaMarkup.js` - Main schema generation functions
+- `src/lib/serviceFAQSchema.js` - Service-specific FAQ schemas
+- `src/utils/schemaValidator.js` - Schema.org validation utilities
+- `src/hooks/useSEO.js` - SEO hook with integrated schema support
+
+#### Rich Snippets Support
+- Business information (address, hours, contact)
+- Medical procedures and services
+- FAQ sections with structured Q&A
+- Professional credentials and certifications
+- Patient reviews and ratings integration
 
 ## Common Development Tasks
 
 ### Adding New API Endpoint
-1. Create function in `api/` directory
+1. Create route in `api/` directory using Express.js
 2. Add corresponding test in `api/__tests__/`
 3. Update TypeScript types if needed
-4. Configure function limits in `vercel.json`
+4. Configure route middleware and validation
 
 ### Creating New Component
 1. Add component file in appropriate `src/components/` subdirectory
@@ -219,13 +269,30 @@ Key tables defined in `src/lib/supabase.ts`:
 
 ## Deployment Configuration
 
-The project uses Vercel with specific configurations:
-- **Framework**: Vite detection
+### Unified Server Deployment
+
+#### Server Configuration
+The project is deployed on a single Linux server with Nginx:
 - **Build Command**: `npm run build`
-- **Output Directory**: `dist`
-- **Node.js Version**: 22.x (specified in package.json)
-- **Functions**: Configured per endpoint in `vercel.json`
-- **Regions**: São Paulo (gru1) for Brazilian audience
+- **Output Directory**: `dist` (served by Nginx)
+- **Node.js Version**: 18.x minimum (as specified in package.json engines)
+- **Location**: Brazilian data center for optimal local performance
+- **SSL**: Let's Encrypt certificates managed by Nginx
+
+#### Service Architecture
+Native services running directly on the server:
+- **Nginx**: Web server serving static files and proxying API requests
+- **Node.js API**: Express.js application for backend services
+- **MySQL**: Database server for data storage
+- **Redis**: Cache server for performance optimization
+- **PHP-FPM**: For WordPress CMS (if needed)
+
+#### Deployment Process
+- **Build**: `npm run build` creates production-ready static files in `dist/`
+- **Deploy**: `npm run deploy:production` copies files to `/var/www/html/` and reloads nginx
+- **Nginx**: Configured to serve static files and proxy API requests
+- **Process Management**: PM2 or systemd for Node.js service management
+- **Manual Deploy**: `sudo cp -r dist/* /var/www/html/ && sudo systemctl reload nginx`
 
 ### Environment Variables Required
 ```
@@ -239,7 +306,7 @@ RESEND_API_KEY=
 ## Troubleshooting Common Issues
 
 ### Build Failures
-- Check Node.js version (requires 22+)
+- Check Node.js version (requires 18+)
 - Verify environment variables are set
 - Clear node_modules and npm cache if needed
 
@@ -248,9 +315,10 @@ RESEND_API_KEY=
 - Check RLS policies for data access
 - Ensure database migrations are applied
 
-### API Function Errors
-- Check function logs in Vercel dashboard
-- Verify timeout and memory limits
-- Test locally with `npm run dev:vercel`
+### API Service Errors
+- Check service logs with `journalctl` or PM2 logs
+- Verify Node.js process and memory usage
+- Test locally with `npm run dev`
+- Check Nginx proxy configuration
 
 This codebase prioritizes medical industry standards, accessibility compliance, and Brazilian market requirements while maintaining modern development practices and performance optimization.
