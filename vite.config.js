@@ -49,7 +49,7 @@ export default defineConfig({
 
   build: {
     outDir: 'dist',
-    sourcemap: false, // Disable source maps for production
+    sourcemap: true, // Enable source maps for debugging ReferenceError
     chunkSizeWarningLimit: 600,
     assetsDir: 'assets', // Proper assets directory for VPS
     assetsInlineLimit: 4096, // Inline small assets as base64 for performance

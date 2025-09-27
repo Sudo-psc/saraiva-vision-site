@@ -22,10 +22,10 @@ import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
-  fetchPostBySlug,
+  getPostBySlug as fetchPostBySlug,
   getFeaturedImageUrl,
   checkWordPressConnection
-} from '../lib/wordpress';
+} from '../lib/wordpress-compat';
 
 const BlogPostPage = () => {
   const { slug } = useParams();

@@ -6,7 +6,7 @@ import { Calendar, ArrowRight, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
-import { fetchPosts as fetchWPPosts } from '@/lib/wordpress';
+import { fetchPosts as fetchWPPosts } from '@/lib/wordpress-compat';
 
 const Blog = () => {
   const { t, i18n } = useTranslation();

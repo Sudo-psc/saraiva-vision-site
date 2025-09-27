@@ -9,14 +9,14 @@ import { Calendar, Loader2, AlertTriangle, ArrowRight, Search } from 'lucide-rea
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
-// WordPress functions temporarily disabled for build
-// import {
-//   fetchPosts,
-//   fetchCategories,
-//   getFeaturedImageUrl,
-//   extractPlainText,
-//   checkWordPressConnection
-// } from '../lib/wordpress';
+// WordPress functions with backward compatibility
+import {
+  fetchPosts,
+  fetchCategories,
+  getFeaturedImageUrl,
+  extractPlainText,
+  checkWordPressConnection
+} from '../lib/wordpress-compat';
 
 const BlogPage = () => {
   const { t, i18n } = useTranslation();
