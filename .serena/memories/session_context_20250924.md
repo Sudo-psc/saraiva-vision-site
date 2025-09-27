@@ -28,8 +28,8 @@ Status: VPS deployment optimization finished and pushed to GitHub
 
 ## Environment Variables Configured
 - Google Business API (client credentials provided)
-- Resend Email API (key: re_DKC1s5fM_9AVw3v3KHarZKmcMJVjQ72DN)
-- Google Maps API (keys: AIzaSyDvio5w5mQVZWZGBnPrys1uTwTQBglmFms)
+- Resend Email API (key: [REDACTED FOR SECURITY])
+- Google Maps API (keys: [REDACTED FOR SECURITY])
 - Contact Email: philipe_cruz@outlook.com
 
 ## Recent Commands Used
