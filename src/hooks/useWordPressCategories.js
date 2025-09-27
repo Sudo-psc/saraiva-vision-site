@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { fetchCategories } from '../lib/wordpress-compat';
 
 /**
@@ -17,19 +17,25 @@ export const useWordPressCategories = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
+  const retryTimerRef = useRef(null);
+  const isMountedRef = useRef(true);
 
   const loadCategories = async (attempt = 1) => {
     try {
-      setLoading(true);
-      setError(null);
+      if (isMountedRef.current) {
+        setLoading(true);
+        setError(null);
+      }
 
       console.log(`Attempting to fetch categories (attempt ${attempt}/${maxRetries + 1})`);
 
       const categoriesData = await fetchCategories();
 
       if (categoriesData && categoriesData.length >= 0) {
-        setCategories(categoriesData);
-        setRetryCount(0); // Reset retry count on success
+        if (isMountedRef.current) {
+          setCategories(categoriesData);
+          setRetryCount(0); // Reset retry count on success
+        }
         console.log(`Successfully loaded ${categoriesData.length} categories`);
 
         // Track successful category load for analytics
@@ -49,21 +55,33 @@ export const useWordPressCategories = ({
       const shouldRetry = autoRetry && attempt <= maxRetries && !error.message?.includes('CORS');
 
       if (shouldRetry) {
-        setRetryCount(attempt);
+        if (isMountedRef.current) {
+          setRetryCount(attempt);
+        }
         console.log(`Retrying categories fetch in ${retryDelay}ms...`);
 
-        setTimeout(() => {
-          loadCategories(attempt + 1);
+        // Clear any existing timeout before scheduling a new one
+        if (retryTimerRef.current) {
+          clearTimeout(retryTimerRef.current);
+        }
+
+        retryTimerRef.current = setTimeout(() => {
+          retryTimerRef.current = null;
+          if (isMountedRef.current) {
+            loadCategories(attempt + 1);
+          }
         }, retryDelay);
       } else {
-        setError({
-          message: error.message || 'Failed to load categories',
-          type: error.type || 'UNKNOWN_ERROR',
-          suggestion: error.suggestion || 'Please try refreshing the page',
-          originalError: error,
-          finalAttempt: true,
-          attempts: attempt
-        });
+        if (isMountedRef.current) {
+          setError({
+            message: error.message || 'Failed to load categories',
+            type: error.type || 'UNKNOWN_ERROR',
+            suggestion: error.suggestion || 'Please try refreshing the page',
+            originalError: error,
+            finalAttempt: true,
+            attempts: attempt
+          });
+        }
 
         // Track category load failure for analytics
         if (window.posthog) {
@@ -76,17 +94,35 @@ export const useWordPressCategories = ({
         }
       }
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
+    isMountedRef.current = true;
     loadCategories();
+
+    return () => {
+      isMountedRef.current = false;
+      if (retryTimerRef.current) {
+        clearTimeout(retryTimerRef.current);
+        retryTimerRef.current = null;
+      }
+    };
   }, []); // Empty dependency array - only run once on mount
 
   const retry = () => {
-    setRetryCount(0);
-    loadCategories();
+    // Clear any pending retry timeout
+    if (retryTimerRef.current) {
+      clearTimeout(retryTimerRef.current);
+      retryTimerRef.current = null;
+    }
+    if (isMountedRef.current) {
+      setRetryCount(0);
+      loadCategories();
+    }
   };
 
   return {
