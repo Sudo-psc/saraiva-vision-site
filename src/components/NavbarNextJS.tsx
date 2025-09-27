@@ -19,7 +19,6 @@ import {
   ChevronDown,
   Calendar,
   Headphones,
-  Instagram,
   ExternalLink
 } from 'lucide-react';
 
@@ -180,15 +179,6 @@ const NavbarNextJS: React.FC<NavbarProps> = ({ className = "" }) => {
     { name: t('navbar.podcast', 'Podcast'), href: '/podcast', internal: true, isRoute: true },
   ], [t]);
 
-  const socialLinks = [
-    {
-      name: 'Instagram',
-      href: 'https://www.instagram.com/saraiva_vision/',
-      internal: false,
-      icon: Instagram
-    }
-  ];
-
   // Handlers
   const handleExternalLink = useCallback((url: string, name: string) => {
     const confirmed = window.confirm(
@@ -260,18 +250,6 @@ const NavbarNextJS: React.FC<NavbarProps> = ({ className = "" }) => {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
             <LanguageSwitcherComponent />
-
-            {/* Social Links */}
-            {socialLinks.map((social) => (
-              <button
-                key={social.name}
-                onClick={() => handleExternalLink(social.href, social.name)}
-                className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                aria-label={social.name}
-              >
-                <social.icon size={20} />
-              </button>
-            ))}
 
             {/* Schedule Button */}
             <ButtonComponent
@@ -351,20 +329,6 @@ const NavbarNextJS: React.FC<NavbarProps> = ({ className = "" }) => {
                   <span>{t('navbar.schedule', 'Agendar Consulta')}</span>
                 </ButtonComponent>
 
-                {socialLinks.map((social) => (
-                  <button
-                    key={social.name}
-                    onClick={() => {
-                      handleExternalLink(social.href, social.name);
-                      setMobileMenuOpen(false);
-                    }}
-                    className="flex items-center gap-3 w-full text-left text-gray-600 hover:text-blue-600 py-2"
-                  >
-                    <social.icon size={20} />
-                    <span>{social.name}</span>
-                  </button>
-                ))}
-              </div>
             </nav>
           </motion.div>
         )}

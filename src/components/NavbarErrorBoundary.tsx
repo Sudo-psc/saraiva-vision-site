@@ -7,7 +7,7 @@
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import Link from 'next/link';
-import { Menu, Home, Phone, Instagram } from 'lucide-react';
+import { Menu, Home, Phone } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
@@ -51,15 +51,6 @@ const NavbarFallback: React.FC = () => {
 
           {/* Actions Fallback */}
           <div className="flex items-center gap-3">
-            <a
-              href="https://www.instagram.com/saraiva_vision/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
-              aria-label="Instagram"
-            >
-              <Instagram size={20} />
-            </a>
             <a
               href="https://wa.me/5511999999999"
               target="_blank"

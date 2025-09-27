@@ -6,7 +6,6 @@ import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import { Calendar, User, ArrowLeft, Loader2, AlertTriangle, Share2, Clock } from 'lucide-react';
-import DOMPurify from 'dompurify';
 import Navbar from '@/components/Navbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
@@ -15,9 +14,12 @@ import {
   fetchRelatedPosts,
   getFeaturedImageUrl,
   getAuthorInfo,
-  cleanHtmlContent,
   extractPlainText
 } from '../lib/wordpress';
+import {
+  sanitizeWordPressContent,
+  sanitizeWordPressTitle
+} from '@/utils/sanitizeWordPressContent';
 
 const PostPage = () => {
   const { slug } = useParams();
@@ -116,7 +118,12 @@ const PostPage = () => {
 
   if (!post) return null;
 
-  const cleanTitle = post.title.rendered.replace(/<[^>]+>/g, '');
+  const sanitizedTitle = sanitizeWordPressTitle(post.title?.rendered || '');
+  const cleanTitle = sanitizeWordPressContent(post.title?.rendered || '', {
+    ALLOWED_TAGS: [],
+    ALLOWED_ATTR: [],
+  }).replace(/<[^>]+>/g, '');
+  const sanitizedContent = sanitizeWordPressContent(post.content?.rendered || '');
 
   return (
     <div className="min-h-screen bg-white relative">
@@ -138,7 +145,7 @@ const PostPage = () => {
               {t('blog.back_to_blog')}
             </Link>
 
-            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
+            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6" dangerouslySetInnerHTML={{ __html: sanitizedTitle }} />
 
             <div className="flex items-center text-gray-500 space-x-6 mb-10 pb-10 border-b">
               <div className="flex items-center">
@@ -154,15 +161,18 @@ const PostPage = () => {
             {post._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
               <img
                 src={post._embedded['wp:featuredmedia'][0].source_url}
-                alt={post._embedded['wp:featuredmedia'][0]?.alt_text ||
-                  t('ui.alt.blog_post', 'Imagem ilustrativa do artigo') + ': ' + cleanTitle}
+                alt={sanitizeWordPressContent(
+                  post._embedded['wp:featuredmedia'][0]?.alt_text ||
+                  `${t('ui.alt.blog_post', 'Imagem ilustrativa do artigo')}: ${cleanTitle}`,
+                  { ALLOWED_TAGS: [], ALLOWED_ATTR: [] }
+                )}
                 className="w-full h-auto max-h-[500px] object-cover rounded-2xl shadow-soft-medium mb-12"
               />
             )}
 
             <div
               className="prose lg:prose-xl max-w-none"
-              dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+              dangerouslySetInnerHTML={{ __html: sanitizedContent }}
             />
           </motion.div>
         </div>

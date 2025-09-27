@@ -10,6 +10,7 @@ import WordPressBlogService from '../../services/WordPressBlogService';
 import LoadingSpinner from '../ui/LoadingSpinner';
 import ErrorMessage from '../ui/ErrorMessage';
 import BlogList from './BlogList';
+import { sanitizeWordPressContent } from '@/utils/sanitizeWordPressContent';
 
 const BlogPost = () => {
     const { slug } = useParams();
@@ -223,7 +224,7 @@ const BlogPost = () => {
                                        prose-ul:text-gray-700 prose-ol:text-gray-700
                                        prose-blockquote:border-l-blue-500 prose-blockquote:bg-blue-50
                                        prose-img:rounded-lg prose-img:shadow-md"
-                            dangerouslySetInnerHTML={{ __html: post.content }}
+                            dangerouslySetInnerHTML={{ __html: sanitizeWordPressContent(post.content) }}
                         />
 
                         {/* Medical Disclaimer */}

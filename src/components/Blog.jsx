@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import { fetchPosts as fetchWPPosts } from '@/lib/wordpress-compat';
+import { extractPlainText } from '@/lib/wordpress';
+import { sanitizeWordPressTitle } from '@/utils/sanitizeWordPressContent';
 
 const Blog = () => {
   const { t, i18n } = useTranslation();
@@ -80,9 +82,15 @@ const Blog = () => {
                 <span>{format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })}</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-gray-900 flex-grow">
-                <Link to={`/blog/${post.slug}`} className="hover:text-blue-600" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
+                <Link
+                  to={`/blog/${post.slug}`}
+                  className="hover:text-blue-600"
+                  dangerouslySetInnerHTML={{ __html: sanitizeWordPressTitle(post.title?.rendered || '') }}
+                />
               </h3>
-              <div className="text-gray-600 mb-4 text-sm" dangerouslySetInnerHTML={{ __html: post.excerpt.rendered.substring(0, 100) + '...' }} />
+              <div className="text-gray-600 mb-4 text-sm">
+                {extractPlainText(post.excerpt?.rendered || '', 120)}
+              </div>
               <Link to={`/blog/${post.slug}`} className="mt-auto">
                 <Button variant="link" className="p-0 text-blue-600 font-semibold group">
                   {t('blog.read_more')}

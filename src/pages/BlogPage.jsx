@@ -9,6 +9,7 @@ import { Calendar, Loader2, AlertTriangle, ArrowRight, Search } from 'lucide-rea
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
+import { sanitizeWordPressTitle } from '@/utils/sanitizeWordPressContent';
 // WordPress functions with backward compatibility
 import {
   fetchPosts,
@@ -158,7 +159,7 @@ const BlogPage = () => {
             <Link
               to={`/blog/${post.slug}`}
               className="hover:text-blue-600 focus:outline-none focus:text-blue-600 focus:underline"
-              dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+              dangerouslySetInnerHTML={{ __html: sanitizeWordPressTitle(post.title?.rendered || '') }}
             />
           </h3>
           {excerpt && (

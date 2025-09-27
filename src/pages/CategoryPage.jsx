@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { usePostsByCategory, useCategories } from '@/hooks/useWordPress';
 import { extractPlainText, getFeaturedImageUrl, getAuthorInfo } from '@/lib/wordpress';
+import { sanitizeWordPressTitle } from '@/utils/sanitizeWordPressContent';
 
 const CategoryPage = () => {
   const { slug } = useParams();
@@ -125,7 +126,7 @@ const CategoryPage = () => {
                 <Link
                   to={`/blog/${post.slug}`}
                   className="hover:text-blue-600 transition-colors"
-                  dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeWordPressTitle(post.title?.rendered || '') }}
                 />
               </h3>
 
@@ -194,7 +195,7 @@ const CategoryPage = () => {
                 <Link
                   to={`/blog/${post.slug}`}
                   className="hover:text-blue-600 transition-colors"
-                  dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeWordPressTitle(post.title?.rendered || '') }}
                 />
               </h3>
 

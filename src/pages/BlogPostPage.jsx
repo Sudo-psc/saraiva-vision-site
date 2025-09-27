@@ -16,7 +16,6 @@ import {
   Tag,
   BookOpen
 } from 'lucide-react';
-import DOMPurify from 'dompurify';
 import Navbar from '@/components/Navbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
@@ -26,6 +25,10 @@ import {
   getFeaturedImageUrl,
   checkWordPressConnection
 } from '../lib/wordpress-compat';
+import {
+  sanitizeWordPressContent,
+  sanitizeWordPressTitle
+} from '@/utils/sanitizeWordPressContent';
 
 const BlogPostPage = () => {
   const { slug } = useParams();
@@ -100,12 +103,11 @@ const BlogPostPage = () => {
     }
   };
 
-  const sanitizeContent = (content) => {
-    return DOMPurify.sanitize(content, {
+  const sanitizeContent = (content) =>
+    sanitizeWordPressContent(content, {
       ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'img', 'blockquote'],
-      ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class']
+      ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class'],
     });
-  };
 
   if (loading) {
     return (
@@ -237,8 +239,11 @@ const BlogPostPage = () => {
               <div className="mb-8 rounded-2xl overflow-hidden shadow-lg">
                 <img
                   src={featuredImage}
-                  alt={post._embedded?.['wp:featuredmedia']?.[0]?.alt_text ||
-                    t('ui.alt.blog_post_image', 'Imagem do artigo')}
+                  alt={sanitizeWordPressContent(
+                    post._embedded?.['wp:featuredmedia']?.[0]?.alt_text ||
+                      t('ui.alt.blog_post_image', 'Imagem do artigo'),
+                    { ALLOWED_TAGS: [], ALLOWED_ATTR: [] }
+                  )}
                   className="w-full h-64 md:h-96 object-cover"
                   loading="eager"
                 />
@@ -259,7 +264,7 @@ const BlogPostPage = () => {
 
             <h1
               className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight"
-              dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+              dangerouslySetInnerHTML={{ __html: sanitizeWordPressTitle(post.title?.rendered || '') }}
             />
 
             {/* Article Meta */}

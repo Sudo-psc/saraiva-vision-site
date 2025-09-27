@@ -2,6 +2,10 @@
 import React from 'react';
 import { usePage, useService, usePopularServices } from '../hooks/useWordPress.js';
 import useSupabasePosts from '../hooks/useSupabasePosts.js';
+import {
+    sanitizeWordPressContent,
+    sanitizeWordPressExcerpt
+} from '@/utils/sanitizeWordPressContent';
 
 // Component for displaying WordPress post content
 export const WordPressPost = ({ slug, className = '' }) => {
@@ -70,13 +74,13 @@ export const WordPressPost = ({ slug, className = '' }) => {
 
             {post.excerpt && (
                 <div className="text-lg text-gray-700 mb-6 font-medium">
-                    <div dangerouslySetInnerHTML={{ __html: post.excerpt }} />
+                    <div dangerouslySetInnerHTML={{ __html: sanitizeWordPressExcerpt(post.excerpt) }} />
                 </div>
             )}
 
             <div
                 className="prose prose-lg max-w-none wordpress-content"
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeWordPressContent(post.content) }}
             />
         </article>
     );
@@ -139,7 +143,7 @@ export const WordPressPage = ({ slug, className = '' }) => {
 
             <div
                 className="prose prose-lg max-w-none wordpress-content"
-                dangerouslySetInnerHTML={{ __html: page.content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeWordPressContent(page.content) }}
             />
         </div>
     );
@@ -211,7 +215,7 @@ export const RecentPostsPreview = ({ count = 3, className = '' }) => {
                             {post.excerpt && (
                                 <div
                                     className="text-gray-600 text-sm mb-4 line-clamp-3"
-                                    dangerouslySetInnerHTML={{ __html: post.excerpt }}
+                                    dangerouslySetInnerHTML={{ __html: sanitizeWordPressExcerpt(post.excerpt) }}
                                 />
                             )}
 
@@ -293,7 +297,7 @@ export const PopularServicesPreview = ({ count = 6, className = '' }) => {
                             {service.excerpt && (
                                 <div
                                     className="text-gray-600 text-sm mb-4 line-clamp-3"
-                                    dangerouslySetInnerHTML={{ __html: service.excerpt }}
+                                    dangerouslySetInnerHTML={{ __html: sanitizeWordPressExcerpt(service.excerpt) }}
                                 />
                             )}
 
