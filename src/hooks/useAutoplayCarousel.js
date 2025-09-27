@@ -412,9 +412,9 @@ export const useAutoplayCarousel = ({
     }
   }, [isVisible, config.disableOnInactiveTab]);
 
-  // Handle autoplay timer
+  // Handle autoplay timer - fixed to prevent infinite loops
   useEffect(() => {
-    if (state.isPlaying && state.isEnabled && state.tabVisible) {
+    if (state.isPlaying && state.isEnabled && state.tabVisible && state.totalSlides > 0) {
       // Clear existing timers
       if (timerRef.current) {
         clearTimeout(timerRef.current);
@@ -433,30 +433,9 @@ export const useAutoplayCarousel = ({
       setProgress(0);
       setTimeRemaining(state.interval);
 
-      // Progress update interval (using setTimeout instead of rAF for better test compatibility)
-      const updateProgress = () => {
-        // Check playing state from ref to avoid stale closure
-        if (!state.isPlaying) return;
-        
-        const elapsed = Date.now() - progressStartRef.current;
-        const newProgress = Math.min(elapsed / progressDurationRef.current, 1);
-        const remaining = Math.max(progressDurationRef.current - elapsed, 0);
-        
-        setProgress(newProgress);
-        setTimeRemaining(remaining);
-
-        if (newProgress < 1 && state.isPlaying) {
-          progressTimerIdRef.current = setTimeout(updateProgress, 50); // Update every 50ms
-        }
-      };
-
-      // Start progress updates
-      progressTimerIdRef.current = setTimeout(updateProgress, 50);
-
       // Main autoplay timer
       timerRef.current = setTimeout(() => {
         if (progressTimerIdRef.current) clearTimeout(progressTimerIdRef.current);
-        // The useEffect cleanup function handles pausing, so we can dispatch directly.
         dispatch({ type: 'NEXT', manual: false });
       }, state.interval);
     } else {
@@ -469,7 +448,6 @@ export const useAutoplayCarousel = ({
         clearTimeout(resumeTimerRef.current);
         resumeTimerRef.current = null;
       }
-      // Clear progress state immediately when not playing
       if (progressTimerIdRef.current) {
         clearTimeout(progressTimerIdRef.current);
         progressTimerIdRef.current = null;
@@ -493,7 +471,7 @@ export const useAutoplayCarousel = ({
         progressTimerIdRef.current = null;
       }
     };
-  }, [state.isPlaying, state.isEnabled, state.tabVisible, state.interval]); // Removed circular dependencies
+  }, [state.isPlaying, state.isEnabled, state.tabVisible, state.interval, state.totalSlides]);
 
   // Handle slide changes for callback - both manual and automatic
   const lastCallbackTransitionRef = useRef(0);

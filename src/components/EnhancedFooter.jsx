@@ -76,7 +76,7 @@ const EnhancedFooter = ({
         phoneNumber: clinicInfo.phone.replace(/\D/g, ''),
         whatsappLink: `https://wa.me/${clinicInfo.phone.replace(/\D/g, '')}`,
         chatbotUrl: clinicInfo.chatbotUrl,
-        amorSaudeLogo: "https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/66c6d707b457395f0aaf159d826531ef.png",
+        amorSaudeLogo: "/api/images/proxy/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/66c6d707b457395f0aaf159d826531ef.png",
         currentYear: new Date().getFullYear()
     }), []);
 

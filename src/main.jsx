@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import './index.css';
@@ -26,7 +26,7 @@ if (!rootElement) {
   throw new Error('Root element not found');
 }
 
-const root = ReactDOM.createRoot(rootElement);
+const root = createRoot(rootElement);
 
 // Render without PostHog integration
 try {

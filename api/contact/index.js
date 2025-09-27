@@ -1,15 +1,15 @@
 import { validateContactSubmission } from '../../src/lib/validation.js';
 import { sendContactEmail } from './emailService.js';
 import { addToOutbox } from './outboxService.js';
-import { supabaseAdmin } from 'from 'from '../../src/lib/supabase.js'' ' ;
+import { supabaseAdmin } from '../src/lib/supabase.js' ;
 import { applyRateLimiting, sanitizeFormData, logRequest } from './utils.js';
 import { getClientIP } from './rateLimiter.js';
 import { createLogger } from '../../src/lib/logger.js';
 import { alertingSystem } from '../../src/lib/alertingSystem.js';
 import { serverEncryption } from '../utils/encryption.js';
-import { accessControl } from '../../src/lib/lgpd/accessControl.js';
-import { securityHeadersMiddleware, applyCorsHeaders, applySecurityHeaders } from '../utils/securityHeaders.js';
-import { handleApiError, createErrorResponse, createSuccessResponse } from '../utils/errorHandler.js';
+
+import { securityHeadersMiddleware, applyCorsHeaders, applySecurityHeaders } from '../../src/lib/securityHeaders.js';
+import { handleApiError, createErrorResponse, createSuccessResponse } from '../../src/lib/errorHandler.js';
 
 /**
  * Apply comprehensive security headers and CORS

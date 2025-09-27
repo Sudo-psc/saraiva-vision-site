@@ -3,8 +3,6 @@
  * Handles role-based permissions and data access controls
  */
 
-import { supabase } from 'from 'from '../supabase.js'' ' ;
-
 export class AccessControl {
     constructor() {
         this.roles = {

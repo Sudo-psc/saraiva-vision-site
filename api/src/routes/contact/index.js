@@ -1,7 +1,7 @@
 import { validateContactSubmission } from '../../../../../../..../../../../src/lib/validation.js';
 import { sendContactEmail } from './emailService.js';
 import { addToOutbox } from './outboxService.js';
-import { supabaseAdmin } from 'from 'from '../../../../../../..../../../../src/lib/supabase.js'' ' ;
+import { supabaseAdmin } from '../utils/supabase.js' ;
 import { applyRateLimiting, sanitizeFormData, logRequest } from './utils.js';
 import { getClientIP } from './rateLimiter.js';
 import { createLogger } from '../../../../../../..../../../../src/lib/logger.js';

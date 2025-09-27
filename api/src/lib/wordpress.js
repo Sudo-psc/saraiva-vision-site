@@ -5,7 +5,7 @@ import {
 } from './wordpress-queries.js';
 
 // WordPress GraphQL endpoint configuration
-const WORDPRESS_GRAPHQL_ENDPOINT = import.meta.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT || 'https://cms.saraivavision.com.br/graphql';
+const WORDPRESS_GRAPHQL_ENDPOINT = process.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT || 'https://cms.saraivavision.com.br/graphql';
 
 // Create GraphQL client instance
 export const wpClient = new GraphQLClient(WORDPRESS_GRAPHQL_ENDPOINT, {

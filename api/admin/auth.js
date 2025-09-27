@@ -1,5 +1,5 @@
-import { supabaseAdmin } from '../../src/lib/supabase';
-import { corsHeaders } from '../cors-config';
+import { supabaseAdmin } from '../utils/supabase.js';
+import { corsHeaders } from '../cors-config.js';
 
 export default async function handler(req, res) {
     // Set CORS headers

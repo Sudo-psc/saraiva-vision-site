@@ -4,12 +4,12 @@
  * Requirement 4.1: Show open slots Monday-Friday 08:00-18:00 in 30-minute intervals
  */
 
-import { supabaseAdmin } from 'from 'from './supabase.js'' ' 
+// import { supabaseAdmin } from '../../../utils/supabase.js'
 
 // Check if supabaseAdmin is available
-if (!supabaseAdmin) {
-    console.warn('Supabase admin client not available. Appointment availability features may not work.');
-}
+// if (!supabaseAdmin) {
+//     console.warn('Supabase admin client not available. Appointment availability features may not work.');
+// }
 
 // Business hours configuration
 export const BUSINESS_HOURS = {

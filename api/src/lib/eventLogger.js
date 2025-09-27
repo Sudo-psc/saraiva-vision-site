@@ -4,7 +4,7 @@
  * Requirement 9.1: Structured logging with appropriate detail levels
  */
 
-import { supabaseAdmin } from 'from 'from './supabase.js'' ' 
+// import { supabaseAdmin } from '../../../utils/supabase.js' 
 
 /**
  * Log an event to the database
@@ -22,12 +22,13 @@ export async function logEvent(eventData) {
     } = eventData
 
     try {
-        const { data: result, error } = await supabaseAdmin.rpc('log_event', {
-            p_event_type: eventType,
-            p_event_data: data,
-            p_severity: severity,
-            p_source: source,
-            p_request_id: requestId,
+        // Temporarily disabled supabase logging
+        // const { data: result, error } = await supabaseAdmin.rpc('log_event', {
+        //     p_event_type: eventType,
+        //     p_event_data: data,
+        //     p_severity: severity,
+        //     p_source: source,
+        //     p_request_id: requestId,
             p_user_id: userId
         })
 

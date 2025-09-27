@@ -7,7 +7,7 @@ import {
   sanitizeWordPressContent,
   sanitizeWordPressExcerpt,
   sanitizeWordPressTitle
-} from '@/utils/sanitizeWordPressContent';
+} from '../utils/sanitizeWordPressContent.js';
 
 // VPS WordPress GraphQL endpoint configuration with multiple fallback options
 const WORDPRESS_GRAPHQL_ENDPOINT = import.meta.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT ||

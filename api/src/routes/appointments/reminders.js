@@ -4,7 +4,7 @@
  * Requirements: 4.3 - Reminder scheduling and processing
  */
 
-import { supabaseAdmin } from 'from 'from '../../../../../../..../../../../src/lib/supabase.js'' ' 
+import { supabaseAdmin } from '../utils/supabase.js' 
 import { addToOutbox } from './notifications.js'
 import { logEvent } from '../../../../../../..../../../../src/lib/eventLogger.js'
 

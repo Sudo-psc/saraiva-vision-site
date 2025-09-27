@@ -4,12 +4,10 @@ import path from 'path'
 
 // Enable workbox plugin with VPS environment check
 const plugins = [react({
-  // Ensure React is properly available for JSX transform
+  // Use automatic JSX runtime
   jsxRuntime: 'automatic',
   // Include refresh for development
-  include: '**/*.{jsx,tsx}',
-  // Ensure React is available globally for components that reference it directly
-  jsxImportSource: 'react'
+  include: '**/*.{jsx,tsx}'
 })]
 
 // Workbox plugin disabled for stable deployment
@@ -27,9 +25,7 @@ export default defineConfig({
   base: '/', // Ensure proper base path for VPS deployment
   define: {
     // Fallback for legacy process.env usage in libraries
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
-    // Ensure React runtime is available globally
-    'global.React': 'React',
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
   },
   esbuild: {
     charset: 'utf8'

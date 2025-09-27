@@ -158,19 +158,19 @@ const Services = ({ full = false, autoplay = true }) => {
 
   // Autoplay carousel hook integration - só inicializa quando há serviços
   const autoplayCarousel = useAutoplayCarousel({
-    totalSlides: Math.max(1, serviceItems.length), // Garante que nunca seja 0
+    totalSlides: serviceItems.length || 0, // Allow 0 during loading
     config: {
       defaultInterval: 4500,
       pauseOnHover: true,
       pauseOnFocus: true,
       respectReducedMotion: true
     },
-    onSlideChange: (newIndex, direction) => {
+    onSlideChange: useCallback((newIndex, direction) => {
       if (scrollerRef.current && serviceItems.length > 0) {
         const targetScroll = newIndex * cardWidthRef.current;
         smoothScrollHorizontal(scrollerRef.current, targetScroll, 300);
       }
-    }
+    }, [serviceItems.length])
   });
 
   // Use currentIndex from autoplay hook
@@ -241,15 +241,14 @@ const Services = ({ full = false, autoplay = true }) => {
   }, [measure]);
 
   const updateIndex = useCallback(() => {
+    // Simplified to prevent loops - just calculate, don't update
     const el = scrollerRef.current;
-    if (!el) return;
+    if (!el || serviceItems.length === 0) return;
     const raw = Math.round(el.scrollLeft / cardWidthRef.current);
     const clamped = Math.max(0, Math.min(serviceItems.length - 1, raw));
-    // Update autoplay hook instead of local state
-    if (clamped !== currentIndex) {
-      autoplayCarousel.goTo(clamped);
-    }
-  }, [serviceItems.length, currentIndex, autoplayCarousel]);
+    // Just return the index without triggering updates
+    return clamped;
+  }, [serviceItems.length]);
 
   const scrollToIndex = useCallback((i) => {
     const el = scrollerRef.current;
@@ -277,10 +276,15 @@ const Services = ({ full = false, autoplay = true }) => {
   // Snap automático para o card mais próximo após rolagem
   const snapToNearest = useCallback(() => {
     const el = scrollerRef.current;
-    if (!el || isDragging) return;
+    if (!el || isDragging || serviceItems.length === 0) return;
     const nearest = Math.round(el.scrollLeft / cardWidthRef.current);
-    scrollToIndex(nearest);
-  }, [isDragging, scrollToIndex]);
+    const clampedIndex = Math.max(0, Math.min(serviceItems.length - 1, nearest));
+    // Direct scroll without triggering autoplay updates
+    if (el) {
+      const targetScroll = clampedIndex * cardWidthRef.current;
+      el.scrollTo({ left: targetScroll, behavior: 'smooth' });
+    }
+  }, [isDragging, serviceItems.length]);
 
   const debouncedSnap = useMemo(() => debounce(snapToNearest, 180), [snapToNearest]);
 
@@ -358,32 +362,26 @@ const Services = ({ full = false, autoplay = true }) => {
 
 
 
-  // Atualiza índice e remove loop infinito
+  // Atualiza índice de forma mais simples sem loops
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
     const handleScroll = () => {
-      updateIndex();
-      // Limita o fim da rolagem sem loop
-      const max = el.scrollWidth - el.clientWidth;
-      if (el.scrollLeft >= max) {
-        el.scrollLeft = max;
-      }
-      // Após pausa da interação, faz snap para o card mais próximo
+      // Snap para o card mais próximo apenas
       debouncedSnap();
     };
     el.addEventListener('scroll', handleScroll, { passive: true });
     return () => el.removeEventListener('scroll', handleScroll);
-  }, [serviceItems.length, updateIndex, debouncedSnap]);
+  }, [debouncedSnap]);
 
-  // Start autoplay if enabled - apenas quando há serviços carregados
-  useEffect(() => {
-    if (autoplay && autoplayCarousel.isEnabled && serviceItems.length > 0 && !loading) {
-      autoplayCarousel.play();
-    } else {
-      autoplayCarousel.pause();
-    }
-  }, [autoplay, autoplayCarousel, serviceItems.length, loading]);
+  // Start autoplay if enabled - temporarily disabled to fix infinite loop
+  // useEffect(() => {
+  //   if (autoplay && autoplayCarousel.isEnabled && serviceItems.length > 0 && !loading) {
+  //     autoplayCarousel.play();
+  //   } else if (autoplayCarousel.pause) {
+  //     autoplayCarousel.pause();
+  //   }
+  // }, [autoplay, autoplayCarousel.isEnabled, autoplayCarousel.play, autoplayCarousel.pause, serviceItems.length, loading]);
 
   // Use autoplay hook's built-in interaction handlers
   useEffect(() => {

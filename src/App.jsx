@@ -1,25 +1,27 @@
-import React, { useEffect, lazy, Suspense } from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-// Code splitting das rotas para melhorar TTI inicial da Home.
-const HomePageLayout = lazy(() => import('./pages/HomePageLayout.jsx'));
-const ServicesPage = lazy(() => import('./pages/ServicesPage.jsx'));
-const AboutPage = lazy(() => import('./pages/AboutPage.jsx'));
-const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage.jsx'));
-const ServiceDetailPage = lazy(() => import('./pages/ServiceDetailPage.jsx'));
-const LensesPage = lazy(() => import('./pages/LensesPage.jsx'));
-const FAQPage = lazy(() => import('./pages/FAQPage.jsx'));
-const MedicalArticleExample = lazy(() => import('./pages/MedicalArticleExample.jsx'));
-const PodcastPage = lazy(() => import('./pages/PodcastPage.jsx'));
+import createLazyComponent from './utils/lazyLoading.jsx';
 
-const BlogPage = lazy(() => import('./pages/BlogPage.jsx'));
-const PostPage = lazy(() => import('./pages/PostPage.jsx'));
-const CategoryPage = lazy(() => import('./pages/CategoryPage.jsx'));
-const AdminLoginPage = lazy(() => import('./pages/AdminLoginPage.jsx'));
-const WordPressAdminRedirect = lazy(() => import('./components/WordPressAdminRedirect.jsx'));
-const CheckPage = lazy(() => import('./pages/CheckPage.jsx'));
-const DashboardPage = lazy(() => import('./pages/DashboardPage.jsx'));
-const GoogleReviewsTestPage = lazy(() => import('./pages/GoogleReviewsTestPage.jsx'));
+// Code splitting das rotas para melhorar TTI inicial da Home com retry logic
+const HomePageLayout = createLazyComponent(() => import('./pages/HomePageLayout.jsx'));
+const ServicesPage = createLazyComponent(() => import('./pages/ServicesPage.jsx'));
+const AboutPage = createLazyComponent(() => import('./pages/AboutPage.jsx'));
+const PrivacyPolicyPage = createLazyComponent(() => import('./pages/PrivacyPolicyPage.jsx'));
+const ServiceDetailPage = createLazyComponent(() => import('./pages/ServiceDetailPage.jsx'));
+const LensesPage = createLazyComponent(() => import('./pages/LensesPage.jsx'));
+const FAQPage = createLazyComponent(() => import('./pages/FAQPage.jsx'));
+const MedicalArticleExample = createLazyComponent(() => import('./pages/MedicalArticleExample.jsx'));
+const PodcastPage = createLazyComponent(() => import('./pages/PodcastPage.jsx'));
+
+const BlogPage = createLazyComponent(() => import('./pages/BlogPage.jsx'));
+const PostPage = createLazyComponent(() => import('./pages/PostPage.jsx'));
+const CategoryPage = createLazyComponent(() => import('./pages/CategoryPage.jsx'));
+const AdminLoginPage = createLazyComponent(() => import('./pages/AdminLoginPage.jsx'));
+const WordPressAdminRedirect = createLazyComponent(() => import('./components/WordPressAdminRedirect.jsx'));
+const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
+const DashboardPage = createLazyComponent(() => import('./pages/DashboardPage.jsx'));
+const GoogleReviewsTestPage = createLazyComponent(() => import('./pages/GoogleReviewsTestPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
 import { Toaster } from './components/ui/toaster.jsx';
@@ -58,12 +60,6 @@ function App() {
                <Navbar />
                <ScrollToTop />
                <ErrorBoundary>
-                 <Suspense fallback={
-                   <div className="w-full py-20 text-center">
-                     <div className="text-sm text-slate-700 mb-2">Carregando página...</div>
-                     <div className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"></div>
-                   </div>
-                 }>
                   <Routes>
                   <Route path="/" element={isCheckSubdomain ? <CheckPage /> : <HomePageLayout />} />
                   <Route path="/check" element={<CheckPage />} />
@@ -93,7 +89,6 @@ function App() {
                     <Route path="*" element={<Navigate to="/" replace />} />
                   )}
                   </Routes>
-                 </Suspense>
                </ErrorBoundary>
             </div>
             <Toaster />

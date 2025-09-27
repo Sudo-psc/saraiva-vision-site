@@ -4,8 +4,8 @@
  * Requirement 4.1: Show open slots Monday-Friday 08:00-18:00 in 30-minute intervals
  */
 
-import { getAvailableSlots, getAvailableSlotsForNextDays, validateAppointmentDateTime } from '../../src/lib/appointmentAvailability.js'
-import { logEvent } from '../../src/lib/eventLogger.js'
+import { getAvailableSlots, getAvailableSlotsForNextDays, validateAppointmentDateTime } from '../src/lib/appointmentAvailability.js'
+import { logEvent } from '../src/lib/eventLogger.js'
 
 // CORS headers
 const corsHeaders = {

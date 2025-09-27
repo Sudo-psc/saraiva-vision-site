@@ -311,10 +311,10 @@ export interface Database {
 }
 
 // Supabase client configuration
-// Use import.meta.env for Vite environment variables
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
-const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || ''
+// Use process.env for Node.js environment variables
+const supabaseUrl = process.env.VITE_SUPABASE_URL || ''
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || ''
+const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY || ''
 
 // Validate required environment variables
 if (!supabaseUrl) {
@@ -326,7 +326,7 @@ if (!supabaseAnonKey) {
 }
 
 // Log configuration status in development
-if (import.meta.env.DEV) {
+if (process.env.NODE_ENV === 'development') {
     const hasClient = !!(supabaseUrl && supabaseAnonKey);
     const hasAdmin = !!(supabaseUrl && supabaseServiceKey);
 

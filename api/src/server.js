@@ -64,16 +64,23 @@ app.get('/health', (req, res) => {
 
 // API Routes - dynamically import and adapt Vercel handlers
 const routes = [
-  { path: '/api/contact', handler: './routes/contact/index.js' },
-  { path: '/api/servicos', handler: './routes/servicos/index.js' },
-  { path: '/api/health', handler: './routes/health.js' },
-  { path: '/api/revalidate', handler: './routes/revalidate.js' },
-  { path: '/api/google-reviews', handler: './routes/google-reviews.js' },
-  { path: '/api/google-reviews-stats', handler: './routes/google-reviews-stats.js' },
-  { path: '/api/blog-posts', handler: './routes/blog-posts.js' },
-  { path: '/api/chatbot', handler: './routes/chatbot.js' },
-  { path: '/api/ping', handler: './routes/ping.js' },
-  { path: '/api/wordpress-webhook', handler: './routes/wordpress-webhook.js' }
+  { path: '/api/contact', handler: '../contact/index.js' },
+  { path: '/api/servicos', handler: '../servicos/index.js' },
+  { path: '/api/health', handler: '../health.js' },
+  { path: '/api/revalidate', handler: '../revalidate.js' },
+  { path: '/api/google-reviews', handler: '../google-reviews.js' },
+  { path: '/api/google-reviews-stats', handler: '../google-reviews-stats.js' },
+  { path: '/api/blog-posts', handler: '../blog-posts.js' },
+  { path: '/api/ping', handler: '../ping.js' },
+  { path: '/api/wordpress-webhook', handler: '../wordpress-webhook.js' },
+  { path: '/api/appointments', handler: '../appointments/availability.js' },
+  { path: '/api/podcast', handler: '../podcast/episodes.js' },
+  { path: '/api/admin', handler: '../admin/auth.js' },
+  { path: '/api/analytics', handler: '../analytics/funnel.js' },
+  { path: '/api/instagram', handler: '../instagram/posts.js' },
+  { path: '/api/security', handler: '../security/monitor.js' },
+  { path: '/api/outbox', handler: '../outbox/drain.js' },
+  { path: '/api/images', handler: '../images/proxy.js' }
 ];
 
 // Load routes dynamically
