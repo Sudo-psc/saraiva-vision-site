@@ -86,31 +86,50 @@ const AudioPlayer = ({
 
     const canPlay = !!(episode && episode.src);
 
-    const togglePlayPause = () => {
+    const togglePlayPause = async () => {
         if (!canPlay) return;
         const audio = audioRef.current;
         if (isPlaying) {
             audio.pause();
             setIsPlaying(false);
         } else {
-            // Notify other players to pause
             try {
+                // Notify other players to pause
                 window.dispatchEvent(new CustomEvent('sv:audio-play', { detail: { id: episode.id } }));
-            } catch (_) { }
-            // Ensure inline playback on iOS + unmute before play
-            audio.playsInline = true;
-            try { audio.muted = false; } catch (_) { }
-            const playPromise = audio.play();
-            if (playPromise && typeof playPromise.then === 'function') {
-                playPromise
-                    .then(() => setIsPlaying(true))
-                    .catch(() => {
-                        // Retry once for Safari quirks
-                        try { audio.muted = false; } catch (_) { }
-                        audio.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+                
+                // Ensure inline playback on iOS + unmute before play
+                audio.playsInline = true;
+                audio.muted = false;
+                
+                // Load the audio if not already loaded (since we use preload="none")
+                if (audio.readyState < 2) {
+                    setIsLoading(true);
+                    await new Promise((resolve, reject) => {
+                        const handleCanPlay = () => {
+                            audio.removeEventListener('canplay', handleCanPlay);
+                            audio.removeEventListener('error', handleError);
+                            setIsLoading(false);
+                            resolve();
+                        };
+                        const handleError = () => {
+                            audio.removeEventListener('canplay', handleCanPlay);
+                            audio.removeEventListener('error', handleError);
+                            setIsLoading(false);
+                            reject(new Error('Failed to load audio'));
+                        };
+                        audio.addEventListener('canplay', handleCanPlay);
+                        audio.addEventListener('error', handleError);
+                        audio.load();
                     });
-            } else {
+                }
+                
+                // Play the audio
+                await audio.play();
                 setIsPlaying(true);
+            } catch (error) {
+                console.warn('Audio play failed:', error);
+                setIsPlaying(false);
+                setError('Falha ao reproduzir o áudio. Tente novamente.');
             }
         }
     };
@@ -381,6 +400,17 @@ const AudioPlayer = ({
         </div>
     );
 
+    // Single audio element for all modes
+    const audioElement = (
+        <audio
+            ref={audioRef}
+            src={episode.src}
+            preload="none"
+            playsInline
+            className="hidden"
+        />
+    );
+
     // Modal variant (placed after PlayerControls so it's defined)
     if (isModal) {
         return (
@@ -398,6 +428,8 @@ const AudioPlayer = ({
                     className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 relative max-h-[90dvh] overflow-y-auto touch-scroll scroll-container scrollbar-none"
                     onClick={e => e.stopPropagation()}
                 >
+                    {audioElement}
+                    
                     <button
                         onClick={onClose}
                         className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
@@ -432,15 +464,6 @@ const AudioPlayer = ({
                         </div>
                     </div>
 
-                    {/* Hidden audio element used by controls (modal mode) */}
-                    <audio
-                        ref={audioRef}
-                        src={episode.src}
-                        preload="metadata"
-                        playsInline
-                        className="hidden"
-                    />
-
                     {error ? (
                         <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
                             {error}
@@ -455,13 +478,7 @@ const AudioPlayer = ({
 
     return (
         <div className={`bg-white rounded-2xl shadow-soft-light border border-gray-100 ${isCompact ? 'p-4' : 'p-6'} ${className}`}>
-            <audio
-                ref={audioRef}
-                src={episode.src}
-                preload="metadata"
-                playsInline
-                className="hidden"
-            />
+            {audioElement}
 
             {/* Card header with large cover */}
             {isCard && episode.cover && (

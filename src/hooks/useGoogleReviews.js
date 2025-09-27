@@ -15,7 +15,25 @@ const DEFAULT_OPTIONS = {
 };
 
 export function useGoogleReviews(options = {}) {
-    const config = useMemo(() => ({ ...DEFAULT_OPTIONS, ...options }), [options]);
+    // Destructure options to create stable dependencies
+    const {
+        placeId = DEFAULT_OPTIONS.placeId,
+        limit = DEFAULT_OPTIONS.limit,
+        autoFetch = DEFAULT_OPTIONS.autoFetch,
+        refreshInterval = DEFAULT_OPTIONS.refreshInterval,
+        onError = DEFAULT_OPTIONS.onError,
+        onSuccess = DEFAULT_OPTIONS.onSuccess
+    } = options;
+
+    const config = useMemo(() => ({
+        placeId,
+        limit,
+        autoFetch,
+        refreshInterval,
+        onError,
+        onSuccess
+    }), [placeId, limit, autoFetch, refreshInterval, onError, onSuccess]);
+
     const [reviews, setReviews] = useState([]);
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -243,7 +261,7 @@ export function useGoogleReviews(options = {}) {
         if (config.autoFetch) {
             fetchReviews();
         }
-    }, [config.autoFetch, fetchReviews]);
+    }, [config.autoFetch]); // Remove fetchReviews dependency to prevent infinite loop
 
     // Set up refresh interval
     useEffect(() => {
@@ -258,7 +276,7 @@ export function useGoogleReviews(options = {}) {
                 }
             };
         }
-    }, [config.refreshInterval, fetchReviews]);
+    }, [config.refreshInterval]); // Remove fetchReviews dependency to prevent infinite loop
 
     // Cleanup on unmount
     useEffect(() => {

@@ -225,57 +225,9 @@ export const useAutoplayCarousel = ({
   const [progress, setProgress] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(state.interval);
 
-  // Clear all timers
-  const clearTimers = useCallback(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-    if (resumeTimerRef.current) {
-      clearTimeout(resumeTimerRef.current);
-      resumeTimerRef.current = null;
-    }
-  }, []);
+  // clearTimers function removed - timer clearing is now done directly to avoid circular dependencies
 
-  // Start autoplay timer
-  const startTimer = useCallback(() => {
-    clearTimers();
-
-    const startTime = Date.now();
-    progressStartRef.current = startTime;
-    progressDurationRef.current = state.interval;
-
-    // Set initial progress values
-    setProgress(0);
-    setTimeRemaining(state.interval);
-
-    // Progress update interval (using setTimeout instead of rAF for better test compatibility)
-    const updateProgress = () => {
-      // Check playing state from ref to avoid stale closure
-      if (!state.isPlaying) return;
-      
-      const elapsed = Date.now() - progressStartRef.current;
-      const newProgress = Math.min(elapsed / progressDurationRef.current, 1);
-      const remaining = Math.max(progressDurationRef.current - elapsed, 0);
-      
-      setProgress(newProgress);
-      setTimeRemaining(remaining);
-
-      if (newProgress < 1 && state.isPlaying) {
-        progressTimerIdRef.current = setTimeout(updateProgress, 50); // Update every 50ms
-      }
-    };
-
-    // Start progress updates
-    progressTimerIdRef.current = setTimeout(updateProgress, 50);
-
-    // Main autoplay timer
-    timerRef.current = setTimeout(() => {
-      if (progressTimerIdRef.current) clearTimeout(progressTimerIdRef.current);
-      // The useEffect cleanup function handles pausing, so we can dispatch directly.
-      dispatch({ type: 'NEXT', manual: false });
-    }, state.interval);
-  }, [state.interval, state.isPlaying, clearTimers]);
+  // startTimer function removed - logic moved directly into useEffect to avoid circular dependencies
 
   // Control methods
   const play = useCallback(() => {
@@ -285,8 +237,16 @@ export const useAutoplayCarousel = ({
 
   const pause = useCallback(() => {
     dispatch({ type: 'PAUSE' });
-    clearTimers();
-  }, [clearTimers]);
+    // Clear timers directly to avoid circular dependency
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    if (resumeTimerRef.current) {
+      clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+    }
+  }, []);
 
   const toggle = useCallback(() => {
     if (state.isPlaying) {
@@ -298,10 +258,18 @@ export const useAutoplayCarousel = ({
 
   const stop = useCallback(() => {
     dispatch({ type: 'STOP' });
-    clearTimers();
+    // Clear timers directly to avoid circular dependency
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    if (resumeTimerRef.current) {
+      clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+    }
     setProgress(0);
     setTimeRemaining(state.interval);
-  }, [clearTimers, state.interval]);
+  }, [state.interval]);
 
   const next = useCallback(() => {
     dispatch({ type: 'NEXT', manual: true });
@@ -345,14 +313,21 @@ export const useAutoplayCarousel = ({
     if (!state.config.pauseOnHover) return;
     dispatch({ type: 'SET_INTERACTION', interacting: false });
     
-    // Resume after delay
-    clearTimers();
+    // Resume after delay - clear timers directly
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    if (resumeTimerRef.current) {
+      clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+    }
     resumeTimerRef.current = setTimeout(() => {
       if (state.isEnabled && !state.userInteracting) {
         dispatch({ type: 'PLAY' });
       }
     }, state.config.resumeDelay);
-  }, [state.config.pauseOnHover, state.config.resumeDelay, state.isEnabled, state.userInteracting, clearTimers]);
+  }, [state.config.pauseOnHover, state.config.resumeDelay, state.isEnabled, state.userInteracting]);
 
   const handleFocus = useCallback(() => {
     if (!state.config.pauseOnFocus) return;
@@ -364,14 +339,21 @@ export const useAutoplayCarousel = ({
     if (!state.config.pauseOnFocus) return;
     dispatch({ type: 'SET_INTERACTION', interacting: false });
     
-    // Resume after delay
-    clearTimers();
+    // Resume after delay - clear timers directly
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    if (resumeTimerRef.current) {
+      clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+    }
     resumeTimerRef.current = setTimeout(() => {
       if (state.isEnabled && !state.userInteracting) {
         dispatch({ type: 'PLAY' });
       }
     }, state.config.resumeDelay);
-  }, [state.config.pauseOnFocus, state.config.resumeDelay, state.isEnabled, state.userInteracting, clearTimers]);
+  }, [state.config.pauseOnFocus, state.config.resumeDelay, state.isEnabled, state.userInteracting]);
 
   const handleTouchStart = useCallback(() => {
     dispatch({ type: 'SET_INTERACTION', interacting: true });
@@ -381,14 +363,21 @@ export const useAutoplayCarousel = ({
   const handleTouchEnd = useCallback(() => {
     dispatch({ type: 'SET_INTERACTION', interacting: false });
     
-    // Resume after delay
-    clearTimers();
+    // Resume after delay - clear timers directly
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    if (resumeTimerRef.current) {
+      clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+    }
     resumeTimerRef.current = setTimeout(() => {
       if (state.isEnabled && !state.userInteracting) {
         dispatch({ type: 'PLAY' });
       }
     }, state.config.resumeDelay);
-  }, [state.config.resumeDelay, state.isEnabled, state.userInteracting, clearTimers]);
+  }, [state.config.resumeDelay, state.isEnabled, state.userInteracting]);
 
   // Handle reduced motion changes
   useEffect(() => {
@@ -406,9 +395,60 @@ export const useAutoplayCarousel = ({
   // Handle autoplay timer
   useEffect(() => {
     if (state.isPlaying && state.isEnabled && state.tabVisible) {
-      startTimer();
+      // Clear existing timers
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+      if (resumeTimerRef.current) {
+        clearTimeout(resumeTimerRef.current);
+        resumeTimerRef.current = null;
+      }
+
+      const startTime = Date.now();
+      progressStartRef.current = startTime;
+      progressDurationRef.current = state.interval;
+
+      // Set initial progress values
+      setProgress(0);
+      setTimeRemaining(state.interval);
+
+      // Progress update interval (using setTimeout instead of rAF for better test compatibility)
+      const updateProgress = () => {
+        // Check playing state from ref to avoid stale closure
+        if (!state.isPlaying) return;
+        
+        const elapsed = Date.now() - progressStartRef.current;
+        const newProgress = Math.min(elapsed / progressDurationRef.current, 1);
+        const remaining = Math.max(progressDurationRef.current - elapsed, 0);
+        
+        setProgress(newProgress);
+        setTimeRemaining(remaining);
+
+        if (newProgress < 1 && state.isPlaying) {
+          progressTimerIdRef.current = setTimeout(updateProgress, 50); // Update every 50ms
+        }
+      };
+
+      // Start progress updates
+      progressTimerIdRef.current = setTimeout(updateProgress, 50);
+
+      // Main autoplay timer
+      timerRef.current = setTimeout(() => {
+        if (progressTimerIdRef.current) clearTimeout(progressTimerIdRef.current);
+        // The useEffect cleanup function handles pausing, so we can dispatch directly.
+        dispatch({ type: 'NEXT', manual: false });
+      }, state.interval);
     } else {
-      clearTimers();
+      // Clear timers when not playing
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+      if (resumeTimerRef.current) {
+        clearTimeout(resumeTimerRef.current);
+        resumeTimerRef.current = null;
+      }
       // Clear progress state immediately when not playing
       if (progressTimerIdRef.current) {
         clearTimeout(progressTimerIdRef.current);
@@ -419,13 +459,21 @@ export const useAutoplayCarousel = ({
     }
 
     return () => {
-      clearTimers();
+      // Cleanup on unmount or dependency change
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+      if (resumeTimerRef.current) {
+        clearTimeout(resumeTimerRef.current);
+        resumeTimerRef.current = null;
+      }
       if (progressTimerIdRef.current) {
         clearTimeout(progressTimerIdRef.current);
         progressTimerIdRef.current = null;
       }
     };
-  }, [state.isPlaying, state.isEnabled, state.tabVisible, state.interval, clearTimers, startTimer]);
+  }, [state.isPlaying, state.isEnabled, state.tabVisible, state.interval]); // Removed circular dependencies
 
   // Handle slide changes for callback - both manual and automatic
   const lastCallbackTransitionRef = useRef(0);
@@ -450,9 +498,21 @@ export const useAutoplayCarousel = ({
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      clearTimers();
+      // Clear all timers on unmount
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+      if (resumeTimerRef.current) {
+        clearTimeout(resumeTimerRef.current);
+        resumeTimerRef.current = null;
+      }
+      if (progressTimerIdRef.current) {
+        clearTimeout(progressTimerIdRef.current);
+        progressTimerIdRef.current = null;
+      }
     };
-  }, [clearTimers]);
+  }, []); // No dependencies needed for cleanup
 
   // Event handlers object
   const handlers = useMemo(() => ({

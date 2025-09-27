@@ -156,6 +156,14 @@ const Services = ({ full = false, autoplay = true }) => {
   const dragStartXRef = useRef(0);
   const scrollStartRef = useRef(0);
 
+  // Stabilize the onSlideChange callback to prevent infinite re-renders
+  const handleSlideChange = useCallback((newIndex, direction) => {
+    if (scrollerRef.current && serviceItems.length > 0) {
+      const targetScroll = newIndex * cardWidthRef.current;
+      smoothScrollHorizontal(scrollerRef.current, targetScroll, 300);
+    }
+  }, [serviceItems.length]);
+
   // Autoplay carousel hook integration - só inicializa quando há serviços
   const autoplayCarousel = useAutoplayCarousel({
     totalSlides: Math.max(1, serviceItems.length), // Garante que nunca seja 0
@@ -165,12 +173,7 @@ const Services = ({ full = false, autoplay = true }) => {
       pauseOnFocus: true,
       respectReducedMotion: true
     },
-    onSlideChange: (newIndex, direction) => {
-      if (scrollerRef.current && serviceItems.length > 0) {
-        const targetScroll = newIndex * cardWidthRef.current;
-        smoothScrollHorizontal(scrollerRef.current, targetScroll, 300);
-      }
-    }
+    onSlideChange: handleSlideChange
   });
 
   // Use currentIndex from autoplay hook

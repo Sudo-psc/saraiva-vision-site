@@ -3,7 +3,7 @@
  * Reliable component for displaying Google Places reviews
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Star, ExternalLink, MessageCircle, RefreshCw, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -63,6 +63,15 @@ const GoogleReviewsWidget = ({
     const [placeLoading, setPlaceLoading] = useState(true);
     const [placeError, setPlaceError] = useState(null);
 
+    // Stabilize the onError callback to prevent infinite re-renders
+    const handleError = useCallback((err) => {
+        if (err.message.includes('not configured')) {
+            console.info('Google Reviews not configured, using fallback data:', err.message);
+        } else {
+            console.info('Using fallback reviews due to API error:', err.message);
+        }
+    }, []);
+
     const {
         reviews: apiReviews,
         stats: apiStats,
@@ -74,13 +83,7 @@ const GoogleReviewsWidget = ({
     } = useGoogleReviews({
         limit: maxReviews,
         autoFetch: true,
-        onError: (err) => {
-            if (err.message.includes('not configured')) {
-                console.info('Google Reviews not configured, using fallback data:', err.message);
-            } else {
-                console.info('Using fallback reviews due to API error:', err.message);
-            }
-        }
+        onError: handleError
     });
 
     // Fetch real place details
