@@ -7,8 +7,8 @@ A high-level overview of the Saraiva Vision medical website architecture, optimi
 **Saraiva Vision** is a production-ready medical clinic website built with modern web technologies and deployed on native VPS infrastructure for maximum performance and regulatory compliance.
 
 ### Key Characteristics
-- **Medical-Grade Security**: CFM and LGPD compliance integrated
-- **High Performance**: Sub-3 second load times with native VPS deployment
+- **Medical-Grade Security**: CFM and LGPD compliance (Targeting full compliance - see compliance framework docs)
+- **High Performance**: Targeting sub-3 second load times with native VPS deployment (In progress - performance monitoring active)
 - **Accessibility First**: WCAG 2.1 AA compliance throughout
 - **Scalable Architecture**: React 18 with TypeScript and modern tooling
 - **Brazilian Market Focus**: Localized for Brazilian healthcare regulations
@@ -28,9 +28,8 @@ Radix UI              → Accessible component primitives
 ### Backend & Infrastructure
 ```text
 Node.js 22+           → ES modules with modern JavaScript
-Supabase 2.30.0       → Primary PostgreSQL database + auth
-MySQL                 → WordPress CMS and local caching
-Redis                 → Session management and performance
+MySQL                 → Primary database for all application data
+Redis                 → Session management, caching, and real-time features
 Nginx                 → Web server and reverse proxy
 Ubuntu/Debian VPS     → Native deployment without containers
 ```
@@ -68,12 +67,10 @@ TypeScript Strict     → Maximum type safety
                     ┌─────────────────┐
                     │   🗄️ Databases   │
                     │                 │
-                    │  Supabase       │  ← Primary data
-                    │  PostgreSQL     │     (patients, appointments)
+                    │  MySQL          │  ← Primary data
+                    │                 │     (patients, appointments, blog)
                     │                 │
-                    │  MySQL          │  ← WordPress CMS
-                    │                 │     (blog, cache)
-                    │  Redis          │  ← Sessions, cache
+                    │  Redis          │  ← Sessions, cache, real-time
                     └─────────────────┘
 ```
 
@@ -81,7 +78,7 @@ TypeScript Strict     → Maximum type safety
 
 ### 1. Patient Interaction Flow
 ```text
-Patient Browser → Nginx → React SPA → Node.js API → Supabase
+Patient Browser → Nginx → React SPA → Node.js API → MySQL
                                    ↘
                                     → WordPress GraphQL → MySQL
 ```
@@ -93,7 +90,7 @@ WordPress Admin → MySQL → GraphQL API → React Components → Patient View
 
 ### 3. Real-time Features
 ```text
-Appointment Booking → Supabase Real-time → WebSocket → React UI Updates
+Appointment Booking → Redis Pub/Sub → WebSocket → React UI Updates
 ```
 
 ## Key Architectural Decisions
@@ -106,12 +103,13 @@ Appointment Booking → Supabase Real-time → WebSocket → React UI Updates
 - Direct OS-level optimizations
 - Lower resource overhead
 
-### 2. Hybrid Database Strategy
-**Decision**: Supabase (primary) + MySQL (WordPress)
+### 2. Unified Database Strategy
+**Decision**: MySQL as primary database for all data
 **Rationale**:
-- Supabase: Modern PostgreSQL with real-time features
-- MySQL: WordPress requirement and local caching
-- Best of both worlds for different use cases
+- Single database technology stack for simplicity
+- MySQL: Mature, reliable, and well-understood
+- Redis: Real-time features and caching
+- Reduced complexity and maintenance overhead
 
 ### 3. WordPress Headless Integration
 **Decision**: GraphQL-based headless WordPress
@@ -142,7 +140,7 @@ Input Validation → Sanitization → Encryption → Database → Audit Logs
 
 ### Authentication & Authorization
 ```text
-User Login → Supabase Auth → JWT Tokens → Role-Based Access → Protected Routes
+User Login → Node.js Auth → JWT Tokens → Role-Based Access → Protected Routes
 ```
 
 ### Infrastructure Security
@@ -159,8 +157,8 @@ Let's Encrypt SSL → Security Headers → Rate Limiting → Input Validation �
 - **Critical CSS**: Above-the-fold optimization
 
 ### Backend Optimizations
-- **Redis Caching**: API response and session caching
-- **Database Indexing**: Optimized queries for medical data
+- **Redis Caching**: API response, session caching, and real-time features
+- **Database Indexing**: Optimized queries for medical data in MySQL
 - **CDN Strategy**: Static asset optimization
 - **Compression**: Gzip for all text content
 
@@ -199,20 +197,20 @@ Local Build → Validation → SSH Upload → Atomic Replacement → Health Chec
 
 ### Backup Strategy
 ```text
-Daily: Application Files → Weekly: Database Backup → Monthly: Full System Backup
+Daily: Application Files → Daily: MySQL Database Backup → Weekly: Redis Cache Backup → Monthly: Full System Backup
 ```
 
 ## Scalability Considerations
 
 ### Current Architecture Supports
 - **Concurrent Users**: 1000+ simultaneous users
-- **Database Load**: Optimized for medical clinic workload
+- **Database Load**: Optimized for medical clinic workload with MySQL
 - **Content Volume**: Unlimited blog posts and medical content
-- **File Storage**: Integrated with Supabase storage
+- **File Storage**: Local file system with Redis caching
 
 ### Future Scaling Options
 - **Horizontal Scaling**: Load balancer + multiple VPS instances
-- **Database Scaling**: Supabase automatic scaling + read replicas
+- **Database Scaling**: MySQL replication + read replicas
 - **CDN Integration**: CloudFlare or similar for global reach
 - **Microservices**: API decomposition for specialized medical services
 

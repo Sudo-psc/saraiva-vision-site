@@ -23,7 +23,7 @@ Site institucional desenvolvido para a Clínica Saraiva Vision, especializada em
 O projeto utiliza uma arquitetura nativa VPS modular e escalável:
 - **Frontend**: React 18 com Vite servido pelo Nginx nativo
 - **Backend**: Node.js + Express.js rodando como serviços systemd nativos
-- **Database**: MySQL nativo + Supabase PostgreSQL para dados principais
+- **Database**: MySQL nativo para todos os dados da aplicação
 - **Cache**: Redis nativo para otimização de performance
 - **CMS**: WordPress headless com PHP-FPM 8.1+ nativo
 - **Proxy**: Nginx nativo como reverse proxy e servidor web
@@ -89,7 +89,7 @@ O projeto utiliza uma arquitetura nativa VPS modular e escalável:
 - **Redis** - Cache server nativo para performance e sessões
 - **PHP-FPM 8.1+** - Processamento PHP nativo para WordPress
 - **Nginx** - Web server e reverse proxy nativo
-- **Supabase** - PostgreSQL external service para dados principais
+- **MySQL** - Banco de dados nativo para todos os dados da aplicação
 
 ### Ferramentas de Desenvolvimento
 - **Vitest** - Framework de testes

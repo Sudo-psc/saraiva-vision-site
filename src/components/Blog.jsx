@@ -82,6 +82,7 @@ const Blog = () => {
                 <span>{format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })}</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-gray-900 flex-grow">
+                {/* eslint-disable-next-line lint/security/noDangerouslySetInnerHtml -- sanitized via sanitizeWordPressTitle */}
                 <Link
                   to={`/blog/${post.slug}`}
                   className="hover:text-blue-600"

@@ -8,7 +8,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { Services } from '@/components/Services';
-import { setupCarouselTest } from '@/tests/utils/testUtils';
+import { setupCarouselTest } from '@/utils/__tests__/testUtils';
 
 // Mock i18next
 vi.mock('react-i18next', () => ({

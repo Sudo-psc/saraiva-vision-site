@@ -3,6 +3,11 @@ import {
   GET_POST_BY_SLUG,
   GET_RELATED_POSTS,
 } from './wordpress-queries.js';
+import {
+  sanitizeWordPressContent,
+  sanitizeWordPressExcerpt,
+  sanitizeWordPressTitle
+} from '@/utils/sanitizeWordPressContent';
 
 // VPS WordPress GraphQL endpoint configuration with multiple fallback options
 const WORDPRESS_GRAPHQL_ENDPOINT = import.meta.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT ||
@@ -299,7 +304,25 @@ export const fetchPostBySlug = async (slug) => {
     throw new Error('Post not found');
   }
 
-  return data.post;
+  const post = data.post;
+
+  const sanitizedFeaturedImage = post.featuredImage?.node
+    ? {
+        ...post.featuredImage,
+        node: {
+          ...post.featuredImage.node,
+          altText: sanitizeWordPressExcerpt(post.featuredImage.node.altText || ''),
+        },
+      }
+    : post.featuredImage;
+
+  return {
+    ...post,
+    title: sanitizeWordPressTitle(post.title || ''),
+    excerpt: sanitizeWordPressExcerpt(post.excerpt || ''),
+    content: sanitizeWordPressContent(post.content || ''),
+    featuredImage: sanitizedFeaturedImage,
+  };
 };
 
 export const fetchRelatedPosts = async (post, limit = 3) => {
@@ -349,7 +372,11 @@ export const fetchRelatedPosts = async (post, limit = 3) => {
     return [];
   }
 
-  return data.posts.nodes || [];
+  return (data.posts.nodes || []).map((relatedPost) => ({
+    ...relatedPost,
+    title: sanitizeWordPressTitle(relatedPost.title || ''),
+    excerpt: sanitizeWordPressExcerpt(relatedPost.excerpt || ''),
+  }));
 };
 
 export const getFeaturedImageUrl = (post) => {
@@ -363,14 +390,13 @@ export const getAuthorInfo = (post) => {
 export const cleanHtmlContent = (html) => {
   if (!html) return '';
 
-  // Remove potentially dangerous content
-  const cleaned = html
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
-    .replace(/on\w+="[^"]*"/g, '')
-    .replace(/on\w+='[^']*'/g, '');
+  const sanitized = sanitizeWordPressContent(html, {
+    FORBID_TAGS: ['script', 'style', 'iframe', 'object', 'embed', 'link', 'base'],
+  });
 
-  return cleaned;
+  return sanitized
+    .replace(/href\s*=\s*"javascript:[^"]*"/gi, 'href="#"')
+    .replace(/href\s*=\s*'javascript:[^']*'/gi, "href='#'");
 };
 
 export const extractPlainText = (html, maxLength = null) => {

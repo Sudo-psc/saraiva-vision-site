@@ -32,8 +32,6 @@ nano .env
 
 **Required Environment Variables:**
 ```bash
-VITE_SUPABASE_URL=your_supabase_project_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 VITE_GOOGLE_MAPS_API_KEY=your_google_maps_key
 VITE_WORDPRESS_API_URL=https://blog.saraivavision.com.br/graphql
 ```
@@ -148,14 +146,20 @@ const apiKey = import.meta.env.VITE_NEW_API_KEY;
 
 ### Database Operations
 ```javascript
-// Contact form submission
-const { data, error } = await supabase
-  .from('contact_messages')
-  .insert({
+// Contact form submission using Node.js API
+const response = await fetch('/api/contact', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
     name: 'Patient Name',
     email: 'patient@email.com',
     message: 'Appointment request'
-  });
+  }),
+});
+
+const result = await response.json();
 ```
 
 ### API Integration
@@ -199,9 +203,11 @@ sudo journalctl -u saraiva-api -f
 
 ### Database Connection Issues
 ```bash
-# Test Supabase connection
-curl -H "apikey: $VITE_SUPABASE_ANON_KEY" \
-     "$VITE_SUPABASE_URL/rest/v1/contact_messages?select=id&limit=1"
+# Test MySQL connection
+mysql -u root -p -e "SHOW DATABASES;"
+
+# Test Node.js API health
+curl http://localhost:3001/api/monitoring/health
 ```
 
 ## 📚 Next Steps

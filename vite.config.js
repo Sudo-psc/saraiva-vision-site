@@ -49,40 +49,49 @@ export default defineConfig({
 
   build: {
     outDir: 'dist',
-    sourcemap: true, // Enable source maps for debugging ReferenceError
-    chunkSizeWarningLimit: 600,
-    assetsDir: 'assets', // Proper assets directory for VPS
-    assetsInlineLimit: 4096, // Inline small assets as base64 for performance
-    minify: 'esbuild', // Enable minification for production
+    sourcemap: process.env.NODE_ENV === 'development' ? true : false, // Source maps only in dev
+    chunkSizeWarningLimit: 800, // Increase for VPS deployment
+    assetsDir: 'assets',
+    assetsInlineLimit: 8192, // Increase inline limit for VPS performance
+    minify: 'esbuild',
+    target: 'es2020', // Modern target for better optimization
+    cssCodeSplit: true, // Split CSS for better caching
     rollupOptions: {
       input: 'index.html',
       output: {
+        // Optimized chunking strategy for VPS
         manualChunks(id) {
-          // Keep React and React-DOM together in vendor chunk
           if (id.includes('node_modules')) {
+            // Core React packages
             if (id.includes('react') || id.includes('react-dom')) {
-              return 'vendor'
+              return 'react-vendor'
             }
-            if (id.includes('react-router-dom')) {
+            // Routing
+            if (id.includes('react-router')) {
               return 'router'
             }
+            // UI Components and animation libs
             if (id.includes('@radix-ui')) {
-              return 'ui'
+              return 'react-vendor'
             }
             if (id.includes('framer-motion')) {
-              return 'animation'
+              return 'motion'
             }
+            // Utilities
             if (id.includes('date-fns') || id.includes('clsx') || id.includes('class-variance-authority')) {
               return 'utils'
             }
+            // Other vendor libraries
             return 'vendor'
           }
         },
-      },
-      // Externalize Sentry to avoid build issues with dynamic imports
-      external: ['@sentry/react', '@sentry/tracing']
+        // Optimized file naming for VPS caching
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
+      }
     },
-    copyPublicDir: true, // Ensure public directory is copied including all assets
+    copyPublicDir: true
   },
   // Ensure all asset types are properly handled
   assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.webp', '**/*.avif', '**/*.mp3', '**/*.wav', '**/*.mp4'],

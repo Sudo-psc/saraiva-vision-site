@@ -15,6 +15,11 @@ import {
   getFeaturedImageUrl as getFeaturedImageUrlOriginal,
   extractPlainText as extractPlainTextOriginal
 } from './wordpress.js';
+import {
+  sanitizeWordPressContent,
+  sanitizeWordPressExcerpt,
+  sanitizeWordPressTitle
+} from '@/utils/sanitizeWordPressContent';
 
 // Health check function
 export const checkWordPressConnection = async () => {
@@ -123,38 +128,53 @@ export const fetchPosts = async (params = {}) => {
     }
 
     // Transform GraphQL posts to REST API format for compatibility
-    return posts.map(post => ({
-      id: post.databaseId || post.id,
-      slug: post.slug,
-      title: {
-        rendered: post.title || ''
-      },
-      content: {
-        rendered: post.content || ''
-      },
-      excerpt: {
-        rendered: post.excerpt || ''
-      },
-      date: post.date,
-      modified: post.modified || post.date,
-      categories: post.categories?.nodes?.map(cat => cat.databaseId) || [],
-      featuredImage: post.featuredImage,
-      author: post.author,
-      _embedded: {
-        'wp:featuredmedia': post.featuredImage ? [{
-          id: post.featuredImage.node?.databaseId,
-          source_url: post.featuredImage.node?.sourceUrl,
-          alt_text: post.featuredImage.node?.altText || ''
-        }] : [],
-        'wp:term': post.categories?.nodes ? [[
-          ...post.categories.nodes.map(cat => ({
-            id: cat.databaseId,
-            name: cat.name,
-            slug: cat.slug
-          }))
-        ]] : []
-      }
-    }));
+    return posts.map(post => {
+      const sanitizedTitle = sanitizeWordPressTitle(post.title || '');
+      const sanitizedContent = sanitizeWordPressContent(post.content || '');
+      const sanitizedExcerpt = sanitizeWordPressExcerpt(post.excerpt || '');
+
+      return {
+        id: post.databaseId || post.id,
+        slug: post.slug,
+        title: {
+          rendered: sanitizedTitle
+        },
+        content: {
+          rendered: sanitizedContent
+        },
+        excerpt: {
+          rendered: sanitizedExcerpt
+        },
+        date: post.date,
+        modified: post.modified || post.date,
+        categories: post.categories?.nodes?.map(cat => cat.databaseId) || [],
+        featuredImage: post.featuredImage,
+        author: post.author,
+        _embedded: {
+          'wp:featuredmedia': post.featuredImage ? [{
+            id: post.featuredImage.node?.databaseId,
+            source_url: post.featuredImage.node?.sourceUrl,
+            alt_text: (post.featuredImage.node?.altText || '')
+              .replace(/<[^>]*>/g, '') // Strip HTML tags
+              .replace(/&amp;/g, '&')
+              .replace(/&lt;/g, '<')
+              .replace(/&gt;/g, '>')
+              .replace(/&quot;/g, '"')
+              .replace(/&#39;/g, "'")
+              .replace(/&nbsp;/g, ' ')
+              .trim()
+              .replace(/"/g, '&quot;') // Escape quotes for HTML attribute
+          }] : [],
+          'wp:term': post.categories?.nodes ? [[
+            ...post.categories.nodes.map(cat => ({
+              id: cat.databaseId,
+              name: cat.name,
+              slug: cat.slug
+            }))
+          ]] : []
+        }
+      };
+    });
 
   } catch (error) {
     console.error('Error in fetchPosts:', error);

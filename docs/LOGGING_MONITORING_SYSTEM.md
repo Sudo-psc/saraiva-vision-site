@@ -12,7 +12,7 @@ This document describes the comprehensive logging and monitoring system implemen
 - **Structured Logging**: JSON-formatted logs with consistent schema
 - **PII Sanitization**: Automatic removal of sensitive data (emails, phones, CPF, etc.)
 - **Multiple Log Levels**: DEBUG, INFO, WARN, ERROR, CRITICAL
-- **Centralized Storage**: Logs stored in Supabase `event_log` table
+- **Centralized Storage**: Logs stored in MySQL `event_log` table
 - **Request Tracing**: Unique request IDs for correlation
 - **Performance Logging**: Built-in performance metrics tracking
 
@@ -219,8 +219,11 @@ CREATE TABLE message_outbox (
 ### Environment Variables
 ```bash
 # Database
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=saraiva_vision
+DB_USER=monitoring_user
+DB_PASSWORD=your_secure_password
 
 # Monitoring
 MONITORING_API_TOKEN=secure_token_for_metrics_api
@@ -342,7 +345,7 @@ async function processMessage(message) {
 
 ### Log Volume Management
 - Debug logs only in development
-- Automatic log rotation (handled by Supabase)
+- Automatic log rotation (handled by MySQL)
 - Efficient indexing on `created_at` and `severity`
 
 ### Performance Impact
@@ -351,7 +354,7 @@ async function processMessage(message) {
 - Minimal overhead for production operations
 
 ### Scalability
-- Horizontal scaling through Supabase
+- Horizontal scaling through MySQL
 - Efficient querying with proper indexes
 - Configurable retention policies
 
@@ -369,7 +372,7 @@ async function processMessage(message) {
 - Admin-only access to sensitive metrics
 
 ### Data Protection
-- Encrypted data at rest (Supabase)
+- Encrypted data at rest (MySQL)
 - Encrypted data in transit (HTTPS)
 - Minimal data collection principle
 
@@ -395,7 +398,7 @@ npm test -- --run api/__tests__/monitoring.test.js
 ### Common Issues
 
 1. **Database Connection Errors**
-   - Check Supabase credentials
+   - Check MySQL credentials
    - Verify network connectivity
    - Check RLS policies
 
@@ -416,7 +419,7 @@ NODE_ENV=development
 ```
 
 ### Log Analysis
-Query logs directly in Supabase:
+Query logs directly in MySQL:
 ```sql
 SELECT * FROM event_log 
 WHERE severity IN ('error', 'critical')

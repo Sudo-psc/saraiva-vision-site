@@ -6,7 +6,7 @@ import { useHomeSEO } from '../hooks/useSEO';
 import { initScrollSystem, scrollToHash, cleanupScrollSystem } from '../utils/scrollUtils';
 
 import Hero from '../components/Hero';
-import ServicesFixed from '../components/ServicesFixed';
+import Services from '../components/Services';
 import About from '../components/About';
 import Contact from '../components/Contact';
 import EnhancedFooter from '../components/EnhancedFooter';
@@ -66,7 +66,7 @@ function HomePage() {
        <div className="min-h-screen bg-white">
          <main>
           <Hero />
-          <ServicesFixed />
+          <Services autoplay full={false} />
           <About />
           <GoogleReviewsIntegration
             maxReviews={3}

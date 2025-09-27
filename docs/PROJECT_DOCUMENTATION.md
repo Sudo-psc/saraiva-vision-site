@@ -47,7 +47,7 @@ The Saraiva Vision project uses a **hybrid architecture** optimized for the Braz
 
 - **Frontend**: React SPA deployed on VPS for maximum control
 - **Backend**: Node.js API services running natively on VPS
-- **Database**: Hybrid Supabase (primary) + MySQL (WordPress/cache)
+- **Database**: Unified MySQL for all data + Redis (caching, sessions, real-time)
 - **Deployment**: Native VPS deployment without Docker for optimal performance
 
 ```
@@ -66,12 +66,6 @@ The Saraiva Vision project uses a **hybrid architecture** optimized for the Braz
 │  │ Port 6379   │  │  Port 9000  │  │             │        │
 │  └─────────────┘  └─────────────┘  └─────────────┘        │
 └─────────────────────────────────────────────────────────────┘
-                              │
-                    ┌─────────────────┐
-                    │    Supabase     │
-                    │   PostgreSQL    │
-                    │   (External)    │
-                    └─────────────────┘
 ```
 
 ### Technology Stack Overview
@@ -87,9 +81,9 @@ The Saraiva Vision project uses a **hybrid architecture** optimized for the Braz
 #### Backend Stack
 - **Node.js 22+** - ES modules with modern JavaScript features
 - **Express.js** - RESTful API framework
-- **Supabase 2.30.0** - Primary PostgreSQL database and auth
-- **MySQL** - WordPress and local caching
-- **Redis** - Session management and performance caching
+- **MySQL** - Primary database for all application data
+- **Redis** - Session management, caching, and real-time features
+- **JWT** - Authentication and authorization
 
 #### UI/Component Libraries
 - **Radix UI** - Accessible component primitives
@@ -142,7 +136,7 @@ src/
 - **React Context**: Global state (Auth, Analytics, Widgets)
 - **Custom Hooks**: Shared stateful logic abstraction
 - **Local Component State**: UI-specific interactions
-- **Supabase Real-time**: Live data synchronization
+- **Redis Pub/Sub**: Live data synchronization and real-time features
 
 #### 3. Performance Optimizations
 - **Code Splitting**: Lazy loading for all route components
@@ -193,9 +187,9 @@ function App() {
 
 #### Type-Safe Database Operations
 ```typescript
-// Comprehensive Supabase types
+// Comprehensive MySQL types
 interface ContactMessage {
-  id: string;
+  id: number;
   name: string;
   email: string;
   message: string;
@@ -203,11 +197,11 @@ interface ContactMessage {
   status: 'pending' | 'processed' | 'failed';
 }
 
-// Type-safe API calls
-const { data, error } = await supabase
-  .from('contact_messages')
-  .select('*')
-  .returns<ContactMessage[]>();
+// Type-safe API calls using custom database client
+const messages = await db.query(
+  'SELECT * FROM contact_messages WHERE status = ?',
+  ['pending']
+);
 ```
 
 ### Accessibility Implementation
@@ -240,7 +234,7 @@ function AccessibleButton({ children, ...props }) {
 
 ### API Architecture
 
-The backend uses a **hybrid approach** combining Supabase (PostgreSQL) for primary data with local MySQL for WordPress and caching:
+The backend uses a **unified approach** with MySQL for all application data and Redis for caching and real-time features:
 
 ```
 api/
@@ -256,11 +250,11 @@ api/
 
 ### Database Schema
 
-#### Supabase Tables
+#### MySQL Tables
 ```sql
 -- Contact messages with comprehensive tracking
 CREATE TABLE contact_messages (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   phone VARCHAR(20),
@@ -268,12 +262,12 @@ CREATE TABLE contact_messages (
   subject VARCHAR(255),
   status contact_status DEFAULT 'pending',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Appointment booking system
 CREATE TABLE appointments (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id INT AUTO_INCREMENT PRIMARY KEY,
   patient_name VARCHAR(255) NOT NULL,
   patient_email VARCHAR(255) NOT NULL,
   patient_phone VARCHAR(20),
@@ -281,12 +275,12 @@ CREATE TABLE appointments (
   preferred_date DATE NOT NULL,
   preferred_time TIME NOT NULL,
   status appointment_status DEFAULT 'pending',
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Message queue for async operations
 CREATE TABLE message_outbox (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id INT AUTO_INCREMENT PRIMARY KEY,
   type message_type NOT NULL,
   recipient VARCHAR(255) NOT NULL,
   subject VARCHAR(255),
@@ -960,123 +954,105 @@ export class WordPressHealthMonitor {
 }
 ```
 
-### 2. Supabase Integration Patterns
+### 2. MySQL Integration Patterns
 
 #### Type-Safe Database Operations
 ```typescript
-// supabase.ts - Complete type definitions
+// database.ts - Complete type definitions
 export interface Database {
-  public: {
-    Tables: {
-      contact_messages: {
-        Row: {
-          id: string;
-          name: string;
-          email: string;
-          phone: string | null;
-          message: string;
-          subject: string | null;
-          status: 'pending' | 'processed' | 'failed';
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          name: string;
-          email: string;
-          phone?: string | null;
-          message: string;
-          subject?: string | null;
-          status?: 'pending' | 'processed' | 'failed';
-        };
-        Update: {
-          name?: string;
-          email?: string;
-          phone?: string | null;
-          message?: string;
-          subject?: string | null;
-          status?: 'pending' | 'processed' | 'failed';
-        };
-      };
-      appointments: {
-        Row: {
-          id: string;
-          patient_name: string;
-          patient_email: string;
-          patient_phone: string | null;
-          service_type: string;
-          preferred_date: string;
-          preferred_time: string;
-          status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
-          notes: string | null;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          patient_name: string;
-          patient_email: string;
-          patient_phone?: string | null;
-          service_type: string;
-          preferred_date: string;
-          preferred_time: string;
-          notes?: string | null;
-        };
-        Update: {
-          status?: 'pending' | 'confirmed' | 'cancelled' | 'completed';
-          notes?: string | null;
-        };
-      };
-    };
+  contact_messages: {
+    id: number;
+    name: string;
+    email: string;
+    phone: string | null;
+    message: string;
+    subject: string | null;
+    status: 'pending' | 'processed' | 'failed';
+    created_at: string;
+    updated_at: string;
+  };
+  appointments: {
+    id: number;
+    patient_name: string;
+    patient_email: string;
+    patient_phone: string | null;
+    service_type: string;
+    preferred_date: string;
+    preferred_time: string;
+    status: 'pending' | 'confirmed' | 'cancelled';
+    created_at: string;
   };
 }
 
-// Type-safe client configuration
-export const supabase = createClient<Database>(
-  process.env.VITE_SUPABASE_URL!,
-  process.env.VITE_SUPABASE_ANON_KEY!
-);
+// MySQL database client
+import mysql from 'mysql2/promise';
+
+export const db = mysql.createPool({
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME || 'saraiva_vision',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
+
+// Type-safe database operations
+export async function getContactMessages(): Promise<Database['contact_messages'][]> {
+  const [rows] = await db.query(
+    'SELECT * FROM contact_messages ORDER BY created_at DESC'
+  );
+  return rows as Database['contact_messages'][];
+}
+
+export async function createContactMessage(
+  data: Omit<Database['contact_messages'], 'id' | 'created_at' | 'updated_at'>
+): Promise<Database['contact_messages']> {
+  const [result] = await db.query(
+    'INSERT INTO contact_messages (name, email, phone, message, subject, status) VALUES (?, ?, ?, ?, ?, ?)',
+    [data.name, data.email, data.phone, data.message, data.subject, data.status || 'pending']
+  );
+
+  return {
+    id: (result as any).insertId,
+    ...data,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
+}
 ```
 
 #### Real-time Subscriptions
 ```javascript
-// Real-time appointment updates
+// Real-time appointment updates using Redis Pub/Sub
 function useAppointmentUpdates(appointmentId) {
   const [appointment, setAppointment] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Initial fetch
+    // Initial fetch from API
     const fetchAppointment = async () => {
-      const { data, error } = await supabase
-        .from('appointments')
-        .select('*')
-        .eq('id', appointmentId)
-        .single();
+      const response = await fetch(`/api/appointments/${appointmentId}`);
+      const data = await response.json();
 
-      if (data) setAppointment(data);
+      if (data.success) setAppointment(data.data);
       setLoading(false);
     };
 
     fetchAppointment();
 
-    // Real-time subscription
-    const subscription = supabase
-      .channel('appointment-updates')
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'appointments',
-          filter: `id=eq.${appointmentId}`
-        },
-        (payload) => {
-          setAppointment(payload.new);
-        }
-      )
-      .subscribe();
+    // Redis Pub/Sub subscription
+    const eventSource = new EventSource(`/api/appointments/${appointmentId}/updates`);
+
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === 'appointment_updated') {
+        setAppointment(data.appointment);
+      }
+    };
 
     return () => {
-      subscription.unsubscribe();
+      eventSource.close();
     };
   }, [appointmentId]);
 
@@ -1250,8 +1226,12 @@ export class InstagramService {
 #### Environment Configuration
 ```bash
 # Required environment variables (client-side only)
-VITE_SUPABASE_URL=your_supabase_project_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+DB_HOST=localhost
+DB_USER=database_user
+DB_PASSWORD=database_password
+DB_NAME=saraiva_vision
+REDIS_HOST=localhost
+REDIS_PORT=6379
 VITE_GOOGLE_MAPS_API_KEY=your_google_maps_key
 VITE_GOOGLE_PLACES_API_KEY=your_places_api_key
 VITE_WORDPRESS_API_URL=https://blog.saraivavision.com.br/graphql
@@ -1262,16 +1242,20 @@ VITE_INSTAGRAM_ACCESS_TOKEN=your_instagram_token
 VITE_SPOTIFY_RSS_URL=your_podcast_rss_feed
 
 # ⚠️ SECURITY CRITICAL: Server-side only (NEVER in frontend builds)
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=saraiva_vision
+DB_USER=api_user
+DB_PASSWORD=your_secure_password
+JWT_SECRET=your_jwt_secret_key
 ```
 
-**Security Note**: The `SUPABASE_SERVICE_ROLE_KEY` must be kept server-side only and never exposed to the browser. Store it in:
+**Security Note**: Database credentials and JWT secrets must be kept server-side only and never exposed to the browser. Store them in:
 - Systemd environment files (`/etc/systemd/system/saraiva-api.service.d/override.conf`)
 - Server-side `.env.server` files
-- Docker secrets or other server-only secret stores
 - Server environment variables (not VITE_ prefixed)
 
-**Never include service-role keys in frontend builds or commit to repository**. Use server-side functions or API routes for privileged operations. See Supabase best practices for service key management.
+**Never include database credentials or JWT secrets in frontend builds or commit to repository**. Use server-side functions or API routes for privileged operations.
 
 #### Development Server Commands
 ```bash
@@ -1368,26 +1352,28 @@ describe('ContactForm', () => {
 ```javascript
 // API integration testing
 import { describe, test, expect, beforeEach, afterEach } from 'vitest';
-import { createClient } from '@supabase/supabase-js';
+import mysql from 'mysql2/promise';
 
 describe('Contact API Integration', () => {
-  let supabase;
+  let db;
   let testContactId;
 
   beforeEach(() => {
-    supabase = createClient(
-      process.env.VITE_SUPABASE_URL,
-      process.env.VITE_SUPABASE_SERVICE_ROLE_KEY
-    );
+    db = mysql.createPool({
+      host: process.env.DB_HOST || 'localhost',
+      user: process.env.DB_USER || 'test_user',
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME || 'saraiva_vision_test',
+    });
   });
 
   afterEach(async () => {
     // Cleanup test data
     if (testContactId) {
-      await supabase
-        .from('contact_messages')
-        .delete()
-        .eq('id', testContactId);
+      await db.execute(
+        'DELETE FROM contact_messages WHERE id = ?',
+        [testContactId]
+      );
     }
   });
 
@@ -1399,20 +1385,15 @@ describe('Contact API Integration', () => {
       subject: 'Consultation Request'
     };
 
-    const { data, error } = await supabase
-      .from('contact_messages')
-      .insert(contactData)
-      .select()
-      .single();
+    const [result] = await db.execute(
+      'INSERT INTO contact_messages (name, email, message, subject, status) VALUES (?, ?, ?, ?, ?)',
+      [contactData.name, contactData.email, contactData.message, contactData.subject, 'pending']
+    );
 
-    expect(error).toBeNull();
-    expect(data).toMatchObject({
-      name: 'Test Patient',
-      email: 'test@example.com',
-      status: 'pending'
-    });
+    testContactId = (result as any).insertId;
 
-    testContactId = data.id;
+    expect(testContactId).toBeDefined();
+    expect(result).toBeDefined();
   });
 
   test('validates required fields', async () => {
@@ -1422,12 +1403,17 @@ describe('Contact API Integration', () => {
       message: 'Test message'
     };
 
-    const { data, error } = await supabase
-      .from('contact_messages')
-      .insert(invalidData);
+    // Test API validation instead of direct database insertion
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(invalidData)
+    });
 
-    expect(error).not.toBeNull();
-    expect(data).toBeNull();
+    const result = await response.json();
+
+    expect(result.success).toBe(false);
+    expect(result.error).toBeDefined();
   });
 });
 ```
@@ -1580,9 +1566,6 @@ jobs:
 
       - name: Build application
         run: npm run build
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
   deploy:
     needs: test
@@ -1604,8 +1587,6 @@ jobs:
       - name: Build for production
         run: npm run build
         env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
           VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
 
       - name: Deploy to VPS
@@ -1650,12 +1631,6 @@ The Saraiva Vision project uses a **native VPS deployment** strategy for maximum
 │  │ Port 6379   │  │  Port 9000  │  │             │        │
 │  └─────────────┘  └─────────────┘  └─────────────┘        │
 └─────────────────────────────────────────────────────────────┘
-                              │
-                    ┌─────────────────┐
-                    │    Supabase     │
-                    │   PostgreSQL    │
-                    │   (External)    │
-                    └─────────────────┘
 ```
 
 ### 1. Initial VPS Setup
@@ -1823,13 +1798,13 @@ SyslogIdentifier=saraiva-api
 # Environment variables
 Environment=NODE_ENV=production
 Environment=PORT=3001
-Environment=SUPABASE_URL=your_supabase_url
-Environment=SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+Environment=DB_HOST=localhost
+Environment=DB_PORT=3306
+Environment=DB_NAME=saraiva_vision
+Environment=DB_USER=api_user
+Environment=DB_PASSWORD=your_secure_password
+Environment=JWT_SECRET=your_jwt_secret_key
 Environment=REDIS_URL=redis://localhost:6379
-Environment=MYSQL_HOST=localhost
-Environment=MYSQL_DATABASE=saraiva_cache
-Environment=MYSQL_USER=saraiva_api
-Environment=MYSQL_PASSWORD=secure_password
 
 # Security
 NoNewPrivileges=true
@@ -2113,25 +2088,25 @@ error TS2307: Cannot find module '@/components/Example'
 
 #### 2. API and Database Issues
 
-##### Supabase Connection Problems
+##### MySQL Connection Problems
 **Problem**: Database queries failing or returning errors
 ```javascript
-// Error: Invalid API key or URL
+// Error: Connection refused or authentication failed
 ```
 
 **Solution**:
 ```bash
-# 1. Verify environment variables
-echo $VITE_SUPABASE_URL
-echo $VITE_SUPABASE_ANON_KEY
+# 1. Verify MySQL service status
+sudo systemctl status mysql
 
-# 2. Test connection
-curl -H "apikey: $VITE_SUPABASE_ANON_KEY" \
-     -H "Authorization: Bearer $VITE_SUPABASE_ANON_KEY" \
-     "$VITE_SUPABASE_URL/rest/v1/contact_messages?select=id&limit=1"
+# 3. Check database credentials
+echo $DB_USER
+echo $DB_PASSWORD
 
-# 3. Check RLS policies in Supabase dashboard
-# 4. Verify service role key for admin operations
+# 4. Test MySQL connection
+mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD -e "SHOW DATABASES;"
+
+# 5. Check database permissions and table existence
 ```
 
 ##### WordPress GraphQL Timeout
@@ -2174,10 +2149,10 @@ curl -X POST https://saraivavision.com.br/api/contact \
 # 2. Check server logs
 sudo journalctl -u saraiva-api -f
 
-# 3. Check Supabase logs
-# Go to Supabase Dashboard > Logs
+# 3. Check MySQL logs
+sudo tail -f /var/log/mysql/error.log
 
-# 4. Verify ReCAPTCHA configuration
+# 5. Verify ReCAPTCHA configuration
 echo $VITE_RECAPTCHA_SITE_KEY
 ```
 
@@ -2306,9 +2281,10 @@ node --inspect server.js
 ```javascript
 // 1. Proper cleanup in useEffect
 useEffect(() => {
-  const subscription = supabase
-    .channel('realtime-updates')
-    .subscribe();
+  const subscription = redisClient
+    .subscribe('realtime-updates', (message) => {
+      // Handle real-time updates from Redis Pub/Sub
+    });
 
   return () => {
     subscription.unsubscribe(); // Important cleanup
@@ -2349,14 +2325,14 @@ echo "Recovery completed"
 
 #### 2. Database Recovery
 ```bash
-# 1. For Supabase issues
-# - Check Supabase dashboard status
-# - Verify API keys and URLs
-# - Test with curl commands
+# 1. For MySQL issues
+# - Check MySQL service status: sudo systemctl status mysql
+# - Verify database credentials and connectivity
+# - Check MySQL error logs: sudo tail -f /var/log/mysql/error.log
 
-# 2. For MySQL issues
-sudo systemctl restart mysql
-mysql -u root -p -e "SHOW PROCESSLIST;"
+# 2. For application issues
+sudo systemctl restart saraiva-api
+sudo journalctl -u saraiva-api -n 50
 
 # 3. For Redis issues
 sudo systemctl restart redis
@@ -2709,7 +2685,7 @@ This comprehensive documentation provides a complete guide to the Saraiva Vision
 
 ### Architecture Highlights
 - **Modern React 18**: Concurrent features, TypeScript, and optimized builds
-- **Hybrid Database**: Supabase for primary data, MySQL for WordPress/caching
+- **Unified Database**: MySQL for all application data with Redis for caching and real-time
 - **Native VPS**: Direct system deployment for maximum performance control
 - **Medical-Grade Security**: Comprehensive input validation and data protection
 - **Accessibility First**: WCAG 2.1 AA compliance throughout

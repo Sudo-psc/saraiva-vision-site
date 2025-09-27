@@ -15,10 +15,10 @@ const fallbackSanitize = (html) =>
     .replace(/<iframe[\s\S]*?>[\s\S]*?<\/iframe>/gi, '')
     .replace(/<link[^>]*?>/gi, '')
     .replace(/<base[^>]*?>/gi, '')
-    .replace(/on\w+="[^"]*"/gi, '')
-    .replace(/on\w+='[^']*'/gi, '')
-    .replace(/srcdoc="[^"]*"/gi, '')
-    .replace(/srcdoc='[^']*'/gi, '');
+    .replace(/on\w+\s*=\s*"[^"]*"/gi, '')
+    .replace(/on\w+\s*=\s*'[^']*'/gi, '')
+    .replace(/srcdoc\s*=\s*"[^"]*"/gi, '')
+    .replace(/srcdoc\s*=\s*'[^']*'/gi, '');
 
 const mergeArrays = (base, extension = []) => Array.from(new Set([...(base || []), ...(extension || [])]));
 

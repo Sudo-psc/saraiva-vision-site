@@ -11,11 +11,12 @@ const LensesPage = lazy(() => import('./pages/LensesPage.jsx'));
 const FAQPage = lazy(() => import('./pages/FAQPage.jsx'));
 const MedicalArticleExample = lazy(() => import('./pages/MedicalArticleExample.jsx'));
 const PodcastPage = lazy(() => import('./pages/PodcastPage.jsx'));
-const AdminPage = lazy(() => import('./pages/AdminPage.jsx'));
+
 const BlogPage = lazy(() => import('./pages/BlogPage.jsx'));
 const PostPage = lazy(() => import('./pages/PostPage.jsx'));
 const CategoryPage = lazy(() => import('./pages/CategoryPage.jsx'));
 const AdminLoginPage = lazy(() => import('./pages/AdminLoginPage.jsx'));
+const WordPressAdminRedirect = lazy(() => import('./components/WordPressAdminRedirect.jsx'));
 const CheckPage = lazy(() => import('./pages/CheckPage.jsx'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage.jsx'));
 const GoogleReviewsTestPage = lazy(() => import('./pages/GoogleReviewsTestPage.jsx'));
@@ -84,7 +85,8 @@ function App() {
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/privacy" element={<PrivacyPolicyPage />} />
                   <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />
-                  <Route path="/wp-admin" element={<AdminPage />} />
+                  <Route path="/wp-admin" element={<WordPressAdminRedirect />} />
+
                   {isCheckSubdomain ? (
                     <Route path="*" element={<Navigate to="/" replace />} />
                   ) : (

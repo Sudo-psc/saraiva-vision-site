@@ -45,8 +45,8 @@ router.post('/graphql', async (req, res) => {
 
     // WordPress GraphQL endpoint configuration
     const wordpressEndpoint = process.env.WORDPRESS_GRAPHQL_ENDPOINT ||
-                             process.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT ||
-                             'https://cms.saraivavision.com.br/graphql';
+      process.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT ||
+      'https://cms.saraivavision.com.br/graphql';
 
     // Create GraphQL client for WordPress
     const wpClient = new GraphQLClient(wordpressEndpoint, {
@@ -105,10 +105,11 @@ router.post('/graphql', async (req, res) => {
 
 // Health check endpoint for WordPress GraphQL
 router.get('/graphql/health', async (req, res) => {
+  const startTime = Date.now();
   try {
     const wordpressEndpoint = process.env.WORDPRESS_GRAPHQL_ENDPOINT ||
-                             process.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT ||
-                             'https://cms.saraivavision.com.br/graphql';
+      process.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT ||
+      'https://cms.saraivavision.com.br/graphql';
 
     const healthQuery = `
       query HealthCheck {
@@ -127,8 +128,6 @@ router.get('/graphql/health', async (req, res) => {
         'User-Agent': 'SaraivaVision-API-Proxy/1.0'
       }
     });
-
-    const startTime = Date.now();
     const data = await wpClient.request(healthQuery);
     const responseTime = Date.now() - startTime;
 

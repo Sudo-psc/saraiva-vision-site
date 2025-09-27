@@ -7,7 +7,7 @@ echo "🔍 Saraiva Vision WordPress GraphQL Health Check"
 echo "=================================================="
 
 # Configuration
-WORDPRESS_ENDPOINT="https://cms.saraivavision.com.br/graphql"
+WORDPRESS_ENDPOINT="https://www.saraivavision.com.br/graphql"
 FRONTEND_URL="https://saraivavision.com.br"
 API_ENDPOINT="https://saraivavision.com.br/api"
 
@@ -69,11 +69,26 @@ test_graphql() {
         -d '{"query": "{categories {nodes {id name slug}}}"}' \
         "$url")
 
-    if echo "$graphql_response" | grep -q "categories"; then
+    # Check if response is valid JSON and parse it
+    if ! echo "$graphql_response" | jq . >/dev/null 2>&1; then
+        echo -e "  ❌ GraphQL: ${RED}NOT WORKING${NC} (Invalid JSON response)"
+        echo -e "  📄 Response preview: ${graphql_response:0:200}..."
+        return 1
+    fi
+
+    # Check for GraphQL errors
+    if echo "$graphql_response" | jq -e '.errors' >/dev/null 2>&1; then
+        echo -e "  ❌ GraphQL: ${RED}NOT WORKING${NC} (GraphQL errors present)"
+        echo -e "  📄 Response preview: ${graphql_response:0:200}..."
+        return 1
+    fi
+
+    # Check if data.categories exists and has nodes
+    if echo "$graphql_response" | jq -e '.data.categories.nodes | length > 0' >/dev/null 2>&1; then
         echo -e "  ✅ GraphQL: ${GREEN}WORKING${NC}"
         return 0
     else
-        echo -e "  ❌ GraphQL: ${RED}NOT WORKING${NC}"
+        echo -e "  ❌ GraphQL: ${RED}NOT WORKING${NC} (No categories data)"
         echo -e "  📄 Response preview: ${graphql_response:0:200}..."
         return 1
     fi
