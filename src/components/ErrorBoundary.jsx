@@ -1,4 +1,5 @@
 import React from 'react';
+import { redirectToBackup } from '@/utils/redirectToBackup';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -52,6 +53,8 @@ class ErrorBoundary extends React.Component {
     } catch (e) {
       console.warn('Failed to save error details:', e);
     }
+
+    redirectToBackup();
   }
 
   render() {

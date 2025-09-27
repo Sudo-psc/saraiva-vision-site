@@ -6,6 +6,7 @@ import './index.css';
 import ErrorBoundary from './components/ErrorBoundary';
 import { AuthProvider } from './contexts/AuthContext';
 import './i18n'; // Initialize i18n
+import { redirectToBackup } from './utils/redirectToBackup';
 
 // Simple error handler setup
 const setupGlobalErrorHandlers = () => {
@@ -45,6 +46,7 @@ try {
   );
 } catch (error) {
   console.error('Failed to render app:', error);
+  redirectToBackup();
   // Fallback render
   root.render(
     <div style={{ padding: '20px', textAlign: 'center', fontFamily: 'Arial, sans-serif' }}>
