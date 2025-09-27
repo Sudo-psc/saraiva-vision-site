@@ -1,4 +1,4 @@
-name: CI/CD
+name: CI
 
 on:
   push:
@@ -7,212 +7,33 @@ on:
   pull_request:
     branches:
       - main
-
-permissions:
-  contents: read
-  pull-requests: write
-  issues: write
-
-env:
-  NODE_VERSION: '22'
+  workflow_dispatch:
 
 jobs:
-  lint:
-    name: Lint
+  ci:
+    name: Lint, Test, and Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: 22.x
           cache: npm
+
       - name: Install dependencies
         run: npm ci
-      - name: Run ESLint
+
+      - name: Run lint
         run: npm run lint
 
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Run unit tests
+      - name: Run tests
         run: npm run test:run
 
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    needs:
-      - lint
-      - test
-    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
       - name: Build application
         run: npm run build
 
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs:
-      - lint
-      - test
-      - build
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Build application
-        run: npm run build
-      - name: Check deployment configuration
-        id: deploy_check
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          missing=0
-          for var in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
-            if [ -z "${!var}" ]; then
-              echo "❌ $var is not configured" >> "$GITHUB_STEP_SUMMARY"
-              missing=1
-            else
-              echo "✅ $var is configured" >> "$GITHUB_STEP_SUMMARY"
-            fi
-          done
-          if [ "$missing" -eq 0 ]; then
-            echo "enabled=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "enabled=false" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Install Vercel CLI
-        if: steps.deploy_check.outputs.enabled == 'true'
-        run: npm install --global vercel
-      - name: Pull Vercel environment
-        if: steps.deploy_check.outputs.enabled == 'true'
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
-      - name: Deploy to Vercel
-        if: steps.deploy_check.outputs.enabled == 'true'
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: vercel deploy --prod --yes --token "$VERCEL_TOKEN"
-      - name: Deployment skipped (missing configuration)
-        if: steps.deploy_check.outputs.enabled != 'true'
-        run: echo "Deployment skipped because Vercel credentials are not configured."
-
-  codex:
-    name: Codex Review & Tasks
-    runs-on: ubuntu-latest
-    needs:
-      - lint
-      - test
-      - build
-      - deploy
-    if: ${{ always() && github.event_name == 'pull_request' }}
-    steps:
-      - name: Notify Codex
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const reviewer = 'codex';
-            const pullNumber = context.payload.pull_request.number;
-
-            try {
-              await github.rest.pulls.requestReviewers({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: pullNumber,
-                reviewers: [reviewer],
-              });
-            } catch (error) {
-              if (error.status !== 422) {
-                throw error;
-              }
-            }
-
-            const statusMap = {
-              success: '✅',
-              failure: '❌',
-              cancelled: '⚠️',
-              skipped: '⏭️',
-              neutral: 'ℹ️',
-            };
-
-            const results = {
-              lint: '${{ needs.lint.result }}',
-              test: '${{ needs.test.result }}',
-              build: '${{ needs.build.result }}',
-              deploy: '${{ needs.deploy.result }}',
-            };
-
-            const formatRow = (label, key) => {
-              const result = results[key] ?? 'neutral';
-              const emoji = statusMap[result] ?? statusMap.neutral;
-              return `| ${emoji} | ${label} | ${result.charAt(0).toUpperCase()}${result.slice(1)} |`;
-            };
-
-            const table = [
-              '| Status | Check | Result |',
-              '| --- | --- | --- |',
-              formatRow('Lint', 'lint'),
-              formatRow('Tests', 'test'),
-              formatRow('Build', 'build'),
-              formatRow('Deploy (main only)', 'deploy'),
-            ].join('\n');
-
-            const marker = '<!-- codex-review -->';
-            const body = `${marker}\n@${reviewer} a new pull request is ready for review.\n\n${table}\n\n#### Task List\n- [ ] Complete code review\n- [ ] Create follow-up tasks if needed\n- [ ] Confirm deployment readiness`;
-
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: pullNumber,
-              per_page: 100,
-            });
-
-            const existing = comments.find((comment) => comment.body && comment.body.includes(marker) && comment.user?.login === 'github-actions[bot]');
-
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: pullNumber,
-                body,
-              });
-            }
+      - name: Run WordPress GraphQL health check
+        run: ./scripts/health-check.sh || echo "WordPress health check failed - this is expected until WPGraphQL plugin is installed"
