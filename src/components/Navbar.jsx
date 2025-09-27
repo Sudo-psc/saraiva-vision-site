@@ -32,7 +32,6 @@ const Navbar = () => {
     { name: t('navbar.blog'), href: '/blog', internal: true, icon: FileText },
     { name: t('navbar.podcast'), href: '/podcast', internal: true, icon: Headphones },
     { name: t('navbar.about'), href: '/sobre', internal: true, icon: User },
-    { name: t('navbar.testimonials'), href: '/depoimentos', internal: true, icon: Star },
     { name: t('navbar.faq'), href: '/faq', internal: true, icon: HelpCircle },
     { name: t('navbar.contact'), href: '/contato', internal: true, icon: Phone },
     { name: 'Instagram', href: 'https://www.instagram.com/saraiva_vision/', internal: false, icon: ExternalLink },

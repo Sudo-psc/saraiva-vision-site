@@ -6,7 +6,6 @@ const HomePageLayout = lazy(() => import('./pages/HomePageLayout.jsx'));
 const ServicesPage = lazy(() => import('./pages/ServicesPage.jsx'));
 const AboutPage = lazy(() => import('./pages/AboutPage.jsx'));
 const ContactPage = lazy(() => import('./pages/ContactPage.jsx'));
-const TestimonialsPage = lazy(() => import('./pages/TestimonialsPage.jsx'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage.jsx'));
 const ServiceDetailPage = lazy(() => import('./pages/ServiceDetailPage.jsx'));
 const LensesPage = lazy(() => import('./pages/LensesPage.jsx'));
@@ -73,7 +72,6 @@ function App() {
                   {/* Redirecionamentos 301 para padronização de URLs */}
                   <Route path="/servico/:serviceId" element={<ServiceRedirect />} />
                   <Route path="/sobre" element={<AboutPage />} />
-                  <Route path="/depoimentos" element={<TestimonialsPage />} />
                   <Route path="/contato" element={<ContactPage />} />
                   <Route path="/lentes" element={<LensesPage />} />
                   <Route path="/faq" element={<FAQPage />} />

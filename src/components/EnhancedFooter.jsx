@@ -85,7 +85,6 @@ const EnhancedFooter = ({
         { name: t('navbar.home'), href: '/' },
         { name: t('navbar.services'), href: '/servicos' },
         { name: t('navbar.about'), href: '/sobre' },
-        { name: t('navbar.testimonials'), href: '/depoimentos' },
         { name: t('navbar.contact'), href: '/contato' },
     ], [t]);
 

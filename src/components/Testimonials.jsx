@@ -266,7 +266,7 @@ const Testimonials = ({ limit }) => {
 
         {limit && testimonials.length > limit && (
           <div className="mt-10 text-center">
-            <a href="/depoimentos" className="text-blue-600 font-medium hover:underline inline-flex items-center gap-1">
+            <a href="/sobre" className="text-blue-600 font-medium hover:underline inline-flex items-center gap-1">
               {t('testimonials.viewAll', 'Ver todos depoimentos')}
               <ChevronRight size={16} />
             </a>

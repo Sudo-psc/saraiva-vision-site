@@ -231,12 +231,12 @@ const GoogleReviewsWidget = ({
                             <span className="text-2xl font-bold text-slate-900">
                                 {stats.overview.averageRating}
                             </span>
-                            <span className="text-slate-600">({stats.overview.totalReviews}+ {t('reviews.total_reviews')})</span>
+                            <span className="text-slate-600">({stats.overview.totalReviews}+ reviews)</span>
                         </div>
                         
                         {stats.overview.recentReviews && (
                             <Badge variant="success" className="px-3 py-1">
-                                {stats.overview.recentReviews} {t('reviews.recent_reviews')}
+                                {stats.overview.recentReviews} avaliações recentes
                             </Badge>
                         )}
                     </motion.div>
