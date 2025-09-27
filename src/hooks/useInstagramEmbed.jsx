@@ -3,7 +3,7 @@
  * Funcionalidades avançadas para @saraiva_vision
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, createContext, useContext } from 'react';
 import instagramEmbedService from '../services/instagramEmbedService.js';
 
 export const useInstagramEmbed = (options = {}) => {
@@ -280,7 +280,6 @@ export const useInstagramByCategory = (hashtag, maxPosts = 6) => {
 };
 
 // Context para compartilhar dados entre componentes
-import { createContext, useContext } from 'react';
 
 const InstagramEmbedContext = createContext();
 

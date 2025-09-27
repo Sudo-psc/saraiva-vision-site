@@ -28,6 +28,8 @@ export default defineConfig({
   define: {
     // Fallback for legacy process.env usage in libraries
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
+    // Ensure React runtime is available globally
+    'global.React': 'React',
   },
   esbuild: {
     charset: 'utf8'
@@ -64,11 +66,15 @@ export default defineConfig({
     rollupOptions: {
       input: 'index.html',
       output: {
-        // Optimized chunking strategy for VPS
+        // Optimized chunking strategy for VPS with React isolation
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            // Core React packages
-            if (id.includes('react') || id.includes('react-dom')) {
+            // Core React packages - isolate to prevent context issues
+            if (id.includes('react/') || id.includes('react-dom/')) {
+              return 'react-vendor'
+            }
+            // React utilities that need React context
+            if (id.includes('react-') && !id.includes('react-router')) {
               return 'react-vendor'
             }
             // Routing

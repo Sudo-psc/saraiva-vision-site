@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useContext, createContext } from 'react';
+import React, { useState, useEffect, useCallback, useContext, createContext } from 'react';
 
 /**
  * Instagram Configuration Context
