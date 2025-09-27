@@ -20,6 +20,7 @@ Saraiva Vision is a modern medical clinic website built with React 18, Vite, and
 - **Node.js 22+** REST API with Express.js framework
 - **Supabase** as primary database and auth provider
 - **Nginx** as web server and reverse proxy
+- **WordPress Headless CMS** with PHP-FPM 8.1+ for blog content
 - **ES modules** with modern JavaScript features
 
 ### Key Integration Points
@@ -28,6 +29,7 @@ Saraiva Vision is a modern medical clinic website built with React 18, Vite, and
 - Google Maps API for clinic location
 - Resend API for email services
 - Spotify Web API for podcast content
+- WordPress REST API for headless blog integration
 
 ## Commands
 
@@ -85,8 +87,8 @@ Saraiva Vision uses a **unified server architecture** deployed directly on Nginx
 The server runs native services without containerization:
 - **Web Server**: Nginx serving static files and proxying API requests
 - **API Service**: Node.js application with Express.js for business logic
-- **CMS Service**: WordPress with PHP-FPM for content management (optional)
-- **Database**: MySQL for relational data storage
+- **Blog CMS**: WordPress headless with PHP-FPM 8.1+ for blog content management
+- **Database**: MySQL for relational data storage (Supabase + WordPress)
 - **Cache**: Redis for performance optimization
 
 ### Directory Structure
@@ -95,12 +97,17 @@ src/
 ├── components/          # React components
 │   ├── ui/             # Base design system components
 │   ├── icons/          # Custom icon components
+│   ├── blog/           # Blog-related components (BlogList, BlogPost)
+│   ├── compliance/     # CFM compliance components
 │   └── __tests__/      # Component tests
 ├── pages/              # Route-level page components
-├── hooks/              # Custom React hooks
+├── hooks/              # Custom React hooks (including useCFMCompliance)
 ├── lib/                # Core utilities and configurations
 ├── contexts/           # React context providers
 ├── utils/              # Helper functions
+├── services/           # External service integrations (WordPress API)
+├── config/             # Configuration files (CFM rules, settings)
+├── workers/            # Web Workers (CFM validation worker)
 └── styles/             # Global CSS files
 
 api/                    # Node.js API endpoints (backend)
@@ -108,6 +115,14 @@ api/                    # Node.js API endpoints (backend)
 ├── appointments/       # Appointment booking system
 ├── podcast/            # Podcast management
 └── __tests__/          # API tests
+
+docs/                   # Documentation and deployment scripts
+├── WORDPRESS_BLOG_SPECS.md    # Blog integration specifications
+├── install-wordpress-blog.sh  # WordPress installation script
+├── deploy-wordpress-blog.sh   # Deployment automation
+├── monitor-wordpress-blog.sh  # Monitoring and health checks
+├── nginx-wordpress-blog.conf  # Nginx configuration
+└── php-fpm-wordpress.conf     # PHP-FPM configuration
 ```
 
 ### Key Architectural Patterns
@@ -121,8 +136,10 @@ api/                    # Node.js API endpoints (backend)
 #### API Architecture
 - RESTful APIs in `api/` directory using Express.js framework
 - Database operations through Supabase client with TypeScript types
+- WordPress REST API integration for headless blog content
 - Authentication handled via Supabase Auth with role-based access control
 - Message queue system using Supabase `message_outbox` table
+- CFM compliance validation with Web Workers for non-blocking performance
 
 #### State Management
 - React Context for global state (Auth, Analytics, Widgets)
@@ -136,7 +153,9 @@ api/                    # Node.js API endpoints (backend)
 - API error handling with proper HTTP status codes
 - Graceful fallbacks for external service failures
 
-### Database Schema (Supabase)
+### Database Schema
+
+#### Supabase Tables
 Key tables defined in `src/lib/supabase.ts`:
 - `contact_messages` - Contact form submissions
 - `appointments` - Patient appointment bookings
@@ -144,6 +163,14 @@ Key tables defined in `src/lib/supabase.ts`:
 - `podcast_episodes` - Podcast content management
 - `profiles` - User authentication and authorization
 - `event_log` - Application event tracking
+
+#### WordPress Database
+WordPress blog content managed through MySQL:
+- `wp_posts` - Blog posts and pages
+- `wp_users` - WordPress admin users
+- `wp_postmeta` - Post metadata including CFM compliance status
+- `wp_terms` - Categories and tags for content organization
+- Custom tables for CFM compliance tracking and audit logs
 
 ### Testing Strategy
 - **Unit Tests**: Component behavior with React Testing Library
@@ -203,17 +230,29 @@ Key tables defined in `src/lib/supabase.ts`:
 - Protected routes via `ProtectedRoute` component
 - Session management with automatic refresh
 
+### Medical Compliance (CFM)
+- **Brazilian Medical Council (CFM) compliance** system with automated validation
+- **CFM Compliance Component** (`src/components/compliance/CFMCompliance.jsx`) for real-time content validation
+- **useCFMCompliance Hook** (`src/hooks/useCFMCompliance.js`) with Web Worker integration
+- **Medical disclaimer injection** for all medical content
+- **CRM identification validation** ensuring proper medical responsibility
+- **PII detection and anonymization** to prevent patient data exposure
+- **Compliance scoring system** with actionable recommendations
+
 ### Data Privacy (LGPD Compliance)
 - Consent management system in `src/components/ConsentManager.jsx`
 - Data anonymization utilities in `src/lib/lgpd/`
-- Audit logging for data access
+- **CFM-integrated PII protection** with pattern detection for CPF, patient names, birth dates
+- Audit logging for data access and compliance validation
 - User data deletion capabilities
+- **Secure cache keys** using SHA-256 hashing to prevent sensitive data exposure
 
 ### API Security
 - Input validation using Zod schemas
 - Rate limiting on contact forms
 - CORS configuration in Express.js middleware
 - Security headers for production
+- **WordPress API security** with authenticated endpoints and content validation
 
 ## SEO & Schema.org Implementation
 
@@ -255,11 +294,23 @@ The project includes comprehensive Schema.org structured markup for medical SEO:
 3. Export from component if reusable
 4. Add to design system if it's a UI primitive
 
+### Adding Blog Content with CFM Compliance
+1. Create content in WordPress admin at `https://blog.saraivavision.com.br/wp-admin`
+2. Content automatically validated against CFM compliance rules
+3. Use `CFMCompliance` component for real-time validation in React
+4. Medical disclaimers automatically injected per CFM regulations
+
 ### Database Schema Changes
 1. Update types in `src/lib/supabase.ts`
 2. Add migration to `database/migrations/`
 3. Update related API functions
 4. Add corresponding tests
+
+### WordPress Blog Management
+1. **Installation**: Run `docs/install-wordpress-blog.sh` as root
+2. **Deployment**: Use `docs/deploy-wordpress-blog.sh` for updates
+3. **Monitoring**: Run `docs/monitor-wordpress-blog.sh` for health checks
+4. **Configuration**: Nginx and PHP-FPM configs in `docs/` directory
 
 ### Performance Monitoring
 - Real-time metrics via `src/hooks/usePerformanceMonitor.js`
@@ -301,6 +352,12 @@ VITE_SUPABASE_ANON_KEY=
 VITE_SUPABASE_SERVICE_ROLE_KEY=
 VITE_GOOGLE_MAPS_API_KEY=
 RESEND_API_KEY=
+
+# WordPress Blog Integration
+VITE_WORDPRESS_API_URL=https://blog.saraivavision.com.br/wp-json/wp/v2
+WORDPRESS_DB_NAME=saraiva_blog
+WORDPRESS_DB_USER=wp_blog_user
+WORDPRESS_DB_PASSWORD=secure_password
 ```
 
 ## Troubleshooting Common Issues
