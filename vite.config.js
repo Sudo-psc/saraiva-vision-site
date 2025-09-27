@@ -37,7 +37,12 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    dedupe: ['react', 'react-dom'] // Prevent React duplication issues
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react/jsx-runtime'],
+    exclude: []
   },
   test: {
     globals: true,
@@ -138,6 +143,17 @@ export default defineConfig({
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        }
+      },
+      // Health check API proxy for development
+      '/api/health': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type'
         }
       }
     }
