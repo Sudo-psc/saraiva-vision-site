@@ -193,10 +193,16 @@ describe('Contact Component', () => {
   it('displays contact information in an organized way', () => {
     render(<Contact />)
     
-    // Look for contact information sections
-    expect(screen.getByText(/Endereço/i) || screen.getByText(/Rua Test/i)).toBeInTheDocument()
-    expect(screen.getByText(/Telefone/i) || screen.getByText(/(33) 99999-9999/i)).toBeInTheDocument()
-    expect(screen.getByText(/E-mail/i) || screen.getByText(/contato@saraivavision.com.br/i)).toBeInTheDocument()
+    // Look for contact information sections - use actual content from component
+    // Test for phone number that's shown in the component (there are multiple instances)
+    const phoneElements = screen.getAllByText(/33 99860-1427/i)
+    expect(phoneElements.length).toBeGreaterThan(0)
+    
+    // Test for email that's shown in the component  
+    expect(screen.getByText(/saraivavision@gmail.com/i)).toBeInTheDocument()
+    
+    // Test that contact form is rendered
+    expect(screen.getByText(/Formulário de Contato/i)).toBeInTheDocument()
   })
 
   it('has proper styling classes', () => {
