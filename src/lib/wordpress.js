@@ -10,25 +10,60 @@ const WORDPRESS_GRAPHQL_ENDPOINT = import.meta.env.VITE_WORDPRESS_GRAPHQL_ENDPOI
                                   import.meta.env.WORDPRESS_URL + '/graphql' ||
                                   'http://31.97.129.78:8081/graphql';
 
-// Create GraphQL client instance with enhanced configuration
+// Create GraphQL client instance with enhanced configuration and proper CORS handling
 export const wpClient = new GraphQLClient(WORDPRESS_GRAPHQL_ENDPOINT, {
   headers: {
     'Content-Type': 'application/json',
-    'User-Agent': 'SaraivaVision-NextJS/1.0',
+    'User-Agent': 'SaraivaVision-Frontend/1.0',
+    'Accept': 'application/json',
   },
   // Add timeout configuration (30 seconds)
   timeout: 30000,
-  // Enable request/response logging in development
-  ...(import.meta.env.MODE === 'development' && {
-    requestMiddleware: (request) => {
-      console.log('WordPress GraphQL Request:', request);
-      return request;
-    },
-    responseMiddleware: (response) => {
-      console.log('WordPress GraphQL Response:', response);
+  // Configure fetch options for proper CORS handling
+  fetch: (url, options) => {
+    const corsOptions = {
+      ...options,
+      mode: 'cors',
+      credentials: 'omit',
+      headers: {
+        ...options.headers,
+        'Origin': window.location.origin,
+      }
+    };
+
+    // Enhanced error handling for 404 and CORS issues
+    return fetch(url, corsOptions).then(async (response) => {
+      // Check if response is HTML (404 page) instead of JSON
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('text/html')) {
+        throw new Error(`WordPress GraphQL endpoint not found (404). The WPGraphQL plugin may not be installed or activated at: ${WORDPRESS_GRAPHQL_ENDPOINT}`);
+      }
+
+      // Check for CORS errors
+      if (response.status === 0) {
+        throw new Error(`CORS error: Unable to connect to ${WORDPRESS_GRAPHQL_ENDPOINT}. The server may not be configured for cross-origin requests.`);
+      }
+
       return response;
-    },
-  }),
+    }).catch(error => {
+      console.error('GraphQL Fetch Error:', error);
+
+      // Enhanced error tracking with PostHog
+      if (window.posthog) {
+        window.posthog.capture('wordpress_graphql_fetch_error', {
+          error: error.message,
+          url,
+          mode: corsOptions.mode,
+          credentials: corsOptions.credentials,
+          endpoint: WORDPRESS_GRAPHQL_ENDPOINT,
+          userAgent: navigator.userAgent,
+          timestamp: new Date().toISOString()
+        });
+      }
+
+      throw error;
+    });
+  },
   // Add retry logic for failed requests
   requestMiddleware: async (request) => {
     const startTime = Date.now();
@@ -45,10 +80,21 @@ export const wpClient = new GraphQLClient(WORDPRESS_GRAPHQL_ENDPOINT, {
     if (responseTime > 5000) {
       console.warn(`Slow WordPress GraphQL response: ${responseTime}ms`);
     }
+
+    // Log CORS-related response headers in development
+    if (import.meta.env.MODE === 'development') {
+      console.log('GraphQL Response CORS headers:', {
+        'access-control-allow-origin': response.headers.get('access-control-allow-origin'),
+        'access-control-allow-methods': response.headers.get('access-control-allow-methods'),
+        'access-control-allow-headers': response.headers.get('access-control-allow-headers'),
+      });
+    }
+
+    return response;
   },
 });
 
-// Error handling wrapper for GraphQL requests
+// Error handling wrapper for GraphQL requests with enhanced CORS and 404 error detection
 export const executeGraphQLQuery = async (query, variables = {}) => {
   try {
     const data = await wpClient.request(query, variables);
@@ -56,37 +102,97 @@ export const executeGraphQLQuery = async (query, variables = {}) => {
   } catch (error) {
     console.error('WordPress GraphQL Error:', error);
 
-    // Handle different types of GraphQL errors
-    if (error.response?.errors) {
-      return {
-        data: null,
-        error: {
-          type: 'GRAPHQL_ERROR',
-          message: error.response.errors[0]?.message || 'GraphQL query failed',
-          errors: error.response.errors,
-        },
+    // Track specific error types for better debugging
+    let errorType = 'UNKNOWN_ERROR';
+    let errorMessage = error.message || 'Unknown error occurred';
+    let errorDetails = {};
+
+    // Enhanced 404 detection
+    if (error.message?.includes('404') || error.message?.includes('not found')) {
+      errorType = 'NOT_FOUND_ERROR';
+      errorMessage = 'WordPress GraphQL endpoint not found. The WPGraphQL plugin may not be installed or activated.';
+      errorDetails = {
+        endpoint: WORDPRESS_GRAPHQL_ENDPOINT,
+        suggestion: 'Please install and activate the WPGraphQL plugin in WordPress admin.',
+        fixSteps: [
+          '1. Log in to WordPress admin at https://cms.saraivavision.com.br/wp-admin',
+          '2. Go to Plugins → Add New',
+          '3. Search for "WPGraphQL"',
+          '4. Install and activate the plugin',
+          '5. Verify the GraphQL endpoint is accessible at /graphql'
+        ]
       };
     }
-
-    if (error.response?.status >= 500) {
-      return {
-        data: null,
-        error: {
-          type: 'SERVER_ERROR',
-          message: 'WordPress server is temporarily unavailable',
-          status: error.response.status,
-        },
+    // Track CORS-specific errors
+    else if (error.message?.includes('CORS') ||
+             error.message?.includes('preflight') ||
+             error.message?.includes('Access-Control') ||
+             error.message?.includes('cross-origin') ||
+             (error.response?.status === 0) ||
+             (error.response === undefined && error.message?.includes('Failed to fetch'))) {
+      errorType = 'CORS_ERROR';
+      errorMessage = 'CORS preflight request failed. WordPress GraphQL endpoint may not be properly configured for cross-origin requests.';
+      errorDetails = {
+        endpoint: WORDPRESS_GRAPHQL_ENDPOINT,
+        origin: window.location.origin,
+        suggestion: 'Check WordPress server CORS headers and Nginx configuration.',
+        fixSteps: [
+          '1. Check if WPGraphQL CORS headers plugin is installed',
+          '2. Verify Nginx configuration allows OPTIONS requests',
+          '3. Check .htaccess for CORS rules',
+          '4. Ensure WordPress permalink settings are set to "Post name"'
+        ]
       };
     }
-
-    return {
-      data: null,
-      error: {
-        type: 'NETWORK_ERROR',
-        message: 'Failed to connect to WordPress CMS',
+    // Handle GraphQL-specific errors
+    else if (error.response?.errors) {
+      errorType = 'GRAPHQL_ERROR';
+      errorMessage = error.response.errors[0]?.message || 'GraphQL query failed';
+      errorDetails = {
+        errors: error.response.errors,
+        endpoint: WORDPRESS_GRAPHQL_ENDPOINT
+      };
+    }
+    // Handle server errors
+    else if (error.response?.status >= 500) {
+      errorType = 'SERVER_ERROR';
+      errorMessage = 'WordPress server is temporarily unavailable';
+      errorDetails = {
+        status: error.response.status,
+        endpoint: WORDPRESS_GRAPHQL_ENDPOINT
+      };
+    }
+    // Handle network errors
+    else if (error.message?.includes('Network') || error.message?.includes('fetch')) {
+      errorType = 'NETWORK_ERROR';
+      errorMessage = 'Failed to connect to WordPress CMS';
+      errorDetails = {
         originalError: error.message,
-      },
+        endpoint: WORDPRESS_GRAPHQL_ENDPOINT
+      };
+    }
+
+    const formattedError = {
+      type: errorType,
+      message: errorMessage,
+      ...errorDetails,
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent
     };
+
+    // Track error for analytics
+    if (window.posthog) {
+      window.posthog.capture('wordpress_graphql_error', {
+        errorType,
+        message: errorMessage,
+        endpoint: WORDPRESS_GRAPHQL_ENDPOINT,
+        userAgent: navigator.userAgent,
+        timestamp: formattedError.timestamp
+      });
+    }
+
+    console.error(`${errorType} Details:`, formattedError);
+    return { data: null, error: formattedError };
   }
 };
 
