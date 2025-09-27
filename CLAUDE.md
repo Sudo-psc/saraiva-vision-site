@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Saraiva Vision is a modern medical clinic website built with React 18, Vite, and TypeScript. It's a full-stack application featuring a healthcare-focused frontend with comprehensive backend API integration using Node.js APIs and Supabase as the database.
+Saraiva Vision is a modern medical clinic website built with React 18, Vite, and TypeScript. It's a hybrid architecture application featuring a healthcare-focused frontend with comprehensive backend integration using native VPS services (no Docker containerization).
 
 ## Tech Stack & Architecture
 
@@ -16,11 +16,13 @@ Saraiva Vision is a modern medical clinic website built with React 18, Vite, and
 - **React Router** for client-side routing with lazy loading
 - **Radix UI** for accessible component primitives
 
-### Backend & APIs
-- **Node.js 22+** REST API with Express.js framework
-- **Supabase** as primary database and auth provider
-- **Nginx** as web server and reverse proxy
-- **WordPress Headless CMS** with PHP-FPM 8.1+ for blog content
+### Backend & APIs (Native VPS Services)
+- **Node.js 22+** REST API with Express.js framework (native systemd service)
+- **Supabase** as primary database and auth provider (external service)
+- **Nginx** as web server and reverse proxy (native service)
+- **WordPress Headless CMS** with PHP-FPM 8.1+ for blog content (native service)
+- **MySQL** native database server for WordPress and local data
+- **Redis** native cache server for performance optimization
 - **ES modules** with modern JavaScript features
 
 ### Key Integration Points
@@ -57,13 +59,18 @@ npm run test:frontend    # Test React components only
 npm run test:watch       # Run tests in watch mode (alias for npm test)
 ```
 
-### Deployment
+### Deployment (Native VPS)
 ```bash
-npm run deploy              # Deploy to production server
-npm run deploy:preview      # Deploy to staging environment
-npm run deploy:production   # Copy dist/ to server and reload nginx
+npm run build               # Build application for production
+npm run deploy              # Build and copy to server (manual step)
+npm run deploy:production   # Show manual deployment command
 npm run deploy:health       # Run server health checks
 npm run production:check    # Production readiness validation
+
+# Manual deployment commands (run on VPS):
+sudo cp -r dist/* /var/www/html/
+sudo systemctl reload nginx
+sudo systemctl restart saraiva-api  # If API updated
 ```
 
 ### Linting & Validation
@@ -76,20 +83,21 @@ npm run validate:api        # Complete API validation (syntax + encoding)
 
 ## Project Architecture
 
-### Server Architecture Overview
-Saraiva Vision uses a **unified server architecture** deployed directly on Nginx for optimal performance:
+### Native VPS Architecture Overview
+Saraiva Vision uses a **native VPS architecture** without Docker containerization for optimal performance:
 
 - **Frontend (React SPA)**: Static files served by Nginx with efficient caching
-- **Backend (Node.js API)**: REST API services running on the same server
+- **Backend (Node.js API)**: REST API services running as native systemd services
 - **Communication Flow**: User → Nginx → Static Files (frontend) / API Proxy (backend) → Node.js Services
 
-### Server Services
-The server runs native services without containerization:
-- **Web Server**: Nginx serving static files and proxying API requests
-- **API Service**: Node.js application with Express.js for business logic
-- **Blog CMS**: WordPress headless with PHP-FPM 8.1+ for blog content management
-- **Database**: MySQL for relational data storage (Supabase + WordPress)
-- **Cache**: Redis for performance optimization
+### Native VPS Services
+The server runs all services directly on the host OS (Ubuntu/Debian):
+- **Web Server**: Nginx (native service) serving static files and proxying API requests
+- **API Service**: Node.js application (systemd service) with Express.js for business logic
+- **Blog CMS**: WordPress headless with PHP-FPM 8.1+ (native service) for blog content management
+- **Database**: MySQL (native service) for WordPress and local data storage
+- **External Database**: Supabase PostgreSQL for main application data
+- **Cache**: Redis (native service) for performance optimization and session storage
 
 ### Directory Structure
 ```
@@ -306,11 +314,11 @@ The project includes comprehensive Schema.org structured markup for medical SEO:
 3. Update related API functions
 4. Add corresponding tests
 
-### WordPress Blog Management
-1. **Installation**: Run `docs/install-wordpress-blog.sh` as root
-2. **Deployment**: Use `docs/deploy-wordpress-blog.sh` for updates
-3. **Monitoring**: Run `docs/monitor-wordpress-blog.sh` for health checks
-4. **Configuration**: Nginx and PHP-FPM configs in `docs/` directory
+### WordPress Blog Management (Native Installation)
+1. **Installation**: Run `docs/install-wordpress-blog.sh` as root (installs native MySQL, PHP-FPM, WordPress)
+2. **Deployment**: Use `docs/deploy-wordpress-blog.sh` for updates (no Docker, direct file operations)
+3. **Monitoring**: Run `docs/monitor-wordpress-blog.sh` for health checks (native service monitoring)
+4. **Configuration**: Nginx and PHP-FPM configs in `docs/` directory (native service configurations)
 
 ### Performance Monitoring
 - Real-time metrics via `src/hooks/usePerformanceMonitor.js`
@@ -320,30 +328,47 @@ The project includes comprehensive Schema.org structured markup for medical SEO:
 
 ## Deployment Configuration
 
-### Unified Server Deployment
+### Native VPS Deployment (No Docker)
 
 #### Server Configuration
-The project is deployed on a single Linux server with Nginx:
+The project is deployed on a single Linux VPS using native services:
 - **Build Command**: `npm run build`
 - **Output Directory**: `dist` (served by Nginx)
-- **Node.js Version**: 18.x minimum (as specified in package.json engines)
-- **Location**: Brazilian data center for optimal local performance
+- **Node.js Version**: 22+ minimum (as specified in package.json engines)
+- **Location**: Brazilian data center (31.97.129.78) for optimal local performance
 - **SSL**: Let's Encrypt certificates managed by Nginx
 
-#### Service Architecture
-Native services running directly on the server:
-- **Nginx**: Web server serving static files and proxying API requests
-- **Node.js API**: Express.js application for backend services
-- **MySQL**: Database server for data storage
-- **Redis**: Cache server for performance optimization
-- **PHP-FPM**: For WordPress CMS (if needed)
+#### Native Service Architecture
+Services running directly on Ubuntu/Debian VPS without containerization:
+- **Nginx**: Web server serving static files and reverse proxy for APIs
+- **Node.js**: Native Node.js runtime for API services
+- **MySQL**: Native MySQL server for relational data (WordPress, user data)
+- **Redis**: Native Redis server for caching and session storage
+- **PHP-FPM 8.1+**: Native PHP-FPM for WordPress CMS
+- **Supabase**: External PostgreSQL database service for main application data
 
-#### Deployment Process
-- **Build**: `npm run build` creates production-ready static files in `dist/`
-- **Deploy**: `npm run deploy:production` copies files to `/var/www/html/` and reloads nginx
-- **Nginx**: Configured to serve static files and proxy API requests
-- **Process Management**: PM2 or systemd for Node.js service management
-- **Manual Deploy**: `sudo cp -r dist/* /var/www/html/ && sudo systemctl reload nginx`
+#### Native Deployment Process
+1. **Build**: `npm run build` creates production-ready static files in `dist/`
+2. **Deploy**: Manual copy to web directory and service reload
+3. **Static Files**: Nginx serves React SPA from `/var/www/html/`
+4. **API Proxy**: Nginx proxies `/api/*` requests to Node.js backend
+5. **Process Management**: systemd services for Node.js API processes
+6. **No Containerization**: All services run directly on host OS
+
+#### Manual Deployment Steps
+```bash
+# Build application
+npm run build
+
+# Copy static files to web directory
+sudo cp -r dist/* /var/www/html/
+
+# Reload Nginx to serve new files
+sudo systemctl reload nginx
+
+# Optional: Restart Node.js API service if updated
+sudo systemctl restart saraiva-api
+```
 
 ### Environment Variables Required
 ```

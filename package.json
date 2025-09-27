@@ -25,9 +25,10 @@
     "validate:api": "npm run lint:syntax-api && npm run lint:encoding-api",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "deploy": "npm run build && npm run deploy:production",
-    "deploy:production": "echo 'Copy dist/ to server: sudo cp -r dist/* /var/www/html/ && sudo systemctl reload nginx'",
-    "deploy:preview": "echo 'Deploy to staging environment'",
-    "deploy:health": "curl -f http://localhost/ || echo 'Health check failed'",
+    "deploy:production": "echo '=== NATIVE VPS DEPLOYMENT COMMANDS ===' && echo 'Run these commands on the VPS server:' && echo 'sudo cp -r dist/* /var/www/html/' && echo 'sudo systemctl reload nginx' && echo 'sudo systemctl restart saraiva-api  # if API updated' && echo 'sudo systemctl status nginx saraiva-api  # verify services'",
+    "deploy:preview": "echo 'Deploy to staging environment (manual copy to staging directory)'",
+    "deploy:health": "curl -f http://localhost/ || echo 'Health check failed - ensure Nginx is running'",
+    "deploy:vps": "echo '=== VPS NATIVE SERVICE STATUS ===' && echo 'Check service status with:' && echo 'sudo systemctl status nginx' && echo 'sudo systemctl status saraiva-api' && echo 'sudo systemctl status mysql' && echo 'sudo systemctl status redis' && echo 'sudo systemctl status php8.1-fpm'",
     "production:check": "npm run build && npm run test:run"
   },
   "dependencies": {
@@ -82,7 +83,7 @@
     "zod": "^3.25.76"
   },
   "engines": {
-    "node": ">=18.x"
+    "node": ">=22.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",

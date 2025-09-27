@@ -18,14 +18,16 @@
 
 Site institucional desenvolvido para a Clínica Saraiva Vision, especializada em oftalmologia em Caratinga-MG. O projeto foi completamente modernizado com as mais recentes tecnologias web, incluindo componentes UI avançados, sistema de performance monitoring, integração com redes sociais e conformidade total com LGPD e acessibilidade.
 
-### 🚀 Arquitetura Moderna
+### 🚀 Arquitetura Native VPS (Sem Docker)
 
-O projeto utiliza uma arquitetura modular e escalável:
-- **Frontend**: React 18 com Vite para build otimizado
-- **UI Components**: Sistema de design avançado com componentes 3D e animações
-- **Performance**: Monitoramento em tempo real e otimização automática
-- **Acessibilidade**: WCAG 2.1 AA compliance com hooks dedicados
-- **Integrações**: Instagram, WhatsApp, Google Maps e muito mais
+O projeto utiliza uma arquitetura nativa VPS modular e escalável:
+- **Frontend**: React 18 com Vite servido pelo Nginx nativo
+- **Backend**: Node.js + Express.js rodando como serviços systemd nativos
+- **Database**: MySQL nativo + Supabase PostgreSQL para dados principais
+- **Cache**: Redis nativo para otimização de performance
+- **CMS**: WordPress headless com PHP-FPM 8.1+ nativo
+- **Proxy**: Nginx nativo como reverse proxy e servidor web
+- **Deployment**: Sem containerização - serviços nativos do Ubuntu/Debian
 
 ### 🎯 Características Principais
 
@@ -81,11 +83,13 @@ O projeto utiliza uma arquitetura modular e escalável:
 - **Google Maps API** - Mapas e localização
 - **Google Reviews API** - Exibição de avaliações
 
-### Backend & APIs
-- **Supabase** - Backend as a Service
-- **Node.js REST API** - API backend com Express.js
-- **Edge Functions** - Processamento na edge
-- **WebSockets** - Comunicação em tempo real
+### Backend & APIs (Native VPS Services)
+- **Node.js REST API** - API backend com Express.js (serviço systemd nativo)
+- **MySQL** - Database server nativo para WordPress e dados locais
+- **Redis** - Cache server nativo para performance e sessões
+- **PHP-FPM 8.1+** - Processamento PHP nativo para WordPress
+- **Nginx** - Web server e reverse proxy nativo
+- **Supabase** - PostgreSQL external service para dados principais
 
 ### Ferramentas de Desenvolvimento
 - **Vitest** - Framework de testes
@@ -117,66 +121,86 @@ saraivavision-site-v2/
 │   └── utils/            # Funções utilitárias
 ├── api/                  # Serverless functions
 ├── docs/                 # Documentação do projeto
-├── nginx.conf            # Configuração do servidor
-├── docker-compose.yml    # Docker para desenvolvimento
-└── deploy.sh            # Script de deploy
+├── setup-vps-native.sh   # Setup inicial do VPS nativo
+├── deploy-vps-native.sh  # Deploy nativo sem Docker
+└── docs/                 # Scripts WordPress e configs Nginx
 ```
 
 git clone https://github.com/Sudo-psc/saraivavision-site-v2.git
 docker-compose -f docker-compose.dev.yml up --build
 git clone https://github.com/Sudo-psc/saraivavision-site-v2.git
 
-## 🛠️ Configuração e Deploy do Servidor
+## 🛠️ Setup e Deploy Native VPS (Sem Docker)
 
 ### Pré-requisitos
-- Servidor Linux com Nginx
-- Node.js 18+ e npm
-- PM2 para gerenciamento de processos
-- Git
+- Servidor Ubuntu/Debian VPS (31.97.129.78)
+- Acesso root via SSH
+- Domínio apontando para o servidor
+- Node.js 18+, MySQL, Redis, PHP-FPM 8.1+, Nginx (todos nativos)
 
-### Instalação e Deploy
+### Setup Inicial do VPS
 
-1. **Clone o repositório**
+1. **Executar setup automático do VPS**
 ```bash
-git clone https://github.com/Sudo-psc/saraiva-vision-site.git
-cd saraiva-vision-site
+# No servidor VPS (como root)
+wget https://raw.githubusercontent.com/Sudo-psc/saraiva-vision-site/main/setup-vps-native.sh
+chmod +x setup-vps-native.sh
+sudo ./setup-vps-native.sh
+```
+
+Este script instala e configura automaticamente:
+- ✅ Node.js 18+ nativo
+- ✅ Nginx com configuração otimizada
+- ✅ MySQL server nativo
+- ✅ Redis server nativo
+- ✅ PHP-FPM 8.1+ nativo
+- ✅ Certificados SSL (Certbot)
+- ✅ Firewall (UFW)
+- ✅ Serviços systemd para API
+
+### Deploy da Aplicação
+
+1. **Clone o repositório (desenvolvimento)**
+```bash
+git clone https://github.com/Sudo-psc/saraivavision-site-v2.git
+cd saraivavision-site-v2
 ```
 
 2. **Configure as variáveis de ambiente**
 ```bash
-cp .env.example .env
-# Edite o arquivo .env com suas configurações
+cp .env.example .env.production
+# Edite .env.production com configurações do VPS
 ```
 
-3. **Instale as dependências**
+3. **Deploy automático para VPS**
 ```bash
-npm install
+# Build local e deploy para VPS
+./deploy-vps-native.sh
 ```
 
-4. **Build do projeto**
-```bash
-npm run build
-```
+O script de deploy realiza automaticamente:
+- ✅ Build da aplicação React
+- ✅ Backup do deployment anterior
+- ✅ Upload e extração no VPS
+- ✅ Restart dos serviços nativos
+- ✅ Verificação de saúde
 
-5. **Deploy para o servidor**
-```bash
-# Deploy para produção
-npm run deploy:production
+### Comandos de Deploy
 
-# Deploy para staging
-npm run deploy:preview
-```
-
-6. **Configurar Nginx (no servidor)**
 ```bash
-# Copiar arquivos para o diretório web
+# Deploy completo
+npm run deploy              # Build + deploy automático
+
+# Comandos VPS individuais
+npm run deploy:production   # Mostrar comandos manuais
+npm run deploy:vps          # Verificar status dos serviços
+npm run deploy:health       # Health check
+
+# No servidor VPS (manual se necessário):
 sudo cp -r dist/* /var/www/html/
-
-# Recarregar Nginx
 sudo systemctl reload nginx
+sudo systemctl restart saraiva-api
 ```
-
-O site ficará disponível no domínio configurado no servidor após o deploy.
 
 
 ## 📝 Scripts Disponíveis
@@ -189,9 +213,12 @@ O site ficará disponível no domínio configurado no servidor após o deploy.
 | `npm run test` | Executa testes em modo watch |
 | `npm run test:run` | Executa todos os testes |
 | `npm run test:coverage` | Gera relatório de cobertura |
-| `npm run deploy:production` | Deploy completo para produção |
-| `npm run deploy:preview` | Deploy para ambiente de staging |
-| `npm run deploy:health` | Verificação de saúde do servidor |
+| `npm run deploy` | Build + deploy automático para VPS |
+| `npm run deploy:production` | Mostrar comandos de deploy manual |
+| `npm run deploy:vps` | Verificar status dos serviços VPS |
+| `npm run deploy:health` | Health check do servidor |
+| `./setup-vps-native.sh` | Setup inicial completo do VPS |
+| `./deploy-vps-native.sh` | Deploy automatizado para VPS |
 
 ## 🧪 Testes
 
@@ -294,8 +321,15 @@ npm run deploy:production
 npm run deploy:preview
 ```
 
-### Configuração Avançada
-O Nginx é configurado para servir arquivos estáticos e fazer proxy das requisições da API. Headers de segurança e cache são configurados diretamente no servidor web.
+### Configuração Native VPS
+O Nginx nativo é configurado para:
+- **Servir arquivos estáticos** do React SPA em `/var/www/html/`
+- **Proxy reverso** para API Node.js (porta 3001)
+- **Proxy WordPress** headless (porta 8080)
+- **Headers de segurança** e cache otimizado
+- **SSL/HTTPS** com Let's Encrypt automático
+
+Todos os serviços rodão nativamente via systemd (sem Docker).
 
 ## 📊 SEO e Performance
 

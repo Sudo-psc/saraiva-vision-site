@@ -33,7 +33,6 @@ const Navbar = () => {
     { name: t('navbar.podcast'), href: '/podcast', internal: true, icon: Headphones },
     { name: t('navbar.about'), href: '/sobre', internal: true, icon: User },
     { name: t('navbar.faq'), href: '/faq', internal: true, icon: HelpCircle },
-    { name: t('navbar.contact'), href: '/contato', internal: true, icon: Phone },
     { name: 'Instagram', href: 'https://www.instagram.com/saraiva_vision/', internal: false, icon: ExternalLink },
   ], [t]);
 
@@ -84,7 +83,7 @@ const Navbar = () => {
 
            <div className="hidden md:flex items-center gap-4">
              <Button
-               onClick={() => navigate('/contato')}
+               onClick={() => navigate('/sobre#contact')}
                className="flex items-center gap-2"
              >
                <Calendar size={18} />
@@ -141,7 +140,7 @@ const Navbar = () => {
               <Button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  navigate('/contato');
+                  navigate('/sobre#contact');
                 }}
                 className="flex items-center gap-2 w-full justify-center"
               >

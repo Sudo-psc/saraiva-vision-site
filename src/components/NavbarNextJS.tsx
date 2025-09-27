@@ -175,10 +175,8 @@ const NavbarNextJS: React.FC<NavbarProps> = ({ className = "" }) => {
     { name: t('navbar.services', 'Serviços'), href: '/servicos', internal: true, isRoute: true },
     { name: t('navbar.lenses', 'Lentes'), href: '/lentes', internal: true, isRoute: true },
     { name: t('navbar.about', 'Sobre'), href: '/sobre', internal: true, isRoute: true },
-    { name: t('navbar.testimonials', 'Depoimentos'), href: '/depoimentos', internal: true, isRoute: true },
     { name: t('navbar.blog', 'Blog'), href: '/blog', internal: true, isRoute: true },
     { name: t('navbar.faq', 'FAQ'), href: '/faq', internal: true, isRoute: true },
-    { name: t('navbar.contact', 'Contato'), href: '/contato', internal: true, isRoute: true },
     { name: t('navbar.podcast', 'Podcast'), href: '/podcast', internal: true, isRoute: true },
   ], [t]);
 

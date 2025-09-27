@@ -246,6 +246,10 @@ export const useAutoplayCarousel = ({
       clearTimeout(resumeTimerRef.current);
       resumeTimerRef.current = null;
     }
+    if (progressTimerIdRef.current) {
+      clearTimeout(progressTimerIdRef.current);
+      progressTimerIdRef.current = null;
+    }
   }, []);
 
   const toggle = useCallback(() => {
@@ -266,6 +270,10 @@ export const useAutoplayCarousel = ({
     if (resumeTimerRef.current) {
       clearTimeout(resumeTimerRef.current);
       resumeTimerRef.current = null;
+    }
+    if (progressTimerIdRef.current) {
+      clearTimeout(progressTimerIdRef.current);
+      progressTimerIdRef.current = null;
     }
     setProgress(0);
     setTimeRemaining(state.interval);
@@ -322,6 +330,10 @@ export const useAutoplayCarousel = ({
       clearTimeout(resumeTimerRef.current);
       resumeTimerRef.current = null;
     }
+    if (progressTimerIdRef.current) {
+      clearTimeout(progressTimerIdRef.current);
+      progressTimerIdRef.current = null;
+    }
     resumeTimerRef.current = setTimeout(() => {
       if (state.isEnabled && !state.userInteracting) {
         dispatch({ type: 'PLAY' });
@@ -348,6 +360,10 @@ export const useAutoplayCarousel = ({
       clearTimeout(resumeTimerRef.current);
       resumeTimerRef.current = null;
     }
+    if (progressTimerIdRef.current) {
+      clearTimeout(progressTimerIdRef.current);
+      progressTimerIdRef.current = null;
+    }
     resumeTimerRef.current = setTimeout(() => {
       if (state.isEnabled && !state.userInteracting) {
         dispatch({ type: 'PLAY' });
@@ -371,6 +387,10 @@ export const useAutoplayCarousel = ({
     if (resumeTimerRef.current) {
       clearTimeout(resumeTimerRef.current);
       resumeTimerRef.current = null;
+    }
+    if (progressTimerIdRef.current) {
+      clearTimeout(progressTimerIdRef.current);
+      progressTimerIdRef.current = null;
     }
     resumeTimerRef.current = setTimeout(() => {
       if (state.isEnabled && !state.userInteracting) {
