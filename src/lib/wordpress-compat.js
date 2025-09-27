@@ -83,7 +83,7 @@ export const fetchPosts = async (params = {}) => {
       // Use category-specific API for better performance
       const categoryId = categories[0]; // For now, handle first category
       try {
-        const categoryResult = await getPostsByCategory(categoryId, { first });
+        const categoryResult = await getPostsByCategory(categoryId, { first: first + offset });
         result = {
           posts: categoryResult.posts || [],
           error: categoryResult.error
@@ -118,8 +118,8 @@ export const fetchPosts = async (params = {}) => {
       // Skip the offset amount and take only what we need
       posts = posts.slice(offset, offset + per_page);
     } else {
-      // For category queries, limit to per_page
-      posts = posts.slice(0, per_page);
+      // For category queries, skip the offset amount and take only what we need
+      posts = posts.slice(offset, offset + per_page);
     }
 
     // Transform GraphQL posts to REST API format for compatibility
