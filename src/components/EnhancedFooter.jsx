@@ -78,7 +78,7 @@ const EnhancedFooter = ({
         phoneNumber: clinicInfo.phone.replace(/\D/g, ''),
         whatsappLink: "https://wa.me/message/EHTAAAAYH7SHJ1", // Updated WhatsApp scheduling link
         chatbotUrl: clinicInfo.chatbotUrl,
-        amorSaudeLogo: "/img/partner-amor-saude.svg",
+        amorSaudeLogo: "/img/logo_amorsaude_color.svg",
         currentYear: new Date().getFullYear()
     }), []);
 

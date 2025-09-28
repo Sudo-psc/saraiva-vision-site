@@ -5,9 +5,9 @@
 
 // Configuração de imagens críticas da clínica
 const CRITICAL_IMAGES = {
-  logo: '/img/logo-saraiva-vision.svg',
+  logo: '/img/logo.png',
   drPhilipe: '/img/drphilipe_perfil.png',
-  heroBackground: '/img/hero-clinica.jpg'
+  heroBackground: '/img/hero.png'
 };
 
 // Imagens que devem ser precarregadas (above the fold)
