@@ -65,10 +65,12 @@ const GoogleReviewsWidget = ({
 
     // Stabilize the onError callback to prevent infinite re-renders
     const handleError = useCallback((err) => {
-        if (err.message.includes('not configured')) {
-            console.info('Google Reviews not configured, using fallback data:', err.message);
+        if (err.message.includes('not configured') || err.message.includes('PLACEHOLDER')) {
+            console.info('Google Reviews: API not configured, gracefully using fallback data');
+            // Don't set error state - let component show fallback
         } else {
-            console.info('Using fallback reviews due to API error:', err.message);
+            console.warn('Google Reviews API error:', err.message);
+            // Only set error for real API failures, not configuration issues
         }
     }, []);
 

@@ -51,10 +51,18 @@ export function useGoogleReviews(options = {}) {
     const fetchReviews = useCallback(async (fetchOptions = {}) => {
         const placeId = fetchOptions.placeId || config.placeId || process.env.VITE_GOOGLE_PLACE_ID;
 
-        if (!placeId || placeId === 'your_google_place_id_here') {
-            const error = new Error('Google Place ID not configured. Please check your environment variables.');
-            setError(error);
-            if (config.onError) config.onError(error);
+        // Check for placeholder values that indicate missing configuration
+        const isPlaceholderValue = !placeId ||
+            placeId === 'your_google_place_id_here' ||
+            placeId === 'GOOGLE_PLACE_ID_PLACEHOLDER' ||
+            placeId.includes('PLACEHOLDER');
+
+        if (isPlaceholderValue) {
+            // Don't throw error - let component handle fallback gracefully
+            console.info('Google Reviews: Using fallback data (API not configured)');
+            setError(null); // Clear any previous errors
+            setReviews([]); // Empty array so component uses fallback data
+            setStats(null);
             return;
         }
 

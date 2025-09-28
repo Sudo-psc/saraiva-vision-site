@@ -81,7 +81,8 @@ const routes = [
   { path: '/api/security', handler: '../security/monitor.js' },
   { path: '/api/outbox', handler: '../outbox/drain.js' },
   { path: '/api/images', handler: '../images/proxy.js' },
-  { path: '/api/wordpress-graphql', handler: '../wordpress-graphql-proxy.js' }
+  { path: '/api/wordpress-graphql', handler: '../wordpress-graphql-proxy.js' },
+  { path: '/api/patient-data', handler: '../patient-data.js' }
 ];
 
 // Load routes dynamically
