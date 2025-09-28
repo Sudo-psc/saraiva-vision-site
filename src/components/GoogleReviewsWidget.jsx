@@ -9,7 +9,7 @@ import { Star, ExternalLink, MessageCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useGoogleReviews } from '@/hooks/useGoogleReviews';
 import { fetchPlaceDetails, clearPlaceCache } from '@/lib/fetchPlaceDetails';
-import { CLINIC_PLACE_ID } from '@/lib/clinicInfo';
+import { CLINIC_PLACE_ID, clinicInfo } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
