@@ -327,7 +327,7 @@ export const getAllPosts = async (options = {}) => {
 
     return {
         ...(result || {}),
-        error: null,
+        error: result?.error || null,
         isOffline: false,
         isFallback: false,
         isCached: result.isCached,
@@ -371,7 +371,7 @@ export const getPostBySlug = async (slug, useCache = true) => {
 
     return {
         ...(result || {}),
-        error: null,
+        error: result?.error || null,
         isOffline: false,
         isFallback: false,
         isCached: result.isCached,
@@ -415,7 +415,7 @@ export const getRecentPosts = async (first = 3, useCache = true) => {
 
     return {
         ...(result || {}),
-        error: null,
+        error: result?.error || null,
         isOffline: false,
         isFallback: false,
         isCached: result.isCached,
@@ -460,7 +460,7 @@ export const getAllPages = async (useCache = true) => {
 
     return {
         ...(result || {}),
-        error: null,
+        error: result?.error || null,
         isOffline: false,
         isFallback: false,
         isCached: result.isCached,

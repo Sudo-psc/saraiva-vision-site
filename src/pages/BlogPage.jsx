@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
-import { Calendar, Loader2, AlertTriangle, ArrowRight, Search } from 'lucide-react';
+import { Calendar, Loader2, AlertTriangle, ArrowRight, Search, Activity } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
 import WordPressFallbackNotice from '@/components/WordPressFallbackNotice';
 import BlogStatusBanner from '@/components/BlogStatusBanner';
 import { sanitizeWordPressTitle } from '@/utils/sanitizeWordPressContent';
+import { createLogger } from '@/lib/logger';
+import { getUserFriendlyError } from '@/lib/errorHandling';
 // WordPress functions with backward compatibility
 import {
   fetchPosts,
@@ -32,6 +34,16 @@ const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [wordpressAvailable, setWordpressAvailable] = useState(true);
   const [retryIndex, setRetryIndex] = useState(0);
+  const [errorDetails, setErrorDetails] = useState(null);
+  const [showDiagnostics, setShowDiagnostics] = useState(false);
+
+  const loggerRef = useRef(createLogger('blog-page'));
+
+  const logEvent = useCallback((level, message, metadata = {}) => {
+    const logger = loggerRef.current;
+    if (!logger || typeof logger[level] !== 'function') return;
+    Promise.resolve(logger[level](message, metadata)).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -52,11 +64,28 @@ const BlogPage = () => {
       try {
         setLoading(true);
         setError(null);
+        setErrorDetails(null);
+        setShowDiagnostics(false);
 
         const connectionResult = await checkWordPressConnection();
         setWordpressAvailable(connectionResult.isConnected);
 
+        logEvent('info', 'WordPress connection check completed', {
+          isConnected: connectionResult.isConnected,
+          healthState: connectionResult.healthState
+        });
+
         if (!connectionResult.isConnected) {
+          const connectionError = {
+            message: connectionResult.error || t('blog.cms_unavailable', 'CMS indisponível no momento.'),
+            code: 'network.offline',
+            severity: 'high',
+            timestamp: new Date().toISOString(),
+            retryable: true
+          };
+          setError(connectionError.message);
+          setErrorDetails(connectionError);
+          logEvent('warn', 'WordPress connection unavailable', connectionError);
           setLoading(false);
           return;
         }
@@ -76,26 +105,156 @@ const BlogPage = () => {
 
         const postsData = await fetchPosts(params);
         setPosts(postsData);
+        const meta = postsData?.meta || {};
+        const diagnostics = meta.diagnostics || {};
+        const metaError = meta.errorDetails || null;
+        setErrorDetails(metaError);
+
+        logEvent(meta.isFallback ? 'warn' : 'info', meta.isFallback
+          ? 'Serving blog posts via fallback'
+          : 'Blog posts loaded successfully', {
+          count: Array.isArray(postsData) ? postsData.length : 0,
+          ...diagnostics,
+          errorCode: metaError?.code,
+          message: metaError?.message || meta?.fallbackMeta?.message
+        });
 
       } catch (error) {
-        console.error('Error loading blog posts:', error);
-        setError(error.message);
+        const friendly = getUserFriendlyError(error.details || error);
+        const detailedError = {
+          message: friendly.userMessage || friendly.message || error.message || t('blog.cms_error', 'Não foi possível carregar os artigos.'),
+          code: friendly.code,
+          severity: friendly.severity,
+          retryable: friendly.retryable !== false,
+          originalMessage: error.message,
+          timestamp: new Date().toISOString()
+        };
+
+        setError(detailedError.message);
+        setErrorDetails(detailedError);
         setWordpressAvailable(false);
+
+        logEvent('error', 'Error loading blog posts', {
+          ...detailedError,
+          stack: error.stack,
+          params: {
+            currentPage,
+            selectedCategory,
+            searchTerm
+          }
+        });
       } finally {
         setLoading(false);
       }
     };
 
     loadPosts();
-  }, [currentPage, selectedCategory, searchTerm, retryIndex]);
+  }, [currentPage, selectedCategory, searchTerm, retryIndex, logEvent, t]);
 
   const handleRetry = () => {
+    logEvent('info', 'Manual blog retry triggered', {
+      currentPage,
+      selectedCategory,
+      searchTerm
+    });
     setRetryIndex((prev) => prev + 1);
   };
 
   const getDateLocale = () => {
     return i18n.language === 'pt' ? ptBR : enUS;
   };
+
+  const formatTimestamp = useCallback((isoString) => {
+    if (!isoString) {
+      return t('blog.not_available', 'Não informado');
+    }
+
+    try {
+      return format(new Date(isoString), 'dd/MM/yyyy HH:mm:ss', { locale: getDateLocale() });
+    } catch (err) {
+      return isoString;
+    }
+  }, [getDateLocale, t]);
+
+  const renderDiagnosticsPanel = useCallback((meta, title = t('blog.diagnostics_title', 'Diagnóstico do CMS'))) => {
+    if (!meta && !errorDetails) {
+      return null;
+    }
+
+    const diagnostics = meta?.diagnostics || {};
+    const detailSource = meta?.errorDetails || errorDetails;
+    const timestamp = diagnostics.fetchedAt || meta?.fallbackMeta?.generatedAt || detailSource?.timestamp;
+
+    const parameterEntries = diagnostics.parameters
+      ? Object.entries(diagnostics.parameters)
+          .filter(([, value]) => value !== null && value !== undefined && value !== '')
+      : [];
+
+    return (
+      <div className="bg-white border border-blue-100 rounded-xl p-5 shadow-sm" role="status" aria-live="polite">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2 text-blue-900 font-semibold text-sm">
+              <Activity className="w-4 h-4" aria-hidden="true" />
+              <span>{title}</span>
+            </div>
+            <p className="text-xs text-blue-700 mt-1">
+              {t('blog.diagnostics_meta', 'Origem: {{source}} • Última atualização: {{timestamp}}', {
+                source: diagnostics.source || (meta?.isFallback ? 'fallback' : 'live'),
+                timestamp: formatTimestamp(timestamp)
+              })}
+            </p>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowDiagnostics(prev => !prev)}
+            className="text-blue-700 hover:text-blue-800"
+          >
+            {showDiagnostics ? t('blog.hide_logs', 'Ocultar logs') : t('blog.show_logs', 'Ver logs técnicos')}
+          </Button>
+        </div>
+
+        {showDiagnostics && (
+          <div className="mt-4 space-y-4 text-xs text-left text-gray-700">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div><span className="font-semibold">{t('blog.diagnostics_status', 'Fallback')}:</span> {meta?.isFallback ? t('blog.yes', 'Sim') : t('blog.no', 'Não')}</div>
+              <div><span className="font-semibold">{t('blog.diagnostics_health', 'Estado do CMS')}:</span> {diagnostics.healthState || t('blog.not_available', 'Não informado')}</div>
+              <div><span className="font-semibold">{t('blog.diagnostics_cached', 'Conteúdo em cache')}:</span> {diagnostics.isCached ? t('blog.yes', 'Sim') : t('blog.no', 'Não')}</div>
+              <div><span className="font-semibold">{t('blog.diagnostics_offline', 'Modo offline')}:</span> {diagnostics.isOffline ? t('blog.yes', 'Sim') : t('blog.no', 'Não')}</div>
+            </div>
+
+            {parameterEntries.length > 0 && (
+              <div>
+                <p className="font-semibold text-gray-800 mb-2">{t('blog.diagnostics_filters', 'Parâmetros da consulta')}</p>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {parameterEntries.map(([key, value]) => (
+                    <li key={key} className="bg-gray-50 border border-gray-100 rounded px-2 py-1 text-gray-600">
+                      <span className="font-medium text-gray-800">{key}</span>: {Array.isArray(value) ? value.join(', ') : value.toString()}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {detailSource && (
+              <div className="border-t border-gray-200 pt-3 space-y-1">
+                <p className="font-semibold text-gray-800">{t('blog.diagnostics_last_error', 'Último erro registrado')}</p>
+                {detailSource.code && (
+                  <p><span className="font-semibold text-gray-700">{t('blog.diagnostics_code', 'Código')}:</span> {detailSource.code}</p>
+                )}
+                <p><span className="font-semibold text-gray-700">{t('blog.diagnostics_message', 'Mensagem')}:</span> {detailSource.message}</p>
+                {detailSource.originalMessage && (
+                  <p className="text-gray-500">{detailSource.originalMessage}</p>
+                )}
+                <p><span className="font-semibold text-gray-700">{t('blog.diagnostics_retry', 'Tentativa recomendada')}:</span> {detailSource.retryable ? t('blog.yes', 'Sim') : t('blog.no', 'Não')}</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }, [errorDetails, formatTimestamp, showDiagnostics, t]);
 
   const handleCategoryChange = (categoryId) => {
     setSelectedCategory(categoryId);
@@ -209,6 +368,7 @@ const BlogPage = () => {
         <div className="space-y-8">
           <BlogStatusBanner className="mb-6" />
           <WordPressFallbackNotice meta={fallbackMeta} onRetry={handleRetry} />
+          {renderDiagnosticsPanel(fallbackMeta)}
           {posts.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 md:gap-8">
               {posts.map((post, index) => (
@@ -242,6 +402,15 @@ const BlogPage = () => {
       return (
         <div className="space-y-6">
           <BlogStatusBanner showDetails className="mb-6" />
+          {renderDiagnosticsPanel({
+            isFallback: false,
+            diagnostics: {
+              source: 'error',
+              fetchedAt: errorDetails?.timestamp,
+              healthState: 'unhealthy'
+            },
+            errorDetails
+          }, t('blog.diagnostics_error_title', 'Detalhes do incidente'))}
           <div
             className="text-center p-12 bg-yellow-50 border border-yellow-200 rounded-2xl max-w-2xl mx-auto"
             role="alert"

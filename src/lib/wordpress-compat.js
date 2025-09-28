@@ -20,6 +20,51 @@ import {
   sanitizeWordPressExcerpt,
   sanitizeWordPressTitle
 } from '@/utils/sanitizeWordPressContent';
+import { createLogger } from './logger.js';
+import { classifyError, getUserFriendlyError } from './errorHandling.js';
+
+const blogLogger = createLogger('blog-fallback');
+
+const emitLog = (level, message, metadata = {}) => {
+  if (!blogLogger || typeof blogLogger[level] !== 'function') return;
+  Promise.resolve(blogLogger[level](message, metadata)).catch(() => {});
+};
+
+const normalizeError = (error) => {
+  if (error instanceof Error) {
+    return error;
+  }
+
+  if (typeof error === 'string') {
+    return new Error(error);
+  }
+
+  if (error && typeof error === 'object') {
+    const normalized = new Error(error.message || 'WordPress request failed');
+    return Object.assign(normalized, error);
+  }
+
+  return new Error('Unknown WordPress error');
+};
+
+const buildErrorDetails = (error, context = {}) => {
+  if (!error) return null;
+
+  const normalized = normalizeError(error);
+  const classification = classifyError(normalized);
+  const friendly = getUserFriendlyError(normalized);
+
+  return {
+    type: classification.type,
+    code: classification.code,
+    message: friendly.userMessage || normalized.message,
+    originalMessage: normalized.message,
+    severity: friendly.severity,
+    retryable: friendly.retryable !== false,
+    timestamp: new Date().toISOString(),
+    context
+  };
+};
 
 // Health check function
 export const checkWordPressConnection = async () => {
@@ -103,10 +148,16 @@ export const fetchPosts = async (params = {}) => {
           error: categoryResult.error,
           isFallback: categoryResult.isFallback,
           fallbackMeta: categoryResult.fallbackMeta,
-          healthState: categoryResult.healthState
+          healthState: categoryResult.healthState,
+          isOffline: categoryResult.isOffline,
+          isCached: categoryResult.isCached,
+          connectionType: categoryResult.connectionType
         };
       } catch (error) {
-        console.warn('Category-specific query failed, falling back to general query:', error);
+        emitLog('warn', 'Category query failed, falling back to global posts', {
+          categoryId,
+          message: error.message
+        });
         result = await getAllPosts({ first: first + offset });
       }
     } else {
@@ -118,9 +169,34 @@ export const fetchPosts = async (params = {}) => {
     const isFallback = Boolean(result.isFallback);
     const fallbackMeta = result.fallbackMeta || null;
     const healthState = result.healthState || null;
+    const diagnostics = {
+      fetchedAt: new Date().toISOString(),
+      source: isFallback ? 'fallback' : 'live',
+      fallbackType: result.error?.type || (isFallback ? 'CMS_FALLBACK' : 'LIVE'),
+      isOffline: Boolean(result.isOffline),
+      isCached: Boolean(result.isCached),
+      healthState: healthState || 'unknown',
+      connectionType: result.connectionType || 'unknown',
+      parameters: { per_page, page, categories, search }
+    };
+
+    const errorDetails = apiError
+      ? buildErrorDetails(apiError, {
+          stage: 'fetchPosts',
+          ...diagnostics
+        })
+      : null;
 
     if (apiError && !isFallback) {
-      throw new Error(apiError.message || apiError);
+      emitLog('error', 'WordPress posts fetch returned error without fallback', {
+        ...diagnostics,
+        errorCode: errorDetails?.code,
+        errorType: errorDetails?.type
+      });
+
+      const normalizedError = normalizeError(apiError);
+      normalizedError.details = errorDetails;
+      throw normalizedError;
     }
 
     let posts = result.posts || [];
@@ -192,20 +268,48 @@ export const fetchPosts = async (params = {}) => {
         }
       };
     });
+    const meta = {
+      isFallback,
+      fallbackMeta,
+      healthState,
+      error: apiError,
+      diagnostics
+    };
 
-    if (isFallback || fallbackMeta || healthState || apiError) {
-      mappedPosts.meta = {
-        isFallback,
-        fallbackMeta,
-        healthState,
-        error: apiError,
-      };
+    if (errorDetails) {
+      meta.errorDetails = errorDetails;
+    }
+
+    mappedPosts.meta = meta;
+
+    const logMetadata = {
+      ...diagnostics,
+      errorCode: errorDetails?.code,
+      errorType: errorDetails?.type,
+      message: errorDetails?.message || fallbackMeta?.message
+    };
+
+    if (isFallback) {
+      emitLog('warn', 'Serving WordPress posts via fallback', logMetadata);
+    } else {
+      emitLog('info', 'WordPress posts fetched successfully', logMetadata);
     }
 
     return mappedPosts;
 
   } catch (error) {
-    console.error('Error in fetchPosts:', error);
+    const errorDetails = buildErrorDetails(error, {
+      stage: 'fetchPosts_catch',
+      params,
+      timestamp: new Date().toISOString()
+    });
+    emitLog('error', 'WordPress posts fetch failed', errorDetails);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error in fetchPosts:', error);
+    }
+    if (error && typeof error === 'object') {
+      error.details = errorDetails;
+    }
     throw error;
   }
 };
