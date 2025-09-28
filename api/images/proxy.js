@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
-import { Request, Response } from 'express';
 
 const router = express.Router();
 
@@ -23,7 +22,7 @@ router.use(cors({
  * Proxy endpoint for Google Cloud Storage images
  * This bypasses CORS issues by serving images through our backend
  */
-router.get('/proxy/:path(*)', async (req: Request, res: Response) => {
+router.get('/proxy/:path(*)', async (req, res) => {
   try {
     const { path } = req.params;
 
@@ -71,7 +70,7 @@ router.get('/proxy/:path(*)', async (req: Request, res: Response) => {
 /**
  * Health check endpoint for the image proxy
  */
-router.get('/health', (req: Request, res: Response) => {
+router.get('/health', (req, res) => {
   res.json({
     status: 'ok',
     service: 'image-proxy',

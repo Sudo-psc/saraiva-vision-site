@@ -98,6 +98,236 @@ O projeto utiliza uma arquitetura nativa VPS modular e escalável:
 - **ESLint** - Linting de código
 - **PostCSS** - Processamento de CSS
 - **Autoprefixer** - Prefixos CSS automáticos
+
+## 🔧 SSL Certificate Troubleshooting Guide
+
+This section provides comprehensive guidance for diagnosing and fixing SSL certificate issues with the WordPress GraphQL endpoint.
+
+### 🚨 Common SSL Issues
+
+#### "The certificate for this server is invalid" Error
+
+This error typically indicates one or more of the following issues:
+
+1. **Expired Certificate**: SSL certificate has passed its expiration date
+2. **Incomplete Certificate Chain**: Missing intermediate certificates
+3. **Domain Mismatch**: Certificate issued for different domain
+4. **Self-Signed Certificate**: Not trusted by browser CAs
+5. **Weak SSL Configuration**: Outdated protocols or cipher suites
+
+### 🔍 Diagnostic Commands
+
+#### 1. Check DNS Resolution
+```bash
+nslookup cms.saraivavision.com.br
+```
+
+#### 2. Test SSL Certificate
+```bash
+openssl s_client -connect cms.saraivavision.com.br:443 -servername cms.saraivavision.com.br -showcerts
+```
+
+#### 3. Verify Certificate Chain
+```bash
+openssl verify -CAfile /etc/ssl/certs/ca-certificates.crt /path/to/certificate.pem
+```
+
+#### 4. Test with SSL Labs
+Visit: https://www.ssllabs.com/ssltest/analyze.html?d=cms.saraivavision.com.br
+
+### 🛠️ Server-Side Fixes
+
+#### Nginx Configuration (SSL Optimization)
+```nginx
+server {
+    listen 443 ssl http2;
+    server_name cms.saraivavision.com.br;
+
+    # SSL Certificate (ensure full chain)
+    ssl_certificate /etc/letsencrypt/live/cms.saraivavision.com.br/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/cms.saraivavision.com.br/privkey.pem;
+
+    # SSL Protocol Configuration
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256;
+    ssl_prefer_server_ciphers off;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+
+    # Security Headers
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+
+    # GraphQL Endpoint
+    location /graphql {
+        if ($request_method = OPTIONS) {
+            add_header Access-Control-Allow-Origin "https://saraivavision.com.br" always;
+            add_header Access-Control-Allow-Methods "GET, POST, OPTIONS" always;
+            add_header Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With" always;
+            add_header Access-Control-Allow-Credentials "true" always;
+            return 204;
+        }
+
+        proxy_pass http://localhost:8080; # WordPress backend
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+#### Renew Certificate with Certbot
+```bash
+# Renew existing certificate
+sudo certbot renew --nginx
+
+# Force new certificate for specific domain
+sudo certbot --nginx -d cms.saraivavision.com.br --force-renewal
+
+# Test renewal process
+sudo certbot renew --dry-run
+```
+
+#### Verify Certificate Chain
+```bash
+# Check certificate chain completeness
+openssl s_client -connect cms.saraivavision.com.br:443 -showcerts </dev/null 2>/dev/null | openssl x509 -text | grep -A 10 "Subject Alternative Name"
+
+# Verify all certificates in chain
+openssl s_client -connect cms.saraivavision.com.br:443 -showcerts </dev/null 2>/dev/null | awk '/BEGIN CERTIFICATE/,/END CERTIFICATE/{print $0}' > fullchain.pem
+openssl verify -CAfile /etc/ssl/certs/ca-certificates.crt fullchain.pem
+```
+
+### 🌐 CORS Configuration
+
+Ensure CORS headers are properly configured for cross-origin requests:
+
+```nginx
+# In your GraphQL location block
+add_header Access-Control-Allow-Origin "https://saraivavision.com.br" always;
+add_header Access-Control-Allow-Methods "GET, POST, OPTIONS" always;
+add_header Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With" always;
+add_header Access-Control-Allow-Credentials "true" always;
+```
+
+### 📱 Frontend Error Handling
+
+The enhanced GraphQL client automatically handles SSL/CORS errors:
+
+```javascript
+// Example of SSL error handling
+import { gqlQuery, GraphQLError, GraphQLErrorType } from './lib/graphqlClient';
+
+try {
+  const result = await gqlQuery('{ posts { nodes { id title } } }');
+} catch (error) {
+  if (error.isSSLError()) {
+    // Display user-friendly SSL error message
+    console.log('SSL Certificate Error:', error.getUserMessage());
+  } else if (error.isCORSError()) {
+    // Handle CORS issues
+    console.log('CORS Error:', error.getUserMessage());
+  }
+}
+```
+
+### 🔧 Environment Configuration
+
+Ensure your `.env.production` file has the correct configuration:
+
+```bash
+# WordPress GraphQL Configuration
+VITE_WORDPRESS_GRAPHQL_ENDPOINT=https://cms.saraivavision.com.br/graphql
+VITE_WORDPRESS_SITE_URL=https://cms.saraivavision.com.br
+
+# GraphQL Client Configuration
+VITE_GRAPHQL_TIMEOUT=15000
+VITE_GRAPHQL_MAX_RETRIES=3
+VITE_GRAPHQL_RETRY_DELAY=1000
+```
+
+### 🧪 Testing and Validation
+
+#### Test GraphQL Endpoint
+```bash
+curl -i https://cms.saraivavision.com.br/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query":"{ __typename }"}'
+```
+
+#### Browser Testing
+1. Open Chrome DevTools → Network tab
+2. Look for GraphQL requests
+3. Check for SSL/CORS errors in console
+4. Test in Safari (stricter SSL validation)
+
+### 📊 Monitoring and Maintenance
+
+#### Automated SSL Renewal
+```bash
+# Setup automated renewal (systemd timer)
+sudo systemctl enable certbot.timer
+sudo systemctl start certbot.timer
+
+# Check renewal status
+sudo systemctl status certbot.timer
+sudo certbot certificates
+```
+
+#### Health Checks
+```bash
+# Check SSL certificate status
+sudo certbot certificates --check-expiry
+
+# Monitor Nginx SSL handshake errors
+sudo tail -f /var/log/nginx/error.log | grep SSL
+
+# Check WordPress GraphQL endpoint
+curl -s https://cms.saraivavision.com.br/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query":"{ __typename }"}' | jq .
+```
+
+### 🆘 Emergency Recovery
+
+If SSL issues persist:
+
+1. **Temporary HTTP Fallback**: Use local proxy endpoint
+2. **Certificate Re-issuance**: Force new certificate with different CA
+3. **CDN Proxy**: Use Cloudflare or similar for SSL termination
+4. **Debug Mode**: Enable detailed SSL logging in Nginx
+
+### 🔍 Troubleshooting Checklist
+
+- [ ] DNS resolves to correct IP
+- [ ] Certificate not expired
+- [ ] Certificate chain complete
+- [ ] Domain matches certificate
+- [ ] CORS headers configured
+- [ ] Nginx SSL settings optimized
+- [ ] Firewall allows port 443
+- [ ] SSL Labs grade A- or better
+- [ ] Browser console clear of errors
+- [ ] GraphQL requests successful
+
+### 📞 Support Resources
+
+- **SSL Labs**: https://www.ssllabs.com/ssltest/
+- **Let's Encrypt Community**: https://community.letsencrypt.org/
+- **Nginx SSL Docs**: https://nginx.org/en/docs/http/configuring_https_servers.html
+- **Mozilla SSL Config Generator**: https://ssl-config.mozilla.org/
+
+### 🎯 Success Criteria
+
+The SSL issue is resolved when:
+- ✅ No SSL errors in browser console
+- ✅ GraphQL requests return 200 OK
+- ✅ SSL Labs grade A- or better
+- ✅ Works in all major browsers
+- ✅ No mixed content warnings
+- ✅ HTTPS padlock displayed
 - **Prettier** - Formatação de código
 
 ## 📁 Estrutura do Projeto

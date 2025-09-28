@@ -1,3 +1,0 @@
-# Exclude API routes from Vercel deployment
-# These are backend routes that run on the VPS server
-api/

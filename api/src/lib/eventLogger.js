@@ -29,15 +29,18 @@ export async function logEvent(eventData) {
         //     p_severity: severity,
         //     p_source: source,
         //     p_request_id: requestId,
-            p_user_id: userId
-        })
+        //     p_user_id: userId
+        // })
 
-        if (error) {
-            console.error('Error logging event:', error)
-            return null
-        }
+        // if (error) {
+        //     console.error('Error logging event:', error)
+        //     return null
+        // }
 
-        return result
+        // return result
+
+        // Temporarily return mock event ID while supabase is disabled
+        return `event_${Date.now()}`
     } catch (error) {
         console.error('Error in logEvent:', error)
         return null
