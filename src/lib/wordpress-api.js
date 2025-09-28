@@ -1,6 +1,14 @@
 import { executeGraphQLQuery } from './wordpress.js';
 import { executeWordPressQueryWithFallback } from './wordpress-health.js';
 import {
+    getCachedContent,
+    setCachedContent,
+    prefetchCriticalContent,
+    generateEnhancedFallbackContent
+} from './wordpress-offline.js';
+import { getCMSFallbackSystem, initializeCMSFallbackSystem } from './cms-fallback-system.js';
+import { getOfflineContentManager } from './offline-content-manager.js';
+import {
     GET_ALL_POSTS,
     GET_POST_BY_SLUG,
     GET_ALL_PAGES,
@@ -30,388 +38,788 @@ const CACHE_DURATION = {
     NAVIGATION: 3600, // 1 hour
 };
 
-// In-memory cache for development (in production, use Redis or similar)
-const cache = new Map();
-
-// Cache helper functions
-const getCacheKey = (type, params = {}) => {
-    const paramString = Object.keys(params).length > 0 ? JSON.stringify(params) : '';
-    return `${type}:${paramString}`;
+// Enhanced cache strategy with offline support
+const CACHE_STRATEGY = {
+    MEMORY: 'memory',     // In-memory cache for fast access
+    LOCAL: 'local',      // localStorage for offline persistence
+    HYBRID: 'hybrid'     // Both memory and localStorage
 };
 
-const getCachedData = (cacheKey) => {
-    const cached = cache.get(cacheKey);
+// Cache configuration
+const CACHE_CONFIG = {
+    strategy: CACHE_STRATEGY.HYBRID,
+    compress: true,
+    encrypt: false,
+    version: '1.0'
+};
+
+// In-memory cache for development (in production, use Redis or similar)
+const memoryCache = new Map();
+
+// Enhanced cache helper functions with offline support
+const getCacheKey = (type, params = {}) => {
+    const paramString = Object.keys(params).length > 0 ? JSON.stringify(params) : '';
+    return `wp_${type}_${CACHE_CONFIG.version}:${paramString}`;
+};
+
+const getMemoryCachedData = (cacheKey) => {
+    const cached = memoryCache.get(cacheKey);
     if (!cached) return null;
 
     const { data, timestamp, duration } = cached;
     const now = Date.now();
 
     if (now - timestamp > duration * 1000) {
-        cache.delete(cacheKey);
+        memoryCache.delete(cacheKey);
         return null;
     }
 
     return data;
 };
 
-const setCachedData = (cacheKey, data, duration) => {
-    cache.set(cacheKey, {
+const setMemoryCachedData = (cacheKey, data, duration) => {
+    memoryCache.set(cacheKey, {
         data,
         timestamp: Date.now(),
         duration,
     });
 };
 
-// Posts API functions with health monitoring
+const getLocalCachedData = (cacheKey) => {
+    const cached = getCachedContent(cacheKey, 'normal');
+    if (!cached) return null;
+
+    const now = Date.now();
+    const cacheAge = now - cached.timestamp;
+
+    // Use longer duration for localStorage (offline fallback)
+    const extendedDuration = Math.min(
+        CACHE_DURATION.POSTS * 4,  // 4x normal duration
+        24 * 60 * 60 * 1000    // Max 24 hours
+    );
+
+    if (cacheAge > extendedDuration) {
+        return null;
+    }
+
+    return cached.data;
+};
+
+const setLocalCachedData = (cacheKey, data, duration) => {
+    // Store in localStorage for offline access
+    setCachedContent(cacheKey, data, 'important', 'wordpress');
+};
+
+const getCachedData = (cacheKey, type = 'normal') => {
+    // Try memory cache first
+    const memoryData = getMemoryCachedData(cacheKey);
+    if (memoryData) return memoryData;
+
+    // Try localStorage if hybrid strategy
+    if (CACHE_CONFIG.strategy === CACHE_STRATEGY.HYBRID || CACHE_CONFIG.strategy === CACHE_STRATEGY.LOCAL) {
+        const localData = getLocalCachedData(cacheKey);
+        if (localData) {
+            // Promote to memory cache for faster access
+            setMemoryCachedData(cacheKey, localData, CACHE_DURATION.POSTS);
+            return localData;
+        }
+    }
+
+    return null;
+};
+
+const setCachedData = (cacheKey, data, duration, type = 'normal') => {
+    // Always store in memory cache
+    setMemoryCachedData(cacheKey, data, duration);
+
+    // Store in localStorage if hybrid or local strategy
+    if (CACHE_CONFIG.strategy === CACHE_STRATEGY.HYBRID || CACHE_CONFIG.strategy === CACHE_STRATEGY.LOCAL) {
+        setLocalCachedData(cacheKey, data, duration);
+    }
+};
+
+// Prefetch critical content for offline access
+export const prefetchCriticalContentForOffline = async () => {
+    try {
+        console.log('Prefetching critical content for offline access...');
+
+        // Fetch critical content types
+        const criticalFetches = [
+            getSiteSettings(false),
+            getNavigationMenus(false),
+            getPopularServices(6, false),
+            getRecentPosts(3, false)
+        ];
+
+        const results = await Promise.allSettled(criticalFetches);
+
+        const successCount = results.filter(result => result.status === 'fulfilled').length;
+        console.log(`Prefetched ${successCount}/${criticalFetches.length} critical content items for offline access`);
+
+        return successCount;
+    } catch (error) {
+        console.error('Error prefetching critical content:', error);
+        return 0;
+    }
+};
+
+// Enhanced cache with multi-layer fallback system
+const getWithOfflineFallback = async (cacheKey, fetchFunction, options = {}) => {
+    const {
+        duration = CACHE_DURATION.POSTS,
+        useCache = true,
+        offlineFallback = true,
+        contentType = 'general',
+        enableCMSFallback = true
+    } = options;
+
+    // Try memory cache first
+    if (useCache) {
+        const cached = getCachedData(cacheKey);
+        if (cached) {
+            return {
+                ...cached,
+                isCached: true,
+                isFallback: false
+            };
+        }
+    }
+
+    try {
+        // Use enhanced CMS fallback system if enabled
+        if (enableCMSFallback && contentType) {
+            const cmsFallback = getCMSFallbackSystem();
+            const result = await cmsFallback.executeWithFallback(fetchFunction, contentType, options);
+
+            if (!result.error && useCache) {
+                setCachedData(cacheKey, result, duration);
+
+                // Also store in offline content manager
+                const offlineManager = getOfflineContentManager();
+                await offlineManager.storeContent(contentType, result, {
+                    source: 'online',
+                    priority: 'normal'
+                });
+            }
+
+            return result;
+        }
+
+        // Fallback to original fetch function
+        const result = await fetchFunction();
+
+        if (!result.error && useCache) {
+            setCachedData(cacheKey, result, duration);
+
+            // Store in offline content manager
+            const offlineManager = getOfflineContentManager();
+            await offlineManager.storeContent(contentType, result, {
+                source: 'online',
+                priority: 'normal'
+            });
+        }
+
+        return {
+            ...result,
+            isCached: false,
+            isFallback: false
+        };
+    } catch (error) {
+        console.warn(`Fetch failed for ${cacheKey}:`, error);
+
+        if (offlineFallback) {
+            // Try to get from offline content manager first
+            const offlineManager = getOfflineContentManager();
+            const offlineContent = offlineManager.getContent(contentType, options);
+
+            if (offlineContent && offlineContent.length > 0) {
+                console.log(`Using offline content manager for ${cacheKey}`);
+                return {
+                    [contentType === 'posts' ? 'posts' :
+                     contentType === 'services' ? 'services' :
+                     contentType === 'teamMembers' ? 'teamMembers' :
+                     contentType === 'testimonials' ? 'testimonials' : 'data']: offlineContent,
+                    isOffline: true,
+                    isFallback: true,
+                    isCached: true,
+                    error: {
+                        type: 'OFFLINE_CONTENT_MANAGER',
+                        message: 'Using offline content manager',
+                        originalError: error.message
+                    }
+                };
+            }
+
+            // Try legacy offline cache
+            const legacyOfflineContent = getLocalCachedData(cacheKey);
+            if (legacyOfflineContent) {
+                console.log(`Using legacy offline cached content for ${cacheKey}`);
+                return {
+                    ...legacyOfflineContent,
+                    isOffline: true,
+                    isFallback: true,
+                    isCached: true,
+                    error: {
+                        type: 'LEGACY_OFFLINE_FALLBACK',
+                        message: 'Using cached offline content',
+                        originalError: error.message
+                    }
+                };
+            }
+
+            // Generate enhanced fallback content
+            const fallbackData = generateEnhancedFallbackContent(contentType, options);
+            return {
+                ...fallbackData,
+                isOffline: true,
+                isFallback: true,
+                isCached: false,
+                error: {
+                    type: 'ENHANCED_FALLBACK_CONTENT',
+                    message: 'Using generated fallback content',
+                    originalError: error.message
+                }
+            };
+        }
+
+        throw error;
+    }
+};
+
+// Posts API functions with health monitoring and offline fallback
 export const getAllPosts = async (options = {}) => {
     const { first = 10, after = null, useCache = true } = options;
     const cacheKey = getCacheKey('posts', { first, after });
 
-    if (useCache) {
-        const cached = getCachedData(cacheKey);
-        if (cached) return cached;
-    }
-
-    const queryFunction = async () => {
+    const fetchFunction = async () => {
         const { data, error } = await executeGraphQLQuery(GET_ALL_POSTS, { first, after });
 
         if (error) {
             return { posts: [], pageInfo: null, error };
         }
 
-        const result = {
+        return {
             posts: data.posts.nodes || [],
             pageInfo: data.posts.pageInfo || null,
             error: null,
         };
-
-        if (useCache) {
-            setCachedData(cacheKey, result, CACHE_DURATION.POSTS);
-        }
-
-        return result;
     };
 
-    // Use health monitoring with fallback
-    const healthResult = await executeWordPressQueryWithFallback(queryFunction, 'posts', { first, after });
+    const result = await getWithOfflineFallback(cacheKey, fetchFunction, {
+        duration: CACHE_DURATION.POSTS,
+        useCache,
+        offlineFallback: true,
+        contentType: 'posts'
+    });
 
-    if (healthResult.isFallback) {
+    if (result.isOffline || result.isFallback) {
         return {
-            posts: healthResult.data.posts || [],
-            pageInfo: null,
-            error: healthResult.error,
-            isFallback: true,
-            healthState: healthResult.healthState,
+            posts: result.posts || [],
+            pageInfo: result.pageInfo || null,
+            error: result.error,
+            isOffline: result.isOffline,
+            isFallback: result.isFallback,
+            isCached: result.isCached,
+            healthState: result.healthState,
+            fallbackMeta: result.fallbackMeta,
         };
     }
 
-    return healthResult.data;
+    return {
+        ...(result || {}),
+        error: null,
+        isOffline: false,
+        isFallback: false,
+        isCached: result.isCached,
+    };
 };
 
 export const getPostBySlug = async (slug, useCache = true) => {
     const cacheKey = getCacheKey('post', { slug });
 
-    if (useCache) {
-        const cached = getCachedData(cacheKey);
-        if (cached) return cached;
-    }
+    const fetchFunction = async () => {
+        const { data, error } = await executeGraphQLQuery(GET_POST_BY_SLUG, { slug });
 
-    const { data, error } = await executeGraphQLQuery(GET_POST_BY_SLUG, { slug });
+        if (error) {
+            return { post: null, error };
+        }
 
-    if (error) {
-        return { post: null, error };
-    }
-
-    const result = {
-        post: data.post || null,
-        error: null,
+        return {
+            post: data.post || null,
+            error: null,
+        };
     };
 
-    if (useCache) {
-        setCachedData(cacheKey, result, CACHE_DURATION.POSTS);
+    const result = await getWithOfflineFallback(cacheKey, fetchFunction, {
+        duration: CACHE_DURATION.POSTS,
+        useCache,
+        offlineFallback: true,
+        contentType: 'posts'
+    });
+
+    if (result.isOffline || result.isFallback) {
+        return {
+            post: result.post || null,
+            error: result.error,
+            isOffline: result.isOffline,
+            isFallback: result.isFallback,
+            isCached: result.isCached,
+            healthState: result.healthState,
+            fallbackMeta: result.fallbackMeta,
+        };
     }
 
-    return result;
+    return {
+        ...(result || {}),
+        error: null,
+        isOffline: false,
+        isFallback: false,
+        isCached: result.isCached,
+    };
 };
 
 export const getRecentPosts = async (first = 3, useCache = true) => {
     const cacheKey = getCacheKey('recent_posts', { first });
 
-    if (useCache) {
-        const cached = getCachedData(cacheKey);
-        if (cached) return cached;
-    }
-
-    const queryFunction = async () => {
+    const fetchFunction = async () => {
         const { data, error } = await executeGraphQLQuery(GET_RECENT_POSTS, { first });
 
         if (error) {
             return { posts: [], error };
         }
 
-        const result = {
+        return {
             posts: data.posts.nodes || [],
             error: null,
         };
-
-        if (useCache) {
-            setCachedData(cacheKey, result, CACHE_DURATION.POSTS);
-        }
-
-        return result;
     };
 
-    // Use health monitoring with fallback
-    const healthResult = await executeWordPressQueryWithFallback(queryFunction, 'posts', { first });
+    const result = await getWithOfflineFallback(cacheKey, fetchFunction, {
+        duration: CACHE_DURATION.POSTS,
+        useCache,
+        offlineFallback: true,
+        contentType: 'posts'
+    });
 
-    if (healthResult.isFallback) {
+    if (result.isOffline || result.isFallback) {
         return {
-            posts: healthResult.data.posts || [],
-            error: healthResult.error,
-            isFallback: true,
-            healthState: healthResult.healthState,
+            posts: result.posts || [],
+            error: result.error,
+            isOffline: result.isOffline,
+            isFallback: result.isFallback,
+            isCached: result.isCached,
+            healthState: result.healthState,
+            fallbackMeta: result.fallbackMeta,
         };
     }
 
-    return healthResult.data;
+    return {
+        ...(result || {}),
+        error: null,
+        isOffline: false,
+        isFallback: false,
+        isCached: result.isCached,
+    };
 };
 
 // Pages API functions
 export const getAllPages = async (useCache = true) => {
     const cacheKey = getCacheKey('pages');
 
-    if (useCache) {
-        const cached = getCachedData(cacheKey);
-        if (cached) return cached;
-    }
+    const fetchFunction = async () => {
+        const { data, error } = await executeGraphQLQuery(GET_ALL_PAGES);
 
-    const { data, error } = await executeGraphQLQuery(GET_ALL_PAGES);
+        if (error) {
+            return { pages: [], error };
+        }
 
-    if (error) {
-        return { pages: [], error };
-    }
-
-    const result = {
-        pages: data.pages.nodes || [],
-        error: null,
+        return {
+            pages: data.pages.nodes || [],
+            error: null,
+        };
     };
 
-    if (useCache) {
-        setCachedData(cacheKey, result, CACHE_DURATION.PAGES);
+    const result = await getWithOfflineFallback(cacheKey, fetchFunction, {
+        duration: CACHE_DURATION.PAGES,
+        useCache,
+        offlineFallback: true,
+        contentType: 'pages'
+    });
+
+    if (result.isOffline || result.isFallback) {
+        return {
+            pages: result.pages || [],
+            error: result.error,
+            isOffline: result.isOffline,
+            isFallback: result.isFallback,
+            isCached: result.isCached,
+            healthState: result.healthState,
+            fallbackMeta: result.fallbackMeta,
+        };
     }
 
-    return result;
+    return {
+        ...(result || {}),
+        error: null,
+        isOffline: false,
+        isFallback: false,
+        isCached: result.isCached,
+    };
 };
 
 export const getPageBySlug = async (slug, useCache = true) => {
     const cacheKey = getCacheKey('page', { slug });
 
-    if (useCache) {
-        const cached = getCachedData(cacheKey);
-        if (cached) return cached;
-    }
+    const fetchFunction = async () => {
+        const { data, error } = await executeGraphQLQuery(GET_PAGE_BY_SLUG, { slug });
 
-    const { data, error } = await executeGraphQLQuery(GET_PAGE_BY_SLUG, { slug });
+        if (error) {
+            return { page: null, error };
+        }
 
-    if (error) {
-        return { page: null, error };
-    }
-
-    const result = {
-        page: data.page || null,
-        error: null,
+        return {
+            page: data.page || null,
+            error: null,
+        };
     };
 
-    if (useCache) {
-        setCachedData(cacheKey, result, CACHE_DURATION.PAGES);
+    const result = await getWithOfflineFallback(cacheKey, fetchFunction, {
+        duration: CACHE_DURATION.PAGES,
+        useCache,
+        offlineFallback: true,
+        contentType: 'pages'
+    });
+
+    if (result.isOffline || result.isFallback) {
+        return {
+            page: result.page || null,
+            error: result.error,
+            isOffline: result.isOffline,
+            isFallback: result.isFallback,
+            isCached: result.isCached,
+            healthState: result.healthState,
+            fallbackMeta: result.fallbackMeta,
+        };
     }
 
-    return result;
+    return {
+        ...(result || {}),
+        error: null,
+        isOffline: false,
+        isFallback: false,
+        isCached: result.isCached,
+    };
 };
 
 // Services API functions
 export const getAllServices = async (useCache = true) => {
     const cacheKey = getCacheKey('services');
 
-    if (useCache) {
-        const cached = getCachedData(cacheKey);
-        if (cached) return cached;
-    }
+    const fetchFunction = async () => {
+        const { data, error } = await executeGraphQLQuery(GET_ALL_SERVICES);
 
-    const { data, error } = await executeGraphQLQuery(GET_ALL_SERVICES);
+        if (error) {
+            return { services: [], error };
+        }
 
-    if (error) {
-        return { services: [], error };
-    }
-
-    const result = {
-        services: data.services.nodes || [],
-        error: null,
+        return {
+            services: data.services.nodes || [],
+            error: null,
+        };
     };
 
-    if (useCache) {
-        setCachedData(cacheKey, result, CACHE_DURATION.SERVICES);
+    const result = await getWithOfflineFallback(cacheKey, fetchFunction, {
+        duration: CACHE_DURATION.SERVICES,
+        useCache,
+        offlineFallback: true,
+        contentType: 'services'
+    });
+
+    if (result.isOffline || result.isFallback) {
+        return {
+            services: result.services || [],
+            error: result.error,
+            isOffline: result.isOffline,
+            isFallback: result.isFallback,
+            isCached: result.isCached,
+            healthState: result.healthState,
+            fallbackMeta: result.fallbackMeta,
+        };
     }
 
-    return result;
+    return {
+        ...(result || {}),
+        error: null,
+        isOffline: false,
+        isFallback: false,
+        isCached: result.isCached,
+    };
 };
 
 export const getServiceBySlug = async (slug, useCache = true) => {
     const cacheKey = getCacheKey('service', { slug });
 
-    if (useCache) {
-        const cached = getCachedData(cacheKey);
-        if (cached) return cached;
-    }
+    const fetchFunction = async () => {
+        const { data, error } = await executeGraphQLQuery(GET_SERVICE_BY_SLUG, { slug });
 
-    const { data, error } = await executeGraphQLQuery(GET_SERVICE_BY_SLUG, { slug });
+        if (error) {
+            return { service: null, error };
+        }
 
-    if (error) {
-        return { service: null, error };
-    }
-
-    const result = {
-        service: data.service || null,
-        error: null,
+        return {
+            service: data.service || null,
+            error: null,
+        };
     };
 
-    if (useCache) {
-        setCachedData(cacheKey, result, CACHE_DURATION.SERVICES);
+    const result = await getWithOfflineFallback(cacheKey, fetchFunction, {
+        duration: CACHE_DURATION.SERVICES,
+        useCache,
+        offlineFallback: true,
+        contentType: 'services'
+    });
+
+    if (result.isOffline || result.isFallback) {
+        return {
+            service: result.service || null,
+            error: result.error,
+            isOffline: result.isOffline,
+            isFallback: result.isFallback,
+            isCached: result.isCached,
+            healthState: result.healthState,
+            fallbackMeta: result.fallbackMeta,
+        };
     }
 
-    return result;
+    return {
+        ...(result || {}),
+        error: null,
+        isOffline: false,
+        isFallback: false,
+        isCached: result.isCached,
+    };
 };
 
 export const getPopularServices = async (first = 6, useCache = true) => {
     const cacheKey = getCacheKey('popular_services', { first });
 
-    if (useCache) {
-        const cached = getCachedData(cacheKey);
-        if (cached) return cached;
-    }
+    const fetchFunction = async () => {
+        const { data, error } = await executeGraphQLQuery(GET_POPULAR_SERVICES, { first });
 
-    const { data, error } = await executeGraphQLQuery(GET_POPULAR_SERVICES, { first });
+        if (error) {
+            return { services: [], error };
+        }
 
-    if (error) {
-        return { services: [], error };
-    }
-
-    const result = {
-        services: data.services.nodes || [],
-        error: null,
+        return {
+            services: data.services.nodes || [],
+            error: null,
+        };
     };
 
-    if (useCache) {
-        setCachedData(cacheKey, result, CACHE_DURATION.SERVICES);
+    const result = await getWithOfflineFallback(cacheKey, fetchFunction, {
+        duration: CACHE_DURATION.SERVICES,
+        useCache,
+        offlineFallback: true,
+        contentType: 'services'
+    });
+
+    if (result.isOffline || result.isFallback) {
+        return {
+            services: result.services || [],
+            error: result.error,
+            isOffline: result.isOffline,
+            isFallback: result.isFallback,
+            isCached: result.isCached,
+            healthState: result.healthState,
+            fallbackMeta: result.fallbackMeta,
+        };
     }
 
-    return result;
+    return {
+        ...(result || {}),
+        error: null,
+        isOffline: false,
+        isFallback: false,
+        isCached: result.isCached,
+    };
 };
 
 // Team Members API functions
 export const getAllTeamMembers = async (useCache = true) => {
     const cacheKey = getCacheKey('team_members');
 
-    if (useCache) {
-        const cached = getCachedData(cacheKey);
-        if (cached) return cached;
-    }
+    const fetchFunction = async () => {
+        const { data, error } = await executeGraphQLQuery(GET_ALL_TEAM_MEMBERS);
 
-    const { data, error } = await executeGraphQLQuery(GET_ALL_TEAM_MEMBERS);
+        if (error) {
+            return { teamMembers: [], error };
+        }
 
-    if (error) {
-        return { teamMembers: [], error };
-    }
-
-    const result = {
-        teamMembers: data.teamMembers.nodes || [],
-        error: null,
+        return {
+            teamMembers: data.teamMembers.nodes || [],
+            error: null,
+        };
     };
 
-    if (useCache) {
-        setCachedData(cacheKey, result, CACHE_DURATION.TEAM_MEMBERS);
+    const result = await getWithOfflineFallback(cacheKey, fetchFunction, {
+        duration: CACHE_DURATION.TEAM_MEMBERS,
+        useCache,
+        offlineFallback: true,
+        contentType: 'teamMembers'
+    });
+
+    if (result.isOffline || result.isFallback) {
+        return {
+            teamMembers: result.teamMembers || [],
+            error: result.error,
+            isOffline: result.isOffline,
+            isFallback: result.isFallback,
+            isCached: result.isCached,
+            healthState: result.healthState,
+            fallbackMeta: result.fallbackMeta,
+        };
     }
 
-    return result;
+    return {
+        ...(result || {}),
+        error: null,
+        isOffline: false,
+        isFallback: false,
+        isCached: result.isCached,
+    };
 };
 
 export const getTeamMemberBySlug = async (slug, useCache = true) => {
     const cacheKey = getCacheKey('team_member', { slug });
 
-    if (useCache) {
-        const cached = getCachedData(cacheKey);
-        if (cached) return cached;
-    }
+    const fetchFunction = async () => {
+        const { data, error } = await executeGraphQLQuery(GET_TEAM_MEMBER_BY_SLUG, { slug });
 
-    const { data, error } = await executeGraphQLQuery(GET_TEAM_MEMBER_BY_SLUG, { slug });
+        if (error) {
+            return { teamMember: null, error };
+        }
 
-    if (error) {
-        return { teamMember: null, error };
-    }
-
-    const result = {
-        teamMember: data.teamMember || null,
-        error: null,
+        return {
+            teamMember: data.teamMember || null,
+            error: null,
+        };
     };
 
-    if (useCache) {
-        setCachedData(cacheKey, result, CACHE_DURATION.TEAM_MEMBERS);
+    const result = await getWithOfflineFallback(cacheKey, fetchFunction, {
+        duration: CACHE_DURATION.TEAM_MEMBERS,
+        useCache,
+        offlineFallback: true,
+        contentType: 'teamMembers'
+    });
+
+    if (result.isOffline || result.isFallback) {
+        return {
+            teamMember: result.teamMember || null,
+            error: result.error,
+            isOffline: result.isOffline,
+            isFallback: result.isFallback,
+            isCached: result.isCached,
+            healthState: result.healthState,
+            fallbackMeta: result.fallbackMeta,
+        };
     }
 
-    return result;
+    return {
+        ...(result || {}),
+        error: null,
+        isOffline: false,
+        isFallback: false,
+        isCached: result.isCached,
+    };
 };
 
 // Testimonials API functions
 export const getFeaturedTestimonials = async (first = 6, useCache = true) => {
     const cacheKey = getCacheKey('featured_testimonials', { first });
 
-    if (useCache) {
-        const cached = getCachedData(cacheKey);
-        if (cached) return cached;
-    }
+    const fetchFunction = async () => {
+        const { data, error } = await executeGraphQLQuery(GET_FEATURED_TESTIMONIALS, { first });
 
-    const { data, error } = await executeGraphQLQuery(GET_FEATURED_TESTIMONIALS, { first });
+        if (error) {
+            return { testimonials: [], error };
+        }
 
-    if (error) {
-        return { testimonials: [], error };
-    }
-
-    const result = {
-        testimonials: data.testimonials.nodes || [],
-        error: null,
+        return {
+            testimonials: data.testimonials.nodes || [],
+            error: null,
+        };
     };
 
-    if (useCache) {
-        setCachedData(cacheKey, result, CACHE_DURATION.TESTIMONIALS);
+    const result = await getWithOfflineFallback(cacheKey, fetchFunction, {
+        duration: CACHE_DURATION.TESTIMONIALS,
+        useCache,
+        offlineFallback: true,
+        contentType: 'testimonials'
+    });
+
+    if (result.isOffline || result.isFallback) {
+        return {
+            testimonials: result.testimonials || [],
+            error: result.error,
+            isOffline: result.isOffline,
+            isFallback: result.isFallback,
+            isCached: result.isCached,
+            healthState: result.healthState,
+            fallbackMeta: result.fallbackMeta,
+        };
     }
 
-    return result;
+    return {
+        ...(result || {}),
+        error: null,
+        isOffline: false,
+        isFallback: false,
+        isCached: result.isCached,
+    };
 };
 
 export const getAllTestimonials = async (useCache = true) => {
     const cacheKey = getCacheKey('testimonials');
 
-    if (useCache) {
-        const cached = getCachedData(cacheKey);
-        if (cached) return cached;
-    }
+    const fetchFunction = async () => {
+        const { data, error } = await executeGraphQLQuery(GET_ALL_TESTIMONIALS);
 
-    const { data, error } = await executeGraphQLQuery(GET_ALL_TESTIMONIALS);
+        if (error) {
+            return { testimonials: [], error };
+        }
 
-    if (error) {
-        return { testimonials: [], error };
-    }
-
-    const result = {
-        testimonials: data.testimonials.nodes || [],
-        error: null,
+        return {
+            testimonials: data.testimonials.nodes || [],
+            error: null,
+        };
     };
 
-    if (useCache) {
-        setCachedData(cacheKey, result, CACHE_DURATION.TESTIMONIALS);
+    const result = await getWithOfflineFallback(cacheKey, fetchFunction, {
+        duration: CACHE_DURATION.TESTIMONIALS,
+        useCache,
+        offlineFallback: true,
+        contentType: 'testimonials'
+    });
+
+    if (result.isOffline || result.isFallback) {
+        return {
+            testimonials: result.testimonials || [],
+            error: result.error,
+            isOffline: result.isOffline,
+            isFallback: result.isFallback,
+            isCached: result.isCached,
+            healthState: result.healthState,
+            fallbackMeta: result.fallbackMeta,
+        };
     }
 
-    return result;
+    return {
+        ...(result || {}),
+        error: null,
+        isOffline: false,
+        isFallback: false,
+        isCached: result.isCached,
+    };
 };
 
 // Site Settings API functions
@@ -530,20 +938,122 @@ export const getAllCategories = async (useCache = true) => {
 // Utility functions
 export const invalidateCache = (pattern = null) => {
     if (!pattern) {
-        cache.clear();
+        memoryCache.clear();
+        // Clear localStorage caches with our prefix
+        if (typeof localStorage !== 'undefined') {
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('wp_fallback_')) {
+                    keysToRemove.push(key);
+                }
+            }
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+        }
         return;
     }
 
-    for (const key of cache.keys()) {
+    // Clear memory cache
+    for (const key of memoryCache.keys()) {
         if (key.includes(pattern)) {
-            cache.delete(key);
+            memoryCache.delete(key);
         }
+    }
+
+    // Clear localStorage cache
+    if (typeof localStorage !== 'undefined') {
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.includes(pattern) && key.startsWith('wp_fallback_')) {
+                keysToRemove.push(key);
+            }
+        }
+        keysToRemove.forEach(key => localStorage.removeItem(key));
     }
 };
 
 export const getCacheStats = () => {
+    const memoryStats = {
+        size: memoryCache.size,
+        keys: Array.from(memoryCache.keys()),
+    };
+
+    let localStorageStats = { size: 0, keys: [] };
+    if (typeof localStorage !== 'undefined') {
+        const wpKeys = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('wp_fallback_')) {
+                wpKeys.push(key);
+            }
+        }
+        localStorageStats = {
+            size: wpKeys.length,
+            keys: wpKeys,
+        };
+    }
+
     return {
-        size: cache.size,
-        keys: Array.from(cache.keys()),
+        memory: memoryStats,
+        localStorage: localStorageStats,
+        total: memoryStats.size + localStorageStats.size,
+    };
+};
+
+// Initialize enhanced fallback systems
+export const initializeOfflineCaching = async () => {
+    if (typeof window !== 'undefined') {
+        // Initialize CMS fallback system
+        try {
+            await initializeCMSFallbackSystem();
+            console.log('CMS fallback system initialized');
+        } catch (error) {
+            console.warn('Failed to initialize CMS fallback system:', error);
+        }
+
+        // Start offline monitoring
+        import('./wordpress-offline.js').then(({ startOfflineMonitoring }) => {
+            startOfflineMonitoring();
+        });
+
+        // Prefetch critical content after page load
+        setTimeout(async () => {
+            const successCount = await prefetchCriticalContentForOffline();
+            console.log(`Offline caching initialized with ${successCount} critical items`);
+        }, 2000);
+    }
+};
+
+// Check if we're in offline mode
+export const isOfflineMode = () => {
+    if (typeof window === 'undefined') return false;
+
+    const offlineState = localStorage.getItem('wp_offline_state');
+    if (offlineState) {
+        try {
+            const parsed = JSON.parse(offlineState);
+            return parsed.isOffline || false;
+        } catch {
+            return false;
+        }
+    }
+
+    return !navigator.onLine;
+};
+
+// Get cache health information
+export const getCacheHealth = () => {
+    const stats = getCacheStats();
+    const isOffline = isOfflineMode();
+
+    return {
+        isOffline,
+        cacheSize: stats.total,
+        memoryCacheSize: stats.memory.size,
+        localStorageSize: stats.localStorage.size,
+        offlineContentAvailable: stats.localStorage.size > 0,
+        cacheStrategy: CACHE_CONFIG.strategy,
+        lastCacheUpdate: stats.memory.keys.length > 0 ? 'recent' : 'none',
     };
 };

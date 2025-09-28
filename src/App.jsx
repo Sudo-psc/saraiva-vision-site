@@ -22,6 +22,7 @@ const WordPressAdminRedirect = createLazyComponent(() => import('./components/Wo
 const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
 const DashboardPage = createLazyComponent(() => import('./pages/DashboardPage.jsx'));
 const GoogleReviewsTestPage = createLazyComponent(() => import('./pages/GoogleReviewsTestPage.jsx'));
+const MapTestPage = createLazyComponent(() => import('./pages/MapTestPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
 import { Toaster } from './components/ui/toaster.jsx';
@@ -81,6 +82,7 @@ function App() {
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/privacy" element={<PrivacyPolicyPage />} />
                   <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />
+                  <Route path="/map-test" element={<MapTestPage />} />
                   <Route path="/wp-admin" element={<WordPressAdminRedirect />} />
 
                   {isCheckSubdomain ? (

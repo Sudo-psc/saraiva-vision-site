@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 const Logo = ({ className = "", isWhite = false, alt: altProp }) => {
   const { t } = useTranslation();
-  const logoUrl = "/api/images/proxy/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/a8dfe42cbf2667c6fde2f934ce773078.png";
+  const logoUrl = "/img/logo-saraiva-vision.svg";
   const altText = altProp || t('common.logo_alt', 'Saraiva Vision Logo');
 
   return (

@@ -4,19 +4,28 @@
  * Requirements: 4.1, 4.4, 4.5 - Real-time availability, conflict prevention, error handling
  */
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
+import { MessageCircle, Phone, ExternalLink } from 'lucide-react'
 import { formatDateBR, formatTimeBR, getDayNameBR } from '../lib/appointmentAvailability.js'
 import { useAnalytics, useVisibilityTracking } from '../hooks/useAnalytics'
+import { clinicInfo } from '@/lib/clinicInfo'
 
 const AppointmentBooking = () => {
     // Analytics integration
-    const { trackFormView, trackFormSubmit, trackAppointment, trackInteraction } = useAnalytics();
+    const { trackFormView, trackFormSubmit, trackAppointment } = useAnalytics();
     const appointmentFormRef = useVisibilityTracking('appointment_form_view');
 
     const [step, setStep] = useState(1) // 1: Select Date/Time, 2: Patient Info, 3: Confirmation
     const [availability, setAvailability] = useState({})
     const [selectedDate, setSelectedDate] = useState('')
     const [selectedTime, setSelectedTime] = useState('')
+    const [schedulingEnabled, setSchedulingEnabled] = useState(true)
+    const [contactInfo, setContactInfo] = useState({
+        whatsapp: clinicInfo.whatsapp,
+        phone: clinicInfo.phone,
+        phoneDisplay: clinicInfo.phoneDisplay,
+        externalUrl: clinicInfo.onlineSchedulingUrl
+    })
     const [patientData, setPatientData] = useState({
         patient_name: '',
         patient_email: '',
@@ -28,30 +37,55 @@ const AppointmentBooking = () => {
     const [success, setSuccess] = useState(false)
     const [appointmentResult, setAppointmentResult] = useState(null)
 
-    // Load availability on component mount
-    useEffect(() => {
-        loadAvailability()
-        trackFormView('appointment')
-    }, [trackFormView])
-
-    const loadAvailability = async () => {
+    const loadAvailability = useCallback(async (showLoader = true) => {
         try {
-            setLoading(true)
+            if (showLoader) {
+                setLoading(true)
+            }
+
             const response = await fetch('/api/appointments/availability?days=14')
             const result = await response.json()
 
-            if (result.success) {
-                setAvailability(result.data.availability)
+            if (response.ok && result.success) {
+                const availabilityData = result.data?.availability || {}
+                setAvailability(availabilityData)
+                setSchedulingEnabled(result.data?.schedulingEnabled !== false)
+                if (result.data?.contact) {
+                    setContactInfo(prev => ({
+                        ...prev,
+                        ...result.data.contact
+                    }))
+                }
+                setError('')
             } else {
-                setError('Erro ao carregar disponibilidade. Tente novamente.')
+                setAvailability({})
+                setSchedulingEnabled(false)
+                setError(result.error?.message || 'Erro ao carregar disponibilidade. Tente novamente.')
             }
         } catch (error) {
             console.error('Error loading availability:', error)
             setError('Erro ao carregar disponibilidade. Verifique sua conexão.')
+            setAvailability({})
         } finally {
-            setLoading(false)
+            if (showLoader) {
+                setLoading(false)
+            }
         }
-    }
+    }, [])
+
+    // Load availability on component mount
+    useEffect(() => {
+        loadAvailability()
+        trackFormView('appointment')
+    }, [loadAvailability, trackFormView])
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            loadAvailability(false)
+        }, 60000)
+
+        return () => clearInterval(intervalId)
+    }, [loadAvailability])
 
     const handleDateTimeSelection = (date, time) => {
         setSelectedDate(date)
@@ -169,6 +203,73 @@ const AppointmentBooking = () => {
         loadAvailability()
     }
 
+    const whatsappLink = contactInfo.whatsapp
+        ? `https://wa.me/${contactInfo.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Olá! Gostaria de agendar uma consulta na Saraiva Vision.')}`
+        : null
+    const phoneLink = contactInfo.phone ? `tel:${contactInfo.phone.replace(/\D/g, '')}` : null
+
+    const renderContactOptions = ({ title, description }) => (
+        <div className="space-y-4 text-center">
+            <div>
+                <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
+                <p className="text-sm text-gray-600 mt-2">{description}</p>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                {whatsappLink && (
+                    <a
+                        href={whatsappLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-green-600 text-white hover:bg-green-700 transition-colors"
+                    >
+                        <MessageCircle className="w-4 h-4" />
+                        WhatsApp {contactInfo.phoneDisplay || ''}
+                    </a>
+                )}
+                {phoneLink && (
+                    <a
+                        href={phoneLink}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-blue-600 text-blue-700 hover:bg-blue-50 transition-colors"
+                    >
+                        <Phone className="w-4 h-4" />
+                        Ligar {contactInfo.phoneDisplay ? `(${contactInfo.phoneDisplay})` : ''}
+                    </a>
+                )}
+                {contactInfo.externalUrl && (
+                    <a
+                        href={contactInfo.externalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition-colors"
+                    >
+                        <ExternalLink className="w-4 h-4" />
+                        Abrir agenda externa
+                    </a>
+                )}
+            </div>
+        </div>
+    )
+
+    if (!schedulingEnabled && !loading) {
+        return (
+            <div className="max-w-4xl mx-auto p-6">
+                <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div className="bg-blue-600 text-white p-6">
+                        <h2 className="text-2xl font-bold">Agendamento Online Temporariamente Indisponível</h2>
+                        <p className="mt-2 opacity-90">Nossa equipe está atualizando os horários disponíveis.</p>
+                    </div>
+                    <div className="p-6 space-y-6">
+                        {renderContactOptions({
+                            title: 'Agende agora com nossa equipe',
+                            description: 'Entre em contato pelos canais abaixo e finalizaremos seu agendamento imediatamente.'
+                        })}
+                        <p className="text-xs text-gray-500 text-center">Agenda online indisponível. Assim que normalizar, atualizaremos automaticamente aqui.</p>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     if (loading && step === 1) {
         return (
             <div className="max-w-4xl mx-auto p-6">
@@ -235,13 +336,17 @@ const AppointmentBooking = () => {
                         <h3 className="text-lg font-semibold mb-4">Escolha a data e horário</h3>
 
                         {Object.keys(availability).length === 0 ? (
-                            <div className="text-center py-8">
+                            <div className="text-center py-8 space-y-4">
                                 <p className="text-gray-600">Não há horários disponíveis no momento.</p>
+                                {renderContactOptions({
+                                    title: 'Fale com a recepção',
+                                    description: 'Nosso time pode encontrar o melhor horário para você por telefone ou WhatsApp.'
+                                })}
                                 <button
-                                    onClick={loadAvailability}
-                                    className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                    onClick={() => loadAvailability()}
+                                    className="mt-2 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                                 >
-                                    Tentar Novamente
+                                    Atualizar horários
                                 </button>
                             </div>
                         ) : (

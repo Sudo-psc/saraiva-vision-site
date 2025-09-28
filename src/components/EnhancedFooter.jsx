@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 import Logo from './Logo';
-import { clinicInfo } from '../lib/clinicInfo';
+import { clinicInfo, googleMapsProfileUrl } from '../lib/clinicInfo';
 import { SocialLinks3D } from './ui/social-links-3d';
 import { useGlassMorphism } from '../hooks/useGlassMorphism';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
@@ -20,6 +20,7 @@ import {
 import {
     useFooterTheme
 } from '../utils/footerThemeManager';
+import { useWorkingHoursStatus } from '../hooks/useWorkingHoursStatus';
 import {
     initializeCompatibility,
     applyCompatibilityFixes,
@@ -36,6 +37,7 @@ const EnhancedFooter = ({
     glassOpacity = null,
     glassBlur = null,
     enableAnimations = true,
+    useGlassEffect = false,
     ...props
 }) => {
     const { t } = useTranslation();
@@ -74,9 +76,9 @@ const EnhancedFooter = ({
     // Memoize computed values (preserved from original Footer)
     const footerData = useMemo(() => ({
         phoneNumber: clinicInfo.phone.replace(/\D/g, ''),
-        whatsappLink: `https://wa.me/${clinicInfo.phone.replace(/\D/g, '')}`,
+        whatsappLink: "https://wa.me/message/EHTAAAAYH7SHJ1", // Updated WhatsApp scheduling link
         chatbotUrl: clinicInfo.chatbotUrl,
-        amorSaudeLogo: "/api/images/proxy/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/66c6d707b457395f0aaf159d826531ef.png",
+        amorSaudeLogo: "/img/partner-amor-saude.svg",
         currentYear: new Date().getFullYear()
     }), []);
 
@@ -151,6 +153,60 @@ const EnhancedFooter = ({
         <li className={cn('text-slate-400', className)}>{children}</li>
     );
 
+    // Enhanced working hours display with status indicator
+    const WorkingHoursDisplay = () => {
+        const formatNextOpening = (date) => {
+            if (!date) return '';
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            if (date.toDateString() === now.toDateString()) {
+                return `Abre hoje às ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+            } else if (date.toDateString() === tomorrow.toDateString()) {
+                return `Abre amanhã às ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+            } else {
+                const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+                return `Abre ${days[date.getDay()]} às ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+            }
+        };
+
+        return (
+            <ContactItem>
+                <div className="flex items-center gap-2">
+                    {/* Status indicator */}
+                    <div
+                        className={cn(
+                            'w-3 h-3 rounded-full animate-pulse',
+                            isOpen ? 'bg-green-500' : 'bg-red-500'
+                        )}
+                        aria-label={isOpen ? 'Clínica aberta' : 'Clínica fechada'}
+                    />
+                    <div>
+                        <div className="flex items-center gap-2 text-sm">
+                            <span className={cn(
+                                'font-medium',
+                                isOpen ? 'text-green-400' : 'text-red-400'
+                            )}>
+                                {isOpen ? 'Aberto agora' : 'Fechado'}
+                            </span>
+                            {!isOpen && nextOpeningTime && (
+                                <span className="text-xs text-slate-500">
+                                    ({formatNextOpening(nextOpeningTime)})
+                                </span>
+                            )}
+                        </div>
+                        <div className="text-xs text-slate-500 mt-1">
+                            <div>Seg-Sex: {formattedHours.weekdays}</div>
+                            <div>Sábado: {formattedHours.saturday}</div>
+                            <div>Domingo: {formattedHours.sunday}</div>
+                        </div>
+                    </div>
+                </div>
+            </ContactItem>
+        );
+    };
+
     const ContactLink = ({ href, children, external = false, icon: Icon, className }) => {
         const linkProps = {
             href,
@@ -197,10 +253,15 @@ const EnhancedFooter = ({
     }, [isFooterVisible, announce]);
 
     // Generate glass morphism styles based on current settings
+    const enableGlass = useMemo(
+        () => useGlassEffect && shouldEnableGlass() && !shouldDisableGlass,
+        [useGlassEffect, shouldEnableGlass, shouldDisableGlass]
+    );
+
     const glassStyles = useMemo(() => {
-        if (!shouldEnableGlass() || shouldDisableGlass) {
+        if (!enableGlass) {
             return {
-                background: 'rgba(30, 41, 59, 0.95)', // Fallback for slate-800
+                background: 'rgba(30, 41, 59, 0.95)',
                 backdropFilter: 'none',
                 WebkitBackdropFilter: 'none'
             };
@@ -211,18 +272,17 @@ const EnhancedFooter = ({
             opacity: glassOpacity,
             blur: glassBlur
         });
-    }, [shouldEnableGlass, shouldDisableGlass, glassIntensity, glassOpacity, glassBlur]);
-
+    }, [enableGlass, glassIntensity, glassOpacity, glassBlur]);
     // Generate CSS classes for glass morphism
     const glassClasses = useMemo(() => {
         const baseClasses = ['footer-glass-morphism'];
 
-        if (shouldEnableGlass() && !shouldDisableGlass) {
+        if (enableGlass) {
             baseClasses.push(`footer-glass-${glassIntensity}`);
         }
 
         return baseClasses.join(' ');
-    }, [shouldEnableGlass, shouldDisableGlass, glassIntensity]);
+    }, [enableGlass, glassIntensity]);
 
     // Get compatibility configuration
     const compatibilityConfig = useMemo(() => getCompatibilityConfig(), []);
@@ -233,6 +293,9 @@ const EnhancedFooter = ({
         glassBlur,
         enableAnimations: enableAnimations && !shouldReduceMotion
     });
+
+    // Working hours status
+    const { isOpen, nextOpeningTime, formattedHours } = useWorkingHoursStatus();
 
     // Extract with fallback for safety
     const themeProperties = footerThemeResult?.cssCustomProperties || {};
@@ -258,7 +321,7 @@ const EnhancedFooter = ({
         }
 
         // Apply compatibility-based adjustments
-        if (!compatibilityConfig.shouldUseGlass) {
+        if (!compatibilityConfig.shouldUseGlass || !enableGlass) {
             mergedProperties['--footer-glass-opacity'] = '0';
             mergedProperties['--footer-glass-blur'] = '0px';
         }
@@ -270,7 +333,7 @@ const EnhancedFooter = ({
         }
 
         return mergedProperties;
-    }, [glassIntensity, glassOpacity, glassBlur, themeProperties, compatibilityConfig]);
+    }, [enableGlass, glassIntensity, glassOpacity, glassBlur, themeProperties, compatibilityConfig]);
 
     // Get responsive timings based on screen size
     const responsiveTimings = useMemo(() => {
@@ -315,9 +378,9 @@ const EnhancedFooter = ({
             <motion.div
                 className={cn(
                     'enhanced-footer-glass-layer absolute inset-0 z-0',
-                    shouldEnableGlass() && !shouldDisableGlass ? glassClasses : 'bg-slate-800/95'
+                    enableGlass ? glassClasses : 'bg-slate-800/95'
                 )}
-                style={shouldEnableGlass() && !shouldDisableGlass ? glassStyles : undefined}
+                style={enableGlass ? glassStyles : undefined}
                 variants={isAnimationEnabled && !shouldReduceMotion ? glassLayerVariants : undefined}
                 initial={isAnimationEnabled && !shouldReduceMotion ? 'hidden' : false}
                 animate={isAnimationEnabled && !shouldReduceMotion && isFooterVisible ? 'visible' : 'hidden'}
@@ -390,8 +453,28 @@ const EnhancedFooter = ({
                         {/* Contact Section */}
                         <FooterSection title={t('footer.contact')}>
                             <ul className="space-y-3">
-                                <ContactItem>{t('footer.address_line1')}</ContactItem>
-                                <ContactItem>{t('footer.address_line2')}</ContactItem>
+                                <ContactItem>
+                                    <a 
+                                        href={googleMapsProfileUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-white transition-colors"
+                                        aria-label="Ver localização no Google Maps (nova aba)"
+                                    >
+                                        {t('footer.address_line1')}
+                                    </a>
+                                </ContactItem>
+                                <ContactItem>
+                                    <a 
+                                        href={googleMapsProfileUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-white transition-colors"
+                                        aria-label="Ver localização no Google Maps (nova aba)"
+                                    >
+                                        {t('footer.address_line2')} 📍
+                                    </a>
+                                </ContactItem>
                                 <ContactLink href={`mailto:${clinicInfo.email}`}>
                                     {clinicInfo.email}
                                 </ContactLink>
@@ -414,6 +497,40 @@ const EnhancedFooter = ({
                                 </ContactItem>
                                 <ContactItem>
                                     <a
+                                        href="https://wa.me/message/EHTAAAAYH7SHJ1"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform text-green-400"
+                                    >
+                                        <img
+                                            src="/icons_social/whatsapp_icon.png"
+                                            alt="WhatsApp Auto Atendimento"
+                                            className="w-6 h-6 object-contain"
+                                            loading="lazy"
+                                            decoding="async"
+                                        />
+                                        Auto Atendimento
+                                    </a>
+                                </ContactItem>
+                                <ContactItem>
+                                    <a
+                                        href="https://api.whatsapp.com/send/?phone=5533984207437&text&type=phone_number&app_absent=0"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform text-red-400"
+                                    >
+                                        <img
+                                            src="/icons_social/whatsapp_icon.png"
+                                            alt="WhatsApp Urgência"
+                                            className="w-6 h-6 object-contain"
+                                            loading="lazy"
+                                            decoding="async"
+                                        />
+                                        Urgência - Enfermeira Ana
+                                    </a>
+                                </ContactItem>
+                                <ContactItem>
+                                    <a
                                         href={footerData.chatbotUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
@@ -429,7 +546,7 @@ const EnhancedFooter = ({
                                         {t('contact.chatbot_title')}
                                     </a>
                                 </ContactItem>
-                                <ContactItem>{t('footer.hours')}</ContactItem>
+                                <WorkingHoursDisplay />
                             </ul>
                         </FooterSection>
                     </div>

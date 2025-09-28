@@ -89,7 +89,9 @@ export function loadGoogleMaps(apiKey) {
     script.async = true;
     script.defer = true;
     script.id = `google-maps-script-${Date.now()}`;
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly&loading=async&callback=${callbackName}`;
+    script.crossOrigin = 'anonymous';
+    script.referrerPolicy = 'no-referrer-when-downgrade';
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly&loading=async&callback=${callbackName}&libraries=places,geometry`;
 
     script.onerror = (error) => {
       clearTimeout(timeoutId);

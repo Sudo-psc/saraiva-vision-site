@@ -88,7 +88,7 @@ export const generateServiceFAQSchema = (serviceId, faqs, serviceTitle) => {
       "name": clinicInfo.name,
       "logo": {
         "@type": "ImageObject",
-        "url": `${window.location.origin}/logo-saraiva-vision.png`,
+        "url": `${window.location.origin}/img/logo-saraiva-vision.svg`,
         "width": 300,
         "height": 100
       },

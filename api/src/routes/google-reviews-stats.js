@@ -3,6 +3,23 @@
  * Provides statistics from Google Places API data
  */
 
+import { CLINIC_PLACE_ID } from '../lib/clinicInfo.js';
+
+const normalizePlaceId = (value) => {
+    if (!value) return null;
+    const cleaned = String(value).trim();
+    if (!cleaned) return null;
+    if (cleaned.toUpperCase().includes('PLACEHOLDER')) return null;
+    return cleaned;
+};
+
+const resolvePlaceId = (explicitId) => (
+    normalizePlaceId(explicitId) ||
+    normalizePlaceId(process.env.GOOGLE_PLACE_ID) ||
+    normalizePlaceId(process.env.VITE_GOOGLE_PLACE_ID) ||
+    CLINIC_PLACE_ID
+);
+
 export default async function handler(req, res) {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -22,13 +39,15 @@ export default async function handler(req, res) {
 
     try {
         const {
-            placeId = process.env.VITE_GOOGLE_PLACE_ID,
+            placeId,
             period = '30',
             includeDistribution = 'true',
             includeTrends = 'false' // Trends not available with Places API
         } = req.query;
 
-        if (!placeId) {
+        const resolvedPlaceId = resolvePlaceId(placeId);
+
+        if (!resolvedPlaceId) {
             return res.status(400).json({
                 success: false,
                 error: 'placeId parameter is required'
@@ -46,7 +65,7 @@ export default async function handler(req, res) {
         // Fetch place details with reviews
         const baseUrl = 'https://maps.googleapis.com/maps/api/place/details/json';
         const params = new URLSearchParams({
-            place_id: placeId,
+            place_id: resolvedPlaceId,
             fields: 'reviews,rating,user_ratings_total,name,formatted_address',
             language: 'pt-BR',
             key: apiKey

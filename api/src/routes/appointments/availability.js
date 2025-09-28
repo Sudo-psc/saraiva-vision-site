@@ -4,8 +4,9 @@
  * Requirement 4.1: Show open slots Monday-Friday 08:00-18:00 in 30-minute intervals
  */
 
-import { getAvailableSlots, getAvailableSlotsForNextDays, validateAppointmentDateTime } from '../../../../../../..../../../../src/lib/appointmentAvailability.js'
-import { logEvent } from '../../../../../../..../../../../src/lib/eventLogger.js'
+import { getAvailableSlots, getAvailableSlotsForNextDays, validateAppointmentDateTime } from '../../../../../../src/lib/appointmentAvailability.js'
+import { logEvent } from '../../../../../../src/lib/eventLogger.js'
+import { clinicInfo } from '../../../../../../src/lib/clinicInfo.js'
 
 // CORS headers
 const corsHeaders = {
@@ -16,6 +17,13 @@ const corsHeaders = {
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Max-Age': '86400',
 }
+
+const CONTACT_INFO = {
+    whatsapp: clinicInfo?.whatsapp || null,
+    phone: clinicInfo?.phone || null,
+    phoneDisplay: clinicInfo?.phoneDisplay || clinicInfo?.phone || null,
+    externalUrl: clinicInfo?.onlineSchedulingUrl || null,
+};
 
 export default async function handler(req, res) {
     // Handle CORS preflight
@@ -77,6 +85,30 @@ export default async function handler(req, res) {
  */
 async function handleGetAvailability(req, res, requestId) {
     const { date, days, start_date, end_date } = req.query
+    const onlineSchedulingEnabled = process.env.ONLINE_SCHEDULING_ENABLED !== 'false'
+
+    if (!onlineSchedulingEnabled) {
+        await logEvent({
+            eventType: 'availability_disabled',
+            severity: 'info',
+            source: 'availability_api',
+            requestId,
+            eventData: {
+                reason: 'Online scheduling disabled via configuration'
+            }
+        })
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                availability: {},
+                schedulingEnabled: false,
+                contact: CONTACT_INFO,
+            },
+            timestamp: new Date().toISOString(),
+            requestId
+        })
+    }
 
     try {
         let availabilityData = {}
@@ -171,7 +203,9 @@ async function handleGetAvailability(req, res, requestId) {
                     slot_duration: 30,
                     work_days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
                     timezone: 'America/Sao_Paulo'
-                }
+                },
+                schedulingEnabled: true,
+                contact: CONTACT_INFO,
             },
             timestamp: new Date().toISOString(),
             requestId

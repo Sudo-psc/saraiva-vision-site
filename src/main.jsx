@@ -34,7 +34,10 @@ try {
   root.render(
     <React.StrictMode>
       <ErrorBoundary>
-        <Router>
+        <Router future={{ 
+          v7_startTransition: true, 
+          v7_relativeSplatPath: true 
+        }}>
           <AuthProvider>
             <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
               <App />

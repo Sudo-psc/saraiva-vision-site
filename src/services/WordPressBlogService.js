@@ -323,7 +323,7 @@ class WordPressBlogService {
                     name: 'Clínica Saraiva Vision',
                     logo: {
                         '@type': 'ImageObject',
-                        url: 'https://saraivavision.com.br/logo-saraiva-vision.png'
+                        url: 'https://saraivavision.com.br/img/logo-saraiva-vision.svg'
                     }
                 },
                 mainEntityOfPage: {

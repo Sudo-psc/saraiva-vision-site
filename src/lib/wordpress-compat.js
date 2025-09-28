@@ -24,13 +24,22 @@ import {
 // Health check function
 export const checkWordPressConnection = async () => {
   try {
-    // Try to fetch a single category to test connection
-    const result = await getAllCategories();
+    const response = await fetch('/api/wordpress-health?detailed=true', {
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`WordPress health check falhou (${response.status})`);
+    }
+
+    const payload = await response.json();
 
     return {
-      isConnected: !result.error && result.categories !== undefined,
-      error: result.error || null,
-      healthState: result.healthState || 'healthy'
+      isConnected: Boolean(payload.isHealthy),
+      error: payload.error || null,
+      healthState: payload.healthState || payload.stats || null
     };
   } catch (error) {
     console.error('WordPress connection check failed:', error);
@@ -91,7 +100,10 @@ export const fetchPosts = async (params = {}) => {
         const categoryResult = await getPostsByCategory(categoryId, { first: first + offset });
         result = {
           posts: categoryResult.posts || [],
-          error: categoryResult.error
+          error: categoryResult.error,
+          isFallback: categoryResult.isFallback,
+          fallbackMeta: categoryResult.fallbackMeta,
+          healthState: categoryResult.healthState
         };
       } catch (error) {
         console.warn('Category-specific query failed, falling back to general query:', error);
@@ -102,8 +114,13 @@ export const fetchPosts = async (params = {}) => {
       result = await getAllPosts({ first: first + offset });
     }
 
-    if (result.error) {
-      throw new Error(result.error);
+    const apiError = result.error;
+    const isFallback = Boolean(result.isFallback);
+    const fallbackMeta = result.fallbackMeta || null;
+    const healthState = result.healthState || null;
+
+    if (apiError && !isFallback) {
+      throw new Error(apiError.message || apiError);
     }
 
     let posts = result.posts || [];
@@ -128,7 +145,7 @@ export const fetchPosts = async (params = {}) => {
     }
 
     // Transform GraphQL posts to REST API format for compatibility
-    return posts.map(post => {
+    const mappedPosts = posts.map(post => {
       const sanitizedTitle = sanitizeWordPressTitle(post.title || '');
       const sanitizedContent = sanitizeWordPressContent(post.content || '');
       const sanitizedExcerpt = sanitizeWordPressExcerpt(post.excerpt || '');
@@ -175,6 +192,17 @@ export const fetchPosts = async (params = {}) => {
         }
       };
     });
+
+    if (isFallback || fallbackMeta || healthState || apiError) {
+      mappedPosts.meta = {
+        isFallback,
+        fallbackMeta,
+        healthState,
+        error: apiError,
+      };
+    }
+
+    return mappedPosts;
 
   } catch (error) {
     console.error('Error in fetchPosts:', error);

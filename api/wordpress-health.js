@@ -1,5 +1,5 @@
 // WordPress Health Check API Endpoint
-import { checkWordPressHealthWithCache, getWordPressHealthState, getWordPressHealthStats } from '../src/lib/wordpress-health.js';
+import { checkWordPressHealthWithCache, getWordPressHealthState, getWordPressHealthStats } from './src/lib/wordpress-health.js';
 
 export default async function handler(req, res) {
     // Set CORS headers

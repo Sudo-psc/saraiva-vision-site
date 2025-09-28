@@ -1,6 +1,41 @@
 // Centralized clinic information to keep consistency with Google Business Profile.
 
-export const CLINIC_PLACE_ID = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GOOGLE_PLACE_ID) || 'ChIJVUKww7WRugARF7u2lAe7BeE';
+const FALLBACK_PLACE_ID = 'ChIJVUKww7WRugARF7u2lAe7BeE';
+const PLACEHOLDER_TOKENS = ['GOOGLE_PLACE_ID_PLACEHOLDER', 'your_google_place_id_here', 'PLACEHOLDER'];
+
+const normalizePlaceId = (value) => {
+  if (!value) return null;
+  const cleanedValue = String(value).trim();
+
+  if (!cleanedValue) return null;
+  if (PLACEHOLDER_TOKENS.some((token) => cleanedValue.includes(token))) return null;
+
+  return cleanedValue;
+};
+
+const resolvePlaceId = () => {
+  const candidates = [];
+
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
+    candidates.push(import.meta.env.VITE_GOOGLE_PLACE_ID);
+  }
+
+  if (typeof process !== 'undefined' && process.env) {
+    candidates.push(process.env.GOOGLE_PLACE_ID);
+    candidates.push(process.env.VITE_GOOGLE_PLACE_ID);
+  }
+
+  for (const candidate of candidates) {
+    const resolved = normalizePlaceId(candidate);
+    if (resolved) {
+      return resolved;
+    }
+  }
+
+  return FALLBACK_PLACE_ID;
+};
+
+export const CLINIC_PLACE_ID = resolvePlaceId();
 
 export const clinicInfo = {
   name: 'Clínica Saraiva Vision',
@@ -22,6 +57,7 @@ export const clinicInfo = {
   phoneDisplay: '+55 33 99860-1427',
   phone: '+5533998601427',
   whatsapp: '+5533998601427',
+  whatsapp24h: 'https://wa.me/message/EHTAAAAYH7SHJ1',
   email: 'saraivavision@gmail.com',
   instagram: 'https://www.instagram.com/saraiva_vision/',
   facebook: 'https://www.facebook.com/philipeoftalmo',

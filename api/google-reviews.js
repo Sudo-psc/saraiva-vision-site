@@ -3,6 +3,23 @@
  * Uses Google Places API to fetch reviews with your existing API key
  */
 
+import { CLINIC_PLACE_ID } from './src/lib/clinicInfo.js';
+
+const normalizePlaceId = (value) => {
+    if (!value) return null;
+    const cleaned = String(value).trim();
+    if (!cleaned) return null;
+    if (cleaned.toUpperCase().includes('PLACEHOLDER')) return null;
+    return cleaned;
+};
+
+const resolvePlaceId = (explicitId) => (
+    normalizePlaceId(explicitId) ||
+    normalizePlaceId(process.env.GOOGLE_PLACE_ID) ||
+    normalizePlaceId(process.env.VITE_GOOGLE_PLACE_ID) ||
+    CLINIC_PLACE_ID
+);
+
 export default async function handler(req, res) {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -22,13 +39,15 @@ export default async function handler(req, res) {
 
     try {
         const {
-            placeId = process.env.VITE_GOOGLE_PLACE_ID,
+            placeId,
             limit = 5,
             language = 'pt-BR'
         } = req.query;
 
+        const resolvedPlaceId = resolvePlaceId(placeId);
+
         // Validate required parameters
-        if (!placeId || placeId === 'your_google_place_id_here') {
+        if (!resolvedPlaceId) {
             console.error('Google Place ID not configured or using placeholder value');
             return res.status(400).json({
                 success: false,
@@ -48,13 +67,13 @@ export default async function handler(req, res) {
         // Build Google Places API URL
         const baseUrl = 'https://maps.googleapis.com/maps/api/place/details/json';
         const params = new URLSearchParams({
-            place_id: placeId,
+            place_id: resolvedPlaceId,
             fields: 'reviews,rating,user_ratings_total,name',
             language: language,
             key: apiKey
         });
 
-        console.log('Fetching reviews from Google Places API for place:', placeId);
+        console.log('Fetching reviews from Google Places API for place:', resolvedPlaceId);
 
         // Fetch from Google Places API with timeout
         const controller = new AbortController();
@@ -141,7 +160,7 @@ export default async function handler(req, res) {
             metadata: {
                 fetchedAt: new Date().toISOString(),
                 source: 'google-places-api',
-                placeId,
+                placeId: resolvedPlaceId,
                 placeName: place.name || 'Unknown',
                 totalReviews: place.user_ratings_total || 0,
                 averageRating: place.rating || 0

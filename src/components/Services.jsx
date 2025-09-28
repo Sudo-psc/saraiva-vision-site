@@ -158,7 +158,7 @@ const Services = ({ full = false, autoplay = true }) => {
 
   // Autoplay carousel hook integration - só inicializa quando há serviços
   const autoplayCarousel = useAutoplayCarousel({
-    totalSlides: serviceItems.length || 0, // Allow 0 during loading
+    totalSlides: Math.max(serviceItems.length, 1), // Prevent 0 warning during loading
     config: {
       defaultInterval: 4500,
       pauseOnHover: true,

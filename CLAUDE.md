@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Saraiva Vision is a modern medical clinic website built with React 18, Vite, and TypeScript. It's a hybrid architecture application featuring a healthcare-focused frontend with comprehensive backend integration using native VPS services (no Docker containerization).
+Saraiva Vision is a modern medical clinic website built with React 18, Vite, and TypeScript. It's a hybrid architecture application featuring a healthcare-focused frontend with comprehensive backend integration using native VPS services (no Docker containerization). This is a production medical website for an ophthalmology clinic in Caratinga, MG, Brazil, with strict compliance requirements for CFM (Brazilian Medical Council) and LGPD (General Data Protection Law).
 
 ## Tech Stack & Architecture
 
@@ -32,6 +32,8 @@ Saraiva Vision is a modern medical clinic website built with React 18, Vite, and
 - Resend API for email services
 - Spotify Web API for podcast content
 - WordPress REST API for headless blog integration
+- Google Business API for reviews and business information
+- Supabase PostgreSQL as primary database with real-time subscriptions
 
 ## Commands
 
@@ -59,18 +61,41 @@ npm run test:frontend    # Test React components only
 npm run test:watch       # Run tests in watch mode (alias for npm test)
 ```
 
+### Development Environment
+```bash
+npm run dev              # Start development server on port 3002
+npm run start            # Alternative start command (same as dev)
+npm run build            # Build for production
+npm run preview          # Preview production build locally
+```
+
+### API Development & Testing
+```bash
+# Test individual API endpoints directly
+node api/health-check.js  # Test API health endpoints
+node api/contact/test.js  # Test contact form functionality
+node api/appointments/test.js  # Test appointment system
+
+# API validation and linting
+npm run lint:syntax-api   # Check API syntax errors
+npm run lint:encoding-api   # Check API file encoding (UTF-8)
+npm run validate:api        # Complete API validation (syntax + encoding)
+```
+
 ### Deployment (Native VPS)
 ```bash
 npm run build               # Build application for production
 npm run deploy              # Build and copy to server (manual step)
 npm run deploy:production   # Show manual deployment command
 npm run deploy:health       # Run server health checks
+npm run deploy:vps          # Check native VPS service status
 npm run production:check    # Production readiness validation
 
 # Manual deployment commands (run on VPS):
 sudo cp -r dist/* /var/www/html/
 sudo systemctl reload nginx
 sudo systemctl restart saraiva-api  # If API updated
+sudo systemctl status nginx saraiva-api mysql redis php8.1-fpm  # Verify all services
 ```
 
 ### Linting & Validation
@@ -103,26 +128,38 @@ The server runs all services directly on the host OS (Ubuntu/Debian):
 ```
 src/
 ├── components/          # React components
-│   ├── ui/             # Base design system components
-│   ├── icons/          # Custom icon components
+│   ├── ui/             # Base design system components (Radix UI based)
+│   ├── icons/          # Custom icon components (Lucide React)
 │   ├── blog/           # Blog-related components (BlogList, BlogPost)
 │   ├── compliance/     # CFM compliance components
-│   └── __tests__/      # Component tests
-├── pages/              # Route-level page components
+│   ├── instagram/      # Instagram feed integration with performance optimization
+│   ├── ErrorBoundaries/ # Error handling with recovery mechanisms
+│   └── __tests__/      # Component tests with React Testing Library
+├── pages/              # Route-level page components with lazy loading
 ├── hooks/              # Custom React hooks (including useCFMCompliance)
 ├── lib/                # Core utilities and configurations
-├── contexts/           # React context providers
-├── utils/              # Helper functions
-├── services/           # External service integrations (WordPress API)
-├── config/             # Configuration files (CFM rules, settings)
+│   ├── lgpd/           # LGPD compliance utilities
+│   └── __tests__/      # Library tests
+├── contexts/           # React context providers (Auth, Analytics)
+├── utils/              # Helper functions with error tracking
+├── services/           # External service integrations (Google Business, Instagram, WordPress)
+├── config/             # Configuration files (CFM rules, Google Business settings)
 ├── workers/            # Web Workers (CFM validation worker)
-└── styles/             # Global CSS files
+├── middleware/        # Request/response middleware
+├── integrations/       # Third-party integrations (Google Business)
+└── styles/             # Global CSS files with design system
 
-api/                    # Node.js API endpoints (backend)
-├── contact/            # Contact form endpoints
-├── appointments/       # Appointment booking system
-├── podcast/            # Podcast management
-└── __tests__/          # API tests
+api/                    # Node.js API endpoints (Express.js backend)
+├── contact/            # Contact form endpoints with validation
+├── appointments/       # Appointment booking system with scheduling
+├── podcast/            # Podcast management and RSS processing
+├── monitoring/         # Health checks and monitoring endpoints
+├── google-reviews/     # Google Reviews API integration
+├── instagram/          # Instagram API proxy and caching
+├── wordpress/          # WordPress integration and webhooks
+├── middleware/         # Security and validation middleware
+├── __tests__/          # API tests with Supertest
+└── src/               # API utilities and helpers
 
 docs/                   # Documentation and deployment scripts
 ├── WORDPRESS_BLOG_SPECS.md    # Blog integration specifications
@@ -142,12 +179,17 @@ docs/                   # Documentation and deployment scripts
 - Custom hooks in `src/hooks/` for shared stateful logic
 
 #### API Architecture
-- RESTful APIs in `api/` directory using Express.js framework
-- Database operations through Supabase client with TypeScript types
-- WordPress REST API integration for headless blog content
-- Authentication handled via Supabase Auth with role-based access control
-- Message queue system using Supabase `message_outbox` table
-- CFM compliance validation with Web Workers for non-blocking performance
+- **Dual API Structure**: Both legacy `api/` root directory and modern `api/src/` structure
+- **Legacy API**: Root `api/` directory with individual endpoint files (contact, appointments, etc.)
+- **Modern API**: `api/src/` directory with organized routes and lib structure
+- **Express.js Framework**: ES modules with modern JavaScript features
+- **Database Operations**: Supabase client with TypeScript types and RLS policies
+- **WordPress Integration**: REST API + GraphQL with SSL/CORS proxy fallback
+- **Authentication**: Supabase Auth with role-based access control (user/admin/super_admin)
+- **Message Queue**: Supabase `message_outbox` table for async email/SMS operations
+- **Compliance**: CFM validation with Web Workers for non-blocking performance
+- **Security**: Rate limiting, Zod schema validation, CORS configuration
+- **Real-time**: Supabase websockets for live data subscriptions
 
 #### State Management
 - React Context for global state (Auth, Analytics, Widgets)
@@ -165,26 +207,32 @@ docs/                   # Documentation and deployment scripts
 
 #### Supabase Tables
 Key tables defined in `src/lib/supabase.ts`:
-- `contact_messages` - Contact form submissions
-- `appointments` - Patient appointment bookings
-- `message_outbox` - Async message queue for emails/SMS
-- `podcast_episodes` - Podcast content management
-- `profiles` - User authentication and authorization
-- `event_log` - Application event tracking
+- `contact_messages` - Contact form submissions with LGPD compliance
+- `appointments` - Patient appointment bookings with reminder system
+- `message_outbox` - Async message queue for emails/SMS with retry logic
+- `podcast_episodes` - Podcast content management with RSS integration
+- `profiles` - User authentication and authorization with role-based access
+- `event_log` - Application event tracking with performance monitoring
+- `review_cache` - Cached Google Business reviews with expiration
 
 #### WordPress Database
 WordPress blog content managed through MySQL:
-- `wp_posts` - Blog posts and pages
-- `wp_users` - WordPress admin users
-- `wp_postmeta` - Post metadata including CFM compliance status
+- `wp_posts` - Blog posts and pages with CFM compliance metadata
+- `wp_users` - WordPress admin users with access control
+- `wp_postmeta` - Post metadata including CFM compliance status and SEO data
 - `wp_terms` - Categories and tags for content organization
 - Custom tables for CFM compliance tracking and audit logs
+- Cache tables for performance optimization
 
 ### Testing Strategy
-- **Unit Tests**: Component behavior with React Testing Library
+- **Unit Tests**: Component behavior with React Testing Library and Vitest
 - **Integration Tests**: API endpoints with Vitest and Supertest
 - **E2E Tests**: Critical user flows (when applicable)
-- **Coverage Target**: 80% minimum for core functionality
+- **Performance Tests**: Core Web Vitals and optimization validation
+- **Coverage Target**: 80% minimum for core functionality with thresholds configured
+- **Test Organization**: Tests co-located with source code in `__tests__/` directories
+- **API Testing**: Separate API test suite in `api/__tests__/` with Express integration tests
+- **Mock Configuration**: Centralized test setup in `src/__tests__/setup.js` with Supabase mocking
 
 ## Development Guidelines
 
@@ -200,29 +248,44 @@ WordPress blog content managed through MySQL:
 - Group imports: React, external libraries, internal modules
 
 ### Code Style
-- ESLint configuration enforces consistent formatting
-- TypeScript strict mode enabled
-- Tailwind CSS for all styling (avoid inline styles)
-- Prefer composition over inheritance for components
+- **ESLint Configuration**: React rules with TypeScript parser, excludes `api/` directory (has separate linting)
+- **TypeScript**: Partial strict mode (strict: false) for legacy compatibility
+- **Styling**: Tailwind CSS only (avoid inline styles)
+- **Components**: Prefer composition over inheritance
+- **Imports**: Use absolute imports with `@/` alias for `src/` directory
+- **API Linting**: Separate validation with `npm run validate:api` for syntax and encoding checks
 
 ### Environment Configuration
 - Development: `.env` file with local configurations
-- Production: Environment variables on server
-- Required vars defined in `src/lib/supabase.ts`
+- Production: Environment variables on server and VPS
+- Required vars: Supabase URL/keys, Google Maps API, Resend API, WordPress endpoints
+- Vite environment variables prefixed with `VITE_` for client-side access
+
+### Development Server Configuration
+- Development server runs on port 3002 with hot reload
+- Proxy configuration for WordPress API (localhost:8083) and Google Places API
+- Health check API proxy (localhost:3001) for backend services
+- CORS headers configured for cross-origin development
+- WordPress GraphQL proxy endpoint: `/api/wordpress-graphql/graphql` for SSL/CORS bypass
 
 ## Performance Considerations
 
 ### Bundle Optimization
-- Lazy loading for route components
-- Code splitting configured in `vite.config.js`
+- Lazy loading for route components with React Router
+- Code splitting configured in `vite.config.js` with manual chunk strategy
 - Tree shaking enabled for production builds
-- Chunk optimization for vendor dependencies
+- Chunk optimization for vendor dependencies (React isolated, utilities separated)
+- ESBuild minification with modern target (ES2020)
+- Assets inline limit increased for VPS performance (8192 bytes)
 
 ### Runtime Performance
 - React.memo for expensive re-renders
 - Debounced inputs for search/filter operations
-- IntersectionObserver for lazy loading
-- Service Worker for caching (development only)
+- IntersectionObserver for lazy loading and performance optimization
+- RequestAnimationFrame for smooth animations
+- PerformanceObserver API for real-time monitoring
+- Web Vitals tracking with Core Web Metrics
+- GPU acceleration for animations and 3D effects
 
 ### Database Performance
 - Supabase RLS policies for security
@@ -278,6 +341,7 @@ The project includes comprehensive Schema.org structured markup for medical SEO:
 #### Schema Files
 - `src/lib/schemaMarkup.js` - Main schema generation functions
 - `src/lib/serviceFAQSchema.js` - Service-specific FAQ schemas
+- `api/src/lib/schemaMarkup.js` - API-side schema generation
 - `src/utils/schemaValidator.js` - Schema.org validation utilities
 - `src/hooks/useSEO.js` - SEO hook with integrated schema support
 
@@ -368,21 +432,35 @@ sudo systemctl reload nginx
 
 # Optional: Restart Node.js API service if updated
 sudo systemctl restart saraiva-api
+
+# Verify services are running
+sudo systemctl status nginx saraiva-api mysql redis php8.1-fpm
 ```
 
 ### Environment Variables Required
 ```
+# Supabase Configuration
 VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
 VITE_SUPABASE_SERVICE_ROLE_KEY=
+
+# External APIs
 VITE_GOOGLE_MAPS_API_KEY=
 RESEND_API_KEY=
 
-# WordPress Blog Integration
+# WordPress Integration
 VITE_WORDPRESS_API_URL=https://blog.saraivavision.com.br/wp-json/wp/v2
+VITE_WORDPRESS_GRAPHQL_ENDPOINT=https://cms.saraivavision.com.br/graphql
+
+# WordPress Database (Native VPS)
 WORDPRESS_DB_NAME=saraiva_blog
 WORDPRESS_DB_USER=wp_blog_user
 WORDPRESS_DB_PASSWORD=secure_password
+
+# Development Configuration
+NODE_ENV=production
+VITE_GRAPHQL_TIMEOUT=15000
+VITE_GRAPHQL_MAX_RETRIES=3
 ```
 
 ## Troubleshooting Common Issues
@@ -398,9 +476,30 @@ WORDPRESS_DB_PASSWORD=secure_password
 - Ensure database migrations are applied
 
 ### API Service Errors
-- Check service logs with `journalctl` or PM2 logs
+- Check service logs with `journalctl -u saraiva-api` or PM2 logs
 - Verify Node.js process and memory usage
 - Test locally with `npm run dev`
-- Check Nginx proxy configuration
+- Check Nginx proxy configuration in `/etc/nginx/sites-available/`
+- Verify all native services are running: `sudo systemctl status nginx mysql redis php8.1-fpm`
+- Test individual API endpoints: `node api/health-check.js`, `node api/contact/test.js`
+
+### SSL Certificate Issues
+- WordPress GraphQL SSL errors are common - check `docs/nginx-cors.conf`
+- Use Certbot for SSL certificate renewal: `sudo certbot renew`
+- Verify SSL configuration: `openssl s_client -connect cms.saraivavision.com.br:443`
+- Check SSL Labs grade: https://www.ssllabs.com/ssltest/
+
+### WordPress Integration Issues
+- Verify WordPress is running on port 8080: `curl http://localhost:8080/`
+- Check WordPress database connection: `sudo systemctl status mysql`
+- Test WordPress REST API: `curl http://localhost:8080/wp-json/wp/v2/posts`
+- Verify CORS headers for GraphQL endpoint
+- Test GraphQL proxy: `curl -X POST http://localhost:3002/api/wordpress-graphql/graphql -H "Content-Type: application/json" -d '{"query":"{__typename}"}'`
+
+### Performance Issues
+- Monitor Core Web Vitals with `src/hooks/usePerformanceMonitor.js`
+- Check Redis cache status: `sudo systemctl status redis`
+- Verify Nginx caching configuration
+- Use browser DevTools Network tab to analyze load times
 
 This codebase prioritizes medical industry standards, accessibility compliance, and Brazilian market requirements while maintaining modern development practices and performance optimization.

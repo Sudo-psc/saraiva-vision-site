@@ -9,6 +9,8 @@ import { Calendar, Loader2, AlertTriangle, ArrowRight, Search } from 'lucide-rea
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
+import WordPressFallbackNotice from '@/components/WordPressFallbackNotice';
+import BlogStatusBanner from '@/components/BlogStatusBanner';
 import { sanitizeWordPressTitle } from '@/utils/sanitizeWordPressContent';
 // WordPress functions with backward compatibility
 import {
@@ -29,6 +31,7 @@ const BlogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [wordpressAvailable, setWordpressAvailable] = useState(true);
+  const [retryIndex, setRetryIndex] = useState(0);
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -84,7 +87,11 @@ const BlogPage = () => {
     };
 
     loadPosts();
-  }, [currentPage, selectedCategory, searchTerm]);
+  }, [currentPage, selectedCategory, searchTerm, retryIndex]);
+
+  const handleRetry = () => {
+    setRetryIndex((prev) => prev + 1);
+  };
 
   const getDateLocale = () => {
     return i18n.language === 'pt' ? ptBR : enUS;
@@ -194,16 +201,73 @@ const BlogPage = () => {
       );
     }
 
+    const fallbackMeta = posts.meta;
+    const isFallback = fallbackMeta?.isFallback;
+
+    if (isFallback) {
+      return (
+        <div className="space-y-8">
+          <BlogStatusBanner className="mb-6" />
+          <WordPressFallbackNotice meta={fallbackMeta} onRetry={handleRetry} />
+          {posts.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 md:gap-8">
+              {posts.map((post, index) => (
+                <motion.article
+                  key={post.id ?? index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  className="modern-card overflow-hidden flex flex-col border border-yellow-100 bg-white/60"
+                  role="article"
+                  aria-label="Conteúdo temporário do blog"
+                >
+                  <div className="p-4 sm:p-6 flex flex-col flex-grow">
+                    <div className="flex items-center text-sm text-gray-600 mb-3">
+                      <Calendar className="w-4 h-4 mr-2" aria-hidden="true" />
+                      <time dateTime={post.date}>{format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })}</time>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 text-gray-900">{post.title}</h3>
+                    <p className="text-gray-600 text-sm flex-grow">{post.excerpt}</p>
+                    <span className="mt-4 text-xs text-gray-500">Tentaremos novamente automaticamente em instantes.</span>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
     if (error || !wordpressAvailable) {
       return (
-        <div
-          className="text-center p-12 bg-yellow-50 border border-yellow-200 rounded-2xl max-w-2xl mx-auto"
-          role="alert"
-          aria-live="assertive"
-        >
-          <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" aria-hidden="true" />
-          <h3 className="text-2xl font-semibold text-yellow-800">{t('blog.placeholder_title')}</h3>
-          <p className="text-yellow-700 mt-2">{t('blog.placeholder_desc_page')}</p>
+        <div className="space-y-6">
+          <BlogStatusBanner showDetails className="mb-6" />
+          <div
+            className="text-center p-12 bg-yellow-50 border border-yellow-200 rounded-2xl max-w-2xl mx-auto"
+            role="alert"
+            aria-live="assertive"
+          >
+            <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" aria-hidden="true" />
+            <h3 className="text-2xl font-semibold text-yellow-800">{t('blog.placeholder_title')}</h3>
+            <p className="text-yellow-700 mt-2">{t('blog.placeholder_desc_page')}</p>
+          </div>
+        </div>
+      );
+    }
+
+    if (error || !wordpressAvailable) {
+      return (
+        <div className="space-y-6">
+          <BlogStatusBanner showDetails className="mb-6" />
+          <div
+            className="text-center p-12 bg-yellow-50 border border-yellow-200 rounded-2xl max-w-2xl mx-auto"
+            role="alert"
+            aria-live="assertive"
+          >
+            <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" aria-hidden="true" />
+            <h3 className="text-2xl font-semibold text-yellow-800">{t('blog.placeholder_title')}</h3>
+            <p className="text-yellow-700 mt-2">{t('blog.placeholder_desc_page')}</p>
+          </div>
         </div>
       );
     }

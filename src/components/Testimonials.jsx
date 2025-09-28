@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PERFORMANCE } from '@/lib/constants';
+import { useGoogleReviews } from '@/hooks/useGoogleReviews';
+import { CLINIC_PLACE_ID } from '@/lib/clinicInfo';
 
 const Testimonials = ({ limit }) => {
   const { t } = useTranslation();
@@ -11,6 +13,16 @@ const Testimonials = ({ limit }) => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const testimonialsData = t('testimonials.reviews', { returnObjects: true }) || [];
+
+  const {
+    reviews: googleReviews,
+    loading: reviewsLoading
+  } = useGoogleReviews({
+    placeId: CLINIC_PLACE_ID,
+    limit: limit || 6,
+    autoFetch: true,
+    refreshInterval: PERFORMANCE.AUTO_SLIDE_INTERVAL * 20
+  });
 
   const images = useMemo(() => [
     'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
@@ -21,18 +33,40 @@ const Testimonials = ({ limit }) => {
     'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80'
   ], []);
 
-  const testimonials = useMemo(() =>
+  const fallbackTestimonials = useMemo(() =>
     Array.isArray(testimonialsData)
       ? testimonialsData.map((testimonial, index) => ({
-        ...testimonial,
-        image: images[index % images.length],
-        rating: 5,
-        role: t('testimonials.patient'),
-        id: index
-      }))
+          ...testimonial,
+          image: images[index % images.length],
+          rating: 5,
+          role: t('testimonials.patient'),
+          id: `local-${index}`
+        }))
       : [],
     [testimonialsData, images, t]
   );
+
+  const googleTestimonials = useMemo(() =>
+    Array.isArray(googleReviews) && googleReviews.length > 0
+      ? googleReviews.map((review, index) => ({
+          id: review.id || `google-${index}`,
+          name: review.reviewer?.displayName || t('testimonials.anonymous', 'Paciente Saraiva Vision'),
+          content: review.comment || t('testimonials.defaultComment', 'Atendimento impecável e equipe atenciosa!'),
+          rating: review.starRating || 5,
+          image: review.reviewer?.profilePhotoUrl || images[index % images.length],
+          role: t('testimonials.patient'),
+        }))
+      : [],
+    [googleReviews, images, t]
+  );
+
+  const testimonials = useMemo(() => (
+    googleTestimonials.length > 0 ? googleTestimonials : fallbackTestimonials
+  ), [googleTestimonials, fallbackTestimonials]);
+
+  useEffect(() => {
+    setCurrentSlide(0);
+  }, [testimonials.length]);
 
   // Auto-play functionality
   useEffect(() => {

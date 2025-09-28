@@ -5,6 +5,26 @@
 
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 
+const PLACEHOLDER_TOKENS = ['GOOGLE_PLACE_ID_PLACEHOLDER', 'your_google_place_id_here', 'PLACEHOLDER'];
+
+const normalizePlaceId = (value) => {
+    if (!value) return null;
+    const cleaned = String(value).trim();
+    if (!cleaned) return null;
+    if (PLACEHOLDER_TOKENS.some((token) => cleaned.includes(token))) return null;
+    return cleaned;
+};
+
+const resolvePlaceId = (...candidates) => {
+    for (const candidate of candidates) {
+        const resolved = normalizePlaceId(candidate);
+        if (resolved) {
+            return resolved;
+        }
+    }
+    return null;
+};
+
 const DEFAULT_OPTIONS = {
     placeId: null,
     limit: 5,
@@ -49,13 +69,15 @@ export function useGoogleReviews(options = {}) {
      * Fetch reviews from Google Places API with retry logic
      */
     const fetchReviews = useCallback(async (fetchOptions = {}) => {
-        const placeId = fetchOptions.placeId || config.placeId || process.env.VITE_GOOGLE_PLACE_ID;
+        const placeId = resolvePlaceId(
+            fetchOptions.placeId,
+            config.placeId,
+            process.env.GOOGLE_PLACE_ID,
+            process.env.VITE_GOOGLE_PLACE_ID
+        );
 
         // Check for placeholder values that indicate missing configuration
-        const isPlaceholderValue = !placeId ||
-            placeId === 'your_google_place_id_here' ||
-            placeId === 'GOOGLE_PLACE_ID_PLACEHOLDER' ||
-            placeId.includes('PLACEHOLDER');
+        const isPlaceholderValue = !placeId;
 
         if (isPlaceholderValue) {
             // Don't throw error - let component handle fallback gracefully
@@ -170,7 +192,12 @@ export function useGoogleReviews(options = {}) {
      * Fetch review statistics
      */
     const fetchStats = useCallback(async (statsOptions = {}) => {
-        const placeId = statsOptions.placeId || config.placeId || process.env.VITE_GOOGLE_PLACE_ID;
+        const placeId = resolvePlaceId(
+            statsOptions.placeId,
+            config.placeId,
+            process.env.GOOGLE_PLACE_ID,
+            process.env.VITE_GOOGLE_PLACE_ID
+        );
 
         if (!placeId) {
             return;
@@ -323,7 +350,11 @@ export function useGoogleReviews(options = {}) {
 
         // Config
         config: {
-            placeId: config.placeId || process.env.VITE_GOOGLE_PLACE_ID,
+            placeId: resolvePlaceId(
+                config.placeId,
+                process.env.GOOGLE_PLACE_ID,
+                process.env.VITE_GOOGLE_PLACE_ID
+            ),
             limit: config.limit
         }
     };
@@ -339,7 +370,11 @@ export function useGoogleReviewsStats(placeId, options = {}) {
     const [lastFetch, setLastFetch] = useState(null);
 
     const fetchStats = useCallback(async () => {
-        const targetPlaceId = placeId || process.env.VITE_GOOGLE_PLACE_ID;
+        const targetPlaceId = resolvePlaceId(
+            placeId,
+            process.env.GOOGLE_PLACE_ID,
+            process.env.VITE_GOOGLE_PLACE_ID
+        );
 
         if (!targetPlaceId) {
             setError(new Error('Place ID is required'));

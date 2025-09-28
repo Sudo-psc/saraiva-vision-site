@@ -297,52 +297,99 @@ export const checkWordPressHealth = async () => {
 
 // Fallback content generator when WordPress is unavailable
 export const generateFallbackContent = (contentType, params = {}) => {
-  const fallbacks = {
-    posts: {
-      nodes: [
-        {
-          id: 'fallback-1',
-          title: 'Conteúdo Temporariamente Indisponível',
-          slug: 'conteudo-temporario',
-          excerpt: 'Estamos enfrentando dificuldades técnicas para carregar nosso conteúdo. Por favor, tente novamente mais tarde.',
-          date: new Date().toISOString(),
-          featuredImage: null,
-          categories: { nodes: [] },
-          author: { node: { name: 'Saraiva Vision' } },
-        }
-      ]
-    },
-    pages: {
-      nodes: [
-        {
-          id: 'fallback-1',
-          title: 'Página Temporariamente Indisponível',
-          slug: 'pagina-temporaria',
-          content: 'Esta página está temporariamente indisponível devido a problemas técnicos. Estamos trabalhando para resolver o o mais rápido possível.',
-          date: new Date().toISOString(),
-        }
-      ]
-    },
-    services: {
-      nodes: [
-        {
-          id: 'fallback-1',
-          title: 'Serviço Temporariamente Indisponível',
-          slug: 'servico-temporario',
-          excerpt: 'Informações sobre nossos serviços estão temporariamente indisponíveis.',
-          featuredImage: null,
-        }
-      ]
-    },
-    teamMembers: {
-      nodes: []
-    },
-    testimonials: {
-      nodes: []
-    }
+  const now = new Date().toISOString();
+  const baseMeta = {
+    generatedAt: now,
+    retryAfterSeconds: 300,
+    contentType,
+    params
   };
 
-  return fallbacks[contentType] || { nodes: [] };
+  switch (contentType) {
+    case 'posts':
+      return {
+        posts: [
+          {
+            id: 'fallback-post-1',
+            databaseId: 'fallback-post-1',
+            title: 'Conteúdo temporariamente indisponível',
+            slug: 'conteudo-temporariamente-indisponivel',
+            excerpt: 'Estamos passando por uma manutenção rápida no nosso blog. As publicações estarão de volta em instantes.',
+            content: '',
+            date: now,
+            featuredImage: null,
+            categories: { nodes: [] },
+            author: { node: { name: 'Equipe Saraiva Vision' } },
+            isFallback: true
+          }
+        ],
+        pageInfo: { hasNextPage: false, hasPreviousPage: false },
+        fallbackMeta: {
+          ...baseMeta,
+          message: 'Publicações do blog indisponíveis temporariamente.'
+        }
+      };
+
+    case 'pages':
+      return {
+        page: {
+          id: 'fallback-page-1',
+          title: 'Página temporariamente indisponível',
+          slug: 'pagina-temporariamente-indisponivel',
+          content: 'Estamos atualizando o conteúdo desta página. Por favor, tente novamente em alguns minutos.',
+          date: now,
+          isFallback: true
+        },
+        fallbackMeta: {
+          ...baseMeta,
+          message: 'Página indisponível temporariamente.'
+        }
+      };
+
+    case 'services':
+      return {
+        services: [
+          {
+            id: 'fallback-service-1',
+            title: 'Serviços temporariamente indisponíveis',
+            slug: 'servicos-temporariamente-indisponiveis',
+            excerpt: 'Estamos atualizando nossa lista de serviços. Retorne em breve.',
+            featuredImage: null,
+            isFallback: true
+          }
+        ],
+        fallbackMeta: {
+          ...baseMeta,
+          message: 'Lista de serviços indisponível no momento.'
+        }
+      };
+
+    case 'teamMembers':
+      return {
+        teamMembers: [],
+        fallbackMeta: {
+          ...baseMeta,
+          message: 'Informações da equipe indisponíveis.'
+        }
+      };
+
+    case 'testimonials':
+      return {
+        testimonials: [],
+        fallbackMeta: {
+          ...baseMeta,
+          message: 'Depoimentos indisponíveis temporariamente.'
+        }
+      };
+
+    default:
+      return {
+        fallbackMeta: {
+          ...baseMeta,
+          message: 'Conteúdo indisponível temporariamente.'
+        }
+      };
+  }
 };
 
 // Post functions for PostPage component

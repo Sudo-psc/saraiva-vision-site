@@ -147,13 +147,39 @@ export const getWordPressHealthState = () => {
  * Execute WordPress query with health check and fallback
  */
 export const executeWordPressQueryWithFallback = async (queryFunction, contentType, fallbackParams = {}) => {
+  const attachMeta = (data, meta) => {
+    if (data && typeof data === 'object' && !Array.isArray(data)) {
+      const existingMeta = data.fallbackMeta || {};
+      return {
+        ...data,
+        fallbackMeta: {
+          ...existingMeta,
+          ...meta,
+        },
+      };
+    }
+
+    return {
+      result: data,
+      fallbackMeta: meta,
+    };
+  };
+
   // Check health first
   const health = await checkWordPressHealthWithCache();
 
   if (!health.isHealthy) {
     console.warn(`WordPress is unhealthy, using fallback content for ${contentType}`);
+    const fallbackData = attachMeta(
+      generateFallbackContent(contentType, fallbackParams),
+      {
+        isFallback: true,
+        healthState: getWordPressHealthState(),
+        error: health.error,
+      }
+    );
     return {
-      data: generateFallbackContent(contentType, fallbackParams),
+      data: fallbackData,
       error: health.error,
       isFallback: true,
       healthState: getWordPressHealthState(),
@@ -167,8 +193,16 @@ export const executeWordPressQueryWithFallback = async (queryFunction, contentTy
     // If query fails despite healthy check, use fallback
     if (result.error) {
       console.warn(`Query failed for ${contentType}, using fallback content`);
+      const fallbackData = attachMeta(
+        generateFallbackContent(contentType, fallbackParams),
+        {
+          isFallback: true,
+          healthState: getWordPressHealthState(),
+          error: result.error,
+        }
+      );
       return {
-        data: generateFallbackContent(contentType, fallbackParams),
+        data: fallbackData,
         error: result.error,
         isFallback: true,
         healthState: getWordPressHealthState(),
@@ -176,14 +210,29 @@ export const executeWordPressQueryWithFallback = async (queryFunction, contentTy
     }
 
     return {
-      ...result,
+      data: attachMeta(result, {
+        isFallback: false,
+        healthState: getWordPressHealthState(),
+      }),
+      error: null,
       isFallback: false,
       healthState: getWordPressHealthState(),
     };
   } catch (error) {
     console.warn(`Exception executing query for ${contentType}, using fallback content`);
+    const fallbackData = attachMeta(
+      generateFallbackContent(contentType, fallbackParams),
+      {
+        isFallback: true,
+        healthState: getWordPressHealthState(),
+        error: {
+          type: 'QUERY_EXCEPTION',
+          message: error.message,
+        },
+      }
+    );
     return {
-      data: generateFallbackContent(contentType, fallbackParams),
+      data: fallbackData,
       error: {
         type: 'QUERY_EXCEPTION',
         message: error.message,

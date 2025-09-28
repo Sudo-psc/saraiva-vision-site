@@ -30,6 +30,7 @@ const useWordPressContent = (fetchFunction, dependencies = [], options = {}) => 
     enabled = true,
     refetchOnWindowFocus = false,
     staleTime = 5 * 60 * 1000, // 5 minutes
+    refreshInterval = null,
   } = options;
 
   const fetchData = useCallback(async () => {
@@ -64,6 +65,17 @@ const useWordPressContent = (fetchFunction, dependencies = [], options = {}) => 
   useEffect(() => {
     fetchData();
   }, [fetchData, ...dependencies]);
+
+  // Auto refresh interval
+  useEffect(() => {
+    if (!refreshInterval || refreshInterval <= 0) return undefined;
+
+    const intervalId = setInterval(() => {
+      fetchData();
+    }, refreshInterval);
+
+    return () => clearInterval(intervalId);
+  }, [refreshInterval, fetchData]);
 
   // Refetch on window focus if enabled
   useEffect(() => {

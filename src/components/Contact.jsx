@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock, Globe, Shield, Wifi, WifiOff, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
-import { clinicInfo } from '@/lib/clinicInfo';
+import { clinicInfo, googleMapsProfileUrl } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { useRecaptcha } from '@/hooks/useRecaptcha';
@@ -159,18 +159,6 @@ const Contact = () => {
     }
   };
 
-  const validateAll = () => {
-    const validationResult = validateContactSubmission(formData);
-
-    if (!validationResult.success) {
-      setErrors(validationResult.errors);
-      return false;
-    }
-
-    setErrors({});
-    return true;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -220,15 +208,17 @@ const Contact = () => {
       return;
     }
 
-    if (!validateAll()) {
-      setTouched({ name: true, email: true, phone: true, message: true, recaptcha: true });
+    const validationResult = validateContactSubmission(formData);
+
+    if (!validationResult.success) {
+      setErrors(validationResult.errors);
+      setTouched({ name: true, email: true, phone: true, message: true, consent: true, recaptcha: true });
       setSubmissionError({
-        field: Object.keys(errors)[0] || 'validation',
+        field: Object.keys(validationResult.errors)[0] || 'validation',
         code: 'validation_failed'
       });
 
-      // Focus on first error field and announce validation errors
-      const firstErrorField = Object.keys(errors)[0];
+      const firstErrorField = Object.keys(validationResult.errors)[0];
       if (firstErrorField) {
         const fieldElement = document.getElementById(firstErrorField);
         if (fieldElement) {
@@ -237,13 +227,14 @@ const Contact = () => {
         announceToScreenReader(`Erro de validação. Corrija o campo ${getFieldLabel(firstErrorField)} e tente novamente.`, 'assertive');
       }
 
-      // Focus on error summary if available
       if (errorSummaryRef.current) {
         errorSummaryRef.current.focus();
       }
 
       return;
     }
+
+    setErrors({});
 
     setIsSubmitting(true);
 
@@ -465,16 +456,33 @@ const Contact = () => {
 
   // reCAPTCHA v3 does not require visible widget handlers
 
-  const contactInfo = [
+  const contactDetails = [
     {
       icon: <MapPin className="h-6 w-6 text-blue-600" />,
       title: t('contact.info.address_title'),
       details: (
         <>
-          <span>{typeof clinicInfo.address === 'string' ? clinicInfo.address : t('contact.info.address_details')}</span>
+          <a 
+            href={googleMapsProfileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-700 hover:underline transition-colors cursor-pointer"
+            aria-label="Ver localização no Google Maps (nova aba)"
+          >
+            <span>{typeof clinicInfo.address === 'string' ? clinicInfo.address : t('contact.info.address_details')}</span>
+          </a>
         </>
       ),
-      subDetails: t('contact.info.address_sub')
+      subDetails: (
+        <a 
+          href={googleMapsProfileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:underline text-sm"
+        >
+          📍 Ver no Google Maps
+        </a>
+      )
     },
     {
       icon: <Phone className="h-6 w-6 text-blue-600" />,
@@ -488,9 +496,27 @@ const Contact = () => {
         </div>
       ),
       subDetails: (
-        <button type="button" onClick={() => window.dispatchEvent(new Event('open-cta-modal'))} className="text-blue-600 hover:underline flex items-center gap-1 text-sm font-semibold">
-          <MessageCircle size={14} /> {t('contact.info.phone_whatsapp')}
-        </button>
+        <div className="flex flex-col gap-2">
+          <button type="button" onClick={() => window.dispatchEvent(new Event('open-cta-modal'))} className="text-blue-600 hover:underline flex items-center gap-1 text-sm font-semibold">
+            <MessageCircle size={14} /> {t('contact.info.phone_whatsapp')}
+          </button>
+          <a 
+            href="https://wa.me/message/EHTAAAAYH7SHJ1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-green-600 hover:underline flex items-center gap-1 text-sm font-semibold"
+          >
+            <MessageCircle size={14} /> Auto Atendimento WhatsApp
+          </a>
+          <a 
+            href="https://api.whatsapp.com/send/?phone=5533984207437&text&type=phone_number&app_absent=0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-red-600 hover:underline flex items-center gap-1 text-sm font-semibold"
+          >
+            <MessageCircle size={14} /> Urgência - Enfermeira Ana
+          </a>
+        </div>
       )
     },
     {
@@ -1037,8 +1063,7 @@ const Contact = () => {
                           Mensagem enviada com sucesso!
                         </h4>
                         <p className="text-sm text-green-700 mt-1">
-                          Recebemos sua mensagem e entraremos em contato em breve.
-                          Obrigado por escolher a Saraiva Vision.
+                          Sua mensagem foi recebida! Resposta em até 24h.
                         </p>
                       </div>
                     </div>
@@ -1161,7 +1186,7 @@ const Contact = () => {
             </a>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5" role="list" aria-label="Informações de contato">
-              {contactInfo.map((info, index) => (
+              {contactDetails.map((info, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
