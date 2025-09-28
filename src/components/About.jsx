@@ -11,10 +11,10 @@ const About = () => {
   const features = t('about.features', { returnObjects: true }) || [];
 
   const imageUrls = [
-    "/api/images/proxy/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/40e4988427ac137c3d141857468774d6.jpg",
-    "/api/images/proxy/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/b8f2dd956e713d7bae5d7fb1e55e4f4f.png",
-    "/api/images/proxy/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/741591d60d9f0ced10bd2364aee36a66.jpg",
-    "/api/images/proxy/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/368a0fa9cfaf91a0bad44aca45721439.png"
+    "/fachada.webp",
+    "/autorrefrator.png",
+    "/consultorio.jpg",
+    "/topografo.png"
   ];
 
   const imageAlts = [
@@ -48,19 +48,47 @@ const About = () => {
             <div className="grid grid-cols-2 gap-4 relative z-10">
               <div className="space-y-4">
                 <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-64">
-                  <img loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt={imageAlts[0]} src={imageUrls[0]} sizes="(min-width: 1024px) 33vw, 50vw" />
+                  <ImageWithMultipleFallbacks
+                    sources={[imageUrls[0]]}
+                    alt={imageAlts[0]}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    sizes="(min-width: 1024px) 33vw, 50vw"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
                 <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-40">
-                  <img loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt={imageAlts[1]} src={imageUrls[1]} sizes="(min-width: 1024px) 33vw, 50vw" />
+                  <ImageWithMultipleFallbacks
+                    sources={[imageUrls[1]]}
+                    alt={imageAlts[1]}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    sizes="(min-width: 1024px) 33vw, 50vw"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
               </div>
 
               <div className="space-y-4 mt-8">
                 <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-40">
-                  <img loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt={imageAlts[2]} src={imageUrls[2]} sizes="(min-width: 1024px) 33vw, 50vw" />
+                  <ImageWithMultipleFallbacks
+                    sources={[imageUrls[2]]}
+                    alt={imageAlts[2]}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    sizes="(min-width: 1024px) 33vw, 50vw"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
                 <div className="rounded-2xl overflow-hidden shadow-3d hover:shadow-3d-hover card-hover h-64">
-                  <img loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt={imageAlts[3]} src={imageUrls[3]} sizes="(min-width: 1024px) 33vw, 50vw" />
+                  <ImageWithMultipleFallbacks
+                    sources={[imageUrls[3]]}
+                    alt={imageAlts[3]}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    sizes="(min-width: 1024px) 33vw, 50vw"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
               </div>
             </div>
