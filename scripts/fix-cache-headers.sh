@@ -164,24 +164,9 @@ echo -e "${GREEN}✅ Nova configuração preparada${NC}"
 echo ""
 
 # ==============================================================================
-# Step 4: Validar sintaxe
+# Step 4: Aplicar nova configuração
 # ==============================================================================
-echo -e "${YELLOW}✔️  Passo 4: Validando sintaxe da nova configuração${NC}"
-
-if sudo nginx -t -c "$TEMP_CONFIG" 2>&1 | grep -q "syntax is ok"; then
-    echo -e "${GREEN}✅ Sintaxe válida${NC}"
-else
-    echo -e "${RED}❌ Erro de sintaxe na nova configuração${NC}"
-    rm "$TEMP_CONFIG"
-    exit 1
-fi
-
-echo ""
-
-# ==============================================================================
-# Step 5: Aplicar nova configuração
-# ==============================================================================
-echo -e "${YELLOW}🚀 Passo 5: Aplicando nova configuração${NC}"
+echo -e "${YELLOW}🚀 Passo 4: Aplicando nova configuração${NC}"
 
 if sudo cp "$TEMP_CONFIG" "$NGINX_CONFIG"; then
     echo -e "${GREEN}✅ Configuração aplicada${NC}"
@@ -195,9 +180,9 @@ fi
 echo ""
 
 # ==============================================================================
-# Step 6: Teste final de sintaxe
+# Step 5: Teste final de sintaxe
 # ==============================================================================
-echo -e "${YELLOW}🧪 Passo 6: Teste final de sintaxe${NC}"
+echo -e "${YELLOW}🧪 Passo 5: Teste final de sintaxe${NC}"
 
 if sudo nginx -t; then
     echo -e "${GREEN}✅ Teste de sintaxe passou${NC}"
@@ -211,9 +196,9 @@ fi
 echo ""
 
 # ==============================================================================
-# Step 7: Reload Nginx (zero downtime)
+# Step 6: Reload Nginx (zero downtime)
 # ==============================================================================
-echo -e "${YELLOW}🔄 Passo 7: Recarregando Nginx (zero downtime)${NC}"
+echo -e "${YELLOW}🔄 Passo 6: Recarregando Nginx (zero downtime)${NC}"
 
 if sudo systemctl reload nginx; then
     echo -e "${GREEN}✅ Nginx recarregado com sucesso${NC}"
@@ -227,9 +212,9 @@ fi
 echo ""
 
 # ==============================================================================
-# Step 8: Verificação pós-deploy
+# Step 7: Verificação pós-deploy
 # ==============================================================================
-echo -e "${YELLOW}✅ Passo 8: Verificando headers aplicados${NC}"
+echo -e "${YELLOW}✅ Passo 7: Verificando headers aplicados${NC}"
 
 sleep 2  # Wait for Nginx to fully reload
 
