@@ -36,6 +36,7 @@ const CACHE_DURATION = {
     TESTIMONIALS: 1800, // 30 minutes
     SITE_SETTINGS: 3600, // 1 hour
     NAVIGATION: 3600, // 1 hour
+    CATEGORIES: 3600, // 1 hour
 };
 
 // Enhanced cache strategy with offline support
@@ -907,6 +908,61 @@ export const getPostsByCategory = async (categorySlug, options = {}) => {
     }
 
     return result;
+};
+
+export const getBlogPosts = async (options = {}) => {
+    const { first = 10, after = null, categorySlug = null, useCache = true } = options;
+    const cacheKey = getCacheKey('blog_posts', { first, after, categorySlug });
+
+    const fetchFunction = async () => {
+        let query = GET_ALL_POSTS;
+        let variables = { first, after };
+
+        if (categorySlug) {
+            query = GET_POSTS_BY_CATEGORY;
+            variables = { slug: categorySlug, first };
+        }
+
+        const { data, error } = await executeGraphQLQuery(query, variables);
+
+        if (error) {
+            return { posts: [], pageInfo: null, error };
+        }
+
+        return {
+            posts: data.posts?.nodes || data.category?.posts?.nodes || [],
+            pageInfo: data.posts?.pageInfo || null,
+            error: null,
+        };
+    };
+
+    const result = await getWithOfflineFallback(cacheKey, fetchFunction, {
+        duration: CACHE_DURATION.POSTS,
+        useCache,
+        offlineFallback: true,
+        contentType: 'posts'
+    });
+
+    if (result.isOffline || result.isFallback) {
+        return {
+            posts: result.posts || [],
+            pageInfo: result.pageInfo || null,
+            error: result.error,
+            isOffline: result.isOffline,
+            isFallback: result.isFallback,
+            isCached: result.isCached,
+            healthState: result.healthState,
+            fallbackMeta: result.fallbackMeta,
+        };
+    }
+
+    return {
+        ...(result || {}),
+        error: result?.error || null,
+        isOffline: false,
+        isFallback: false,
+        isCached: result.isCached,
+    };
 };
 
 export const getAllCategories = async (useCache = true) => {

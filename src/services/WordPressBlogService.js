@@ -1,22 +1,66 @@
 /**
  * WordPress Blog Service
  * Handles API communication with WordPress headless blog
- * Includes caching, error handling, and SEO optimization
+ * Includes caching, error handling, JWT authentication, and SEO optimization
  */
+
+import WordPressJWTAuthService from './WordPressJWTAuthService.js';
+import {
+    tokenStorage,
+    wordpressEndpoints,
+    WordPressAPIError,
+    validateWordPressResponse,
+    logger,
+    isTokenExpired
+} from '../lib/wordpress-jwt-utils.js';
 
 class WordPressBlogService {
     constructor(options = {}) {
         this.baseURL = options.baseURL || 'https://blog.saraivavision.com.br';
         this.apiEndpoint = '/wp-json/wp/v2';
+        this.cmsBaseURL = options.cmsBaseURL || 'https://cms.saraivavision.com.br';
         this.cacheEnabled = options.cacheEnabled !== false;
         this.cacheTimeout = options.cacheTimeout || 5 * 60 * 1000; // 5 minutes
         this.cache = this.cacheEnabled ? new Map() : null;
         this.retryAttempts = options.retryAttempts || 3;
         this.retryDelay = options.retryDelay || 1000;
+
+        // JWT Authentication
+        this.useJWTAuth = options.useJWTAuth !== false;
+        this.jwtService = this.useJWTAuth ? new WordPressJWTAuthService({
+            baseURL: this.cmsBaseURL,
+            credentials: options.jwtCredentials
+        }) : null;
+
+        // Try to restore token from storage
+        this.initializeAuth();
     }
 
     /**
-     * Generic API request method with retry logic
+     * Initialize authentication from stored tokens
+     */
+    async initializeAuth() {
+        if (!this.useJWTAuth || !this.jwtService) {
+            return;
+        }
+
+        try {
+            const storedToken = tokenStorage.getToken();
+            if (storedToken && !isTokenExpired(storedToken)) {
+                this.jwtService.token = storedToken;
+                const payload = this.jwtService.decodeJWTPayload ? this.jwtService.decodeJWTPayload(storedToken) : null;
+                if (payload && payload.exp) {
+                    this.jwtService.tokenExpiry = payload.exp * 1000;
+                }
+                logger.auth('Restored token from storage', { expires: new Date(this.jwtService.tokenExpiry).toISOString() });
+            }
+        } catch (error) {
+            logger.error('Failed to initialize auth', error);
+        }
+    }
+
+    /**
+     * Generic API request method with JWT authentication and retry logic
      */
     async makeRequest(endpoint, options = {}) {
         const url = `${this.baseURL}${this.apiEndpoint}${endpoint}`;
@@ -43,18 +87,82 @@ class WordPressBlogService {
         let lastError;
         for (let attempt = 1; attempt <= this.retryAttempts; attempt++) {
             try {
+                let headers = {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    ...options.headers
+                };
+
+                // Add JWT authentication header if enabled
+                if (this.useJWTAuth && this.jwtService) {
+                    try {
+                        const authHeader = await this.jwtService.getAuthorizationHeader();
+                        headers = { ...headers, ...authHeader };
+                    } catch (authError) {
+                        logger.error('Failed to get auth header', authError);
+                        // Continue without auth for public endpoints
+                    }
+                }
+
                 const response = await fetch(urlWithParams.toString(), {
                     method: options.method || 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        ...options.headers
-                    },
+                    headers,
                     ...options.fetchOptions
                 });
 
+                // Handle authentication errors
+                if (response.status === 401 && this.useJWTAuth && this.jwtService) {
+                    logger.auth('Token expired, attempting refresh');
+                    try {
+                        await this.jwtService.refreshToken();
+
+                        // Store new token
+                        const newToken = this.jwtService.getCurrentToken();
+                        if (newToken) {
+                            tokenStorage.setToken(newToken);
+                        }
+
+                        // Retry with fresh token
+                        const authHeader = await this.jwtService.getAuthorizationHeader();
+                        const retryResponse = await fetch(urlWithParams.toString(), {
+                            method: options.method || 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                ...authHeader,
+                                ...options.headers
+                            },
+                            ...options.fetchOptions
+                        });
+
+                        if (!retryResponse.ok) {
+                            throw new Error(`HTTP ${retryResponse.status}: ${retryResponse.statusText}`);
+                        }
+
+                        const data = await retryResponse.json();
+
+                        // Cache successful responses
+                        if (this.cache && options.method !== 'POST') {
+                            this.cache.set(cacheKey, {
+                                data,
+                                timestamp: Date.now()
+                            });
+                        }
+
+                        logger.api(options.method || 'GET', endpoint, response.status);
+                        return data;
+                    } catch (refreshError) {
+                        logger.error('Token refresh failed', refreshError);
+                        throw refreshError;
+                    }
+                }
+
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    throw new WordPressAPIError(
+                        `HTTP ${response.status}: ${response.statusText}`,
+                        response.status,
+                        endpoint
+                    );
                 }
 
                 const data = await response.json();
@@ -67,11 +175,12 @@ class WordPressBlogService {
                     });
                 }
 
+                logger.api(options.method || 'GET', endpoint, response.status);
                 return data;
 
             } catch (error) {
                 lastError = error;
-                console.warn(`WordPress API request failed (attempt ${attempt}/${this.retryAttempts}):`, error.message);
+                logger.error(`API request failed (attempt ${attempt}/${this.retryAttempts})`, error);
 
                 if (attempt < this.retryAttempts) {
                     await this.delay(this.retryDelay * attempt);
@@ -80,6 +189,17 @@ class WordPressBlogService {
         }
 
         throw lastError;
+    }
+
+    /**
+     * Make authenticated request to CMS endpoints
+     */
+    async makeAuthenticatedRequest(endpoint, options = {}) {
+        if (!this.useJWTAuth || !this.jwtService) {
+            throw new Error('JWT authentication is not enabled');
+        }
+
+        return await this.jwtService.makeAuthenticatedRequest(endpoint, options);
     }
 
     /**
@@ -357,6 +477,73 @@ class WordPressBlogService {
             size: this.cache.size,
             timeout: this.cacheTimeout
         };
+    }
+
+    /**
+     * Get authentication status
+     */
+    getAuthStatus() {
+        if (!this.useJWTAuth || !this.jwtService) {
+            return {
+                enabled: false,
+                authenticated: false,
+                tokenExpiry: null
+            };
+        }
+
+        return {
+            enabled: true,
+            authenticated: this.jwtService.isAuthenticated(),
+            tokenExpiry: this.jwtService.getTokenExpiry(),
+            hasStoredToken: !!tokenStorage.getToken()
+        };
+    }
+
+    /**
+     * Authenticate with WordPress CMS
+     */
+    async authenticate() {
+        if (!this.useJWTAuth || !this.jwtService) {
+            throw new Error('JWT authentication is not enabled');
+        }
+
+        const token = await this.jwtService.authenticate();
+
+        // Store token for future use
+        if (token) {
+            tokenStorage.setToken(token);
+            logger.auth('Authentication successful', { expires: new Date(this.jwtService.tokenExpiry).toISOString() });
+        }
+
+        return token;
+    }
+
+    /**
+     * Get current user information from WordPress
+     */
+    async getCurrentUser() {
+        if (!this.useJWTAuth || !this.jwtService) {
+            throw new Error('JWT authentication is not enabled');
+        }
+
+        try {
+            const user = await this.jwtService.makeAuthenticatedRequest('/users/me');
+            return user;
+        } catch (error) {
+            logger.error('Failed to get current user', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Logout/clear authentication
+     */
+    async logout() {
+        if (this.jwtService) {
+            this.jwtService.clearAuth();
+        }
+        tokenStorage.clearAllTokens();
+        logger.auth('Logged out successfully');
     }
 
     /**

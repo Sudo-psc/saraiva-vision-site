@@ -84,7 +84,7 @@ const routes = [
   { path: '/api/security', handler: '../security/monitor.js' },
   { path: '/api/outbox', handler: '../outbox/drain.js' },
   { path: '/api/images', handler: '../images/proxy.js' },
-  { path: '/api/wordpress-graphql', handler: '../wordpress-graphql-proxy.js' },
+   { path: '/api/wordpress-graphql', handler: '../wordpress-graphql-proxy.js', type: 'express' },
   { path: '/api/patient-data', handler: '../patient-data.js' }
 ];
 
@@ -92,7 +92,15 @@ const routes = [
 for (const route of routes) {
   try {
     const handler = await import(route.handler);
-    app.use(route.path, createExpressAdapter(handler.default));
+
+    if (route.type === 'express') {
+      // Handle Express routers directly
+      app.use(route.path, handler.default);
+    } else {
+      // Handle Vercel serverless functions
+      app.use(route.path, createExpressAdapter(handler.default));
+    }
+
     console.log(`✅ Loaded route: ${route.path}`);
   } catch (error) {
     console.warn(`⚠️  Failed to load route ${route.path}:`, error.message);

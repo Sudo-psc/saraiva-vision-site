@@ -4,12 +4,11 @@
  * and SSL/CORS bypass capabilities
  */
 
-const express = require('express');
-const { GraphQLClient } = require('graphql-request');
-const cors = require('cors');
-const https = require('https');
-const http = require('http');
-const { URL } = require('url');
+import express from 'express';
+import cors from 'cors';
+import https from 'https';
+import http from 'http';
+import { URL } from 'url';
 
 const router = express.Router();
 
@@ -61,76 +60,11 @@ const createWordPressClient = () => {
       'User-Agent': 'SaraivaVision-Proxy/1.0'
     },
     timeout: 30000,
-    // Custom fetch with SSL bypass
-    fetch: async (url, options) => {
-      try {
-        const parsedUrl = new URL(url);
-        const isHttps = parsedUrl.protocol === 'https:';
-        const agent = isHttps ? httpsAgent : httpAgent;
-
-        const requestOptions = {
-          hostname: parsedUrl.hostname,
-          port: parsedUrl.port || (isHttps ? 443 : 80),
-          path: parsedUrl.pathname + parsedUrl.search,
-          method: options.method || 'POST',
-          headers: {
-            ...options.headers,
-            'Content-Length': Buffer.byteLength(options.body || '')
-          },
-          agent,
-          timeout: 30000
-        };
-
-        return new Promise((resolve, reject) => {
-          const req = (isHttps ? https : http).request(requestOptions, (res) => {
-            let data = '';
-
-            res.on('data', (chunk) => {
-              data += chunk;
-            });
-
-            res.on('end', () => {
-              // Check if response is HTML (404 page)
-              const contentType = res.headers['content-type'] || '';
-              if (contentType.includes('text/html')) {
-                const error = new Error('WordPress GraphQL endpoint not found (404). WPGraphQL plugin may not be installed.');
-                error.statusCode = res.statusCode;
-                error.isHtmlResponse = true;
-                reject(error);
-                return;
-              }
-
-              const response = {
-                status: res.statusCode,
-                statusText: res.statusMessage,
-                headers: new Map(Object.entries(res.headers)),
-                text: () => Promise.resolve(data),
-                json: () => Promise.resolve(JSON.parse(data))
-              };
-
-              resolve(response);
-            });
-          });
-
-          req.on('error', (error) => {
-            console.error('WordPress GraphQL Proxy Error:', error);
-            reject(error);
-          });
-
-          req.on('timeout', () => {
-            req.destroy();
-            reject(new Error('WordPress GraphQL request timeout'));
-          });
-
-          if (options.body) {
-            req.write(options.body);
-          }
-          req.end();
-        });
-      } catch (error) {
-        console.error('WordPress GraphQL Proxy Fetch Error:', error);
-        throw error;
-      }
+    fetch: (url, options) => {
+      return fetch(url, {
+        ...options,
+        agent: url.startsWith('https:') ? httpsAgent : httpAgent
+      });
     }
   });
 };
@@ -148,13 +82,27 @@ router.post('/graphql', async (req, res) => {
     }
 
     console.log('Proxying GraphQL request to:', WORDPRESS_GRAPHQL_ENDPOINT);
-    console.log('Query:', query.substring(0, 100) + '...');
 
-    const client = createWordPressClient();
     const startTime = Date.now();
 
     try {
-      const data = await client.request(query, variables);
+      // Use direct fetch with SSL bypass
+      const response = await fetch(WORDPRESS_GRAPHQL_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'SaraivaVision-Proxy/1.0'
+        },
+        body: JSON.stringify({
+          query,
+          variables: variables || {},
+          operationName: operationName || null
+        }),
+        agent: httpsAgent, // Use HTTPS agent for SSL bypass
+        timeout: 30000
+      });
+
+      const data = await response.json();
       const responseTime = Date.now() - startTime;
 
       console.log(`GraphQL request completed in ${responseTime}ms`);
@@ -167,17 +115,17 @@ router.post('/graphql', async (req, res) => {
           timestamp: new Date().toISOString()
         }
       });
-    } catch (graphqlError) {
-      console.error('GraphQL Query Error:', graphqlError);
+    } catch (fetchError) {
+      console.error('GraphQL Fetch Error:', fetchError);
 
       // Handle specific error types
       let errorResponse = {
         error: 'GraphQL request failed',
-        details: graphqlError.message,
+        details: fetchError.message,
         code: 'GRAPHQL_ERROR'
       };
 
-      if (graphqlError.isHtmlResponse) {
+      if (fetchError.message?.includes('ENOTFOUND') || fetchError.message?.includes('404')) {
         errorResponse = {
           error: 'WordPress GraphQL endpoint not found',
           details: 'The WPGraphQL plugin may not be installed or activated on the WordPress server.',
@@ -190,7 +138,7 @@ router.post('/graphql', async (req, res) => {
             '5. Verify the GraphQL endpoint is accessible at /graphql'
           ]
         };
-      } else if (graphqlError.message?.includes('SSL') || graphqlError.message?.includes('CERTIFICATE')) {
+      } else if (fetchError.message?.includes('SSL') || fetchError.message?.includes('CERTIFICATE')) {
         errorResponse = {
           error: 'SSL Certificate Error',
           details: 'The WordPress server has SSL certificate issues.',
@@ -201,12 +149,6 @@ router.post('/graphql', async (req, res) => {
             '3. Reload nginx: systemctl reload nginx',
             '4. Test SSL configuration'
           ]
-        };
-      } else if (graphqlError.response?.errors) {
-        errorResponse = {
-          error: 'GraphQL Query Errors',
-          details: graphqlError.response.errors.map(e => e.message),
-          code: 'GRAPHQL_QUERY_ERROR'
         };
       }
 
@@ -225,7 +167,6 @@ router.post('/graphql', async (req, res) => {
 // Health check endpoint
 router.get('/health', async (req, res) => {
   try {
-    const client = createWordPressClient();
     const startTime = Date.now();
 
     const healthQuery = `
@@ -240,16 +181,31 @@ router.get('/health', async (req, res) => {
     `;
 
     try {
-      const data = await client.request(healthQuery);
+      const response = await fetch(WORDPRESS_GRAPHQL_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'SaraivaVision-Proxy/1.0'
+        },
+        body: JSON.stringify({ query: healthQuery }),
+        agent: httpsAgent,
+        timeout: 10000
+      });
+
+      const data = await response.json();
       const responseTime = Date.now() - startTime;
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
 
       res.json({
         status: 'healthy',
         responseTime,
         endpoint: WORDPRESS_GRAPHQL_ENDPOINT,
         wordpress: {
-          title: data.generalSettings?.title || 'Unknown',
-          url: data.generalSettings?.url || 'Unknown',
+          title: data.data?.generalSettings?.title || 'Unknown',
+          url: data.data?.generalSettings?.url || 'Unknown',
           accessible: true
         },
         timestamp: new Date().toISOString()
@@ -260,7 +216,7 @@ router.get('/health', async (req, res) => {
         responseTime: Date.now() - startTime,
         endpoint: WORDPRESS_GRAPHQL_ENDPOINT,
         error: error.message,
-        errorType: error.isHtmlResponse ? 'WPGRAPHQL_NOT_FOUND' : 'CONNECTION_ERROR',
+        errorType: error.message?.includes('404') ? 'WPGRAPHQL_NOT_FOUND' : 'CONNECTION_ERROR',
         timestamp: new Date().toISOString()
       });
     }
@@ -343,4 +299,4 @@ router.use((error, req, res, next) => {
   });
 });
 
-module.exports = router;
+export default router;

@@ -92,15 +92,126 @@ const clinicConfig = {
 };
 
 // Headers específicos para requisições médicas
-const getApiHeaders = () => ({
-  'Content-Type': 'application/json',
-  'Accept': 'application/json',
-  'X-Requested-With': 'XMLHttpRequest',
-  'User-Agent': `${clinicConfig.name} Website/2.0`,
-  // Headers para compliance médico
-  'X-Medical-Compliance': 'CFM-LGPD',
-  'X-Healthcare-Provider': clinicConfig.doctor.crm
-});
+const getApiHeaders = (includeAuth = false) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest',
+    'User-Agent': `${clinicConfig.name} Website/2.0`,
+    // Headers para compliance médico
+    'X-Medical-Compliance': 'CFM-LGPD',
+    'X-Healthcare-Provider': clinicConfig.doctor.crm
+  };
+
+  // Adicionar JWT authentication se solicitado e token disponível
+  if (includeAuth) {
+    try {
+      // Tentar obter token do localStorage (client-side)
+      const authToken = localStorage.getItem('wp_jwt_token');
+      if (authToken) {
+        headers['Authorization'] = `Bearer ${authToken}`;
+      }
+    } catch (error) {
+      // localStorage pode não estar disponível em alguns contextos (server-side)
+      console.warn('Unable to access localStorage for JWT token:', error.message);
+    }
+  }
+
+  return headers;
+};
+
+// Função para obter token JWT (client-side)
+const getJWTToken = () => {
+  try {
+    return localStorage.getItem('wp_jwt_token');
+  } catch (error) {
+    console.warn('Unable to access localStorage for JWT token:', error.message);
+    return null;
+  }
+};
+
+// Função para definir token JWT (client-side)
+const setJWTToken = (token) => {
+  try {
+    if (token) {
+      localStorage.setItem('wp_jwt_token', token);
+    } else {
+      localStorage.removeItem('wp_jwt_token');
+    }
+    return true;
+  } catch (error) {
+    console.error('Failed to store JWT token:', error.message);
+    return false;
+  }
+};
+
+// Função para autenticar e obter token JWT
+const authenticateWithWordPress = async (username, password) => {
+  const config = getCurrentEnvironmentConfig();
+  const authUrl = config.wordpressUrl.replace('/wp/v2', '/jwt-auth/v1/token');
+
+  try {
+    const response = await fetch(authUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        password
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Authentication failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.token) {
+      setJWTToken(data.token);
+      return {
+        success: true,
+        token: data.token,
+        user: data.user_display_name || username
+      };
+    } else {
+      throw new Error('No token received from authentication server');
+    }
+  } catch (error) {
+    console.error('WordPress authentication error:', error);
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+};
+
+// Função para verificar se token é válido
+const validateJWTToken = async (token) => {
+  const config = getCurrentEnvironmentConfig();
+  const validateUrl = config.wordpressUrl.replace('/wp/v2', '/jwt-auth/v1/token/validate');
+
+  try {
+    const response = await fetch(validateUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      return { valid: false, error: 'Token validation failed' };
+    }
+
+    const data = await response.json();
+    return { valid: data.code === 'jwt_auth_valid_token', data };
+  } catch (error) {
+    console.error('JWT token validation error:', error);
+    return { valid: false, error: error.message };
+  }
+};
 
 // Função para detectar problemas comuns de configuração
 function validateWordPressSetup(url) {
