@@ -364,37 +364,53 @@ const BlogPage = () => {
     const fallbackMeta = posts.meta;
     const isFallback = fallbackMeta?.isFallback;
 
-    if (isFallback) {
+    // Check if posts are fallback posts (by checking for fallback- prefix in IDs)
+    const isFallbackContent = posts.length > 0 && posts.some(post =>
+      typeof post.id === 'string' && post.id.startsWith('fallback-')
+    );
+
+    if (isFallback || isFallbackContent) {
       return (
         <div className="space-y-8">
-          <BlogStatusBanner className="mb-6" />
-          <WordPressFallbackNotice meta={fallbackMeta} onRetry={handleRetry} />
-          {renderDiagnosticsPanel(fallbackMeta)}
-          {posts.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 md:gap-8">
-              {posts.map((post, index) => (
-                <motion.article
-                  key={post.id ?? index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className="modern-card overflow-hidden flex flex-col border border-yellow-100 bg-white/60"
-                  role="article"
-                  aria-label="Conteúdo temporário do blog"
+          {/* Fallback Notice Banner */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 rounded-lg p-6 shadow-sm">
+            <div className="flex items-start gap-4">
+              <AlertTriangle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" aria-hidden="true" />
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-blue-900 mb-2">
+                  {t('blog.fallback_title', 'Conteúdo de Prévia Disponível')}
+                </h3>
+                <p className="text-sm text-blue-800 mb-3">
+                  {t('blog.fallback_description', 'Nossa conexão com o sistema de blog está temporariamente indisponível. Enquanto isso, confira estas prévias de conteúdo relevante sobre saúde ocular.')}
+                </p>
+                <Button
+                  onClick={handleRetry}
+                  variant="outline"
+                  size="sm"
+                  className="bg-white hover:bg-blue-50 text-blue-700 border-blue-300"
                 >
-                  <div className="p-4 sm:p-6 flex flex-col flex-grow">
-                    <div className="flex items-center text-sm text-gray-600 mb-3">
-                      <Calendar className="w-4 h-4 mr-2" aria-hidden="true" />
-                      <time dateTime={post.date}>{format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })}</time>
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 text-gray-900">{post.title}</h3>
-                    <p className="text-gray-600 text-sm flex-grow">{post.excerpt}</p>
-                    <span className="mt-4 text-xs text-gray-500">Tentaremos novamente automaticamente em instantes.</span>
-                  </div>
-                </motion.article>
-              ))}
+                  {t('blog.retry_connection', 'Tentar Reconectar')}
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Fallback Posts Grid with Preview Styling */}
+          {posts.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+              {posts.map((post, index) => renderPostCard(post, index))}
             </div>
           )}
+
+          {/* Help Text */}
+          <div className="text-center p-6 bg-gray-50 rounded-lg border border-gray-200">
+            <p className="text-sm text-gray-600">
+              {t('blog.fallback_help', 'Estes são exemplos de conteúdo educativo sobre saúde ocular. O blog completo será carregado assim que a conexão for restabelecida.')}
+            </p>
+            <p className="text-xs text-gray-500 mt-2">
+              {t('blog.fallback_auto_retry', 'Tentativa automática de reconexão em andamento...')}
+            </p>
+          </div>
         </div>
       );
     }
