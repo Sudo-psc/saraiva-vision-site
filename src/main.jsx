@@ -8,14 +8,55 @@ import { AuthProvider } from './contexts/AuthContext';
 import './i18n'; // Initialize i18n
 import { redirectToBackup } from './utils/redirectToBackup';
 
-// Simple error handler setup
+// Enhanced error handler setup with detailed logging
 const setupGlobalErrorHandlers = () => {
   window.addEventListener('error', (event) => {
-    console.error('Global error:', event.error);
+    const errorDetails = {
+      message: event.message || 'Unknown error',
+      filename: event.filename || 'Unknown file',
+      lineno: event.lineno || 0,
+      colno: event.colno || 0,
+      error: event.error ? {
+        name: event.error.name,
+        message: event.error.message,
+        stack: event.error.stack
+      } : null,
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      url: window.location.href
+    };
+
+    console.error('Global error:', errorDetails);
+
+    // Send to error tracking service if available
+    if (window.gtag) {
+      window.gtag('event', 'exception', {
+        description: `${errorDetails.message} at ${errorDetails.filename}:${errorDetails.lineno}`,
+        fatal: false
+      });
+    }
   });
 
   window.addEventListener('unhandledrejection', (event) => {
-    console.error('Unhandled promise rejection:', event.reason);
+    const rejectionDetails = {
+      reason: event.reason ? {
+        name: event.reason.name,
+        message: event.reason.message,
+        stack: event.reason.stack
+      } : String(event.reason),
+      timestamp: new Date().toISOString(),
+      url: window.location.href
+    };
+
+    console.error('Unhandled promise rejection:', rejectionDetails);
+
+    // Send to error tracking service if available
+    if (window.gtag) {
+      window.gtag('event', 'exception', {
+        description: `Unhandled rejection: ${rejectionDetails.reason}`,
+        fatal: false
+      });
+    }
   });
 };
 

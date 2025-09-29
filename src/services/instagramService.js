@@ -3,6 +3,8 @@
  * Handles posts fetching, statistics, and real-time updates via WebSocket
  */
 
+import { SafeWS } from '../utils/SafeWS.js';
+
 class InstagramService {
     constructor() {
         this.baseUrl = '/api/instagram';
@@ -321,31 +323,33 @@ class InstagramService {
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
             const wsUrl = `${protocol}//${window.location.host}/api/instagram/websocket`;
 
-            this.websocket = new WebSocket(wsUrl);
-
-            this.websocket.onopen = (event) => {
-                console.log('Instagram WebSocket connected');
-                this.reconnectAttempts = 0;
-                this.reconnectDelay = 1000;
-            };
-
-            this.websocket.onmessage = (event) => {
-                try {
-                    const message = JSON.parse(event.data);
-                    this.handleWebSocketMessage(message);
-                } catch (error) {
-                    console.error('Failed to parse WebSocket message:', error);
+            this.websocket = new SafeWS(wsUrl, {
+                maxRetries: 5,
+                baseDelay: 1000,
+                maxDelay: 30000,
+                onOpen: () => {
+                    console.log('Instagram WebSocket connected');
+                    this.reconnectAttempts = 0;
+                    this.reconnectDelay = 1000;
+                },
+                onMessage: (data) => {
+                    try {
+                        const message = JSON.parse(data);
+                        this.handleWebSocketMessage(message);
+                    } catch (error) {
+                        console.error('Failed to parse WebSocket message:', error);
+                    }
+                },
+                onClose: () => {
+                    console.log('Instagram WebSocket disconnected');
+                    this.handleWebSocketClose();
+                },
+                onError: (event) => {
+                    console.error('Instagram WebSocket error:', event);
                 }
-            };
+            });
 
-            this.websocket.onclose = (event) => {
-                console.log('Instagram WebSocket disconnected:', event.code, event.reason);
-                this.handleWebSocketClose();
-            };
-
-            this.websocket.onerror = (error) => {
-                console.error('Instagram WebSocket error:', error);
-            };
+            this.websocket.connect();
         } catch (error) {
             console.error('Failed to initialize WebSocket:', error);
         }
@@ -433,8 +437,8 @@ class InstagramService {
      * Send ping to keep WebSocket connection alive
      */
     ping() {
-        if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
-            this.websocket.send(JSON.stringify({ type: 'ping' }));
+        if (this.websocket) {
+            this.websocket.sendSafe(JSON.stringify({ type: 'ping' }));
         }
     }
 
@@ -455,7 +459,8 @@ class InstagramService {
      */
     getConnectionStatus() {
         return {
-            connected: this.websocket && this.websocket.readyState === WebSocket.OPEN,
+            connected: this.websocket && this.websocket.isReady(),
+            state: this.websocket ? this.websocket.getState() : 'disconnected',
             subscribedPosts: Array.from(this.subscribers.keys()),
             totalSubscribers: Array.from(this.subscribers.values()).reduce((total, set) => total + set.size, 0),
             reconnectAttempts: this.reconnectAttempts,
