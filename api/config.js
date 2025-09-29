@@ -40,18 +40,10 @@ export default function handler(req, res) {
         googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || process.env.VITE_GOOGLE_MAPS_API_KEY,
         googlePlacesApiKey: process.env.GOOGLE_PLACES_API_KEY || process.env.VITE_GOOGLE_PLACES_API_KEY,
         googlePlaceId: process.env.GOOGLE_PLACE_ID || process.env.VITE_GOOGLE_PLACE_ID,
-
-        // Supabase (only anon key, never service role)
-        supabaseUrl: process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL,
-        supabaseAnonKey: process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY,
-
-        // WordPress (public API endpoints)
-        wordpressApiUrl: process.env.WORDPRESS_API_URL || process.env.VITE_WORDPRESS_API_URL,
-        wordpressGraphqlEndpoint: process.env.WORDPRESS_GRAPHQL_ENDPOINT || process.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT,
       };
 
       // Validate required fields
-      if (!config.supabaseUrl || !config.supabaseAnonKey) {
+      if (!config.googleMapsApiKey) {
         return res.status(500).json({ error: 'Server configuration incomplete' });
       }
 

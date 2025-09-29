@@ -46,12 +46,8 @@ async function fetchEnvConfig() {
     } catch (error) {
       console.error('Failed to load environment configuration:', error);
 
-      // Fallback: Use public configuration only
-      envConfig = {
-        supabaseUrl: 'https://yluhrvsqdohxcnwwrekz.supabase.co',
-        wordpressApiUrl: 'https://blog.saraivavision.com.br/wp-json/wp/v2',
-        wordpressGraphqlEndpoint: 'https://cms.saraivavision.com.br/graphql',
-      };
+      // Fallback: Empty config for static site
+      envConfig = {};
 
       return envConfig;
     } finally {

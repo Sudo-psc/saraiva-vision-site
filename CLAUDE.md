@@ -4,7 +4,7 @@
 
 ## 🎯 Visão Executiva
 
-Clínica oftalmológica em Caratinga, MG, Brasil. Arquitetura VPS nativa sem Docker, com compliance CFM e LGPD.
+Clínica oftalmológica em Caratinga, MG, Brasil. Arquitetura VPS nativa simplificada com blog estático e compliance CFM/LGPD.
 
 **Status**: ✅ Produção ativa | 🏥 Healthcare | 🇧🇷 Mercado brasileiro | ⚖️ CFM/LGPD compliance
 
@@ -14,35 +14,18 @@ Clínica oftalmológica em Caratinga, MG, Brasil. Arquitetura VPS nativa sem Doc
 - React 18 + TypeScript 5.x + Vite
 - Tailwind CSS + Framer Motion + React Router
 - Radix UI (componentes acessíveis)
+- Blog estático (sem CMS externo)
 
 ### Backend & APIs (VPS Nativo)
 - Node.js 22+ + Express.js
-- Supabase (banco + auth)
 - Nginx (web server + proxy)
-- WordPress Headless (PHP-FPM 8.1+)
-- MySQL + Redis + ES modules
+- Redis (cache)
+- ES modules
 
 ### 🔌 Integrações Principais
 - Instagram Graph API, WhatsApp Business API
 - Google Maps API, Google Places API (avaliações em tempo real)
 - Resend API, Spotify Web API
-- WordPress External API (blog.saraivavision.com.br)
-- WordPress JWT Admin API (cms.saraivavision.com.br)
-- Supabase PostgreSQL (real-time)
-
-### 🔐 WordPress JWT Integration
-Autenticação segura para operações administrativas:
-
-**Arquivos Chave**:
-- `api/src/wordpress-jwt-client.js` - Cliente JWT
-- `api/src/routes/wordpress-admin.js` - Rotas admin CRUD
-- `src/config/env.ts` - Validação Zod
-
-**Funcionalidades**:
-- Autenticação JWT automática com refresh
-- CRUD posts via REST API
-- Health checks e error recovery
-- Segurança com token validation e rate limiting
 
 ### ⭐ Google Reviews Integration
 Sistema de avaliações em tempo real:
@@ -59,6 +42,21 @@ Sistema de avaliações em tempo real:
 - Rate limiting (30 req/min)
 
 **Dados Atuais**: 136 avaliações, média 4.9/5.0
+
+### 📝 Static Blog System
+Blog estático integrado ao SPA principal:
+
+**Arquivos Chave**:
+- `src/data/blogPosts.js` - Dados estáticos dos posts
+- `src/pages/BlogPage.jsx` - Listagem de posts
+- `src/pages/BlogPostPage.jsx` - Visualização individual
+
+**Características**:
+- Dados em JavaScript estático
+- Sem dependências externas (WordPress/CMS)
+- SEO-friendly com meta tags dinâmicas
+- Categorização e busca integradas
+- Performance otimizada
 
 ## 🚀 Comandos Essenciais
 
@@ -143,19 +141,15 @@ docs/                   # Config e documentação
 
 ### 🎯 Padrões Arquiteturais
 - **Componentes**: Páginas em `src/pages/`, UI reutilizável em `src/components/`
-- **API**: Estrutura dual (`api/` legado + `api/src/` moderno)
-- **Auth**: Supabase Auth com RBAC (user/admin/super_admin)
-- **State**: React Context + local state + Supabase subscriptions
+- **API**: Node.js/Express servindo endpoints REST
+- **State**: React Context + local state
 - **Error Handling**: Error Boundaries + tracking + graceful fallbacks
+- **Blog**: Static data em `src/data/blogPosts.js`, renderizado no client-side
 
-### 🗃 Database Schema (Supabase)
-- `contact_messages` - Contato pacientes (LGPD compliant)
-- `appointments` - Agendamentos com lembretes
-- `message_outbox` - Fila email/SMS assíncrona
-- `podcast_episodes` - Gerenciamento podcasts com RSS
-- `profiles` - Auth com RBAC
-- `event_log` - Logging eventos e performance
-- `review_cache` - Cache Google Business reviews
+### 💾 Data Storage
+- Local JSON files para blog posts
+- Redis para cache de reviews e sessões
+- File-based storage para assets estáticos
 
 ### 🧪 Estratégia de Testes
 - Unit Tests (React Testing Library + Vitest)
@@ -213,9 +207,9 @@ docs/                   # Config e documentação
 ## 🔒 Segurança & Compliance
 
 ### Authentication & Authorization
-- Supabase Auth + RBAC
-- Protected routes via `ProtectedRoute`
-- Session management com refresh automático
+- Simplified authentication (se necessário no futuro)
+- Public-facing content sem necessidade de auth
+- Admin operations via environment-based controls
 
 ### ⚖️ CFM Compliance
 - Sistema CFM compliance com validação automatizada
@@ -298,10 +292,10 @@ Schema.org para SEO médico:
 
 ### Variáveis de Ambiente Obrigatórias
 ```bash
-VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY  # Database
-VITE_GOOGLE_MAPS_API_KEY                     # Maps
-VITE_WORDPRESS_API_URL=https://blog.saraivavision.com.br  # WordPress
-RESEND_API_KEY                               # Email
+VITE_GOOGLE_MAPS_API_KEY                     # Google Maps
+VITE_GOOGLE_PLACES_API_KEY                   # Google Places (reviews)
+VITE_GOOGLE_PLACE_ID                         # Google Place ID
+RESEND_API_KEY                               # Email notifications
 ```
 
 ## 🔧 Troubleshooting
@@ -311,10 +305,10 @@ RESEND_API_KEY                               # Email
 - Variáveis de ambiente configuradas
 - Limpar node_modules e cache
 
-### Database Issues
-- Variáveis Supabase corretas
-- Checar RLS policies
-- Garantir migrations aplicadas
+### Data Issues
+- Verificar estrutura de dados em `src/data/blogPosts.js`
+- Validar formato de datas e campos obrigatórios
+- Checar cache Redis se aplicável
 
 ### API Service Errors
 - Logs: `journalctl -u saraiva-api`
@@ -323,15 +317,8 @@ RESEND_API_KEY                               # Email
 - Testar endpoints: `node api/health-check.js`
 
 ### SSL Certificate Issues
-- Erros SSL WordPress GraphQL comuns
 - Renovar: `sudo certbot renew`
-- Verificar: `openssl s_client -connect cms.saraivavision.com.br:443`
-
-### WordPress Integration
-- Verificar APIs externas via curl
-- Testar GraphQL endpoint
-- JWT authentication e token refresh
-- CORS configuration
+- Verificar: `openssl s_client -connect saraivavision.com.br:443`
 
 ### Google Maps Issues
 - InvalidStateError resolvido com SafeWS wrapper

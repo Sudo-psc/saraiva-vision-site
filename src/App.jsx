@@ -15,10 +15,7 @@ const MedicalArticleExample = createLazyComponent(() => import('./pages/MedicalA
 const PodcastPage = createLazyComponent(() => import('./pages/PodcastPage.jsx'));
 
 const BlogPage = createLazyComponent(() => import('./pages/BlogPage.jsx'));
-const PostPage = createLazyComponent(() => import('./pages/PostPage.jsx'));
-const CategoryPage = createLazyComponent(() => import('./pages/CategoryPage.jsx'));
 const AdminLoginPage = createLazyComponent(() => import('./pages/AdminLoginPage.jsx'));
-const WordPressAdminRedirect = createLazyComponent(() => import('./components/WordPressAdminRedirect.jsx'));
 const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
 const DashboardPage = createLazyComponent(() => import('./pages/DashboardPage.jsx'));
 const GoogleReviewsTestPage = createLazyComponent(() => import('./pages/GoogleReviewsTestPage.jsx'));
@@ -79,8 +76,8 @@ function App() {
                   <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
                   <Route path="/podcast" element={<PodcastPage />} />
                   <Route path="/blog" element={<BlogPage />} />
-                  <Route path="/blog/:slug" element={<PostPage />} />
-                  <Route path="/categoria/:slug" element={<CategoryPage />} />
+                  <Route path="/blog/:slug" element={<Navigate to="/blog" replace />} />
+                  <Route path="/categoria/:slug" element={<Navigate to="/blog" replace />} />
                    <Route path="/admin/login" element={<AdminLoginPage />} />
                    <Route path="/admin" element={<AdminLoginPage />} />
                    <Route path="/admin/*" element={<DashboardPage />} />
@@ -88,7 +85,7 @@ function App() {
                   <Route path="/privacy" element={<PrivacyPolicyPage />} />
                   <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />
                   <Route path="/map-test" element={<MapTestPage />} />
-                  <Route path="/wp-admin" element={<WordPressAdminRedirect />} />
+                  <Route path="/wp-admin" element={<Navigate to="/blog" replace />} />
 
                   {isCheckSubdomain ? (
                     <Route path="*" element={<Navigate to="/" replace />} />

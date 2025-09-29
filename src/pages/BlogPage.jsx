@@ -1,276 +1,43 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
-import { ptBR, enUS } from 'date-fns/locale';
-import { Calendar, Loader2, AlertTriangle, ArrowRight, Search, Activity } from 'lucide-react';
+import { ptBR } from 'date-fns/locale';
+import { Calendar, ArrowRight, Eye } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
-import WordPressFallbackNotice from '@/components/WordPressFallbackNotice';
-import BlogStatusBanner from '@/components/BlogStatusBanner';
-import { sanitizeWordPressTitle } from '@/utils/sanitizeWordPressContent';
-import { createLogger } from '@/lib/logger';
-import { getUserFriendlyError } from '@/lib/errorHandling';
-// WordPress functions with backward compatibility
-import {
-  fetchPosts,
-  fetchCategories,
-  getFeaturedImageUrl,
-  extractPlainText,
-  checkWordPressConnection
-} from '../lib/wordpress-compat';
+import { blogPosts, categories } from '../data/blogPosts';
 
 const BlogPage = () => {
-  const { t, i18n } = useTranslation();
-  const [posts, setPosts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [wordpressAvailable, setWordpressAvailable] = useState(true);
-  const [retryIndex, setRetryIndex] = useState(0);
-  const [errorDetails, setErrorDetails] = useState(null);
-  const [showDiagnostics, setShowDiagnostics] = useState(false);
+  const { t } = useTranslation();
+  const [selectedCategory, setSelectedCategory] = React.useState('Todas');
+  const [searchTerm, setSearchTerm] = React.useState('');
 
-  const loggerRef = useRef(createLogger('blog-page'));
+  // Filter posts based on category and search
+  const filteredPosts = blogPosts.filter(post => {
+    const matchesCategory = selectedCategory === 'Todas' || post.category === selectedCategory;
+    const matchesSearch = !searchTerm ||
+      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
-  const logEvent = useCallback((level, message, metadata = {}) => {
-    const logger = loggerRef.current;
-    if (!logger || typeof logger[level] !== 'function') return;
-    Promise.resolve(logger[level](message, metadata)).catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    const loadCategories = async () => {
-      try {
-        const categoriesData = await fetchCategories();
-        setCategories(categoriesData);
-      } catch (error) {
-        console.error('Error loading categories:', error);
-        // Do not set a page-level error for categories, as posts might still load
-      }
-    };
-
-    loadCategories();
-  }, []); // Runs only once on mount
-
-  useEffect(() => {
-    const loadPosts = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        setErrorDetails(null);
-        setShowDiagnostics(false);
-
-        const connectionResult = await checkWordPressConnection();
-        setWordpressAvailable(connectionResult.isConnected);
-
-        logEvent('info', 'WordPress connection check completed', {
-          isConnected: connectionResult.isConnected,
-          healthState: connectionResult.healthState
-        });
-
-        if (!connectionResult.isConnected) {
-          const connectionError = {
-            message: connectionResult.error || t('blog.cms_unavailable', 'CMS indisponível no momento.'),
-            code: 'network.offline',
-            severity: 'high',
-            timestamp: new Date().toISOString(),
-            retryable: true
-          };
-          setError(connectionError.message);
-          setErrorDetails(connectionError);
-          logEvent('warn', 'WordPress connection unavailable', connectionError);
-          setLoading(false);
-          return;
-        }
-
-        const params = {
-          per_page: 9,
-          page: currentPage,
-        };
-
-        if (selectedCategory) {
-          params.categories = [selectedCategory];
-        }
-
-        if (searchTerm) {
-          params.search = searchTerm;
-        }
-
-        const postsData = await fetchPosts(params);
-        setPosts(postsData);
-        const meta = postsData?.meta || {};
-        const diagnostics = meta.diagnostics || {};
-        const metaError = meta.errorDetails || null;
-        setErrorDetails(metaError);
-
-        logEvent(meta.isFallback ? 'warn' : 'info', meta.isFallback
-          ? 'Serving blog posts via fallback'
-          : 'Blog posts loaded successfully', {
-          count: Array.isArray(postsData) ? postsData.length : 0,
-          ...diagnostics,
-          errorCode: metaError?.code,
-          message: metaError?.message || meta?.fallbackMeta?.message
-        });
-
-      } catch (error) {
-        const friendly = getUserFriendlyError(error.details || error);
-        const detailedError = {
-          message: friendly.userMessage || friendly.message || error.message || t('blog.cms_error', 'Não foi possível carregar os artigos.'),
-          code: friendly.code,
-          severity: friendly.severity,
-          retryable: friendly.retryable !== false,
-          originalMessage: error.message,
-          timestamp: new Date().toISOString()
-        };
-
-        setError(detailedError.message);
-        setErrorDetails(detailedError);
-        setWordpressAvailable(false);
-
-        logEvent('error', 'Error loading blog posts', {
-          ...detailedError,
-          stack: error.stack,
-          params: {
-            currentPage,
-            selectedCategory,
-            searchTerm
-          }
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadPosts();
-  }, [currentPage, selectedCategory, searchTerm, retryIndex, logEvent, t]);
-
-  const handleRetry = () => {
-    logEvent('info', 'Manual blog retry triggered', {
-      currentPage,
-      selectedCategory,
-      searchTerm
-    });
-    setRetryIndex((prev) => prev + 1);
+  const formatDate = (dateString) => {
+    return format(new Date(dateString), 'dd MMMM, yyyy', { locale: ptBR });
   };
 
-  const getDateLocale = () => {
-    return i18n.language === 'pt' ? ptBR : enUS;
-  };
-
-  const formatTimestamp = useCallback((isoString) => {
-    if (!isoString) {
-      return t('blog.not_available', 'Não informado');
-    }
-
-    try {
-      return format(new Date(isoString), 'dd/MM/yyyy HH:mm:ss', { locale: getDateLocale() });
-    } catch (err) {
-      return isoString;
-    }
-  }, [getDateLocale, t]);
-
-  const renderDiagnosticsPanel = useCallback((meta, titleParam) => {
-    const title = titleParam ?? t('blog.diagnostics_title', 'Diagnóstico do CMS');
-    if (!meta && !errorDetails) {
-      return null;
-    }
-
-    const diagnostics = meta?.diagnostics || {};
-    const detailSource = meta?.errorDetails || errorDetails;
-    const timestamp = diagnostics.fetchedAt || meta?.fallbackMeta?.generatedAt || detailSource?.timestamp;
-
-    const parameterEntries = diagnostics.parameters
-      ? Object.entries(diagnostics.parameters)
-          .filter(([, value]) => value !== null && value !== undefined && value !== '')
-      : [];
-
-    return (
-      <div className="bg-white border border-blue-100 rounded-xl p-5 shadow-sm" role="status" aria-live="polite">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div>
-            <div className="flex items-center gap-2 text-blue-900 font-semibold text-sm">
-              <Activity className="w-4 h-4" aria-hidden="true" />
-              <span>{title}</span>
-            </div>
-            <p className="text-xs text-blue-700 mt-1">
-              {t('blog.diagnostics_meta', 'Origem: {{source}} • Última atualização: {{timestamp}}', {
-                source: diagnostics.source || (meta?.isFallback ? 'fallback' : 'live'),
-                timestamp: formatTimestamp(timestamp)
-              })}
-            </p>
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowDiagnostics(prev => !prev)}
-            className="text-blue-700 hover:text-blue-800"
-          >
-            {showDiagnostics ? t('blog.hide_logs', 'Ocultar logs') : t('blog.show_logs', 'Ver logs técnicos')}
-          </Button>
-        </div>
-
-        {showDiagnostics && (
-          <div className="mt-4 space-y-4 text-xs text-left text-gray-700">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <div><span className="font-semibold">{t('blog.diagnostics_status', 'Fallback')}:</span> {meta?.isFallback ? t('blog.yes', 'Sim') : t('blog.no', 'Não')}</div>
-              <div><span className="font-semibold">{t('blog.diagnostics_health', 'Estado do CMS')}:</span> {diagnostics.healthState || t('blog.not_available', 'Não informado')}</div>
-              <div><span className="font-semibold">{t('blog.diagnostics_cached', 'Conteúdo em cache')}:</span> {diagnostics.isCached ? t('blog.yes', 'Sim') : t('blog.no', 'Não')}</div>
-              <div><span className="font-semibold">{t('blog.diagnostics_offline', 'Modo offline')}:</span> {diagnostics.isOffline ? t('blog.yes', 'Sim') : t('blog.no', 'Não')}</div>
-            </div>
-
-            {parameterEntries.length > 0 && (
-              <div>
-                <p className="font-semibold text-gray-800 mb-2">{t('blog.diagnostics_filters', 'Parâmetros da consulta')}</p>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {parameterEntries.map(([key, value]) => (
-                    <li key={key} className="bg-gray-50 border border-gray-100 rounded px-2 py-1 text-gray-600">
-                      <span className="font-medium text-gray-800">{key}</span>: {Array.isArray(value) ? value.join(', ') : value.toString()}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {detailSource && (
-              <div className="border-t border-gray-200 pt-3 space-y-1">
-                <p className="font-semibold text-gray-800">{t('blog.diagnostics_last_error', 'Último erro registrado')}</p>
-                {detailSource.code && (
-                  <p><span className="font-semibold text-gray-700">{t('blog.diagnostics_code', 'Código')}:</span> {detailSource.code}</p>
-                )}
-                <p><span className="font-semibold text-gray-700">{t('blog.diagnostics_message', 'Mensagem')}:</span> {detailSource.message}</p>
-                {detailSource.originalMessage && (
-                  <p className="text-gray-500">{detailSource.originalMessage}</p>
-                )}
-                <p><span className="font-semibold text-gray-700">{t('blog.diagnostics_retry', 'Tentativa recomendada')}:</span> {detailSource.retryable ? t('blog.yes', 'Sim') : t('blog.no', 'Não')}</p>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  }, [errorDetails, formatTimestamp, showDiagnostics, t]);
-
-  const handleCategoryChange = (categoryId) => {
-    setSelectedCategory(categoryId);
-    setCurrentPage(1);
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setCurrentPage(1);
   };
 
   const renderPostCard = (post, index) => {
-    const featuredImage = getFeaturedImageUrl(post);
-    const excerpt = extractPlainText(post.excerpt?.rendered || '', 120);
-
     return (
       <motion.article
         key={post.id}
@@ -284,41 +51,33 @@ const BlogPage = () => {
         <Link
           to={`/blog/${post.slug}`}
           className="block overflow-hidden focus:outline-none"
-          aria-label={t('blog.read_post', 'Ler o post: {{title}}', { title: (post.title?.rendered || '').replace(/<[^>]+>/g, '') })}
+          aria-label={`Ler o post: ${post.title}`}
         >
           <img
-            src={featuredImage || 'https://placehold.co/600x400/e2e8f0/64748b?text=Image'}
-            alt={post._embedded?.['wp:featuredmedia']?.[0]?.alt_text ||
-              t('ui.alt.blog_post', 'Imagem ilustrativa do artigo') + ': ' +
-              (post.title?.rendered || '').replace(/<[^>]+>/g, '')}
+            src={post.image}
+            alt={`Imagem ilustrativa do artigo: ${post.title}`}
             className="w-full h-48 sm:h-52 md:h-56 object-cover transition-transform duration-300 hover:scale-105"
             loading="lazy"
             decoding="async"
           />
         </Link>
         <div className="p-4 sm:p-6 flex flex-col flex-grow">
-          <div className="flex items-center text-sm text-gray-600 mb-3">
-            <Calendar className="w-4 h-4 mr-2" aria-hidden="true" />
-            <time
-              dateTime={post.date}
-              aria-label={t('blog.published_date', 'Publicado em {{date}}', {
-                date: format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })
-              })}
-            >
-              {format(new Date(post.date), 'dd MMMM, yyyy', { locale: getDateLocale() })}
-            </time>
-            {post._embedded?.['wp:term']?.[0]?.length > 0 && (
-              <span
-                className="ml-4 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
-                role="note"
-                aria-label={t('blog.category_label', 'Categoria: {{category}}', {
-                  category: post._embedded['wp:term'][0][0].name
-                })}
+          <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
+            <div className="flex items-center">
+              <Calendar className="w-4 h-4 mr-2" aria-hidden="true" />
+              <time
+                dateTime={post.date}
+                aria-label={`Publicado em ${formatDate(post.date)}`}
               >
-                {post._embedded['wp:term'][0][0].name}
-              </span>
-            )}
+                {formatDate(post.date)}
+              </time>
+            </div>
           </div>
+
+          <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium mb-3">
+            {post.category}
+          </span>
+
           <h3
             id={`post-title-${post.id}`}
             className="text-xl font-bold mb-3 text-gray-900 flex-grow"
@@ -326,23 +85,22 @@ const BlogPage = () => {
             <Link
               to={`/blog/${post.slug}`}
               className="hover:text-blue-600 focus:outline-none focus:text-blue-600 focus:underline"
-              dangerouslySetInnerHTML={{ __html: sanitizeWordPressTitle(post.title?.rendered || '') }}
-            />
+            >
+              {post.title}
+            </Link>
           </h3>
-          {excerpt && (
-            <div className="text-gray-600 mb-4 text-sm">
-              {excerpt}
-            </div>
-          )}
+
+          <p className="text-gray-600 mb-4 text-sm flex-grow">
+            {post.excerpt}
+          </p>
+
           <Link
             to={`/blog/${post.slug}`}
             className="mt-auto focus:outline-none"
-            aria-label={t('blog.read_more_post', 'Leia mais sobre: {{title}}', {
-              title: (post.title?.rendered || '').replace(/<[^>]+>/g, '')
-            })}
+            aria-label={`Leia mais sobre: ${post.title}`}
           >
             <Button variant="link" className="p-0 text-blue-600 font-semibold group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded">
-              {t('blog.read_more')}
+              {t('blog.read_more', 'Leia mais')}
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </Button>
           </Link>
@@ -351,204 +109,20 @@ const BlogPage = () => {
     );
   };
 
-  const renderContent = () => {
-    if (loading) {
-      return (
-        <div className="flex justify-center items-center h-96" role="status" aria-live="polite">
-          <Loader2 className="h-16 w-16 animate-spin text-blue-500" aria-hidden="true" />
-          <span className="sr-only">{t('blog.loading', 'Carregando posts do blog...')}</span>
-        </div>
-      );
-    }
-
-    const fallbackMeta = posts.meta;
-    const isFallback = fallbackMeta?.isFallback;
-
-    // Check if posts are fallback posts (by checking for fallback- prefix in IDs)
-    const isFallbackContent = posts.length > 0 && posts.some(post =>
-      typeof post.id === 'string' && post.id.startsWith('fallback-')
-    );
-
-    if (isFallback || isFallbackContent) {
-      return (
-        <div className="space-y-8">
-          {/* Fallback Notice Banner */}
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 rounded-lg p-6 shadow-sm">
-            <div className="flex items-start gap-4">
-              <AlertTriangle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" aria-hidden="true" />
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-blue-900 mb-2">
-                  {t('blog.fallback_title', 'Conteúdo de Prévia Disponível')}
-                </h3>
-                <p className="text-sm text-blue-800 mb-3">
-                  {t('blog.fallback_description', 'Nossa conexão com o sistema de blog está temporariamente indisponível. Enquanto isso, confira estas prévias de conteúdo relevante sobre saúde ocular.')}
-                </p>
-                <Button
-                  onClick={handleRetry}
-                  variant="outline"
-                  size="sm"
-                  className="bg-white hover:bg-blue-50 text-blue-700 border-blue-300"
-                >
-                  {t('blog.retry_connection', 'Tentar Reconectar')}
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          {/* Fallback Posts Grid with Preview Styling */}
-          {posts.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
-              {posts.map((post, index) => renderPostCard(post, index))}
-            </div>
-          )}
-
-          {/* Help Text */}
-          <div className="text-center p-6 bg-gray-50 rounded-lg border border-gray-200">
-            <p className="text-sm text-gray-600">
-              {t('blog.fallback_help', 'Estes são exemplos de conteúdo educativo sobre saúde ocular. O blog completo será carregado assim que a conexão for restabelecida.')}
-            </p>
-            <p className="text-xs text-gray-500 mt-2">
-              {t('blog.fallback_auto_retry', 'Tentativa automática de reconexão em andamento...')}
-            </p>
-          </div>
-        </div>
-      );
-    }
-
-    if (error || !wordpressAvailable) {
-      return (
-        <div className="space-y-6">
-          <BlogStatusBanner showDetails className="mb-6" />
-          {renderDiagnosticsPanel({
-            isFallback: false,
-            diagnostics: {
-              source: 'error',
-              fetchedAt: errorDetails?.timestamp,
-              healthState: 'unhealthy'
-            },
-            errorDetails
-          }, t('blog.diagnostics_error_title', 'Detalhes do incidente'))}
-          <div
-            className="text-center p-12 bg-yellow-50 border border-yellow-200 rounded-2xl max-w-2xl mx-auto"
-            role="alert"
-            aria-live="assertive"
-          >
-            <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" aria-hidden="true" />
-            <h3 className="text-2xl font-semibold text-yellow-800">{t('blog.placeholder_title')}</h3>
-            <p className="text-yellow-700 mt-2">{t('blog.placeholder_desc_page')}</p>
-          </div>
-        </div>
-      );
-    }
-
-    if (error || !wordpressAvailable) {
-      return (
-        <div className="space-y-6">
-          <BlogStatusBanner showDetails className="mb-6" />
-          <div
-            className="text-center p-12 bg-yellow-50 border border-yellow-200 rounded-2xl max-w-2xl mx-auto"
-            role="alert"
-            aria-live="assertive"
-          >
-            <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" aria-hidden="true" />
-            <h3 className="text-2xl font-semibold text-yellow-800">{t('blog.placeholder_title')}</h3>
-            <p className="text-yellow-700 mt-2">{t('blog.placeholder_desc_page')}</p>
-          </div>
-        </div>
-      );
-    }
-
-    if (posts.length === 0) {
-      return (
-        <div
-          className="text-center p-12"
-          role="status"
-          aria-live="polite"
-        >
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('blog.no_posts')}</h3>
-          <p className="text-gray-600">{t('blog.no_posts_description')}</p>
-        </div>
-      );
-    }
-
-    return (
-      <>
-        {/* Search and Filter Section */}
-        <div className="mb-12">
-          {/* Search Bar */}
-          <form onSubmit={handleSearch} className="max-w-md mx-auto mb-8">
-            <div className="relative">
-              <label htmlFor="blog-search" className="sr-only">
-                {t('blog.search_placeholder')}
-              </label>
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" aria-hidden="true" />
-              <input
-                id="blog-search"
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder={t('blog.search_placeholder')}
-                aria-describedby="search-description"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:border-transparent"
-              />
-              <span id="search-description" className="sr-only">
-                {t('blog.search_description', 'Digite para buscar posts por título ou conteúdo')}
-              </span>
-            </div>
-          </form>
-
-          {/* Category Filter */}
-          {categories.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-2" role="group" aria-label={t('blog.category_filters', 'Filtros de categoria')}>
-              <button
-                onClick={() => handleCategoryChange(null)}
-                aria-pressed={selectedCategory === null}
-                aria-label={t('blog.all_categories_label', 'Mostrar todos os posts')}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${selectedCategory === null
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-              >
-                {t('blog.all_categories')}
-              </button>
-
-              {categories.slice(0, 6).map(category => (
-                <button
-                  key={category.id}
-                  onClick={() => handleCategoryChange(category.id)}
-                  aria-pressed={selectedCategory === category.id}
-                  aria-label={t('blog.filter_by_category', 'Filtrar por categoria: {{category}}', { category: category.name })}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${selectedCategory === category.id
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                    }`}
-                >
-                  {category.name}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Posts Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 md:gap-8">
-          {posts.map((post, index) => renderPostCard(post, index))}
-        </div>
-      </>
-    );
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 relative">
       <Helmet>
-        <title>{t('blog.page_title')} | Saraiva Vision</title>
-        <meta name="description" content={t('blog.page_description')} />
+        <title>Blog | Saraiva Vision</title>
+        <meta name="description" content="Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos na Clínica Saraiva Vision." />
+        <meta name="keywords" content="oftalmologia, saúde ocular, catarata, glaucoma, cirurgia refrativa, Caratinga" />
       </Helmet>
+
       <Navbar />
+
       <main
         className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%]"
         role="main"
-        aria-label={t('blog.main_content_label', 'Conteúdo principal do blog')}
+        aria-label="Conteúdo principal do blog"
       >
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <motion.header
@@ -557,14 +131,119 @@ const BlogPage = () => {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900">{t('blog.page_title')}</h1>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">{t('blog.page_subtitle')}</p>
+            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
+              Blog Saraiva Vision
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+              Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos
+              com a qualidade e expertise da Clínica Saraiva Vision.
+            </p>
+            <div className="w-24 h-1 bg-blue-600 mx-auto rounded"></div>
           </motion.header>
-          <section aria-label={t('blog.posts_section_label', 'Posts do blog')}>
-            {renderContent()}
+
+          <section aria-label="Posts do blog">
+            {/* Search and Filter Section */}
+            <div className="mb-12">
+              {/* Search Bar */}
+              <form onSubmit={handleSearch} className="max-w-md mx-auto mb-8">
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Buscar artigos..."
+                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:border-transparent"
+                  />
+                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                </div>
+              </form>
+
+              {/* Category Filter */}
+              <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Filtros de categoria">
+                {categories.map(category => (
+                  <button
+                    key={category}
+                    onClick={() => handleCategoryChange(category)}
+                    aria-pressed={selectedCategory === category}
+                    aria-label={`Filtrar por categoria: ${category}`}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                      selectedCategory === category
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Posts Grid */}
+            {filteredPosts.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+                {filteredPosts.map((post, index) => renderPostCard(post, index))}
+              </div>
+            ) : (
+              <div className="text-center p-12">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  Nenhum artigo encontrado
+                </h3>
+                <p className="text-gray-600">
+                  Tente ajustar sua busca ou filtros para encontrar mais artigos.
+                </p>
+              </div>
+            )}
+
+            {/* Blog Info Section */}
+            <div className="mt-16 bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  Sobre Nosso Blog
+                </h2>
+                <p className="text-gray-600 max-w-3xl mx-auto mb-6">
+                  No blog Saraiva Vision, compartilhamos conhecimento especializado sobre saúde ocular,
+                  prevenção de doenças e as tecnologias mais modernas em oftalmologia.
+                  Nossa missão é educar e informar sobre a importância dos cuidados com a visão.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                      </svg>
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Conteúdo Especializado</h3>
+                    <p className="text-sm text-gray-600">Artigos elaborados por oftalmologistas experientes</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Prevenção e Saúde</h3>
+                    <p className="text-sm text-gray-600">Foco na prevenção e cuidados com a saúde ocular</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Atualizações Regulares</h3>
+                    <p className="text-sm text-gray-600">Novo conteúdo adicionado mensalmente</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </section>
         </div>
       </main>
+
       <EnhancedFooter />
     </div>
   );
