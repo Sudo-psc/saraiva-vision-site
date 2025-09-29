@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { MapPin, Phone, Clock } from 'lucide-react';
+import { resolveGoogleMapsApiKey, isValidGoogleMapsKey, getBuildTimeGoogleMapsKey } from '@/lib/googleMapsKey';
 
 /**
  * Google Maps Loader Component for Saraiva Vision
  * Carrega o Google Maps de forma otimizada e segura
  */
-const GoogleMapsLoader = ({ apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY }) => {
+const GoogleMapsLoader = ({ apiKey: apiKeyProp }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState(null);
+  const [apiKey, setApiKey] = useState(() => {
+    const initialKey = apiKeyProp || getBuildTimeGoogleMapsKey();
+    return isValidGoogleMapsKey(initialKey) ? initialKey : null;
+  });
 
   // Dados da clínica
   const clinicInfo = {
@@ -26,6 +31,40 @@ const GoogleMapsLoader = ({ apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY })
   };
 
   useEffect(() => {
+    if (apiKeyProp && isValidGoogleMapsKey(apiKeyProp)) {
+      setApiKey(apiKeyProp);
+      return;
+    }
+
+    if (apiKey) {
+      return;
+    }
+
+    let cancelled = false;
+
+    resolveGoogleMapsApiKey()
+      .then((key) => {
+        if (!cancelled) {
+          setApiKey(key);
+        }
+      })
+      .catch((error) => {
+        console.error('❌ [ERROR] Falha ao resolver Google Maps API key:', error);
+        if (!cancelled) {
+          setMapError('API Key do Google Maps não configurada');
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [apiKey, apiKeyProp]);
+
+  useEffect(() => {
+    if (!apiKey) {
+      return;
+    }
+
     // Verifica se o Google Maps já foi carregado
     if (window.google && window.google.maps) {
       setMapLoaded(true);
@@ -34,12 +73,6 @@ const GoogleMapsLoader = ({ apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY })
     }
 
     // Verifica se a API key existe
-    if (!apiKey) {
-      setMapError('API Key do Google Maps não configurada');
-      console.warn('Google Maps API Key não encontrada. Configure REACT_APP_GOOGLE_MAPS_API_KEY');
-      return;
-    }
-
     // Carrega o script do Google Maps
     const loadGoogleMapsScript = () => {
       const script = document.createElement('script');

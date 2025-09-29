@@ -1,20 +1,62 @@
 import { clinicInfo } from './clinicInfo.js';
 
+const DEFAULT_BASE_URL = 'https://saraivavision.com.br';
+
+const resolveBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return window.location.origin.replace(/\/?$/, '');
+  }
+
+  if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SITE_BASE_URL) {
+    return import.meta.env.VITE_SITE_BASE_URL.replace(/\/?$/, '');
+  }
+
+  if (typeof process !== 'undefined' && process.env?.VITE_SITE_BASE_URL) {
+    return process.env.VITE_SITE_BASE_URL.replace(/\/?$/, '');
+  }
+
+  return DEFAULT_BASE_URL;
+};
+
+const BASE_URL = resolveBaseUrl();
+
+const withPath = (path = '') => {
+  if (!path || path === '/') {
+    return `${BASE_URL}/`;
+  }
+
+  if (path.startsWith('http://') || path.startsWith('https://')) {
+    return path;
+  }
+
+  if (path.startsWith('/')) {
+    return `${BASE_URL}${path}`;
+  }
+
+  return `${BASE_URL}/${path}`;
+};
+
+const withHash = (hash) => {
+  if (!hash) return `${BASE_URL}/`;
+  const normalized = hash.replace(/^#/, '');
+  return `${BASE_URL}/#${normalized}`;
+};
+
 // Gera schema markup para MedicalClinic seguindo as melhores práticas
 export const generateMedicalClinicSchema = (language = 'pt', forGraph = false) => {
   const baseSchema = {
     '@type': 'MedicalClinic',
-    '@id': 'https://saraivavision.com.br/#clinic',
+    '@id': withHash('clinic'),
     name: clinicInfo.name,
     legalName: clinicInfo.legalName,
     description: language === 'pt' 
       ? 'Clínica oftalmológica especializada em consultas, exames e procedimentos oftalmológicos com tecnologia avançada em Caratinga/MG.'
       : 'Ophthalmology clinic specialized in consultations, exams and ophthalmological procedures with advanced technology in Caratinga/MG.',
     image: [
-      'https://saraivavision.com.br/img/logo-saraiva-vision.svg'
+      withPath('/img/logo-saraiva-vision.svg')
     ],
-    logo: 'https://saraivavision.com.br/img/logo-saraiva-vision.svg',
-    url: 'https://saraivavision.com.br/',
+    logo: withPath('/img/logo-saraiva-vision.svg'),
+    url: withPath('/'),
     telephone: clinicInfo.phoneDisplay,
     email: clinicInfo.email,
     priceRange: 'R$',
@@ -63,7 +105,7 @@ export const generateMedicalClinicSchema = (language = 'pt', forGraph = false) =
     employee: [
       {
         '@type': 'Physician',
-        '@id': 'https://saraivavision.com.br/#physician',
+        '@id': withHash('physician'),
         name: clinicInfo.responsiblePhysician,
         jobTitle: language === 'pt' ? 'Oftalmologista' : 'Ophthalmologist',
         medicalSpecialty: 'Ophthalmology',
@@ -124,7 +166,7 @@ export const generateMedicalClinicSchema = (language = 'pt', forGraph = false) =
       clinicInfo.instagram,
       clinicInfo.facebook,
       clinicInfo.linkedin,
-      'https://saraivavision.com.br/',
+      withPath('/'),
       clinicInfo.chatbotUrl
     ],
     
@@ -191,7 +233,7 @@ export const generateMedicalClinicSchema = (language = 'pt', forGraph = false) =
 export const generateFAQSchema = (faqItems, language = 'pt', forGraph = false) => {
   const schema = {
     '@type': 'FAQPage',
-    '@id': 'https://saraivavision.com.br/#faq',
+    '@id': withHash('faq'),
     mainEntity: faqItems.map(item => ({
       '@type': 'Question',
       name: item.question,
@@ -214,15 +256,15 @@ export const generateFAQSchema = (faqItems, language = 'pt', forGraph = false) =
 export const generateMedicalProcedureSchema = (service, language = 'pt', forGraph = false) => {
   const schema = {
     '@type': 'MedicalProcedure',
-    '@id': `https://saraivavision.com.br/servicos/${service.id}#procedure`,
+    '@id': `${withPath(`/servicos/${service.id}`)}#procedure`,
     name: service.title,
     description: service.description,
     category: 'Ophthalmology',
     performer: {
-      '@id': 'https://saraivavision.com.br/#physician'
+      '@id': withHash('physician')
     },
     location: {
-      '@id': 'https://saraivavision.com.br/#clinic'
+      '@id': withHash('clinic')
     }
   };
   
@@ -236,21 +278,23 @@ export const generateMedicalProcedureSchema = (service, language = 'pt', forGrap
 
 // Gera schema para WebPage médica
 export const generateMedicalWebPageSchema = (pageInfo, language = 'pt', forGraph = false) => {
+  const pagePath = pageInfo.url || '/';
+  const fullUrl = withPath(pagePath);
   const schema = {
     '@type': 'MedicalWebPage',
-    '@id': `https://saraivavision.com.br${pageInfo.url}#webpage`,
+    '@id': `${fullUrl}#webpage`,
     name: pageInfo.title,
     description: pageInfo.description,
-    url: `https://saraivavision.com.br${pageInfo.url}`,
+    url: fullUrl,
     inLanguage: language === 'pt' ? 'pt-BR' : 'en-US',
     isPartOf: {
       '@type': 'WebSite',
-      '@id': 'https://saraivavision.com.br/#website',
+      '@id': withHash('website'),
       name: 'Saraiva Vision',
-      url: 'https://saraivavision.com.br/'
+      url: withPath('/')
     },
     about: {
-      '@id': 'https://saraivavision.com.br/#clinic'
+      '@id': withHash('clinic')
     },
     audience: {
       '@type': 'PeopleAudience',
@@ -289,7 +333,7 @@ export const generateBreadcrumbSchema = (breadcrumbs, forGraph = false) => {
       '@type': 'ListItem',
       position: index + 1,
       name: crumb.name,
-      item: `https://saraivavision.com.br${crumb.url}`
+      item: withPath(crumb.url)
     }))
   };
   
@@ -305,22 +349,22 @@ export const generateBreadcrumbSchema = (breadcrumbs, forGraph = false) => {
 export const generateWebSiteSchema = (language = 'pt', forGraph = false) => {
   const schema = {
     '@type': 'WebSite',
-    '@id': 'https://saraivavision.com.br/#website',
+    '@id': withHash('website'),
     name: 'Saraiva Vision - Clínica Oftalmológica',
     alternateName: 'Saraiva Vision',
     description: language === 'pt' 
       ? 'Clínica oftalmológica especializada em consultas, exames e procedimentos oftalmológicos com tecnologia avançada em Caratinga/MG.'
       : 'Ophthalmology clinic specialized in consultations, exams and ophthalmological procedures with advanced technology in Caratinga/MG.',
-    url: 'https://saraivavision.com.br/',
+    url: withPath('/'),
     inLanguage: language === 'pt' ? 'pt-BR' : 'en-US',
     publisher: {
-      '@id': 'https://saraivavision.com.br/#clinic'
+      '@id': withHash('clinic')
     },
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://saraivavision.com.br/?s={search_term_string}'
+        urlTemplate: `${BASE_URL}/?s={search_term_string}`
       },
       'query-input': 'required name=search_term_string'
     }
@@ -338,13 +382,13 @@ export const generateWebSiteSchema = (language = 'pt', forGraph = false) => {
 export const generateOrganizationSchema = (language = 'pt', forGraph = false) => {
   const schema = {
     '@type': 'Organization',
-    '@id': 'https://saraivavision.com.br/#organization',
+    '@id': withHash('organization'),
     name: clinicInfo.name,
     legalName: clinicInfo.legalName,
-    url: 'https://saraivavision.com.br/',
+    url: withPath('/'),
     logo: {
       '@type': 'ImageObject',
-      '@id': 'https://saraivavision.com.br/#logo',
+      '@id': withHash('logo'),
       url: 'https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png',
       contentUrl: 'https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png',
       width: 300,
@@ -383,22 +427,22 @@ export const generatePodcastSchema = (podcastData, language = 'pt', forGraph = f
   
   const podcastSchema = {
     '@type': 'PodcastSeries',
-    '@id': 'https://saraivavision.com.br/podcast#podcast',
+    '@id': `${withPath('/podcast')}#podcast`,
     name: language === 'pt' ? 'Podcast Saraiva Vision' : 'Saraiva Vision Podcast',
     description: language === 'pt' 
       ? 'Conteúdo especializado sobre saúde ocular para manter seus olhos sempre saudáveis com o Dr. Philipe Saraiva.'
       : 'Specialized content on eye health to keep your eyes always healthy with Dr. Philipe Saraiva.',
-    url: 'https://saraivavision.com.br/podcast',
-    image: episodes[0]?.cover || 'https://saraivavision.com.br/Podcasts/Covers/podcast.jpg',
+    url: withPath('/podcast'),
+    image: episodes[0]?.cover || withPath('/Podcasts/Covers/podcast.jpg'),
     author: {
       '@type': 'Person',
       name: 'Dr. Philipe Saraiva',
-      sameAs: 'https://saraivavision.com.br/sobre',
+      sameAs: withPath('/sobre'),
       jobTitle: language === 'pt' ? 'Oftalmologista' : 'Ophthalmologist',
       worksFor: {
         '@type': 'MedicalClinic',
         name: 'Clínica Saraiva Vision',
-        url: 'https://saraivavision.com.br'
+        url: withPath('/')
       }
     },
     genre: language === 'pt' ? 'Saúde e Medicina' : 'Health & Medicine',
@@ -406,23 +450,23 @@ export const generatePodcastSchema = (podcastData, language = 'pt', forGraph = f
     publisher: {
       '@type': 'Organization',
       name: 'Clínica Saraiva Vision',
-      url: 'https://saraivavision.com.br',
+      url: withPath('/'),
       logo: {
         '@type': 'ImageObject',
         url: 'https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png'
       }
     },
-    webFeed: 'https://saraivavision.com.br/podcast/rss'
+    webFeed: `${withPath('/podcast')}/rss`
   };
 
   // Add podcast episodes
   if (episodes.length > 0) {
     podcastSchema.episode = episodes.map((episode, index) => ({
       '@type': 'PodcastEpisode',
-      '@id': `https://saraivavision.com.br/podcast/${episode.slug}#episode`,
+      '@id': `${withPath(`/podcast/${episode.slug}`)}#episode`,
       name: episode.title,
       description: episode.description,
-      url: `https://saraivavision.com.br/podcast/${episode.slug}`,
+      url: withPath(`/podcast/${episode.slug}`),
       episodeNumber: episodes.length - index, // Reverse order for latest first
       datePublished: episode.date,
       duration: episode.duration,
@@ -433,7 +477,7 @@ export const generatePodcastSchema = (podcastData, language = 'pt', forGraph = f
         encodingFormat: 'audio/mpeg'
       } : undefined,
       partOfSeries: {
-        '@id': 'https://saraivavision.com.br/podcast#podcast'
+        '@id': `${withPath('/podcast')}#podcast`
       },
       keywords: episode.tags?.join(', '),
       genre: episode.category,

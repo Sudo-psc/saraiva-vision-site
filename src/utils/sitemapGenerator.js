@@ -1,6 +1,22 @@
+const resolveBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return window.location.origin.replace(/\/?$/, '');
+  }
+
+  if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SITE_BASE_URL) {
+    return import.meta.env.VITE_SITE_BASE_URL.replace(/\/?$/, '');
+  }
+
+  if (typeof process !== 'undefined' && process.env?.VITE_SITE_BASE_URL) {
+    return process.env.VITE_SITE_BASE_URL.replace(/\/?$/, '');
+  }
+
+  return 'https://saraivavision.com.br';
+};
+
 // Gerador de sitemap.xml dinâmico para SEO
 export const generateSitemap = (blogPosts = []) => {
-  const baseUrl = 'https://saraivavision.com.br';
+  const baseUrl = resolveBaseUrl();
   const currentDate = new Date().toISOString().split('T')[0];
   
   // URLs estáticas principais
@@ -9,7 +25,8 @@ export const generateSitemap = (blogPosts = []) => {
     { url: '/lentes', priority: '0.9', changefreq: 'monthly', lastmod: currentDate },
     { url: '/podcast', priority: '0.6', changefreq: 'weekly', lastmod: currentDate },
     { url: '/artigos/catarata', priority: '0.7', changefreq: 'monthly', lastmod: currentDate },
-    { url: '/privacy', priority: '0.3', changefreq: 'yearly', lastmod: currentDate }
+    { url: '/privacidade', priority: '0.3', changefreq: 'yearly', lastmod: currentDate },
+    { url: '/termos', priority: '0.3', changefreq: 'yearly', lastmod: currentDate }
   ];
   
   // URLs de serviços dinâmicas

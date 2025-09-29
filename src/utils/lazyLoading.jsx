@@ -10,7 +10,6 @@ const createLazyComponent = (importFn, retries = 3, retryDelay = 1000) => {
   return function LazyComponentWithErrorHandling(props) {
     const [error, setError] = useState(null);
     const [retryCount, setRetryCount] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
       if (error && retryCount < retries) {
@@ -18,17 +17,15 @@ const createLazyComponent = (importFn, retries = 3, retryDelay = 1000) => {
           console.log(`Retrying chunk load (${retryCount + 1}/${retries})...`);
           setRetryCount(prev => prev + 1);
           setError(null);
-          setIsLoading(true);
         }, retryDelay);
 
         return () => clearTimeout(timer);
       }
-    }, [error, retryCount, retries, retryDelay]);
+    }, [error, retryCount]);
 
     const handleError = (err) => {
       console.error('Lazy loading error:', err);
       setError(err);
-      setIsLoading(false);
     };
 
     if (error && retryCount >= retries) {
@@ -83,8 +80,8 @@ class ErrorBoundary extends React.Component {
     return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
-    console.error('Lazy loading error boundary caught:', error, errorInfo);
+  componentDidCatch(error) {
+    console.error('Lazy loading error boundary caught:', error);
     if (this.props.onError) {
       this.props.onError(error);
     }
@@ -92,7 +89,18 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return null; // Let the parent component handle the error display
+      // Instead of returning null (which makes components disappear),
+      // return a fallback UI that allows the parent to handle the error
+      return this.props.fallback || (
+        <div className="w-full py-4 text-center">
+          <div className="text-yellow-600 mb-2">
+            <svg className="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0S3.34 2.667 2.57 4l-6.732 13C-4.85 18.667-3.888 20-2.348 20z" />
+            </svg>
+          </div>
+          <p className="text-sm text-gray-600">Componente temporariamente indisponível</p>
+        </div>
+      );
     }
     return this.props.children;
   }

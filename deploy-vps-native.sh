@@ -3,9 +3,9 @@
 # Native VPS Deployment Script for Saraiva Vision
 # Deploys React application to native VPS without Docker containerization
 # Author: Saraiva Vision Development Team
-# Version: 2.0.0
+# Version: 2.1.0
 
-set -e
+set -euo pipefail
 
 # Colors for output
 RED='\033[0;31m'
@@ -15,12 +15,12 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-VPS_HOST="31.97.129.78"
-VPS_USER="root"
-WEB_ROOT="/var/www/html"
-API_SERVICE="saraiva-api"
-BACKUP_DIR="/var/backups/saraiva-vision"
-BUILD_DIR="dist"
+VPS_HOST="${VPS_HOST:-31.97.129.78}"
+VPS_USER="${VPS_USER:-root}"
+WEB_ROOT="${WEB_ROOT:-/var/www/html}"
+API_SERVICE="${API_SERVICE:-saraiva-api}"
+BACKUP_DIR="${BACKUP_DIR:-/var/backups/saraiva-vision}"
+BUILD_DIR="${BUILD_DIR:-dist}"
 
 # Print colored output
 print_status() {
@@ -48,7 +48,7 @@ command_exists() {
 check_vps_connectivity() {
     print_status "Checking VPS connectivity..."
 
-    if ping -c 1 "$VPS_HOST" >/dev/null 2>&1; then
+    if ping -c 1 -W 2 "$VPS_HOST" >/dev/null 2>&1; then
         print_success "VPS is reachable at $VPS_HOST"
     else
         print_error "Cannot reach VPS at $VPS_HOST"
@@ -61,15 +61,16 @@ build_application() {
     print_status "Building React application..."
 
     # Clean previous build
-    if [ -d "$BUILD_DIR" ]; then
-        rm -rf "$BUILD_DIR"
-        print_status "Cleaned previous build directory"
-    fi
+    rm -rf "$BUILD_DIR"
 
     # Install dependencies if needed
     if [ ! -d "node_modules" ]; then
-        print_status "Installing dependencies..."
-        npm install
+        print_status "Installing dependencies (detected fresh workspace)..."
+        if command_exists npm && [ -f package-lock.json ]; then
+            npm ci
+        else
+            npm install
+        fi
     fi
 
     # Build application
@@ -136,12 +137,13 @@ deploy_to_vps() {
     print_status "Deploying to VPS..."
 
     # Create temporary deployment package
-    TEMP_PACKAGE="/tmp/saraiva-vision-deploy-$(date +%Y%m%d_%H%M%S).tar.gz"
+    TEMP_PACKAGE="$(mktemp /tmp/saraiva-vision-deploy.XXXXXX.tar.gz)"
     tar -czf "$TEMP_PACKAGE" -C "$BUILD_DIR" .
+    PACKAGE_NAME="$(basename "$TEMP_PACKAGE")"
 
     # Copy to VPS
     print_status "Uploading deployment package..."
-    scp "$TEMP_PACKAGE" "$VPS_USER@$VPS_HOST:/tmp/"
+    scp "$TEMP_PACKAGE" "$VPS_USER@$VPS_HOST:/tmp/$PACKAGE_NAME"
 
     # Extract and deploy on VPS
     ssh "$VPS_USER@$VPS_HOST" "
@@ -152,14 +154,14 @@ deploy_to_vps() {
         find '$WEB_ROOT' -mindepth 1 ! -name '.htaccess' -delete 2>/dev/null || true
 
         # Extract new deployment
-        tar -xzf '/tmp/$(basename $TEMP_PACKAGE)' -C '$WEB_ROOT'
+        tar -xzf "/tmp/$PACKAGE_NAME" -C '$WEB_ROOT'
 
         # Set proper permissions
         chown -R www-data:www-data '$WEB_ROOT'
         chmod -R 755 '$WEB_ROOT'
 
         # Clean up temporary file
-        rm -f '/tmp/$(basename $TEMP_PACKAGE)'
+        rm -f "/tmp/$PACKAGE_NAME"
     "
 
     # Clean up local temporary file
@@ -173,9 +175,14 @@ restart_services() {
     print_status "Managing VPS services..."
 
     ssh "$VPS_USER@$VPS_HOST" "
-        # Reload Nginx configuration
-        systemctl reload nginx
-        echo 'Nginx configuration reloaded'
+        # Validate Nginx configuration before reload
+        if nginx -t; then
+            systemctl reload nginx
+            echo 'Nginx configuration reloaded'
+        else
+            echo 'Nginx configuration test failed; aborting reload'
+            exit 1
+        fi
 
         # Restart API service if it exists
         if systemctl is-active --quiet '$API_SERVICE'; then
@@ -205,7 +212,7 @@ verify_deployment() {
     sleep 2
 
     # Check if site is responding
-    if curl -f -s "http://$VPS_HOST" >/dev/null; then
+    if curl -f -s --max-time 5 "https://$VPS_HOST" >/dev/null; then
         print_success "Website is responding"
     else
         print_warning "Website may not be responding properly"
@@ -243,20 +250,19 @@ main() {
     echo ""
 
     # Pre-deployment checks
-    if ! command_exists npm; then
-        print_error "npm is not installed"
-        exit 1
-    fi
-
-    if ! command_exists ssh; then
-        print_error "ssh is not installed"
-        exit 1
-    fi
+    for cmd in npm ssh scp tar curl; do
+        if ! command_exists "$cmd"; then
+            print_error "Required command missing: $cmd"
+            exit 1
+        fi
+    done
 
     if [ ! -f "package.json" ]; then
         print_error "Not in a Node.js project directory"
         exit 1
     fi
+    
+    print_status "Deployment target: $VPS_USER@$VPS_HOST -> $WEB_ROOT"
 
     # Check connectivity
     check_vps_connectivity

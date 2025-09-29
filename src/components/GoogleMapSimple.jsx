@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MapPin, ExternalLink, AlertCircle } from 'lucide-react';
 import { clinicInfo, CLINIC_PLACE_ID } from '@/lib/clinicInfo';
 import { loadGoogleMaps } from '@/lib/loadGoogleMaps';
+import { resolveGoogleMapsApiKey, isValidGoogleMapsKey } from '@/lib/googleMapsKey';
 
 const GoogleMapSimple = ({ height = 340 }) => {
   const containerRef = useRef(null);
@@ -13,7 +14,6 @@ const GoogleMapSimple = ({ height = 340 }) => {
   const staticMapUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${clinicInfo.latitude},${clinicInfo.longitude}&zoom=17&size=640x360&markers=${clinicInfo.latitude},${clinicInfo.longitude},lightblue1`;
 
   useEffect(() => {
-    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     let isMounted = true;
     const abortController = new AbortController();
 
@@ -26,15 +26,22 @@ const GoogleMapSimple = ({ height = 340 }) => {
       setLoading(false);
     };
 
-    if (!apiKey) {
-      enableFallback('Mapa interativo indisponível: chave da API ausente.');
-      return () => {
-        isMounted = false;
-        abortController.abort();
-      };
-    }
-
     const initializeMap = async () => {
+      let apiKey;
+
+      try {
+        apiKey = await resolveGoogleMapsApiKey();
+      } catch (resolveError) {
+        console.error('[GoogleMap] Falha ao resolver Google Maps API key:', resolveError);
+        enableFallback('Mapa interativo indisponível: chave da API ausente.');
+        return;
+      }
+
+      if (!isValidGoogleMapsKey(apiKey)) {
+        enableFallback('Mapa interativo indisponível: chave da API inválida.');
+        return;
+      }
+
       try {
         const response = await fetch('/api/maps-health', {
           signal: abortController.signal,

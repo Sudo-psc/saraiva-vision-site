@@ -176,7 +176,8 @@ const BlogPage = () => {
     }
   }, [getDateLocale, t]);
 
-  const renderDiagnosticsPanel = useCallback((meta, title = t('blog.diagnostics_title', 'Diagnóstico do CMS'))) => {
+  const renderDiagnosticsPanel = useCallback((meta, titleParam) => {
+    const title = titleParam ?? t('blog.diagnostics_title', 'Diagnóstico do CMS');
     if (!meta && !errorDetails) {
       return null;
     }

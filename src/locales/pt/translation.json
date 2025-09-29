@@ -1073,7 +1073,11 @@
     "google_maps_button": "Ver no Google Maps",
     "review_button": "Avalie-nos no Google",
     "google_maps_button_aria": "Abrir perfil da clínica no Google Maps (nova aba)",
-    "review_button_aria": "Abrir página de avaliações no Google (nova aba)"
+    "review_button_aria": "Abrir página de avaliações no Google (nova aba)",
+    "cta_group": "Ações principais de localização"
+  },
+  "recaptcha": {
+    "disclosure_html": "Este site é protegido pelo reCAPTCHA e se aplicam a <a href=\"https://policies.google.com/privacy\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline\">Política de Privacidade</a> e os <a href=\"https://policies.google.com/terms\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline\">Termos de Serviço</a> do Google."
   },
   "service": {
     "about": "Sobre o Serviço",

@@ -54,7 +54,26 @@ class ErrorBoundary extends React.Component {
       console.warn('Failed to save error details:', e);
     }
 
-    redirectToBackup();
+    // Only redirect to backup for critical errors that make the app unusable
+    // Don't redirect for minor errors that can be recovered from
+    const isCriticalError = errorMessage.includes('Minified React error') ||
+                          errorMessage.includes('ChunkLoadError') ||
+                          errorMessage.includes('Failed to fetch dynamically imported module') ||
+                          errorMessage.includes('Cannot read properties of null') ||
+                          errorMessage.includes('Cannot read properties of undefined');
+
+    if (isCriticalError) {
+      console.warn('Critical error detected, redirecting to backup...');
+      setTimeout(() => {
+        try {
+          redirectToBackup();
+        } catch (e) {
+          console.error('Backup redirect failed:', e);
+        }
+      }, 2000); // Give user time to see the error message
+    } else {
+      console.warn('Non-critical error caught, showing error UI instead of redirecting');
+    }
   }
 
   render() {

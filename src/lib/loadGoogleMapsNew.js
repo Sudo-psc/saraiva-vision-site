@@ -1,4 +1,5 @@
 import { Loader } from '@googlemaps/js-api-loader';
+import { resolveGoogleMapsApiKey, isValidGoogleMapsKey } from '@/lib/googleMapsKey';
 
 let loaderInstance = null;
 let loadPromise = null;
@@ -24,22 +25,13 @@ export function loadGoogleMaps(apiKey) {
     return Promise.resolve(window.google.maps);
   }
 
-  if (!apiKey) {
-    return Promise.reject(new Error('Google Maps API key is required'));
-  }
+  const keyPromise = isValidGoogleMapsKey(apiKey)
+    ? Promise.resolve(apiKey)
+    : resolveGoogleMapsApiKey();
 
   console.log('🚀 [GoogleMaps] Starting official loader...');
 
   // Initialize loader with configuration
-  loaderInstance = new Loader({
-    apiKey,
-    version: 'weekly',
-    libraries: ['places', 'marker'],
-    language: 'pt-BR',
-    region: 'BR',
-    mapIds: [], // Add your map IDs if needed
-  });
-
   // Create load promise with timeout and error handling
   loadPromise = new Promise(async (resolve, reject) => {
     const timeoutId = setTimeout(() => {
@@ -47,6 +39,21 @@ export function loadGoogleMaps(apiKey) {
     }, 15000);
 
     try {
+      const resolvedKey = await keyPromise;
+
+      if (!isValidGoogleMapsKey(resolvedKey)) {
+        throw new Error('Google Maps API key is required');
+      }
+
+      loaderInstance = new Loader({
+        apiKey: resolvedKey,
+        version: 'weekly',
+        libraries: ['places', 'marker'],
+        language: 'pt-BR',
+        region: 'BR',
+        mapIds: [], // Add your map IDs if needed
+      });
+
       // Load the maps library
       console.log('📦 [GoogleMaps] Loading maps library...');
       const google = await loaderInstance.load();

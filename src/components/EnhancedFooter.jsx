@@ -21,6 +21,8 @@ import {
     useFooterTheme
 } from '../utils/footerThemeManager';
 import { useWorkingHoursStatus } from '../hooks/useWorkingHoursStatus';
+import { getWeekdays } from '../lib/date';
+import { WeekdaysList } from './footer/Weekdays';
 import {
     initializeCompatibility,
     applyCompatibilityFixes,
@@ -166,7 +168,7 @@ const EnhancedFooter = ({
             } else if (date.toDateString() === tomorrow.toDateString()) {
                 return `Abre amanhã às ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             } else {
-                const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+                const days = getWeekdays();
                 return `Abre ${days[date.getDay()]} às ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
             }
         };
@@ -197,9 +199,7 @@ const EnhancedFooter = ({
                             )}
                         </div>
                         <div className="text-xs text-slate-500 mt-1">
-                            <div>Seg-Sex: {formattedHours.weekdays}</div>
-                            <div>Sábado: {formattedHours.saturday}</div>
-                            <div>Domingo: {formattedHours.sunday}</div>
+                            <WeekdaysList />
                         </div>
                     </div>
                 </div>

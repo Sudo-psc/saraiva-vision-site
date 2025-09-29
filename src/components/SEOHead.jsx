@@ -4,6 +4,22 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { clinicInfo } from '@/lib/clinicInfo';
 
+const resolveBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return window.location.origin.replace(/\/?$/, '');
+  }
+
+  if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SITE_BASE_URL) {
+    return import.meta.env.VITE_SITE_BASE_URL.replace(/\/?$/, '');
+  }
+
+  if (typeof process !== 'undefined' && process.env?.VITE_SITE_BASE_URL) {
+    return process.env.VITE_SITE_BASE_URL.replace(/\/?$/, '');
+  }
+
+  return 'https://saraivavision.com.br';
+};
+
 const SEOHead = ({
   title,
   description,
@@ -18,7 +34,7 @@ const SEOHead = ({
   const location = useLocation();
 
   const currentLang = i18n.language || 'pt';
-  const baseUrl = 'https://saraivavision.com.br';
+  const baseUrl = resolveBaseUrl();
   const currentPath = location.pathname;
 
   // Generate optimized image URL for social sharing
@@ -66,8 +82,14 @@ const SEOHead = ({
   };
 
   const hreflangs = generateHreflangs();
-  const canonicalUrl = canonicalPath
-    ? `${baseUrl}${canonicalPath}`
+  const normalizedCanonicalPath = canonicalPath && canonicalPath.startsWith('/')
+    ? canonicalPath
+    : canonicalPath
+      ? `/${canonicalPath}`
+      : null;
+
+  const canonicalUrl = normalizedCanonicalPath
+    ? `${baseUrl}${normalizedCanonicalPath}`
     : `${baseUrl}${currentPath}`;
   const ogImage = getOptimizedOgImage();
 

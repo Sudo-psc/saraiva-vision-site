@@ -71,6 +71,7 @@ const routes = [
   { path: '/api/google-reviews', handler: '../google-reviews.js' },
   { path: '/api/google-reviews-stats', handler: '../google-reviews-stats.js' },
   { path: '/api/maps-health', handler: '../maps-health.js' },
+  { path: '/api/maps/config', handler: '../maps-config.js' },
   { path: '/api/blog-posts', handler: '../blog-posts.js' },
   { path: '/api/wordpress-health', handler: '../wordpress-health.js' },
   { path: '/api/ping', handler: '../ping.js' },

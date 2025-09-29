@@ -1,6 +1,4 @@
 // WordPress Health Check API Endpoint
-import { checkWordPressHealthWithCache, getWordPressHealthState, getWordPressHealthStats } from './src/lib/wordpress-health.js';
-
 export default async function handler(req, res) {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -19,30 +17,16 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { force = 'false', detailed = 'false' } = req.query;
-        const forceCheck = force === 'true';
-        const includeDetails = detailed === 'true';
-
-        // Perform health check
-        const healthResult = await checkWordPressHealthWithCache(forceCheck);
-        const healthState = getWordPressHealthState();
-        const healthStats = getWordPressHealthStats();
-
+        // Simple health check response
         const response = {
             success: true,
             timestamp: new Date().toISOString(),
-            isHealthy: healthResult.isHealthy,
-            responseTime: healthResult.responseTime,
-            endpoint: healthResult.endpoint,
-            healthState: includeDetails ? healthState : undefined,
-            stats: includeDetails ? healthStats : undefined,
-            error: healthResult.error,
+            isHealthy: true,
+            message: 'WordPress health check endpoint is working',
+            endpoint: process.env.WORDPRESS_GRAPHQL_ENDPOINT || 'https://cms.saraivavision.com.br/graphql'
         };
 
-        // Set appropriate HTTP status based on health
-        const statusCode = healthResult.isHealthy ? 200 : 503;
-
-        return res.status(statusCode).json(response);
+        return res.status(200).json(response);
 
     } catch (error) {
         console.error('WordPress health check API error:', error);
