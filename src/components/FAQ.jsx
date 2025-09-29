@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { ChevronDown, ChevronUp, HelpCircle, Search } from 'lucide-react';
+import { ChevronDown, HelpCircle, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import SchemaMarkup from '@/components/SchemaMarkup';
 

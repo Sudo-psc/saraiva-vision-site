@@ -10,7 +10,6 @@ import {
     SkipBack,
     SkipForward,
     X,
-    ExternalLink,
     RotateCcw,
     Download,
     Settings

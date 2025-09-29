@@ -8,14 +8,11 @@ import {
   Minus,
   Plus,
   Contrast,
-  Eye,
-  EyeOff,
   Highlighter,
   Volume2,
   VolumeX,
   Keyboard,
   MousePointer,
-  SunMoon,
   Zap,
   RefreshCw,
   Globe2,
@@ -24,7 +21,7 @@ import {
   PlayCircle,
   Wand2
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+
 import { useWidgetManager } from '../utils/widgetManager.jsx';
 
 // Helper to announce changes to screen readers

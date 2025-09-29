@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Lock, Globe, Shield, Wifi, WifiOff, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Globe, Shield, Wifi, WifiOff, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { clinicInfo, googleMapsProfileUrl } from '@/lib/clinicInfo';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { useRecaptcha } from '@/hooks/useRecaptcha';
 import { submitContactForm, FallbackStrategies, useConnectionStatus, networkMonitor } from '@/lib/apiUtils';
-import { getUserFriendlyError, getRecoverySteps, logError } from '@/lib/errorHandling';
-import ErrorFeedback, { NetworkError, RateLimitError, RecaptchaError, EmailServiceError } from '@/components/ui/ErrorFeedback';
+import { getUserFriendlyError, logError } from '@/lib/errorHandling';
+import ErrorFeedback from '@/components/ui/ErrorFeedback';
 import { validateField, validateContactSubmission } from '@/lib/validation';
 import { useAnalytics, useVisibilityTracking, useSaraivaTracking } from '@/hooks/useAnalytics';
 import { consentManager } from '@/lib/lgpd/consentManager';

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Linkedin, ArrowUp, MessageCircle, Bot, Twitter } from 'lucide-react';
+import { ArrowUp, MessageCircle, Bot } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { SocialLinks } from '@/components/ui/social-links';
