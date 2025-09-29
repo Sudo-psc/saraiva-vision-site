@@ -28,21 +28,8 @@ async function fetchEnvConfig() {
 
   configPromise = (async () => {
     try {
-      // Development: Use Vite environment variables
-      if (import.meta.env.DEV) {
-        envConfig = {
-          googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-          googlePlacesApiKey: import.meta.env.VITE_GOOGLE_PLACES_API_KEY,
-          googlePlaceId: import.meta.env.VITE_GOOGLE_PLACE_ID,
-          supabaseUrl: import.meta.env.VITE_SUPABASE_URL,
-          supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-          wordpressApiUrl: import.meta.env.VITE_WORDPRESS_API_URL,
-          wordpressGraphqlEndpoint: import.meta.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT,
-        };
-        return envConfig;
-      }
-
-      // Production: Fetch from secure API endpoint
+      // Always fetch from API endpoint (development and production)
+      // This prevents Vite from inlining VITE_ environment variables
       const response = await fetch('/api/config', {
         method: 'GET',
         headers: {

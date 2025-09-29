@@ -9,22 +9,13 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { linkedErrorsIntegration } from "@sentry/core"; // Integração Sentry para rastrear erros em links (ex: erros de navegação ou cliques)
-
-// Configuração básica do Sentry
-import * as Sentry from "@sentry/react"; // Assumindo Sentry configurado no projeto
-Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN, // Substitua pela DSN real
-  integrations: [linkedErrorsIntegration()], // Ativa rastreamento de erros em links e navegações
-  // Outras configs...
-});
 
 // Definição das redes sociais com links placeholders (atualize com URLs reais da Clínica Saraiva Vision)
 const socialLinks = [
   {
     name: 'TikTok',
-    href: 'https://www.tiktok.com/@saraivavision', // Placeholder
-    iconPath: '/icons_social/tik_tok_icon.png', // Caminho correto em /public/icons_social/
+    href: 'https://www.tiktok.com/@saraivavision',
+    iconPath: '/icons_social/tik_tok_icon.png',
     alt: 'TikTok da Clínica Saraiva Vision'
   },
   {
@@ -41,20 +32,20 @@ const socialLinks = [
   },
   {
     name: 'Spotify',
-    href: 'https://open.spotify.com/show/saraivavision', // Ex: podcast ou playlist da clínica
+    href: 'https://open.spotify.com/show/saraivavision',
     iconPath: '/icons_social/spotify_icon.png',
     alt: 'Spotify da Clínica Saraiva Vision'
   },
   {
     name: 'WhatsApp',
-    href: 'https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta', // Placeholder com mensagem
+    href: 'https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta',
     iconPath: '/icons_social/whatsapp_icon.png',
     alt: 'WhatsApp da Clínica Saraiva Vision'
   },
   {
     name: 'Twitter',
     href: 'https://twitter.com/saraivavision',
-    iconPath: '/icons_social/X_icon.png', // Usando X_icon.png para Twitter/X
+    iconPath: '/icons_social/X_icon.png',
     alt: 'Twitter da Clínica Saraiva Vision'
   },
   {
@@ -73,8 +64,8 @@ const SocialMediaLinks = () => {
       // Lógica adicional se necessário (ex: analytics)
       console.log(`Clicou em: ${href}`);
     } catch (error) {
-      // Captura erros locais e integra com Sentry linkedErrors
-      Sentry.captureException(error, { tags: { section: 'social-link-click' } });
+      // Captura erros locais para rastreamento
+      console.error('Erro ao clicar em link:', error);
     }
   };
 
@@ -101,8 +92,8 @@ const SocialMediaLinks = () => {
                 className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12" // Tamanhos responsivos: mobile (8), tablet (10), desktop (12)
                 loading="lazy"
                 onError={(e) => {
-                  // Rastreia erros de imagem via Sentry
-                  Sentry.captureMessage(`Erro ao carregar ícone: ${social.iconPath}`, 'error');
+                  // Rastreia erros de imagem via console
+                  console.error(`Erro ao carregar ícone: ${social.iconPath}`, e);
                 }}
               />
             </Link>
