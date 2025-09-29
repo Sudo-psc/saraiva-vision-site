@@ -77,7 +77,6 @@ function App() {
                   <Route path="/podcast" element={<PodcastPage />} />
                   <Route path="/blog" element={<BlogPage />} />
                   <Route path="/blog/:slug" element={<Navigate to="/blog" replace />} />
-                  <Route path="/categoria/:slug" element={<Navigate to="/blog" replace />} />
                    <Route path="/admin/login" element={<AdminLoginPage />} />
                    <Route path="/admin" element={<AdminLoginPage />} />
                    <Route path="/admin/*" element={<DashboardPage />} />
