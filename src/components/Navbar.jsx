@@ -13,6 +13,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  console.log('mobileMenuOpen:', mobileMenuOpen);
+
   // Prevent double-scroll: lock body when mobile menu is open
   useBodyScrollLock(mobileMenuOpen);
 
@@ -49,7 +51,7 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Link to="/" aria-label={t('navbar.home_link_label')}><Logo /></Link>
+            <Link to="/" aria-label={t('navbar.home_link_label')}><Logo isWhite /></Link>
           </motion.div>
 
           {/* Desktop Navigation */}

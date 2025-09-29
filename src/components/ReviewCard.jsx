@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Star, Clock, MessageSquare, ThumbsUp, Share2, ChevronDown, ChevronUp } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { createLogger } from '@/utils/structuredLogger.js';
+
+const logger = createLogger('ReviewCard');
 
 /**
  * ReviewCard Component
@@ -21,26 +24,52 @@ const ReviewCard = ({
     const [isExpanded, setIsExpanded] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
 
-    if (!review) {
-        return null;
+    // Enhanced review validation with fallback
+    if (!review || typeof review !== 'object') {
+        logger.warn('Invalid review object received', { review, type: typeof review });
+        return (
+            <div className="bg-slate-50 dark:bg-slate-800/20 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
+                <div className="flex items-center justify-center text-slate-500 dark:text-slate-400">
+                    <div className="text-center">
+                        <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center mx-auto mb-2">
+                            <Star className="w-4 h-4 text-slate-400" />
+                        </div>
+                        <p className="text-sm">Avaliação não disponível</p>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     const {
         id,
-        reviewer,
-        starRating,
-        comment,
+        reviewer = {},
+        starRating = 0,
+        comment = '',
         createTime,
         updateTime,
         reviewReply,
         isRecent = false,
         hasResponse = false,
         wordCount = 0
-    } = review;
+    } = review || {};
+
+    // Log review processing for observability
+    logger.logReviewProcessing(id, 'render', {
+        hasReviewer: !!reviewer,
+        starRating,
+        hasComment: !!comment,
+        wordCount,
+        isRecent,
+        hasResponse
+    });
 
     // Format date for display
     const formatDate = (dateString) => {
-        if (!dateString) return '';
+        if (!dateString) {
+            logger.debug('Empty date string provided', { reviewId: id });
+            return '';
+        }
 
         try {
             const date = new Date(dateString);
@@ -54,6 +83,7 @@ const ReviewCard = ({
             if (diffDays < 365) return `há ${Math.floor(diffDays / 30)} meses`;
             return `há ${Math.floor(diffDays / 365)} anos`;
         } catch (error) {
+            logger.error('Date formatting error', { reviewId: id, dateString, error: error.message });
             return '';
         }
     };
@@ -70,7 +100,7 @@ const ReviewCard = ({
         const stars = [];
 
         for (let i = 1; i <= 5; i++) {
-            const isFilled = i <= rating;
+            const isFilled = i <= (rating || 0);
             stars.push(
                 <Star
                     key={i}
@@ -88,33 +118,46 @@ const ReviewCard = ({
 
     // Handle share action
     const handleShare = async () => {
+        logger.logUserInteraction('share_button', 'click', { reviewId: id });
+
         if (onShare) {
+            logger.debug('Using custom onShare callback', { reviewId: id });
             onShare(review);
         } else {
             // Default share behavior
-            if (navigator.share) {
+            if (navigator?.share) {
                 try {
                     await navigator.share({
-                        title: `Avaliação de ${reviewer.displayName}`,
-                        text: comment,
-                        url: window.location.href
+                        title: `Avaliação de ${reviewer?.displayName || 'Anônimo'}`,
+                        text: comment || '',
+                        url: window?.location?.href || ''
                     });
+                    logger.info('Review shared successfully', { reviewId: id, method: 'navigator.share' });
                 } catch (error) {
+                    logger.warn('Share failed, falling back to clipboard', { reviewId: id, error: error.message });
                     // Fallback to copying to clipboard
-                    navigator.clipboard.writeText(comment);
+                    navigator?.clipboard?.writeText(comment || '');
                 }
             } else {
+                logger.debug('Navigator share not available, using clipboard', { reviewId: id });
                 // Fallback to copying to clipboard
-                navigator.clipboard.writeText(comment);
+                navigator?.clipboard?.writeText(comment || '');
             }
         }
     };
 
     // Handle like action
     const handleLike = () => {
-        setIsLiked(!isLiked);
+        const newLikeState = !isLiked;
+        logger.logUserInteraction('like_button', 'click', {
+            reviewId: id,
+            previousState: isLiked,
+            newState: newLikeState
+        });
+
+        setIsLiked(newLikeState);
         if (onLike) {
-            onLike(review, !isLiked);
+            onLike(review, newLikeState);
         }
     };
 
@@ -156,29 +199,40 @@ const ReviewCard = ({
                 {/* Reviewer info and rating */}
                 <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                        {/* Reviewer avatar */}
-                        {reviewer.profilePhotoUrl ? (
+                        {/* Reviewer avatar with enhanced error handling */}
+                        {reviewer?.profilePhotoUrl ? (
                             <img
                                 src={reviewer.profilePhotoUrl}
-                                alt={reviewer.displayName}
+                                alt={reviewer?.displayName || 'Anônimo'}
                                 className="w-10 h-10 rounded-full object-cover ring-2 ring-slate-200 dark:ring-slate-700"
                                 loading="lazy"
+                                onError={(e) => {
+                                    logger.warn('Profile image failed to load', {
+                                        reviewId: id,
+                                        imageUrl: reviewer.profilePhotoUrl,
+                                        error: e.type
+                                    });
+                                    e.target.style.display = 'none';
+                                    e.target.nextElementSibling.style.display = 'flex';
+                                }}
                             />
-                        ) : (
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold text-sm">
-                                {reviewer.displayName ? reviewer.displayName.charAt(0).toUpperCase() : 'A'}
-                            </div>
-                        )}
+                        ) : null}
+                        <div
+                            className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold text-sm"
+                            style={{ display: reviewer?.profilePhotoUrl ? 'none' : 'flex' }}
+                        >
+                            {reviewer?.displayName?.charAt(0)?.toUpperCase() || 'A'}
+                        </div>
 
                         <div>
                             <h4 className="font-semibold text-slate-800 dark:text-slate-100 text-sm">
-                                {reviewer.displayName || 'Anônimo'}
-                                {reviewer.isAnonymous && (
+                                {reviewer?.displayName || 'Anônimo'}
+                                {reviewer?.isAnonymous && (
                                     <span className="text-xs text-slate-500 dark:text-slate-400 ml-1">(Anônimo)</span>
                                 )}
                             </h4>
                             <div className="flex items-center gap-2 mt-1">
-                                {renderStars(starRating, 'small')}
+                                {renderStars(starRating || 0, 'small')}
                                 {showDate && createTime && (
                                     <span className="text-xs text-slate-500 dark:text-slate-400">
                                         • {formatDate(createTime)}
@@ -218,7 +272,7 @@ const ReviewCard = ({
                 )}
 
                 {/* Business reply */}
-                {showReply && reviewReply && reviewReply.comment && (
+                {showReply && reviewReply?.comment && (
                     <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-100 dark:border-blue-800/30">
                         <div className="flex items-center gap-2 mb-2">
                             <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
@@ -227,14 +281,14 @@ const ReviewCard = ({
                             <span className="text-xs font-medium text-blue-700 dark:text-blue-400">
                                 Resposta do estabelecimento
                             </span>
-                            {reviewReply.updateTime && (
+                            {reviewReply?.updateTime && (
                                 <span className="text-xs text-blue-600 dark:text-blue-400">
                                     • {formatDate(reviewReply.updateTime)}
                                 </span>
                             )}
                         </div>
                         <p className="text-sm text-blue-800 dark:text-blue-200 leading-relaxed">
-                            {reviewReply.comment}
+                            {reviewReply?.comment}
                         </p>
                     </div>
                 )}

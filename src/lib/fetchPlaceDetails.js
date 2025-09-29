@@ -1,6 +1,28 @@
 import { loadGoogleMaps } from './loadGoogleMaps';
 import { formatDate } from './date.js';
 
+// Local fallback formatDate helper in case import fails
+const localFormatDate = (input, format = "DD/MM/YYYY") => {
+  if (!input) return '';
+
+  try {
+    const date = new Date(input);
+    if (isNaN(date.getTime())) return '';
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  } catch (error) {
+    console.warn('Erro ao formatar data localmente:', error);
+    return '';
+  }
+};
+
+// Use imported formatDate if available, otherwise use local fallback
+const safeFormatDate = formatDate || localFormatDate;
+
 const placeCache = new Map();
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutos
 
@@ -76,7 +98,7 @@ export async function fetchPlaceDetails(
         try {
           // Safe formatDate usage with error handling
           const timeToFormat = review.createTime || review.time;
-          relativeTime = review.relativeTimeDescription || (timeToFormat ? formatDate(timeToFormat, 'DD/MM/YYYY') : '');
+           relativeTime = review.relativeTimeDescription || (timeToFormat ? safeFormatDate(timeToFormat, 'DD/MM/YYYY') : '');
         } catch (dateError) {
           console.warn('Erro ao formatar data do review:', dateError);
           relativeTime = review.relativeTimeDescription || '';

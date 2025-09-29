@@ -328,6 +328,7 @@ const NavbarNextJS: React.FC<NavbarProps> = ({ className = "" }) => {
                   <MessageCircle size={18} />
                   <span>{t('navbar.schedule', 'Agendar Consulta')}</span>
                 </ButtonComponent>
+              </div>
 
             </nav>
           </motion.div>

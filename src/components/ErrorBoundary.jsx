@@ -1,5 +1,6 @@
 import React from 'react';
 import { redirectToBackup } from '@/utils/redirectToBackup';
+import { trackComponentError } from '@/utils/errorTracker';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -15,6 +16,13 @@ class ErrorBoundary extends React.Component {
     // Log detalhado para debug - sempre mostrar em desenvolvimento
     const errorMessage = error?.message || 'Unknown error';
     const errorStack = error?.stack || 'No stack trace available';
+
+    // Track component error with centralized error tracker
+    trackComponentError(
+      this.constructor.name || 'ErrorBoundary',
+      error,
+      info?.componentStack
+    );
 
     console.error('🚨 ErrorBoundary caught error:', {
       error: errorMessage,
@@ -54,25 +62,52 @@ class ErrorBoundary extends React.Component {
       console.warn('Failed to save error details:', e);
     }
 
+    // Enhanced error categorization for better handling
+    const isChunkLoadError = errorMessage.includes('ChunkLoadError') ||
+                            errorMessage.includes('Failed to fetch dynamically imported module') ||
+                            errorMessage.includes('Loading chunk') ||
+                            errorMessage.includes('Loading CSS chunk');
+
+    const isNetworkError = errorMessage.includes('Network Error') ||
+                          errorMessage.includes('Failed to fetch') ||
+                          errorMessage.includes('NetworkError') ||
+                          errorMessage.includes('ECONNREFUSED') ||
+                          errorMessage.includes('ENOTFOUND');
+
+    const isAuthError = errorMessage.includes('401') ||
+                       errorMessage.includes('403') ||
+                       errorMessage.includes('Unauthorized') ||
+                       errorMessage.includes('Forbidden');
+
+    const isNullError = errorMessage.includes('Cannot read properties of null') ||
+                      errorMessage.includes('Cannot read properties of undefined');
+
     // Only redirect to backup for critical errors that make the app unusable
     // Don't redirect for minor errors that can be recovered from
     const isCriticalError = errorMessage.includes('Minified React error') ||
-                          errorMessage.includes('ChunkLoadError') ||
-                          errorMessage.includes('Failed to fetch dynamically imported module') ||
-                          errorMessage.includes('Cannot read properties of null') ||
-                          errorMessage.includes('Cannot read properties of undefined');
+                          isChunkLoadError ||
+                          isNetworkError ||
+                          (isNullError && !errorMessage.includes('displayName')) ||
+                          isAuthError;
 
     if (isCriticalError) {
-      console.warn('Critical error detected, redirecting to backup...');
+      console.warn('Critical error detected, redirecting to backup...', {
+        errorType: isChunkLoadError ? 'Chunk Load' :
+                  isNetworkError ? 'Network' :
+                  isAuthError ? 'Authentication' : 'React Critical'
+      });
+
       setTimeout(() => {
         try {
           redirectToBackup();
         } catch (e) {
           console.error('Backup redirect failed:', e);
         }
-      }, 2000); // Give user time to see the error message
+      }, isChunkLoadError ? 1000 : 2000); // Faster redirect for chunk errors
     } else {
-      console.warn('Non-critical error caught, showing error UI instead of redirecting');
+      console.warn('Non-critical error caught, showing error UI instead of redirecting', {
+        errorType: isNullError ? 'Null Reference' : 'Generic'
+      });
     }
   }
 

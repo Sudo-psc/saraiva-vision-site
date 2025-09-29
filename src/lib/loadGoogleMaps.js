@@ -1,4 +1,4 @@
-import { resolveGoogleMapsApiKey, isValidGoogleMapsKey } from '@/lib/googleMapsKey';
+import { resolveGoogleMapsApiKey, isValidGoogleMapsKey } from './googleMapsKey.js';
 
 let mapsPromise = null;
 let loadAttempts = 0;

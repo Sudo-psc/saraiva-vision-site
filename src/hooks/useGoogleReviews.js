@@ -160,17 +160,35 @@ export function useGoogleReviews(options = {}) {
 
             console.error('Google Reviews fetch error:', err);
             
-            // Retry logic for network errors
-            if (currentRetry < maxRetries && (err.message.includes('network') || err.message.includes('timeout') || err.message.includes('fetch'))) {
+            // Retry logic for network errors and 5xx server errors (not 401/403)
+            const isNetworkError = err.message.includes('network') ||
+                                  err.message.includes('timeout') ||
+                                  err.message.includes('fetch') ||
+                                  err.message.includes('ECONNREFUSED') ||
+                                  err.message.includes('ENOTFOUND') ||
+                                  (err.response && err.response.status >= 500);
+
+            const isAuthError = err.message.includes('401') ||
+                               err.message.includes('403') ||
+                               err.message.includes('Unauthorized') ||
+                               err.message.includes('Forbidden');
+
+            if (currentRetry < maxRetries && isNetworkError && !isAuthError) {
                 console.log(`Retrying request (${currentRetry + 1}/${maxRetries})...`);
                 setRetryCount(currentRetry + 1);
-                
+
                 // Exponential backoff: wait 1s, 2s, 4s
                 const delay = Math.pow(2, currentRetry) * 1000;
                 setTimeout(() => {
                     fetchReviews({ ...fetchOptions, retryAttempt: currentRetry + 1 });
                 }, delay);
                 return;
+            }
+
+            // Log auth errors differently
+            if (isAuthError) {
+                console.warn('Authentication error with Google Reviews API:', err.message);
+                // Don't retry auth errors - they require configuration changes
             }
 
             const error = new Error(err.message || 'Failed to fetch reviews from Google Places API');

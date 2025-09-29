@@ -127,7 +127,7 @@ const Blog = () => {
                   <span>{date}</span>
                 </div>
                 <h3 className="text-xl font-bold mb-3 text-gray-900 flex-grow">
-                  {/* eslint-disable-next-line lint/security/noDangerouslySetInnerHtml -- sanitized via sanitizeWordPressTitle */}
+                  {/* eslint-disable-next-line react/no-danger -- sanitized via sanitizeWordPressTitle */}
                   <Link
                     to={`/blog/${post.slug}`}
                     className="hover:text-blue-600"
