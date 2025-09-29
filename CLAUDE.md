@@ -28,15 +28,15 @@ Saraiva Vision é um site de clínica médica de produção para oftalmologia em
 - **ES modules** (JavaScript moderno)
 
 ### 🔌 Integrações Principais
-- Instagram Graph API (feed social)
-- WhatsApp Business API (comunicação)
-- Google Maps API (localização)
-- Resend API (emails)
-- Spotify Web API (podcasts)
-- WordPress External API (blog headless - https://blog.saraivavision.com.br)
-- WordPress JWT Admin API (operações administrativas - https://cms.saraivavision.com.br)
-- Google Business API (avaliações)
-- Supabase PostgreSQL (real-time)
+- **Instagram Graph API** (feed social)
+- **WhatsApp Business API** (comunicação)
+- **Google Maps API** (localização)
+- **Google Places API** (avaliações em tempo real com fotos)
+- **Resend API** (emails)
+- **Spotify Web API** (podcasts)
+- **WordPress External API** (blog headless - https://blog.saraivavision.com.br)
+- **WordPress JWT Admin API** (operações administrativas - https://cms.saraivavision.com.br)
+- **Supabase PostgreSQL** (real-time)
 
 ### 🔐 WordPress JWT Integration
 Integração segura com WordPress CMS para operações administrativas:
@@ -78,6 +78,42 @@ VITE_PULSE_WS_URL=wss://lc.pulse.is/?b=...&s=...
 - **Rate Limiting**: Controle de requisições por fonte
 - **Error Recovery**: Reconexão automática com backoff exponencial
 - **Input Sanitization**: Validação e limpeza de dados
+
+### ⭐ Google Reviews Integration
+Sistema de avaliações em tempo real com Google Places API:
+
+#### 📁 Arquivos da Integração
+- `src/components/CompactGoogleReviews.jsx` - Componente de exibição
+- `src/hooks/useGoogleReviews.js` - Hook customizado para API
+- `api/src/routes/google-reviews.js` - Endpoint de proxy API
+- `api/src/routes/google-reviews-stats.js` - Estatísticas de avaliações
+- `docs/GOOGLE_REVIEWS_INTEGRATION.md` - Documentação completa
+
+#### 🌟 Funcionalidades
+- **Real-time Reviews**: Avaliações ao vivo da API Google Places
+- **Profile Photos**: Fotos autênticas dos revisores do Google
+- **Intelligent Fallback**: Sistema robusto com dados locais curados
+- **Auto-retry Logic**: Reconexão automática com backoff exponencial
+- **Error Handling**: Tratamento elegante sem quebrar UX
+- **Rate Limiting**: Proteção contra abuso (30 req/min)
+
+#### 📊 Dados Atuais
+```
+Total Reviews: 136 avaliações
+Average Rating: 4.9/5.0 estrelas
+Recent Reviews: Atualizadas em tempo real
+Profile Photos: URLs do Google CDN
+```
+
+#### 🔧 Configuração
+```bash
+# Google Places API
+VITE_GOOGLE_PLACES_API_KEY=AIzaSyDvio5w5mQVZWZGBnPrys1uTwTQBglmFms
+VITE_GOOGLE_PLACE_ID=ChIJVUKww7WRugARF7u2lAe7BeE
+
+# API Endpoint
+GET /api/google-reviews?placeId={PLACE_ID}&limit=5
+```
 
 ## 🚀 Comandos Essenciais
 
