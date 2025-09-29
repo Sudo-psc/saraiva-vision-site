@@ -33,9 +33,51 @@ Saraiva Vision é um site de clínica médica de produção para oftalmologia em
 - Google Maps API (localização)
 - Resend API (emails)
 - Spotify Web API (podcasts)
-- WordPress REST API (blog headless)
+- WordPress External API (blog headless - https://blog.saraivavision.com.br)
+- WordPress JWT Admin API (operações administrativas - https://cms.saraivavision.com.br)
 - Google Business API (avaliações)
 - Supabase PostgreSQL (real-time)
+
+### 🔐 WordPress JWT Integration
+Integração segura com WordPress CMS para operações administrativas:
+
+#### 📁 Arquivos de Integração
+- `api/src/wordpress-jwt-client.js` - Cliente JWT para autenticação WordPress
+- `api/src/routes/wordpress-admin.js` - Rotas admin para CRUD de posts
+- `api/__tests__/wordpress-jwt-client.test.js` - Testes unitários do cliente
+- `src/config/env.ts` - Validação de ambiente com Zod
+- `src/hooks/useGoogleMaps.ts` - Hook seguro para Google Maps
+- `src/utils/SafeWS.ts` - Wrapper WebSocket com reconexão automática
+- `src/hooks/usePulseChat.ts` - Hook para Pulse.live WebSocket
+
+#### 🔑 Funcionalidades JWT
+- **Autenticação JWT**: Login automático com credenciais WordPress
+- **Token Refresh**: Renovação automática de tokens expirados
+- **CRUD Posts**: Criar, ler, atualizar e deletar posts via REST API
+- **User Management**: Acesso a usuários WordPress (admin)
+- **Health Checks**: Validação de conectividade WordPress
+- **Error Handling**: Logging detalhado e recovery automático
+
+#### 🔧 Configuração de Ambiente
+```bash
+# WordPress JWT Credentials
+WORDPRESS_ADMIN_USER=admin_username
+WORDPRESS_ADMIN_PASSWORD=secure_password
+
+# WordPress Base URL
+WORDPRESS_BASE_URL=https://cms.saraivavision.com.br
+
+# Environment Validation (Zod)
+VITE_GOOGLE_MAPS_API_KEY=your_google_maps_key
+VITE_PULSE_WS_URL=wss://lc.pulse.is/?b=...&s=...
+```
+
+#### 🛡️ Segurança Implementada
+- **Token Validation**: Verificação automática de expiração
+- **Secure Storage**: Credenciais não expostas no client-side
+- **Rate Limiting**: Controle de requisições por fonte
+- **Error Recovery**: Reconexão automática com backoff exponencial
+- **Input Sanitization**: Validação e limpeza de dados
 
 ## 🚀 Comandos Essenciais
 
@@ -133,10 +175,11 @@ api/                    # Backend Node.js/Express
 └── __tests__/          # API tests
 
 docs/                   # Scripts e documentação
-├── WORDPRESS_BLOG_SPECS.md    # Especificações
-├── install-wordpress-blog.sh  # Instalação WordPress
-├── deploy-wordpress-blog.sh   # Deploy WordPress
-└── monitor-wordpress-blog.sh  # Monitoramento
+├── WORDPRESS_BLOG_SPECS.md    # Especificações da integração WordPress
+├── nginx-optimized.conf        # Configuração Nginx principal
+├── nginx-wordpress-blog.conf  # Configuração WordPress blog
+├── nginx-cors.conf            # Configuração CORS para APIs
+└── API_INTEGRATION_GUIDE.md   # Guia de integração de APIs
 ```
 
 ### 🎯 Padrões Arquiteturais
@@ -151,7 +194,7 @@ docs/                   # Scripts e documentação
 - **Estrutura Dual**: `api/` (legado) + `api/src/` (moderno)
 - **Express.js**: ES modules + JavaScript moderno
 - **Database**: Supabase + TypeScript + RLS policies
-- **WordPress**: REST API + GraphQL com proxy SSL/CORS
+- **WordPress External API**: Integração com APIs externas via JWT authentication
 - **Auth**: Supabase Auth com RBAC (user/admin/super_admin)
 - **Message Queue**: Supabase `message_outbox` para emails/SMS
 - **Compliance**: CFM validation com Web Workers
@@ -183,12 +226,12 @@ Principais tabelas em `src/lib/supabase.ts`:
 - `review_cache` - Cache de Google Business reviews
 
 #### WordPress Database
-Conteúdo WordPress via MySQL:
-- `wp_posts` - Posts e páginas com metadados CFM
-- `wp_users` - Usuários admin com controle de acesso
-- `wp_postmeta` - Metadados de posts (CFM compliance + SEO)
-- `wp_terms` - Categorias e tags
-- Tabelas customizadas para CFM compliance e audit logs
+Conteúdo WordPress gerenciado via APIs externas:
+- **blog.saraivavision.com.br**: Conteúdo público e posts via REST API
+- **cms.saraivavision.com.br**: Operações administrativas via GraphQL
+- **JWT Authentication**: Token management para acesso seguro
+- **External Storage**: Dados armazenados em WordPress hosting externo
+- **CFM Compliance**: Validação de conteúdo médico via API hooks
 
 ### 🧪 Estratégia de Testes
 - **Unit Tests**: Componentes com React Testing Library + Vitest
@@ -339,11 +382,13 @@ Markup Schema.org compreensivo para SEO médico:
 3. Atualizar funções API relacionadas
 4. Adicionar testes correspondentes
 
-### 🌐 WordPress Management (VPS Nativo)
-1. **Instalação**: `docs/install-wordpress-blog.sh` como root
-2. **Deploy**: `docs/deploy-wordpress-blog.sh` (sem Docker)
-3. **Monitoramento**: `docs/monitor-wordpress-blog.sh`
-4. **Configuração**: Nginx e PHP-FPM configs em `docs/`
+### 🌐 WordPress Management (API Externa)
+1. **Conteúdo Público**: Gerenciado via `https://blog.saraivavision.com.br/wp-admin`
+2. **Operações Admin**: Realizadas via `https://cms.saraivavision.com.br`
+3. **JWT Authentication**: Tokens gerenciados automaticamente pelo sistema
+4. **API Integration**: Uso de `WordPressBlogService.js` e `WordPressJWTAuthService.js`
+5. **CFM Compliance**: Validação automática de conteúdo médico
+6. **Configuração**: Nginx proxy para endpoints externos em `docs/`
 
 ### 📊 Performance Monitoring
 - Métricas real-time via `src/hooks/usePerformanceMonitor.js`
@@ -367,10 +412,9 @@ Projeto deployado em VPS Linux usando serviços nativos:
 Serviços rodando diretamente no Ubuntu/Debian VPS sem containerização:
 - **Nginx**: Web server + proxy reverso para APIs
 - **Node.js**: Runtime nativo para serviços API
-- **MySQL**: Banco nativo para dados relacionais (WordPress, user data)
 - **Redis**: Cache nativo e armazenamento de sessões
-- **PHP-FPM 8.1+**: WordPress CMS nativo
 - **Supabase**: PostgreSQL externo para dados principais
+- **WordPress APIs**: Integração com serviços WordPress externos
 
 #### 📋 Processo de Deployment Nativo
 1. **Build**: `npm run build` cria arquivos estáticos em `dist/`
@@ -395,7 +439,7 @@ sudo systemctl reload nginx
 sudo systemctl restart saraiva-api
 
 # Verificar se serviços estão rodando
-sudo systemctl status nginx saraiva-api mysql redis php8.1-fpm
+sudo systemctl status nginx saraiva-api redis
 ```
 
 ### 🔧 Variáveis de Ambiente Obrigatórias
@@ -409,14 +453,10 @@ VITE_SUPABASE_SERVICE_ROLE_KEY=
 VITE_GOOGLE_MAPS_API_KEY=
 RESEND_API_KEY=
 
-# WordPress Integration
+# WordPress Integration (External API)
 VITE_WORDPRESS_API_URL=https://blog.saraivavision.com.br/wp-json/wp/v2
 VITE_WORDPRESS_GRAPHQL_ENDPOINT=https://cms.saraivavision.com.br/graphql
-
-# WordPress Database (Native VPS)
-WORDPRESS_DB_NAME=saraiva_blog
-WORDPRESS_DB_USER=wp_blog_user
-WORDPRESS_DB_PASSWORD=secure_password
+VITE_WORDPRESS_JWT_ENDPOINT=https://cms.saraivavision.com.br/wp-json/jwt-auth/v1/token
 
 # Development Configuration
 NODE_ENV=production
@@ -451,11 +491,23 @@ VITE_GRAPHQL_MAX_RETRIES=3
 - Checar SSL Labs grade: https://www.ssllabs.com/ssltest/
 
 ### 🌐 WordPress Integration Issues
-- Verificar WordPress rodando na porta 8080: `curl http://localhost:8080/`
-- Checar conexão WordPress database: `sudo systemctl status mysql`
-- Testar WordPress REST API: `curl http://localhost:8080/wp-json/wp/v2/posts`
-- Verificar CORS headers para endpoint GraphQL
-- Testar GraphQL proxy: `curl -X POST http://localhost:3002/api/wordpress-graphql/graphql -H "Content-Type: application/json" -d '{"query":"{__typename}"}'`
+- **Verificar API Externa**: `curl https://blog.saraivavision.com.br/wp-json/wp/v2/posts`
+- **Testar GraphQL**: `curl https://cms.saraivavision.com.br/graphql -H "Content-Type: application/json" -d '{"query":"{__typename}"}'`
+- **JWT Authentication**: Verificar credenciais em variáveis de ambiente
+- **Token Expiration**: Cliente JWT faz refresh automático
+- **CORS Configuration**: Checar headers em `docs/nginx-cors.conf`
+- **Nginx Proxy**: Verificar rotas em `/api/wordpress-graphql/` e `/wp-json/`
+
+### 🗺️ Google Maps Issues (Corrigido v4)
+- **InvalidStateError**: Resolvido com SafeWS wrapper e guards de estado
+- **404 maps-health**: Corrigido com parâmetros válidos e loading seguro
+- **WebSocket bad response**: Implementado reconexão automática com backoff
+- **Global error: null**: Substituído por logging detalhado com contexto
+
+### 🔧 Environment Validation
+- Usar `src/config/env.ts` para validação obrigatória de variáveis
+- Prefixo `VITE_` obrigatório para client-side access
+- Fallback seguro para APIs externas com error boundaries
 
 ### ⚡ Performance Issues
 - Monitorar Core Web Vitals com `src/hooks/usePerformanceMonitor.js`

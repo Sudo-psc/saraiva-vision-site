@@ -6,14 +6,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import WordPressBlogService from '../../services/WordPressBlogService';
+import { useWordPressAuth } from '../../contexts/WordPressAuthContext';
 import LoadingSpinner from '../ui/LoadingSpinner';
 import ErrorMessage from '../ui/ErrorMessage';
+import WordPressAuthStatus from './WordPressAuthStatus';
 
 const BlogList = ({
     category = null,
     featured = false,
     limit = 10,
     showPagination = true,
+    showAuthStatus = true,
     className = ''
 }) => {
     const [posts, setPosts] = useState([]);
@@ -23,12 +26,16 @@ const BlogList = ({
     const [totalPages, setTotalPages] = useState(1);
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(category);
+    const [authStatusVisible, setAuthStatusVisible] = useState(false);
+    const [connectionStatus, setConnectionStatus] = useState(null);
 
+    const { isAuthenticated, wordpressUser, testConnection, canEditPosts, jwtService } = useWordPressAuth();
     const blogService = new WordPressBlogService();
 
     useEffect(() => {
         loadPosts();
         loadCategories();
+        checkWordPressConnection();
     }, [currentPage, selectedCategory, limit]);
 
     const loadPosts = async () => {
@@ -36,6 +43,7 @@ const BlogList = ({
             setLoading(true);
             setError(null);
 
+            // Add authentication context to the request
             const postsData = await blogService.getPosts({
                 page: currentPage,
                 perPage: limit,
@@ -56,6 +64,30 @@ const BlogList = ({
         } finally {
             setLoading(false);
         }
+    };
+
+    const checkWordPressConnection = async () => {
+        try {
+            const status = await blogService.testConnection();
+            setConnectionStatus(status);
+        } catch (err) {
+            console.error('Error checking WordPress connection:', err);
+            setConnectionStatus({ success: false, error: err.message });
+        }
+    };
+
+    const handleTestConnection = async () => {
+        try {
+            setConnectionStatus({ success: false, message: 'Testando conexão...' });
+            const result = await testConnection();
+            setConnectionStatus(result);
+        } catch (err) {
+            setConnectionStatus({ success: false, error: err.message });
+        }
+    };
+
+    const toggleAuthStatus = () => {
+        setAuthStatusVisible(!authStatusVisible);
     };
 
     const loadCategories = async () => {
@@ -105,6 +137,92 @@ const BlogList = ({
 
     return (
         <div className={`blog-list ${className}`}>
+            {/* Connection Status and Auth Controls */}
+            <div className="mb-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    {/* Connection Status */}
+                    <div className="flex items-center space-x-3">
+                        <div className={`w-3 h-3 rounded-full ${
+                            connectionStatus?.success ? 'bg-green-500' :
+                            connectionStatus === null ? 'bg-yellow-500' : 'bg-red-500'
+                        }`} />
+                        <div className="text-sm">
+                            {connectionStatus === null && (
+                                <span className="text-gray-600">Verificando conexão WordPress...</span>
+                            )}
+                            {connectionStatus?.success && (
+                                <span className="text-green-600">
+                                    WordPress conectado ✓
+                                    {isAuthenticated && ` (Autenticado como ${wordpressUser?.name})`}
+                                </span>
+                            )}
+                            {connectionStatus && !connectionStatus.success && (
+                                <span className="text-red-600">
+                                    WordPress: {connectionStatus.error || 'Erro de conexão'}
+                                </span>
+                            )}
+                        </div>
+                        <button
+                            onClick={handleTestConnection}
+                            className="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                        >
+                            Testar Conexão
+                        </button>
+                    </div>
+
+                    {/* Auth Controls */}
+                    {showAuthStatus && (
+                        <div>
+                            <button
+                                onClick={toggleAuthStatus}
+                                className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                            >
+                                {authStatusVisible ? 'Ocultar Auth' : 'Mostrar Auth'}
+                            </button>
+                        </div>
+                    )}
+                </div>
+
+                {/* WordPress Auth Status Panel */}
+                {authStatusVisible && showAuthStatus && (
+                    <div className="mt-4">
+                        <WordPressAuthStatus showControls={true} />
+                    </div>
+                )}
+            </div>
+
+            {/* Admin Controls for Authenticated Users */}
+            {isAuthenticated && canEditPosts() && (
+                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h3 className="text-green-800 font-medium">
+                                🎯 Modo Administrador WordPress
+                            </h3>
+                            <p className="text-green-700 text-sm mt-1">
+                                Você tem permissão para editar e gerenciar conteúdo do blog.
+                            </p>
+                        </div>
+                        <div className="flex space-x-2">
+                            <a
+                                href="https://blog.saraivavision.com.br/wp-admin/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700"
+                            >
+                                Painel WordPress
+                            </a>
+                            <button
+                                onClick={() => window.open('/novo-post', '_blank')}
+                                className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                            >
+                                Novo Post
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Category Filter */}
             {!category && categories.length > 0 && (
                 <div className="mb-8">

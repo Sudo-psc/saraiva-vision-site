@@ -45,13 +45,9 @@ class WordPressBlogService {
         }
 
         try {
-            const storedToken = tokenStorage.getToken();
-            if (storedToken && !isTokenExpired(storedToken)) {
-                this.jwtService.token = storedToken;
-                const payload = this.jwtService.decodeJWTPayload ? this.jwtService.decodeJWTPayload(storedToken) : null;
-                if (payload && payload.exp) {
-                    this.jwtService.tokenExpiry = payload.exp * 1000;
-                }
+            // Use the new initializeFromStorage method
+            const restored = this.jwtService.initializeFromStorage();
+            if (restored) {
                 logger.auth('Restored token from storage', { expires: new Date(this.jwtService.tokenExpiry).toISOString() });
             }
         } catch (error) {
@@ -491,12 +487,7 @@ class WordPressBlogService {
             };
         }
 
-        return {
-            enabled: true,
-            authenticated: this.jwtService.isAuthenticated(),
-            tokenExpiry: this.jwtService.getTokenExpiry(),
-            hasStoredToken: !!tokenStorage.getToken()
-        };
+        return this.jwtService.getAuthStatus();
     }
 
     /**
@@ -508,12 +499,7 @@ class WordPressBlogService {
         }
 
         const token = await this.jwtService.authenticate();
-
-        // Store token for future use
-        if (token) {
-            tokenStorage.setToken(token);
-            logger.auth('Authentication successful', { expires: new Date(this.jwtService.tokenExpiry).toISOString() });
-        }
+        logger.auth('Authentication successful', { expires: new Date(this.jwtService.tokenExpiry).toISOString() });
 
         return token;
     }
@@ -527,8 +513,7 @@ class WordPressBlogService {
         }
 
         try {
-            const user = await this.jwtService.makeAuthenticatedRequest('/users/me');
-            return user;
+            return await this.jwtService.getCurrentUser();
         } catch (error) {
             logger.error('Failed to get current user', error);
             throw error;
@@ -544,6 +529,17 @@ class WordPressBlogService {
         }
         tokenStorage.clearAllTokens();
         logger.auth('Logged out successfully');
+    }
+
+    /**
+     * Test WordPress JWT connection
+     */
+    async testConnection() {
+        if (!this.useJWTAuth || !this.jwtService) {
+            throw new Error('JWT authentication is not enabled');
+        }
+
+        return await this.jwtService.testConnection();
     }
 
     /**
