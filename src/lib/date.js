@@ -27,4 +27,24 @@ export const getWeekdays = () => {
     }
 };
 
+/**
+ * Formatar data para exibição em português brasileiro
+ * @param {string | Date} input - Data a ser formatada
+ * @param {string} format - Formato da data (default: "DD/MM/YYYY")
+ * @returns {string} Data formatada ou string vazia se inválida
+ */
+export const formatDate = (input, format = "DD/MM/YYYY") => {
+    if (!input) return '';
+
+    try {
+        const date = dayjs(input);
+        if (!date.isValid()) return '';
+
+        return date.format(format);
+    } catch (error) {
+        console.warn('Erro ao formatar data:', error);
+        return '';
+    }
+};
+
 export default dayjs;

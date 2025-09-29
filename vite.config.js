@@ -52,7 +52,7 @@ export default defineConfig({
 
   build: {
     outDir: 'dist',
-    sourcemap: process.env.NODE_ENV === 'development' ? true : false, // Source maps only in dev
+    sourcemap: true, // Always enable sourcemaps for debugging
     chunkSizeWarningLimit: 800, // Increase for VPS deployment
     assetsDir: 'assets',
     assetsInlineLimit: 8192, // Increase inline limit for VPS performance

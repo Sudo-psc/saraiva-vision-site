@@ -1,4 +1,5 @@
 import { loadGoogleMaps } from './loadGoogleMaps';
+import { formatDate } from './date.js';
 
 const placeCache = new Map();
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutos
@@ -6,6 +7,8 @@ const CACHE_DURATION = 30 * 60 * 1000; // 30 minutos
 export function clearPlaceCache() {
   placeCache.clear();
 }
+
+export { placeCache };
 
 /**
  * Busca detalhes de um local do Google Places
@@ -60,15 +63,38 @@ export async function fetchPlaceDetails(
     
     await place.fetchFields({ fields });
 
+    // Normalize place data to prevent undefined errors with safe formatDate usage
     const data = {
       name: place.displayName || 'Nome não disponível',
-      location: place.location,
+      location: place.location || null,
       formattedAddress: place.formattedAddress || 'Endereço não disponível',
       rating: place.rating || 0,
       userRatingCount: place.userRatingCount || 0,
       url: place.googleMapsURI || '',
-      reviews: place.reviews || [],
-      photos: place.photos || [],
+      reviews: Array.isArray(place.reviews) ? place.reviews.filter(review => review && typeof review === 'object').map(review => {
+        let relativeTime = '';
+        try {
+          // Safe formatDate usage with error handling
+          const timeToFormat = review.createTime || review.time;
+          relativeTime = review.relativeTimeDescription || (timeToFormat ? formatDate(timeToFormat, 'DD/MM/YYYY') : '');
+        } catch (dateError) {
+          console.warn('Erro ao formatar data do review:', dateError);
+          relativeTime = review.relativeTimeDescription || '';
+        }
+
+        return {
+          id: review.id || `review-${Date.now()}-${Math.random()}`,
+          reviewer: {
+            displayName: review.reviewer?.displayName || review.reviewer?.name || review.author_name || 'Nome não disponível',
+            profilePhotoUrl: review.reviewer?.profilePhotoUrl || review.reviewer?.photoUrl || review.author_profile_photo || '/images/avatar-female-brunette-320w.avif'
+          },
+          starRating: Math.max(1, Math.min(5, Number(review.starRating) || Number(review.rating) || 5)),
+          comment: review.comment || review.text || review.review_text || 'Excelente atendimento!',
+          createTime: review.createTime || review.time || review.relative_time || new Date().toISOString(),
+          relativeTimeDescription: relativeTime
+        };
+      }) : [],
+      photos: Array.isArray(place.photos) ? place.photos : [],
       businessStatus: place.businessStatus || 'UNKNOWN',
       priceLevel: place.priceLevel || null,
       fetchedAt: new Date().toISOString()
@@ -94,7 +120,7 @@ export async function fetchPlaceDetails(
     
     // Retornar dados básicos em caso de erro
     return {
-      name: 'Saraiva Vision',
+      name: 'Nome não disponível',
       location: null,
       formattedAddress: 'Endereço não disponível',
       rating: 0,
