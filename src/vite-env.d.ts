@@ -16,8 +16,8 @@ interface ImportMetaEnv {
   // Maps Configuration
   readonly VITE_GOOGLE_MAPS_API_KEY: string
   
-  // Error Tracking
-  readonly VITE_SENTRY_DSN: string
+  // Error Tracking (Sentry removed - using console logging)
+  // readonly VITE_SENTRY_DSN: string
   readonly VITE_VERCEL_ENV: string
   readonly VITE_VERCEL_GIT_COMMIT_SHA: string
   

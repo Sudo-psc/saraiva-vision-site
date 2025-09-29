@@ -43,8 +43,13 @@ function App() {
   useEffect(() => {
     document.documentElement.lang = 'pt-BR';
 
-    // Initialize error tracking for production
-    initErrorTracking();
+    // Initialize error tracking for production with error boundary
+    try {
+      initErrorTracking();
+    } catch (error) {
+      console.warn('Failed to initialize error tracking:', error);
+      // Don't let error tracking failure break the app
+    }
   }, []);
 
   return (

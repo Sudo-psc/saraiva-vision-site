@@ -1,63 +1,74 @@
 # Saraiva Vision - Project Essentials
 
-## Core Identity
-- **Medical ophthalmology clinic** in Caratinga, MG, Brazil
-- **Production VPS** at 31.97.129.78 (native deployment, no Docker)
-- **CFM/LGPD compliance** required for medical industry
-- **Current Branch**: external-wordpress (stable deployment)
+## 🎯 Visão Executiva
+Plataforma médica oftalmológica em Caratinga, MG, Brasil. Site em produção com requisitos rigorosos de compliance CFM/LGPD.
 
-## Tech Stack
+**Status**: ✅ Produção ativa | 🏥 Healthcare | 🇧🇷 Mercado brasileiro | ⚖️ CFM/LGPD compliance
+
+## 🛠 Tech Stack Principal
 - **Frontend**: React 18 + TypeScript + Vite + Tailwind CSS
-- **Backend**: Node.js 22+ + Express + Nginx
-- **Database**: Supabase PostgreSQL + WordPress external (cms.saraivavision.com.br)
-- **Authentication**: Supabase Auth + WordPress JWT for admin ops
+- **Backend**: Node.js 22+ + Express + Nginx (VPS nativo)
+- **Database**: Supabase PostgreSQL + WordPress externo
+- **Auth**: Supabase Auth + WordPress JWT para admin
 
-## Key Commands
+## 🚀 Comandos Essenciais
 ```bash
-npm run dev              # Dev server (port 3002)
-npm run build            # Production build → dist/
-npm run test:comprehensive  # Full test suite
-bash scripts/deploy-production.sh  # VPS deployment (on server)
+npm run dev              # Servidor de desenvolvimento (porta 3002)
+npm run build            # Build para produção
+npm run test:comprehensive  # Testes completos
+bash scripts/deploy-production.sh  # Deploy VPS (no servidor)
 ```
 
-## Critical Features
-- **Patient Management**: Appointments, contact forms, reviews
-- **WordPress Integration**: External CMS via REST API (cms.saraivavision.com.br)
-- **Social**: Instagram feed, Spotify podcasts, Google Reviews
-- **AI**: Pulse.live chatbot integration
-- **Compliance**: Medical disclaimers, PII detection, LGPD consent
+## ⭐ Funcionalidades Críticas
+- **Gestão de Pacientes**: Agendamentos, contato, avaliações
+- **Integração WordPress**: CMS externo via REST API
+- **Social**: Instagram, podcasts, Google Reviews
+- **AI**: Chatbot Pulse.live integration
+- **Compliance**: Disclaimers médicos, PII detection, LGPD
 
-## Architecture
+## 🏗 Arquitetura
 ```
 User → Nginx (31.97.129.78) → Static Files (/var/www/html)
                             → API Proxy (/api/*) → Node.js Express
                             → WordPress Proxy (/wp-json/*) → cms.saraivavision.com.br
 ```
 
-## Deployment Flow
-1. Build locally: `npm run build`
-2. Execute on VPS: `bash scripts/deploy-production.sh`
-3. Script auto-handles: backups, Nginx test, file copy, permissions, reload
-4. Zero-downtime deployment with rollback capability
+## 📋 Processo de Deploy
+1. Build local: `npm run build`
+2. Executar no VPS: `bash scripts/deploy-production.sh`
+3. Script auto-lida com: backups, test Nginx, cópia de arquivos, permissões, reload
+4. Deploy zero-downtime com rollback capability
 
-## Database Schema (Supabase)
-- `contact_messages` - Patient inquiries (LGPD compliant)
-- `appointments` - Booking system with reminders
-- `message_outbox` - Async email/SMS queue
-- `podcast_episodes` - Content management with RSS
-- `profiles` - User auth with RBAC (user/admin/super_admin)
+## 🗃 Database Schema (Supabase)
+- `contact_messages` - Contato de pacientes (LGPD compliant)
+- `appointments` - Sistema de agendamentos com lembretes
+- `message_outbox` - Fila email/SMS assíncrona
+- `podcast_episodes` - Gerenciamento de conteúdo com RSS
+- `profiles` - Auth com RBAC (user/admin/super_admin)
 
-## Environment Variables
+## 🔧 Variáveis de Ambiente
 ```bash
 VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY  # Database
 VITE_GOOGLE_MAPS_API_KEY                     # Maps integration
-VITE_WORDPRESS_API_URL=https://cms.saraivavision.com.br  # WordPress JSON API
+VITE_WORDPRESS_API_URL=https://cms.saraivavision.com.br  # WordPress API
 RESEND_API_KEY                               # Email service
 ```
 
-## Current State (2025-09-29)
+## 📊 Estado Atual (2025-09-29)
 - ✅ VPS deployment successful (bundle: 154KB main, 11MB assets)
 - ✅ WordPress REST API working (cms.saraivavision.com.br)
-- ✅ Nginx optimized with CORS, security headers, rate limiting
-- ✅ Build optimizations: aggressive chunking, no sourcemaps in prod
-- ✅ Production verified: all health checks passing
+- ✅ Nginx optimized com CORS, security headers, rate limiting
+- ✅ Build optimizations: aggressive chunking, no sourcemaps em prod
+- ✅ Produção verificada: todos health checks passing
+
+## 🔗 Links Importantes
+- **Production**: https://saraivavision.com.br
+- **WordPress Admin**: https://cms.saraivavision.com.br
+- **Blog Público**: https://blog.saraivavision.com.br
+- **VPS**: 31.97.129.78 (Ubuntu/Debian nativo)
+
+## ⚠️ Observações Importantes
+- **Sem Docker**: Deploy nativo em VPS para performance otimizada
+- **WordPress Externo**: CMS gerenciado via APIs externas
+- **CFM Compliance**: Validação automática de conteúdo médico
+- **LGPD**: Consent management e PII protection integrados

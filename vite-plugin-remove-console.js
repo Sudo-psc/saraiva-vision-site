@@ -23,10 +23,11 @@ export default function removeConsolePlugin() {
       }
 
       // Pattern to match console statements (preserves warn and error)
-      const consolePattern = /console\.(log|debug|info)\s*\([^)]*\);?/g
+      // Use a more robust pattern that handles template literals
+      const consolePattern = /console\.(log|debug|info)\s*\([\s\S]*?\)(?:\s*;)?/g
 
       // Replace console statements with empty string
-      const transformedCode = code.replace(consolePattern, '/* console removed */')
+      const transformedCode = code.replace(consolePattern, '')
 
       // Only return if changes were made
       if (transformedCode !== code) {

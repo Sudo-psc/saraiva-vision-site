@@ -10,9 +10,8 @@ const plugins = [
     jsxRuntime: 'automatic',
     // Include refresh for development
     include: '**/*.{jsx,tsx}'
-  }),
-  removeConsolePlugin() // Auto-remove console.log in production
-]
+   })
+ ]
 
 // Workbox plugin disabled for stable deployment
 // if (process.env.NODE_ENV === 'development') {
@@ -141,55 +140,72 @@ export default defineConfig(({ mode }) => {
         // Aggressive chunking strategy for optimal bundle sizes (<250KB target per chunk)
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            // Core React packages - isolate to prevent context issues (<200KB)
-            if (id.includes('react/') || id.includes('react-dom/')) {
+            // Core React packages - isolate to prevent context issues
+            if (id.includes('react/') || id.includes('react-dom/') || id.includes('react/jsx-runtime')) {
               return 'react-core'
             }
 
-            // React Router - separate chunk (~50KB)
+            // React Router - separate chunk
             if (id.includes('react-router')) {
               return 'router'
             }
 
-            // Radix UI - split by component to enable tree-shaking
+            // Radix UI - group together to prevent circular dependencies
             if (id.includes('@radix-ui')) {
-              // Dialog, Dropdown, etc. are heavy - separate them
-              if (id.includes('@radix-ui/react-dialog') || id.includes('@radix-ui/react-dropdown-menu')) {
-                return 'radix-dialog'
-              }
-              if (id.includes('@radix-ui/react-popover') || id.includes('@radix-ui/react-tooltip')) {
-                return 'radix-popover'
-              }
-              // Other Radix components together
               return 'radix-ui'
             }
 
-            // Framer Motion - heavy animation library (~150KB)
+            // Framer Motion - heavy animation library
             if (id.includes('framer-motion')) {
               return 'motion'
             }
 
+            // React Helmet - async rendering utilities
+            if (id.includes('react-helmet')) {
+              return 'helmet'
+            }
+
             // Date utilities
-            if (id.includes('date-fns')) {
+            if (id.includes('date-fns') || id.includes('dayjs')) {
               return 'date-utils'
             }
 
-            // CSS/Styling utilities (clsx, class-variance-authority, tailwind-merge)
+            // CSS/Styling utilities
             if (id.includes('clsx') || id.includes('class-variance-authority') || id.includes('tailwind-merge')) {
               return 'style-utils'
             }
 
-            // Supabase SDK - separate for lazy loading potential
+            // Supabase SDK
             if (id.includes('@supabase/')) {
               return 'supabase'
             }
 
+            // Utility libraries
+            if (id.includes('crypto-js') || id.includes('dompurify') || id.includes('zod')) {
+              return 'utils'
+            }
+
+            // HTTP/GraphQL libraries
+            if (id.includes('graphql') || id.includes('fetch')) {
+              return 'network'
+            }
+
             // Icons libraries
-            if (id.includes('lucide-react') || id.includes('react-icons')) {
+            if (id.includes('lucide-react')) {
               return 'icons'
             }
 
-            // Other vendor libraries - remaining small utilities
+            // Google Maps
+            if (id.includes('googlemaps')) {
+              return 'maps'
+            }
+
+            // Internationalization
+            if (id.includes('i18next')) {
+              return 'i18n'
+            }
+
+            // Other vendor libraries
             return 'vendor-misc'
           }
         },

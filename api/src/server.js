@@ -64,6 +64,7 @@ app.get('/health', (req, res) => {
 
 // API Routes - dynamically import and adapt Vercel handlers
 const routes = [
+  { path: '/api/config', handler: '../config.js' },
   { path: '/api/contact', handler: '../contact/index.js' },
   { path: '/api/servicos', handler: '../servicos/index.js' },
   { path: '/api/health', handler: '../health.js' },

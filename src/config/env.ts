@@ -31,8 +31,8 @@ const envSchema = z.object({
   // Resend Email
   VITE_RESEND_API_KEY: z.string().optional(),
 
-  // Sentry
-  VITE_SENTRY_DSN: z.string().url().optional(),
+  // Sentry (REMOVED - no longer used)
+  // VITE_SENTRY_DSN: z.string().url().optional(),
 
   // Site configuration
   VITE_SITE_BASE_URL: z.string().url().optional(),

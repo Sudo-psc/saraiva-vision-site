@@ -33,9 +33,9 @@ export function getSupabaseClient(): SupabaseClient<Database> | null {
     return clientInstance;
   }
 
-  // Get environment variables
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+  // Get environment variables (empty in production to prevent inlining)
+  const supabaseUrl = import.meta.env.PROD ? '' : (import.meta.env.VITE_SUPABASE_URL || '');
+  const supabaseAnonKey = import.meta.env.PROD ? '' : (import.meta.env.VITE_SUPABASE_ANON_KEY || '');
 
   // Validate configuration
   if (!supabaseUrl || !supabaseAnonKey) {
@@ -102,10 +102,9 @@ export function getSupabaseAdmin(): SupabaseClient<Database> | null {
     return adminInstance;
   }
 
-  // Get environment variables
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-  const supabaseServiceKey =
-    import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || '';
+  // Get environment variables (empty in production to prevent inlining)
+  const supabaseUrl = import.meta.env.PROD ? '' : (import.meta.env.VITE_SUPABASE_URL || '');
+  const supabaseServiceKey = ''; // Service role key removed - not exposed to frontend
 
   // Validate configuration
   if (!supabaseUrl || !supabaseServiceKey) {
@@ -173,6 +172,9 @@ export function resetSupabaseClients(): void {
  * Check if Supabase is properly configured
  */
 export function isSupabaseConfigured(): boolean {
+  // Return false in production - use runtime config instead
+  if (import.meta.env.PROD) return false;
+
   const url = import.meta.env.VITE_SUPABASE_URL || '';
   const key = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
@@ -187,5 +189,11 @@ export function isSupabaseConfigured(): boolean {
 
 // Export default instance for backward compatibility
 // This maintains existing import patterns while using singleton
+// Note: These will be null initially and should be replaced with async getSupabaseClient() calls
 export const supabase = getSupabaseClient();
 export const supabaseAdmin = getSupabaseAdmin();
+
+// Add warning about deprecated usage
+if (import.meta.env.DEV) {
+  console.warn('⚠️ Direct supabase export is deprecated. Use getSupabaseClient() async function instead.');
+}

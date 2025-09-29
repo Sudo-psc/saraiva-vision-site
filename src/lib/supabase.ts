@@ -346,11 +346,7 @@ async function initSupabaseClients() {
             const config = await getEnvConfig();
             const supabaseUrl = config.supabaseUrl || '';
             const supabaseAnonKey = config.supabaseAnonKey || '';
-
-            // Development: Get service key from env if available
-            const supabaseServiceKey = import.meta.env.DEV
-                ? import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || ''
-                : '';
+            const supabaseServiceKey = ''; // Service role key removed - not used in production
 
             // Validate required environment variables
             if (!supabaseUrl || !isValidHttpUrl(supabaseUrl)) {
