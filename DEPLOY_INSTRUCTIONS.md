@@ -1,6 +1,6 @@
 # 🚀 INSTRUÇÕES DE DEPLOY - Saraiva Vision
 
-**Tempo Estimado**: 5 minutos
+**Tempo Estimado**: 2 minutos
 **Downtime**: Zero (reload Nginx é graceful)
 **Reversível**: Sim (backup automático criado)
 
@@ -8,31 +8,27 @@
 
 ## ✅ PRÉ-REQUISITOS
 
-- [x] Acesso SSH ao VPS (root@31.97.129.78)
-- [x] Script de deploy criado e commitado
-- [x] Novo build pronto (index-BBFraBW_.js)
+- [x] Estar logado no VPS
+- [x] Novo build gerado (npm run build)
+- [x] Git atualizado com última versão
 
 ---
 
 ## 🎯 EXECUÇÃO DO DEPLOY
 
-### Opção 1: Script Automatizado (RECOMENDADO) ⭐
+### Script Automatizado (1 comando) ⭐
 
-Conecte no VPS e execute **apenas um comando**:
+Execute direto no VPS:
 
 ```bash
-# SSH no VPS
-ssh root@31.97.129.78
-
-# Execute o script completo
 sudo bash /home/saraiva-vision-site/DEPLOY_NOW.sh
 ```
 
 **O script vai automaticamente**:
-1. ✅ Fazer pull do código atualizado
+1. ✅ Verificar diretório do projeto
 2. ✅ Aplicar correção de cache headers do Nginx
 3. ✅ Criar backup da produção atual
-4. ✅ Deploy do novo build (index-BBFraBW_.js)
+4. ✅ Deploy do novo build (detecta hash automaticamente)
 5. ✅ Configurar permissões corretas
 6. ✅ Validar deployment com testes
 7. ✅ Verificar cache headers aplicados
@@ -41,17 +37,13 @@ sudo bash /home/saraiva-vision-site/DEPLOY_NOW.sh
 
 ## ✅ VALIDAÇÃO PÓS-DEPLOY
 
-### Teste 1: Cache Headers Corretos
+### Teste 1: Verificar Output do Script
 
-```bash
-# HTML deve ter no-cache
-curl -sI https://saraivavision.com.br/ | grep Cache-Control
-# ✅ Esperado: "no-store, no-cache, must-revalidate"
-
-# Assets devem ter cache imutável
-curl -sI https://saraivavision.com.br/assets/index-BBFraBW_.js | grep Cache-Control
-# ✅ Esperado: "public, immutable, max-age=31536000"
-```
+O script mostra automaticamente:
+- ✅ Bundle deployado (ex: index-BBFraBW_.js)
+- ✅ Cache headers HTML (no-cache)
+- ✅ Cache headers Assets (immutable)
+- ✅ Testes de carregamento de páginas
 
 ### Teste 2: No Navegador
 
@@ -71,6 +63,25 @@ sudo systemctl reload nginx
 
 ---
 
+## 📝 WORKFLOW COMPLETO
+
+### 1. Desenvolvimento Local
+```bash
+npm run build  # Gera novo build com hash
+```
+
+### 2. Deploy no VPS
+```bash
+# Já está no VPS
+sudo bash /home/saraiva-vision-site/DEPLOY_NOW.sh
+```
+
+### 3. Validação
+- Script mostra todos os testes automaticamente
+- Testar no navegador com hard refresh
+
+---
+
 **Status**: ✅ Pronto para deploy
-**Build**: index-BBFraBW_.js
 **Script**: `/home/saraiva-vision-site/DEPLOY_NOW.sh`
+**Detecção**: Automática do hash do bundle

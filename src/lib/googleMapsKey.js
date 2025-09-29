@@ -14,16 +14,29 @@ export function isValidGoogleMapsKey(key) {
 }
 
 export function getBuildTimeGoogleMapsKey() {
+  // Em produção, NUNCA usar build-time keys para evitar exposição
+  // Sempre usar runtime loading via /api/config
+  if (import.meta.env.PROD) {
+    return ''; // Força runtime loading em produção
+  }
+
+  // Development: OK usar VITE_ vars
   const key = normalizeKey(import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
   return isValidGoogleMapsKey(key) ? key : '';
 }
 
 function getMapsConfigUrl() {
+  // Em produção, usar /api/config endpoint
+  if (import.meta.env.PROD) {
+    return '/api/config';
+  }
+
+  // Development: try specific maps config first, fallback to general config
   const base = normalizeKey(import.meta.env.VITE_API_BASE_URL);
   if (base && base.startsWith('http')) {
-    return `${base.replace(/\/$/, '')}/maps/config`;
+    return `${base.replace(/\/$/, '')}/config`;
   }
-  return '/api/maps/config';
+  return '/api/config';
 }
 
 async function fetchRuntimeKey() {

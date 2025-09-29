@@ -1,17 +1,42 @@
-import React, { useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getEnvConfig } from '@/config/runtime-env';
 
 const GoogleMapsDebugger = () => {
-  const debugInfo = useMemo(() => {
-    const viteKey = import.meta.env?.VITE_GOOGLE_MAPS_API_KEY;
-    const maskedKey = viteKey ? `${viteKey.slice(0, 6)}•••${viteKey.slice(-4)}` : 'não definido';
+  const [debugInfo, setDebugInfo] = useState({
+    apiKeyPresent: false,
+    apiKeyMasked: 'carregando...',
+    mapsScriptPresent: false,
+    hostname: typeof window !== 'undefined' ? window.location.hostname : 'desconhecido',
+    buildTime: new Date().toISOString(),
+    loadingConfig: true
+  });
 
-    return {
-      apiKeyPresent: Boolean(viteKey),
-      apiKeyMasked: maskedKey,
-      mapsScriptPresent: Boolean(document.querySelector('script[src*="maps.googleapis"]')),
-      hostname: typeof window !== 'undefined' ? window.location.hostname : 'desconhecido',
-      buildTime: new Date().toISOString()
+  useEffect(() => {
+    const loadDebugInfo = async () => {
+      try {
+        const config = await getEnvConfig();
+        const apiKey = config.googleMapsApiKey;
+        const maskedKey = apiKey ? `${apiKey.slice(0, 6)}•••${apiKey.slice(-4)}` : 'não definido';
+
+        setDebugInfo({
+          apiKeyPresent: Boolean(apiKey),
+          apiKeyMasked: maskedKey,
+          mapsScriptPresent: Boolean(document.querySelector('script[src*="maps.googleapis"]')),
+          hostname: typeof window !== 'undefined' ? window.location.hostname : 'desconhecido',
+          buildTime: new Date().toISOString(),
+          loadingConfig: false
+        });
+      } catch (error) {
+        console.error('Failed to load debug info:', error);
+        setDebugInfo(prev => ({
+          ...prev,
+          apiKeyMasked: 'erro ao carregar',
+          loadingConfig: false
+        }));
+      }
     };
+
+    loadDebugInfo();
   }, []);
 
   return (

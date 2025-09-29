@@ -2,11 +2,11 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { useGoogleReviews } from '../useGoogleReviews';
 
 // Mock fetch
-global.fetch = jest.fn();
+global.fetch = vi.fn();
 
 describe('useGoogleReviews', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should handle successful API response', async () => {

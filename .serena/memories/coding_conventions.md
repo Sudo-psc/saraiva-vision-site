@@ -1,66 +1,30 @@
-# Coding Conventions - Saraiva Vision Site
+# Coding Standards
 
-## File Organization
-- **Components**: `src/components/` - React components
-- **Pages**: `src/pages/` - Page-level components with lazy loading
-- **Utils**: `src/utils/` - Utility functions and helpers
-- **Hooks**: `src/hooks/` - Custom React hooks
-- **Config**: `src/config/` - Configuration files
-- **Types**: `src/types/` - TypeScript type definitions
-- **Styles**: `src/styles/` - CSS and styling files
-- **Locales**: `src/locales/` - Internationalization files
-
-## Naming Conventions
-- **Components**: PascalCase (e.g., `HomePageLayout.jsx`, `ContactPage.jsx`)
-- **Files**: PascalCase for components, camelCase for utilities
-- **Variables**: camelCase
+## File Naming
+- **Components**: PascalCase (`ContactForm.jsx`)
+- **Utils/Hooks**: camelCase (`useAuth.js`)
 - **Constants**: UPPER_SNAKE_CASE
-- **CSS Classes**: Tailwind utility classes
+- **Tests**: Co-located `__tests__/` or `.test.jsx`
 
-## Code Style
-- **Language**: JavaScript (JSX) with some TypeScript
-- **Module System**: ES6 modules (`import`/`export`)
-- **Component Style**: Functional components with hooks
-- **Code Splitting**: Lazy loading for pages (`React.lazy()`)
-- **Aliases**: `@/` for `src/` directory
+## Import Organization
+1. React imports
+2. External libraries
+3. Internal modules (use `@/` alias)
+4. Styles
+
+## TypeScript
+- Partial strict mode (`strict: false` for compatibility)
+- Path aliases: `@/` → `src/`
+- DB types in `src/lib/supabase.ts`
 
 ## React Patterns
-- Functional components with hooks
-- Lazy loading for route-level components
-- Context providers for global state (WidgetProvider)
-- Custom hooks for reusable logic
-- Suspense boundaries for lazy components
+- Prefer composition over inheritance
+- Use React.memo for expensive renders
+- Custom hooks for shared logic
+- Error boundaries for crash protection
 
-## Dependencies
-- **UI Framework**: React 18.2.0
-- **UI Components**: Radix UI with custom styling
-- **Styling**: Tailwind CSS
-- **Animation**: Framer Motion
-- **Routing**: React Router DOM v6
-- **Internationalization**: i18next
-- **Build Tool**: Vite
-
-## Component Structure
-```jsx
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-
-function ComponentName() {
-  const { t } = useTranslation();
-  
-  return (
-    <div className="tailwind-classes">
-      {/* Component content */}
-    </div>
-  );
-}
-
-export default ComponentName;
-```
-
-## Performance Considerations
-- Code splitting at route level
-- Manual chunk splitting in Vite config
-- Lazy loading for non-critical components
-- Service Worker with Workbox for caching
-- Image optimization with Sharp
+## API Structure
+- Dual: `api/` (legacy) + `api/src/` (modern ES modules)
+- Validation: Zod schemas
+- Security: Rate limiting, CORS middleware
+- Separate linting: `npm run validate:api`

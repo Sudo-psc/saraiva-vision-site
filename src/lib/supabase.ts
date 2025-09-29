@@ -310,38 +310,12 @@ export interface Database {
     }
 }
 
-// Supabase client configuration
-// Use import.meta.env for Vite environment variables
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
-const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || ''
+import { getEnvConfig } from '@/config/runtime-env'
 
-// Validate required environment variables
-if (!supabaseUrl) {
-    console.warn('VITE_SUPABASE_URL is not set. Supabase client will not work properly.')
-}
-
-if (!supabaseAnonKey) {
-    console.warn('VITE_SUPABASE_ANON_KEY is not set. Supabase client will not work properly.')
-}
-
-// Log configuration status in development
-if (import.meta.env.DEV) {
-    const hasClient = !!(supabaseUrl && supabaseAnonKey);
-    const hasAdmin = !!(supabaseUrl && supabaseServiceKey);
-
-    console.group('Supabase Configuration');
-    console.log('Client configured:', hasClient);
-    console.log('Admin configured:', hasAdmin);
-
-    if (!hasClient) {
-        console.warn('To enable Supabase features, add these to your .env file:');
-        console.warn('VITE_SUPABASE_URL=your_supabase_project_url');
-        console.warn('VITE_SUPABASE_ANON_KEY=your_supabase_anon_key');
-    }
-
-    console.groupEnd();
-}
+// Supabase client instances (initialized asynchronously)
+let supabaseClient: ReturnType<typeof createClient<Database>> | null = null
+let supabaseAdminClient: ReturnType<typeof createClient<Database>> | null = null
+let initPromise: Promise<void> | null = null
 
 // Helper to validate Supabase URL structure safely
 function isValidHttpUrl(url: string): boolean {
@@ -354,25 +328,106 @@ function isValidHttpUrl(url: string): boolean {
     }
 }
 
-// Client for frontend operations (with RLS)
-export const supabase = supabaseUrl && supabaseAnonKey &&
-    !supabaseUrl.includes('your_supabase') && !supabaseAnonKey.includes('your_supabase') &&
-    isValidHttpUrl(supabaseUrl)
-    ? createClient<Database>(supabaseUrl, supabaseAnonKey)
-    : null
+/**
+ * Initialize Supabase clients with runtime configuration
+ * This prevents API keys from being inlined into the build
+ */
+async function initSupabaseClients() {
+    if (supabaseClient && supabaseAdminClient) {
+        return;
+    }
 
-// Admin client for backend operations (bypasses RLS)
-// Only create if we have the service key (typically only available server-side)
-export const supabaseAdmin = supabaseUrl && supabaseServiceKey &&
-    !supabaseUrl.includes('your_supabase') && !supabaseServiceKey.includes('your_supabase') &&
-    isValidHttpUrl(supabaseUrl)
-    ? createClient<Database>(supabaseUrl, supabaseServiceKey, {
-        auth: {
-            autoRefreshToken: false,
-            persistSession: false
+    if (initPromise) {
+        return initPromise;
+    }
+
+    initPromise = (async () => {
+        try {
+            const config = await getEnvConfig();
+            const supabaseUrl = config.supabaseUrl || '';
+            const supabaseAnonKey = config.supabaseAnonKey || '';
+
+            // Development: Get service key from env if available
+            const supabaseServiceKey = import.meta.env.DEV
+                ? import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || ''
+                : '';
+
+            // Validate required environment variables
+            if (!supabaseUrl || !isValidHttpUrl(supabaseUrl)) {
+                console.warn('Supabase URL is not set or invalid. Supabase client will not work properly.');
+                return;
+            }
+
+            if (!supabaseAnonKey || supabaseAnonKey.includes('your_supabase')) {
+                console.warn('Supabase anon key is not set or invalid. Supabase client will not work properly.');
+                return;
+            }
+
+            // Log configuration status in development
+            if (import.meta.env.DEV) {
+                const hasClient = !!(supabaseUrl && supabaseAnonKey);
+                const hasAdmin = !!(supabaseUrl && supabaseServiceKey);
+
+                console.group('Supabase Configuration');
+                console.log('✅ Client configured:', hasClient);
+                console.log('✅ Admin configured:', hasAdmin);
+                console.log('🔐 Using runtime environment loading');
+
+                if (!hasClient) {
+                    console.warn('To enable Supabase features, ensure environment variables are set.');
+                }
+
+                console.groupEnd();
+            }
+
+            // Create client for frontend operations (with RLS)
+            supabaseClient = createClient<Database>(supabaseUrl, supabaseAnonKey);
+
+            // Create admin client for backend operations (bypasses RLS)
+            // Only in development when service key is available
+            if (supabaseServiceKey && !supabaseServiceKey.includes('your_supabase')) {
+                supabaseAdminClient = createClient<Database>(supabaseUrl, supabaseServiceKey, {
+                    auth: {
+                        autoRefreshToken: false,
+                        persistSession: false
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Failed to initialize Supabase clients:', error);
+        } finally {
+            initPromise = null;
         }
-    })
-    : null
+    })();
+
+    return initPromise;
+}
+
+/**
+ * Get Supabase client (initializes on first call)
+ * Use this instead of direct supabase export
+ */
+export async function getSupabaseClient() {
+    await initSupabaseClients();
+    return supabaseClient;
+}
+
+/**
+ * Get Supabase admin client (initializes on first call)
+ * Only available in development mode
+ */
+export async function getSupabaseAdminClient() {
+    await initSupabaseClients();
+    return supabaseAdminClient;
+}
+
+// Legacy exports for backward compatibility
+// These will be null initially and should be replaced with getSupabaseClient()
+export const supabase = supabaseClient;
+export const supabaseAdmin = supabaseAdminClient;
+
+// Auto-initialize on import for better DX
+initSupabaseClients().catch(console.error);
 
 // Type exports for use in other files
 export type ContactMessage = Database['public']['Tables']['contact_messages']['Row']

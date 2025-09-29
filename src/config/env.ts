@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 // Environment schema validation
 const envSchema = z.object({
-  // Google Maps
-  VITE_GOOGLE_MAPS_API_KEY: z.string().min(1, 'VITE_GOOGLE_MAPS_API_KEY is required'),
+  // Google Maps - Optional in production (uses runtime loading)
+  VITE_GOOGLE_MAPS_API_KEY: z.string().optional(),
 
   // Google Business API
   VITE_GOOGLE_BUSINESS_CLIENT_ID: z.string().optional(),
