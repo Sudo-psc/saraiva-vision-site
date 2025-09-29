@@ -1,24 +1,24 @@
-# WordPress GraphQL Integration Guide
+ # WordPress REST API Integration Guide
 
-This document explains how to use the WordPress headless CMS integration with GraphQL, ISR (Incremental Static Regeneration), and webhook-based revalidation.
+This document explains how to use the WordPress headless CMS integration with REST API, ISR (Incremental Static Regeneration), and webhook-based revalidation.
 
 ## Overview
 
 The WordPress integration provides:
-- **Headless CMS**: WordPress as a content management system via GraphQL API
+- **Headless CMS**: WordPress as a content management system via REST API
 - **ISR Support**: Incremental Static Regeneration for optimal performance
 - **Real-time Updates**: Webhook-triggered revalidation when content changes
 - **Caching**: Intelligent caching with configurable TTL
 - **Error Handling**: Graceful fallbacks and error recovery
-- **Type Safety**: Comprehensive GraphQL queries and fragments
+- **Type Safety**: Comprehensive REST API endpoints and data normalization
 
 ## Architecture
 
 ```
-WordPress CMS (VPS) → GraphQL API → Next.js (Vercel) → Static Pages + ISR
-                                         ↑
-                                    Webhooks for
-                                   Revalidation
+WordPress CMS (VPS) → REST API (/wp-json/wp/v2/) → Next.js (Vercel) → Static Pages + ISR
+                                          ↑
+                                     Webhooks for
+                                    Revalidation
 ```
 
 ## Setup Instructions
@@ -28,9 +28,10 @@ WordPress CMS (VPS) → GraphQL API → Next.js (Vercel) → Static Pages + ISR
 #### Install Required Plugins
 ```bash
 # On your WordPress VPS
-wp plugin install wp-graphql --activate
-wp plugin install wp-graphql-acf --activate  # If using Advanced Custom Fields
-wp plugin install wp-graphql-jwt-authentication --activate  # For admin access
+wp plugin install advanced-custom-fields --activate  # For custom fields
+wp plugin install jwt-authentication-for-wp-rest-api --activate  # For admin access
+wp plugin install wp-rest-api-menu --activate  # For menu endpoints
+wp plugin install wordpress-seo --activate  # For SEO optimization
 ```
 
 #### Configure Custom Post Types
@@ -45,9 +46,8 @@ function register_services_post_type() {
             'singular_name' => 'Service',
         ],
         'public' => true,
-        'show_in_graphql' => true,
-        'graphql_single_name' => 'service',
-        'graphql_plural_name' => 'services',
+        'show_in_rest' => true,
+        'rest_base' => 'services',
         'supports' => ['title', 'editor', 'excerpt', 'thumbnail', 'custom-fields'],
     ]);
 }
@@ -61,9 +61,8 @@ function register_team_members_post_type() {
             'singular_name' => 'Team Member',
         ],
         'public' => true,
-        'show_in_graphql' => true,
-        'graphql_single_name' => 'teamMember',
-        'graphql_plural_name' => 'teamMembers',
+        'show_in_rest' => true,
+        'rest_base' => 'team-members',
         'supports' => ['title', 'editor', 'excerpt', 'thumbnail', 'custom-fields'],
     ]);
 }
@@ -77,9 +76,8 @@ function register_testimonials_post_type() {
             'singular_name' => 'Testimonial',
         ],
         'public' => true,
-        'show_in_graphql' => true,
-        'graphql_single_name' => 'testimonial',
-        'graphql_plural_name' => 'testimonials',
+        'show_in_rest' => true,
+        'rest_base' => 'testimonials',
         'supports' => ['title', 'editor', 'excerpt', 'thumbnail', 'custom-fields'],
     ]);
 }
@@ -132,8 +130,8 @@ add_action('before_delete_post', function($post_id) {
 Add to your `.env` file:
 
 ```bash
-# WordPress GraphQL Configuration
-WORDPRESS_GRAPHQL_ENDPOINT=https://cms.saraivavision.com.br/graphql
+# WordPress REST API Configuration
+WORDPRESS_API_URL=https://cms.saraivavision.com.br
 WORDPRESS_DOMAIN=https://cms.saraivavision.com.br
 WP_REVALIDATE_SECRET=your_secure_revalidate_secret_here
 WP_WEBHOOK_SECRET=your_secure_webhook_secret_here
@@ -169,15 +167,15 @@ import { usePost, useRecentPosts, usePopularServices } from '../hooks/useWordPre
 
 function BlogPost({ slug }) {
   const { data, loading, error } = usePost(slug);
-  
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   if (!data?.post) return <div>Post not found</div>;
-  
+
   return (
     <article>
-      <h1>{data.post.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: data.post.content }} />
+      <h1>{data.post.title.rendered}</h1>
+      <div dangerouslySetInnerHTML={{ __html: data.post.content.rendered }} />
     </article>
   );
 }
@@ -185,20 +183,20 @@ function BlogPost({ slug }) {
 function Homepage() {
   const { data: recentPosts } = useRecentPosts(3);
   const { data: popularServices } = usePopularServices(6);
-  
+
   return (
     <div>
       <section>
         <h2>Recent Posts</h2>
         {recentPosts?.posts?.map(post => (
-          <div key={post.id}>{post.title}</div>
+          <div key={post.id}>{post.title.rendered}</div>
         ))}
       </section>
-      
+
       <section>
         <h2>Popular Services</h2>
         {popularServices?.services?.map(service => (
-          <div key={service.id}>{service.title}</div>
+          <div key={service.id}>{service.title.rendered}</div>
         ))}
       </section>
     </div>
@@ -260,9 +258,9 @@ export async function getStaticProps({ params }) {
 import { getAllPosts, getPostBySlug } from '../lib/wordpress-api.js';
 
 // Fetch all posts with pagination
-const { posts, pageInfo, error } = await getAllPosts({
-  first: 10,
-  after: 'cursor_string'
+const { posts, totalPages, totalPosts, error } = await getAllPosts({
+  per_page: 10,
+  page: 1
 });
 
 // Fetch single post
@@ -303,6 +301,15 @@ Receives WordPress webhooks for automatic revalidation:
   "post_title": "My New Post",
   "post_modified": "2024-01-15 10:30:00"
 }
+```
+
+### WordPress REST API Endpoints
+- `GET /wp-json/wp/v2/posts` - List all posts
+- `GET /wp-json/wp/v2/posts/{id}` - Get specific post
+- `GET /wp-json/wp/v2/pages` - List all pages
+- `GET /wp-json/wp/v2/categories` - List categories
+- `GET /wp-json/wp/v2/tags` - List tags
+- `GET /wp-json/wp/v2/media` - List media files
 ```
 
 ## Caching Strategy
@@ -431,33 +438,34 @@ console.error('WordPress GraphQL Error:', {
 
 ### Common Issues
 
-1. **GraphQL Endpoint Not Accessible**
-   - Check WordPress URL and SSL certificate
-   - Verify WPGraphQL plugin is active
-   - Test endpoint manually: `curl https://cms.saraivavision.com.br/graphql`
+1. **REST API Endpoint Not Accessible**
+    - Check WordPress URL and SSL certificate
+    - Verify REST API is enabled (default in WordPress)
+    - Test endpoint manually: `curl https://cms.saraivavision.com.br/wp-json/wp/v2/posts`
 
 2. **Webhooks Not Working**
-   - Verify webhook URL is accessible from WordPress server
-   - Check webhook secret configuration
-   - Monitor webhook logs in WordPress
+    - Verify webhook URL is accessible from WordPress server
+    - Check webhook secret configuration
+    - Monitor webhook logs in WordPress
 
 3. **ISR Not Updating**
-   - Verify revalidation secret is correct
-   - Check Vercel function logs
-   - Ensure webhook payload format is correct
+    - Verify revalidation secret is correct
+    - Check Vercel function logs
+    - Ensure webhook payload format is correct
 
 4. **Cache Issues**
-   - Clear cache manually: `invalidateCache()`
-   - Check cache TTL settings
-   - Verify cache key generation
+    - Clear cache manually: `invalidateCache()`
+    - Check cache TTL settings
+    - Verify cache key generation
 
 ### Debug Commands
 
 ```bash
-# Test WordPress GraphQL endpoint
-curl -X POST https://cms.saraivavision.com.br/graphql \
-  -H "Content-Type: application/json" \
-  -d '{"query": "{ generalSettings { title } }"}'
+# Test WordPress REST API endpoint
+curl https://cms.saraivavision.com.br/wp-json/wp/v2/posts
+
+# Test specific post
+curl https://cms.saraivavision.com.br/wp-json/wp/v2/posts/123
 
 # Test revalidation endpoint
 curl -X POST https://saraivavision.com.br/api/revalidate \

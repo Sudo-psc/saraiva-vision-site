@@ -18,7 +18,7 @@ const WORDPRESS_API_URL = process.env.WORDPRESS_API_URL ||
                          'https://cms.saraivavision.com.br';
 
 // Enhanced CORS configuration for WordPress REST API proxy
-const graphqlCorsOptions = {
+const corsOptions = {
   origin: [
     'https://saraivavision.com.br',
     'https://www.saraivavision.com.br',
@@ -34,10 +34,10 @@ const graphqlCorsOptions = {
 };
 
 // Apply CORS middleware
-router.use(cors(graphqlCorsOptions));
+router.use(cors(corsOptions));
 
 // Handle OPTIONS preflight requests
-router.options('*', cors(graphqlCorsOptions), (req, res) => {
+router.options('*', cors(corsOptions), (req, res) => {
   res.status(200).end();
 });
 
@@ -51,23 +51,6 @@ const httpsAgent = new https.Agent({
 const httpAgent = new http.Agent({
   timeout: 30000
 });
-
-// Create GraphQL client with SSL bypass
-const createWordPressClient = () => {
-  return new GraphQLClient(WORDPRESS_GRAPHQL_ENDPOINT, {
-    headers: {
-      'Content-Type': 'application/json',
-      'User-Agent': 'SaraivaVision-Proxy/1.0'
-    },
-    timeout: 30000,
-    fetch: (url, options) => {
-      return fetch(url, {
-        ...options,
-        agent: url.startsWith('https:') ? httpsAgent : httpAgent
-      });
-    }
-  });
-};
 
 // Main REST API proxy endpoint
 router.get('/wp-json/wp/v2/*', async (req, res) => {
@@ -205,68 +188,9 @@ router.get('/health', async (req, res) => {
   }
 });
 
-// WordPress server status endpoint
-router.get('/server-status', async (req, res) => {
-  try {
-    const url = new URL(WORDPRESS_GRAPHQL_ENDPOINT);
-    const isHttps = url.protocol === 'https:';
-
-    const agent = isHttps ? httpsAgent : httpAgent;
-
-    const options = {
-      hostname: url.hostname,
-      port: url.port || (isHttps ? 443 : 80),
-      path: '/',
-      method: 'HEAD',
-      agent,
-      timeout: 10000
-    };
-
-    const req = (isHttps ? https : http).request(options, (response) => {
-      res.json({
-        endpoint: WORDPRESS_GRAPHQL_ENDPOINT,
-        accessible: true,
-        statusCode: response.statusCode,
-        statusMessage: response.statusMessage,
-        server: response.headers['server'],
-        contentType: response.headers['content-type'],
-        corsConfigured: !!response.headers['access-control-allow-origin'],
-        timestamp: new Date().toISOString()
-      });
-    });
-
-    req.on('error', (error) => {
-      res.json({
-        endpoint: WORDPRESS_GRAPHQL_ENDPOINT,
-        accessible: false,
-        error: error.message,
-        timestamp: new Date().toISOString()
-      });
-    });
-
-    req.on('timeout', () => {
-      req.destroy();
-      res.json({
-        endpoint: WORDPRESS_GRAPHQL_ENDPOINT,
-        accessible: false,
-        error: 'Connection timeout',
-        timestamp: new Date().toISOString()
-      });
-    });
-
-    req.end();
-  } catch (error) {
-    res.status(500).json({
-      error: 'Server status check failed',
-      details: error.message,
-      timestamp: new Date().toISOString()
-    });
-  }
-});
-
 // Error handling middleware
 router.use((error, req, res, next) => {
-  console.error('WordPress GraphQL Proxy Error:', error);
+  console.error('WordPress REST API Proxy Error:', error);
   res.status(500).json({
     error: 'Internal proxy error',
     details: error.message,
