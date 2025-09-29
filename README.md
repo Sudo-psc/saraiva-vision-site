@@ -675,6 +675,7 @@ Para contribuir com o projeto, siga as diretrizes de desenvolvimento e abra um P
 ### 🔧 Manutenção e Suporte
 - **[🛠️ Correções Console](./CONSOLE_FIXES.md)** - Fixes para problemas comuns
 - **[🌐 Nginx Updates](./NGINX_UPDATE_NOTES.md)** - Configuração do servidor
+- **[🔍 Nginx Review 2025-09-29](./docs/NGINX_REVIEW_2025-09-29.md)** - Revisão completa Nginx com correções WordPress
 - **[🔍 Auditoria URLs](./URL_AUDIT_REPORT.md)** - Relatório de links e SEO
 
 ---
