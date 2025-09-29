@@ -444,7 +444,7 @@ function setFallbackCache<T>(key: string, data: T, ttl: number = 300000): void {
 function getFallbackConfig(): FallbackConfig {
   return {
     enabled: true,
-    restApiUrl: import.meta.env.VITE_WORDPRESS_API_URL || 'https://blog.saraivavision.com.br',
+    restApiUrl: import.meta.env.VITE_WORDPRESS_API_URL || 'https://cms.saraivavision.com.br',
     maxFallbackRetries: 2,
     fallbackTimeout: 8000
   };

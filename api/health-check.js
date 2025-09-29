@@ -7,12 +7,11 @@ const execAsync = promisify(exec);
 const SERVICES = ["nginx", "php8.1-fpm", "mysql", "redis-server"];
 const WEBSITES = [
     "https://saraivavision.com.br",
-    "https://blog.saraivavision.com.br",
-    "http://cms.saraivavision.com.br"
+    "https://cms.saraivavision.com.br"
 ];
 const APIS = [
     "https://saraivavision.com.br/api/health",
-    "https://blog.saraivavision.com.br/wp-json/wp/v2/posts?per_page=1",
+    "https://cms.saraivavision.com.br/wp-json/wp/v2/posts?per_page=1",
     "https://saraivavision.com.br/graphql"
 ];
 

@@ -454,7 +454,7 @@ async function checkServiceStatus(service) {
             case 'wordpress':
                 // Check WordPress API
                 try {
-                    const response = await fetch('https://blog.saraivavision.com.br/wp-json/wp/v2/posts?per_page=1', {
+                    const response = await fetch('https://cms.saraivavision.com.br/wp-json/wp/v2/posts?per_page=1', {
                         timeout: 5000
                     });
                     return {

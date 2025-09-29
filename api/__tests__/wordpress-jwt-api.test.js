@@ -12,7 +12,7 @@ const mockEnv = {
   VITE_WORDPRESS_JWT_USERNAME: 'test_user',
   VITE_WORDPRESS_JWT_PASSWORD: 'test_pass',
   VITE_WORDPRESS_CMS_URL: 'https://cms.saraivavision.com.br',
-  VITE_WORDPRESS_API_URL: 'https://blog.saraivavision.com.br'
+  VITE_WORDPRESS_API_URL: 'https://cms.saraivavision.com.br'
 };
 
 // Mock fetch for API calls

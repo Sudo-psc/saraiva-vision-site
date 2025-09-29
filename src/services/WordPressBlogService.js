@@ -16,7 +16,7 @@ import {
 
 class WordPressBlogService {
     constructor(options = {}) {
-        this.baseURL = options.baseURL || 'https://blog.saraivavision.com.br';
+        this.baseURL = options.baseURL || 'https://cms.saraivavision.com.br';
         this.apiEndpoint = '/wp-json/wp/v2';
         this.cmsBaseURL = options.cmsBaseURL || 'https://cms.saraivavision.com.br';
         this.cacheEnabled = options.cacheEnabled !== false;
