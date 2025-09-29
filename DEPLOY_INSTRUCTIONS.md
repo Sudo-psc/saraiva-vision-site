@@ -24,17 +24,14 @@
 
 ## 🛠 Deploy Manual no VPS
 
-### Passo 1: Fazer SSH no VPS
-```bash
-ssh root@31.97.129.78
-```
+**Pré-requisito**: Todos os comandos devem ser executados **dentro do VPS** no diretório `/home/saraiva-vision-site`
 
-### Passo 2: Navegar para Diretório do Projeto
+### Passo 1: Navegar para Diretório do Projeto
 ```bash
 cd /home/saraiva-vision-site
 ```
 
-### Passo 3: Backup da Configuração Atual
+### Passo 2: Backup da Configuração Atual
 ```bash
 # Backup Nginx configuration
 sudo cp /etc/nginx/sites-available/saraivavision \
@@ -48,7 +45,7 @@ ls -lh /etc/nginx/sites-available/saraivavision.backup.*
 ls -lhd /var/www/html.backup.*
 ```
 
-### Passo 4: Copiar Nova Configuração Nginx
+### Passo 3: Copiar Nova Configuração Nginx
 ```bash
 # Copiar configuração
 sudo cp /home/saraiva-vision-site/nginx-optimized.conf \
@@ -60,7 +57,7 @@ sudo nginx -t
 # Esperado: "syntax is ok" e "test is successful"
 ```
 
-### Passo 5: Deploy dos Arquivos React
+### Passo 4: Deploy dos Arquivos React
 ```bash
 # Remover arquivos antigos (preservar backup feito no passo 3)
 sudo rm -rf /var/www/html/*
@@ -77,7 +74,7 @@ sudo find /var/www/html -type f -exec chmod 644 {} \;
 ls -lh /var/www/html/
 ```
 
-### Passo 6: Reload Nginx (Zero Downtime)
+### Passo 5: Reload Nginx (Zero Downtime)
 ```bash
 # Reload Nginx configuration
 sudo systemctl reload nginx
@@ -88,7 +85,7 @@ sudo systemctl status nginx
 # Esperado: "active (running)" sem erros
 ```
 
-### Passo 7: Verificar Logs
+### Passo 6: Verificar Logs
 ```bash
 # Ver logs de erro (deve estar vazio ou sem erros recentes)
 sudo tail -f /var/log/nginx/saraivavision_error.log

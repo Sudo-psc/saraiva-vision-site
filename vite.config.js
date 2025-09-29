@@ -1,14 +1,18 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import removeConsolePlugin from './vite-plugin-remove-console.js'
 
 // Enable workbox plugin with VPS environment check
-const plugins = [react({
-  // Use automatic JSX runtime
-  jsxRuntime: 'automatic',
-  // Include refresh for development
-  include: '**/*.{jsx,tsx}'
-})]
+const plugins = [
+  react({
+    // Use automatic JSX runtime
+    jsxRuntime: 'automatic',
+    // Include refresh for development
+    include: '**/*.{jsx,tsx}'
+  }),
+  removeConsolePlugin() // Auto-remove console.log in production
+]
 
 // Workbox plugin disabled for stable deployment
 // if (process.env.NODE_ENV === 'development') {
@@ -122,44 +126,71 @@ export default defineConfig(({ mode }) => {
 
   build: {
     outDir: 'dist',
-    sourcemap: true, // Always enable sourcemaps for debugging
-    chunkSizeWarningLimit: 800, // Increase for VPS deployment
+    sourcemap: false, // Disable sourcemaps in production for security
+    chunkSizeWarningLimit: 300, // Reduced to enforce smaller chunks
     assetsDir: 'assets',
-    assetsInlineLimit: 8192, // Increase inline limit for VPS performance
+    assetsInlineLimit: 4096, // Reduced to avoid large inline assets
     minify: 'esbuild',
     target: 'es2020', // Modern target for better optimization
     cssCodeSplit: true, // Split CSS for better caching
+    // Enhanced minification and tree-shaking
+    reportCompressedSize: true,
     rollupOptions: {
       input: 'index.html',
       output: {
-        // Optimized chunking strategy for VPS with React isolation
+        // Aggressive chunking strategy for optimal bundle sizes (<250KB target per chunk)
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            // Core React packages - isolate to prevent context issues
+            // Core React packages - isolate to prevent context issues (<200KB)
             if (id.includes('react/') || id.includes('react-dom/')) {
-              return 'react-vendor'
+              return 'react-core'
             }
-            // React utilities that need React context
-            if (id.includes('react-') && !id.includes('react-router')) {
-              return 'react-vendor'
-            }
-            // Routing
+
+            // React Router - separate chunk (~50KB)
             if (id.includes('react-router')) {
               return 'router'
             }
-            // UI Components and animation libs
+
+            // Radix UI - split by component to enable tree-shaking
             if (id.includes('@radix-ui')) {
-              return 'react-vendor'
+              // Dialog, Dropdown, etc. are heavy - separate them
+              if (id.includes('@radix-ui/react-dialog') || id.includes('@radix-ui/react-dropdown-menu')) {
+                return 'radix-dialog'
+              }
+              if (id.includes('@radix-ui/react-popover') || id.includes('@radix-ui/react-tooltip')) {
+                return 'radix-popover'
+              }
+              // Other Radix components together
+              return 'radix-ui'
             }
+
+            // Framer Motion - heavy animation library (~150KB)
             if (id.includes('framer-motion')) {
               return 'motion'
             }
-            // Utilities
-            if (id.includes('date-fns') || id.includes('clsx') || id.includes('class-variance-authority')) {
-              return 'utils'
+
+            // Date utilities
+            if (id.includes('date-fns')) {
+              return 'date-utils'
             }
-            // Other vendor libraries
-            return 'vendor'
+
+            // CSS/Styling utilities (clsx, class-variance-authority, tailwind-merge)
+            if (id.includes('clsx') || id.includes('class-variance-authority') || id.includes('tailwind-merge')) {
+              return 'style-utils'
+            }
+
+            // Supabase SDK - separate for lazy loading potential
+            if (id.includes('@supabase/')) {
+              return 'supabase'
+            }
+
+            // Icons libraries
+            if (id.includes('lucide-react') || id.includes('react-icons')) {
+              return 'icons'
+            }
+
+            // Other vendor libraries - remaining small utilities
+            return 'vendor-misc'
           }
         },
         // Optimized file naming for VPS caching
