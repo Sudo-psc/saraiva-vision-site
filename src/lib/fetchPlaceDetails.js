@@ -1,11 +1,19 @@
 import { loadGoogleMaps } from './loadGoogleMaps';
-import { formatDate } from './date.js';
 
-// Local fallback formatDate helper in case import fails
-const localFormatDate = (input, format = "DD/MM/YYYY") => {
+// Safe formatDate helper with proper fallback handling
+const safeFormatDate = (input, format = "DD/MM/YYYY") => {
   if (!input) return '';
 
   try {
+    // Try to use dayjs if available
+    if (typeof window !== 'undefined' && window.dayjs) {
+      const date = window.dayjs(input);
+      if (date.isValid()) {
+        return date.format(format);
+      }
+    }
+
+    // Fallback to native Date formatting
     const date = new Date(input);
     if (isNaN(date.getTime())) return '';
 
@@ -15,13 +23,10 @@ const localFormatDate = (input, format = "DD/MM/YYYY") => {
 
     return `${day}/${month}/${year}`;
   } catch (error) {
-    console.warn('Erro ao formatar data localmente:', error);
+    console.warn('Erro ao formatar data:', error);
     return '';
   }
 };
-
-// Use imported formatDate if available, otherwise use local fallback
-const safeFormatDate = formatDate || localFormatDate;
 
 const placeCache = new Map();
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutos

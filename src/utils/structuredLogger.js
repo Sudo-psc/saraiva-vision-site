@@ -1,5 +1,7 @@
 // src/utils/structuredLogger.js
 
+import React from 'react';
+
 /**
  * Structured Logger for Saraiva Vision Components
  * Provides comprehensive observability with contextual logging

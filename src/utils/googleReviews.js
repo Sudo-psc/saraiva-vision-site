@@ -1,6 +1,34 @@
 // src/utils/googleReviews.js
 
 /**
+ * Normaliza timestamps para ISO strings, convertendo valores numéricos (segundos desde epoch)
+ * para o formato ISO correto.
+ *
+ * @param {string|number|Date} timestamp - O timestamp a ser normalizado
+ * @returns {string} - Timestamp em formato ISO string
+ */
+const normalizeTimestamp = (timestamp) => {
+    if (!timestamp) return new Date().toISOString();
+
+    // Se já é uma string ISO ou Date, retorna como está
+    if (timestamp instanceof Date) return timestamp.toISOString();
+    if (typeof timestamp === 'string' && timestamp.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)) {
+        return timestamp;
+    }
+
+    // Se é numérico (segundos desde epoch) ou string numérica, converte
+    if (typeof timestamp === 'number' || (typeof timestamp === 'string' && !isNaN(Number(timestamp)))) {
+        const numValue = Number(timestamp);
+        // Se o valor é muito pequeno (segundos), multiplica por 1000 para milissegundos
+        const msValue = numValue < 1e10 ? numValue * 1000 : numValue;
+        return new Date(msValue).toISOString();
+    }
+
+    // Fallback para data atual
+    return new Date().toISOString();
+};
+
+/**
  * Normaliza o objeto de review da API do Google Places para um formato seguro e consistente.
  * A API pode retornar informações do autor em `reviewer` ou `authorAttribution`.
  *
@@ -43,10 +71,10 @@ export const normalizeReview = (review) => {
         },
         starRating: reviewRating,
         comment: reviewText,
-        createTime: review?.createTime || review?.time || review?.created_at || new Date().toISOString(),
-        updateTime: review?.updateTime || review?.updated_at || null,
+        createTime: normalizeTimestamp(review?.createTime || review?.time || review?.created_at),
+        updateTime: review?.updateTime || review?.updated_at ? normalizeTimestamp(review.updateTime || review.updated_at) : null,
         reviewReply: normalizeReviewReply(review?.reviewReply || review?.reply),
-        isRecent: isRecentReview(review?.createTime || review?.time),
+        isRecent: isRecentReview(normalizeTimestamp(review?.createTime || review?.time)),
         hasResponse: !!(review?.reviewReply || review?.reply),
         wordCount: countWords(reviewText)
     };

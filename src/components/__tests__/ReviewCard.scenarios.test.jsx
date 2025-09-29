@@ -504,5 +504,3 @@ describe('ReviewCard Component Scenarios', () => {
     });
   });
 });
-
-export default ReviewCard;

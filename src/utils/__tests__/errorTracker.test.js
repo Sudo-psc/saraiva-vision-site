@@ -1,5 +1,8 @@
 import { errorTracker, trackError, trackNetworkError, trackComponentError } from '../errorTracker.js';
 
+// Capture original console before mocking
+const originalConsole = global.console;
+
 // Mock console methods
 const mockConsole = {
   groupCollapsed: jest.fn(),

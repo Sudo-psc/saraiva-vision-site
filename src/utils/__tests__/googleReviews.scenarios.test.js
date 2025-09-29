@@ -361,5 +361,3 @@ describe('Google Reviews Data Scenarios', () => {
     });
   });
 });
-
-export { normalizeReview, normalizeReviewsArray, isValidReview, extractReviewerInfo };

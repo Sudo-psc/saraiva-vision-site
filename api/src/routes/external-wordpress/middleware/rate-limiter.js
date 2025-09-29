@@ -175,7 +175,7 @@ const slidingWindowStrategy = async (key, currentTime, windowMs) => {
 
     // Get reset time (when oldest request will expire)
     const oldestRequest = await redis.zrange(redisKey, 0, 0, 'WITHSCORES');
-    const resetTime = oldestRequest.length > 0 ? parseFloat(oldestRequest[0][1]) + windowMs : currentTime + windowMs;
+    const resetTime = oldestRequest.length > 1 ? parseFloat(oldestRequest[1]) + windowMs : currentTime + windowMs;
 
     return { requestCount, resetTime };
   } else {

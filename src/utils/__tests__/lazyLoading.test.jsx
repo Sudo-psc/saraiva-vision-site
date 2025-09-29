@@ -1,17 +1,18 @@
 import React from 'react';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, fireEvent } from '@testing-library/react';
+import { vi } from 'vitest';
 import { trackError } from '@/utils/errorTracker.js';
 import createLazyComponent from '../lazyLoading.jsx';
 
 // Mock the error tracker
-jest.mock('@/utils/errorTracker.js', () => ({
-  trackError: jest.fn()
+vi.mock('@/utils/errorTracker.js', () => ({
+  trackError: vi.fn()
 }));
 
 // Mock React.lazy
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  lazy: jest.fn()
+vi.mock('react', async () => ({
+  ...(await vi.importActual('react')),
+  lazy: vi.fn()
 }));
 
 describe('createLazyComponent', () => {
@@ -19,11 +20,11 @@ describe('createLazyComponent', () => {
   let mockError;
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    jest.useFakeTimers();
+    vi.clearAllMocks();
+    vi.useFakeTimers();
 
     mockError = new Error('Failed to load component');
-    mockLazyComponent = jest.fn(() => 'Mock Component');
+    mockLazyComponent = vi.fn(() => 'Mock Component');
 
     // Mock React.lazy to return a mock component
     const React = require('react');
@@ -31,7 +32,7 @@ describe('createLazyComponent', () => {
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   describe('successful loading', () => {
@@ -148,7 +149,7 @@ describe('createLazyComponent', () => {
       const chunkError = new Error('ChunkLoadError: Loading chunk 3 failed');
       let attemptCount = 0;
 
-      const mockImport = jest.fn(() => {
+      const mockImport = vi.fn(() => {
         attemptCount++;
         if (attemptCount <= 2) {
           return Promise.reject(chunkError);
@@ -162,21 +163,21 @@ describe('createLazyComponent', () => {
 
       // First attempt fails
       await act(async () => {
-        await jest.runAllTimersAsync();
+        await vi.runAllTimersAsync();
       });
 
       expect(screen.getByText('Tentando recarregar... (1/3)')).toBeInTheDocument();
 
       // Second attempt fails
       await act(async () => {
-        await jest.advanceTimersByTimeAsync(1000);
+        await vi.advanceTimersByTimeAsync(1000);
       });
 
       expect(screen.getByText('Tentando recarregar... (2/3)')).toBeInTheDocument();
 
       // Third attempt succeeds
       await act(async () => {
-        await jest.advanceTimersByTimeAsync(2000); // Exponential backoff
+        await vi.advanceTimersByTimeAsync(2000); // Exponential backoff
       });
 
       expect(screen.getByText('Finally Loaded')).toBeInTheDocument();
@@ -185,7 +186,7 @@ describe('createLazyComponent', () => {
 
     it('should stop retrying after max attempts', async () => {
       const chunkError = new Error('ChunkLoadError: Loading chunk 3 failed');
-      const mockImport = jest.fn(() => Promise.reject(chunkError));
+      const mockImport = vi.fn(() => Promise.reject(chunkError));
 
       const LazyComponent = createLazyComponent(mockImport, 2, 1000);
 
@@ -193,12 +194,12 @@ describe('createLazyComponent', () => {
 
       // First attempt fails
       await act(async () => {
-        await jest.runAllTimersAsync();
+        await vi.runAllTimersAsync();
       });
 
       // Second attempt fails
       await act(async () => {
-        await jest.advanceTimersByTimeAsync(1000);
+        await vi.advanceTimersByTimeAsync(1000);
       });
 
       // Should show error UI after max attempts
@@ -212,7 +213,7 @@ describe('createLazyComponent', () => {
     it('should allow manual retry after max attempts', async () => {
       const chunkError = new Error('ChunkLoadError: Loading chunk 3 failed');
       let resolvePromise;
-      const mockImport = jest.fn(() => new Promise((_, reject) => {
+      const mockImport = vi.fn(() => new Promise((_, reject) => {
         reject(chunkError);
       }));
 
@@ -222,8 +223,8 @@ describe('createLazyComponent', () => {
 
       // Wait for max attempts
       await act(async () => {
-        await jest.runAllTimersAsync();
-        await jest.advanceTimersByTimeAsync(1000);
+        await vi.runAllTimersAsync();
+        await vi.advanceTimersByTimeAsync(1000);
       });
 
       // Should show error UI with retry buttons
@@ -231,7 +232,7 @@ describe('createLazyComponent', () => {
 
       // Manually trigger retry
       await act(async () => {
-        retryButton.onclick(new MouseEvent('click'));
+        fireEvent.click(retryButton);
       });
 
       expect(screen.getByText('Tentando recarregar... (1/3)')).toBeInTheDocument();
