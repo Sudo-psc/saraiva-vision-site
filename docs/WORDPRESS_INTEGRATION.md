@@ -1,541 +1,447 @@
-# WordPress REST API Integration Guide - Saraiva Vision
+# WordPress External API Integration Guide - Saraiva Vision
 
-Este guia completo explica como usar a integração headless do WordPress via REST API no domínio `cms.saraivavision.com.br` para o site médico da Clínica Saraiva Vision.
+Este guia completo explica como usar a integração headless do WordPress via APIs externas (não hospedadas no VPS) para o site médico da Clínica Saraiva Vision.
 
 ## 📋 Visão Geral
 
 A integração WordPress fornece:
-- **🏥 CMS Headless**: WordPress como sistema de gerenciamento de conteúdo via REST API
+- **🌐 CMS Externo**: WordPress como sistema de gerenciamento de conteúdo via APIs externas
 - **⚡ ISR Support**: Regeneração Estática Incremental para performance otimizada
-- **🔄 Real-time Updates**: Revalidação via webhooks quando conteúdo muda
-- **💾 Caching Inteligente**: Cache com TTL configurável
+- **🔄 Real-time Updates**: Sincronização automática com fontes externas
+- **💾 Caching Distribuído**: Cache Redis e Supabase para alta performance
 - **🛡️ Error Handling**: Fallbacks graciosos e recuperação de erros
 - **🔒 Segurança Médica**: Conformidade CFM e LGPD
 - **📊 Monitoramento**: Métricas e health checks em tempo real
+- **🔧 Transformação**: Conteúdo adaptado para conformidade médica
 
 ## 🏗️ Arquitetura
 
 ```
-┌─────────────────┐    REST API (/wp-json/wp/v2/)    ┌─────────────────┐
-│  React Frontend │ ────────────────────────────── │ WordPress CMS   │
-│ saraivavision   │                                 │ cms.saraivavi   │
-│     .com.br     │                                 │   sion.com.br   │
-└─────────────────┘                                 └─────────────────┘
-        │                                                     │
-        └─── Consome dados médicos ──────────────────────────┘
-                    ↓
-            ┌─────────────────┐
-            │   ISR Cache     │
-            │   (Vercel)      │
-            └─────────────────┘
-                    ↓
-            ┌─────────────────┐
-            │ Webhooks para   │
-            │ Revalidação     │
-            └─────────────────┘
+┌─────────────────┐    External APIs    ┌─────────────────┐
+│  React Frontend │ ────────────────── │ WordPress CMS   │
+│ saraivavision   │                     │ (External)      │
+│     .com.br     │                     │                 │
+└─────────────────┘                     └─────────────────┘
+         │                                                     │
+         └─── Consome dados médicos ──────────────────────────┘
+                     ↓
+             ┌─────────────────┐
+             │   Supabase DB   │
+             │   + Redis Cache │
+             └─────────────────┘
+                     ↓
+             ┌─────────────────┐
+             │   Node.js API   │
+             │   (VPS Backend) │
+             └─────────────────┘
 ```
 
 ## 🚀 Configuração Inicial
 
-### 1. Pré-requisitos do Servidor WordPress
+### 1. Pré-requisitos das Fontes WordPress Externas
 
-**Servidor:** `cms.saraivavision.com.br` (VPS dedicado)
-- **Sistema Operacional:** Ubuntu 22.04 LTS ou Debian 12
-- **PHP:** 8.2+ com OPcache
-- **Banco de Dados:** MariaDB 10.6+ ou MySQL 8.0+
-- **Web Server:** Nginx 1.20+ com SSL Let's Encrypt
-- **Cache:** Redis 7.0+ (recomendado)
+**Fontes Externas:** WordPress sites não hospedados no VPS
+- **APIs Disponíveis:** REST API (/wp-json/wp/v2/), GraphQL
+- **Autenticação:** JWT ou API Keys conforme necessário
+- **Segurança:** HTTPS obrigatório, certificados válidos
+- **Conformidade:** Conteúdo médico deve seguir CFM e LGPD
 
-### 2. Instalação de Plugins Essenciais
+### 2. Configuração das Fontes Externas
 
-```bash
-# No servidor WordPress (cms.saraivavision.com.br)
-cd /var/www/cms.saraivavision.com.br
-
-# Plugins obrigatórios para integração headless
-wp plugin install advanced-custom-fields --activate          # Campos personalizados
-wp plugin install jwt-authentication-for-wp-rest-api --activate  # Autenticação JWT
-wp plugin install wp-rest-api-menu --activate               # Endpoints de menu
-wp plugin install wordpress-seo --activate                  # Otimização SEO
-wp plugin install custom-post-type-ui --activate           # Interface CPT
-wp plugin install wp-mail-smtp --activate                   # SMTP para emails
-
-# Plugins de segurança médica
-wp plugin install wordfence --activate                      # Segurança avançada
-wp plugin install wp-security-audit-log --activate         # Logs de auditoria
-wp plugin install health-check --activate                  # Health checks
-
-# Plugins de performance
-wp plugin install redis-cache --activate                   # Cache Redis
-wp plugin install autoptimize --activate                   # Otimização automática
+```javascript
+// Configuração das fontes WordPress externas no Supabase
+const externalSources = [
+  {
+    name: "Blog Médico Principal",
+    base_url: "https://blog-medico-externo.com",
+    api_type: "rest", // ou "graphql"
+    auth_type: "jwt", // ou "api_key", "none"
+    content_types: ["posts", "pages", "medical_articles"],
+    compliance_level: "cfm_strict",
+    cache_ttl: 300, // 5 minutos
+    sync_frequency: 600 // 10 minutos
+  },
+  {
+    name: "Conteúdo Educacional",
+    base_url: "https://conteudo-educacional.com",
+    api_type: "graphql",
+    auth_type: "none",
+    content_types: ["educational_content"],
+    compliance_level: "cfm_basic",
+    cache_ttl: 1800, // 30 minutos
+    sync_frequency: 3600 // 1 hora
+  }
+];
 ```
 
-### 3. Configuração de Tipos de Post Personalizados
+### 3. Mapeamento de Conteúdo Externo
 
-Adicione ao arquivo `functions.php` do seu tema WordPress:
+Configure o mapeamento de tipos de conteúdo das fontes externas:
 
-```php
-<?php
-// functions.php - Configuração para Saraiva Vision CMS
-
-// ==========================================
-// TIPOS DE POST PERSONALIZADOS
-// ==========================================
-
-// Serviços Oftalmológicos
-function register_services_post_type() {
-    register_post_type('service', [
-        'labels' => [
-            'name' => 'Serviços',
-            'singular_name' => 'Serviço',
-            'menu_name' => 'Serviços Oftalmológicos',
-            'add_new' => 'Adicionar Serviço',
-            'add_new_item' => 'Adicionar Novo Serviço',
-            'edit_item' => 'Editar Serviço',
-            'view_item' => 'Ver Serviço',
-        ],
-        'public' => true,
-        'show_in_rest' => true,
-        'rest_base' => 'services',
-        'menu_icon' => 'dashicons-heart',
-        'supports' => ['title', 'editor', 'excerpt', 'thumbnail', 'custom-fields', 'revisions'],
-        'taxonomies' => ['service_category'],
-        'rewrite' => ['slug' => 'servicos'],
-    ]);
-}
-add_action('init', 'register_services_post_type');
-
-// Equipe Médica
-function register_team_members_post_type() {
-    register_post_type('team_member', [
-        'labels' => [
-            'name' => 'Equipe Médica',
-            'singular_name' => 'Membro da Equipe',
-            'menu_name' => 'Equipe Médica',
-        ],
-        'public' => true,
-        'show_in_rest' => true,
-        'rest_base' => 'team-members',
-        'menu_icon' => 'dashicons-groups',
-        'supports' => ['title', 'editor', 'thumbnail', 'custom-fields', 'page-attributes'],
-        'rewrite' => ['slug' => 'equipe'],
-    ]);
-}
-add_action('init', 'register_team_members_post_type');
-
-// Depoimentos de Pacientes
-function register_testimonials_post_type() {
-    register_post_type('testimonial', [
-        'labels' => [
-            'name' => 'Depoimentos',
-            'singular_name' => 'Depoimento',
-            'menu_name' => 'Depoimentos de Pacientes',
-        ],
-        'public' => true,
-        'show_in_rest' => true,
-        'rest_base' => 'testimonials',
-        'menu_icon' => 'dashicons-testimonial',
-        'supports' => ['title', 'editor', 'thumbnail', 'custom-fields'],
-        'rewrite' => ['slug' => 'depoimentos'],
-    ]);
-}
-add_action('init', 'register_testimonials_post_type');
-
-// Artigos Médicos (para blog)
-function register_medical_articles_post_type() {
-    register_post_type('medical_article', [
-        'labels' => [
-            'name' => 'Artigos Médicos',
-            'singular_name' => 'Artigo Médico',
-            'menu_name' => 'Blog Médico',
-        ],
-        'public' => true,
-        'show_in_rest' => true,
-        'rest_base' => 'medical-articles',
-        'menu_icon' => 'dashicons-media-document',
-        'supports' => ['title', 'editor', 'excerpt', 'thumbnail', 'custom-fields', 'author'],
-        'taxonomies' => ['category', 'post_tag', 'medical_specialty'],
-        'rewrite' => ['slug' => 'blog'],
-    ]);
-}
-add_action('init', 'register_medical_articles_post_type');
+```javascript
+// src/lib/content-mapping.js - Mapeamento de conteúdo externo
 
 // ==========================================
-// TAXONOMIAS PERSONALIZADAS
+// MAPEAMENTO DE TIPOS DE CONTEÚDO
 // ==========================================
 
-// Especialidades Médicas
-function register_medical_specialties_taxonomy() {
-    register_taxonomy('medical_specialty', ['medical_article'], [
-        'labels' => [
-            'name' => 'Especialidades Médicas',
-            'singular_name' => 'Especialidade Médica',
-        ],
-        'hierarchical' => true,
-        'show_in_rest' => true,
-        'rewrite' => ['slug' => 'especialidade'],
-    ]);
-}
-add_action('init', 'register_medical_specialties_taxonomy');
-
-// Categorias de Serviços
-function register_service_categories_taxonomy() {
-    register_taxonomy('service_category', ['service'], [
-        'labels' => [
-            'name' => 'Categorias de Serviço',
-            'singular_name' => 'Categoria de Serviço',
-        ],
-        'hierarchical' => true,
-        'show_in_rest' => true,
-        'rewrite' => ['slug' => 'categoria-servico'],
-    ]);
-}
-add_action('init', 'register_service_categories_taxonomy');
-
-// ==========================================
-// CAMPOS ACF (ADVANCED CUSTOM FIELDS)
-// ==========================================
-
-// Campos para Serviços Oftalmológicos
-function register_service_acf_fields() {
-    if (function_exists('acf_add_local_field_group')) {
-        acf_add_local_field_group([
-            'key' => 'service_details',
-            'title' => 'Detalhes do Serviço',
-            'fields' => [
-                [
-                    'key' => 'service_duration',
-                    'label' => 'Duração (minutos)',
-                    'name' => 'duration',
-                    'type' => 'number',
-                    'required' => 1,
-                ],
-                [
-                    'key' => 'service_price',
-                    'label' => 'Preço Estimado',
-                    'name' => 'price',
-                    'type' => 'text',
-                    'instructions' => 'Formato: R$ XXX,XX',
-                ],
-                [
-                    'key' => 'service_medical_disclaimer',
-                    'label' => 'Isenção de Responsabilidade Médica',
-                    'name' => 'medical_disclaimer',
-                    'type' => 'textarea',
-                    'default_value' => 'Este serviço não substitui consulta médica. Procure sempre orientação profissional.',
-                    'required' => 1,
-                ],
-                [
-                    'key' => 'service_preparation',
-                    'label' => 'Preparação Necessária',
-                    'name' => 'preparation',
-                    'type' => 'wysiwyg',
-                    'instructions' => 'Instruções para o paciente se preparar para o exame/procedimento',
-                ],
-            ],
-            'location' => [
-                [
-                    [
-                        'param' => 'post_type',
-                        'operator' => '==',
-                        'value' => 'service',
-                    ],
-                ],
-            ],
-        ]);
+const contentTypeMapping = {
+  // Serviços Oftalmológicos
+  service: {
+    external_type: 'service',
+    internal_type: 'service',
+    fields: {
+      title: 'title.rendered',
+      content: 'content.rendered',
+      excerpt: 'excerpt.rendered',
+      featured_image: 'featured_media',
+      custom_fields: {
+        duration: 'acf.duration',
+        price: 'acf.price',
+        medical_disclaimer: 'acf.medical_disclaimer',
+        preparation: 'acf.preparation'
+      }
+    },
+    validation: {
+      required_fields: ['title', 'medical_disclaimer'],
+      compliance: 'cfm_strict'
     }
-}
-add_action('acf/init', 'register_service_acf_fields');
+  },
 
-// Campos para Equipe Médica (CFM Compliance)
-function register_team_member_acf_fields() {
-    if (function_exists('acf_add_local_field_group')) {
-        acf_add_local_field_group([
-            'key' => 'team_member_details',
-            'title' => 'Informações Profissionais (CFM)',
-            'fields' => [
-                [
-                    'key' => 'member_crm',
-                    'label' => 'CRM',
-                    'name' => 'crm',
-                    'type' => 'text',
-                    'required' => 1,
-                    'instructions' => 'Número do Conselho Regional de Medicina (obrigatório)',
-                ],
-                [
-                    'key' => 'member_specialty',
-                    'label' => 'Especialidade Médica',
-                    'name' => 'specialty',
-                    'type' => 'text',
-                    'required' => 1,
-                ],
-                [
-                    'key' => 'member_education',
-                    'label' => 'Formação Acadêmica',
-                    'name' => 'education',
-                    'type' => 'textarea',
-                    'instructions' => 'Universidade, ano de formação, títulos',
-                ],
-                [
-                    'key' => 'member_experience',
-                    'label' => 'Anos de Experiência',
-                    'name' => 'experience_years',
-                    'type' => 'number',
-                ],
-                [
-                    'key' => 'member_certifications',
-                    'label' => 'Certificações e Títulos',
-                    'name' => 'certifications',
-                    'type' => 'textarea',
-                ],
-            ],
-            'location' => [
-                [
-                    [
-                        'param' => 'post_type',
-                        'operator' => '==',
-                        'value' => 'team_member',
-                    ],
-                ],
-            ],
-        ]);
+  // Equipe Médica
+  team_member: {
+    external_type: 'team_member',
+    internal_type: 'team_member',
+    fields: {
+      title: 'title.rendered',
+      content: 'content.rendered',
+      featured_image: 'featured_media',
+      custom_fields: {
+        crm: 'acf.crm',
+        specialty: 'acf.specialty',
+        education: 'acf.education',
+        experience_years: 'acf.experience_years'
+      }
+    },
+    validation: {
+      required_fields: ['title', 'crm', 'specialty'],
+      compliance: 'cfm_strict'
     }
-}
-add_action('acf/init', 'register_team_member_acf_fields');
+  },
 
-// Campos para Depoimentos de Pacientes (LGPD Compliance)
-function register_testimonial_acf_fields() {
-    if (function_exists('acf_add_local_field_group')) {
-        acf_add_local_field_group([
-            'key' => 'testimonial_details',
-            'title' => 'Detalhes do Depoimento (LGPD Compliance)',
-            'fields' => [
-                [
-                    'key' => 'testimonial_patient_name',
-                    'label' => 'Nome do Paciente (Anônimo)',
-                    'name' => 'patient_name',
-                    'type' => 'text',
-                    'instructions' => 'Nome fictício ou "Paciente Anônimo" para proteger privacidade (LGPD)',
-                    'default_value' => 'Paciente Anônimo',
-                ],
-                [
-                    'key' => 'testimonial_procedure',
-                    'label' => 'Procedimento Realizado',
-                    'name' => 'procedure',
-                    'type' => 'text',
-                    'required' => 1,
-                    'instructions' => 'Nome do exame ou tratamento oftalmológico',
-                ],
-                [
-                    'key' => 'testimonial_rating',
-                    'label' => 'Avaliação (1-5 estrelas)',
-                    'name' => 'rating',
-                    'type' => 'select',
-                    'choices' => [
-                        '5' => '⭐⭐⭐⭐⭐ (Excelente)',
-                        '4' => '⭐⭐⭐⭐ (Muito Bom)',
-                        '3' => '⭐⭐⭐ (Bom)',
-                        '2' => '⭐⭐ (Regular)',
-                        '1' => '⭐ (Ruim)',
-                    ],
-                    'default_value' => '5',
-                ],
-                [
-                    'key' => 'testimonial_consent',
-                    'label' => 'Consentimento LGPD',
-                    'name' => 'lgpd_consent',
-                    'type' => 'true_false',
-                    'required' => 1,
-                    'message' => 'Paciente autorizou o uso do depoimento (obrigatório)',
-                    'instructions' => 'Marque apenas se o paciente assinou termo de consentimento LGPD',
-                ],
-                [
-                    'key' => 'testimonial_date',
-                    'label' => 'Data do Procedimento',
-                    'name' => 'procedure_date',
-                    'type' => 'date_picker',
-                    'instructions' => 'Data aproximada (mês/ano) para contextualizar o depoimento',
-                ],
-                [
-                    'key' => 'testimonial_medical_disclaimer',
-                    'label' => 'Isenção Médica',
-                    'name' => 'medical_disclaimer',
-                    'type' => 'textarea',
-                    'default_value' => 'Este depoimento representa a experiência pessoal do paciente e não garante resultados similares. Cada caso é único e deve ser avaliado individualmente por um oftalmologista.',
-                    'required' => 1,
-                ],
-            ],
-            'location' => [
-                [
-                    [
-                        'param' => 'post_type',
-                        'operator' => '==',
-                        'value' => 'testimonial',
-                    ],
-                ],
-            ],
-        ]);
+  // Depoimentos de Pacientes
+  testimonial: {
+    external_type: 'testimonial',
+    internal_type: 'testimonial',
+    fields: {
+      title: 'title.rendered',
+      content: 'content.rendered',
+      featured_image: 'featured_media',
+      custom_fields: {
+        patient_name: 'acf.patient_name',
+        procedure: 'acf.procedure',
+        rating: 'acf.rating',
+        lgpd_consent: 'acf.lgpd_consent'
+      }
+    },
+    validation: {
+      required_fields: ['title', 'lgpd_consent'],
+      compliance: 'lgpd_strict'
     }
-}
-add_action('acf/init', 'register_testimonial_acf_fields');
+  },
 
-// Campos para Artigos Médicos (CFM Compliance Obrigatória)
-function register_medical_article_acf_fields() {
-    if (function_exists('acf_add_local_field_group')) {
-        acf_add_local_field_group([
-            'key' => 'medical_article_compliance',
-            'title' => 'Conformidade Médica (CFM - Obrigatório)',
-            'fields' => [
-                [
-                    'key' => 'article_author_crm',
-                    'label' => 'CRM do Autor Responsável',
-                    'name' => 'author_crm',
-                    'type' => 'text',
-                    'required' => 1,
-                    'instructions' => 'CRM do médico responsável pelo conteúdo (obrigatório por lei)',
-                ],
-                [
-                    'key' => 'article_medical_disclaimer',
-                    'label' => 'Isenção Médica Obrigatória',
-                    'name' => 'medical_disclaimer',
-                    'type' => 'textarea',
-                    'default_value' => 'IMPORTANTE: Este artigo não substitui consulta médica. As informações aqui apresentadas têm caráter informativo e educacional, não devendo ser usadas como diagnóstico, tratamento ou prescrição médica. Sempre consulte um oftalmologista qualificado para avaliação e tratamento adequados à sua condição.',
-                    'required' => 1,
-                ],
-                [
-                    'key' => 'article_references',
-                    'label' => 'Referências Científicas',
-                    'name' => 'medical_references',
-                    'type' => 'textarea',
-                    'instructions' => 'Fontes científicas, estudos e referências médicas utilizadas',
-                ],
-                [
-                    'key' => 'article_review_date',
-                    'label' => 'Data da Última Revisão Médica',
-                    'name' => 'review_date',
-                    'type' => 'date_picker',
-                    'required' => 1,
-                    'instructions' => 'Quando o conteúdo foi revisado pela última vez por profissional médico',
-                ],
-                [
-                    'key' => 'article_target_audience',
-                    'label' => 'Público-Alvo',
-                    'name' => 'target_audience',
-                    'type' => 'select',
-                    'choices' => [
-                        'geral' => 'Público Geral',
-                        'pacientes' => 'Pacientes',
-                        'profissionais' => 'Profissionais de Saúde',
-                    ],
-                    'default_value' => 'geral',
-                ],
-                [
-                    'key' => 'article_content_warnings',
-                    'label' => 'Advertências de Conteúdo',
-                    'name' => 'content_warnings',
-                    'type' => 'checkbox',
-                    'choices' => [
-                        'graphic_images' => 'Imagens Gráficas Médicas',
-                        'sensitive_topics' => 'Tópicos Sensíveis',
-                        'treatment_details' => 'Detalhes de Tratamentos',
-                        'anatomy_descriptions' => 'Descrições Anatômicas',
-                    ],
-                    'instructions' => 'Marque se o artigo contém conteúdo que pode ser sensível',
-                ],
-                [
-                    'key' => 'article_peer_reviewed',
-                    'label' => 'Revisado por Pares',
-                    'name' => 'peer_reviewed',
-                    'type' => 'true_false',
-                    'instructions' => 'Conteúdo revisado por outro profissional médico qualificado',
-                ],
-            ],
-            'location' => [
-                [
-                    [
-                        'param' => 'post_type',
-                        'operator' => '==',
-                        'value' => 'medical_article',
-                    ],
-                ],
-            ],
-        ]);
+  // Artigos Médicos
+  medical_article: {
+    external_type: 'medical_article',
+    internal_type: 'medical_article',
+    fields: {
+      title: 'title.rendered',
+      content: 'content.rendered',
+      excerpt: 'excerpt.rendered',
+      author: 'author',
+      categories: 'categories',
+      tags: 'tags',
+      custom_fields: {
+        author_crm: 'acf.author_crm',
+        medical_disclaimer: 'acf.medical_disclaimer',
+        review_date: 'acf.review_date'
+      }
+    },
+    validation: {
+      required_fields: ['title', 'author_crm', 'medical_disclaimer', 'review_date'],
+      compliance: 'cfm_strict'
     }
-}
-add_action('acf/init', 'register_medical_article_acf_fields');
+  }
+};
+
+// ==========================================
+// MAPEAMENTO DE TAXONOMIAS
+// ==========================================
+
+const taxonomyMapping = {
+  medical_specialty: {
+    external_taxonomy: 'medical_specialty',
+    internal_taxonomy: 'medical_specialty',
+    hierarchical: true
+  },
+
+  service_category: {
+    external_taxonomy: 'service_category',
+    internal_taxonomy: 'service_category',
+    hierarchical: true
+  }
+};
+
+// ==========================================
+// MAPEAMENTO DE CAMPOS PERSONALIZADOS
+// ==========================================
+
+const fieldMapping = {
+  // Campos para Serviços Oftalmológicos
+  service_fields: {
+    duration: {
+      external_path: 'acf.duration',
+      internal_name: 'duration',
+      type: 'number',
+      required: true,
+      validation: 'positive_integer'
+    },
+    price: {
+      external_path: 'acf.price',
+      internal_name: 'price',
+      type: 'string',
+      validation: 'currency_format'
+    },
+    medical_disclaimer: {
+      external_path: 'acf.medical_disclaimer',
+      internal_name: 'medical_disclaimer',
+      type: 'string',
+      required: true,
+      default: 'Este serviço não substitui consulta médica. Procure sempre orientação profissional.'
+    },
+    preparation: {
+      external_path: 'acf.preparation',
+      internal_name: 'preparation',
+      type: 'html',
+      validation: 'safe_html'
+    }
+  },
+
+  // Campos para Equipe Médica (CFM Compliance)
+  team_member_fields: {
+    crm: {
+      external_path: 'acf.crm',
+      internal_name: 'crm',
+      type: 'string',
+      required: true,
+      validation: 'crm_format'
+    },
+    specialty: {
+      external_path: 'acf.specialty',
+      internal_name: 'specialty',
+      type: 'string',
+      required: true
+    },
+    education: {
+      external_path: 'acf.education',
+      internal_name: 'education',
+      type: 'string',
+      validation: 'safe_text'
+    },
+    experience_years: {
+      external_path: 'acf.experience_years',
+      internal_name: 'experience_years',
+      type: 'number',
+      validation: 'positive_integer'
+    }
+  },
+
+  // Campos para Depoimentos (LGPD Compliance)
+  testimonial_fields: {
+    patient_name: {
+      external_path: 'acf.patient_name',
+      internal_name: 'patient_name',
+      type: 'string',
+      default: 'Paciente Anônimo',
+      validation: 'anonymous_name'
+    },
+    procedure: {
+      external_path: 'acf.procedure',
+      internal_name: 'procedure',
+      type: 'string',
+      required: true
+    },
+    rating: {
+      external_path: 'acf.rating',
+      internal_name: 'rating',
+      type: 'number',
+      validation: 'rating_1_5'
+    },
+    lgpd_consent: {
+      external_path: 'acf.lgpd_consent',
+      internal_name: 'lgpd_consent',
+      type: 'boolean',
+      required: true,
+      validation: 'must_be_true'
+    }
+  },
+
+  // Campos para Artigos Médicos (CFM Compliance)
+  medical_article_fields: {
+    author_crm: {
+      external_path: 'acf.author_crm',
+      internal_name: 'author_crm',
+      type: 'string',
+      required: true,
+      validation: 'crm_format'
+    },
+    medical_disclaimer: {
+      external_path: 'acf.medical_disclaimer',
+      internal_name: 'medical_disclaimer',
+      type: 'string',
+      required: true,
+      default: 'IMPORTANTE: Este artigo não substitui consulta médica...'
+    },
+    review_date: {
+      external_path: 'acf.review_date',
+      internal_name: 'review_date',
+      type: 'date',
+      required: true,
+      validation: 'not_future_date'
+    },
+    peer_reviewed: {
+      external_path: 'acf.peer_reviewed',
+      internal_name: 'peer_reviewed',
+      type: 'boolean'
+    }
+  }
+};
 ```
 
-#### Set Up Webhooks
-Add webhook functionality to trigger revalidation:
+#### Configuração de Sincronização
+Configure a sincronização automática com fontes externas:
 
-```php
-// Add webhook triggers for content updates
-function trigger_nextjs_revalidation($post_id, $post, $update) {
-    // Only trigger for published posts
-    if ($post->post_status !== 'publish') return;
-    
-    $webhook_url = 'https://saraivavision.com.br/api/wordpress-webhook';
-    $webhook_secret = get_option('nextjs_webhook_secret');
-    
-    $payload = [
-        'action' => $update ? 'wp_update_post' : 'publish_' . $post->post_type,
-        'post_id' => $post_id,
-        'post_type' => $post->post_type,
-        'post_slug' => $post->post_name,
-        'post_status' => $post->post_status,
-        'post_title' => $post->post_title,
-        'post_modified' => $post->post_modified,
-    ];
-    
-    wp_remote_post($webhook_url, [
-        'body' => json_encode($payload),
-        'headers' => [
-            'Content-Type' => 'application/json',
-            'X-Hub-Signature-256' => 'sha256=' . hash_hmac('sha256', json_encode($payload), $webhook_secret),
-        ],
-        'timeout' => 10,
-    ]);
-}
+```javascript
+// src/lib/external-sync.js - Sincronização com fontes externas
 
-add_action('wp_insert_post', 'trigger_nextjs_revalidation', 10, 3);
-add_action('before_delete_post', function($post_id) {
-    $post = get_post($post_id);
-    if ($post) {
-        trigger_nextjs_revalidation($post_id, $post, false);
+class ExternalWordPressSync {
+    constructor() {
+        this.sources = [];
+        this.syncInterval = 10 * 60 * 1000; // 10 minutos
+        this.cache = new RedisCache();
     }
-});
+
+    // Adicionar fonte externa
+    addSource(sourceConfig) {
+        this.sources.push({
+            ...sourceConfig,
+            lastSync: null,
+            status: 'active'
+        });
+    }
+
+    // Iniciar sincronização
+    startSync() {
+        setInterval(() => {
+            this.syncAllSources();
+        }, this.syncInterval);
+    }
+
+    // Sincronizar todas as fontes
+    async syncAllSources() {
+        for (const source of this.sources) {
+            if (source.status === 'active') {
+                await this.syncSource(source);
+            }
+        }
+    }
+
+    // Sincronizar fonte específica
+    async syncSource(source) {
+        try {
+            const content = await this.fetchContent(source);
+            const transformed = await this.transformContent(content, source);
+            await this.storeContent(transformed, source);
+            await this.invalidateCache(source);
+
+            source.lastSync = new Date();
+            source.status = 'healthy';
+        } catch (error) {
+            console.error(`Sync failed for ${source.name}:`, error);
+            source.status = 'error';
+        }
+    }
+
+    // Buscar conteúdo da fonte externa
+    async fetchContent(source) {
+        const response = await fetch(`${source.base_url}/wp-json/wp/v2/posts`, {
+            headers: this.getAuthHeaders(source)
+        });
+        return response.json();
+    }
+
+    // Transformar conteúdo para conformidade
+    async transformContent(content, source) {
+        // Aplicar validações CFM/LGPD
+        // Injetar disclaimers médicos
+        // Anonimizar dados pessoais
+        return transformedContent;
+    }
+
+    // Armazenar no Supabase
+    async storeContent(content, source) {
+        const { data, error } = await supabase
+            .from('external_wordpress_content')
+            .upsert(content);
+
+        if (error) throw error;
+        return data;
+    }
+}
 ```
 
 ### 4. Segurança Médica e Conformidade
 
-#### Configurações de Segurança CFM/LGPD
+#### Configurações de Segurança para APIs Externas
 
-```php
-// wp-config.php - Configurações de segurança médica obrigatórias
-define('CFM_COMPLIANCE_MODE', true);
-define('LGPD_COMPLIANCE_LEVEL', 'strict');
-define('MEDICAL_CONTENT_RESTRICTION', true);
+```javascript
+// src/lib/security-config.js - Configurações de segurança médica
 
-// Desabilitar edição de arquivos (segurança crítica)
-define('DISALLOW_FILE_EDIT', true);
-define('DISALLOW_FILE_MODS', false); // Permite apenas plugins aprovados
-define('DISALLOW_UNFILTERED_HTML', true); // Previne XSS em conteúdo médico
+const securityConfig = {
+    // Conformidade CFM/LGPD
+    compliance: {
+        cfm_mode: true,
+        lgpd_level: 'strict',
+        medical_content_restriction: true,
+        audit_logging: true
+    },
 
-// Logs de auditoria médica obrigatórios
-define('WP_DEBUG', false);
-define('WP_DEBUG_LOG', true);
-define('WP_DEBUG_DISPLAY', false);
+    // Validações de segurança
+    validations: {
+        content_filtering: true,
+        pii_detection: true,
+        medical_disclaimer_injection: true,
+        crm_validation: true
+    },
 
-// Limitações de conteúdo médico
-define('MAX_POST_REVISIONS', 10);
-define('EMPTY_TRASH_DAYS', 30);
-define('WP_POST_REVISIONS', 10);
-define('AUTOSAVE_INTERVAL', 300); // 5 minutos para conteúdo médico
+    // Autenticação e autorização
+    auth: {
+        jwt_required: true,
+        api_key_fallback: false,
+        rate_limiting: {
+            requests_per_minute: 60,
+            burst_limit: 100
+        }
+    },
 
-// Segurança adicional para dados médicos
-define('FORCE_SSL_ADMIN', true);
-define('FORCE_SSL_LOGIN', true);
-define('WP_CACHE', true); // Cache obrigatório para performance
+    // Cache e performance
+    cache: {
+        enabled: true,
+        ttl: 300, // 5 minutos
+        compression: true,
+        invalidation_on_update: true
+    }
+};
 ```
 
 #### Configurações Avançadas de Segurança Médica
@@ -702,25 +608,25 @@ add_action('wp_head', function() {
 Adicione ao seu arquivo `.env`:
 
 ```bash
-# WordPress REST API Configuration
-WORDPRESS_API_URL=https://cms.saraivavision.com.br
-WORDPRESS_DOMAIN=https://cms.saraivavision.com.br
-WP_REVALIDATE_SECRET=your_secure_revalidate_secret_here
-WP_WEBHOOK_SECRET=your_secure_webhook_secret_here
+# External WordPress API Configuration
+EXTERNAL_WORDPRESS_SOURCES=[{"name":"Blog Médico","base_url":"https://blog-externo.com","api_type":"rest"}]
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+REDIS_URL=redis://localhost:6379
 
-# Autenticação JWT (para admin operations)
+# Autenticação para fontes externas
 WP_JWT_SECRET=your_jwt_secret_key_here
-WP_ADMIN_USERNAME=admin_saraiva
-WP_APP_PASSWORD=secure_app_password_here
+EXTERNAL_API_KEYS=[{"source":"blog","key":"your_api_key"}]
 
 # Configurações de Segurança Médica
 CFM_COMPLIANCE_ENABLED=true
 LGPD_STRICT_MODE=true
 MEDICAL_CONTENT_FILTER=true
+AUDIT_LOGGING_ENABLED=true
 
 # Site Configuration
 NEXT_PUBLIC_SITE_URL=https://saraivavision.com.br
-NEXT_PUBLIC_WORDPRESS_URL=https://cms.saraivavision.com.br
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 ```
 
 ### 3. Vercel Configuration
@@ -730,14 +636,20 @@ Add to your `vercel.json`:
 ```json
 {
   "functions": {
-    "api/revalidate.js": { "maxDuration": 10 },
-    "api/wordpress-webhook.js": { "maxDuration": 15 }
+    "api/external-wordpress/health.js": { "maxDuration": 10 },
+    "api/external-wordpress/sync.js": { "maxDuration": 30 }
   },
   "env": {
-    "WORDPRESS_GRAPHQL_ENDPOINT": "@wordpress_graphql_endpoint",
-    "WP_REVALIDATE_SECRET": "@wp_revalidate_secret",
-    "WP_WEBHOOK_SECRET": "@wp_webhook_secret"
-  }
+    "SUPABASE_URL": "@supabase_url",
+    "SUPABASE_ANON_KEY": "@supabase_anon_key",
+    "REDIS_URL": "@redis_url"
+  },
+  "rewrites": [
+    {
+      "source": "/api/external-wordpress/:path*",
+      "destination": "https://your-vps.com/api/external-wordpress/:path*"
+    }
+  ]
 }
 ```
 
@@ -886,13 +798,13 @@ Receives WordPress webhooks for automatic revalidation:
 }
 ```
 
-### WordPress REST API Endpoints
-- `GET /wp-json/wp/v2/posts` - List all posts
-- `GET /wp-json/wp/v2/posts/{id}` - Get specific post
-- `GET /wp-json/wp/v2/pages` - List all pages
-- `GET /wp-json/wp/v2/categories` - List categories
-- `GET /wp-json/wp/v2/tags` - List tags
-- `GET /wp-json/wp/v2/media` - List media files
+### External WordPress API Endpoints
+- `GET /api/external-wordpress/posts` - List posts from external sources
+- `GET /api/external-wordpress/posts/{id}` - Get specific post
+- `GET /api/external-wordpress/pages` - List pages
+- `GET /api/external-wordpress/health` - Health check
+- `POST /api/external-wordpress/sync` - Manual sync trigger
+- `GET /api/external-wordpress/sources` - List configured sources
 ```
 
 ## Caching Strategy
@@ -901,13 +813,15 @@ Receives WordPress webhooks for automatic revalidation:
 1. **Browser Cache**: Static assets and pages
 2. **CDN Cache**: Vercel Edge Network
 3. **ISR Cache**: Next.js static generation
-4. **API Cache**: In-memory WordPress API responses
+4. **Redis Cache**: External content caching
+5. **Supabase Cache**: Database query caching
 
 ### Cache Durations
-- **Posts**: 5 minutes (frequent updates)
-- **Pages**: 1 hour (less frequent updates)
+- **External Posts**: 5 minutes (frequent updates)
+- **External Pages**: 30 minutes (moderate updates)
+- **Medical Articles**: 1 hour (infrequent updates)
+- **Team Members**: 2 hours (rare updates)
 - **Services**: 30 minutes (moderate updates)
-- **Site Settings**: 1 hour (rare updates)
 
 ### Cache Management
 
@@ -1021,39 +935,45 @@ console.error('WordPress GraphQL Error:', {
 
 ### Common Issues
 
-1. **REST API Endpoint Not Accessible**
-    - Check WordPress URL and SSL certificate
-    - Verify REST API is enabled (default in WordPress)
-    - Test endpoint manually: `curl https://cms.saraivavision.com.br/wp-json/wp/v2/posts`
+1. **External API Not Accessible**
+     - Check external WordPress URL and SSL certificate
+     - Verify API authentication (JWT/API keys)
+     - Test endpoint manually: `curl https://external-blog.com/wp-json/wp/v2/posts`
 
-2. **Webhooks Not Working**
-    - Verify webhook URL is accessible from WordPress server
-    - Check webhook secret configuration
-    - Monitor webhook logs in WordPress
+2. **Sync Not Working**
+     - Check Supabase connection and permissions
+     - Verify Redis cache connectivity
+     - Monitor sync logs in the backend API
 
 3. **ISR Not Updating**
-    - Verify revalidation secret is correct
-    - Check Vercel function logs
-    - Ensure webhook payload format is correct
+     - Verify external sync triggers revalidation
+     - Check Vercel function logs
+     - Ensure content transformation is working
 
 4. **Cache Issues**
-    - Clear cache manually: `invalidateCache()`
-    - Check cache TTL settings
-    - Verify cache key generation
+     - Clear Redis cache: `redis-cli FLUSHDB`
+     - Check Supabase RLS policies
+     - Verify cache invalidation triggers
 
 ### Debug Commands
 
 ```bash
-# Test WordPress REST API endpoint
-curl https://cms.saraivavision.com.br/wp-json/wp/v2/posts
+# Test external WordPress API
+curl https://external-blog.com/wp-json/wp/v2/posts
 
-# Test specific post
-curl https://cms.saraivavision.com.br/wp-json/wp/v2/posts/123
+# Test backend API health
+curl https://saraivavision.com.br/api/external-wordpress/health
 
-# Test revalidation endpoint
-curl -X POST https://saraivavision.com.br/api/revalidate \
+# Test manual sync
+curl -X POST https://saraivavision.com.br/api/external-wordpress/sync \
   -H "Content-Type: application/json" \
-  -d '{"secret": "your_secret", "path": "/"}'
+  -d '{"source": "blog"}'
+
+# Check Redis cache
+redis-cli KEYS "*"
+
+# Check Supabase logs
+# Access via Supabase dashboard
 
 # Check Vercel function logs
 vercel logs --follow
