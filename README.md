@@ -83,13 +83,12 @@ O projeto utiliza uma arquitetura nativa VPS modular e escalável:
 - **Google Maps API** - Mapas e localização
 - **Google Reviews API** - Exibição de avaliações
 
-### Backend & APIs (Native VPS Services)
-- **Node.js REST API** - API backend com Express.js (serviço systemd nativo)
-- **MySQL** - Database server nativo para WordPress e dados locais
-- **Redis** - Cache server nativo para performance e sessões
-- **PHP-FPM 8.1+** - Processamento PHP nativo para WordPress
-- **Nginx** - Web server e reverse proxy nativo
-- **MySQL** - Banco de dados nativo para todos os dados da aplicação
+### Integração WordPress (API Externa)
+- **WordPress External API**: Integração completa com WordPress REST API e GraphQL
+- **JWT Authentication**: Sistema de autenticação JWT para WordPress API externa
+- **Content Caching**: Cache inteligente de posts e categorias
+- **Blog Management**: Sistema completo de gerenciamento de blog via API externa
+- **GraphQL Queries**: Consultas otimizadas para WordPress headless
 
 ### Ferramentas de Desenvolvimento
 - **Vitest** - Framework de testes

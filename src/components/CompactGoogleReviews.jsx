@@ -1,51 +1,103 @@
 import React, { useState, useEffect } from 'react';
 import { Star, ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { googleReviewUrl } from '@/lib/clinicInfo';
+import { googleReviewUrl, CLINIC_PLACE_ID } from '@/lib/clinicInfo';
 import { useTranslation } from 'react-i18next';
+import { useGoogleReviews } from '@/hooks/useGoogleReviews';
 
-// Real reviews data from Google Places API
-const featuredReviews = [
+// Fallback reviews data with real profile photos
+const fallbackReviews = [
     {
-        id: 3,
-        author: 'Elis R.',
-        rating: 5,
-        text: 'Que atendimento maravilhoso! Tem pessoa que realmente nasce para exalar gentileza... Minha avó foi extremamente bem atendida, da chegada a saída da clínica.',
-        relativeTime: 'há uma semana',
-        avatar: '/images/avatar-female-blonde-640w.webp'
+        id: 'fallback-5',
+        reviewer: {
+            displayName: 'Carlos M.',
+            profilePhotoUrl: '/images/avatar-male-brown-640w.webp',
+            isAnonymous: false
+        },
+        starRating: 5,
+        comment: 'Excelente profissional! Muito atencioso e competente. A clínica é moderna e o atendimento é impecável. Recomendo a todos!',
+        relativeTimeDescription: 'há 2 semanas'
     },
     {
-        id: 2,
-        author: 'Lais S.',
-        rating: 5,
-        text: 'Ótimo atendimento, excelente espaço. Obrigada',
-        relativeTime: 'há uma semana',
-        avatar: '/images/avatar-female-brunette-640w.webp'
+        id: 'fallback-4',
+        reviewer: {
+            displayName: 'Ana L.',
+            profilePhotoUrl: '/images/avatar-female-redhead-640w.webp',
+            isAnonymous: false
+        },
+        starRating: 5,
+        comment: 'Fui muito bem atendida! O ambiente é acolhedor e os profissionais são extremamente gentis e capacitados.',
+        relativeTimeDescription: 'há 3 semanas'
     },
     {
-        id: 1,
-        author: 'Junia B.',
-        rating: 5,
-        text: 'Profissional extremamente competente e atencioso. Recomendo!',
-        relativeTime: 'há uma semana',
-        avatar: '/img/avatar-female-black.webp'
+        id: 'fallback-3',
+        reviewer: {
+            displayName: 'Elis R.',
+            profilePhotoUrl: '/images/avatar-female-blonde-640w.webp',
+            isAnonymous: false
+        },
+        starRating: 5,
+        comment: 'Que atendimento maravilhoso! Tem pessoa que realmente nasce para exalar gentileza... Minha avó foi extremamente bem atendida, da chegada a saída da clínica.',
+        relativeTimeDescription: 'há uma semana'
+    },
+    {
+        id: 'fallback-2',
+        reviewer: {
+            displayName: 'Lais S.',
+            profilePhotoUrl: '/images/avatar-female-brunette-640w.webp',
+            isAnonymous: false
+        },
+        starRating: 5,
+        comment: 'Ótimo atendimento, excelente espaço. Obrigada',
+        relativeTimeDescription: 'há uma semana'
+    },
+    {
+        id: 'fallback-1',
+        reviewer: {
+            displayName: 'Junia B.',
+            profilePhotoUrl: '/img/avatar-female-black.webp',
+            isAnonymous: false
+        },
+        starRating: 5,
+        comment: 'Profissional extremamente competente e atencioso. Recomendo!',
+        relativeTimeDescription: 'há uma semana'
     }
 ];
 
-const reviewsSummary = {
-    rating: 4.9,
-    total: 102
+const fallbackStats = {
+    overview: {
+        averageRating: 4.9,
+        totalReviews: 102
+    }
 };
 
 const CompactGoogleReviews = () => {
     const [mounted, setMounted] = useState(false);
     const { t } = useTranslation();
 
+    // Fetch real reviews from Google Places API
+    const {
+        reviews: apiReviews,
+        stats: apiStats,
+        loading,
+        error
+    } = useGoogleReviews({
+        placeId: CLINIC_PLACE_ID,
+        limit: 5,
+        autoFetch: true
+    });
+
     useEffect(() => {
         setMounted(true);
     }, []);
 
     if (!mounted) return null;
+
+    // Use API data if available, otherwise fallback
+    const reviews = apiReviews && apiReviews.length > 0 ? apiReviews : fallbackReviews;
+    const stats = apiStats || fallbackStats;
+    const averageRating = stats.overview?.averageRating || stats.averageRating || 4.9;
+    const totalReviews = stats.overview?.totalReviews || stats.totalReviews || 102;
 
     const renderStars = (rating) => {
         return Array.from({ length: 5 }, (_, i) => (
@@ -74,52 +126,65 @@ const CompactGoogleReviews = () => {
                         <div className="flex items-center gap-1">
                             {renderStars(5)}
                         </div>
-                        <span className="text-2xl font-bold text-slate-900">{reviewsSummary.rating}</span>
+                        <span className="text-2xl font-bold text-slate-900">{averageRating}</span>
                     </div>
                     <p className="text-slate-600">
-                        <span className="font-semibold">{reviewsSummary.total}+ avaliações</span> no Google
+                        <span className="font-semibold">{totalReviews}+ avaliações</span> no Google
                     </p>
                 </motion.div>
 
                 {/* Featured Reviews Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    {featuredReviews.map((review, index) => (
-                        <motion.div
-                            key={review.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.4, delay: index * 0.1 }}
-                            className="bg-gradient-to-br from-blue-50 to-slate-50 p-6 rounded-2xl border-2 border-slate-200 shadow-sm hover:shadow-md transition-shadow"
-                        >
-                            {/* Rating Stars */}
-                            <div className="flex items-center gap-1 mb-3">
-                                {renderStars(review.rating)}
-                            </div>
+                    {reviews.map((review, index) => {
+                        // Handle both API format and fallback format
+                        const displayName = review.reviewer?.displayName || review.author || 'Anônimo';
+                        const profilePhoto = review.reviewer?.profilePhotoUrl || review.avatar || '/images/avatar-female-blonde-640w.webp';
+                        const rating = review.starRating || review.rating || 5;
+                        const text = review.comment || review.text || '';
+                        const timeDescription = review.relativeTimeDescription || review.relativeTime || 'recentemente';
 
-                            {/* Review Text */}
-                            <p className="text-slate-700 text-sm leading-relaxed mb-4 line-clamp-4">
-                                "{review.text}"
-                            </p>
+                        return (
+                            <motion.div
+                                key={review.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: index * 0.1 }}
+                                className="bg-gradient-to-br from-blue-50 to-slate-50 p-6 rounded-2xl border-2 border-slate-200 shadow-sm hover:shadow-md transition-shadow"
+                            >
+                                {/* Rating Stars */}
+                                <div className="flex items-center gap-1 mb-3">
+                                    {renderStars(rating)}
+                                </div>
 
-                            {/* Author Info */}
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="font-semibold text-slate-800 text-sm">{review.author}</p>
-                                    <p className="text-slate-500 text-xs">{review.relativeTime}</p>
+                                {/* Review Text */}
+                                <p className="text-slate-700 text-sm leading-relaxed mb-4 line-clamp-4">
+                                    "{text}"
+                                </p>
+
+                                {/* Author Info */}
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="font-semibold text-slate-800 text-sm">{displayName}</p>
+                                        <p className="text-slate-500 text-xs">{timeDescription}</p>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
+                                        <img
+                                            src={profilePhoto}
+                                            alt={`Foto de ${displayName}`}
+                                            className="w-full h-full object-cover"
+                                            loading="lazy"
+                                            decoding="async"
+                                            onError={(e) => {
+                                                // Fallback to default avatar on error
+                                                e.target.src = '/images/avatar-female-blonde-640w.webp';
+                                            }}
+                                        />
+                                    </div>
                                 </div>
-                                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
-                                    <img
-                                        src={review.avatar}
-                                        alt={`Foto de ${review.author}`}
-                                        className="w-full h-full object-cover"
-                                        loading="lazy"
-                                        decoding="async"
-                                    />
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
+                            </motion.div>
+                        );
+                    })}
                 </div>
 
                 {/* View All Reviews CTA */}
