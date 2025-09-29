@@ -84,11 +84,13 @@ O projeto utiliza uma arquitetura nativa VPS modular e escalável:
 - **Google Reviews API** - Exibição de avaliações
 
 ### Integração WordPress (API Externa)
-- **WordPress External API**: Integração completa com WordPress REST API e GraphQL
+- **WordPress REST API**: Integração completa com WordPress REST API em `cms.saraivavision.com.br`
 - **JWT Authentication**: Sistema de autenticação JWT para WordPress API externa
-- **Content Caching**: Cache inteligente de posts e categorias
+- **Content Caching**: Cache inteligente de posts e categorias (LRU, 24h TTL)
 - **Blog Management**: Sistema completo de gerenciamento de blog via API externa
-- **GraphQL Queries**: Consultas otimizadas para WordPress headless
+- **Dual Subdomain Architecture**: `blog` (HTML) e `cms` (JSON API) - [Ver Documentação](./docs/WORDPRESS_CMS_URL_ARCHITECTURE.md)
+- **Circuit Breaker**: Proteção contra falhas de API com recovery automático
+- **Fallback System**: Conteúdo degradado quando API indisponível
 
 ### Ferramentas de Desenvolvimento
 - **Vitest** - Framework de testes

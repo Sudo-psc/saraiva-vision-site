@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
@@ -20,7 +20,77 @@ const plugins = [react({
 //   }
 // }
 
-export default defineConfig({
+/**
+ * Validate required environment variables
+ * @param {Record<string, string>} env - Environment variables object
+ * @param {string} mode - Build mode (development/production)
+ */
+function validateEnvironmentVariables(env, mode) {
+  const required = [
+    'VITE_SUPABASE_URL',
+    'VITE_SUPABASE_ANON_KEY',
+    'VITE_WORDPRESS_API_URL',
+  ];
+
+  const recommended = [
+    'VITE_GOOGLE_MAPS_API_KEY',
+    'VITE_GOOGLE_PLACES_API_KEY',
+  ];
+
+  const missing = required.filter(key => !env[key] || env[key].includes('your_'));
+  const missingRecommended = recommended.filter(key => !env[key] || env[key].includes('your_'));
+
+  if (missing.length > 0) {
+    console.error('\n❌ Missing required environment variables:');
+    missing.forEach(key => console.error(`   - ${key}`));
+    console.error('\nPlease add these to your .env file or .env.production\n');
+
+    if (mode === 'production') {
+      throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+    }
+  }
+
+  if (missingRecommended.length > 0 && mode !== 'test') {
+    console.warn('\n⚠️  Missing recommended environment variables:');
+    missingRecommended.forEach(key => console.warn(`   - ${key}`));
+    console.warn('\nSome features may not work properly.\n');
+  }
+
+  // Validate URL formats
+  const urlVars = {
+    VITE_SUPABASE_URL: env.VITE_SUPABASE_URL,
+    VITE_WORDPRESS_API_URL: env.VITE_WORDPRESS_API_URL,
+  };
+
+  Object.entries(urlVars).forEach(([key, value]) => {
+    if (value && !value.includes('your_')) {
+      try {
+        new URL(value);
+      } catch {
+        console.error(`\n❌ Invalid URL format for ${key}: ${value}\n`);
+        if (mode === 'production') {
+          throw new Error(`Invalid URL format for ${key}`);
+        }
+      }
+    }
+  });
+
+  // Success message
+  if (missing.length === 0 && mode !== 'test') {
+    console.log('\n✅ Environment variables validated successfully\n');
+  }
+}
+
+export default defineConfig(({ mode }) => {
+  // Load environment variables
+  const env = loadEnv(mode, process.cwd(), '');
+
+  // Validate environment variables (skip in test mode to avoid noise)
+  if (mode !== 'test') {
+    validateEnvironmentVariables(env, mode);
+  }
+
+  return {
   plugins,
   base: '/', // Ensure proper base path for VPS deployment
   define: {
@@ -179,5 +249,6 @@ export default defineConfig({
         }
       }
     }
+  }
   }
 })

@@ -4,26 +4,27 @@
  */
 
 // Configurações por ambiente
+// WordPress é sempre externo via API (cms.saraivavision.com.br)
 const environments = {
   development: {
     name: 'Desenvolvimento Local',
-    wordpressUrl: 'http://localhost:8081/wp-json/wp/v2', // Servidor mock
+    wordpressUrl: 'https://cms.saraivavision.com.br/wp-json/wp/v2', // External API
     timeout: 5000,
     retries: 2,
     useFallback: true
   },
-  
+
   staging: {
     name: 'Ambiente de Teste',
-    wordpressUrl: 'https://staging.clinicasaraivavision.com.br/wp-json/wp/v2',
+    wordpressUrl: 'https://cms.saraivavision.com.br/wp-json/wp/v2', // External API
     timeout: 10000,
     retries: 3,
     useFallback: true
   },
-  
+
   production: {
     name: 'Produção',
-    wordpressUrl: 'https://clinicasaraivavision.com.br/wp-json/wp/v2',
+    wordpressUrl: 'https://cms.saraivavision.com.br/wp-json/wp/v2', // External API
     timeout: 15000,
     retries: 5,
     useFallback: true

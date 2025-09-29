@@ -4,40 +4,24 @@
  * Includes PII sanitization and performance monitoring
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { getSupabaseClient, getSupabaseAdmin } from './supabaseClient';
 
-// Lazy/Safe Supabase client for logging (works in browser and server)
-let supabase = null;
-function getSupabaseClient() {
-    if (supabase) return supabase;
+/**
+ * Get appropriate Supabase client for logging
+ * Prefers admin client (service_role) for backend, falls back to regular client for frontend
+ * Returns null if neither is configured (triggers console fallback)
+ */
+function getLoggingClient() {
+    // Try admin client first (server-side or configured service_role)
+    const admin = getSupabaseAdmin();
+    if (admin) return admin;
 
-    // Prefer Vite env on client, fall back to process.env on server
-    const supabaseUrl =
-        (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_URL) ||
-        process.env.SUPABASE_URL ||
-        '';
-    const supabaseServiceKey =
-        (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY) ||
-        process.env.SUPABASE_SERVICE_ROLE_KEY ||
-        '';
+    // Fall back to regular client (frontend anon key)
+    const client = getSupabaseClient();
+    if (client) return client;
 
-    const hasValidUrl = typeof supabaseUrl === 'string' && /^https?:\/\//.test(supabaseUrl);
-    const hasKey = !!supabaseServiceKey;
-
-    if (hasValidUrl && hasKey) {
-        supabase = createClient(supabaseUrl, supabaseServiceKey, {
-            auth: { autoRefreshToken: false, persistSession: false }
-        });
-    } else {
-        // In browser builds without env, avoid constructing an invalid client.
-        supabase = null;
-        if (typeof window !== 'undefined' && import.meta?.env?.DEV) {
-            console.warn(
-                'Supabase logging disabled: missing VITE_SUPABASE_URL or VITE_SUPABASE_SERVICE_ROLE_KEY'
-            );
-        }
-    }
-    return supabase;
+    // Neither configured - will use console fallback
+    return null;
 }
 
 // Log levels with numeric values for filtering
@@ -137,14 +121,17 @@ class Logger {
     }
 
     /**
-     * Store log entry in database
+     * Store log entry in database with robust fallback
      */
     async storeLog(logEntry) {
         try {
-            const client = getSupabaseClient();
+            const client = getLoggingClient();
+
             if (!client) {
-                // Fallback to console logging when Supabase is unavailable (e.g., client build without env)
-                console.log('LOG_FALLBACK:', JSON.stringify(logEntry));
+                // Fallback: Supabase not configured - log to console only
+                if (import.meta?.env?.DEV) {
+                    console.log('[LOG_FALLBACK - No Supabase]:', JSON.stringify(logEntry, null, 2));
+                }
                 return;
             }
 
@@ -155,16 +142,35 @@ class Logger {
                     event_data: logEntry,
                     severity: logEntry.level,
                     source: logEntry.service,
+                    request_id: logEntry.request_id,
                     created_at: logEntry.timestamp
                 });
 
             if (error) {
-                console.error('Failed to store log in database:', error);
-                console.log('LOG_FALLBACK:', JSON.stringify(logEntry));
+                // Handle specific error cases
+                if (error.code === 'PGRST301' || error.message?.includes('JWT')) {
+                    // Authentication error - likely invalid key
+                    if (import.meta?.env?.DEV) {
+                        console.warn('[LOG_FALLBACK - Auth Error]:', error.message);
+                    }
+                } else if (error.code === '42P01') {
+                    // Table doesn't exist
+                    if (import.meta?.env?.DEV) {
+                        console.warn('[LOG_FALLBACK - Table Missing]:', 'event_log table not found');
+                    }
+                } else {
+                    console.error('Failed to store log in database:', error);
+                }
+
+                // Always fallback to console on error
+                console.log('[LOG_FALLBACK]:', JSON.stringify(logEntry, null, 2));
             }
         } catch (err) {
-            console.error('Database logging error:', err);
-            console.log('LOG_FALLBACK:', JSON.stringify(logEntry));
+            // Catch-all for unexpected errors
+            if (import.meta?.env?.DEV) {
+                console.error('Unexpected database logging error:', err);
+            }
+            console.log('[LOG_FALLBACK]:', JSON.stringify(logEntry, null, 2));
         }
     }
 
@@ -219,15 +225,25 @@ class Logger {
     }
 
     /**
-     * Send alert for critical issues
+     * Send alert for critical issues with fallback
      */
     async sendAlert(logEntry) {
         try {
-            const client = getSupabaseClient();
-            if (!client) return;
+            const client = getLoggingClient();
+
+            if (!client) {
+                // Fallback: log critical alert to console
+                console.error('[CRITICAL ALERT - No Supabase]:', {
+                    service: logEntry.service,
+                    message: logEntry.message,
+                    request_id: logEntry.request_id,
+                    timestamp: logEntry.timestamp
+                });
+                return;
+            }
 
             // Store alert in outbox for reliable delivery
-            await client
+            const { error } = await client
                 .from('message_outbox')
                 .insert({
                     message_type: 'email',
@@ -237,8 +253,26 @@ class Logger {
                     template_data: { logEntry },
                     status: 'pending'
                 });
+
+            if (error) {
+                console.error('[CRITICAL ALERT - DB Error]:', error.message);
+                // Still log to console as fallback
+                console.error('[CRITICAL ALERT]:', {
+                    service: logEntry.service,
+                    message: logEntry.message,
+                    request_id: logEntry.request_id,
+                    timestamp: logEntry.timestamp
+                });
+            }
         } catch (err) {
             console.error('Failed to send critical alert:', err);
+            // Final fallback to console
+            console.error('[CRITICAL ALERT - Exception]:', {
+                service: logEntry.service,
+                message: logEntry.message,
+                request_id: logEntry.request_id,
+                timestamp: logEntry.timestamp
+            });
         }
     }
 

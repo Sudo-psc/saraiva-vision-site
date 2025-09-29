@@ -1,20 +1,10 @@
 /**
  * WordPress Compatibility Layer
  * Provides backward compatibility for BlogPage.jsx functions
- * Maps old function names to new WordPress API functions
+ * Uses WordPress REST API via WordPressBlogService (avoiding GraphQL 502 errors)
  */
 
-import {
-  getAllPosts,
-  getAllCategories,
-  getPostBySlug,
-  getRecentPosts,
-  getPostsByCategory
-} from './wordpress-api.js';
-import {
-  getFeaturedImageUrl as getFeaturedImageUrlOriginal,
-  extractPlainText as extractPlainTextOriginal
-} from './wordpress.js';
+import WordPressBlogService from '@/services/WordPressBlogService.js';
 import {
   sanitizeWordPressContent,
   sanitizeWordPressExcerpt,
@@ -22,6 +12,15 @@ import {
 } from '@/utils/sanitizeWordPressContent';
 import { createLogger } from './logger.js';
 import { classifyError, getUserFriendlyError } from './errorHandling.js';
+
+// Initialize REST API service (NOT GraphQL)
+const blogService = new WordPressBlogService({
+  baseURL: import.meta.env.VITE_WORDPRESS_API_URL || 'https://blog.saraivavision.com.br',
+  cmsBaseURL: import.meta.env.VITE_WORDPRESS_SITE_URL || 'https://cms.saraivavision.com.br',
+  cacheEnabled: true,
+  cacheTimeout: 5 * 60 * 1000, // 5 minutes
+  useJWTAuth: false // Public endpoints don't need JWT
+});
 
 const blogLogger = createLogger('blog-fallback');
 
@@ -66,25 +65,16 @@ const buildErrorDetails = (error, context = {}) => {
   };
 };
 
-// Health check function
+// Health check function using REST API
 export const checkWordPressConnection = async () => {
   try {
-    const response = await fetch('/api/wordpress-health?detailed=true', {
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error(`WordPress health check falhou (${response.status})`);
-    }
-
-    const payload = await response.json();
+    // Simple ping to WordPress REST API root
+    const result = await blogService.makeRequest('/', { params: { _fields: 'name' } });
 
     return {
-      isConnected: Boolean(payload.isHealthy),
-      error: payload.error || null,
-      healthState: payload.healthState || payload.stats || null
+      isConnected: Boolean(result && result.name),
+      error: null,
+      healthState: 'healthy'
     };
   } catch (error) {
     console.error('WordPress connection check failed:', error);
@@ -96,31 +86,23 @@ export const checkWordPressConnection = async () => {
   }
 };
 
-// Fetch categories with backward compatibility
+// Fetch categories using REST API
 export const fetchCategories = async () => {
   try {
-    const result = await getAllCategories();
+    const categories = await blogService.getCategories({
+      hide_empty: false,
+      per_page: 100
+    });
 
-    if (result.error) {
-      console.error('Error fetching categories:', result.error);
-      return [];
-    }
-
-    // Transform GraphQL categories to REST API format for compatibility
-    return result.categories.map(category => ({
-      id: category.databaseId || category.id,
-      name: category.name,
-      slug: category.slug,
-      count: category.count || 0,
-      description: category.description || ''
-    }));
+    return Array.isArray(categories) ? categories : [];
   } catch (error) {
-    console.error('Error in fetchCategories:', error);
-    return [];
+    console.error('Error fetching categories:', error);
+    emitLog('error', 'Categories fetch failed', { error: error.message });
+    return []; // Return empty array as fallback
   }
 };
 
-// Fetch posts with backward compatibility and REST API format
+// Fetch posts using REST API directly
 export const fetchPosts = async (params = {}) => {
   try {
     const {
@@ -130,205 +112,153 @@ export const fetchPosts = async (params = {}) => {
       search = null
     } = params;
 
-    // Convert pagination parameters - use exact amount needed
-    const first = per_page;
-    // Calculate offset for page-based pagination
-    const offset = (page - 1) * per_page;
+    // Build REST API parameters
+    const apiParams = {
+      per_page,
+      page,
+      _embed: true // Include embedded data (featured image, author, categories)
+    };
 
-    let result;
-
-    // Handle category-specific queries efficiently
+    // Add category filter if specified
     if (categories && categories.length > 0) {
-      // Use category-specific API for better performance
-      const categoryId = categories[0]; // For now, handle first category
-      try {
-        const categoryResult = await getPostsByCategory(categoryId, { first: first + offset });
-        result = {
-          posts: categoryResult.posts || [],
-          error: categoryResult.error,
-          isFallback: categoryResult.isFallback,
-          fallbackMeta: categoryResult.fallbackMeta,
-          healthState: categoryResult.healthState,
-          isOffline: categoryResult.isOffline,
-          isCached: categoryResult.isCached,
-          connectionType: categoryResult.connectionType
-        };
-      } catch (error) {
-        emitLog('warn', 'Category query failed, falling back to global posts', {
-          categoryId,
-          message: error.message
-        });
-        result = await getAllPosts({ first: first + offset });
-      }
-    } else {
-      // Use efficient pagination: only fetch what we need
-      result = await getAllPosts({ first: first + offset });
+      apiParams.categories = Array.isArray(categories) ? categories.join(',') : categories;
     }
 
-    const apiError = result.error;
-    const isFallback = Boolean(result.isFallback);
-    const fallbackMeta = result.fallbackMeta || null;
-    const healthState = result.healthState || null;
-    const diagnostics = {
-      fetchedAt: new Date().toISOString(),
-      source: isFallback ? 'fallback' : 'live',
-      fallbackType: result.error?.type || (isFallback ? 'CMS_FALLBACK' : 'LIVE'),
-      isOffline: Boolean(result.isOffline),
-      isCached: Boolean(result.isCached),
-      healthState: healthState || 'unknown',
-      connectionType: result.connectionType || 'unknown',
-      parameters: { per_page, page, categories, search }
-    };
-
-    const errorDetails = apiError
-      ? buildErrorDetails(apiError, {
-          stage: 'fetchPosts',
-          ...diagnostics
-        })
-      : null;
-
-    if (apiError && !isFallback) {
-      emitLog('error', 'WordPress posts fetch returned error without fallback', {
-        ...diagnostics,
-        errorCode: errorDetails?.code,
-        errorType: errorDetails?.type
-      });
-
-      const normalizedError = normalizeError(apiError);
-      normalizedError.details = errorDetails;
-      throw normalizedError;
-    }
-
-    let posts = result.posts || [];
-
-    // Only apply client-side filtering for search (temporary solution until GraphQL search is implemented)
+    // Add search if specified
     if (search) {
-      const searchLower = search.toLowerCase();
-      posts = posts.filter(post =>
-        post.title?.toLowerCase().includes(searchLower) ||
-        post.content?.toLowerCase().includes(searchLower) ||
-        post.excerpt?.toLowerCase().includes(searchLower)
-      );
+      apiParams.search = search;
     }
 
-    // Apply pagination only if we fetched more than needed (due to offset approximation)
-    if (!categories || categories.length === 0) {
-      // Skip the offset amount and take only what we need
-      posts = posts.slice(offset, offset + per_page);
-    } else {
-      // For category queries, skip the offset amount and take only what we need
-      posts = posts.slice(offset, offset + per_page);
+    // Fetch posts via REST API
+    const posts = await blogService.getPosts(apiParams);
+
+    if (!Array.isArray(posts)) {
+      throw new Error('Invalid response from WordPress API');
     }
 
-    // Transform GraphQL posts to REST API format for compatibility
-    const mappedPosts = posts.map(post => {
-      const sanitizedTitle = sanitizeWordPressTitle(post.title || '');
-      const sanitizedContent = sanitizeWordPressContent(post.content || '');
-      const sanitizedExcerpt = sanitizeWordPressExcerpt(post.excerpt || '');
+    // Posts are already in correct REST API format, just sanitize content
+    const sanitizedPosts = posts.map(post => ({
+      ...post,
+      title: {
+        ...post.title,
+        rendered: sanitizeWordPressTitle(post.title?.rendered || '')
+      },
+      content: {
+        ...post.content,
+        rendered: sanitizeWordPressContent(post.content?.rendered || '')
+      },
+      excerpt: {
+        ...post.excerpt,
+        rendered: sanitizeWordPressExcerpt(post.excerpt?.rendered || '')
+      }
+    }));
 
-      return {
-        id: post.databaseId || post.id,
-        slug: post.slug,
-        title: {
-          rendered: sanitizedTitle
-        },
-        content: {
-          rendered: sanitizedContent
-        },
-        excerpt: {
-          rendered: sanitizedExcerpt
-        },
-        date: post.date,
-        modified: post.modified || post.date,
-        categories: post.categories?.nodes?.map(cat => cat.databaseId) || [],
-        featuredImage: post.featuredImage,
-        author: post.author,
-        _embedded: {
-          'wp:featuredmedia': post.featuredImage ? [{
-            id: post.featuredImage.node?.databaseId,
-            source_url: post.featuredImage.node?.sourceUrl,
-            alt_text: (post.featuredImage.node?.altText || '')
-              .replace(/<[^>]*>/g, '') // Strip HTML tags
-              .replace(/&amp;/g, '&')
-              .replace(/&lt;/g, '<')
-              .replace(/&gt;/g, '>')
-              .replace(/&quot;/g, '"')
-              .replace(/&#39;/g, "'")
-              .replace(/&nbsp;/g, ' ')
-              .trim()
-              .replace(/"/g, '&quot;') // Escape quotes for HTML attribute
-          }] : [],
-          'wp:term': post.categories?.nodes ? [[
-            ...post.categories.nodes.map(cat => ({
-              id: cat.databaseId,
-              name: cat.name,
-              slug: cat.slug
-            }))
-          ]] : []
-        }
-      };
+    emitLog('info', 'WordPress posts fetched successfully via REST API', {
+      count: sanitizedPosts.length,
+      page,
+      per_page,
+      hasCategories: Boolean(categories),
+      hasSearch: Boolean(search)
     });
-    const meta = {
-      isFallback,
-      fallbackMeta,
-      healthState,
-      error: apiError,
-      diagnostics
-    };
 
-    if (errorDetails) {
-      meta.errorDetails = errorDetails;
-    }
-
-    mappedPosts.meta = meta;
-
-    const logMetadata = {
-      ...diagnostics,
-      errorCode: errorDetails?.code,
-      errorType: errorDetails?.type,
-      message: errorDetails?.message || fallbackMeta?.message
-    };
-
-    if (isFallback) {
-      emitLog('warn', 'Serving WordPress posts via fallback', logMetadata);
-    } else {
-      emitLog('info', 'WordPress posts fetched successfully', logMetadata);
-    }
-
-    return mappedPosts;
+    return sanitizedPosts;
 
   } catch (error) {
     const errorDetails = buildErrorDetails(error, {
-      stage: 'fetchPosts_catch',
+      stage: 'fetchPosts_rest_api',
       params,
       timestamp: new Date().toISOString()
     });
+
     emitLog('error', 'WordPress posts fetch failed', errorDetails);
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Error in fetchPosts:', error);
-    }
-    if (error && typeof error === 'object') {
-      error.details = errorDetails;
-    }
-    throw error;
+
+    // Return fallback posts instead of throwing
+    console.warn('Returning fallback posts due to API error:', error.message);
+
+    return [
+      {
+        id: 1,
+        slug: 'fallback-post-1',
+        title: { rendered: 'Conteúdo em Manutenção' },
+        excerpt: { rendered: '<p>Nosso blog está temporariamente indisponível. Tente novamente em alguns instantes.</p>' },
+        content: { rendered: '<p>Nosso blog está temporariamente indisponível. Estamos trabalhando para restaurar o serviço o mais rápido possível.</p>' },
+        date: new Date().toISOString(),
+        _embedded: {
+          'wp:featuredmedia': [],
+          'wp:term': [[]]
+        }
+      }
+    ];
   }
 };
 
-// Re-export utility functions with the same names
-export const getFeaturedImageUrl = (post) => {
-  // Handle both GraphQL and REST API post formats
-  if (post.featuredImage?.node?.sourceUrl) {
-    return post.featuredImage.node.sourceUrl;
+// Get single post by slug using REST API
+export const getPostBySlug = async (slug) => {
+  try {
+    const post = await blogService.getPostBySlug(slug);
+
+    if (!post) {
+      console.warn(`Post not found: ${slug}`);
+      return null;
+    }
+
+    // Sanitize content
+    return {
+      ...post,
+      title: {
+        ...post.title,
+        rendered: sanitizeWordPressTitle(post.title?.rendered || '')
+      },
+      content: {
+        ...post.content,
+        rendered: sanitizeWordPressContent(post.content?.rendered || '')
+      },
+      excerpt: {
+        ...post.excerpt,
+        rendered: sanitizeWordPressExcerpt(post.excerpt?.rendered || '')
+      }
+    };
+  } catch (error) {
+    console.error(`Error fetching post ${slug}:`, error);
+    emitLog('error', 'Post fetch failed', { slug, error: error.message });
+    return null; // Return null instead of throwing
   }
+};
+
+// Utility functions
+export const getFeaturedImageUrl = (post) => {
+  // Handle REST API format
   if (post._embedded?.['wp:featuredmedia']?.[0]?.source_url) {
     return post._embedded['wp:featuredmedia'][0].source_url;
   }
-  return getFeaturedImageUrlOriginal(post);
+  // Handle direct media URL
+  if (post.featured_media_url) {
+    return post.featured_media_url;
+  }
+  // Handle legacy GraphQL format (if any)
+  if (post.featuredImage?.node?.sourceUrl) {
+    return post.featuredImage.node.sourceUrl;
+  }
+  return null;
 };
 
 export const extractPlainText = (html, maxLength = null) => {
-  return extractPlainTextOriginal(html, maxLength);
-};
+  if (!html) return '';
 
-// Export additional helper functions - renamed to avoid circular import
-export { getPostBySlug } from './wordpress-api.js';
+  // Remove HTML tags
+  const text = html
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .trim();
+
+  if (maxLength && text.length > maxLength) {
+    return text.substring(0, maxLength) + '...';
+  }
+
+  return text;
+};

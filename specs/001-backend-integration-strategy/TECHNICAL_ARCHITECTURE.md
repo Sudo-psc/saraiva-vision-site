@@ -524,93 +524,54 @@ interface AlertThresholds {
 }
 ```
 
-### 2. Docker Configuration (WordPress)
-```yaml
-# docker-compose.yml
-version: "3.9"
-services:
-  db:
-    image: mariadb:10.6
-    restart: unless-stopped
-    environment:
-      - MYSQL_DATABASE=wordpress
-      - MYSQL_USER=wp
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - wp-network
+### 2. External WordPress API Configuration
 
-  redis:
-    image: redis:6-alpine
-    restart: unless-stopped
-    command: ["redis-server", "--appendonly", "yes"]
-    volumes:
-      - redis_data:/data
-    networks:
-      - wp-network
+**Note**: WordPress is hosted externally and consumed via REST API. No local installation required.
 
-  wp:
-    image: wordpress:6.5-php8.2-fpm
-    restart: unless-stopped
-    environment:
-      - WORDPRESS_DB_HOST=db
-      - WORDPRESS_DB_USER=wp
-      - WORDPRESS_DB_PASSWORD=${MYSQL_PASSWORD}
-      - WORDPRESS_DB_NAME=wordpress
-      - WORDPRESS_CONFIG_EXTRA=define('WP_HOME', 'https://cms.saraivavision.com.br'); define('WP_SITEURL', 'https://cms.saraivavision.com.br');
-    volumes:
-      - wp_data:/var/www/html
-    depends_on:
-      - db
-      - redis
-    networks:
-      - wp-network
+**External WordPress Endpoints**:
+- **API Base**: `https://cms.saraivavision.com.br`
+- **REST API**: `https://cms.saraivavision.com.br/wp-json/wp/v2/`
+- **Authentication**: JWT tokens for admin operations
+- **Public Access**: Posts and pages via REST API (no auth required)
 
-  nginx:
-    image: nginx:stable
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - wp_data:/var/www/html:ro
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - /etc/letsencrypt:/etc/letsencrypt
-      - /var/lib/letsencrypt:/var/lib/letsencrypt
-    depends_on:
-      - wp
-    networks:
-      - wp-network
-
-volumes:
-  db_data:
-  wp_data:
-  redis_data:
-
-networks:
-  wp-network:
-    driver: bridge
+**Environment Configuration**:
+```bash
+# .env.production
+VITE_WORDPRESS_API_URL=https://cms.saraivavision.com.br
+VITE_WORDPRESS_SITE_URL=https://cms.saraivavision.com.br
+VITE_WORDPRESS_GRAPHQL_ENDPOINT=https://cms.saraivavision.com.br/graphql
 ```
+
+**Integration Architecture**:
+```
+React Frontend (VPS) → REST API → External WordPress CMS
+                     ↓
+                 Supabase Cache
+                     ↓
+              Fallback System
+```
+
+See [WORDPRESS_CMS_URL_ARCHITECTURE.md](../../docs/WORDPRESS_CMS_URL_ARCHITECTURE.md) for complete integration details.
 
 ## Disaster Recovery
 
 ### 1. Backup Strategy
+
+**External WordPress**: Managed by external hosting provider
+- Database backups handled externally
+- Content accessible via REST API
+- Local cache in Supabase provides redundancy
+
+**Local Data Backup**:
 ```bash
 #!/bin/bash
-# Backup script example
+# Backup Supabase cache and application data
 BACKUP_DIR="/backups/$(date +%Y-%m-%d)"
 mkdir -p "$BACKUP_DIR"
 
-# Database backup
-mysqldump -h db -u wp -p$MYSQL_PASSWORD wordpress > "$BACKUP_DIR/database.sql"
-
-# WordPress files backup
-tar -czf "$BACKUP_DIR/wordpress.tar.gz" -C /var/www/html wp-content
-
-# Upload to cloud storage
-aws s3 sync "$BACKUP_DIR" s3://saraiva-vision-backups/$(date +%Y-%m-%d)/
+# Supabase data backup (via pg_dump or Supabase CLI)
+# Application configuration backup
+tar -czf "$BACKUP_DIR/app-config.tar.gz" .env.production nginx-optimized.conf
 ```
 
 ### 2. Failover Procedures
