@@ -12,7 +12,7 @@ const ServiceDetailPage = createLazyComponent(() => import('./pages/ServiceDetai
 const LensesPage = createLazyComponent(() => import('./pages/LensesPage.jsx'));
 const FAQPage = createLazyComponent(() => import('./pages/FAQPage.jsx'));
 const MedicalArticleExample = createLazyComponent(() => import('./pages/MedicalArticleExample.jsx'));
-const PodcastPage = createLazyComponent(() => import('./pages/PodcastPage.jsx'));
+const PodcastPageConsolidated = createLazyComponent(() => import('./pages/PodcastPageConsolidated.jsx'));
 
 const BlogPage = createLazyComponent(() => import('./pages/BlogPage.jsx'));
 const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
@@ -72,7 +72,8 @@ function App() {
                   <Route path="/lentes" element={<LensesPage />} />
                   <Route path="/faq" element={<FAQPage />} />
                   <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
-                  <Route path="/podcast" element={<PodcastPage />} />
+                  <Route path="/podcast" element={<PodcastPageConsolidated />} />
+                  <Route path="/podcast/:slug" element={<PodcastPageConsolidated />} />
                   <Route path="/blog" element={<BlogPage />} />
                   <Route path="/blog/:slug" element={<BlogPage />} />
                   <Route path="/privacy" element={<PrivacyPolicyPage />} />
