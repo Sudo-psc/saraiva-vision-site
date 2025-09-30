@@ -195,12 +195,12 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Prevenção',
     tags: ['Teste do Olhinho', 'Retinoblastoma', 'Oftalmologia Pediátrica', 'Saúde Infantil', 'Prevenção', 'Câncer Ocular', 'Caratinga MG'],
-    image: '/Blog/capa_pediatria.png',
+    image: '/Blog/olhinho.png',
     featured: true,
     seo: {
       metaDescription: 'Descubra a importância do Teste do Olhinho para detectar retinoblastoma e outras doenças oculares em bebês. Dr. Philipe Saraiva explica em Caratinga, MG.',
       keywords: 'teste do olhinho, retinoblastoma, câncer ocular infantil, oftalmologia pediátrica, saúde ocular bebê, teste reflexo vermelho, Caratinga MG, Dr Philipe Saraiva',
-      ogImage: '/Blog/capa_pediatria.png'
+      ogImage: '/Blog/olhinho.png'
     }
   },
   {
@@ -341,7 +341,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tecnologia',
     tags: ['retinose pigmentar', 'luxturna', 'terapia gênica', 'doenças genéticas', 'Caratinga', 'inovação'],
-    image: '/Blog/terapia_genica.png',
+    image: '/Blog/retinose_pigmentar.png',
     featured: true,
     seo: {
       metaTitle: 'Retinose Pigmentar e Luxturna®: Terapia Gênica em Caratinga',
@@ -461,7 +461,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Dúvidas Frequentes',
     tags: ['moscas volantes', 'miodesopsia', 'retina', 'vítreo', 'Caratinga', 'saúde ocular'],
-    image: '/Blog/moscas_volantes.png',
+    image: '/Blog/moscas_volantes_capa.png',
     featured: true,
     seo: {
       metaTitle: 'Moscas Volantes: Quando Preocupar? Oftalmologista em Caratinga',
@@ -602,7 +602,7 @@ export const blogPosts = [
     category: 'Prevenção',
     tags: ['cuidados visuais esportes', 'visão esportiva Caratinga', 'saúde ocular atletas', 'oftalmologista Caratinga MG', 'proteção ocular', 'lentes de contato esportivas', 'óculos de sol UV', 'prevenção visual'],
     featured: true,
-    image: '/Blog/capa_IA.png',
+    image: '/Blog/gym_capa.png',
     seo: {
       metaTitle: 'Cuidados visuais para quem pratica esportes | Clínica Saraiva Vision Caratinga',
       metaDescription: 'Descubra como proteger sua visão durante a prática esportiva. Orientações do Dr. Philipe Saraiva, oftalmologista em Caratinga (MG).',
@@ -879,13 +879,21 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['descolamento de retina', 'retina', 'cirurgia retina', 'oftalmologia Caratinga', 'vitrectomia', 'mapeamento de retina', 'urgência oftalmológica', 'saúde ocular'],
-    image: '/Blog/eye_anatomy_diagram.png',
+    image: '/Blog/descolamente_retina_capa.png',
     featured: true,
     seo: {
       metaTitle: 'Descolamento de Retina: Mitos e Verdades | Clínica Saraiva Vision Caratinga',
       metaDescription: 'Entenda os principais mitos e verdades sobre descolamento de retina. Informações baseadas em ciência para prevenir e tratar essa condição séria que pode ameaçar a visão.',
       keywords: ['descolamento de retina', 'descolamento retina Caratinga', 'tratamento retina', 'cirurgia retina', 'oftalmologista Caratinga MG', 'mapeamento retina', 'vitrectomia', 'urgência oftalmológica', 'sintomas descolamento retina']
-    }
+    },
+    relatedPodcasts: [
+      {
+        id: 'retina-ep3',
+        title: 'Retina: Cuidados e Prevenção',
+        spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
+        spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV'
+      }
+    ]
   },
   {
     id: 16,
@@ -1338,7 +1346,15 @@ export const blogPosts = [
       metaTitle: 'Olho Seco e Blefarite: Por Que Causam Lacrimejamento em Caratinga e Como Tratar Sem Piorar os Sintomas',
       metaDescription: 'Entenda por que olho seco e blefarite levam a lacrimejamento excessivo em Caratinga, MG. Descubra tratamentos seguros na Clínica Saraiva Vision, com Dr. Philipe Saraiva Cruz. Agende agora! (33) 99860-1427.',
       keywords: ['olho seco', 'blefarite', 'lacrimejamento excessivo', 'tratamento ocular Caratinga', 'sintomas olhos secos', 'prevenção blefarite', 'oftalmologia Caratinga']
-    }
+    },
+    relatedPodcasts: [
+      {
+        id: 'olho-seco-ep5',
+        title: 'Olho Seco: Sintomas e Tratamentos',
+        spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
+        spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV'
+      }
+    ]
   },
   {
     id: 9,
@@ -1607,7 +1623,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Prevenção',
     tags: ['sensibilidade à luz', 'fotofobia', 'causas fotofobia', 'tratamentos sensibilidade à luz', 'saúde ocular Caratinga'],
-    image: '/Blog/capa_pad.png',
+    image: '/Blog/capa_fotofobia.png',
     featured: true,
     seo: {
       metaTitle: 'Sensibilidade à Luz: Causas, Sintomas e Tratamentos Eficazes em Caratinga, MG',
@@ -1693,7 +1709,14 @@ export const blogPosts = [
       metaTitle: 'Lentes de Contato para Presbiopia: Soluções Eficazes em Caratinga, MG',
       metaDescription: 'Descubra como as lentes de contato multifocais corrigem a presbiopia e melhoram sua visão. Na Clínica Saraiva Vision em Caratinga, MG, agende uma consulta com especialistas para adaptação personalizada.',
       keywords: ['lentes de contato para presbiopia', 'correção da presbiopia', 'lentes multifocais', 'oftalmologista Caratinga', 'saúde ocular MG']
-    }
+    },
+    relatedPodcasts: [
+      {
+        id: 'lentes-ep1',
+        title: 'Lentes de Contato: Rígidas vs Gelatinosas',
+        spotifyUrl: 'https://creators.spotify.com/pod/profile/philipe-cruz/episodes/Sade-Ocular-em-Foco---Lentes-de-Contato-Rgidas-vs-Gelatinosas-e37iag0'
+      }
+    ]
    },
    {
      id: 23,
@@ -1994,7 +2017,20 @@ export const blogPosts = [
       metaTitle: 'Cirurgia refrativa e lentes premium em Caratinga',
       metaDescription: 'Laser de femtossegundos, IOLs multifocais e EDOF para catarata e presbiopia. Avaliação individual na Clínica Saraiva Vision, em Caratinga-MG.',
       keywords: ['cirurgia refrativa Caratinga', 'lentes intraoculares Caratinga', 'catarata Caratinga', 'laser de femtossegundos Caratinga', 'lente multifocal Caratinga', 'lente EDOF Caratinga', 'presbiopia Caratinga', 'astigmatismo Caratinga', 'LASIK Caratinga', 'PRK Caratinga', 'SMILE Caratinga', 'cirurgia de catarata Caratinga', 'avaliação oftalmológica Caratinga', 'Dr. Philipe Saraiva Cruz']
-    }
+    },
+    relatedPodcasts: [
+      {
+        id: 'catarata-ep2',
+        title: 'Catarata: Sintomas e Cirurgia',
+        spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
+        spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV'
+      },
+      {
+        id: 'lentes-ep1',
+        title: 'Lentes de Contato: Rígidas vs Gelatinosas',
+        spotifyUrl: 'https://creators.spotify.com/pod/profile/philipe-cruz/episodes/Sade-Ocular-em-Foco---Lentes-de-Contato-Rgidas-vs-Gelatinosas-e37iag0'
+      }
+    ]
   },
   {
     id: 2,
@@ -2075,7 +2111,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Prevenção',
     tags: ['presbiopia', 'vista cansada', 'cura presbiopia', 'cirurgia presbiopia', 'lentes de contato presbiopia', 'oftalmologista Caratinga', 'saúde ocular MG', 'tratamento presbiopia'],
-    image: '/Blog/capa_catarata.png',
+    image: '/Blog/capa_presbiopia.png',
     featured: true,
     seo: {
       metaTitle: 'Presbiopia: O Que É, Existe Cura, Opções de Cirurgia e Lentes de Contato em Caratinga, MG',
@@ -2286,7 +2322,15 @@ export const blogPosts = [
       metaTitle: 'Lentes Premium para Cirurgia de Catarata em Caratinga, MG: Benefícios e Opções Avançadas',
       metaDescription: 'Descubra como lentes premium na cirurgia de catarata podem restaurar sua visão com clareza. Na Clínica Saraiva Vision em Caratinga, MG, agende uma consulta com Dr. Philipe Saraiva Cruz para tratamentos personalizados.',
       keywords: ['lentes premium para cirurgia de catarata', 'cirurgia de catarata com lentes intraoculares', 'lentes multifocais catarata', 'tratamento catarata Caratinga MG', 'oftalmologia Caratinga']
-    }
+    },
+    relatedPodcasts: [
+      {
+        id: 'catarata-ep2',
+        title: 'Catarata: Sintomas e Cirurgia',
+        spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
+        spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV'
+      }
+    ]
   },
   {
     id: 5,
@@ -2439,6 +2483,98 @@ export const blogPosts = [
       metaDescription: 'Descubra quando levar seu filho ao oftalmologista em Caratinga. Dr. Philipe Saraiva Cruz explica frequência ideal e sinais de alerta. Agende na Saraiva Vision.',
       keywords: ['oftalmologia pediátrica Caratinga', 'oftalmologista infantil', 'exame de vista crianças', 'Dr. Philipe Saraiva Cruz']
     }
+  },
+  {
+    id: 23,
+    slug: 'pterigio-guia-completo-prevencao-cuidados-cirurgia',
+    title: 'Pterígio: O Guia Completo sobre Prevenção, Cuidados e Cirurgia',
+    excerpt: 'Entenda tudo sobre pterígio (carne no olho): causas, sintomas, prevenção e tratamento cirúrgico. Guia completo com informações atualizadas para proteger sua visão.',
+    content: `
+      <h2>O que é Pterígio?</h2>
+      <p>O <strong>pterígio</strong>, popularmente conhecido como <strong>"carne no olho"</strong>, é uma lesão ocular caracterizada pelo crescimento anormal de tecido fibrovascular da conjuntiva (membrana transparente que reveste o olho) em direção à córnea (parte transparente frontal do olho). Geralmente apresenta formato triangular ou de "asa" e pode ter coloração amarelada, rosada ou avermelhada.</p>
+      <h3>Principais Características:</h3>
+      <ul>
+        <li>Mais comum no <strong>canto interno do olho</strong> (lado nasal)</li>
+        <li>Pode ocorrer em <strong>um ou ambos os olhos</strong></li>
+        <li>Afeta principalmente <strong>adultos entre 20 e 40 anos</strong></li>
+        <li>Mais frequente em <strong>homens</strong></li>
+        <li>Prevalência maior em <strong>regiões tropicais e ensolaradas</strong></li>
+      </ul>
+      <h2>Como Prevenir o Pterígio</h2>
+      <h3>As 3 Regras de Ouro da Prevenção:</h3>
+      <h4>1. Proteção Solar Ocular</h4>
+      <ul>
+        <li><strong>Óculos de sol com proteção UV 100%</strong>: use sempre que estiver ao ar livre</li>
+        <li>Prefira óculos com lentes grandes e proteção lateral</li>
+        <li><strong>Chapéus de aba larga</strong> ou bonés para proteção adicional</li>
+      </ul>
+      <h4>2. Proteção Contra Irritantes Ambientais</h4>
+      <ul>
+        <li>Use <strong>óculos de proteção</strong> em ambientes com poeira, vento ou produtos químicos</li>
+        <li>Evite exposição prolongada a ambientes secos e poluídos</li>
+      </ul>
+      <h4>3. Hidratação Ocular</h4>
+      <ul>
+        <li>Use <strong>colírios lubrificantes</strong> regularmente, especialmente se tiver olho seco</li>
+        <li>Mantenha-se hidratado bebendo água suficiente</li>
+      </ul>
+      <h2>Quando Operar?</h2>
+      <p>A cirurgia de pterígio é recomendada quando:</p>
+      <ul>
+        <li><strong>Comprometimento visual</strong>: pterígio invade a córnea e afeta a visão</li>
+        <li><strong>Sintomas persistentes</strong>: irritação constante que não melhora com tratamento</li>
+        <li><strong>Crescimento progressivo</strong>: pterígio avança rapidamente</li>
+        <li><strong>Motivos estéticos</strong>: desconforto psicológico importante</li>
+      </ul>
+      <h2>Como é Feita a Cirurgia</h2>
+      <ul>
+        <li><strong>Duração</strong>: 30 a 45 minutos</li>
+        <li><strong>Anestesia</strong>: local (colírio anestésico + sedação leve)</li>
+        <li><strong>Regime</strong>: ambulatorial (alta no mesmo dia)</li>
+        <li><strong>Técnicas modernas</strong>: autoenxerto conjuntival com cola biológica (recidiva 0-5%)</li>
+      </ul>
+      <h2>Recuperação e Cuidados</h2>
+      <p><strong>Primeiros dias:</strong></p>
+      <ul>
+        <li>Use colírios antibióticos e anti-inflamatórios conforme prescrito</li>
+        <li>Aplique compressas frias a cada 30 minutos por 3 dias</li>
+        <li>Use protetor ocular à noite por 1 semana</li>
+      </ul>
+      <p><strong>Primeiras semanas:</strong></p>
+      <ul>
+        <li>Use óculos escuros com proteção UV sempre que sair</li>
+        <li>Evite natação por 4 semanas e atividades físicas intensas por 2-4 semanas</li>
+        <li>Planeje 2 semanas de afastamento do trabalho</li>
+      </ul>
+      <p><strong>Longo prazo:</strong></p>
+      <ul>
+        <li>Acompanhamento oftalmológico regular por 1 ano</li>
+        <li>Mantenha o uso de óculos de sol permanentemente</li>
+      </ul>
+      <h2>Mensagem Final</h2>
+      <p>O pterígio é uma condição <strong>prevenível e tratável</strong>. A chave está na <strong>proteção solar adequada</strong> e no <strong>acompanhamento oftalmológico regular</strong>. Com técnicas cirúrgicas modernas, é possível ter excelentes resultados e baixíssimo risco de recidiva.</p>
+      <p><strong>Lembre-se:</strong> Seus olhos merecem a mesma proteção que você dá à sua pele. Use óculos de sol com proteção UV todos os dias!</p>
+      <p><strong>Para mais informações ou agendamento de consulta, entre em contato com a Clínica Saraiva Vision pelo telefone (33) 99860-1427.</strong></p>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Tratamento',
+    tags: ['pterígio', 'carne no olho', 'cirurgia ocular', 'prevenção', 'proteção UV', 'Caratinga'],
+    image: '/Blog/pterigio_capa.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Pterígio: Guia Completo sobre Prevenção, Tratamento e Cirurgia',
+      metaDescription: 'Entenda tudo sobre pterígio (carne no olho): causas, sintomas, prevenção e tratamento cirúrgico. Guia completo para proteger sua visão.',
+      keywords: ['pterígio', 'carne no olho', 'cirurgia de pterígio', 'prevenção pterígio', 'oftalmologia Caratinga', 'proteção UV']
+    },
+    relatedPodcasts: [
+      {
+        id: 'pterigio-ep2',
+        title: 'Pterígio: Sintomas e Tratamento',
+        spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
+        spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV'
+      }
+    ]
   }
 ];
 

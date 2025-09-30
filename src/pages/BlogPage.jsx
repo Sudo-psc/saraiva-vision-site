@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Calendar, ArrowRight, ArrowLeft, Eye, Shield, Stethoscope, Cpu, HelpCircle, Clock, User } from 'lucide-react';
+import { Calendar, ArrowRight, ArrowLeft, Eye, Shield, Stethoscope, Cpu, HelpCircle, Clock, User, ChevronLeft, ChevronRight, Headphones } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
@@ -19,8 +19,8 @@ import InfoBox from '../components/blog/InfoBox';
 import PostFAQ from '../components/blog/PostFAQ';
 import RelatedPosts from '../components/blog/RelatedPosts';
 import AccessibilityControls from '../components/blog/AccessibilityControls';
-import FixedCTA from '../components/blog/FixedCTA';
 import PatientEducationSidebar from '../components/blog/PatientEducationSidebar';
+import SpotifyEmbed from '../components/SpotifyEmbed';
 
 const BlogPage = () => {
   const { t } = useTranslation();
@@ -29,6 +29,8 @@ const BlogPage = () => {
   const [selectedCategory, setSelectedCategory] = React.useState('Todas');
   const [searchTerm, setSearchTerm] = React.useState('');
   const [debouncedSearch, setDebouncedSearch] = React.useState('');
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const POSTS_PER_PAGE = 9;
 
   // Debounce search term
   React.useEffect(() => {
@@ -50,6 +52,17 @@ const BlogPage = () => {
       post.tags?.some(tag => tag.toLowerCase().includes(debouncedSearch.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+  const endIndex = startIndex + POSTS_PER_PAGE;
+  const currentPosts = filteredPosts.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, debouncedSearch]);
 
   const formatDate = (dateString) => {
     return format(new Date(dateString), 'dd MMMM, yyyy', { locale: ptBR });
@@ -150,6 +163,7 @@ const BlogPage = () => {
                     alt={currentPost.title}
                     className="w-full h-full object-cover object-center"
                     loading="eager"
+                    style={{ maxWidth: '100%', display: 'block' }}
                   />
                 </div>
               </motion.div>
@@ -194,6 +208,81 @@ const BlogPage = () => {
                   ))}
                 </div>
               </div>
+            )}
+
+            {/* Related Podcasts Section */}
+            {currentPost.relatedPodcasts && currentPost.relatedPodcasts.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="mt-12 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 md:p-8 border border-blue-100 shadow-lg"
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl shadow-md">
+                    <Headphones className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900">
+                      Podcasts Relacionados
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Ouça nossos episódios sobre este tema
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  {currentPost.relatedPodcasts.map((podcast, index) => (
+                    <div
+                      key={podcast.id || index}
+                      className="bg-white rounded-xl p-4 md:p-6 shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
+                    >
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                        <span className="text-blue-600">🎙️</span>
+                        {podcast.title}
+                      </h4>
+
+                      {podcast.spotifyShowId ? (
+                        <SpotifyEmbed
+                          type="show"
+                          id={podcast.spotifyShowId}
+                          className="mb-0"
+                        />
+                      ) : podcast.spotifyEpisodeId ? (
+                        <SpotifyEmbed
+                          type="episode"
+                          id={podcast.spotifyEpisodeId}
+                          className="mb-0"
+                        />
+                      ) : (
+                        <div className="text-center py-4">
+                          <a
+                            href={podcast.spotifyUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-[#1DB954] hover:bg-[#1ed760] text-white font-semibold rounded-full transition-colors"
+                          >
+                            <Headphones className="w-5 h-5" />
+                            Ouvir no Spotify
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-blue-200">
+                  <p className="text-sm text-gray-600 text-center">
+                    <a
+                      href="/podcast"
+                      className="text-blue-600 hover:text-blue-700 font-medium underline"
+                    >
+                      Ver todos os episódios do podcast
+                    </a>
+                  </p>
+                </div>
+              </motion.div>
             )}
 
             {/* FAQ Section */}
@@ -243,9 +332,6 @@ const BlogPage = () => {
         {/* Accessibility Controls */}
         <AccessibilityControls />
 
-        {/* Fixed CTA */}
-        <FixedCTA />
-
         <EnhancedFooter />
       </div>
     );
@@ -267,18 +353,16 @@ const BlogPage = () => {
       >
         <Link
           to={`/blog/${post.slug}`}
-          className="block overflow-hidden focus:outline-none"
+          className="block focus:outline-none"
           aria-label={`Ler o post: ${post.title}`}
         >
-          <div className="relative w-full h-48 sm:h-52 md:h-56 lg:h-60 overflow-hidden bg-gradient-to-br from-blue-100 to-gray-100">
+          <div className="relative w-full h-48 sm:h-52 md:h-56 lg:h-60 overflow-hidden bg-gradient-to-br from-blue-100 to-gray-100 flex-shrink-0">
              <img
                src={post.image}
                alt={`Imagem ilustrativa do artigo: ${post.title}`}
-               className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+               className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                loading="lazy"
                decoding="async"
-               width="400"
-               height="240"
                onError={(e) => {
                  e.target.onerror = null;
                  e.target.src = '/img/blog-fallback.jpg';
@@ -494,9 +578,95 @@ const BlogPage = () => {
                  <span className="ml-3 text-gray-600">Buscando artigos...</span>
                </div>
              ) : filteredPosts.length > 0 ? (
-               <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-                 {filteredPosts.map((post, index) => renderPostCard(post, index))}
-               </div>
+               <>
+                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+                   {currentPosts.map((post, index) => renderPostCard(post, index))}
+                 </div>
+
+                 {/* Pagination */}
+                 {totalPages > 1 && (
+                   <motion.div
+                     initial={{ opacity: 0, y: 20 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     transition={{ duration: 0.5, delay: 0.2 }}
+                     className="mt-12 flex justify-center items-center gap-2"
+                     role="navigation"
+                     aria-label="Navegação de páginas"
+                   >
+                     {/* Previous Button */}
+                     <Button
+                       onClick={() => {
+                         setCurrentPage(prev => Math.max(prev - 1, 1));
+                         window.scrollTo({ top: 0, behavior: 'smooth' });
+                       }}
+                       disabled={currentPage === 1}
+                       variant="outline"
+                       className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50"
+                       aria-label="Página anterior"
+                     >
+                       <ChevronLeft className="w-5 h-5" />
+                     </Button>
+
+                     {/* Page Numbers */}
+                     <div className="flex gap-2">
+                       {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNum => {
+                         // Show first page, last page, current page, and pages around current
+                         const showPage = pageNum === 1 ||
+                                         pageNum === totalPages ||
+                                         Math.abs(pageNum - currentPage) <= 1;
+
+                         // Show ellipsis
+                         const showEllipsisBefore = pageNum === currentPage - 2 && currentPage > 3;
+                         const showEllipsisAfter = pageNum === currentPage + 2 && currentPage < totalPages - 2;
+
+                         if (showEllipsisBefore || showEllipsisAfter) {
+                           return (
+                             <span key={pageNum} className="px-3 py-2 text-gray-500">
+                               ...
+                             </span>
+                           );
+                         }
+
+                         if (!showPage) return null;
+
+                         return (
+                           <Button
+                             key={pageNum}
+                             onClick={() => {
+                               setCurrentPage(pageNum);
+                               window.scrollTo({ top: 0, behavior: 'smooth' });
+                             }}
+                             variant={currentPage === pageNum ? 'default' : 'outline'}
+                             className={`px-4 py-2 min-w-[44px] ${
+                               currentPage === pageNum
+                                 ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                 : 'hover:bg-blue-50'
+                             }`}
+                             aria-label={`Página ${pageNum}`}
+                             aria-current={currentPage === pageNum ? 'page' : undefined}
+                           >
+                             {pageNum}
+                           </Button>
+                         );
+                       })}
+                     </div>
+
+                     {/* Next Button */}
+                     <Button
+                       onClick={() => {
+                         setCurrentPage(prev => Math.min(prev + 1, totalPages));
+                         window.scrollTo({ top: 0, behavior: 'smooth' });
+                       }}
+                       disabled={currentPage === totalPages}
+                       variant="outline"
+                       className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50"
+                       aria-label="Próxima página"
+                     >
+                       <ChevronRight className="w-5 h-5" />
+                     </Button>
+                   </motion.div>
+                 )}
+               </>
              ) : (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -575,9 +745,6 @@ const BlogPage = () => {
 
       {/* Accessibility Controls */}
       <AccessibilityControls />
-
-      {/* Fixed CTA */}
-      <FixedCTA />
 
       <EnhancedFooter />
     </div>
