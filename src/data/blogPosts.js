@@ -1703,7 +1703,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Prevenção',
     tags: ['lentes de contato', 'presbiopia', 'correção visual', 'vista cansada', 'Caratinga MG'],
-    image: '/Blog/lentecontado.png',
+    image: '/Blog/capa_post_6_imagen4_opt1_20250930_184946.png',
     featured: true,
     seo: {
       metaTitle: 'Lentes de Contato para Presbiopia: Soluções Eficazes em Caratinga, MG',
@@ -1816,7 +1816,7 @@ export const blogPosts = [
      date: '2025-09-30',
      category: 'Dúvidas Frequentes',
      tags: ['mitos saúde ocular', 'verdades visão', 'ciência oftalmologia', 'cuidados olhos', 'prevenção ocular Caratinga', 'dicas visão saudável', 'oftalmologista Caratinga MG'],
-     image: '/Blog/capa_pad.png',
+     image: '/Blog/capa_post_23_imagen4_opt1_20250930_185601.png',
      featured: true,
      seo: {
        metaTitle: 'Mitos e Verdades Sobre Saúde Ocular: O Que a Ciência Diz | Saraiva Vision Caratinga',
@@ -2560,7 +2560,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['pterígio', 'carne no olho', 'cirurgia ocular', 'prevenção', 'proteção UV', 'Caratinga'],
-    image: '/Blog/pterigio_capa.png',
+    image: '/Blog/capa_post_24_imagen4_opt1_20250930_185815.png',
     featured: true,
     seo: {
       metaTitle: 'Pterígio: Guia Completo sobre Prevenção, Tratamento e Cirurgia',
