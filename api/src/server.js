@@ -74,9 +74,7 @@ const routes = [
   { path: '/api/maps-health', handler: '../maps-health.js' },
   { path: '/api/maps/config', handler: '../maps-config.js' },
   { path: '/api/blog-posts', handler: '../blog-posts.js' },
-  { path: '/api/wordpress-health', handler: '../wordpress-health.js' },
   { path: '/api/ping', handler: '../ping.js' },
-  { path: '/api/wordpress-webhook', handler: '../wordpress-webhook.js' },
   { path: '/api/appointments', handler: '../appointments/availability.js' },
   { path: '/api/podcast', handler: '../podcast/episodes.js' },
   { path: '/api/admin', handler: '../admin/auth.js' },
@@ -85,7 +83,6 @@ const routes = [
   { path: '/api/security', handler: '../security/monitor.js' },
   { path: '/api/outbox', handler: '../outbox/drain.js' },
   { path: '/api/images', handler: '../images/proxy.js' },
-   { path: '/api/wordpress-graphql', handler: '../wordpress-graphql-proxy.js', type: 'express' },
   { path: '/api/patient-data', handler: '../patient-data.js' }
 ];
 

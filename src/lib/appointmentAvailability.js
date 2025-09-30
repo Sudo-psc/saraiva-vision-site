@@ -2,14 +2,12 @@
  * Appointment Availability Management
  * Handles calculation of available time slots for Monday-Friday 08:00-18:00
  * Requirement 4.1: Show open slots Monday-Friday 08:00-18:00 in 30-minute intervals
+ * NOTE: Supabase integration removed - backend API integration required
  */
 
-import { supabaseAdmin } from '../../api/utils/supabase.js'
-
-// Check if supabaseAdmin is available
-if (!supabaseAdmin) {
-    console.warn('Supabase admin client not available. Appointment availability features may not work.');
-}
+// Supabase removed - availability checks should use backend API
+const supabaseAdmin = null;
+console.warn('Appointment availability: Supabase removed. Use backend API for availability checks.');
 
 // Business hours configuration
 export const BUSINESS_HOURS = {

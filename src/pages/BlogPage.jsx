@@ -1,20 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Calendar, ArrowRight, Eye } from 'lucide-react';
+import { Calendar, ArrowRight, ArrowLeft, Eye } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
-import { blogPosts, categories } from '../data/blogPosts';
+import { blogPosts, categories, getPostBySlug } from '../data/blogPosts';
 
 const BlogPage = () => {
   const { t } = useTranslation();
+  const { slug } = useParams();
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = React.useState('Todas');
   const [searchTerm, setSearchTerm] = React.useState('');
+
+  // Check if viewing single post
+  const currentPost = slug ? getPostBySlug(slug) : null;
 
   // Filter posts based on category and search
   const filteredPosts = blogPosts.filter(post => {
@@ -37,6 +42,115 @@ const BlogPage = () => {
     e.preventDefault();
   };
 
+  // Render single post view
+  if (currentPost) {
+    return (
+      <div className="min-h-screen bg-gray-50 relative">
+        <Helmet>
+          <title>{currentPost.seo?.metaTitle || currentPost.title} | Saraiva Vision</title>
+          <meta name="description" content={currentPost.seo?.metaDescription || currentPost.excerpt} />
+          <meta name="keywords" content={currentPost.seo?.keywords?.join(', ') || currentPost.tags.join(', ')} />
+        </Helmet>
+
+        <Navbar />
+
+        <main className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%]">
+          <article className="container mx-auto px-4 md:px-6 max-w-4xl">
+            {/* Back button */}
+            <Button
+              onClick={() => navigate('/blog')}
+              variant="ghost"
+              className="mb-8 hover:bg-gray-100"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar para o blog
+            </Button>
+
+            {/* Post header */}
+            <motion.header
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-8"
+            >
+              <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">
+                {currentPost.category}
+              </span>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4">
+                {currentPost.title}
+              </h1>
+              <div className="flex items-center text-gray-600 text-sm mb-6">
+                <Calendar className="w-4 h-4 mr-2" />
+                <time dateTime={currentPost.date}>
+                  {formatDate(currentPost.date)}
+                </time>
+                <span className="mx-2">•</span>
+                <span>{currentPost.author}</span>
+              </div>
+            </motion.header>
+
+            {/* Featured image */}
+            {currentPost.image && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="mb-8 rounded-xl overflow-hidden shadow-lg bg-gray-100"
+              >
+                <div className="w-full h-64 md:h-80 lg:h-96 overflow-hidden">
+                  <img
+                    src={currentPost.image}
+                    alt={currentPost.title}
+                    className="w-full h-full object-cover object-center"
+                    loading="eager"
+                  />
+                </div>
+              </motion.div>
+            )}
+
+            {/* Post content */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="prose prose-lg max-w-none"
+              dangerouslySetInnerHTML={{ __html: currentPost.content }}
+            />
+
+            {/* Tags */}
+            {currentPost.tags && currentPost.tags.length > 0 && (
+              <div className="mt-8 pt-8 border-t border-gray-200">
+                <div className="flex flex-wrap gap-2">
+                  {currentPost.tags.map(tag => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Share and back */}
+            <div className="mt-12 pt-8 border-t border-gray-200 flex justify-between items-center">
+              <Button
+                onClick={() => navigate('/blog')}
+                variant="outline"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Ver todos os posts
+              </Button>
+            </div>
+          </article>
+        </main>
+
+        <EnhancedFooter />
+      </div>
+    );
+  }
+
   const renderPostCard = (post, index) => {
     return (
       <motion.article
@@ -53,13 +167,15 @@ const BlogPage = () => {
           className="block overflow-hidden focus:outline-none"
           aria-label={`Ler o post: ${post.title}`}
         >
-          <img
-            src={post.image}
-            alt={`Imagem ilustrativa do artigo: ${post.title}`}
-            className="w-full h-48 sm:h-52 md:h-56 object-cover transition-transform duration-300 hover:scale-105"
-            loading="lazy"
-            decoding="async"
-          />
+          <div className="w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gray-100">
+            <img
+              src={post.image}
+              alt={`Imagem ilustrativa do artigo: ${post.title}`}
+              className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         </Link>
         <div className="p-4 sm:p-6 flex flex-col flex-grow">
           <div className="flex items-center justify-between text-sm text-gray-600 mb-3">

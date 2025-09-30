@@ -1,41 +1,14 @@
 /**
  * Error Tracking and Alerting System
  * Specialized for email/SMS delivery failures and system alerts
+ * NOTE: Supabase integration removed - console-only logging
  */
 
-import { createClient } from '@supabase/supabase-js';
 import { createLogger } from './logger.js';
 
-// Lazy/Safe Supabase client for alerting (works in browser and server)
-let supabase = null;
+// Supabase removed - always returns null for console fallback
 function getSupabaseClient() {
-    if (supabase) return supabase;
-
-    const supabaseUrl =
-        (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_URL) ||
-        process.env.SUPABASE_URL ||
-        '';
-    const supabaseServiceKey =
-        (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY) ||
-        process.env.SUPABASE_SERVICE_ROLE_KEY ||
-        '';
-
-    const hasValidUrl = typeof supabaseUrl === 'string' && /^https?:\/\//.test(supabaseUrl);
-    const hasKey = !!supabaseServiceKey;
-
-    if (hasValidUrl && hasKey) {
-        supabase = createClient(supabaseUrl, supabaseServiceKey, {
-            auth: { autoRefreshToken: false, persistSession: false }
-        });
-    } else {
-        supabase = null;
-        if (typeof window !== 'undefined' && import.meta?.env?.DEV) {
-            console.warn(
-                'Supabase alerting disabled: missing VITE_SUPABASE_URL or VITE_SUPABASE_SERVICE_ROLE_KEY'
-            );
-        }
-    }
-    return supabase;
+    return null;
 }
 
 /**

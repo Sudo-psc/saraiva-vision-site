@@ -21,11 +21,13 @@ Clínica oftalmológica em Caratinga, MG, Brasil. Arquitetura VPS nativa simplif
 - Nginx (web server + proxy)
 - Redis (cache)
 - ES modules
+- **Nota**: WordPress e Supabase foram removidos - sistema 100% estático
 
 ### 🔌 Integrações Principais
-- Instagram Graph API, WhatsApp Business API
 - Google Maps API, Google Places API (avaliações em tempo real)
-- Resend API, Spotify Web API
+- Resend API (notificações por email)
+- Instagram Graph API (conteúdo social)
+- WhatsApp Business API, Spotify Web API
 
 ### ⭐ Google Reviews Integration
 Sistema de avaliações em tempo real:
@@ -44,19 +46,20 @@ Sistema de avaliações em tempo real:
 **Dados Atuais**: 136 avaliações, média 4.9/5.0
 
 ### 📝 Static Blog System
-Blog estático integrado ao SPA principal:
+Blog estático 100% client-side integrado ao SPA:
 
 **Arquivos Chave**:
 - `src/data/blogPosts.js` - Dados estáticos dos posts
-- `src/pages/BlogPage.jsx` - Listagem de posts
-- `src/pages/BlogPostPage.jsx` - Visualização individual
+- `src/pages/BlogPage.jsx` - Listagem e visualização de posts
 
 **Características**:
-- Dados em JavaScript estático
-- Sem dependências externas (WordPress/CMS)
+- **Zero dependências externas** - Sem WordPress, sem CMS, sem database
+- Dados em JavaScript estático (bundled no build)
+- Rota única: `/blog` (via React Router)
 - SEO-friendly com meta tags dinâmicas
-- Categorização e busca integradas
-- Performance otimizada
+- Categorização e busca client-side
+- Performance otimizada (sem API calls)
+- Servido estaticamente via Nginx
 
 ## 🚀 Comandos Essenciais
 
@@ -80,11 +83,11 @@ npm run test:api         # Testes API
 
 ### API & Deploy
 ```bash
-node api/health-check.js  # Testa saúde endpoints
-node api/contact/test.js  # Testa contato
+node api/health-check.js    # Testa saúde endpoints
 npm run validate:api        # Valida API completa
 npm run build               # Build aplicação
 # Deploy VPS: sudo cp -r dist/* /var/www/html/
+# Nginx config: Ver nginx-blog-config.conf e NGINX_BLOG_DEPLOYMENT.md
 ```
 
 ### Qualidade
@@ -101,12 +104,10 @@ npm run validate:api        # Valida API
 - **Fluxo**: Usuário → Nginx → Static Files/API Proxy → Node.js
 
 ### Serviços VPS
-- Nginx (web server + proxy)
-- Node.js API (systemd service)
-- WordPress CMS (PHP-FPM 8.1+)
-- MySQL (WordPress local)
-- Supabase PostgreSQL (dados principais)
-- Redis (cache e sessões)
+- Nginx (web server + static files)
+- Node.js API (systemd service para endpoints mínimos)
+- Redis (cache de reviews e sessões)
+- **Removidos**: WordPress, MySQL, Supabase (arquitetura simplificada)
 
 ### 📁 Estrutura de Diretórios
 ```
@@ -126,15 +127,11 @@ src/
 ├── workers/            # Web Workers
 └── styles/             # CSS global
 
-api/                    # Backend Node.js/Express
-├── contact/            # Formulário contato
-├── appointments/       # Agendamentos
-├── podcast/            # Podcasts
-├── google-reviews/     # Google reviews
-├── instagram/          # Instagram API
-├── wordpress/          # WordPress integration
-├── middleware/         # Security
-└── __tests__/          # API tests
+api/                    # Backend Node.js/Express (mínimo)
+├── google-reviews/     # Google reviews integration
+├── middleware/         # Security middleware
+├── utils/              # Utility functions
+└── __tests__/          # API tests (reduzidos)
 
 docs/                   # Config e documentação
 ```
@@ -147,9 +144,10 @@ docs/                   # Config e documentação
 - **Blog**: Static data em `src/data/blogPosts.js`, renderizado no client-side
 
 ### 💾 Data Storage
-- Local JSON files para blog posts
-- Redis para cache de reviews e sessões
-- File-based storage para assets estáticos
+- **Blog**: JavaScript estático (`src/data/blogPosts.js`) bundled no build
+- **Reviews Cache**: Redis para Google Reviews
+- **Assets**: File-based storage (static files via Nginx)
+- **Sem database externa**: Arquitetura 100% estática
 
 ### 🧪 Estratégia de Testes
 - Unit Tests (React Testing Library + Vitest)
@@ -176,11 +174,11 @@ docs/                   # Config e documentação
 ### Environment
 - Desenvolvimento: `.env` local
 - Produção: Variáveis no VPS
-- Variáveis obrigatórias: Supabase, Google Maps, Resend API, WordPress
+- Variáveis obrigatórias: Google Maps API, Google Places API, Resend API
 - Prefixo `VITE_` para client-side access
 
 ### Dev Server (Porta 3002)
-- Hot reload + proxy WordPress API
+- Hot reload com HMR (Hot Module Replacement)
 - Health check API proxy
 - CORS headers configurados
 
@@ -199,17 +197,12 @@ docs/                   # Config e documentação
 - RequestAnimationFrame + PerformanceObserver
 - Web Vitals tracking + GPU acceleration
 
-### Database Performance
-- Supabase RLS policies
-- Indexed queries + connection pooling
-- Optimistic updates
-
 ## 🔒 Segurança & Compliance
 
 ### Authentication & Authorization
-- Simplified authentication (se necessário no futuro)
-- Public-facing content sem necessidade de auth
-- Admin operations via environment-based controls
+- **Removido**: Sistema de autenticação Supabase foi removido
+- Site público sem necessidade de login
+- Admin operations podem ser adicionadas no futuro se necessário
 
 ### ⚖️ CFM Compliance
 - Sistema CFM compliance com validação automatizada
@@ -228,7 +221,7 @@ docs/                   # Config e documentação
 ### API Security
 - Input validation com Zod schemas
 - Rate limiting + CORS configuration
-- Security headers + WordPress API security
+- Security headers (CSP, HSTS, X-Frame-Options)
 
 ## 🎯 SEO & Schema.org
 
@@ -262,17 +255,12 @@ Schema.org para SEO médico:
 3. Exportar se reutilizável
 4. Adicionar ao design system se UI primitive
 
-### Blog Content (CFM Compliance)
-1. Criar conteúdo no WordPress admin
-2. Conteúdo validado automaticamente contra CFM
-3. Usar CFMCompliance component para validação real-time
-4. Medical disclaimers injetados automaticamente
-
-### Database Changes
-1. Atualizar types em `src/lib/supabase.ts`
-2. Adicionar migration
-3. Atualizar funções API
-4. Adicionar testes
+### Blog Content (Static)
+1. Adicionar post em `src/data/blogPosts.js`
+2. Seguir estrutura existente (title, content, category, date, author)
+3. Usar CFMCompliance component para validação (se conteúdo médico)
+4. Rebuild e deploy: `npm run build` → copiar dist/ para VPS
+5. Medical disclaimers injetados automaticamente
 
 ## 🚀 Deployment
 
@@ -285,10 +273,10 @@ Schema.org para SEO médico:
 
 ### Processo de Deploy
 1. Build: `npm run build` → `dist/`
-2. Deploy: Copiar para `/var/www/html/` + reload serviços
-3. Static files via Nginx
-4. API proxy via Nginx para Node.js
-5. Serviços systemd para processos
+2. Deploy: `sudo cp -r dist/* /var/www/html/`
+3. Reload Nginx: `sudo systemctl reload nginx`
+4. Verificar: Acessar https://saraivavision.com.br/blog
+5. **Documentação**: Ver `NGINX_BLOG_DEPLOYMENT.md` para instruções detalhadas
 
 ### Variáveis de Ambiente Obrigatórias
 ```bash

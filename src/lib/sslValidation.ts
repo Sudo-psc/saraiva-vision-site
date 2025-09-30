@@ -3,8 +3,6 @@
  * Provides tools for checking and diagnosing SSL certificate issues
  */
 
-import { getGraphQLEndpoint, WORDPRESS_CONFIG } from '../config/wp';
-
 /**
  * SSL Certificate Validation Result
  */
@@ -213,78 +211,6 @@ export function getSSLRecommendations(): {
   };
 }
 
-/**
- * Health check for GraphQL endpoint SSL
- */
-export async function checkGraphQLEndpointSSL(): Promise<{
-  endpoint: string;
-  sslValid: boolean;
-  errors: string[];
-  warnings: string[];
-  suggestions: string[];
-}> {
-  const endpoint = getGraphQLEndpoint();
-  const url = new URL(endpoint);
-
-  return {
-    endpoint,
-    sslValid: false,
-    errors: [],
-    warnings: [],
-    suggestions: []
-  };
-}
-
-/**
- * Simple SSL check for GraphQL endpoint
- */
-export async function simpleGraphQLSSLCheck(): Promise<{
-  ok: boolean;
-  error?: string;
-  endpoint: string;
-}> {
-  try {
-    const endpoint = getGraphQLEndpoint();
-    if (!endpoint || !endpoint.startsWith('https://')) {
-      return {
-        ok: false,
-        error: 'GraphQL endpoint is not configured or not using HTTPS',
-        endpoint
-      };
-    }
-
-    // Simple fetch test
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: '{ __typename }' }),
-      signal: AbortSignal.timeout(5000)
-    });
-
-    return {
-      ok: response.ok,
-      endpoint
-    };
-  } catch (error) {
-    let errorMessage = 'Unknown SSL/network error';
-
-    if (error instanceof TypeError && error.message.includes('certificate')) {
-      errorMessage = 'SSL certificate validation failed';
-    } else if (error instanceof TypeError && error.message.includes('CORS')) {
-      errorMessage = 'CORS policy blocked the request';
-    } else if (error.name === 'AbortError') {
-      errorMessage = 'Request timeout - possible network or SSL issue';
-    } else if (error instanceof Error) {
-      errorMessage = error.message;
-    }
-
-    return {
-      ok: false,
-      error: errorMessage,
-      endpoint: getGraphQLEndpoint()
-    };
-  }
-}
 
 /**
  * Format SSL validation results for display

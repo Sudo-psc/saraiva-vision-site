@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import './index.css';
 import ErrorBoundary from './components/ErrorBoundary';
-import { AuthProvider } from './contexts/AuthContext';
 import './i18n'; // Initialize i18n
 import { redirectToBackup } from './utils/redirectToBackup';
 
@@ -70,20 +69,18 @@ if (!rootElement) {
 
 const root = createRoot(rootElement);
 
-// Render without PostHog integration
+// Render without auth providers (removed)
 try {
   root.render(
     <React.StrictMode>
       <ErrorBoundary>
-        <Router future={{ 
-          v7_startTransition: true, 
-          v7_relativeSplatPath: true 
+        <Router future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true
         }}>
-          <AuthProvider>
-            <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
-              <App />
-            </Suspense>
-          </AuthProvider>
+          <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
+            <App />
+          </Suspense>
         </Router>
       </ErrorBoundary>
     </React.StrictMode>

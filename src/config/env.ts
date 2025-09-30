@@ -21,10 +21,6 @@ const envSchema = z.object({
   // API Base URL
   VITE_API_BASE: z.string().url().default('http://localhost:3000'),
 
-  // WordPress
-  VITE_WORDPRESS_API_URL: z.string().url().optional(),
-  VITE_WORDPRESS_GRAPHQL_ENDPOINT: z.string().url().optional(),
-
   // Instagram
   VITE_INSTAGRAM_ACCESS_TOKEN: z.string().optional(),
 

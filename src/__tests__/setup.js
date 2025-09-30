@@ -7,66 +7,10 @@ import { vi } from 'vitest'
 import '@testing-library/jest-dom'
 
 // Set up environment variables for tests
-process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
-process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-anon-key'
-process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-key'
-process.env.SUPABASE_URL = 'https://test.supabase.co'
 process.env.RESEND_API_KEY = 'test-resend-key'
 process.env.NODE_ENV = 'test'
 
-// Mock Supabase client
-vi.mock('../lib/supabase.ts', () => ({
-    supabase: {
-        from: vi.fn(() => ({
-            select: vi.fn(() => ({
-                eq: vi.fn(() => ({
-                    single: vi.fn()
-                }))
-            })),
-            insert: vi.fn(() => ({
-                select: vi.fn(() => ({
-                    single: vi.fn()
-                }))
-            })),
-            update: vi.fn(() => ({
-                eq: vi.fn(() => ({
-                    select: vi.fn(() => ({
-                        single: vi.fn()
-                    }))
-                }))
-            }))
-        })),
-        rpc: vi.fn()
-    },
-    supabaseAdmin: {
-        from: vi.fn(() => ({
-            select: vi.fn(() => ({
-                eq: vi.fn(() => ({
-                    single: vi.fn()
-                })),
-                order: vi.fn(() => ({
-                    order: vi.fn(() => ({
-                        limit: vi.fn()
-                    }))
-                })),
-                limit: vi.fn()
-            })),
-            insert: vi.fn(() => ({
-                select: vi.fn(() => ({
-                    single: vi.fn()
-                }))
-            })),
-            update: vi.fn(() => ({
-                eq: vi.fn(() => ({
-                    select: vi.fn(() => ({
-                        single: vi.fn()
-                    }))
-                }))
-            }))
-        })),
-        rpc: vi.fn()
-    }
-}))
+// Note: Supabase integration removed - mocks removed
 
 // Mock appointment availability functions
 vi.mock('../lib/appointmentAvailability.js', () => ({

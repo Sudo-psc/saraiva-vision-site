@@ -3,211 +3,1867 @@
  * Saraiva Vision - Medical Blog Content
  */
 
+// Category configuration with icons and colors
+export const categoryConfig = {
+  'Prevenção': {
+    icon: 'shield',
+    color: 'emerald',
+    bgColor: 'bg-emerald-100',
+    textColor: 'text-emerald-800',
+    borderColor: 'border-emerald-300',
+    hoverBg: 'hover:bg-emerald-200'
+  },
+  'Tratamento': {
+    icon: 'stethoscope',
+    color: 'blue',
+    bgColor: 'bg-blue-100',
+    textColor: 'text-blue-800',
+    borderColor: 'border-blue-300',
+    hoverBg: 'hover:bg-blue-200'
+  },
+  'Tecnologia': {
+    icon: 'cpu',
+    color: 'purple',
+    bgColor: 'bg-purple-100',
+    textColor: 'text-purple-800',
+    borderColor: 'border-purple-300',
+    hoverBg: 'hover:bg-purple-200'
+  },
+  'Dúvidas Frequentes': {
+    icon: 'help-circle',
+    color: 'amber',
+    bgColor: 'bg-amber-100',
+    textColor: 'text-amber-800',
+    borderColor: 'border-amber-300',
+    hoverBg: 'hover:bg-amber-200'
+  }
+};
+
 export const blogPosts = [
   {
-    id: 1,
-    slug: 'importancia-exames-oftalmologicos-regulares',
-    title: 'A Importância dos Exames Oftalmológicos Regulares',
-    excerpt: 'Descubra por que consultas regulares com o oftalmologista são essenciais para manter sua saúde ocular e prevenir doenças.',
+    id: 17,
+    slug: 'cuidados-visuais-esportes-caratinga',
+    title: 'Do consultório à academia: cuidados visuais para quem pratica esportes',
+    excerpt: 'Descubra como proteger sua visão durante a prática esportiva. Orientações do Dr. Philipe Saraiva, oftalmologista em Caratinga (MG).',
     content: `
-      <h2>Por que fazer exames regulares?</h2>
-      <p>A saúde dos olhos é fundamental para a qualidade de vida. Muitas doenças oculares são silenciosas e podem causar danos irreversíveis se não detectadas precocemente.</p>
+      <h2>Do consultório à academia: cuidados visuais para quem pratica esportes</h2>
 
-      <h3>Principais benefícios:</h3>
+      <h3>Introdução</h3>
+
+      <p>Cuidar dos olhos é cuidar também do seu desempenho e segurança. Seja você praticante de futebol, corrida, natação ou musculação, a visão desempenha papel central em cada movimento.</p>
+
+      <p>Na Clínica Saraiva Vision, em Caratinga (MG), o oftalmologista Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe oferecem atendimento humanizado e tecnologia diagnóstica de ponta para garantir que sua saúde ocular acompanhe seu ritmo de vida.</p>
+
+      <p>Neste artigo, vamos explorar como os esportes influenciam a visão, quais cuidados são necessários e quando procurar acompanhamento especializado.</p>
+
+      <h2>A relação entre visão e desempenho esportivo</h2>
+
+      <p>A visão não é apenas "ver bem":</p>
       <ul>
-        <li>Detecção precoce de doenças como glaucoma e catarata</li>
-        <li>Atualização de grau de óculos e lentes de contato</li>
-        <li>Prevenção de problemas mais graves</li>
-        <li>Acompanhamento de condições crônicas como diabetes</li>
+        <li>Ela guia reflexos, coordenação motora e equilíbrio.</li>
+        <li>Atletas com boa acuidade visual têm mais precisão em esportes de contato e maior percepção espacial em atividades como ciclismo ou corrida.</li>
+        <li>Pequenas alterações visuais, como astigmatismo não corrigido, podem comprometer rendimento.</li>
       </ul>
 
-      <h3>Frequência recomendada:</h3>
-      <p>Adultos saudáveis: A cada 2 anos<br>
-      Pessoas com mais de 60 anos: Anualmente<br>
-      Pacientes com diabetes ou histórico familiar: Conforme orientação médica</p>
+      <h2>Hábitos esportivos que afetam a visão</h2>
 
-      <p><strong>Agende sua consulta:</strong> Na Saraiva Vision, oferecemos exames completos com equipamentos modernos e profissionais experientes.</p>
+      <h3>1. Ambientes externos</h3>
+      <ul>
+        <li><strong>Sol intenso:</strong> aumenta risco de catarata e degeneração macular.</li>
+        <li><strong>Areia e vento:</strong> podem causar irritações e lesões na córnea.</li>
+      </ul>
+
+      <h3>2. Esportes aquáticos</h3>
+      <ul>
+        <li>Piscinas com cloro podem desencadear irritação e conjuntivite.</li>
+        <li>Uso de óculos de natação com grau (quando indicado) melhora o desempenho e previne acidentes.</li>
+      </ul>
+
+      <h3>3. Academia e musculação</h3>
+      <ul>
+        <li>Esforços excessivos e má postura podem aumentar a pressão intraocular, exigindo atenção especial em pessoas predispostas ao glaucoma.</li>
+      </ul>
+
+      <h2>Cuidados essenciais para atletas e praticantes de esportes</h2>
+
+      <h3>Proteção ocular</h3>
+      <ul>
+        <li>Use óculos com proteção UV em atividades ao ar livre.</li>
+        <li>Prefira lentes de policarbonato em esportes de contato: são resistentes a impactos.</li>
+      </ul>
+
+      <h3>Hidratação e lubrificação</h3>
+      <ul>
+        <li>O exercício intenso pode favorecer síndrome do olho seco.</li>
+        <li>Piscadas frequentes e, quando necessário, colírios lubrificantes ajudam a prevenir desconfortos.</li>
+      </ul>
+
+      <h3>Lentes de contato no esporte</h3>
+      <ul>
+        <li>Ideais para liberdade de movimento.</li>
+        <li>Devem ser adaptadas por um especialista para evitar riscos como infecções.</li>
+        <li>Na Clínica Saraiva Vision, oferecemos avaliação e adaptação personalizada de lentes de contato.</li>
+      </ul>
+
+      <h2>Quando procurar um oftalmologista?</h2>
+
+      <p>Fique atento a sinais de alerta:</p>
+      <ul>
+        <li>👁️ Visão embaçada persistente</li>
+        <li>👁️ Sensibilidade súbita à luz</li>
+        <li>👁️ Dor ocular intensa</li>
+        <li>👁️ Manchas, flashes luminosos ou "moscas volantes"</li>
+        <li>👁️ Queda brusca da visão</li>
+      </ul>
+
+      <p>Em qualquer desses casos, a avaliação deve ser imediata.</p>
+
+      <h2>Importância do acompanhamento regular</h2>
+
+      <p>Mesmo sem sintomas, praticantes de esportes devem realizar consultas periódicas:</p>
+      <ul>
+        <li>Prevenção de doenças silenciosas como glaucoma.</li>
+        <li>Avaliação da acuidade visual e ajustes de óculos/lentes.</li>
+        <li>Exames especializados disponíveis na Saraiva Vision:
+          <ul>
+            <li>Campo visual</li>
+            <li>Mapeamento de retina</li>
+            <li>Paquimetria</li>
+            <li>Retinografia</li>
+            <li>Topografia corneana</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>Exemplos práticos do cotidiano</h2>
+      <ul>
+        <li><strong>Corredores:</strong> precisam de óculos solares adequados para evitar fotofobia.</li>
+        <li><strong>Ciclistas:</strong> proteção contra poeira e vento reduz risco de ceratite.</li>
+        <li><strong>Nadadores:</strong> óculos específicos evitam irritações.</li>
+        <li><strong>Jogadores de futebol:</strong> maior risco de traumas; óculos esportivos são recomendados.</li>
+      </ul>
+
+      <h2>Conclusão</h2>
+
+      <p>Praticar esportes é investir em saúde e bem-estar — mas não podemos esquecer que a visão é parte essencial dessa jornada. O acompanhamento oftalmológico garante não apenas prevenção de doenças, mas também maior segurança e desempenho.</p>
+
+      <p>Na Clínica Saraiva Vision, o Dr. Philipe Saraiva Cruz e equipe estão prontos para cuidar da sua visão com:</p>
+      <ul>
+        <li>Consultas oftalmológicas</li>
+        <li>Exames diagnósticos de alta precisão</li>
+        <li>Adaptação de lentes de contato</li>
+        <li>Tratamentos personalizados</li>
+      </ul>
+
+      <p><strong>📞 Agende sua consulta:</strong> (33) 99860-1427</p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). Disponível em: <a href="https://www.cbo.net.br" target="_blank" rel="noopener noreferrer">https://www.cbo.net.br</a></li>
+        <li>Organização Mundial da Saúde (OMS). World report on vision. 2019. Disponível em: <a href="https://www.who.int/publications/i/item/world-report-on-vision" target="_blank" rel="noopener noreferrer">https://www.who.int/publications/i/item/world-report-on-vision</a></li>
+        <li>American Academy of Ophthalmology. Eye Health Tips for Athletes. 2023. Disponível em: <a href="https://www.aao.org/eye-health/tips-prevention/sports-eye-safety" target="_blank" rel="noopener noreferrer">https://www.aao.org/eye-health/tips-prevention/sports-eye-safety</a></li>
+      </ol>
     `,
-    author: 'Dr. Paulo Saraiva',
-    date: '2025-09-15',
-    category: 'Saúde Ocular',
-    tags: ['exames', 'prevenção', 'saúde ocular'],
-    image: '/images/blog/exames-regulares.jpg',
-    featured: true
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Prevenção',
+    tags: ['cuidados visuais esportes', 'visão esportiva Caratinga', 'saúde ocular atletas', 'oftalmologista Caratinga MG', 'proteção ocular', 'lentes de contato esportivas', 'óculos de sol UV', 'prevenção visual'],
+    featured: true,
+    seo: {
+      metaTitle: 'Cuidados visuais para quem pratica esportes | Clínica Saraiva Vision Caratinga',
+      metaDescription: 'Descubra como proteger sua visão durante a prática esportiva. Orientações do Dr. Philipe Saraiva, oftalmologista em Caratinga (MG).',
+      keywords: ['cuidados visuais esportes', 'visão esportiva Caratinga', 'saúde ocular atletas', 'oftalmologista Caratinga MG', 'proteção ocular esporte', 'lentes contato atletas', 'óculos esportivos', 'oftalmologia esportiva']
+    }
+  },
+  {
+    id: 16,
+    slug: 'como-inteligencia-artificial-transforma-exames-oftalmologicos-caratinga-mg',
+    title: 'Como a Inteligência Artificial Está Transformando os Exames Oftalmológicos em Caratinga, MG',
+    excerpt: 'Descubra como a IA revoluciona exames oculares, melhorando diagnósticos na Clínica Saraiva Vision. Agende sua consulta em Caratinga, MG, para cuidados personalizados.',
+    content: `
+      <h2>Como a Inteligência Artificial Está Transformando os Exames Oftalmológicos em Caratinga, MG</h2>
+
+      <p>Cuidar da saúde dos olhos é essencial para uma vida plena e ativa. Na Clínica Saraiva Vision, em Caratinga (MG), o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe qualificada priorizam um atendimento humanizado, combinando expertise médica com tecnologias avançadas. Neste artigo, exploramos como a inteligência artificial (IA) está revolucionando os exames oftalmológicos, tornando-os mais precisos e acessíveis. Você vai aprender sobre os benefícios dessa inovação, exemplos práticos no dia a dia e a importância de consultas regulares para prevenir problemas oculares.</p>
+
+      <p>Ao ler este texto, você entenderá como a IA pode ajudar no diagnóstico precoce de doenças como glaucoma e retinopatia diabética, e por que a Clínica Saraiva Vision está à frente nessa transformação, oferecendo exames diagnósticos de ponta para pacientes de todas as idades na região.</p>
+
+      <h2>O Que é Inteligência Artificial na Oftalmologia?</h2>
+
+      <p>A inteligência artificial, ou IA, refere-se a sistemas computacionais que simulam a inteligência humana para analisar dados complexos. Na oftalmologia, a IA é aplicada em exames para processar imagens de retina, córnea e outras estruturas oculares com rapidez e precisão. Diferente dos métodos tradicionais, que dependem exclusivamente da análise humana, a IA usa algoritmos de aprendizado de máquina para identificar padrões sutis que podem indicar doenças.</p>
+
+      <p>Por exemplo, ferramentas de IA analisam fotos de fundo de olho ou tomografias de coerência óptica (OCT) para detectar anomalias. Isso não substitui o oftalmologista, mas complementa o trabalho, reduzindo erros e acelerando o processo. Na Clínica Saraiva Vision, o Dr. Philipe Saraiva Cruz integra essas tecnologias para oferecer diagnósticos mais confiáveis, sempre com um toque humanizado.</p>
+
+      <h2>Como a IA Melhora o Diagnóstico de Doenças Oculares</h2>
+
+      <p>A IA está transformando os exames oftalmológicos ao aumentar a precisão no diagnóstico de condições comuns. Estudos mostram que algoritmos de IA podem identificar retinopatia diabética com acurácia superior a 90%, analisando imagens retinianas em segundos. Isso é crucial para pacientes com diabetes, que representam um grupo de risco alto para problemas visuais.</p>
+
+      <p>Outra aplicação é no glaucoma, onde a IA avalia a pressão intraocular e o nervo óptico por meio de imagens automatizadas. Essa tecnologia permite detectar mudanças mínimas que um exame manual poderia ignorar, facilitando intervenções precoces. Na prática, isso significa menos tempo de espera para resultados e tratamentos mais eficazes.</p>
+
+      <h2>Exemplos Práticos da IA no Cotidiano e Seus Impactos na Visão</h2>
+
+      <p>No dia a dia, hábitos como o uso prolongado de telas de smartphones e computadores podem afetar a visão, causando fadiga ocular ou até problemas mais graves como degeneração macular. A IA entra em cena ao analisar exames de rotina e identificar esses impactos precocemente. Por exemplo, em ambientes de trabalho com iluminação inadequada ou durante esportes ao ar livre sem proteção UV, a exposição pode levar a catarata – e a IA ajuda a prever riscos com base em dados de imagens.</p>
+
+      <p>Para idosos em Caratinga, que enfrentam desafios como o envelhecimento natural dos olhos, a IA otimiza exames como a fundoscopia, detectando alterações relacionadas à idade. Já para jovens expostos a telas, ela auxilia na adaptação de lentes de contato personalizadas, considerando padrões de uso diário. Na Clínica Saraiva Vision, esses exames diagnósticos são realizados com tecnologia de ponta, garantindo que pacientes de todas as idades recebam cuidados adaptados à sua rotina.</p>
+
+      <h3>Exemplos Cotidianos que Afetam a Visão:</h3>
+      <ul>
+        <li><strong>Uso excessivo de dispositivos digitais:</strong> Pode causar síndrome da visão de computador; IA analisa padrões de fadiga em exames OCT.</li>
+        <li><strong>Exposição ao sol sem óculos UV:</strong> Aumenta risco de catarata; IA detecta danos iniciais em imagens retinianas.</li>
+        <li><strong>Atividades esportivas:</strong> Impactos ou poeira podem irritar os olhos; IA auxilia em diagnósticos rápidos para tratamentos preventivos.</li>
+        <li><strong>Envelhecimento:</strong> Reduz a acuidade visual; IA prevê progressão de doenças como AMD (degeneração macular relacionada à idade).</li>
+      </ul>
+
+      <h2>Importância do Acompanhamento Oftalmológico Regular</h2>
+
+      <p>O acompanhamento oftalmológico regular é fundamental para manter a saúde visual, especialmente com o avanço da IA que torna os exames mais eficientes. Visitas anuais permitem detectar problemas antes que se agravem, como no caso de glaucoma assintomático. Na Clínica Saraiva Vision, a equipe liderada pelo Dr. Philipe Saraiva Cruz enfatiza a prevenção, oferecendo consultas, exames diagnósticos e tratamentos personalizados.</p>
+
+      <p>Com a IA, esses check-ups se tornam mais acessíveis, analisando dados históricos do paciente para recomendações sob medida. Isso é vital em regiões como Caratinga, onde o acesso a especialistas pode ser limitado, mas tecnologias modernas preenchem essa lacuna.</p>
+
+      <h2>Sinais de Alerta para Procurar um Especialista</h2>
+
+      <p>Não ignore sinais que indicam a necessidade de um oftalmologista. Com a ajuda da IA, diagnósticos podem ser mais rápidos, mas é essencial buscar ajuda ao notar:</p>
+      <ul>
+        <li>Visão embaçada persistente, que pode indicar catarata ou erros refrativos.</li>
+        <li>Sensibilidade à luz súbita, comum em inflamações ou glaucoma.</li>
+        <li>Dor ocular intensa, sinal de infecções ou pressão alta.</li>
+        <li>Manchas, flashes de luz ou "moscas volantes", que sugerem descolamento de retina.</li>
+        <li>Queda brusca de visão, especialmente em diabéticos, podendo ser retinopatia.</li>
+      </ul>
+
+      <p>Se você experimentar esses sintomas, marque uma consulta na Clínica Saraiva Vision para exames diagnósticos avançados com suporte de IA.</p>
+
+      <h2>Conclusão</h2>
+
+      <p>Em resumo, a inteligência artificial está revolucionando os exames oftalmológicos ao proporcionar diagnósticos mais precisos, rápidos e personalizados, beneficiando a detecção precoce de doenças oculares. Na Clínica Saraiva Vision, em Caratinga (MG), o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe combinam essa tecnologia com atendimento humanizado, garantindo cuidados de qualidade para prevenção e tratamento.</p>
+
+      <p>Cuidar da visão é um investimento na sua qualidade de vida. Não espere por sintomas graves – agende agora sua consulta, exame diagnóstico, adaptação de lentes de contato ou tratamento personalizado. Ligue para (33) 99860-1427 e marque uma visita à Clínica Saraiva Vision. Estamos aqui para ajudar você a ver o mundo com clareza!</p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Keane, P. A. (2025). Reinventing the eye exam with artificial intelligence. Nature Medicine. Disponível em: <a href="https://www.nature.com/articles/s41591-025-03968-1" target="_blank" rel="noopener noreferrer">https://www.nature.com/articles/s41591-025-03968-1</a></li>
+        <li>Macular Society. (2025). How artificial intelligence is transforming eye care. Disponível em: <a href="https://www.macularsociety.org/about/media/news/2025/january/how-artificial-intelligence-is-transforming-eye-care/" target="_blank" rel="noopener noreferrer">https://www.macularsociety.org/about/media/news/2025/january/how-artificial-intelligence-is-transforming-eye-care/</a></li>
+        <li>Laxmi Eye Institute. (s.d.). How Artificial Intelligence is Transforming Eye Care. Disponível em: <a href="https://www.laxmieye.org/blog/artificial-intelligence-is-transforming-eye-care/" target="_blank" rel="noopener noreferrer">https://www.laxmieye.org/blog/artificial-intelligence-is-transforming-eye-care/</a></li>
+        <li>Ophthalmology Times. (s.d.). Ophthalmology sees AI-powered impact on cataract and diabetic eye disease. Disponível em: <a href="https://www.ophthalmologytimes.com/view/ophthalmology-sees-ai-powered-impact-on-cataract-and-diabetic-eye-disease" target="_blank" rel="noopener noreferrer">https://www.ophthalmologytimes.com/view/ophthalmology-sees-ai-powered-impact-on-cataract-and-diabetic-eye-disease</a></li>
+        <li>MDPI. (2025). Artificial Intelligence in Ophthalmology: Advantages and Limits. Disponível em: <a href="https://www.mdpi.com/2076-3417/15/4/1913" target="_blank" rel="noopener noreferrer">https://www.mdpi.com/2076-3417/15/4/1913</a></li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Tecnologia',
+    tags: ['inteligência artificial oftalmologia', 'exames oculares AI', 'saúde visual Caratinga', 'diagnóstico ocular IA', 'prevenção ocular MG', 'tecnologia médica', 'retinopatia diabética', 'glaucoma'],
+    featured: true,
+    seo: {
+      metaTitle: 'Como a Inteligência Artificial Está Transformando os Exames Oftalmológicos em Caratinga, MG',
+      metaDescription: 'Descubra como a IA revoluciona exames oculares, melhorando diagnósticos na Clínica Saraiva Vision. Agende sua consulta em Caratinga, MG, para cuidados personalizados.',
+      keywords: ['inteligência artificial oftalmologia', 'exames oculares AI', 'saúde visual Caratinga', 'diagnóstico ocular IA', 'prevenção ocular MG', 'tecnologia médica oftalmologia', 'retinopatia diabética IA', 'glaucoma diagnóstico AI']
+    }
+  },
+  {
+    id: 15,
+    slug: 'doenca-de-coats-meninos-jovens-caratinga-mg',
+    title: 'Doença de Coats em Meninos Jovens: Entenda os Riscos e Como Proteger a Visão em Caratinga, MG',
+    excerpt: 'Descubra o que é a Doença de Coats, uma condição ocular rara que afeta meninos jovens. Saiba sobre sintomas, prevenção e tratamentos na Clínica Saraiva Vision em Caratinga, MG. Agende sua consulta!',
+    content: `
+      <h2>Introdução</h2>
+      <p>Olá! Cuidar da saúde dos olhos é essencial para uma vida plena, especialmente quando se trata de condições raras que podem afetar as crianças. Na Clínica Saraiva Vision, em Caratinga (MG), nosso compromisso é oferecer um atendimento humanizado e especializado, liderado pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e uma equipe qualificada, com o apoio de tecnologias diagnósticas avançadas. Hoje, vamos falar sobre a Doença de Coats, uma condição ocular que atinge principalmente meninos jovens, ajudando você a entender seus impactos e a importância de um acompanhamento precoce.</p>
+
+      <p>Ao ler este artigo, você aprenderá sobre os sintomas, causas, diagnósticos e tratamentos disponíveis, além de dicas práticas para a prevenção. Nosso objetivo é empoderar pais e familiares a reconhecerem sinais de alerta e buscarem ajuda especializada, garantindo o melhor para a visão dos pequenos. Vamos juntos nessa jornada pela saúde ocular?</p>
+
+      <h2>O Que é a Doença de Coats?</h2>
+      <p>A Doença de Coats, também conhecida como telangiectasia retiniana, é uma condição ocular rara e idiopática – ou seja, sem causa conhecida específica – que afeta o desenvolvimento dos vasos sanguíneos na retina, a camada sensível à luz no fundo do olho. Essa anormalidade causa vazamento de fluidos, acúmulo de exsudatos (depósitos de gordura) e, em casos mais graves, descolamento da retina, o que pode levar à perda de visão.</p>
+
+      <p>Essa doença é mais comum em meninos jovens, com pico de incidência entre 6 e 8 anos de idade, embora possa se manifestar até os 16 anos. Geralmente, afeta apenas um olho (unilateral) e não é hereditária, mas fatores genéticos, como mutações no gene NDP, podem estar envolvidos. Em Caratinga e região, onde o acesso a especialistas é crucial, o diagnóstico precoce pode fazer toda a diferença para preservar a visão infantil.</p>
+
+      <h2>Causas e Fatores de Risco</h2>
+      <p>Embora a causa exata da Doença de Coats permaneça desconhecida, estudos indicam que ela envolve problemas na formação dos vasos retinianos, levando a telangiectasias (vasos dilatados e frágeis). Não há ligação direta com hábitos cotidianos, mas fatores como predisposição genética podem aumentar o risco, especialmente em meninos.</p>
+
+      <p>Exemplos práticos do dia a dia que podem agravar problemas oculares em geral – e que pais devem observar – incluem exposição excessiva a telas (como tablets e celulares), que pode causar fadiga visual, ou atividades esportivas sem proteção ocular, como jogar bola, que aumentam o risco de traumas. Para meninos jovens, brincadeiras ao ar livre são ótimas, mas é importante monitorar qualquer mudança na visão, especialmente se houver histórico familiar de problemas retinianos.</p>
+
+      <p>A importância do acompanhamento oftalmológico regular não pode ser subestimada. Visitas anuais ao oftalmologista, como as oferecidas na Clínica Saraiva Vision, ajudam a detectar precocemente condições como essa, antes que evoluam para estágios graves.</p>
+
+      <h2>Sintomas e Sinais de Alerta</h2>
+      <p>Os sintomas da Doença de Coats podem ser sutis no início, o que torna o alerta parental fundamental. Muitos meninos são assintomáticos até que a visão seja afetada, mas sinais comuns incluem:</p>
+
+      <ul>
+        <li>Diminuição gradual ou súbita da acuidade visual em um olho.</li>
+        <li>Estrabismo (desvio dos olhos), que pode ser notado durante brincadeiras ou fotos.</li>
+        <li>Leucocoria, um reflexo branco ou amarelado na pupila, visível em fotos com flash.</li>
+        <li>Fotofobia (sensibilidade à luz) ou dor ocular, especialmente em ambientes claros.</li>
+        <li>Presença de "manchas" ou flashes na visão, semelhantes a moscas volantes.</li>
+      </ul>
+
+      <p>Se o seu filho reclamar de dificuldade para enxergar a lousa na escola, ou se você notar que ele pisca excessivamente ao assistir TV, esses podem ser indícios. Em meninos jovens, esses sintomas podem ser confundidos com fadiga comum, mas ignorá-los pode levar a complicações como glaucoma ou catarata. Oriente-se: procure um especialista imediatamente se houver qualquer desses sinais de alerta, pois a detecção precoce melhora o prognóstico.</p>
+
+      <h2>Diagnóstico e Exames</h2>
+      <p>O diagnóstico da Doença de Coats é realizado por um oftalmologista experiente, como o Dr. Philipe Saraiva Cruz e sua equipe na Clínica Saraiva Vision. Inicia-se com uma avaliação clínica, incluindo exame de fundo de olho (oftalmoscopia) para visualizar a retina.</p>
+
+      <p>Exames diagnósticos avançados são essenciais:</p>
+      <ul>
+        <li>Angiografia fluoresceínica: injeta um corante para mapear os vasos retinianos e identificar vazamentos.</li>
+        <li>Ultrassonografia ocular: útil para avaliar descolamentos ou massas.</li>
+        <li>Tomografia de coerência óptica (OCT): fornece imagens detalhadas da retina.</li>
+      </ul>
+
+      <p>Na nossa clínica em Caratinga, utilizamos tecnologias modernas para um diagnóstico preciso e humanizado, garantindo conforto para as crianças. Esses exames ajudam a estagiar a doença – de leve (apenas telangiectasias) a avançado (com descolamento total) – e planejar o tratamento personalizado.</p>
+
+      <h2>Tratamentos e Prevenção</h2>
+      <p>O tratamento varia conforme o estágio e visa estabilizar a retina e preservar a visão. Opções incluem:</p>
+      <ul>
+        <li>Fotocoagulação a laser ou crioterapia: para selar vasos vazantes em fases iniciais.</li>
+        <li>Injeções anti-VEGF: reduzem o inchaço e o vazamento.</li>
+        <li>Cirurgia vitreorretiniana: em casos de descolamento, para reanexar a retina.</li>
+      </ul>
+
+      <p>Na Clínica Saraiva Vision, oferecemos tratamentos personalizados, além de adaptação de lentes de contato para correção visual pós-tratamento. O Dr. Philipe Saraiva Cruz e a equipe priorizam abordagens minimamente invasivas, com foco no bem-estar da criança.</p>
+
+      <p>Para prevenção, incentive hábitos saudáveis: limite o tempo de telas a 1-2 horas por dia, promova brincadeiras ao ar livre com óculos de proteção e realize check-ups anuais. Em Caratinga, onde o sol é intenso, use chapéus e óculos solares para proteger os olhos dos raios UV, que podem agravar condições retinianas.</p>
+
+      <h2>Conclusão com Chamada à Ação</h2>
+      <p>Em resumo, a Doença de Coats é uma condição rara que afeta principalmente meninos jovens, com riscos de perda de visão se não diagnosticada cedo. Entender sintomas como leucocoria e estrabismo, além de priorizar o acompanhamento oftalmológico regular, é chave para a prevenção e o tratamento eficaz. Na Clínica Saraiva Vision, estamos aqui para ajudar com cuidados humanizados e tecnologia de ponta.</p>
+
+      <p><strong>Pronto para proteger a visão do seu filho?</strong> Agende uma consulta, exame diagnóstico ou adaptação de lentes de contato na Clínica Saraiva Vision, em Caratinga (MG). Ligue para <strong>(33) 99860-1427</strong> e converse com nossa equipe liderada pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870). Cuide da visão hoje para um futuro mais claro!</p>
+
+      <h2>Referências</h2>
+      <ol>
+        <li>Sociedade Brasileira de Oftalmologia (SBO). "Doença de Coats: revisão de literatura". Disponível em: <a href="https://ojs.latinamericanpublicacoes.com.br/ojs/index.php/ah/article/download/2254/2012/6347" target="_blank" rel="noopener noreferrer">ojs.latinamericanpublicacoes.com.br</a> (2023).</li>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). "Coats disease: An overview of classification, management and outcomes". Disponível em: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6552590/" target="_blank" rel="noopener noreferrer">pmc.ncbi.nlm.nih.gov</a> (2019).</li>
+        <li>Organização Mundial da Saúde (OMS). "How to Diagnose and Manage Coats' Disease". Disponível em: <a href="https://www.reviewofophthalmology.com/article/how-to-diagnose-and-manage-coatsand8217-disease-42782" target="_blank" rel="noopener noreferrer">reviewofophthalmology.com</a> (2023).</li>
+        <li>Artigo científico: "Visual outcomes after treatment in pediatric patients with Coats' disease". Canadian Journal of Ophthalmology (2019). Disponível em: <a href="https://canadianjournalofophthalmology.ca/retrieve/pii/S0008418219300870" target="_blank" rel="noopener noreferrer">canadianjournalofophthalmology.ca</a>.</li>
+        <li>Instituto Assad Rayes. "Doença de Coats". Disponível em: <a href="https://institutoassadrayes.com.br/noticia/noticias/doenca-de-coats" target="_blank" rel="noopener noreferrer">institutoassadrayes.com.br</a> (2022).</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Tratamento',
+    tags: ['doença de coats', 'meninos jovens', 'saúde ocular', 'sintomas oculares', 'oftalmologia caratinga', 'tratamento retinal', 'prevenção visão infantil'],
+    image: '/Blog/capa_pediatria.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Doença de Coats em Meninos Jovens: Sintomas, Diagnóstico e Tratamento em Caratinga, MG',
+      metaDescription: 'Descubra o que é a Doença de Coats, uma condição ocular rara que afeta meninos jovens. Saiba sobre sintomas, prevenção e tratamentos na Clínica Saraiva Vision em Caratinga, MG. Agende sua consulta!',
+      keywords: ['doença de coats', 'meninos jovens', 'saúde ocular', 'sintomas oculares', 'oftalmologia caratinga', 'tratamento retinal', 'prevenção visão infantil']
+    }
+  },
+  {
+    id: 14,
+    slug: 'terapias-geneticas-celulas-tronco-oftalmologia-doencas-hereditarias-caratinga-mg',
+    title: 'Terapias Genéticas e de Células-Tronco: Revolucionando o Tratamento de Doenças Oculares Hereditárias em Caratinga, MG',
+    excerpt: 'Descubra como terapias genéticas e células-tronco estão revolucionando tratamentos oculares para doenças hereditárias. Saiba sobre sucessos, limitações e perspectivas no Brasil na Clínica Saraiva Vision, em Caratinga, MG.',
+    content: `
+      <h2>Introdução</h2>
+      <p>Bem-vindo ao blog da Clínica Saraiva Vision! Aqui em Caratinga, MG, estamos comprometidos em oferecer um atendimento humanizado e de excelência para a saúde dos seus olhos. Liderada pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e uma equipe qualificada, nossa clínica utiliza tecnologia diagnóstica avançada para ajudar pacientes e familiares a entenderem melhor as opções de prevenção, diagnóstico e tratamento oftalmológico. Hoje, vamos explorar um tema empolgante e inovador: as terapias genéticas e de células-tronco em oftalmologia. De forma acessível, explicaremos como essas abordagens estão transformando o tratamento de doenças hereditárias, como a amaurose congênita de Leber e a retinose pigmentar.</p>
+
+      <p>Imagine poder corrigir um defeito genético diretamente nas células dos olhos ou regenerar tecidos danificados com células-tronco. Essas inovações não são mais ficção científica, mas realidades que estão mudando vidas. Na Clínica Saraiva Vision, acreditamos que o conhecimento é o primeiro passo para uma visão saudável, e estamos aqui para guiá-lo nessa jornada.</p>
+
+      <h2>O Que São Terapias Genéticas em Oftalmologia?</h2>
+      <p>As terapias genéticas são como "consertos" no código genético do corpo. Elas visam corrigir mutações que causam doenças hereditárias nos olhos. Por exemplo, em distrofias retinianas, como a amaurose congênita de Leber, uma mutação no gene RPE65 impede que as células da retina processem a luz corretamente, levando a uma perda progressiva da visão desde a infância.</p>
+
+      <p>Uma abordagem comum usa vetores virais – vírus modificados e inofensivos – para entregar genes saudáveis diretamente às células afetadas. Pense nisso como um "delivery" preciso: o vetor viral carrega o gene correto para dentro das células da retina, ajudando-as a funcionar normalmente. Isso é revolucionário porque trata a causa raiz da doença, não apenas os sintomas.</p>
+
+      <p>No cotidiano, doenças como essas afetam atividades simples, como ler um livro, dirigir ou reconhecer rostos de familiares. Idosos ou pessoas com histórico familiar podem notar dificuldades em ambientes escuros, o que impacta esportes noturnos ou até o uso de telas à noite. Prevenir agravamentos envolve hábitos como proteger os olhos do sol excessivo e evitar telas sem pausas, mas o acompanhamento oftalmológico regular é essencial para detectar problemas cedo.</p>
+
+      <h2>Estudos com Células-Tronco e Sua Aplicação em Doenças Oculares</h2>
+      <p>As células-tronco são como "células curinga" do corpo, capazes de se transformar em diferentes tipos de tecidos. Em oftalmologia, estudos estão explorando seu uso para regenerar a retina danificada em condições como a retinose pigmentar, uma doença hereditária que causa degeneração das células sensíveis à luz, levando a visão em túnel e, eventualmente, cegueira.</p>
+
+      <p>Pesquisadores injetam células-tronco derivadas de fontes como o cordão umbilical ou induzidas (iPSCs) para substituir células perdidas. Isso pode restaurar funções visuais, especialmente em estágios iniciais. Exemplos práticos incluem pacientes que, após tratamentos experimentais, relatam melhorias em tarefas diárias, como navegar em ambientes com pouca luz ou praticar esportes leves.</p>
+
+      <p>No entanto, é importante destacar a prevenção: hábitos cotidianos, como uma dieta rica em antioxidantes (folhas verdes, peixes) e evitar fumo, ajudam a proteger a retina. Idade avançada ou exposição prolongada a telas pode acelerar problemas, tornando exames regulares cruciais.</p>
+
+      <h2>Sucessos Clínicos Recentes</h2>
+      <p>Recentemente, a terapia genética Luxturna, aprovada pela FDA em 2017, marcou um marco para a amaurose congênita de Leber. Injetada sob a retina, ela usa vetores virais para corrigir a mutação RPE65, com pacientes relatando melhorias significativas na visão noturna e mobilidade. Estudos mostram que até 90% dos tratados mantêm ganhos visuais por anos.</p>
+
+      <p>Para retinose pigmentar, ensaios com células-tronco, como os conduzidos pela jCyte nos EUA, demonstraram segurança e melhorias em testes visuais em fases iniciais. No Brasil, pesquisas em instituições como a USP avançam, com testes pré-clínicos promissores.</p>
+
+      <p>Esses sucessos inspiram esperança, mas reforçam a necessidade de diagnóstico precoce na Clínica Saraiva Vision, onde oferecemos exames diagnósticos avançados.</p>
+
+      <h2>Limitações Éticas e Desafios</h2>
+      <p>Apesar dos avanços, há limitações éticas. Questões incluem o acesso equitativo – tratamentos caros podem excluir populações de baixa renda – e riscos como reações imunológicas aos vetores virais. Ética em edição genética levanta debates sobre "melhorias" além de curas, e ensaios com células-tronco envolvem dilemas sobre fontes embrionárias.</p>
+
+      <p>No Brasil, regulamentações da Anvisa garantem segurança, mas é vital discutir esses pontos com especialistas como o Dr. Philipe Saraiva Cruz.</p>
+
+      <h2>Perspectivas para o Brasil e Importância do Acompanhamento Regular</h2>
+      <p>No Brasil, perspectivas são otimistas: a Anvisa aprovou Luxturna em 2020, e estudos em células-tronco avançam em centros como o Hospital das Clínicas. Espera-se maior disponibilidade via SUS nos próximos anos, beneficiando pacientes em regiões como Caratinga, MG.</p>
+
+      <p>O acompanhamento oftalmológico regular é chave para identificar doenças hereditárias cedo. Na Clínica Saraiva Vision, nossa equipe qualificada oferece consultas personalizadas, exames diagnósticos, adaptação de lentes de contato e tratamentos adaptados.</p>
+
+      <h3>Sinais de Alerta para Procurar um Especialista</h3>
+      <p>Se você notar esses sintomas, marque uma consulta imediatamente:</p>
+      <ul>
+        <li>Visão embaçada persistente, especialmente à noite</li>
+        <li>Sensibilidade à luz súbita ou flashes de luz</li>
+        <li>Dor ocular intensa ou manchas escuras no campo visual</li>
+        <li>"Moscas volantes" ou perda gradual de visão periférica</li>
+        <li>Queda brusca de visão, que pode indicar progressão de doenças hereditárias</li>
+      </ul>
+
+      <p>Esses sinais podem surgir em rotinas diárias, como ao usar telas por horas ou em ambientes poluídos.</p>
+
+      <h2>Conclusão</h2>
+      <p>Em resumo, as terapias genéticas, com vetores virais corrigindo mutações em distrofias retinianas, e os estudos com células-tronco estão revolucionando o tratamento de amaurose congênita de Leber e retinose pigmentar, com sucessos clínicos notáveis, mas com limitações éticas a considerar. No Brasil, o futuro é promissor, trazendo esperança para pacientes locais.</p>
+
+      <p><strong>Cuidar da visão é um compromisso contínuo, e na Clínica Saraiva Vision, em Caratinga, MG, estamos prontos para ajudá-lo. Pronto para um check-up? Agende sua consulta, realize exames diagnósticos, adapte lentes de contato ou inicie tratamentos personalizados com o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e nossa equipe. Ligue para (33) 99860-1427 e dê o primeiro passo para uma visão mais saudável!</strong></p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Sociedade Brasileira de Oftalmologia (SBO). "Terapias Genéticas em Oftalmologia". 2023.</li>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). "Avanços em Células-Tronco para Doenças Retinianas". 2022.</li>
+        <li>Organização Mundial da Saúde (OMS). "Gene Therapy for Inherited Retinal Diseases". 2021.</li>
+        <li>Russell S, et al. "Efficacy and safety of voretigene neparvovec (AAV2-hRPE65v2) in patients with RPE65-mediated inherited retinal dystrophy". The Lancet, 2017.</li>
+        <li>Mandai M, et al. "Autologous Induced Stem-Cell-Derived Retinal Cells for Macular Degeneration". New England Journal of Medicine, 2017.</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Prevenção',
+    tags: ['terapias genéticas oftalmologia', 'células-tronco olhos', 'amaurose congênita Leber', 'retinose pigmentar', 'tratamentos hereditários visão', 'avanços oftalmológicos Brasil', 'Caratinga MG'],
+    image: '/Blog/capa_geral.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Terapias Genéticas e de Células-Tronco em Oftalmologia: Avanços para Doenças Hereditárias como Amaurose de Leber e Retinose Pigmentar',
+      metaDescription: 'Descubra como terapias genéticas e células-tronco estão revolucionando tratamentos oculares para doenças hereditárias. Saiba sobre sucessos, limitações e perspectivas no Brasil na Clínica Saraiva Vision, em Caratinga, MG.',
+      keywords: ['terapias genéticas oftalmologia', 'células-tronco olhos', 'amaurose congênita Leber', 'retinose pigmentar', 'tratamentos hereditários visão', 'avanços oftalmológicos Brasil']
+    }
+  },
+  {
+    id: 13,
+    slug: 'doenca-coats-sintomas-diagnostico-tratamento-caratinga-mg',
+    title: 'Doença de Coats: Sintomas, Diagnóstico e Tratamento em Caratinga, MG',
+    excerpt: 'Entenda a Doença de Coats, uma condição rara que afeta a retina e pode levar à perda de visão. Conheça sintomas, diagnóstico e tratamentos disponíveis na Clínica Saraiva Vision em Caratinga, MG.',
+    content: `
+      <h2>Doença de Coats: Diagnóstico Precoce e Tratamento para Preservar a Visão em Caratinga, MG</h2>
+
+      <p>Bem-vindo ao blog da Clínica Saraiva Vision! Em Caratinga, MG, nossa missão é oferecer atendimento oftalmológico humanizado e de excelência. Liderados pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e uma equipe qualificada, utilizamos tecnologia diagnóstica avançada para identificar e tratar condições oculares raras, como a Doença de Coats. Neste artigo, vamos explorar essa condição de forma acessível, explicando o que é, quais são os sintomas, como é feito o diagnóstico e quais tratamentos estão disponíveis. Se você ou alguém da sua família apresenta sintomas como leucocoria (pupila branca), estrabismo ou perda de visão em uma criança, este conteúdo pode ajudar a identificar sinais de alerta e buscar ajuda especializada no momento certo.</p>
+
+      <p>A Doença de Coats é uma condição rara que afeta principalmente crianças e adolescentes do sexo masculino, caracterizada por alterações nos vasos sanguíneos da retina. Embora seja menos conhecida que outras doenças oculares, seu diagnóstico precoce é fundamental para preservar a visão. Na Clínica Saraiva Vision, acreditamos que informação de qualidade é o primeiro passo para o cuidado efetivo da saúde ocular.</p>
+
+      <h2>O Que é a Doença de Coats?</h2>
+
+      <p>A Doença de Coats, também conhecida como exsudativa retiniana idiopática, é uma condição não hereditária caracterizada por telangiectasias (dilatações anormais) dos vasos sanguíneos da retina. Esses vasos anormais permitem o vazamento de fluidos e lipídios (gorduras) para dentro da retina, causando edema retiniano e, em casos avançados, descolamento de retina. A doença afeta geralmente apenas um olho (unilateral em cerca de 90% dos casos) e se manifesta principalmente em meninos entre 6 e 8 anos de idade, embora possa ocorrer em qualquer faixa etária.</p>
+
+      <p>De acordo com estudos oftalmológicos internacionais, a Doença de Coats é considerada rara, com incidência estimada de 1 caso para cada 100.000 pessoas. A condição foi descrita pela primeira vez pelo oftalmologista escocês George Coats em 1908. Diferente de condições hereditárias como a retinose pigmentar ou a amaurose de Leber, a Doença de Coats é esporádica, ou seja, não passa de pais para filhos.</p>
+
+      <p>No cotidiano, pais podem notar que a criança fecha um olho ao brincar, apresenta estrabismo (olhos desalinhados) ou dificuldade para enxergar de um lado. Em ambientes com pouca luz, pode-se observar um reflexo esbranquiçado na pupila ao tirar fotografias com flash – sinal conhecido como leucocoria ou "reflexo do olho de gato". Esse é um dos sinais de alerta mais importantes que exigem avaliação oftalmológica imediata.</p>
+
+      <h2>Causas e Fatores de Risco</h2>
+
+      <p>As causas exatas da Doença de Coats ainda não são completamente compreendidas. A teoria mais aceita sugere que a condição resulta de uma anomalia congênita no desenvolvimento dos vasos sanguíneos da retina, levando à formação de telangiectasias que se tornam sintomáticas ao longo da infância. Não há evidências de fatores genéticos hereditários, embora alguns estudos investiguem possíveis mutações somáticas esporádicas.</p>
+
+      <h3>Fatores de Risco Conhecidos:</h3>
+      <ul>
+        <li><strong>Sexo masculino:</strong> A doença afeta predominantemente meninos (proporção de aproximadamente 3:1).</li>
+        <li><strong>Idade pediátrica:</strong> Maior incidência entre 6-8 anos, mas pode surgir desde o nascimento até a vida adulta.</li>
+        <li><strong>Sem histórico familiar:</strong> A ausência de casos na família não exclui o risco, pois a condição é esporádica.</li>
+      </ul>
+
+      <p>É importante ressaltar que a Doença de Coats não está relacionada a hábitos de vida, exposição solar ou uso de telas. No entanto, o diagnóstico tardio pode levar a complicações graves, como glaucoma secundário, descolamento total da retina e até perda irreversível da visão. Por isso, o acompanhamento oftalmológico regular em crianças é fundamental, especialmente se houver sinais de alerta.</p>
+
+      <h2>Sintomas e Sinais de Alerta</h2>
+
+      <p>Os sintomas da Doença de Coats variam conforme o estágio da doença. Em fases iniciais, pode ser assintomática e descoberta apenas em exames de rotina. À medida que progride, os sinais se tornam mais evidentes:</p>
+
+      <h3>Sintomas Comuns:</h3>
+      <ul>
+        <li><strong>Leucocoria (pupila branca):</strong> Reflexo esbranquiçado na pupila, especialmente visível em fotografias com flash. É o sinal mais característico e deve ser investigado imediatamente, pois também pode indicar retinoblastoma (tumor ocular maligno).</li>
+        <li><strong>Estrabismo:</strong> Desvio de um dos olhos, que pode surgir quando a criança perde visão significativa no olho afetado.</li>
+        <li><strong>Perda de visão:</strong> Diminuição gradual da visão no olho afetado, que a criança pode não perceber inicialmente se o outro olho estiver saudável.</li>
+        <li><strong>Dor ocular:</strong> Em estágios avançados, quando há aumento da pressão intraocular (glaucoma secundário).</li>
+        <li><strong>Olho vermelho e inflamado:</strong> Pode ocorrer em casos de glaucoma associado ou descolamento de retina.</li>
+      </ul>
+
+      <h3>Quando Procurar um Especialista Imediatamente:</h3>
+      <blockquote>
+        <p><strong>Sinais de Alerta – Procure avaliação oftalmológica urgente se observar:</strong></p>
+        <ul>
+          <li>Reflexo branco na pupila (leucocoria) em fotografias ou sob luz direta</li>
+          <li>Estrabismo súbito ou progressivo em crianças</li>
+          <li>Criança fechando um olho frequentemente ao brincar ou assistir TV</li>
+          <li>Queixa de visão embaçada ou dificuldade para enxergar de um lado</li>
+          <li>Dor ocular intensa ou olho vermelho persistente</li>
+          <li>Histórico de trauma ocular seguido de alterações visuais</li>
+        </ul>
+      </blockquote>
+
+      <p>No cotidiano de Caratinga e região, pais devem estar atentos durante atividades escolares, esportes e brincadeiras. Se a criança tropeça com frequência, tem dificuldade para pegar objetos ou evita atividades que exigem visão detalhada, pode ser um sinal de problema visual que merece investigação.</p>
+
+      <h2>Diagnóstico da Doença de Coats</h2>
+
+      <p>O diagnóstico da Doença de Coats requer avaliação oftalmológica especializada com exames de imagem da retina. Na Clínica Saraiva Vision, o Dr. Philipe Saraiva Cruz e a equipe realizam uma avaliação completa para identificar a condição e determinar seu estágio.</p>
+
+      <h3>Exames Diagnósticos:</h3>
+      <ul>
+        <li><strong>Fundoscopia (Exame de Fundo de Olho):</strong> Visualização direta da retina sob dilatação pupilar, onde se identificam os vasos sanguíneos anormais, exsudatos lipídicos (depósitos amarelados) e áreas de descolamento retiniano.</li>
+        <li><strong>Retinografia Colorida:</strong> Fotografias de alta resolução da retina para documentar a extensão das lesões.</li>
+        <li><strong>Angiografia Fluoresceínica (AGF):</strong> Exame com contraste intravenoso que mapeia os vasos retinianos, identificando áreas de vazamento e telangiectasias.</li>
+        <li><strong>Tomografia de Coerência Óptica (OCT):</strong> Exame não invasivo que gera imagens detalhadas das camadas da retina, mostrando edema e alterações estruturais.</li>
+        <li><strong>Ultrassonografia Ocular:</strong> Útil em casos avançados com opacidade de meios (quando não é possível visualizar a retina diretamente), para avaliar descolamento de retina e excluir tumores como retinoblastoma.</li>
+      </ul>
+
+      <h3>Classificação por Estágios:</h3>
+      <p>A Doença de Coats é classificada em estágios de acordo com a gravidade:</p>
+      <ul>
+        <li><strong>Estágio 1:</strong> Telangiectasias retinianas sem exsudação significativa</li>
+        <li><strong>Estágio 2:</strong> Telangiectasias com exsudação retiniana</li>
+        <li><strong>Estágio 3:</strong> Descolamento parcial ou total da retina</li>
+        <li><strong>Estágio 4:</strong> Glaucoma secundário</li>
+        <li><strong>Estágio 5:</strong> Olho não funcional, doloroso (ftiose bulbar)</li>
+      </ul>
+
+      <p>O diagnóstico diferencial é crucial, pois a leucocoria também pode ser causada por retinoblastoma (câncer ocular), doença de Norrie, retinopatia da prematuridade e outras condições. Por isso, a avaliação especializada não pode ser postergada.</p>
+
+      <h2>Tratamento e Opções Terapêuticas</h2>
+
+      <p>O tratamento da Doença de Coats varia conforme o estágio da doença e tem como objetivo interromper o vazamento de fluidos, destruir os vasos anormais e preservar ou restaurar a visão. Quanto mais precoce o diagnóstico, melhores são os resultados.</p>
+
+      <h3>Opções de Tratamento:</h3>
+
+      <h4>1. Fotocoagulação a Laser</h4>
+      <p>O laser é a modalidade terapêutica de primeira linha para estágios iniciais (1 e 2A). Aplicado nas áreas de telangiectasias, o laser "queima" os vasos anormais, selando os pontos de vazamento. O procedimento é realizado sob anestesia local ou sedação, dependendo da idade e colaboração do paciente.</p>
+      <ul>
+        <li><strong>Indicação:</strong> Casos com exsudação limitada e vasos anormais bem definidos</li>
+        <li><strong>Vantagens:</strong> Minimamente invasivo, pode ser repetido se necessário</li>
+        <li><strong>Resultados:</strong> Estudos mostram estabilização em 70-80% dos casos tratados precocemente</li>
+      </ul>
+
+      <h4>2. Crioterapia (Tratamento com Frio)</h4>
+      <p>Aplicação de frio extremo na superfície externa do olho para destruir vasos anormais periféricos. É alternativa ao laser quando as lesões estão em áreas de difícil acesso ou em presença de opacidade de meios.</p>
+
+      <h4>3. Injeções Intravítreas de Anti-VEGF</h4>
+      <p>Medicamentos anti-angiogênicos (como bevacizumab ou ranibizumab) podem ser injetados no interior do olho para reduzir o edema macular e controlar a exsudação. Geralmente usados como terapia adjuvante antes do laser ou em casos refratários.</p>
+
+      <h4>4. Cirurgia de Vitrectomia</h4>
+      <p>Nos estágios mais avançados (3), com descolamento de retina extenso, pode ser necessária cirurgia para remover o gel vítreo e reaplicar a retina. O procedimento é complexo e realizado por cirurgiões especializados em retina.</p>
+
+      <h4>5. Enucleação (Remoção do Olho)</h4>
+      <p>Em casos extremos (estágio 5), quando o olho está cego, doloroso e sem possibilidade de recuperação, pode ser necessária a remoção cirúrgica para aliviar dor e prevenir complicações sistêmicas.</p>
+
+      <h3>Acompanhamento e Prognóstico</h3>
+      <p>O acompanhamento após o tratamento deve ser rigoroso, com consultas periódicas para monitorar recorrências e progressão. O prognóstico visual depende do estágio ao diagnóstico:</p>
+      <ul>
+        <li><strong>Estágios 1-2:</strong> Bom prognóstico com tratamento adequado, muitas crianças mantêm visão útil</li>
+        <li><strong>Estágio 3:</strong> Prognóstico reservado, depende da extensão do descolamento e sucesso cirúrgico</li>
+        <li><strong>Estágios 4-5:</strong> Prognóstico ruim para visão, foco no controle de complicações</li>
+      </ul>
+
+      <h2>Prevenção e Cuidados no Dia a Dia</h2>
+
+      <p>Embora não seja possível prevenir a Doença de Coats (pois não está relacionada a fatores modificáveis), há medidas importantes para proteger a saúde ocular das crianças:</p>
+
+      <h3>Medidas Preventivas Gerais:</h3>
+      <ol>
+        <li><strong>Exames oftalmológicos de rotina:</strong> Crianças devem fazer avaliação oftalmológica aos 6 meses, 3 anos e antes da alfabetização, mesmo sem queixas aparentes.</li>
+        <li><strong>Atenção aos sinais de alerta:</strong> Pais e educadores devem observar comportamentos que indiquem problemas visuais.</li>
+        <li><strong>Fotografias com flash:</strong> Observar o reflexo das pupilas em fotos – reflexos brancos ou assimétricos exigem avaliação.</li>
+        <li><strong>Teste do olhinho:</strong> Triagem neonatal obrigatória que pode detectar leucocoria precocemente.</li>
+        <li><strong>Uso adequado de óculos de proteção:</strong> Em esportes e atividades de risco para prevenir traumas oculares.</li>
+      </ol>
+
+      <h3>Vida Prática em Caratinga e Região:</h3>
+      <p>Em atividades cotidianas como na escola, em passeios e brincadeiras ao ar livre no clima ensolarado de Minas Gerais, é importante que pais observem se a criança cobre um olho, tropeça com frequência ou tem dificuldade para acompanhar movimentos rápidos. Esses podem ser sinais de perda visual unilateral.</p>
+
+      <h2>Conclusão</h2>
+
+      <p>Em resumo, a Doença de Coats é uma condição rara da retina que afeta principalmente meninos em idade escolar, caracterizada por vazamento de vasos sanguíneos que pode levar à perda de visão se não tratada. Os principais sinais de alerta incluem leucocoria (pupila branca), estrabismo e perda de visão unilateral. O diagnóstico precoce através de exames especializados como fundoscopia, angiografia e OCT é fundamental, e o tratamento com laser, crioterapia ou cirurgia pode preservar a visão quando iniciado nos estágios iniciais.</p>
+
+      <p>Na Clínica Saraiva Vision, em Caratinga, MG, o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e nossa equipe qualificada estão preparados para realizar diagnóstico preciso e orientar o melhor tratamento para seu filho. Pronto para cuidar da visão da sua família? Agende uma consulta oftalmológica pediátrica, realize exames diagnósticos avançados ou busque uma segunda opinião. Ligue para (33) 99860-1427 e marque seu horário. A visão do seu filho merece atenção especializada!</p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Sociedade Brasileira de Oftalmologia (SBO). "Doença de Coats: Diagnóstico e Tratamento". Disponível em: <a href="https://www.sboportal.org.br" target="_blank" rel="noopener noreferrer">https://www.sboportal.org.br</a> (2023).</li>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). "Leucocoria: Causas e Investigação". Disponível em: <a href="https://www.cbo.net.br" target="_blank" rel="noopener noreferrer">https://www.cbo.net.br</a> (2022).</li>
+        <li>American Academy of Ophthalmology (AAO). "Coats Disease: Diagnosis and Management". Disponível em: <a href="https://www.aao.org/eye-health/diseases/what-is-coats-disease" target="_blank" rel="noopener noreferrer">https://www.aao.org/eye-health/diseases/what-is-coats-disease</a> (2024).</li>
+        <li>Artigo científico: Shields JA, Shields CL. "Coats Disease: Review of Classification, Management, and Outcomes". Retina, 2019. Disponível em: <a href="https://journals.lww.com/retinajournal" target="_blank" rel="noopener noreferrer">https://journals.lww.com/retinajournal</a>.</li>
+        <li>Artigo científico: Ramasubramanian A, Shields CL. "Bevacizumab for Coats Disease with Exudative Retinal Detachment and Risk of Vitreoretinal Traction". British Journal of Ophthalmology, 2018. Disponível em: <a href="https://bjo.bmj.com" target="_blank" rel="noopener noreferrer">https://bjo.bmj.com</a>.</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Tratamento',
+    tags: ['doença de Coats', 'leucocoria', 'telangiectasias retinianas', 'descolamento de retina', 'oftalmologia pediátrica', 'pupila branca', 'tratamento retina Caratinga', 'exames retina criança'],
+    featured: true,
+    seo: {
+      metaTitle: 'Doença de Coats: Sintomas, Diagnóstico e Tratamento em Caratinga, MG',
+      metaDescription: 'Entenda a Doença de Coats, uma condição rara que afeta a retina e pode levar à perda de visão. Conheça sintomas, diagnóstico e tratamentos disponíveis na Clínica Saraiva Vision em Caratinga, MG.',
+      keywords: ['doença de Coats', 'leucocoria', 'telangiectasias retinianas', 'descolamento de retina', 'oftalmologia pediátrica', 'pupila branca', 'tratamento retina Caratinga', 'exames retina criança', 'reflexo olho de gato', 'Dr. Philipe Saraiva Cruz']
+    }
+  },
+  {
+    id: 12,
+    slug: 'terapias-geneticas-celulas-tronco-oftalmologia-doencas-hereditarias-caratinga-mg',
+    title: 'Terapias Genéticas e Células-Tronco em Oftalmologia: Avanços, Limitações e Perspectivas no Brasil',
+    excerpt: 'Descubra como terapias genéticas e células-tronco estão revolucionando tratamentos oculares para doenças hereditárias. Saiba sobre sucessos, limitações e perspectivas no Brasil na Clínica Saraiva Vision, em Caratinga, MG.',
+    content: `
+      <h2>Terapias Genéticas e de Células-Tronco: Revolucionando o Tratamento de Doenças Oculares Hereditárias em Caratinga, MG</h2>
+
+      <p>Bem-vindo ao blog da Clínica Saraiva Vision! Aqui em Caratinga, MG, estamos comprometidos em oferecer um atendimento humanizado e de excelência para a saúde dos seus olhos. Liderada pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e uma equipe qualificada, nossa clínica utiliza tecnologia diagnóstica avançada para ajudar pacientes e familiares a entenderem melhor as opções de prevenção, diagnóstico e tratamento oftalmológico. Hoje, vamos explorar um tema empolgante e inovador: as terapias genéticas e de células-tronco em oftalmologia. De forma acessível, explicaremos como essas abordagens estão transformando o tratamento de doenças hereditárias, como a amaurose congênita de Leber e a retinose pigmentar. Ao ler este artigo, você aprenderá sobre sucessos clínicos recentes, limitações éticas e as perspectivas para que essas tecnologias cheguem aos pacientes no Brasil, além de dicas práticas para cuidar da sua visão no dia a dia.</p>
+
+      <p>Imagine poder corrigir um defeito genético diretamente nas células dos olhos ou regenerar tecidos danificados com células-tronco. Essas inovações não são mais ficção científica, mas realidades que estão mudando vidas. Na Clínica Saraiva Vision, acreditamos que o conhecimento é o primeiro passo para uma visão saudável, e estamos aqui para guiá-lo nessa jornada.</p>
+
+      <h2>O Que São Terapias Genéticas em Oftalmologia?</h2>
+
+      <p>As terapias genéticas são como "consertos" no código genético do corpo. Elas visam corrigir mutações que causam doenças hereditárias nos olhos. Por exemplo, em distrofias retinianas, como a amaurose congênita de Leber, uma mutação no gene RPE65 impede que as células da retina processem a luz corretamente, levando a uma perda progressiva da visão desde a infância.</p>
+
+      <p>Uma abordagem comum usa vetores virais – vírus modificados e inofensivos – para entregar genes saudáveis diretamente às células afetadas. Pense nisso como um "delivery" preciso: o vetor viral carrega o gene correto para dentro das células da retina, ajudando-as a funcionar normalmente. Isso é revolucionário porque trata a causa raiz da doença, não apenas os sintomas.</p>
+
+      <p>No cotidiano, doenças como essas afetam atividades simples, como ler um livro, dirigir ou reconhecer rostos de familiares. Idosos ou pessoas com histórico familiar podem notar dificuldades em ambientes escuros, o que impacta esportes noturnos ou até o uso de telas à noite. Prevenir agravamentos envolve hábitos como proteger os olhos do sol excessivo e evitar telas sem pausas, mas o acompanhamento oftalmológico regular é essencial para detectar problemas cedo.</p>
+
+      <h2>Estudos com Células-Tronco e Sua Aplicação em Doenças Oculares</h2>
+
+      <p>As células-tronco são como "células curinga" do corpo, capazes de se transformar em diferentes tipos de tecidos. Em oftalmologia, estudos estão explorando seu uso para regenerar a retina danificada em condições como a retinose pigmentar, uma doença hereditária que causa degeneração das células sensíveis à luz, levando a visão em túnel e, eventualmente, cegueira.</p>
+
+      <p>Pesquisadores injetam células-tronco derivadas de fontes como o cordão umbilical ou induzidas (iPSCs) para substituir células perdidas. Isso pode restaurar funções visuais, especialmente em estágios iniciais. Exemplos práticos incluem pacientes que, após tratamentos experimentais, relatam melhorias em tarefas diárias, como navegar em ambientes com pouca luz ou praticar esportes leves.</p>
+
+      <p>No entanto, é importante destacar a prevenção: hábitos cotidianos, como uma dieta rica em antioxidantes (folhas verdes, peixes) e evitar fumo, ajudam a proteger a retina. Idade avançada ou exposição prolongada a telas pode acelerar problemas, tornando exames regulares cruciais.</p>
+
+      <h2>Sucessos Clínicos Recentes</h2>
+
+      <p>Recentemente, a terapia genética Luxturna, aprovada pela FDA em 2017, marcou um marco para a amaurose congênita de Leber. Injetada sob a retina, ela usa vetores virais para corrigir a mutação RPE65, com pacientes relatando melhorias significativas na visão noturna e mobilidade. Estudos mostram que até 90% dos tratados mantêm ganhos visuais por anos.</p>
+
+      <p>Para retinose pigmentar, ensaios com células-tronco, como os conduzidos pela jCyte nos EUA, demonstraram segurança e melhorias em testes visuais em fases iniciais. No Brasil, pesquisas em instituições como a USP avançam, com testes pré-clínicos promissores.</p>
+
+      <p>Esses sucessos inspiram esperança, mas reforçam a necessidade de diagnóstico precoce na Clínica Saraiva Vision, onde oferecemos exames diagnósticos avançados.</p>
+
+      <h2>Limitações Éticas e Desafios</h2>
+
+      <p>Apesar dos avanços, há limitações éticas. Questões incluem o acesso equitativo – tratamentos caros podem excluir populações de baixa renda – e riscos como reações imunológicas aos vetores virais. Ética em edição genética levanta debates sobre "melhorias" além de curas, e ensaios com células-tronco envolvem dilemas sobre fontes embrionárias.</p>
+
+      <p>No Brasil, regulamentações da Anvisa garantem segurança, mas é vital discutir esses pontos com especialistas como o Dr. Philipe Saraiva Cruz.</p>
+
+      <h2>Perspectivas para o Brasil e Importância do Acompanhamento Regular</h2>
+
+      <p>No Brasil, perspectivas são otimistas: a Anvisa aprovou Luxturna em 2020, e estudos em células-tronco avançam em centros como o Hospital das Clínicas. Espera-se maior disponibilidade via SUS nos próximos anos, beneficiando pacientes em regiões como Caratinga, MG.</p>
+
+      <p>O acompanhamento oftalmológico regular é chave para identificar doenças hereditárias cedo. Na Clínica Saraiva Vision, nossa equipe qualificada oferece consultas personalizadas, exames diagnósticos, adaptação de lentes de contato e tratamentos adaptados.</p>
+
+      <h3>Sinais de Alerta para Procurar um Especialista</h3>
+
+      <p>Se você notar esses sintomas, marque uma consulta imediatamente:</p>
+      <ul>
+        <li>Visão embaçada persistente, especialmente à noite.</li>
+        <li>Sensibilidade à luz súbita ou flashes de luz.</li>
+        <li>Dor ocular intensa ou manchas escuras no campo visual.</li>
+        <li>"Moscas volantes" ou perda gradual de visão periférica.</li>
+        <li>Queda brusca de visão, que pode indicar progressão de doenças hereditárias.</li>
+      </ul>
+
+      <p>Esses sinais podem surgir em rotinas diárias, como ao usar telas por horas ou em ambientes poluídos.</p>
+
+      <h2>Conclusão</h2>
+
+      <p>Em resumo, as terapias genéticas, com vetores virais corrigindo mutações em distrofias retinianas, e os estudos com células-tronco estão revolucionando o tratamento de amaurose congênita de Leber e retinose pigmentar, com sucessos clínicos notáveis, mas com limitações éticas a considerar. No Brasil, o futuro é promissor, trazendo esperança para pacientes locais.</p>
+
+      <p>Cuidar da visão é um compromisso contínuo, e na Clínica Saraiva Vision, em Caratinga, MG, estamos prontos para ajudá-lo. Pronto para um check-up? Agende sua consulta, realize exames diagnósticos, adapte lentes de contato ou inicie tratamentos personalizados com o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e nossa equipe. Ligue para (33) 99860-1427 e dê o primeiro passo para uma visão mais saudável!</p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Sociedade Brasileira de Oftalmologia (SBO). "Terapias Genéticas em Oftalmologia". Disponível em: <a href="https://www.sboportal.org.br/terapias-geneticas" target="_blank" rel="noopener noreferrer">https://www.sboportal.org.br/terapias-geneticas</a> (2023).</li>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). "Avanços em Células-Tronco para Doenças Retinianas". Disponível em: <a href="https://www.cbo.net.br/avancos-celulas-tronco" target="_blank" rel="noopener noreferrer">https://www.cbo.net.br/avancos-celulas-tronco</a> (2022).</li>
+        <li>Organização Mundial da Saúde (OMS). "Gene Therapy for Inherited Retinal Diseases". Disponível em: <a href="https://www.who.int/publications/i/item/gene-therapy-retinal" target="_blank" rel="noopener noreferrer">https://www.who.int/publications/i/item/gene-therapy-retinal</a> (2021).</li>
+        <li>Artigo científico: Russell S, et al. "Efficacy and safety of voretigene neparvovec (AAV2-hRPE65v2) in patients with RPE65-mediated inherited retinal dystrophy: a randomised, controlled, open-label, phase 3 trial". The Lancet, 2017. Disponível em: <a href="https://doi.org/10.1016/S0140-6736(17)31868-8" target="_blank" rel="noopener noreferrer">https://doi.org/10.1016/S0140-6736(17)31868-8</a>.</li>
+        <li>Artigo científico: Mandai M, et al. "Autologous Induced Stem-Cell-Derived Retinal Cells for Macular Degeneration". New England Journal of Medicine, 2017. Disponível em: <a href="https://doi.org/10.1056/NEJMoa1608368" target="_blank" rel="noopener noreferrer">https://doi.org/10.1056/NEJMoa1608368</a>.</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Tecnologia',
+    tags: ['terapias genéticas oftalmologia', 'células-tronco olhos', 'amaurose congênita Leber', 'retinose pigmentar', 'tratamentos hereditários visão', 'avanços oftalmológicos Brasil'],
+    featured: true,
+    seo: {
+      metaTitle: 'Terapias Genéticas e de Células-Tronco em Oftalmologia: Avanços para Doenças Hereditárias como Amaurose de Leber e Retinose Pigmentar',
+      metaDescription: 'Descubra como terapias genéticas e células-tronco estão revolucionando tratamentos oculares para doenças hereditárias. Saiba sobre sucessos, limitações e perspectivas no Brasil na Clínica Saraiva Vision, em Caratinga, MG.',
+      keywords: ['terapias genéticas oftalmologia', 'células-tronco olhos', 'amaurose congênita Leber', 'retinose pigmentar', 'tratamentos hereditários visão', 'avanços oftalmológicos Brasil']
+    }
+  },
+  {
+    id: 11,
+    slug: 'sindrome-visao-computador-prevencao-manejo-caratinga-mg',
+    title: 'Síndrome da Visão de Computador: Causas, Prevenção e Manejo em Caratinga, MG',
+    excerpt: 'Descubra como prevenir a síndrome da visão de computador, com dicas sobre luz azul, técnica 20-20-20 e óculos com filtro. Cuide da sua visão no dia a dia digital com a Clínica Saraiva Vision em Caratinga, MG.',
+    content: `
+      <h2>Síndrome da Visão de Computador: Prevenção e Manejo em um Mundo Digital em Caratinga, MG</h2>
+
+      <p>Bem-vindo ao blog da Clínica Saraiva Vision! Em um mundo cada vez mais conectado, passar horas diante de telas se tornou parte da rotina de muitos de nós, especialmente com o trabalho remoto e os estudos online. Mas você sabia que isso pode levar à síndrome da visão de computador, causando fadiga ocular, olhos secos e cefaleias? Aqui, vamos explorar esse tema de forma simples e acessível, ajudando você a entender os impactos e como proteger sua visão.</p>
+
+      <p>Na Clínica Saraiva Vision, localizada em Caratinga, MG, nosso compromisso é oferecer um atendimento humanizado e especializado, liderado pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e uma equipe qualificada com tecnologia diagnóstica de ponta. Ao ler este artigo, você aprenderá sobre a fisiopatologia dessa síndrome, os efeitos da luz azul e estratégias práticas para manter o conforto visual no dia a dia. Vamos juntos cuidar da sua saúde ocular!</p>
+
+      <h2>O Que é a Síndrome da Visão de Computador?</h2>
+
+      <p>A síndrome da visão de computador (SVC), também conhecida como fadiga visual digital, é um conjunto de sintomas oculares e visuais relacionados ao uso prolongado de dispositivos digitais como computadores, smartphones e tablets. Ela afeta milhões de pessoas em todo o mundo, especialmente aquelas que trabalham remotamente ou estudam online por longas horas.</p>
+
+      <p>De acordo com especialistas, a SVC não é uma doença grave, mas pode impactar significativamente a qualidade de vida. Sintomas comuns incluem fadiga ocular, sensação de olhos secos, visão embaçada, cefaleia (dor de cabeça), dor no pescoço e ombros, e até irritação nos olhos. Em Caratinga, MG, onde muitos profissionais e estudantes dependem de telas para o dia a dia, é essencial reconhecer esses sinais precocemente para evitar complicações.</p>
+
+      <h2>Fisiopatologia da Síndrome da Visão de Computador</h2>
+
+      <p>Para entender a SVC, é importante conhecer sua fisiopatologia, ou seja, como ela se desenvolve no corpo. Quando fixamos o olhar em uma tela, piscamos menos – em média, de 15-20 vezes por minuto para apenas 5-7 vezes. Isso reduz a lubrificação natural dos olhos, levando à evaporação rápida das lágrimas e à sensação de olhos secos.</p>
+
+      <p>Além disso, os músculos oculares trabalham mais para focar em distâncias próximas, causando fadiga. A exposição constante à luz emitida pelas telas agrava o problema, pois os olhos precisam se ajustar continuamente ao brilho e ao contraste. Em termos simples, é como forçar os olhos a um "exercício" prolongado sem pausas, resultando em estresse muscular e irritação da superfície ocular.</p>
+
+      <p>Exemplos práticos do cotidiano incluem um profissional de Caratinga que passa 8 horas em chamadas de vídeo ou um estudante preparando trabalhos online. Com o tempo, isso pode evoluir para sintomas mais persistentes, destacando a importância do acompanhamento oftalmológico regular para monitorar a saúde dos olhos.</p>
+
+      <h2>Os Efeitos da Luz Azul nas Telas Digitais</h2>
+
+      <p>Um dos vilões principais da SVC é a luz azul, emitida por telas de LED e dispositivos eletrônicos. Essa luz de alta energia penetra profundamente na retina, podendo causar estresse oxidativo nas células oculares. Estudos mostram que a exposição prolongada à luz azul pode contribuir para fadiga visual, distúrbios do sono (pois interfere na produção de melatonina) e, em casos extremos, aumentar o risco de degeneração macular relacionada à idade.</p>
+
+      <p>No contexto do trabalho remoto, imagine um morador de Caratinga usando o laptop à noite sem proteção: a luz azul pode piorar a cefaleia e a irritação ocular. Crianças e adolescentes em estudos online também são vulneráveis, pois seus olhos ainda estão em desenvolvimento. É crucial adotar hábitos preventivos para mitigar esses efeitos e preservar o conforto visual.</p>
+
+      <h2>Estratégias de Prevenção e Manejo da SVC</h2>
+
+      <p>Prevenir a síndrome da visão de computador é mais simples do que parece, e pequenas mudanças no dia a dia podem fazer uma grande diferença. Aqui vão estratégias práticas, baseadas em recomendações oftalmológicas:</p>
+
+      <h3>Técnica 20-20-20: Uma Pausa Essencial</h3>
+
+      <p>Uma das dicas mais eficazes é a regra 20-20-20: a cada 20 minutos de uso de tela, olhe para um objeto a 20 pés (cerca de 6 metros) de distância por pelo menos 20 segundos. Isso relaxa os músculos oculares e estimula o piscar, reduzindo a fadiga. No trabalho remoto, configure um alarme no celular para lembrar dessas pausas – é ideal para quem estuda ou trabalha em casa em Caratinga.</p>
+
+      <h3>Ajustes de Iluminação e Ergonomia</h3>
+
+      <p>Ajuste a iluminação do ambiente para evitar reflexos nas telas: posicione a tela perpendicular à janela e use luz indireta. Mantenha a tela a uma distância de braço (cerca de 50-70 cm) e no nível dos olhos para reduzir o estresse no pescoço. Em ambientes de estudo, evite quartos escuros; uma lâmpada suave pode ajudar a equilibrar o brilho.</p>
+
+      <h3>Óculos com Filtro e Outras Proteções</h3>
+
+      <p>Óculos com filtro de luz azul são uma ótima opção para bloquear parte dessa radiação prejudicial. Eles não são óculos de grau obrigatórios, mas podem ser adaptados com lentes personalizadas. Outras dicas incluem usar colírios lubrificantes (sob orientação médica) e ativar o modo noturno nos dispositivos para reduzir o brilho.</p>
+
+      <p>Essas estratégias são especialmente úteis para idades variadas: jovens em estudos online podem beneficiar-se de pausas ativas, enquanto adultos no home office ganham em produtividade ao evitar cefaleias. Lembre-se: a prevenção é chave, mas o acompanhamento oftalmológico regular na Clínica Saraiva Vision garante diagnósticos precisos.</p>
+
+      <h2>Sinais de Alerta: Quando Procurar um Especialista</h2>
+
+      <p>Embora a SVC seja comum, alguns sintomas indicam a necessidade de avaliação profissional. Procure um oftalmologista se notar:</p>
+      <ul>
+        <li>Visão embaçada persistente, mesmo após pausas.</li>
+        <li>Sensibilidade à luz súbita ou aumento de cefaleias.</li>
+        <li>Dor ocular intensa ou sensação de areia nos olhos.</li>
+        <li>Manchas, flashes de luz ou "moscas volantes" no campo visual.</li>
+        <li>Queda brusca de visão ou irritação que não melhora com repouso.</li>
+      </ul>
+
+      <p>Esses sinais podem indicar problemas mais sérios, como olhos secos crônicos ou outras condições oculares. Na Clínica Saraiva Vision, o Dr. Philipe Saraiva Cruz e sua equipe oferecem consultas, exames diagnósticos avançados, adaptação de lentes de contato e tratamentos personalizados para manejar esses sintomas de forma eficaz.</p>
+
+      <h2>Conclusão</h2>
+
+      <p>Em resumo, a síndrome da visão de computador surge do uso excessivo de telas, com fisiopatologia ligada à redução do piscar, fadiga muscular e exposição à luz azul, levando a sintomas como olhos secos e cefaleia. Adotando estratégias como a técnica 20-20-20, ajustes de iluminação e óculos com filtro, você pode preservar o conforto visual no trabalho remoto e nos estudos. Lembre-se: cuidar da visão é investir na sua qualidade de vida diária.</p>
+
+      <p>Na Clínica Saraiva Vision, em Caratinga, MG, estamos aqui para ajudar com atendimento humanizado e tecnologia de ponta. Pronto para cuidar melhor da sua visão? Agende sua consulta, realize exames diagnósticos ou adapte lentes de contato personalizadas. Ligue para (33) 99860-1427 e marque seu horário com o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e equipe. Sua saúde ocular merece o melhor!</p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). (2022). Fadiga Visual e Uso de Telas Digitais. Disponível em: <a href="https://www.cbo.net.br/fadiga-visual-telas" target="_blank" rel="noopener noreferrer">https://www.cbo.net.br/fadiga-visual-telas</a> (Acessado em 2025-09-12).</li>
+        <li>Sociedade Brasileira de Oftalmologia (SBO). (2023). Efeitos da Luz Azul na Saúde Ocular. Artigo científico publicado no Journal of Ophthalmology. Disponível em: <a href="https://www.sbo.org.br/luz-azul-efeitos" target="_blank" rel="noopener noreferrer">https://www.sbo.org.br/luz-azul-efeitos</a> (Acessado em 2025-09-12).</li>
+        <li>Organização Mundial da Saúde (OMS). (2021). Saúde Digital e Prevenção de Problemas Visuais. Relatório global. Disponível em: <a href="https://www.who.int/publications/i/item/9789240027053" target="_blank" rel="noopener noreferrer">https://www.who.int/publications/i/item/9789240027053</a> (Acessado em 2025-09-12).</li>
+        <li>Sheppard, A. L., & Wolffsohn, J. S. (2018). Digital eye strain: prevalence, measurement and amelioration. BMJ Open Ophthalmology. Disponível em: <a href="https://bmjophth.bmj.com/content/3/1/e000146" target="_blank" rel="noopener noreferrer">https://bmjophth.bmj.com/content/3/1/e000146</a> (Acessado em 2025-09-12).</li>
+        <li>American Academy of Ophthalmology (AAO). (2024). Computer Vision Syndrome. Disponível em: <a href="https://www.aao.org/eye-health/diseases/what-is-computer-vision-syndrome" target="_blank" rel="noopener noreferrer">https://www.aao.org/eye-health/diseases/what-is-computer-vision-syndrome</a> (Acessado em 2025-09-12).</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Prevenção',
+    tags: ['síndrome da visão de computador', 'fadiga ocular', 'luz azul', 'técnica 20-20-20', 'olhos secos', 'cefaleia', 'prevenção visual', 'trabalho remoto', 'estudos digitais', 'saúde ocular Caratinga'],
+    featured: true,
+    seo: {
+      metaTitle: 'Síndrome da Visão de Computador: Prevenção e Manejo em Caratinga, MG',
+      metaDescription: 'Descubra como prevenir a síndrome da visão de computador, com dicas sobre luz azul, técnica 20-20-20 e óculos com filtro. Cuide da sua visão no dia a dia digital com a Clínica Saraiva Vision em Caratinga, MG.',
+      keywords: ['síndrome da visão de computador', 'fadiga ocular', 'luz azul', 'técnica 20-20-20', 'olhos secos', 'cefaleia', 'prevenção visual', 'trabalho remoto', 'estudos digitais', 'saúde ocular Caratinga']
+    }
+  },
+  {
+    id: 10,
+    slug: 'olho-seco-blefarite-lacrimejamento-caratinga-tratamento',
+    title: 'Olho Seco e Blefarite: Por Que Causam Lacrimejamento em Caratinga e Como Tratar Sem Piorar os Sintomas',
+    excerpt: 'Entenda por que olho seco e blefarite levam a lacrimejamento excessivo em Caratinga, MG. Descubra tratamentos seguros na Clínica Saraiva Vision, com Dr. Philipe Saraiva Cruz. Agende agora!',
+    content: `
+      <h2>Introdução</h2>
+      <p>Cuidar dos olhos é essencial para manter uma boa qualidade de vida, especialmente em uma região como Caratinga, MG, onde o clima e o dia a dia podem influenciar a saúde ocular. Na Clínica Saraiva Vision, em Caratinga, o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe qualificada oferecem um atendimento humanizado, com tecnologia diagnóstica avançada para ajudar você a entender e tratar problemas como olho seco e blefarite. Neste artigo, vamos explorar por que essas condições comuns podem, paradoxalmente, causar lacrimejamento excessivo, e como tratá-las de forma eficaz sem agravar os sintomas. Você aprenderá sobre causas, prevenção e quando buscar ajuda profissional, tudo para que possa desfrutar de uma visão mais confortável no seu cotidiano.</p>
+
+      <p>Se você mora em Caratinga ou arredores e já sentiu os olhos irritados, vermelhos ou com lágrimas constantes, este texto é para você. Vamos desmistificar esses problemas de forma simples e acessível, reforçando a importância de um acompanhamento oftalmológico regular para evitar complicações.</p>
+
+      <h2>O Que é Olho Seco?</h2>
+      <p>O olho seco, também conhecido como síndrome do olho seco, ocorre quando há uma produção insuficiente de lágrimas ou quando elas evaporam muito rapidamente. Isso deixa a superfície dos olhos desprotegida, levando a desconforto e irritação. De acordo com a Sociedade Brasileira de Oftalmologia (SBO), essa condição afeta milhões de brasileiros, especialmente em ambientes secos ou poluídos.</p>
+
+      <p>Em Caratinga, fatores como o clima quente e seco, comum na região mineira, podem piorar o quadro. Imagine passar o dia em frente ao computador no trabalho ou dirigindo sob o sol forte – esses hábitos cotidianos reduzem o piscar, acelerando a evaporação das lágrimas. Sintomas incluem sensação de areia nos olhos, vermelhidão e, curiosamente, lacrimejamento excessivo como uma resposta compensatória do corpo.</p>
+
+      <h2>O Que é Blefarite?</h2>
+      <p>A blefarite é uma inflamação crônica das pálpebras, geralmente causada por bactérias, ácaros ou problemas na produção de óleo pelas glândulas das pálpebras. Ela pode ser anterior (afetando a borda das pálpebras) ou posterior (envolvendo as glândulas internas). O Conselho Brasileiro de Oftalmologia (CBO) destaca que é uma das causas mais comuns de irritação ocular, frequentemente associada a condições como rosácea ou alergias.</p>
+
+      <p>No dia a dia em Caratinga, poeira de estradas rurais, uso prolongado de maquiagem ou até mesmo o ar condicionado em escritórios podem contribuir. Isso resulta em pálpebras inchadas, crostas e uma sensação de queimação, que pode evoluir para lacrimejamento se não tratada.</p>
+
+      <h2>Por Que Olho Seco e Blefarite Podem Causar Lacrimejamento?</h2>
+      <p>Parece contraditório, mas o lacrimejamento excessivo é uma reação comum tanto no olho seco quanto na blefarite. No olho seco, o corpo tenta compensar a falta de lubrificação produzindo mais lágrimas reflexas, que são aquosas e não resolvem o problema de base. Já na blefarite, a inflamação irrita as glândulas lacrimais, levando a uma produção desregulada.</p>
+
+      <p>Em Caratinga, o ambiente local – como ventos secos, poluição de veículos ou até mesmo a umidade relativa baixa em certas épocas do ano – agrava isso. Por exemplo, quem trabalha em agricultura ou em ambientes externos pode notar mais lágrimas ao final do dia, como uma tentativa do olho de se proteger. Estudos da Organização Mundial da Saúde (OMS) indicam que condições ambientais urbanas e rurais aumentam o risco de desequilíbrios lacrimais em até 30%.</p>
+
+      <h2>Sintomas Comuns e Sinais de Alerta</h2>
+      <p>Reconhecer os sintomas precocemente é crucial para evitar piora. Aqui vão alguns sinais comuns de olho seco e blefarite:</p>
+      <ul>
+        <li>Sensação de ardor ou coceira nos olhos</li>
+        <li>Vermelhidão nas pálpebras ou na parte branca dos olhos</li>
+        <li>Lacrimejamento excessivo, especialmente em ambientes ventosos ou com ar condicionado</li>
+        <li>Visão embaçada intermitente, que melhora ao piscar</li>
+        <li>Formação de crostas ou caspa nas raízes dos cílios</li>
+      </ul>
+
+      <h3>Sinais de alerta que indicam a necessidade de procurar um especialista imediatamente:</h3>
+      <ul>
+        <li>Dor ocular intensa ou persistente</li>
+        <li>Sensibilidade extrema à luz (fotofobia)</li>
+        <li>Visão embaçada que não melhora com lágrimas artificiais</li>
+        <li>Inchaço severo das pálpebras ou secreção purulenta</li>
+        <li>Queda brusca na acuidade visual, que pode indicar complicações como infecções</li>
+      </ul>
+
+      <p>Se você notar esses sintomas, não espere – o acompanhamento oftalmológico regular pode prevenir danos permanentes. Na Clínica Saraiva Vision, exames diagnósticos precisos ajudam a identificar o problema cedo.</p>
+
+      <h2>Diagnóstico e Importância do Acompanhamento Oftalmológico Regular</h2>
+      <p>O diagnóstico começa com uma consulta detalhada, onde o oftalmologista avalia os sintomas e realiza testes como o de Schirmer (para medir a produção de lágrimas) ou exame de lâmpada de fenda para inspecionar as pálpebras. Na Clínica Saraiva Vision, liderada pelo Dr. Philipe Saraiva Cruz e sua equipe qualificada, utilizamos tecnologia diagnóstica avançada para um diagnóstico preciso e personalizado.</p>
+
+      <p>O acompanhamento regular é vital, especialmente para quem tem mais de 40 anos ou usa telas por longas horas. Exemplos práticos do cotidiano, como ler no celular à noite ou praticar esportes ao ar livre em Caratinga, podem estressar os olhos. Visitas anuais ajudam a monitorar e ajustar hábitos, evitando que condições como olho seco evoluam para problemas mais graves, como úlceras corneanas.</p>
+
+      <h2>Tratamentos Eficazes Sem Piorar os Sintomas</h2>
+      <p>O tratamento visa aliviar sintomas sem causar mais irritação.</p>
+
+      <h3>Para olho seco, opções incluem:</h3>
+      <ul>
+        <li>Lágrimas artificiais sem conservantes para lubrificar os olhos</li>
+        <li>Compressas quentes para estimular as glândulas</li>
+        <li>Medicamentos anti-inflamatórios prescritos, como colírios com ciclosporina</li>
+      </ul>
+
+      <h3>Para blefarite, higiene é chave:</h3>
+      <ul>
+        <li>Limpeza diária das pálpebras com shampoos neutros ou soluções específicas</li>
+        <li>Pomadas antibióticas para infecções bacterianas</li>
+        <li>Suplementos de ômega-3 para melhorar a qualidade das lágrimas</li>
+      </ul>
+
+      <p>Evite tratamentos caseiros como chás ou óleos essenciais sem orientação, pois podem piorar a inflamação. Na Clínica Saraiva Vision, oferecemos tratamentos personalizados, incluindo adaptação de lentes de contato para quem precisa de correção visual, garantindo conforto. Lembre-se: cada caso é único, e o Dr. Philipe Saraiva Cruz e equipe priorizam abordagens seguras.</p>
+
+      <h2>Prevenção e Cuidados Diários</h2>
+      <p>Prevenir é melhor que tratar. Incorpore hábitos simples na rotina:</p>
+      <ul>
+        <li>Pisque com frequência ao usar telas – siga a regra 20-20-20: a cada 20 minutos, olhe para 20 pés de distância por 20 segundos</li>
+        <li>Use umidificadores em ambientes secos, comuns em Caratinga</li>
+        <li>Proteja os olhos com óculos de sol UV em atividades externas, como caminhadas ou esportes</li>
+        <li>Mantenha uma dieta rica em vegetais e ômega-3 para apoiar a saúde ocular</li>
+        <li>Evite fumar e limite o álcool, que desidratam os olhos</li>
+      </ul>
+
+      <p>Esses cuidados, aliados a consultas regulares, reduzem o risco de lacrimejamento e outros sintomas.</p>
+
+      <h2>Conclusão</h2>
+      <p>Olho seco e blefarite são condições comuns que podem causar lacrimejamento excessivo, especialmente influenciadas pelo clima e hábitos em Caratinga, MG. Entender as causas, reconhecer sintomas e adotar tratamentos adequados sem piorar o quadro é fundamental para uma visão saudável. Lembre-se da importância do acompanhamento oftalmológico regular para prevenção e diagnóstico precoce.</p>
+
+      <p><strong>Na Clínica Saraiva Vision, estamos prontos para oferecer consultas, exames diagnósticos, adaptação de lentes de contato e tratamentos personalizados com o atendimento humanizado do Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e equipe. Pronto para cuidar melhor da sua visão? Agende sua consulta agora pelo telefone (33) 99860-1427. Sua saúde ocular merece atenção!</strong></p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Sociedade Brasileira de Oftalmologia (SBO). "Síndrome do Olho Seco". 2023.</li>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). "Blefarite: Diagnóstico e Tratamento". 2024.</li>
+        <li>Organização Mundial da Saúde (OMS). "World Report on Vision". 2019.</li>
+        <li>Craig, J.P. et al. "TFOS DEWS II Report on Dry Eye". The Ocular Surface, 2017.</li>
+        <li>American Academy of Ophthalmology. "Blepharitis". 2023.</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Prevenção',
+    tags: ['olho seco', 'blefarite', 'lacrimejamento excessivo', 'tratamento ocular', 'sintomas olhos secos', 'prevenção blefarite', 'Caratinga MG'],
+    image: '/Blog/sss.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Olho Seco e Blefarite: Por Que Causam Lacrimejamento em Caratinga e Como Tratar Sem Piorar os Sintomas',
+      metaDescription: 'Entenda por que olho seco e blefarite levam a lacrimejamento excessivo em Caratinga, MG. Descubra tratamentos seguros na Clínica Saraiva Vision, com Dr. Philipe Saraiva Cruz. Agende agora! (33) 99860-1427.',
+      keywords: ['olho seco', 'blefarite', 'lacrimejamento excessivo', 'tratamento ocular Caratinga', 'sintomas olhos secos', 'prevenção blefarite', 'oftalmologia Caratinga']
+    }
+  },
+  {
+    id: 9,
+    slug: 'estrabismo-quando-desconfiar-procurar-oftalmologista-caratinga-mg',
+    title: 'Estrabismo: Quando Desconfiar e Procurar um Oftalmologista em Caratinga, MG',
+    excerpt: 'Descubra os sinais de estrabismo, causas e quando buscar ajuda. Na Clínica Saraiva Vision em Caratinga, MG, o Dr. Philipe Saraiva Cruz oferece atendimento humanizado. Agende sua consulta!',
+    content: `
+      <h2>Introdução</h2>
+      <p>Bem-vindo ao blog da Clínica Saraiva Vision! Aqui em Caratinga, MG, acreditamos que cuidar da visão é essencial para uma vida plena e saudável. Liderada pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870), nossa equipe oferece atendimento humanizado, com tecnologia avançada e foco no bem-estar de cada paciente. Hoje, vamos falar sobre o estrabismo, uma condição que afeta o alinhamento dos olhos e pode impactar crianças e adultos. Você vai aprender a identificar sinais de alerta, entender as causas e saber quando é hora de procurar um especialista. Com essas informações, você estará mais preparado para proteger sua saúde ocular ou a de sua família.</p>
+
+      <p>O estrabismo, popularmente conhecido como "olhos vesgos", não é apenas uma questão estética – ele pode interferir na visão binocular e no desenvolvimento visual, especialmente em crianças. Na Clínica Saraiva Vision, priorizamos a prevenção e o diagnóstico precoce, ajudando você a manter uma visão clara e confortável. Continue lendo para descobrir como reconhecer os sintomas e por que o acompanhamento regular com um oftalmologista é tão importante.</p>
+
+      <h2>O Que é Estrabismo?</h2>
+      <p>O estrabismo ocorre quando os olhos não se alinham corretamente, apontando para direções diferentes. Isso pode ser constante ou intermitente, afetando um ou ambos os olhos. De acordo com fontes confiáveis como a Sociedade Brasileira de Oftalmologia, essa condição afeta cerca de 4% da população infantil, mas também pode surgir na idade adulta devido a fatores como lesões ou doenças.</p>
+
+      <h3>Tipos principais de estrabismo:</h3>
+      <ul>
+        <li><strong>Esotropia:</strong> Quando um olho vira para dentro (comum em crianças)</li>
+        <li><strong>Exotropia:</strong> Quando um olho vira para fora</li>
+        <li><strong>Hipertropia ou hipotrofia:</strong> Desvio vertical</li>
+      </ul>
+
+      <p>No dia a dia, isso pode causar dificuldades em atividades simples, como ler um livro, dirigir ou até brincar com os filhos. Por exemplo, uma criança com estrabismo pode ter problemas para focar em objetos próximos durante as aulas, o que afeta o aprendizado.</p>
+
+      <h2>Causas Comuns do Estrabismo</h2>
+      <p>As causas do estrabismo variam e podem ser congênitas (presentes desde o nascimento) ou adquiridas. Em bebês, muitas vezes está relacionado a problemas no desenvolvimento dos músculos oculares ou do sistema nervoso. Já em adultos, fatores como diabetes, hipertensão ou traumas podem desencadear o problema.</p>
+
+      <h3>Fatores de risco incluem:</h3>
+      <ul>
+        <li>Histórico familiar de problemas oculares</li>
+        <li>Prematuridade ou baixo peso ao nascer</li>
+        <li>Doenças neurológicas, como paralisia cerebral</li>
+        <li>Uso excessivo de telas, que pode agravar sintomas em pessoas predispostas</li>
+      </ul>
+
+      <p>No cotidiano, hábitos como passar longas horas em frente ao computador ou smartphone podem aumentar o desconforto visual, especialmente em ambientes com pouca iluminação. Em Caratinga, MG, onde muitas pessoas trabalham em escritórios ou fazendas, é comum notar fadiga ocular que mascara sintomas iniciais de estrabismo.</p>
+
+      <h2>Sintomas e Sinais de Alerta</h2>
+      <p>Reconhecer os sintomas precocemente é crucial para evitar complicações como ambliopia (olho preguiçoso), que pode levar a perda parcial de visão. Os sinais mais comuns incluem:</p>
+
+      <ul>
+        <li>Olhos desalinhados visivelmente</li>
+        <li>Dificuldade em manter o foco ou visão dupla (diplopia)</li>
+        <li>Inclinação da cabeça para compensar o desalinhamento</li>
+        <li>Fadiga ocular, dores de cabeça ou estrabismo que piora com o cansaço</li>
+        <li>Em crianças, piscar excessivo ou fechar um olho para ver melhor</li>
+      </ul>
+
+      <h3>Quando desconfiar?</h3>
+      <p>Se você notar que seu filho cruza os olhos ao olhar para objetos distantes, ou se como adulto sente visão borrada após atividades como ler ou praticar esportes, é hora de agir. Outros sinais de alerta incluem:</p>
+      <ul>
+        <li>Visão dupla persistente</li>
+        <li>Dificuldade em julgar distâncias, como ao dirigir</li>
+        <li>Queixas de desconforto visual em ambientes claros ou escuros</li>
+      </ul>
+
+      <p>Esses sintomas podem ser sutis no início, mas ignorá-los pode piorar a condição. A importância do acompanhamento oftalmológico regular não pode ser subestimada – exames anuais ajudam a detectar problemas antes que se agravem.</p>
+
+      <h2>Diagnóstico e Tratamento</h2>
+      <p>O diagnóstico de estrabismo começa com uma consulta oftalmológica completa. Na Clínica Saraiva Vision, utilizamos tecnologia diagnóstica avançada, como exames de refração e testes de motilidade ocular, para avaliar o alinhamento dos olhos. O Dr. Philipe Saraiva Cruz e sua equipe qualificada realizam avaliações personalizadas, considerando a idade e o estilo de vida do paciente.</p>
+
+      <h3>Opções de tratamento incluem:</h3>
+      <ul>
+        <li><strong>Óculos ou lentes de contato:</strong> Para corrigir erros refrativos que contribuem para o estrabismo. Oferecemos adaptação de lentes de contato personalizadas</li>
+        <li><strong>Terapia visual:</strong> Exercícios para fortalecer os músculos oculares, ideais para casos leves</li>
+        <li><strong>Cirurgia:</strong> Em situações mais graves, para realinhar os olhos. É um procedimento seguro, com recuperação rápida</li>
+        <li><strong>Injeções ou tampão ocular:</strong> Para tratar ambliopia associada</li>
+      </ul>
+
+      <p>Tratamentos são personalizados, e o sucesso depende do diagnóstico precoce. Por exemplo, em crianças, intervenções antes dos 7 anos melhoram significativamente os resultados. Adultos também se beneficiam, recuperando conforto em atividades diárias como trabalhar em telas ou praticar esportes.</p>
+
+      <h2>Prevenção e Acompanhamento Regular</h2>
+      <p>Prevenir o estrabismo envolve hábitos saudáveis desde a infância. Incentive pausas durante o uso de telas (regra 20-20-20: a cada 20 minutos, olhe para 20 pés de distância por 20 segundos). Para crianças, brincadeiras ao ar livre promovem o desenvolvimento visual natural.</p>
+
+      <p>O acompanhamento oftalmológico regular é fundamental. Recomendamos consultas anuais, especialmente para famílias com histórico de problemas oculares. Em Caratinga, MG, onde o clima quente pode aumentar a exposição ao sol e poeira, proteger os olhos com óculos solares é uma medida simples de prevenção.</p>
+
+      <p>Na Clínica Saraiva Vision, nosso diferencial é o atendimento humanizado: escutamos suas preocupações e criamos planos de tratamento acessíveis. Seja para exames diagnósticos ou tratamentos personalizados, estamos aqui para ajudar.</p>
+
+      <h2>Conclusão</h2>
+      <p>Em resumo, o estrabismo é uma condição tratável que exige atenção aos sinais iniciais, como desalinhamento ocular ou visão dupla. Entender as causas, sintomas e opções de tratamento pode fazer toda a diferença na qualidade de vida. Lembre-se: cuidar da visão é um compromisso contínuo, e o diagnóstico precoce evita complicações.</p>
+
+      <p><strong>Pronto para avaliar sua saúde ocular? Agende sua consulta na Clínica Saraiva Vision, em Caratinga, MG. Oferecemos consultas, exames diagnósticos, adaptação de lentes de contato e tratamentos personalizados com o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e equipe. Ligue para (33) 99860-1427 e dê o primeiro passo para uma visão mais saudável!</strong></p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Sociedade Brasileira de Oftalmologia (SBO). "Estrabismo: O que é, causas e tratamentos". 2023.</li>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). "Guia sobre estrabismo infantil e adulto". 2024.</li>
+        <li>Organização Mundial da Saúde (OMS). "World report on vision". 2019.</li>
+        <li>Sharma P, et al. "Management of strabismus in children: Recent advances". Journal of Pediatric Ophthalmology and Strabismus, 2023.</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Tratamento',
+    tags: ['estrabismo', 'sintomas de estrabismo', 'causas de estrabismo', 'tratamento de estrabismo', 'saúde ocular', 'Caratinga MG'],
+    image: '/Blog/capa_pediatria.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Estrabismo: Quando Desconfiar e Procurar um Oftalmologista em Caratinga, MG',
+      metaDescription: 'Descubra os sinais de estrabismo, causas e quando buscar ajuda. Na Clínica Saraiva Vision em Caratinga, MG, o Dr. Philipe Saraiva Cruz oferece atendimento humanizado. Agende sua consulta!',
+      keywords: ['estrabismo', 'sintomas de estrabismo', 'causas de estrabismo', 'quando procurar oftalmologista', 'tratamento de estrabismo', 'saúde ocular Caratinga MG', 'Clínica Saraiva Vision']
+    }
+  },
+  {
+    id: 8,
+    slug: 'alimentacao-microbioma-ocular-saude-visao-caratinga-mg',
+    title: 'Alimentação e Saúde Ocular: Nutrientes, Microbioma e Prevenção em Caratinga, MG',
+    excerpt: 'Descubra como vitaminas A, C, E, ômega-3 e carotenoides previnem degeneração macular e catarata. Explore o microbioma intestinal e ocular para combater inflamação e olho seco. Cuide da visão na Clínica Saraiva Vision.',
+    content: `
+      <h2>Introdução</h2>
+      <p>Cuidar da visão vai além de consultas regulares; envolve hábitos diários que impactam nossa saúde como um todo. Na Clínica Saraiva Vision, em Caratinga (MG), o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe qualificada priorizam um atendimento humanizado, combinando tecnologia diagnóstica avançada com orientações personalizadas. Hoje, vamos explorar como a alimentação, o microbioma ocular e a saúde sistêmica influenciam a visão, ampliando o diálogo sobre prevenção. Você aprenderá sobre nutrientes essenciais que reduzem riscos de problemas como degeneração macular e catarata, além de pesquisas emergentes sobre o microbioma intestinal e ocular, que podem afetar inflamação e olho seco. Ao final, estará mais preparado para adotar hábitos saudáveis e saber quando buscar ajuda profissional.</p>
+
+      <p>Entender essa conexão entre nutrição e olhos é fundamental, especialmente em uma rotina agitada com telas e dietas modernas. Vamos descomplicar esses conceitos e mostrar como pequenas mudanças podem preservar sua qualidade de vida.</p>
+
+      <h2>A Importância da Nutrição na Prevenção de Doenças Oculares</h2>
+      <p>A alimentação é uma aliada poderosa na manutenção da saúde ocular. Nutrientes específicos atuam como escudos contra danos oxidativos, que aceleram o envelhecimento dos olhos. Por exemplo, vitaminas antioxidantes como A, C e E ajudam a combater radicais livres, reduzindo o risco de degeneração macular relacionada à idade (DMRI) e catarata.</p>
+
+      <ul>
+        <li><strong>Vitamina A:</strong> Essencial para a visão noturna e a integridade da córnea. Encontrada em alimentos como cenoura, espinafre e fígado, sua deficiência pode levar a problemas como xeroftalmia (olhos secos e inflamados).</li>
+        <li><strong>Vitamina C:</strong> Presente em frutas cítricas, pimentões e morangos, ela fortalece os vasos sanguíneos oculares e previne cataratas.</li>
+        <li><strong>Vitamina E:</strong> Encontrada em nozes, sementes e óleos vegetais, protege as células retinianas contra o estresse oxidativo.</li>
+      </ul>
+
+      <p>Estudos, como o AREDS (Age-Related Eye Disease Study), mostram que uma combinação dessas vitaminas pode diminuir em até 25% o risco de progressão da DMRI. Em Caratinga, onde o dia a dia inclui exposição ao sol intenso e dietas baseadas em alimentos locais, incorporar esses nutrientes pode fazer a diferença.</p>
+
+      <h3>Ácidos Graxos Ômega-3 e Carotenoides: Proteção Natural para os Olhos</h3>
+      <p>Além das vitaminas, os ácidos graxos ômega-3, encontrados em peixes como salmão, sardinha e sementes de linhaça, têm propriedades anti-inflamatórias que beneficiam a retina. Eles ajudam a reduzir o risco de DMRI e aliviam sintomas de olho seco, comum em quem passa horas em ambientes com ar-condicionado ou telas.</p>
+
+      <p>Já os carotenoides, como luteína e zeaxantina, agem como "filtros solares" naturais para os olhos. Presentes em vegetais folhosos verdes (couve, espinafre) e milho, eles se acumulam na mácula, protegendo contra luz azul prejudicial de dispositivos eletrônicos. Pesquisas indicam que uma ingestão diária de 10 mg de luteína pode cortar o risco de catarata em 20-50%, especialmente em populações com dietas ricas em processados.</p>
+
+      <p>No cotidiano, pense em hábitos simples: adicione saladas verdes ao almoço ou opte por lanches com nozes. Para quem pratica esportes ao ar livre em Caratinga, como caminhadas no Parque Estadual do Rio Doce, esses nutrientes ajudam a combater o desgaste causado pela exposição UV.</p>
+
+      <h2>O Papel Emergente do Microbioma Intestinal e Ocular na Saúde da Visão</h2>
+      <p>O microbioma – conjunto de bactérias e microrganismos no corpo – está ganhando destaque na oftalmologia. O microbioma intestinal, influenciado pela dieta, afeta a saúde sistêmica, incluindo os olhos. Uma dieta rica em fibras (frutas, vegetais e grãos integrais) promove bactérias benéficas que reduzem inflamação crônica, ligada a condições como uveíte e olho seco.</p>
+
+      <p>Pesquisas emergentes exploram o microbioma ocular, o "ecossistema" de microrganismos na superfície dos olhos. Desequilíbrios (disbiose) podem aumentar a inflamação e piorar o olho seco, afetando até 30% da população adulta. Um estudo recente publicado na revista "Ophthalmology" sugere que probióticos e prebióticos podem modular esse microbioma, melhorando a lubrificação ocular.</p>
+
+      <p>Em termos práticos, evite excessos de açúcares e gorduras saturadas, que desequilibram o intestino. Para idosos em Caratinga, onde o envelhecimento populacional é notável, manter um microbioma saudável através de iogurtes naturais ou suplementos pode prevenir complicações visuais.</p>
+
+      <h3>Exemplos Práticos do Cotidiano e Prevenção</h3>
+      <p>A visão é impactada por rotinas diárias: uso prolongado de telas causa fadiga ocular, enquanto dietas pobres em nutrientes aceleram o envelhecimento. Atividades como dirigir à noite ou ler em baixa luz demandam olhos saudáveis, e a idade (acima de 40 anos) aumenta riscos.</p>
+
+      <p>Para prevenção:</p>
+      <ul>
+        <li>Faça pausas 20-20-20 ao usar telas: a cada 20 minutos, olhe 20 pés distante por 20 segundos.</li>
+        <li>Inclua exercícios leves, como caminhadas, para melhorar a circulação sanguínea ocular.</li>
+        <li>Realize check-ups anuais, especialmente se você tem histórico familiar de problemas visuais.</li>
+      </ul>
+
+      <p>O acompanhamento oftalmológico regular é crucial. Na Clínica Saraiva Vision, oferecemos exames diagnósticos avançados, adaptação de lentes de contato e tratamentos personalizados, sempre com a expertise do Dr. Philipe Saraiva Cruz e equipe.</p>
+
+      <h3>Sinais de Alerta: Quando Procurar um Especialista</h3>
+      <p>Não ignore sintomas que podem indicar problemas graves. Procure um oftalmologista se notar:</p>
+      <ul>
+        <li>Visão embaçada persistente, que afeta tarefas diárias.</li>
+        <li>Sensibilidade à luz súbita, comum em inflamações.</li>
+        <li>Dor ocular intensa ou vermelhidão prolongada.</li>
+        <li>Manchas, flashes de luz ou "moscas volantes" na visão.</li>
+        <li>Queda brusca de visão, especialmente em um olho.</li>
+      </ul>
+
+      <p>Esses sinais podem apontar para DMRI, catarata ou olho seco relacionado ao microbioma. Em Caratinga, a Clínica Saraiva Vision está pronta para avaliar e orientar.</p>
+
+      <h2>Conclusão</h2>
+      <p>Em resumo, a alimentação rica em vitaminas A, C, E, ômega-3 e carotenoides como luteína e zeaxantina é essencial para reduzir riscos de degeneração macular e catarata. Além disso, o microbioma intestinal e ocular emerge como fator chave na prevenção de inflamação e olho seco, destacando a conexão entre saúde sistêmica e visão. Adotar hábitos nutritivos e monitorar a saúde ocular pode transformar sua qualidade de vida.</p>
+
+      <p>Lembre-se: o cuidado contínuo com a visão é um investimento no seu bem-estar. Pronto para uma avaliação personalizada? Agende sua consulta na Clínica Saraiva Vision, em Caratinga (MG), com o Dr. Philipe Saraiva Cruz e equipe. Oferecemos exames diagnósticos precisos, adaptação de lentes de contato e tratamentos adaptados às suas necessidades. Ligue para (33) 99860-1427 e dê o primeiro passo para olhos mais saudáveis.</p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Age-Related Eye Disease Study Research Group. (2001). A randomized, placebo-controlled, clinical trial of high-dose supplementation with vitamins C and E, beta carotene, and zinc for age-related macular degeneration and vision loss: AREDS report no. 8. Archives of Ophthalmology.</li>
+        <li>Sociedade Brasileira de Oftalmologia (SBO). (2022). Nutrição e Saúde Ocular: Recomendações para Prevenção de Doenças Degenerativas.</li>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). (2023). Microbioma e Doenças Oculares: Abordagem Atual.</li>
+        <li>Organização Mundial da Saúde (OMS). (2021). World Report on Vision: Nutrition and Eye Health.</li>
+        <li>Ozawa, Y., et al. (2020). The Gut Microbiome and Ocular Inflammation: Emerging Evidence. Ophthalmology Journal.</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Prevenção',
+    tags: ['alimentação e saúde ocular', 'microbioma ocular', 'vitaminas para visão', 'prevenção degeneração macular', 'catarata', 'ômega-3 olhos', 'luteína zeaxantina', 'olho seco', 'saúde sistêmica visão', 'Caratinga MG'],
+    image: '/Blog/capa_pad.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Alimentação e Saúde Ocular: Como Nutrientes e Microbioma Influenciam a Visão em Caratinga, MG',
+      metaDescription: 'Descubra como vitaminas A, C, E, ômega-3 e carotenoides previnem degeneração macular e catarata. Explore o microbioma intestinal e ocular para combater inflamação e olho seco. Cuide da visão na Clínica Saraiva Vision.',
+      keywords: ['alimentação e saúde ocular', 'microbioma ocular', 'vitaminas para visão', 'prevenção degeneração macular', 'catarata', 'ômega-3 olhos', 'luteína zeaxantina', 'olho seco', 'saúde sistêmica visão', 'Caratinga MG']
+    }
+  },
+  {
+    id: 7,
+    slug: 'sensibilidade-a-luz-causas-tratamentos-caratinga-mg',
+    title: 'Sensibilidade à Luz (Fotofobia): Causas, Sintomas e Tratamentos em Caratinga, MG',
+    excerpt: 'Descubra as causas da sensibilidade à luz (fotofobia) e opções de tratamento. Na Clínica Saraiva Vision em Caratinga, MG, o Dr. Philipe Saraiva Cruz oferece cuidados personalizados. Agende sua consulta!',
+    content: `
+      <h2>Introdução</h2>
+      <p>Olá! Se você já sentiu desconforto ao sair de um ambiente escuro para a luz do dia ou ao ligar uma lâmpada forte, sabe como a sensibilidade à luz pode afetar o dia a dia. Conhecida clinicamente como fotofobia, essa condição não é uma doença em si, mas um sintoma que pode indicar problemas oculares ou de saúde geral. Na Clínica Saraiva Vision, em Caratinga (MG), estamos comprometidos em oferecer um atendimento humanizado e especializado, liderado pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe qualificada. Com tecnologia diagnóstica avançada, ajudamos pacientes a entender e tratar esses incômodos, melhorando sua qualidade de vida.</p>
+
+      <p>Neste artigo, você vai aprender sobre as causas comuns da sensibilidade à luz, os sintomas a observar, opções de tratamento e dicas de prevenção. Ao final, esperamos que você se sinta mais empoderado para cuidar da sua visão. Lembre-se: um check-up oftalmológico regular pode fazer toda a diferença. Vamos explorar isso juntos?</p>
+
+      <h2>O Que é Sensibilidade à Luz (Fotofobia)?</h2>
+      <p>A sensibilidade à luz, ou fotofobia, é uma reação exagerada dos olhos à luminosidade, causando desconforto, dor ou até lágrimas involuntárias. Não se trata de uma fobia no sentido psicológico, mas de uma resposta física do sistema visual. Ela pode afetar pessoas de todas as idades, desde crianças até idosos, e é mais comum em ambientes com luz intensa, como praias ensolaradas ou telas de computadores.</p>
+
+      <p>De acordo com especialistas, a fotofobia ocorre quando os nervos ópticos são estimulados excessivamente, muitas vezes ligada a condições subjacentes. Na Clínica Saraiva Vision, em Caratinga, MG, nossa equipe enfatiza que ignorar esse sintoma pode levar a complicações maiores, por isso incentivamos consultas preventivas.</p>
+
+      <h3>Causas Comuns da Sensibilidade à Luz</h3>
+      <p>Existem diversas razões para a fotofobia, variando de problemas oculares simples a condições mais sérias. Aqui vão as principais, com exemplos do cotidiano:</p>
+      <ul>
+        <li><strong>Problemas oculares superficiais:</strong> Olhos secos, comuns em quem passa horas em frente a telas (como no home office ou estudos), podem causar sensibilidade. Por exemplo, ao usar o celular em um quarto escuro, os olhos se esforçam mais, agravando o desconforto.</li>
+        <li><strong>Infecções e inflamações:</strong> Conjuntivite, ceratite ou uveíte (inflamação interna do olho) são gatilhos frequentes. Imagine praticar esportes ao ar livre e contrair uma infecção por poeira ou alergia – isso pode tornar a luz solar insuportável.</li>
+        <li><strong>Condições neurológicas:</strong> Enxaquecas são uma causa clássica, afetando milhões de brasileiros. Durante uma crise, luzes de faróis de carros ou lâmpadas fluorescentes em escritórios podem intensificar a dor.</li>
+        <li><strong>Fatores ambientais e hábitos:</strong> Exposição prolongada ao sol sem óculos de proteção, especialmente em regiões quentes como o interior de Minas Gerais, ou o uso excessivo de dispositivos digitais. Idosos podem experimentar fotofobia devido ao envelhecimento natural dos olhos, como catarata incipiente.</li>
+        <li><strong>Outras causas:</strong> Medicamentos (como alguns antibióticos), lesões oculares ou até condições sistêmicas como meningite. Em Caratinga, onde o clima varia, fatores como poeira e poluição podem piorar o quadro.</li>
+      </ul>
+
+      <p>É essencial destacar que essas causas não são exaustivas, e um diagnóstico preciso requer avaliação profissional. O Dr. Philipe Saraiva Cruz e sua equipe na Clínica Saraiva Vision utilizam exames diagnósticos modernos para identificar a raiz do problema.</p>
+
+      <h3>Sintomas e Sinais de Alerta</h3>
+      <p>Além do desconforto com a luz, a fotofobia pode vir acompanhada de outros sintomas. Preste atenção nestes sinais de alerta, que indicam a necessidade de procurar um especialista imediatamente:</p>
+      <ul>
+        <li>Visão embaçada persistente, mesmo em ambientes com pouca luz.</li>
+        <li>Sensibilidade à luz súbita, como ao ligar o interruptor ou sair para a rua.</li>
+        <li>Dor ocular intensa, que pode irradiar para a cabeça.</li>
+        <li>Manchas, flashes de luz ou "moscas volantes" no campo visual.</li>
+        <li>Queda brusca de visão, especialmente se associada a náuseas ou tontura.</li>
+      </ul>
+
+      <p>Se você notar esses sintomas durante atividades cotidianas, como dirigir ou trabalhar em telas, não espere. Um acompanhamento oftalmológico regular pode prevenir agravamentos. Na Clínica Saraiva Vision, incentivamos check-ups anuais, especialmente para quem tem histórico familiar de problemas oculares.</p>
+
+      <h2>Diagnóstico e Tratamentos Disponíveis</h2>
+      <p>O diagnóstico começa com uma consulta detalhada. Na Clínica Saraiva Vision, o Dr. Philipe Saraiva Cruz realiza exames como tonometria (para medir pressão ocular) e fundoscopia, utilizando tecnologia de ponta para um diagnóstico preciso e humanizado.</p>
+
+      <h3>Opções de Tratamento</h3>
+      <p>Os tratamentos dependem da causa subjacente e são personalizados. Aqui vão abordagens comuns:</p>
+      <ul>
+        <li><strong>Medidas preventivas e hábitos:</strong> Use óculos de sol com proteção UV, reduza o tempo em telas e aplique lágrimas artificiais para olhos secos. Em ambientes de trabalho, ajuste o brilho das telas e faça pausas regulares.</li>
+        <li><strong>Tratamentos médicos:</strong> Para infecções, colírios antibióticos ou anti-inflamatórios. Em casos de enxaqueca, medicamentos prescritos pelo oftalmologista ou neurologista.</li>
+        <li><strong>Adaptação de lentes e cirurgias:</strong> Lentes de contato fotossensíveis ou óculos com filtros especiais ajudam no dia a dia. Para condições como catarata, cirurgias minimamente invasivas podem resolver o problema.</li>
+        <li><strong>Abordagens integradas:</strong> Em Caratinga, MG, nossa clínica oferece tratamentos personalizados, incluindo adaptação de lentes de contato e terapias para condições crônicas.</li>
+      </ul>
+
+      <p>Lembre-se: a prevenção é chave. Hábitos simples, como usar chapéu em dias ensolarados ou hidratar os olhos, fazem diferença. O acompanhamento oftalmológico regular, recomendado pela Sociedade Brasileira de Oftalmologia, ajuda a detectar problemas cedo.</p>
+
+      <h3>Importância do Acompanhamento Oftalmológico Regular</h3>
+      <p>Consultas anuais não são luxo, mas necessidade. Elas permitem detectar fotofobia precoce, evitando complicações como perda de visão. Na Clínica Saraiva Vision, nossa equipe qualificada, liderada pelo Dr. Philipe Saraiva Cruz, foca em um atendimento acolhedor, considerando idade, hábitos e estilo de vida. Exemplos práticos? Para atletas, orientamos proteção em esportes; para idosos, monitoramos mudanças relacionadas à idade.</p>
+
+      <h2>Conclusão</h2>
+      <p>Em resumo, a sensibilidade à luz pode ter causas variadas, de olhos secos a condições neurológicas, mas tratamentos eficazes existem, desde hábitos simples até intervenções médicas. Cuidar da visão é investir na sua qualidade de vida diária, seja no trabalho, lazer ou rotina familiar. Não ignore sinais de alerta – eles podem indicar algo mais sério.</p>
+
+      <p>Na Clínica Saraiva Vision, em Caratinga (MG), estamos aqui para ajudar com consultas, exames diagnósticos, adaptação de lentes de contato e tratamentos personalizados. Liderados pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e uma equipe dedicada, oferecemos cuidados humanizados e tecnologia avançada. Pronto para cuidar melhor da sua visão? Agende sua consulta agora pelo telefone (33) 99860-1427. Sua saúde ocular merece atenção!</p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Sociedade Brasileira de Oftalmologia (SBO). "Fotofobia: Causas e Manejo". 2023.</li>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). "Diretrizes para o Tratamento de Condições Oculares Inflamatórias". 2022.</li>
+        <li>Organização Mundial da Saúde (OMS). "Saúde Ocular e Prevenção de Doenças Visuais". 2021.</li>
+        <li>Katz, B. J., & Digre, K. B. (2022). "Diagnosis and Management of Photophobia". American Journal of Ophthalmology, 234, 1-10.</li>
+        <li>Digre, K. B., & Brennan, K. C. (2023). "Shedding Light on Photophobia". Journal of Neuro-Ophthalmology, 43(2), 145-152.</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-29',
+    category: 'Prevenção',
+    tags: ['sensibilidade à luz', 'fotofobia', 'causas fotofobia', 'tratamentos sensibilidade à luz', 'saúde ocular Caratinga'],
+    image: '/Blog/capa_pad.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Sensibilidade à Luz: Causas, Sintomas e Tratamentos Eficazes em Caratinga, MG',
+      metaDescription: 'Descubra as causas da sensibilidade à luz (fotofobia) e opções de tratamento. Na Clínica Saraiva Vision em Caratinga, MG, o Dr. Philipe Saraiva Cruz oferece cuidados personalizados. Agende sua consulta!',
+      keywords: ['sensibilidade à luz', 'fotofobia', 'causas fotofobia', 'tratamentos sensibilidade à luz', 'saúde ocular Caratinga']
+    }
+  },
+  {
+    id: 6,
+    slug: 'lentes-de-contato-para-presbiopia-caratinga-mg',
+    title: 'Lentes de Contato para Presbiopia: Soluções Eficazes em Caratinga, MG',
+    excerpt: 'Descubra como as lentes de contato multifocais corrigem a presbiopia e melhoram sua visão. Na Clínica Saraiva Vision em Caratinga, MG, agende uma consulta com especialistas para adaptação personalizada.',
+    content: `
+      <h2>O Que é Presbiopia?</h2>
+      <p>A presbiopia, também conhecida como "vista cansada", é uma condição natural que ocorre com o envelhecimento, geralmente a partir dos 40 anos. Ela acontece quando o cristalino do olho perde flexibilidade, dificultando o foco em objetos próximos. Diferente de outros erros refrativos como miopia ou astigmatismo, a presbiopia afeta principalmente a visão de perto, mas pode coexistir com outras condições.</p>
+
+      <p>De acordo com fontes confiáveis, como o Conselho Brasileiro de Oftalmologia (CBO), a presbiopia é uma das principais causas de dependência de correção visual em adultos maduros. Não é uma doença, mas um processo fisiológico inevitável, influenciado por fatores como genética e estilo de vida. Em Caratinga, MG, onde muitas pessoas lidam com rotinas intensas de trabalho e lazer, entender essa condição ajuda a buscar soluções precoces.</p>
+
+      <h2>Sintomas e Causas da Presbiopia</h2>
+      <p>Os sintomas da presbiopia surgem gradualmente e podem impactar significativamente o cotidiano. Imagine tentar ler um menu em um restaurante local em Caratinga ou verificar mensagens no celular durante uma pausa no trabalho – se você precisa afastar o objeto para focar, isso pode ser um sinal.</p>
+
+      <h3>Sintomas comuns:</h3>
+      <ul>
+        <li>Dificuldade para ler textos pequenos ou focar em objetos próximos</li>
+        <li>Necessidade de mais luz para tarefas como costura ou uso de telas</li>
+        <li>Fadiga ocular, dores de cabeça ou visão embaçada após atividades prolongadas</li>
+        <li>Tendência a esticar os braços para "alongar" a visão</li>
+      </ul>
+
+      <p>As causas estão ligadas ao envelhecimento natural do olho, mas hábitos cotidianos podem acelerar o processo. Por exemplo, exposição excessiva a telas digitais (como computadores e smartphones), comum em ambientes de trabalho ou home office, pode agravar a fadiga visual. Atividades esportivas ao ar livre, como caminhadas em parques de Caratinga, também demandam visão clara em distâncias variadas. Fatores como diabetes ou uso prolongado de medicamentos podem contribuir, destacando a importância do acompanhamento oftalmológico regular para detecção precoce.</p>
+
+      <h2>Opções de Tratamento: Foco em Lentes de Contato</h2>
+      <p>Existem várias formas de corrigir a presbiopia, incluindo óculos, cirurgias refrativas e lentes de contato. As lentes de contato multifocais são projetadas para corrigir múltiplas distâncias de foco – perto, intermediário e longe – em uma única lente. Elas funcionam simulando o mecanismo natural do olho, permitindo transições suaves sem a necessidade de trocar de óculos.</p>
+
+      <p>Na Clínica Saraiva Vision, em Caratinga, MG, realizamos adaptações personalizadas, considerando o estilo de vida do paciente, como dirigir, praticar esportes ou trabalhar em ambientes com ar-condicionado.</p>
+
+      <h3>Tipos de Lentes de Contato para Presbiopia:</h3>
+      <ul>
+        <li><strong>Lentes multifocais:</strong> Ideais para correção simultânea, com zonas de foco progressivo. São ótimas para quem usa telas o dia todo.</li>
+        <li><strong>Lentes bifocais:</strong> Divididas em seções para perto e longe, semelhantes a óculos bifocais, mas mais confortáveis para atividades dinâmicas.</li>
+        <li><strong>Lentes monovisão:</strong> Uma lente corrige a visão de longe e a outra de perto, permitindo que o cérebro se adapte.</li>
+      </ul>
+
+      <p>Essas opções são seguras quando adaptadas por profissionais qualificados, como o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe, que utilizam exames diagnósticos avançados para garantir o ajuste perfeito.</p>
+
+      <h2>Vantagens das Lentes de Contato e Cuidados Essenciais</h2>
+      <p>As lentes de contato oferecem vantagens como maior campo de visão periférica, ausência de embaçamento em dias chuvosos em Caratinga e compatibilidade com esportes ou óculos de sol. Elas promovem uma correção natural, melhorando a qualidade de vida sem alterar a aparência.</p>
+
+      <p>No entanto, a prevenção é chave. Mantenha hábitos como pausas regulares ao usar telas (regra 20-20-20: a cada 20 minutos, olhe para 20 metros por 20 segundos), proteja os olhos do sol com óculos UV e realize check-ups anuais. A Clínica Saraiva Vision enfatiza o acompanhamento oftalmológico regular para monitorar não só a presbiopia, mas também outras condições oculares.</p>
+
+      <h2>Quando Procurar um Especialista: Sinais de Alerta</h2>
+      <p>Não ignore sinais que indicam a necessidade de uma consulta. Procure um oftalmologista se notar:</p>
+      <ul>
+        <li>Visão embaçada persistente para perto, mesmo com correção</li>
+        <li>Fadiga ocular constante ou dores de cabeça após leitura</li>
+        <li>Dificuldade em tarefas cotidianas, como ler rótulos ou usar o celular</li>
+        <li>Mudanças súbitas na visão, como flashes de luz ou manchas</li>
+        <li>Queda brusca de acuidade visual em um ou ambos os olhos</li>
+      </ul>
+
+      <p>Na Clínica Saraiva Vision, oferecemos consultas, exames diagnósticos precisos, adaptação de lentes de contato e tratamentos personalizados. O Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e nossa equipe estão prontos para avaliar sua saúde ocular de forma humanizada.</p>
+
+      <h2>Conclusão</h2>
+      <p>A presbiopia é uma condição comum do envelhecimento que pode ser efetivamente gerenciada com lentes de contato multifocais, proporcionando visão clara e conforto no dia a dia. Entender sintomas, causas e opções de tratamento, como as adaptações personalizadas, é essencial para manter uma visão saudável.</p>
+
+      <p><strong>Pronto para dar o próximo passo?</strong> Agende sua consulta na Clínica Saraiva Vision para exames diagnósticos, adaptação de lentes de contato ou tratamentos personalizados. Ligue para <strong>(33) 99860-1427</strong> e marque um horário com o Dr. Philipe Saraiva Cruz e nossa equipe qualificada. Sua visão merece o melhor cuidado!</p>
+
+      <h3>Referências:</h3>
+      <ol>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). As Condições de Saúde Ocular no Brasil. 2019.</li>
+        <li>Organização Mundial da Saúde (OMS). Relatório Mundial sobre a Visão. 2019.</li>
+        <li>Revista Brasileira de Oftalmologia. Lentes intraoculares fácicas para miopia e hipermetropia: revisão. 2021.</li>
+        <li>Sociedade Brasileira de Oftalmologia (SBO). Jornal Brasileiro de Oftalmologia. 2020.</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-29',
+    category: 'Prevenção',
+    tags: ['lentes de contato', 'presbiopia', 'correção visual', 'vista cansada', 'Caratinga MG'],
+    image: '/Blog/oculosxlec.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Lentes de Contato para Presbiopia: Soluções Eficazes em Caratinga, MG',
+      metaDescription: 'Descubra como as lentes de contato multifocais corrigem a presbiopia e melhoram sua visão. Na Clínica Saraiva Vision em Caratinga, MG, agende uma consulta com especialistas para adaptação personalizada.',
+      keywords: ['lentes de contato para presbiopia', 'correção da presbiopia', 'lentes multifocais', 'oftalmologista Caratinga', 'saúde ocular MG']
+    }
+  },
+  {
+    id: 1,
+    slug: 'cirurgia-refrativa-lentes-intraoculares-caratinga',
+    title: 'Cirurgia refrativa e lentes premium em Caratinga',
+    excerpt: 'Laser de femtossegundos, IOLs multifocais e EDOF para catarata e presbiopia. Avaliação individual na Clínica Saraiva Vision, em Caratinga-MG.',
+    content: `
+      <h2>Inovações em cirurgias refrativas e lentes intraoculares premium: o que há de novo e para quem é indicado em Caratinga-MG</h2>
+
+      <h3>Introdução</h3>
+      <p>A visão está diretamente ligada à nossa autonomia. Ler uma mensagem no celular, dirigir pela cidade em um dia de sol forte, trabalhar no computador ou reconhecer rostos à distância: tudo passa pelos olhos. Na Clínica Saraiva Vision, em Caratinga-MG, o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) acompanha diariamente pacientes que buscam mais nitidez e conforto visual — seja por miopia, astigmatismo, hipermetropia, presbiopia (vista cansada) ou catarata. Este artigo apresenta, de forma didática, as principais inovações em cirurgias refrativas e em lentes intraoculares premium, incluindo o laser de femtossegundos e as IOLs multifocais e de foco estendido (EDOF) para correção da presbiopia e do astigmatismo durante a cirurgia de catarata. Você entenderá indicações, benefícios, limitações e como é feita a escolha personalizada. Sabia que a catarata é a principal causa de cegueira reversível no mundo e que a presbiopia afeta mais de 1 bilhão de pessoas globalmente? Com informação de qualidade e avaliação individualizada, é possível alinhar expectativas de independência de óculos e segurança, decidindo com tranquilidade qual caminho é melhor para o seu caso.</p>
+
+      <h2>Definição e Contexto</h2>
+
+      <h3>O que é o tema?</h3>
+      <ul>
+        <li><strong>Cirurgias refrativas:</strong> procedimentos que corrigem erros de refração (miopia, hipermetropia e astigmatismo), remodelando a córnea (PRK, LASIK, SMILE) ou, em casos selecionados, trocando o cristalino por uma lente intraocular (lensectomia refrativa).</li>
+        <li><strong>Cirurgia de catarata:</strong> substitui o cristalino opaco por uma lente intraocular (IOL). Com as IOLs premium, é possível tratar a catarata e, ao mesmo tempo, reduzir a dependência de óculos para longe, intermediário e/ou perto.</li>
+        <li><strong>Laser de femtossegundos:</strong> tecnologia que pode auxiliar etapas da cirurgia (como incisões, capsulorrexe e fragmentação do cristalino) com alta precisão.</li>
+        <li><strong>Lentes intraoculares premium:</strong> incluem IOLs tóricas (corrigem astigmatismo), multifocais (tipicamente trifocais) e EDOF (extended depth of focus), que ampliam a profundidade de foco, priorizando visão de longe e intermediária com menos halos que multifocais clássicas.</li>
+      </ul>
+
+      <h3>Por que é importante conhecer?</h3>
+      <p>Porque cada tecnologia oferece benefícios distintos e possíveis efeitos colaterais. A escolha adequada depende do seu perfil visual (tarefas diárias, profissão, hobbies), anatomia ocular, presença de olho seco, astigmatismo, estado da córnea e retina, além de expectativas realistas. Informação clara evita frustrações e aumenta a segurança.</p>
+
+      <h3>Dados epidemiológicos relevantes</h3>
+      <ul>
+        <li>Catarata é a principal causa de cegueira reversível no mundo, especialmente após os 60 anos.</li>
+        <li>Presbiopia (vista cansada) acomete virtualmente todas as pessoas após os 40–45 anos, impactando leitura e tarefas de perto.</li>
+        <li>Astigmatismo corneano clinicamente significativo é comum em candidatos à cirurgia de catarata, e corrigi-lo na cirurgia melhora a qualidade visual e reduz dependência de óculos.</li>
+        <li>O uso de plataformas a laser e IOLs avançadas vem crescendo, com maior satisfação quando há seleção e orientação adequadas.</li>
+      </ul>
+
+      <h2>Causas e Fatores de Risco</h2>
+
+      <h3>Causas principais</h3>
+      <ul>
+        <li>Erros de refração: variações na curvatura corneana e no comprimento do olho.</li>
+        <li>Presbiopia: envelhecimento natural do cristalino, perdendo capacidade de focar de perto.</li>
+        <li>Catarata: opacificação do cristalino por envelhecimento; pode ser acelerada por fatores metabólicos e ambientais.</li>
+        <li>Astigmatismo: irregularidade na curvatura da córnea ou do cristalino.</li>
+      </ul>
+
+      <h3>Fatores de risco</h3>
+      <ul>
+        <li>Idade acima de 40–50 anos (presbiopia, catarata).</li>
+        <li>Exposição crônica ao sol sem proteção (UV).</li>
+        <li>Diabetes e outras condições metabólicas.</li>
+        <li>Uso prolongado de corticoides.</li>
+        <li>Tabagismo.</li>
+        <li>Doenças oculares prévias (ceratocone, olho seco moderado a severo).</li>
+        <li>Histórico familiar de miopia alta.</li>
+      </ul>
+
+      <h3>Grupos mais afetados</h3>
+      <ul>
+        <li>Adultos acima de 50 anos (catarata, presbiopia).</li>
+        <li>Profissionais que trabalham ao ar livre (exposição solar intensa).</li>
+        <li>Pessoas com alta demanda visual digital (computador, celular) que sentem muito a vista cansada.</li>
+      </ul>
+
+      <h2>Sintomas e Diagnóstico</h2>
+
+      <h3>Sinais de alerta</h3>
+      <blockquote>
+        <p><strong>Caixa de atenção — procure avaliação oftalmológica se você observar:</strong></p>
+        <ul>
+          <li>Visão embaçada para longe, intermediário e/ou perto</li>
+          <li>Halos e ofuscamento, especialmente ao dirigir à noite</li>
+          <li>Dificuldade para ler cardápios, rótulos e mensagens no celular</li>
+          <li>Troca frequente do grau dos óculos</li>
+          <li>Sensibilidade ao sol forte e às luzes de carros</li>
+          <li>Dupla imagem monocular ou distorção</li>
+        </ul>
+      </blockquote>
+
+      <h3>Quando procurar ajuda</h3>
+      <p>Se sua visão impacta atividades diárias (dirigir em rodovias da região, trabalhar ao ar livre, usar computador por longas horas, ler receitas e boletos), se você tem mais de 40 anos e percebe piora de perto, ou se recebeu diagnóstico de catarata/astigmatismo, é hora de agendar avaliação. A decisão por cirurgia refrativa ou por lentes premium na cirurgia de catarata deve ser tomada após exames que mapeiam a córnea, a lágrima, a mácula e as medidas do olho, com discussão franca sobre expectativas.</p>
+
+      <h3>Exames diagnósticos disponíveis na clínica</h3>
+      <p>Na Clínica Saraiva Vision, a avaliação inclui, conforme o caso:</p>
+      <ul>
+        <li>Biometria óptica para cálculo preciso das lentes intraoculares</li>
+        <li>Topografia e tomografia da córnea (paquimetria, curvatura e simetria)</li>
+        <li>Aberrometria (avalia aberrações ópticas de alta ordem)</li>
+        <li>Avaliação do filme lacrimal e olho seco</li>
+        <li>Pupillometria e medida do diâmetro pupilar</li>
+        <li>OCT da mácula e, quando indicado, do segmento anterior</li>
+        <li>Microscopia especular da córnea</li>
+      </ul>
+      <p>Esses dados orientam a indicação de PRK/LASIK/SMILE, a necessidade de tratar o olho seco antes, e a melhor escolha entre IOL monofocal, tórica, multifocal ou EDOF.</p>
+
+      <h2>Tratamento e Prevenção</h2>
+
+      <h3>Opções terapêuticas</h3>
+      <ul>
+        <li><strong>PRK:</strong> remodela a córnea na superfície. Vantagens: preserva mais tecido corneano e evita flap; desvantagens: recuperação visual mais lenta e desconforto inicial.</li>
+        <li><strong>LASIK (com femtossegundos para criar o flap):</strong> recuperação mais rápida e conforto superior, com perfil de segurança consolidado em indicações corretas.</li>
+        <li><strong>SMILE:</strong> técnica de microincisão sem flap para miopias e astigmatismos selecionados; potencialmente menor impacto na superfície ocular.</li>
+        <li><strong>Cirurgia de catarata convencional (facoemulsificação):</strong> padrão ouro, com pequenas incisões e recuperação geralmente rápida.</li>
+        <li><strong>Cirurgia assistida por laser de femtossegundos:</strong> pode aumentar a precisão de etapas como capsulorrexe e fragmentação do cristalino. Estudos mostram resultados visuais comparáveis à faco convencional, mas com vantagens específicas em certos perfis.</li>
+      </ul>
+
+      <h3>Lentes intraoculares</h3>
+      <ul>
+        <li><strong>Monofocal asférica:</strong> excelente qualidade para longe; leitura requer óculos (exceto em monovisão).</li>
+        <li><strong>Tórica:</strong> corrige astigmatismo corneano significativo, reduzindo óculos para longe.</li>
+        <li><strong>Multifocal (geralmente trifocal):</strong> independência maior de óculos para longe, intermediário e perto; pode cursar com halos e glare noturno em parte dos pacientes.</li>
+        <li><strong>EDOF (foco estendido):</strong> prioriza longe e intermediário com menos halos que multifocal clássica; para perto intenso, pode exigir óculos em textos muito miúdos.</li>
+        <li><strong>Estratégias combinadas:</strong> mini-monovisão com EDOF; multifocal tórica para quem tem astigmatismo e demanda alta de perto; ajustes do alvo refrativo conforme hobbies e profissão.</li>
+      </ul>
+
+      <p><strong>Reforço clínico importante:</strong> a escolha da técnica é sempre individualizada, considerando segurança, anatomia e objetivos pessoais — nunca existe "uma única melhor opção" para todos.</p>
+
+      <h3>Tecnologias disponíveis na clínica</h3>
+      <p>A Clínica Saraiva Vision dispõe de plataforma diagnóstica moderna para:</p>
+      <ul>
+        <li>Medição de comprimento axial e potência da IOL (biometria óptica)</li>
+        <li>Mapas corneanos detalhados (topografia/tomografia) e paquimetria</li>
+        <li>Avaliação da qualidade da lágrima e estabilidade da superfície ocular</li>
+        <li>OCT de mácula para segurança em IOLs premium</li>
+      </ul>
+      <p>Com esses dados, o Dr. Philipe Saraiva Cruz discute cenários realistas, prós e contras de cada opção e ajuda a alinhar a expectativa de independência de óculos com a melhor margem de segurança para o seu caso.</p>
+
+      <h3>Medidas preventivas</h3>
+      <ol>
+        <li>Use óculos de sol com proteção UV e, se possível, lentes polarizadas em dias de sol forte.</li>
+        <li>Controle glicemia e doenças sistêmicas; não fume.</li>
+        <li>Faça pausas visuais (regra 20-20-20) em uso prolongado de telas.</li>
+        <li>Trate olho seco e alergias oculares antes de cirurgias eletivas.</li>
+        <li>Evite automedicação com colírios, especialmente corticoides.</li>
+        <li>Proteja os olhos em trabalhos de risco (óculos de proteção).</li>
+        <li>Realize check-ups anuais após os 40–45 anos.</li>
+      </ol>
+
+      <h2>Vida Prática em Caratinga</h2>
+      <p>O sol intenso típico do leste de Minas pode causar ofuscamento no centro da cidade e nas estradas da região; quem dirige à noite percebe halos nas luzes de carros quando há catarata ou após certas cirurgias sem correção do astigmatismo. Profissionais que trabalham ao ar livre (agro, construção, comércio de rua) e quem usa muito computador sentem bastante a presbiopia e o olho seco.</p>
+
+      <h3>Adaptações necessárias</h3>
+      <p>Use óculos de sol de boa qualidade e boné/chapéu nas horas de maior insolação; ajuste iluminação de casa e do trabalho para evitar reflexos; considere películas antirreflexo no para-brisa; lubrifique os olhos em ambientes com ar-condicionado; após a cirurgia, siga à risca o esquema de colírios e retornos.</p>
+
+      <h3>Recursos disponíveis na região</h3>
+      <p>Avaliação completa na Clínica Saraiva Vision e, quando indicado, acesso às tecnologias cirúrgicas adequadas por meio de referências e parcerias, garantindo qualidade e segurança.</p>
+
+      <blockquote>
+        <p><strong>Curiosidade médica:</strong> Você sabia? IOLs EDOF usam desenhos ópticos que "estendem" a profundidade de foco — uma espécie de "truque" óptico — para oferecer visão contínua de longe ao intermediário com menos halos que muitas multifocais tradicionais.</p>
+      </blockquote>
+
+      <blockquote>
+        <p><strong>Citação de impacto:</strong> "A medicina é a ciência da incerteza e a arte da probabilidade." — William Osler. Na prática, isso significa individualizar: o melhor resultado nasce do equilíbrio entre evidência científica, anatomia individual e objetivos de vida.</p>
+      </blockquote>
+
+      <blockquote>
+        <p><strong>Caso exemplo (ilustrativo, sem identificação):</strong> Maria*, 58 anos, de Caratinga, professora, queixava-se de ofuscamento ao dirigir e dificuldade para ler sem óculos. Diagnóstico: catarata inicial e astigmatismo de 1,25 D. Após avaliação do filme lacrimal e biometria óptica, optou-se por IOL EDOF tórica no olho dominante e alvo levemente miopizado no contralateral (mini-monovisão). Passou a dirigir com conforto e lê a maior parte dos textos sem óculos, aceitando usar óculos para letras muito pequenas. Resultado condizente com o perfil e as expectativas construídas em consulta. (*Nome fictício)</p>
+      </blockquote>
+
+      <h3>Avisos importantes</h3>
+      <ul>
+        <li>Nem toda córnea é elegível para LASIK/SMILE, e nem todo olho é candidato a IOL premium. Doenças da córnea, alterações maculares, olho seco significativo e pupilas muito grandes podem limitar a indicação.</li>
+        <li>Resultados variam entre indivíduos; não há promessa de independência total de óculos para todos.</li>
+        <li>O acompanhamento pós-operatório e a adesão ao tratamento são fundamentais para a segurança.</li>
+      </ul>
+
+      <h2>Conclusão</h2>
+      <p>As inovações em cirurgia refrativa e lentes intraoculares premium ampliam as possibilidades de enxergar bem em diferentes distâncias, com segurança e previsibilidade cada vez maiores. O laser de femtossegundos, as IOLs tóricas, multifocais e EDOF podem reduzir a dependência de óculos na catarata e em situações selecionadas, desde que a escolha seja feita de forma personalizada. Em Caratinga-MG, a Clínica Saraiva Vision, com o Dr. Philipe Saraiva Cruz, oferece uma avaliação criteriosa para alinhar suas expectativas à melhor estratégia. Para mais informações ou para agendar sua avaliação, entre em contato pelos canais oficiais da Clínica Saraiva Vision. Sua visão, suas escolhas — com orientação especializada em cada passo.</p>
+
+      <h3>CTA — Contatos</h3>
+      <ul>
+        <li>Clínica Saraiva Vision — Caratinga, MG</li>
+        <li>WhatsApp/Telefone: (33) 99860-1427</li>
+        <li>Endereço e agendamento: consulte o site e redes oficiais</li>
+      </ul>
+
+      <p><em>Nota: Este conteúdo é educativo e não substitui consulta com oftalmologista.</em></p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>AAO — American Academy of Ophthalmology. Refractive surgery options. 2023. <a href="https://www.aao.org/eye-health/treatments/refractive-surgery" target="_blank" rel="noopener noreferrer">https://www.aao.org/eye-health/treatments/refractive-surgery</a></li>
+        <li>AAO — American Academy of Ophthalmology. Intraocular lens (IOL) options. 2023. <a href="https://www.aao.org/eye-health/treatments/intraocular-lens" target="_blank" rel="noopener noreferrer">https://www.aao.org/eye-health/treatments/intraocular-lens</a></li>
+        <li>CBO — Conselho Brasileiro de Oftalmologia. Catarata: informações ao paciente. 2022. <a href="https://www.cbo.net.br/publico" target="_blank" rel="noopener noreferrer">https://www.cbo.net.br/publico</a></li>
+        <li>WHO — World Health Organization. World report on vision. 2019. <a href="https://www.who.int/publications-detail/world-report-on-vision" target="_blank" rel="noopener noreferrer">https://www.who.int/publications-detail/world-report-on-vision</a></li>
+        <li>Cochrane Eyes and Vision. Femtosecond laser-assisted cataract surgery versus phacoemulsification cataract surgery. 2020. <a href="https://www.cochranelibrary.com" target="_blank" rel="noopener noreferrer">https://www.cochranelibrary.com</a></li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Tratamento',
+    tags: ['cirurgia refrativa Caratinga', 'lentes intraoculares Caratinga', 'catarata Caratinga', 'laser de femtossegundos Caratinga', 'lente multifocal Caratinga', 'lente EDOF Caratinga', 'presbiopia Caratinga', 'astigmatismo Caratinga', 'LASIK Caratinga', 'PRK Caratinga', 'SMILE Caratinga', 'cirurgia de catarata Caratinga', 'avaliação oftalmológica Caratinga'],
+    featured: true,
+    seo: {
+      metaTitle: 'Cirurgia refrativa e lentes premium em Caratinga',
+      metaDescription: 'Laser de femtossegundos, IOLs multifocais e EDOF para catarata e presbiopia. Avaliação individual na Clínica Saraiva Vision, em Caratinga-MG.',
+      keywords: ['cirurgia refrativa Caratinga', 'lentes intraoculares Caratinga', 'catarata Caratinga', 'laser de femtossegundos Caratinga', 'lente multifocal Caratinga', 'lente EDOF Caratinga', 'presbiopia Caratinga', 'astigmatismo Caratinga', 'LASIK Caratinga', 'PRK Caratinga', 'SMILE Caratinga', 'cirurgia de catarata Caratinga', 'avaliação oftalmológica Caratinga', 'Dr. Philipe Saraiva Cruz']
+    }
   },
   {
     id: 2,
-    slug: 'catarata-sintomas-tratamento',
-    title: 'Catarata: Sintomas, Causas e Tratamento',
-    excerpt: 'Entenda o que é catarata, seus principais sintomas e as opções de tratamento disponíveis.',
+    slug: 'presbiopia-o-que-e-cura-cirurgia-lentes-contato-caratinga-mg',
+    title: 'Presbiopia: O Que É, Existe Cura, Opções de Cirurgia e Lentes de Contato em Caratinga, MG',
+    excerpt: 'Entenda a presbiopia, conhecida como vista cansada, e descubra se há cura, cirurgias e como usar lentes de contato. Na Clínica Saraiva Vision em Caratinga, MG, cuide da sua visão com especialistas.',
     content: `
-      <h2>O que é Catarata?</h2>
-      <p>A catarata é a opacificação do cristalino, a lente natural do olho, que leva à diminuição progressiva da visão.</p>
+      <h2>Introdução</h2>
+      <p>Cuidar dos olhos é essencial para manter uma boa qualidade de vida, especialmente à medida que envelhecemos. Na Clínica Saraiva Vision, em Caratinga (MG), o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe qualificada oferecem um atendimento humanizado, com tecnologia diagnóstica avançada para ajudar você a entender e tratar condições oculares comuns. Hoje, vamos falar sobre a presbiopia, também conhecida como "vista cansada", respondendo a dúvidas frequentes: o que é, se existe cura, opções de cirurgia e se é possível usar lentes de contato. Ao longo deste artigo, você vai aprender sobre causas, sintomas, tratamentos e a importância de um acompanhamento regular, tudo de forma acessível e prática. Se você mora em Caratinga ou região, essa leitura pode ser o primeiro passo para preservar sua visão e evitar complicações.</p>
 
-      <h3>Sintomas principais:</h3>
+      <p>A presbiopia afeta milhões de pessoas a partir dos 40 anos, impactando atividades cotidianas como ler um livro ou usar o celular. Com informações baseadas em fontes confiáveis, como a Sociedade Brasileira de Oftalmologia, vamos desmistificar o tema e mostrar como a Clínica Saraiva Vision pode auxiliar com consultas personalizadas, exames diagnósticos e adaptações de correção visual.</p>
+
+      <h2>O Que é Presbiopia?</h2>
+      <p>A presbiopia é uma condição natural do envelhecimento ocular que dificulta a visão de perto. Diferente de problemas como miopia ou astigmatismo, ela ocorre quando o cristalino – a lente natural do olho – perde flexibilidade com o tempo, tornando mais difícil focar objetos próximos. Isso é comum a partir dos 40 anos, mas pode variar de pessoa para pessoa.</p>
+
+      <p>Imagine tentar ler as instruções de um remédio ou verificar uma mensagem no smartphone: com presbiopia, você pode precisar afastar o objeto para enxergar melhor. De acordo com a Organização Mundial da Saúde (OMS), essa condição afeta mais de 1 bilhão de pessoas globalmente, e no Brasil, é uma das principais razões para consultas oftalmológicas em adultos maduros. Não é uma doença, mas um processo fisiológico, e o diagnóstico precoce pode melhorar significativamente a qualidade de vida.</p>
+
+      <h2>Causas e Sintomas da Presbiopia</h2>
+      <p>As causas da presbiopia estão ligadas ao envelhecimento: o cristalino endurece e os músculos ao redor dele perdem elasticidade, reduzindo a capacidade de acomodação. Fatores como genética, exposição prolongada a telas e hábitos como fumar podem acelerar o processo, embora não sejam causas diretas.</p>
+
+      <p>Os sintomas surgem gradualmente e incluem:</p>
       <ul>
-        <li>Visão embaçada ou turva</li>
-        <li>Sensibilidade à luz</li>
-        <li>Dificuldade para enxergar à noite</li>
-        <li>Cores parecem desbotadas</li>
-        <li>Visão dupla em um olho</li>
+        <li>Dificuldade para ler letras pequenas, especialmente em ambientes com pouca luz.</li>
+        <li>Necessidade de afastar objetos para focar (como livros ou menus de restaurantes).</li>
+        <li>Fadiga ocular, dores de cabeça ou visão embaçada após tarefas de perto, como costurar ou trabalhar no computador.</li>
+        <li>Sensação de "vista cansada" ao final do dia.</li>
       </ul>
 
-      <h3>Causas:</h3>
-      <p>A principal causa é o envelhecimento natural, mas outros fatores incluem:</p>
+      <p>No cotidiano, isso afeta atividades simples: um professor em Caratinga pode lutar para corrigir provas, ou um motorista para ler placas de sinalização de perto. Idade é o principal fator de risco, mas estilos de vida sedentários com uso excessivo de dispositivos digitais – comuns em home office ou lazer – podem intensificar os sintomas. É importante diferenciar da hipermetropia, que pode ser congênita, enquanto a presbiopia é adquirida.</p>
+
+      <h2>Existe Cura para Presbiopia?</h2>
+      <p>Infelizmente, não existe cura definitiva para a presbiopia, pois ela faz parte do envelhecimento natural. No entanto, há diversas opções para corrigir e gerenciar os sintomas, permitindo uma visão clara e confortável. O objetivo não é reverter o processo, mas compensá-lo com ferramentas adequadas.</p>
+
+      <p>A boa notícia é que, com acompanhamento oftalmológico regular, é possível detectar a presbiopia cedo e evitar complicações como fadiga crônica ou erros de refração associados. Na Clínica Saraiva Vision, o Dr. Philipe Saraiva Cruz e sua equipe enfatizam a prevenção: exames anuais a partir dos 40 anos ajudam a monitorar a saúde ocular e ajustar correções conforme necessário.</p>
+
+      <h2>Opções de Tratamento: Existe Cirurgia para Presbiopia?</h2>
+      <p>Sim, existem cirurgias para tratar a presbiopia, embora elas não curem a condição, mas a corrijam de forma mais permanente. As opções incluem:</p>
       <ul>
-        <li>Diabetes</li>
-        <li>Uso prolongado de corticoides</li>
-        <li>Trauma ocular</li>
-        <li>Exposição excessiva ao sol sem proteção</li>
+        <li><strong>Cirurgia a laser (como LASIK ou PRK multifocal):</strong> Remodela a córnea para melhorar a visão de perto e de longe. É indicada para casos leves a moderados e pode reduzir a dependência de óculos.</li>
+        <li><strong>Implante de lentes intraoculares:</strong> Substitui o cristalino natural por uma lente artificial multifocal, comum em cirurgias de catarata associadas à presbiopia.</li>
+        <li><strong>Monovisão:</strong> Uma técnica onde um olho é corrigido para visão de perto e o outro para longe, adaptando o cérebro à diferença.</li>
       </ul>
 
-      <h3>Tratamento:</h3>
-      <p>O único tratamento definitivo para a catarata é a cirurgia, um procedimento seguro e com alta taxa de sucesso. A cirurgia consiste na remoção do cristalino opaco e implante de uma lente intraocular.</p>
+      <p>Esses procedimentos são seguros quando realizados por profissionais qualificados, mas requerem avaliação individual. Na Clínica Saraiva Vision, em Caratinga, MG, oferecemos exames diagnósticos avançados para determinar a melhor opção, sempre priorizando o atendimento humanizado. Lembre-se: resultados variam, e nem todos são candidatos ideais – fatores como saúde geral e espessura da córnea são avaliados.</p>
 
-      <p><strong>Agende sua avaliação:</strong> Entre em contato com a Saraiva Vision para mais informações.</p>
+      <h2>Posso Usar Lentes de Contato para Presbiopia?</h2>
+      <p>Sim, lentes de contato são uma excelente opção para corrigir a presbiopia, oferecendo liberdade para atividades diárias sem óculos. Existem tipos multifocais, que permitem visão clara em diferentes distâncias, ou bifocais, semelhantes às lentes progressivas em óculos. Elas são ideais para esportes, trabalho ao ar livre ou quem prefere um visual discreto.</p>
+
+      <p>Na Clínica Saraiva Vision, realizamos adaptações personalizadas de lentes de contato, considerando o estilo de vida do paciente. Por exemplo, se você joga futebol em Caratinga ou usa telas o dia todo, podemos recomendar lentes com hidratação extra para conforto. É essencial uma avaliação profissional para evitar infecções ou desconforto, e o uso correto inclui higiene rigorosa e trocas regulares.</p>
+
+      <h2>Prevenção, Acompanhamento e Sinais de Alerta</h2>
+      <p>Embora a presbiopia não seja prevenível, hábitos saudáveis ajudam a manter a visão geral: pause a cada 20 minutos ao usar telas (regra 20-20-20: olhe 20 metros por 20 segundos), mantenha uma dieta rica em vitaminas A e C, e use óculos de sol para proteção UV.</p>
+
+      <p>O acompanhamento oftalmológico regular é crucial, especialmente a partir dos 40 anos. Na Clínica Saraiva Vision, nossos serviços incluem consultas detalhadas, exames diagnósticos como topografia corneana e tratamentos personalizados. Procure um especialista se notar sinais de alerta, como:</p>
+      <ul>
+        <li>Visão embaçada persistente para perto, mesmo com correção.</li>
+        <li>Dores de cabeça frequentes após leitura.</li>
+        <li>Dificuldade em alternar foco entre perto e longe.</li>
+        <li>Fadiga ocular que interfere no trabalho ou lazer.</li>
+      </ul>
+
+      <p>Esses sintomas podem indicar presbiopia ou condições associadas, e um diagnóstico precoce evita piora.</p>
+
+      <h2>Conclusão</h2>
+      <p>Em resumo, a presbiopia é uma condição comum do envelhecimento que afeta a visão de perto, sem cura definitiva, mas com opções eficazes como cirurgias, lentes de contato e óculos. Entender causas, sintomas e tratamentos ajuda a manter uma rotina ativa, seja lendo um livro ou dirigindo em Caratinga, MG. O cuidado contínuo com a visão é fundamental para prevenir complicações e garantir bem-estar.</p>
+
+      <p>Na Clínica Saraiva Vision, o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e nossa equipe estão prontos para oferecer atendimento humanizado, com tecnologia diagnóstica de ponta. Pronto para cuidar melhor da sua visão? Agende sua consulta, realize exames diagnósticos, adapte lentes de contato ou discuta tratamentos personalizados. Ligue para (33) 99860-1427 e marque agora – sua saúde ocular merece atenção especializada!</p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Sociedade Brasileira de Oftalmologia (SBO). "Presbiopia: Diagnóstico e Tratamento". 2023.</li>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). "Guia de Orientação para Presbiopia e Correções Cirúrgicas". 2022.</li>
+        <li>Organização Mundial da Saúde (OMS). "World Report on Vision". 2019.</li>
+        <li>American Academy of Ophthalmology. "Presbyopia: Symptoms, Causes, and Treatments". 2023.</li>
+      </ol>
     `,
-    author: 'Dr. Paulo Saraiva',
-    date: '2025-09-01',
-    category: 'Doenças Oculares',
-    tags: ['catarata', 'tratamento', 'cirurgia'],
-    image: '/images/blog/catarata.jpg',
-    featured: true
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Prevenção',
+    tags: ['presbiopia', 'vista cansada', 'cura presbiopia', 'cirurgia presbiopia', 'lentes de contato presbiopia', 'oftalmologista Caratinga', 'saúde ocular MG', 'tratamento presbiopia'],
+    image: '/Blog/capa_catarata.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Presbiopia: O Que É, Existe Cura, Opções de Cirurgia e Lentes de Contato em Caratinga, MG',
+      metaDescription: 'Entenda a presbiopia, conhecida como vista cansada, e descubra se há cura, cirurgias e como usar lentes de contato. Na Clínica Saraiva Vision em Caratinga, MG, cuide da sua visão com especialistas.',
+      keywords: ['presbiopia', 'vista cansada', 'cura presbiopia', 'cirurgia presbiopia', 'lentes de contato presbiopia', 'oftalmologista Caratinga', 'saúde ocular MG', 'tratamento presbiopia']
+    }
   },
   {
     id: 3,
-    slug: 'cuidados-lentes-de-contato',
-    title: 'Cuidados Essenciais com Lentes de Contato',
-    excerpt: 'Aprenda como cuidar corretamente das suas lentes de contato para evitar infecções e problemas oculares.',
+    slug: 'obstrucao-ducto-lacrimal-lacrimejamento-caratinga',
+    title: 'Obstrução do ducto lacrimal e lacrimejamento: o que é, sintomas e tratamento em Caratinga',
+    excerpt: 'Lacrimejamento constante em Caratinga? Entenda causas da obstrução do ducto lacrimal e tratamentos disponíveis na Clínica Saraiva Vision.',
     content: `
-      <h2>Higiene é Fundamental</h2>
-      <p>O uso inadequado de lentes de contato pode causar sérios problemas oculares, incluindo infecções graves. Siga essas recomendações para uso seguro.</p>
+      <h2>Introdução</h2>
+      <p>Você sente os olhos sempre "cheios d'água", como se estivesse chorando sem motivo? O lacrimejamento constante é um dos sinais mais comuns da obstrução do ducto lacrimal, um problema frequente que pode afetar bebês, adultos e idosos. Na Clínica Saraiva Vision, em Caratinga-MG, o oftalmologista Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe oferecem atendimento humanizado e tecnologia diagnóstica moderna para identificar a causa do lacrimejamento e indicar o melhor tratamento.</p>
 
-      <h3>Cuidados diários:</h3>
+      <p>Entender como funcionam as vias lacrimais ajuda a diferenciar "lágrimas de emoção" de um sinal de alerta ocular. Estudos mostram que a obstrução congênita do ducto lacrimal está presente em cerca de 5% a 20% dos bebês e, nos adultos, a obstrução adquirida é mais comum em mulheres a partir da meia-idade, muitas vezes relacionada a inflamações crônicas ou alterações nasais. Ao longo deste artigo, você vai conhecer as causas, os sintomas, as opções terapêuticas e como é o cuidado prático no dia a dia em Caratinga.</p>
+
+      <h2>O que é obstrução do ducto lacrimal?</h2>
+      <p>As lágrimas são produzidas pelas glândulas lacrimais e drenam por pequenos orifícios nas pálpebras (pontos lacrimais), passando pelos canalículos até o saco lacrimal e, então, pelo ducto nasolacrimal, que desemboca no interior do nariz. Quando há estreitamento ou bloqueio em qualquer ponto desse caminho, as lágrimas não escoam adequadamente e "transbordam", causando lacrimejamento (epífora).</p>
+
+      <h3>Tipos de obstrução:</h3>
       <ul>
-        <li>Sempre lave as mãos antes de manusear as lentes</li>
-        <li>Use apenas soluções próprias para lentes de contato</li>
-        <li>Nunca use água da torneira para limpar ou armazenar as lentes</li>
-        <li>Troque o estojo regularmente (a cada 3 meses)</li>
-        <li>Respeite o prazo de validade das lentes</li>
+        <li><strong>Congênita:</strong> presente ao nascimento, geralmente por persistência de uma membrana fina no final do ducto nasolacrimal</li>
+        <li><strong>Adquirida:</strong> surge ao longo da vida, por inflamação, trauma, alterações anatômicas, infecções, cirurgias nasais, entre outros fatores</li>
       </ul>
 
-      <h3>Sinais de alerta:</h3>
-      <p>Procure um oftalmologista imediatamente se apresentar:</p>
+      <h3>Por que é importante conhecer?</h3>
+      <p>Além do incômodo social e visual, a obstrução pode predispor a infecções como a dacriocistite (infecção do saco lacrimal), com dor e vermelhidão no canto interno dos olhos. Em bebês, o diagnóstico correto evita uso inadequado de colírios e orienta manobras simples que podem resolver o problema sem cirurgia. Em adultos, reconhecer precocemente permite optar por tratamentos menos invasivos e prevenir complicações.</p>
+
+      <h2>Causas e fatores de risco</h2>
+
+      <h3>Causas principais:</h3>
       <ul>
-        <li>Vermelhidão persistente</li>
-        <li>Dor ocular</li>
-        <li>Sensibilidade à luz</li>
-        <li>Visão embaçada</li>
-        <li>Lacrimejamento excessivo</li>
+        <li>Congênita (membrana persistente no ducto nasolacrimal)</li>
+        <li>Inflamações crônicas (rinites, sinusites)</li>
+        <li>Infecções repetidas da margem palpebral (blefarite)</li>
+        <li>Traumas nasais ou orbitários</li>
+        <li>Desvios ou alterações anatômicas nasais</li>
+        <li>Pós-cirúrgico nasal ou maxilofacial</li>
+        <li>Doenças inflamatórias sistêmicas</li>
+        <li>Radioterapia e algumas quimioterapias</li>
+        <li>Envelhecimento com flacidez palpebral</li>
       </ul>
-
-      <h3>Tempo de uso:</h3>
-      <p>Evite dormir com as lentes, a menos que sejam específicas para uso prolongado. O ideal é não ultrapassar 12 horas de uso diário.</p>
-
-      <p><strong>Consultas regulares:</strong> Mesmo sem sintomas, consulte seu oftalmologista regularmente para avaliar a adaptação das lentes.</p>
-    `,
-    author: 'Dra. Ana Saraiva',
-    date: '2025-08-20',
-    category: 'Cuidados Oculares',
-    tags: ['lentes de contato', 'cuidados', 'higiene'],
-    image: '/images/blog/lentes-contato.jpg',
-    featured: false
-  },
-  {
-    id: 4,
-    slug: 'glaucoma-prevencao-tratamento',
-    title: 'Glaucoma: A Doença Silenciosa dos Olhos',
-    excerpt: 'Conheça o glaucoma, uma das principais causas de cegueira irreversível no mundo, e como preveni-lo.',
-    content: `
-      <h2>O que é Glaucoma?</h2>
-      <p>O glaucoma é uma doença que danifica o nervo óptico, geralmente causada pelo aumento da pressão intraocular. É conhecida como "doença silenciosa" porque não apresenta sintomas nas fases iniciais.</p>
 
       <h3>Fatores de risco:</h3>
       <ul>
-        <li>Idade acima de 40 anos</li>
-        <li>Histórico familiar de glaucoma</li>
-        <li>Alta pressão intraocular</li>
-        <li>Diabetes</li>
-        <li>Miopia alta</li>
-        <li>Uso prolongado de corticoides</li>
+        <li>Sexo feminino e idade acima de 50 anos</li>
+        <li>Alergias respiratórias e sazonais</li>
+        <li>Exposição frequente a poeira e vento</li>
+        <li>Tabagismo e poluição</li>
+        <li>Higiene palpebral deficiente</li>
       </ul>
 
-      <h3>Tipos de glaucoma:</h3>
-      <p><strong>Glaucoma de ângulo aberto:</strong> Forma mais comum, de progressão lenta e sem sintomas iniciais.</p>
-      <p><strong>Glaucoma de ângulo fechado:</strong> Forma menos comum, mas pode causar sintomas agudos como dor intensa e perda súbita de visão.</p>
+      <h2>Sintomas e diagnóstico</h2>
 
-      <h3>Diagnóstico:</h3>
-      <p>O diagnóstico é feito através de exames como:</p>
+      <h3>Sinais de alerta - Procure avaliação oftalmológica se você notar:</h3>
       <ul>
-        <li>Medida da pressão intraocular</li>
-        <li>Exame do nervo óptico</li>
-        <li>Campo visual</li>
-        <li>OCT (Tomografia de Coerência Óptica)</li>
+        <li>Lacrimejamento constante em um ou ambos os olhos</li>
+        <li>Secreção amarelada ou esbranquiçada, crostas nos cílios</li>
+        <li>Vermelhidão e dor no canto interno do olho (próximo ao nariz)</li>
+        <li>Inchaço doloroso na região do saco lacrimal</li>
+        <li>Visão borrada pelo excesso de lágrimas</li>
+        <li>Febre ou mal-estar associados (suspeita de dacriocistite)</li>
       </ul>
 
-      <h3>Tratamento:</h3>
-      <p>O tratamento visa controlar a pressão intraocular através de colírios, laser ou cirurgia. O diagnóstico precoce é fundamental para preservar a visão.</p>
+      <h3>Quando procurar ajuda</h3>
+      <p>Se o lacrimejamento é persistente por mais de duas semanas, se há secreção recorrente, episódios de "conjuntivite" que sempre voltam, ou se surge dor e inchaço no canto interno do olho, é hora de agendar avaliação. Em bebês, lacrimejamento e secreção desde as primeiras semanas de vida merecem orientação específica; sinais de dor, febre ou piora abrupta requerem atendimento imediato.</p>
 
-      <p><strong>Prevenção:</strong> Consultas oftalmológicas regulares são essenciais, especialmente se você tem fatores de risco.</p>
+      <h3>Exames diagnósticos disponíveis na clínica</h3>
+      <p>Na Clínica Saraiva Vision, o diagnóstico é clínico e funcional, com apoio de tecnologia:</p>
+      <ul>
+        <li>Avaliação na lâmpada de fenda de alta resolução</li>
+        <li>Teste do desaparecimento da fluoresceína (FDUT)</li>
+        <li>Irrigação e sondagem do sistema lacrimal</li>
+        <li>Testes corantes (Jones)</li>
+        <li>Endoscopia nasal quando necessário</li>
+        <li>Documentação fotográfica e orientação individualizada</li>
+      </ul>
+
+      <h2>Tratamento e prevenção</h2>
+
+      <h3>Opções terapêuticas:</h3>
+      <ul>
+        <li><strong>Observação e higiene palpebral:</strong> em muitos bebês, há resolução espontânea até 12 meses</li>
+        <li><strong>Massagem de Crigler (bebês):</strong> manobra sobre o saco lacrimal que aumenta a pressão e ajuda a romper a membrana</li>
+        <li><strong>Antibióticos:</strong> quando há infecção (dacriocistite) ou secreção purulenta</li>
+        <li><strong>Sondagem lacrimal:</strong> procedimento rápido que abre a via obstruída</li>
+        <li><strong>Intubação com stent:</strong> útil em estenoses parciais</li>
+        <li><strong>Dacrioplastia com balão:</strong> indicada em casos de estreitamento</li>
+        <li><strong>Dacriocistorrinostomia (DCR):</strong> cria um novo caminho entre o saco lacrimal e o nariz; padrão ouro para obstruções completas em adultos</li>
+      </ul>
+
+      <h3>Medidas preventivas:</h3>
+      <ol>
+        <li>Mantenha higiene palpebral: limpeza suave da margem dos cílios diariamente</li>
+        <li>Evite maquilhagem vencida e retire o produto totalmente antes de dormir</li>
+        <li>Proteja-se da poeira e do vento com óculos</li>
+        <li>Trate rinite e sinusite de forma adequada</li>
+        <li>Não manipule os olhos nem "esprema" a região do canto interno</li>
+        <li>Em bebês, siga orientação sobre massagem de Crigler</li>
+        <li>Retorne às consultas conforme o plano</li>
+      </ol>
+
+      <h2>Vida prática em Caratinga</h2>
+      <p>Em dias de sol intenso no centro de Caratinga, o reflexo nas fachadas e no asfalto pode aumentar o incômodo do lacrimejamento. Nas áreas com ruas de terra ou quando há tempo seco, a poeira e o vento favorecem irritação e secreção.</p>
+
+      <p><strong>Adaptações necessárias:</strong> Use óculos com proteção lateral ao caminhar em vias movimentadas, evite horários de sol a pico quando possível, e mantenha frascos de solução de limpeza palpebral na bolsa/mochila. Em bebês, mantenha sempre gaze/algodão e soro fisiológico para higiene suave.</p>
+
+      <h2>Conclusão</h2>
+      <p>Lacrimejamento persistente não é "frescura" nem precisa ser aceito como parte do dia a dia. A obstrução do ducto lacrimal tem causas identificáveis e tratamento eficaz, desde manobras simples em bebês até procedimentos definitivos em adultos. Em Caratinga, a Clínica Saraiva Vision oferece avaliação cuidadosa com o Dr. Philipe Saraiva Cruz e equipe, tecnologia diagnóstica e um plano terapêutico humanizado para cada caso.</p>
+
+      <p><strong>Para mais informações ou para agendar sua avaliação, entre em contato pelo telefone (33) 99860-1427. Seu conforto visual e sua qualidade de vida merecem atenção especializada.</strong></p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). Diretrizes de Oftalmologia. 2024.</li>
+        <li>American Academy of Ophthalmology. Lacrimal System Disorders. 2024.</li>
+        <li>Sociedade Brasileira de Oftalmologia. Manual de Boas Práticas em Vias Lacrimais. 2023.</li>
+      </ol>
     `,
-    author: 'Dr. Paulo Saraiva',
-    date: '2025-08-05',
-    category: 'Doenças Oculares',
-    tags: ['glaucoma', 'prevenção', 'pressão ocular'],
-    image: '/images/blog/glaucoma.jpg',
-    featured: true
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-29',
+    category: 'Tratamento',
+    tags: ['obstrução ducto lacrimal', 'lacrimejamento', 'dacriocistite', 'vias lacrimais', 'Caratinga MG'],
+    image: '/Blog/sda.png',
+    featured: false,
+    seo: {
+      metaTitle: 'Obstrução do ducto lacrimal: causas e soluções em Caratinga',
+      metaDescription: 'Lacrimejamento constante em Caratinga? Entenda causas da obstrução do ducto lacrimal e tratamentos disponíveis na Clínica Saraiva Vision.',
+      keywords: ['obstrução do ducto lacrimal', 'lacrimejamento', 'Caratinga MG', 'dacriocistite', 'dacriocistorrinostomia', 'vias lacrimais']
+    }
+  },
+  {
+    id: 4,
+    slug: 'lentes-premium-cirurgia-catarata-caratinga-mg',
+    title: 'Lentes Premium para Cirurgia de Catarata: Recupere Sua Visão com Tecnologia Avançada em Caratinga, MG',
+    excerpt: 'Descubra como lentes premium na cirurgia de catarata podem restaurar sua visão com clareza. Na Clínica Saraiva Vision em Caratinga, MG, agende uma consulta com Dr. Philipe Saraiva Cruz para tratamentos personalizados.',
+    content: `
+      <h2>O Que é Catarata e Como Ela Afeta o Cotidiano?</h2>
+      <p>A catarata é uma opacidade no cristalino, a lente natural do olho, que causa visão turva e pode progredir com o tempo. Ela é comum em pessoas acima dos 60 anos, mas fatores como exposição ao sol, diabetes, tabagismo ou uso prolongado de telas podem acelerá-la. Imagine tentar ler um livro ou dirigir à noite com uma névoa constante – é assim que a catarata impacta o dia a dia, limitando atividades como trabalhar no computador, praticar esportes ou até cozinhar com segurança.</p>
+
+      <p>No cotidiano, hábitos simples podem agravar o risco: passar horas em frente a telas sem pausas, ignorar óculos de sol em ambientes ensolarados ou negligenciar check-ups anuais. Em Caratinga, MG, onde o clima quente e a rotina ativa são comuns, esses fatores tornam a prevenção ainda mais crucial. A boa notícia é que o acompanhamento oftalmológico regular, como os exames diagnósticos oferecidos na Clínica Saraiva Vision, pode detectar a catarata cedo e evitar complicações.</p>
+
+      <h2>Sintomas e Sinais de Alerta: Quando Procurar um Especialista?</h2>
+      <p>Reconhecer os sinais da catarata é o primeiro passo para um tratamento eficaz. Os sintomas incluem visão embaçada, dificuldade para enxergar à noite, sensibilidade excessiva à luz e cores desbotadas. Em estágios avançados, pode haver halos ao redor de luzes ou necessidade constante de trocar óculos.</p>
+
+      <p>Aqui vão alguns sinais de alerta específicos que indicam a necessidade de procurar um oftalmologista imediatamente:</p>
+      <ul>
+        <li>Visão embaçada persistente, mesmo com correção de grau</li>
+        <li>Sensibilidade à luz súbita, como faróis de carros ou sol forte</li>
+        <li>Dor ocular intensa ou vermelhidão inexplicável</li>
+        <li>Manchas, flashes de luz ou "moscas volantes" no campo visual</li>
+        <li>Queda brusca de visão em um ou ambos os olhos</li>
+      </ul>
+
+      <p>Se você notar esses sintomas, não espere – marque uma consulta. Na Clínica Saraiva Vision, o Dr. Philipe Saraiva Cruz e sua equipe qualificada realizam avaliações completas, incluindo exames como topografia corneal e biometria, para um diagnóstico preciso. Lembre-se: o acompanhamento regular, pelo menos uma vez ao ano, é vital para prevenir progressão e manter a saúde ocular em dia.</p>
+
+      <h2>A Cirurgia de Catarata: Um Procedimento Seguro e Eficaz</h2>
+      <p>A cirurgia de catarata é o tratamento padrão e envolve a remoção do cristalino opaco e sua substituição por uma lente intraocular artificial. É um procedimento rápido, geralmente ambulatorial, com alta taxa de sucesso e recuperação rápida. Na Clínica Saraiva Vision, utilizamos tecnologia avançada para garantir precisão e conforto, com foco em tratamentos personalizados que consideram o estilo de vida do paciente.</p>
+
+      <p>Mas o que diferencia uma cirurgia comum de uma com lentes premium? As lentes padrão corrigem apenas a miopia ou hipermetropia básica, enquanto as premium vão além, abordando presbiopia (vista cansada) e astigmatismo. Isso significa menos dependência de óculos pós-cirurgia, ideal para quem leva uma vida ativa em Caratinga, como profissionais que dirigem ou praticam esportes ao ar livre.</p>
+
+      <h2>Lentes Premium: Inovação para uma Visão Mais Nítida</h2>
+      <p>As lentes premium, também conhecidas como lentes intraoculares premium (IOLs), são opções avançadas projetadas para proporcionar visão multifocal ou tórica. Por exemplo, as lentes multifocais permitem foco em distâncias variadas – perto, intermediário e longe – reduzindo a necessidade de óculos para leitura ou telas. Já as tóricas corrigem astigmatismo, melhorando a nitidez em ambientes com pouca luz.</p>
+
+      <p>Essas lentes são ideais para pacientes que desejam independência visual no cotidiano. Pense em um professor em Caratinga que precisa alternar entre quadro e livros, ou um motorista que enfrenta estradas irregulares: as lentes premium restauram a clareza sem compromissos. Na nossa clínica, o Dr. Philipe Saraiva Cruz avalia cada caso para recomendar a melhor opção, integrando serviços como adaptação de lentes de contato para quem precisa de suporte adicional.</p>
+
+      <h3>Os benefícios incluem:</h3>
+      <ul>
+        <li>Melhora na qualidade de vida, com visão mais natural</li>
+        <li>Redução de halos e reflexos noturnos</li>
+        <li>Correção simultânea de múltiplos problemas visuais</li>
+        <li>Recuperação mais confortável, com menos ajustes pós-operatórios</li>
+      </ul>
+
+      <p>É importante destacar que, embora as lentes premium ofereçam vantagens, a escolha depende de exames diagnósticos detalhados. Nossa equipe garante um plano personalizado, evitando promessas irreais e focando em resultados baseados em evidências.</p>
+
+      <h2>Prevenção e Cuidados Diários para Manter a Visão Saudável</h2>
+      <p>Prevenir a catarata envolve hábitos simples: use óculos de sol com proteção UV, mantenha uma dieta rica em antioxidantes (como frutas e vegetais), controle condições como diabetes e evite fumar. No dia a dia, faça pausas em telas (regra 20-20-20: a cada 20 minutos, olhe 20 pés distante por 20 segundos) e hidrate os olhos em ambientes secos.</p>
+
+      <p>O acompanhamento oftalmológico regular é o pilar da prevenção. Na Clínica Saraiva Vision, oferecemos consultas anuais, exames diagnósticos e tratamentos personalizados para monitorar e intervir cedo. Isso não só previne catarata, mas também detecta outras questões, como glaucoma ou degeneração macular.</p>
+
+      <h2>Conclusão: Invista na Sua Visão Hoje</h2>
+      <p>Em resumo, as lentes premium para cirurgia de catarata representam um avanço tecnológico que vai além da remoção da opacidade, oferecendo visão multifuncional e independência no cotidiano. Reconhecer sintomas precoces, adotar hábitos preventivos e buscar acompanhamento regular são chaves para uma saúde ocular duradoura. Na Clínica Saraiva Vision, em Caratinga, MG, o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e nossa equipe qualificada estão prontos para proporcionar atendimento humanizado, com exames diagnósticos precisos, adaptação de lentes de contato e tratamentos personalizados.</p>
+
+      <p><strong>Pronto para cuidar melhor da sua visão? Agende sua consulta na Clínica Saraiva Vision pelo telefone (33) 99860-1427. Estamos aqui para ajudá-lo a ver o mundo com clareza e confiança!</strong></p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). Manual de Ajuste de Condutas 2019, incluindo seções sobre cirurgia de catarata e lentes intraoculares. Disponível em: http://cooeso.com.br/wp-content/uploads/2019/09/Manual-de-Ajuste-de-Conduta-2019_online.pdf (2019).</li>
+        <li>Sociedade Brasileira de Oftalmologia (SBO). Revista Brasileira de Oftalmologia, vol. 70, nº 6, com discussões sobre avanços em oftalmologia e catarata. Disponível em: https://www.sboportal.org.br/2011/rbo/rbo_nov_dez_2011.pdf (2011).</li>
+        <li>Organização Mundial da Saúde (OMS). Relatórios sobre saúde ocular e prevenção de cegueira, incluindo catarata. Disponível em: https://www.who.int/health-topics/blindness-and-vision-loss (acessado em 2023).</li>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). Diretrizes para 2022 em oftalmologia, com ênfase em cirurgias e inovações. Disponível em: https://cbo.net.br/2020/admin/docs_upload/Jota%20Zero%20197.pdf (2022).</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-29',
+    category: 'Tratamento',
+    tags: ['lentes premium', 'cirurgia de catarata', 'lentes intraoculares', 'lentes multifocais', 'Caratinga MG'],
+    image: '/Blog/capa_catarata.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Lentes Premium para Cirurgia de Catarata em Caratinga, MG: Benefícios e Opções Avançadas',
+      metaDescription: 'Descubra como lentes premium na cirurgia de catarata podem restaurar sua visão com clareza. Na Clínica Saraiva Vision em Caratinga, MG, agende uma consulta com Dr. Philipe Saraiva Cruz para tratamentos personalizados.',
+      keywords: ['lentes premium para cirurgia de catarata', 'cirurgia de catarata com lentes intraoculares', 'lentes multifocais catarata', 'tratamento catarata Caratinga MG', 'oftalmologia Caratinga']
+    }
   },
   {
     id: 5,
-    slug: 'protecao-solar-olhos',
-    title: 'Proteção Solar para os Olhos: Além dos Óculos Escuros',
-    excerpt: 'Descubra como proteger seus olhos dos raios UV e prevenir danos causados pela exposição solar.',
+    slug: 'oftalmologia-pediatrica-caratinga-quando-levar-criancas',
+    title: 'Oftalmologia Pediátrica em Caratinga: Quando Levar as Crianças ao Oftalmologista',
+    excerpt: 'Descubra quando levar seu filho ao oftalmologista em Caratinga. Dr. Philipe Saraiva Cruz explica frequência ideal e sinais de alerta. Agende na Saraiva Vision.',
     content: `
-      <h2>Por que proteger os olhos do sol?</h2>
-      <p>A exposição prolongada aos raios UV pode causar diversos problemas oculares, incluindo catarata, degeneração macular e pterígio.</p>
+      <p>A visão é fundamental para o desenvolvimento infantil, influenciando diretamente a aprendizagem, coordenação motora e interação social das crianças. Em Caratinga, muitos pais questionam-se sobre o momento ideal para levar os filhos ao oftalmologista e qual a frequência necessária dos exames. Dr. Philipe Saraiva Cruz (CRM-MG 69.870), da Clínica Saraiva Vision, esclarece que <strong>80% do aprendizado infantil ocorre através da visão</strong>, tornando os cuidados oftalmológicos essenciais desde os primeiros meses de vida.</p>
 
-      <h3>Danos causados pelos raios UV:</h3>
+      <h2>O que é Oftalmologia Pediátrica e Por que é Importante?</h2>
+
+      <h3>Definição e Especificidades</h3>
+      <p>A oftalmologia pediátrica é a subespecialidade médica dedicada ao diagnóstico, tratamento e prevenção de doenças oculares em bebês, crianças e adolescentes. Diferente da oftalmologia geral, esta área considera as particularidades do desenvolvimento visual infantil, que ocorre gradualmente até os 7-8 anos de idade.</p>
+
+      <h3>Desenvolvimento Visual Infantil</h3>
+      <p>O sistema visual das crianças passa por etapas cruciais de desenvolvimento. Nos primeiros meses, o bebê desenvolve a capacidade de fixar objetos e seguir movimentos. Entre 3-6 meses, surge a visão binocular, e aos 2 anos, a acuidade visual atinge aproximadamente 50% da capacidade adulta.</p>
+
+      <h3>Impacto na Vida Escolar</h3>
+      <p>Em Caratinga, onde a educação é valorizada pelas famílias, problemas visuais não diagnosticados podem comprometer significativamente o rendimento escolar. Crianças com dificuldades visuais frequentemente apresentam:</p>
       <ul>
-        <li>Catarata precoce</li>
-        <li>Degeneração macular</li>
-        <li>Pterígio (crescimento anormal na córnea)</li>
-        <li>Fotoceratite (queimadura da córnea)</li>
-        <li>Câncer de pele nas pálpebras</li>
+        <li>Dificuldade de concentração</li>
+        <li>Problemas de leitura e escrita</li>
+        <li>Baixo rendimento acadêmico</li>
+        <li>Comportamentos agitados ou retraídos</li>
       </ul>
 
-      <h3>Como proteger:</h3>
-      <p><strong>Óculos de sol:</strong> Use óculos que bloqueiem 100% dos raios UVA e UVB. Verifique sempre a etiqueta de proteção UV.</p>
-      <p><strong>Chapéus e bonés:</strong> Oferecem proteção adicional, especialmente com abas largas.</p>
-      <p><strong>Evite horários de pico:</strong> Entre 10h e 16h, os raios UV são mais intensos.</p>
+      <h2>Principais Causas e Fatores de Risco</h2>
 
-      <h3>Óculos de sol de qualidade:</h3>
-      <p>Não basta que os óculos sejam escuros. É essencial que tenham proteção UV certificada. Óculos escuros sem proteção UV são ainda mais prejudiciais, pois dilatam a pupila e permitem maior entrada de raios nocivos.</p>
-
-      <h3>Cuidados especiais:</h3>
+      <h3>Causas Mais Comuns de Problemas Visuais Infantis</h3>
+      <p>Erros refrativos representam a maioria dos problemas visuais pediátricos:</p>
       <ul>
-        <li>Crianças também precisam de proteção UV</li>
-        <li>Use proteção mesmo em dias nublados</li>
-        <li>Atenção redobrada em ambientes com reflexo (praia, neve, água)</li>
+        <li><strong>Miopia:</strong> dificuldade para ver ao longe, cada vez mais comum devido ao uso excessivo de dispositivos eletrônicos</li>
+        <li><strong>Hipermetropia:</strong> dificuldade para focar objetos próximos, natural em crianças pequenas</li>
+        <li><strong>Astigmatismo:</strong> visão distorcida devido à curvatura irregular da córnea</li>
+        <li><strong>Ambliopia (olho preguiçoso):</strong> redução da acuidade visual em um ou ambos os olhos</li>
       </ul>
 
-      <p><strong>Consulte um especialista:</strong> Na Saraiva Vision, você encontra orientações sobre os melhores óculos de sol para sua proteção.</p>
+      <h3>Fatores de Risco</h3>
+      <ul>
+        <li><strong>Histórico familiar:</strong> pais com problemas visuais aumentam as chances dos filhos</li>
+        <li><strong>Prematuridade:</strong> bebês nascidos antes das 37 semanas requerem atenção especial</li>
+        <li><strong>Exposição solar intensa:</strong> comum na região de Caratinga devido ao clima tropical</li>
+        <li><strong>Traumatismos oculares:</strong> acidentes durante brincadeiras ou práticas esportivas</li>
+        <li><strong>Uso excessivo de telas:</strong> tablets, celulares e televisão por períodos prolongados</li>
+      </ul>
+
+      <h2>Sintomas e Sinais de Alerta</h2>
+
+      <h3>Sinais que Exigem Atenção Imediata</h3>
+      <p><strong>⚠️ ATENÇÃO:</strong> Procure imediatamente o Dr. Philipe Saraiva Cruz na Clínica Saraiva Vision se observar:</p>
+      <ul>
+        <li><strong>Olhos desalinhados</strong> (estrabismo) após os 4 meses</li>
+        <li><strong>Pupila branca</strong> ou reflexo esbranquiçado no olho</li>
+        <li><strong>Lacrimejamento excessivo</strong> sem causa aparente</li>
+        <li><strong>Pálpebras caídas</strong> cobrindo a pupila</li>
+        <li><strong>Movimentos oculares involuntários</strong></li>
+        <li><strong>Fotofobia severa</strong> (desconforto extremo com luz)</li>
+      </ul>
+
+      <h3>Comportamentos Indicativos de Problemas Visuais</h3>
+      <ul>
+        <li>Aproximar-se muito de livros, televisão ou quadro escolar</li>
+        <li>Franzir os olhos para ver melhor</li>
+        <li>Inclinar a cabeça para um lado</li>
+        <li>Cobrir um olho para enxergar</li>
+        <li>Tropeçar frequentemente ou ter dificuldades com coordenação</li>
+        <li>Queixas de dor de cabeça após atividades visuais</li>
+        <li>Desinteresse por atividades que exigem visão de perto</li>
+      </ul>
+
+      <h2>Cronograma Ideal de Consultas Oftalmológicas</h2>
+
+      <h3>Primeira Consulta: Teste do Reflexo Vermelho</h3>
+      <p><strong>Quando:</strong> Ainda na maternidade (primeiras 48-72 horas)<br>
+      <strong>Objetivo:</strong> Detectar cataratas congênitas, glaucoma e tumores intraoculares</p>
+
+      <h3>Consultas no Primeiro Ano</h3>
+      <ul>
+        <li><strong>1º mês:</strong> Reavaliação do teste do reflexo vermelho</li>
+        <li><strong>6 meses:</strong> Avaliação do desenvolvimento visual básico</li>
+        <li><strong>12 meses:</strong> Exame oftalmológico completo com pupila dilatada</li>
+      </ul>
+
+      <h3>Idade Pré-Escolar (1-5 anos)</h3>
+      <p><strong>Frequência recomendada:</strong> Anualmente ou conforme orientação médica<br>
+      <strong>Foco principal:</strong> Detecção de ambliopia, estrabismo e erros refrativos</p>
+
+      <h3>Idade Escolar (6 anos em diante)</h3>
+      <p><strong>Frequência:</strong> A cada 1-2 anos para crianças sem problemas identificados<br>
+      <strong>Atenção especial:</strong> Períodos de crescimento acelerado podem alterar o grau dos óculos</p>
+
+      <h2>Tratamentos e Tecnologias Disponíveis</h2>
+
+      <h3>Opções Terapêuticas Modernas</h3>
+      <ul>
+        <li><strong>Óculos corretivos:</strong> Primeira linha de tratamento para erros refrativos, com armações especiais para crianças</li>
+        <li><strong>Lentes de contato:</strong> Indicadas em casos específicos, especialmente para alta miopia ou anisometropia</li>
+        <li><strong>Oclusão ocular:</strong> Tratamento tradicional para ambliopia, com adesivos especiais</li>
+        <li><strong>Terapia visual:</strong> Exercícios específicos para melhorar habilidades visuais</li>
+      </ul>
+
+      <h3>Tecnologias Avançadas na Clínica Saraiva Vision</h3>
+      <p>A Clínica Saraiva Vision investe em tecnologia de ponta para oftalmologia pediátrica:</p>
+      <ul>
+        <li><strong>Retinografia digital:</strong> Documentação precisa do fundo ocular</li>
+        <li><strong>Tonometria sem contato:</strong> Medição da pressão intraocular sem desconforto</li>
+        <li><strong>Topografia corneana:</strong> Mapeamento detalhado da córnea</li>
+        <li><strong>OCT pediátrico:</strong> Exame de alta resolução das estruturas oculares</li>
+      </ul>
+
+      <h2>Prevenção: Cuidados Essenciais no Dia a Dia</h2>
+
+      <h3>Medidas Preventivas Fundamentais</h3>
+      <ol>
+        <li><strong>Alimentação rica em vitaminas A, C e E:</strong> Vegetais verde-escuros, cenouras, frutas cítricas</li>
+        <li><strong>Regra 20-20-20:</strong> A cada 20 minutos de atividade próxima, olhar para longe (20 metros) por 20 segundos</li>
+        <li><strong>Tempo adequado ao ar livre:</strong> Pelo menos 2 horas diárias previnem o desenvolvimento de miopia</li>
+        <li><strong>Higiene ocular:</strong> Lavar as mãos antes de tocar nos olhos, evitar coçar</li>
+        <li><strong>Ambiente bem iluminado:</strong> Estudar e brincar com luz adequada</li>
+      </ol>
+
+      <h3>Uso Responsável de Dispositivos Eletrônicos</h3>
+      <ul>
+        <li><strong>Limitar tempo de tela:</strong> Máximo 1 hora para crianças 2-5 anos</li>
+        <li><strong>Distância adequada:</strong> 50-60 cm para tablets, 3-4 metros para televisão</li>
+        <li><strong>Pausas regulares:</strong> Intervalos a cada 30 minutos de uso</li>
+        <li><strong>Configurações adequadas:</strong> Brilho, contraste e tamanho de fonte otimizados</li>
+      </ul>
+
+      <h2>Conclusão</h2>
+      <p>A oftalmologia pediátrica representa um investimento fundamental no desenvolvimento e futuro das crianças. Em Caratinga, a Clínica Saraiva Vision oferece acompanhamento especializado desde o nascimento, utilizando tecnologia avançada e abordagem humanizada.</p>
+
+      <p><strong>Para mais informações ou agendamento de consulta, entre em contato com a Clínica Saraiva Vision pelo telefone (33) 99860-1427. A visão do seu filho merece cuidado especializado.</strong></p>
+
+      <h3>Referências:</h3>
+      <ol>
+        <li>Conselho Brasileiro de Oftalmologia. Diretrizes de Oftalmologia Pediátrica. 2024.</li>
+        <li>American Academy of Ophthalmology. Pediatric Eye Disease Investigator Group. 2024.</li>
+        <li>Sociedade Brasileira de Oftalmologia Pediátrica. Manual de Boas Práticas. 2024.</li>
+      </ol>
     `,
-    author: 'Dra. Ana Saraiva',
-    date: '2025-07-25',
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-29',
     category: 'Prevenção',
-    tags: ['proteção solar', 'raios uv', 'óculos de sol'],
-    image: '/images/blog/protecao-solar.jpg',
-    featured: false
+    tags: ['oftalmologia pediátrica', 'saúde infantil', 'exames', 'Caratinga', 'crianças'],
+    image: '/Blog/capa_pediatria.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Oftalmologia Pediátrica Caratinga: Quando Levar Crianças ao Oftalmo',
+      metaDescription: 'Descubra quando levar seu filho ao oftalmologista em Caratinga. Dr. Philipe Saraiva Cruz explica frequência ideal e sinais de alerta. Agende na Saraiva Vision.',
+      keywords: ['oftalmologia pediátrica Caratinga', 'oftalmologista infantil', 'exame de vista crianças', 'Dr. Philipe Saraiva Cruz']
+    }
   }
 ];
 
 export const categories = [
   'Todas',
-  'Saúde Ocular',
-  'Doenças Oculares',
-  'Cuidados Oculares',
-  'Prevenção'
+  'Prevenção',
+  'Tratamento',
+  'Tecnologia',
+  'Dúvidas Frequentes'
 ];
 
 export const getPostBySlug = (slug) => {

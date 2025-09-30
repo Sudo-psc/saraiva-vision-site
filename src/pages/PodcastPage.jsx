@@ -275,12 +275,13 @@ function PodcastPage() {
                 <div className="glass-blue card-3d rounded-3xl shadow-soft-light p-6 md:p-8 lg:p-10 border border-blue-200/40">
                   <div className="flex flex-col lg:flex-row items-center gap-8">
                     <div className="flex-shrink-0 relative group">
-                      <OptimizedImage
-                        src={featuredEpisode.cover}
-                        alt={t('ui.alt.podcast_episode', 'Capa do episódio de podcast sobre saúde ocular') + ': ' + featuredEpisode.title}
-                        className="w-48 h-48 lg:w-64 lg:h-64 rounded-3xl object-cover shadow-2xl"
-                        priority={true}
-                      />
+                       <OptimizedImage
+                         src={featuredEpisode.cover}
+                         alt={t('ui.alt.podcast_episode', 'Capa do episódio de podcast sobre saúde ocular') + ': ' + featuredEpisode.title}
+                         className="w-48 h-48 lg:w-64 lg:h-64 rounded-3xl object-cover shadow-2xl"
+                         priority={true}
+                         fallbackSrc="/Podcasts/Covers/podcast.png"
+                       />
                     </div>
 
                     <div className="flex-grow text-center lg:text-left">

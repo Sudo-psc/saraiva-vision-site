@@ -2,9 +2,12 @@
  * Event Logger
  * Centralized logging system for application events
  * Requirement 9.1: Structured logging with appropriate detail levels
+ * NOTE: Supabase integration removed - console-only logging
  */
 
-import { supabaseAdmin } from '../../api/utils/supabase.js'
+// Supabase removed - use console logging
+const supabaseAdmin = null;
+console.warn('Event Logger: Supabase removed. Events logged to console only.');
 
 /**
  * Log an event to the database

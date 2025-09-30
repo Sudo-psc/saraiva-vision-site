@@ -1,26 +1,16 @@
 /**
  * Comprehensive Logging and Monitoring System
- * Implements structured logging with centralized event storage
+ * Implements structured logging with console fallback
  * Includes PII sanitization and performance monitoring
+ * NOTE: Supabase integration removed - console-only logging
  */
-
-import { getSupabaseClient, getSupabaseAdmin } from './supabaseClient';
 
 /**
- * Get appropriate Supabase client for logging
- * Prefers admin client (service_role) for backend, falls back to regular client for frontend
- * Returns null if neither is configured (triggers console fallback)
+ * Get appropriate logging client
+ * Returns null to trigger console fallback (Supabase removed)
  */
 function getLoggingClient() {
-    // Try admin client first (server-side or configured service_role)
-    const admin = getSupabaseAdmin();
-    if (admin) return admin;
-
-    // Fall back to regular client (frontend anon key)
-    const client = getSupabaseClient();
-    if (client) return client;
-
-    // Neither configured - will use console fallback
+    // Supabase removed - always use console fallback
     return null;
 }
 

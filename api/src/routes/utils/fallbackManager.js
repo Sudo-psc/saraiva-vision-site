@@ -13,7 +13,6 @@ import { logEvent } from '../../../../../../..../../../../src/lib/eventLogger.js
 export const FALLBACK_STRATEGIES = {
     EMAIL_SERVICE: 'email_service',
     SMS_SERVICE: 'sms_service',
-    WORDPRESS_CMS: 'wordpress_cms',
     CHATBOT_AI: 'chatbot_ai',
     PODCAST_SYNC: 'podcast_sync',
     ANALYTICS: 'analytics',
@@ -117,10 +116,6 @@ export class FallbackManager {
 
                 case FALLBACK_STRATEGIES.SMS_SERVICE:
                     fallbackResult = await this.handleSmsServiceFallback(options);
-                    break;
-
-                case FALLBACK_STRATEGIES.WORDPRESS_CMS:
-                    fallbackResult = await this.handleWordPressFallback(options);
                     break;
 
                 case FALLBACK_STRATEGIES.CHATBOT_AI:
@@ -232,31 +227,6 @@ export class FallbackManager {
             type: 'email_only',
             data: { emailOnly: true },
             message: 'Confirmação será enviada apenas por email. SMS temporariamente indisponível.'
-        };
-    }
-
-    /**
-     * Handle WordPress CMS fallback
-     * @param {Object} options - Fallback options
-     * @returns {Promise<Object>} Fallback result
-     */
-    async handleWordPressFallback(options) {
-        // Serve cached content
-        const cachedContent = this.getCachedContent(options.contentType, options.identifier);
-
-        if (cachedContent) {
-            return {
-                type: 'cached_content',
-                data: cachedContent,
-                message: 'Conteúdo em cache sendo exibido.'
-            };
-        }
-
-        // Serve static fallback content
-        return {
-            type: 'static_content',
-            data: this.getStaticFallbackContent(options.contentType),
-            message: 'Conteúdo estático sendo exibido temporariamente.'
         };
     }
 
@@ -469,33 +439,6 @@ export class FallbackManager {
             data,
             timestamp: Date.now()
         });
-    }
-
-    /**
-     * Get static fallback content for WordPress
-     * @param {string} contentType - Type of content
-     * @returns {Object} Static content
-     */
-    getStaticFallbackContent(contentType) {
-        const staticContent = {
-            page: {
-                title: 'Saraiva Vision - Oftalmologia',
-                content: 'Clínica especializada em oftalmologia em Caratinga-MG. Entre em contato para agendamentos.',
-                excerpt: 'Cuidando da sua visão com excelência.'
-            },
-            post: {
-                title: 'Conteúdo Temporariamente Indisponível',
-                content: 'O conteúdo está sendo atualizado. Tente novamente em alguns minutos.',
-                excerpt: 'Conteúdo em manutenção.'
-            },
-            service: {
-                title: 'Serviços Oftalmológicos',
-                content: 'Oferecemos consultas, exames e cirurgias oftalmológicas. Entre em contato para mais informações.',
-                excerpt: 'Serviços completos de oftalmologia.'
-            }
-        };
-
-        return staticContent[contentType] || staticContent.page;
     }
 
     /**

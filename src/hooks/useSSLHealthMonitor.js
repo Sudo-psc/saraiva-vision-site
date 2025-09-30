@@ -123,25 +123,6 @@ export function useSSLHealthMonitor(config = {}, domain = null) {
     };
 }
 
-/**
- * Hook for WordPress GraphQL endpoint SSL monitoring
- * Specifically monitors the CMS GraphQL endpoint
- */
-export function useWordPressGraphQLMonitor(config = {}) {
-    const graphqlEndpoint = import.meta.env.VITE_WORDPRESS_GRAPHQL_ENDPOINT || '';
-    const domain = graphqlEndpoint ? new URL(graphqlEndpoint).hostname : null;
-
-    return useSSLHealthMonitor(
-        {
-            checkInterval: 3 * 60 * 1000, // 3 minutes for GraphQL
-            criticalThresholdDays: 7,
-            warningThresholdDays: 30,
-            timeoutMs: 15000,
-            ...config
-        },
-        domain
-    );
-}
 
 /**
  * Hook for dashboard SSL monitoring
@@ -269,19 +250,6 @@ export function useSSLHealthAlerts(config = {}) {
             });
         }
 
-        // GraphQL endpoint issues
-        if (healthStatus.endpointStatus && !healthStatus.endpointStatus.ok) {
-            newAlerts.push({
-                type: 'error',
-                title: 'GraphQL Endpoint SSL Error',
-                message: healthStatus.endpointStatus.error,
-                timestamp: new Date(),
-                actions: [
-                    { label: 'Troubleshoot', action: () => {} },
-                    { label: 'Retry', action: () => {} }
-                ]
-            });
-        }
 
         setAlerts(newAlerts);
     }, [healthStatus]);

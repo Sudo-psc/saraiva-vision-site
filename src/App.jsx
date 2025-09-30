@@ -15,9 +15,7 @@ const MedicalArticleExample = createLazyComponent(() => import('./pages/MedicalA
 const PodcastPage = createLazyComponent(() => import('./pages/PodcastPage.jsx'));
 
 const BlogPage = createLazyComponent(() => import('./pages/BlogPage.jsx'));
-const AdminLoginPage = createLazyComponent(() => import('./pages/AdminLoginPage.jsx'));
 const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
-const DashboardPage = createLazyComponent(() => import('./pages/DashboardPage.jsx'));
 const GoogleReviewsTestPage = createLazyComponent(() => import('./pages/GoogleReviewsTestPage.jsx'));
 const MapTestPage = createLazyComponent(() => import('./pages/MapTestPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
@@ -76,11 +74,7 @@ function App() {
                   <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
                   <Route path="/podcast" element={<PodcastPage />} />
                   <Route path="/blog" element={<BlogPage />} />
-                  <Route path="/blog/:slug" element={<Navigate to="/blog" replace />} />
-                   <Route path="/admin/login" element={<AdminLoginPage />} />
-                   <Route path="/admin" element={<AdminLoginPage />} />
-                   <Route path="/admin/*" element={<DashboardPage />} />
-                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/blog/:slug" element={<BlogPage />} />
                   <Route path="/privacy" element={<PrivacyPolicyPage />} />
                   <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />
                   <Route path="/map-test" element={<MapTestPage />} />

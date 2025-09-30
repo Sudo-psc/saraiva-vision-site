@@ -32,7 +32,6 @@ function validateEnvironmentVariables(env, mode) {
   const required = [
     'VITE_SUPABASE_URL',
     'VITE_SUPABASE_ANON_KEY',
-    'VITE_WORDPRESS_API_URL',
   ];
 
   const recommended = [
@@ -62,7 +61,6 @@ function validateEnvironmentVariables(env, mode) {
   // Validate URL formats
   const urlVars = {
     VITE_SUPABASE_URL: env.VITE_SUPABASE_URL,
-    VITE_WORDPRESS_API_URL: env.VITE_WORDPRESS_API_URL,
   };
 
   Object.entries(urlVars).forEach(([key, value]) => {
@@ -231,27 +229,6 @@ export default defineConfig(({ mode }) => {
       'saraivavision.com.br'
     ],
     proxy: {
-      // WordPress proxy enabled for development mock server
-      '/wp-json': {
-        target: 'http://localhost:8083',
-        changeOrigin: true,
-        secure: false,
-        headers: {
-          'Origin': 'http://localhost:3002',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-        }
-      },
-      '/wp-admin': {
-        target: 'http://localhost:8083',
-        changeOrigin: true,
-        secure: false,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
-        }
-      },
       // Google Places API proxy for development
       '/api/google-places': {
         target: 'https://maps.googleapis.com',
@@ -282,16 +259,6 @@ export default defineConfig(({ mode }) => {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-        }
-      },
-      '/api/wordpress-health': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
-        secure: false,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization'
         }
       }
