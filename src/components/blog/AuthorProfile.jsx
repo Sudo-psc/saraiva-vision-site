@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { User, Stethoscope, Award, Mail, Phone } from 'lucide-react';
+import OptimizedImage from './OptimizedImage';
 
 /**
  * AuthorProfile - Displays author credentials and contact info
@@ -27,16 +28,15 @@ const AuthorProfile = ({
     >
       {/* Author Header */}
       <div className="flex items-start gap-4 mb-4">
-        <div className="relative flex-shrink-0">
-          <img
+        <div className="relative flex-shrink-0 w-20 h-20">
+          <OptimizedImage
             src={image}
             alt={`Foto de ${name}`}
-            className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-md"
-            style={{ maxWidth: '100%', display: 'block' }}
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = '/img/team/default-doctor.jpg';
-            }}
+            className="rounded-full border-4 border-white shadow-md"
+            loading="eager"
+            aspectRatio="1/1"
+            sizes="80px"
+            fallbackSrc="/img/team/default-doctor.jpg"
           />
           <div className="absolute -bottom-1 -right-1 bg-blue-600 rounded-full p-1.5 shadow-md">
             <Award className="w-4 h-4 text-white" aria-hidden="true" />

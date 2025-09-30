@@ -7,10 +7,12 @@
   - API local (/api/): Network First com fallback ao cache (quando possível)
 */
 
-const SW_VERSION = 'v1.0.6'; // Fixed: Safari navigation issues
+const SW_VERSION = 'v1.1.0'; // Enhanced: Blog images cache + offline support
 const RUNTIME_CACHE = `sv-runtime-${SW_VERSION}`;
 const ASSETS_CACHE = `sv-assets-${SW_VERSION}`;
 const CORE_CACHE = `sv-core-${SW_VERSION}`;
+const BLOG_IMAGES_CACHE = `sv-blog-images-${SW_VERSION}`;
+const BLOG_DATA_CACHE = `sv-blog-data-${SW_VERSION}`;
 
 // Arquivos essenciais (sem hash) para boot offline básico
 const CORE_ASSETS = [
@@ -67,8 +69,19 @@ function isNavigationRequest(request) {
 function isAssetRequest(url) {
   return url.origin === self.location.origin && (
     /\/assets\//.test(url.pathname) ||
-    /\.(css|js|png|jpg|jpeg|gif|svg|webp|avif|woff2?|ttf|otf)$/i.test(url.pathname)
+    /\.(css|js|woff2?|ttf|otf)$/i.test(url.pathname)
   );
+}
+
+function isBlogImageRequest(url) {
+  return url.origin === self.location.origin &&
+         url.pathname.startsWith('/Blog/') &&
+         /\.(png|jpg|jpeg|gif|svg|webp|avif)$/i.test(url.pathname);
+}
+
+function isBlogDataRequest(url) {
+  return url.origin === self.location.origin &&
+         url.pathname.includes('/blog');
 }
 
 function isApiRequest(url) {
@@ -153,6 +166,48 @@ self.addEventListener('fetch', (event) => {
           } catch (cacheError) {
             return handleError(cacheError);
           }
+        }
+      })()
+    );
+    return;
+  }
+
+  // Blog images: Cache First with background update (para performance máxima)
+  if (isBlogImageRequest(url)) {
+    event.respondWith(
+      (async () => {
+        try {
+          const cache = await caches.open(BLOG_IMAGES_CACHE);
+          const cached = await cache.match(request);
+
+          // Return cached immediately if available
+          if (cached) {
+            // Update cache in background
+            fetch(request)
+              .then((response) => {
+                if (response.status === 200 && response.type !== 'opaque') {
+                  cache.put(request, response.clone());
+                }
+              })
+              .catch(() => {}); // Silent fail for background update
+
+            return cached;
+          }
+
+          // No cache: fetch and cache
+          const response = await fetch(request);
+          if (response.status === 200 && response.type !== 'opaque') {
+            cache.put(request, response.clone());
+          }
+          return response;
+        } catch (error) {
+          // Return offline fallback image
+          const cache = await caches.open(BLOG_IMAGES_CACHE);
+          const fallback = await cache.match(request);
+          return fallback || new Response(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><rect fill="#e2e8f0" width="800" height="600"/><text x="50%" y="50%" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="20">Imagem indisponível offline</text></svg>',
+            { headers: { 'Content-Type': 'image/svg+xml' }}
+          );
         }
       })()
     );

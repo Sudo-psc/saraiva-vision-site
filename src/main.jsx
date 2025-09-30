@@ -6,6 +6,8 @@ import './index.css';
 import ErrorBoundary from './components/ErrorBoundary';
 import './i18n'; // Initialize i18n
 import { redirectToBackup } from './utils/redirectToBackup';
+import { initializeAnalytics, trackPageView, trackWebVitals } from './utils/analytics';
+import { onCLS, onINP, onFCP, onLCP, onTTFB } from 'web-vitals';
 
 // Enhanced error handler setup with detailed logging
 const setupGlobalErrorHandlers = () => {
@@ -60,6 +62,33 @@ const setupGlobalErrorHandlers = () => {
 };
 
 setupGlobalErrorHandlers();
+
+// Initialize Analytics in production
+if (import.meta.env.PROD && import.meta.env.VITE_GA_ID) {
+  try {
+    initializeAnalytics();
+    console.log('Analytics initialized');
+  } catch (error) {
+    console.warn('Failed to initialize analytics:', error);
+  }
+}
+
+// Initialize Web Vitals tracking
+function sendToAnalytics(metric) {
+  try {
+    trackWebVitals(metric);
+  } catch (error) {
+    console.warn('Failed to track web vital:', error);
+  }
+}
+
+if (import.meta.env.PROD) {
+  onCLS(sendToAnalytics);  // Cumulative Layout Shift
+  onINP(sendToAnalytics);  // Interaction to Next Paint (replaces FID)
+  onFCP(sendToAnalytics);  // First Contentful Paint
+  onLCP(sendToAnalytics);  // Largest Contentful Paint
+  onTTFB(sendToAnalytics); // Time to First Byte
+}
 
 // Get root element
 const rootElement = document.getElementById('root');

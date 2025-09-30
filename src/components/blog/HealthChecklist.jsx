@@ -1,0 +1,3 @@
+import React, { useState } from 'antml:function_calls>
+<invoke name="mcp__kluster-verify__kluster_code_review_auto">
+<parameter name="modified_files_path">/home/saraiva-vision-site/src/components/blog/PostHeader.jsx;/home/saraiva-vision-site/src/components/blog/QuickTakeaways.jsx;/home/saraiva-vision-site/src/components/blog/ExpertTip.jsx;/home/saraiva-vision-site/src/components/blog/PatientQuiz.jsx

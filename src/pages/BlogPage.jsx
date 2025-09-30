@@ -21,6 +21,8 @@ import RelatedPosts from '../components/blog/RelatedPosts';
 import AccessibilityControls from '../components/blog/AccessibilityControls';
 import PatientEducationSidebar from '../components/blog/PatientEducationSidebar';
 import SpotifyEmbed from '../components/SpotifyEmbed';
+import OptimizedImage from '../components/blog/OptimizedImage';
+import { trackBlogInteraction, trackPageView, trackSearchInteraction } from '../utils/analytics';
 
 const BlogPage = () => {
   const { t } = useTranslation();
@@ -64,12 +66,46 @@ const BlogPage = () => {
     setCurrentPage(1);
   }, [selectedCategory, debouncedSearch]);
 
+  // Track page views and blog interactions
+  React.useEffect(() => {
+    if (currentPost) {
+      // Track individual post view
+      trackPageView(`/blog/${currentPost.slug}`);
+      trackBlogInteraction('view_post', currentPost.slug, {
+        post_title: currentPost.title,
+        post_category: currentPost.category,
+        post_author: currentPost.author
+      });
+    } else {
+      // Track blog listing view
+      trackPageView('/blog');
+    }
+  }, [currentPost]);
+
+  // Track search interactions
+  React.useEffect(() => {
+    if (debouncedSearch) {
+      trackSearchInteraction(debouncedSearch, filteredPosts.length, {
+        context: 'blog',
+        category: selectedCategory
+      });
+    }
+  }, [debouncedSearch, filteredPosts.length, selectedCategory]);
+
   const formatDate = (dateString) => {
     return format(new Date(dateString), 'dd MMMM, yyyy', { locale: ptBR });
   };
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
+
+    // Track category filter
+    trackBlogInteraction('filter_category', null, {
+      category: category,
+      results_count: filteredPosts.filter(post =>
+        category === 'Todas' || post.category === category
+      ).length
+    });
   };
 
   const handleSearch = (e) => {
@@ -157,15 +193,14 @@ const BlogPage = () => {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="mb-8 rounded-xl overflow-hidden shadow-lg bg-gray-100"
               >
-                <div className="w-full h-64 md:h-80 lg:h-96 overflow-hidden">
-                  <img
-                    src={currentPost.image}
-                    alt={currentPost.title}
-                    className="w-full h-full object-cover object-center"
-                    loading="eager"
-                    style={{ maxWidth: '100%', display: 'block' }}
-                  />
-                </div>
+                <OptimizedImage
+                  src={currentPost.image}
+                  alt={`${currentPost.title} - Saraiva Vision`}
+                  className="w-full h-64 md:h-80 lg:h-96"
+                  loading="eager"
+                  aspectRatio="16/9"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 66vw, 800px"
+                />
               </motion.div>
             )}
 
@@ -357,17 +392,15 @@ const BlogPage = () => {
           aria-label={`Ler o post: ${post.title}`}
         >
           <div className="relative w-full h-48 sm:h-52 md:h-56 lg:h-60 overflow-hidden bg-gradient-to-br from-blue-100 to-gray-100 flex-shrink-0">
-             <img
-               src={post.image}
-               alt={`Imagem ilustrativa do artigo: ${post.title}`}
-               className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
-               loading="lazy"
-               decoding="async"
-               onError={(e) => {
-                 e.target.onerror = null;
-                 e.target.src = '/img/blog-fallback.jpg';
-               }}
-             />
+            <OptimizedImage
+              src={post.image}
+              alt={`Imagem ilustrativa do artigo: ${post.title}`}
+              className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
+              loading="lazy"
+              aspectRatio="16/9"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 400px"
+              fallbackSrc="/img/blog-fallback.jpg"
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
         </Link>

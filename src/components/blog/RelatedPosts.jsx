@@ -5,6 +5,7 @@ import { ArrowRight, Clock } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import CategoryBadge from './CategoryBadge';
+import OptimizedImage from './OptimizedImage';
 
 /**
  * RelatedPosts - Shows related content to keep users engaged
@@ -58,16 +59,14 @@ const RelatedPosts = ({ posts = [], currentPostId, className = '' }) => {
             <Link to={`/blog/${post.slug}`} className="block">
               {/* Image */}
               <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-100 to-gray-100">
-                <img
+                <OptimizedImage
                   src={post.image}
                   alt={`Imagem ilustrativa do artigo: ${post.title}`}
-                  className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                  className="transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
-                  style={{ maxWidth: '100%', display: 'block' }}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = '/img/blog-fallback.jpg';
-                  }}
+                  aspectRatio="16/9"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  fallbackSrc="/img/blog-fallback.jpg"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
