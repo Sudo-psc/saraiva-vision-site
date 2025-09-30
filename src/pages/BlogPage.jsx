@@ -18,16 +18,26 @@ const BlogPage = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = React.useState('Todas');
   const [searchTerm, setSearchTerm] = React.useState('');
+  const [debouncedSearch, setDebouncedSearch] = React.useState('');
+
+  // Debounce search term
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   // Check if viewing single post
   const currentPost = slug ? getPostBySlug(slug) : null;
 
-  // Filter posts based on category and search
+  // Filter posts based on category and debounced search
   const filteredPosts = blogPosts.filter(post => {
     const matchesCategory = selectedCategory === 'Todas' || post.category === selectedCategory;
-    const matchesSearch = !searchTerm ||
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = !debouncedSearch ||
+      post.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+      post.tags?.some(tag => tag.toLowerCase().includes(debouncedSearch.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
@@ -46,7 +56,7 @@ const BlogPage = () => {
   // Render single post view
   if (currentPost) {
     return (
-      <div className="min-h-screen bg-gray-50 relative">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50 relative">
         <Helmet>
           <title>{currentPost.seo?.metaTitle || currentPost.title} | Saraiva Vision</title>
           <meta name="description" content={currentPost.seo?.metaDescription || currentPost.excerpt} />
@@ -57,11 +67,32 @@ const BlogPage = () => {
 
         <main className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%]">
           <article className="container mx-auto px-4 md:px-6 max-w-4xl">
+            {/* Breadcrumbs */}
+            <nav aria-label="Breadcrumb" className="mb-6">
+              <ol className="flex items-center space-x-2 text-sm text-gray-600">
+                <li>
+                  <Link to="/" className="hover:text-blue-600 transition-colors">
+                    Home
+                  </Link>
+                </li>
+                <li className="text-gray-400">/</li>
+                <li>
+                  <Link to="/blog" className="hover:text-blue-600 transition-colors">
+                    Blog
+                  </Link>
+                </li>
+                <li className="text-gray-400">/</li>
+                <li className="text-gray-900 font-medium truncate max-w-xs" title={currentPost.title}>
+                  {currentPost.title}
+                </li>
+              </ol>
+            </nav>
+
             {/* Back button */}
             <Button
               onClick={() => navigate('/blog')}
               variant="ghost"
-              className="mb-8 hover:bg-gray-100"
+              className="mb-8 hover:bg-blue-50 transition-colors"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar para o blog
@@ -72,21 +103,21 @@ const BlogPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="mb-8"
+              className="mb-8 bg-white/70 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg border border-white/50"
             >
               <div className="mb-4">
                 <CategoryBadge category={currentPost.category} size="lg" />
               </div>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
                 {currentPost.title}
               </h1>
-              <div className="flex items-center text-gray-600 text-sm mb-6">
+              <div className="flex items-center text-gray-600 text-sm mb-2">
                 <Calendar className="w-4 h-4 mr-2" />
                 <time dateTime={currentPost.date}>
                   {formatDate(currentPost.date)}
                 </time>
                 <span className="mx-2">•</span>
-                <span>{currentPost.author}</span>
+                <span className="font-medium">{currentPost.author}</span>
               </div>
             </motion.header>
 
@@ -114,7 +145,7 @@ const BlogPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="prose prose-lg max-w-none"
+              className="prose prose-lg max-w-none bg-white/70 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg border border-white/50"
               dangerouslySetInnerHTML={{ __html: currentPost.content }}
             />
 
@@ -159,7 +190,7 @@ const BlogPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: index * 0.1 }}
-        className="modern-card overflow-hidden flex flex-col focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
+        className="group bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 border border-white/50"
         role="article"
         aria-labelledby={`post-title-${post.id}`}
       >
@@ -168,14 +199,19 @@ const BlogPage = () => {
           className="block overflow-hidden focus:outline-none"
           aria-label={`Ler o post: ${post.title}`}
         >
-          <div className="w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gray-100">
+          <div className="relative w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gradient-to-br from-blue-100 to-gray-100">
             <img
               src={post.image}
               alt={`Imagem ilustrativa do artigo: ${post.title}`}
-              className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
+              className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
               loading="lazy"
               decoding="async"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = '/img/blog-fallback.jpg';
+              }}
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
         </Link>
         <div className="p-4 sm:p-6 flex flex-col flex-grow">
@@ -227,19 +263,29 @@ const BlogPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 relative">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50 relative">
       <Helmet>
         <title>Blog | Saraiva Vision</title>
         <meta name="description" content="Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos na Clínica Saraiva Vision." />
         <meta name="keywords" content="oftalmologia, saúde ocular, catarata, glaucoma, cirurgia refrativa, Caratinga" />
       </Helmet>
 
+      {/* Skip to main content link for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"
+      >
+        Pular para o conteúdo principal
+      </a>
+
       <Navbar />
 
       <main
+        id="main-content"
         className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%]"
         role="main"
         aria-label="Conteúdo principal do blog"
+        tabIndex="-1"
       >
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <motion.header
@@ -268,15 +314,26 @@ const BlogPage = () => {
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Buscar artigos..."
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:border-transparent"
+                    placeholder="Buscar artigos por título, conteúdo ou tags..."
+                    aria-label="Buscar artigos no blog"
+                    className="w-full pl-12 pr-4 py-3.5 bg-white/80 backdrop-blur-sm border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:border-blue-500 transition-all shadow-sm hover:shadow-md"
                   />
                   <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   </div>
+                  {searchTerm && searchTerm !== debouncedSearch && (
+                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                      <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                  )}
                 </div>
+                {debouncedSearch && (
+                  <p className="text-sm text-gray-600 mt-2 text-center">
+                    {filteredPosts.length} {filteredPosts.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
+                  </p>
+                )}
               </form>
 
               {/* Category Filter */}
@@ -321,18 +378,37 @@ const BlogPage = () => {
                 {filteredPosts.map((post, index) => renderPostCard(post, index))}
               </div>
             ) : (
-              <div className="text-center p-12">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center p-12 bg-white/70 backdrop-blur-md rounded-2xl shadow-lg border border-white/50"
+              >
+                <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
                   Nenhum artigo encontrado
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 mb-6">
                   Tente ajustar sua busca ou filtros para encontrar mais artigos.
                 </p>
-              </div>
+                <Button
+                  onClick={() => {
+                    setSearchTerm('');
+                    setSelectedCategory('Todas');
+                  }}
+                  variant="outline"
+                  className="mx-auto"
+                >
+                  Limpar filtros
+                </Button>
+              </motion.div>
             )}
 
             {/* Blog Info Section */}
-            <div className="mt-16 bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+            <div className="mt-16 bg-white/70 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/50">
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
                   Sobre Nosso Blog
