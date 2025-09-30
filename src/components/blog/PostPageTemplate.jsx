@@ -85,11 +85,12 @@ const PostPageTemplate = ({ slug }) => {
 
     // Extract H2 sections from content for TOC
     const parser = new DOMParser();
-    const doc = parser.parseFromString(currentPost.content, 'text/html');
+    const safeContent = currentPost.content || '<div></div>';
+    const doc = parser.parseFromString(safeContent, 'text/html');
     const h2Elements = doc.querySelectorAll('h2');
     const sections = Array.from(h2Elements).map((h2, index) => ({
       id: `section-${index}`,
-      title: h2.textContent,
+      title: h2.textContent || '',
       element: h2
     }));
     setTocSections(sections);
@@ -411,24 +412,9 @@ const PostPageTemplate = ({ slug }) => {
                   {/* Liquid Glass Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 rounded-3xl pointer-events-none"></div>
 
-                  {/* Content */}
+                  {/* Content with Typography Plugin */}
                   <div
-                    className="relative prose prose-lg max-w-none post-content
-                      prose-headings:font-bold prose-headings:text-gray-900 prose-headings:mb-4
-                      prose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-6 prose-h2:pb-3 prose-h2:border-b-2 prose-h2:border-blue-200
-                      prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
-                      prose-h4:text-xl prose-h4:mt-6 prose-h4:mb-3
-                      prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6
-                      prose-a:text-blue-600 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
-                      prose-strong:text-gray-900 prose-strong:font-bold
-                      prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6
-                      prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6
-                      prose-li:text-gray-700 prose-li:mb-2
-                      prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-600 prose-blockquote:bg-blue-50/50 prose-blockquote:py-4 prose-blockquote:rounded-r-xl
-                      prose-img:rounded-xl prose-img:shadow-lg prose-img:my-8
-                      prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:text-pink-600
-                      prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:rounded-xl prose-pre:p-6 prose-pre:shadow-lg
-                    "
+                    className="relative prose prose-lg lg:prose-xl max-w-none post-content"
                     dangerouslySetInnerHTML={{ __html: currentPost.content }}
                   />
                 </div>

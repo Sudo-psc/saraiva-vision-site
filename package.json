@@ -31,6 +31,9 @@
     "deploy:health": "curl -f http://localhost/ || echo 'Health check failed - ensure Nginx is running'",
     "optimize:images": "node scripts/optimize-blog-images.js",
     "verify:blog-images": "node scripts/verify-blog-images.js",
+    "generate:manifest": "node scripts/generate-image-manifest.js",
+    "validate:images": "node scripts/validate-images-ci.js",
+    "fix:image-typos": "bash scripts/fix-image-typos.sh",
     "deploy:vps": "echo '=== VPS NATIVE SERVICE STATUS ===' && echo 'Check service status with:' && echo 'sudo systemctl status nginx' && echo 'sudo systemctl status saraiva-api' && echo 'sudo systemctl status mysql' && echo 'sudo systemctl status redis' && echo 'sudo systemctl status php8.1-fpm'",
     "production:check": "npm run build && npm run test:run"
   },

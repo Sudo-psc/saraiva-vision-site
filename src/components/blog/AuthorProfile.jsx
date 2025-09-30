@@ -15,7 +15,7 @@ const AuthorProfile = ({
   image = '/img/team/dr-philipe.jpg',
   bio = 'Especialista em oftalmologia com mais de 10 anos de experiência em cirurgias refrativas e tratamento de catarata.',
   email = 'contato@saraivavision.com.br',
-  phone = '(33) 98420-7437',
+  phone = '(33) 99860-1427',
   showContact = false
 }) => {
   return (

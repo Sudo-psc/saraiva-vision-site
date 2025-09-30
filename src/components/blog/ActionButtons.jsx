@@ -84,11 +84,11 @@ const ActionButtons = ({
           Atendimento imediato:
         </p>
         <a
-          href="tel:+553398207437"
+          href="tel:+553399860142"
           className="flex items-center gap-2 text-white hover:text-blue-100 transition-colors group"
         >
           <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
-          <span className="font-bold text-lg">(33) 98420-7437</span>
+          <span className="font-bold text-lg">(33) 99860-1427</span>
         </a>
       </div>
 

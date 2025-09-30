@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import instagramServiceWorker from '../services/instagramServiceWorker';
+import logger from '../utils/logger';
 
 /**
  * Custom hook for Instagram offline functionality
@@ -101,12 +102,12 @@ const useInstagramOffline = ({
         };
 
         const handlePostsCached = ({ posts }) => {
-            console.log('Posts cached for offline use:', posts.length);
+            logger.log('Posts cached for offline use:', posts.length);
             updateCacheStatus();
         };
 
         const handleCacheCleared = () => {
-            console.log('Cache cleared');
+            logger.log('Cache cleared');
             setCacheStatus(null);
             setContentAvailableOffline(false);
             setOfflineContent(null);

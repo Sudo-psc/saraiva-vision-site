@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Calendar, ArrowRight, Eye, Shield, Stethoscope, Cpu, HelpCircle, Clock, User, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, ArrowRight, Eye, Shield, Stethoscope, Cpu, HelpCircle, Clock, User, ChevronLeft, ChevronRight, Headphones, X } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
@@ -114,11 +114,11 @@ const BlogPage = () => {
     const postSpecificSchema = getPostSpecificSchema(currentPost.id);
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50 relative">
+      <div className="min-h-screen bg-gradient-to-br from-bg-primary via-primary-50/30 to-bg-primary relative">
         <Helmet>
           <title>{currentPost.seo?.metaTitle || currentPost.title} | Saraiva Vision</title>
           <meta name="description" content={currentPost.seo?.metaDescription || currentPost.excerpt} />
-          <meta name="keywords" content={currentPost.seo?.keywords?.join(', ') || currentPost.tags.join(', ')} />
+          <meta name="keywords" content={currentPost.seo?.keywords?.join(', ') || currentPost.tags?.join(', ') || ''} />
 
           {/* Schema.org Structured Data */}
           {schemaBundle.map((schema, index) => (
@@ -146,7 +146,7 @@ const BlogPage = () => {
           <div className="container mx-auto px-4 md:px-6 max-w-7xl">
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb" className="mb-6">
-              <ol className="flex items-center space-x-2 text-sm text-gray-600">
+              <ol className="flex items-center space-x-2 text-sm text-text-secondary">
                 <li>
                   <Link to="/" className="hover:text-primary-600 transition-colors">
                     Home
@@ -159,7 +159,7 @@ const BlogPage = () => {
                   </Link>
                 </li>
                 <li className="text-gray-400">/</li>
-                <li className="text-gray-900 font-semibold truncate max-w-xs" title={currentPost.title}>
+                <li className="text-text-primary font-semibold truncate max-w-xs" title={currentPost.title}>
                   {currentPost.title}
                 </li>
               </ol>
@@ -178,7 +178,7 @@ const BlogPage = () => {
             {/* Post Content */}
             <article className="prose prose-lg max-w-none">
               <h1>{currentPost.title}</h1>
-              <div className="flex items-center gap-4 text-sm text-gray-600 mb-8">
+              <div className="flex items-center gap-4 text-sm text-text-secondary mb-8">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
                   <time dateTime={currentPost.date}>
@@ -210,7 +210,7 @@ const BlogPage = () => {
               {currentPost.tags && currentPost.tags.length > 0 && (
                 <div className="mt-8 flex flex-wrap gap-2">
                   {currentPost.tags.map(tag => (
-                    <span key={tag} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
+                    <span key={tag} className="px-3 py-1 bg-gray-100 text-text-secondary rounded-full text-sm">
                       #{tag}
                     </span>
                   ))}
@@ -231,10 +231,10 @@ const BlogPage = () => {
                     <Headphones className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-gray-900">
+                    <h3 className="text-2xl font-bold text-text-primary">
                       Podcasts Relacionados
                     </h3>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-text-secondary mt-1">
                       Ouça nossos episódios sobre este tema
                     </p>
                   </div>
@@ -246,7 +246,7 @@ const BlogPage = () => {
                       key={podcast.id || index}
                       className="bg-white rounded-xl p-4 md:p-6 shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
                     >
-                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                      <h4 className="text-lg font-semibold text-text-primary mb-4 flex items-center gap-2">
                         <span className="text-primary-600">🎙️</span>
                         {podcast.title}
                       </h4>
@@ -281,7 +281,7 @@ const BlogPage = () => {
                 </div>
 
                 <div className="mt-6 pt-6 border-t border-primary-200">
-                  <p className="text-sm text-gray-600 text-center">
+                  <p className="text-sm text-text-secondary text-center">
                     <a
                       href="/podcast"
                       className="text-primary-600 hover:text-primary-700 font-medium underline"
@@ -354,7 +354,7 @@ const BlogPage = () => {
           {/* Title */}
           <h3
             id={`post-title-${post.id}`}
-            className="text-xl font-bold mb-3 text-gray-900 leading-tight"
+            className="text-xl font-bold mb-3 text-text-primary leading-tight"
           >
             <Link
               to={`/blog/${post.slug}`}
@@ -365,12 +365,12 @@ const BlogPage = () => {
           </h3>
 
           {/* Excerpt */}
-          <p className="text-gray-600 mb-4 text-sm flex-grow leading-relaxed">
+          <p className="text-text-secondary mb-4 text-sm flex-grow leading-relaxed">
             {post.excerpt}
           </p>
 
           {/* Metadata Row */}
-          <div className="flex items-center justify-between text-xs text-gray-500 mb-4 pt-4 border-t border-gray-100">
+          <div className="flex items-center justify-between text-xs text-text-muted mb-4 pt-4 border-t border-gray-100">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1">
                 <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
@@ -428,7 +428,7 @@ const BlogPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50 relative">
+    <div className="min-h-screen bg-gradient-to-br from-bg-primary via-primary-50/30 to-bg-primary relative">
       <Helmet>
         <title>Blog | Saraiva Vision</title>
         <meta name="description" content="Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos na Clínica Saraiva Vision." />
@@ -473,10 +473,10 @@ const BlogPage = () => {
 
                 {/* Content */}
                 <div className="relative z-10">
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-900 to-gray-900 bg-clip-text text-transparent mb-3 drop-shadow-sm">
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-text-primary via-primary-900 to-text-primary bg-clip-text text-transparent mb-3 drop-shadow-sm">
                     Blog Saraiva Vision
                   </h1>
-                  <p className="text-base md:text-lg text-gray-700 font-medium max-w-2xl mx-auto leading-relaxed">
+                  <p className="text-base md:text-lg text-text-secondary font-medium max-w-2xl mx-auto leading-relaxed">
                     Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos
                   </p>
                 </div>
@@ -506,7 +506,7 @@ const BlogPage = () => {
                       placeholder="Buscar artigos por título, conteúdo ou tags..."
                       aria-label="Buscar artigos no blog"
                       aria-describedby="search-help"
-                      className="w-full pl-14 pr-14 py-4 bg-white/60 backdrop-blur-xl border-2 border-white/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:border-primary-400 transition-all duration-300 shadow-lg shadow-primary-500/10 hover:shadow-xl hover:shadow-primary-500/20 focus:shadow-2xl focus:shadow-primary-500/30 text-gray-800 placeholder:text-gray-500"
+                      className="w-full pl-14 pr-14 py-4 bg-white/60 backdrop-blur-xl border-2 border-white/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:border-primary-400 transition-all duration-300 shadow-lg shadow-primary-500/10 hover:shadow-xl hover:shadow-primary-500/20 focus:shadow-2xl focus:shadow-primary-500/30 text-text-primary placeholder:text-text-muted"
                     />
 
                     {/* Search icon with 3D effect */}
@@ -550,13 +550,13 @@ const BlogPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="mt-3"
                   >
-                    <p className="text-sm font-medium text-center bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent" id="search-help">
+                    <p className="text-sm font-medium text-center bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent" id="search-help" aria-live="polite" aria-atomic="true">
                       ✨ {filteredPosts.length} {filteredPosts.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
                     </p>
                   </motion.div>
                 )}
                 {!debouncedSearch && (
-                  <p className="text-xs text-gray-500 mt-3 text-center" id="search-help">
+                  <p className="text-xs text-text-muted mt-3 text-center" id="search-help">
                     🔍 Digite para buscar artigos por título, conteúdo ou tags
                   </p>
                 )}
@@ -597,7 +597,7 @@ const BlogPage = () => {
                             ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-xl shadow-primary-500/30 scale-105 border-2 border-white/50 backdrop-blur-sm'
                             : config
                             ? `${config.bgColor} ${config.textColor} hover:shadow-lg ${config.hoverBg} shadow-md border-2 border-white/30 backdrop-blur-sm hover:scale-[1.03] active:scale-95`
-                            : 'bg-white/60 backdrop-blur-sm text-gray-700 hover:bg-white/80 hover:shadow-lg shadow-md border-2 border-white/50 hover:scale-[1.03] active:scale-95'
+                            : 'bg-white/60 backdrop-blur-sm text-text-secondary hover:bg-white/80 hover:shadow-lg shadow-md border-2 border-white/50 hover:scale-[1.03] active:scale-95'
                         }`}
                       >
                         {/* Liquid glass overlay */}
@@ -616,7 +616,7 @@ const BlogPage = () => {
              {searchTerm && searchTerm !== debouncedSearch ? (
                <div className="flex justify-center items-center py-12">
                  <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
-                 <span className="ml-3 text-gray-600">Buscando artigos...</span>
+                 <span className="ml-3 text-text-secondary">Buscando artigos...</span>
                </div>
              ) : filteredPosts.length > 0 ? (
                <>
@@ -662,7 +662,7 @@ const BlogPage = () => {
 
                          if (showEllipsisBefore || showEllipsisAfter) {
                            return (
-                             <span key={pageNum} className="px-3 py-2 text-gray-500">
+                             <span key={pageNum} className="px-3 py-2 text-text-muted">
                                ...
                              </span>
                            );
@@ -719,10 +719,10 @@ const BlogPage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                <h3 className="text-xl font-semibold text-text-primary mb-2">
                   Nenhum artigo encontrado
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-text-secondary mb-6">
                   Tente ajustar sua busca ou filtros para encontrar mais artigos.
                 </p>
                 <Button
@@ -741,10 +741,10 @@ const BlogPage = () => {
             {/* Blog Info Section */}
             <div className="mt-16 bg-white/70 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/50">
               <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                <h2 className="text-2xl font-bold text-text-primary mb-4">
                   Sobre Nosso Blog
                 </h2>
-                <p className="text-gray-600 max-w-3xl mx-auto mb-6">
+                <p className="text-text-secondary max-w-3xl mx-auto mb-6">
                   No blog Saraiva Vision, compartilhamos conhecimento especializado sobre saúde ocular,
                   prevenção de doenças e as tecnologias mais modernas em oftalmologia.
                   Nossa missão é educar e informar sobre a importância dos cuidados com a visão.
@@ -756,8 +756,8 @@ const BlogPage = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                       </svg>
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Conteúdo Especializado</h3>
-                    <p className="text-sm text-gray-600">Artigos elaborados por oftalmologistas experientes</p>
+                    <h3 className="font-semibold text-text-primary mb-2">Conteúdo Especializado</h3>
+                    <p className="text-sm text-text-secondary">Artigos elaborados por oftalmologistas experientes</p>
                   </div>
                   <div className="text-center">
                     <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -765,8 +765,8 @@ const BlogPage = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Prevenção e Saúde</h3>
-                    <p className="text-sm text-gray-600">Foco na prevenção e cuidados com a saúde ocular</p>
+                    <h3 className="font-semibold text-text-primary mb-2">Prevenção e Saúde</h3>
+                    <p className="text-sm text-text-secondary">Foco na prevenção e cuidados com a saúde ocular</p>
                   </div>
                   <div className="text-center">
                     <div className="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -774,8 +774,8 @@ const BlogPage = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Atualizações Regulares</h3>
-                    <p className="text-sm text-gray-600">Novo conteúdo adicionado mensalmente</p>
+                    <h3 className="font-semibold text-text-primary mb-2">Atualizações Regulares</h3>
+                    <p className="text-sm text-text-secondary">Novo conteúdo adicionado mensalmente</p>
                   </div>
                 </div>
               </div>

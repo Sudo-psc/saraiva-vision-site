@@ -30,13 +30,13 @@ export function generateMedicalWebPageSchema(post, url) {
         name: 'Clínica Saraiva Vision',
         address: {
           '@type': 'PostalAddress',
-          streetAddress: 'Rua Coronel Antônio Gonçalves da Silva, 101',
+          streetAddress: 'Rua Catarina Maria Passos, 97',
           addressLocality: 'Caratinga',
           addressRegion: 'MG',
           postalCode: '35300-000',
           addressCountry: 'BR'
         },
-        telephone: '+55-33-3321-8148',
+        telephone: '+55-33-99860-1427',
         url: 'https://saraivavision.com.br'
       }
     },
@@ -193,12 +193,14 @@ export function generatePhysicianSchema(authorName = 'Dr. Philipe Saraiva Cruz')
       name: 'Clínica Saraiva Vision',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Rua Coronel Antônio Gonçalves da Silva, 101',
+        streetAddress: 'Rua Catarina Maria Passos, 97',
         addressLocality: 'Caratinga',
         addressRegion: 'MG',
         postalCode: '35300-000',
         addressCountry: 'BR'
-      }
+      },
+      telephone: '+55-33-99860-1427',
+      url: 'https://saraivavision.com.br'
     },
     alumniOf: {
       '@type': 'EducationalOrganization',

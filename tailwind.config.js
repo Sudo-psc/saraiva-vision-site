@@ -100,7 +100,183 @@ export default {
         '3d': '0 20px 60px rgba(30, 77, 76, 0.2), 0 10px 20px rgba(30, 77, 76, 0.15), 0 4px 8px rgba(0, 0, 0, 0.08)',
         '3d-hover': '0 30px 80px rgba(30, 77, 76, 0.25), 0 15px 30px rgba(30, 77, 76, 0.2), 0 6px 12px rgba(0, 0, 0, 0.12)',
       },
+      typography: ({ theme }) => ({
+        DEFAULT: {
+          css: {
+            // Base colors aligned with Saraiva Vision theme
+            '--tw-prose-body': theme('colors.text.primary'),
+            '--tw-prose-headings': theme('colors.primary.700'),
+            '--tw-prose-lead': theme('colors.text.secondary'),
+            '--tw-prose-links': theme('colors.primary.600'),
+            '--tw-prose-bold': theme('colors.primary.800'),
+            '--tw-prose-counters': theme('colors.primary.500'),
+            '--tw-prose-bullets': theme('colors.primary.400'),
+            '--tw-prose-hr': theme('colors.border.light'),
+            '--tw-prose-quotes': theme('colors.primary.700'),
+            '--tw-prose-quote-borders': theme('colors.primary.300'),
+            '--tw-prose-captions': theme('colors.text.muted'),
+            '--tw-prose-code': theme('colors.primary.800'),
+            '--tw-prose-pre-code': theme('colors.bg.primary'),
+            '--tw-prose-pre-bg': theme('colors.primary.800'),
+            '--tw-prose-th-borders': theme('colors.border.medium'),
+            '--tw-prose-td-borders': theme('colors.border.light'),
+
+            // Typography styling
+            maxWidth: 'none',
+            fontSize: '1.0625rem',
+            lineHeight: '1.75',
+
+            // Headings
+            h1: {
+              fontWeight: '700',
+              letterSpacing: '-0.025em',
+              color: theme('colors.primary.700'),
+            },
+            h2: {
+              fontWeight: '600',
+              letterSpacing: '-0.015em',
+              color: theme('colors.primary.700'),
+              marginTop: '2em',
+              marginBottom: '1em',
+            },
+            h3: {
+              fontWeight: '600',
+              color: theme('colors.primary.600'),
+              marginTop: '1.75em',
+              marginBottom: '0.75em',
+            },
+            h4: {
+              fontWeight: '600',
+              color: theme('colors.primary.600'),
+            },
+
+            // Links with medical theme
+            a: {
+              color: theme('colors.primary.600'),
+              textDecoration: 'none',
+              fontWeight: '500',
+              borderBottom: `1px solid ${theme('colors.primary.300')}`,
+              transition: 'all 0.2s ease',
+              '&:hover': {
+                color: theme('colors.primary.700'),
+                borderBottomColor: theme('colors.primary.600'),
+              },
+            },
+
+            // Strong/Bold
+            strong: {
+              color: theme('colors.primary.800'),
+              fontWeight: '600',
+            },
+
+            // Blockquotes
+            blockquote: {
+              fontStyle: 'normal',
+              borderLeftColor: theme('colors.primary.500'),
+              backgroundColor: theme('colors.bg.secondary'),
+              padding: '1rem 1.5rem',
+              borderRadius: theme('borderRadius.soft'),
+              quotes: 'none',
+            },
+
+            // Code
+            code: {
+              color: theme('colors.primary.800'),
+              backgroundColor: theme('colors.primary.50'),
+              padding: '0.25rem 0.375rem',
+              borderRadius: theme('borderRadius.soft'),
+              fontWeight: '500',
+              fontSize: '0.875em',
+            },
+            'code::before': {
+              content: '""',
+            },
+            'code::after': {
+              content: '""',
+            },
+
+            // Pre/Code blocks
+            pre: {
+              backgroundColor: theme('colors.primary.800'),
+              color: theme('colors.bg.primary'),
+              borderRadius: theme('borderRadius.medium'),
+              padding: '1rem 1.5rem',
+              overflowX: 'auto',
+            },
+            'pre code': {
+              backgroundColor: 'transparent',
+              padding: '0',
+              color: 'inherit',
+              fontSize: 'inherit',
+            },
+
+            // Lists
+            ul: {
+              listStyleType: 'disc',
+              paddingLeft: '1.5rem',
+            },
+            ol: {
+              listStyleType: 'decimal',
+              paddingLeft: '1.5rem',
+            },
+            li: {
+              marginTop: '0.5rem',
+              marginBottom: '0.5rem',
+            },
+
+            // Images
+            img: {
+              borderRadius: theme('borderRadius.medium'),
+              boxShadow: theme('boxShadow.soft'),
+            },
+
+            // Tables
+            table: {
+              fontSize: '0.9375rem',
+            },
+            thead: {
+              borderBottomColor: theme('colors.border.medium'),
+            },
+            'thead th': {
+              color: theme('colors.primary.700'),
+              fontWeight: '600',
+            },
+          },
+        },
+        lg: {
+          css: {
+            fontSize: '1.125rem',
+            lineHeight: '1.75',
+            h1: {
+              fontSize: '2.5rem',
+            },
+            h2: {
+              fontSize: '2rem',
+            },
+            h3: {
+              fontSize: '1.5rem',
+            },
+          },
+        },
+        xl: {
+          css: {
+            fontSize: '1.25rem',
+            lineHeight: '1.8',
+            h1: {
+              fontSize: '3rem',
+            },
+            h2: {
+              fontSize: '2.25rem',
+            },
+            h3: {
+              fontSize: '1.75rem',
+            },
+          },
+        },
+      }),
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 }
