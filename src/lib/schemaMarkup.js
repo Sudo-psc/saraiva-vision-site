@@ -42,24 +42,34 @@ const withHash = (hash) => {
   return `${BASE_URL}/#${normalized}`;
 };
 
-// Gera schema markup para MedicalClinic seguindo as melhores práticas
-export const generateMedicalClinicSchema = (language = 'pt', forGraph = false) => {
+// Gera schema para LocalBusiness + MedicalBusiness (duplo tipo para SEO)
+export const generateLocalBusinessSchema = (language = 'pt', forGraph = false) => {
   const baseSchema = {
-    '@type': 'MedicalClinic',
-    '@id': withHash('clinic'),
+    '@type': ['LocalBusiness', 'MedicalBusiness', 'MedicalClinic'],
+    '@id': withHash('localbusiness'),
     name: clinicInfo.name,
     legalName: clinicInfo.legalName,
-    description: language === 'pt' 
+    alternateName: 'Saraiva Vision',
+    description: language === 'pt'
       ? 'Clínica oftalmológica especializada em consultas, exames e procedimentos oftalmológicos com tecnologia avançada em Caratinga/MG.'
       : 'Ophthalmology clinic specialized in consultations, exams and ophthalmological procedures with advanced technology in Caratinga/MG.',
     image: [
-      withPath('/img/logo-saraiva-vision.svg')
+      'https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png',
+      withPath('/img/logo-saraiva-vision.svg'),
+      withPath('/fachada.webp')
     ],
-    logo: withPath('/img/logo-saraiva-vision.svg'),
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png',
+      width: 300,
+      height: 300
+    },
     url: withPath('/'),
     telephone: clinicInfo.phoneDisplay,
     email: clinicInfo.email,
-    priceRange: 'R$',
+    priceRange: 'R$ 100 - R$ 500',
+    currenciesAccepted: 'BRL',
+    paymentAccepted: 'Cash, Credit Card, Debit Card, Bank Transfer, PIX',
     taxID: clinicInfo.taxId,
     foundingDate: clinicInfo.foundingDate,
     medicalSpecialty: ['Ophthalmology'],
@@ -226,6 +236,135 @@ export const generateMedicalClinicSchema = (language = 'pt', forGraph = false) =
     baseSchema['@context'] = 'https://schema.org';
   }
   
+  return baseSchema;
+};
+
+// Manter função legacy para compatibilidade (alias para LocalBusiness)
+export const generateMedicalClinicSchema = generateLocalBusinessSchema;
+
+// Gera schema standalone para Physician (Dr. Philipe Saraiva)
+export const generatePhysicianSchema = (language = 'pt', forGraph = false) => {
+  const baseSchema = {
+    '@type': 'Physician',
+    '@id': withHash('physician'),
+    name: clinicInfo.responsiblePhysician,
+    alternateName: 'Dr. Philipe Saraiva',
+    jobTitle: language === 'pt' ? 'Oftalmologista' : 'Ophthalmologist',
+    description: language === 'pt'
+      ? 'Oftalmologista especializado em cirurgias de catarata, glaucoma, adaptação de lentes de contato e tratamentos oftalmológicos avançados.'
+      : 'Ophthalmologist specialized in cataract surgery, glaucoma, contact lens fitting and advanced ophthalmological treatments.',
+    image: withPath('/img/dr-philipe-saraiva.jpg'),
+    url: withPath('/sobre'),
+
+    // Especialidade médica
+    medicalSpecialty: [
+      'Ophthalmology',
+      'Cataract Surgery',
+      'Glaucoma Treatment',
+      'Contact Lens Fitting',
+      'Retinal Diseases',
+      'Refractive Surgery'
+    ],
+
+    // Áreas de conhecimento
+    knowsAbout: [
+      'Ophthalmology',
+      'Cataract Surgery',
+      'Glaucoma',
+      'Contact Lens Fitting',
+      'Retinal Diseases',
+      'Diabetic Retinopathy',
+      'Macular Degeneration',
+      'Refractive Surgery',
+      'Pediatric Ophthalmology',
+      'Strabismus'
+    ],
+
+    // Credenciais profissionais
+    identifier: [
+      {
+        '@type': 'PropertyValue',
+        propertyID: 'CRM',
+        value: clinicInfo.responsiblePhysicianCRM
+      }
+    ],
+
+    // Qualificações
+    hasCredential: [
+      {
+        '@type': 'EducationalOccupationalCredential',
+        credentialCategory: 'Medical License',
+        name: language === 'pt' ? 'Registro no CRM-MG' : 'Medical License CRM-MG',
+        issuedBy: {
+          '@type': 'Organization',
+          name: 'Conselho Regional de Medicina de Minas Gerais',
+          url: 'https://www.crmmg.org.br/'
+        }
+      },
+      {
+        '@type': 'EducationalOccupationalCredential',
+        credentialCategory: 'Medical Specialty',
+        name: language === 'pt' ? 'Especialização em Oftalmologia' : 'Ophthalmology Specialty',
+        issuedBy: {
+          '@type': 'Organization',
+          name: 'Conselho Brasileiro de Oftalmologia',
+          url: 'https://www.cbo.com.br/'
+        }
+      }
+    ],
+
+    // Local de trabalho
+    worksFor: {
+      '@id': withHash('localbusiness')
+    },
+
+    // Afiliações profissionais
+    memberOf: [
+      {
+        '@type': 'Organization',
+        name: 'Conselho Brasileiro de Oftalmologia',
+        url: 'https://www.cbo.com.br/'
+      },
+      {
+        '@type': 'Organization',
+        name: 'Sociedade Brasileira de Oftalmologia',
+        url: 'https://www.sboportal.org.br/'
+      }
+    ],
+
+    // Formas de contato
+    telephone: clinicInfo.phoneDisplay,
+    email: clinicInfo.email,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: clinicInfo.phoneDisplay,
+      contactType: 'appointment booking',
+      availableLanguage: ['Portuguese', 'English']
+    },
+
+    // Localização
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: `${clinicInfo.streetAddress} – ${clinicInfo.neighborhood}`,
+      addressLocality: clinicInfo.city,
+      addressRegion: clinicInfo.state,
+      postalCode: clinicInfo.postalCode,
+      addressCountry: clinicInfo.country
+    },
+
+    // Redes sociais
+    sameAs: [
+      clinicInfo.instagram,
+      clinicInfo.linkedin,
+      withPath('/sobre')
+    ]
+  };
+
+  // Se não for para @graph, adicionar @context
+  if (!forGraph) {
+    baseSchema['@context'] = 'https://schema.org';
+  }
+
   return baseSchema;
 };
 

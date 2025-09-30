@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import {
   generateMedicalClinicSchema,
+  generatePhysicianSchema,
   generateFAQSchema,
   generateMedicalWebPageSchema,
   generateBreadcrumbSchema,
@@ -34,6 +35,9 @@ const SchemaMarkup = ({
 
     // Schema principal da clínica (para @graph)
     schemas.push(generateMedicalClinicSchema(language, true));
+
+    // Schema do médico responsável
+    schemas.push(generatePhysicianSchema(language, true));
 
     // Schema específico da página
     if (type === 'webpage' && pageInfo) {
