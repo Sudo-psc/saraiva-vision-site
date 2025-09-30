@@ -41,6 +41,272 @@ export const categoryConfig = {
 
 export const blogPosts = [
   {
+    id: 21,
+    slug: 'retinose-pigmentar-luxturna-caratinga',
+    title: 'Retinose Pigmentar e a Revolução do Luxturna®: Esperança para Pacientes em Caratinga, MG',
+    excerpt: 'Conheça a Retinose Pigmentar e o tratamento revolucionário com terapia gênica Luxturna®. Dr. Philipe Saraiva explica os avanços em Caratinga.',
+    content: `
+      <h2>Retinose Pigmentar e a Revolução do Luxturna®: Esperança para Pacientes em Caratinga, MG</h2>
+
+      <p>Bem-vindo ao blog da Clínica Saraiva Vision! Em Caratinga, MG, nosso propósito é cuidar da visão com tecnologia de ponta e atendimento humanizado. Liderados pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870), estamos comprometidos em trazer informações de qualidade para que você e sua família estejam sempre bem informados sobre saúde ocular.</p>
+
+      <p>Hoje vamos falar sobre uma condição rara e desafiadora: a Retinose Pigmentar (RP). Essa doença hereditária afeta milhões de pessoas no mundo e, até pouco tempo, não tinha nenhum tratamento capaz de frear sua progressão.</p>
+
+      <p>A boa notícia é que, com os avanços da terapia gênica, surgiu o Luxturna®, o primeiro medicamento aprovado no mundo para tratar uma forma específica de retinose pigmentar e de amaurose congênita de Leber. Esse avanço trouxe esperança para pacientes e famílias que antes só contavam com acompanhamento clínico.</p>
+
+      <h2>O Que é Retinose Pigmentar?</h2>
+
+      <p>A Retinose Pigmentar é um grupo de doenças genéticas que afetam as células fotorreceptoras da retina — os bastonetes (responsáveis pela visão noturna e periférica) e os cones (responsáveis pela visão central e das cores).</p>
+
+      <h3>📌 Características principais:</h3>
+      <ul>
+        <li>É progressiva e hereditária.</li>
+        <li>Começa geralmente na infância ou adolescência.</li>
+        <li>Evolui ao longo dos anos, podendo levar à baixa visão severa ou cegueira legal.</li>
+      </ul>
+
+      <h2>Sintomas Mais Comuns</h2>
+      <ul>
+        <li><strong>Cegueira noturna:</strong> dificuldade para enxergar em ambientes escuros.</li>
+        <li><strong>Perda progressiva da visão periférica:</strong> a visão vai se tornando "em túnel".</li>
+        <li>Dificuldade para perceber cores.</li>
+        <li>Sensibilidade aumentada à luz (fotofobia).</li>
+        <li>Em fases avançadas, redução da visão central.</li>
+      </ul>
+
+      <p>Segundo o Conselho Brasileiro de Oftalmologia (CBO), a prevalência da RP é de 1 em cada 4.000 pessoas, sendo uma das principais causas de deficiência visual hereditária no mundo.</p>
+
+      <h2>Diagnóstico da Retinose Pigmentar</h2>
+
+      <p>O diagnóstico envolve exames especializados como:</p>
+      <ul>
+        <li><strong>Mapeamento de retina:</strong> identifica pigmentos característicos ("espículas ósseas").</li>
+        <li><strong>Eletrorretinograma (ERG):</strong> avalia a função elétrica dos fotorreceptores.</li>
+        <li><strong>Tomografia de coerência óptica (OCT):</strong> analisa a estrutura das camadas da retina.</li>
+        <li><strong>Testes genéticos:</strong> fundamentais para identificar a mutação responsável e indicar candidatos à terapia gênica.</li>
+      </ul>
+
+      <p>Na Saraiva Vision, realizamos exames complementares e, quando necessário, encaminhamos para avaliação genética em centros de referência.</p>
+
+      <h2>O Que é o Luxturna®?</h2>
+
+      <p>O Luxturna® (voretigene neparvovec-rzyl) é uma terapia gênica inovadora aprovada pela FDA (EUA) e EMA (Europa) para tratar pacientes com mutação bialélica no gene RPE65, que pode causar formas de Retinose Pigmentar e Amaurose Congênita de Leber.</p>
+
+      <h3>📌 Como funciona:</h3>
+      <ul>
+        <li>O medicamento utiliza um vetor viral adeno-associado (AAV2) para levar uma cópia saudável do gene RPE65 às células da retina.</li>
+        <li>Esse gene é responsável pela produção de uma proteína essencial para o ciclo visual.</li>
+        <li>A aplicação é feita por injeção sub-retiniana cirúrgica, em ambiente hospitalar.</li>
+      </ul>
+
+      <h2>Indicações</h2>
+      <ul>
+        <li>Pacientes diagnosticados geneticamente com mutação bialélica do gene RPE65.</li>
+        <li>Pessoas com sobrevivência de células viáveis na retina (avaliadas por OCT).</li>
+        <li>Indicado para crianças e adultos que apresentam perda progressiva da visão devido à doença genética.</li>
+      </ul>
+
+      <h2>Benefícios do Luxturna®</h2>
+
+      <p>Estudos clínicos mostraram que:</p>
+      <ul>
+        <li>Pacientes tiveram melhora significativa na capacidade de enxergar em ambientes com pouca luz.</li>
+        <li>Houve aumento na mobilidade visual (capacidade de se locomover em ambientes com obstáculos).</li>
+        <li>Em alguns casos, melhora da visão periférica e da visão funcional no dia a dia.</li>
+      </ul>
+
+      <p>Esses resultados foram relatados em estudos publicados no New England Journal of Medicine, confirmando a eficácia da terapia gênica.</p>
+
+      <h2>Limitações e Considerações</h2>
+
+      <p>Apesar de revolucionário, o tratamento apresenta pontos importantes:</p>
+      <ul>
+        <li><strong>Não é uma cura:</strong> a doença não é eliminada, mas a progressão pode ser freada.</li>
+        <li>O tratamento só funciona em pacientes com mutações específicas (RPE65).</li>
+        <li>O acesso ainda é restrito, devido ao alto custo e à necessidade de centros cirúrgicos especializados.</li>
+        <li>Efeitos colaterais possíveis incluem inflamação ocular, catarata e complicações cirúrgicas.</li>
+      </ul>
+
+      <h2>Situação do Luxturna® no Brasil</h2>
+      <ul>
+        <li>A ANVISA aprovou o Luxturna® em 2020.</li>
+        <li>O medicamento ainda não está amplamente disponível pelo SUS.</li>
+        <li>Pacientes podem buscar acesso por meio de ações judiciais ou programas especiais de fornecimento.</li>
+        <li>O preço é elevado: nos EUA, cada aplicação custa em torno de US$ 425.000 por olho, tornando-se um dos medicamentos mais caros do mundo.</li>
+      </ul>
+
+      <p>Apesar do custo, sua chegada representa um marco para a oftalmologia e para os pacientes brasileiros com doenças hereditárias da retina.</p>
+
+      <h2>Perspectivas Futuras</h2>
+
+      <p>A aprovação do Luxturna® abre portas para o desenvolvimento de novas terapias gênicas voltadas a outras mutações genéticas ligadas à retinose pigmentar. Atualmente, há diversos ensaios clínicos em andamento para genes como RPGR, USH2A e CHM.</p>
+
+      <p>Isso significa que estamos entrando em uma nova era da oftalmologia, em que doenças antes incuráveis passam a ter tratamentos personalizados baseados em genética.</p>
+
+      <h2>Convivendo com a Retinose Pigmentar</h2>
+
+      <p>Mesmo sem cura definitiva para a maioria dos casos, existem medidas que ajudam a melhorar a qualidade de vida dos pacientes:</p>
+      <ul>
+        <li>Acompanhamento regular com oftalmologista especializado em retina.</li>
+        <li>Uso de auxílios de visão subnormal (lupas, óculos especiais, aplicativos).</li>
+        <li>Adaptações no ambiente (iluminação adequada, contraste nas superfícies).</li>
+        <li>Apoio psicológico e grupos de pacientes.</li>
+      </ul>
+
+      <p>Na Saraiva Vision, reforçamos a importância do cuidado contínuo e do encaminhamento para terapias inovadoras quando disponíveis.</p>
+
+      <h2>Conclusão</h2>
+
+      <p>A Retinose Pigmentar é uma condição genética desafiadora, mas os avanços recentes trazem esperança. O Luxturna® representa um divisor de águas na oftalmologia, sendo o primeiro medicamento aprovado para uma forma de RP e de amaurose congênita de Leber.</p>
+
+      <p>Embora ainda não seja acessível para todos, esse marco sinaliza o futuro da medicina personalizada: tratar doenças da visão a partir da raiz genética.</p>
+
+      <p>Em Caratinga, a Saraiva Vision está preparada para oferecer acompanhamento humanizado, exames diagnósticos avançados e orientação atualizada sobre as novidades da oftalmologia.</p>
+
+      <p><strong>📲 Agende sua avaliação pelo WhatsApp: (33) 99860-1427</strong><br>
+      <strong>🌐 saraivavision.com.br | Instagram: @saraiva_vision</strong></p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Russell S, Bennett J, et al. Efficacy and safety of voretigene neparvovec (Luxturna) in RPE65-mediated inherited retinal dystrophy. NEJM. 2017.</li>
+        <li>American Academy of Ophthalmology (AAO). Inherited Retinal Diseases.</li>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). Distrofias Hereditárias da Retina.</li>
+        <li>ANVISA. Registro do medicamento Luxturna®. 2020.</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Tecnologia',
+    tags: ['retinose pigmentar', 'luxturna', 'terapia gênica', 'doenças genéticas', 'Caratinga', 'inovação'],
+    image: '/Blog/terapia_genica.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Retinose Pigmentar e Luxturna®: Terapia Gênica em Caratinga',
+      metaDescription: 'Conheça a Retinose Pigmentar e o tratamento revolucionário com Luxturna®. Dr. Philipe Saraiva Cruz explica a terapia gênica em Caratinga, MG.',
+      keywords: ['retinose pigmentar', 'luxturna', 'terapia gênica', 'oftalmologista Caratinga', 'Dr. Philipe Saraiva Cruz', 'doenças hereditárias']
+    }
+  },
+  {
+    id: 20,
+    slug: 'moscas-volantes-quando-preocupar-caratinga',
+    title: 'Moscas Volantes: Quando as Manchas na Visão São Inofensivas e Quando Exigem Atenção em Caratinga, MG',
+    excerpt: 'Entenda o que são as moscas volantes, quando são benignas e quando indicam problemas graves. Orientações do Dr. Philipe Saraiva em Caratinga.',
+    content: `
+      <h2>Moscas Volantes: Quando as Manchas na Visão São Inofensivas e Quando Exigem Atenção em Caratinga, MG</h2>
+
+      <p>Bem-vindo ao blog da Clínica Saraiva Vision! Aqui, em Caratinga, MG, nossa missão é oferecer informação de qualidade e atendimento oftalmológico de excelência, unindo tecnologia de ponta e cuidado humanizado. Sob a liderança do Dr. Philipe Saraiva Cruz (CRM-MG 69.870), nossa equipe esclarece dúvidas comuns dos pacientes para que todos possam cuidar da visão com segurança.</p>
+
+      <p>Hoje vamos falar sobre um sintoma que intriga e preocupa muita gente: as famosas "moscas volantes". Talvez você já tenha notado pequenos pontos, linhas ou manchas que parecem flutuar no seu campo de visão, especialmente quando olha para um fundo claro, como o céu ou uma parede branca.</p>
+
+      <p>Mas afinal, o que são essas manchas? Elas são perigosas? Será que indicam doenças graves? Vamos separar os mitos e verdades sobre esse fenômeno ocular chamado miodesopsia.</p>
+
+      <h2>O Que São as Moscas Volantes?</h2>
+
+      <p>As moscas volantes são pequenos corpos opacos que se formam dentro do vítreo — o gel transparente que preenche a parte interna do olho. Quando a luz entra, essas opacidades projetam sombras na retina, que percebemos como manchas móveis no campo visual.</p>
+
+      <h3>📌 Características típicas:</h3>
+      <ul>
+        <li>Formato irregular (pontos, filamentos ou teias).</li>
+        <li>Movimento ao acompanhar o olhar, mas sempre "flutuando" com atraso.</li>
+        <li>Mais visíveis em ambientes claros.</li>
+      </ul>
+
+      <p>Segundo a American Academy of Ophthalmology (AAO), quase todas as pessoas terão moscas volantes em algum momento da vida, especialmente após os 40 anos, quando o vítreo começa a se liquefazer.</p>
+
+      <h2>Mitos e Verdades Sobre Moscas Volantes</h2>
+
+      <h3>❌ Mito 1: "Moscas volantes sempre indicam doença grave."</h3>
+      <p><strong>✅ Verdade:</strong> Na maioria dos casos, são benignas e relacionadas ao envelhecimento natural do vítreo. Porém, quando aparecem de forma súbita, em grande quantidade ou associadas a flashes de luz, podem indicar rasgos ou descolamento de retina — situações que exigem atendimento imediato.</p>
+
+      <h3>❌ Mito 2: "Moscas volantes podem ser curadas com colírios."</h3>
+      <p><strong>✅ Verdade:</strong> Não existem colírios ou medicamentos que eliminem as moscas volantes. O tratamento depende da causa e, na maioria das vezes, não é necessário intervir. Casos graves podem ser tratados com cirurgia (vitrectomia) ou laser, mas essas indicações são raras.</p>
+
+      <h3>❌ Mito 3: "Se você tem moscas volantes, vai ficar cego."</h3>
+      <p><strong>✅ Verdade:</strong> As moscas volantes não causam cegueira. No entanto, se estiverem associadas a doenças da retina, como descolamento ou hemorragia vítrea, podem sim ser um sinal de alerta. O importante é diferenciar o sintoma benigno de situações que requerem intervenção urgente.</p>
+
+      <h3>❌ Mito 4: "Moscas volantes são mais comuns apenas em idosos."</h3>
+      <p><strong>✅ Verdade:</strong> Embora sejam mais frequentes após os 40 anos, podem aparecer em jovens, especialmente em pessoas com miopia alta, após traumas oculares ou cirurgias oftalmológicas.</p>
+
+      <h3>❌ Mito 5: "Moscas volantes somem com o tempo."</h3>
+      <p><strong>✅ Verdade:</strong> Elas não desaparecem totalmente, mas muitas vezes deixam de incomodar. Isso acontece porque o cérebro se adapta e passa a ignorá-las — um processo chamado de neuroadaptação.</p>
+
+      <h2>Fatores de Risco</h2>
+      <ul>
+        <li>Idade acima de 40 anos.</li>
+        <li>Miopia elevada.</li>
+        <li>Cirurgias oculares prévias (como catarata).</li>
+        <li>Traumas nos olhos.</li>
+        <li>Diabetes e retinopatia diabética.</li>
+      </ul>
+
+      <h2>Quando as Moscas Volantes São Perigosas?</h2>
+
+      <p>Você deve procurar um oftalmologista imediatamente se notar:</p>
+      <ul>
+        <li>Aumento súbito no número de moscas volantes.</li>
+        <li>Associação com flashes de luz (fotopsias).</li>
+        <li>Perda de campo visual, como uma "cortina escura".</li>
+        <li>Moscas volantes acompanhadas de dor ocular intensa.</li>
+      </ul>
+
+      <p><strong>Esses sinais podem indicar rasgo ou descolamento de retina, condições que exigem cirurgia urgente para preservar a visão.</strong></p>
+
+      <h2>Diagnóstico</h2>
+
+      <p>Na Saraiva Vision, utilizamos exames avançados para avaliar o vítreo e a retina:</p>
+      <ul>
+        <li><strong>Mapeamento de retina:</strong> analisa toda a superfície da retina.</li>
+        <li><strong>Retinografia:</strong> registra imagens de alta resolução.</li>
+        <li><strong>OCT (tomografia de coerência óptica):</strong> avalia camadas da retina (em breve disponível).</li>
+        <li><strong>Ultrassonografia ocular:</strong> útil quando há hemorragia vítrea.</li>
+      </ul>
+
+      <h2>Tratamento</h2>
+      <ul>
+        <li><strong>Observação:</strong> em 90% dos casos, basta acompanhamento periódico.</li>
+        <li><strong>Vitrectomia:</strong> cirurgia que remove o vítreo, indicada apenas em casos graves de opacidades.</li>
+        <li><strong>Laser YAG vitreólise:</strong> tratamento alternativo, ainda em estudo, que fragmenta as opacidades.</li>
+      </ul>
+
+      <p><strong>📌 Importante:</strong> a maioria dos pacientes não precisa de tratamento, apenas de acompanhamento e exames regulares.</p>
+
+      <h2>Convivendo com Moscas Volantes</h2>
+      <ul>
+        <li>Evite fixar a atenção nelas; o cérebro tende a ignorar as manchas com o tempo.</li>
+        <li>Use óculos escuros para reduzir o incômodo em ambientes claros.</li>
+        <li>Mantenha acompanhamento regular com oftalmologista, especialmente se tiver fatores de risco.</li>
+      </ul>
+
+      <h2>Conclusão</h2>
+
+      <p>As moscas volantes são um sintoma comum e, na maioria das vezes, inofensivo. No entanto, quando surgem de forma súbita ou associadas a flashes de luz, podem indicar doenças graves da retina e exigem atenção imediata.</p>
+
+      <p>Na Saraiva Vision, em Caratinga, estamos preparados para diagnosticar e acompanhar cada caso com tecnologia avançada e acolhimento humano. Se você tem notado manchas na visão, não adie sua avaliação.</p>
+
+      <p><strong>📲 Agende sua consulta pelo WhatsApp: (33) 99860-1427</strong><br>
+      <strong>🌐 saraivavision.com.br | Instagram: @saraiva_vision</strong></p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>American Academy of Ophthalmology (AAO). Eye Floaters and Flashes.</li>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). Manual de Orientação ao Paciente – Corpo Vítreo.</li>
+        <li>American Optometric Association (AOA). Floaters and Spots.</li>
+        <li>Organização Mundial da Saúde (OMS). World Report on Vision, 2019.</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Dúvidas Frequentes',
+    tags: ['moscas volantes', 'miodesopsia', 'retina', 'vítreo', 'Caratinga', 'saúde ocular'],
+    image: '/Blog/moscas_volantes.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Moscas Volantes: Quando Preocupar? Oftalmologista em Caratinga',
+      metaDescription: 'Entenda o que são moscas volantes, quando são inofensivas e quando exigem atendimento urgente. Dr. Philipe Saraiva Cruz explica em Caratinga, MG.',
+      keywords: ['moscas volantes', 'miodesopsia', 'oftalmologista Caratinga', 'descolamento de retina', 'Dr. Philipe Saraiva Cruz']
+    }
+  },
+  {
     id: 17,
     slug: 'cuidados-visuais-esportes-caratinga',
     title: 'Do consultório à academia: cuidados visuais para quem pratica esportes',
@@ -169,10 +435,289 @@ export const blogPosts = [
     category: 'Prevenção',
     tags: ['cuidados visuais esportes', 'visão esportiva Caratinga', 'saúde ocular atletas', 'oftalmologista Caratinga MG', 'proteção ocular', 'lentes de contato esportivas', 'óculos de sol UV', 'prevenção visual'],
     featured: true,
+    image: '/Blog/capa_IA.png',
     seo: {
       metaTitle: 'Cuidados visuais para quem pratica esportes | Clínica Saraiva Vision Caratinga',
       metaDescription: 'Descubra como proteger sua visão durante a prática esportiva. Orientações do Dr. Philipe Saraiva, oftalmologista em Caratinga (MG).',
       keywords: ['cuidados visuais esportes', 'visão esportiva Caratinga', 'saúde ocular atletas', 'oftalmologista Caratinga MG', 'proteção ocular esporte', 'lentes contato atletas', 'óculos esportivos', 'oftalmologia esportiva']
+    }
+  },
+  {
+    id: 18,
+    slug: 'lentes-especiais-daltonismo-caratinga',
+    title: 'Lentes Especiais para Daltonismo: Tecnologia que Transforma Vidas em Caratinga, MG',
+    excerpt: 'Descubra como as lentes especiais filtrantes podem ampliar a percepção das cores e transformar o dia a dia de quem convive com daltonismo. Tecnologia moderna disponível na Clínica Saraiva Vision.',
+    content: `
+      <h2>Lentes Especiais para Daltonismo: Tecnologia que Transforma Vidas em Caratinga, MG</h2>
+
+      <p>Bem-vindo ao blog da Clínica Saraiva Vision! Aqui em Caratinga, MG, nosso compromisso vai além de consultas oftalmológicas: buscamos trazer informação de qualidade e soluções modernas para melhorar a vida de nossos pacientes. Sob a liderança do Dr. Philipe Saraiva Cruz (CRM-MG 69.870), trabalhamos com exames de alta precisão e orientações individualizadas, sempre de forma humanizada.</p>
+
+      <p>Hoje, vamos abordar um tema que gera muitas dúvidas: o daltonismo. Também chamado de discromatopsia, essa condição dificulta a percepção correta das cores e afeta milhões de pessoas no mundo. Até pouco tempo atrás, acreditava-se que nada poderia ser feito além da adaptação. Porém, com o avanço da tecnologia, surgiram as lentes especiais para daltonismo, capazes de ampliar a percepção das cores e transformar o dia a dia de quem convive com essa condição.</p>
+
+      <p>Se você ou alguém da sua família tem dificuldades para diferenciar cores, este artigo é para você.</p>
+
+      <h2>O Que é Daltonismo?</h2>
+
+      <p>O daltonismo é uma alteração genética na forma como os olhos percebem as cores. Ele ocorre devido a alterações nos cones da retina, células responsáveis por captar estímulos luminosos e diferenciá-los em três comprimentos de onda: vermelho, verde e azul.</p>
+
+      <p>Quando um ou mais desses cones não funcionam corretamente, a percepção das cores fica comprometida.</p>
+
+      <h3>Tipos mais comuns de daltonismo:</h3>
+      <ul>
+        <li><strong>Deuteranopia:</strong> dificuldade em diferenciar tons de verde.</li>
+        <li><strong>Protanopia:</strong> dificuldade em diferenciar tons de vermelho.</li>
+        <li><strong>Tritanopia:</strong> dificuldade em diferenciar tons de azul.</li>
+        <li><strong>Daltonismo total (monocromacia):</strong> extremamente raro, com visão em tons de cinza.</li>
+      </ul>
+
+      <p>De acordo com o Conselho Brasileiro de Oftalmologia (CBO), cerca de 8% dos homens e 0,5% das mulheres apresentam algum tipo de discromatopsia.</p>
+
+      <p>Em Caratinga e região, essa condição afeta não só a percepção estética, mas também escolhas profissionais (pilotos, eletricistas, designers, entre outros) e atividades cotidianas, como identificar cores em sinais de trânsito.</p>
+
+      <h2>Sintomas do Daltonismo</h2>
+
+      <p>Nem sempre a pessoa percebe de imediato que tem daltonismo. Muitas vezes, o diagnóstico surge em exames de rotina, principalmente em crianças.</p>
+
+      <h3>📌 Sintomas comuns:</h3>
+      <ul>
+        <li>Confundir verde com vermelho (exemplo: semáforos).</li>
+        <li>Dificuldade em diferenciar tons próximos, como azul e roxo.</li>
+        <li>Problemas em identificar cores em mapas, gráficos ou roupas.</li>
+        <li>Necessidade de pedir ajuda para reconhecer cores em tarefas simples.</li>
+      </ul>
+
+      <p>Por ser uma condição genética e geralmente sem sintomas físicos (como dor ou vermelhidão), muitas famílias demoram a buscar avaliação. Isso reforça a importância de exames oftalmológicos precoces, especialmente no início da vida escolar.</p>
+
+      <h2>Existe Cura para o Daltonismo?</h2>
+
+      <p>Até o momento, não há cura definitiva para o daltonismo, já que se trata de uma alteração genética. Porém, há tratamentos que melhoram a qualidade de vida, entre eles as lentes especiais para daltonismo.</p>
+
+      <p>Essas lentes não corrigem a visão de forma tradicional (como óculos para miopia ou astigmatismo), mas funcionam como filtros que alteram o espectro de luz percebido, ajudando a diferenciar cores que antes pareciam iguais.</p>
+
+      <h2>Como Funcionam as Lentes Especiais para Daltonismo?</h2>
+
+      <p>As lentes especiais utilizam filtros ópticos de alta tecnologia que "separam" os comprimentos de onda da luz. Dessa forma, o cérebro recebe sinais mais diferenciados entre as cores, permitindo que o usuário perceba contrastes que antes eram imperceptíveis.</p>
+
+      <h3>📌 Funcionamento prático:</h3>
+      <ul>
+        <li>Reduzem a sobreposição entre os estímulos de cores (especialmente vermelho e verde).</li>
+        <li>Intensificam os contrastes entre tons próximos.</li>
+        <li>Facilitam a distinção de cores no cotidiano.</li>
+      </ul>
+
+      <p>É importante ressaltar que:</p>
+      <ul>
+        <li>Elas não "curam" o daltonismo, mas compensam parte da dificuldade visual.</li>
+        <li>A percepção varia de acordo com o tipo e grau de daltonismo.</li>
+        <li>Devem ser prescritas após exames específicos, como o teste de Ishihara ou outros testes de visão de cores realizados em consultório.</li>
+      </ul>
+
+      <h2>Tipos de Lentes para Daltonismo</h2>
+
+      <p>Existem diferentes modelos, adaptados às necessidades individuais:</p>
+      <ul>
+        <li><strong>Óculos com lentes filtrantes especiais:</strong> recomendados para uso no dia a dia.</li>
+        <li><strong>Lentes de contato filtrantes:</strong> alternativas discretas, aplicando a mesma tecnologia.</li>
+        <li><strong>Lentes externas para sobreposição:</strong> ideais para testes ou uso ocasional.</li>
+      </ul>
+
+      <p>Na Saraiva Vision, realizamos testes personalizados para avaliar o benefício das lentes em cada paciente. Como o daltonismo pode variar em intensidade, o acompanhamento oftalmológico é fundamental para garantir uma adaptação eficaz.</p>
+
+      <h2>Benefícios das Lentes Especiais</h2>
+      <ul>
+        <li>Melhor distinção de cores no cotidiano.</li>
+        <li>Autonomia em tarefas simples, como escolher roupas ou identificar sinais.</li>
+        <li>Maior inclusão social, já que muitas vezes o daltonismo é motivo de frustração ou isolamento.</li>
+        <li>Impacto positivo em atividades profissionais e acadêmicas, como leitura de gráficos, mapas e uso de softwares.</li>
+      </ul>
+
+      <p>📌 Muitos pacientes relatam a emoção de enxergar certas cores de forma "nova" ao utilizar essas lentes, como apreciar um pôr do sol ou diferenciar flores no jardim.</p>
+
+      <h2>Limitações Importantes</h2>
+
+      <p>Apesar dos benefícios, é essencial esclarecer:</p>
+      <ul>
+        <li>As lentes não funcionam igualmente para todos os tipos de daltonismo.</li>
+        <li>Podem melhorar significativamente a percepção em alguns contextos, mas não devolvem visão normal de cores.</li>
+        <li>Não são indicadas para atividades críticas de segurança (como habilitação de pilotos) sem avaliação oficial.</li>
+      </ul>
+
+      <p>Por isso, o acompanhamento médico é indispensável.</p>
+
+      <h2>O Papel do Oftalmologista em Caratinga</h2>
+
+      <p>O Dr. Philipe Saraiva Cruz e a equipe da Saraiva Vision utilizam exames especializados para diagnosticar o daltonismo, como:</p>
+      <ul>
+        <li>Teste de Ishihara</li>
+        <li>Anomaloscopia</li>
+        <li>Testes digitais avançados</li>
+      </ul>
+
+      <p>A partir desse diagnóstico, é possível indicar a melhor solução para cada paciente. Nosso objetivo é aliar ciência e tecnologia a um atendimento humano, garantindo que cada pessoa encontre meios de enxergar o mundo com mais clareza e inclusão.</p>
+
+      <h2>Conclusão</h2>
+
+      <p>O daltonismo é uma condição genética que, embora não tenha cura, pode ser compensada com tecnologias inovadoras como as lentes especiais filtrantes. Elas representam um grande avanço, proporcionando mais independência, segurança e qualidade de vida.</p>
+
+      <p>Na Saraiva Vision, em Caratinga, estamos preparados para avaliar cada caso com exames precisos e orientar sobre as melhores opções de tratamento. Se você ou alguém próximo enfrenta dificuldades para distinguir cores, não adie sua consulta.</p>
+
+      <p><strong>📲 Agende sua avaliação pelo WhatsApp:</strong> (33) 99860-1427<br>
+      🌐 saraivavision.com.br | Instagram: @saraiva_vision</p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). Saúde Ocular no Brasil.</li>
+        <li>American Academy of Ophthalmology (AAO). Color Vision Deficiency.</li>
+        <li>Organização Mundial da Saúde (OMS). World Report on Vision, 2019.</li>
+        <li>American Optometric Association (AOA). Understanding Color Blindness.</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Tecnologia',
+    tags: ['daltonismo', 'lentes especiais', 'discromatopsia', 'visão de cores', 'oftalmologista Caratinga', 'teste de Ishihara', 'lentes filtrantes', 'tecnologia oftalmológica'],
+    featured: true,
+    image: '/Blog/capa_daltonismo.png',
+    seo: {
+      metaTitle: 'Lentes Especiais para Daltonismo | Tecnologia Moderna em Caratinga - Saraiva Vision',
+      metaDescription: 'Descubra como as lentes especiais filtrantes podem ampliar a percepção das cores e transformar o dia a dia de quem convive com daltonismo. Tecnologia moderna disponível na Clínica Saraiva Vision em Caratinga, MG.',
+      keywords: ['daltonismo', 'lentes especiais daltonismo', 'discromatopsia', 'visão de cores Caratinga', 'oftalmologista Caratinga MG', 'teste Ishihara', 'lentes filtrantes', 'tecnologia oftalmológica', 'tratamento daltonismo']
+    }
+  },
+  {
+    id: 19,
+    slug: 'descolamento-retina-mitos-verdades-caratinga',
+    title: 'Descolamento de Retina: Mitos e Verdades Que Todo Paciente em Caratinga Precisa Saber',
+    excerpt: 'Entenda os principais mitos e verdades sobre descolamento de retina. Informações baseadas em ciência para prevenir e tratar essa condição séria que pode ameaçar a visão.',
+    content: `
+      <h2>Descolamento de Retina: Mitos e Verdades Que Todo Paciente em Caratinga Precisa Saber</h2>
+
+      <p>Bem-vindo ao blog da Clínica Saraiva Vision! Nossa missão em Caratinga, MG, é oferecer cuidado ocular com excelência, sempre baseado em ciência, tecnologia diagnóstica avançada e atendimento humanizado. Sob a liderança do Dr. Philipe Saraiva Cruz (CRM-MG 69.870), esclarecemos temas que preocupam muitos pacientes e suas famílias.</p>
+
+      <p>Hoje vamos falar sobre uma condição séria que pode ameaçar a visão: o descolamento de retina. Entre medos, crenças populares e informações da internet, é comum surgirem dúvidas sobre o que realmente causa esse problema, como preveni-lo e o que esperar do tratamento.</p>
+
+      <p>Será que o descolamento pode acontecer de repente, sem aviso? Exercícios físicos ou pequenos traumas causam a doença? E será que óculos ou colírios ajudam na prevenção? Vamos desvendar os principais mitos e verdades sobre o descolamento de retina com base em informações científicas e na prática clínica diária.</p>
+
+      <h2>O Que é o Descolamento de Retina?</h2>
+
+      <p>A retina é uma membrana fina localizada na parte posterior do olho, responsável por captar a luz e transformá-la em sinais que são enviados ao cérebro. O descolamento de retina ocorre quando essa membrana se separa das camadas de suporte que a nutrem.</p>
+
+      <p>Quando isso acontece, a retina deixa de receber oxigênio e nutrientes adequados, o que pode levar à perda parcial ou total da visão se não houver tratamento imediato.</p>
+
+      <h3>Existem diferentes tipos de descolamento:</h3>
+      <ul>
+        <li><strong>Regmatogênico:</strong> causado por rasgos ou buracos na retina, permitindo a entrada de líquido que a descola.</li>
+        <li><strong>Tracional:</strong> associado a doenças como a retinopatia diabética, quando cicatrizes puxam a retina.</li>
+        <li><strong>Exsudativo:</strong> ocorre por acúmulo de líquido sob a retina, muitas vezes ligado a inflamações ou tumores.</li>
+      </ul>
+
+      <p>Segundo o Conselho Brasileiro de Oftalmologia (CBO), trata-se de uma urgência médica que exige diagnóstico rápido e intervenção especializada.</p>
+
+      <h2>Sintomas do Descolamento de Retina</h2>
+
+      <p>O descolamento raramente é indolor, mas seus sinais de alerta podem ser discretos. Entre eles:</p>
+      <ul>
+        <li>Luzes piscando (fotopsias), como se fossem relâmpagos.</li>
+        <li>Manchas flutuantes (moscas volantes) no campo visual.</li>
+        <li>Sombra escura ou cortina em parte da visão.</li>
+        <li>Perda súbita e progressiva da acuidade visual.</li>
+      </ul>
+
+      <p>Qualquer um desses sintomas exige avaliação imediata com oftalmologista.</p>
+
+      <h2>Mitos e Verdades Sobre Descolamento de Retina</h2>
+
+      <h3>❌ Mito 1: "Descolamento de retina acontece sempre de forma repentina e sem aviso."</h3>
+      <p><strong>✅ Verdade:</strong> Embora a perda visual possa ser rápida, o corpo geralmente dá sinais de alerta, como flashes de luz e manchas escuras. Identificar precocemente esses sintomas aumenta muito as chances de tratamento eficaz.</p>
+
+      <h3>❌ Mito 2: "A doença só afeta idosos."</h3>
+      <p><strong>✅ Verdade:</strong> O risco aumenta com a idade, mas jovens também podem ter descolamento, principalmente aqueles com miopia alta, traumas oculares ou histórico familiar.</p>
+
+      <h3>❌ Mito 3: "Esforço físico ou abaixar a cabeça causa descolamento."</h3>
+      <p><strong>✅ Verdade:</strong> Atividades físicas comuns não causam o problema. O que aumenta o risco são traumas diretos nos olhos, doenças pré-existentes e alterações anatômicas da retina.</p>
+
+      <h3>❌ Mito 4: "Colírios e óculos previnem descolamento."</h3>
+      <p><strong>✅ Verdade:</strong> Nem colírios, nem óculos podem evitar o descolamento. A prevenção se baseia em consultas regulares, diagnóstico precoce de rasgos ou afinamentos da retina e tratamento com laser quando indicado.</p>
+
+      <h3>❌ Mito 5: "Se a retina descolar, a visão sempre será perdida."</h3>
+      <p><strong>✅ Verdade:</strong> O prognóstico depende da rapidez no tratamento. Cirurgias como a vitrectomia ou a aplicação de gás/silicone intraocular podem recolocar a retina no lugar. Quanto mais cedo o paciente procurar ajuda, maiores as chances de preservar a visão.</p>
+
+      <h3>❌ Mito 6: "Descolamento só acontece em quem tem problema de visão grave."</h3>
+      <p><strong>✅ Verdade:</strong> Embora miopia elevada seja fator de risco, qualquer pessoa pode desenvolver descolamento, especialmente após traumas ou em presença de doenças como diabetes e inflamações oculares.</p>
+
+      <h2>Fatores de Risco</h2>
+      <ul>
+        <li>Miopia alta (acima de 6 graus).</li>
+        <li>Idade acima de 50 anos.</li>
+        <li>Cirurgias oculares prévias, como de catarata.</li>
+        <li>História familiar de descolamento.</li>
+        <li>Retinopatia diabética.</li>
+        <li>Traumas oculares.</li>
+      </ul>
+
+      <p>Na Saraiva Vision, avaliamos cada fator de risco durante os exames de rotina, especialmente em pacientes com histórico pessoal ou familiar.</p>
+
+      <h2>Diagnóstico</h2>
+
+      <p>O diagnóstico é feito em consulta com oftalmologista, utilizando exames como:</p>
+      <ul>
+        <li>Mapeamento de retina</li>
+        <li>Oftalmoscopia indireta</li>
+        <li>Retinografia</li>
+        <li>Tomografia de coerência óptica (OCT) (em breve disponível na Saraiva Vision)</li>
+      </ul>
+
+      <p>Esses exames permitem identificar rasgos ou áreas frágeis que podem evoluir para descolamento.</p>
+
+      <h2>Tratamento</h2>
+
+      <p>O tratamento é sempre cirúrgico. Entre as técnicas mais comuns:</p>
+      <ul>
+        <li><strong>Fotocoagulação a laser:</strong> usada em rasgos iniciais, antes do descolamento.</li>
+        <li><strong>Retinopexia pneumática:</strong> injeção de gás no olho para pressionar a retina contra a parede ocular.</li>
+        <li><strong>Vitrectomia:</strong> remoção do vítreo e reposicionamento da retina com gás ou silicone.</li>
+        <li><strong>Cerclagem escleral:</strong> uso de uma faixa de silicone externa para apoiar a retina.</li>
+      </ul>
+
+      <p>O tempo de recuperação varia, e o acompanhamento oftalmológico é essencial.</p>
+
+      <h2>O Papel da Prevenção</h2>
+
+      <p>Embora não seja possível eliminar todos os riscos, é fundamental:</p>
+      <ul>
+        <li>Fazer consultas periódicas com oftalmologista.</li>
+        <li>Controlar doenças crônicas, como diabetes.</li>
+        <li>Usar óculos de proteção em esportes e atividades de risco.</li>
+        <li>Procurar atendimento imediato ao notar sintomas suspeitos.</li>
+      </ul>
+
+      <h2>Conclusão</h2>
+
+      <p>O descolamento de retina é uma condição séria, mas cheia de mitos que podem atrasar o diagnóstico. Entender os sinais de alerta e procurar ajuda rapidamente pode salvar a visão.</p>
+
+      <p>Na Saraiva Vision, em Caratinga, contamos com exames especializados e atendimento humanizado para identificar precocemente alterações na retina e indicar o tratamento mais adequado.</p>
+
+      <p><strong>📲 Agende sua avaliação pelo WhatsApp:</strong> (33) 99860-1427<br>
+      🌐 saraivavision.com.br | Instagram: @saraiva_vision</p>
+
+      <h3>Referências</h3>
+      <ol>
+        <li>Conselho Brasileiro de Oftalmologia (CBO). Descolamento de Retina – Informações para Pacientes.</li>
+        <li>American Academy of Ophthalmology (AAO). Retinal Detachment.</li>
+        <li>Organização Mundial da Saúde (OMS). Relatório Mundial sobre a Visão, 2019.</li>
+        <li>Retina Foundation. Advances in Retinal Detachment Treatment.</li>
+      </ol>
+    `,
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-09-30',
+    category: 'Tratamento',
+    tags: ['descolamento de retina', 'retina', 'cirurgia retina', 'oftalmologia Caratinga', 'vitrectomia', 'mapeamento de retina', 'urgência oftalmológica', 'saúde ocular'],
+    image: '/Blog/eye_anatomy_diagram.png',
+    featured: true,
+    seo: {
+      metaTitle: 'Descolamento de Retina: Mitos e Verdades | Clínica Saraiva Vision Caratinga',
+      metaDescription: 'Entenda os principais mitos e verdades sobre descolamento de retina. Informações baseadas em ciência para prevenir e tratar essa condição séria que pode ameaçar a visão.',
+      keywords: ['descolamento de retina', 'descolamento retina Caratinga', 'tratamento retina', 'cirurgia retina', 'oftalmologista Caratinga MG', 'mapeamento retina', 'vitrectomia', 'urgência oftalmológica', 'sintomas descolamento retina']
     }
   },
   {
@@ -251,6 +796,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tecnologia',
     tags: ['inteligência artificial oftalmologia', 'exames oculares AI', 'saúde visual Caratinga', 'diagnóstico ocular IA', 'prevenção ocular MG', 'tecnologia médica', 'retinopatia diabética', 'glaucoma'],
+    image: '/Blog/futuristic_eye_examination.png',
     featured: true,
     seo: {
       metaTitle: 'Como a Inteligência Artificial Está Transformando os Exames Oftalmológicos em Caratinga, MG',
@@ -336,7 +882,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['doença de coats', 'meninos jovens', 'saúde ocular', 'sintomas oculares', 'oftalmologia caratinga', 'tratamento retinal', 'prevenção visão infantil'],
-    image: '/Blog/capa_pediatria.png',
+    image: '/Blog/Coats.png',
     featured: true,
     seo: {
       metaTitle: 'Doença de Coats em Meninos Jovens: Sintomas, Diagnóstico e Tratamento em Caratinga, MG',
@@ -416,256 +962,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Prevenção',
     tags: ['terapias genéticas oftalmologia', 'células-tronco olhos', 'amaurose congênita Leber', 'retinose pigmentar', 'tratamentos hereditários visão', 'avanços oftalmológicos Brasil', 'Caratinga MG'],
-    image: '/Blog/capa_geral.png',
-    featured: true,
-    seo: {
-      metaTitle: 'Terapias Genéticas e de Células-Tronco em Oftalmologia: Avanços para Doenças Hereditárias como Amaurose de Leber e Retinose Pigmentar',
-      metaDescription: 'Descubra como terapias genéticas e células-tronco estão revolucionando tratamentos oculares para doenças hereditárias. Saiba sobre sucessos, limitações e perspectivas no Brasil na Clínica Saraiva Vision, em Caratinga, MG.',
-      keywords: ['terapias genéticas oftalmologia', 'células-tronco olhos', 'amaurose congênita Leber', 'retinose pigmentar', 'tratamentos hereditários visão', 'avanços oftalmológicos Brasil']
-    }
-  },
-  {
-    id: 13,
-    slug: 'doenca-coats-sintomas-diagnostico-tratamento-caratinga-mg',
-    title: 'Doença de Coats: Sintomas, Diagnóstico e Tratamento em Caratinga, MG',
-    excerpt: 'Entenda a Doença de Coats, uma condição rara que afeta a retina e pode levar à perda de visão. Conheça sintomas, diagnóstico e tratamentos disponíveis na Clínica Saraiva Vision em Caratinga, MG.',
-    content: `
-      <h2>Doença de Coats: Diagnóstico Precoce e Tratamento para Preservar a Visão em Caratinga, MG</h2>
-
-      <p>Bem-vindo ao blog da Clínica Saraiva Vision! Em Caratinga, MG, nossa missão é oferecer atendimento oftalmológico humanizado e de excelência. Liderados pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e uma equipe qualificada, utilizamos tecnologia diagnóstica avançada para identificar e tratar condições oculares raras, como a Doença de Coats. Neste artigo, vamos explorar essa condição de forma acessível, explicando o que é, quais são os sintomas, como é feito o diagnóstico e quais tratamentos estão disponíveis. Se você ou alguém da sua família apresenta sintomas como leucocoria (pupila branca), estrabismo ou perda de visão em uma criança, este conteúdo pode ajudar a identificar sinais de alerta e buscar ajuda especializada no momento certo.</p>
-
-      <p>A Doença de Coats é uma condição rara que afeta principalmente crianças e adolescentes do sexo masculino, caracterizada por alterações nos vasos sanguíneos da retina. Embora seja menos conhecida que outras doenças oculares, seu diagnóstico precoce é fundamental para preservar a visão. Na Clínica Saraiva Vision, acreditamos que informação de qualidade é o primeiro passo para o cuidado efetivo da saúde ocular.</p>
-
-      <h2>O Que é a Doença de Coats?</h2>
-
-      <p>A Doença de Coats, também conhecida como exsudativa retiniana idiopática, é uma condição não hereditária caracterizada por telangiectasias (dilatações anormais) dos vasos sanguíneos da retina. Esses vasos anormais permitem o vazamento de fluidos e lipídios (gorduras) para dentro da retina, causando edema retiniano e, em casos avançados, descolamento de retina. A doença afeta geralmente apenas um olho (unilateral em cerca de 90% dos casos) e se manifesta principalmente em meninos entre 6 e 8 anos de idade, embora possa ocorrer em qualquer faixa etária.</p>
-
-      <p>De acordo com estudos oftalmológicos internacionais, a Doença de Coats é considerada rara, com incidência estimada de 1 caso para cada 100.000 pessoas. A condição foi descrita pela primeira vez pelo oftalmologista escocês George Coats em 1908. Diferente de condições hereditárias como a retinose pigmentar ou a amaurose de Leber, a Doença de Coats é esporádica, ou seja, não passa de pais para filhos.</p>
-
-      <p>No cotidiano, pais podem notar que a criança fecha um olho ao brincar, apresenta estrabismo (olhos desalinhados) ou dificuldade para enxergar de um lado. Em ambientes com pouca luz, pode-se observar um reflexo esbranquiçado na pupila ao tirar fotografias com flash – sinal conhecido como leucocoria ou "reflexo do olho de gato". Esse é um dos sinais de alerta mais importantes que exigem avaliação oftalmológica imediata.</p>
-
-      <h2>Causas e Fatores de Risco</h2>
-
-      <p>As causas exatas da Doença de Coats ainda não são completamente compreendidas. A teoria mais aceita sugere que a condição resulta de uma anomalia congênita no desenvolvimento dos vasos sanguíneos da retina, levando à formação de telangiectasias que se tornam sintomáticas ao longo da infância. Não há evidências de fatores genéticos hereditários, embora alguns estudos investiguem possíveis mutações somáticas esporádicas.</p>
-
-      <h3>Fatores de Risco Conhecidos:</h3>
-      <ul>
-        <li><strong>Sexo masculino:</strong> A doença afeta predominantemente meninos (proporção de aproximadamente 3:1).</li>
-        <li><strong>Idade pediátrica:</strong> Maior incidência entre 6-8 anos, mas pode surgir desde o nascimento até a vida adulta.</li>
-        <li><strong>Sem histórico familiar:</strong> A ausência de casos na família não exclui o risco, pois a condição é esporádica.</li>
-      </ul>
-
-      <p>É importante ressaltar que a Doença de Coats não está relacionada a hábitos de vida, exposição solar ou uso de telas. No entanto, o diagnóstico tardio pode levar a complicações graves, como glaucoma secundário, descolamento total da retina e até perda irreversível da visão. Por isso, o acompanhamento oftalmológico regular em crianças é fundamental, especialmente se houver sinais de alerta.</p>
-
-      <h2>Sintomas e Sinais de Alerta</h2>
-
-      <p>Os sintomas da Doença de Coats variam conforme o estágio da doença. Em fases iniciais, pode ser assintomática e descoberta apenas em exames de rotina. À medida que progride, os sinais se tornam mais evidentes:</p>
-
-      <h3>Sintomas Comuns:</h3>
-      <ul>
-        <li><strong>Leucocoria (pupila branca):</strong> Reflexo esbranquiçado na pupila, especialmente visível em fotografias com flash. É o sinal mais característico e deve ser investigado imediatamente, pois também pode indicar retinoblastoma (tumor ocular maligno).</li>
-        <li><strong>Estrabismo:</strong> Desvio de um dos olhos, que pode surgir quando a criança perde visão significativa no olho afetado.</li>
-        <li><strong>Perda de visão:</strong> Diminuição gradual da visão no olho afetado, que a criança pode não perceber inicialmente se o outro olho estiver saudável.</li>
-        <li><strong>Dor ocular:</strong> Em estágios avançados, quando há aumento da pressão intraocular (glaucoma secundário).</li>
-        <li><strong>Olho vermelho e inflamado:</strong> Pode ocorrer em casos de glaucoma associado ou descolamento de retina.</li>
-      </ul>
-
-      <h3>Quando Procurar um Especialista Imediatamente:</h3>
-      <blockquote>
-        <p><strong>Sinais de Alerta – Procure avaliação oftalmológica urgente se observar:</strong></p>
-        <ul>
-          <li>Reflexo branco na pupila (leucocoria) em fotografias ou sob luz direta</li>
-          <li>Estrabismo súbito ou progressivo em crianças</li>
-          <li>Criança fechando um olho frequentemente ao brincar ou assistir TV</li>
-          <li>Queixa de visão embaçada ou dificuldade para enxergar de um lado</li>
-          <li>Dor ocular intensa ou olho vermelho persistente</li>
-          <li>Histórico de trauma ocular seguido de alterações visuais</li>
-        </ul>
-      </blockquote>
-
-      <p>No cotidiano de Caratinga e região, pais devem estar atentos durante atividades escolares, esportes e brincadeiras. Se a criança tropeça com frequência, tem dificuldade para pegar objetos ou evita atividades que exigem visão detalhada, pode ser um sinal de problema visual que merece investigação.</p>
-
-      <h2>Diagnóstico da Doença de Coats</h2>
-
-      <p>O diagnóstico da Doença de Coats requer avaliação oftalmológica especializada com exames de imagem da retina. Na Clínica Saraiva Vision, o Dr. Philipe Saraiva Cruz e a equipe realizam uma avaliação completa para identificar a condição e determinar seu estágio.</p>
-
-      <h3>Exames Diagnósticos:</h3>
-      <ul>
-        <li><strong>Fundoscopia (Exame de Fundo de Olho):</strong> Visualização direta da retina sob dilatação pupilar, onde se identificam os vasos sanguíneos anormais, exsudatos lipídicos (depósitos amarelados) e áreas de descolamento retiniano.</li>
-        <li><strong>Retinografia Colorida:</strong> Fotografias de alta resolução da retina para documentar a extensão das lesões.</li>
-        <li><strong>Angiografia Fluoresceínica (AGF):</strong> Exame com contraste intravenoso que mapeia os vasos retinianos, identificando áreas de vazamento e telangiectasias.</li>
-        <li><strong>Tomografia de Coerência Óptica (OCT):</strong> Exame não invasivo que gera imagens detalhadas das camadas da retina, mostrando edema e alterações estruturais.</li>
-        <li><strong>Ultrassonografia Ocular:</strong> Útil em casos avançados com opacidade de meios (quando não é possível visualizar a retina diretamente), para avaliar descolamento de retina e excluir tumores como retinoblastoma.</li>
-      </ul>
-
-      <h3>Classificação por Estágios:</h3>
-      <p>A Doença de Coats é classificada em estágios de acordo com a gravidade:</p>
-      <ul>
-        <li><strong>Estágio 1:</strong> Telangiectasias retinianas sem exsudação significativa</li>
-        <li><strong>Estágio 2:</strong> Telangiectasias com exsudação retiniana</li>
-        <li><strong>Estágio 3:</strong> Descolamento parcial ou total da retina</li>
-        <li><strong>Estágio 4:</strong> Glaucoma secundário</li>
-        <li><strong>Estágio 5:</strong> Olho não funcional, doloroso (ftiose bulbar)</li>
-      </ul>
-
-      <p>O diagnóstico diferencial é crucial, pois a leucocoria também pode ser causada por retinoblastoma (câncer ocular), doença de Norrie, retinopatia da prematuridade e outras condições. Por isso, a avaliação especializada não pode ser postergada.</p>
-
-      <h2>Tratamento e Opções Terapêuticas</h2>
-
-      <p>O tratamento da Doença de Coats varia conforme o estágio da doença e tem como objetivo interromper o vazamento de fluidos, destruir os vasos anormais e preservar ou restaurar a visão. Quanto mais precoce o diagnóstico, melhores são os resultados.</p>
-
-      <h3>Opções de Tratamento:</h3>
-
-      <h4>1. Fotocoagulação a Laser</h4>
-      <p>O laser é a modalidade terapêutica de primeira linha para estágios iniciais (1 e 2A). Aplicado nas áreas de telangiectasias, o laser "queima" os vasos anormais, selando os pontos de vazamento. O procedimento é realizado sob anestesia local ou sedação, dependendo da idade e colaboração do paciente.</p>
-      <ul>
-        <li><strong>Indicação:</strong> Casos com exsudação limitada e vasos anormais bem definidos</li>
-        <li><strong>Vantagens:</strong> Minimamente invasivo, pode ser repetido se necessário</li>
-        <li><strong>Resultados:</strong> Estudos mostram estabilização em 70-80% dos casos tratados precocemente</li>
-      </ul>
-
-      <h4>2. Crioterapia (Tratamento com Frio)</h4>
-      <p>Aplicação de frio extremo na superfície externa do olho para destruir vasos anormais periféricos. É alternativa ao laser quando as lesões estão em áreas de difícil acesso ou em presença de opacidade de meios.</p>
-
-      <h4>3. Injeções Intravítreas de Anti-VEGF</h4>
-      <p>Medicamentos anti-angiogênicos (como bevacizumab ou ranibizumab) podem ser injetados no interior do olho para reduzir o edema macular e controlar a exsudação. Geralmente usados como terapia adjuvante antes do laser ou em casos refratários.</p>
-
-      <h4>4. Cirurgia de Vitrectomia</h4>
-      <p>Nos estágios mais avançados (3), com descolamento de retina extenso, pode ser necessária cirurgia para remover o gel vítreo e reaplicar a retina. O procedimento é complexo e realizado por cirurgiões especializados em retina.</p>
-
-      <h4>5. Enucleação (Remoção do Olho)</h4>
-      <p>Em casos extremos (estágio 5), quando o olho está cego, doloroso e sem possibilidade de recuperação, pode ser necessária a remoção cirúrgica para aliviar dor e prevenir complicações sistêmicas.</p>
-
-      <h3>Acompanhamento e Prognóstico</h3>
-      <p>O acompanhamento após o tratamento deve ser rigoroso, com consultas periódicas para monitorar recorrências e progressão. O prognóstico visual depende do estágio ao diagnóstico:</p>
-      <ul>
-        <li><strong>Estágios 1-2:</strong> Bom prognóstico com tratamento adequado, muitas crianças mantêm visão útil</li>
-        <li><strong>Estágio 3:</strong> Prognóstico reservado, depende da extensão do descolamento e sucesso cirúrgico</li>
-        <li><strong>Estágios 4-5:</strong> Prognóstico ruim para visão, foco no controle de complicações</li>
-      </ul>
-
-      <h2>Prevenção e Cuidados no Dia a Dia</h2>
-
-      <p>Embora não seja possível prevenir a Doença de Coats (pois não está relacionada a fatores modificáveis), há medidas importantes para proteger a saúde ocular das crianças:</p>
-
-      <h3>Medidas Preventivas Gerais:</h3>
-      <ol>
-        <li><strong>Exames oftalmológicos de rotina:</strong> Crianças devem fazer avaliação oftalmológica aos 6 meses, 3 anos e antes da alfabetização, mesmo sem queixas aparentes.</li>
-        <li><strong>Atenção aos sinais de alerta:</strong> Pais e educadores devem observar comportamentos que indiquem problemas visuais.</li>
-        <li><strong>Fotografias com flash:</strong> Observar o reflexo das pupilas em fotos – reflexos brancos ou assimétricos exigem avaliação.</li>
-        <li><strong>Teste do olhinho:</strong> Triagem neonatal obrigatória que pode detectar leucocoria precocemente.</li>
-        <li><strong>Uso adequado de óculos de proteção:</strong> Em esportes e atividades de risco para prevenir traumas oculares.</li>
-      </ol>
-
-      <h3>Vida Prática em Caratinga e Região:</h3>
-      <p>Em atividades cotidianas como na escola, em passeios e brincadeiras ao ar livre no clima ensolarado de Minas Gerais, é importante que pais observem se a criança cobre um olho, tropeça com frequência ou tem dificuldade para acompanhar movimentos rápidos. Esses podem ser sinais de perda visual unilateral.</p>
-
-      <h2>Conclusão</h2>
-
-      <p>Em resumo, a Doença de Coats é uma condição rara da retina que afeta principalmente meninos em idade escolar, caracterizada por vazamento de vasos sanguíneos que pode levar à perda de visão se não tratada. Os principais sinais de alerta incluem leucocoria (pupila branca), estrabismo e perda de visão unilateral. O diagnóstico precoce através de exames especializados como fundoscopia, angiografia e OCT é fundamental, e o tratamento com laser, crioterapia ou cirurgia pode preservar a visão quando iniciado nos estágios iniciais.</p>
-
-      <p>Na Clínica Saraiva Vision, em Caratinga, MG, o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e nossa equipe qualificada estão preparados para realizar diagnóstico preciso e orientar o melhor tratamento para seu filho. Pronto para cuidar da visão da sua família? Agende uma consulta oftalmológica pediátrica, realize exames diagnósticos avançados ou busque uma segunda opinião. Ligue para (33) 99860-1427 e marque seu horário. A visão do seu filho merece atenção especializada!</p>
-
-      <h3>Referências</h3>
-      <ol>
-        <li>Sociedade Brasileira de Oftalmologia (SBO). "Doença de Coats: Diagnóstico e Tratamento". Disponível em: <a href="https://www.sboportal.org.br" target="_blank" rel="noopener noreferrer">https://www.sboportal.org.br</a> (2023).</li>
-        <li>Conselho Brasileiro de Oftalmologia (CBO). "Leucocoria: Causas e Investigação". Disponível em: <a href="https://www.cbo.net.br" target="_blank" rel="noopener noreferrer">https://www.cbo.net.br</a> (2022).</li>
-        <li>American Academy of Ophthalmology (AAO). "Coats Disease: Diagnosis and Management". Disponível em: <a href="https://www.aao.org/eye-health/diseases/what-is-coats-disease" target="_blank" rel="noopener noreferrer">https://www.aao.org/eye-health/diseases/what-is-coats-disease</a> (2024).</li>
-        <li>Artigo científico: Shields JA, Shields CL. "Coats Disease: Review of Classification, Management, and Outcomes". Retina, 2019. Disponível em: <a href="https://journals.lww.com/retinajournal" target="_blank" rel="noopener noreferrer">https://journals.lww.com/retinajournal</a>.</li>
-        <li>Artigo científico: Ramasubramanian A, Shields CL. "Bevacizumab for Coats Disease with Exudative Retinal Detachment and Risk of Vitreoretinal Traction". British Journal of Ophthalmology, 2018. Disponível em: <a href="https://bjo.bmj.com" target="_blank" rel="noopener noreferrer">https://bjo.bmj.com</a>.</li>
-      </ol>
-    `,
-    author: 'Dr. Philipe Saraiva Cruz',
-    date: '2025-09-30',
-    category: 'Tratamento',
-    tags: ['doença de Coats', 'leucocoria', 'telangiectasias retinianas', 'descolamento de retina', 'oftalmologia pediátrica', 'pupila branca', 'tratamento retina Caratinga', 'exames retina criança'],
-    featured: true,
-    seo: {
-      metaTitle: 'Doença de Coats: Sintomas, Diagnóstico e Tratamento em Caratinga, MG',
-      metaDescription: 'Entenda a Doença de Coats, uma condição rara que afeta a retina e pode levar à perda de visão. Conheça sintomas, diagnóstico e tratamentos disponíveis na Clínica Saraiva Vision em Caratinga, MG.',
-      keywords: ['doença de Coats', 'leucocoria', 'telangiectasias retinianas', 'descolamento de retina', 'oftalmologia pediátrica', 'pupila branca', 'tratamento retina Caratinga', 'exames retina criança', 'reflexo olho de gato', 'Dr. Philipe Saraiva Cruz']
-    }
-  },
-  {
-    id: 12,
-    slug: 'terapias-geneticas-celulas-tronco-oftalmologia-doencas-hereditarias-caratinga-mg',
-    title: 'Terapias Genéticas e Células-Tronco em Oftalmologia: Avanços, Limitações e Perspectivas no Brasil',
-    excerpt: 'Descubra como terapias genéticas e células-tronco estão revolucionando tratamentos oculares para doenças hereditárias. Saiba sobre sucessos, limitações e perspectivas no Brasil na Clínica Saraiva Vision, em Caratinga, MG.',
-    content: `
-      <h2>Terapias Genéticas e de Células-Tronco: Revolucionando o Tratamento de Doenças Oculares Hereditárias em Caratinga, MG</h2>
-
-      <p>Bem-vindo ao blog da Clínica Saraiva Vision! Aqui em Caratinga, MG, estamos comprometidos em oferecer um atendimento humanizado e de excelência para a saúde dos seus olhos. Liderada pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e uma equipe qualificada, nossa clínica utiliza tecnologia diagnóstica avançada para ajudar pacientes e familiares a entenderem melhor as opções de prevenção, diagnóstico e tratamento oftalmológico. Hoje, vamos explorar um tema empolgante e inovador: as terapias genéticas e de células-tronco em oftalmologia. De forma acessível, explicaremos como essas abordagens estão transformando o tratamento de doenças hereditárias, como a amaurose congênita de Leber e a retinose pigmentar. Ao ler este artigo, você aprenderá sobre sucessos clínicos recentes, limitações éticas e as perspectivas para que essas tecnologias cheguem aos pacientes no Brasil, além de dicas práticas para cuidar da sua visão no dia a dia.</p>
-
-      <p>Imagine poder corrigir um defeito genético diretamente nas células dos olhos ou regenerar tecidos danificados com células-tronco. Essas inovações não são mais ficção científica, mas realidades que estão mudando vidas. Na Clínica Saraiva Vision, acreditamos que o conhecimento é o primeiro passo para uma visão saudável, e estamos aqui para guiá-lo nessa jornada.</p>
-
-      <h2>O Que São Terapias Genéticas em Oftalmologia?</h2>
-
-      <p>As terapias genéticas são como "consertos" no código genético do corpo. Elas visam corrigir mutações que causam doenças hereditárias nos olhos. Por exemplo, em distrofias retinianas, como a amaurose congênita de Leber, uma mutação no gene RPE65 impede que as células da retina processem a luz corretamente, levando a uma perda progressiva da visão desde a infância.</p>
-
-      <p>Uma abordagem comum usa vetores virais – vírus modificados e inofensivos – para entregar genes saudáveis diretamente às células afetadas. Pense nisso como um "delivery" preciso: o vetor viral carrega o gene correto para dentro das células da retina, ajudando-as a funcionar normalmente. Isso é revolucionário porque trata a causa raiz da doença, não apenas os sintomas.</p>
-
-      <p>No cotidiano, doenças como essas afetam atividades simples, como ler um livro, dirigir ou reconhecer rostos de familiares. Idosos ou pessoas com histórico familiar podem notar dificuldades em ambientes escuros, o que impacta esportes noturnos ou até o uso de telas à noite. Prevenir agravamentos envolve hábitos como proteger os olhos do sol excessivo e evitar telas sem pausas, mas o acompanhamento oftalmológico regular é essencial para detectar problemas cedo.</p>
-
-      <h2>Estudos com Células-Tronco e Sua Aplicação em Doenças Oculares</h2>
-
-      <p>As células-tronco são como "células curinga" do corpo, capazes de se transformar em diferentes tipos de tecidos. Em oftalmologia, estudos estão explorando seu uso para regenerar a retina danificada em condições como a retinose pigmentar, uma doença hereditária que causa degeneração das células sensíveis à luz, levando a visão em túnel e, eventualmente, cegueira.</p>
-
-      <p>Pesquisadores injetam células-tronco derivadas de fontes como o cordão umbilical ou induzidas (iPSCs) para substituir células perdidas. Isso pode restaurar funções visuais, especialmente em estágios iniciais. Exemplos práticos incluem pacientes que, após tratamentos experimentais, relatam melhorias em tarefas diárias, como navegar em ambientes com pouca luz ou praticar esportes leves.</p>
-
-      <p>No entanto, é importante destacar a prevenção: hábitos cotidianos, como uma dieta rica em antioxidantes (folhas verdes, peixes) e evitar fumo, ajudam a proteger a retina. Idade avançada ou exposição prolongada a telas pode acelerar problemas, tornando exames regulares cruciais.</p>
-
-      <h2>Sucessos Clínicos Recentes</h2>
-
-      <p>Recentemente, a terapia genética Luxturna, aprovada pela FDA em 2017, marcou um marco para a amaurose congênita de Leber. Injetada sob a retina, ela usa vetores virais para corrigir a mutação RPE65, com pacientes relatando melhorias significativas na visão noturna e mobilidade. Estudos mostram que até 90% dos tratados mantêm ganhos visuais por anos.</p>
-
-      <p>Para retinose pigmentar, ensaios com células-tronco, como os conduzidos pela jCyte nos EUA, demonstraram segurança e melhorias em testes visuais em fases iniciais. No Brasil, pesquisas em instituições como a USP avançam, com testes pré-clínicos promissores.</p>
-
-      <p>Esses sucessos inspiram esperança, mas reforçam a necessidade de diagnóstico precoce na Clínica Saraiva Vision, onde oferecemos exames diagnósticos avançados.</p>
-
-      <h2>Limitações Éticas e Desafios</h2>
-
-      <p>Apesar dos avanços, há limitações éticas. Questões incluem o acesso equitativo – tratamentos caros podem excluir populações de baixa renda – e riscos como reações imunológicas aos vetores virais. Ética em edição genética levanta debates sobre "melhorias" além de curas, e ensaios com células-tronco envolvem dilemas sobre fontes embrionárias.</p>
-
-      <p>No Brasil, regulamentações da Anvisa garantem segurança, mas é vital discutir esses pontos com especialistas como o Dr. Philipe Saraiva Cruz.</p>
-
-      <h2>Perspectivas para o Brasil e Importância do Acompanhamento Regular</h2>
-
-      <p>No Brasil, perspectivas são otimistas: a Anvisa aprovou Luxturna em 2020, e estudos em células-tronco avançam em centros como o Hospital das Clínicas. Espera-se maior disponibilidade via SUS nos próximos anos, beneficiando pacientes em regiões como Caratinga, MG.</p>
-
-      <p>O acompanhamento oftalmológico regular é chave para identificar doenças hereditárias cedo. Na Clínica Saraiva Vision, nossa equipe qualificada oferece consultas personalizadas, exames diagnósticos, adaptação de lentes de contato e tratamentos adaptados.</p>
-
-      <h3>Sinais de Alerta para Procurar um Especialista</h3>
-
-      <p>Se você notar esses sintomas, marque uma consulta imediatamente:</p>
-      <ul>
-        <li>Visão embaçada persistente, especialmente à noite.</li>
-        <li>Sensibilidade à luz súbita ou flashes de luz.</li>
-        <li>Dor ocular intensa ou manchas escuras no campo visual.</li>
-        <li>"Moscas volantes" ou perda gradual de visão periférica.</li>
-        <li>Queda brusca de visão, que pode indicar progressão de doenças hereditárias.</li>
-      </ul>
-
-      <p>Esses sinais podem surgir em rotinas diárias, como ao usar telas por horas ou em ambientes poluídos.</p>
-
-      <h2>Conclusão</h2>
-
-      <p>Em resumo, as terapias genéticas, com vetores virais corrigindo mutações em distrofias retinianas, e os estudos com células-tronco estão revolucionando o tratamento de amaurose congênita de Leber e retinose pigmentar, com sucessos clínicos notáveis, mas com limitações éticas a considerar. No Brasil, o futuro é promissor, trazendo esperança para pacientes locais.</p>
-
-      <p>Cuidar da visão é um compromisso contínuo, e na Clínica Saraiva Vision, em Caratinga, MG, estamos prontos para ajudá-lo. Pronto para um check-up? Agende sua consulta, realize exames diagnósticos, adapte lentes de contato ou inicie tratamentos personalizados com o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e nossa equipe. Ligue para (33) 99860-1427 e dê o primeiro passo para uma visão mais saudável!</p>
-
-      <h3>Referências</h3>
-      <ol>
-        <li>Sociedade Brasileira de Oftalmologia (SBO). "Terapias Genéticas em Oftalmologia". Disponível em: <a href="https://www.sboportal.org.br/terapias-geneticas" target="_blank" rel="noopener noreferrer">https://www.sboportal.org.br/terapias-geneticas</a> (2023).</li>
-        <li>Conselho Brasileiro de Oftalmologia (CBO). "Avanços em Células-Tronco para Doenças Retinianas". Disponível em: <a href="https://www.cbo.net.br/avancos-celulas-tronco" target="_blank" rel="noopener noreferrer">https://www.cbo.net.br/avancos-celulas-tronco</a> (2022).</li>
-        <li>Organização Mundial da Saúde (OMS). "Gene Therapy for Inherited Retinal Diseases". Disponível em: <a href="https://www.who.int/publications/i/item/gene-therapy-retinal" target="_blank" rel="noopener noreferrer">https://www.who.int/publications/i/item/gene-therapy-retinal</a> (2021).</li>
-        <li>Artigo científico: Russell S, et al. "Efficacy and safety of voretigene neparvovec (AAV2-hRPE65v2) in patients with RPE65-mediated inherited retinal dystrophy: a randomised, controlled, open-label, phase 3 trial". The Lancet, 2017. Disponível em: <a href="https://doi.org/10.1016/S0140-6736(17)31868-8" target="_blank" rel="noopener noreferrer">https://doi.org/10.1016/S0140-6736(17)31868-8</a>.</li>
-        <li>Artigo científico: Mandai M, et al. "Autologous Induced Stem-Cell-Derived Retinal Cells for Macular Degeneration". New England Journal of Medicine, 2017. Disponível em: <a href="https://doi.org/10.1056/NEJMoa1608368" target="_blank" rel="noopener noreferrer">https://doi.org/10.1056/NEJMoa1608368</a>.</li>
-      </ol>
-    `,
-    author: 'Dr. Philipe Saraiva Cruz',
-    date: '2025-09-30',
-    category: 'Tecnologia',
-    tags: ['terapias genéticas oftalmologia', 'células-tronco olhos', 'amaurose congênita Leber', 'retinose pigmentar', 'tratamentos hereditários visão', 'avanços oftalmológicos Brasil'],
+    image: '/Blog/terapia_genica.png',
     featured: true,
     seo: {
       metaTitle: 'Terapias Genéticas e de Células-Tronco em Oftalmologia: Avanços para Doenças Hereditárias como Amaurose de Leber e Retinose Pigmentar',
@@ -755,6 +1052,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Prevenção',
     tags: ['síndrome da visão de computador', 'fadiga ocular', 'luz azul', 'técnica 20-20-20', 'olhos secos', 'cefaleia', 'prevenção visual', 'trabalho remoto', 'estudos digitais', 'saúde ocular Caratinga'],
+    image: '/Blog/capa_digital.png',
     featured: true,
     seo: {
       metaTitle: 'Síndrome da Visão de Computador: Prevenção e Manejo em Caratinga, MG',
@@ -965,7 +1263,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['estrabismo', 'sintomas de estrabismo', 'causas de estrabismo', 'tratamento de estrabismo', 'saúde ocular', 'Caratinga MG'],
-    image: '/Blog/capa_pediatria.png',
+    image: '/Blog/capa_estrabismo.png',
     featured: true,
     seo: {
       metaTitle: 'Estrabismo: Quando Desconfiar e Procurar um Oftalmologista em Caratinga, MG',
@@ -1051,7 +1349,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Prevenção',
     tags: ['alimentação e saúde ocular', 'microbioma ocular', 'vitaminas para visão', 'prevenção degeneração macular', 'catarata', 'ômega-3 olhos', 'luteína zeaxantina', 'olho seco', 'saúde sistêmica visão', 'Caratinga MG'],
-    image: '/Blog/capa_pad.png',
+    image: '/Blog/healthy_food_sources.png',
     featured: true,
     seo: {
       metaTitle: 'Alimentação e Saúde Ocular: Como Nutrientes e Microbioma Influenciam a Visão em Caratinga, MG',
@@ -1214,7 +1512,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Prevenção',
     tags: ['lentes de contato', 'presbiopia', 'correção visual', 'vista cansada', 'Caratinga MG'],
-    image: '/Blog/oculosxlec.png',
+    image: '/Blog/lentecontado.png',
     featured: true,
     seo: {
       metaTitle: 'Lentes de Contato para Presbiopia: Soluções Eficazes em Caratinga, MG',
@@ -1515,6 +1813,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['cirurgia refrativa Caratinga', 'lentes intraoculares Caratinga', 'catarata Caratinga', 'laser de femtossegundos Caratinga', 'lente multifocal Caratinga', 'lente EDOF Caratinga', 'presbiopia Caratinga', 'astigmatismo Caratinga', 'LASIK Caratinga', 'PRK Caratinga', 'SMILE Caratinga', 'cirurgia de catarata Caratinga', 'avaliação oftalmológica Caratinga'],
+    image: '/Blog/refrativa_capa.png',
     featured: true,
     seo: {
       metaTitle: 'Cirurgia refrativa e lentes premium em Caratinga',
@@ -1727,7 +2026,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Tratamento',
     tags: ['obstrução ducto lacrimal', 'lacrimejamento', 'dacriocistite', 'vias lacrimais', 'Caratinga MG'],
-    image: '/Blog/sda.png',
+    image: '/Blog/capa_ductolacrimal.png',
     featured: false,
     seo: {
       metaTitle: 'Obstrução do ducto lacrimal: causas e soluções em Caratinga',
@@ -1802,7 +2101,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Tratamento',
     tags: ['lentes premium', 'cirurgia de catarata', 'lentes intraoculares', 'lentes multifocais', 'Caratinga MG'],
-    image: '/Blog/capa_catarata.png',
+    image: '/Blog/capa_lentes_premium_catarata.png',
     featured: true,
     seo: {
       metaTitle: 'Lentes Premium para Cirurgia de Catarata em Caratinga, MG: Benefícios e Opções Avançadas',
