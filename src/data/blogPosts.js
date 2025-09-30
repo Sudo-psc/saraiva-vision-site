@@ -1221,9 +1221,115 @@ export const blogPosts = [
       metaDescription: 'Descubra como as lentes de contato multifocais corrigem a presbiopia e melhoram sua visão. Na Clínica Saraiva Vision em Caratinga, MG, agende uma consulta com especialistas para adaptação personalizada.',
       keywords: ['lentes de contato para presbiopia', 'correção da presbiopia', 'lentes multifocais', 'oftalmologista Caratinga', 'saúde ocular MG']
     }
-  },
-  {
-    id: 1,
+   },
+   {
+     id: 18,
+     slug: 'mitos-verdades-saude-ocular-ciencia-caratinga-mg',
+     title: 'Mitos e Verdades Sobre Saúde Ocular: O Que a Ciência Realmente Diz',
+     excerpt: 'Descubra o que é mito e verdade sobre cuidados com a visão. Da leitura com pouca luz às cenouras milagrosas, esclareça dúvidas com base científica na Clínica Saraiva Vision em Caratinga, MG.',
+     content: `
+       <h2>Mitos e Verdades Sobre Saúde Ocular: O Que a Ciência Realmente Diz</h2>
+
+       <p>Nossos olhos são as janelas para o mundo. No entanto, quando o assunto é saúde ocular, muitas informações circulam sem comprovação científica. Entre conselhos familiares e dicas da internet, é comum surgirem dúvidas: afinal, o que é mito e o que é verdade sobre os cuidados com a visão?</p>
+
+       <p>Neste artigo, a Saraiva Vision reuniu as principais crenças populares e as confrontou com a ciência para esclarecer de vez como proteger a saúde dos seus olhos.</p>
+
+       <h3>❌ Mito 1: Ler com pouca luz ou muito perto da tela estraga a visão</h3>
+
+       <p><strong>✅ Verdade:</strong> Ler em ambientes mal iluminados ou passar muito tempo em frente às telas não causa danos permanentes, mas pode gerar cansaço ocular digital.</p>
+
+       <p><strong>O que acontece com os olhos:</strong></p>
+       <ul>
+         <li>Esforço maior para focar → olhos secos e ardência</li>
+         <li>Dor de cabeça e visão embaçada temporária</li>
+         <li>Sensação de peso ao final do dia</li>
+       </ul>
+
+       <p>Segundo a Academia Americana de Oftalmologia, não há evidências de que a prática piore miopia ou outros erros de refração.</p>
+
+       <p><strong>📌 Dica prática:</strong> adote a regra 20-20-20 → a cada 20 minutos, olhe para algo a 6 metros de distância por 20 segundos.</p>
+
+       <p><strong>Referência:</strong> <a href="https://www.aao.org/eye-health/tips-prevention/computer-usage" target="_blank" rel="noopener noreferrer">American Academy of Ophthalmology – Digital Eye Strain</a></p>
+
+       <h3>❌ Mito 2: Comer cenouras melhora drasticamente a visão</h3>
+
+       <p><strong>✅ Verdade:</strong> A cenoura é rica em betacaroteno, que o corpo converte em vitamina A, essencial para a retina e para enxergar em ambientes com pouca luz.</p>
+
+       <p><strong>O que a ciência diz:</strong></p>
+       <ul>
+         <li>A falta grave de vitamina A pode causar cegueira noturna.</li>
+         <li>Contudo, nenhum alimento corrige miopia, astigmatismo ou hipermetropia.</li>
+         <li>A saúde ocular depende de uma dieta variada, incluindo vitamina C, vitamina E, zinco e ômega-3.</li>
+       </ul>
+
+       <p><strong>📌 Comer cenoura ajuda a manter os olhos saudáveis, mas não substitui os óculos ou as consultas oftalmológicas.</strong></p>
+
+       <p><strong>Referência:</strong> <a href="https://www.who.int/health-topics/vitamin-a-deficiency" target="_blank" rel="noopener noreferrer">Organização Mundial da Saúde – Vitamin A Deficiency</a></p>
+
+       <h3>❌ Mito 3: Usar óculos de outra pessoa estraga os olhos</h3>
+
+       <p><strong>✅ Verdade:</strong> Usar óculos com grau errado não causa lesões permanentes, mas pode gerar sintomas incômodos:</p>
+       <ul>
+         <li>Tontura</li>
+         <li>Dor de cabeça</li>
+         <li>Fadiga visual</li>
+       </ul>
+
+       <p><strong>Atenção especial:</strong> em crianças, o uso contínuo de óculos incorretos ou desatualizados pode atrapalhar o desenvolvimento visual. Por isso, consultas periódicas são fundamentais para ajustar o grau corretamente.</p>
+
+       <p><strong>Referência:</strong> <a href="https://www.cbo.net.br/publico" target="_blank" rel="noopener noreferrer">Conselho Brasileiro de Oftalmologia – Saúde Ocular na Infância</a></p>
+
+       <h3>❌ Mito 4: Usar óculos deixa os olhos "preguiçosos"</h3>
+
+       <p><strong>✅ Verdade:</strong> Óculos não enfraquecem os olhos. Eles apenas corrigem a forma como a luz chega à retina, permitindo visão nítida.</p>
+
+       <p><strong>Por que parece que a visão piora sem óculos?</strong></p>
+       <ul>
+         <li>O cérebro se acostuma à visão clara com os óculos.</li>
+         <li>Ao tirá-los, o contraste com a visão natural embaçada dá a impressão de piora.</li>
+       </ul>
+
+       <p>O uso correto da prescrição é essencial para evitar dores de cabeça, fadiga ocular e perda de qualidade de vida.</p>
+
+       <p><strong>Referência:</strong> <a href="https://www.aoa.org/healthy-eyes/eye-and-vision-conditions/corrective-lenses" target="_blank" rel="noopener noreferrer">American Optometric Association – Corrective Lenses</a></p>
+
+       <h2>👁️ Conclusão: Informação de Qualidade é o Melhor Cuidado</h2>
+
+       <p>Cuidar da saúde ocular é mais simples do que parece. Siga passos básicos no dia a dia:</p>
+       <ul>
+         <li>🕶️ Use óculos de sol com proteção UV</li>
+         <li>⏱️ Faça pausas regulares ao usar telas</li>
+         <li>🥦 Mantenha uma dieta equilibrada</li>
+         <li>👨‍⚕️ Consulte um oftalmologista regularmente</li>
+       </ul>
+
+       <p>Na Saraiva Vision, oferecemos consultas e exames completos com tecnologia de ponta, sempre aliados a um atendimento humano e acolhedor.</p>
+
+       <p><strong>📲 Agende sua avaliação pelo WhatsApp: (33) 99860-1427</strong></p>
+       <p><strong>🌐 saraivavision.com.br | Instagram: @saraiva_vision</strong></p>
+
+       <h3>🔖 Fontes:</h3>
+       <ul>
+         <li>American Academy of Ophthalmology (AAO)</li>
+         <li>American Optometric Association (AOA)</li>
+         <li>Organização Mundial da Saúde (OMS)</li>
+         <li>Conselho Brasileiro de Oftalmologia (CBO)</li>
+       </ul>
+     `,
+     author: 'Dr. Philipe Saraiva Cruz',
+     date: '2025-09-30',
+     category: 'Dúvidas Frequentes',
+     tags: ['mitos saúde ocular', 'verdades visão', 'ciência oftalmologia', 'cuidados olhos', 'prevenção ocular Caratinga', 'dicas visão saudável', 'oftalmologista Caratinga MG'],
+     image: '/Blog/capa_pad.png',
+     featured: true,
+     seo: {
+       metaTitle: 'Mitos e Verdades Sobre Saúde Ocular: O Que a Ciência Diz | Saraiva Vision Caratinga',
+       metaDescription: 'Descubra o que é mito e verdade sobre cuidados com a visão. Da leitura com pouca luz às cenouras milagrosas, esclareça dúvidas com base científica na Clínica Saraiva Vision em Caratinga, MG.',
+       keywords: ['mitos saúde ocular', 'verdades visão', 'ciência oftalmologia', 'cuidados olhos', 'prevenção ocular Caratinga', 'dicas visão saudável', 'oftalmologista Caratinga MG']
+     }
+   },
+   {
+     id: 1,
     slug: 'cirurgia-refrativa-lentes-intraoculares-caratinga',
     title: 'Cirurgia refrativa e lentes premium em Caratinga',
     excerpt: 'Laser de femtossegundos, IOLs multifocais e EDOF para catarata e presbiopia. Avaliação individual na Clínica Saraiva Vision, em Caratinga-MG.',
