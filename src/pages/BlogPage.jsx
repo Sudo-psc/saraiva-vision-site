@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Calendar, ArrowRight, ArrowLeft, Eye, Shield, Stethoscope, Cpu, HelpCircle } from 'lucide-react';
+import { Calendar, ArrowRight, ArrowLeft, Eye, Shield, Stethoscope, Cpu, HelpCircle, Clock, User } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
@@ -18,6 +18,9 @@ import LearningSummary from '../components/blog/LearningSummary';
 import InfoBox from '../components/blog/InfoBox';
 import PostFAQ from '../components/blog/PostFAQ';
 import RelatedPosts from '../components/blog/RelatedPosts';
+import AccessibilityControls from '../components/blog/AccessibilityControls';
+import FixedCTA from '../components/blog/FixedCTA';
+import PatientEducationSidebar from '../components/blog/PatientEducationSidebar';
 
 const BlogPage = () => {
   const { t } = useTranslation();
@@ -223,6 +226,9 @@ const BlogPage = () => {
               showContact={true}
               showPDF={false}
             />
+
+            {/* Patient Education Sidebar */}
+            <PatientEducationSidebar />
           </aside>
         </div>
 
@@ -234,12 +240,21 @@ const BlogPage = () => {
           </div>
         </main>
 
+        {/* Accessibility Controls */}
+        <AccessibilityControls />
+
+        {/* Fixed CTA */}
+        <FixedCTA />
+
         <EnhancedFooter />
       </div>
     );
   }
 
   const renderPostCard = (post, index) => {
+    const enrichment = getPostEnrichment(post.id);
+    const readingTime = Math.ceil((post.content?.length || 1000) / 1000);
+
     return (
       <motion.article
         key={post.id}
@@ -273,45 +288,75 @@ const BlogPage = () => {
           </div>
         </Link>
         <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-grow">
-          <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
-            <div className="flex items-center">
-              <Calendar className="w-4 h-4 mr-2" aria-hidden="true" />
-              <time
-                dateTime={post.date}
-                aria-label={`Publicado em ${formatDate(post.date)}`}
-              >
-                {formatDate(post.date)}
-              </time>
-            </div>
-          </div>
-
+          {/* Category Badge */}
           <div className="mb-3">
             <CategoryBadge category={post.category} size="sm" />
           </div>
 
+          {/* Title */}
           <h3
             id={`post-title-${post.id}`}
-            className="text-xl font-bold mb-3 text-gray-900 flex-grow"
+            className="text-xl font-bold mb-3 text-gray-900 leading-tight"
           >
             <Link
               to={`/blog/${post.slug}`}
-              className="hover:text-blue-600 focus:outline-none focus:text-blue-600 focus:underline"
+              className="hover:text-blue-600 focus:outline-none focus:text-blue-600 focus:underline transition-colors"
             >
               {post.title}
             </Link>
           </h3>
 
-          <p className="text-gray-600 mb-4 text-sm flex-grow">
+          {/* Excerpt */}
+          <p className="text-gray-600 mb-4 text-sm flex-grow leading-relaxed">
             {post.excerpt}
           </p>
 
+          {/* Metadata Row */}
+          <div className="flex items-center justify-between text-xs text-gray-500 mb-4 pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1">
+                <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
+                <time
+                  dateTime={post.date}
+                  aria-label={`Publicado em ${formatDate(post.date)}`}
+                >
+                  {formatDate(post.date)}
+                </time>
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="w-3.5 h-3.5" aria-hidden="true" />
+                <span>{readingTime} min de leitura</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-1">
+              <User className="w-3.5 h-3.5" aria-hidden="true" />
+              <span className="font-medium">{post.author || 'Dr. Saraiva'}</span>
+            </div>
+          </div>
+
+          {/* Learning Points Preview */}
+          {enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
+            <div className="bg-blue-50/50 rounded-lg p-3 mb-4 border border-blue-100">
+              <p className="text-xs font-semibold text-blue-900 mb-2">O que você vai aprender:</p>
+              <ul className="space-y-1">
+                {enrichment.learningPoints.slice(0, 2).map((point, idx) => (
+                  <li key={idx} className="text-xs text-blue-800 flex items-start gap-2">
+                    <span className="text-blue-600 mt-0.5">•</span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* CTA Button */}
           <Link
             to={`/blog/${post.slug}`}
             className="mt-auto focus:outline-none"
             aria-label={`Leia mais sobre: ${post.title}`}
           >
-            <Button variant="link" className="p-0 text-blue-600 font-semibold group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded">
-              {t('blog.read_more', 'Leia mais')}
+            <Button variant="default" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+              {t('blog.read_more', 'Ler artigo completo')}
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </Button>
           </Link>
@@ -527,6 +572,12 @@ const BlogPage = () => {
           </section>
         </div>
       </main>
+
+      {/* Accessibility Controls */}
+      <AccessibilityControls />
+
+      {/* Fixed CTA */}
+      <FixedCTA />
 
       <EnhancedFooter />
     </div>
