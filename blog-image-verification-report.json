@@ -1,0 +1,1679 @@
+{
+  "timestamp": "2025-09-30T19:10:34.822Z",
+  "paths": {
+    "imagesDirectory": "/home/saraiva-vision-site/public/Blog",
+    "blogPostsFile": "/home/saraiva-vision-site/src/data/blogPosts.js"
+  },
+  "summary": {
+    "totalImagesAvailable": 116,
+    "totalReferences": 22,
+    "validReferences": 22,
+    "missingImages": 0,
+    "extensionTypos": 0,
+    "imagesNeedingVariants": 19,
+    "unusedImages": 94
+  },
+  "availableImages": [
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3-480w.avif",
+      "extension": ".avif",
+      "basename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3-480w"
+    },
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3-480w.webp",
+      "extension": ".webp",
+      "basename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3-480w"
+    },
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3-768w.avif",
+      "extension": ".avif",
+      "basename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3-768w"
+    },
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3-768w.webp",
+      "extension": ".webp",
+      "basename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3-768w"
+    },
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3.avif",
+      "extension": ".avif",
+      "basename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3"
+    },
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3.png",
+      "extension": ".png",
+      "basename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3"
+    },
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3.webp",
+      "extension": ".webp",
+      "basename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23-1280w.avif",
+      "extension": ".avif",
+      "basename": "ChatGPT 2025-09-30 00.47.23-1280w"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23-1280w.webp",
+      "extension": ".webp",
+      "basename": "ChatGPT 2025-09-30 00.47.23-1280w"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23-480w.avif",
+      "extension": ".avif",
+      "basename": "ChatGPT 2025-09-30 00.47.23-480w"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23-480w.webp",
+      "extension": ".webp",
+      "basename": "ChatGPT 2025-09-30 00.47.23-480w"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23-768w.avif",
+      "extension": ".avif",
+      "basename": "ChatGPT 2025-09-30 00.47.23-768w"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23-768w.webp",
+      "extension": ".webp",
+      "basename": "ChatGPT 2025-09-30 00.47.23-768w"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23.avif",
+      "extension": ".avif",
+      "basename": "ChatGPT 2025-09-30 00.47.23"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23.tiff",
+      "extension": ".tiff",
+      "basename": "ChatGPT 2025-09-30 00.47.23"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23.webp",
+      "extension": ".webp",
+      "basename": "ChatGPT 2025-09-30 00.47.23"
+    },
+    {
+      "filename": "Coats-1280w.avif",
+      "extension": ".avif",
+      "basename": "Coats-1280w"
+    },
+    {
+      "filename": "Coats-1280w.webp",
+      "extension": ".webp",
+      "basename": "Coats-1280w"
+    },
+    {
+      "filename": "Coats-480w.avif",
+      "extension": ".avif",
+      "basename": "Coats-480w"
+    },
+    {
+      "filename": "Coats-480w.webp",
+      "extension": ".webp",
+      "basename": "Coats-480w"
+    },
+    {
+      "filename": "Coats-768w.avif",
+      "extension": ".avif",
+      "basename": "Coats-768w"
+    },
+    {
+      "filename": "Coats-768w.webp",
+      "extension": ".webp",
+      "basename": "Coats-768w"
+    },
+    {
+      "filename": "Coats.avif",
+      "extension": ".avif",
+      "basename": "Coats"
+    },
+    {
+      "filename": "Coats.png",
+      "extension": ".png",
+      "basename": "Coats"
+    },
+    {
+      "filename": "Coats.webp",
+      "extension": ".webp",
+      "basename": "Coats"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44-480w.avif",
+      "extension": ".avif",
+      "basename": "Perplexity 2025-09-30 02.07.44-480w"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44-480w.webp",
+      "extension": ".webp",
+      "basename": "Perplexity 2025-09-30 02.07.44-480w"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44-768w.avif",
+      "extension": ".avif",
+      "basename": "Perplexity 2025-09-30 02.07.44-768w"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44-768w.webp",
+      "extension": ".webp",
+      "basename": "Perplexity 2025-09-30 02.07.44-768w"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44.avif",
+      "extension": ".avif",
+      "basename": "Perplexity 2025-09-30 02.07.44"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44.png",
+      "extension": ".png",
+      "basename": "Perplexity 2025-09-30 02.07.44"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44.webp",
+      "extension": ".webp",
+      "basename": "Perplexity 2025-09-30 02.07.44"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34-480w.avif",
+      "extension": ".avif",
+      "basename": "Raycast 2025-09-30 07.35.34-480w"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34-480w.webp",
+      "extension": ".webp",
+      "basename": "Raycast 2025-09-30 07.35.34-480w"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34-768w.avif",
+      "extension": ".avif",
+      "basename": "Raycast 2025-09-30 07.35.34-768w"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34-768w.webp",
+      "extension": ".webp",
+      "basename": "Raycast 2025-09-30 07.35.34-768w"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34.avif",
+      "extension": ".avif",
+      "basename": "Raycast 2025-09-30 07.35.34"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34.png",
+      "extension": ".png",
+      "basename": "Raycast 2025-09-30 07.35.34"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34.webp",
+      "extension": ".webp",
+      "basename": "Raycast 2025-09-30 07.35.34"
+    },
+    {
+      "filename": "capa_IA-480w.avif",
+      "extension": ".avif",
+      "basename": "capa_IA-480w"
+    },
+    {
+      "filename": "capa_IA-480w.webp",
+      "extension": ".webp",
+      "basename": "capa_IA-480w"
+    },
+    {
+      "filename": "capa_IA-768w.avif",
+      "extension": ".avif",
+      "basename": "capa_IA-768w"
+    },
+    {
+      "filename": "capa_IA-768w.webp",
+      "extension": ".webp",
+      "basename": "capa_IA-768w"
+    },
+    {
+      "filename": "capa_IA.avif",
+      "extension": ".avif",
+      "basename": "capa_IA"
+    },
+    {
+      "filename": "capa_IA.png",
+      "extension": ".png",
+      "basename": "capa_IA"
+    },
+    {
+      "filename": "capa_IA.webp",
+      "extension": ".webp",
+      "basename": "capa_IA"
+    },
+    {
+      "filename": "capa_catarata-480w.avif",
+      "extension": ".avif",
+      "basename": "capa_catarata-480w"
+    },
+    {
+      "filename": "capa_catarata-480w.webp",
+      "extension": ".webp",
+      "basename": "capa_catarata-480w"
+    },
+    {
+      "filename": "capa_catarata-768w.avif",
+      "extension": ".avif",
+      "basename": "capa_catarata-768w"
+    },
+    {
+      "filename": "capa_catarata-768w.webp",
+      "extension": ".webp",
+      "basename": "capa_catarata-768w"
+    },
+    {
+      "filename": "capa_catarata.avif",
+      "extension": ".avif",
+      "basename": "capa_catarata"
+    },
+    {
+      "filename": "capa_catarata.png",
+      "extension": ".png",
+      "basename": "capa_catarata"
+    },
+    {
+      "filename": "capa_catarata.webp",
+      "extension": ".webp",
+      "basename": "capa_catarata"
+    },
+    {
+      "filename": "capa_daltonismo-480w.avif",
+      "extension": ".avif",
+      "basename": "capa_daltonismo-480w"
+    },
+    {
+      "filename": "capa_daltonismo-480w.webp",
+      "extension": ".webp",
+      "basename": "capa_daltonismo-480w"
+    },
+    {
+      "filename": "capa_daltonismo-768w.avif",
+      "extension": ".avif",
+      "basename": "capa_daltonismo-768w"
+    },
+    {
+      "filename": "capa_daltonismo-768w.webp",
+      "extension": ".webp",
+      "basename": "capa_daltonismo-768w"
+    },
+    {
+      "filename": "capa_daltonismo.avif",
+      "extension": ".avif",
+      "basename": "capa_daltonismo"
+    },
+    {
+      "filename": "capa_daltonismo.png",
+      "extension": ".png",
+      "basename": "capa_daltonismo"
+    },
+    {
+      "filename": "capa_daltonismo.webp",
+      "extension": ".webp",
+      "basename": "capa_daltonismo"
+    },
+    {
+      "filename": "capa_digital-480w.avif",
+      "extension": ".avif",
+      "basename": "capa_digital-480w"
+    },
+    {
+      "filename": "capa_digital-480w.webp",
+      "extension": ".webp",
+      "basename": "capa_digital-480w"
+    },
+    {
+      "filename": "capa_digital-768w.avif",
+      "extension": ".avif",
+      "basename": "capa_digital-768w"
+    },
+    {
+      "filename": "capa_digital-768w.webp",
+      "extension": ".webp",
+      "basename": "capa_digital-768w"
+    },
+    {
+      "filename": "capa_digital.avif",
+      "extension": ".avif",
+      "basename": "capa_digital"
+    },
+    {
+      "filename": "capa_digital.png",
+      "extension": ".png",
+      "basename": "capa_digital"
+    },
+    {
+      "filename": "capa_digital.webp",
+      "extension": ".webp",
+      "basename": "capa_digital"
+    },
+    {
+      "filename": "capa_drye-480w.avif",
+      "extension": ".avif",
+      "basename": "capa_drye-480w"
+    },
+    {
+      "filename": "capa_drye-480w.webp",
+      "extension": ".webp",
+      "basename": "capa_drye-480w"
+    },
+    {
+      "filename": "capa_drye-768w.avif",
+      "extension": ".avif",
+      "basename": "capa_drye-768w"
+    },
+    {
+      "filename": "capa_drye-768w.webp",
+      "extension": ".webp",
+      "basename": "capa_drye-768w"
+    },
+    {
+      "filename": "capa_drye.avif",
+      "extension": ".avif",
+      "basename": "capa_drye"
+    },
+    {
+      "filename": "capa_drye.jpg",
+      "extension": ".jpg",
+      "basename": "capa_drye"
+    },
+    {
+      "filename": "capa_drye.webp",
+      "extension": ".webp",
+      "basename": "capa_drye"
+    },
+    {
+      "filename": "capa_ductolacrimal.png",
+      "extension": ".png",
+      "basename": "capa_ductolacrimal"
+    },
+    {
+      "filename": "capa_estrabismo.png",
+      "extension": ".png",
+      "basename": "capa_estrabismo"
+    },
+    {
+      "filename": "capa_fotofobia.png",
+      "extension": ".png",
+      "basename": "capa_fotofobia"
+    },
+    {
+      "filename": "capa_geral.png",
+      "extension": ".png",
+      "basename": "capa_geral"
+    },
+    {
+      "filename": "capa_glaucoma.png",
+      "extension": ".png",
+      "basename": "capa_glaucoma"
+    },
+    {
+      "filename": "capa_ido.png",
+      "extension": ".png",
+      "basename": "capa_ido"
+    },
+    {
+      "filename": "capa_lentes_premium_catarata.png",
+      "extension": ".png",
+      "basename": "capa_lentes_premium_catarata"
+    },
+    {
+      "filename": "capa_lâmpada.png",
+      "extension": ".png",
+      "basename": "capa_lâmpada"
+    },
+    {
+      "filename": "capa_pad.png",
+      "extension": ".png",
+      "basename": "capa_pad"
+    },
+    {
+      "filename": "capa_pediatria.png",
+      "extension": ".png",
+      "basename": "capa_pediatria"
+    },
+    {
+      "filename": "capa_post_16_gemini_20250930_175253_1.png",
+      "extension": ".png",
+      "basename": "capa_post_16_gemini_20250930_175253_1"
+    },
+    {
+      "filename": "capa_post_22_gemini_20250930_175228_1.png",
+      "extension": ".png",
+      "basename": "capa_post_22_gemini_20250930_175228_1"
+    },
+    {
+      "filename": "capa_post_23_gemini_flash_20250930_185117.png",
+      "extension": ".png",
+      "basename": "capa_post_23_gemini_flash_20250930_185117"
+    },
+    {
+      "filename": "capa_post_23_gemini_flash_20250930_185127.png",
+      "extension": ".png",
+      "basename": "capa_post_23_gemini_flash_20250930_185127"
+    },
+    {
+      "filename": "capa_post_23_imagen4_opt1_20250930_185601.png",
+      "extension": ".png",
+      "basename": "capa_post_23_imagen4_opt1_20250930_185601"
+    },
+    {
+      "filename": "capa_post_23_imagen4_opt2_20250930_185601.png",
+      "extension": ".png",
+      "basename": "capa_post_23_imagen4_opt2_20250930_185601"
+    },
+    {
+      "filename": "capa_post_24_imagen4_opt1_20250930_185815.png",
+      "extension": ".png",
+      "basename": "capa_post_24_imagen4_opt1_20250930_185815"
+    },
+    {
+      "filename": "capa_post_24_imagen4_opt2_20250930_185815.png",
+      "extension": ".png",
+      "basename": "capa_post_24_imagen4_opt2_20250930_185815"
+    },
+    {
+      "filename": "capa_post_6_imagen4_opt1_20250930_184946.png",
+      "extension": ".png",
+      "basename": "capa_post_6_imagen4_opt1_20250930_184946"
+    },
+    {
+      "filename": "capa_post_6_imagen4_opt2_20250930_184946.png",
+      "extension": ".png",
+      "basename": "capa_post_6_imagen4_opt2_20250930_184946"
+    },
+    {
+      "filename": "capa_presbiopia.png",
+      "extension": ".png",
+      "basename": "capa_presbiopia"
+    },
+    {
+      "filename": "cegueira-notruna.jpeg",
+      "extension": ".jpeg",
+      "basename": "cegueira-notruna"
+    },
+    {
+      "filename": "descolamente_retina_capa.png",
+      "extension": ".png",
+      "basename": "descolamente_retina_capa"
+    },
+    {
+      "filename": "eye_anatomy_diagram.png",
+      "extension": ".png",
+      "basename": "eye_anatomy_diagram"
+    },
+    {
+      "filename": "eye_doctor_consultation.png",
+      "extension": ".png",
+      "basename": "eye_doctor_consultation"
+    },
+    {
+      "filename": "futuristic_eye_examination.png",
+      "extension": ".png",
+      "basename": "futuristic_eye_examination"
+    },
+    {
+      "filename": "gym_capa.png",
+      "extension": ".png",
+      "basename": "gym_capa"
+    },
+    {
+      "filename": "healthy_food_sources.png",
+      "extension": ".png",
+      "basename": "healthy_food_sources"
+    },
+    {
+      "filename": "lentecontado.png",
+      "extension": ".png",
+      "basename": "lentecontado"
+    },
+    {
+      "filename": "lentes.jpeg",
+      "extension": ".jpeg",
+      "basename": "lentes"
+    },
+    {
+      "filename": "moscas_volantes_capa.png",
+      "extension": ".png",
+      "basename": "moscas_volantes_capa"
+    },
+    {
+      "filename": "oculosxlec.png",
+      "extension": ".png",
+      "basename": "oculosxlec"
+    },
+    {
+      "filename": "oftalmo.png",
+      "extension": ".png",
+      "basename": "oftalmo"
+    },
+    {
+      "filename": "olhinho.png",
+      "extension": ".png",
+      "basename": "olhinho"
+    },
+    {
+      "filename": "pterigio_capa.png",
+      "extension": ".png",
+      "basename": "pterigio_capa"
+    },
+    {
+      "filename": "refrativa_capa.png",
+      "extension": ".png",
+      "basename": "refrativa_capa"
+    },
+    {
+      "filename": "retinose_pigmentar.png",
+      "extension": ".png",
+      "basename": "retinose_pigmentar"
+    },
+    {
+      "filename": "saudeoio.png",
+      "extension": ".png",
+      "basename": "saudeoio"
+    },
+    {
+      "filename": "sda.png",
+      "extension": ".png",
+      "basename": "sda"
+    },
+    {
+      "filename": "sss.png",
+      "extension": ".png",
+      "basename": "sss"
+    },
+    {
+      "filename": "terapia_genica.png",
+      "extension": ".png",
+      "basename": "terapia_genica"
+    },
+    {
+      "filename": "terapia_genica_celula_tronco_capa.png",
+      "extension": ".png",
+      "basename": "terapia_genica_celula_tronco_capa"
+    }
+  ],
+  "imageReferences": [
+    {
+      "reference": "olhinho.png",
+      "filename": "olhinho.png",
+      "line": 203
+    },
+    {
+      "reference": "retinose_pigmentar.png",
+      "filename": "retinose_pigmentar.png",
+      "line": 344
+    },
+    {
+      "reference": "moscas_volantes_capa.png",
+      "filename": "moscas_volantes_capa.png",
+      "line": 464
+    },
+    {
+      "reference": "gym_capa.png",
+      "filename": "gym_capa.png",
+      "line": 605
+    },
+    {
+      "reference": "capa_daltonismo.png",
+      "filename": "capa_daltonismo.png",
+      "line": 747
+    },
+    {
+      "reference": "descolamente_retina_capa.png",
+      "filename": "descolamente_retina_capa.png",
+      "line": 882
+    },
+    {
+      "reference": "futuristic_eye_examination.png",
+      "filename": "futuristic_eye_examination.png",
+      "line": 974
+    },
+    {
+      "reference": "Coats.png",
+      "filename": "Coats.png",
+      "line": 1060
+    },
+    {
+      "reference": "terapia_genica.png",
+      "filename": "terapia_genica.png",
+      "line": 1140
+    },
+    {
+      "reference": "capa_digital.png",
+      "filename": "capa_digital.png",
+      "line": 1230
+    },
+    {
+      "reference": "sss.png",
+      "filename": "sss.png",
+      "line": 1343
+    },
+    {
+      "reference": "capa_estrabismo.png",
+      "filename": "capa_estrabismo.png",
+      "line": 1453
+    },
+    {
+      "reference": "healthy_food_sources.png",
+      "filename": "healthy_food_sources.png",
+      "line": 1543
+    },
+    {
+      "reference": "capa_fotofobia.png",
+      "filename": "capa_fotofobia.png",
+      "line": 1626
+    },
+    {
+      "reference": "lentecontado.png",
+      "filename": "lentecontado.png",
+      "line": 1706
+    },
+    {
+      "reference": "capa_pad.png",
+      "filename": "capa_pad.png",
+      "line": 1819
+    },
+    {
+      "reference": "refrativa_capa.png",
+      "filename": "refrativa_capa.png",
+      "line": 2014
+    },
+    {
+      "reference": "capa_presbiopia.png",
+      "filename": "capa_presbiopia.png",
+      "line": 2114
+    },
+    {
+      "reference": "capa_ductolacrimal.png",
+      "filename": "capa_ductolacrimal.png",
+      "line": 2240
+    },
+    {
+      "reference": "capa_lentes_premium_catarata.png",
+      "filename": "capa_lentes_premium_catarata.png",
+      "line": 2319
+    },
+    {
+      "reference": "capa_pediatria.png",
+      "filename": "capa_pediatria.png",
+      "line": 2479
+    },
+    {
+      "reference": "pterigio_capa.png",
+      "filename": "pterigio_capa.png",
+      "line": 2563
+    }
+  ],
+  "validReferences": [
+    {
+      "reference": "olhinho.png",
+      "filename": "olhinho.png",
+      "line": 203
+    },
+    {
+      "reference": "retinose_pigmentar.png",
+      "filename": "retinose_pigmentar.png",
+      "line": 344
+    },
+    {
+      "reference": "moscas_volantes_capa.png",
+      "filename": "moscas_volantes_capa.png",
+      "line": 464
+    },
+    {
+      "reference": "gym_capa.png",
+      "filename": "gym_capa.png",
+      "line": 605
+    },
+    {
+      "reference": "capa_daltonismo.png",
+      "filename": "capa_daltonismo.png",
+      "line": 747
+    },
+    {
+      "reference": "descolamente_retina_capa.png",
+      "filename": "descolamente_retina_capa.png",
+      "line": 882
+    },
+    {
+      "reference": "futuristic_eye_examination.png",
+      "filename": "futuristic_eye_examination.png",
+      "line": 974
+    },
+    {
+      "reference": "Coats.png",
+      "filename": "Coats.png",
+      "line": 1060
+    },
+    {
+      "reference": "terapia_genica.png",
+      "filename": "terapia_genica.png",
+      "line": 1140
+    },
+    {
+      "reference": "capa_digital.png",
+      "filename": "capa_digital.png",
+      "line": 1230
+    },
+    {
+      "reference": "sss.png",
+      "filename": "sss.png",
+      "line": 1343
+    },
+    {
+      "reference": "capa_estrabismo.png",
+      "filename": "capa_estrabismo.png",
+      "line": 1453
+    },
+    {
+      "reference": "healthy_food_sources.png",
+      "filename": "healthy_food_sources.png",
+      "line": 1543
+    },
+    {
+      "reference": "capa_fotofobia.png",
+      "filename": "capa_fotofobia.png",
+      "line": 1626
+    },
+    {
+      "reference": "lentecontado.png",
+      "filename": "lentecontado.png",
+      "line": 1706
+    },
+    {
+      "reference": "capa_pad.png",
+      "filename": "capa_pad.png",
+      "line": 1819
+    },
+    {
+      "reference": "refrativa_capa.png",
+      "filename": "refrativa_capa.png",
+      "line": 2014
+    },
+    {
+      "reference": "capa_presbiopia.png",
+      "filename": "capa_presbiopia.png",
+      "line": 2114
+    },
+    {
+      "reference": "capa_ductolacrimal.png",
+      "filename": "capa_ductolacrimal.png",
+      "line": 2240
+    },
+    {
+      "reference": "capa_lentes_premium_catarata.png",
+      "filename": "capa_lentes_premium_catarata.png",
+      "line": 2319
+    },
+    {
+      "reference": "capa_pediatria.png",
+      "filename": "capa_pediatria.png",
+      "line": 2479
+    },
+    {
+      "reference": "pterigio_capa.png",
+      "filename": "pterigio_capa.png",
+      "line": 2563
+    }
+  ],
+  "missingImages": [],
+  "extensionTypos": [],
+  "missingModernVariants": [
+    {
+      "reference": {
+        "reference": "olhinho.png",
+        "filename": "olhinho.png",
+        "line": 203
+      },
+      "image": {
+        "filename": "olhinho.png",
+        "path": "/home/saraiva-vision-site/public/Blog/olhinho.png",
+        "extension": ".png",
+        "basename": "olhinho"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "olhinho.webp",
+          "sourceImage": "olhinho.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "olhinho.avif",
+          "sourceImage": "olhinho.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "retinose_pigmentar.png",
+        "filename": "retinose_pigmentar.png",
+        "line": 344
+      },
+      "image": {
+        "filename": "retinose_pigmentar.png",
+        "path": "/home/saraiva-vision-site/public/Blog/retinose_pigmentar.png",
+        "extension": ".png",
+        "basename": "retinose_pigmentar"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "retinose_pigmentar.webp",
+          "sourceImage": "retinose_pigmentar.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "retinose_pigmentar.avif",
+          "sourceImage": "retinose_pigmentar.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "moscas_volantes_capa.png",
+        "filename": "moscas_volantes_capa.png",
+        "line": 464
+      },
+      "image": {
+        "filename": "moscas_volantes_capa.png",
+        "path": "/home/saraiva-vision-site/public/Blog/moscas_volantes_capa.png",
+        "extension": ".png",
+        "basename": "moscas_volantes_capa"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "moscas_volantes_capa.webp",
+          "sourceImage": "moscas_volantes_capa.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "moscas_volantes_capa.avif",
+          "sourceImage": "moscas_volantes_capa.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "gym_capa.png",
+        "filename": "gym_capa.png",
+        "line": 605
+      },
+      "image": {
+        "filename": "gym_capa.png",
+        "path": "/home/saraiva-vision-site/public/Blog/gym_capa.png",
+        "extension": ".png",
+        "basename": "gym_capa"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "gym_capa.webp",
+          "sourceImage": "gym_capa.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "gym_capa.avif",
+          "sourceImage": "gym_capa.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "descolamente_retina_capa.png",
+        "filename": "descolamente_retina_capa.png",
+        "line": 882
+      },
+      "image": {
+        "filename": "descolamente_retina_capa.png",
+        "path": "/home/saraiva-vision-site/public/Blog/descolamente_retina_capa.png",
+        "extension": ".png",
+        "basename": "descolamente_retina_capa"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "descolamente_retina_capa.webp",
+          "sourceImage": "descolamente_retina_capa.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "descolamente_retina_capa.avif",
+          "sourceImage": "descolamente_retina_capa.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "futuristic_eye_examination.png",
+        "filename": "futuristic_eye_examination.png",
+        "line": 974
+      },
+      "image": {
+        "filename": "futuristic_eye_examination.png",
+        "path": "/home/saraiva-vision-site/public/Blog/futuristic_eye_examination.png",
+        "extension": ".png",
+        "basename": "futuristic_eye_examination"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "futuristic_eye_examination.webp",
+          "sourceImage": "futuristic_eye_examination.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "futuristic_eye_examination.avif",
+          "sourceImage": "futuristic_eye_examination.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "terapia_genica.png",
+        "filename": "terapia_genica.png",
+        "line": 1140
+      },
+      "image": {
+        "filename": "terapia_genica.png",
+        "path": "/home/saraiva-vision-site/public/Blog/terapia_genica.png",
+        "extension": ".png",
+        "basename": "terapia_genica"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "terapia_genica.webp",
+          "sourceImage": "terapia_genica.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "terapia_genica.avif",
+          "sourceImage": "terapia_genica.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "sss.png",
+        "filename": "sss.png",
+        "line": 1343
+      },
+      "image": {
+        "filename": "sss.png",
+        "path": "/home/saraiva-vision-site/public/Blog/sss.png",
+        "extension": ".png",
+        "basename": "sss"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "sss.webp",
+          "sourceImage": "sss.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "sss.avif",
+          "sourceImage": "sss.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "capa_estrabismo.png",
+        "filename": "capa_estrabismo.png",
+        "line": 1453
+      },
+      "image": {
+        "filename": "capa_estrabismo.png",
+        "path": "/home/saraiva-vision-site/public/Blog/capa_estrabismo.png",
+        "extension": ".png",
+        "basename": "capa_estrabismo"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "capa_estrabismo.webp",
+          "sourceImage": "capa_estrabismo.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "capa_estrabismo.avif",
+          "sourceImage": "capa_estrabismo.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "healthy_food_sources.png",
+        "filename": "healthy_food_sources.png",
+        "line": 1543
+      },
+      "image": {
+        "filename": "healthy_food_sources.png",
+        "path": "/home/saraiva-vision-site/public/Blog/healthy_food_sources.png",
+        "extension": ".png",
+        "basename": "healthy_food_sources"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "healthy_food_sources.webp",
+          "sourceImage": "healthy_food_sources.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "healthy_food_sources.avif",
+          "sourceImage": "healthy_food_sources.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "capa_fotofobia.png",
+        "filename": "capa_fotofobia.png",
+        "line": 1626
+      },
+      "image": {
+        "filename": "capa_fotofobia.png",
+        "path": "/home/saraiva-vision-site/public/Blog/capa_fotofobia.png",
+        "extension": ".png",
+        "basename": "capa_fotofobia"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "capa_fotofobia.webp",
+          "sourceImage": "capa_fotofobia.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "capa_fotofobia.avif",
+          "sourceImage": "capa_fotofobia.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "lentecontado.png",
+        "filename": "lentecontado.png",
+        "line": 1706
+      },
+      "image": {
+        "filename": "lentecontado.png",
+        "path": "/home/saraiva-vision-site/public/Blog/lentecontado.png",
+        "extension": ".png",
+        "basename": "lentecontado"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "lentecontado.webp",
+          "sourceImage": "lentecontado.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "lentecontado.avif",
+          "sourceImage": "lentecontado.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "capa_pad.png",
+        "filename": "capa_pad.png",
+        "line": 1819
+      },
+      "image": {
+        "filename": "capa_pad.png",
+        "path": "/home/saraiva-vision-site/public/Blog/capa_pad.png",
+        "extension": ".png",
+        "basename": "capa_pad"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "capa_pad.webp",
+          "sourceImage": "capa_pad.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "capa_pad.avif",
+          "sourceImage": "capa_pad.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "refrativa_capa.png",
+        "filename": "refrativa_capa.png",
+        "line": 2014
+      },
+      "image": {
+        "filename": "refrativa_capa.png",
+        "path": "/home/saraiva-vision-site/public/Blog/refrativa_capa.png",
+        "extension": ".png",
+        "basename": "refrativa_capa"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "refrativa_capa.webp",
+          "sourceImage": "refrativa_capa.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "refrativa_capa.avif",
+          "sourceImage": "refrativa_capa.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "capa_presbiopia.png",
+        "filename": "capa_presbiopia.png",
+        "line": 2114
+      },
+      "image": {
+        "filename": "capa_presbiopia.png",
+        "path": "/home/saraiva-vision-site/public/Blog/capa_presbiopia.png",
+        "extension": ".png",
+        "basename": "capa_presbiopia"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "capa_presbiopia.webp",
+          "sourceImage": "capa_presbiopia.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "capa_presbiopia.avif",
+          "sourceImage": "capa_presbiopia.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "capa_ductolacrimal.png",
+        "filename": "capa_ductolacrimal.png",
+        "line": 2240
+      },
+      "image": {
+        "filename": "capa_ductolacrimal.png",
+        "path": "/home/saraiva-vision-site/public/Blog/capa_ductolacrimal.png",
+        "extension": ".png",
+        "basename": "capa_ductolacrimal"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "capa_ductolacrimal.webp",
+          "sourceImage": "capa_ductolacrimal.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "capa_ductolacrimal.avif",
+          "sourceImage": "capa_ductolacrimal.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "capa_lentes_premium_catarata.png",
+        "filename": "capa_lentes_premium_catarata.png",
+        "line": 2319
+      },
+      "image": {
+        "filename": "capa_lentes_premium_catarata.png",
+        "path": "/home/saraiva-vision-site/public/Blog/capa_lentes_premium_catarata.png",
+        "extension": ".png",
+        "basename": "capa_lentes_premium_catarata"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "capa_lentes_premium_catarata.webp",
+          "sourceImage": "capa_lentes_premium_catarata.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "capa_lentes_premium_catarata.avif",
+          "sourceImage": "capa_lentes_premium_catarata.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "capa_pediatria.png",
+        "filename": "capa_pediatria.png",
+        "line": 2479
+      },
+      "image": {
+        "filename": "capa_pediatria.png",
+        "path": "/home/saraiva-vision-site/public/Blog/capa_pediatria.png",
+        "extension": ".png",
+        "basename": "capa_pediatria"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "capa_pediatria.webp",
+          "sourceImage": "capa_pediatria.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "capa_pediatria.avif",
+          "sourceImage": "capa_pediatria.png"
+        }
+      ]
+    },
+    {
+      "reference": {
+        "reference": "pterigio_capa.png",
+        "filename": "pterigio_capa.png",
+        "line": 2563
+      },
+      "image": {
+        "filename": "pterigio_capa.png",
+        "path": "/home/saraiva-vision-site/public/Blog/pterigio_capa.png",
+        "extension": ".png",
+        "basename": "pterigio_capa"
+      },
+      "missingFormats": [
+        {
+          "format": ".webp",
+          "suggestedFilename": "pterigio_capa.webp",
+          "sourceImage": "pterigio_capa.png"
+        },
+        {
+          "format": ".avif",
+          "suggestedFilename": "pterigio_capa.avif",
+          "sourceImage": "pterigio_capa.png"
+        }
+      ]
+    }
+  ],
+  "unusedImages": [
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3-480w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3-480w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3-768w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3-768w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23-1280w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23-1280w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23-480w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23-480w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23-768w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23-768w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23.tiff",
+      "extension": ".tiff"
+    },
+    {
+      "filename": "ChatGPT 2025-09-30 00.47.23.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "Coats-1280w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "Coats-1280w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "Coats-480w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "Coats-480w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "Coats-768w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "Coats-768w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "Coats.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "Coats.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44-480w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44-480w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44-768w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44-768w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34-480w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34-480w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34-768w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34-768w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_IA-480w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_IA-480w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_IA-768w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_IA-768w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_IA.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_IA.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_IA.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_catarata-480w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_catarata-480w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_catarata-768w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_catarata-768w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_catarata.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_catarata.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_catarata.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_daltonismo-480w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_daltonismo-480w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_daltonismo-768w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_daltonismo-768w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_daltonismo.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_daltonismo.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_digital-480w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_digital-480w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_digital-768w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_digital-768w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_digital.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_digital.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_drye-480w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_drye-480w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_drye-768w.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_drye-768w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_drye.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa_drye.jpg",
+      "extension": ".jpg"
+    },
+    {
+      "filename": "capa_drye.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "capa_geral.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_glaucoma.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_ido.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_lâmpada.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_post_16_gemini_20250930_175253_1.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_post_22_gemini_20250930_175228_1.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_post_23_gemini_flash_20250930_185117.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_post_23_gemini_flash_20250930_185127.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_post_23_imagen4_opt1_20250930_185601.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_post_23_imagen4_opt2_20250930_185601.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_post_24_imagen4_opt1_20250930_185815.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_post_24_imagen4_opt2_20250930_185815.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_post_6_imagen4_opt1_20250930_184946.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "capa_post_6_imagen4_opt2_20250930_184946.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "cegueira-notruna.jpeg",
+      "extension": ".jpeg"
+    },
+    {
+      "filename": "eye_anatomy_diagram.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "eye_doctor_consultation.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "lentes.jpeg",
+      "extension": ".jpeg"
+    },
+    {
+      "filename": "oculosxlec.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "oftalmo.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "saudeoio.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "sda.png",
+      "extension": ".png"
+    },
+    {
+      "filename": "terapia_genica_celula_tronco_capa.png",
+      "extension": ".png"
+    }
+  ]
+}

@@ -23,6 +23,7 @@ import PatientEducationSidebar from '../components/blog/PatientEducationSidebar'
 import SpotifyEmbed from '../components/SpotifyEmbed';
 import OptimizedImage from '../components/blog/OptimizedImage';
 import { trackBlogInteraction, trackPageView, trackSearchInteraction } from '../utils/analytics';
+import { generateCompleteSchemaBundle, getPostSpecificSchema } from '../lib/blogSchemaMarkup';
 
 const BlogPage = () => {
   const { t } = useTranslation();
@@ -116,12 +117,30 @@ const BlogPage = () => {
   if (currentPost) {
     const enrichment = getPostEnrichment(currentPost.id);
 
+    // Generate Schema.org structured data
+    const schemaBundle = generateCompleteSchemaBundle(currentPost, enrichment?.faqs);
+    const postSpecificSchema = getPostSpecificSchema(currentPost.id);
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50 relative">
         <Helmet>
           <title>{currentPost.seo?.metaTitle || currentPost.title} | Saraiva Vision</title>
           <meta name="description" content={currentPost.seo?.metaDescription || currentPost.excerpt} />
           <meta name="keywords" content={currentPost.seo?.keywords?.join(', ') || currentPost.tags.join(', ')} />
+
+          {/* Schema.org Structured Data */}
+          {schemaBundle.map((schema, index) => (
+            <script key={`schema-${index}`} type="application/ld+json">
+              {JSON.stringify(schema)}
+            </script>
+          ))}
+
+          {/* Post-specific schema (conditions/procedures) */}
+          {postSpecificSchema && (
+            <script type="application/ld+json">
+              {JSON.stringify(postSpecificSchema)}
+            </script>
+          )}
         </Helmet>
 
         <Navbar />
@@ -135,13 +154,13 @@ const BlogPage = () => {
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex items-center space-x-2 text-sm text-gray-600">
                 <li>
-                  <Link to="/" className="hover:text-blue-600 transition-colors">
+                  <Link to="/" className="hover:text-primary-600 transition-colors">
                     Home
                   </Link>
                 </li>
                 <li className="text-gray-400">/</li>
                 <li>
-                  <Link to="/blog" className="hover:text-blue-600 transition-colors">
+                  <Link to="/blog" className="hover:text-primary-600 transition-colors">
                     Blog
                   </Link>
                 </li>
@@ -156,7 +175,7 @@ const BlogPage = () => {
             <Button
               onClick={() => navigate('/blog')}
               variant="ghost"
-              className="mb-8 hover:bg-blue-50 transition-colors"
+              className="mb-8 hover:bg-primary-50 transition-colors"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar para o blog
@@ -251,10 +270,10 @@ const BlogPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="mt-12 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 md:p-8 border border-blue-100 shadow-lg"
+                className="mt-12 bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl p-6 md:p-8 border border-primary-100 shadow-lg"
               >
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl shadow-md">
+                  <div className="p-3 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl shadow-md">
                     <Headphones className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -274,7 +293,7 @@ const BlogPage = () => {
                       className="bg-white rounded-xl p-4 md:p-6 shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
                     >
                       <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <span className="text-blue-600">🎙️</span>
+                        <span className="text-primary-600">🎙️</span>
                         {podcast.title}
                       </h4>
 
@@ -307,11 +326,11 @@ const BlogPage = () => {
                   ))}
                 </div>
 
-                <div className="mt-6 pt-6 border-t border-blue-200">
+                <div className="mt-6 pt-6 border-t border-primary-200">
                   <p className="text-sm text-gray-600 text-center">
                     <a
                       href="/podcast"
-                      className="text-blue-600 hover:text-blue-700 font-medium underline"
+                      className="text-primary-600 hover:text-primary-700 font-medium underline"
                     >
                       Ver todos os episódios do podcast
                     </a>
@@ -382,29 +401,41 @@ const BlogPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: index * 0.1 }}
-        className="group bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 border border-white/50 focus:outline-none"
+        className="group relative overflow-hidden flex flex-col focus:outline-none"
         role="article"
         aria-labelledby={`post-title-${post.id}`}
       >
-        <Link
-          to={`/blog/${post.slug}`}
-          className="block focus:outline-none"
-          aria-label={`Ler o post: ${post.title}`}
-        >
-          <div className="relative w-full h-48 sm:h-52 md:h-56 lg:h-60 overflow-hidden bg-gradient-to-br from-blue-100 to-gray-100 flex-shrink-0">
-            <OptimizedImage
-              src={post.image}
-              alt={`Imagem ilustrativa do artigo: ${post.title}`}
-              className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
-              loading="lazy"
-              aspectRatio="16/9"
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 400px"
-              fallbackSrc="/img/blog-fallback.jpg"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </div>
-        </Link>
-        <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-grow">
+        {/* 3D shadow layer */}
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-600 rounded-3xl blur-lg opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+
+        {/* Glass card container */}
+        <div className="relative bg-white/70 backdrop-blur-xl rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col border-2 border-white/50 group-hover:border-white/80 group-hover:scale-[1.02] group-focus-within:ring-2 group-focus-within:ring-blue-400 group-focus-within:ring-offset-2">
+          {/* Liquid glass overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-secondary-500/5 to-primary-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+          <Link
+            to={`/blog/${post.slug}`}
+            className="relative block focus:outline-none z-10"
+            aria-label={`Ler o post: ${post.title}`}
+          >
+            <div className="relative w-full h-48 sm:h-52 md:h-56 lg:h-60 overflow-hidden bg-gradient-to-br from-primary-50 via-secondary-50 to-primary-100 flex-shrink-0 rounded-t-3xl">
+              <OptimizedImage
+                src={post.image}
+                alt={`Imagem ilustrativa do artigo: ${post.title}`}
+                className="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
+                loading="lazy"
+                aspectRatio="16/9"
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 400px"
+                fallbackSrc="/img/blog-fallback.jpg"
+              />
+              {/* Gradient overlay on hover */}
+              <div className="absolute inset-0 bg-gradient-to-t from-primary-900/30 via-secondary-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+              {/* Shimmer effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            </div>
+          </Link>
+
+          <div className="relative p-5 sm:p-6 md:p-7 flex flex-col flex-grow z-10">
           {/* Category Badge */}
           <div className="mb-3">
             <CategoryBadge category={post.category} size="sm" />
@@ -417,7 +448,7 @@ const BlogPage = () => {
           >
             <Link
               to={`/blog/${post.slug}`}
-              className="hover:text-blue-600 focus:outline-none focus:text-blue-600 focus:underline transition-colors"
+              className="hover:text-primary-600 focus:outline-none focus:text-primary-600 focus:underline transition-colors"
             >
               {post.title}
             </Link>
@@ -453,12 +484,12 @@ const BlogPage = () => {
 
           {/* Learning Points Preview */}
           {enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
-            <div className="bg-blue-50/50 rounded-lg p-3 mb-4 border border-blue-100">
-              <p className="text-xs font-semibold text-blue-900 mb-2">O que você vai aprender:</p>
+            <div className="bg-primary-50/50 rounded-lg p-3 mb-4 border border-primary-100">
+              <p className="text-xs font-semibold text-primary-900 mb-2">O que você vai aprender:</p>
               <ul className="space-y-1">
                 {enrichment.learningPoints.slice(0, 2).map((point, idx) => (
-                  <li key={idx} className="text-xs text-blue-800 flex items-start gap-2">
-                    <span className="text-blue-600 mt-0.5">•</span>
+                  <li key={idx} className="text-xs text-primary-800 flex items-start gap-2">
+                    <span className="text-primary-600 mt-0.5">•</span>
                     <span>{point}</span>
                   </li>
                 ))}
@@ -466,17 +497,21 @@ const BlogPage = () => {
             </div>
           )}
 
-          {/* CTA Button */}
+          {/* CTA Button with 3D effect */}
           <Link
             to={`/blog/${post.slug}`}
             className="mt-auto focus:outline-none"
             aria-label={`Leia mais sobre: ${post.title}`}
           >
-            <Button variant="default" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold group focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-              {t('blog.read_more', 'Ler artigo completo')}
-              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-            </Button>
+            <div className="relative group/button">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-xl blur opacity-30 group-hover/button:opacity-50 transition-opacity"></div>
+              <Button variant="default" className="relative w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 border border-white/20">
+                <span className="relative z-10">{t('blog.read_more', 'Ler artigo completo')}</span>
+                <ArrowRight className="relative z-10 w-4 h-4 ml-2 transition-transform group-hover/button:translate-x-1" aria-hidden="true" />
+              </Button>
+            </div>
           </Link>
+        </div>
         </div>
       </motion.article>
     );
@@ -493,7 +528,7 @@ const BlogPage = () => {
       {/* Skip to main content link for accessibility */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:bg-primary-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"
       >
         Pular para o conteúdo principal
       </a>
@@ -512,58 +547,113 @@ const BlogPage = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-             className="text-center mb-8"
+            className="text-center mb-6"
           >
-            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
-              Blog Saraiva Vision
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-              Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos
-              com a qualidade e expertise da Clínica Saraiva Vision.
-            </p>
-            <div className="w-24 h-1 bg-blue-600 mx-auto rounded"></div>
+            {/* Glass morphism header with 3D effect */}
+            <div className="relative inline-block">
+              {/* 3D shadow layers */}
+              <div className="absolute -inset-2 bg-gradient-to-r from-primary-600 via-secondary-600 to-primary-600 rounded-3xl blur-2xl opacity-15 animate-pulse"></div>
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-3xl blur-xl opacity-20"></div>
+
+              {/* Glass container */}
+              <div className="relative bg-white/40 backdrop-blur-xl rounded-3xl px-8 md:px-12 py-6 md:py-8 border border-white/50 shadow-2xl shadow-primary-500/20">
+                {/* Liquid glass effect overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-secondary-500/10 to-primary-600/10 rounded-3xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-tl from-white/20 via-transparent to-white/20 rounded-3xl"></div>
+
+                {/* Content */}
+                <div className="relative z-10">
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-gray-900 via-primary-900 to-gray-900 bg-clip-text text-transparent mb-3 drop-shadow-sm">
+                    Blog Saraiva Vision
+                  </h1>
+                  <p className="text-base md:text-lg text-gray-700 font-medium max-w-2xl mx-auto leading-relaxed">
+                    Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos
+                  </p>
+                </div>
+
+                {/* Decorative elements */}
+                <div className="absolute -top-2 -right-2 w-16 h-16 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-full blur-2xl opacity-30"></div>
+                <div className="absolute -bottom-2 -left-2 w-20 h-20 bg-gradient-to-tr from-secondary-400 to-primary-400 rounded-full blur-2xl opacity-30"></div>
+              </div>
+            </div>
           </motion.header>
 
           <section aria-label="Posts do blog">
             {/* Search and Filter Section */}
-            <div className="mb-12">
-              {/* Search Bar */}
-              <form onSubmit={handleSearch} className="max-w-md mx-auto mb-8">
-                <div className="relative">
-                   <input
-                     type="text"
-                     value={searchTerm}
-                     onChange={(e) => setSearchTerm(e.target.value)}
-                     placeholder="Buscar artigos por título, conteúdo ou tags..."
-                     aria-label="Buscar artigos no blog"
-                     aria-describedby="search-help"
-                     className="w-full pl-12 pr-4 py-3.5 bg-white/90 backdrop-blur-sm border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md focus:shadow-lg"
-                   />
-                   <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                     </svg>
-                   </div>
-                   {searchTerm && searchTerm !== debouncedSearch && (
-                     <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                       <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
-                     </div>
-                   )}
+            <div className="mb-10">
+              {/* Search Bar with 3D Glass Effect */}
+              <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-8">
+                <div className="relative group">
+                  {/* 3D glow effect */}
+                  <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-20 group-focus-within:opacity-30 transition-opacity duration-300"></div>
+
+                  {/* Glass search container */}
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      placeholder="Buscar artigos por título, conteúdo ou tags..."
+                      aria-label="Buscar artigos no blog"
+                      aria-describedby="search-help"
+                      className="w-full pl-14 pr-14 py-4 bg-white/60 backdrop-blur-xl border-2 border-white/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:border-primary-400 transition-all duration-300 shadow-lg shadow-primary-500/10 hover:shadow-xl hover:shadow-primary-500/20 focus:shadow-2xl focus:shadow-primary-500/30 text-gray-800 placeholder:text-gray-500"
+                    />
+
+                    {/* Search icon with 3D effect */}
+                    <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-primary-500 rounded-full blur-md opacity-40"></div>
+                        <svg className="relative w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Clear button */}
+                    {searchTerm && (
+                      <button
+                        type="button"
+                        onClick={() => setSearchTerm('')}
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 p-1.5 hover:bg-secondary-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
+                        aria-label="Limpar busca"
+                      >
+                        <X className="w-5 h-5 text-text-secondary hover:text-primary-600 transition-colors" />
+                      </button>
+                    )}
+
+                    {/* Loading spinner */}
+                    {searchTerm && searchTerm !== debouncedSearch && (
+                      <div className="absolute right-14 top-1/2 transform -translate-y-1/2">
+                        <div className="w-5 h-5 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
+                      </div>
+                    )}
+
+                    {/* Liquid glass overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary-500/5 via-secondary-500/5 to-primary-600/5 rounded-2xl pointer-events-none"></div>
+                  </div>
                 </div>
-                 {debouncedSearch && (
-                   <p className="text-sm text-gray-600 mt-2 text-center" id="search-help">
-                     {filteredPosts.length} {filteredPosts.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
-                   </p>
-                 )}
-                 {!debouncedSearch && (
-                   <p className="text-xs text-gray-500 mt-2 text-center" id="search-help">
-                     Digite para buscar artigos por título, conteúdo ou tags
-                   </p>
-                 )}
+
+                {/* Search results counter */}
+                {debouncedSearch && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-3"
+                  >
+                    <p className="text-sm font-medium text-center bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent" id="search-help">
+                      ✨ {filteredPosts.length} {filteredPosts.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
+                    </p>
+                  </motion.div>
+                )}
+                {!debouncedSearch && (
+                  <p className="text-xs text-gray-500 mt-3 text-center" id="search-help">
+                    🔍 Digite para buscar artigos por título, conteúdo ou tags
+                  </p>
+                )}
               </form>
 
-               {/* Category Filter */}
-               <div className="flex flex-wrap justify-center gap-2 sm:gap-3" role="group" aria-label="Filtros de categoria">
+               {/* Category Filter with 3D Glass Pills */}
+               <div className="flex flex-wrap justify-center gap-3" role="group" aria-label="Filtros de categoria">
                 {categories.map(category => {
                   const config = categoryConfig[category];
                   const iconMap = {
@@ -573,32 +663,40 @@ const BlogPage = () => {
                     'help-circle': HelpCircle
                   };
                   const Icon = config ? iconMap[config.icon] : null;
+                  const isActive = selectedCategory === category;
 
                   return (
-                     <button
-                       key={category}
-                       onClick={() => handleCategoryChange(category)}
-                       onKeyDown={(e) => {
-                         if (e.key === 'Enter' || e.key === ' ') {
-                           e.preventDefault();
-                           handleCategoryChange(category);
-                         }
-                       }}
-                       aria-pressed={selectedCategory === category}
-                       aria-label={`Filtrar por categoria: ${category}`}
-                       className={`inline-flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm ${
-                         selectedCategory === category
-                           ? config
-                             ? `${config.bgColor} ${config.textColor} ring-2 ${config.borderColor} shadow-md`
-                             : 'bg-blue-600 text-white ring-2 ring-blue-300 shadow-md'
-                           : config
-                           ? `${config.bgColor} ${config.textColor} hover:shadow-md ${config.hoverBg} focus:bg-opacity-80`
-                           : 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:shadow-md focus:bg-gray-300'
-                       }`}
-                     >
-                      {Icon && <Icon className="w-4 h-4" aria-hidden="true" />}
-                      <span>{category}</span>
-                    </button>
+                    <div key={category} className="relative group">
+                      {/* 3D glow for active button */}
+                      {isActive && (
+                        <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full blur-md opacity-40 animate-pulse"></div>
+                      )}
+
+                      <button
+                        onClick={() => handleCategoryChange(category)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleCategoryChange(category);
+                          }
+                        }}
+                        aria-pressed={isActive}
+                        aria-label={`Filtrar por categoria: ${category}`}
+                        className={`relative inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full text-sm font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-400 ${
+                          isActive
+                            ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-xl shadow-primary-500/30 scale-105 border-2 border-white/50 backdrop-blur-sm'
+                            : config
+                            ? `${config.bgColor} ${config.textColor} hover:shadow-lg ${config.hoverBg} shadow-md border-2 border-white/30 backdrop-blur-sm hover:scale-[1.03] active:scale-95`
+                            : 'bg-white/60 backdrop-blur-sm text-gray-700 hover:bg-white/80 hover:shadow-lg shadow-md border-2 border-white/50 hover:scale-[1.03] active:scale-95'
+                        }`}
+                      >
+                        {/* Liquid glass overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10 rounded-full pointer-events-none"></div>
+
+                        {Icon && <Icon className="relative w-4 h-4 z-10" aria-hidden="true" />}
+                        <span className="relative z-10">{category}</span>
+                      </button>
+                    </div>
                   );
                 })}
               </div>
@@ -607,7 +705,7 @@ const BlogPage = () => {
              {/* Posts Grid */}
              {searchTerm && searchTerm !== debouncedSearch ? (
                <div className="flex justify-center items-center py-12">
-                 <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
+                 <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
                  <span className="ml-3 text-gray-600">Buscando artigos...</span>
                </div>
              ) : filteredPosts.length > 0 ? (
@@ -634,7 +732,7 @@ const BlogPage = () => {
                        }}
                        disabled={currentPage === 1}
                        variant="outline"
-                       className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50"
+                       className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-50"
                        aria-label="Página anterior"
                      >
                        <ChevronLeft className="w-5 h-5" />
@@ -672,8 +770,8 @@ const BlogPage = () => {
                              variant={currentPage === pageNum ? 'default' : 'outline'}
                              className={`px-4 py-2 min-w-[44px] ${
                                currentPage === pageNum
-                                 ? 'bg-blue-600 text-white hover:bg-blue-700'
-                                 : 'hover:bg-blue-50'
+                                 ? 'bg-primary-600 text-white hover:bg-primary-700'
+                                 : 'hover:bg-primary-50'
                              }`}
                              aria-label={`Página ${pageNum}`}
                              aria-current={currentPage === pageNum ? 'page' : undefined}
@@ -692,7 +790,7 @@ const BlogPage = () => {
                        }}
                        disabled={currentPage === totalPages}
                        variant="outline"
-                       className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50"
+                       className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-50"
                        aria-label="Próxima página"
                      >
                        <ChevronRight className="w-5 h-5" />
@@ -706,8 +804,8 @@ const BlogPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-center p-12 bg-white/70 backdrop-blur-md rounded-2xl shadow-lg border border-white/50"
               >
-                <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-10 h-10 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
@@ -743,8 +841,8 @@ const BlogPage = () => {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                   <div className="text-center">
-                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                       </svg>
                     </div>
@@ -761,8 +859,8 @@ const BlogPage = () => {
                     <p className="text-sm text-gray-600">Foco na prevenção e cuidados com a saúde ocular</p>
                   </div>
                   <div className="text-center">
-                    <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <svg className="w-8 h-8 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>

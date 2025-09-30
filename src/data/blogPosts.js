@@ -43,8 +43,8 @@ export const blogPosts = [
   {
     id: 22,
     slug: 'teste-olhinho-retinoblastoma-prevencao-caratinga-mg',
-    title: 'Teste do Olhinho e Retinoblastoma: A Importância da Prevenção na Saúde Ocular Infantil em Caratinga, MG',
-    excerpt: 'Entenda a importância do Teste do Olhinho para detectar precocemente o retinoblastoma e outras doenças oculares em bebês. Dr. Philipe Saraiva explica.',
+    title: 'Teste do Olhinho e Retinoblastoma | Caratinga MG',
+    excerpt: 'Teste do Olhinho detecta retinoblastoma e doenças oculares em bebês. Dr. Philipe Saraiva realiza em Caratinga, MG. Proteção vital para recém-nascidos.',
     content: `
       <h2>Teste do Olhinho e Retinoblastoma: A Importância da Prevenção na Saúde Ocular Infantil em Caratinga, MG</h2>
 
@@ -198,16 +198,16 @@ export const blogPosts = [
     image: '/Blog/olhinho.png',
     featured: true,
     seo: {
-      metaDescription: 'Descubra a importância do Teste do Olhinho para detectar retinoblastoma e outras doenças oculares em bebês. Dr. Philipe Saraiva explica em Caratinga, MG.',
-      keywords: 'teste do olhinho, retinoblastoma, câncer ocular infantil, oftalmologia pediátrica, saúde ocular bebê, teste reflexo vermelho, Caratinga MG, Dr Philipe Saraiva',
+      metaDescription: 'Teste do Olhinho detecta retinoblastoma precocemente. Dr. Philipe Saraiva realiza exame em Caratinga, MG. Proteção vital para bebês. Agende consulta!',
+      keywords: 'teste do olhinho caratinga mg, retinoblastoma caratinga, oftalmologista pediatrico caratinga, exame olhinho bebe caratinga minas gerais, teste reflexo vermelho caratinga',
       ogImage: '/Blog/olhinho.png'
     }
   },
   {
     id: 21,
     slug: 'retinose-pigmentar-luxturna-caratinga',
-    title: 'Retinose Pigmentar e a Revolução do Luxturna®: Esperança para Pacientes em Caratinga, MG',
-    excerpt: 'Conheça a Retinose Pigmentar e o tratamento revolucionário com terapia gênica Luxturna®. Dr. Philipe Saraiva explica os avanços em Caratinga.',
+    title: 'Retinose Pigmentar e Luxturna® | Caratinga MG',
+    excerpt: 'Retinose Pigmentar: tratamento revolucionário com Luxturna®. Dr. Philipe Saraiva acompanha casos em Caratinga, MG. Esperança para preservar a visão.',
     content: `
       <h2>Retinose Pigmentar e a Revolução do Luxturna®: Esperança para Pacientes em Caratinga, MG</h2>
 
@@ -345,15 +345,15 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Retinose Pigmentar e Luxturna®: Terapia Gênica em Caratinga',
-      metaDescription: 'Conheça a Retinose Pigmentar e o tratamento revolucionário com Luxturna®. Dr. Philipe Saraiva Cruz explica a terapia gênica em Caratinga, MG.',
+      metaDescription: 'Retinose Pigmentar tem tratamento com terapia gênica Luxturna®. Dr. Philipe Saraiva acompanha casos em Caratinga, MG. Conheça esta revolução!',
       keywords: ['retinose pigmentar', 'luxturna', 'terapia gênica', 'oftalmologista Caratinga', 'Dr. Philipe Saraiva Cruz', 'doenças hereditárias']
     }
   },
   {
     id: 20,
     slug: 'moscas-volantes-quando-preocupar-caratinga',
-    title: 'Moscas Volantes: Quando as Manchas na Visão São Inofensivas e Quando Exigem Atenção em Caratinga, MG',
-    excerpt: 'Entenda o que são as moscas volantes, quando são benignas e quando indicam problemas graves. Orientações do Dr. Philipe Saraiva em Caratinga.',
+    title: 'Terapia Gênica e Células-Tronco na Visão | Caratinga MG',
+    excerpt: 'Terapia gênica e células-tronco revolucionam tratamento ocular. Dr. Philipe Saraiva apresenta futuro da oftalmologia em Caratinga, MG.',
     content: `
       <h2>Moscas Volantes: Quando as Manchas na Visão São Inofensivas e Quando Exigem Atenção em Caratinga, MG</h2>
 
@@ -465,15 +465,15 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Moscas Volantes: Quando Preocupar? Oftalmologista em Caratinga',
-      metaDescription: 'Entenda o que são moscas volantes, quando são inofensivas e quando exigem atendimento urgente. Dr. Philipe Saraiva Cruz explica em Caratinga, MG.',
+      metaDescription: 'Terapia gênica e células-tronco revolucionam tratamento de doenças oculares. Dr. Philipe Saraiva explica avanços em Caratinga, MG. Futuro da visão!',
       keywords: ['moscas volantes', 'miodesopsia', 'oftalmologista Caratinga', 'descolamento de retina', 'Dr. Philipe Saraiva Cruz']
     }
   },
   {
     id: 17,
     slug: 'cuidados-visuais-esportes-caratinga',
-    title: 'Do consultório à academia: cuidados visuais para quem pratica esportes',
-    excerpt: 'Descubra como proteger sua visão durante a prática esportiva. Orientações do Dr. Philipe Saraiva, oftalmologista em Caratinga (MG).',
+    title: 'Obstrução Ducto Lacrimal: Tratamento | Caratinga MG',
+    excerpt: 'Obstrução do ducto lacrimal: tratamentos clínicos e cirúrgicos. Dr. Philipe Saraiva resolve lacrimejamento excessivo em Caratinga, MG.',
     content: `
       <h2>Do consultório à academia: cuidados visuais para quem pratica esportes</h2>
 
@@ -605,15 +605,15 @@ export const blogPosts = [
     image: '/Blog/gym_capa.png',
     seo: {
       metaTitle: 'Cuidados visuais para quem pratica esportes | Clínica Saraiva Vision Caratinga',
-      metaDescription: 'Descubra como proteger sua visão durante a prática esportiva. Orientações do Dr. Philipe Saraiva, oftalmologista em Caratinga (MG).',
+      metaDescription: 'Obstrução do ducto lacrimal tem tratamento cirúrgico e clínico. Dr. Philipe Saraiva trata lacrimejamento em Caratinga, MG. Alívio garantido!',
       keywords: ['cuidados visuais esportes', 'visão esportiva Caratinga', 'saúde ocular atletas', 'oftalmologista Caratinga MG', 'proteção ocular esporte', 'lentes contato atletas', 'óculos esportivos', 'oftalmologia esportiva']
     }
   },
   {
     id: 18,
     slug: 'lentes-especiais-daltonismo-caratinga',
-    title: 'Lentes Especiais para Daltonismo: Tecnologia que Transforma Vidas em Caratinga, MG',
-    excerpt: 'Descubra como as lentes especiais filtrantes podem ampliar a percepção das cores e transformar o dia a dia de quem convive com daltonismo. Tecnologia moderna disponível na Clínica Saraiva Vision.',
+    title: 'Estrabismo: Diagnóstico e Tratamento | Caratinga MG',
+    excerpt: 'Estrabismo: tratamento cirúrgico e clínico para adultos e crianças. Dr. Philipe Saraiva oferece soluções personalizadas em Caratinga, MG.',
     content: `
       <h2>Lentes Especiais para Daltonismo: Tecnologia que Transforma Vidas em Caratinga, MG</h2>
 
@@ -747,15 +747,15 @@ export const blogPosts = [
     image: '/Blog/capa_daltonismo.png',
     seo: {
       metaTitle: 'Lentes Especiais para Daltonismo | Tecnologia Moderna em Caratinga - Saraiva Vision',
-      metaDescription: 'Descubra como as lentes especiais filtrantes podem ampliar a percepção das cores e transformar o dia a dia de quem convive com daltonismo. Tecnologia moderna disponível na Clínica Saraiva Vision em Caratinga, MG.',
+      metaDescription: 'Estrabismo tem tratamento cirúrgico e clínico eficaz. Dr. Philipe Saraiva trata adultos e crianças em Caratinga, MG. Recupere alinhamento! Agende.',
       keywords: ['daltonismo', 'lentes especiais daltonismo', 'discromatopsia', 'visão de cores Caratinga', 'oftalmologista Caratinga MG', 'teste Ishihara', 'lentes filtrantes', 'tecnologia oftalmológica', 'tratamento daltonismo']
     }
   },
   {
     id: 19,
     slug: 'descolamento-retina-mitos-verdades-caratinga',
-    title: 'Descolamento de Retina: Mitos e Verdades Que Todo Paciente em Caratinga Precisa Saber',
-    excerpt: 'Entenda os principais mitos e verdades sobre descolamento de retina. Informações baseadas em ciência para prevenir e tratar essa condição séria que pode ameaçar a visão.',
+    title: 'Fotofobia: Causas e Tratamento | Caratinga MG',
+    excerpt: 'Fotofobia (sensibilidade à luz): causas e tratamentos eficazes. Dr. Philipe Saraiva oferece diagnóstico completo em Caratinga, MG.',
     content: `
       <h2>Descolamento de Retina: Mitos e Verdades Que Todo Paciente em Caratinga Precisa Saber</h2>
 
@@ -883,7 +883,7 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Descolamento de Retina: Mitos e Verdades | Clínica Saraiva Vision Caratinga',
-      metaDescription: 'Entenda os principais mitos e verdades sobre descolamento de retina. Informações baseadas em ciência para prevenir e tratar essa condição séria que pode ameaçar a visão.',
+      metaDescription: 'Fotofobia (sensibilidade à luz) tem tratamento. Dr. Philipe Saraiva identifica causas e trata em Caratinga, MG. Recupere conforto visual. Agende!',
       keywords: ['descolamento de retina', 'descolamento retina Caratinga', 'tratamento retina', 'cirurgia retina', 'oftalmologista Caratinga MG', 'mapeamento retina', 'vitrectomia', 'urgência oftalmológica', 'sintomas descolamento retina']
     },
     relatedPodcasts: [
@@ -898,8 +898,8 @@ export const blogPosts = [
   {
     id: 16,
     slug: 'como-inteligencia-artificial-transforma-exames-oftalmologicos-caratinga-mg',
-    title: 'Como a Inteligência Artificial Está Transformando os Exames Oftalmológicos em Caratinga, MG',
-    excerpt: 'Descubra como a IA revoluciona exames oculares, melhorando diagnósticos na Clínica Saraiva Vision. Agende sua consulta em Caratinga, MG, para cuidados personalizados.',
+    title: 'Dry Eye: Tratamento de Olho Seco | Caratinga MG',
+    excerpt: 'Olho seco (Dry Eye): tratamentos modernos para alívio definitivo. Dr. Philipe Saraiva oferece soluções personalizadas em Caratinga, MG.',
     content: `
       <h2>Como a Inteligência Artificial Está Transformando os Exames Oftalmológicos em Caratinga, MG</h2>
 
@@ -975,15 +975,15 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Como a Inteligência Artificial Está Transformando os Exames Oftalmológicos em Caratinga, MG',
-      metaDescription: 'Descubra como a IA revoluciona exames oculares, melhorando diagnósticos na Clínica Saraiva Vision. Agende sua consulta em Caratinga, MG, para cuidados personalizados.',
+      metaDescription: 'Olho seco (Dry Eye) tem tratamento eficaz. Dr. Philipe Saraiva oferece terapias avançadas em Caratinga, MG. Alívio imediato! Agende consulta.',
       keywords: ['inteligência artificial oftalmologia', 'exames oculares AI', 'saúde visual Caratinga', 'diagnóstico ocular IA', 'prevenção ocular MG', 'tecnologia médica oftalmologia', 'retinopatia diabética IA', 'glaucoma diagnóstico AI']
     }
   },
   {
     id: 15,
     slug: 'doenca-de-coats-meninos-jovens-caratinga-mg',
-    title: 'Doença de Coats em Meninos Jovens: Entenda os Riscos e Como Proteger a Visão em Caratinga, MG',
-    excerpt: 'Descubra o que é a Doença de Coats, uma condição ocular rara que afeta meninos jovens. Saiba sobre sintomas, prevenção e tratamentos na Clínica Saraiva Vision em Caratinga, MG. Agende sua consulta!',
+    title: 'Descolamento de Retina: Emergência Ocular | Caratinga',
+    excerpt: 'Descolamento de retina: emergência ocular que exige cirurgia urgente. Dr. Philipe Saraiva oferece atendimento rápido em Caratinga, MG.',
     content: `
       <h2>Introdução</h2>
       <p>Olá! Cuidar da saúde dos olhos é essencial para uma vida plena, especialmente quando se trata de condições raras que podem afetar as crianças. Na Clínica Saraiva Vision, em Caratinga (MG), nosso compromisso é oferecer um atendimento humanizado e especializado, liderado pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e uma equipe qualificada, com o apoio de tecnologias diagnósticas avançadas. Hoje, vamos falar sobre a Doença de Coats, uma condição ocular que atinge principalmente meninos jovens, ajudando você a entender seus impactos e a importância de um acompanhamento precoce.</p>
@@ -1061,15 +1061,15 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Doença de Coats em Meninos Jovens: Sintomas, Diagnóstico e Tratamento em Caratinga, MG',
-      metaDescription: 'Descubra o que é a Doença de Coats, uma condição ocular rara que afeta meninos jovens. Saiba sobre sintomas, prevenção e tratamentos na Clínica Saraiva Vision em Caratinga, MG. Agende sua consulta!',
+      metaDescription: 'Descolamento de retina é emergência! Dr. Philipe Saraiva trata com cirurgia urgente em Caratinga, MG. Salve sua visão. Atendimento rápido!',
       keywords: ['doença de coats', 'meninos jovens', 'saúde ocular', 'sintomas oculares', 'oftalmologia caratinga', 'tratamento retinal', 'prevenção visão infantil']
     }
   },
   {
     id: 14,
     slug: 'terapias-geneticas-celulas-tronco-oftalmologia-doencas-hereditarias-caratinga-mg',
-    title: 'Terapias Genéticas e de Células-Tronco: Revolucionando o Tratamento de Doenças Oculares Hereditárias em Caratinga, MG',
-    excerpt: 'Descubra como terapias genéticas e células-tronco estão revolucionando tratamentos oculares para doenças hereditárias. Saiba sobre sucessos, limitações e perspectivas no Brasil na Clínica Saraiva Vision, em Caratinga, MG.',
+    title: 'Pterígio: Remoção Cirúrgica | Caratinga MG',
+    excerpt: 'Pterígio: remoção cirúrgica com técnicas modernas para baixa recorrência. Dr. Philipe Saraiva opera em Caratinga, MG.',
     content: `
       <h2>Introdução</h2>
       <p>Bem-vindo ao blog da Clínica Saraiva Vision! Aqui em Caratinga, MG, estamos comprometidos em oferecer um atendimento humanizado e de excelência para a saúde dos seus olhos. Liderada pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e uma equipe qualificada, nossa clínica utiliza tecnologia diagnóstica avançada para ajudar pacientes e familiares a entenderem melhor as opções de prevenção, diagnóstico e tratamento oftalmológico. Hoje, vamos explorar um tema empolgante e inovador: as terapias genéticas e de células-tronco em oftalmologia. De forma acessível, explicaremos como essas abordagens estão transformando o tratamento de doenças hereditárias, como a amaurose congênita de Leber e a retinose pigmentar.</p>
@@ -1141,15 +1141,15 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Terapias Genéticas e de Células-Tronco em Oftalmologia: Avanços para Doenças Hereditárias como Amaurose de Leber e Retinose Pigmentar',
-      metaDescription: 'Descubra como terapias genéticas e células-tronco estão revolucionando tratamentos oculares para doenças hereditárias. Saiba sobre sucessos, limitações e perspectivas no Brasil na Clínica Saraiva Vision, em Caratinga, MG.',
+      metaDescription: 'Pterígio tem remoção cirúrgica eficaz. Dr. Philipe Saraiva opera com baixa recorrência em Caratinga, MG. Visão clara novamente! Agende.',
       keywords: ['terapias genéticas oftalmologia', 'células-tronco olhos', 'amaurose congênita Leber', 'retinose pigmentar', 'tratamentos hereditários visão', 'avanços oftalmológicos Brasil']
     }
   },
   {
     id: 11,
     slug: 'sindrome-visao-computador-prevencao-manejo-caratinga-mg',
-    title: 'Síndrome da Visão de Computador: Causas, Prevenção e Manejo em Caratinga, MG',
-    excerpt: 'Descubra como prevenir a síndrome da visão de computador, com dicas sobre luz azul, técnica 20-20-20 e óculos com filtro. Cuide da sua visão no dia a dia digital com a Clínica Saraiva Vision em Caratinga, MG.',
+    title: 'Retinopatia Diabética: Controle Essencial | Caratinga',
+    excerpt: 'Retinopatia diabética: monitoramento e tratamento para prevenir cegueira. Dr. Philipe Saraiva cuida de diabéticos em Caratinga, MG.',
     content: `
       <h2>Síndrome da Visão de Computador: Prevenção e Manejo em um Mundo Digital em Caratinga, MG</h2>
 
@@ -1231,15 +1231,15 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Síndrome da Visão de Computador: Prevenção e Manejo em Caratinga, MG',
-      metaDescription: 'Descubra como prevenir a síndrome da visão de computador, com dicas sobre luz azul, técnica 20-20-20 e óculos com filtro. Cuide da sua visão no dia a dia digital com a Clínica Saraiva Vision em Caratinga, MG.',
+      metaDescription: 'Retinopatia diabética exige controle rigoroso. Dr. Philipe Saraiva monitora e trata em Caratinga, MG. Previna cegueira. Agende exame!',
       keywords: ['síndrome da visão de computador', 'fadiga ocular', 'luz azul', 'técnica 20-20-20', 'olhos secos', 'cefaleia', 'prevenção visual', 'trabalho remoto', 'estudos digitais', 'saúde ocular Caratinga']
     }
   },
   {
     id: 10,
     slug: 'olho-seco-blefarite-lacrimejamento-caratinga-tratamento',
-    title: 'Olho Seco e Blefarite: Por Que Causam Lacrimejamento em Caratinga e Como Tratar Sem Piorar os Sintomas',
-    excerpt: 'Entenda por que olho seco e blefarite levam a lacrimejamento excessivo em Caratinga, MG. Descubra tratamentos seguros na Clínica Saraiva Vision, com Dr. Philipe Saraiva Cruz. Agende agora!',
+    title: 'Degeneração Macular (DMRI): Tratamento | Caratinga MG',
+    excerpt: 'Degeneração macular relacionada à idade (DMRI): tratamentos para preservar visão central. Dr. Philipe Saraiva em Caratinga, MG.',
     content: `
       <h2>Introdução</h2>
       <p>Cuidar dos olhos é essencial para manter uma boa qualidade de vida, especialmente em uma região como Caratinga, MG, onde o clima e o dia a dia podem influenciar a saúde ocular. Na Clínica Saraiva Vision, em Caratinga, o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe qualificada oferecem um atendimento humanizado, com tecnologia diagnóstica avançada para ajudar você a entender e tratar problemas como olho seco e blefarite. Neste artigo, vamos explorar por que essas condições comuns podem, paradoxalmente, causar lacrimejamento excessivo, e como tratá-las de forma eficaz sem agravar os sintomas. Você aprenderá sobre causas, prevenção e quando buscar ajuda profissional, tudo para que possa desfrutar de uma visão mais confortável no seu cotidiano.</p>
@@ -1344,7 +1344,7 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Olho Seco e Blefarite: Por Que Causam Lacrimejamento em Caratinga e Como Tratar Sem Piorar os Sintomas',
-      metaDescription: 'Entenda por que olho seco e blefarite levam a lacrimejamento excessivo em Caratinga, MG. Descubra tratamentos seguros na Clínica Saraiva Vision, com Dr. Philipe Saraiva Cruz. Agende agora! (33) 99860-1427.',
+      metaDescription: 'Degeneração macular (DMRI) tem tratamento moderno. Dr. Philipe Saraiva oferece terapias avançadas em Caratinga, MG. Preserve visão central!',
       keywords: ['olho seco', 'blefarite', 'lacrimejamento excessivo', 'tratamento ocular Caratinga', 'sintomas olhos secos', 'prevenção blefarite', 'oftalmologia Caratinga']
     },
     relatedPodcasts: [
@@ -1359,8 +1359,8 @@ export const blogPosts = [
   {
     id: 9,
     slug: 'estrabismo-quando-desconfiar-procurar-oftalmologista-caratinga-mg',
-    title: 'Estrabismo: Quando Desconfiar e Procurar um Oftalmologista em Caratinga, MG',
-    excerpt: 'Descubra os sinais de estrabismo, causas e quando buscar ajuda. Na Clínica Saraiva Vision em Caratinga, MG, o Dr. Philipe Saraiva Cruz oferece atendimento humanizado. Agende sua consulta!',
+    title: 'Ceratocone: Tratamento e Crosslinking | Caratinga MG',
+    excerpt: 'Ceratocone: tratamento com crosslinking e lentes especiais. Dr. Philipe Saraiva oferece tecnologia de ponta em Caratinga, MG.',
     content: `
       <h2>Introdução</h2>
       <p>Bem-vindo ao blog da Clínica Saraiva Vision! Aqui em Caratinga, MG, acreditamos que cuidar da visão é essencial para uma vida plena e saudável. Liderada pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870), nossa equipe oferece atendimento humanizado, com tecnologia avançada e foco no bem-estar de cada paciente. Hoje, vamos falar sobre o estrabismo, uma condição que afeta o alinhamento dos olhos e pode impactar crianças e adultos. Você vai aprender a identificar sinais de alerta, entender as causas e saber quando é hora de procurar um especialista. Com essas informações, você estará mais preparado para proteger sua saúde ocular ou a de sua família.</p>
@@ -1454,15 +1454,15 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Estrabismo: Quando Desconfiar e Procurar um Oftalmologista em Caratinga, MG',
-      metaDescription: 'Descubra os sinais de estrabismo, causas e quando buscar ajuda. Na Clínica Saraiva Vision em Caratinga, MG, o Dr. Philipe Saraiva Cruz oferece atendimento humanizado. Agende sua consulta!',
+      metaDescription: 'Ceratocone tem tratamento com crosslinking e lentes especiais. Dr. Philipe Saraiva trata em Caratinga, MG. Estabilize sua córnea! Agende.',
       keywords: ['estrabismo', 'sintomas de estrabismo', 'causas de estrabismo', 'quando procurar oftalmologista', 'tratamento de estrabismo', 'saúde ocular Caratinga MG', 'Clínica Saraiva Vision']
     }
   },
   {
     id: 8,
     slug: 'alimentacao-microbioma-ocular-saude-visao-caratinga-mg',
-    title: 'Alimentação e Saúde Ocular: Nutrientes, Microbioma e Prevenção em Caratinga, MG',
-    excerpt: 'Descubra como vitaminas A, C, E, ômega-3 e carotenoides previnem degeneração macular e catarata. Explore o microbioma intestinal e ocular para combater inflamação e olho seco. Cuide da visão na Clínica Saraiva Vision.',
+    title: 'Catarata: Cirurgia e Recuperação | Caratinga MG',
+    excerpt: 'Cirurgia de catarata: procedimento moderno com lentes premium. Dr. Philipe Saraiva oferece recuperação rápida em Caratinga, MG.',
     content: `
       <h2>Introdução</h2>
       <p>Cuidar da visão vai além de consultas regulares; envolve hábitos diários que impactam nossa saúde como um todo. Na Clínica Saraiva Vision, em Caratinga (MG), o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe qualificada priorizam um atendimento humanizado, combinando tecnologia diagnóstica avançada com orientações personalizadas. Hoje, vamos explorar como a alimentação, o microbioma ocular e a saúde sistêmica influenciam a visão, ampliando o diálogo sobre prevenção. Você aprenderá sobre nutrientes essenciais que reduzem riscos de problemas como degeneração macular e catarata, além de pesquisas emergentes sobre o microbioma intestinal e ocular, que podem afetar inflamação e olho seco. Ao final, estará mais preparado para adotar hábitos saudáveis e saber quando buscar ajuda profissional.</p>
@@ -1544,15 +1544,15 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Alimentação e Saúde Ocular: Como Nutrientes e Microbioma Influenciam a Visão em Caratinga, MG',
-      metaDescription: 'Descubra como vitaminas A, C, E, ômega-3 e carotenoides previnem degeneração macular e catarata. Explore o microbioma intestinal e ocular para combater inflamação e olho seco. Cuide da visão na Clínica Saraiva Vision.',
+      metaDescription: 'Cirurgia de catarata com lentes premium em Caratinga. Dr. Philipe Saraiva realiza procedimento moderno. Visão clara novamente! Agende.',
       keywords: ['alimentação e saúde ocular', 'microbioma ocular', 'vitaminas para visão', 'prevenção degeneração macular', 'catarata', 'ômega-3 olhos', 'luteína zeaxantina', 'olho seco', 'saúde sistêmica visão', 'Caratinga MG']
     }
   },
   {
     id: 7,
     slug: 'sensibilidade-a-luz-causas-tratamentos-caratinga-mg',
-    title: 'Sensibilidade à Luz (Fotofobia): Causas, Sintomas e Tratamentos em Caratinga, MG',
-    excerpt: 'Descubra as causas da sensibilidade à luz (fotofobia) e opções de tratamento. Na Clínica Saraiva Vision em Caratinga, MG, o Dr. Philipe Saraiva Cruz oferece cuidados personalizados. Agende sua consulta!',
+    title: 'Lentes Premium para Catarata | Caratinga MG',
+    excerpt: 'Lentes intraoculares premium: multifocais, tóricas e EDOF para cirurgia de catarata. Dr. Philipe Saraiva em Caratinga, MG.',
     content: `
       <h2>Introdução</h2>
       <p>Olá! Se você já sentiu desconforto ao sair de um ambiente escuro para a luz do dia ou ao ligar uma lâmpada forte, sabe como a sensibilidade à luz pode afetar o dia a dia. Conhecida clinicamente como fotofobia, essa condição não é uma doença em si, mas um sintoma que pode indicar problemas oculares ou de saúde geral. Na Clínica Saraiva Vision, em Caratinga (MG), estamos comprometidos em oferecer um atendimento humanizado e especializado, liderado pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe qualificada. Com tecnologia diagnóstica avançada, ajudamos pacientes a entender e tratar esses incômodos, melhorando sua qualidade de vida.</p>
@@ -1627,15 +1627,15 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Sensibilidade à Luz: Causas, Sintomas e Tratamentos Eficazes em Caratinga, MG',
-      metaDescription: 'Descubra as causas da sensibilidade à luz (fotofobia) e opções de tratamento. Na Clínica Saraiva Vision em Caratinga, MG, o Dr. Philipe Saraiva Cruz oferece cuidados personalizados. Agende sua consulta!',
+      metaDescription: 'Lentes intraoculares premium (multifocais, tóricas, EDOF) para catarata. Dr. Philipe Saraiva oferece em Caratinga, MG. Liberdade dos óculos!',
       keywords: ['sensibilidade à luz', 'fotofobia', 'causas fotofobia', 'tratamentos sensibilidade à luz', 'saúde ocular Caratinga']
     }
   },
   {
     id: 6,
     slug: 'lentes-de-contato-para-presbiopia-caratinga-mg',
-    title: 'Lentes de Contato para Presbiopia: Soluções Eficazes em Caratinga, MG',
-    excerpt: 'Descubra como as lentes de contato multifocais corrigem a presbiopia e melhoram sua visão. Na Clínica Saraiva Vision em Caratinga, MG, agende uma consulta com especialistas para adaptação personalizada.',
+    title: 'Presbiopia: Tratamento e Cirurgia | Caratinga MG',
+    excerpt: 'Presbiopia (vista cansada): tratamentos cirúrgicos e com lentes. Dr. Philipe Saraiva oferece soluções modernas em Caratinga, MG.',
     content: `
       <h2>O Que é Presbiopia?</h2>
       <p>A presbiopia, também conhecida como "vista cansada", é uma condição natural que ocorre com o envelhecimento, geralmente a partir dos 40 anos. Ela acontece quando o cristalino do olho perde flexibilidade, dificultando o foco em objetos próximos. Diferente de outros erros refrativos como miopia ou astigmatismo, a presbiopia afeta principalmente a visão de perto, mas pode coexistir com outras condições.</p>
@@ -1707,7 +1707,7 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Lentes de Contato para Presbiopia: Soluções Eficazes em Caratinga, MG',
-      metaDescription: 'Descubra como as lentes de contato multifocais corrigem a presbiopia e melhoram sua visão. Na Clínica Saraiva Vision em Caratinga, MG, agende uma consulta com especialistas para adaptação personalizada.',
+      metaDescription: 'Presbiopia (vista cansada) tem tratamento cirúrgico e com lentes. Dr. Philipe Saraiva oferece soluções em Caratinga, MG. Liberdade visual!',
       keywords: ['lentes de contato para presbiopia', 'correção da presbiopia', 'lentes multifocais', 'oftalmologista Caratinga', 'saúde ocular MG']
     },
     relatedPodcasts: [
@@ -1827,8 +1827,8 @@ export const blogPosts = [
    {
      id: 1,
     slug: 'cirurgia-refrativa-lentes-intraoculares-caratinga',
-    title: 'Cirurgia refrativa e lentes premium em Caratinga',
-    excerpt: 'Laser de femtossegundos, IOLs multifocais e EDOF para catarata e presbiopia. Avaliação individual na Clínica Saraiva Vision, em Caratinga-MG.',
+    title: 'IA na Oftalmologia: Revolução Digital | Caratinga MG',
+    excerpt: 'Inteligência Artificial na oftalmologia: diagnóstico preciso e tratamentos personalizados. Dr. Philipe Saraiva em Caratinga, MG.',
     content: `
       <h2>Inovações em cirurgias refrativas e lentes intraoculares premium: o que há de novo e para quem é indicado em Caratinga-MG</h2>
 
@@ -2015,7 +2015,7 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Cirurgia refrativa e lentes premium em Caratinga',
-      metaDescription: 'Laser de femtossegundos, IOLs multifocais e EDOF para catarata e presbiopia. Avaliação individual na Clínica Saraiva Vision, em Caratinga-MG.',
+      metaDescription: 'Inteligência Artificial revoluciona diagnóstico oftalmológico. Dr. Philipe Saraiva usa tecnologia de ponta em Caratinga, MG. Futuro da visão!',
       keywords: ['cirurgia refrativa Caratinga', 'lentes intraoculares Caratinga', 'catarata Caratinga', 'laser de femtossegundos Caratinga', 'lente multifocal Caratinga', 'lente EDOF Caratinga', 'presbiopia Caratinga', 'astigmatismo Caratinga', 'LASIK Caratinga', 'PRK Caratinga', 'SMILE Caratinga', 'cirurgia de catarata Caratinga', 'avaliação oftalmológica Caratinga', 'Dr. Philipe Saraiva Cruz']
     },
     relatedPodcasts: [
@@ -2035,8 +2035,8 @@ export const blogPosts = [
   {
     id: 2,
     slug: 'presbiopia-o-que-e-cura-cirurgia-lentes-contato-caratinga-mg',
-    title: 'Presbiopia: O Que É, Existe Cura, Opções de Cirurgia e Lentes de Contato em Caratinga, MG',
-    excerpt: 'Entenda a presbiopia, conhecida como vista cansada, e descubra se há cura, cirurgias e como usar lentes de contato. Na Clínica Saraiva Vision em Caratinga, MG, cuide da sua visão com especialistas.',
+    title: 'Exercícios Oculares e Mitos | Caratinga MG',
+    excerpt: 'Exercícios oculares: o que realmente funciona? Dr. Philipe Saraiva desvenda mitos e verdades em Caratinga, MG.',
     content: `
       <h2>Introdução</h2>
       <p>Cuidar dos olhos é essencial para manter uma boa qualidade de vida, especialmente à medida que envelhecemos. Na Clínica Saraiva Vision, em Caratinga (MG), o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe qualificada oferecem um atendimento humanizado, com tecnologia diagnóstica avançada para ajudar você a entender e tratar condições oculares comuns. Hoje, vamos falar sobre a presbiopia, também conhecida como "vista cansada", respondendo a dúvidas frequentes: o que é, se existe cura, opções de cirurgia e se é possível usar lentes de contato. Ao longo deste artigo, você vai aprender sobre causas, sintomas, tratamentos e a importância de um acompanhamento regular, tudo de forma acessível e prática. Se você mora em Caratinga ou região, essa leitura pode ser o primeiro passo para preservar sua visão e evitar complicações.</p>
@@ -2115,15 +2115,15 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Presbiopia: O Que É, Existe Cura, Opções de Cirurgia e Lentes de Contato em Caratinga, MG',
-      metaDescription: 'Entenda a presbiopia, conhecida como vista cansada, e descubra se há cura, cirurgias e como usar lentes de contato. Na Clínica Saraiva Vision em Caratinga, MG, cuide da sua visão com especialistas.',
+      metaDescription: 'Exercícios oculares: mitos e verdades. Dr. Philipe Saraiva esclarece o que funciona em Caratinga, MG. Cuide corretamente da visão!',
       keywords: ['presbiopia', 'vista cansada', 'cura presbiopia', 'cirurgia presbiopia', 'lentes de contato presbiopia', 'oftalmologista Caratinga', 'saúde ocular MG', 'tratamento presbiopia']
     }
   },
   {
     id: 3,
     slug: 'obstrucao-ducto-lacrimal-lacrimejamento-caratinga',
-    title: 'Obstrução do ducto lacrimal e lacrimejamento: o que é, sintomas e tratamento em Caratinga',
-    excerpt: 'Lacrimejamento constante em Caratinga? Entenda causas da obstrução do ducto lacrimal e tratamentos disponíveis na Clínica Saraiva Vision.',
+    title: 'Nutrição para Saúde Ocular | Caratinga MG',
+    excerpt: 'Nutrição para saúde ocular: alimentos essenciais para proteger sua visão. Dr. Philipe Saraiva orienta em Caratinga, MG.',
     content: `
       <h2>Introdução</h2>
       <p>Você sente os olhos sempre "cheios d'água", como se estivesse chorando sem motivo? O lacrimejamento constante é um dos sinais mais comuns da obstrução do ducto lacrimal, um problema frequente que pode afetar bebês, adultos e idosos. Na Clínica Saraiva Vision, em Caratinga-MG, o oftalmologista Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e sua equipe oferecem atendimento humanizado e tecnologia diagnóstica moderna para identificar a causa do lacrimejamento e indicar o melhor tratamento.</p>
@@ -2241,15 +2241,15 @@ export const blogPosts = [
     featured: false,
     seo: {
       metaTitle: 'Obstrução do ducto lacrimal: causas e soluções em Caratinga',
-      metaDescription: 'Lacrimejamento constante em Caratinga? Entenda causas da obstrução do ducto lacrimal e tratamentos disponíveis na Clínica Saraiva Vision.',
+      metaDescription: 'Nutrição correta protege sua visão. Dr. Philipe Saraiva explica alimentos essenciais em Caratinga, MG. Cuide dos olhos pela alimentação!',
       keywords: ['obstrução do ducto lacrimal', 'lacrimejamento', 'Caratinga MG', 'dacriocistite', 'dacriocistorrinostomia', 'vias lacrimais']
     }
   },
   {
     id: 4,
     slug: 'lentes-premium-cirurgia-catarata-caratinga-mg',
-    title: 'Lentes Premium para Cirurgia de Catarata: Recupere Sua Visão com Tecnologia Avançada em Caratinga, MG',
-    excerpt: 'Descubra como lentes premium na cirurgia de catarata podem restaurar sua visão com clareza. Na Clínica Saraiva Vision em Caratinga, MG, agende uma consulta com Dr. Philipe Saraiva Cruz para tratamentos personalizados.',
+    title: 'Daltonismo: Diagnóstico e Adaptação | Caratinga MG',
+    excerpt: 'Daltonismo: diagnóstico e adaptação com lentes especiais. Dr. Philipe Saraiva oferece avaliação completa em Caratinga, MG.',
     content: `
       <h2>O Que é Catarata e Como Ela Afeta o Cotidiano?</h2>
       <p>A catarata é uma opacidade no cristalino, a lente natural do olho, que causa visão turva e pode progredir com o tempo. Ela é comum em pessoas acima dos 60 anos, mas fatores como exposição ao sol, diabetes, tabagismo ou uso prolongado de telas podem acelerá-la. Imagine tentar ler um livro ou dirigir à noite com uma névoa constante – é assim que a catarata impacta o dia a dia, limitando atividades como trabalhar no computador, praticar esportes ou até cozinhar com segurança.</p>
@@ -2320,7 +2320,7 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Lentes Premium para Cirurgia de Catarata em Caratinga, MG: Benefícios e Opções Avançadas',
-      metaDescription: 'Descubra como lentes premium na cirurgia de catarata podem restaurar sua visão com clareza. Na Clínica Saraiva Vision em Caratinga, MG, agende uma consulta com Dr. Philipe Saraiva Cruz para tratamentos personalizados.',
+      metaDescription: 'Daltonismo: diagnóstico preciso e adaptação com lentes especiais. Dr. Philipe Saraiva avalia em Caratinga, MG. Melhore percepção de cores!',
       keywords: ['lentes premium para cirurgia de catarata', 'cirurgia de catarata com lentes intraoculares', 'lentes multifocais catarata', 'tratamento catarata Caratinga MG', 'oftalmologia Caratinga']
     },
     relatedPodcasts: [
@@ -2335,8 +2335,8 @@ export const blogPosts = [
   {
     id: 5,
     slug: 'oftalmologia-pediatrica-caratinga-quando-levar-criancas',
-    title: 'Oftalmologia Pediátrica em Caratinga: Quando Levar as Crianças ao Oftalmologista',
-    excerpt: 'Descubra quando levar seu filho ao oftalmologista em Caratinga. Dr. Philipe Saraiva Cruz explica frequência ideal e sinais de alerta. Agende na Saraiva Vision.',
+    title: 'Cirurgia Refrativa: Laser e ICL | Caratinga MG',
+    excerpt: 'Cirurgia refrativa: laser femtossegundo e ICL para corrigir miopia, hipermetropia e astigmatismo. Dr. Philipe Saraiva em Caratinga, MG.',
     content: `
       <p>A visão é fundamental para o desenvolvimento infantil, influenciando diretamente a aprendizagem, coordenação motora e interação social das crianças. Em Caratinga, muitos pais questionam-se sobre o momento ideal para levar os filhos ao oftalmologista e qual a frequência necessária dos exames. Dr. Philipe Saraiva Cruz (CRM-MG 69.870), da Clínica Saraiva Vision, esclarece que <strong>80% do aprendizado infantil ocorre através da visão</strong>, tornando os cuidados oftalmológicos essenciais desde os primeiros meses de vida.</p>
 
@@ -2480,12 +2480,12 @@ export const blogPosts = [
     featured: true,
     seo: {
       metaTitle: 'Oftalmologia Pediátrica Caratinga: Quando Levar Crianças ao Oftalmo',
-      metaDescription: 'Descubra quando levar seu filho ao oftalmologista em Caratinga. Dr. Philipe Saraiva Cruz explica frequência ideal e sinais de alerta. Agende na Saraiva Vision.',
+      metaDescription: 'Cirurgia refrativa com laser femtossegundo e ICL em Caratinga. Dr. Philipe Saraiva corrige miopia, hipermetropia e astigmatismo. Liberte-se!',
       keywords: ['oftalmologia pediátrica Caratinga', 'oftalmologista infantil', 'exame de vista crianças', 'Dr. Philipe Saraiva Cruz']
     }
   },
   {
-    id: 23,
+    id: 24,
     slug: 'pterigio-guia-completo-prevencao-cuidados-cirurgia',
     title: 'Pterígio: O Guia Completo sobre Prevenção, Cuidados e Cirurgia',
     excerpt: 'Entenda tudo sobre pterígio (carne no olho): causas, sintomas, prevenção e tratamento cirúrgico. Guia completo com informações atualizadas para proteger sua visão.',

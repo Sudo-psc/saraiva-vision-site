@@ -13,8 +13,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  console.log('mobileMenuOpen:', mobileMenuOpen);
-
   // Prevent double-scroll: lock body when mobile menu is open
   useBodyScrollLock(mobileMenuOpen);
 

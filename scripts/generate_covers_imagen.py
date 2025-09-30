@@ -166,7 +166,7 @@ class ImagenCoverGenerator:
             response = self.client.models.generate_images(
                 model=self.model_name,
                 prompt=prompt,
-                config=genai.types.GenerateImageConfig(
+                config=genai.types.GenerateImagesConfig(
                     number_of_images=num_images,
                     aspect_ratio=aspect_ratio,
                     image_size=image_size,
@@ -182,13 +182,18 @@ class ImagenCoverGenerator:
                 filename = f"capa_post_{post_id}_imagen4_opt{image_count}_{timestamp}.png"
                 filepath = OUTPUT_DIR / filename
 
-                # Processar imagem
-                image = generated_image.image  # PIL Image
-                image.save(str(filepath), format='PNG', optimize=True)
+                # Save image using genai.types.Image.save() method
+                generated_image.image.save(str(filepath))
 
                 file_size = filepath.stat().st_size
+
+                # Get dimensions from saved file
+                from PIL import Image as PILImage
+                with PILImage.open(filepath) as pil_img:
+                    width, height = pil_img.size
+
                 print(f"✓ Imagem {image_count} salva: {filename} ({file_size:,} bytes)")
-                print(f"   Dimensões: {image.size[0]}x{image.size[1]}")
+                print(f"   Dimensões: {width}x{height}")
                 saved_files.append(str(filepath))
 
             return saved_files

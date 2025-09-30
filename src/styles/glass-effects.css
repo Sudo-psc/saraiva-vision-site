@@ -1,0 +1,496 @@
+/**
+ * Glass Effects and 3D Utilities
+ * Premium glassmorphism design system for Saraiva Vision blog
+ *
+ * Usage: Import in main.jsx or App.jsx
+ * Features: Glass cards, liquid overlays, 3D shadows, glass pills
+ */
+
+/* ========================================
+   BASE GLASS COMPONENTS
+   ======================================== */
+
+.glass-card {
+  @apply bg-white/70 backdrop-blur-xl rounded-3xl shadow-glass border-2 border-white/50;
+}
+
+.glass-card-hover {
+  @apply transition-all duration-300 hover:shadow-glass-lg hover:border-white/80 hover:scale-[1.02];
+}
+
+.glass-card-active {
+  @apply shadow-glass-xl border-white/90 scale-[1.02];
+}
+
+/* Glass card with stronger effect */
+.glass-card-strong {
+  @apply bg-white/80 backdrop-blur-2xl rounded-3xl shadow-glass-lg border-2 border-white/60;
+}
+
+/* Glass card with subtle effect */
+.glass-card-subtle {
+  @apply bg-white/50 backdrop-blur-lg rounded-3xl shadow-glass border border-white/40;
+}
+
+/* Colored glass variants */
+.glass-card-blue {
+  @apply bg-primary-500/8 backdrop-blur-xl rounded-3xl border-2 border-primary-200/50 shadow-glass;
+}
+
+.glass-card-teal {
+  @apply bg-secondary-500/8 backdrop-blur-xl rounded-3xl border-2 border-secondary-200/50 shadow-glass;
+}
+
+.glass-card-green {
+  @apply bg-green-500/8 backdrop-blur-xl rounded-3xl border-2 border-green-200/50 shadow-glass;
+}
+
+
+/* ========================================
+   LIQUID GLASS OVERLAYS
+   ======================================== */
+
+.liquid-overlay {
+  @apply absolute inset-0 bg-gradient-to-br from-primary-500/4 via-secondary-500/4 to-primary-600/4 rounded-3xl pointer-events-none;
+}
+
+.liquid-overlay-hover {
+  @apply absolute inset-0 bg-gradient-to-br from-primary-500/4 via-secondary-500/4 to-primary-600/4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none;
+}
+
+.liquid-shimmer {
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000;
+}
+
+/* Animated liquid background */
+@keyframes liquid-flow {
+  0%, 100% {
+    transform: translate(0%, 0%) scale(1);
+  }
+  33% {
+    transform: translate(30%, -20%) scale(1.1);
+  }
+  66% {
+    transform: translate(-20%, 30%) scale(0.9);
+  }
+}
+
+.liquid-bg {
+  @apply absolute inset-0 bg-gradient-to-br from-primary-500/8 via-secondary-500/8 to-primary-600/8 rounded-3xl pointer-events-none;
+  animation: liquid-flow 10s ease-in-out infinite;
+}
+
+
+/* ========================================
+   3D EFFECTS AND SHADOWS
+   ======================================== */
+
+/* 3D glow effect - Azul Petróleo */
+.glow-3d {
+  @apply absolute -inset-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full blur opacity-40 group-hover:opacity-60 transition-opacity duration-200;
+}
+
+.glow-3d-strong {
+  @apply absolute -inset-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full blur-md opacity-50 group-hover:opacity-75 transition-opacity duration-200;
+}
+
+.glow-3d-lg {
+  @apply absolute -inset-2 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-600 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-200;
+}
+
+/* 3D shadow layers */
+.shadow-3d {
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 10px 20px rgba(0, 0, 0, 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-3d-hover {
+  transition: box-shadow 0.3s ease;
+}
+
+.shadow-3d-hover:hover {
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.4),
+    0 15px 30px rgba(0, 0, 0, 0.3),
+    0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Floating 3D effect */
+@keyframes float-3d {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-3d {
+  animation: float-3d 3s ease-in-out infinite;
+}
+
+
+/* ========================================
+   GLASS PILLS AND BADGES
+   ======================================== */
+
+.glass-pill {
+  @apply inline-flex items-center gap-2 bg-white/20 backdrop-blur-md rounded-full px-4 py-2 border border-white/30 shadow-lg;
+}
+
+.glass-pill-hover {
+  @apply transition-all duration-300 hover:bg-white/30 hover:shadow-xl hover:scale-105;
+}
+
+.glass-pill-active {
+  @apply bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-xl scale-105 border-white/50;
+}
+
+/* Glass badge sizes */
+.glass-pill-sm {
+  @apply px-3 py-1.5 text-xs rounded-full;
+}
+
+.glass-pill-lg {
+  @apply px-6 py-3 text-base rounded-full;
+}
+
+.glass-pill-xl {
+  @apply px-8 py-4 text-lg rounded-full;
+}
+
+
+/* ========================================
+   GLASS BUTTONS
+   ======================================== */
+
+.glass-button {
+  @apply bg-white/20 backdrop-blur-md border-2 border-white/30 rounded-xl px-6 py-3 font-semibold shadow-lg transition-all duration-300;
+}
+
+.glass-button:hover {
+  @apply bg-white/30 shadow-xl scale-105;
+}
+
+.glass-button:active {
+  @apply scale-95;
+}
+
+/* Primary glass button */
+.glass-button-primary {
+  @apply bg-gradient-to-r from-primary-600 to-secondary-600 text-white border-white/20 backdrop-blur-sm rounded-xl px-6 py-3 font-semibold shadow-xl transition-all duration-300;
+}
+
+.glass-button-primary:hover {
+  @apply from-primary-700 to-secondary-700 shadow-2xl scale-[1.03];
+}
+
+
+/* ========================================
+   GLASS TYPOGRAPHY
+   ======================================== */
+
+.glass-heading {
+  @apply bg-gradient-to-r from-text-primary via-primary-800 to-text-primary bg-clip-text text-transparent drop-shadow-sm font-extrabold;
+}
+
+.glass-text {
+  @apply text-gray-700 drop-shadow-sm;
+}
+
+.glass-text-light {
+  @apply text-white drop-shadow-lg;
+}
+
+
+/* ========================================
+   PROSE GLASS (Blog Content Styling)
+   ======================================== */
+
+.prose-glass h2 {
+  @apply relative pb-3 border-b-2 border-blue-200 mt-10 mb-6;
+}
+
+.prose-glass h2::before {
+  content: '';
+  @apply absolute left-0 bottom-0 w-20 h-0.5 bg-gradient-to-r from-primary-600 to-secondary-600;
+}
+
+.prose-glass h3 {
+  @apply mt-8 mb-4 text-2xl font-bold text-gray-900;
+}
+
+.prose-glass h4 {
+  @apply mt-6 mb-3 text-xl font-bold text-gray-900;
+}
+
+.prose-glass p {
+  @apply text-gray-700 leading-relaxed mb-6;
+}
+
+.prose-glass a {
+  @apply text-primary-600 font-semibold no-underline hover:underline transition-colors;
+}
+
+.prose-glass blockquote {
+  @apply border-l-4 border-primary-500 pl-6 italic text-text-secondary bg-primary-50/50 py-4 rounded-r-xl my-6;
+}
+
+.prose-glass ul,
+.prose-glass ol {
+  @apply pl-6 mb-6;
+}
+
+.prose-glass li {
+  @apply text-gray-700 mb-2;
+}
+
+.prose-glass code {
+  @apply bg-gray-100 px-2 py-1 rounded text-sm text-pink-600;
+}
+
+.prose-glass pre {
+  @apply bg-gray-900 text-gray-100 rounded-xl p-6 shadow-lg my-8 overflow-x-auto;
+}
+
+.prose-glass img {
+  @apply rounded-xl shadow-lg my-8 w-full;
+}
+
+
+/* ========================================
+   GLASS CONTAINERS
+   ======================================== */
+
+.glass-container {
+  @apply bg-white/60 backdrop-blur-xl rounded-2xl p-6 shadow-lg border border-white/50;
+}
+
+.glass-container-lg {
+  @apply bg-white/60 backdrop-blur-xl rounded-3xl p-8 md:p-12 shadow-2xl border-2 border-white/50;
+}
+
+.glass-section {
+  @apply bg-white/50 backdrop-blur-lg rounded-3xl p-6 md:p-8 shadow-xl border border-white/40;
+}
+
+
+/* ========================================
+   GLASS NAVIGATION
+   ======================================== */
+
+.glass-nav {
+  @apply bg-white/60 backdrop-blur-xl border-b border-white/50 shadow-lg sticky top-0 z-40;
+}
+
+.glass-nav-item {
+  @apply px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/80;
+}
+
+.glass-nav-item-active {
+  @apply bg-white/90 shadow-md font-semibold;
+}
+
+
+/* ========================================
+   GLASS FORMS
+   ======================================== */
+
+.glass-input {
+  @apply w-full bg-white/60 backdrop-blur-xl border-2 border-white/50 rounded-xl px-4 py-3 text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all shadow-lg;
+}
+
+.glass-textarea {
+  @apply w-full bg-white/60 backdrop-blur-xl border-2 border-white/50 rounded-xl px-4 py-3 text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all shadow-lg resize-none;
+}
+
+.glass-select {
+  @apply w-full bg-white/60 backdrop-blur-xl border-2 border-white/50 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all shadow-lg;
+}
+
+
+/* ========================================
+   GLASS MODALS AND OVERLAYS
+   ======================================== */
+
+.glass-modal {
+  @apply bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl border-2 border-white/60 p-8;
+}
+
+.glass-overlay {
+  @apply fixed inset-0 bg-black/40 backdrop-blur-sm z-40;
+}
+
+.glass-dropdown {
+  @apply bg-white/90 backdrop-blur-xl rounded-xl shadow-2xl border border-white/50 p-3;
+}
+
+
+/* ========================================
+   GLASS CARDS WITH HOVER EFFECTS
+   ======================================== */
+
+.glass-card-interactive {
+  @apply bg-white/70 backdrop-blur-xl rounded-3xl shadow-lg border-2 border-white/50 transition-all duration-500 cursor-pointer;
+}
+
+.glass-card-interactive:hover {
+  @apply shadow-2xl border-white/80 scale-[1.02];
+}
+
+.glass-card-interactive:hover .liquid-overlay-hover {
+  @apply opacity-100;
+}
+
+
+/* ========================================
+   ACCESSIBILITY ENHANCEMENTS
+   ======================================== */
+
+.glass-focus {
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2;
+}
+
+.glass-focus-visible:focus-visible {
+  @apply outline-none ring-2 ring-blue-400 ring-offset-2;
+}
+
+
+/* ========================================
+   RESPONSIVE UTILITIES
+   ======================================== */
+
+@media (max-width: 768px) {
+  .glass-card-lg {
+    @apply rounded-2xl p-6;
+  }
+
+  .glass-container-lg {
+    @apply rounded-2xl p-6;
+  }
+
+  .prose-glass h2 {
+    @apply text-2xl;
+  }
+}
+
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+  .glass-card,
+  .glass-card-strong,
+  .glass-card-subtle {
+    @apply bg-white border border-gray-300 shadow-none;
+  }
+
+  .glass-overlay,
+  .liquid-overlay,
+  .liquid-overlay-hover {
+    @apply hidden;
+  }
+
+  .glow-3d,
+  .glow-3d-strong,
+  .glow-3d-lg {
+    @apply hidden;
+  }
+}
+
+
+/* ========================================
+   DARK MODE SUPPORT (Future)
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+  /*
+   * Dark mode styles can be added here in the future
+   * Example:
+   * .glass-card {
+   *   @apply bg-gray-800/70 border-gray-700/50;
+   * }
+   */
+}
+
+
+/* ========================================
+   CUSTOM ANIMATIONS
+   ======================================== */
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slide-up 0.5s ease-out;
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.scale-in {
+  animation: scale-in 0.3s ease-out;
+}
+
+
+/* ========================================
+   PERFORMANCE OPTIMIZATIONS
+   ======================================== */
+
+/* Use GPU acceleration for smooth animations */
+.glass-card,
+.glass-button,
+.glass-pill {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .liquid-shimmer,
+  .liquid-bg,
+  .float-3d,
+  .pulse-glow {
+    animation: none !important;
+  }
+}

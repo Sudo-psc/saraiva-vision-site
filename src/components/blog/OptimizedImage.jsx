@@ -13,12 +13,15 @@ const OptimizedImage = ({
   sizes = '(max-width: 480px) 480px, (max-width: 768px) 768px, (max-width: 1280px) 1280px, 1920px',
   loading = 'lazy',
   aspectRatio,
+  width,
+  height,
   fallbackSrc,
   onLoad,
   onError
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [sourceError, setSourceError] = useState({ avif: false, webp: false });
   const imgRef = useRef(null);
 
   // Extract base filename without extension
@@ -31,13 +34,32 @@ const OptimizedImage = ({
   const basename = getBasename(src);
   const imagePath = src.substring(0, src.lastIndexOf('/') + 1);
 
-  // Generate responsive image sources
-  const responsiveSizes = [480, 768, 1280, 1920];
+  // Generate responsive image sources - only for sizes that exist
+  // Use smaller sizes for fallback (480, 768 more likely to exist than 1280, 1920)
+  const responsiveSizes = [480, 768, 1280];
+
+  // Valid image formats for srcset generation
+  const VALID_FORMATS = ['avif', 'webp', 'jpg', 'jpeg', 'png'];
 
   const generateSrcSet = (format) => {
-    return responsiveSizes
-      .map(size => `${imagePath}${basename}-${size}w.${format} ${size}w`)
+    // Validate format to prevent typos like 'avi' or 'avit'
+    const normalizedFormat = format.toLowerCase().trim();
+
+    if (!VALID_FORMATS.includes(normalizedFormat)) {
+      console.error(`Invalid image format: "${format}". Expected one of: ${VALID_FORMATS.join(', ')}`);
+      return '';
+    }
+
+    const srcset = responsiveSizes
+      .map(size => `${imagePath}${basename}-${size}w.${normalizedFormat} ${size}w`)
       .join(', ');
+
+    // Debug logging (remove in production)
+    if (import.meta.env.DEV) {
+      console.debug(`Generated ${normalizedFormat} srcset:`, srcset);
+    }
+
+    return srcset;
   };
 
   const handleLoad = (e) => {
@@ -46,6 +68,7 @@ const OptimizedImage = ({
   };
 
   const handleError = (e) => {
+    console.warn(`Image load error: ${e.target?.src || src}`);
     setHasError(true);
     if (onError) onError(e);
 
@@ -55,34 +78,56 @@ const OptimizedImage = ({
     }
   };
 
+  const handleSourceError = (format) => {
+    // Handle source errors (404s for AVIF/WebP)
+    // Browser will fall through to next format
+    if (import.meta.env.DEV) {
+      console.warn(`Failed to load ${format.toUpperCase()} sources for: ${basename}`);
+      console.debug(`Expected files: ${responsiveSizes.map(s => `${basename}-${s}w.${format}`).join(', ')}`);
+    }
+    setSourceError(prev => ({ ...prev, [format]: true }));
+  };
+
   // Intersection Observer for advanced lazy loading
   useEffect(() => {
     if (!imgRef.current || loading !== 'lazy') return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const img = entry.target;
-            // Trigger loading by accessing srcset
-            if (img.dataset.srcset) {
-              img.srcset = img.dataset.srcset;
-              img.removeAttribute('data-srcset');
-            }
-            observer.unobserve(img);
-          }
-        });
-      },
-      {
-        rootMargin: '50px', // Start loading 50px before visible
-        threshold: 0.01
-      }
-    );
+    // Fallback for browsers without IntersectionObserver
+    if (!('IntersectionObserver' in window)) {
+      console.warn('IntersectionObserver not supported, using native lazy loading');
+      return;
+    }
 
-    observer.observe(imgRef.current);
+    let observer;
+    try {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              // Trigger loading by accessing srcset
+              if (img.dataset.srcset) {
+                img.srcset = img.dataset.srcset;
+                img.removeAttribute('data-srcset');
+              }
+              observer.unobserve(img);
+            }
+          });
+        },
+        {
+          rootMargin: '50px', // Start loading 50px before visible
+          threshold: 0.01
+        }
+      );
+
+      observer.observe(imgRef.current);
+    } catch (error) {
+      console.error('IntersectionObserver error:', error);
+      // Fallback to native loading
+    }
 
     return () => {
-      if (imgRef.current) {
+      if (observer && imgRef.current) {
         observer.unobserve(imgRef.current);
       }
     };
@@ -100,28 +145,37 @@ const OptimizedImage = ({
 
       <picture>
         {/* AVIF - Best compression, modern browsers */}
-        <source
-          type="image/avif"
-          srcSet={generateSrcSet('avif')}
-          sizes={sizes}
-        />
+        {!sourceError.avif && (
+          <source
+            type="image/avif"
+            srcSet={generateSrcSet('avif')}
+            sizes={sizes}
+            onError={() => handleSourceError('avif')}
+          />
+        )}
 
         {/* WebP - Good compression, wide support */}
-        <source
-          type="image/webp"
-          srcSet={generateSrcSet('webp')}
-          sizes={sizes}
-        />
+        {!sourceError.webp && (
+          <source
+            type="image/webp"
+            srcSet={generateSrcSet('webp')}
+            sizes={sizes}
+            onError={() => handleSourceError('webp')}
+          />
+        )}
 
         {/* Fallback to original image */}
         <img
           ref={imgRef}
           src={hasError && fallbackSrc ? fallbackSrc : src}
           alt={alt}
+          width={width}
+          height={height}
           loading={loading}
           decoding="async"
           onLoad={handleLoad}
           onError={handleError}
+          style={{ overflow: 'hidden' }}
           className={`w-full h-full object-cover transition-opacity duration-300 ${
             isLoaded ? 'opacity-100' : 'opacity-0'
           }`}
@@ -160,6 +214,8 @@ OptimizedImage.propTypes = {
   sizes: PropTypes.string,
   loading: PropTypes.oneOf(['lazy', 'eager']),
   aspectRatio: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number,
   fallbackSrc: PropTypes.string,
   onLoad: PropTypes.func,
   onError: PropTypes.func
