@@ -14,36 +14,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Page configurations with SEO metadata
+// NOTE: Only pre-render homepage (/) to avoid MIME type issues with SPA routing
+// Other routes are handled by Nginx fallback to /index.html
 const pages = {
   '/': {
     title: 'Saraiva Vision - Clínica Oftalmológica em Caratinga/MG',
     description: 'Clínica oftalmológica especializada em catarata, glaucoma, retina e cirurgia refrativa em Caratinga/MG. Atendimento médico de qualidade com tecnologia de ponta.',
     keywords: 'oftalmologia Caratinga, clínica oftalmológica MG, catarata Caratinga, cirurgia refrativa Vale do Aço',
     canonicalUrl: 'https://saraivavision.com.br/'
-  },
-  '/sobre': {
-    title: 'Sobre a Clínica Saraiva Vision - Oftalmologia em Caratinga/MG',
-    description: 'Conheça a Clínica Saraiva Vision em Caratinga/MG. Equipe médica especializada, tecnologia de ponta e atendimento humanizado em oftalmologia.',
-    keywords: 'sobre Saraiva Vision, clínica Caratinga, oftalmologista Caratinga',
-    canonicalUrl: 'https://saraivavision.com.br/sobre'
-  },
-  '/servicos': {
-    title: 'Serviços Oftalmológicos - Saraiva Vision Caratinga/MG',
-    description: 'Serviços oftalmológicos completos em Caratinga/MG: cirurgia de catarata, glaucoma, retina, cirurgia refrativa e mais. Agende sua consulta.',
-    keywords: 'serviços oftalmológicos Caratinga, cirurgia catarata MG, tratamento glaucoma',
-    canonicalUrl: 'https://saraivavision.com.br/servicos'
-  },
-  '/blog': {
-    title: 'Blog - Artigos sobre Saúde Ocular | Saraiva Vision',
-    description: 'Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos escritos por especialistas da Clínica Saraiva Vision em Caratinga/MG.',
-    keywords: 'blog oftalmologia, saúde ocular, artigos oftalmológicos, dicas visão',
-    canonicalUrl: 'https://saraivavision.com.br/blog'
-  },
-  '/contato': {
-    title: 'Contato - Agende sua Consulta | Saraiva Vision Caratinga/MG',
-    description: 'Entre em contato com a Clínica Saraiva Vision em Caratinga/MG. Rua Catarina Maria Passos, 97 - Santa Zita. Telefone: (33) 99860-1427.',
-    keywords: 'contato Saraiva Vision, agendar consulta Caratinga, telefone oftalmologista',
-    canonicalUrl: 'https://saraivavision.com.br/contato'
   }
 };
 
@@ -104,9 +82,28 @@ function generateLocalBusinessSchema() {
 }
 
 /**
+ * Read the Vite-built index.html to extract script/style tags
+ */
+function getViteBuildAssets(distDir) {
+  const indexPath = path.join(distDir, 'index.html');
+  const indexContent = fs.readFileSync(indexPath, 'utf8');
+
+  // Extract script and link tags
+  const scriptMatch = indexContent.match(/<script[^>]*type="module"[^>]*src="([^"]+)"[^>]*><\/script>/);
+  const styleMatches = indexContent.match(/<link[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g);
+  const modulePreloads = indexContent.match(/<link[^>]*rel="modulepreload"[^>]*>/g) || [];
+
+  return {
+    mainScript: scriptMatch ? scriptMatch[0] : '',
+    styles: styleMatches ? styleMatches.join('\n    ') : '',
+    modulePreloads: modulePreloads.join('\n    ')
+  };
+}
+
+/**
  * Generate pre-rendered HTML for a page
  */
-function generatePrerenderedHTML(route, metadata) {
+function generatePrerenderedHTML(route, metadata, assets) {
   const schema = generateLocalBusinessSchema();
 
   return `<!DOCTYPE html>
@@ -156,30 +153,14 @@ function generatePrerenderedHTML(route, metadata) {
     <script type="application/ld+json">
 ${JSON.stringify(schema, null, 2)}
     </script>
+
+    <!-- Vite Build Assets -->
+    ${assets.mainScript}
+    ${assets.modulePreloads}
+    ${assets.styles}
   </head>
   <body>
-    <div id="root">
-      <!-- Pre-rendered content above the fold -->
-      <header>
-        <h1>${NAP.name}</h1>
-        <p>${metadata.description}</p>
-      </header>
-      <main>
-        <section>
-          <h2>Informações de Contato</h2>
-          <address>
-            <p>${NAP.streetAddress}, ${NAP.neighborhood}</p>
-            <p>${NAP.city} - ${NAP.state}, ${NAP.postalCode}</p>
-            <p>Telefone: <a href="tel:${NAP.whatsapp}">${NAP.phone}</a></p>
-            <p>Email: <a href="mailto:${NAP.email}">${NAP.email}</a></p>
-          </address>
-        </section>
-      </main>
-      <noscript>
-        <p>Este site requer JavaScript para funcionar corretamente. Por favor, habilite JavaScript no seu navegador.</p>
-      </noscript>
-    </div>
-    <script type="module" src="/src/main.jsx"></script>
+    <div id="root"></div>
     <script src="https://cdn.pulse.is/livechat/loader.js" data-live-chat-id="68d52f7bf91669800d0923ac" async></script>
   </body>
 </html>
