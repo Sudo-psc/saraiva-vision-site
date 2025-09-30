@@ -68,7 +68,9 @@ const OptimizedImage = ({
   };
 
   const handleError = (e) => {
-    console.warn(`Image load error: ${e.target?.src || src}`);
+    if (!hasError) {
+      console.warn(`Image load error: ${e.target?.src || src}`);
+    }
     setHasError(true);
     if (onError) onError(e);
 
