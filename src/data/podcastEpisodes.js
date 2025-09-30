@@ -419,6 +419,322 @@ export const podcastEpisodes = [
         slug: 'olho-seco-causas-tratamentos'
       }
     ]
+  },
+
+  {
+    id: 'lentes-contato-ep1',
+    slug: 'lentes-contato-rigidas-gelatinosas',
+    title: 'Lentes de Contato: Rígidas vs Gelatinosas - Qual Escolher?',
+    description: 'Comparação completa entre lentes rígidas e gelatinosas. Vantagens, desvantagens, indicações e cuidados. Dr. Philipe Saraiva em Caratinga.',
+    cover: '/Podcasts/Covers/lentes_contato_cover.jpg',
+    duration: '05:30',
+    date: '2025-08-31',
+    category: 'Lentes de Contato',
+    tags: ['lentes de contato', 'lentes rígidas', 'lentes gelatinosas', 'adaptação'],
+    featured: false,
+    spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
+
+    transcript: {
+      summary: 'Diferenças entre lentes de contato rígidas e gelatinosas: conforto, oxigenação, custo e indicações específicas para cada tipo.',
+
+      keywords: [
+        'lentes de contato Caratinga',
+        'lentes rígidas',
+        'lentes gelatinosas',
+        'adaptação de lentes',
+        'ceratocone',
+        'astigmatismo'
+      ],
+
+      highlights: [
+        {
+          timestamp: '01:00',
+          text: 'Lentes gelatinosas são mais confortáveis inicialmente, mas lentes rígidas proporcionam melhor visão para pacientes com astigmatismo alto ou ceratocone.',
+          keywords: ['lentes gelatinosas', 'lentes rígidas', 'astigmatismo', 'ceratocone']
+        },
+        {
+          timestamp: '03:15',
+          text: 'Lentes rígidas duram mais (1-2 anos) e permitem maior oxigenação da córnea, mas exigem período de adaptação.',
+          keywords: ['durabilidade', 'oxigenação', 'adaptação']
+        }
+      ],
+
+      fullTranscript: `
+        <p>Comparação completa entre <strong>lentes de contato rígidas e gelatinosas</strong>. Descubra qual tipo é ideal para você.</p>
+
+        <h3>Lentes Gelatinosas (Hidrofílicas)</h3>
+        <p><strong>Vantagens</strong>:</p>
+        <ul>
+          <li>Conforto imediato, sem período de adaptação</li>
+          <li>Grande variedade de marcas e modelos</li>
+          <li>Disponíveis descartáveis (diárias, quinzenais, mensais)</li>
+          <li>Indicadas para uso esporádico</li>
+        </ul>
+
+        <p><strong>Desvantagens</strong>:</p>
+        <ul>
+          <li>Menor oxigenação da córnea</li>
+          <li>Acúmulo de proteínas e depósitos</li>
+          <li>Visão inferior para astigmatismos altos</li>
+          <li>Maior risco de infecções se mal higienizadas</li>
+        </ul>
+
+        <h3>Lentes Rígidas (Gás Permeáveis)</h3>
+        <p><strong>Vantagens</strong>:</p>
+        <ul>
+          <li>Melhor oxigenação da córnea</li>
+          <li>Visão mais nítida (corrigem aberrações ópticas)</li>
+          <li>Ideais para ceratocone e astigmatismo alto</li>
+          <li>Duram 1-2 anos (mais econômicas a longo prazo)</li>
+          <li>Menos depósitos e infecções</li>
+        </ul>
+
+        <p><strong>Desvantagens</strong>:</p>
+        <ul>
+          <li>Período de adaptação (1-2 semanas)</li>
+          <li>Desconforto inicial</li>
+          <li>Custo inicial mais alto</li>
+          <li>Podem sair do olho com facilidade (esportes de contato)</li>
+        </ul>
+
+        <h3>Quando Escolher Cada Tipo?</h3>
+        <p><strong>Lentes Gelatinosas</strong>: Uso esporádico, primeiro contato com lentes, esportes.</p>
+        <p><strong>Lentes Rígidas</strong>: Ceratocone, astigmatismo alto, olho seco, uso diário prolongado.</p>
+
+        <p>Agende uma <strong>consulta de adaptação de lentes</strong> na Clínica Saraiva Vision em Caratinga.</p>
+      `
+    },
+
+    relatedServices: [
+      {
+        title: 'Adaptação de Lentes de Contato',
+        url: '/servicos/lentes-de-contato',
+        icon: 'eye'
+      }
+    ],
+
+    relatedPosts: []
+  },
+
+  {
+    id: 'cirurgia-refrativa-ep1',
+    slug: 'cirurgia-refrativa-lasik-prk',
+    title: 'Cirurgia Refrativa: LASIK vs PRK - Qual a Melhor?',
+    description: 'Tudo sobre cirurgia a laser para miopia, hipermetropia e astigmatismo. Diferenças entre LASIK e PRK. Dr. Philipe Saraiva.',
+    cover: '/Podcasts/Covers/refrativa_cover.jpg',
+    duration: '10:15',
+    date: '2025-08-25',
+    category: 'Cirurgias Oftalmológicas',
+    tags: ['cirurgia refrativa', 'LASIK', 'PRK', 'miopia', 'Caratinga'],
+    featured: true,
+    spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
+
+    transcript: {
+      summary: 'Comparação completa entre LASIK e PRK para correção de grau: diferenças técnicas, indicações, recuperação e resultados.',
+
+      keywords: [
+        'cirurgia refrativa Caratinga',
+        'LASIK',
+        'PRK',
+        'miopia',
+        'hipermetropia',
+        'astigmatismo',
+        'laser oftalmológico'
+      ],
+
+      highlights: [
+        {
+          timestamp: '02:30',
+          text: 'LASIK tem recuperação mais rápida (1-2 dias), enquanto PRK leva 5-7 dias, mas é mais segura para córneas finas.',
+          keywords: ['LASIK', 'PRK', 'recuperação', 'córnea fina']
+        },
+        {
+          timestamp: '06:45',
+          text: 'Ambas as técnicas têm taxa de sucesso acima de 95%. A escolha depende do perfil do paciente e características da córnea.',
+          keywords: ['taxa de sucesso', 'indicação cirúrgica']
+        }
+      ],
+
+      fullTranscript: `
+        <p>Saiba tudo sobre <strong>cirurgia refrativa a laser</strong> para corrigir miopia, hipermetropia e astigmatismo.</p>
+
+        <h3>O que é Cirurgia Refrativa?</h3>
+        <p>É uma cirurgia a <strong>laser</strong> que remodela a córnea para corrigir <strong>erros refrativos</strong> (grau). Objetivo: eliminar ou reduzir a dependência de óculos e lentes de contato.</p>
+
+        <h3>LASIK (Laser-Assisted In Situ Keratomileusis)</h3>
+        <p><strong>Como funciona</strong>:</p>
+        <ol>
+          <li>Cria-se um "flap" (lamela) superficial na córnea</li>
+          <li>Laser Excimer remodela a córnea interna</li>
+          <li>Flap é reposicionado (cicatriza naturalmente)</li>
+        </ol>
+
+        <p><strong>Vantagens</strong>:</p>
+        <ul>
+          <li>Recuperação rápida (1-2 dias)</li>
+          <li>Pouco desconforto pós-operatório</li>
+          <li>Retorno às atividades em 2-3 dias</li>
+        </ul>
+
+        <p><strong>Desvantagens</strong>:</p>
+        <ul>
+          <li>Não indicado para córneas muito finas</li>
+          <li>Risco de complicações do flap (raro)</li>
+        </ul>
+
+        <h3>PRK (Photorefractive Keratectomy)</h3>
+        <p><strong>Como funciona</strong>:</p>
+        <ol>
+          <li>Remove-se o epitélio (camada superficial) da córnea</li>
+          <li>Laser Excimer remodela a córnea</li>
+          <li>Epitélio regenera naturalmente em 3-5 dias</li>
+        </ol>
+
+        <p><strong>Vantagens</strong>:</p>
+        <ul>
+          <li>Mais segura para córneas finas</li>
+          <li>Não há flap (menor risco de complicações)</li>
+          <li>Ideal para esportes de contato</li>
+        </ul>
+
+        <p><strong>Desvantagens</strong>:</p>
+        <ul>
+          <li>Recuperação mais lenta (5-7 dias)</li>
+          <li>Desconforto moderado nos primeiros dias</li>
+        </ul>
+
+        <h3>Qual Escolher?</h3>
+        <p><strong>LASIK</strong>: Córnea espessa, grau moderado, recuperação rápida prioritária.</p>
+        <p><strong>PRK</strong>: Córnea fina, grau alto, esportes de contato, ectasias prévias.</p>
+
+        <p>Agende uma <strong>avaliação pré-operatória</strong> na Clínica Saraiva Vision para saber qual técnica é ideal para você.</p>
+      `
+    },
+
+    relatedServices: [
+      {
+        title: 'Cirurgia Refrativa LASIK/PRK',
+        url: '/servicos/cirurgia-refrativa',
+        icon: 'stethoscope'
+      },
+      {
+        title: 'Avaliação Pré-Operatória',
+        url: '/servicos/consulta-oftalmologica',
+        icon: 'clipboard'
+      }
+    ],
+
+    relatedPosts: [
+      {
+        id: 7,
+        title: 'Cirurgia Refrativa: LASIK e PRK',
+        slug: 'cirurgia-refrativa-lasik-prk'
+      }
+    ]
+  },
+
+  {
+    id: 'glaucoma-ep1',
+    slug: 'glaucoma-prevencao-tratamento',
+    title: 'Glaucoma: O Ladrão Silencioso da Visão',
+    description: 'Glaucoma: causas, sintomas, diagnóstico e tratamentos. Como prevenir a cegueira irreversível. Dr. Philipe Saraiva em Caratinga.',
+    cover: '/Podcasts/Covers/glaucoma_cover.jpg',
+    duration: '12:30',
+    date: '2025-08-20',
+    category: 'Doenças Oculares',
+    tags: ['glaucoma', 'pressão intraocular', 'campo visual', 'Caratinga'],
+    featured: false,
+    spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
+
+    transcript: {
+      summary: 'Glaucoma é uma doença silenciosa que danifica o nervo óptico. Diagnóstico precoce e tratamento são essenciais para evitar cegueira.',
+
+      keywords: [
+        'glaucoma Caratinga',
+        'pressão intraocular',
+        'campo visual',
+        'nervo óptico',
+        'colírios para glaucoma',
+        'cirurgia de glaucoma'
+      ],
+
+      highlights: [
+        {
+          timestamp: '03:00',
+          text: 'Glaucoma é chamado de "ladrão silencioso" porque não causa sintomas até fases avançadas. Exames preventivos são fundamentais.',
+          keywords: ['glaucoma', 'ladrão silencioso', 'exames preventivos']
+        },
+        {
+          timestamp: '08:15',
+          text: 'Tratamento com colírios reduz a pressão intraocular e preserva a visão. Em casos avançados, cirurgia pode ser necessária.',
+          keywords: ['colírios', 'pressão intraocular', 'cirurgia de glaucoma']
+        }
+      ],
+
+      fullTranscript: `
+        <p><strong>Glaucoma</strong> é uma das principais causas de cegueira irreversível no mundo. Conheça sintomas, diagnóstico e tratamento.</p>
+
+        <h3>O que é Glaucoma?</h3>
+        <p>Doença que danifica o <strong>nervo óptico</strong>, geralmente causada por <strong>pressão intraocular (PIO) elevada</strong>. O dano é progressivo e irreversível.</p>
+
+        <h3>Por que "Ladrão Silencioso"?</h3>
+        <p>Glaucoma não causa sintomas até fases avançadas. Quando o paciente percebe perda de visão, o nervo óptico já está bastante danificado.</p>
+
+        <h3>Tipos de Glaucoma</h3>
+        <ul>
+          <li><strong>Ângulo Aberto</strong> (90%): Progressão lenta, sem sintomas</li>
+          <li><strong>Ângulo Fechado</strong> (10%): Crise aguda com dor intensa (emergência)</li>
+          <li><strong>Congênito</strong>: Presente desde o nascimento</li>
+          <li><strong>Secundário</strong>: Causado por outras doenças (diabetes, trauma)</li>
+        </ul>
+
+        <h3>Fatores de Risco</h3>
+        <ul>
+          <li>Pressão intraocular elevada</li>
+          <li>Idade acima de 40 anos</li>
+          <li>História familiar de glaucoma</li>
+          <li>Miopia alta</li>
+          <li>Diabetes</li>
+          <li>Uso prolongado de corticoides</li>
+        </ul>
+
+        <h3>Diagnóstico</h3>
+        <p>Exames realizados na Clínica Saraiva Vision:</p>
+        <ul>
+          <li><strong>Tonometria</strong>: Mede pressão intraocular</li>
+          <li><strong>Campimetria</strong>: Avalia campo visual</li>
+          <li><strong>OCT</strong>: Analisa fibras do nervo óptico</li>
+          <li><strong>Gonioscopia</strong>: Classifica tipo de glaucoma</li>
+        </ul>
+
+        <h3>Tratamento</h3>
+        <p><strong>Colírios</strong>: Reduzem produção ou aumentam drenagem do humor aquoso.</p>
+        <p><strong>Laser</strong>: Trabeculoplastia melhora drenagem.</p>
+        <p><strong>Cirurgia</strong>: Cria via alternativa de drenagem (trabeculectomia).</p>
+
+        <p><strong>Importante</strong>: Tratamento NÃO restaura visão perdida, apenas previne piora.</p>
+
+        <p>Agende <strong>exame de glaucoma</strong> na Clínica Saraiva Vision em Caratinga.</p>
+      `
+    },
+
+    relatedServices: [
+      {
+        title: 'Exames de Glaucoma',
+        url: '/servicos/exames',
+        icon: 'search'
+      },
+      {
+        title: 'Tratamento de Glaucoma',
+        url: '/servicos/glaucoma',
+        icon: 'stethoscope'
+      }
+    ],
+
+    relatedPosts: []
   }
 ];
 
