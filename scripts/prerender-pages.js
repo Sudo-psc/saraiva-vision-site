@@ -184,10 +184,13 @@ function prerenderPages() {
   let successCount = 0;
   let errorCount = 0;
 
+  // Get Vite build assets
+  const assets = getViteBuildAssets(distDir);
+
   // Generate pre-rendered HTML for each page
   Object.entries(pages).forEach(([route, metadata]) => {
     try {
-      const html = generatePrerenderedHTML(route, metadata);
+      const html = generatePrerenderedHTML(route, metadata, assets);
 
       // Determine file path
       let filePath;
