@@ -191,12 +191,7 @@ export const blogPosts = [
       <em>Oftalmologista - Especialista em Cirurgias Refrativas e Catarata</em><br>
       <em>Saraiva Vision - Caratinga, MG</em></p>
     `,
-    author: {
-      name: 'Dr. Philipe Saraiva Cruz',
-      title: 'Oftalmologista - CRM-MG 69.870',
-      avatar: '/team/dr-philipe.jpg',
-      bio: 'Especialista em Cirurgias Refrativas e Catarata'
-    },
+    author: 'Dr. Philipe Saraiva Cruz',
     date: '2025-09-30',
     category: 'Prevenção',
     tags: ['Teste do Olhinho', 'Retinoblastoma', 'Oftalmologia Pediátrica', 'Saúde Infantil', 'Prevenção', 'Câncer Ocular', 'Caratinga MG'],
@@ -1701,7 +1696,7 @@ export const blogPosts = [
     }
    },
    {
-     id: 18,
+     id: 23,
      slug: 'mitos-verdades-saude-ocular-ciencia-caratinga-mg',
      title: 'Mitos e Verdades Sobre Saúde Ocular: O Que a Ciência Realmente Diz',
      excerpt: 'Descubra o que é mito e verdade sobre cuidados com a visão. Da leitura com pouca luz às cenouras milagrosas, esclareça dúvidas com base científica na Clínica Saraiva Vision em Caratinga, MG.',
