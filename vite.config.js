@@ -123,7 +123,7 @@ export default defineConfig(({ mode }) => {
 
   build: {
     outDir: 'dist',
-    sourcemap: false, // Disable sourcemaps in production for security
+    sourcemap: true, // Enable sourcemaps for better error tracking (hidden .map files)
     chunkSizeWarningLimit: 300, // Reduced to enforce smaller chunks
     assetsDir: 'assets',
     assetsInlineLimit: 4096, // Reduced to avoid large inline assets

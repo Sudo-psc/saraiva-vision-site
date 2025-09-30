@@ -17,11 +17,13 @@ const OptimizedImage = ({
   height,
   fallbackSrc,
   onLoad,
-  onError
+  onError,
+  disableOptimization = false // New prop to disable srcset generation
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [sourceError, setSourceError] = useState({ avif: false, webp: false });
+  const [useSimpleImg, setUseSimpleImg] = useState(disableOptimization);
   const imgRef = useRef(null);
 
   // Extract base filename without extension
@@ -54,11 +56,6 @@ const OptimizedImage = ({
       .map(size => `${imagePath}${basename}-${size}w.${normalizedFormat} ${size}w`)
       .join(', ');
 
-    // Debug logging (remove in production)
-    if (import.meta.env.DEV) {
-      console.debug(`Generated ${normalizedFormat} srcset:`, srcset);
-    }
-
     return srcset;
   };
 
@@ -82,12 +79,15 @@ const OptimizedImage = ({
 
   const handleSourceError = (format) => {
     // Handle source errors (404s for AVIF/WebP)
-    // Browser will fall through to next format
-    if (import.meta.env.DEV) {
-      console.warn(`Failed to load ${format.toUpperCase()} sources for: ${basename}`);
-      console.debug(`Expected files: ${responsiveSizes.map(s => `${basename}-${s}w.${format}`).join(', ')}`);
-    }
-    setSourceError(prev => ({ ...prev, [format]: true }));
+    // Browser will fall through to next format (AVIF → WebP → original PNG/JPG)
+    setSourceError(prev => {
+      const newState = { ...prev, [format]: true };
+      // If both optimized formats failed, fallback to simple img without srcset
+      if (newState.avif && newState.webp) {
+        setUseSimpleImg(true);
+      }
+      return newState;
+    });
   };
 
   // Intersection Observer for advanced lazy loading
@@ -145,28 +145,8 @@ const OptimizedImage = ({
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 animate-pulse" />
       )}
 
-      <picture>
-        {/* AVIF - Best compression, modern browsers */}
-        {!sourceError.avif && (
-          <source
-            type="image/avif"
-            srcSet={generateSrcSet('avif')}
-            sizes={sizes}
-            onError={() => handleSourceError('avif')}
-          />
-        )}
-
-        {/* WebP - Good compression, wide support */}
-        {!sourceError.webp && (
-          <source
-            type="image/webp"
-            srcSet={generateSrcSet('webp')}
-            sizes={sizes}
-            onError={() => handleSourceError('webp')}
-          />
-        )}
-
-        {/* Fallback to original image */}
+      {useSimpleImg ? (
+        /* Simple img tag when optimized formats not available */
         <img
           ref={imgRef}
           src={hasError && fallbackSrc ? fallbackSrc : src}
@@ -177,12 +157,49 @@ const OptimizedImage = ({
           decoding="async"
           onLoad={handleLoad}
           onError={handleError}
-          style={{ overflow: 'hidden' }}
           className={`w-full h-full object-cover transition-opacity duration-300 ${
             isLoaded ? 'opacity-100' : 'opacity-0'
           }`}
         />
-      </picture>
+      ) : (
+        <picture>
+          {/* AVIF - Best compression, modern browsers */}
+          {!sourceError.avif && (
+            <source
+              type="image/avif"
+              srcSet={generateSrcSet('avif')}
+              sizes={sizes}
+              onError={() => handleSourceError('avif')}
+            />
+          )}
+
+          {/* WebP - Good compression, wide support */}
+          {!sourceError.webp && (
+            <source
+              type="image/webp"
+              srcSet={generateSrcSet('webp')}
+              sizes={sizes}
+              onError={() => handleSourceError('webp')}
+            />
+          )}
+
+          {/* Fallback to original image */}
+          <img
+            ref={imgRef}
+            src={hasError && fallbackSrc ? fallbackSrc : src}
+            alt={alt}
+            width={width}
+            height={height}
+            loading={loading}
+            decoding="async"
+            onLoad={handleLoad}
+            onError={handleError}
+            className={`w-full h-full object-cover transition-opacity duration-300 ${
+              isLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        </picture>
+      )}
 
       {/* Error state */}
       {hasError && !fallbackSrc && (
@@ -220,7 +237,8 @@ OptimizedImage.propTypes = {
   height: PropTypes.number,
   fallbackSrc: PropTypes.string,
   onLoad: PropTypes.func,
-  onError: PropTypes.func
+  onError: PropTypes.func,
+  disableOptimization: PropTypes.bool
 };
 
 export default OptimizedImage;
