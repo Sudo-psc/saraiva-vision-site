@@ -4,12 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight, Rss, Calendar, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-// WordPress functions temporarily disabled for build
-// import {
-//     fetchRecentPosts,
-//     getFeaturedImageUrl,
-//     extractPlainText
-// } from '@/lib/wordpress';
+import { getRecentPosts } from '@/data/blogPosts';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 
@@ -17,61 +12,17 @@ const LatestBlogPosts = () => {
     const { t, i18n } = useTranslation();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [wordpressAvailable, setWordpressAvailable] = useState(true);
-
-    // Fallback posts para quando o WordPress não estiver disponível
-    // Dados de fallback relacionados à clínica
-    const fallbackPosts = [
-        {
-            id: 1,
-            title: "Importância dos Exames Oftalmológicos Preventivos",
-            excerpt: "Dr. Philipe Saraiva Cruz explica como exames como refração e mapeamento de retina podem prevenir problemas visuais.",
-            date: "2025-09-15T10:00:00",
-            category: t('blog.categories.prevention', 'Prevenção'),
-            link: '/blog/exames-preventivos',
-            isFallback: true
-        },
-        {
-            id: 2,
-            title: "Adaptação de Lentes de Contato: Processo Personalizado",
-            excerpt: "Nossa equipe, incluindo a enfermeira Ana Lúcia, oferece acompanhamento completo na adaptação de lentes.",
-            date: "2025-09-10T11:00:00",
-            category: t('blog.categories.treatments', 'Tratamentos'),
-            link: '/blog/adaptacao-lentes-contato',
-            isFallback: true
-        },
-        {
-            id: 3,
-            title: "O que é Meibografia e por que é importante?",
-            excerpt: "Entenda como o exame de Meibografia, oferecido na Clínica Saraiva Vision, ajuda no diagnóstico do olho seco.",
-            date: "2025-09-05T09:00:00",
-            category: t('blog.categories.exams', 'Exames'),
-            link: '/blog/o-que-e-meibografia',
-            isFallback: true
-        }
-    ];
 
     useEffect(() => {
-        const loadPosts = async () => {
-            const debugMode = import.meta.env.DEV;
-            if (debugMode) {
-                console.log('Carregando posts do blog da Clínica Saraiva Vision...');
-            }
-
+        const loadPosts = () => {
             try {
                 setLoading(true);
-                setError(null);
-
-                // WordPress integration temporarily disabled for build
-                setWordpressAvailable(false);
-                setPosts(fallbackPosts);
-
+                // Get the 3 most recent posts from static blog data
+                const recentPosts = getRecentPosts(3);
+                setPosts(recentPosts);
             } catch (error) {
                 console.error('Erro ao carregar posts do blog:', error);
-                setError(error.message);
-                setWordpressAvailable(false);
-                setPosts(fallbackPosts);
+                setPosts([]);
             } finally {
                 setLoading(false);
             }
@@ -93,54 +44,23 @@ const LatestBlogPosts = () => {
     };
 
     const getPostCategory = (post) => {
-        if (post.isFallback) {
-            return post.category;
-        }
-
-        // Para posts reais do WordPress
-        if (post._embedded?.['wp:term']?.[0]?.length > 0) {
-            return post._embedded['wp:term'][0][0].name;
-        }
-
-        return t('blog.categories.general', 'Geral');
+        return post.category || t('blog.categories.general', 'Geral');
     };
 
     const getPostTitle = (post) => {
-        if (post.isFallback) {
-            return post.title;
-        }
-
-        // Para posts reais do WordPress, remover HTML
-        return post.title?.rendered?.replace(/<[^>]+>/g, '') || 'Sem título';
+        return post.title || 'Sem título';
     };
 
     const getPostExcerpt = (post) => {
-        if (post.isFallback) {
-            return post.excerpt;
-        }
-
-        // Para posts reais do WordPress
-        if (post.excerpt?.rendered) {
-            return post.excerpt.rendered.replace(/<[^>]+>/g, '').substring(0, 120) + '...';
-        }
-
-        return 'Leia mais sobre este artigo...';
+        return post.excerpt || 'Leia mais sobre este artigo...';
     };
 
     const getPostLink = (post) => {
-        if (post.isFallback) {
-            return post.link;
-        }
-
         return `/blog/${post.slug}`;
     };
 
     const getPostImage = (post) => {
-        if (post.isFallback) {
-            return null;
-        }
-
-        return post.featured_media_url || null;
+        return post.image || null;
     };
 
     const renderPost = (post, index) => {
@@ -160,9 +80,10 @@ const LatestBlogPosts = () => {
                     <div className="relative h-48 overflow-hidden">
                         <img
                             src={featuredImage}
-                            alt={getPostTitle(post)}
-                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                            alt={`Imagem ilustrativa do artigo: ${getPostTitle(post)}`}
+                            className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
                             loading="lazy"
+                            style={{ maxWidth: '100%', display: 'block' }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                     </div>
@@ -211,7 +132,7 @@ const LatestBlogPosts = () => {
             );
         }
 
-        if (error && !wordpressAvailable && posts.length === 0) {
+        if (posts.length === 0) {
             return (
                 <div className="text-center p-8 bg-yellow-50 border border-yellow-200 rounded-2xl max-w-2xl mx-auto">
                     <AlertTriangle className="h-8 w-8 text-yellow-500 mx-auto mb-3" />
@@ -227,7 +148,7 @@ const LatestBlogPosts = () => {
 
         return (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {posts.slice(0, 3).map((post, index) => renderPost(post, index))}
+                {posts.map((post, index) => renderPost(post, index))}
             </div>
         );
     };
