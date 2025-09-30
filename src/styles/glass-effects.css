@@ -34,15 +34,21 @@
 
 /* Colored glass variants */
 .glass-card-blue {
-  @apply bg-primary-500/8 backdrop-blur-xl rounded-3xl border-2 border-primary-200/50 shadow-glass;
+  @apply backdrop-blur-xl rounded-3xl border-2 shadow-glass;
+  background-color: rgba(30, 77, 76, 0.08);
+  border-color: rgba(193, 215, 211, 0.5);
 }
 
 .glass-card-teal {
-  @apply bg-secondary-500/8 backdrop-blur-xl rounded-3xl border-2 border-secondary-200/50 shadow-glass;
+  @apply backdrop-blur-xl rounded-3xl border-2 shadow-glass;
+  background-color: rgba(44, 95, 91, 0.08);
+  border-color: rgba(203, 213, 209, 0.5);
 }
 
 .glass-card-green {
-  @apply bg-green-500/8 backdrop-blur-xl rounded-3xl border-2 border-green-200/50 shadow-glass;
+  @apply backdrop-blur-xl rounded-3xl border-2 shadow-glass;
+  background-color: rgba(16, 185, 129, 0.08);
+  border-color: rgba(167, 243, 208, 0.5);
 }
 
 
@@ -51,11 +57,13 @@
    ======================================== */
 
 .liquid-overlay {
-  @apply absolute inset-0 bg-gradient-to-br from-primary-500/4 via-secondary-500/4 to-primary-600/4 rounded-3xl pointer-events-none;
+  @apply absolute inset-0 rounded-3xl pointer-events-none;
+  background: linear-gradient(to bottom right, rgba(30, 77, 76, 0.04), rgba(44, 95, 91, 0.04), rgba(30, 77, 76, 0.04));
 }
 
 .liquid-overlay-hover {
-  @apply absolute inset-0 bg-gradient-to-br from-primary-500/4 via-secondary-500/4 to-primary-600/4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none;
+  @apply absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-3xl;
+  background: linear-gradient(to bottom right, rgba(30, 77, 76, 0.04), rgba(44, 95, 91, 0.04), rgba(30, 77, 76, 0.04));
 }
 
 .liquid-shimmer {
@@ -76,7 +84,8 @@
 }
 
 .liquid-bg {
-  @apply absolute inset-0 bg-gradient-to-br from-primary-500/8 via-secondary-500/8 to-primary-600/8 rounded-3xl pointer-events-none;
+  @apply absolute inset-0 rounded-3xl pointer-events-none;
+  background: linear-gradient(to bottom right, rgba(30, 77, 76, 0.08), rgba(44, 95, 91, 0.08), rgba(30, 77, 76, 0.08));
   animation: liquid-flow 10s ease-in-out infinite;
 }
 

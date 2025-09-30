@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import './index.css';
+import './styles/glass-effects.css'; // Import glass effects for 3D glassmorphism
 import ErrorBoundary from './components/ErrorBoundary';
 import './i18n'; // Initialize i18n
 import { redirectToBackup } from './utils/redirectToBackup';
