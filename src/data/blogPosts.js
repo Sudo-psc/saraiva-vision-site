@@ -41,6 +41,174 @@ export const categoryConfig = {
 
 export const blogPosts = [
   {
+    id: 22,
+    slug: 'teste-olhinho-retinoblastoma-prevencao-caratinga-mg',
+    title: 'Teste do Olhinho e Retinoblastoma: A Importância da Prevenção na Saúde Ocular Infantil em Caratinga, MG',
+    excerpt: 'Entenda a importância do Teste do Olhinho para detectar precocemente o retinoblastoma e outras doenças oculares em bebês. Dr. Philipe Saraiva explica.',
+    content: `
+      <h2>Teste do Olhinho e Retinoblastoma: A Importância da Prevenção na Saúde Ocular Infantil em Caratinga, MG</h2>
+
+      <p>Olá! Aqui é a Clínica Saraiva Vision, localizada em Caratinga, Minas Gerais, e hoje vamos falar sobre um tema essencial para a saúde ocular dos nossos pequenos: o Teste do Olhinho (também conhecido como Teste do Reflexo Vermelho) e o retinoblastoma.</p>
+
+      <p>Muitos pais ainda têm dúvidas sobre o que é esse exame, quando ele deve ser feito e por que ele é tão importante. Vamos esclarecer tudo isso e também falar sobre o retinoblastoma, um dos principais motivos que tornam esse teste fundamental.</p>
+
+      <h2>O Que é o Teste do Olhinho?</h2>
+
+      <p>O Teste do Olhinho, tecnicamente chamado de Teste do Reflexo Vermelho (TRV), é um exame simples, rápido, indolor e obrigatório por lei no Brasil (Lei nº 12.069/2009). Ele deve ser realizado na maternidade, ainda nas primeiras 48 horas de vida do bebê.</p>
+
+      <h3>🔍 Como funciona?</h3>
+      <p>O médico ou profissional capacitado utiliza um aparelho chamado oftalmoscópio, que emite uma luz especial direcionada para os olhos do bebê. O reflexo saudável é vermelho, alaranjado ou amarelado, indicando que as estruturas oculares (córnea, cristalino, humor vítreo e retina) estão funcionando normalmente.</p>
+
+      <h3>⚠️ Quando o teste pode estar alterado?</h3>
+      <p>Se o reflexo aparecer branco, amarelado opaco, ausente ou diferente entre os dois olhos, isso pode indicar problemas como:</p>
+      <ul>
+        <li>Retinoblastoma (câncer ocular infantil)</li>
+        <li>Catarata congênita</li>
+        <li>Glaucoma congênito</li>
+        <li>Infecções intrauterinas (toxoplasmose, rubéola, citomegalovírus)</li>
+        <li>Descolamento de retina</li>
+        <li>Outras alterações estruturais</li>
+      </ul>
+
+      <h2>O Que é Retinoblastoma?</h2>
+
+      <p>O retinoblastoma é o tumor ocular maligno mais comum na infância. Ele se origina nas células da retina e pode afetar um ou ambos os olhos. Apesar de grave, quando diagnosticado precocemente, as chances de cura são superiores a 95%.</p>
+
+      <h3>📊 Dados importantes:</h3>
+      <ul>
+        <li>Incidência: cerca de 1 em cada 15.000 a 20.000 nascidos vivos</li>
+        <li>Faixa etária mais afetada: menores de 5 anos, principalmente entre 0 e 2 anos</li>
+        <li>Causa principal: mutação genética no gene RB1</li>
+      </ul>
+
+      <h2>Sintomas do Retinoblastoma</h2>
+
+      <p>Os sinais mais comuns incluem:</p>
+      <ul>
+        <li><strong>Leucocoria ("reflexo do olho de gato"):</strong> a pupila fica branca ou brilhante em fotos com flash.</li>
+        <li><strong>Estrabismo:</strong> desvio de um ou ambos os olhos.</li>
+        <li>Vermelhidão e dor ocular.</li>
+        <li>Perda de visão em um ou ambos os olhos.</li>
+        <li>Diferença no tamanho das pupilas.</li>
+      </ul>
+
+      <p><strong>⚠️ Atenção:</strong> Se você perceber qualquer um desses sinais no seu filho, procure imediatamente um oftalmologista!</p>
+
+      <h2>Tratamento do Retinoblastoma</h2>
+
+      <p>O tratamento varia de acordo com o tamanho e a localização do tumor, podendo incluir:</p>
+      <ul>
+        <li>Quimioterapia sistêmica ou intra-arterial</li>
+        <li>Fotocoagulação a laser</li>
+        <li>Crioterapia</li>
+        <li>Radioterapia</li>
+        <li>Enucleação (remoção do olho) em casos avançados</li>
+      </ul>
+
+      <p>Na Saraiva Vision, realizamos o diagnóstico precoce e, quando necessário, encaminhamos o paciente para centros especializados no tratamento de câncer infantil, garantindo todo o suporte necessário.</p>
+
+      <h2>Teste do Olhinho em Caratinga: Quando e Onde Fazer?</h2>
+
+      <p>Embora o Teste do Olhinho seja obrigatório na maternidade, nem sempre ele é realizado ou pode apresentar limitações técnicas. Por isso, recomendamos:</p>
+      <ul>
+        <li><strong>Consulta oftalmológica no 1º mês de vida</strong></li>
+        <li><strong>Retorno aos 6 meses</strong></li>
+        <li><strong>Consulta anual ou quando surgirem sintomas</strong></li>
+      </ul>
+
+      <p>Na Clínica Saraiva Vision, realizamos o Teste do Olhinho com equipamentos modernos e experiência comprovada, garantindo o diagnóstico precoce de qualquer alteração ocular.</p>
+
+      <h2>Mitos e Verdades sobre o Teste do Olhinho</h2>
+
+      <h3>✅ Verdade: O Teste do Olhinho é obrigatório e gratuito no Brasil.</h3>
+      <p>A Lei nº 12.069/2009 tornou o exame obrigatório em todas as maternidades públicas e privadas.</p>
+
+      <h3>❌ Mito: Se o bebê passou no teste na maternidade, não precisa mais fazer consultas oftalmológicas.</h3>
+      <p>Falso! O acompanhamento regular é fundamental, pois algumas doenças podem se manifestar após o período neonatal.</p>
+
+      <h3>✅ Verdade: O reflexo branco na pupila em fotos com flash pode ser sinal de retinoblastoma.</h3>
+      <p>Sim! Esse é um dos sinais mais comuns e deve ser investigado imediatamente.</p>
+
+      <h2>Perguntas Frequentes</h2>
+
+      <h3>1. O Teste do Olhinho dói?</h3>
+      <p>Não! É um exame rápido, indolor e não invasivo.</p>
+
+      <h3>2. Qual a diferença entre Teste do Olhinho e exame oftalmológico completo?</h3>
+      <p>O Teste do Olhinho é um exame de triagem básico. Já o exame oftalmológico completo avalia detalhadamente todas as estruturas oculares e deve ser realizado por um médico oftalmologista.</p>
+
+      <h3>3. Meu bebê pode fazer o teste depois das 48 horas de vida?</h3>
+      <p>Sim! Embora o ideal seja nas primeiras 48 horas, o teste pode e deve ser realizado em qualquer consulta oftalmológica pediátrica.</p>
+
+      <h3>4. Quais são os sinais de alerta que os pais devem observar?</h3>
+      <ul>
+        <li>Reflexo branco na pupila</li>
+        <li>Olhos desalinhados (estrabismo)</li>
+        <li>Lacrimejamento excessivo</li>
+        <li>Sensibilidade à luz</li>
+        <li>Olhos vermelhos persistentes</li>
+      </ul>
+
+      <h2>A Importância do Acompanhamento Oftalmológico Regular</h2>
+
+      <p>Além do Teste do Olhinho, é fundamental que as crianças passem por consultas oftalmológicas regulares, mesmo que não apresentem sintomas. Muitas doenças oculares são assintomáticas no início e só podem ser detectadas por exames especializados.</p>
+
+      <h3>📅 Calendário de consultas oftalmológicas recomendado:</h3>
+      <ul>
+        <li><strong>1º mês de vida:</strong> primeira avaliação completa</li>
+        <li><strong>6 meses:</strong> segunda avaliação</li>
+        <li><strong>1 ano:</strong> avaliação de desenvolvimento visual</li>
+        <li><strong>3 anos:</strong> teste de acuidade visual</li>
+        <li><strong>A partir dos 5 anos:</strong> consultas anuais ou conforme orientação médica</li>
+      </ul>
+
+      <h2>Conclusão</h2>
+
+      <p>O Teste do Olhinho é uma ferramenta essencial para a detecção precoce de doenças oculares graves, como o retinoblastoma, catarata congênita e glaucoma. Quando diagnosticadas cedo, muitas dessas condições podem ser tratadas com sucesso, preservando a visão e salvando vidas.</p>
+
+      <p>Na Clínica Saraiva Vision, em Caratinga, MG, estamos comprometidos em oferecer o melhor atendimento oftalmológico para toda a família, com especial atenção à saúde ocular infantil.</p>
+
+      <p><strong>📍 Agende sua consulta e traga seu bebê para uma avaliação completa!</strong></p>
+
+      <h2>Referências Científicas</h2>
+      <ul>
+        <li>Sociedade Brasileira de Oftalmologia Pediátrica (SBOP)</li>
+        <li>Conselho Brasileiro de Oftalmologia (CBO)</li>
+        <li>Sociedade Brasileira de Pediatria (SBP)</li>
+        <li>Instituto Nacional de Câncer (INCA)</li>
+        <li>American Academy of Ophthalmology (AAO)</li>
+      </ul>
+
+      <h2>📞 Entre em Contato com a Saraiva Vision</h2>
+
+      <p><strong>Endereço:</strong> Rua Coronel Antônio Pinto, 88 - Sala 2 - Centro, Caratinga - MG, 35300-033</p>
+      <p><strong>Telefone/WhatsApp:</strong> (33) 3321-7070</p>
+      <p><strong>Instagram:</strong> @saraivavision</p>
+
+      <p>Estamos à disposição para cuidar da saúde ocular do seu filho com excelência, tecnologia e humanização.</p>
+
+      <p><em>Dra. Philipe Saraiva Cruz - CRM-MG 69.870</em><br>
+      <em>Oftalmologista - Especialista em Cirurgias Refrativas e Catarata</em><br>
+      <em>Saraiva Vision - Caratinga, MG</em></p>
+    `,
+    author: {
+      name: 'Dr. Philipe Saraiva Cruz',
+      title: 'Oftalmologista - CRM-MG 69.870',
+      avatar: '/team/dr-philipe.jpg',
+      bio: 'Especialista em Cirurgias Refrativas e Catarata'
+    },
+    date: '2025-09-30',
+    category: 'Prevenção',
+    tags: ['Teste do Olhinho', 'Retinoblastoma', 'Oftalmologia Pediátrica', 'Saúde Infantil', 'Prevenção', 'Câncer Ocular', 'Caratinga MG'],
+    image: '/Blog/capa_pediatria.png',
+    featured: true,
+    seo: {
+      metaDescription: 'Descubra a importância do Teste do Olhinho para detectar retinoblastoma e outras doenças oculares em bebês. Dr. Philipe Saraiva explica em Caratinga, MG.',
+      keywords: 'teste do olhinho, retinoblastoma, câncer ocular infantil, oftalmologia pediátrica, saúde ocular bebê, teste reflexo vermelho, Caratinga MG, Dr Philipe Saraiva',
+      ogImage: '/Blog/capa_pediatria.png'
+    }
+  },
+  {
     id: 21,
     slug: 'retinose-pigmentar-luxturna-caratinga',
     title: 'Retinose Pigmentar e a Revolução do Luxturna®: Esperança para Pacientes em Caratinga, MG',
@@ -408,6 +576,10 @@ export const blogPosts = [
         <li><strong>Nadadores:</strong> óculos específicos evitam irritações.</li>
         <li><strong>Jogadores de futebol:</strong> maior risco de traumas; óculos esportivos são recomendados.</li>
       </ul>
+
+      <h2>🎧 Ouça Nosso Podcast Sobre Lentes de Contato</h2>
+      <p>Para atletas e praticantes de esportes, as lentes de contato podem ser uma excelente opção. Ouça o episódio do nosso podcast <strong>"Saúde Ocular em Foco"</strong> sobre <strong>Lentes de Contato: Rígidas vs Gelatinosas</strong>, onde o Dr. Philipe Saraiva Cruz explica as diferenças e qual é a melhor escolha para cada tipo de atividade.</p>
+      <p><strong>🎙️ <a href="https://creators.spotify.com/pod/profile/philipe-cruz/episodes/Sade-Ocular-em-Foco---Lentes-de-Contato-Rgidas-vs-Gelatinosas-e37iag0" target="_blank" rel="noopener noreferrer" style="color: #1DB954; text-decoration: underline;">Ouça no Spotify</a></strong></p>
 
       <h2>Conclusão</h2>
 
@@ -1143,6 +1315,10 @@ export const blogPosts = [
 
       <p>Esses cuidados, aliados a consultas regulares, reduzem o risco de lacrimejamento e outros sintomas.</p>
 
+      <h2>🎧 Ouça Nosso Podcast Sobre Olho Seco</h2>
+      <p>Quer se aprofundar ainda mais no assunto? Ouça o episódio do nosso podcast <strong>"Saúde Ocular em Foco"</strong> dedicado ao tema <strong>Olho Seco: Sintomas e Tratamentos</strong>. O Dr. Philipe Saraiva Cruz explica de forma acessível tudo sobre essa condição e como tratá-la adequadamente.</p>
+      <p><strong>🎙️ <a href="https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV" target="_blank" rel="noopener noreferrer" style="color: #1DB954; text-decoration: underline;">Ouça no Spotify</a></strong></p>
+
       <h2>Conclusão</h2>
       <p>Olho seco e blefarite são condições comuns que podem causar lacrimejamento excessivo, especialmente influenciadas pelo clima e hábitos em Caratinga, MG. Entender as causas, reconhecer sintomas e adotar tratamentos adequados sem piorar o quadro é fundamental para uma visão saudável. Lembre-se da importância do acompanhamento oftalmológico regular para prevenção e diagnóstico precoce.</p>
 
@@ -1330,6 +1506,10 @@ export const blogPosts = [
       </ul>
 
       <p>Esses sinais podem apontar para DMRI, catarata ou olho seco relacionado ao microbioma. Em Caratinga, a Clínica Saraiva Vision está pronta para avaliar e orientar.</p>
+
+      <h2>🎧 Ouça Nosso Podcast Sobre DMRI</h2>
+      <p>Quer aprender mais sobre degeneração macular e como a alimentação pode ajudar? Ouça o episódio do nosso podcast <strong>"Saúde Ocular em Foco"</strong> dedicado ao tema <strong>DMRI: Quando a Mácula Decide se Aposentar</strong>. O Dr. Philipe Saraiva Cruz explica de forma descomplicada tudo sobre essa condição.</p>
+      <p><strong>🎙️ <a href="https://creators.spotify.com/pod/profile/philipe-cruz/episodes/Sade-Ocular-em-Foco---DMRI-Quando-a-Mcula-Decide-se-Aposentar-e37i9pk" target="_blank" rel="noopener noreferrer" style="color: #1DB954; text-decoration: underline;">Ouça no Spotify</a></strong></p>
 
       <h2>Conclusão</h2>
       <p>Em resumo, a alimentação rica em vitaminas A, C, E, ômega-3 e carotenoides como luteína e zeaxantina é essencial para reduzir riscos de degeneração macular e catarata. Além disso, o microbioma intestinal e ocular emerge como fator chave na prevenção de inflamação e olho seco, destacando a conexão entre saúde sistêmica e visão. Adotar hábitos nutritivos e monitorar a saúde ocular pode transformar sua qualidade de vida.</p>
@@ -2083,6 +2263,10 @@ export const blogPosts = [
       <p>Prevenir a catarata envolve hábitos simples: use óculos de sol com proteção UV, mantenha uma dieta rica em antioxidantes (como frutas e vegetais), controle condições como diabetes e evite fumar. No dia a dia, faça pausas em telas (regra 20-20-20: a cada 20 minutos, olhe 20 pés distante por 20 segundos) e hidrate os olhos em ambientes secos.</p>
 
       <p>O acompanhamento oftalmológico regular é o pilar da prevenção. Na Clínica Saraiva Vision, oferecemos consultas anuais, exames diagnósticos e tratamentos personalizados para monitorar e intervir cedo. Isso não só previne catarata, mas também detecta outras questões, como glaucoma ou degeneração macular.</p>
+
+      <h2>🎧 Ouça Nosso Podcast Sobre Catarata</h2>
+      <p>Quer entender mais sobre catarata, sintomas e os avanços nas cirurgias? Ouça o episódio do nosso podcast <strong>"Saúde Ocular em Foco"</strong> dedicado ao tema <strong>Catarata: Sintomas e Cirurgia</strong>. O Dr. Philipe Saraiva Cruz explica tudo de forma clara e acessível.</p>
+      <p><strong>🎙️ <a href="https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV" target="_blank" rel="noopener noreferrer" style="color: #1DB954; text-decoration: underline;">Ouça no Spotify</a></strong></p>
 
       <h2>Conclusão: Invista na Sua Visão Hoje</h2>
       <p>Em resumo, as lentes premium para cirurgia de catarata representam um avanço tecnológico que vai além da remoção da opacidade, oferecendo visão multifuncional e independência no cotidiano. Reconhecer sintomas precoces, adotar hábitos preventivos e buscar acompanhamento regular são chaves para uma saúde ocular duradoura. Na Clínica Saraiva Vision, em Caratinga, MG, o Dr. Philipe Saraiva Cruz (CRM-MG 69.870) e nossa equipe qualificada estão prontos para proporcionar atendimento humanizado, com exames diagnósticos precisos, adaptação de lentes de contato e tratamentos personalizados.</p>
