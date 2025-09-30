@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prerender-pages.js",
+    "build": "vite build",
+    "build:prerender": "vite build && node scripts/prerender-pages.js",
     "preview": "vite preview",
     "start": "vite",
     "test": "vitest",

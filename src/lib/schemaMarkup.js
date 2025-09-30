@@ -373,21 +373,40 @@ export const generateFAQSchema = (faqItems, language = 'pt', forGraph = false) =
   const schema = {
     '@type': 'FAQPage',
     '@id': withHash('faq'),
-    mainEntity: faqItems.map(item => ({
+    about: {
+      '@type': 'MedicalBusiness',
+      name: clinicInfo.name
+    },
+    specialty: 'Ophthalmology',
+    audience: {
+      '@type': 'MedicalAudience',
+      audienceType: 'Patient',
+      healthCondition: 'Eye Health and Vision Care'
+    },
+    inLanguage: language === 'pt' ? 'pt-BR' : 'en-US',
+    mainEntity: faqItems.map((item, index) => ({
       '@type': 'Question',
+      '@id': `${withHash('faq')}/question-${index + 1}`,
       name: item.question,
       acceptedAnswer: {
         '@type': 'Answer',
-        text: item.answer
+        '@id': `${withHash('faq')}/answer-${index + 1}`,
+        text: item.answer,
+        dateCreated: item.dateCreated || new Date().toISOString().split('T')[0],
+        author: {
+          '@type': 'Physician',
+          '@id': withHash('physician'),
+          name: clinicInfo.responsiblePhysician
+        }
       }
     }))
   };
-  
+
   // Se não for para @graph, adicionar @context
   if (!forGraph) {
     schema['@context'] = 'https://schema.org';
   }
-  
+
   return schema;
 };
 
