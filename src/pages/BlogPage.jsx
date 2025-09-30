@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Calendar, ArrowRight, Eye, Shield, Stethoscope, Cpu, HelpCircle, Clock, User, ChevronLeft, ChevronRight, Headphones, X } from 'lucide-react';
+import { Calendar, ArrowRight, ArrowLeft, Eye, Shield, Stethoscope, Cpu, HelpCircle, Clock, User, ChevronLeft, ChevronRight, Headphones, X } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
@@ -14,6 +14,7 @@ import { getPostEnrichment } from '../data/blogPostsEnrichment';
 import CategoryBadge from '../components/blog/CategoryBadge';
 import AccessibilityControls from '../components/blog/AccessibilityControls';
 import OptimizedImage from '../components/blog/OptimizedImage';
+import SpotifyEmbed from '../components/SpotifyEmbed';
 import { trackBlogInteraction, trackPageView, trackSearchInteraction } from '../utils/analytics';
 import { generateCompleteSchemaBundle, getPostSpecificSchema } from '../lib/blogSchemaMarkup';
 
