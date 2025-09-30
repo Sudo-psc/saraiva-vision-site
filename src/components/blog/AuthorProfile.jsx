@@ -27,11 +27,12 @@ const AuthorProfile = ({
     >
       {/* Author Header */}
       <div className="flex items-start gap-4 mb-4">
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <img
             src={image}
             alt={`Foto de ${name}`}
             className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-md"
+            style={{ maxWidth: '100%', display: 'block' }}
             onError={(e) => {
               e.target.onerror = null;
               e.target.src = '/img/team/default-doctor.jpg';

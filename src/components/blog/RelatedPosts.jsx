@@ -60,9 +60,10 @@ const RelatedPosts = ({ posts = [], currentPostId, className = '' }) => {
               <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-100 to-gray-100">
                 <img
                   src={post.image}
-                  alt={post.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  alt={`Imagem ilustrativa do artigo: ${post.title}`}
+                  className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
+                  style={{ maxWidth: '100%', display: 'block' }}
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = '/img/blog-fallback.jpg';
