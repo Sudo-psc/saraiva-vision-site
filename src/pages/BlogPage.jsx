@@ -5,11 +5,12 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Calendar, ArrowRight, ArrowLeft, Eye } from 'lucide-react';
+import { Calendar, ArrowRight, ArrowLeft, Eye, Shield, Stethoscope, Cpu, HelpCircle } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
-import { blogPosts, categories, getPostBySlug } from '../data/blogPosts';
+import { blogPosts, categories, getPostBySlug, categoryConfig } from '../data/blogPosts';
+import CategoryBadge from '../components/blog/CategoryBadge';
 
 const BlogPage = () => {
   const { t } = useTranslation();
@@ -73,9 +74,9 @@ const BlogPage = () => {
               transition={{ duration: 0.5 }}
               className="mb-8"
             >
-              <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">
-                {currentPost.category}
-              </span>
+              <div className="mb-4">
+                <CategoryBadge category={currentPost.category} size="lg" />
+              </div>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4">
                 {currentPost.title}
               </h1>
@@ -190,9 +191,9 @@ const BlogPage = () => {
             </div>
           </div>
 
-          <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium mb-3">
-            {post.category}
-          </span>
+          <div className="mb-3">
+            <CategoryBadge category={post.category} size="sm" />
+          </div>
 
           <h3
             id={`post-title-${post.id}`}
@@ -279,22 +280,38 @@ const BlogPage = () => {
               </form>
 
               {/* Category Filter */}
-              <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Filtros de categoria">
-                {categories.map(category => (
-                  <button
-                    key={category}
-                    onClick={() => handleCategoryChange(category)}
-                    aria-pressed={selectedCategory === category}
-                    aria-label={`Filtrar por categoria: ${category}`}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                      selectedCategory === category
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
+              <div className="flex flex-wrap justify-center gap-3" role="group" aria-label="Filtros de categoria">
+                {categories.map(category => {
+                  const config = categoryConfig[category];
+                  const iconMap = {
+                    'shield': Shield,
+                    'stethoscope': Stethoscope,
+                    'cpu': Cpu,
+                    'help-circle': HelpCircle
+                  };
+                  const Icon = config ? iconMap[config.icon] : null;
+
+                  return (
+                    <button
+                      key={category}
+                      onClick={() => handleCategoryChange(category)}
+                      aria-pressed={selectedCategory === category}
+                      aria-label={`Filtrar por categoria: ${category}`}
+                      className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-sm ${
+                        selectedCategory === category
+                          ? config
+                            ? `${config.bgColor} ${config.textColor} ring-2 ${config.borderColor} shadow-md`
+                            : 'bg-blue-600 text-white ring-2 ring-blue-300 shadow-md'
+                          : config
+                          ? `${config.bgColor} ${config.textColor} hover:shadow-md ${config.hoverBg}`
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:shadow-md'
+                      }`}
+                    >
+                      {Icon && <Icon className="w-4 h-4" aria-hidden="true" />}
+                      <span>{category}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
