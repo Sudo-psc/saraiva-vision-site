@@ -115,7 +115,7 @@ const BlogPage = () => {
     const postSpecificSchema = getPostSpecificSchema(currentPost.id);
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-bg-primary via-primary-50/30 to-bg-primary relative">
+      <div className="min-h-screen bg-white relative">
         <Helmet>
           <title>{currentPost.seo?.metaTitle || currentPost.title} | Saraiva Vision</title>
           <meta name="description" content={currentPost.seo?.metaDescription || currentPost.excerpt} />
@@ -312,41 +312,29 @@ const BlogPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: index * 0.1 }}
-        className="group relative overflow-hidden flex flex-col focus:outline-none"
+        className="group relative flex flex-col bg-white rounded-xl border border-border-light hover:border-primary-300 hover:shadow-lg transition-all overflow-hidden"
         role="article"
         aria-labelledby={`post-title-${post.id}`}
       >
-        {/* 3D shadow layer */}
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-600 rounded-3xl blur-lg opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
-
-        {/* Glass card container */}
-        <div className="relative bg-white/70 backdrop-blur-xl rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col border-2 border-white/50 group-hover:border-white/80 group-hover:scale-[1.02] group-focus-within:ring-2 group-focus-within:ring-blue-400 group-focus-within:ring-offset-2">
-          {/* Liquid glass overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-secondary-500/5 to-primary-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
           <Link
             to={`/blog/${post.slug}`}
-            className="relative block focus:outline-none z-10"
+            className="relative block focus:outline-none"
             aria-label={`Ler o post: ${post.title}`}
           >
-            <div className="relative w-full h-48 sm:h-52 md:h-56 lg:h-60 overflow-hidden bg-gradient-to-br from-primary-50 via-secondary-50 to-primary-100 flex-shrink-0 rounded-t-3xl">
+            <div className="relative w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gray-100">
               <OptimizedImage
                 src={post.image}
                 alt={`Imagem ilustrativa do artigo: ${post.title}`}
-                className="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
+                className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
                 aspectRatio="16/9"
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 400px"
                 fallbackSrc="/img/blog-fallback.jpg"
               />
-              {/* Gradient overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-primary-900/30 via-secondary-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-              {/* Shimmer effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             </div>
           </Link>
 
-          <div className="relative p-5 sm:p-6 md:p-7 flex flex-col flex-grow z-10">
+          <div className="p-6 flex flex-col flex-grow">
           {/* Category Badge */}
           <div className="mb-3">
             <CategoryBadge category={post.category} size="sm" />
@@ -395,8 +383,8 @@ const BlogPage = () => {
 
           {/* Learning Points Preview */}
           {enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
-            <div className="bg-primary-50/50 rounded-lg p-3 mb-4 border border-primary-100">
-              <p className="text-xs font-semibold text-primary-900 mb-2">O que você vai aprender:</p>
+            <div className="bg-primary-50 rounded-lg p-3 mb-4 border border-primary-100">
+              <p className="text-xs font-semibold text-primary-700 mb-2">O que você vai aprender:</p>
               <ul className="space-y-1">
                 {enrichment.learningPoints.slice(0, 2).map((point, idx) => (
                   <li key={idx} className="text-xs text-primary-800 flex items-start gap-2">
@@ -408,28 +396,24 @@ const BlogPage = () => {
             </div>
           )}
 
-          {/* CTA Button with 3D effect */}
+          {/* Clean CTA Button */}
           <Link
             to={`/blog/${post.slug}`}
             className="mt-auto focus:outline-none"
             aria-label={`Leia mais sobre: ${post.title}`}
           >
-            <div className="relative group/button">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-xl blur opacity-30 group-hover/button:opacity-50 transition-opacity"></div>
-              <Button variant="default" className="relative w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 border border-white/20">
-                <span className="relative z-10">{t('blog.read_more', 'Ler artigo completo')}</span>
-                <ArrowRight className="relative z-10 w-4 h-4 ml-2 transition-transform group-hover/button:translate-x-1" aria-hidden="true" />
-              </Button>
-            </div>
+            <Button variant="default" className="w-full bg-primary-500 hover:bg-primary-600 text-white font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+              <span>{t('blog.read_more', 'Ler artigo completo')}</span>
+              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            </Button>
           </Link>
-        </div>
         </div>
       </motion.article>
     );
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-bg-primary via-primary-50/30 to-bg-primary relative">
+    <div className="min-h-screen bg-white relative">
       <Helmet>
         <title>Blog | Saraiva Vision</title>
         <meta name="description" content="Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos na Clínica Saraiva Vision." />
@@ -460,88 +444,58 @@ const BlogPage = () => {
             transition={{ duration: 0.5 }}
             className="text-center mb-6"
           >
-            {/* Glass morphism header with 3D effect */}
-            <div className="relative inline-block">
-              {/* 3D shadow layers */}
-              <div className="absolute -inset-2 bg-gradient-to-r from-primary-600 via-secondary-600 to-primary-600 rounded-3xl blur-2xl opacity-15 animate-pulse"></div>
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-3xl blur-xl opacity-20"></div>
-
-              {/* Glass container */}
-              <div className="relative bg-white/40 backdrop-blur-xl rounded-3xl px-8 md:px-12 py-6 md:py-8 border border-white/50 shadow-2xl shadow-primary-500/20">
-                {/* Liquid glass effect overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-secondary-500/10 to-primary-600/10 rounded-3xl"></div>
-                <div className="absolute inset-0 bg-gradient-to-tl from-white/20 via-transparent to-white/20 rounded-3xl"></div>
-
-                {/* Content */}
-                <div className="relative z-10">
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-text-primary via-primary-900 to-text-primary bg-clip-text text-transparent mb-3 drop-shadow-sm">
-                    Blog Saraiva Vision
-                  </h1>
-                  <p className="text-base md:text-lg text-text-secondary font-medium max-w-2xl mx-auto leading-relaxed">
-                    Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos
-                  </p>
-                </div>
-
-                {/* Decorative elements */}
-                <div className="absolute -top-2 -right-2 w-16 h-16 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-full blur-2xl opacity-30"></div>
-                <div className="absolute -bottom-2 -left-2 w-20 h-20 bg-gradient-to-tr from-secondary-400 to-primary-400 rounded-full blur-2xl opacity-30"></div>
-              </div>
+            {/* Clean header aligned with homepage */}
+            <div className="relative">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-4">
+                Blog Saraiva Vision
+              </h1>
+              <p className="text-base md:text-lg text-text-secondary font-normal max-w-2xl mx-auto leading-relaxed">
+                Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos
+              </p>
             </div>
           </motion.header>
 
           <section aria-label="Posts do blog">
             {/* Search and Filter Section */}
             <div className="mb-10">
-              {/* Search Bar with 3D Glass Effect */}
+              {/* Clean Search Bar */}
               <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-8">
-                <div className="relative group">
-                  {/* 3D glow effect */}
-                  <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-20 group-focus-within:opacity-30 transition-opacity duration-300"></div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Buscar artigos por título, conteúdo ou tags..."
+                    aria-label="Buscar artigos no blog"
+                    aria-describedby="search-help"
+                    className="w-full pl-12 pr-12 py-3.5 bg-white border border-border-light rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-text-primary placeholder:text-text-muted shadow-sm"
+                  />
 
-                  {/* Glass search container */}
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      placeholder="Buscar artigos por título, conteúdo ou tags..."
-                      aria-label="Buscar artigos no blog"
-                      aria-describedby="search-help"
-                      className="w-full pl-14 pr-14 py-4 bg-white/60 backdrop-blur-xl border-2 border-white/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:border-primary-400 transition-all duration-300 shadow-lg shadow-primary-500/10 hover:shadow-xl hover:shadow-primary-500/20 focus:shadow-2xl focus:shadow-primary-500/30 text-text-primary placeholder:text-text-muted"
-                    />
-
-                    {/* Search icon with 3D effect */}
-                    <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                      <div className="relative">
-                        <div className="absolute inset-0 bg-primary-500 rounded-full blur-md opacity-40"></div>
-                        <svg className="relative w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                      </div>
-                    </div>
-
-                    {/* Clear button */}
-                    {searchTerm && (
-                      <button
-                        type="button"
-                        onClick={() => setSearchTerm('')}
-                        className="absolute right-4 top-1/2 transform -translate-y-1/2 p-1.5 hover:bg-secondary-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
-                        aria-label="Limpar busca"
-                      >
-                        <X className="w-5 h-5 text-text-secondary hover:text-primary-600 transition-colors" />
-                      </button>
-                    )}
-
-                    {/* Loading spinner */}
-                    {searchTerm && searchTerm !== debouncedSearch && (
-                      <div className="absolute right-14 top-1/2 transform -translate-y-1/2">
-                        <div className="w-5 h-5 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
-                      </div>
-                    )}
-
-                    {/* Liquid glass overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary-500/5 via-secondary-500/5 to-primary-600/5 rounded-2xl pointer-events-none"></div>
+                  {/* Search icon */}
+                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                    <svg className="w-5 h-5 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
                   </div>
+
+                  {/* Clear button */}
+                  {searchTerm && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchTerm('')}
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
+                      aria-label="Limpar busca"
+                    >
+                      <X className="w-4 h-4 text-text-secondary hover:text-primary-600 transition-colors" />
+                    </button>
+                  )}
+
+                  {/* Loading spinner */}
+                  {searchTerm && searchTerm !== debouncedSearch && (
+                    <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
+                      <div className="w-4 h-4 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Search results counter */}
@@ -563,8 +517,8 @@ const BlogPage = () => {
                 )}
               </form>
 
-               {/* Category Filter with 3D Glass Pills */}
-               <div className="flex flex-wrap justify-center gap-3" role="group" aria-label="Filtros de categoria">
+               {/* Clean Category Filter */}
+               <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Filtros de categoria">
                 {categories.map(category => {
                   const config = categoryConfig[category];
                   const iconMap = {
@@ -577,37 +531,26 @@ const BlogPage = () => {
                   const isActive = selectedCategory === category;
 
                   return (
-                    <div key={category} className="relative group">
-                      {/* 3D glow for active button */}
-                      {isActive && (
-                        <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full blur-md opacity-40 animate-pulse"></div>
-                      )}
-
-                      <button
-                        onClick={() => handleCategoryChange(category)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            handleCategoryChange(category);
-                          }
-                        }}
-                        aria-pressed={isActive}
-                        aria-label={`Filtrar por categoria: ${category}`}
-                        className={`relative inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full text-sm font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-400 ${
-                          isActive
-                            ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-xl shadow-primary-500/30 scale-105 border-2 border-white/50 backdrop-blur-sm'
-                            : config
-                            ? `${config.bgColor} ${config.textColor} hover:shadow-lg ${config.hoverBg} shadow-md border-2 border-white/30 backdrop-blur-sm hover:scale-[1.03] active:scale-95`
-                            : 'bg-white/60 backdrop-blur-sm text-text-secondary hover:bg-white/80 hover:shadow-lg shadow-md border-2 border-white/50 hover:scale-[1.03] active:scale-95'
-                        }`}
-                      >
-                        {/* Liquid glass overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10 rounded-full pointer-events-none"></div>
-
-                        {Icon && <Icon className="relative w-4 h-4 z-10" aria-hidden="true" />}
-                        <span className="relative z-10">{category}</span>
-                      </button>
-                    </div>
+                    <button
+                      key={category}
+                      onClick={() => handleCategoryChange(category)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handleCategoryChange(category);
+                        }
+                      }}
+                      aria-pressed={isActive}
+                      aria-label={`Filtrar por categoria: ${category}`}
+                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                        isActive
+                          ? 'bg-primary-500 text-white shadow-sm'
+                          : 'bg-white text-text-secondary border border-border-light hover:border-primary-300 hover:text-primary-600'
+                      }`}
+                    >
+                      {Icon && <Icon className="w-4 h-4" aria-hidden="true" />}
+                      <span>{category}</span>
+                    </button>
                   );
                 })}
               </div>
