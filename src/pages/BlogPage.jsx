@@ -14,8 +14,8 @@ import { getPostEnrichment } from '../data/blogPostsEnrichment';
 import CategoryBadge from '../components/blog/CategoryBadge';
 import AccessibilityControls from '../components/blog/AccessibilityControls';
 import OptimizedImage from '../components/blog/OptimizedImage';
-import PostPageTemplate from '../components/blog/PostPageTemplate';
 import { trackBlogInteraction, trackPageView, trackSearchInteraction } from '../utils/analytics';
+import { generateCompleteSchemaBundle, getPostSpecificSchema } from '../lib/blogSchemaMarkup';
 
 const BlogPage = () => {
   const { t } = useTranslation();
@@ -105,9 +105,200 @@ const BlogPage = () => {
     e.preventDefault();
   };
 
-  // Render single post view with PostPageTemplate
+  // Render single post view
   if (currentPost) {
-    return <PostPageTemplate slug={slug} />;
+    const enrichment = getPostEnrichment(currentPost.id);
+
+    // Generate Schema.org structured data
+    const schemaBundle = generateCompleteSchemaBundle(currentPost, enrichment?.faqs);
+    const postSpecificSchema = getPostSpecificSchema(currentPost.id);
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50 relative">
+        <Helmet>
+          <title>{currentPost.seo?.metaTitle || currentPost.title} | Saraiva Vision</title>
+          <meta name="description" content={currentPost.seo?.metaDescription || currentPost.excerpt} />
+          <meta name="keywords" content={currentPost.seo?.keywords?.join(', ') || currentPost.tags.join(', ')} />
+
+          {/* Schema.org Structured Data */}
+          {schemaBundle.map((schema, index) => (
+            <script key={`schema-${index}`} type="application/ld+json">
+              {JSON.stringify(schema)}
+            </script>
+          ))}
+
+          {/* Post-specific schema (conditions/procedures) */}
+          {postSpecificSchema && (
+            <script type="application/ld+json">
+              {JSON.stringify(postSpecificSchema)}
+            </script>
+          )}
+        </Helmet>
+
+        <Navbar />
+
+        {/* Skip to content link */}
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg">
+          Pular para o conteúdo
+        </a>
+
+        <main id="main-content" tabIndex="-1" className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%]">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+            {/* Breadcrumbs */}
+            <nav aria-label="Breadcrumb" className="mb-6">
+              <ol className="flex items-center space-x-2 text-sm text-gray-600">
+                <li>
+                  <Link to="/" className="hover:text-primary-600 transition-colors">
+                    Home
+                  </Link>
+                </li>
+                <li className="text-gray-400">/</li>
+                <li>
+                  <Link to="/blog" className="hover:text-primary-600 transition-colors">
+                    Blog
+                  </Link>
+                </li>
+                <li className="text-gray-400">/</li>
+                <li className="text-gray-900 font-semibold truncate max-w-xs" title={currentPost.title}>
+                  {currentPost.title}
+                </li>
+              </ol>
+            </nav>
+
+            {/* Back Button */}
+            <Button
+              onClick={() => navigate('/blog')}
+              variant="ghost"
+              className="mb-8 hover:bg-primary-50 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar para o blog
+            </Button>
+
+            {/* Post Content */}
+            <article className="prose prose-lg max-w-none">
+              <h1>{currentPost.title}</h1>
+              <div className="flex items-center gap-4 text-sm text-gray-600 mb-8">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <time dateTime={currentPost.date}>
+                    {formatDate(currentPost.date)}
+                  </time>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4" />
+                  <span>{Math.ceil((currentPost.content?.length || 1000) / 1000)} min de leitura</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  <span>{currentPost.author}</span>
+                </div>
+              </div>
+
+              {currentPost.image && (
+                <OptimizedImage
+                  src={currentPost.image}
+                  alt={currentPost.title}
+                  className="rounded-2xl shadow-lg mb-8"
+                  loading="eager"
+                />
+              )}
+
+              <div dangerouslySetInnerHTML={{ __html: currentPost.content }} />
+
+              {/* Tags */}
+              {currentPost.tags && currentPost.tags.length > 0 && (
+                <div className="mt-8 flex flex-wrap gap-2">
+                  {currentPost.tags.map(tag => (
+                    <span key={tag} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </article>
+
+            {/* Related Podcasts */}
+            {currentPost.relatedPodcasts && currentPost.relatedPodcasts.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="mt-12 bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl p-6 md:p-8 border border-primary-100 shadow-lg"
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl shadow-md">
+                    <Headphones className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900">
+                      Podcasts Relacionados
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Ouça nossos episódios sobre este tema
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  {currentPost.relatedPodcasts.map((podcast, index) => (
+                    <div
+                      key={podcast.id || index}
+                      className="bg-white rounded-xl p-4 md:p-6 shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
+                    >
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                        <span className="text-primary-600">🎙️</span>
+                        {podcast.title}
+                      </h4>
+
+                      {podcast.spotifyShowId ? (
+                        <SpotifyEmbed
+                          type="show"
+                          id={podcast.spotifyShowId}
+                          className="mb-0"
+                        />
+                      ) : podcast.spotifyEpisodeId ? (
+                        <SpotifyEmbed
+                          type="episode"
+                          id={podcast.spotifyEpisodeId}
+                          className="mb-0"
+                        />
+                      ) : (
+                        <div className="text-center py-4">
+                          <a
+                            href={podcast.spotifyUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-[#1DB954] hover:bg-[#1ed760] text-white font-semibold rounded-full transition-colors"
+                          >
+                            <Headphones className="w-5 h-5" />
+                            Ouvir no Spotify
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-primary-200">
+                  <p className="text-sm text-gray-600 text-center">
+                    <a
+                      href="/podcast"
+                      className="text-primary-600 hover:text-primary-700 font-medium underline"
+                    >
+                      Ver todos os episódios do podcast
+                    </a>
+                  </p>
+                </div>
+              </motion.div>
+            )}
+          </div>
+        </main>
+
+        <EnhancedFooter />
+        <AccessibilityControls />
+      </div>
+    );
   }
 
   const renderPostCard = (post, index) => {
