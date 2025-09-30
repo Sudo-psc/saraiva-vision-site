@@ -10,7 +10,14 @@ import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
 import { blogPosts, categories, getPostBySlug, categoryConfig } from '../data/blogPosts';
+import { getPostEnrichment } from '../data/blogPostsEnrichment';
 import CategoryBadge from '../components/blog/CategoryBadge';
+import AuthorProfile from '../components/blog/AuthorProfile';
+import ActionButtons from '../components/blog/ActionButtons';
+import LearningSummary from '../components/blog/LearningSummary';
+import InfoBox from '../components/blog/InfoBox';
+import PostFAQ from '../components/blog/PostFAQ';
+import RelatedPosts from '../components/blog/RelatedPosts';
 
 const BlogPage = () => {
   const { t } = useTranslation();
@@ -55,6 +62,8 @@ const BlogPage = () => {
 
   // Render single post view
   if (currentPost) {
+    const enrichment = getPostEnrichment(currentPost.id);
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50 relative">
         <Helmet>
@@ -66,7 +75,10 @@ const BlogPage = () => {
         <Navbar />
 
         <main className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%]">
-          <article className="container mx-auto px-4 md:px-6 max-w-4xl">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              {/* Main Content Area */}
+              <article className="lg:col-span-8">
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex items-center space-x-2 text-sm text-gray-600">
@@ -140,6 +152,11 @@ const BlogPage = () => {
               </motion.div>
             )}
 
+            {/* Learning Summary */}
+            {enrichment?.learningPoints && (
+              <LearningSummary items={enrichment.learningPoints} />
+            )}
+
             {/* Post content */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -148,6 +165,17 @@ const BlogPage = () => {
               className="prose prose-lg max-w-none bg-white/70 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg border border-white/50"
               dangerouslySetInnerHTML={{ __html: currentPost.content }}
             />
+
+            {/* Info Boxes/Warnings */}
+            {enrichment?.warnings && enrichment.warnings.map((warning, index) => (
+              <InfoBox
+                key={index}
+                type={warning.type}
+                title={warning.title}
+              >
+                <p>{warning.content}</p>
+              </InfoBox>
+            ))}
 
             {/* Tags */}
             {currentPost.tags && currentPost.tags.length > 0 && (
@@ -165,6 +193,11 @@ const BlogPage = () => {
               </div>
             )}
 
+            {/* FAQ Section */}
+            {enrichment?.faq && (
+              <PostFAQ questions={enrichment.faq} />
+            )}
+
             {/* Share and back */}
             <div className="mt-12 pt-8 border-t border-gray-200 flex justify-between items-center">
               <Button
@@ -176,6 +209,29 @@ const BlogPage = () => {
               </Button>
             </div>
           </article>
+
+          {/* Sidebar */}
+          <aside className="lg:col-span-4 space-y-6">
+            {/* Author Profile */}
+            <AuthorProfile
+              showContact={false}
+            />
+
+            {/* Action Buttons */}
+            <ActionButtons
+              showAppointment={true}
+              showContact={true}
+              showPDF={false}
+            />
+          </aside>
+        </div>
+
+            {/* Related Posts - Full Width */}
+            <RelatedPosts
+              posts={blogPosts}
+              currentPostId={currentPost.id}
+            />
+          </div>
         </main>
 
         <EnhancedFooter />
@@ -190,7 +246,7 @@ const BlogPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: index * 0.1 }}
-        className="group bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 border border-white/50"
+        className="group bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 border border-white/50 focus:outline-none"
         role="article"
         aria-labelledby={`post-title-${post.id}`}
       >
@@ -199,22 +255,24 @@ const BlogPage = () => {
           className="block overflow-hidden focus:outline-none"
           aria-label={`Ler o post: ${post.title}`}
         >
-          <div className="relative w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gradient-to-br from-blue-100 to-gray-100">
-            <img
-              src={post.image}
-              alt={`Imagem ilustrativa do artigo: ${post.title}`}
-              className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
-              loading="lazy"
-              decoding="async"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = '/img/blog-fallback.jpg';
-              }}
-            />
+          <div className="relative w-full h-48 sm:h-52 md:h-56 lg:h-60 overflow-hidden bg-gradient-to-br from-blue-100 to-gray-100">
+             <img
+               src={post.image}
+               alt={`Imagem ilustrativa do artigo: ${post.title}`}
+               className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+               loading="lazy"
+               decoding="async"
+               width="400"
+               height="240"
+               onError={(e) => {
+                 e.target.onerror = null;
+                 e.target.src = '/img/blog-fallback.jpg';
+               }}
+             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
         </Link>
-        <div className="p-4 sm:p-6 flex flex-col flex-grow">
+        <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-grow">
           <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
             <div className="flex items-center">
               <Calendar className="w-4 h-4 mr-2" aria-hidden="true" />
@@ -310,34 +368,40 @@ const BlogPage = () => {
               {/* Search Bar */}
               <form onSubmit={handleSearch} className="max-w-md mx-auto mb-8">
                 <div className="relative">
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Buscar artigos por título, conteúdo ou tags..."
-                    aria-label="Buscar artigos no blog"
-                    className="w-full pl-12 pr-4 py-3.5 bg-white/80 backdrop-blur-sm border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:border-blue-500 transition-all shadow-sm hover:shadow-md"
-                  />
-                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </div>
-                  {searchTerm && searchTerm !== debouncedSearch && (
-                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                      <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                    </div>
-                  )}
+                   <input
+                     type="text"
+                     value={searchTerm}
+                     onChange={(e) => setSearchTerm(e.target.value)}
+                     placeholder="Buscar artigos por título, conteúdo ou tags..."
+                     aria-label="Buscar artigos no blog"
+                     aria-describedby="search-help"
+                     className="w-full pl-12 pr-4 py-3.5 bg-white/90 backdrop-blur-sm border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md focus:shadow-lg"
+                   />
+                   <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                     </svg>
+                   </div>
+                   {searchTerm && searchTerm !== debouncedSearch && (
+                     <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                       <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
+                     </div>
+                   )}
                 </div>
-                {debouncedSearch && (
-                  <p className="text-sm text-gray-600 mt-2 text-center">
-                    {filteredPosts.length} {filteredPosts.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
-                  </p>
-                )}
+                 {debouncedSearch && (
+                   <p className="text-sm text-gray-600 mt-2 text-center" id="search-help">
+                     {filteredPosts.length} {filteredPosts.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
+                   </p>
+                 )}
+                 {!debouncedSearch && (
+                   <p className="text-xs text-gray-500 mt-2 text-center" id="search-help">
+                     Digite para buscar artigos por título, conteúdo ou tags
+                   </p>
+                 )}
               </form>
 
-              {/* Category Filter */}
-              <div className="flex flex-wrap justify-center gap-3" role="group" aria-label="Filtros de categoria">
+               {/* Category Filter */}
+               <div className="flex flex-wrap justify-center gap-2 sm:gap-3" role="group" aria-label="Filtros de categoria">
                 {categories.map(category => {
                   const config = categoryConfig[category];
                   const iconMap = {
@@ -349,21 +413,27 @@ const BlogPage = () => {
                   const Icon = config ? iconMap[config.icon] : null;
 
                   return (
-                    <button
-                      key={category}
-                      onClick={() => handleCategoryChange(category)}
-                      aria-pressed={selectedCategory === category}
-                      aria-label={`Filtrar por categoria: ${category}`}
-                      className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-sm ${
-                        selectedCategory === category
-                          ? config
-                            ? `${config.bgColor} ${config.textColor} ring-2 ${config.borderColor} shadow-md`
-                            : 'bg-blue-600 text-white ring-2 ring-blue-300 shadow-md'
-                          : config
-                          ? `${config.bgColor} ${config.textColor} hover:shadow-md ${config.hoverBg}`
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:shadow-md'
-                      }`}
-                    >
+                     <button
+                       key={category}
+                       onClick={() => handleCategoryChange(category)}
+                       onKeyDown={(e) => {
+                         if (e.key === 'Enter' || e.key === ' ') {
+                           e.preventDefault();
+                           handleCategoryChange(category);
+                         }
+                       }}
+                       aria-pressed={selectedCategory === category}
+                       aria-label={`Filtrar por categoria: ${category}`}
+                       className={`inline-flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm ${
+                         selectedCategory === category
+                           ? config
+                             ? `${config.bgColor} ${config.textColor} ring-2 ${config.borderColor} shadow-md`
+                             : 'bg-blue-600 text-white ring-2 ring-blue-300 shadow-md'
+                           : config
+                           ? `${config.bgColor} ${config.textColor} hover:shadow-md ${config.hoverBg} focus:bg-opacity-80`
+                           : 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:shadow-md focus:bg-gray-300'
+                       }`}
+                     >
                       {Icon && <Icon className="w-4 h-4" aria-hidden="true" />}
                       <span>{category}</span>
                     </button>
@@ -372,12 +442,17 @@ const BlogPage = () => {
               </div>
             </div>
 
-            {/* Posts Grid */}
-            {filteredPosts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
-                {filteredPosts.map((post, index) => renderPostCard(post, index))}
-              </div>
-            ) : (
+             {/* Posts Grid */}
+             {searchTerm && searchTerm !== debouncedSearch ? (
+               <div className="flex justify-center items-center py-12">
+                 <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
+                 <span className="ml-3 text-gray-600">Buscando artigos...</span>
+               </div>
+             ) : filteredPosts.length > 0 ? (
+               <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+                 {filteredPosts.map((post, index) => renderPostCard(post, index))}
+               </div>
+             ) : (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
