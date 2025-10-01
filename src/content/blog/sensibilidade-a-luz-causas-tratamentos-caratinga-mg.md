@@ -1,8 +1,8 @@
 ---
 id: 7
 slug: sensibilidade-a-luz-causas-tratamentos-caratinga-mg
-title: Lentes Premium para Catarata | Caratinga MG
-excerpt: Lentes intraoculares premium: multifocais, tóricas e EDOF para cirurgia de catarata. Dr. Philipe Saraiva em Caratinga, MG.
+title: Sensibilidade à Luz (Fotofobia): Causas e Tratamentos | Caratinga MG
+excerpt: Fotofobia ou sensibilidade à luz: conheça causas, sintomas e tratamentos. Dr. Philipe Saraiva oferece diagnóstico especializado em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-29
 category: Prevenção
@@ -12,12 +12,12 @@ tags:
   - causas fotofobia
   - tratamentos sensibilidade à luz
   - saúde ocular Caratinga
-image: /Blog/capa-lentes-premium-catarata.png
+image: /Blog/capa-sensibilidade-luz-fotofobia.png
 featured: true
 seo:
-  metaDescription: Lentes intraoculares premium (multifocais, tóricas, EDOF) para catarata. Dr. Philipe Saraiva oferece em Caratinga, MG. Liberdade dos óculos!
-  keywords: 
-  ogImage: /Blog/capa-lentes-premium-catarata.png
+  metaDescription: Sensibilidade à luz (fotofobia): causas, sintomas e tratamentos especializados. Dr. Philipe Saraiva atende em Caratinga, MG.
+  keywords: fotofobia, sensibilidade à luz, causas fotofobia, tratamento fotofobia, oftalmologista Caratinga
+  ogImage: /Blog/capa-sensibilidade-luz-fotofobia.png
 ---
 
 ## Introdução
