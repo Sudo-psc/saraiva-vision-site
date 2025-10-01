@@ -247,9 +247,9 @@ const PostPageTemplate = ({ slug }) => {
       <Navbar />
 
       <main className="py-24 md:py-32 scroll-block-internal">
-        <div className="container mx-auto px-3 md:px-4 lg:px-6 max-w-[1600px]">
+        <div className="container mx-auto px-0 max-w-full">
           {/* Breadcrumbs with Glass Effect */}
-          <nav aria-label="Breadcrumb" className="mb-6">
+          <nav aria-label="Breadcrumb" className="mb-6 px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -279,7 +279,7 @@ const PostPageTemplate = ({ slug }) => {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="mb-8 relative inline-block group"
+            className="mb-8 px-4 md:px-6 relative inline-block group"
           >
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl blur opacity-0 group-hover:opacity-30 transition-opacity"></div>
             <Button
@@ -390,7 +390,7 @@ const PostPageTemplate = ({ slug }) => {
           </motion.div>
 
           {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 px-4 md:px-6">
             {/* Main Content Area */}
             <article className="lg:col-span-8 space-y-8">
               {/* Learning Summary */}
@@ -409,13 +409,13 @@ const PostPageTemplate = ({ slug }) => {
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                 {/* Content Container */}
-                <div className="relative bg-white/70 backdrop-blur-xl rounded-3xl p-8 md:p-12 lg:p-16 xl:p-20 shadow-2xl border-2 border-white/50">
+                <div className="relative bg-white/70 backdrop-blur-xl rounded-none p-0 shadow-2xl border-0">
                   {/* Liquid Glass Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 rounded-3xl pointer-events-none"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 pointer-events-none"></div>
 
                   {/* Content with Typography Plugin */}
                   <div
-                    className="relative prose prose-lg lg:prose-xl max-w-none post-content"
+                    className="relative prose prose-lg lg:prose-xl max-w-none post-content px-4 md:px-6 lg:px-8 py-8 md:py-12"
                     dangerouslySetInnerHTML={{ __html: currentPost.content }}
                   />
                 </div>
@@ -618,8 +618,8 @@ const PostPageTemplate = ({ slug }) => {
             {/* Sticky Sidebar */}
             <aside className="lg:col-span-4 space-y-6">
               <div className="sticky top-24 space-y-6">
-                {/* Table of Contents */}
-                {tocSections.length > 0 && (
+                {/* Table of Contents - REMOVIDO */}
+                {/* {tocSections.length > 0 && (
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -649,7 +649,7 @@ const PostPageTemplate = ({ slug }) => {
                       </ul>
                     </nav>
                   </motion.div>
-                )}
+                )} */}
 
                 {/* Author Profile */}
                 <AuthorProfile showContact={false} />

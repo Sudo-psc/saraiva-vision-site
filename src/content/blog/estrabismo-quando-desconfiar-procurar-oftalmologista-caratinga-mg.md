@@ -1,11 +1,11 @@
 ---
 id: 9
 slug: estrabismo-quando-desconfiar-procurar-oftalmologista-caratinga-mg
-title: Ceratocone: Tratamento e Crosslinking | Caratinga MG
-excerpt: Ceratocone: tratamento com crosslinking e lentes especiais. Dr. Philipe Saraiva oferece tecnologia de ponta em Caratinga, MG.
+title: Estrabismo: Quando Desconfiar e Procurar Oftalmologista | Caratinga MG
+excerpt: Estrabismo afeta o alinhamento dos olhos em crianças e adultos. Saiba quando desconfiar, sintomas e tratamentos. Dr. Philipe Saraiva em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-30
-category: Tratamento
+category: Saúde Ocular
 tags:
   - estrabismo
   - sintomas de estrabismo
@@ -13,12 +13,12 @@ tags:
   - tratamento de estrabismo
   - saúde ocular
   - Caratinga MG
-image: /Blog/eye-anatomy-diagram.png
+image: /Blog/estrabismo-quando-desconfiar-procurar-oftalmologista-caratinga-mg.png
 featured: true
 seo:
-  metaDescription: Ceratocone tem tratamento com crosslinking e lentes especiais. Dr. Philipe Saraiva trata em Caratinga, MG. Estabilize sua córnea! Agende.
-  keywords: 
-  ogImage: /Blog/eye-anatomy-diagram.png
+  metaDescription: Estrabismo tem sinais de alerta em crianças e adultos. Dr. Philipe Saraiva explica sintomas, causas e tratamentos em Caratinga, MG. Agende sua consulta!
+  keywords: estrabismo, olhos desalinhados, tratamento estrabismo, oftalmologista Caratinga, visão dupla, estrabismo infantil
+  ogImage: /Blog/estrabismo-quando-desconfiar-procurar-oftalmologista-caratinga-mg.png
 ---
 
 ## Introdução

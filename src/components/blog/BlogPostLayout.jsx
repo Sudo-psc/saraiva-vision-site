@@ -170,10 +170,10 @@ export default function BlogPostLayout({ post, children }) {
         {/* Disclaimer Médico - Obrigatório para conteúdo de saúde */}
         {needsMedicalDisclaimer && <MedicalDisclaimer />}
 
-        {/* Índice (Table of Contents) */}
-        {post.headings && post.headings.length > 0 && (
+        {/* Índice (Table of Contents) - REMOVIDO */}
+        {/* {post.headings && post.headings.length > 0 && (
           <TableOfContents headings={post.headings} />
-        )}
+        )} */}
 
         {/* Conteúdo Principal - Tipografia Otimizada */}
         <div 

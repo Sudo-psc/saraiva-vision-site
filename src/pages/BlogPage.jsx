@@ -294,8 +294,8 @@ const BlogPage = () => {
           Pular para o conteúdo
         </a>
 
-        <main id="main-content" tabIndex="-1" className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%]">
-          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+        <main id="main-content" tabIndex="-1" className="py-32 md:py-40 scroll-block-internal">
+          <div className="container mx-auto px-0 max-w-full">
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex items-center space-x-2 text-sm text-text-secondary">
@@ -335,7 +335,7 @@ const BlogPage = () => {
               </aside>
 
               {/* Main Content Area */}
-              <article className="lg:col-span-6 prose prose-lg max-w-none bg-white rounded-2xl p-8 md:p-10 shadow-lg border border-border-light">
+              <article className="lg:col-span-6 prose prose-lg max-w-none bg-white rounded-none p-6 md:p-8 shadow-none border-0">
               <h1>{currentPost.title}</h1>
               <div className="flex items-center gap-4 text-sm text-text-secondary mb-8">
                 <div className="flex items-center gap-2">

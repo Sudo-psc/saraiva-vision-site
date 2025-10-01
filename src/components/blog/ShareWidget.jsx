@@ -47,10 +47,10 @@ const ShareWidget = ({ title, url }) => {
       className="sticky top-[600px] bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
     >
       <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-200">
-        <div className="p-2 bg-gradient-to-br from-primary-100 to-slate-100 rounded-lg">
-          <Share2 className="w-4 h-4 text-primary-600" />
+        <div className="p-2 bg-gradient-to-br from-blue-100 to-slate-100 rounded-lg">
+          <Share2 className="w-4 h-4 text-blue-600" />
         </div>
-        <h3 className="text-sm font-bold bg-gradient-to-r from-primary-700 to-primary-500 bg-clip-text text-transparent">
+        <h3 className="text-sm font-bold bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent">
           Compartilhar
         </h3>
       </div>
@@ -75,7 +75,7 @@ const ShareWidget = ({ title, url }) => {
 
         <button
           onClick={handleCopyLink}
-          className="w-full flex items-center gap-3 p-3 rounded-lg border border-slate-100 hover:bg-primary-50 hover:text-primary-600 transition-all"
+          className="w-full flex items-center gap-3 p-3 rounded-lg border border-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all"
           aria-label="Copiar link do artigo"
         >
           {copied ? (

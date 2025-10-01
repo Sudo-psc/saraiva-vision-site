@@ -52,10 +52,10 @@ const TableOfContents = ({ headings = [] }) => {
       className="sticky top-24 bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
     >
       <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-200">
-        <div className="p-2 bg-gradient-to-br from-primary-100 to-slate-100 rounded-lg">
-          <List className="w-4 h-4 text-primary-600" />
+        <div className="p-2 bg-gradient-to-br from-blue-100 to-slate-100 rounded-lg">
+          <List className="w-4 h-4 text-blue-600" />
         </div>
-        <h3 className="text-sm font-bold bg-gradient-to-r from-primary-700 to-primary-500 bg-clip-text text-transparent">
+        <h3 className="text-sm font-bold bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent">
           Neste Artigo
         </h3>
       </div>
@@ -74,14 +74,14 @@ const TableOfContents = ({ headings = [] }) => {
                     isH2 ? 'font-medium' : 'font-normal pl-4'
                   } ${
                     isActive
-                      ? 'text-primary-600'
-                      : 'text-slate-600 hover:text-primary-600'
+                      ? 'text-blue-600'
+                      : 'text-slate-600 hover:text-blue-600'
                   }`}
                   aria-current={isActive ? 'location' : undefined}
                 >
                   <ChevronRight
                     className={`w-4 h-4 mt-0.5 flex-shrink-0 transition-transform ${
-                      isActive ? 'text-primary-600 transform translate-x-1' : 'text-slate-400 group-hover:text-primary-600 group-hover:translate-x-1'
+                      isActive ? 'text-blue-600 transform translate-x-1' : 'text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1'
                     }`}
                   />
                   <span className="line-clamp-2">{heading.text}</span>
@@ -96,13 +96,13 @@ const TableOfContents = ({ headings = [] }) => {
       <div className="mt-6 pt-4 border-t border-slate-100">
         <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
           <span>Progresso de leitura</span>
-          <span className="font-medium text-primary-600">
+          <span className="font-medium text-blue-600">
             {Math.round((headings.findIndex(h => h.id === activeId) + 1) / headings.length * 100)}%
           </span>
         </div>
         <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-primary-600 to-primary-500"
+            className="h-full bg-gradient-to-r from-blue-600 to-blue-500"
             initial={{ width: 0 }}
             animate={{
               width: `${((headings.findIndex(h => h.id === activeId) + 1) / headings.length) * 100}%`
