@@ -341,7 +341,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tecnologia',
     tags: ['retinose pigmentar', 'luxturna', 'terapia gênica', 'doenças genéticas', 'Caratinga', 'inovação'],
-    image: '/Blog/retinose_pigmentar.png',
+    image: '/Blog/retinose-pigmentar.png',
     featured: true,
     seo: {
       metaTitle: 'Retinose Pigmentar e Luxturna®: Terapia Gênica em Caratinga',
@@ -461,7 +461,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Dúvidas Frequentes',
     tags: ['moscas volantes', 'miodesopsia', 'retina', 'vítreo', 'Caratinga', 'saúde ocular'],
-    image: '/Blog/moscas_volantes_capa.png',
+    image: '/Blog/moscas-volantes-capa.png',
     featured: true,
     seo: {
       metaTitle: 'Moscas Volantes: Quando Preocupar? Oftalmologista em Caratinga',
@@ -602,7 +602,7 @@ export const blogPosts = [
     category: 'Prevenção',
     tags: ['cuidados visuais esportes', 'visão esportiva Caratinga', 'saúde ocular atletas', 'oftalmologista Caratinga MG', 'proteção ocular', 'lentes de contato esportivas', 'óculos de sol UV', 'prevenção visual'],
     featured: true,
-    image: '/Blog/gym_capa.png',
+    image: '/Blog/gym-capa.png',
     seo: {
       metaTitle: 'Cuidados visuais para quem pratica esportes | Clínica Saraiva Vision Caratinga',
       metaDescription: 'Obstrução do ducto lacrimal tem tratamento cirúrgico e clínico. Dr. Philipe Saraiva trata lacrimejamento em Caratinga, MG. Alívio garantido!',
@@ -744,7 +744,7 @@ export const blogPosts = [
     category: 'Tecnologia',
     tags: ['daltonismo', 'lentes especiais', 'discromatopsia', 'visão de cores', 'oftalmologista Caratinga', 'teste de Ishihara', 'lentes filtrantes', 'tecnologia oftalmológica'],
     featured: true,
-    image: '/Blog/capa_daltonismo.png',
+    image: '/Blog/capa-daltonismo.png',
     seo: {
       metaTitle: 'Lentes Especiais para Daltonismo | Tecnologia Moderna em Caratinga - Saraiva Vision',
       metaDescription: 'Estrabismo tem tratamento cirúrgico e clínico eficaz. Dr. Philipe Saraiva trata adultos e crianças em Caratinga, MG. Recupere alinhamento! Agende.',
@@ -879,7 +879,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['descolamento de retina', 'retina', 'cirurgia retina', 'oftalmologia Caratinga', 'vitrectomia', 'mapeamento de retina', 'urgência oftalmológica', 'saúde ocular'],
-    image: '/Blog/descolamente_retina_capa.png',
+    image: '/Blog/descolamento-retina-capa.png',
     featured: true,
     seo: {
       metaTitle: 'Descolamento de Retina: Mitos e Verdades | Clínica Saraiva Vision Caratinga',
@@ -971,7 +971,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tecnologia',
     tags: ['inteligência artificial oftalmologia', 'exames oculares AI', 'saúde visual Caratinga', 'diagnóstico ocular IA', 'prevenção ocular MG', 'tecnologia médica', 'retinopatia diabética', 'glaucoma'],
-    image: '/Blog/futuristic_eye_examination.png',
+    image: '/Blog/futuristic-eye-examination.png',
     featured: true,
     seo: {
       metaTitle: 'Como a Inteligência Artificial Está Transformando os Exames Oftalmológicos em Caratinga, MG',
@@ -1137,7 +1137,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Prevenção',
     tags: ['terapias genéticas oftalmologia', 'células-tronco olhos', 'amaurose congênita Leber', 'retinose pigmentar', 'tratamentos hereditários visão', 'avanços oftalmológicos Brasil', 'Caratinga MG'],
-    image: '/Blog/terapia_genica.png',
+    image: '/Blog/terapia-genetica.png',
     featured: true,
     seo: {
       metaTitle: 'Terapias Genéticas e de Células-Tronco em Oftalmologia: Avanços para Doenças Hereditárias como Amaurose de Leber e Retinose Pigmentar',
@@ -1227,7 +1227,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Prevenção',
     tags: ['síndrome da visão de computador', 'fadiga ocular', 'luz azul', 'técnica 20-20-20', 'olhos secos', 'cefaleia', 'prevenção visual', 'trabalho remoto', 'estudos digitais', 'saúde ocular Caratinga'],
-    image: '/Blog/capa_digital.png',
+    image: '/Blog/capa-digital.png',
     featured: true,
     seo: {
       metaTitle: 'Síndrome da Visão de Computador: Prevenção e Manejo em Caratinga, MG',
@@ -1340,7 +1340,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Prevenção',
     tags: ['olho seco', 'blefarite', 'lacrimejamento excessivo', 'tratamento ocular', 'sintomas olhos secos', 'prevenção blefarite', 'Caratinga MG'],
-    image: '/Blog/sss.png',
+    image: '/Blog/capa-drye.jpg',
     featured: true,
     seo: {
       metaTitle: 'Olho Seco e Blefarite: Por Que Causam Lacrimejamento em Caratinga e Como Tratar Sem Piorar os Sintomas',
@@ -1450,7 +1450,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['estrabismo', 'sintomas de estrabismo', 'causas de estrabismo', 'tratamento de estrabismo', 'saúde ocular', 'Caratinga MG'],
-    image: '/Blog/capa_estrabismo.png',
+    image: '/Blog/capa-estrabismo.png',
     featured: true,
     seo: {
       metaTitle: 'Estrabismo: Quando Desconfiar e Procurar um Oftalmologista em Caratinga, MG',
@@ -1540,7 +1540,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Prevenção',
     tags: ['alimentação e saúde ocular', 'microbioma ocular', 'vitaminas para visão', 'prevenção degeneração macular', 'catarata', 'ômega-3 olhos', 'luteína zeaxantina', 'olho seco', 'saúde sistêmica visão', 'Caratinga MG'],
-    image: '/Blog/healthy_food_sources.png',
+    image: '/Blog/healthy-food-sources.png',
     featured: true,
     seo: {
       metaTitle: 'Alimentação e Saúde Ocular: Como Nutrientes e Microbioma Influenciam a Visão em Caratinga, MG',
@@ -1623,7 +1623,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Prevenção',
     tags: ['sensibilidade à luz', 'fotofobia', 'causas fotofobia', 'tratamentos sensibilidade à luz', 'saúde ocular Caratinga'],
-    image: '/Blog/capa_fotofobia.png',
+    image: '/Blog/capa-fotofobia.png',
     featured: true,
     seo: {
       metaTitle: 'Sensibilidade à Luz: Causas, Sintomas e Tratamentos Eficazes em Caratinga, MG',
@@ -1703,7 +1703,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Prevenção',
     tags: ['lentes de contato', 'presbiopia', 'correção visual', 'vista cansada', 'Caratinga MG'],
-    image: '/Blog/capa_post_6_imagen4_opt1_20250930_184946.png',
+    image: '/Blog/capa-post-6-imagen4-opt1-20250930-184946.png',
     featured: true,
     seo: {
       metaTitle: 'Lentes de Contato para Presbiopia: Soluções Eficazes em Caratinga, MG',
@@ -1816,7 +1816,7 @@ export const blogPosts = [
      date: '2025-09-30',
      category: 'Dúvidas Frequentes',
      tags: ['mitos saúde ocular', 'verdades visão', 'ciência oftalmologia', 'cuidados olhos', 'prevenção ocular Caratinga', 'dicas visão saudável', 'oftalmologista Caratinga MG'],
-     image: '/Blog/capa_post_23_imagen4_opt1_20250930_185601.png',
+     image: '/Blog/capa-post-23-imagen4-opt1-20250930-185601.png',
      featured: true,
      seo: {
        metaTitle: 'Mitos e Verdades Sobre Saúde Ocular: O Que a Ciência Diz | Saraiva Vision Caratinga',
@@ -2011,7 +2011,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['cirurgia refrativa Caratinga', 'lentes intraoculares Caratinga', 'catarata Caratinga', 'laser de femtossegundos Caratinga', 'lente multifocal Caratinga', 'lente EDOF Caratinga', 'presbiopia Caratinga', 'astigmatismo Caratinga', 'LASIK Caratinga', 'PRK Caratinga', 'SMILE Caratinga', 'cirurgia de catarata Caratinga', 'avaliação oftalmológica Caratinga'],
-    image: '/Blog/refrativa_capa.png',
+    image: '/Blog/refrativa-capa.png',
     featured: true,
     seo: {
       metaTitle: 'Cirurgia refrativa e lentes premium em Caratinga',
@@ -2111,7 +2111,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Prevenção',
     tags: ['presbiopia', 'vista cansada', 'cura presbiopia', 'cirurgia presbiopia', 'lentes de contato presbiopia', 'oftalmologista Caratinga', 'saúde ocular MG', 'tratamento presbiopia'],
-    image: '/Blog/capa_presbiopia.png',
+    image: '/Blog/capa-presbiopia.png',
     featured: true,
     seo: {
       metaTitle: 'Presbiopia: O Que É, Existe Cura, Opções de Cirurgia e Lentes de Contato em Caratinga, MG',
@@ -2237,7 +2237,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Tratamento',
     tags: ['obstrução ducto lacrimal', 'lacrimejamento', 'dacriocistite', 'vias lacrimais', 'Caratinga MG'],
-    image: '/Blog/capa_ductolacrimal.png',
+    image: '/Blog/capa-ductolacrimal.png',
     featured: false,
     seo: {
       metaTitle: 'Obstrução do ducto lacrimal: causas e soluções em Caratinga',
@@ -2316,7 +2316,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Tratamento',
     tags: ['lentes premium', 'cirurgia de catarata', 'lentes intraoculares', 'lentes multifocais', 'Caratinga MG'],
-    image: '/Blog/capa_lentes_premium_catarata.png',
+    image: '/Blog/capa-lentes-premium-catarata.png',
     featured: true,
     seo: {
       metaTitle: 'Lentes Premium para Cirurgia de Catarata em Caratinga, MG: Benefícios e Opções Avançadas',
@@ -2476,7 +2476,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Prevenção',
     tags: ['oftalmologia pediátrica', 'saúde infantil', 'exames', 'Caratinga', 'crianças'],
-    image: '/Blog/capa_pediatria.png',
+    image: '/Blog/capa-pediatria.png',
     featured: true,
     seo: {
       metaTitle: 'Oftalmologia Pediátrica Caratinga: Quando Levar Crianças ao Oftalmo',
@@ -2560,7 +2560,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['pterígio', 'carne no olho', 'cirurgia ocular', 'prevenção', 'proteção UV', 'Caratinga'],
-    image: '/Blog/capa_post_24_imagen4_opt1_20250930_185815.png',
+    image: '/Blog/capa-post-24-imagen4-opt1-20250930-185815.png',
     featured: true,
     seo: {
       metaTitle: 'Pterígio: Guia Completo sobre Prevenção, Tratamento e Cirurgia',
