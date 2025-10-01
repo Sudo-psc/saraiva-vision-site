@@ -314,7 +314,7 @@ const AudioPlayer = ({
                     {episode.src && (
                         <button
                             onClick={handleDownload}
-                            className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                             aria-label="Baixar episódio"
                             title="Baixar episódio"
                         >
@@ -372,7 +372,7 @@ const AudioPlayer = ({
                                 href={episode.spotifyUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                                 aria-label="Ouvir no Spotify"
                             >
                                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
