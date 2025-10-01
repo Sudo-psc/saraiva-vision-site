@@ -5,7 +5,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
-import { Calendar, ArrowRight, ArrowLeft, Eye, Shield, Stethoscope, Cpu, HelpCircle, Clock, User, ChevronLeft, ChevronRight, Headphones, X } from 'lucide-react';
+import { Calendar, ArrowRight, ArrowLeft, Shield, Stethoscope, Cpu, HelpCircle, Clock, User, ChevronLeft, ChevronRight, Headphones, X } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
@@ -78,7 +78,7 @@ const BlogPage = () => {
         post.tags?.some(tag => tag.toLowerCase().includes(debouncedSearch.toLowerCase()));
       return matchesCategory && matchesSearch;
     });
-  }, [blogPosts, selectedCategory, debouncedSearch]);
+  }, [selectedCategory, debouncedSearch]);
 
   // Calculate pagination - memoized to prevent unnecessary recalculations
   const paginationData = React.useMemo(() => {

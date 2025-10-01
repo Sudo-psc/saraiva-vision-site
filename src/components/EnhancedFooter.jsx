@@ -155,24 +155,12 @@ const EnhancedFooter = ({
         <li className={cn('text-slate-400', className)}>{children}</li>
     );
 
+    // Working hours status
+    const { status, nextOpening, closesAt } = useWorkingHoursStatus();
+    const isOpen = status === 'open';
+
     // Enhanced working hours display with status indicator
     const WorkingHoursDisplay = () => {
-        const formatNextOpening = (date) => {
-            if (!date) return '';
-            const now = new Date();
-            const tomorrow = new Date(now);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-
-            if (date.toDateString() === now.toDateString()) {
-                return `Abre hoje às ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-            } else if (date.toDateString() === tomorrow.toDateString()) {
-                return `Abre amanhã às ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-            } else {
-                const days = getWeekdays();
-                return `Abre ${days[date.getDay()]} às ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-            }
-        };
-
         return (
             <ContactItem>
                 <div className="flex items-center gap-2">
@@ -192,9 +180,14 @@ const EnhancedFooter = ({
                             )}>
                                 {isOpen ? 'Aberto agora' : 'Fechado'}
                             </span>
-                            {!isOpen && nextOpeningTime && (
+                            {!isOpen && nextOpening && (
                                 <span className="text-xs text-slate-500">
-                                    ({formatNextOpening(nextOpeningTime)})
+                                    ({nextOpening})
+                                </span>
+                            )}
+                            {isOpen && closesAt && (
+                                <span className="text-xs text-slate-500">
+                                    (Fecha às {closesAt})
                                 </span>
                             )}
                         </div>
@@ -293,9 +286,6 @@ const EnhancedFooter = ({
         glassBlur,
         enableAnimations: enableAnimations && !shouldReduceMotion
     });
-
-    // Working hours status
-    const { isOpen, nextOpeningTime, formattedHours } = useWorkingHoursStatus();
 
     // Extract with fallback for safety
     const themeProperties = footerThemeResult?.cssCustomProperties || {};
