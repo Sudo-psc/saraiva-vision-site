@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import '../../styles/blog-post-layout.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
@@ -29,7 +30,7 @@ import OptimizedImage from './OptimizedImage';
 import SpotifyEmbed from '../SpotifyEmbed';
 import CookieConsentModal from '../CookieConsentModal';
 
-import { blogPosts, getPostBySlug } from '../../data/blogPosts';
+import { blogPosts, getPostBySlug } from '../../content/blog';
 import { getPostEnrichment } from '../../data/blogPostsEnrichment';
 import { trackBlogInteraction, trackPageView } from '../../utils/analytics';
 
@@ -231,7 +232,7 @@ const PostPageTemplateRefactored = ({ slug }) => {
       <Navbar />
 
       <main className="py-24 md:py-32" role="main">
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+        <div className="container mx-auto px-3 md:px-4 lg:px-6 max-w-[1600px]">
           <nav aria-label="Breadcrumb" className="mb-8">
             <ol className="flex items-center gap-2 text-sm text-slate-600">
               <li><Link to="/" className="hover:text-teal-600 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded">Início</Link></li>

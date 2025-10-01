@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br';
 import { Calendar, ArrowRight, ArrowLeft, Eye, Shield, Stethoscope, Cpu, HelpCircle, Clock, User, ChevronLeft, ChevronRight, Headphones, X } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
-import { blogPosts, categories, getPostBySlug, categoryConfig } from '../data/blogPosts';
+import { blogPosts, categoryConfig, getPostBySlug, categories } from '../content/blog';
 import { getPostEnrichment } from '../data/blogPostsEnrichment';
 import CategoryBadge from '../components/blog/CategoryBadge';
 import AccessibilityControls from '../components/blog/AccessibilityControls';
@@ -98,7 +98,8 @@ const BlogPage = () => {
   }, [debouncedSearch, filteredPosts.length, selectedCategory]);
 
   const formatDate = (dateString) => {
-    return format(new Date(dateString), 'dd MMMM, yyyy', { locale: ptBR });
+    dayjs.locale('pt-br');
+    return dayjs(dateString).format('DD MMMM, YYYY');
   };
 
   const handleCategoryChange = (category) => {
