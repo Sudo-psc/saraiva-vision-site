@@ -1,8 +1,8 @@
 ---
 id: 17
 slug: cuidados-visuais-esportes-caratinga
-title: Obstrução Ducto Lacrimal: Tratamento | Caratinga MG
-excerpt: Obstrução do ducto lacrimal: tratamentos clínicos e cirúrgicos. Dr. Philipe Saraiva resolve lacrimejamento excessivo em Caratinga, MG.
+title: "Cuidados Visuais em Esportes: Proteção Ocular | Caratinga MG"
+excerpt: "Proteção ocular para atletas: óculos esportivos, lentes de contato e cuidados visuais. Dr. Philipe Saraiva orienta sobre prevenção de lesões em Caratinga, MG."
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-30
 category: Prevenção
@@ -15,12 +15,12 @@ tags:
   - lentes de contato esportivas
   - óculos de sol UV
   - prevenção visual
-image: /Blog/capa-ductolacrimal.png
+image: /Blog/capa-cuidados-visuais-esportes.png
 featured: true
 seo:
-  metaDescription: Obstrução do ducto lacrimal tem tratamento cirúrgico e clínico. Dr. Philipe Saraiva trata lacrimejamento em Caratinga, MG. Alívio garantido!
-  keywords: 
-  ogImage: /Blog/capa-ductolacrimal.png
+  metaDescription: "Proteção ocular para atletas: óculos esportivos e cuidados visuais. Dr. Philipe Saraiva orienta sobre prevenção de lesões em Caratinga, MG."
+  keywords: "cuidados visuais esportes, proteção ocular atletas, óculos esportivos, oftalmologista Caratinga"
+  ogImage: /Blog/capa-cuidados-visuais-esportes.png
 ---
 
 ## Do consultório à academia: cuidados visuais para quem pratica esportes
