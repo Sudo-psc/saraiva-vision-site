@@ -7,6 +7,10 @@ import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 
 const PLACEHOLDER_TOKENS = ['GOOGLE_PLACE_ID_PLACEHOLDER', 'your_google_place_id_here', 'PLACEHOLDER'];
 
+// Simple in-memory cache for Google Reviews API responses
+const reviewsCache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 const normalizePlaceId = (value) => {
     if (!value) return null;
     const cleaned = String(value).trim();
@@ -66,7 +70,7 @@ export function useGoogleReviews(options = {}) {
     const maxRetries = 3;
 
     /**
-     * Fetch reviews from Google Places API with retry logic
+     * Fetch reviews from Google Places API with retry logic and caching
      */
     const fetchReviews = useCallback(async (fetchOptions = {}) => {
         const placeId = resolvePlaceId(
@@ -88,6 +92,20 @@ export function useGoogleReviews(options = {}) {
             return;
         }
 
+        // Check cache first (unless force refresh is requested)
+        const cacheKey = `${placeId}-${fetchOptions.limit || config.limit || 5}`;
+        const cachedData = reviewsCache.get(cacheKey);
+
+        if (!fetchOptions.forceRefresh && cachedData && (Date.now() - cachedData.timestamp < CACHE_DURATION)) {
+            console.log('Google Reviews: Using cached data');
+            setReviews(cachedData.reviews);
+            setStats(cachedData.stats);
+            setLastFetch(cachedData.timestamp);
+            setLoading(false);
+            setError(null);
+            return;
+        }
+
         // Cancel previous request
         if (abortControllerRef.current) {
             abortControllerRef.current.abort();
@@ -96,7 +114,7 @@ export function useGoogleReviews(options = {}) {
         abortControllerRef.current = new AbortController();
         setLoading(true);
         setError(null);
-        
+
         const currentRetry = fetchOptions.retryAttempt || 0;
 
         try {
@@ -139,6 +157,14 @@ export function useGoogleReviews(options = {}) {
             }
 
             const { reviews: newReviews, stats: newStats } = result.data;
+
+            // Cache the successful response
+            const cacheData = {
+                reviews: newReviews || [],
+                stats: newStats,
+                timestamp: new Date()
+            };
+            reviewsCache.set(cacheKey, cacheData);
 
             setReviews(newReviews || []);
 
@@ -247,10 +273,10 @@ export function useGoogleReviews(options = {}) {
     }, [config.placeId]);
 
     /**
-     * Refresh reviews (force fetch from API)
+     * Refresh reviews (force fetch from API bypassing cache)
      */
     const refresh = useCallback(async () => {
-        await fetchReviews();
+        await fetchReviews({ forceRefresh: true });
     }, [fetchReviews]);
 
     /**

@@ -71,7 +71,7 @@ const fallbackStats = {
     }
 };
 
-const CompactGoogleReviews = () => {
+const CompactGoogleReviews = React.memo(() => {
     const [mounted, setMounted] = useState(false);
     const { t } = useTranslation();
 

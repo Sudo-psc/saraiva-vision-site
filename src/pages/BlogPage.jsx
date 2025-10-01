@@ -15,6 +15,10 @@ import CategoryBadge from '../components/blog/CategoryBadge';
 import AccessibilityControls from '../components/blog/AccessibilityControls';
 import OptimizedImage from '../components/blog/OptimizedImage';
 import SpotifyEmbed from '../components/SpotifyEmbed';
+import TableOfContents from '../components/blog/TableOfContents';
+import RelatedPostsWidget from '../components/blog/RelatedPostsWidget';
+import ShareWidget from '../components/blog/ShareWidget';
+import AuthorWidget from '../components/blog/AuthorWidget';
 import { trackBlogInteraction, trackPageView, trackSearchInteraction } from '../utils/analytics';
 import { generateCompleteSchemaBundle, getPostSpecificSchema } from '../lib/blogSchemaMarkup';
 
@@ -39,23 +43,30 @@ const BlogPage = () => {
   // Check if viewing single post
   const currentPost = slug ? getPostBySlug(slug) : null;
 
-  // Filter posts based on category and debounced search
-  const filteredPosts = blogPosts.filter(post => {
-    const matchesCategory = selectedCategory === 'Todas' || post.category === selectedCategory;
-    const matchesSearch = !debouncedSearch ||
-      post.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-      post.tags?.some(tag => tag.toLowerCase().includes(debouncedSearch.toLowerCase()));
-    return matchesCategory && matchesSearch;
-  });
+  // Filter posts based on category and debounced search - memoized for performance
+  const filteredPosts = React.useMemo(() => {
+    return blogPosts.filter(post => {
+      const matchesCategory = selectedCategory === 'Todas' || post.category === selectedCategory;
+      const matchesSearch = !debouncedSearch ||
+        post.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        post.excerpt.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        post.tags?.some(tag => tag.toLowerCase().includes(debouncedSearch.toLowerCase()));
+      return matchesCategory && matchesSearch;
+    });
+  }, [blogPosts, selectedCategory, debouncedSearch]);
 
-  // Calculate pagination
-  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
-  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
-  const endIndex = startIndex + POSTS_PER_PAGE;
-  const currentPosts = filteredPosts.slice(startIndex, endIndex);
+  // Calculate pagination - memoized to prevent unnecessary recalculations
+  const paginationData = React.useMemo(() => {
+    const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+    const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+    const endIndex = startIndex + POSTS_PER_PAGE;
+    const currentPosts = filteredPosts.slice(startIndex, endIndex);
+    return { totalPages, startIndex, endIndex, currentPosts };
+  }, [filteredPosts, currentPage]);
 
-  // Reset to page 1 when filters change
+  const { totalPages, currentPosts } = paginationData;
+
+  // Reset to page 1 when filters change - optimized to avoid unnecessary effect calls
   React.useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, debouncedSearch]);
@@ -113,6 +124,32 @@ const BlogPage = () => {
     // Generate Schema.org structured data
     const schemaBundle = generateCompleteSchemaBundle(currentPost, enrichment?.faqs);
     const postSpecificSchema = getPostSpecificSchema(currentPost.id);
+
+    // Extract headings from content for Table of Contents
+    const extractHeadings = (htmlContent) => {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = htmlContent;
+      const headingElements = tempDiv.querySelectorAll('h2, h3');
+
+      return Array.from(headingElements).map((heading, index) => {
+        const text = heading.textContent;
+        const id = `heading-${index}`;
+        heading.id = id; // Add ID to actual heading in content
+
+        return {
+          id,
+          text,
+          level: parseInt(heading.tagName.charAt(1))
+        };
+      });
+    };
+
+    const headings = currentPost.content ? extractHeadings(currentPost.content) : [];
+
+    // Get related posts from same category
+    const relatedPosts = blogPosts
+      .filter(post => post.category === currentPost.category && post.id !== currentPost.id)
+      .slice(0, 3);
 
     return (
       <div className="min-h-screen bg-white relative">
@@ -176,8 +213,15 @@ const BlogPage = () => {
               Voltar para o blog
             </Button>
 
-            {/* Post Content */}
-            <article className="prose prose-lg max-w-none">
+            {/* 3-Column Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              {/* Left Sidebar - Table of Contents (Hidden on mobile) */}
+              <aside className="hidden lg:block lg:col-span-3">
+                <TableOfContents headings={headings} />
+              </aside>
+
+              {/* Main Content Area */}
+              <article className="lg:col-span-6 prose prose-lg max-w-none bg-white rounded-2xl p-8 md:p-10 shadow-lg border border-border-light">
               <h1>{currentPost.title}</h1>
               <div className="flex items-center gap-4 text-sm text-text-secondary mb-8">
                 <div className="flex items-center gap-2">
@@ -219,7 +263,42 @@ const BlogPage = () => {
               )}
             </article>
 
-            {/* Related Podcasts */}
+              {/* Right Sidebar - Interactive Widgets */}
+              <aside className="hidden lg:block lg:col-span-3 space-y-6">
+                <AuthorWidget
+                  author={currentPost.author}
+                  date={currentPost.date}
+                  category={currentPost.category}
+                />
+                <ShareWidget
+                  title={currentPost.title}
+                  url={typeof window !== 'undefined' ? window.location.href : ''}
+                />
+                <RelatedPostsWidget
+                  posts={relatedPosts}
+                  currentPostId={currentPost.id}
+                />
+              </aside>
+            </div>
+
+            {/* Mobile Widgets - Show below content on mobile */}
+            <div className="lg:hidden mt-8 space-y-6">
+              <AuthorWidget
+                author={currentPost.author}
+                date={currentPost.date}
+                category={currentPost.category}
+              />
+              <ShareWidget
+                title={currentPost.title}
+                url={typeof window !== 'undefined' ? window.location.href : ''}
+              />
+              <RelatedPostsWidget
+                posts={relatedPosts}
+                currentPostId={currentPost.id}
+              />
+            </div>
+
+            {/* Related Podcasts - Full Width Below Content */}
             {currentPost.relatedPodcasts && currentPost.relatedPodcasts.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -432,7 +511,7 @@ const BlogPage = () => {
 
       <main
         id="main-content"
-        className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%]"
+        className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%] bg-gradient-to-b from-blue-50/30 via-white to-white"
         role="main"
         aria-label="Conteúdo principal do blog"
         tabIndex="-1"
@@ -446,8 +525,10 @@ const BlogPage = () => {
           >
             {/* Clean header aligned with homepage */}
             <div className="relative">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-4">
-                Blog Saraiva Vision
+              <h1 className="text-5xl md:text-6xl font-bold mb-4">
+                <Trans i18nKey="blog.title">
+                  Blog <span className="text-gradient">Saraiva Vision</span>
+                </Trans>
               </h1>
               <p className="text-base md:text-lg text-text-secondary font-normal max-w-2xl mx-auto leading-relaxed">
                 Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos
@@ -468,7 +549,7 @@ const BlogPage = () => {
                     placeholder="Buscar artigos por título, conteúdo ou tags..."
                     aria-label="Buscar artigos no blog"
                     aria-describedby="search-help"
-                    className="w-full pl-12 pr-12 py-3.5 bg-white border border-border-light rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-text-primary placeholder:text-text-muted shadow-sm"
+                    className="w-full pl-12 pr-12 py-3.5 bg-white border border-border-light rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-text-primary placeholder:text-text-muted shadow-sm hover:shadow-md"
                   />
 
                   {/* Search icon */}
@@ -505,7 +586,7 @@ const BlogPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="mt-3"
                   >
-                    <p className="text-sm font-medium text-center bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent" id="search-help" aria-live="polite" aria-atomic="true">
+                    <p className="text-sm font-medium text-center text-primary-600" id="search-help" aria-live="polite" aria-atomic="true">
                       ✨ {filteredPosts.length} {filteredPosts.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
                     </p>
                   </motion.div>

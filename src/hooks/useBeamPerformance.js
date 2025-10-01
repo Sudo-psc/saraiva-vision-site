@@ -174,9 +174,9 @@ export const useBeamPerformance = (options = {}) => {
         };
     }, [startMonitoring, stopMonitoring, checkBatteryLevel]);
 
-    // Battery level monitoring
+    // Battery level monitoring - optimized to check every 5 minutes instead of every minute
     useEffect(() => {
-        const interval = setInterval(checkBatteryLevel, 60000); // Check every minute
+        const interval = setInterval(checkBatteryLevel, 300000); // Check every 5 minutes
         return () => clearInterval(interval);
     }, [checkBatteryLevel]);
 

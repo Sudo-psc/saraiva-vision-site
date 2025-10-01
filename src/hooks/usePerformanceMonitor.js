@@ -169,6 +169,7 @@ export const usePerformanceMonitor = (options = {}) => {
     return () => {
       if (performanceObserverRef.current) {
         performanceObserverRef.current.disconnect();
+        performanceObserverRef.current = null;
       }
     };
   }, [enableAutoAdjustment, performanceLevel]);
