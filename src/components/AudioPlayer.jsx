@@ -327,7 +327,7 @@ const AudioPlayer = ({
                         <div className="relative">
                             <button
                                 onClick={() => setShowSettings(!showSettings)}
-                                className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
                                 aria-label="Configurações de velocidade"
                                 title="Velocidade de reprodução"
                             >
@@ -351,7 +351,7 @@ const AudioPlayer = ({
                                                     key={rate}
                                                     onClick={() => handlePlaybackRateChange(rate)}
                                                     className={`w-full text-left px-2 py-1 rounded-lg text-sm transition-colors ${playbackRate === rate
-                                                        ? 'bg-blue-100 text-blue-700 font-medium'
+                                                        ? 'bg-[#1DB954]/10 text-[#1DB954] font-semibold border border-[#1DB954]/20'
                                                         : 'text-gray-600 hover:bg-gray-100'
                                                         }`}
                                                 >
