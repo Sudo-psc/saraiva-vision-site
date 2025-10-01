@@ -226,7 +226,7 @@ export const blogPosts = [
     date: '2025-10-01',
     category: 'Tratamento',
     tags: ['amaurose congênita de leber', 'LCA', 'terapia gênica', 'doenças genéticas', 'retina', 'cegueira infantil', 'luxturna', 'RPE65', 'oftalmologia pediátrica'],
-    image: '/Blog/terapia-genetica-celula-tronco-capa.png',
+    image: '/Blog/capa-pediatria.png',
     featured: true,
     seo: {
       metaTitle: 'Amaurose Congênita de Leber: Tratamento e Terapia Gênica | LCA',
