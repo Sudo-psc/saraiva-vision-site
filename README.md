@@ -18,10 +18,10 @@ sudo bash /home/saraiva-vision-site/DEPLOY_NOW.sh
 
 ## 📚 Documentação Completa
 
-- **Deploy**: [`DEPLOY_INSTRUCTIONS.md`](./DEPLOY_INSTRUCTIONS.md)
-- **Diagnóstico**: [`docs/LAZY_LOADING_ERROR_DIAGNOSIS.md`](./docs/LAZY_LOADING_ERROR_DIAGNOSIS.md)
-- **Quick Fix**: [`docs/QUICK_FIX_GUIDE.md`](./docs/QUICK_FIX_GUIDE.md)
-- **Projeto**: [`CLAUDE.md`](./CLAUDE.md)
+- **Deploy Guide**: [`docs/deployment/DEPLOYMENT_GUIDE.md`](./docs/deployment/DEPLOYMENT_GUIDE.md) - Guia completo de deployment
+- **Projeto**: [`CLAUDE.md`](./CLAUDE.md) - Documentação principal do projeto
+- **Troubleshooting**: [`TROUBLESHOOTING.md`](./TROUBLESHOOTING.md) - Resolução de problemas
+- **Security**: [`SECURITY.md`](./SECURITY.md) - Práticas de segurança
 
 ## 🛠️ Development
 

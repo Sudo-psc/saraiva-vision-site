@@ -22,6 +22,7 @@ Clínica oftalmológica em Caratinga, MG, Brasil. Arquitetura VPS nativa simplif
 - Redis (cache)
 - ES modules
 - **Nota**: WordPress e Supabase foram removidos - sistema 100% estático
+- **Nota**: `vite.config.js` ainda valida variáveis Supabase (legacy) - pode ignorar se não usar Supabase
 
 ### 🔌 Integrações Principais
 - Google Maps API, Google Places API (avaliações em tempo real)
@@ -66,28 +67,44 @@ Blog estático 100% client-side integrado ao SPA:
 ### Desenvolvimento
 ```bash
 npm run dev              # Servidor dev (porta 3002)
-npm run build            # Build produção
+npm run build            # Build produção + prerender SEO
+npm run build:norender   # Build sem prerender
 npm run start            # Alternativa dev
 ```
 
 ### Testes
 ```bash
-npm test                 # Testes watch
+npm test                 # Testes watch mode
 npm run test:run         # Executa todos os testes
 npm run test:coverage    # Relatório cobertura
-npm run test:comprehensive  # Testes completos
-npm run test:unit        # Testes unitários
-npm run test:integration # Testes integração
-npm run test:api         # Testes API
+npm run test:comprehensive  # Suite completa (unit + integration + API + frontend)
+npm run test:unit        # Workspace unit tests
+npm run test:integration # Workspace integration tests
+npm run test:e2e         # Workspace E2E tests
+npm run test:performance # Workspace performance tests
+npm run test:api         # API tests (api/__tests__)
+npm run test:frontend    # Frontend tests (src/__tests__)
+
+# Executar arquivo específico
+npx vitest run path/to/file.test.js
 ```
 
 ### API & Deploy
 ```bash
 node api/health-check.js    # Testa saúde endpoints
-npm run validate:api        # Valida API completa
-npm run build               # Build aplicação
-# Deploy VPS: sudo cp -r dist/* /var/www/html/
-# Nginx config: Ver nginx-blog-config.conf e NGINX_BLOG_DEPLOYMENT.md
+npm run validate:api        # Valida API (syntax + encoding)
+npm run deploy              # Deploy completo VPS
+npm run deploy:quick        # Deploy rápido (sem backup)
+npm run deploy:health       # Health check pós-deploy
+```
+
+### Blog & Imagens
+```bash
+npm run optimize:images     # Otimiza imagens do blog
+npm run verify:blog-images  # Valida imagens blog
+npm run generate:manifest   # Gera manifest de imagens
+npm run validate:images     # Validação CI de imagens
+npm run fix:image-typos     # Corrige typos em nomes
 ```
 
 ### Qualidade
@@ -150,11 +167,14 @@ docs/                   # Config e documentação
 - **Sem database externa**: Arquitetura 100% estática
 
 ### 🧪 Estratégia de Testes
-- Unit Tests (React Testing Library + Vitest)
-- Integration Tests (Vitest + Supertest)
-- E2E Tests para fluxos críticos
-- Performance Tests (Core Web Vitals)
-- Coverage mínimo 80% para funcionalidades core
+- **Test Runner**: Vitest com workspace configuration
+- **Workspaces**: unit, integration, e2e, performance (separação lógica)
+- **Unit Tests**: React Testing Library + Vitest (src/__tests__)
+- **Integration Tests**: Vitest + node-mocks-http (api/__tests__)
+- **E2E Tests**: Fluxos críticos de usuário
+- **Performance Tests**: Core Web Vitals tracking
+- **Coverage Target**: 80% mínimo para funcionalidades core
+- **Test Environment**: jsdom para testes React
 
 ## 📋 Guidelines de Desenvolvimento
 
@@ -167,9 +187,9 @@ docs/                   # Config e documentação
 
 ### Code Style
 - ESLint (React + TypeScript parser)
-- TypeScript parcial strict (strict: false)
+- TypeScript 5.x com strict mode desabilitado (strict: false em tsconfig.json)
 - Tailwind CSS apenas (no inline styles)
-- API linting separada com `npm run validate:api`
+- API linting separada: `npm run validate:api` (syntax + encoding checks)
 
 ### Environment
 - Desenvolvimento: `.env` local
@@ -186,10 +206,12 @@ docs/                   # Config e documentação
 
 ### Bundle Optimization
 - Lazy loading componentes de rota
-- Code splitting manual em `vite.config.js`
+- Code splitting manual em `vite.config.js` (manualChunks strategy)
 - Tree shaking + chunk optimization
 - ESBuild minification (ES2020 target)
-- Assets inline limit: 8192 bytes
+- Assets inline limit: 2048 bytes (reduzido para evitar bloat)
+- Chunk size target: <250KB por chunk
+- Prerendering SEO automático via `scripts/prerender-pages.js`
 
 ### Runtime Performance
 - React.memo para re-renders caros
@@ -272,11 +294,13 @@ Schema.org para SEO médico:
 - **SSL**: Let's Encrypt via Nginx
 
 ### Processo de Deploy
-1. Build: `npm run build` → `dist/`
-2. Deploy: `sudo cp -r dist/* /var/www/html/`
+1. Build: `npm run build` → gera `dist/` + prerender páginas SEO
+2. Deploy: `npm run deploy` (script automatizado) ou `sudo cp -r dist/* /var/www/html/`
 3. Reload Nginx: `sudo systemctl reload nginx`
-4. Verificar: Acessar https://saraivavision.com.br/blog
-5. **Documentação**: Ver `NGINX_BLOG_DEPLOYMENT.md` para instruções detalhadas
+4. Health Check: `npm run deploy:health` ou acesse https://saraivavision.com.br
+5. **Documentação completa**: `docs/deployment/DEPLOYMENT_GUIDE.md`
+
+**Deploy Rápido** (90% dos casos): `npm run deploy:quick`
 
 ### Variáveis de Ambiente Obrigatórias
 ```bash

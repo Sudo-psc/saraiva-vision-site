@@ -454,25 +454,24 @@ const EnhancedFooter = ({
                         <FooterSection title={t('footer.contact')}>
                             <ul className="space-y-3">
                                 <ContactItem>
-                                    <a 
-                                        href={googleMapsProfileUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="hover:text-white transition-colors"
-                                        aria-label="Ver localização no Google Maps (nova aba)"
-                                    >
-                                        {t('footer.address_line1')}
-                                    </a>
+                                    <div className="font-semibold text-white mb-1">
+                                        {clinicInfo.name}
+                                    </div>
                                 </ContactItem>
                                 <ContactItem>
-                                    <a 
+                                    <a
                                         href={googleMapsProfileUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="hover:text-white transition-colors"
-                                        aria-label="Ver localização no Google Maps (nova aba)"
+                                        className="hover:text-white transition-colors inline-flex items-start gap-2 group"
+                                        aria-label={`Endereço da ${clinicInfo.name}: ${clinicInfo.streetAddress}, ${clinicInfo.neighborhood}, ${clinicInfo.city}-${clinicInfo.state}. Abrir no Google Maps (nova aba)`}
                                     >
-                                        {t('footer.address_line2')} 📍
+                                        <span className="flex-1">
+                                            {clinicInfo.streetAddress}, {clinicInfo.neighborhood}
+                                            <br />
+                                            {clinicInfo.city}-{clinicInfo.state}, CEP {clinicInfo.postalCode}
+                                        </span>
+                                        <span className="text-primary-400 group-hover:scale-110 transition-transform" aria-hidden="true">📍</span>
                                     </a>
                                 </ContactItem>
                                 <ContactLink href={`mailto:${clinicInfo.email}`}>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../../styles/blog-post-layout.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
@@ -40,7 +41,7 @@ import SpotifyEmbed from '../SpotifyEmbed';
 import OptimizedImage from './OptimizedImage';
 
 // Import data utilities
-import { blogPosts, getPostBySlug } from '../../data/blogPosts';
+import { blogPosts, getPostBySlug } from '../../content/blog';
 import { getPostEnrichment } from '../../data/blogPostsEnrichment';
 import { trackBlogInteraction, trackPageView } from '../../utils/analytics';
 
@@ -245,8 +246,8 @@ const PostPageTemplate = ({ slug }) => {
 
       <Navbar />
 
-      <main className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%]">
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+      <main className="py-24 md:py-32 scroll-block-internal">
+        <div className="container mx-auto px-3 md:px-4 lg:px-6 max-w-[1600px]">
           {/* Breadcrumbs with Glass Effect */}
           <nav aria-label="Breadcrumb" className="mb-6">
             <motion.div
@@ -318,8 +319,8 @@ const PostPageTemplate = ({ slug }) => {
             )}
 
             {/* Hero Content - Overlayed on Image */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 lg:p-12">
-              <div className="max-w-4xl">
+            <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 lg:p-16 xl:p-20">
+              <div className="max-w-6xl">
                 {/* Category Badge with Glass Effect */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -408,7 +409,7 @@ const PostPageTemplate = ({ slug }) => {
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                 {/* Content Container */}
-                <div className="relative bg-white/70 backdrop-blur-xl rounded-3xl p-6 md:p-10 lg:p-12 shadow-2xl border-2 border-white/50">
+                <div className="relative bg-white/70 backdrop-blur-xl rounded-3xl p-8 md:p-12 lg:p-16 xl:p-20 shadow-2xl border-2 border-white/50">
                   {/* Liquid Glass Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 rounded-3xl pointer-events-none"></div>
 

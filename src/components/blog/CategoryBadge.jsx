@@ -1,6 +1,6 @@
 import React from 'react';
 import { Shield, Stethoscope, Cpu, HelpCircle } from 'lucide-react';
-import { categoryConfig } from '../../data/blogPosts';
+import { categoryConfig } from '../../content/blog';
 
 const iconMap = {
   'shield': Shield,

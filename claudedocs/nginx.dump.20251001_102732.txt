@@ -1,0 +1,658 @@
+2025/10/01 10:27:32 [info] 49068#49068: Using 116KiB of shared memory for nchan in /etc/nginx/nginx.conf:104
+2025/10/01 10:27:32 [info] 49068#49068: Using 131072KiB of shared memory for nchan in /etc/nginx/nginx.conf:104
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+# configuration file /etc/nginx/nginx.conf:
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+error_log /var/log/nginx/error.log;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+	worker_connections 2048;
+	use epoll;
+	multi_accept on;
+}
+
+http {
+	##
+	# Basic Settings
+	##
+
+	sendfile on;
+	tcp_nopush on;
+	tcp_nodelay on;
+	types_hash_max_size 2048;
+	server_tokens off;
+
+	# Keepalive optimization
+	keepalive_timeout 30;
+	keepalive_requests 100;
+
+	# Buffer optimization
+	client_body_buffer_size 128k;
+	client_max_body_size 10m;
+	client_header_buffer_size 1k;
+	large_client_header_buffers 4 8k;
+
+	# Open file cache
+	open_file_cache max=10000 inactive=30s;
+	open_file_cache_valid 60s;
+	open_file_cache_min_uses 2;
+	open_file_cache_errors on;
+
+	# server_names_hash_bucket_size 64;
+	# server_name_in_redirect off;
+
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	##
+	# SSL Settings
+	##
+
+	ssl_protocols TLSv1.2 TLSv1.3; # Modern protocols only
+	ssl_prefer_server_ciphers on;
+	ssl_session_cache shared:SSL:10m; # Enhanced session cache
+	ssl_session_timeout 1d; # Longer session timeout
+	ssl_session_tickets off; # Better security
+	ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+
+	##
+	# Logging Settings
+	##
+
+	access_log /var/log/nginx/access.log;
+
+	##
+	# Compression Settings
+	##
+
+	gzip on;
+	gzip_vary on;
+	gzip_proxied any;
+	gzip_comp_level 6;
+	gzip_min_length 1000;
+	gzip_http_version 1.1;
+	gzip_types
+		application/atom+xml
+		application/geo+json
+		application/javascript
+		application/x-javascript
+		application/json
+		application/ld+json
+		application/manifest+json
+		application/rdf+xml
+		application/rss+xml
+		application/xhtml+xml
+		application/xml
+		font/eot
+		font/otf
+		font/ttf
+		image/svg+xml
+		text/css
+		text/javascript
+		text/plain
+		text/xml;
+
+	##
+	# Virtual Host Configs
+	##
+
+    # Rate limiting zones for API security
+    limit_req_zone $binary_remote_addr zone=graphql:10m rate=30r/m;
+    limit_req_zone $binary_remote_addr zone=rest_api:10m rate=60r/m;
+
+	include /etc/nginx/conf.d/*.conf;
+	include /etc/nginx/sites-enabled/*;
+}
+
+
+#mail {
+#	# See sample authentication script at:
+#	# http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
+#
+#	# auth_http localhost/auth.php;
+#	# pop3_capabilities "TOP" "USER";
+#	# imap_capabilities "IMAP4rev1" "UIDPLUS";
+#
+#	server {
+#		listen     localhost:110;
+#		protocol   pop3;
+#		proxy      on;
+#	}
+#
+#	server {
+#		listen     localhost:143;
+#		protocol   imap;
+#		proxy      on;
+#	}
+#}
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-auth-pam.conf:
+load_module modules/ngx_http_auth_pam_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-cache-purge.conf:
+load_module modules/ngx_http_cache_purge_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-dav-ext.conf:
+load_module modules/ngx_http_dav_ext_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-echo.conf:
+load_module modules/ngx_http_echo_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-fancyindex.conf:
+load_module modules/ngx_http_fancyindex_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-geoip.conf:
+load_module modules/ngx_http_geoip_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-geoip2.conf:
+load_module modules/ngx_http_geoip2_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-headers-more-filter.conf:
+load_module modules/ngx_http_headers_more_filter_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-image-filter.conf:
+load_module modules/ngx_http_image_filter_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-perl.conf:
+load_module modules/ngx_http_perl_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-subs-filter.conf:
+load_module modules/ngx_http_subs_filter_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-uploadprogress.conf:
+load_module modules/ngx_http_uploadprogress_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-upstream-fair.conf:
+load_module modules/ngx_http_upstream_fair_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-http-xslt-filter.conf:
+load_module modules/ngx_http_xslt_filter_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-mail.conf:
+load_module modules/ngx_mail_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-nchan.conf:
+load_module modules/ngx_nchan_module.so;
+
+# configuration file /etc/nginx/modules-enabled/50-mod-stream.conf:
+load_module modules/ngx_stream_module.so;
+
+# configuration file /etc/nginx/modules-enabled/70-mod-stream-geoip.conf:
+load_module modules/ngx_stream_geoip_module.so;
+
+# configuration file /etc/nginx/modules-enabled/70-mod-stream-geoip2.conf:
+load_module modules/ngx_stream_geoip2_module.so;
+
+# configuration file /etc/nginx/mime.types:
+
+types {
+    text/html                                        html htm shtml;
+    text/css                                         css;
+    text/xml                                         xml;
+    image/gif                                        gif;
+    image/jpeg                                       jpeg jpg;
+    application/javascript                           js;
+    application/atom+xml                             atom;
+    application/rss+xml                              rss;
+
+    text/mathml                                      mml;
+    text/plain                                       txt;
+    text/vnd.sun.j2me.app-descriptor                 jad;
+    text/vnd.wap.wml                                 wml;
+    text/x-component                                 htc;
+
+    image/avif                                       avif;
+    image/png                                        png;
+    image/svg+xml                                    svg svgz;
+    image/tiff                                       tif tiff;
+    image/vnd.wap.wbmp                               wbmp;
+    image/webp                                       webp;
+    image/x-icon                                     ico;
+    image/x-jng                                      jng;
+    image/x-ms-bmp                                   bmp;
+
+    font/woff                                        woff;
+    font/woff2                                       woff2;
+
+    application/java-archive                         jar war ear;
+    application/json                                 json;
+    application/mac-binhex40                         hqx;
+    application/msword                               doc;
+    application/pdf                                  pdf;
+    application/postscript                           ps eps ai;
+    application/rtf                                  rtf;
+    application/vnd.apple.mpegurl                    m3u8;
+    application/vnd.google-earth.kml+xml             kml;
+    application/vnd.google-earth.kmz                 kmz;
+    application/vnd.ms-excel                         xls;
+    application/vnd.ms-fontobject                    eot;
+    application/vnd.ms-powerpoint                    ppt;
+    application/vnd.oasis.opendocument.graphics      odg;
+    application/vnd.oasis.opendocument.presentation  odp;
+    application/vnd.oasis.opendocument.spreadsheet   ods;
+    application/vnd.oasis.opendocument.text          odt;
+    application/vnd.openxmlformats-officedocument.presentationml.presentation
+                                                     pptx;
+    application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                                                     xlsx;
+    application/vnd.openxmlformats-officedocument.wordprocessingml.document
+                                                     docx;
+    application/vnd.wap.wmlc                         wmlc;
+    application/wasm                                 wasm;
+    application/x-7z-compressed                      7z;
+    application/x-cocoa                              cco;
+    application/x-java-archive-diff                  jardiff;
+    application/x-java-jnlp-file                     jnlp;
+    application/x-makeself                           run;
+    application/x-perl                               pl pm;
+    application/x-pilot                              prc pdb;
+    application/x-rar-compressed                     rar;
+    application/x-redhat-package-manager             rpm;
+    application/x-sea                                sea;
+    application/x-shockwave-flash                    swf;
+    application/x-stuffit                            sit;
+    application/x-tcl                                tcl tk;
+    application/x-x509-ca-cert                       der pem crt;
+    application/x-xpinstall                          xpi;
+    application/xhtml+xml                            xhtml;
+    application/xspf+xml                             xspf;
+    application/zip                                  zip;
+
+    application/octet-stream                         bin exe dll;
+    application/octet-stream                         deb;
+    application/octet-stream                         dmg;
+    application/octet-stream                         iso img;
+    application/octet-stream                         msi msp msm;
+
+    audio/midi                                       mid midi kar;
+    audio/mpeg                                       mp3;
+    audio/ogg                                        ogg;
+    audio/x-m4a                                      m4a;
+    audio/x-realaudio                                ra;
+
+    video/3gpp                                       3gpp 3gp;
+    video/mp2t                                       ts;
+    video/mp4                                        mp4;
+    video/mpeg                                       mpeg mpg;
+    video/ogg                                        ogv;
+    video/quicktime                                  mov;
+    video/webm                                       webm;
+    video/x-flv                                      flv;
+    video/x-m4v                                      m4v;
+    video/x-matroska                                 mkv;
+    video/x-mng                                      mng;
+    video/x-ms-asf                                   asx asf;
+    video/x-ms-wmv                                   wmv;
+    video/x-msvideo                                  avi;
+}
+
+# configuration file /etc/nginx/conf.d/cors.conf:
+# Nginx CORS Configuration Maps for GraphQL and WordPress REST API
+# These maps should be placed in http context for CORS handling
+
+# CORS configuration map - should be placed in http context
+map $request_method $cors_method {
+    default "GET, POST, OPTIONS";
+    GET     "GET, OPTIONS";
+    POST    "POST, OPTIONS";
+    PUT     "PUT, POST, OPTIONS";
+    DELETE  "DELETE, OPTIONS";
+}
+
+map $http_origin $cors_origin {
+    default "";
+    "~^https://saraivavision\.com\.br$" "https://saraivavision.com.br";
+    "~^https://www\.saraivavision\.com\.br$" "https://www.saraivavision.com.br";
+    "~^https://localhost:\d+$" "$http_origin";  # Development
+}
+
+# Rate limiting zones - should be placed in http context
+# Note: These limit_req_zone directives must be placed in the http context of nginx.conf
+# limit_req_zone $binary_remote_addr zone=graphql:10m rate=30r/m;
+# limit_req_zone $binary_remote_addr zone=rest_api:10m rate=60r/m;
+
+# CORS headers configuration for various contexts
+# These variables can be used in server/location blocks
+
+# Common CORS headers for API endpoints
+add_header Access-Control-Allow-Origin $cors_origin always;
+add_header Access-Control-Allow-Methods $cors_method always;
+add_header Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, X-WP-Nonce, Accept" always;
+add_header Access-Control-Allow-Credentials "true" always;
+add_header Access-Control-Max-Age "86400" always;
+
+# Security headers for API endpoints
+add_header X-Content-Type-Options "nosniff" always;
+add_header X-Frame-Options "SAMEORIGIN" always;
+add_header X-XSS-Protection "1; mode=block" always;
+add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+# Cache control for API responses
+add_header Cache-Control "no-cache, no-store, must-revalidate" always;
+add_header Pragma "no-cache" always;
+add_header Expires "0" always;
+
+
+
+# configuration file /etc/nginx/sites-enabled/chatbot-api:
+# Chatbot API Configuration for Saraiva Vision
+# Handles appointment booking API endpoints
+
+server {
+    listen 80;
+    server_name api.saraivavision.com.br;
+
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    # Rate limiting for API endpoints
+    limit_req zone=rest_api burst=20 nodelay;
+
+    # Health check endpoint
+    location /health {
+        access_log off;
+        proxy_pass http://127.0.0.1:8000/health;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Allow ACME challenges for Let's Encrypt
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+    }
+
+    # API endpoints
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # CORS headers for API access
+        add_header Access-Control-Allow-Origin "*" always;
+        add_header Access-Control-Allow-Methods "GET, POST, OPTIONS" always;
+        add_header Access-Control-Allow-Headers "Content-Type, Authorization" always;
+
+        # Handle preflight requests
+        if ($request_method = OPTIONS) {
+            add_header Access-Control-Allow-Origin "*";
+            add_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
+            add_header Access-Control-Allow-Headers "Content-Type, Authorization";
+            add_header Access-Control-Max-Age 1728000;
+            add_header Content-Type 'text/plain; charset=utf-8';
+            add_header Content-Length 0;
+            return 204;
+        }
+    }
+
+    # Security - block access to sensitive files
+    location ~ /\. {
+        deny all;
+        return 404;
+    }
+
+    location ~ ~$ {
+        deny all;
+        return 404;
+    }
+}
+
+# HTTPS server block will be added after SSL certificate issuance.
+
+server {
+    listen 443 ssl http2;
+    server_name api.saraivavision.com.br;
+
+    ssl_certificate /etc/letsencrypt/live/api.saraivavision.com.br/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.saraivavision.com.br/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers off;
+
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    limit_req zone=rest_api burst=20 nodelay;
+
+    location /health {
+        access_log off;
+        proxy_pass http://127.0.0.1:8000/health;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        add_header Access-Control-Allow-Origin "*" always;
+        add_header Access-Control-Allow-Methods "GET, POST, OPTIONS" always;
+        add_header Access-Control-Allow-Headers "Content-Type, Authorization" always;
+
+        if ($request_method = OPTIONS) {
+            add_header Access-Control-Allow-Origin "*";
+            add_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
+            add_header Access-Control-Allow-Headers "Content-Type, Authorization";
+            add_header Access-Control-Max-Age 1728000;
+            add_header Content-Type 'text/plain; charset=utf-8';
+            add_header Content-Length 0;
+            return 204;
+        }
+    }
+
+    location ~ /\. {
+        deny all;
+        return 404;
+    }
+
+    location ~ ~$ {
+        deny all;
+        return 404;
+    }
+}
+
+# configuration file /etc/nginx/sites-enabled/saraivavision:
+# ==============================================================================
+# Saraiva Vision - Static SPA Configuration
+# Updated: 2025-09-30
+# Architecture: React SPA + Node.js API (no WordPress)
+# ==============================================================================
+
+server {
+    listen 443 ssl http2 default_server;
+    listen [::]:443 ssl http2 default_server;
+    server_name saraivavision.com.br www.saraivavision.com.br;
+
+    root /var/www/html;
+    index index.html;
+
+    # SSL Configuration
+    ssl_certificate /etc/letsencrypt/live/saraivavision.com.br/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/saraivavision.com.br/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+
+    # ============================================================
+    # CRITICAL FIX: HTML sem cache (SPA entry point)
+    # ============================================================
+    location = / {
+        try_files /index.html =404;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0" always;
+        add_header Pragma "no-cache" always;
+        add_header Expires "0" always;
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+    }
+
+    location = /index.html {
+        try_files /index.html =404;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0" always;
+        add_header Pragma "no-cache" always;
+        add_header Expires "0" always;
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+    }
+
+    # ============================================================
+    # FIX: Static assets com cache imutável (hash-based)
+    # ============================================================
+    location ~* ^/assets/.*\.(js|mjs|css|woff2?|ttf|eot|otf)$ {
+        try_files $uri =404;
+
+        types {
+            application/javascript js mjs;
+            text/css css;
+            font/woff2 woff2;
+            font/woff woff;
+        }
+
+        expires 1y;
+        add_header Cache-Control "public, immutable, max-age=31536000" always;
+        add_header Access-Control-Allow-Origin "*" always;
+        add_header Vary "Accept-Encoding" always;
+
+        gzip_static on;
+        access_log off;
+    }
+
+    # ============================================================
+    # Blog Image Optimization - Progressive Fallback System
+    # Saraiva Vision Medical Blog - AVIF → WebP → PNG/JPEG
+    # ============================================================
+    include /etc/nginx/snippets/blog-image-optimization.conf;
+
+    # ============================================================
+    # Other Static Assets (non-Blog)
+    # ============================================================
+    location ~* \.(png|jpg|jpeg|gif|webp|avif|svg|ico)$ {
+        try_files $uri =404;
+        expires 1y;
+        add_header Cache-Control "public, immutable" always;
+        access_log off;
+    }
+
+    # ============================================================
+    # Node.js API Proxy
+    # ============================================================
+    location /api/ {
+        proxy_pass http://127.0.0.1:3001/api/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+    }
+
+    # ============================================================
+    # SPA Routing fallback
+    # ============================================================
+    location / {
+        try_files $uri $uri/ /index.html;
+        add_header Cache-Control "no-store, no-cache, must-revalidate" always;
+    }
+
+    # ============================================================
+    # Security Headers (Global)
+    # ============================================================
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+}
+
+# ==============================================================================
+# HTTP to HTTPS Redirect
+# ==============================================================================
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name saraivavision.com.br www.saraivavision.com.br;
+    return 301 https://$server_name$request_uri;
+}
+
+# configuration file /etc/nginx/snippets/blog-image-optimization.conf:
+# ==============================================================================
+# Saraiva Vision - Blog Image Optimization Snippet
+# Progressive Fallback: AVIF → WebP → PNG/JPEG
+# Last Updated: 2025-09-30
+# ==============================================================================
+
+# Blog-specific image optimization with intelligent fallback
+location /Blog/ {
+    # Modern image formats (AVIF, WebP) with progressive fallback
+    location ~* \.(avif|webp)$ {
+        # Fallback chain: AVIF/WebP → PNG/JPEG → 404
+        try_files
+            $uri                                     # Exact format match
+            $uri.png                                 # PNG fallback
+            $uri.jpg                                 # JPEG fallback
+            $uri.jpeg                                # JPEG fallback
+            =404;
+
+        expires 1y;
+        add_header Cache-Control "public, immutable" always;
+        add_header Vary "Accept" always;
+        add_header Access-Control-Allow-Origin "*" always;
+        add_header Access-Control-Allow-Methods "GET" always;
+        add_header Access-Control-Allow-Headers "Accept, Content-Type" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        access_log off;
+    }
+
+    # Responsive image variants (-480w, -768w, -1280w, -1920w)
+    location ~ ^/Blog/(?<basename>[^-]+)(?<suffix>-\d+w)?\.(?<format>avif|webp)$ {
+        # Multi-level fallback for responsive images
+        try_files
+            /Blog/${basename}${suffix}.${format}    # Exact match (e.g., image-1280w.avif)
+            /Blog/${basename}${suffix}.png        # Same size PNG fallback
+            /Blog/${basename}${suffix}.jpg        # Same size JPEG fallback
+            /Blog/${basename}.png                 # Original PNG
+            /Blog/${basename}.jpg                 # Original JPEG
+            =404;
+
+        expires 1y;
+        add_header Cache-Control "public, immutable" always;
+        add_header Vary "Accept" always;
+        add_header Access-Control-Allow-Origin "*" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        access_log off;
+    }
+
+    # Standard blog images (PNG, JPEG, GIF, SVG, ICO)
+    location ~* \.(png|jpg|jpeg|gif|svg|ico)$ {
+        try_files $uri =404;
+        expires 1y;
+        add_header Cache-Control "public, immutable" always;
+        add_header Vary "Accept" always;
+        add_header Access-Control-Allow-Origin "*" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        access_log off;
+    }
+
+    # Default behavior for other Blog files
+    try_files $uri $uri/ =404;
+    expires 1y;
+    add_header Cache-Control "public, immutable" always;
+}

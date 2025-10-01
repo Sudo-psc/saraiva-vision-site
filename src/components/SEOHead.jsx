@@ -37,10 +37,23 @@ const SEOHead = ({
   const baseUrl = resolveBaseUrl();
   const currentPath = location.pathname;
 
-  // Generate optimized image URL for social sharing
+  // Validar limites de caracteres para SEO
+  const validatedTitle = React.useMemo(() => {
+    if (!title) return 'Oftalmologista Caratinga/MG | Dr. Philipe Saraiva CRM 69.870';
+    return title.length > 60 ? title.substring(0, 57) + '...' : title;
+  }, [title]);
+
+  const validatedDescription = React.useMemo(() => {
+    const defaultDesc = 'Clínica oftalmológica em Caratinga/MG: catarata, glaucoma, retina, lentes. Dr. Philipe Saraiva CRM-MG 69.870. Agende online ou WhatsApp!';
+    const desc = description || defaultDesc;
+    return desc.length > 155 ? desc.substring(0, 152) + '...' : desc;
+  }, [description]);
+
+  // Generate optimized image URL for social sharing (1200x630)
   const getOptimizedOgImage = () => {
     if (image) return image;
-    return `${baseUrl}/og-image-${currentLang}.jpg`;
+    // Usar imagem OpenGraph padrão 1200x630
+    return `${baseUrl}/og-image-1200x630.jpg`;
   };
 
   // Generate site name based on language
@@ -93,14 +106,12 @@ const SEOHead = ({
     : `${baseUrl}${currentPath}`;
   const ogImage = getOptimizedOgImage();
 
-  const resolvedDescription = description || 'Clínica oftalmológica em Caratinga/MG com consultas, exames e tratamentos especializados para a saúde da visão.';
-
   return (
     <Helmet>
       {/* Basic Meta Tags */}
       <html lang={currentLang} />
-      <title>{title}</title>
-      <meta name="description" content={resolvedDescription} />
+      <title>{validatedTitle}</title>
+      <meta name="description" content={validatedDescription} />
       {keywords && <meta name="keywords" content={keywords} />}
 
       {/* Viewport and Mobile Optimization */}
@@ -128,14 +139,14 @@ const SEOHead = ({
       ))}
 
       {/* Open Graph - Enhanced for Medical Clinics */}
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={resolvedDescription} />
+      <meta property="og:title" content={validatedTitle} />
+      <meta property="og:description" content={validatedDescription} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:site_name" content={siteName} />
       <meta property="og:locale" content={currentLang === 'pt' ? 'pt_BR' : 'en_US'} />
       <meta property="og:type" content={ogType} />
       <meta property="og:image" content={ogImage} />
-      <meta property="og:image:alt" content={`${siteName} - ${resolvedDescription.substring(0, 100)}...`} />
+      <meta property="og:image:alt" content={`${validatedTitle} - Clínica Saraiva Vision`} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:type" content="image/jpeg" />
@@ -152,10 +163,10 @@ const SEOHead = ({
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@saraivavisao" />
       <meta name="twitter:creator" content="@saraivavisao" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={resolvedDescription} />
+      <meta name="twitter:title" content={validatedTitle} />
+      <meta name="twitter:description" content={validatedDescription} />
       <meta name="twitter:image" content={ogImage} />
-      <meta name="twitter:image:alt" content={`${siteName} - Oftalmologia em Caratinga`} />
+      <meta name="twitter:image:alt" content={`${validatedTitle} - Clínica Saraiva Vision`} />
 
       {/* Additional Social Media Meta Tags */}
       <meta property="fb:app_id" content="1134006230864956" />

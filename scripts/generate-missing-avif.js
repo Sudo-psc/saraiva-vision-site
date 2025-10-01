@@ -15,7 +15,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuration
-const SIZES = [480, 768, 1280];
+const SIZES = [480, 768, 1280, 1920];
 const QUALITY = 80; // AVIF quality (0-100)
 const EFFORT = 4;   // Compression effort (0-9, higher = slower but better)
 
@@ -28,9 +28,7 @@ const TARGET_DIR = SOURCE_DIR;
 
 // Images to process (based on 404 errors)
 const IMAGES_TO_PROCESS = [
-  'olhinho.png',
-  'retinose_pigmentar.png',
-  'moscas_volantes_capa.png'
+  'terapia-genetica-celula-tronco-capa.png'
 ];
 
 /**

@@ -1,205 +1,255 @@
 #!/bin/bash
-# Atomic Deploy Script with Rollback
-# Usage: ./scripts/deploy-atomic.sh [--skip-build] [--skip-backup]
 
-set -e
+###############################################################################
+# Deploy Atômico Script
+# Descrição: Deploy com zero-downtime usando releases/current/shared
+# Uso: sudo ./scripts/deploy-atomic.sh [branch]
+###############################################################################
 
+set -euo pipefail
+
+# Cores
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+# Configurações do projeto
+DOMAIN="saraivavision.com.br"
+REPO_URL="https://github.com/Sudo-psc/saraiva-vision-site.git"
+BRANCH="${1:-main}"
+APP_ROOT="/var/www/saraivavision"
+BUILD_CMD="npm ci && npm run build"
 BUILD_DIR="dist"
-PRODUCTION_DIR="/var/www/html"
-BACKUP_DIR="/var/backups/saraiva-$(date +%Y%m%d_%H%M%S)"
-SKIP_BUILD=false
-SKIP_BACKUP=false
+HEALTHCHECK_URL="https://saraivavision.com.br/"
+KEEP_RELEASES=5
 
-# Parse arguments
-for arg in "$@"; do
-  case $arg in
-    --skip-build)
-      SKIP_BUILD=true
-      ;;
-    --skip-backup)
-      SKIP_BACKUP=true
-      ;;
-    *)
-      echo "Unknown argument: $arg"
-      echo "Usage: $0 [--skip-build] [--skip-backup]"
-      exit 1
-      ;;
-  esac
-done
+# Diretórios
+RELEASES_DIR="${APP_ROOT}/releases"
+SHARED_DIR="${APP_ROOT}/shared"
+REPO_CACHE_DIR="${APP_ROOT}/repo_cache"
+CURRENT_LINK="${APP_ROOT}/current"
 
-echo "════════════════════════════════════════════════════"
-echo "   ATOMIC DEPLOY - Saraiva Vision"
-echo "════════════════════════════════════════════════════"
-echo ""
+# Timestamp para esta release
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+RELEASE_DIR="${RELEASES_DIR}/${TIMESTAMP}"
+LOG_FILE="/home/saraiva-vision-site/claudelogs/deploy/deploy_${TIMESTAMP}.log"
 
-# Pre-flight checks
-echo "🔍 Pre-flight checks..."
-if [ ! -d "$PRODUCTION_DIR" ]; then
-  echo "❌ Production directory not found: $PRODUCTION_DIR"
-  exit 1
-fi
+# Criar diretórios de log
+mkdir -p "$(dirname "$LOG_FILE")"
 
-if [ "$SKIP_BUILD" = false ]; then
-  if [ ! -f "package.json" ]; then
-    echo "❌ package.json not found. Are you in the project root?"
-    exit 1
-  fi
-fi
-
-echo "✅ Pre-flight OK"
-echo ""
-
-# Step 1: Build
-if [ "$SKIP_BUILD" = false ]; then
-  echo "🔨 Step 1: Building..."
-  npm run build || {
-    echo "❌ Build failed!"
-    exit 1
-  }
-  echo "✅ Build successful"
-  echo ""
-else
-  echo "⏭️  Skipping build (--skip-build)"
-  echo ""
-fi
-
-# Verify build output
-if [ ! -d "$BUILD_DIR" ]; then
-  echo "❌ Build directory not found: $BUILD_DIR"
-  exit 1
-fi
-
-if [ ! -f "$BUILD_DIR/index.html" ]; then
-  echo "❌ index.html not found in $BUILD_DIR"
-  exit 1
-fi
-
-# Step 2: Backup
-if [ "$SKIP_BACKUP" = false ]; then
-  echo "💾 Step 2: Creating backup..."
-  sudo mkdir -p "$(dirname "$BACKUP_DIR")"
-  sudo cp -r "$PRODUCTION_DIR" "$BACKUP_DIR" || {
-    echo "❌ Backup failed!"
-    exit 1
-  }
-  BACKUP_SIZE=$(sudo du -sh "$BACKUP_DIR" | cut -f1)
-  echo "✅ Backup created: $BACKUP_DIR ($BACKUP_SIZE)"
-  echo ""
-else
-  echo "⏭️  Skipping backup (--skip-backup)"
-  echo ""
-fi
-
-# Step 3: Deploy
-echo "🚀 Step 3: Deploying..."
-echo "   Source: $BUILD_DIR"
-echo "   Target: $PRODUCTION_DIR"
-
-# Copy files
-sudo cp -r "$BUILD_DIR"/* "$PRODUCTION_DIR"/ || {
-  echo "❌ Deploy failed during copy!"
-  if [ "$SKIP_BACKUP" = false ]; then
-    echo "🔄 Rolling back..."
-    sudo rm -rf "${PRODUCTION_DIR:?}"/*
-    sudo cp -r "$BACKUP_DIR"/* "$PRODUCTION_DIR"/
-    echo "✅ Rollback complete"
-  fi
-  exit 1
+# Função de log
+log() {
+    echo -e "${BLUE}[$(date +'%H:%M:%S')]${NC} $*" | tee -a "$LOG_FILE"
 }
 
-echo "✅ Files copied"
-echo ""
+log_success() {
+    echo -e "${GREEN}[✓]${NC} $*" | tee -a "$LOG_FILE"
+}
 
-# Step 4: Verify
-echo "✅ Step 4: Verifying deployment..."
+log_warning() {
+    echo -e "${YELLOW}[⚠]${NC} $*" | tee -a "$LOG_FILE"
+}
 
-# Check index.html exists
-if [ ! -f "$PRODUCTION_DIR/index.html" ]; then
-  echo "❌ index.html missing after deploy!"
-  if [ "$SKIP_BACKUP" = false ]; then
-    echo "🔄 Rolling back..."
-    sudo rm -rf "${PRODUCTION_DIR:?}"/*
-    sudo cp -r "$BACKUP_DIR"/* "$PRODUCTION_DIR"/
-    echo "✅ Rollback complete"
-  fi
-  exit 1
+log_error() {
+    echo -e "${RED}[✗]${NC} $*" | tee -a "$LOG_FILE"
+}
+
+log_step() {
+    echo -e "\n${CYAN}▶${NC} ${YELLOW}$*${NC}" | tee -a "$LOG_FILE"
+}
+
+# Verificar se está rodando como root
+if [[ $EUID -ne 0 ]]; then
+   log_error "Este script deve ser executado como root (sudo)"
+   exit 1
 fi
 
-# HTTP health check
-echo "   Testing HTTP response..."
-HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://saraivavision.com.br/ || echo "000")
+# Banner
+echo -e "${CYAN}"
+cat << "EOF"
+╔══════════════════════════════════════════╗
+║     Deploy Atômico - Saraiva Vision      ║
+╚══════════════════════════════════════════╝
+EOF
+echo -e "${NC}"
 
-if [ "$HTTP_CODE" != "200" ]; then
-  echo "❌ Health check failed! HTTP $HTTP_CODE"
+log "Iniciando deploy atômico"
+log "Branch: $BRANCH"
+log "Release: $TIMESTAMP"
+log "Log: $LOG_FILE"
+echo ""
 
-  if [ "$SKIP_BACKUP" = false ]; then
-    echo "🔄 Rolling back..."
-    sudo rm -rf "${PRODUCTION_DIR:?}"/*
-    sudo cp -r "$BACKUP_DIR"/* "$PRODUCTION_DIR"/
+# Fase 1: Criar estrutura de diretórios
+log_step "Fase 1: Preparando estrutura de diretórios"
 
-    # Verify rollback
-    ROLLBACK_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://saraivavision.com.br/ || echo "000")
-    if [ "$ROLLBACK_CODE" = "200" ]; then
-      echo "✅ Rollback complete and verified"
-    else
-      echo "❌ Rollback verification failed! Manual intervention required."
+mkdir -p "$RELEASES_DIR"
+mkdir -p "$SHARED_DIR"
+mkdir -p "$REPO_CACHE_DIR"
+
+log_success "Estrutura criada"
+
+# Fase 2: Clone/Pull do repositório
+log_step "Fase 2: Atualizando repositório"
+
+if [[ -d "${REPO_CACHE_DIR}/.git" ]]; then
+    log "Repositório já existe, fazendo pull..."
+    cd "$REPO_CACHE_DIR"
+    git fetch origin
+    git reset --hard "origin/${BRANCH}"
+    git clean -fd
+else
+    log "Clonando repositório..."
+    git clone --depth 1 --branch "$BRANCH" "$REPO_URL" "$REPO_CACHE_DIR"
+    cd "$REPO_CACHE_DIR"
+fi
+
+COMMIT_HASH=$(git rev-parse --short HEAD)
+log_success "Código atualizado (commit: $COMMIT_HASH)"
+
+# Fase 3: Criar nova release
+log_step "Fase 3: Criando release ${TIMESTAMP}"
+
+mkdir -p "$RELEASE_DIR"
+rsync -a --exclude='.git' --exclude='node_modules' "$REPO_CACHE_DIR/" "$RELEASE_DIR/"
+
+log_success "Release criada: $RELEASE_DIR"
+
+# Fase 4: Build da aplicação
+log_step "Fase 4: Building aplicação"
+
+cd "$RELEASE_DIR"
+
+# Verificar se existe package.json
+if [[ ! -f "package.json" ]]; then
+    log_error "package.json não encontrado em $RELEASE_DIR"
+    rm -rf "$RELEASE_DIR"
+    exit 1
+fi
+
+# Executar build
+log "Executando: $BUILD_CMD"
+if eval "$BUILD_CMD" >> "$LOG_FILE" 2>&1; then
+    log_success "Build concluído"
+else
+    log_error "Build falhou! Verifique o log: $LOG_FILE"
+    rm -rf "$RELEASE_DIR"
+    exit 1
+fi
+
+# Verificar se diretório de build existe
+if [[ ! -d "${RELEASE_DIR}/${BUILD_DIR}" ]]; then
+    log_error "Diretório de build não encontrado: ${RELEASE_DIR}/${BUILD_DIR}"
+    rm -rf "$RELEASE_DIR"
+    exit 1
+fi
+
+# Fase 5: Criar symlinks para shared folders (se necessário)
+log_step "Fase 5: Configurando shared folders"
+
+# Exemplo: se houver uploads ou storage compartilhado
+# ln -sf "${SHARED_DIR}/storage" "${RELEASE_DIR}/dist/storage"
+
+log_success "Shared folders configurados"
+
+# Fase 6: Healthcheck local
+log_step "Fase 6: Healthcheck local"
+
+log "Verificando arquivos essenciais..."
+if [[ ! -f "${RELEASE_DIR}/${BUILD_DIR}/index.html" ]]; then
+    log_error "index.html não encontrado em ${RELEASE_DIR}/${BUILD_DIR}/"
+    rm -rf "$RELEASE_DIR"
+    exit 1
+fi
+
+log_success "Healthcheck local passou"
+
+# Fase 7: Trocar symlink current (deploy atômico!)
+log_step "Fase 7: Ativando release (deploy atômico)"
+
+# Backup do symlink anterior
+if [[ -L "$CURRENT_LINK" ]]; then
+    PREVIOUS_RELEASE=$(readlink "$CURRENT_LINK")
+    log "Release anterior: $PREVIOUS_RELEASE"
+fi
+
+# Trocar symlink atomicamente
+ln -sfn "${RELEASE_DIR}/${BUILD_DIR}" "$CURRENT_LINK"
+
+log_success "Symlink atualizado: current -> releases/${TIMESTAMP}/${BUILD_DIR}"
+
+# Ajustar permissões
+chown -R www-data:www-data "$APP_ROOT"
+
+# Fase 8: Validar e recarregar Nginx
+log_step "Fase 8: Recarregando Nginx"
+
+if nginx -t >> "$LOG_FILE" 2>&1; then
+    systemctl reload nginx
+    log_success "Nginx recarregado"
+else
+    log_error "Configuração Nginx inválida!"
+    # Rollback
+    if [[ -n "${PREVIOUS_RELEASE:-}" ]]; then
+        log_warning "Fazendo rollback para release anterior..."
+        ln -sfn "$PREVIOUS_RELEASE" "$CURRENT_LINK"
     fi
-  fi
-
-  exit 1
+    exit 1
 fi
 
-echo "✅ Health check passed (HTTP $HTTP_CODE)"
-echo ""
+# Fase 9: Healthcheck em produção
+log_step "Fase 9: Healthcheck em produção"
 
-# Step 5: Post-deploy checks
-echo "🔍 Step 5: Post-deploy verification..."
+sleep 2  # Aguardar Nginx recarregar
 
-# Check bundle exists
-BUNDLE=$(curl -s https://saraivavision.com.br/ | grep -o 'index-[A-Za-z0-9_-]*.js' | head -1)
-if [ -z "$BUNDLE" ]; then
-  echo "⚠️  Warning: Could not detect bundle filename"
+if /home/saraiva-vision-site/scripts/healthcheck.sh "$HEALTHCHECK_URL" 3 10 >> "$LOG_FILE" 2>&1; then
+    log_success "Healthcheck em produção passou"
 else
-  echo "   Bundle detected: $BUNDLE"
-
-  BUNDLE_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://saraivavision.com.br/assets/$BUNDLE")
-  if [ "$BUNDLE_CODE" = "200" ]; then
-    echo "   ✅ Bundle accessible (HTTP $BUNDLE_CODE)"
-  else
-    echo "   ⚠️  Bundle not accessible (HTTP $BUNDLE_CODE)"
-  fi
+    log_error "Healthcheck em produção falhou!"
+    
+    # Rollback
+    if [[ -n "${PREVIOUS_RELEASE:-}" ]]; then
+        log_warning "Fazendo rollback automático..."
+        ln -sfn "$PREVIOUS_RELEASE" "$CURRENT_LINK"
+        systemctl reload nginx
+        log_warning "Rollback concluído"
+    fi
+    exit 1
 fi
 
-# Check AVIF images
-echo "   Checking AVIF images..."
-AVIF_COUNT=$(find "$PRODUCTION_DIR/Blog" -name "*-{480,768,1280}w.avif" 2>/dev/null | wc -l)
-if [ "$AVIF_COUNT" -gt 0 ]; then
-  echo "   ✅ AVIF images found ($AVIF_COUNT files)"
-else
-  echo "   ⚠️  No AVIF images found"
+# Fase 10: Marcar release como OK e limpar antigas
+log_step "Fase 10: Limpeza"
+
+touch "${RELEASE_DIR}/.deployed"
+echo "$COMMIT_HASH" > "${RELEASE_DIR}/.commit"
+
+# Manter apenas últimas N releases
+RELEASE_COUNT=$(ls -1d "${RELEASES_DIR}"/* 2>/dev/null | wc -l)
+if [[ $RELEASE_COUNT -gt $KEEP_RELEASES ]]; then
+    log "Removendo releases antigas (mantendo últimas $KEEP_RELEASES)..."
+    ls -1dt "${RELEASES_DIR}"/* | tail -n +$((KEEP_RELEASES + 1)) | while read -r old_release; do
+        if [[ ! -L "$CURRENT_LINK" ]] || [[ "$(readlink "$CURRENT_LINK")" != "${old_release}/${BUILD_DIR}" ]]; then
+            log "  Removendo: $(basename "$old_release")"
+            rm -rf "$old_release"
+        fi
+    done
 fi
 
+log_success "Limpeza concluída"
+
+# Relatório final
+echo ""
+echo -e "${GREEN}╔══════════════════════════════════════════╗${NC}"
+echo -e "${GREEN}║     ✅ Deploy Concluído com Sucesso!     ║${NC}"
+echo -e "${GREEN}╚══════════════════════════════════════════╝${NC}"
+echo ""
+log "Branch: $BRANCH"
+log "Commit: $COMMIT_HASH"
+log "Release: $TIMESTAMP"
+log "URL: $HEALTHCHECK_URL"
+log "Log completo: $LOG_FILE"
 echo ""
 
-# Summary
-echo "════════════════════════════════════════════════════"
-echo "   ✅ DEPLOY SUCCESSFUL!"
-echo "════════════════════════════════════════════════════"
-echo ""
-echo "📊 Summary:"
-echo "   Build: $([ "$SKIP_BUILD" = true ] && echo "Skipped" || echo "✅ Success")"
-echo "   Backup: $([ "$SKIP_BACKUP" = true ] && echo "Skipped" || echo "✅ $BACKUP_DIR")"
-echo "   Deploy: ✅ Success"
-echo "   Health: ✅ HTTP $HTTP_CODE"
-echo ""
-echo "🌐 URL: https://saraivavision.com.br"
-echo "📋 Logs: sudo tail -f /var/log/nginx/access.log"
-echo ""
-echo "🔄 Rollback command (se necessário):"
-if [ "$SKIP_BACKUP" = false ]; then
-  echo "   sudo rm -rf $PRODUCTION_DIR/*"
-  echo "   sudo cp -r $BACKUP_DIR/* $PRODUCTION_DIR/"
-else
-  echo "   (Backup não criado - rollback manual necessário)"
-fi
-echo ""
+exit 0

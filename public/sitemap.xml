@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
   <!-- Main Pages - Highest Priority -->
   <url>
     <loc>https://saraivavision.com.br/</loc>
-    <lastmod>2025-09-30</lastmod>
+    <lastmod>2025-10-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png</image:loc>
+      <image:title>Saraiva Vision Logo</image:title>
+      <image:caption>Clínica Oftalmológica Saraiva Vision em Caratinga/MG</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://saraivavision.com.br/consultorio.jpg</image:loc>
+      <image:title>Consultório Saraiva Vision</image:title>
+    </image:image>
   </url>
 
   <url>
@@ -18,9 +28,13 @@
 
   <url>
     <loc>https://saraivavision.com.br/blog</loc>
-    <lastmod>2025-09-30</lastmod>
+    <lastmod>2025-10-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://saraivavision.com.br/Blog/capa-ia.webp</image:loc>
+      <image:title>Blog Saraiva Vision - Artigos sobre saúde ocular</image:title>
+    </image:image>
   </url>
 
   <!-- Service Detail Pages - High Priority Medical Content -->
@@ -115,23 +129,35 @@
   <!-- Blog Posts - Medical Educational Content -->
   <url>
     <loc>https://saraivavision.com.br/blog/catarata-guia-completo-2025</loc>
-    <lastmod>2025-09-30</lastmod>
+    <lastmod>2025-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://saraivavision.com.br/Blog/capa-lentes-premium-catarata-1920w.avif</image:loc>
+      <image:title>Catarata - Guia Completo 2025</image:title>
+    </image:image>
   </url>
 
   <url>
     <loc>https://saraivavision.com.br/blog/glaucoma-o-ladrao-silencioso-da-visao</loc>
-    <lastmod>2025-09-30</lastmod>
+    <lastmod>2025-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://saraivavision.com.br/Blog/capa-glaucoma-768w.avif</image:loc>
+      <image:title>Glaucoma - O Ladrão Silencioso da Visão</image:title>
+    </image:image>
   </url>
 
   <url>
     <loc>https://saraivavision.com.br/blog/adaptacao-de-lentes-de-contato</loc>
-    <lastmod>2025-09-30</lastmod>
+    <lastmod>2025-10-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://saraivavision.com.br/Blog/lentes.jpeg</image:loc>
+      <image:title>Adaptação de Lentes de Contato</image:title>
+    </image:image>
   </url>
 
   <url>

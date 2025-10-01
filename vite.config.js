@@ -111,7 +111,7 @@ export default defineConfig(({ mode }) => {
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react/jsx-runtime'],
-    exclude: []
+    exclude: ['date-fns', 'crypto-js']
   },
   test: {
     globals: true,
@@ -123,15 +123,18 @@ export default defineConfig(({ mode }) => {
 
   build: {
     outDir: 'dist',
-    sourcemap: true, // Enable sourcemaps for better error tracking (hidden .map files)
-    chunkSizeWarningLimit: 300, // Reduced to enforce smaller chunks
+    sourcemap: false, // Disabled for production to reduce bundle size
+    chunkSizeWarningLimit: 250, // Further reduced to enforce smaller chunks
     assetsDir: 'assets',
-    assetsInlineLimit: 4096, // Reduced to avoid large inline assets
+    assetsInlineLimit: 2048, // Reduced to minimize inline base64 bloat
     minify: 'esbuild',
     target: 'es2020', // Modern target for better optimization
     cssCodeSplit: true, // Split CSS for better caching
     // Enhanced minification and tree-shaking
     reportCompressedSize: true,
+    modulePreload: {
+      polyfill: false // Disable polyfill for modern browsers
+    },
     rollupOptions: {
       input: 'index.html',
       output: {
@@ -153,7 +156,7 @@ export default defineConfig(({ mode }) => {
               return 'radix-ui'
             }
 
-            // Framer Motion - heavy animation library
+            // Framer Motion - heavy animation library, lazy load
             if (id.includes('framer-motion')) {
               return 'motion'
             }
@@ -163,8 +166,8 @@ export default defineConfig(({ mode }) => {
               return 'helmet'
             }
 
-            // Date utilities
-            if (id.includes('date-fns') || id.includes('dayjs')) {
+            // Date utilities - only dayjs now
+            if (id.includes('dayjs')) {
               return 'date-utils'
             }
 
@@ -173,34 +176,34 @@ export default defineConfig(({ mode }) => {
               return 'style-utils'
             }
 
-            // Supabase SDK
-            if (id.includes('@supabase/')) {
-              return 'supabase'
-            }
-
-            // Utility libraries
-            if (id.includes('crypto-js') || id.includes('dompurify') || id.includes('zod')) {
+            // Utility libraries - removed crypto-js
+            if (id.includes('dompurify') || id.includes('zod')) {
               return 'utils'
             }
 
-            // HTTP/GraphQL libraries
-            if (id.includes('graphql') || id.includes('fetch')) {
-              return 'network'
-            }
-
-            // Icons libraries
+            // Icons libraries - split by usage
             if (id.includes('lucide-react')) {
               return 'icons'
             }
 
-            // Google Maps
+            // Google Maps - lazy load
             if (id.includes('googlemaps')) {
               return 'maps'
             }
 
-            // Internationalization
+            // Internationalization - lazy load
             if (id.includes('i18next')) {
               return 'i18n'
+            }
+
+            // PostHog analytics - separate chunk for lazy loading
+            if (id.includes('posthog')) {
+              return 'analytics'
+            }
+
+            // Workbox - service worker utilities
+            if (id.includes('workbox')) {
+              return 'sw'
             }
 
             // Other vendor libraries
