@@ -314,7 +314,7 @@ const AudioPlayer = ({
                     {episode.src && (
                         <button
                             onClick={handleDownload}
-                            className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                            className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
                             aria-label="Baixar episódio"
                             title="Baixar episódio"
                         >
@@ -372,7 +372,7 @@ const AudioPlayer = ({
                                 href={episode.spotifyUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                                className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
                                 aria-label="Ouvir no Spotify"
                             >
                                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -455,7 +455,7 @@ const AudioPlayer = ({
                             {episode.category && (
                                 <>
                                     <span>•</span>
-                                    <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium text-xs">
+                                    <span className="bg-[#1DB954]/10 text-[#1DB954] px-2 py-1 rounded-full font-semibold text-xs border border-[#1DB954]/20">
                                         {episode.category}
                                     </span>
                                 </>
@@ -496,7 +496,7 @@ const AudioPlayer = ({
                             {episode.category && (
                                 <>
                                     <span>•</span>
-                                    <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                                    <span className="bg-[#1DB954]/10 text-[#1DB954] px-2 py-0.5 rounded-full font-semibold border border-[#1DB954]/20">
                                         {episode.category}
                                     </span>
                                 </>
@@ -526,7 +526,7 @@ const AudioPlayer = ({
                             {episode.category && (
                                 <>
                                     <span>•</span>
-                                    <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                                    <span className="bg-[#1DB954]/10 text-[#1DB954] px-2 py-0.5 rounded-full font-semibold border border-[#1DB954]/20">
                                         {episode.category}
                                     </span>
                                 </>

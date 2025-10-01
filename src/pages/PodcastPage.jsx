@@ -229,7 +229,7 @@ function PodcastPage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 mb-6"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1DB954]/10 text-[#1DB954] mb-6 border border-[#1DB954]/20 font-semibold"
               >
                 <Mic2 className="w-5 h-5" />
                 <span className="text-sm font-semibold">{t('podcast.title')}</span>
@@ -272,7 +272,7 @@ function PodcastPage() {
                 transition={{ delay: 0.3 }}
                 className="mb-8"
               >
-                <div className="glass-blue card-3d rounded-3xl shadow-soft-light p-6 md:p-8 lg:p-10 border border-blue-200/40">
+                <div className="glass-blue card-3d rounded-3xl shadow-soft-light p-6 md:p-8 lg:p-10 border border-[#1DB954]/20">
                   <div className="flex flex-col lg:flex-row items-center gap-8">
                     <div className="flex-shrink-0 relative group">
                        <OptimizedImage
@@ -285,7 +285,7 @@ function PodcastPage() {
                     </div>
 
                     <div className="flex-grow text-center lg:text-left">
-                      <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-4">
+                      <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#1DB954]/10 text-[#1DB954] rounded-full text-sm font-semibold mb-4 border border-[#1DB954]/20">
                         <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
                         Episódio em Destaque
                       </div>
@@ -315,7 +315,7 @@ function PodcastPage() {
                         {featuredEpisode.category && (
                           <>
                             <span className="text-gray-300">•</span>
-                            <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
+                            <span className="px-2 py-1 bg-[#1DB954]/10 text-[#1DB954] rounded text-xs font-semibold border border-[#1DB954]/20">
                               {featuredEpisode.category}
                             </span>
                           </>
@@ -330,7 +330,7 @@ function PodcastPage() {
                         >
                           <Button
                             size="lg"
-                            className="bg-green-600 hover:bg-green-700 text-white gap-2 px-8"
+                            className="bg-[#1DB954] hover:bg-[#1ed760] text-white gap-2 px-8 shadow-lg hover:shadow-xl transition-all duration-300"
                           >
                             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                               <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.84-.54 0-.36.179-.66.479-.78 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02v-.12h.002zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.48.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3L19.081 10.68z" />
@@ -352,7 +352,7 @@ function PodcastPage() {
               transition={{ delay: 0.4 }}
               className="mb-6"
             >
-              <div className="glass-blue rounded-2xl border border-blue-200/40 p-6">
+              <div className="glass-blue rounded-2xl border border-[#1DB954]/20 p-6">
                 <div className="flex flex-col lg:flex-row gap-4">
                   {/* Search */}
                   <div className="flex-grow relative">
@@ -362,7 +362,7 @@ function PodcastPage() {
                       placeholder="Buscar episódios..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#1DB954] focus:border-[#1DB954] transition-all"
                       aria-label="Buscar episódios"
                     />
                   </div>
@@ -373,7 +373,7 @@ function PodcastPage() {
                     <select
                       value={selectedCategory}
                       onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                      className="px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#1DB954] focus:border-[#1DB954] transition-all bg-white"
                       aria-label="Filtrar por categoria"
                     >
                       {categories.map(category => (
@@ -419,7 +419,7 @@ function PodcastPage() {
                               href={episode.spotifyUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-green-600 hover:text-green-700"
+                              className="text-[#1DB954] hover:text-[#1ed760] font-medium transition-colors duration-200"
                               aria-label="Ouvir no Spotify"
                             >
                               Spotify
