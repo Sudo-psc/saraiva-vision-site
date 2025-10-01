@@ -28,7 +28,7 @@ const TARGET_DIR = SOURCE_DIR;
 
 // Images to process (based on 404 errors)
 const IMAGES_TO_PROCESS = [
-  'terapia-genetica-celula-tronco-capa.png'
+  'capa-exercicios-oculares.png'
 ];
 
 /**
