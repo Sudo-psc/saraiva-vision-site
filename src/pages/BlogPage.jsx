@@ -22,6 +22,31 @@ import AuthorWidget from '../components/blog/AuthorWidget';
 import { trackBlogInteraction, trackPageView, trackSearchInteraction } from '../utils/analytics';
 import { generateCompleteSchemaBundle, getPostSpecificSchema } from '../lib/blogSchemaMarkup';
 
+// Helper function to format dates - extracted for performance
+const formatDate = (dateString) => {
+  dayjs.locale('pt-br');
+  return dayjs(dateString).format('DD MMMM, YYYY');
+};
+
+// Helper function to extract headings from HTML content - extracted for performance
+const extractHeadings = (htmlContent) => {
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = htmlContent;
+  const headingElements = tempDiv.querySelectorAll('h2, h3');
+
+  return Array.from(headingElements).map((heading, index) => {
+    const text = heading.textContent;
+    const id = `heading-${index}`;
+    heading.id = id; // Add ID to actual heading in content
+
+    return {
+      id,
+      text,
+      level: parseInt(heading.tagName.charAt(1))
+    };
+  });
+};
+
 const BlogPage = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
@@ -97,10 +122,6 @@ const BlogPage = () => {
     }
   }, [debouncedSearch, filteredPosts.length, selectedCategory]);
 
-  const formatDate = (dateString) => {
-    dayjs.locale('pt-br');
-    return dayjs(dateString).format('DD MMMM, YYYY');
-  };
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
@@ -118,6 +139,117 @@ const BlogPage = () => {
     e.preventDefault();
   };
 
+  // Memoized function to render post cards for performance
+  const renderPostCard = React.useCallback((post, index) => {
+    const enrichment = getPostEnrichment(post.id);
+    const readingTime = Math.ceil((post.content?.length || 1000) / 1000);
+
+    return (
+      <motion.article
+        key={post.id}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+        className="group relative flex flex-col bg-white rounded-xl border border-border-light hover:border-primary-300 hover:shadow-lg transition-all overflow-hidden"
+        role="article"
+        aria-labelledby={`post-title-${post.id}`}
+      >
+          <Link
+            to={`/blog/${post.slug}`}
+            className="relative block focus:outline-none"
+            aria-label={`Ler o post: ${post.title}`}
+          >
+            <div className="relative w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gray-100">
+              <OptimizedImage
+                src={post.image}
+                alt={`Imagem ilustrativa do artigo: ${post.title}`}
+                className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+                aspectRatio="16/9"
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 400px"
+                fallbackSrc="/img/blog-fallback.jpg"
+              />
+            </div>
+          </Link>
+
+          <div className="p-6 flex flex-col flex-grow">
+          {/* Category Badge */}
+          <div className="mb-3">
+            <CategoryBadge category={post.category} size="sm" />
+          </div>
+
+          {/* Title */}
+          <h3
+            id={`post-title-${post.id}`}
+            className="text-xl font-bold mb-3 text-text-primary leading-tight"
+          >
+            <Link
+              to={`/blog/${post.slug}`}
+              className="hover:text-primary-600 focus:outline-none focus:text-primary-600 focus:underline transition-colors"
+            >
+              {post.title}
+            </Link>
+          </h3>
+
+          {/* Excerpt */}
+          <p className="text-text-secondary mb-4 text-sm flex-grow leading-relaxed">
+            {post.excerpt}
+          </p>
+
+          {/* Metadata Row */}
+          <div className="flex items-center justify-between text-xs text-text-muted mb-4 pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1">
+                <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
+                <time
+                  dateTime={post.date}
+                  aria-label={`Publicado em ${formatDate(post.date)}`}
+                >
+                  {formatDate(post.date)}
+                </time>
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="w-3.5 h-3.5" aria-hidden="true" />
+                <span>{readingTime} min de leitura</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-1">
+              <User className="w-3.5 h-3.5" aria-hidden="true" />
+              <span className="font-medium">{post.author || 'Dr. Saraiva'}</span>
+            </div>
+          </div>
+
+          {/* Learning Points Preview */}
+          {enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
+            <div className="bg-primary-50 rounded-lg p-3 mb-4 border border-primary-100">
+              <p className="text-xs font-semibold text-primary-700 mb-2">O que você vai aprender:</p>
+              <ul className="space-y-1">
+                {enrichment.learningPoints.slice(0, 2).map((point, idx) => (
+                  <li key={idx} className="text-xs text-primary-800 flex items-start gap-2">
+                    <span className="text-primary-600 mt-0.5">•</span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Clean CTA Button */}
+          <Link
+            to={`/blog/${post.slug}`}
+            className="mt-auto focus:outline-none"
+            aria-label={`Leia mais sobre: ${post.title}`}
+          >
+            <Button variant="default" className="w-full bg-primary-500 hover:bg-primary-600 text-white font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+              <span>{t('blog.read_more', 'Ler artigo completo')}</span>
+              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            </Button>
+          </Link>
+        </div>
+      </motion.article>
+    );
+  }, [t]);
+
   // Render single post view
   if (currentPost) {
     const enrichment = getPostEnrichment(currentPost.id);
@@ -125,25 +257,6 @@ const BlogPage = () => {
     // Generate Schema.org structured data
     const schemaBundle = generateCompleteSchemaBundle(currentPost, enrichment?.faqs);
     const postSpecificSchema = getPostSpecificSchema(currentPost.id);
-
-    // Extract headings from content for Table of Contents
-    const extractHeadings = (htmlContent) => {
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = htmlContent;
-      const headingElements = tempDiv.querySelectorAll('h2, h3');
-
-      return Array.from(headingElements).map((heading, index) => {
-        const text = heading.textContent;
-        const id = `heading-${index}`;
-        heading.id = id; // Add ID to actual heading in content
-
-        return {
-          id,
-          text,
-          level: parseInt(heading.tagName.charAt(1))
-        };
-      });
-    };
 
     const headings = currentPost.content ? extractHeadings(currentPost.content) : [];
 
@@ -382,115 +495,6 @@ const BlogPage = () => {
     );
   }
 
-  const renderPostCard = (post, index) => {
-    const enrichment = getPostEnrichment(post.id);
-    const readingTime = Math.ceil((post.content?.length || 1000) / 1000);
-
-    return (
-      <motion.article
-        key={post.id}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.1 }}
-        className="group relative flex flex-col bg-white rounded-xl border border-border-light hover:border-primary-300 hover:shadow-lg transition-all overflow-hidden"
-        role="article"
-        aria-labelledby={`post-title-${post.id}`}
-      >
-          <Link
-            to={`/blog/${post.slug}`}
-            className="relative block focus:outline-none"
-            aria-label={`Ler o post: ${post.title}`}
-          >
-            <div className="relative w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gray-100">
-              <OptimizedImage
-                src={post.image}
-                alt={`Imagem ilustrativa do artigo: ${post.title}`}
-                className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-                aspectRatio="16/9"
-                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 400px"
-                fallbackSrc="/img/blog-fallback.jpg"
-              />
-            </div>
-          </Link>
-
-          <div className="p-6 flex flex-col flex-grow">
-          {/* Category Badge */}
-          <div className="mb-3">
-            <CategoryBadge category={post.category} size="sm" />
-          </div>
-
-          {/* Title */}
-          <h3
-            id={`post-title-${post.id}`}
-            className="text-xl font-bold mb-3 text-text-primary leading-tight"
-          >
-            <Link
-              to={`/blog/${post.slug}`}
-              className="hover:text-primary-600 focus:outline-none focus:text-primary-600 focus:underline transition-colors"
-            >
-              {post.title}
-            </Link>
-          </h3>
-
-          {/* Excerpt */}
-          <p className="text-text-secondary mb-4 text-sm flex-grow leading-relaxed">
-            {post.excerpt}
-          </p>
-
-          {/* Metadata Row */}
-          <div className="flex items-center justify-between text-xs text-text-muted mb-4 pt-4 border-t border-gray-100">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
-                <time
-                  dateTime={post.date}
-                  aria-label={`Publicado em ${formatDate(post.date)}`}
-                >
-                  {formatDate(post.date)}
-                </time>
-              </div>
-              <div className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>{readingTime} min de leitura</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-1">
-              <User className="w-3.5 h-3.5" aria-hidden="true" />
-              <span className="font-medium">{post.author || 'Dr. Saraiva'}</span>
-            </div>
-          </div>
-
-          {/* Learning Points Preview */}
-          {enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
-            <div className="bg-primary-50 rounded-lg p-3 mb-4 border border-primary-100">
-              <p className="text-xs font-semibold text-primary-700 mb-2">O que você vai aprender:</p>
-              <ul className="space-y-1">
-                {enrichment.learningPoints.slice(0, 2).map((point, idx) => (
-                  <li key={idx} className="text-xs text-primary-800 flex items-start gap-2">
-                    <span className="text-primary-600 mt-0.5">•</span>
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Clean CTA Button */}
-          <Link
-            to={`/blog/${post.slug}`}
-            className="mt-auto focus:outline-none"
-            aria-label={`Leia mais sobre: ${post.title}`}
-          >
-            <Button variant="default" className="w-full bg-primary-500 hover:bg-primary-600 text-white font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-              <span>{t('blog.read_more', 'Ler artigo completo')}</span>
-              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-            </Button>
-          </Link>
-        </div>
-      </motion.article>
-    );
-  };
 
   return (
     <div className="min-h-screen bg-white relative">

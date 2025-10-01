@@ -100,7 +100,7 @@ export function useGoogleReviews(options = {}) {
             console.log('Google Reviews: Using cached data');
             setReviews(cachedData.reviews);
             setStats(cachedData.stats);
-            setLastFetch(cachedData.timestamp);
+            setLastFetch(new Date(cachedData.timestamp));
             setLoading(false);
             setError(null);
             return;
@@ -160,7 +160,7 @@ export function useGoogleReviews(options = {}) {
             const cacheData = {
                 reviews: newReviews || [],
                 stats: newStats,
-                timestamp: new Date()
+                timestamp: Date.now()
             };
             reviewsCache.set(cacheKey, cacheData);
 

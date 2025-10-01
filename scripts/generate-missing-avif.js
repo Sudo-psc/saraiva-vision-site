@@ -28,7 +28,7 @@ const TARGET_DIR = SOURCE_DIR;
 
 // Images to process (based on 404 errors)
 const IMAGES_TO_PROCESS = [
-  'capa-exercicios-oculares.png'
+  'olhinho.png'
 ];
 
 /**
