@@ -147,8 +147,6 @@ export function useGoogleReviews(options = {}) {
                 result = await response.json();
             } catch (jsonError) {
                 console.error('JSON parsing error:', jsonError);
-                const text = await response.text();
-                console.error('Response text:', text.substring(0, 500));
                 throw new Error('Invalid response format from server');
             }
 

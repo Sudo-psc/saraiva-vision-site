@@ -157,7 +157,7 @@ const BlogPage = () => {
         <Helmet>
           <title>{currentPost.seo?.metaTitle || currentPost.title} | Saraiva Vision</title>
           <meta name="description" content={currentPost.seo?.metaDescription || currentPost.excerpt} />
-          <meta name="keywords" content={currentPost.seo?.keywords?.join(', ') || currentPost.tags?.join(', ') || ''} />
+          <meta name="keywords" content={Array.isArray(currentPost.seo?.keywords) ? currentPost.seo.keywords.join(', ') : currentPost.tags?.join(', ') || ''} />
 
           {/* Schema.org Structured Data */}
           {schemaBundle.map((schema, index) => (
