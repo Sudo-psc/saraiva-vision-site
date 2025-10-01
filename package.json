@@ -5,8 +5,10 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/build-blog-posts.js",
     "build": "vite build && node scripts/prerender-pages.js",
     "build:norender": "vite build",
+    "build:blog": "node scripts/build-blog-posts.js",
     "preview": "vite preview",
     "start": "vite",
     "test": "vitest",

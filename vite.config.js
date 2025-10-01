@@ -269,3 +269,40 @@ export default defineConfig(({ mode }) => {
   }
   }
 })
+
+/**
+ * Validate that Node.js-only dependencies don't leak into client bundle
+ * This prevents Buffer, crypto, fs, path references in browser code
+ */
+function validateClientBundle() {
+  return {
+    name: 'validate-no-node-deps',
+    enforce: 'post',
+    generateBundle(options, bundle) {
+      const nodeOnlyModules = ['buffer', 'gray-matter', 'crypto', 'fs', 'path', 'stream'];
+      
+      for (const [fileName, chunk] of Object.entries(bundle)) {
+        if (chunk.type === 'chunk' && chunk.code) {
+          for (const module of nodeOnlyModules) {
+            // Check for require or import of Node modules
+            const patterns = [
+              new RegExp(`require\\(['"\`]${module}['"\`]\\)`, 'g'),
+              new RegExp(`from ['"\`]${module}['"\`]`, 'g'),
+              // Check for Buffer global reference
+              module === 'buffer' ? /\bBuffer\s*\./g : null
+            ].filter(Boolean);
+            
+            for (const pattern of patterns) {
+              if (pattern.test(chunk.code)) {
+                console.warn(`⚠️  Warning: ${fileName} contains reference to Node.js module "${module}"`);
+                console.warn(`   This may cause runtime errors in the browser.`);
+                console.warn(`   Consider moving this code to build-time processing or SSR.`);
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+}
+
