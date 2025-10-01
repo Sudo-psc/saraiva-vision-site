@@ -230,10 +230,10 @@ const AudioPlayer = ({
                     tabIndex={0}
                 >
                     <div
-                        className="h-full bg-gradient-to-r from-blue-600 to-blue-700 rounded-full transition-all group-hover:from-blue-700 group-hover:to-blue-800 relative"
+                        className="h-full bg-gradient-to-r from-[#1DB954] to-[#1ed760] rounded-full transition-all group-hover:from-[#1ed760] group-hover:to-[#19e866] relative"
                         style={{ width: `${progress}%` }}
                     >
-                        <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-blue-600 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-[#1DB954] rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                 </div>
                 <div className="flex justify-between text-xs text-gray-500">
@@ -247,7 +247,7 @@ const AudioPlayer = ({
                 <div className="flex items-center gap-2">
                     <button
                         onClick={handleRestart}
-                        className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
                         aria-label="Reiniciar episódio"
                         title="Reiniciar do início"
                     >
@@ -256,7 +256,7 @@ const AudioPlayer = ({
 
                     <button
                         onClick={() => handleSeek(-10)}
-                        className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
                         aria-label="Voltar 10 segundos"
                     >
                         <SkipBack className="w-4 h-4" />
@@ -265,7 +265,7 @@ const AudioPlayer = ({
                     <button
                         onClick={togglePlayPause}
                         disabled={isLoading || !canPlay}
-                        className="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 text-white rounded-full flex items-center justify-center transition-all shadow-lg"
+                        className="w-12 h-12 bg-gradient-to-r from-[#1DB954] to-[#1ed760] hover:from-[#1ed760] hover:to-[#19e866] disabled:from-gray-400 disabled:to-gray-500 text-white rounded-full flex items-center justify-center transition-all shadow-lg"
                         aria-label={canPlay ? (isPlaying ? 'Pausar' : 'Reproduzir') : 'Áudio indisponível'}
                     >
                         {isLoading ? (
@@ -279,7 +279,7 @@ const AudioPlayer = ({
 
                     <button
                         onClick={() => handleSeek(10)}
-                        className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
                         aria-label="Avançar 10 segundos"
                     >
                         <SkipForward className="w-4 h-4" />
@@ -291,7 +291,7 @@ const AudioPlayer = ({
                     <div className="flex items-center gap-1">
                         <button
                             onClick={toggleMute}
-                            className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
                             aria-label={isMuted ? 'Ativar som' : 'Silenciar'}
                         >
                             {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}

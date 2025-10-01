@@ -299,14 +299,14 @@ function PodcastPage() {
                       </p>
 
                       <div className="flex flex-wrap items-center gap-4 mb-6 justify-center lg:justify-start">
-                        <div className="flex items-center gap-1 text-sm text-gray-500">
+                        <div className="flex items-center gap-1 text-sm text-gray-600 font-medium">
                           <Calendar className="w-4 h-4" />
                           <span>{new Date(featuredEpisode.date).toLocaleDateString('pt-BR')}</span>
                         </div>
                         {featuredEpisode.duration && (
                           <>
                             <span className="text-gray-300">•</span>
-                            <div className="flex items-center gap-1 text-sm text-gray-500">
+                            <div className="flex items-center gap-1 text-sm text-gray-600 font-medium">
                               <Clock className="w-4 h-4" />
                               <span>{featuredEpisode.duration}</span>
                             </div>
@@ -410,9 +410,9 @@ function PodcastPage() {
                         <AudioPlayer
                           episode={episode}
                           mode="card"
-                          className="glass-blue card-3d hover:shadow-2xl transition-all border border-blue-200/40"
+                          className="glass-blue card-3d hover:shadow-2xl transition-all border border-[#1DB954]/20"
                         />
-                        <div className="flex items-center justify-between px-1 pt-2 text-xs text-gray-500">
+                        <div className="flex items-center justify-between px-1 pt-2 text-xs text-gray-600 font-medium">
                           <span>{new Date(episode.date).toLocaleDateString('pt-BR')}</span>
                           {episode.spotifyUrl && (
                             <a
