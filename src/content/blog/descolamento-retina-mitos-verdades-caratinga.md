@@ -1,8 +1,8 @@
 ---
 id: 19
 slug: descolamento-retina-mitos-verdades-caratinga
-title: Retina: Cuidados e Prevenção
-excerpt: Fotofobia (sensibilidade à luz): causas e tratamentos eficazes. Dr. Philipe Saraiva oferece diagnóstico completo em Caratinga, MG.
+title: Descolamento de Retina: Mitos e Verdades | Caratinga MG
+excerpt: Descolamento de retina: causas, sintomas e tratamentos. Dr. Philipe Saraiva esclarece mitos e verdades sobre essa urgência oftalmológica em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-30
 category: Tratamento
@@ -15,12 +15,17 @@ tags:
   - mapeamento de retina
   - urgência oftalmológica
   - saúde ocular
-image: /Blog/capa-fotofobia.png
+image: /Blog/capa-descolamento-retina.png
 featured: true
 seo:
-  metaDescription: Fotofobia (sensibilidade à luz) tem tratamento. Dr. Philipe Saraiva identifica causas e trata em Caratinga, MG. Recupere conforto visual. Agende!
-  keywords: 
-  ogImage: /Blog/capa-fotofobia.png
+  metaDescription: Descolamento de retina: mitos, verdades, sintomas e tratamentos. Dr. Philipe Saraiva realiza cirurgias em Caratinga, MG. Urgência oftalmológica!
+  keywords:
+    - descolamento retina caratinga
+    - cirurgia retina caratinga mg
+    - vitrectomia caratinga
+    - urgencia oftalmologica
+    - sintomas descolamento retina
+  ogImage: /Blog/capa-descolamento-retina.png
 ---
 
 ## Descolamento de Retina: Mitos e Verdades Que Todo Paciente em Caratinga Precisa Saber

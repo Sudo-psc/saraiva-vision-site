@@ -1,8 +1,8 @@
 ---
 id: 20
 slug: moscas-volantes-quando-preocupar-caratinga
-title: Terapia Gênica e Células-Tronco na Visão | Caratinga MG
-excerpt: Terapia gênica e células-tronco revolucionam tratamento ocular. Dr. Philipe Saraiva apresenta futuro da oftalmologia em Caratinga, MG.
+title: Moscas Volantes: Quando Preocupar | Caratinga MG
+excerpt: Moscas volantes (miodesopsia): saiba quando são inofensivas e quando indicam problemas graves. Dr. Philipe Saraiva esclarece em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-30
 category: Dúvidas Frequentes
@@ -13,12 +13,17 @@ tags:
   - vítreo
   - Caratinga
   - saúde ocular
-image: /Blog/terapia-genetica.png
+image: /Blog/capa-moscas-volantes.png
 featured: true
 seo:
-  metaDescription: Terapia gênica e células-tronco revolucionam tratamento de doenças oculares. Dr. Philipe Saraiva explica avanços em Caratinga, MG. Futuro da visão!
-  keywords: 
-  ogImage: /Blog/terapia-genetica.png
+  metaDescription: Moscas volantes na visão: quando são normais e quando indicam descolamento de retina. Dr. Philipe Saraiva explica em Caratinga, MG. Agende consulta!
+  keywords:
+    - moscas volantes caratinga
+    - miodesopsia tratamento
+    - manchas na visão
+    - descolamento retina sintomas
+    - oftalmologista caratinga mg
+  ogImage: /Blog/capa-moscas-volantes.png
 ---
 
 ## Moscas Volantes: Quando as Manchas na Visão São Inofensivas e Quando Exigem Atenção em Caratinga, MG
