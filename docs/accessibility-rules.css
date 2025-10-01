@@ -1,0 +1,372 @@
+/**
+ * Accessibility Rules for Saraiva Vision Blog
+ * WCAG 2.1 AA Compliance
+ * 
+ * Add these rules to src/index.css
+ */
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   FOCUS VISIBLE (Fallback for older browsers)
+   ======================================== */
+
+:focus-visible {
+  outline: 2px solid #14b8a6; /* teal-600 */
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove outline for mouse users, keep for keyboard */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ========================================
+   SKIP LINKS
+   ======================================== */
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #14b8a6;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 0 0 4px 0;
+  z-index: 9999;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid #0f172a;
+  outline-offset: 2px;
+}
+
+/* ========================================
+   HIGH CONTRAST MODE SUPPORT
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  .bg-teal-50,
+  .bg-blue-50 {
+    background-color: white !important;
+  }
+
+  .border-slate-200 {
+    border-color: #000 !important;
+    border-width: 2px !important;
+  }
+
+  .text-slate-600,
+  .text-slate-700 {
+    color: #000 !important;
+  }
+
+  button,
+  a {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+/* ========================================
+   SCREEN READER ONLY
+   ======================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+  /* Hide navigation, sidebar, footer on print */
+  header,
+  aside,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Ensure readable text */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+
+  /* Show URLs after links */
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+    color: #666;
+  }
+
+  /* Prevent page breaks inside elements */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+
+  p, li {
+    page-break-inside: avoid;
+  }
+
+  /* Expand all collapsed sections */
+  details {
+    display: block;
+  }
+
+  details summary {
+    display: none;
+  }
+}
+
+/* ========================================
+   DARK MODE OVERRIDES (Future)
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+  /* 
+   * Note: Currently not implemented in design system
+   * Placeholder for future dark mode support
+   */
+  :root {
+    --bg-primary: #0f172a;
+    --text-primary: #f8fafc;
+    --border-color: #334155;
+  }
+}
+
+/* ========================================
+   SCROLL MARGIN FOR ANCHOR LINKS
+   ======================================== */
+
+:target {
+  scroll-margin-top: 120px; /* Account for fixed header */
+}
+
+/* Smooth scroll for browsers that don't support scroll-behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ========================================
+   TOUCH TARGET SIZE (Mobile)
+   ======================================== */
+
+@media (max-width: 768px) {
+  button,
+  a,
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px;
+  }
+
+  /* Ensure adequate spacing between tap targets */
+  button + button,
+  a + a {
+    margin-left: 8px;
+  }
+}
+
+/* ========================================
+   FORM VALIDATION STATES
+   ======================================== */
+
+input:invalid,
+select:invalid,
+textarea:invalid {
+  border-color: #ef4444; /* red-600 */
+  outline-color: #ef4444;
+}
+
+input:valid,
+select:valid,
+textarea:valid {
+  border-color: #14b8a6; /* teal-600 */
+}
+
+/* Error messages */
+.error-message {
+  color: #dc2626; /* red-700 */
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.error-message::before {
+  content: "⚠️";
+  font-size: 1rem;
+}
+
+/* Success messages */
+.success-message {
+  color: #047857; /* green-700 */
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.success-message::before {
+  content: "✓";
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* ========================================
+   LOADING STATES
+   ======================================== */
+
+.loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    #e2e8f0 25%,
+    #f1f5f9 50%,
+    #e2e8f0 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-skeleton {
+    animation: none;
+    background: #e2e8f0;
+  }
+}
+
+/* ========================================
+   TOOLTIP ACCESSIBILITY
+   ======================================== */
+
+[role="tooltip"] {
+  position: absolute;
+  z-index: 9999;
+  background: #0f172a;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  max-width: 200px;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+[aria-describedby]:focus + [role="tooltip"],
+[aria-describedby]:hover + [role="tooltip"] {
+  opacity: 1;
+}
+
+/* ========================================
+   DIALOG/MODAL OVERLAY
+   ======================================== */
+
+[role="dialog"] {
+  position: fixed;
+  z-index: 9999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+[aria-modal="true"] {
+  /* Trap focus within modal */
+  isolation: isolate;
+}
+
+/* Overlay backdrop */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 9998;
+}
+
+/* ========================================
+   CONTRAST CHECKER UTILITIES
+   ======================================== */
+
+/* Use these classes to quickly test contrast ratios */
+.contrast-test-aa {
+  outline: 2px solid orange;
+  outline-offset: 2px;
+}
+
+.contrast-test-aaa {
+  outline: 2px solid green;
+  outline-offset: 2px;
+}
+
+.contrast-test-fail {
+  outline: 2px solid red;
+  outline-offset: 2px;
+}
+
+/* ========================================
+   END OF ACCESSIBILITY RULES
+   ======================================== */
