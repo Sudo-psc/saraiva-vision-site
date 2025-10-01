@@ -699,11 +699,11 @@ const PostPageTemplate = ({ slug }) => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setShareMenuOpen(!shareMenuOpen)}
-            className="group relative p-3 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-full shadow-xl hover:shadow-2xl transition-all"
+            className="group relative p-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full shadow-xl hover:shadow-2xl transition-all"
             aria-label="Compartilhar"
           >
             {/* 3D Glow */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-teal-500 rounded-full blur opacity-50 group-hover:opacity-75 transition-opacity"></div>
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full blur opacity-50 group-hover:opacity-75 transition-opacity"></div>
             <Share2 className="relative w-6 h-6" />
           </motion.button>
 

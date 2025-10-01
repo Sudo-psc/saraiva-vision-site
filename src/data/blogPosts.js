@@ -226,7 +226,7 @@ export const blogPosts = [
     date: '2025-10-01',
     category: 'Tratamento',
     tags: ['amaurose congênita de leber', 'LCA', 'terapia gênica', 'doenças genéticas', 'retina', 'cegueira infantil', 'luxturna', 'RPE65', 'oftalmologia pediátrica'],
-    image: '/Blog/capa-pediatria.png',
+    image: '/Blog/capa-amaurose-congenita-leber.png',
     featured: true,
     seo: {
       metaTitle: 'Amaurose Congênita de Leber: Tratamento e Terapia Gênica | LCA',
@@ -656,7 +656,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Dúvidas Frequentes',
     tags: ['moscas volantes', 'miodesopsia', 'retina', 'vítreo', 'Caratinga', 'saúde ocular'],
-    image: '/Blog/terapia-genetica.png',
+    image: '/Blog/capa-moscas-volantes.png',
     featured: true,
     seo: {
       metaTitle: 'Moscas Volantes: Quando Preocupar? Oftalmologista em Caratinga',
@@ -797,7 +797,7 @@ export const blogPosts = [
     category: 'Prevenção',
     tags: ['cuidados visuais esportes', 'visão esportiva Caratinga', 'saúde ocular atletas', 'oftalmologista Caratinga MG', 'proteção ocular', 'lentes de contato esportivas', 'óculos de sol UV', 'prevenção visual'],
     featured: true,
-    image: '/Blog/capa-ductolacrimal.png',
+    image: '/Blog/capa-cuidados-visuais-esportes.png',
     seo: {
       metaTitle: 'Cuidados visuais para quem pratica esportes | Clínica Saraiva Vision Caratinga',
       metaDescription: 'Obstrução do ducto lacrimal tem tratamento cirúrgico e clínico. Dr. Philipe Saraiva trata lacrimejamento em Caratinga, MG. Alívio garantido!',
@@ -939,7 +939,7 @@ export const blogPosts = [
     category: 'Tecnologia',
     tags: ['daltonismo', 'lentes especiais', 'discromatopsia', 'visão de cores', 'oftalmologista Caratinga', 'teste de Ishihara', 'lentes filtrantes', 'tecnologia oftalmológica'],
     featured: true,
-    image: '/Blog/capa-estrabismo.png',
+    image: '/Blog/capa-lentes-daltonismo.png',
     seo: {
       metaTitle: 'Lentes Especiais para Daltonismo | Tecnologia Moderna em Caratinga - Saraiva Vision',
       metaDescription: 'Estrabismo tem tratamento cirúrgico e clínico eficaz. Dr. Philipe Saraiva trata adultos e crianças em Caratinga, MG. Recupere alinhamento! Agende.',
@@ -1074,7 +1074,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['descolamento de retina', 'retina', 'cirurgia retina', 'oftalmologia Caratinga', 'vitrectomia', 'mapeamento de retina', 'urgência oftalmológica', 'saúde ocular'],
-    image: '/Blog/capa-fotofobia.png',
+    image: '/Blog/capa-descolamento-retina.png',
     featured: true,
     seo: {
       metaTitle: 'Descolamento de Retina: Mitos e Verdades | Clínica Saraiva Vision Caratinga',
@@ -1645,7 +1645,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['estrabismo', 'sintomas de estrabismo', 'causas de estrabismo', 'tratamento de estrabismo', 'saúde ocular', 'Caratinga MG'],
-    image: '/Blog/eye-anatomy-diagram.png',
+    image: '/Blog/capa-estrabismo-tratamento.png',
     featured: true,
     seo: {
       metaTitle: 'Estrabismo: Quando Desconfiar e Procurar um Oftalmologista em Caratinga, MG',
@@ -1735,7 +1735,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Prevenção',
     tags: ['alimentação e saúde ocular', 'microbioma ocular', 'vitaminas para visão', 'prevenção degeneração macular', 'catarata', 'ômega-3 olhos', 'luteína zeaxantina', 'olho seco', 'saúde sistêmica visão', 'Caratinga MG'],
-    image: '/Blog/capa-catarata.png',
+    image: '/Blog/capa-alimentacao-microbioma-ocular.png',
     featured: true,
     seo: {
       metaTitle: 'Alimentação e Saúde Ocular: Como Nutrientes e Microbioma Influenciam a Visão em Caratinga, MG',
@@ -1818,7 +1818,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Prevenção',
     tags: ['sensibilidade à luz', 'fotofobia', 'causas fotofobia', 'tratamentos sensibilidade à luz', 'saúde ocular Caratinga'],
-    image: '/Blog/capa-lentes-premium-catarata.png',
+    image: '/Blog/capa-sensibilidade-luz-fotofobia.png',
     featured: true,
     seo: {
       metaTitle: 'Sensibilidade à Luz: Causas, Sintomas e Tratamentos Eficazes em Caratinga, MG',

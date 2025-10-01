@@ -276,9 +276,9 @@ function PrimaryAppointmentCTA() {
           href="https://wa.me/5533998601427?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta"
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full sm:w-auto whitespace-nowrap bg-green-600 hover:bg-green-700 
+          className="w-full sm:w-auto whitespace-nowrap bg-blue-600 hover:bg-blue-700
                      text-white font-semibold px-6 py-3 rounded-lg
-                     focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
+                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
                      transition-all shadow-md hover:shadow-lg"
         >
           <Phone className="w-5 h-5 mr-2" aria-hidden="true" />

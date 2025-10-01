@@ -91,7 +91,7 @@ const PostFAQ = ({ questions = [], className = '' }) => {
           href="https://wa.me/message/EHTAAAAYH7SHJ1"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white rounded-xl font-semibold hover:bg-green-600 transition-colors shadow-md hover:shadow-lg"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600 transition-colors shadow-md hover:shadow-lg"
         >
           <HelpCircle className="w-5 h-5" />
           <span>Fale com Especialista</span>

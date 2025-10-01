@@ -67,7 +67,7 @@ const NewsletterSignup = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className={`my-16 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 rounded-3xl p-8 md:p-12 shadow-xl border-2 border-green-100 ${className}`}
+      className={`my-16 bg-gradient-to-br from-blue-50 via-blue-50 to-indigo-50 rounded-3xl p-8 md:p-12 shadow-xl border-2 border-blue-100 ${className}`}
       aria-label="Inscrição na newsletter"
     >
       <div className="max-w-4xl mx-auto">
@@ -79,7 +79,7 @@ const NewsletterSignup = ({
               whileInView={{ scale: 1 }}
               viewport={{ once: true }}
               transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
-              className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-600 to-teal-600 rounded-full mb-4 shadow-lg"
+              className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full mb-4 shadow-lg"
             >
               <Mail className="w-8 h-8 text-white" aria-hidden="true" />
             </motion.div>
@@ -102,7 +102,7 @@ const NewsletterSignup = ({
                   transition={{ delay: index * 0.1 }}
                   className="flex items-center gap-3 text-gray-700"
                 >
-                  <div className="flex-shrink-0 w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
+                  <div className="flex-shrink-0 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
                     <CheckCircle className="w-4 h-4 text-white" aria-hidden="true" />
                   </div>
                   <span>{benefit}</span>
@@ -111,7 +111,7 @@ const NewsletterSignup = ({
             </ul>
 
             {/* Trust Badge */}
-            <div className="mt-6 pt-6 border-t border-green-200">
+            <div className="mt-6 pt-6 border-t border-blue-200">
               <p className="text-sm text-gray-600 flex items-center gap-2">
                 <span className="text-2xl">🔒</span>
                 <span>
@@ -137,7 +137,7 @@ const NewsletterSignup = ({
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Maria Silva"
                     disabled={status === 'loading' || status === 'success'}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     required
                   />
                 </div>
@@ -154,7 +154,7 @@ const NewsletterSignup = ({
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="seuemail@exemplo.com"
                     disabled={status === 'loading' || status === 'success'}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     required
                   />
                 </div>
@@ -163,7 +163,7 @@ const NewsletterSignup = ({
                 <Button
                   type="submit"
                   disabled={status === 'loading' || status === 'success'}
-                  className="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-bold py-4 shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {status === 'loading' ? (
                     <span className="flex items-center justify-center gap-2">
@@ -190,7 +190,7 @@ const NewsletterSignup = ({
                     animate={{ opacity: 1, y: 0 }}
                     className={`flex items-start gap-2 p-3 rounded-lg text-sm ${
                       status === 'success'
-                        ? 'bg-green-50 text-green-800 border border-green-200'
+                        ? 'bg-blue-50 text-blue-800 border border-blue-200'
                         : 'bg-red-50 text-red-800 border border-red-200'
                     }`}
                   >
@@ -206,7 +206,7 @@ const NewsletterSignup = ({
                 {/* Privacy Notice */}
                 <p className="text-xs text-gray-500 text-center">
                   Ao se inscrever, você concorda com nossa{' '}
-                  <a href="/politica-privacidade" className="text-green-600 hover:underline">
+                  <a href="/politica-privacidade" className="text-blue-600 hover:underline">
                     Política de Privacidade
                   </a>
                   .

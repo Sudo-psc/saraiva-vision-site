@@ -35,7 +35,7 @@ const FixedCTA = () => {
       icon: MessageCircle,
       label: 'WhatsApp',
       href: 'https://wa.me/5533998765432?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta.',
-      color: 'bg-green-600 hover:bg-green-700',
+      color: 'bg-blue-600 hover:bg-blue-700',
       description: 'Atendimento rápido',
       external: true,
     },
