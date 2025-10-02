@@ -7,7 +7,7 @@
   - API local (/api/): Network First com fallback ao cache (quando possível)
 */
 
-const SW_VERSION = 'v1.2.2'; // CRITICAL: Fix image cache - force complete reload
+const SW_VERSION = 'v1.2.3'; // CRITICAL: Force reload for podcast episode IDs update
 const RUNTIME_CACHE = `sv-runtime-${SW_VERSION}`;
 const ASSETS_CACHE = `sv-assets-${SW_VERSION}`;
 const CORE_CACHE = `sv-core-${SW_VERSION}`;
