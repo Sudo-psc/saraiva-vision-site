@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from '@/utils/router';
 import Navbar from '@/components/Navbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import SEOHead from '@/components/SEOHead';

@@ -1,10 +1,11 @@
+import { env } from '@/utils/env';
 const resolveBaseUrl = () => {
   if (typeof window !== 'undefined' && window.location?.origin) {
     return window.location.origin.replace(/\/?$/, '');
   }
 
-  if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SITE_BASE_URL) {
-    return import.meta.env.VITE_SITE_BASE_URL.replace(/\/?$/, '');
+  if (typeof import.meta !== 'undefined' && env?.VITE_SITE_BASE_URL) {
+    return env.VITE_SITE_BASE_URL.replace(/\/?$/, '');
   }
 
   if (typeof process !== 'undefined' && process.env?.VITE_SITE_BASE_URL) {

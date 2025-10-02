@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import CryptoJS from 'crypto-js';
 
 /**
@@ -30,7 +31,7 @@ class GoogleBusinessConfig {
      */
     generateEncryptionKey() {
         // In production, this should come from environment variables
-        const envKey = import.meta.env.VITE_GOOGLE_BUSINESS_ENCRYPTION_KEY;
+        const envKey = env.VITE_GOOGLE_BUSINESS_ENCRYPTION_KEY;
 
         if (envKey) {
             return envKey;

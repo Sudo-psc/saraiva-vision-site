@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import React, { useEffect, useRef, useState } from 'react';
 import { MapPin, ExternalLink, AlertCircle } from 'lucide-react';
 import { clinicInfo, CLINIC_PLACE_ID } from '@/lib/clinicInfo';
@@ -58,7 +59,7 @@ const GoogleMapSimple = ({ height = 340 }) => {
           }
         }
       } catch (healthError) {
-        if (import.meta.env.DEV) {
+        if (env.DEV) {
           console.warn('[GoogleMap] Falha ao verificar saúde do serviço:', healthError);
         }
       }
@@ -77,7 +78,7 @@ const GoogleMapSimple = ({ height = 340 }) => {
         const map = new window.google.maps.Map(containerRef.current, {
           zoom: 17,
           center: { lat: clinicInfo.latitude, lng: clinicInfo.longitude },
-          mapId: import.meta.env.VITE_GOOGLE_MAP_ID || undefined,
+          mapId: env.VITE_GOOGLE_MAP_ID || undefined,
           mapTypeControl: false,
           streetViewControl: false,
           fullscreenControl: false
@@ -100,7 +101,7 @@ const GoogleMapSimple = ({ height = 340 }) => {
               if (status === window.google.maps.places.PlacesServiceStatus.OK && place?.geometry?.location) {
                 map.setCenter(place.geometry.location);
                 marker.setPosition(place.geometry.location);
-              } else if (import.meta.env.DEV) {
+              } else if (env.DEV) {
                 console.warn('[GoogleMap] Place ID não pôde ser confirmado:', status);
               }
             }

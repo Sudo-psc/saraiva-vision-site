@@ -8,7 +8,7 @@
 // - Contexto: App React/Vite deployado no Vercel, otimizado para saraivavision.com.br
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/utils/router';
 
 // Definição das redes sociais com links placeholders (atualize com URLs reais da Clínica Saraiva Vision)
 const socialLinks = [

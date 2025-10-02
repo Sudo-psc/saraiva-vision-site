@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link } from '@/utils/router';
 import { ArrowUp } from 'lucide-react';
 import Logo from './Logo';
 import { clinicInfo, googleMapsProfileUrl } from '../lib/clinicInfo';

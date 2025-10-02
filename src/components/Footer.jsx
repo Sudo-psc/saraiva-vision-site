@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link } from '@/utils/router';
 import { ArrowUp, MessageCircle, Bot } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { clinicInfo } from '@/lib/clinicInfo';

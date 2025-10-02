@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 /**
  * Analytics and tracking utilities for Saraiva Vision
  * Handles Google Analytics, Meta Pixel, and consent management
@@ -171,8 +172,8 @@ export function bindConsentUpdates() {
 export function initializeAnalytics() {
   if (typeof window === 'undefined') return;
 
-  const gaId = import.meta.env.VITE_GA_ID;
-  const metaId = import.meta.env.VITE_META_PIXEL_ID;
+  const gaId = env.VITE_GA_ID;
+  const metaId = env.VITE_META_PIXEL_ID;
 
   if (gaId) {
     initGA(gaId);
@@ -189,7 +190,7 @@ export function initializeAnalytics() {
 // Track page view
 export function trackPageView(pagePath = window.location.pathname) {
   if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('config', import.meta.env.VITE_GA_ID, {
+    window.gtag('config', env.VITE_GA_ID, {
       page_path: pagePath,
     });
   }

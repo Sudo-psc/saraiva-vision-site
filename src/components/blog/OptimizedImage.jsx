@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 /**
  * Optimized Image Component V2 - Enterprise Grade
  *
@@ -27,7 +28,7 @@ const OptimizedImage = ({
   onLoad,
   onError,
   disableOptimization = false,
-  enableLogging = import.meta.env.DEV // Enable detailed logging in development
+  enableLogging = env.DEV // Enable detailed logging in development
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);

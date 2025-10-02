@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from '@/utils/router';
 import EnhancedFooter from './EnhancedFooter';
 import Footer from './Footer';
 

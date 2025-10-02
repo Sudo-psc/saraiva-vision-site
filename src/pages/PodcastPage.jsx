@@ -312,6 +312,7 @@ function PodcastPage() {
         className="pt-24 md:pt-32 relative focus:outline-none"
         role="main"
         aria-label="Podcasts de Saúde Ocular"
+      >
         {/* Hero Section with Featured Episode */}
         <section
           className="py-8 md:py-12 lg:py-16 relative overflow-hidden"

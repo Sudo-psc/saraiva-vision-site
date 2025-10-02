@@ -1,6 +1,7 @@
+import { env } from '@/utils/env';
 import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from '@/utils/router';
 import App from './App';
 import './index.css';
 import './styles/glass-effects.css';
@@ -68,7 +69,7 @@ const setupGlobalErrorHandlers = () => {
 setupGlobalErrorHandlers();
 
 // Initialize Analytics in production
-if (import.meta.env.PROD && import.meta.env.VITE_GA_ID) {
+if (env.PROD && env.VITE_GA_ID) {
   try {
     initializeAnalytics();
     console.log('Analytics initialized');
@@ -86,7 +87,7 @@ function sendToAnalytics(metric) {
   }
 }
 
-if (import.meta.env.PROD) {
+if (env.PROD) {
   onCLS(sendToAnalytics);  // Cumulative Layout Shift
   onINP(sendToAnalytics);  // Interaction to Next Paint (replaces FID)
   onFCP(sendToAnalytics);  // First Contentful Paint

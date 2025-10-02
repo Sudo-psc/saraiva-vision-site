@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { trackError } from './errorTracker.js';
 
@@ -170,7 +171,7 @@ class ErrorBoundary extends React.Component {
              isNetworkError ? 'Erro de conexão' :
              'Componente temporariamente indisponível'}
           </p>
-          {import.meta.env.DEV && (
+          {env.DEV && (
             <details className="mt-2 text-left">
               <summary className="cursor-pointer text-xs text-gray-500">Detalhes técnicos</summary>
               <pre className="text-xs mt-1 p-2 bg-gray-100 rounded overflow-auto max-h-20">

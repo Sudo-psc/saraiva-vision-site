@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 /**
  * Runtime Environment Configuration
  *
@@ -81,7 +82,7 @@ export async function getEnvConfig() {
  * @returns {boolean}
  */
 export function isProduction() {
-  return import.meta.env.PROD;
+  return env.PROD;
 }
 
 /**
@@ -89,7 +90,7 @@ export function isProduction() {
  * @returns {boolean}
  */
 export function isDevelopment() {
-  return import.meta.env.DEV;
+  return env.DEV;
 }
 
 export default {

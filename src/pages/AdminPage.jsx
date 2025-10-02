@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@/utils/router';
 import { Helmet } from 'react-helmet-async';
 
 function AdminPage() {

@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link } from '@/utils/router';
 import SafeImage from '@/components/ui/SafeImage';
 import { Button } from '@/components/ui/button';
 import { useAnimationConfig, useMediaLoader } from '@/hooks/useUnifiedComponents';

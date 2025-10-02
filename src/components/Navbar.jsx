@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from '@/utils/router';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Menu, X, Calendar, Home, Stethoscope, Eye, FileText, Headphones, User, Star, HelpCircle, Phone } from 'lucide-react';

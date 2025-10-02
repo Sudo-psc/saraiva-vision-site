@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from '@/utils/router'
 import Hero from '../Hero'
 
 // Mock i18next with realistic translations

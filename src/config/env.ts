@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import { z } from 'zod';
 
 // Environment schema validation
@@ -45,7 +46,7 @@ function validateEnv(): EnvConfig {
   try {
     // Merge Vite env vars with Node env vars for compatibility
     const envVars = {
-      ...import.meta.env,
+      ...env,
       ...process.env,
     };
 

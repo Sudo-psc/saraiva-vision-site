@@ -1,9 +1,10 @@
+import { env } from '@/utils/env';
 /**
  * Conditional Logger Utility
  * Only logs in development environment to reduce production console noise
  */
 
-const isDev = import.meta.env.DEV;
+const isDev = env.DEV;
 
 export const logger = {
   log: (...args) => {

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link } from '@/utils/router';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 

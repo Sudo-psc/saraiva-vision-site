@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import React from 'react';
 import { redirectToBackup } from '@/utils/redirectToBackup';
 import { trackComponentError } from '@/utils/errorTracker';
@@ -123,7 +124,7 @@ class ErrorBoundary extends React.Component {
           >
             Recarregar Página
           </button>
-          {import.meta.env.DEV && (
+          {env.DEV && (
             <details className="mt-2">
               <summary className="cursor-pointer text-xs">Detalhes do Erro (DEV)</summary>
               <pre className="text-xs mt-1 overflow-auto max-h-32 bg-gray-100 p-2">
@@ -146,4 +147,3 @@ class ErrorBoundary extends React.Component {
 }
 
 export default ErrorBoundary;
-

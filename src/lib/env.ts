@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 /**
  * Environment Configuration for Saraiva Vision
  * Centralized environment variable management with proper Vite support
@@ -6,32 +7,32 @@
 // Vite environment variables (client-side)
 export const VITE_ENV = {
   // Vercel deployment info
-  VERCEL_ENV: import.meta.env.VITE_VERCEL_ENV ?? 'development',
-  VERCEL_URL: import.meta.env.VITE_VERCEL_URL,
-  VERCEL_BRANCH_URL: import.meta.env.VITE_VERCEL_BRANCH_URL,
+  VERCEL_ENV: env.VITE_VERCEL_ENV ?? 'development',
+  VERCEL_URL: env.VITE_VERCEL_URL,
+  VERCEL_BRANCH_URL: env.VITE_VERCEL_BRANCH_URL,
 
   // Google services
-  GOOGLE_MAPS_API_KEY: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-  GOOGLE_PLACES_API_KEY: import.meta.env.VITE_GOOGLE_PLACES_API_KEY,
-  GOOGLE_PLACE_ID: import.meta.env.VITE_GOOGLE_PLACE_ID,
+  GOOGLE_MAPS_API_KEY: env.VITE_GOOGLE_MAPS_API_KEY,
+  GOOGLE_PLACES_API_KEY: env.VITE_GOOGLE_PLACES_API_KEY,
+  GOOGLE_PLACE_ID: env.VITE_GOOGLE_PLACE_ID,
 
   // Supabase
-  SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
-  SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY,
+  SUPABASE_URL: env.VITE_SUPABASE_URL,
+  SUPABASE_ANON_KEY: env.VITE_SUPABASE_ANON_KEY,
 
   // Analytics
-  POSTHOG_KEY: import.meta.env.VITE_POSTHOG_KEY,
-  POSTHOG_HOST: import.meta.env.VITE_POSTHOG_HOST,
+  POSTHOG_KEY: env.VITE_POSTHOG_KEY,
+  POSTHOG_HOST: env.VITE_POSTHOG_HOST,
 
   // reCAPTCHA
-  RECAPTCHA_SITE_KEY: import.meta.env.VITE_RECAPTCHA_SITE_KEY,
+  RECAPTCHA_SITE_KEY: env.VITE_RECAPTCHA_SITE_KEY,
 
   // API Configuration
-  API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
-  WORDPRESS_URL: import.meta.env.VITE_WORDPRESS_URL,
+  API_BASE_URL: env.VITE_API_BASE_URL,
+  WORDPRESS_URL: env.VITE_WORDPRESS_URL,
 
   // Site configuration
-  SITE_URL: import.meta.env.VITE_SITE_URL,
+  SITE_URL: env.VITE_SITE_URL,
 } as const;
 
 /**

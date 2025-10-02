@@ -1,23 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/utils/router';
 import { motion } from 'framer-motion';
 import { ArrowRight, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-interface Service {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
-  slug: string;
-  category?: string;
-}
-
-interface ServicesCardProps {
-  service: Service;
-}
-
-const ServicesCard: React.FC<ServicesCardProps> = ({ service }) => {
+const ServicesCard = ({ service }) => {
   return (
     <motion.div
       className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
@@ -32,8 +19,10 @@ const ServicesCard: React.FC<ServicesCardProps> = ({ service }) => {
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
           onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = '/images/drphilipe_perfil.webp';
+            const target = e.target;
+            if (target && typeof target === 'object') {
+              target.src = '/images/drphilipe_perfil.webp';
+            }
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

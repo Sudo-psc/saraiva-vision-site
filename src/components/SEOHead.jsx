@@ -1,7 +1,8 @@
+import { env } from '@/utils/env';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@/utils/router';
 import { clinicInfo } from '@/lib/clinicInfo';
 
 const resolveBaseUrl = () => {
@@ -9,8 +10,8 @@ const resolveBaseUrl = () => {
     return window.location.origin.replace(/\/?$/, '');
   }
 
-  if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SITE_BASE_URL) {
-    return import.meta.env.VITE_SITE_BASE_URL.replace(/\/?$/, '');
+  if (typeof import.meta !== 'undefined' && env?.VITE_SITE_BASE_URL) {
+    return env.VITE_SITE_BASE_URL.replace(/\/?$/, '');
   }
 
   if (typeof process !== 'undefined' && process.env?.VITE_SITE_BASE_URL) {

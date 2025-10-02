@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link } from '@/utils/router';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';

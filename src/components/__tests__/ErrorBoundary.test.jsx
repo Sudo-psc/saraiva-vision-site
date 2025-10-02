@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import { render, screen } from '@testing-library/react';
 import { ErrorBoundary } from '../ErrorBoundary.jsx';
 import { trackComponentError } from '@/utils/errorTracker.js';
@@ -143,8 +144,8 @@ describe('ErrorBoundary', () => {
 
   describe('error details display', () => {
     it('should show error details in development mode', () => {
-      const originalEnv = import.meta.env.DEV;
-      import.meta.env.DEV = true;
+      const originalEnv = env.DEV;
+      env.DEV = true;
 
       const testError = new Error('Test error message');
 
@@ -160,12 +161,12 @@ describe('ErrorBoundary', () => {
 
       expect(screen.getByText('Detalhes do Erro (DEV)')).toBeInTheDocument();
 
-      import.meta.env.DEV = originalEnv;
+      env.DEV = originalEnv;
     });
 
     it('should hide error details in production mode', () => {
-      const originalEnv = import.meta.env.DEV;
-      import.meta.env.DEV = false;
+      const originalEnv = env.DEV;
+      env.DEV = false;
 
       const testError = new Error('Test error message');
 
@@ -181,7 +182,7 @@ describe('ErrorBoundary', () => {
 
       expect(screen.queryByText('Detalhes do Erro (DEV)')).not.toBeInTheDocument();
 
-      import.meta.env.DEV = originalEnv;
+      env.DEV = originalEnv;
     });
   });
 

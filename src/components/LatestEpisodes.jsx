@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Mic2, ArrowRight, Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AudioPlayer from '@/components/AudioPlayer';
-import { Link } from 'react-router-dom';
+import { Link } from '@/utils/router';
 
 const LatestEpisodes = () => {
     const { t } = useTranslation();

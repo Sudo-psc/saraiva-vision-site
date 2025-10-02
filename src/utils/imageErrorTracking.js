@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 /**
  * Tracking de erros de imagem
  */
@@ -33,7 +34,7 @@ export function trackImageError(errorData) {
   console.warn('[ImageErrorTracking]', JSON.stringify(payload));
   
   // Opcional: enviar para endpoint custom
-  if (import.meta.env.PROD) {
+  if (env.PROD) {
     fetch('/api/telemetry/image-error', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

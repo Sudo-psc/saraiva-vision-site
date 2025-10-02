@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import OptimizedImage from '../OptimizedImage.jsx';
@@ -189,14 +190,14 @@ describe('OptimizedImage Component', () => {
   });
 
   describe('Development Logging', () => {
-    const originalEnv = import.meta.env;
+    const originalEnv = env;
 
     beforeEach(() => {
-      import.meta.env.DEV = true;
+      env.DEV = true;
     });
 
     afterEach(() => {
-      import.meta.env = originalEnv;
+      env = originalEnv;
     });
 
     test('logs detailed information in development', () => {

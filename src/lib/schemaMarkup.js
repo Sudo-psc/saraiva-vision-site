@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import { clinicInfo } from './clinicInfo.js';
 
 const DEFAULT_BASE_URL = 'https://saraivavision.com.br';
@@ -7,8 +8,8 @@ const resolveBaseUrl = () => {
     return window.location.origin.replace(/\/?$/, '');
   }
 
-  if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SITE_BASE_URL) {
-    return import.meta.env.VITE_SITE_BASE_URL.replace(/\/?$/, '');
+  if (typeof import.meta !== 'undefined' && env?.VITE_SITE_BASE_URL) {
+    return env.VITE_SITE_BASE_URL.replace(/\/?$/, '');
   }
 
   if (typeof process !== 'undefined' && process.env?.VITE_SITE_BASE_URL) {

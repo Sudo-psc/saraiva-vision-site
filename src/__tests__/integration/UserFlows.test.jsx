@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter } from '@/utils/router';
 import { HelmetProvider } from 'react-helmet-async';
 import App from '../../App';
 import HomePage from '../../pages/HomePage';

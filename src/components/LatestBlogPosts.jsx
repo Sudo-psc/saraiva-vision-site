@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, Rss, Calendar, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link } from '@/utils/router';
 import { getRecentPosts } from '@/content/blog';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
