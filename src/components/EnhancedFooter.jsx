@@ -120,7 +120,7 @@ const EnhancedFooter = ({
         {
             name: "LinkedIn",
             href: clinicInfo.linkedin,
-            image: "/icons_social/linkedln_icon.png",
+            image: "/icons_social/linkedin_icon.png",
             color: "#0A66C2"
         },
         {
@@ -140,6 +140,18 @@ const EnhancedFooter = ({
             href: clinicInfo.spotify,
             image: "/icons_social/spotify_icon.png",
             color: "#1DB954"
+        },
+        {
+            name: "WhatsApp",
+            href: "https://wa.me/message/EHTAAAAYH7SHJ1",
+            image: "/icons_social/whatsapp_icon.png",
+            color: "#25D366"
+        },
+        {
+            name: "Google Reviews",
+            href: "https://search.google.com/local/writereview?placeid=ChIJVUKww7WRugARF7u2lAe7BeE",
+            image: "/icons_social/IA.png",
+            color: "#4285F4"
         },
     ], []);
 
@@ -456,12 +468,29 @@ const EnhancedFooter = ({
                                         className="hover:text-white transition-colors inline-flex items-start gap-2 group"
                                         aria-label={`Endereço da ${clinicInfo.name}: ${clinicInfo.streetAddress}, ${clinicInfo.neighborhood}, ${clinicInfo.city}-${clinicInfo.state}. Abrir no Google Maps (nova aba)`}
                                     >
+                                        <img
+                                            src="/icons_social/Pin_icon_menino.png"
+                                            alt="Localização"
+                                            className="w-11 h-11 object-contain group-hover:scale-200 transition-transform duration-300 ease-in-out flex-shrink-0"
+                                            loading="lazy"
+                                            decoding="async"
+                                            onError={(e) => {
+                                                e.target.style.display = 'none';
+                                                e.target.nextSibling.style.display = 'inline-block';
+                                            }}
+                                        />
+                                        <span
+                                            className="text-primary-400 group-hover:scale-110 transition-transform"
+                                            aria-hidden="true"
+                                            style={{display: 'none'}}
+                                        >
+                                            📍
+                                        </span>
                                         <span className="flex-1">
                                             {clinicInfo.streetAddress}, {clinicInfo.neighborhood}
                                             <br />
                                             {clinicInfo.city}-{clinicInfo.state}, CEP {clinicInfo.postalCode}
                                         </span>
-                                        <span className="text-primary-400 group-hover:scale-110 transition-transform" aria-hidden="true">📍</span>
                                     </a>
                                 </ContactItem>
                                 <ContactLink href={`mailto:${clinicInfo.email}`}>

@@ -84,7 +84,7 @@ const PodcastEpisodeCard = ({
                 loading="lazy"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-400 to-blue-500">
+              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-400 to-blue-600">
                 <Volume2 className="w-6 h-6 text-white" />
               </div>
             )}
@@ -156,7 +156,7 @@ const PodcastEpisodeCard = ({
           {spotifyUrl && (
             <button
               onClick={handleSpotifyClick}
-              className="p-2 text-gray-400 hover:text-green-600 transition-colors"
+              className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
               title="Abrir no Spotify"
               aria-label="Abrir no Spotify"
             >

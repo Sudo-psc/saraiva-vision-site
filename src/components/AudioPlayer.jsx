@@ -17,7 +17,7 @@ import {
 
 const AudioPlayer = ({
     episode,
-    mode = 'card', // 'card', 'inline', 'modal'
+    mode = 'card', // 'card', 'inline', 'modal', 'compact'
     onClose = () => { },
     className = ''
 }) => {
@@ -211,8 +211,67 @@ const AudioPlayer = ({
     // Modal variant moved below PlayerControls to avoid TDZ
 
     // Variants
-    const isCompact = mode === 'inline';
+    const isCompact = mode === 'inline' || mode === 'compact';
     const isCard = mode === 'card';
+    const isCompactMode = mode === 'compact';
+
+    const CompactPlayer = () => (
+        <div className="flex items-center gap-3">
+            {/* Play/Pause button */}
+            <button
+                onClick={togglePlayPause}
+                disabled={isLoading || !canPlay}
+                className="w-10 h-10 bg-primary-600 hover:bg-primary-700 disabled:from-gray-400 disabled:to-gray-500 text-white rounded-full flex items-center justify-center transition-all shadow-md focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2 flex-shrink-0"
+                aria-label={canPlay ? (isPlaying ? 'Pausar' : 'Reproduzir') : 'Áudio indisponível'}
+                aria-describedby={`episode-${episode.id}-title`}
+            >
+                {isLoading ? (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : isPlaying ? (
+                    <Pause className="w-4 h-4" />
+                ) : (
+                    <Play className="w-4 h-4 ml-0.5" />
+                )}
+            </button>
+
+            {/* Progress and info */}
+            <div className="flex-grow min-w-0">
+                <div className="w-full h-1.5 bg-gray-200 rounded-full cursor-pointer group mb-2"
+                     ref={progressRef}
+                     onClick={handleProgressClick}
+                     role="slider"
+                     aria-label="Progresso do áudio"
+                     aria-valuenow={Math.round(progress)}
+                     aria-valuemin={0}
+                     aria-valuemax={100}
+                     tabIndex={0}
+                     id={`progress-${episode.id}`}
+                >
+                    <div
+                        className="h-full bg-gradient-to-r from-primary-500 to-primary-600 rounded-full transition-all group-hover:from-primary-600 group-hover:to-primary-700 relative"
+                        style={{ width: `${progress}%` }}
+                    >
+                        <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-3 h-3 bg-white border-2 border-primary-500 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                </div>
+                <div className="flex justify-between text-xs text-text-muted">
+                    <span>{formatTime(currentTime)}</span>
+                    <span>{formatTime(duration)}</span>
+                </div>
+            </div>
+
+            {/* Volume control */}
+            <div className="flex items-center gap-1">
+                <button
+                    onClick={toggleMute}
+                    className="p-2 text-text-muted hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-1"
+                    aria-label={isMuted ? 'Ativar som' : 'Silenciar'}
+                >
+                    {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                </button>
+            </div>
+        </div>
+    );
 
     const PlayerControls = () => (
         <div className="space-y-4">
@@ -230,10 +289,10 @@ const AudioPlayer = ({
                     tabIndex={0}
                 >
                     <div
-                        className="h-full bg-gradient-to-r from-[#1DB954] to-[#1ed760] rounded-full transition-all group-hover:from-[#1ed760] group-hover:to-[#19e866] relative"
+                        className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all group-hover:from-blue-600 group-hover:to-blue-700 relative"
                         style={{ width: `${progress}%` }}
                     >
-                        <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-[#1DB954] rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-blue-500 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                 </div>
                 <div className="flex justify-between text-xs text-gray-500">
@@ -247,7 +306,7 @@ const AudioPlayer = ({
                 <div className="flex items-center gap-2">
                     <button
                         onClick={handleRestart}
-                        className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
+                        className="p-2 text-gray-600 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
                         aria-label="Reiniciar episódio"
                         title="Reiniciar do início"
                     >
@@ -256,7 +315,7 @@ const AudioPlayer = ({
 
                     <button
                         onClick={() => handleSeek(-10)}
-                        className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
+                        className="p-2 text-gray-600 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
                         aria-label="Voltar 10 segundos"
                     >
                         <SkipBack className="w-4 h-4" />
@@ -265,7 +324,7 @@ const AudioPlayer = ({
                     <button
                         onClick={togglePlayPause}
                         disabled={isLoading || !canPlay}
-                        className="w-12 h-12 bg-gradient-to-r from-[#1DB954] to-[#1ed760] hover:from-[#1ed760] hover:to-[#19e866] disabled:from-gray-400 disabled:to-gray-500 text-white rounded-full flex items-center justify-center transition-all shadow-lg"
+                        className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white rounded-full flex items-center justify-center transition-all shadow-lg"
                         aria-label={canPlay ? (isPlaying ? 'Pausar' : 'Reproduzir') : 'Áudio indisponível'}
                     >
                         {isLoading ? (
@@ -279,7 +338,7 @@ const AudioPlayer = ({
 
                     <button
                         onClick={() => handleSeek(10)}
-                        className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
+                        className="p-2 text-gray-600 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
                         aria-label="Avançar 10 segundos"
                     >
                         <SkipForward className="w-4 h-4" />
@@ -291,7 +350,7 @@ const AudioPlayer = ({
                     <div className="flex items-center gap-1">
                         <button
                             onClick={toggleMute}
-                            className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
+                            className="p-2 text-gray-600 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
                             aria-label={isMuted ? 'Ativar som' : 'Silenciar'}
                         >
                             {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
@@ -314,7 +373,7 @@ const AudioPlayer = ({
                     {episode.src && (
                         <button
                             onClick={handleDownload}
-                            className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
+                            className="p-2 text-gray-600 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
                             aria-label="Baixar episódio"
                             title="Baixar episódio"
                         >
@@ -327,7 +386,7 @@ const AudioPlayer = ({
                         <div className="relative">
                             <button
                                 onClick={() => setShowSettings(!showSettings)}
-                                className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
+                                className="p-2 text-gray-600 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
                                 aria-label="Configurações de velocidade"
                                 title="Velocidade de reprodução"
                             >
@@ -351,7 +410,7 @@ const AudioPlayer = ({
                                                     key={rate}
                                                     onClick={() => handlePlaybackRateChange(rate)}
                                                     className={`w-full text-left px-2 py-1 rounded-lg text-sm transition-colors ${playbackRate === rate
-                                                        ? 'bg-[#1DB954]/10 text-[#1DB954] font-semibold border border-[#1DB954]/20'
+                                                        ? 'bg-blue-50 text-blue-600 font-semibold border border-blue-200'
                                                         : 'text-gray-600 hover:bg-gray-100'
                                                         }`}
                                                 >
@@ -372,7 +431,7 @@ const AudioPlayer = ({
                                 href={episode.spotifyUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-2 text-gray-600 hover:text-[#1DB954] hover:bg-[#1DB954]/10 rounded-lg transition-colors"
+                                className="p-2 text-gray-600 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
                                 aria-label="Ouvir no Spotify"
                             >
                                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -455,7 +514,7 @@ const AudioPlayer = ({
                             {episode.category && (
                                 <>
                                     <span>•</span>
-                                    <span className="bg-[#1DB954]/10 text-[#1DB954] px-2 py-1 rounded-full font-semibold text-xs border border-[#1DB954]/20">
+                                    <span className="bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-semibold text-xs border border-blue-200">
                                         {episode.category}
                                     </span>
                                 </>
@@ -496,7 +555,7 @@ const AudioPlayer = ({
                             {episode.category && (
                                 <>
                                     <span>•</span>
-                                    <span className="bg-[#1DB954]/10 text-[#1DB954] px-2 py-0.5 rounded-full font-semibold border border-[#1DB954]/20">
+                                    <span className="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-semibold border border-blue-200">
                                         {episode.category}
                                     </span>
                                 </>
@@ -526,7 +585,7 @@ const AudioPlayer = ({
                             {episode.category && (
                                 <>
                                     <span>•</span>
-                                    <span className="bg-[#1DB954]/10 text-[#1DB954] px-2 py-0.5 rounded-full font-semibold border border-[#1DB954]/20">
+                                    <span className="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-semibold border border-blue-200">
                                         {episode.category}
                                     </span>
                                 </>

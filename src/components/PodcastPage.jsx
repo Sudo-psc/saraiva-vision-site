@@ -25,7 +25,7 @@ function SpotifyEmbed({ embedUrl, episodeTitle, spotifyUrl }) {
                         href={spotifyUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
                         aria-label={`Ouvir episódio no Spotify: ${episodeTitle}`}
                     >
                         Ouvir no Spotify
