@@ -15,7 +15,7 @@ tags:
   - mapeamento de retina
   - urgência oftalmológica
   - saúde ocular
-image: /Blog/capa-descolamento-retina.png
+image: /Blog/descolamento-retina-capa.png
 featured: true
 seo:
   metaDescription: Descolamento de retina: mitos, verdades, sintomas e tratamentos. Dr. Philipe Saraiva realiza cirurgias em Caratinga, MG. Urgência oftalmológica!
@@ -25,7 +25,7 @@ seo:
     - vitrectomia caratinga
     - urgencia oftalmologica
     - sintomas descolamento retina
-  ogImage: /Blog/capa-descolamento-retina.png
+  ogImage: /Blog/descolamento-retina-capa.png
 ---
 
 ## Descolamento de Retina: Mitos e Verdades Que Todo Paciente em Caratinga Precisa Saber
