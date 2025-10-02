@@ -15,8 +15,8 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Configuration
-PROD_DIR="/var/www/html"
+# Configuration - CORRECT production directory matching Nginx config
+PROD_DIR="/var/www/saraivavision/current"
 PROJECT_DIR="/home/saraiva-vision-site"
 BACKUP_DIR="/var/backups/saraiva-vision"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)

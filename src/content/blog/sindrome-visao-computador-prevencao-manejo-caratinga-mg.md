@@ -1,8 +1,8 @@
 ---
 id: 11
 slug: sindrome-visao-computador-prevencao-manejo-caratinga-mg
-title: Retinopatia Diabética: Controle Essencial | Caratinga
-excerpt: Retinopatia diabética: monitoramento e tratamento para prevenir cegueira. Dr. Philipe Saraiva cuida de diabéticos em Caratinga, MG.
+title: Síndrome da Visão de Computador: Fadiga Ocular Digital | Caratinga MG
+excerpt: Fadiga visual, olho seco e cefaleia por telas. Regra 20-20-20 e proteção contra luz azul. Dr. Philipe Saraiva orienta em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-30
 category: Prevenção
@@ -17,12 +17,12 @@ tags:
   - trabalho remoto
   - estudos digitais
   - saúde ocular Caratinga
-image: /Blog/capa-digital.png
+image: /Blog/capa-fadiga-digital.png
 featured: true
 seo:
-  metaDescription: Retinopatia diabética exige controle rigoroso. Dr. Philipe Saraiva monitora e trata em Caratinga, MG. Previna cegueira. Agende exame!
+  metaDescription: Síndrome da visão de computador: fadiga ocular digital, olho seco e cefaleia. Regra 20-20-20 e filtros de luz azul. Caratinga, MG.
   keywords: 
-  ogImage: /Blog/capa-digital.png
+  ogImage: /Blog/capa-fadiga-digital.png
 ---
 
 ## Síndrome da Visão de Computador: Prevenção e Manejo em um Mundo Digital em Caratinga, MG

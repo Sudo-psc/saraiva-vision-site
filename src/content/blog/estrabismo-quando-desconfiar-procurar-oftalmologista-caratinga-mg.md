@@ -13,12 +13,12 @@ tags:
   - tratamento de estrabismo
   - saúde ocular
   - Caratinga MG
-image: /Blog/estrabismo-quando-desconfiar-procurar-oftalmologista-caratinga-mg.png
+image: /Blog/capa-estrabismo-tratamento.png
 featured: true
 seo:
   metaDescription: Estrabismo tem sinais de alerta em crianças e adultos. Dr. Philipe Saraiva explica sintomas, causas e tratamentos em Caratinga, MG. Agende sua consulta!
   keywords: estrabismo, olhos desalinhados, tratamento estrabismo, oftalmologista Caratinga, visão dupla, estrabismo infantil
-  ogImage: /Blog/estrabismo-quando-desconfiar-procurar-oftalmologista-caratinga-mg.png
+  ogImage: /Blog/capa-estrabismo-tratamento.png
 ---
 
 ## Introdução

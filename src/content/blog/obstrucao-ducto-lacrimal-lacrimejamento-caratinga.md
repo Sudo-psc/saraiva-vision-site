@@ -1,8 +1,8 @@
 ---
 id: 3
 slug: obstrucao-ducto-lacrimal-lacrimejamento-caratinga
-title: Nutrição para Saúde Ocular | Caratinga MG
-excerpt: Nutrição para saúde ocular: alimentos essenciais para proteger sua visão. Dr. Philipe Saraiva orienta em Caratinga, MG.
+title: Obstrução do Ducto Lacrimal: Causas e Tratamento do Lacrimejamento | Caratinga MG
+excerpt: Lacrimejamento constante pode ser obstrução lacrimal. Dr. Philipe Saraiva trata desde massagem de Crigler a DCR em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-29
 category: Tratamento
@@ -12,11 +12,11 @@ tags:
   - dacriocistite
   - vias lacrimais
   - Caratinga MG
-image: /Blog/capa-ductolacrimal.png
+image: /Blog/capa-lacrimejamento.png
 seo:
-  metaDescription: Nutrição correta protege sua visão. Dr. Philipe Saraiva explica alimentos essenciais em Caratinga, MG. Cuide dos olhos pela alimentação!
+  metaDescription: Obstrução ducto lacrimal causa lacrimejamento constante. Tratamento: massagem Crigler, sondagem e DCR. Dr. Philipe Saraiva em Caratinga, MG.
   keywords: 
-  ogImage: /Blog/capa-ductolacrimal.png
+  ogImage: /Blog/capa-lacrimejamento.png
 ---
 
 ## Introdução

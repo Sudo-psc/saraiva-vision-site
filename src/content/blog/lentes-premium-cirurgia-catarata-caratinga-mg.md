@@ -1,8 +1,8 @@
 ---
 id: 4
 slug: lentes-premium-cirurgia-catarata-caratinga-mg
-title: Catarata: Sintomas e Cirurgia
-excerpt: Daltonismo: diagnóstico e adaptação com lentes especiais. Dr. Philipe Saraiva oferece avaliação completa em Caratinga, MG.
+title: Lentes Premium para Cirurgia de Catarata: Multifocais e Tóricas | Caratinga MG
+excerpt: Lentes intraoculares premium reduzem dependência de óculos. Dr. Philipe Saraiva oferece tecnologia avançada em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-29
 category: Tratamento
@@ -12,12 +12,12 @@ tags:
   - lentes intraoculares
   - lentes multifocais
   - Caratinga MG
-image: /Blog/capa-lentes-premium-catarata.png
+image: /Blog/capa-lentes-premium.png
 featured: true
 seo:
-  metaDescription: Daltonismo: diagnóstico preciso e adaptação com lentes especiais. Dr. Philipe Saraiva avalia em Caratinga, MG. Melhore percepção de cores!
+  metaDescription: Lentes premium para catarata: multifocais, tóricas e EDOF. Cirurgia moderna reduz dependência de óculos. Dr. Philipe Saraiva em Caratinga, MG.
   keywords: 
-  ogImage: /Blog/capa-lentes-premium-catarata.png
+  ogImage: /Blog/capa-lentes-premium.png
 ---
 
 ## O Que é Catarata e Como Ela Afeta o Cotidiano?

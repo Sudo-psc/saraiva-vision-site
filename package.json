@@ -36,6 +36,8 @@
     "verify:blog-images": "node scripts/verify-blog-images.js",
     "generate:manifest": "node scripts/generate-image-manifest.js",
     "validate:images": "node scripts/validate-images-ci.js",
+    "validate:blog-compliance": "node scripts/validate-blog-compliance-simple.js",
+    "audit:blog-images": "node scripts/validate-blog-compliance-simple.js",
     "fix:image-typos": "bash scripts/fix-image-typos.sh",
     "validate:bundle": "node scripts/validate-client-bundle.js",
     "production:check": "npm run build && npm run test:run"

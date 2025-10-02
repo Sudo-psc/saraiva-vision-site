@@ -1,8 +1,8 @@
 ---
 id: 14
 slug: terapias-geneticas-celulas-tronco-oftalmologia-doencas-hereditarias-caratinga-mg
-title: Pterígio: Remoção Cirúrgica | Caratinga MG
-excerpt: Pterígio: remoção cirúrgica com técnicas modernas para baixa recorrência. Dr. Philipe Saraiva opera em Caratinga, MG.
+title: Terapias Genéticas e Células-Tronco em Oftalmologia: Futuro das Doenças Hereditárias | Caratinga MG
+excerpt: Luxturna e células-tronco revolucionam tratamento de amaurose congênita e retinose pigmentar. Dr. Philipe Saraiva em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-30
 category: Prevenção
@@ -14,12 +14,12 @@ tags:
   - tratamentos hereditários visão
   - avanços oftalmológicos Brasil
   - Caratinga MG
-image: /Blog/pterigio-capa.png
+image: /Blog/capa-terapias-geneticas.png
 featured: true
 seo:
-  metaDescription: Pterígio tem remoção cirúrgica eficaz. Dr. Philipe Saraiva opera com baixa recorrência em Caratinga, MG. Visão clara novamente! Agende.
+  metaDescription: Terapias genéticas (Luxturna) e células-tronco para amaurose congênita, retinose pigmentar e DMRI. Futuro da oftalmologia em Caratinga, MG.
   keywords: 
-  ogImage: /Blog/pterigio-capa.png
+  ogImage: /Blog/capa-terapias-geneticas.png
 ---
 
 ## Introdução

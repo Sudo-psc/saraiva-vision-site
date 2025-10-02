@@ -1,8 +1,8 @@
 ---
 id: 10
 slug: olho-seco-blefarite-lacrimejamento-caratinga-tratamento
-title: Olho Seco: Sintomas e Tratamentos
-excerpt: Degeneração macular relacionada à idade (DMRI): tratamentos para preservar visão central. Dr. Philipe Saraiva em Caratinga, MG.
+title: Olho Seco e Blefarite: Por Que Causam Lacrimejamento Excessivo | Caratinga MG
+excerpt: Paradoxo do olho seco: lacrimejamento e blefarite. Dr. Philipe Saraiva explica tratamentos personalizados em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-30
 category: Prevenção
@@ -14,12 +14,12 @@ tags:
   - sintomas olhos secos
   - prevenção blefarite
   - Caratinga MG
-image: /Blog/capa_post_10_imagen4_opt1_20251001_095940.png
+image: /Blog/capa-olho-seco.png
 featured: true
 seo:
-  metaDescription: Degeneração macular (DMRI) tem tratamento moderno. Dr. Philipe Saraiva oferece terapias avançadas em Caratinga, MG. Preserve visão central!
+  metaDescription: Olho seco e blefarite causam lacrimejamento excessivo. Entenda o paradoxo e tratamentos: lágrimas artificiais, higiene palpebral. Caratinga, MG.
   keywords: 
-  ogImage: /Blog/capa_post_10_imagen4_opt1_20251001_095940.png
+  ogImage: /Blog/capa-olho-seco.png
 ---
 
 ## Introdução

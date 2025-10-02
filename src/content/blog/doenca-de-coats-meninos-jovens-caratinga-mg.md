@@ -1,8 +1,8 @@
 ---
 id: 15
 slug: doenca-de-coats-meninos-jovens-caratinga-mg
-title: Descolamento de Retina: Emergência Ocular | Caratinga
-excerpt: Descolamento de retina: emergência ocular que exige cirurgia urgente. Dr. Philipe Saraiva oferece atendimento rápido em Caratinga, MG.
+title: Doença de Coats: Condição Rara em Meninos Jovens | Caratinga MG
+excerpt: Doença de Coats afeta principalmente meninos: saiba sintomas, diagnóstico e tratamentos. Dr. Philipe Saraiva orienta em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-30
 category: Tratamento
@@ -14,12 +14,12 @@ tags:
   - oftalmologia caratinga
   - tratamento retinal
   - prevenção visão infantil
-image: /Blog/descolamento-retina-capa.png
+image: /Blog/capa-coats.png
 featured: true
 seo:
-  metaDescription: Descolamento de retina é emergência! Dr. Philipe Saraiva trata com cirurgia urgente em Caratinga, MG. Salve sua visão. Atendimento rápido!
+  metaDescription: Doença de Coats: exsudação retiniana em meninos jovens. Sintomas, diagnóstico e tratamento com laser/crioterapia. Dr. Philipe Saraiva em Caratinga, MG.
   keywords: 
-  ogImage: /Blog/descolamento-retina-capa.png
+  ogImage: /Blog/capa-coats.png
 ---
 
 ## Introdução

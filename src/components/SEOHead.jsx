@@ -52,8 +52,8 @@ const SEOHead = ({
   // Generate optimized image URL for social sharing (1200x630)
   const getOptimizedOgImage = () => {
     if (image) return image;
-    // Usar imagem OpenGraph padrão 1200x630
-    return `${baseUrl}/og-image-1200x630.jpg`;
+    // Usar imagem OpenGraph otimizada com logo 1200x630
+    return `${baseUrl}/og-image-1200x630-optimized.jpg`;
   };
 
   // Generate site name based on language
@@ -167,6 +167,26 @@ const SEOHead = ({
       <meta name="twitter:description" content={validatedDescription} />
       <meta name="twitter:image" content={ogImage} />
       <meta name="twitter:image:alt" content={`${validatedTitle} - Clínica Saraiva Vision`} />
+
+      {/* LinkedIn and Business Social Media */}
+      <meta property="linkedin:owner" content="saraiva-vision" />
+      <meta property="linkedin:company" content="saraiva-vision" />
+
+      {/* WhatsApp Business */}
+      <meta property="whatsapp:url" content={canonicalUrl} />
+      <meta property="whatsapp:title" content={validatedTitle} />
+      <meta property="whatsapp:description" content={validatedDescription} />
+      <meta property="whatsapp:image" content={ogImage} />
+
+      {/* Instagram Preview */}
+      <meta property="og:article:author" content="Dr. Philipe Saraiva" />
+      <meta property="og:article:section" content="Medicina Oftalmológica" />
+
+      {/* Medical Practice Enhancement */}
+      <meta name="medical-category" content="Oftalmologia" />
+      <meta name="specialty" content="Clínica Oftalmológica" />
+      <meta name="doctor-name" content="Dr. Philipe Saraiva" />
+      <meta name="crm" content="CRM-MG 69.870" />
 
       {/* Additional Social Media Meta Tags */}
       <meta property="fb:app_id" content="1134006230864956" />

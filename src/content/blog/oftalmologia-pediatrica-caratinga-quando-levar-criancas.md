@@ -1,8 +1,8 @@
 ---
 id: 5
 slug: oftalmologia-pediatrica-caratinga-quando-levar-criancas
-title: Cirurgia Refrativa: Laser e ICL | Caratinga MG
-excerpt: Cirurgia refrativa: laser femtossegundo e ICL para corrigir miopia, hipermetropia e astigmatismo. Dr. Philipe Saraiva em Caratinga, MG.
+title: Oftalmologia Pediátrica: Quando Levar Crianças ao Oftalmologista | Caratinga MG
+excerpt: 80% do aprendizado infantil ocorre pela visão. Dr. Philipe Saraiva orienta sobre check-ups pediátricos em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-29
 category: Prevenção
@@ -15,7 +15,7 @@ tags:
 image: /Blog/capa-pediatria.png
 featured: true
 seo:
-  metaDescription: Cirurgia refrativa com laser femtossegundo e ICL em Caratinga. Dr. Philipe Saraiva corrige miopia, hipermetropia e astigmatismo. Liberte-se!
+  metaDescription: Oftalmologia pediátrica: teste do olhinho, ambliopia, estrabismo. Quando levar crianças ao oftalmologista. Dr. Philipe Saraiva em Caratinga, MG.
   keywords: 
   ogImage: /Blog/capa-pediatria.png
 ---

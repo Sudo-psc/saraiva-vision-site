@@ -1,8 +1,8 @@
 ---
 id: 2
 slug: presbiopia-o-que-e-cura-cirurgia-lentes-contato-caratinga-mg
-title: Exercícios Oculares e Mitos | Caratinga MG
-excerpt: Exercícios oculares: o que realmente funciona? Dr. Philipe Saraiva desvenda mitos e verdades em Caratinga, MG.
+title: Presbiopia (Vista Cansada): Existe Cura? Cirurgia e Lentes de Contato | Caratinga MG
+excerpt: Presbiopia após 40 anos: opções de correção com cirurgia, lentes multifocais e óculos. Dr. Philipe Saraiva esclarece em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-30
 category: Prevenção
@@ -15,12 +15,12 @@ tags:
   - oftalmologista Caratinga
   - saúde ocular MG
   - tratamento presbiopia
-image: /Blog/capa-exercicios-oculares.png
+image: /Blog/capa-presbiopia.png
 featured: true
 seo:
-  metaDescription: Exercícios oculares: mitos e verdades. Dr. Philipe Saraiva esclarece o que funciona em Caratinga, MG. Cuide corretamente da visão!
+  metaDescription: Presbiopia (vista cansada) após 40 anos: correção com óculos progressivos, lentes multifocais ou cirurgia. Dr. Philipe Saraiva em Caratinga, MG.
   keywords: 
-  ogImage: /Blog/capa-exercicios-oculares.png
+  ogImage: /Blog/capa-presbiopia.png
 ---
 
 ## Introdução

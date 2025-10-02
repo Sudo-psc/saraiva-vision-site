@@ -147,7 +147,7 @@ export default function BlogPostLayout({ post, children }) {
 
         {/* Imagem de Capa */}
         {post.coverImage && (
-          <figure className="mb-8 -mx-4 sm:mx-0 sm:rounded-xl overflow-hidden">
+          <figure className="mb-8 sm:rounded-xl overflow-hidden">
             <OptimizedImage
               src={post.coverImage}
               alt={post.coverImageAlt || `Ilustração sobre ${post.title}`}
@@ -257,8 +257,8 @@ export default function BlogPostLayout({ post, children }) {
 function PrimaryAppointmentCTA() {
   return (
     <div 
-      className="mb-8 p-6 bg-gradient-to-br from-blue-50 to-purple-50 
-                 border-2 border-blue-200 rounded-xl shadow-sm"
+      className="mb-8 p-6 bg-gradient-to-br from-blue-50 to-blue-100 
+                 border-2 border-blue-300 rounded-xl shadow-sm"
       role="complementary"
       aria-label="Área de agendamento de consulta"
     >
@@ -295,7 +295,7 @@ function PrimaryAppointmentCTA() {
 function SecondaryAppointmentCTA() {
   return (
     <div 
-      className="mt-12 p-8 bg-gradient-to-br from-blue-600 to-purple-700 
+      className="mt-12 p-8 bg-gradient-to-br from-blue-600 to-blue-800 
                  rounded-xl text-white shadow-xl"
       role="complementary"
       aria-label="Área de ações finais"

@@ -1,8 +1,8 @@
 ---
 id: 16
 slug: como-inteligencia-artificial-transforma-exames-oftalmologicos-caratinga-mg
-title: Dry Eye: Tratamento de Olho Seco | Caratinga MG
-excerpt: Olho seco (Dry Eye): tratamentos modernos para alívio definitivo. Dr. Philipe Saraiva oferece soluções personalizadas em Caratinga, MG.
+title: Como a Inteligência Artificial Transforma Exames Oftalmológicos | Caratinga MG
+excerpt: IA revoluciona diagnóstico de retinopatia diabética e glaucoma. Dr. Philipe Saraiva usa tecnologia avançada em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-30
 category: Tecnologia
@@ -15,12 +15,12 @@ tags:
   - tecnologia médica
   - retinopatia diabética
   - glaucoma
-image: /Blog/futuristic-eye-examination.png
+image: /Blog/capa-ia-oftalmologia.png
 featured: true
 seo:
-  metaDescription: Olho seco (Dry Eye) tem tratamento eficaz. Dr. Philipe Saraiva oferece terapias avançadas em Caratinga, MG. Alívio imediato! Agende consulta.
+  metaDescription: Inteligência artificial (IA) em exames oftalmológicos: OCT-A, detecção precoce de glaucoma e retinopatia. Dr. Philipe Saraiva em Caratinga, MG.
   keywords: 
-  ogImage: /Blog/futuristic-eye-examination.png
+  ogImage: /Blog/capa-ia-oftalmologia.png
 ---
 
 ## Como a Inteligência Artificial Está Transformando os Exames Oftalmológicos em Caratinga, MG

@@ -1,8 +1,8 @@
 ---
 id: 8
 slug: alimentacao-microbioma-ocular-saude-visao-caratinga-mg
-title: Catarata: Cirurgia e Recuperação | Caratinga MG
-excerpt: Cirurgia de catarata: procedimento moderno com lentes premium. Dr. Philipe Saraiva oferece recuperação rápida em Caratinga, MG.
+title: Alimentação e Microbioma Ocular: Nutrição para Saúde da Visão | Caratinga MG
+excerpt: Descubra como alimentação rica em vitaminas A, C, E e ômega-3 protege sua visão. Dr. Philipe Saraiva explica papel do microbioma em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-30
 category: Prevenção
@@ -17,12 +17,12 @@ tags:
   - olho seco
   - saúde sistêmica visão
   - Caratinga MG
-image: /Blog/capa-catarata.png
+image: /Blog/capa-nutricao-visao.png
 featured: true
 seo:
-  metaDescription: Cirurgia de catarata com lentes premium em Caratinga. Dr. Philipe Saraiva realiza procedimento moderno. Visão clara novamente! Agende.
+  metaDescription: Nutrientes essenciais para saúde ocular: vitaminas A, C, E, ômega-3 e microbioma intestinal. Dr. Philipe Saraiva orienta sobre alimentação para visão em Caratinga, MG.
   keywords: 
-  ogImage: /Blog/capa-catarata.png
+  ogImage: /Blog/capa-nutricao-visao.png
 ---
 
 ## Introdução

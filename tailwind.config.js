@@ -59,6 +59,22 @@ export default {
           medium: '#9BABAC',    // Borda média
           dark: '#647A78',      // Borda escura
         },
+        // Spotify Green Theme for Podcasts
+        'spotify-green': {
+          50: '#F0FDF4',     // Very light green
+          100: '#DCFCE7',    // Light green
+          200: '#BBF7D0',    // Medium light green
+          300: '#86EFAC',    // Medium green
+          400: '#4ADE80',    // Bright green
+          500: '#22C55E',    // Spotify Green base
+          600: '#16A34A',    // Spotify Green (standard)
+          700: '#15803D',    // Spotify Green dark
+          800: '#166534',    // Spotify Green darker
+          900: '#14532D',    // Spotify Green darkest
+          light: '#BBF7D0',   // Light variant
+          DEFAULT: '#1DB954', // Official Spotify Green
+          dark: '#166534',    // Dark variant
+        },
         // Cores Semânticas (harmonizadas)
         success: {
           light: '#D1FAE5',

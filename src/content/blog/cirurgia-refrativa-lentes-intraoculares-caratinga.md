@@ -1,8 +1,8 @@
 ---
 id: 1
 slug: cirurgia-refrativa-lentes-intraoculares-caratinga
-title: Catarata: Sintomas e Cirurgia
-excerpt: Inteligência Artificial na oftalmologia: diagnóstico preciso e tratamentos personalizados. Dr. Philipe Saraiva em Caratinga, MG.
+title: Cirurgia Refrativa e Lentes Intraoculares Premium | Caratinga MG
+excerpt: Inovações em PRK, LASIK, SMILE e lentes multifocais/EDOF. Dr. Philipe Saraiva oferece correção visual avançada em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-30
 category: Tratamento
@@ -20,12 +20,12 @@ tags:
   - SMILE Caratinga
   - cirurgia de catarata Caratinga
   - avaliação oftalmológica Caratinga
-image: /Blog/capa_post_1_imagen4_opt1_20251001_100736.png
+image: /Blog/capa-cirurgia-refrativa.png
 featured: true
 seo:
-  metaDescription: Inteligência Artificial revoluciona diagnóstico oftalmológico. Dr. Philipe Saraiva usa tecnologia de ponta em Caratinga, MG. Futuro da visão!
+  metaDescription: Cirurgia refrativa (PRK, LASIK, SMILE) e lentes intraoculares premium (multifocais, EDOF, tóricas). Dr. Philipe Saraiva em Caratinga, MG.
   keywords: 
-  ogImage: /Blog/capa_post_1_imagen4_opt1_20251001_100736.png
+  ogImage: /Blog/capa-cirurgia-refrativa.png
 ---
 
 ## Inovações em cirurgias refrativas e lentes intraoculares premium: o que há de novo e para quem é indicado em Caratinga-MG

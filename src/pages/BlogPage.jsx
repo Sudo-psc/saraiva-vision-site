@@ -240,7 +240,7 @@ const BlogPage = () => {
             className="mt-auto focus:outline-none"
             aria-label={`Leia mais sobre: ${post.title}`}
           >
-            <Button variant="default" className="w-full bg-primary-500 hover:bg-primary-600 text-white font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+            <Button variant="default" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
               <span>{t('blog.read_more', 'Ler artigo completo')}</span>
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </Button>
@@ -294,8 +294,8 @@ const BlogPage = () => {
           Pular para o conteúdo
         </a>
 
-        <main id="main-content" tabIndex="-1" className="py-32 md:py-40 scroll-block-internal">
-          <div className="container mx-auto px-0 max-w-full">
+        <main id="main-content" tabIndex="-1" className="py-20 md:py-24 scroll-block-internal bg-gradient-to-b from-gray-50 to-white">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex items-center space-x-2 text-sm text-text-secondary">
@@ -311,7 +311,7 @@ const BlogPage = () => {
                   </Link>
                 </li>
                 <li className="text-gray-400">/</li>
-                <li className="text-text-primary font-semibold truncate max-w-xs" title={currentPost.title}>
+                <li className="text-text-primary font-semibold truncate max-w-xs md:max-w-md" title={currentPost.title}>
                   {currentPost.title}
                 </li>
               </ol>
@@ -321,95 +321,123 @@ const BlogPage = () => {
             <Button
               onClick={() => navigate('/blog')}
               variant="ghost"
-              className="mb-8 hover:bg-primary-50 transition-colors"
+              className="mb-8 hover:bg-blue-50 transition-colors"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar para o blog
             </Button>
 
             {/* 3-Column Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
               {/* Left Sidebar - Table of Contents (Hidden on mobile) */}
               <aside className="hidden lg:block lg:col-span-3">
-                <TableOfContents headings={headings} />
+                <div className="sticky top-24">
+                  <TableOfContents headings={headings} />
+                </div>
               </aside>
 
               {/* Main Content Area */}
-              <article className="lg:col-span-6 prose prose-lg max-w-none bg-white rounded-none p-6 md:p-8 shadow-none border-0">
-              <h1>{currentPost.title}</h1>
-              <div className="flex items-center gap-4 text-sm text-text-secondary mb-8">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  <time dateTime={currentPost.date}>
-                    {formatDate(currentPost.date)}
-                  </time>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  <span>{Math.ceil((currentPost.content?.length || 1000) / 1000)} min de leitura</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <User className="w-4 h-4" />
-                  <span>{currentPost.author}</span>
-                </div>
-              </div>
+              <article className="lg:col-span-6 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                {/* Featured Image */}
+                {currentPost.image && (
+                  <div className="relative w-full h-64 md:h-80 lg:h-96 overflow-hidden">
+                    <OptimizedImage
+                      src={currentPost.image}
+                      alt={currentPost.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      loading="eager"
+                    />
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
 
-              {currentPost.image && (
-                <OptimizedImage
-                  src={currentPost.image}
-                  alt={currentPost.title}
-                  className="rounded-2xl shadow-lg mb-8"
-                  loading="eager"
-                />
-              )}
+                    {/* Category Badge on Image */}
+                    <div className="absolute top-4 left-4">
+                      <CategoryBadge category={currentPost.category} size="md" onImage={true} />
+                    </div>
+                  </div>
+                )}
 
-              <div dangerouslySetInnerHTML={{ __html: currentPost.content }} />
+                {/* Content Container */}
+                <div className="p-6 md:p-8 lg:p-10">
+                  {/* Title */}
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-6 leading-tight">
+                    {currentPost.title}
+                  </h1>
 
-              {/* Tags */}
-              {currentPost.tags && currentPost.tags.length > 0 && (
-                <div className="mt-8 flex flex-wrap gap-2">
-                  {currentPost.tags.map(tag => (
-                    <span key={tag} className="px-3 py-1 bg-gray-100 text-text-secondary rounded-full text-sm">
-                      #{tag}
-                    </span>
-                  ))}
+                  {/* Metadata Row */}
+                  <div className="flex flex-wrap items-center gap-4 pb-6 mb-8 border-b border-gray-200">
+                    <div className="flex items-center gap-2 text-sm text-text-secondary">
+                      <User className="w-4 h-4" />
+                      <span className="font-medium">{currentPost.author}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-text-secondary">
+                      <Calendar className="w-4 h-4" />
+                      <time dateTime={currentPost.date}>
+                        {formatDate(currentPost.date)}
+                      </time>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-text-secondary">
+                      <Clock className="w-4 h-4" />
+                      <span>{Math.ceil((currentPost.content?.length || 1000) / 1000)} min de leitura</span>
+                    </div>
+                  </div>
+
+                  {/* Article Content */}
+                  <div
+                    className="prose prose-lg max-w-none
+                      prose-headings:font-bold prose-headings:text-text-primary
+                      prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-gray-200
+                      prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3
+                      prose-p:text-text-secondary prose-p:leading-relaxed prose-p:mb-4
+                      prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline
+                      prose-strong:text-text-primary prose-strong:font-semibold
+                      prose-ul:my-4 prose-ul:ml-6
+                      prose-ol:my-4 prose-ol:ml-6
+                      prose-li:text-text-secondary prose-li:mb-2
+                      prose-img:rounded-xl prose-img:shadow-md prose-img:my-6
+                      prose-blockquote:border-l-4 prose-blockquote:border-primary-500 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-text-secondary
+                      prose-code:text-primary-600 prose-code:bg-primary-50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
+                      prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-xl prose-pre:overflow-x-auto"
+                    dangerouslySetInnerHTML={{ __html: currentPost.content }}
+                  />
+
+                  {/* Tags */}
+                  {currentPost.tags && currentPost.tags.length > 0 && (
+                    <div className="mt-10 pt-6 border-t border-gray-200">
+                      <h3 className="text-sm font-semibold text-text-muted mb-3">Tags relacionadas:</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {currentPost.tags.map(tag => (
+                          <span
+                            key={tag}
+                            className="px-3 py-1.5 bg-gradient-to-r from-primary-50 to-secondary-50 text-primary-700 rounded-full text-sm font-medium border border-primary-100 hover:border-primary-300 transition-colors"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </article>
+              </article>
 
               {/* Right Sidebar - Interactive Widgets */}
-              <aside className="hidden lg:block lg:col-span-3 space-y-6">
-                <AuthorWidget
-                  author={currentPost.author}
-                  date={currentPost.date}
-                  category={currentPost.category}
-                />
-                <ShareWidget
-                  title={currentPost.title}
-                  url={typeof window !== 'undefined' ? window.location.href : ''}
-                />
-                <RelatedPostsWidget
-                  posts={relatedPosts}
-                  currentPostId={currentPost.id}
-                />
+              <aside className="lg:col-span-3 space-y-6">
+                <div className="sticky top-24 space-y-6">
+                  <AuthorWidget
+                    author={currentPost.author}
+                    date={currentPost.date}
+                    category={currentPost.category}
+                  />
+                  <ShareWidget
+                    title={currentPost.title}
+                    url={typeof window !== 'undefined' ? window.location.href : ''}
+                  />
+                  <RelatedPostsWidget
+                    posts={relatedPosts}
+                    currentPostId={currentPost.id}
+                  />
+                </div>
               </aside>
-            </div>
-
-            {/* Mobile Widgets - Show below content on mobile */}
-            <div className="lg:hidden mt-8 space-y-6">
-              <AuthorWidget
-                author={currentPost.author}
-                date={currentPost.date}
-                category={currentPost.category}
-              />
-              <ShareWidget
-                title={currentPost.title}
-                url={typeof window !== 'undefined' ? window.location.href : ''}
-              />
-              <RelatedPostsWidget
-                posts={relatedPosts}
-                currentPostId={currentPost.id}
-              />
             </div>
 
             {/* Related Podcasts - Full Width Below Content */}
@@ -665,18 +693,18 @@ const BlogPage = () => {
                      aria-label="Navegação de páginas"
                    >
                      {/* Previous Button */}
-                     <Button
-                       onClick={() => {
-                         setCurrentPage(prev => Math.max(prev - 1, 1));
-                         window.scrollTo({ top: 0, behavior: 'smooth' });
-                       }}
-                       disabled={currentPage === 1}
-                       variant="outline"
-                       className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-50"
-                       aria-label="Página anterior"
-                     >
-                       <ChevronLeft className="w-5 h-5" />
-                     </Button>
+                      <Button
+                        onClick={() => {
+                          setCurrentPage(prev => Math.max(prev - 1, 1));
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        disabled={currentPage === 1}
+                        variant="outline"
+                        className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50"
+                        aria-label="Página anterior"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </Button>
 
                      {/* Page Numbers */}
                      <div className="flex gap-2">
@@ -700,41 +728,41 @@ const BlogPage = () => {
 
                          if (!showPage) return null;
 
-                         return (
-                           <Button
-                             key={pageNum}
-                             onClick={() => {
-                               setCurrentPage(pageNum);
-                               window.scrollTo({ top: 0, behavior: 'smooth' });
-                             }}
-                             variant={currentPage === pageNum ? 'default' : 'outline'}
-                             className={`px-4 py-2 min-w-[44px] ${
-                               currentPage === pageNum
-                                 ? 'bg-primary-600 text-white hover:bg-primary-700'
-                                 : 'hover:bg-primary-50'
-                             }`}
-                             aria-label={`Página ${pageNum}`}
-                             aria-current={currentPage === pageNum ? 'page' : undefined}
-                           >
-                             {pageNum}
-                           </Button>
-                         );
+                          return (
+                            <Button
+                              key={pageNum}
+                              onClick={() => {
+                                setCurrentPage(pageNum);
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                              }}
+                              variant={currentPage === pageNum ? 'default' : 'outline'}
+                              className={`px-4 py-2 min-w-[44px] ${
+                                currentPage === pageNum
+                                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                  : 'hover:bg-blue-50'
+                              }`}
+                              aria-label={`Página ${pageNum}`}
+                              aria-current={currentPage === pageNum ? 'page' : undefined}
+                            >
+                              {pageNum}
+                            </Button>
+                          );
                        })}
                      </div>
 
                      {/* Next Button */}
-                     <Button
-                       onClick={() => {
-                         setCurrentPage(prev => Math.min(prev + 1, totalPages));
-                         window.scrollTo({ top: 0, behavior: 'smooth' });
-                       }}
-                       disabled={currentPage === totalPages}
-                       variant="outline"
-                       className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-50"
-                       aria-label="Próxima página"
-                     >
-                       <ChevronRight className="w-5 h-5" />
-                     </Button>
+                      <Button
+                        onClick={() => {
+                          setCurrentPage(prev => Math.min(prev + 1, totalPages));
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        disabled={currentPage === totalPages}
+                        variant="outline"
+                        className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50"
+                        aria-label="Próxima página"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </Button>
                    </motion.div>
                  )}
                </>

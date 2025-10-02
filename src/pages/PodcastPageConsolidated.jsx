@@ -92,7 +92,7 @@ function PodcastPageConsolidated() {
   // Render single episode view
   if (currentEpisode) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-bg-primary via-primary-50/30 to-bg-primary">
+      <div className="min-h-screen bg-gradient-to-br from-bg-primary via-blue-50/30 to-bg-primary">
         <Helmet>
           <title>{currentEpisode.title} | Podcast Saraiva Vision</title>
           <meta name="description" content={currentEpisode.description} />
@@ -144,14 +144,14 @@ function PodcastPageConsolidated() {
             <Button
               onClick={() => navigate('/podcast')}
               variant="ghost"
-              className="mb-8 hover:bg-primary-50 transition-colors"
+              className="mb-8 hover:bg-blue-50 transition-colors"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar para o podcast
             </Button>
 
             {/* Episode Header */}
-            <div className="bg-gradient-to-br from-primary-500 to-secondary-500 rounded-3xl p-8 md:p-12 mb-12 shadow-2xl">
+            <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-8 md:p-12 mb-12 shadow-2xl">
               <div className="grid md:grid-cols-3 gap-8 items-center">
                 {/* Cover */}
                 {currentEpisode.cover && (
@@ -226,7 +226,7 @@ function PodcastPageConsolidated() {
             </div>
 
             {/* Call to Action */}
-            <div className="bg-gradient-to-r from-primary-500 to-secondary-500 rounded-3xl p-8 md:p-12 text-center text-white shadow-2xl">
+            <div className="bg-gradient-to-r from-blue-500 to-blue-700 rounded-3xl p-8 md:p-12 text-center text-white shadow-2xl">
               <h2 className="text-2xl md:text-3xl font-bold mb-4">
                 Agende sua Consulta
               </h2>
@@ -236,7 +236,7 @@ function PodcastPageConsolidated() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/agendar"
-                  className="px-8 py-4 bg-white text-primary-600 hover:bg-gray-100 rounded-xl font-semibold transition-colors inline-flex items-center justify-center gap-2 shadow-lg"
+                  className="px-8 py-4 bg-white text-blue-600 hover:bg-gray-100 rounded-xl font-semibold transition-colors inline-flex items-center justify-center gap-2 shadow-lg"
                 >
                   <Calendar className="w-5 h-5" />
                   Agendar Consulta
@@ -264,7 +264,7 @@ function PodcastPageConsolidated() {
 
   // Render podcast list view
   return (
-    <div className="min-h-screen bg-gradient-to-br from-bg-primary via-primary-50/30 to-bg-primary">
+    <div className="min-h-screen bg-gradient-to-br from-bg-primary via-blue-50/30 to-bg-primary">
       <Helmet>
         <title>Podcast Saúde Ocular em Foco | Saraiva Vision Caratinga</title>
         <meta
@@ -297,12 +297,12 @@ function PodcastPageConsolidated() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white mb-6 shadow-lg">
+            <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full text-white mb-6 shadow-lg">
               <Mic2 className="w-6 h-6" />
               <span className="font-semibold">Podcast</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-primary-700 via-secondary-600 to-primary-700 bg-clip-text text-transparent mb-6">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 bg-clip-text text-transparent mb-6">
               Saúde Ocular em Foco
             </h1>
 
@@ -317,13 +317,13 @@ function PodcastPageConsolidated() {
             {/* Search Bar */}
             <div className="relative max-w-2xl mx-auto">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Buscar episódios por título, descrição ou palavra-chave..."
-                className="w-full pl-12 pr-4 py-4 bg-white/70 backdrop-blur-sm border-2 border-primary-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all"
-              />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Buscar episódios por título, descrição ou palavra-chave..."
+                  className="w-full pl-12 pr-4 py-4 bg-white/70 backdrop-blur-sm border-2 border-blue-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
+                />
             </div>
 
             {/* Category Filters */}
@@ -334,7 +334,7 @@ function PodcastPageConsolidated() {
                   onClick={() => setSelectedCategory(category)}
                   className={`px-6 py-3 rounded-full font-semibold transition-all ${
                     selectedCategory === category
-                      ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg scale-105'
+                      ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg scale-105'
                       : 'bg-white/70 backdrop-blur-sm text-gray-700 hover:bg-white hover:shadow-md'
                   }`}
                 >
@@ -348,7 +348,7 @@ function PodcastPageConsolidated() {
           {!searchTerm && selectedCategory === 'Todas' && featuredEpisodes.length > 0 && (
             <div className="mb-16">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <Headphones className="w-8 h-8 text-primary-600" />
+                <Headphones className="w-8 h-8 text-blue-600" />
                 Episódios em Destaque
               </h2>
 
@@ -369,15 +369,15 @@ function PodcastPageConsolidated() {
                       </div>
                     )}
 
-                    <div className="p-6">
-                      <div className="flex items-center gap-2 text-sm text-primary-600 mb-3">
-                        <Tag className="w-4 h-4" />
-                        {episode.category}
-                      </div>
+                      <div className="p-6">
+                        <div className="flex items-center gap-2 text-sm text-blue-600 mb-3">
+                          <Tag className="w-4 h-4" />
+                          {episode.category}
+                        </div>
 
-                      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors">
-                        {episode.title}
-                      </h3>
+                        <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                          {episode.title}
+                        </h3>
 
                       <p className="text-gray-600 mb-4 line-clamp-2">
                         {episode.description}
@@ -430,11 +430,11 @@ function PodcastPageConsolidated() {
                     )}
 
                     <div className="p-5">
-                      <div className="text-xs text-primary-600 font-semibold mb-2">
+                      <div className="text-xs text-blue-600 font-semibold mb-2">
                         {episode.category}
                       </div>
 
-                      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
+                      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
                         {episode.title}
                       </h3>
 

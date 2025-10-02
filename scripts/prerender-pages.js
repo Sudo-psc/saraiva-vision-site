@@ -130,11 +130,18 @@ function generatePrerenderedHTML(route, metadata, assets) {
     <meta property="og:url" content="${metadata.canonicalUrl}" />
     <meta property="og:site_name" content="Saraiva Vision" />
     <meta property="og:locale" content="pt_BR" />
+    <meta property="og:image" content="https://saraivavision.com.br/og-image-1200x630-optimized.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="${metadata.title} - Clínica Saraiva Vision" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${metadata.title}" />
     <meta name="twitter:description" content="${metadata.description}" />
+    <meta name="twitter:image" content="https://saraivavision.com.br/og-image-1200x630-optimized.jpg" />
+    <meta name="twitter:image:alt" content="${metadata.title} - Clínica Saraiva Vision" />
 
     <!-- Geo Meta Tags -->
     <meta name="geo.region" content="BR-MG" />

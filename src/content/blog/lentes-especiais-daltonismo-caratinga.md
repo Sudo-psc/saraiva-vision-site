@@ -1,8 +1,8 @@
 ---
 id: 18
 slug: lentes-especiais-daltonismo-caratinga
-title: Estrabismo: Diagnóstico e Tratamento | Caratinga MG
-excerpt: Estrabismo: tratamento cirúrgico e clínico para adultos e crianças. Dr. Philipe Saraiva oferece soluções personalizadas em Caratinga, MG.
+title: Lentes Especiais para Daltonismo: Tecnologia que Transforma Cores | Caratinga MG
+excerpt: Lentes filtrantes para daltonismo melhoram percepção de cores. Dr. Philipe Saraiva avalia e adapta em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-30
 category: Tecnologia
@@ -15,12 +15,12 @@ tags:
   - teste de Ishihara
   - lentes filtrantes
   - tecnologia oftalmológica
-image: /Blog/capa-estrabismo.png
+image: /Blog/capa-daltonismo.png
 featured: true
 seo:
-  metaDescription: Estrabismo tem tratamento cirúrgico e clínico eficaz. Dr. Philipe Saraiva trata adultos e crianças em Caratinga, MG. Recupere alinhamento! Agende.
+  metaDescription: Lentes especiais para daltonismo (protanopia, deuteranopia): óculos filtrantes melhoram percepção de cores. Dr. Philipe Saraiva em Caratinga, MG.
   keywords: 
-  ogImage: /Blog/capa-estrabismo.png
+  ogImage: /Blog/capa-daltonismo.png
 ---
 
 ## Lentes Especiais para Daltonismo: Tecnologia que Transforma Vidas em Caratinga, MG

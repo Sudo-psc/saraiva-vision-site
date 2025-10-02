@@ -1252,7 +1252,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['doença de coats', 'meninos jovens', 'saúde ocular', 'sintomas oculares', 'oftalmologia caratinga', 'tratamento retinal', 'prevenção visão infantil'],
-    image: '/Blog/descolamento-retina-capa.png',
+    image: '/Blog/capa_post_15_imagen4_opt1_20251001_222851.png',
     featured: true,
     seo: {
       metaTitle: 'Doença de Coats em Meninos Jovens: Sintomas, Diagnóstico e Tratamento em Caratinga, MG',
@@ -1332,7 +1332,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Prevenção',
     tags: ['terapias genéticas oftalmologia', 'células-tronco olhos', 'amaurose congênita Leber', 'retinose pigmentar', 'tratamentos hereditários visão', 'avanços oftalmológicos Brasil', 'Caratinga MG'],
-    image: '/Blog/pterigio-capa.png',
+    image: '/Blog/capa_post_14_imagen4_opt1_20251001_222835.png',
     featured: true,
     seo: {
       metaTitle: 'Terapias Genéticas e de Células-Tronco em Oftalmologia: Avanços para Doenças Hereditárias como Amaurose de Leber e Retinose Pigmentar',

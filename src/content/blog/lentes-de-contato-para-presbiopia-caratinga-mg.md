@@ -1,8 +1,8 @@
 ---
 id: 6
 slug: lentes-de-contato-para-presbiopia-caratinga-mg
-title: Lentes de Contato: Rígidas vs Gelatinosas
-excerpt: Presbiopia (vista cansada): tratamentos cirúrgicos e com lentes. Dr. Philipe Saraiva oferece soluções modernas em Caratinga, MG.
+title: Lentes de Contato Multifocais para Presbiopia (Vista Cansada) | Caratinga MG
+excerpt: Lentes multifocais e monovisão para presbiopia após 40 anos. Dr. Philipe Saraiva adapta lentes personalizadas em Caratinga, MG.
 author: Dr. Philipe Saraiva Cruz
 date: 2025-09-29
 category: Prevenção
@@ -12,12 +12,12 @@ tags:
   - correção visual
   - vista cansada
   - Caratinga MG
-image: /Blog/capa-post-6-imagen4-opt1-20250930-184946.png
+image: /Blog/capa-lentes-presbiopia.png
 featured: true
 seo:
-  metaDescription: Presbiopia (vista cansada) tem tratamento cirúrgico e com lentes. Dr. Philipe Saraiva oferece soluções em Caratinga, MG. Liberdade visual!
+  metaDescription: Lentes de contato multifocais e monovisão para presbiopia (vista cansada) após 40 anos. Adaptação personalizada em Caratinga, MG.
   keywords: 
-  ogImage: /Blog/capa-post-6-imagen4-opt1-20250930-184946.png
+  ogImage: /Blog/capa-lentes-presbiopia.png
 ---
 
 ## O Que é Presbiopia?

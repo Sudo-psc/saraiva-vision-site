@@ -197,11 +197,13 @@ export const useLensesSEO = () => {
 // Hook para página inicial
 export const useHomeSEO = () => {
   const { t } = useTranslation();
+  const baseUrl = 'https://saraivavision.com.br';
   return useSEO({
     title: t('homeMeta.title'),
     description: t('homeMeta.description'),
     keywords: t('homeMeta.keywords'),
-    pageType: 'website'
+    pageType: 'website',
+    image: `${baseUrl}/og-image-1200x630-optimized.jpg`
   });
 };
 
