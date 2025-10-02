@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { getRecentPosts } from '@/content/blog';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
+import OptimizedImage from '@/components/blog/OptimizedImage';
 
 const LatestBlogPosts = () => {
     const { t, i18n } = useTranslation();
@@ -78,12 +79,12 @@ const LatestBlogPosts = () => {
                 {/* Featured Image */}
                 {featuredImage && (
                     <div className="relative h-48 overflow-hidden">
-                        <img
+                        <OptimizedImage
                             src={featuredImage}
                             alt={`Imagem ilustrativa do artigo: ${getPostTitle(post)}`}
                             className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
                             loading="lazy"
-                            style={{ maxWidth: '100%', display: 'block' }}
+                            aspectRatio="16/9"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                     </div>

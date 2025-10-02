@@ -1,4 +1,4 @@
-// Centralized clinic information to keep consistency with Google Business Profile.
+import { NAP_CANONICAL } from './napCanonical';
 
 const FALLBACK_PLACE_ID = 'ChIJVUKww7WRugARF7u2lAe7BeE';
 const PLACEHOLDER_TOKENS = ['GOOGLE_PLACE_ID_PLACEHOLDER', 'your_google_place_id_here', 'PLACEHOLDER'];
@@ -38,27 +38,26 @@ const resolvePlaceId = () => {
 export const CLINIC_PLACE_ID = resolvePlaceId();
 
 export const clinicInfo = {
-  name: 'Clínica Saraiva Vision',
-  legalName: 'Saraiva Vision Care LTDA',
-  streetAddress: 'Rua Catarina Maria Passos, 97',
-  neighborhood: 'Santa Zita',
-  city: 'Caratinga',
-  state: 'MG',
-  postalCode: '35300-299',
-  country: 'BR',
-  // Structured address for easy access in components
+  name: NAP_CANONICAL.business.legalName,
+  legalName: NAP_CANONICAL.business.legalName,
+  streetAddress: `${NAP_CANONICAL.address.street}, ${NAP_CANONICAL.address.number}`,
+  neighborhood: NAP_CANONICAL.address.neighborhood,
+  city: NAP_CANONICAL.address.city,
+  state: NAP_CANONICAL.address.stateCode,
+  postalCode: NAP_CANONICAL.address.postalCode,
+  country: NAP_CANONICAL.address.countryCode,
   address: {
-    street: 'Rua Catarina Maria Passos, 97',
-    city: 'Caratinga',
-    state: 'MG',
-    zip: '35300-299',
-    country: 'BR'
+    street: `${NAP_CANONICAL.address.street}, ${NAP_CANONICAL.address.number}`,
+    city: NAP_CANONICAL.address.city,
+    state: NAP_CANONICAL.address.stateCode,
+    zip: NAP_CANONICAL.address.postalCode,
+    country: NAP_CANONICAL.address.countryCode
   },
-  phoneDisplay: '+55 33 99860-1427',
-  phone: '+5533998601427',
-  whatsapp: '+5533998601427',
+  phoneDisplay: NAP_CANONICAL.phone.primary.display,
+  phone: NAP_CANONICAL.phone.primary.e164,
+  whatsapp: NAP_CANONICAL.phone.whatsapp.e164,
   whatsapp24h: 'https://wa.me/message/EHTAAAAYH7SHJ1',
-  email: 'saraivavision@gmail.com',
+  email: NAP_CANONICAL.email.primary,
   instagram: 'https://www.instagram.com/saraiva_vision/',
   facebook: 'https://www.facebook.com/philipeoftalmo',
   linkedin: 'https://www.linkedin.com/in/dr-philipe-saraiva/',

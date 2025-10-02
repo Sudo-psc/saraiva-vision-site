@@ -17,12 +17,12 @@ tags:
   - trabalho remoto
   - estudos digitais
   - saúde ocular Caratinga
-image: /Blog/capa-fadiga-digital.png
+image: /Blog/capa-digital.png
 featured: true
 seo:
   metaDescription: Síndrome da visão de computador: fadiga ocular digital, olho seco e cefaleia. Regra 20-20-20 e filtros de luz azul. Caratinga, MG.
   keywords: 
-  ogImage: /Blog/capa-fadiga-digital.png
+  ogImage: /Blog/capa-digital.png
 ---
 
 ## Síndrome da Visão de Computador: Prevenção e Manejo em um Mundo Digital em Caratinga, MG

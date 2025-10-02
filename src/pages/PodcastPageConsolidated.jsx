@@ -9,7 +9,6 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import {
   Play,
-  Headphones,
   Search,
   Filter,
   Calendar,
@@ -32,7 +31,6 @@ import { Button } from '../components/ui/button';
 import {
   podcastEpisodes,
   getEpisodeBySlug,
-  getFeaturedEpisodes,
   getPodcastCategories,
   searchEpisodes as searchEpisodesData
 } from '../data/podcastEpisodes';
@@ -71,9 +69,6 @@ function PodcastPageConsolidated() {
 
     return episodes;
   }, [searchTerm, selectedCategory]);
-
-  // Featured episodes
-  const featuredEpisodes = useMemo(() => getFeaturedEpisodes(), []);
 
   // Format date
   const formatDate = (dateString) => {
@@ -344,66 +339,10 @@ function PodcastPageConsolidated() {
             </div>
           </div>
 
-          {/* Featured Episodes */}
-          {!searchTerm && selectedCategory === 'Todas' && featuredEpisodes.length > 0 && (
-            <div className="mb-16">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <Headphones className="w-8 h-8 text-blue-600" />
-                Episódios em Destaque
-              </h2>
-
-              <div className="grid md:grid-cols-2 gap-8">
-                {featuredEpisodes.map(episode => (
-                  <Link
-                    key={episode.id}
-                    to={`/podcast/${episode.slug}`}
-                    className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
-                  >
-                    {episode.cover && (
-                      <div className="aspect-video overflow-hidden">
-                        <img
-                          src={episode.cover}
-                          alt={episode.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    )}
-
-                      <div className="p-6">
-                        <div className="flex items-center gap-2 text-sm text-blue-600 mb-3">
-                          <Tag className="w-4 h-4" />
-                          {episode.category}
-                        </div>
-
-                        <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                          {episode.title}
-                        </h3>
-
-                      <p className="text-gray-600 mb-4 line-clamp-2">
-                        {episode.description}
-                      </p>
-
-                      <div className="flex items-center gap-4 text-sm text-gray-500">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {formatDate(episode.date)}
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          {episode.duration}
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* All Episodes */}
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-              Todos os Episódios
+              Todos os Podcasts
               {filteredEpisodes.length > 0 && (
                 <span className="text-lg font-normal text-gray-600 ml-3">
                   ({filteredEpisodes.length} {filteredEpisodes.length === 1 ? 'episódio' : 'episódios'})

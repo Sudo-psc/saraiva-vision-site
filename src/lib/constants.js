@@ -1,15 +1,14 @@
-// Application-wide constants
+import { NAP_CANONICAL } from './napCanonical';
 
-// Contact Information
 export const CONTACT = {
   PHONE: {
-    NUMBER: '5533998601427',
-    DISPLAY: '+55 33 99860-1427',
-    HREF: 'tel:+5533998601427'
+    NUMBER: NAP_CANONICAL.phone.primary.raw,
+    DISPLAY: NAP_CANONICAL.phone.primary.display,
+    HREF: NAP_CANONICAL.phone.primary.href
   },
-  EMAIL: 'saraivavision@gmail.com',
+  EMAIL: NAP_CANONICAL.email.primary,
   DEFAULT_MESSAGES: {
-    WHATSAPP: 'Olá! Gostaria de agendar uma consulta.',
+    WHATSAPP: NAP_CANONICAL.phone.whatsapp.defaultMessage,
     EMAIL_SUBJECT: 'Agendamento de Consulta'
   }
 };

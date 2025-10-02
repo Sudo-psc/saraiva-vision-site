@@ -146,10 +146,10 @@ export default function BlogPostLayout({ post, children }) {
         </header>
 
         {/* Imagem de Capa */}
-        {post.coverImage && (
+        {post.image && (
           <figure className="mb-8 sm:rounded-xl overflow-hidden">
             <OptimizedImage
-              src={post.coverImage}
+              src={post.image}
               alt={post.coverImageAlt || `Ilustração sobre ${post.title}`}
               className="w-full"
               aspectRatio="16/9"

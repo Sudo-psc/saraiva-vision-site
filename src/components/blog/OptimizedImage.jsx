@@ -95,6 +95,19 @@ const OptimizedImage = ({
       return '';
     }
 
+    // Check if the provided src already matches an optimized format and size pattern
+    const srcMatchesOptimizedPattern = src.match(/^(.*)-(\d+)w\.(avif|webp|png|jpe?g)$/i);
+
+    if (srcMatchesOptimizedPattern) {
+      const [, base, size, ext] = srcMatchesOptimizedPattern;
+      if (ext.toLowerCase() === normalizedFormat) {
+        if (enableLogging) {
+          console.info(`[OptimizedImage] Using pre-optimized src for ${format}:`, { src });
+        }
+        return `${src} ${size}w`;
+      }
+    }
+
     // Generate srcSet with available sizes only
     const validSizes = responsiveSizes.filter(size => {
       const filename = `${basename}-${size}w.${normalizedFormat}`;

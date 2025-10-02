@@ -150,7 +150,7 @@ const BlogPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: index * 0.1 }}
-        className="group relative flex flex-col bg-white rounded-xl border border-border-light hover:border-primary-300 hover:shadow-lg transition-all overflow-hidden"
+        className="group relative flex flex-col bg-white rounded-xl border border-border-light hover:border-primary-300 hover:shadow-lg transition-all overflow-hidden h-full"
         role="article"
         aria-labelledby={`post-title-${post.id}`}
       >
@@ -159,20 +159,21 @@ const BlogPage = () => {
             className="relative block focus:outline-none"
             aria-label={`Ler o post: ${post.title}`}
           >
-            <div className="relative w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gray-100">
+            <div className="relative w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gray-100 rounded-t-xl">
               <OptimizedImage
                 src={post.image}
                 alt={`Imagem ilustrativa do artigo: ${post.title}`}
-                className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
-                aspectRatio="16/9"
+                width="400"
+                height="225"
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 400px"
                 fallbackSrc="/img/blog-fallback.jpg"
               />
             </div>
           </Link>
 
-          <div className="p-6 flex flex-col flex-grow">
+          <div className="p-6 flex flex-col flex-grow min-h-0">
           {/* Category Badge */}
           <div className="mb-3">
             <CategoryBadge category={post.category} size="sm" />
@@ -192,7 +193,7 @@ const BlogPage = () => {
           </h3>
 
           {/* Excerpt */}
-          <p className="text-text-secondary mb-4 text-sm flex-grow leading-relaxed">
+          <p className="text-text-secondary mb-4 text-sm leading-relaxed line-clamp-3 flex-shrink-0">
             {post.excerpt}
           </p>
 
@@ -321,7 +322,7 @@ const BlogPage = () => {
             <Button
               onClick={() => navigate('/blog')}
               variant="ghost"
-              className="mb-8 hover:bg-blue-50 transition-colors"
+              className="mb-8 mt-8 hover:bg-blue-50 transition-colors"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar para o blog
@@ -656,10 +657,10 @@ const BlogPage = () => {
                       }}
                       aria-pressed={isActive}
                       aria-label={`Filtrar por categoria: ${category}`}
-                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                         isActive
-                          ? 'bg-primary-500 text-white shadow-sm'
-                          : 'bg-white text-text-secondary border border-border-light hover:border-primary-300 hover:text-primary-600'
+                          ? 'bg-blue-500 text-white shadow-sm hover:bg-blue-600'
+                          : 'bg-white text-text-secondary border border-border-light hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50'
                       }`}
                     >
                       {Icon && <Icon className="w-4 h-4" aria-hidden="true" />}
@@ -678,7 +679,7 @@ const BlogPage = () => {
                </div>
              ) : filteredPosts.length > 0 ? (
                <>
-                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8 auto-rows-fr">
                    {currentPosts.map((post, index) => renderPostCard(post, index))}
                  </div>
 

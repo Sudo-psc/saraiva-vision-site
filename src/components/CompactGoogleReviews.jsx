@@ -75,12 +75,9 @@ const CompactGoogleReviews = React.memo(() => {
     const [mounted, setMounted] = useState(false);
     const { t } = useTranslation();
 
-    // Fetch real reviews from Google Places API
     const {
         reviews: apiReviews,
-        stats: apiStats,
-        loading,
-        error
+        stats: apiStats
     } = useGoogleReviews({
         placeId: CLINIC_PLACE_ID,
         limit: 5,

@@ -12,6 +12,7 @@ import ErrorFeedback from '@/components/ui/ErrorFeedback';
 import { validateField, validateContactSubmission } from '@/lib/validation';
 import { useAnalytics, useVisibilityTracking, useSaraivaTracking } from '@/hooks/useAnalytics';
 import { consentManager } from '@/lib/lgpd/consentManager';
+import { NAP_CANONICAL, generateWhatsAppURL } from '@/lib/napCanonical';
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -124,8 +125,8 @@ const Contact = () => {
 
 
 
-  const phoneNumber = "5533998601427";
-  const whatsappLink = `https://wa.me/${phoneNumber}`;
+  const phoneNumber = NAP_CANONICAL.phone.whatsapp.raw;
+  const whatsappLink = generateWhatsAppURL();
   const chatbotLink = "https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica?model=gpt-4o";
 
   const handleChange = (e) => {

@@ -735,6 +735,354 @@ export const podcastEpisodes = [
     ],
 
     relatedPosts: []
+  },
+
+  {
+    id: 'ceratocone-ep1',
+    slug: 'ceratocone-tratamento-crosslinking',
+    title: 'Ceratocone: Diagnóstico, Tratamento e Crosslinking',
+    description: 'Ceratocone: doença que afina e deforma a córnea. Conheça sintomas, diagnóstico e tratamento com crosslinking. Dr. Philipe Saraiva.',
+    cover: '/Podcasts/Covers/ceratocone_cover.jpg',
+    duration: '11:00',
+    date: '2025-08-15',
+    category: 'Doenças Oculares',
+    tags: ['ceratocone', 'crosslinking', 'córnea', 'Caratinga'],
+    featured: false,
+    spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
+
+    transcript: {
+      summary: 'Ceratocone é uma doença progressiva que deforma a córnea. O crosslinking é o tratamento que estabiliza a progressão da doença.',
+
+      keywords: [
+        'ceratocone Caratinga',
+        'crosslinking',
+        'córnea',
+        'lentes de contato rígidas',
+        'oftalmologista Caratinga',
+        'tratamento ceratocone'
+      ],
+
+      highlights: [
+        {
+          timestamp: '02:00',
+          text: 'Ceratocone geralmente aparece na adolescência e causa astigmatismo irregular progressivo. O diagnóstico precoce é fundamental.',
+          keywords: ['ceratocone', 'adolescência', 'astigmatismo irregular']
+        },
+        {
+          timestamp: '05:30',
+          text: 'O crosslinking é o único tratamento que para a progressão do ceratocone. É realizado com aplicação de riboflavina e luz UV.',
+          keywords: ['crosslinking', 'riboflavina', 'luz UV', 'progressão']
+        }
+      ],
+
+      fullTranscript: `
+        <p>Ceratocone é uma doença que causa deformação progressiva da córnea. Conheça sintomas e tratamentos disponíveis em Caratinga.</p>
+
+        <h3>O que é Ceratocone?</h3>
+        <p>Doença que afina e deforma a córnea, deixando-a em formato de cone. Causa astigmatismo irregular e perda de visão progressiva.</p>
+
+        <h3>Sintomas</h3>
+        <ul>
+          <li>Visão embaçada e distorcida</li>
+          <li>Troca frequente de grau dos óculos</li>
+          <li>Sensibilidade à luz</li>
+          <li>Halos noturnos</li>
+        </ul>
+
+        <h3>Tratamento: Crosslinking</h3>
+        <p>Procedimento que fortalece as fibras de colágeno da córnea, paralisando a progressão do ceratocone. Taxa de sucesso superior a 95%.</p>
+
+        <p>Agende avaliação na Clínica Saraiva Vision em Caratinga.</p>
+      `
+    },
+
+    relatedServices: [
+      {
+        title: 'Tratamento de Ceratocone',
+        url: '/servicos/ceratocone',
+        icon: 'stethoscope'
+      }
+    ],
+
+    relatedPosts: []
+  },
+
+  {
+    id: 'retina-ep1',
+    slug: 'doencas-retina-dmri-retinopatia',
+    title: 'Doenças da Retina: DMRI e Retinopatia Diabética',
+    description: 'Principais doenças da retina: degeneração macular e retinopatia diabética. Sintomas, diagnóstico e tratamento. Dr. Philipe Saraiva.',
+    cover: '/Podcasts/Covers/retina.jpeg',
+    duration: '13:15',
+    date: '2025-08-10',
+    category: 'Doenças Oculares',
+    tags: ['retina', 'DMRI', 'retinopatia diabética', 'Caratinga'],
+    featured: false,
+    spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
+
+    transcript: {
+      summary: 'Doenças da retina como DMRI e retinopatia diabética são causas importantes de perda visual. Diagnóstico precoce e tratamento adequado preservam a visão.',
+
+      keywords: [
+        'doenças da retina Caratinga',
+        'DMRI',
+        'degeneração macular',
+        'retinopatia diabética',
+        'diabetes',
+        'anti-VEGF'
+      ],
+
+      highlights: [
+        {
+          timestamp: '03:30',
+          text: 'A DMRI é a principal causa de cegueira em idosos acima de 60 anos. Afeta a mácula, região central da retina responsável pela visão de detalhes.',
+          keywords: ['DMRI', 'idosos', 'mácula', 'visão central']
+        },
+        {
+          timestamp: '08:00',
+          text: 'Retinopatia diabética é uma complicação grave do diabetes. Todo diabético deve fazer exame de fundo de olho anualmente.',
+          keywords: ['retinopatia diabética', 'diabetes', 'exame de fundo de olho']
+        }
+      ],
+
+      fullTranscript: `
+        <p>Principais doenças da retina e como preservar sua visão com diagnóstico precoce e tratamento adequado.</p>
+
+        <h3>DMRI - Degeneração Macular Relacionada à Idade</h3>
+        <p>Doença progressiva que afeta a mácula. Causa perda da visão central, dificultando leitura e reconhecimento de rostos.</p>
+
+        <h3>Retinopatia Diabética</h3>
+        <p>Complicação do diabetes que danifica vasos sanguíneos da retina. Pode levar à cegueira se não tratada.</p>
+
+        <h3>Tratamentos</h3>
+        <p>Injeções intravítreas de anti-VEGF, fotocoagulação a laser e cirurgia vitreoretiniana quando necessário.</p>
+
+        <p>Agende consulta na Clínica Saraiva Vision em Caratinga.</p>
+      `
+    },
+
+    relatedServices: [
+      {
+        title: 'Tratamento de Retina',
+        url: '/servicos/retina',
+        icon: 'stethoscope'
+      }
+    ],
+
+    relatedPosts: []
+  },
+
+  {
+    id: 'saude-ocular-dmri-ep1',
+    slug: 'saude-ocular-dmri-prevencao',
+    title: 'Saúde Ocular: DMRI - Prevenção e Cuidados',
+    description: 'DMRI: como prevenir a degeneração macular relacionada à idade. Nutrição, suplementos e fatores de risco. Dr. Philipe Saraiva.',
+    cover: '/Podcasts/Covers/dmri.jpg',
+    duration: '09:45',
+    date: '2025-08-05',
+    category: 'Prevenção e Saúde',
+    tags: ['DMRI', 'prevenção', 'nutrição', 'suplementos', 'Caratinga'],
+    featured: false,
+    spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
+
+    transcript: {
+      summary: 'Como prevenir a DMRI através de hábitos saudáveis, nutrição adequada e suplementação. Fatores de risco e cuidados essenciais.',
+
+      keywords: [
+        'DMRI prevenção',
+        'degeneração macular',
+        'nutrição ocular',
+        'suplementos',
+        'luteína',
+        'zeaxantina',
+        'ômega 3'
+      ],
+
+      highlights: [
+        {
+          timestamp: '02:15',
+          text: 'Alimentação rica em vegetais verdes escuros, peixes e frutas coloridas ajuda a prevenir DMRI. Luteína e zeaxantina são nutrientes essenciais.',
+          keywords: ['alimentação', 'vegetais', 'luteína', 'zeaxantina']
+        },
+        {
+          timestamp: '06:00',
+          text: 'Parar de fumar reduz drasticamente o risco de DMRI. Tabagismo é o principal fator de risco modificável.',
+          keywords: ['tabagismo', 'fumo', 'fator de risco']
+        }
+      ],
+
+      fullTranscript: `
+        <p>Como prevenir DMRI e proteger sua visão com hábitos saudáveis e nutrição adequada.</p>
+
+        <h3>Fatores de Risco</h3>
+        <ul>
+          <li>Idade acima de 60 anos</li>
+          <li>Tabagismo (principal fator modificável)</li>
+          <li>História familiar</li>
+          <li>Exposição solar excessiva</li>
+          <li>Hipertensão e obesidade</li>
+        </ul>
+
+        <h3>Prevenção</h3>
+        <ul>
+          <li>Pare de fumar</li>
+          <li>Alimente-se bem (vegetais verdes, peixes)</li>
+          <li>Use óculos de sol com proteção UV</li>
+          <li>Controle pressão arterial e peso</li>
+          <li>Faça exames oftalmológicos regulares</li>
+        </ul>
+
+        <p>Agende consulta preventiva na Clínica Saraiva Vision em Caratinga.</p>
+      `
+    },
+
+    relatedServices: [
+      {
+        title: 'Prevenção Oftalmológica',
+        url: '/servicos/consulta-oftalmologica',
+        icon: 'clipboard'
+      }
+    ],
+
+    relatedPosts: []
+  },
+
+  {
+    id: 'saude-ocular-duvidas-ep1',
+    slug: 'saude-ocular-duvidas-frequentes',
+    title: 'Saúde Ocular: Dúvidas Frequentes Respondidas',
+    description: 'Principais dúvidas sobre saúde ocular respondidas pelo Dr. Philipe Saraiva: óculos, lentes, exames e cuidados diários.',
+    cover: '/Podcasts/Covers/duvidas_cover.jpeg',
+    duration: '14:20',
+    date: '2025-07-30',
+    category: 'Educação e Dúvidas',
+    tags: ['dúvidas', 'saúde ocular', 'óculos', 'lentes', 'Caratinga'],
+    featured: false,
+    spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
+
+    transcript: {
+      summary: 'Episódio especial respondendo as principais dúvidas dos pacientes sobre saúde ocular, uso de óculos, lentes de contato e cuidados diários.',
+
+      keywords: [
+        'dúvidas oftalmologia',
+        'saúde ocular',
+        'óculos',
+        'lentes de contato',
+        'exames oftalmológicos',
+        'Caratinga'
+      ],
+
+      highlights: [
+        {
+          timestamp: '04:00',
+          text: 'Usar óculos não vicia os olhos. O que acontece é que você se acostuma a enxergar bem e percebe mais a diferença sem eles.',
+          keywords: ['óculos', 'mito', 'vícios']
+        },
+        {
+          timestamp: '09:30',
+          text: 'Crianças devem fazer o primeiro exame oftalmológico aos 3 anos de idade, mesmo sem sintomas aparentes.',
+          keywords: ['crianças', 'primeiro exame', 'prevenção']
+        }
+      ],
+
+      fullTranscript: `
+        <p>Respondendo as principais dúvidas sobre saúde ocular dos pacientes da Clínica Saraiva Vision.</p>
+
+        <h3>Principais Dúvidas</h3>
+        <ul>
+          <li>Óculos vicia? Não! É mito.</li>
+          <li>Quando fazer o primeiro exame? Aos 3 anos.</li>
+          <li>Pode usar lentes todos os dias? Sim, com higiene adequada.</li>
+          <li>Computador faz mal? Não, mas causa fadiga ocular.</li>
+        </ul>
+
+        <p>Tire suas dúvidas na Clínica Saraiva Vision em Caratinga.</p>
+      `
+    },
+
+    relatedServices: [
+      {
+        title: 'Consulta Oftalmológica',
+        url: '/servicos/consulta-oftalmologica',
+        icon: 'clipboard'
+      }
+    ],
+
+    relatedPosts: []
+  },
+
+  {
+    id: 'saude-ocular-lentes-ep1',
+    slug: 'saude-ocular-lentes-contato-cuidados',
+    title: 'Saúde Ocular: Lentes de Contato - Cuidados Essenciais',
+    description: 'Guia completo de cuidados com lentes de contato: higienização, tempo de uso e prevenção de infecções. Dr. Philipe Saraiva.',
+    cover: '/Podcasts/Covers/lentes_contato_cover.jpg',
+    duration: '08:30',
+    date: '2025-07-25',
+    category: 'Lentes de Contato',
+    tags: ['lentes de contato', 'cuidados', 'higiene', 'infecções', 'Caratinga'],
+    featured: false,
+    spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
+
+    transcript: {
+      summary: 'Cuidados essenciais com lentes de contato para evitar infecções e complicações. Higienização correta, tempo de uso e quando procurar o oftalmologista.',
+
+      keywords: [
+        'lentes de contato cuidados',
+        'higienização lentes',
+        'infecções oculares',
+        'ceratite',
+        'uso seguro lentes',
+        'Caratinga'
+      ],
+
+      highlights: [
+        {
+          timestamp: '02:30',
+          text: 'Nunca durma com lentes de contato. Isso reduz drasticamente a oxigenação da córnea e aumenta risco de infecções graves.',
+          keywords: ['dormir com lentes', 'oxigenação', 'infecções']
+        },
+        {
+          timestamp: '05:45',
+          text: 'Troque o estojo das lentes a cada 3 meses. Estojos antigos acumulam bactérias e podem contaminar as lentes.',
+          keywords: ['estojo', 'higiene', 'bactérias']
+        }
+      ],
+
+      fullTranscript: `
+        <p>Cuidados essenciais para usar lentes de contato com segurança e evitar complicações.</p>
+
+        <h3>Cuidados Importantes</h3>
+        <ul>
+          <li>Lave as mãos antes de manusear as lentes</li>
+          <li>Use solução própria, nunca água ou soro</li>
+          <li>Não durma com as lentes</li>
+          <li>Respeite o tempo de uso (diário, quinzenal, mensal)</li>
+          <li>Troque o estojo a cada 3 meses</li>
+          <li>Evite nadar com lentes</li>
+        </ul>
+
+        <h3>Sinais de Alerta</h3>
+        <p>Procure oftalmologista imediatamente se tiver: dor, vermelhidão intensa, visão embaçada ou secreção.</p>
+
+        <p>Adaptação e acompanhamento na Clínica Saraiva Vision em Caratinga.</p>
+      `
+    },
+
+    relatedServices: [
+      {
+        title: 'Adaptação de Lentes de Contato',
+        url: '/servicos/lentes-de-contato',
+        icon: 'eye'
+      }
+    ],
+
+    relatedPosts: []
   }
 ];
 

@@ -1,46 +1,22 @@
-import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Calendar, ArrowRight, Eye } from 'lucide-react';
-import { clinicInfo } from '@/lib/clinicInfo';
-import { safeOpenUrl } from '@/utils/safeNavigation';
+import { ArrowRight, Eye } from 'lucide-react';
 
 import { smoothScrollTo } from '@/utils/scrollUtils';
-import OptimizedPicture from '@/components/ui/OptimizedPicture';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
+import UnifiedCTA from '@/components/UnifiedCTA';
 
 const Hero = () => {
   const { t } = useTranslation();
 
-  const openFloatingCTA = () => {
-    window.dispatchEvent(new Event('open-cta-modal'));
-  };
-
-
-
-  const handleAgendarClick = () => {
-    // Use validated scheduling URL with enhanced error handling
-    const validUrl = clinicInfo.validateSchedulingUrl();
-    if (validUrl) {
-      safeOpenUrl(validUrl);
-    } else {
-      console.error('Scheduling URL validation failed, falling back to contact modal');
-      openFloatingCTA();
-    }
-  };
-
-  const handleAgendarContato = openFloatingCTA;
-
   const handleNossosServicosClick = () => {
     smoothScrollTo('#services', {
-      offset: -80, // Account for navbar height
+      offset: -80,
       duration: 800,
       easing: 'easeInOutCubic'
     });
   };
-
-  // Remove manual state management, let ImageWithFallback handle it
 
   return (
     <section
@@ -77,23 +53,19 @@ const Hero = () => {
               {t('hero.subtitle')}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center lg:justify-start">
-              <Button size="xl" variant="cta" className="gap-2 btn-medical focus-ring" onClick={handleAgendarClick}>
-                <Calendar size={20} />
-                {t('hero.schedule_button')}
-              </Button>
-
-              <Button variant="outline" size="lg" className="gap-2 glass-card hover:glass-morphism-hover focus-ring transition-all duration-300" onClick={handleNossosServicosClick}>
+            <div className="flex flex-col gap-6 pt-4">
+              <UnifiedCTA variant="hero" className="w-full lg:w-auto" />
+              
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="gap-2 glass-card hover:glass-morphism-hover focus-ring transition-all duration-300 w-full lg:w-auto" 
+                onClick={handleNossosServicosClick}
+              >
                 {t('hero.services_button')}
                 <ArrowRight size={20} />
               </Button>
             </div>
-
-            {/* Micro-roadmap copy below hero primary actions */}
-            <p className="text-sm text-slate-700 mt-2 font-medium" aria-live="polite">
-              {t('hero.microcopy_fast_confirmation')}
-              <button type="button" onClick={handleAgendarContato} className="ml-2 text-blue-700 hover:underline">{t('hero.more_contact_options')}</button>
-            </p>
 
             <div className="flex items-center gap-4 pt-6 justify-center lg:justify-start">
               <div className="flex -space-x-4">

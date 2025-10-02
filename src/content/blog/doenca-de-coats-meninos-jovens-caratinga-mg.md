@@ -14,12 +14,12 @@ tags:
   - oftalmologia caratinga
   - tratamento retinal
   - prevenção visão infantil
-image: /Blog/capa-coats.png
+image: /Blog/coats.png
 featured: true
 seo:
   metaDescription: Doença de Coats: exsudação retiniana em meninos jovens. Sintomas, diagnóstico e tratamento com laser/crioterapia. Dr. Philipe Saraiva em Caratinga, MG.
   keywords: 
-  ogImage: /Blog/capa-coats.png
+  ogImage: /Blog/coats.png
 ---
 
 ## Introdução

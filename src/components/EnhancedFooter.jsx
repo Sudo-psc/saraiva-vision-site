@@ -582,7 +582,7 @@ const EnhancedFooter = ({
                                         <a href="/privacy" className="underline hover:text-white transition-colors">{t('privacy.link_label')}</a>
                                         <button
                                             type="button"
-                                            onClick={() => window.dispatchEvent(new Event('open-privacy-settings'))}
+                                            onClick={() => window.dispatchEvent(new Event('open-cookie-modal'))}
                                             className="underline hover:text-white transition-colors"
                                         >
                                             {t('privacy.manage_cookies')}

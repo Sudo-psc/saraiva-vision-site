@@ -29,14 +29,14 @@ const corrections = {
     title: 'Como a Inteligência Artificial Transforma Exames Oftalmológicos | Caratinga MG',
     excerpt: 'IA revoluciona diagnóstico de retinopatia diabética e glaucoma. Dr. Philipe Saraiva usa tecnologia avançada em Caratinga, MG.',
     metaDescription: 'Inteligência artificial (IA) em exames oftalmológicos: OCT-A, detecção precoce de glaucoma e retinopatia. Dr. Philipe Saraiva em Caratinga, MG.',
-    image: '/Blog/capa-ia-oftalmologia.png'
+    image: '/Blog/capa_post_1_imagen4_opt1_20251001_100736-768w.avif'
   },
 
   'doenca-de-coats-meninos-jovens-caratinga-mg': {
     title: 'Doença de Coats: Condição Rara em Meninos Jovens | Caratinga MG',
     excerpt: 'Doença de Coats afeta principalmente meninos: saiba sintomas, diagnóstico e tratamentos. Dr. Philipe Saraiva orienta em Caratinga, MG.',
     metaDescription: 'Doença de Coats: exsudação retiniana em meninos jovens. Sintomas, diagnóstico e tratamento com laser/crioterapia. Dr. Philipe Saraiva em Caratinga, MG.',
-    image: '/Blog/capa-coats.png'
+    image: '/Blog/Coats.png'
   },
 
   'lentes-de-contato-para-presbiopia-caratinga-mg': {
@@ -99,7 +99,7 @@ const corrections = {
     title: 'Terapias Genéticas e Células-Tronco em Oftalmologia: Futuro das Doenças Hereditárias | Caratinga MG',
     excerpt: 'Luxturna e células-tronco revolucionam tratamento de amaurose congênita e retinose pigmentar. Dr. Philipe Saraiva em Caratinga, MG.',
     metaDescription: 'Terapias genéticas (Luxturna) e células-tronco para amaurose congênita, retinose pigmentar e DMRI. Futuro da oftalmologia em Caratinga, MG.',
-    image: '/Blog/capa-terapias-geneticas.png'
+    image: '/Blog/capa-terapias-genicas.png'
   }
 };
 

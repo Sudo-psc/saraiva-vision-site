@@ -22,12 +22,14 @@ import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
 import { Toaster } from './components/ui/toaster.jsx';
 import CTAModal from './components/CTAModal.jsx';
+import StickyCTA from './components/StickyCTA.jsx';
+import CookieManager from './components/CookieManager.jsx';
 import ServiceWorkerUpdateNotification from './components/ServiceWorkerUpdateNotification.jsx';
 import Navbar from './components/Navbar.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
-import { clinicInfo } from './lib/clinicInfo.js';
 import Accessibility from './components/Accessibility.jsx';
 import { WidgetProvider } from './utils/widgetManager.jsx';
+import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
 
 import { initErrorTracking } from './utils/errorTracking.js';
 
@@ -49,6 +51,7 @@ function App() {
 
   return (
     <HelmetProvider>
+      <LocalBusinessSchema />
           <WidgetProvider>
             {/*
           Envolvemos apenas o conteúdo da aplicação em um wrapper dedicado.
@@ -91,6 +94,8 @@ function App() {
             </div>
             <Toaster />
             <CTAModal />
+            <StickyCTA />
+            <CookieManager />
             <ServiceWorkerUpdateNotification />
               <Accessibility />
           </WidgetProvider>

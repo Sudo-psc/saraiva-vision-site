@@ -1,0 +1,129 @@
+/* ============================================
+   COOKIE CONSENT SYSTEM - LGPD Compliant
+   Banner e Modal de Preferências
+   ============================================ */
+
+/* Banner de Cookies (Bottom) */
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9998;
+  
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(8, 145, 178, 0.2);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  
+  padding: 16px;
+}
+
+.cookie-banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cookie-banner-text {
+  flex: 1;
+}
+
+.cookie-banner-actions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.btn-accept-all {
+  background: #0891b2;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  font-size: 14px;
+  min-height: 40px;
+  cursor: pointer;
+  
+  transition: all 0.2s ease;
+}
+
+.btn-accept-all:hover {
+  background: #0e7490;
+}
+
+.btn-accept-all:focus-visible {
+  outline: 2px solid #0891b2;
+  outline-offset: 3px;
+}
+
+.btn-manage {
+  background: transparent;
+  color: #0891b2;
+  border: 1px solid #0891b2;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  min-height: 40px;
+  cursor: pointer;
+  
+  transition: all 0.2s ease;
+}
+
+.btn-manage:hover {
+  background: #ecfeff;
+}
+
+.btn-manage:focus-visible {
+  outline: 2px solid #0891b2;
+  outline-offset: 3px;
+}
+
+/* Mobile: stack vertical */
+@media (max-width: 640px) {
+  .cookie-banner-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .cookie-banner-actions {
+    flex-direction: column;
+  }
+  
+  .btn-accept-all,
+  .btn-manage {
+    width: 100%;
+  }
+}
+
+/* Safe area para dispositivos com notch */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .cookie-banner {
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .cookie-banner {
+    animation: none;
+  }
+}

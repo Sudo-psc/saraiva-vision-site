@@ -15,12 +15,12 @@ tags:
   - tecnologia médica
   - retinopatia diabética
   - glaucoma
-image: /Blog/capa-ia-oftalmologia.png
+image: /Blog/capa_post_1_imagen4_opt1_20251001_100736-768w.avif
 featured: true
 seo:
   metaDescription: Inteligência artificial (IA) em exames oftalmológicos: OCT-A, detecção precoce de glaucoma e retinopatia. Dr. Philipe Saraiva em Caratinga, MG.
   keywords: 
-  ogImage: /Blog/capa-ia-oftalmologia.png
+  ogImage: /Blog/capa_post_1_imagen4_opt1_20251001_100736-768w.avif
 ---
 
 ## Como a Inteligência Artificial Está Transformando os Exames Oftalmológicos em Caratinga, MG

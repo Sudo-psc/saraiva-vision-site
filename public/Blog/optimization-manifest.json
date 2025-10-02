@@ -1,0 +1,3991 @@
+{
+  "date": "2025-10-02T13:57:16.751Z",
+  "originalCount": 97,
+  "processed": 97,
+  "totalOriginalSize": "120.22MB",
+  "totalSavings": "116.64MB",
+  "results": [
+    {
+      "filename": "1d166bbe258b66d34d5dc1df7e8eb172713130d3.png",
+      "originalSize": "1.64MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.06MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.05MB"
+        }
+      ]
+    },
+    {
+      "filename": "Perplexity 2025-09-30 02.07.44.png",
+      "originalSize": "1.94MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.04MB"
+        }
+      ]
+    },
+    {
+      "filename": "Raycast 2025-09-30 07.35.34.png",
+      "originalSize": "1.17MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.06MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.06MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.09MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.09MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-alimentacao-microbioma-ocular.png",
+      "originalSize": "1.21MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.08MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.09MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.09MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-amaurose-congenita-leber.png",
+      "originalSize": "1.52MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.11MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.11MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.06MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.06MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.13MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.13MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-catarata.png",
+      "originalSize": "1.54MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.06MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-cirurgia-refrativa.png",
+      "originalSize": "1.94MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.04MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-cuidados-visuais-esportes.png",
+      "originalSize": "1.27MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.06MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.07MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-daltonismo.png",
+      "originalSize": "2.25MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.06MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-descolamento-retina.png",
+      "originalSize": "2.05MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1920,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 1920,
+          "size": "0.07MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-digital.png",
+      "originalSize": "0.82MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.01MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-drye.jpg",
+      "originalSize": "0.23MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.06MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.06MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-ductolacrimal.png",
+      "originalSize": "2.32MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.10MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.09MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1536,
+          "size": "0.13MB"
+        },
+        {
+          "format": "avif",
+          "width": 1536,
+          "size": "0.12MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-estrabismo-tratamento.png",
+      "originalSize": "1.13MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.06MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.06MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.06MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-estrabismo.png",
+      "originalSize": "1.33MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.06MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.05MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-exercicios-oculares.png",
+      "originalSize": "1.12MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.04MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-fotofobia.png",
+      "originalSize": "0.83MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.03MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-geral.png",
+      "originalSize": "2.05MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1920,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 1920,
+          "size": "0.07MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-glaucoma.png",
+      "originalSize": "1.6MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.07MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-ia.png",
+      "originalSize": "1.35MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.07MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-ido.png",
+      "originalSize": "2.05MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1920,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 1920,
+          "size": "0.07MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lacrimejamento.png",
+      "originalSize": "2.32MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.10MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.09MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1536,
+          "size": "0.13MB"
+        },
+        {
+          "format": "avif",
+          "width": 1536,
+          "size": "0.12MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lampada.png",
+      "originalSize": "2.28MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1920,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 1920,
+          "size": "0.07MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-contato-tipos.png",
+      "originalSize": "0.71MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.03MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-daltonismo.png",
+      "originalSize": "1.13MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.04MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-de-contato-coloridas.png",
+      "originalSize": "0MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 1200,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 1200,
+          "size": "0.01MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-de-contato-descartaveis.png",
+      "originalSize": "0MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 1200,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 1200,
+          "size": "0.01MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-de-contato-esclerais.png",
+      "originalSize": "0MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 1200,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 1200,
+          "size": "0.01MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-de-contato-gelatinosas.png",
+      "originalSize": "0MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 1200,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 1200,
+          "size": "0.01MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-de-contato-hibridas.png",
+      "originalSize": "0MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 1200,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 1200,
+          "size": "0.01MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-de-contato-multifocais.png",
+      "originalSize": "0MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 1200,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 1200,
+          "size": "0.01MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-de-contato-para-ceratocone.png",
+      "originalSize": "0MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 1200,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 1200,
+          "size": "0.01MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-de-contato-rigidas.png",
+      "originalSize": "0MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 1200,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 1200,
+          "size": "0.01MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-de-contato-toricas.png",
+      "originalSize": "0MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 1200,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 1200,
+          "size": "0.01MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-de-contato-uso-prolongado.png",
+      "originalSize": "0MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.00MB"
+        },
+        {
+          "format": "webp",
+          "width": 1200,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 1200,
+          "size": "0.01MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-premium-catarata.png",
+      "originalSize": "2.45MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.11MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.11MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 1536,
+          "size": "0.16MB"
+        },
+        {
+          "format": "avif",
+          "width": 1536,
+          "size": "0.16MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-premium.png",
+      "originalSize": "2.45MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.11MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.11MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 1536,
+          "size": "0.16MB"
+        },
+        {
+          "format": "avif",
+          "width": 1536,
+          "size": "0.16MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-lentes-presbiopia.png",
+      "originalSize": "0.84MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.02MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-moscas-volantes.png",
+      "originalSize": "2.05MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1920,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 1920,
+          "size": "0.07MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-nutricao-visao.png",
+      "originalSize": "1.21MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.08MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.09MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.09MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-olho-seco.png",
+      "originalSize": "2.09MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1920,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 1920,
+          "size": "0.08MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-pad.png",
+      "originalSize": "2.09MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1920,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 1920,
+          "size": "0.08MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-pediatria.png",
+      "originalSize": "2.06MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1920,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 1920,
+          "size": "0.07MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-post-16-gemini-20250930-175253-1.png",
+      "originalSize": "0.92MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.05MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-post-22-gemini-20250930-175228-1.png",
+      "originalSize": "0.97MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.02MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-post-23-gemini-flash-20250930-185117.png",
+      "originalSize": "0.8MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.02MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-post-23-gemini-flash-20250930-185127.png",
+      "originalSize": "0.97MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.03MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-post-23-imagen4-opt1-20250930-185601.png",
+      "originalSize": "0.84MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.04MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-post-23-imagen4-opt2-20250930-185601.png",
+      "originalSize": "0.86MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.03MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-post-24-imagen4-opt1-20250930-185815.png",
+      "originalSize": "1.17MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.03MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-post-24-imagen4-opt2-20250930-185815.png",
+      "originalSize": "1.13MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.03MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-post-6-imagen4-opt1-20250930-184946.png",
+      "originalSize": "0.75MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.01MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-post-6-imagen4-opt2-20250930-184946.png",
+      "originalSize": "0.77MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.01MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-presbiopia.png",
+      "originalSize": "0.84MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.02MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-retinose-pigmentar.png",
+      "originalSize": "1.17MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.06MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.06MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.09MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.09MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-sensibilidade-luz-fotofobia.png",
+      "originalSize": "1.19MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.06MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.05MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-terapias-geneticas.png",
+      "originalSize": "1.48MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.09MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.12MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.13MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa-teste-olhinho.png",
+      "originalSize": "2.22MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.09MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.09MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1536,
+          "size": "0.12MB"
+        },
+        {
+          "format": "avif",
+          "width": 1536,
+          "size": "0.11MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_10_imagen4_opt1_20251001_095940.png",
+      "originalSize": "0.86MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.04MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_10_imagen4_opt2_20251001_095940.png",
+      "originalSize": "0.61MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.02MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_11_imagen4_opt1_20251001_100117.png",
+      "originalSize": "0.74MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.02MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_11_imagen4_opt2_20251001_100117.png",
+      "originalSize": "0.84MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.02MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_14_imagen4_opt1_20251001_222835.png",
+      "originalSize": "0.79MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.02MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_14_imagen4_opt2_20251001_222835.png",
+      "originalSize": "0.94MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.03MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_15_imagen4_opt1_20251001_222851.png",
+      "originalSize": "1.19MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.03MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_15_imagen4_opt2_20251001_222851.png",
+      "originalSize": "0.97MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.04MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_1_imagen4_opt1_20251001_100736.png",
+      "originalSize": "1.08MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.03MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_1_imagen4_opt2_20251001_100736.png",
+      "originalSize": "1.03MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.02MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_24_imagen4_opt1_20251001_100334.png",
+      "originalSize": "1.14MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.04MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_24_imagen4_opt2_20251001_100334.png",
+      "originalSize": "1.09MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.02MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_3_imagen4_opt1_20251001_035903.png",
+      "originalSize": "1.06MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.04MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_3_imagen4_opt2_20251001_035903.png",
+      "originalSize": "1.13MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.03MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_8_imagen4_opt1_20251001_100258.png",
+      "originalSize": "0.52MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.02MB"
+        }
+      ]
+    },
+    {
+      "filename": "capa_post_8_imagen4_opt2_20251001_100258.png",
+      "originalSize": "0.7MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1408,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1408,
+          "size": "0.02MB"
+        }
+      ]
+    },
+    {
+      "filename": "cegueira-notruna.jpeg",
+      "originalSize": "0.2MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.07MB"
+        }
+      ]
+    },
+    {
+      "filename": "coats.png",
+      "originalSize": "2.5MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.11MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.11MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1536,
+          "size": "0.16MB"
+        },
+        {
+          "format": "avif",
+          "width": 1536,
+          "size": "0.17MB"
+        }
+      ]
+    },
+    {
+      "filename": "descolamento-retina-capa.png",
+      "originalSize": "0.96MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.06MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.05MB"
+        }
+      ]
+    },
+    {
+      "filename": "estrabismo-quando-desconfiar-procurar-oftalmologista-caratinga-mg.png",
+      "originalSize": "1.16MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.06MB"
+        }
+      ]
+    },
+    {
+      "filename": "eye-anatomy-diagram.png",
+      "originalSize": "2.08MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.07MB"
+        }
+      ]
+    },
+    {
+      "filename": "eye-doctor-consultation.png",
+      "originalSize": "1.36MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.07MB"
+        }
+      ]
+    },
+    {
+      "filename": "futuristic-eye-examination.png",
+      "originalSize": "1.83MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.06MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1536,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 1536,
+          "size": "0.06MB"
+        }
+      ]
+    },
+    {
+      "filename": "gym-capa.png",
+      "originalSize": "2.13MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.07MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.11MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.10MB"
+        }
+      ]
+    },
+    {
+      "filename": "healthy-food-sources.png",
+      "originalSize": "2.66MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.11MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.12MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1536,
+          "size": "0.16MB"
+        },
+        {
+          "format": "avif",
+          "width": 1536,
+          "size": "0.17MB"
+        }
+      ]
+    },
+    {
+      "filename": "lentecontado.png",
+      "originalSize": "1.47MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.03MB"
+        }
+      ]
+    },
+    {
+      "filename": "lentes.jpeg",
+      "originalSize": "0.23MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.06MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.10MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.10MB"
+        }
+      ]
+    },
+    {
+      "filename": "moscas-volantes-capa.png",
+      "originalSize": "0.81MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.02MB"
+        }
+      ]
+    },
+    {
+      "filename": "oculosxlec.png",
+      "originalSize": "1.29MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.06MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.06MB"
+        }
+      ]
+    },
+    {
+      "filename": "oftalmo.png",
+      "originalSize": "1.39MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.06MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.06MB"
+        }
+      ]
+    },
+    {
+      "filename": "olhinho.png",
+      "originalSize": "2.22MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.09MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.09MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1536,
+          "size": "0.12MB"
+        },
+        {
+          "format": "avif",
+          "width": 1536,
+          "size": "0.11MB"
+        }
+      ]
+    },
+    {
+      "filename": "pterigio-capa.png",
+      "originalSize": "2.43MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.07MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1536,
+          "size": "0.12MB"
+        },
+        {
+          "format": "avif",
+          "width": 1536,
+          "size": "0.12MB"
+        }
+      ]
+    },
+    {
+      "filename": "refrativa-capa.png",
+      "originalSize": "1.94MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.04MB"
+        }
+      ]
+    },
+    {
+      "filename": "retinose-pigmentar.png",
+      "originalSize": "1.17MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.06MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.06MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.09MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.09MB"
+        }
+      ]
+    },
+    {
+      "filename": "saudeoio.png",
+      "originalSize": "1.39MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.05MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.05MB"
+        }
+      ]
+    },
+    {
+      "filename": "sda.png",
+      "originalSize": "1.86MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.08MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.02MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.15MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.16MB"
+        }
+      ]
+    },
+    {
+      "filename": "sss.png",
+      "originalSize": "1.52MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.07MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.10MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.11MB"
+        }
+      ]
+    },
+    {
+      "filename": "terapia-genetica-celula-tronco-capa.png",
+      "originalSize": "1.48MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.08MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.09MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.04MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.05MB"
+        },
+        {
+          "format": "webp",
+          "width": 1024,
+          "size": "0.12MB"
+        },
+        {
+          "format": "avif",
+          "width": 1024,
+          "size": "0.13MB"
+        }
+      ]
+    },
+    {
+      "filename": "terapia-genetica.png",
+      "originalSize": "2.33MB",
+      "formats": [
+        {
+          "format": "webp",
+          "width": 1280,
+          "size": "0.07MB"
+        },
+        {
+          "format": "avif",
+          "width": 1280,
+          "size": "0.06MB"
+        },
+        {
+          "format": "webp",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "avif",
+          "width": 768,
+          "size": "0.03MB"
+        },
+        {
+          "format": "webp",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "avif",
+          "width": 480,
+          "size": "0.01MB"
+        },
+        {
+          "format": "webp",
+          "width": 1536,
+          "size": "0.09MB"
+        },
+        {
+          "format": "avif",
+          "width": 1536,
+          "size": "0.09MB"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,269 @@
+/* ============================================
+   FORM SYSTEM - Validation & Fallback
+   Formulários Acessíveis com reCAPTCHA Fallback
+   ============================================ */
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+/* Form Inputs */
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  color: #111827;
+  
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #0891b2;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1);
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+}
+
+/* Textarea specific */
+textarea.form-input {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+/* Input Error State */
+.input-error {
+  border-color: #dc2626;
+}
+
+.input-error:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+/* Form Hints */
+.form-hint {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Form Errors */
+.form-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* Error Summary */
+.error-summary {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.error-summary h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #991b1b;
+  margin-bottom: 8px;
+}
+
+.error-summary ul {
+  margin-left: 20px;
+}
+
+.error-summary a {
+  color: #dc2626;
+  text-decoration: underline;
+}
+
+.error-summary a:hover {
+  color: #991b1b;
+}
+
+/* Success Message */
+.success-message {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Submit Button */
+.btn-submit {
+  width: 100%;
+  background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+  color: white;
+  padding: 14px 24px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 500;
+  font-size: 16px;
+  min-height: 48px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0e7490 0%, #155e75 100%);
+  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+}
+
+.btn-submit:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-submit:focus-visible {
+  outline: 3px solid #0891b2;
+  outline-offset: 4px;
+}
+
+/* reCAPTCHA Container */
+.recaptcha-container {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* Fallback Notice */
+.fallback-notice {
+  margin: 16px 0;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Fallback Contacts */
+.fallback-contacts {
+  margin-top: 24px;
+}
+
+.fallback-contacts h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* Loading State */
+.btn-submit svg.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Autocomplete Styles */
+.form-input:-webkit-autofill,
+.form-input:-webkit-autofill:hover,
+.form-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px white inset;
+  -webkit-text-fill-color: #111827;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .form-input {
+    border-width: 3px;
+  }
+  
+  .input-error {
+    border-width: 3px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .form-input,
+  .btn-submit,
+  .fallback-notice,
+  .success-message {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 640px) {
+  .form-input {
+    font-size: 16px; /* Previne zoom no iOS */
+  }
+  
+  .recaptcha-container {
+    transform: scale(0.9);
+    transform-origin: center;
+  }
+}
+
+/* Focus Indicators (WCAG 2.2) */
+.form-input:focus-visible,
+.btn-submit:focus-visible {
+  outline: 3px solid #0891b2;
+  outline-offset: 2px;
+}
+
+/* Touch Target Size (mínimo 44×44px) */
+.form-input {
+  min-height: 44px;
+}
+
+.btn-submit {
+  min-height: 48px;
+}
+
+/* Error Animation */
+.input-error {
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
