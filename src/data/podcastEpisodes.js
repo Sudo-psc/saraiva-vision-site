@@ -16,7 +16,7 @@ export const podcastEpisodes = [
     tags: ['catarata', 'cirurgia', 'lentes premium', 'Caratinga'],
     featured: true,
     spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
-    spotifyEpisodeId: '7umyFuUi4JcOwzuDcd5xez',
+    spotifyEpisodeId: '63rL35vquzdt1VW2BpTl2N',
     spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
 
     // SEO-optimized short transcript with local keywords

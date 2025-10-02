@@ -4,6 +4,9 @@
 # Deploy Atômico Script
 # Descrição: Deploy com zero-downtime usando releases/current/shared
 # Uso: sudo ./scripts/deploy-atomic.sh [branch]
+#
+# ⚠️  IMPORTANTE: Este script faz deploy do código do GITHUB (origin/branch)
+# ⚠️  Para testar mudanças locais, use: sudo ./scripts/deploy-local.sh
 ###############################################################################
 
 set -euo pipefail
