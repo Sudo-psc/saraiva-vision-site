@@ -360,7 +360,7 @@ const EnhancedFooter = ({
     );
 
     // Liquid Glass classes for footer
-    const footerClasses = useLiquidClasses('enhanced-footer relative overflow-hidden', {
+    const footerClasses = useLiquidClasses('enhanced-footer relative', {
         variant: 'secondary',
         responsive: true
     });

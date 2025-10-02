@@ -1,23 +1,38 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-// Lightweight Spotify embed component. Supports show/episode types.
-// Defaults to the clinic podcast show if no ID is provided.
 const DEFAULT_SHOW_ID = import.meta.env.VITE_SPOTIFY_SHOW_ID || '6sHIG7HbhF1w5O63CTtxwV';
 
-const SpotifyEmbed = ({ type = 'show', id = DEFAULT_SHOW_ID, className = '' }) => {
+const SpotifyEmbed = ({ 
+  type = 'show', 
+  id = DEFAULT_SHOW_ID, 
+  className = '',
+  episodeTitle = null,
+  compact = false
+}) => {
   const { t } = useTranslation();
 
   const src = type === 'episode'
     ? `https://open.spotify.com/embed/episode/${id}`
     : `https://open.spotify.com/embed/show/${id}`;
 
+  const height = compact ? 152 : (type === 'episode' ? 232 : 352);
+
   return (
     <div className={`w-full ${className}`}>
+      {episodeTitle && (
+        <div className="mb-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+          <p className="text-sm text-blue-800 font-medium">
+            🎧 Episódio destacado: <span className="font-bold">{episodeTitle}</span>
+          </p>
+          <p className="text-xs text-blue-600 mt-1">
+            Role a lista abaixo para encontrar e reproduzir este episódio
+          </p>
+        </div>
+      )}
       <iframe
         title={t('podcast.spotify_embed_title', 'Player do Spotify')}
         className="w-full rounded-xl border border-slate-200"
-        style={{ minHeight: 152, backgroundColor: 'transparent' }}
+        style={{ height: `${height}px`, backgroundColor: 'transparent', border: 0 }}
         src={src}
         loading="lazy"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"

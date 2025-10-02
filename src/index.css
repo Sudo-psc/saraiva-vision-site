@@ -526,7 +526,7 @@ html {
     color: hsl(var(--text-primary));
     /* NORMALIZADO: Scroll fluido nativo conforme especificações */
     overflow-y: auto !important;
-    overscroll-behavior-y: none !important;
+    overscroll-behavior-y: auto !important;
     scroll-behavior: smooth !important;
     /* Enhanced mobile responsiveness */
     overflow-x: hidden !important;
@@ -543,7 +543,7 @@ html {
     max-width: 100vw !important;
     position: relative;
     /* BLOQUEIO DE SCROLL: Previne scroll interno nos containers */
-    overscroll-behavior: none !important;
+    overscroll-behavior: auto !important;
     scroll-behavior: auto !important;
   }
 
@@ -562,7 +562,7 @@ html {
     overflow-x: hidden !important;
     overflow-y: visible !important;
     scroll-behavior: auto !important;
-    overscroll-behavior: none !important;
+    overscroll-behavior: auto !important;
     position: relative;
     width: 100% !important;
     max-width: 100vw !important;
