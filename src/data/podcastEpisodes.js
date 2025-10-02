@@ -16,6 +16,7 @@ export const podcastEpisodes = [
     tags: ['catarata', 'cirurgia', 'lentes premium', 'Caratinga'],
     featured: true,
     spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyEpisodeId: '7umyFuUi4JcOwzuDcd5xez',
     spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
 
     // SEO-optimized short transcript with local keywords
@@ -153,6 +154,7 @@ export const podcastEpisodes = [
     tags: ['pterígio', 'cirurgia', 'sol', 'Caratinga'],
     featured: true,
     spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyEpisodeId: '7DB7N4kfBAceF8rndw3jLv',
     spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
 
     transcript: {
@@ -287,6 +289,7 @@ export const podcastEpisodes = [
     tags: ['olho seco', 'lágrimas artificiais', 'ar-condicionado', 'Caratinga'],
     featured: false,
     spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyEpisodeId: '5lQLLPl5YqFtcocTBreQ2e',
     spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
 
     transcript: {
@@ -433,6 +436,7 @@ export const podcastEpisodes = [
     tags: ['lentes de contato', 'lentes rígidas', 'lentes gelatinosas', 'adaptação'],
     featured: false,
     spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyEpisodeId: '3BWBx1thfd6V62sTW1NhMk',
     spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
 
     transcript: {
@@ -529,6 +533,7 @@ export const podcastEpisodes = [
     tags: ['cirurgia refrativa', 'LASIK', 'PRK', 'miopia', 'Caratinga'],
     featured: true,
     spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyEpisodeId: '4PXh72DOxy2sNnenhtaUot',
     spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
 
     transcript: {
@@ -647,6 +652,7 @@ export const podcastEpisodes = [
     tags: ['glaucoma', 'pressão intraocular', 'campo visual', 'Caratinga'],
     featured: false,
     spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyEpisodeId: '1zg3x36TgQGVn9yyXb7qek',
     spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
 
     transcript: {
@@ -749,6 +755,7 @@ export const podcastEpisodes = [
     tags: ['ceratocone', 'crosslinking', 'córnea', 'Caratinga'],
     featured: false,
     spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyEpisodeId: '2roxI5wm7cSSCd4E3epOYP',
     spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
 
     transcript: {
@@ -820,6 +827,7 @@ export const podcastEpisodes = [
     tags: ['retina', 'DMRI', 'retinopatia diabética', 'Caratinga'],
     featured: false,
     spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyEpisodeId: '6smms2vhOtlU0etFSvejVd',
     spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
 
     transcript: {
@@ -886,6 +894,7 @@ export const podcastEpisodes = [
     tags: ['DMRI', 'prevenção', 'nutrição', 'suplementos', 'Caratinga'],
     featured: false,
     spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyEpisodeId: '6d7AWWdDyOAtqofrcIeMkT',
     spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
 
     transcript: {
@@ -962,6 +971,7 @@ export const podcastEpisodes = [
     tags: ['dúvidas', 'saúde ocular', 'óculos', 'lentes', 'Caratinga'],
     featured: false,
     spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyEpisodeId: '4xJ7dLzOsnzNubP23bmNXF',
     spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
 
     transcript: {
@@ -1027,6 +1037,7 @@ export const podcastEpisodes = [
     tags: ['lentes de contato', 'cuidados', 'higiene', 'infecções', 'Caratinga'],
     featured: false,
     spotifyShowId: '6sHIG7HbhF1w5O63CTtxwV',
+    spotifyEpisodeId: '2biGTDebzcisJyA9UgE3My',
     spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
 
     transcript: {
