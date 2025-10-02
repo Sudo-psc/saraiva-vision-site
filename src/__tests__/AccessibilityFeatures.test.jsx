@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from '@/utils/router';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import SocialIcons3D from '../components/ui/SocialIcons3D';

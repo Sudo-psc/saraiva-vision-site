@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from '@/utils/router';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '@/i18n';
 import ServiceDetailPage from '../ServiceDetailPage';
@@ -36,8 +36,8 @@ vi.mock('@/components/Footer', () => ({ default: () => <div data-testid="footer"
 
 // Mock useParams e useNavigate do react-router-dom
 const mockNavigate = vi.fn();
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
+vi.mock('@/utils/router', async () => {
+  const actual = await vi.importActual('@/utils/router');
   return {
     ...actual,
     useParams: () => ({ serviceId: 'consulta-oftalmologica' }),

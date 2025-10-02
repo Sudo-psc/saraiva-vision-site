@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 // src/lib/date.js
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
@@ -8,7 +9,7 @@ dayjs.extend(localizedFormat);
 dayjs.extend(updateLocale);
 
 // Forçar pt-br como padrão
-const APP_LOCALE = import.meta.env.VITE_DEFAULT_LOCALE ?? "pt-br";
+const APP_LOCALE = env.VITE_DEFAULT_LOCALE ?? "pt-br";
 dayjs.locale(APP_LOCALE);
 
 // Exportar API segura

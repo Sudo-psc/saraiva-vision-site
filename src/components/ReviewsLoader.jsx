@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -14,7 +15,7 @@ const ReviewsLoader = () => {
         setError(null);
         
         // In development, use mock data
-        if (import.meta.env.DEV) {
+        if (env.DEV) {
           const mockReviews = {
             source: 'mock',
             total: 127,

@@ -3,7 +3,7 @@ import { initReactI18next } from "react-i18next";
 import pt from "@/locales/pt/translation.json";
 import common from "@/locales/pt/common.json";
 
-const lng = import.meta.env.VITE_DEFAULT_LOCALE ?? "pt";
+const lng = process.env.NEXT_PUBLIC_DEFAULT_LOCALE ?? process.env.VITE_DEFAULT_LOCALE ?? "pt";
 const ns = ["translation", "common"];
 const resources = {
     pt: {

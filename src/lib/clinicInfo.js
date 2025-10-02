@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import { NAP_CANONICAL } from './napCanonical';
 
 const FALLBACK_PLACE_ID = 'ChIJVUKww7WRugARF7u2lAe7BeE';
@@ -16,8 +17,8 @@ const normalizePlaceId = (value) => {
 const resolvePlaceId = () => {
   const candidates = [];
 
-  if (typeof import.meta !== 'undefined' && import.meta.env) {
-    candidates.push(import.meta.env.VITE_GOOGLE_PLACE_ID);
+  if (typeof import.meta !== 'undefined' && env) {
+    candidates.push(env.VITE_GOOGLE_PLACE_ID);
   }
 
   if (typeof process !== 'undefined' && process.env) {

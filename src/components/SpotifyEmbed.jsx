@@ -1,9 +1,10 @@
+import { env } from '@/utils/env';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Lightweight Spotify embed component. Supports show/episode types.
 // Defaults to the clinic podcast show if no ID is provided.
-const DEFAULT_SHOW_ID = import.meta.env.VITE_SPOTIFY_SHOW_ID || '6sHIG7HbhF1w5O63CTtxwV';
+const DEFAULT_SHOW_ID = env.VITE_SPOTIFY_SHOW_ID || '6sHIG7HbhF1w5O63CTtxwV';
 
 const SpotifyEmbed = ({ type = 'show', id = DEFAULT_SHOW_ID, className = '' }) => {
   const { t } = useTranslation();

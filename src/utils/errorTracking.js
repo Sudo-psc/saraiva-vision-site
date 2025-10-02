@@ -1,9 +1,10 @@
+import { env } from '@/utils/env';
 // Simple Error Tracking Configuration - Sentry REMOVED due to module conflicts
 // This provides basic console error logging without external dependencies
 
 export function initErrorTracking() {
   // Only initialize in production and browser environment
-  if (import.meta.env.MODE !== 'production' || typeof window === 'undefined') {
+  if (env.MODE !== 'production' || typeof window === 'undefined') {
     return;
   }
 
@@ -64,7 +65,7 @@ function shouldIgnoreError(error, message, filename) {
 
 // Utility function to manually capture errors
 export async function captureError(error, context = {}) {
-  if (import.meta.env.MODE === 'production' && typeof window !== 'undefined') {
+  if (env.MODE === 'production' && typeof window !== 'undefined') {
     console.error('📝 Error captured:', error, context);
   } else {
     console.error('Error captured (dev mode):', error, context);
@@ -73,7 +74,7 @@ export async function captureError(error, context = {}) {
 
 // Utility function to capture user feedback
 export async function captureUserFeedback(feedback) {
-  if (import.meta.env.MODE === 'production' && typeof window !== 'undefined') {
+  if (env.MODE === 'production' && typeof window !== 'undefined') {
     console.info('💬 User feedback:', feedback);
   }
 }

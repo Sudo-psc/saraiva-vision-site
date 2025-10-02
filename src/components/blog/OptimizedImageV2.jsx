@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 /**
  * Optimized Image Component V2
  * Manifest-based responsive images with robust fallback
@@ -71,7 +72,7 @@ const OptimizedImageV2 = ({
       .map(size => `${imagePath}${basename}-${size}w.${format} ${size}w`)
       .join(', ');
 
-    if (import.meta.env.DEV) {
+    if (env.DEV) {
       console.debug(`[${basename}] Generated ${format} srcset:`, srcset);
     }
 
@@ -107,7 +108,7 @@ const OptimizedImageV2 = ({
 
   const handleSourceError = (format, e) => {
     // Browser will automatically fall through to next <source>
-    if (import.meta.env.DEV) {
+    if (env.DEV) {
       console.debug(`[${basename}] ${format.toUpperCase()} source failed, falling back to next format`);
     }
   };
@@ -257,7 +258,7 @@ const OptimizedImageV2 = ({
       )}
 
       {/* Dev-only debug info */}
-      {import.meta.env.DEV && !isLoaded && !hasError && (
+      {env.DEV && !isLoaded && !hasError && (
         <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded font-mono">
           Loading: {basename}
         </div>

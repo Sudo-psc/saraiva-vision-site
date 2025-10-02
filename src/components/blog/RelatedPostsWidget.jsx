@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/utils/router';
 import { motion } from 'framer-motion';
 import { BookOpen, ArrowRight, Clock } from 'lucide-react';
 

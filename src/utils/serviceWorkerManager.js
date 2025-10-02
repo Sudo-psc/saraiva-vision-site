@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 /**
  * Service Worker Registration com Workbox
  * Features: Update detection, skip waiting control, cache management
@@ -220,7 +221,7 @@ export const swManager = new ServiceWorkerManager();
 
 // Auto-inicialização quando módulo é importado - TEMPORARIAMENTE DESABILITADO
 // Aguardando correção do deployment do service worker no Vercel
-// if (typeof window !== 'undefined' && import.meta.env.PROD) {
+// if (typeof window !== 'undefined' && env.PROD) {
 //	swManager.register();
 // }
 

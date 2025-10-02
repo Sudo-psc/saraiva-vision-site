@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/utils/router';
 import { Phone, Calendar, Star, Shield, MapPin, Clock } from 'lucide-react';
 import { Button } from '../ui/button';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 import { HelmetProvider } from 'react-helmet-async';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from '@/utils/router';
 
 // Mock clinicInfo com estrutura esperada por SEOHead
 vi.mock('@/lib/clinicInfo', () => ({

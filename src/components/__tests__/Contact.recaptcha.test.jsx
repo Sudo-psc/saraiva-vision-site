@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
@@ -49,7 +50,7 @@ describe('Contact Component - reCAPTCHA Integration', () => {
     vi.clearAllMocks();
     localStorage.clear();
     // Mock environment variable
-    import.meta.env.VITE_RECAPTCHA_SITE_KEY = 'test-site-key';
+    env.VITE_RECAPTCHA_SITE_KEY = 'test-site-key';
   });
 
   it('renders reCAPTCHA component', () => {

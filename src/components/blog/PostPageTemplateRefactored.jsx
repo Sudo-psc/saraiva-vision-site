@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import '../../styles/blog-post-layout.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from '@/utils/router';
 import { motion, useScroll } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';

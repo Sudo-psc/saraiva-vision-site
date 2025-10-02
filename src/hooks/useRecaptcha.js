@@ -1,8 +1,9 @@
+import { env } from '@/utils/env';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 // Loads Google reCAPTCHA v3 script and returns an executor for actions
 export const useRecaptcha = () => {
-  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  const siteKey = env.VITE_RECAPTCHA_SITE_KEY;
   const [ready, setReady] = useState(false);
   const loadingRef = useRef(false);
 
@@ -49,4 +50,3 @@ export const useRecaptcha = () => {
 
   return { ready, execute, enabled: !!siteKey };
 };
-

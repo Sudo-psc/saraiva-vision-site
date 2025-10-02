@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from '@/utils/router';
 import { useSEO, useHomeSEO, useServiceSEO, useContactSEO } from '../useSEO';
 
 // Wrapper component for tests that need Router context

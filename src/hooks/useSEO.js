@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@/utils/router';
 import * as schemaLib from '@/lib/schemaMarkup';
 
 export const useSEO = ({

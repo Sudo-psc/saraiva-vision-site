@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp, Clock, Tag, Link as LinkIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/utils/router';
 import PropTypes from 'prop-types';
 
 const PodcastTranscript = ({ episode }) => {

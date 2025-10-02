@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 /**
  * OptimizedImage Component Tests
  * Tests for responsive image loading, format validation, and error handling
@@ -321,8 +322,8 @@ describe('OptimizedImage Component', () => {
     });
 
     it('should log source errors in development mode', () => {
-      const originalEnv = import.meta.env.DEV;
-      import.meta.env.DEV = true;
+      const originalEnv = env.DEV;
+      env.DEV = true;
 
       const { container } = render(
         <OptimizedImage
@@ -338,7 +339,7 @@ describe('OptimizedImage Component', () => {
         expect.stringContaining('Failed to load AVIF sources')
       );
 
-      import.meta.env.DEV = originalEnv;
+      env.DEV = originalEnv;
     });
 
     it('should hide AVIF source after error', async () => {

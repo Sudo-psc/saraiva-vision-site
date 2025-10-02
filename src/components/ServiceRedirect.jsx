@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from '@/utils/router';
 
 /**
  * Componente para redirecionamento 301 de URLs antigas de serviços

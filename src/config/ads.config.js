@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 /**
  * Configuração para detecção de ads e bloqueadores
  * Permite desabilitar funcionalidades que geram erros de console
@@ -13,7 +14,7 @@ export const adsConfig = {
   fallbackBehavior: 'silent',
   
   // Número de tentativas antes de desistir
-  retryAttempts: import.meta.env.DEV ? 0 : 1,
+  retryAttempts: env.DEV ? 0 : 1,
   
   // Timeout para requests de detecção
   requestTimeout: 1500,
@@ -26,7 +27,7 @@ export const adsConfig = {
   ],
   
   // Console logging level
-  logLevel: import.meta.env.DEV ? 'debug' : 'error'
+  logLevel: env.DEV ? 'debug' : 'error'
 };
 
 export default adsConfig;

@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from '@/utils/router';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import {
