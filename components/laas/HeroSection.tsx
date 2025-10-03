@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Shield, Award, Eye, UserCheck } from 'lucide-react';
+import { Shield, Award, Eye, UserCheck, Loader2 } from 'lucide-react';
 import { trackCtaClick, trackLeadGeneration } from '@/lib/laas/analytics';
 import { LAAS_WHATSAPP_NUMBER, SOCIAL_PROOF_BADGES } from '@/lib/laas/config';
 import type { LaasFormData } from '@/types/laas';
+import { laasLeadFormSchema, type LaasLeadResponse } from '@/lib/validations/laas';
 
 const BADGE_ICONS = {
   'Selo de Qualidade': Award,
@@ -13,6 +14,15 @@ const BADGE_ICONS = {
   'CRM Médico Responsável': UserCheck,
 };
 
+// A/B Test variants for headline
+const HEADLINE_VARIANTS = {
+  A: 'Nunca mais fique sem lentes',
+  B: 'Suas lentes de contato com cuidado médico, sem o trabalho de lembrar de comprar',
+};
+
+const ACTIVE_VARIANT =
+  (process.env.NEXT_PUBLIC_HERO_HEADLINE_VARIANT as 'A' | 'B') || 'A';
+
 export function HeroSection() {
   const [formData, setFormData] = useState<LaasFormData>({
     nome: '',
@@ -20,6 +30,14 @@ export function HeroSection() {
     email: '',
     lgpdConsent: false,
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [estimatedSavings, setEstimatedSavings] = useState<{
+    monthly: number;
+    yearly: number;
+  } | null>(null);
 
   const handleAgendarClick = () => {
     trackCtaClick('agendar_consulta', 'hero');
@@ -35,27 +53,90 @@ export function HeroSection() {
     window.open(`https://wa.me/${LAAS_WHATSAPP_NUMBER}?text=${message}`, '_blank');
   };
 
+  /**
+   * Format phone number with mask (XX) XXXXX-XXXX
+   */
+  const formatPhoneNumber = (value: string): string => {
+    const digits = value.replace(/\D/g, '');
+
+    if (digits.length <= 2) {
+      return `(${digits}`;
+    } else if (digits.length <= 7) {
+      return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+    } else if (digits.length <= 11) {
+      return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+    }
+
+    // Limit to 11 digits
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setFormData({ ...formData, whatsapp: formatted });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError(null);
+    setSubmitSuccess(false);
 
-    if (!formData.lgpdConsent) {
-      alert('Por favor, aceite os termos da LGPD para continuar.');
+    // Client-side validation with Zod
+    const validationResult = laasLeadFormSchema.safeParse(formData);
+
+    if (!validationResult.success) {
+      const firstError = Object.values(validationResult.error.flatten().fieldErrors)[0]?.[0];
+      setSubmitError(firstError || 'Dados inválidos. Verifique os campos.');
+      setIsSubmitting(false);
       return;
     }
 
     trackLeadGeneration('calculadora_economia');
 
-    // TODO: Implementar envio para API
-    console.log('Lead gerado:', formData);
-    alert('Obrigado! Em breve entraremos em contato para calcular sua economia.');
+    try {
+      const response = await fetch('/api/laas/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    // Reset form
-    setFormData({
-      nome: '',
-      whatsapp: '',
-      email: '',
-      lgpdConsent: false,
-    });
+      const data: LaasLeadResponse = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Erro ao enviar formulário');
+      }
+
+      // Success!
+      setSubmitSuccess(true);
+      setEstimatedSavings(data.estimatedSavings || null);
+
+      // Reset form
+      setFormData({
+        nome: '',
+        whatsapp: '',
+        email: '',
+        lgpdConsent: false,
+      });
+
+      // Track successful lead in GA4
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'conversion', {
+          send_to: 'AW-CONVERSION_ID', // Replace with actual conversion ID
+          value: data.estimatedSavings?.yearly || 960,
+          currency: 'BRL',
+        });
+      }
+    } catch (error: any) {
+      console.error('Lead submission error:', error);
+      setSubmitError(
+        error.message || 'Erro ao enviar formulário. Tente novamente.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -71,9 +152,9 @@ export function HeroSection() {
               </span>
             </div>
 
-            {/* Headline */}
+            {/* Headline - A/B Test */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-              Nunca mais fique sem lentes
+              {HEADLINE_VARIANTS[ACTIVE_VARIANT]}
             </h1>
 
             {/* Sub-headline */}
@@ -160,9 +241,10 @@ export function HeroSection() {
                   id="whatsapp"
                   required
                   value={formData.whatsapp}
-                  onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+                  onChange={handlePhoneChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                  placeholder="(00) 00000-0000"
+                  placeholder="(33) 99999-9999"
+                  maxLength={15}
                 />
               </div>
 
@@ -199,11 +281,47 @@ export function HeroSection() {
                 </label>
               </div>
 
+              {/* Error Message */}
+              {submitError && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-sm text-red-600">{submitError}</p>
+                </div>
+              )}
+
+              {/* Success Message */}
+              {submitSuccess && (
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-sm text-green-700 font-medium mb-2">
+                    Obrigado! Em breve entraremos em contato.
+                  </p>
+                  {estimatedSavings && (
+                    <div className="text-xs text-green-600 space-y-1">
+                      <p>
+                        💰 Economia estimada: <strong>R$ {estimatedSavings.monthly.toFixed(2)}/mês</strong>
+                      </p>
+                      <p>
+                        📊 Economia anual: <strong>R$ {estimatedSavings.yearly.toFixed(2)}</strong>
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full bg-primary text-white px-6 py-4 rounded-lg font-semibold text-lg hover:bg-primary/90 transition-all hover:scale-105 shadow-lg"
+                disabled={isSubmitting || submitSuccess}
+                className="w-full bg-primary text-white px-6 py-4 rounded-lg font-semibold text-lg hover:bg-primary/90 transition-all hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
               >
-                Calcule sua economia
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    Enviando...
+                  </>
+                ) : submitSuccess ? (
+                  '✓ Enviado com sucesso!'
+                ) : (
+                  'Calcule sua economia'
+                )}
               </button>
             </form>
           </div>

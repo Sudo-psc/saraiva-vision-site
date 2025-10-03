@@ -13,17 +13,17 @@ export const LAAS_CRM_MEDICO = process.env.NEXT_PUBLIC_CRM_MEDICO || '';
 export const PROBLEMAS: LaasProblema[] = [
   { text: 'Ficar sem lentes na hora errada' },
   { text: 'Preço varia a cada compra' },
-  { text: 'Esquecer de repor o estoque' },
-  { text: 'Falta de acompanhamento médico' },
-  { text: 'Logística complicada e demorada' },
+  { text: 'Esquecer de renovar receita' },
+  { text: 'Perder tempo indo à ótica' },
+  { text: 'Lentes inadequadas sem acompanhamento' },
 ];
 
 export const SOLUCOES: LaasSolucao[] = [
   { text: 'Entregas programadas sem esforço' },
   { text: 'Preço fixo e previsível' },
-  { text: 'Sistema automático de reposição' },
-  { text: 'Consultas e teleorientação inclusos' },
-  { text: 'Entrega rápida direto em casa' },
+  { text: 'Acompanhamento médico contínuo' },
+  { text: 'Receba em casa semestralmente' },
+  { text: 'Lentes prescritas por oftalmologista' },
 ];
 
 // Como Funciona - 3 Passos
@@ -135,27 +135,27 @@ export const ADDONS: LaasAddon[] = [
 export const FAQ_ITEMS: LaasFaqItem[] = [
   {
     question: 'Como funciona o cancelamento?',
-    answer: 'Você pode cancelar a qualquer momento sem multas ou taxas. Basta avisar com 15 dias de antecedência da próxima entrega programada.',
+    answer: 'Você pode cancelar a qualquer momento sem multa. Basta avisar com 30 dias de antecedência.',
   },
   {
     question: 'Posso trocar de lente durante a assinatura?',
-    answer: 'Sim! Se sua receita mudar ou você quiser experimentar outro modelo, basta agendar uma nova consulta e ajustaremos sua assinatura.',
-  },
-  {
-    question: 'As lentes são de qualidade?',
-    answer: 'Trabalhamos apenas com marcas premium certificadas pela ANVISA. Todas as lentes são importadas e atendem aos mais altos padrões de qualidade.',
+    answer: 'Sim! Mediante nova consulta com nossos oftalmologistas.',
   },
   {
     question: 'Como funciona a entrega?',
-    answer: 'As entregas são programadas a cada 6 meses automaticamente. Você receberá um aviso por e-mail e WhatsApp 15 dias antes do envio.',
+    answer: 'Enviamos automaticamente a cada 6 meses para o endereço cadastrado.',
   },
   {
-    question: 'Preciso de receita médica?',
-    answer: 'Sim, mas incluímos a consulta oftalmológica na assinatura! Nossos médicos avaliam e emitem sua receita como parte do serviço.',
+    question: 'Preciso ter receita médica?',
+    answer: 'Não! A consulta inicial com nossos oftalmologistas está incluída.',
   },
   {
-    question: 'Qual a diferença entre os planos?',
-    answer: 'Os planos variam em tipo de lente, quantidade de consultas inclusas, add-ons e prioridade no atendimento. Todos incluem entregas automáticas.',
+    question: 'Quais marcas de lentes vocês trabalham?',
+    answer: 'Trabalhamos com as principais marcas: Acuvue, Biofinity, Air Optix, entre outras.',
+  },
+  {
+    question: 'O que acontece se eu perder as lentes?',
+    answer: 'Assine o add-on de Seguro Perda/Dano por R$ 29/mês.',
   },
 ];
 

@@ -1,58 +1,100 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { X, Check } from 'lucide-react';
 import { PROBLEMAS, SOLUCOES } from '@/lib/laas/config';
 
 export function ProblemSolutionSection() {
-  return (
-    <section className="py-16 md:py-24 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Resolva de vez seus problemas com lentes de contato
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Criamos o LAAS para acabar com as dores de quem usa lentes
-          </p>
-        </div>
+  const sectionRef = useRef<HTMLElement>(null);
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 max-w-5xl mx-auto">
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && window.gtag) {
+            window.gtag('event', 'scroll_to_section', {
+              section_name: 'problema_solucao',
+            });
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-white"
+      aria-labelledby="problem-solution-heading"
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16">
           {/* Coluna PROBLEMA */}
           <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-red-600 mb-6 flex items-center gap-2">
-              <X className="h-6 w-6" />
-              PROBLEMA
-            </h3>
-            <div className="space-y-4">
-              {PROBLEMAS.map((problema, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-lg"
-                >
-                  <X className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-gray-700 line-through decoration-red-600">{problema.text}</p>
-                </div>
-              ))}
+            <div className="inline-block">
+              <h2
+                id="problem-solution-heading"
+                className="text-3xl md:text-4xl font-bold text-gray-900 mb-2"
+              >
+                Os Desafios com Lentes de Contato
+              </h2>
+              <div className="h-1 w-24 bg-red-500 rounded-full" aria-hidden="true" />
             </div>
+
+            <ul className="space-y-4" role="list" aria-label="Problemas comuns com lentes de contato">
+              {PROBLEMAS.map((problema, index) => (
+                <li
+                  key={index}
+                  className="flex items-start gap-3 p-4 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-200"
+                >
+                  <div
+                    className="flex-shrink-0 w-6 h-6 rounded-full bg-red-100 flex items-center justify-center mt-0.5"
+                    aria-hidden="true"
+                  >
+                    <X className="w-4 h-4 text-red-600" strokeWidth={2.5} />
+                  </div>
+                  <p className="text-gray-700 text-base md:text-lg leading-relaxed">
+                    {problema.text}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Coluna SOLUÇÃO */}
           <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-green-600 mb-6 flex items-center gap-2">
-              <Check className="h-6 w-6" />
-              SOLUÇÃO
-            </h3>
-            <div className="space-y-4">
-              {SOLUCOES.map((solucao, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-3 p-4 bg-green-50 border border-green-200 rounded-lg"
-                >
-                  <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-gray-700 font-medium">{solucao.text}</p>
-                </div>
-              ))}
+            <div className="inline-block">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                Como o LAAS Resolve
+              </h2>
+              <div className="h-1 w-24 bg-green-500 rounded-full" aria-hidden="true" />
             </div>
+
+            <ul className="space-y-4" role="list" aria-label="Soluções oferecidas pelo LAAS">
+              {SOLUCOES.map((solucao, index) => (
+                <li
+                  key={index}
+                  className="flex items-start gap-3 p-4 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-200 border-l-4 border-green-500"
+                >
+                  <div
+                    className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-0.5"
+                    aria-hidden="true"
+                  >
+                    <Check className="w-4 h-4 text-green-600" strokeWidth={2.5} />
+                  </div>
+                  <p className="text-gray-700 text-base md:text-lg leading-relaxed">
+                    {solucao.text}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
