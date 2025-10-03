@@ -1,3 +1,10 @@
+/**
+ * Contact Form Type Definitions
+ *
+ * Comprehensive types for contact form data, validation, and API responses.
+ * Used across components, validation schemas, and API routes.
+ */
+
 export interface ContactFormData {
   name: string;
   email: string;
@@ -15,6 +22,7 @@ export interface ContactFormErrors {
   consent?: string;
   honeypot?: string;
   general?: string;
+  recaptcha?: string;
 }
 
 export interface ContactFormState {
@@ -30,4 +38,72 @@ export interface ContactAPIResponse {
   errors?: ContactFormErrors;
   messageId?: string;
   code?: string;
+}
+
+/**
+ * Extended contact form data with metadata
+ * Used for API submissions and server-side processing
+ */
+export interface ContactSubmissionData extends ContactFormData {
+  recaptchaToken?: string;
+  timestamp?: string;
+  userAgent?: string;
+  ipAddress?: string;
+}
+
+/**
+ * Rate limiting information
+ */
+export interface RateLimitInfo {
+  allowed: boolean;
+  remaining: number;
+  resetTime?: Date;
+  windowMs?: number;
+}
+
+/**
+ * Validation result for individual fields
+ */
+export interface FieldValidationResult {
+  success: boolean;
+  error?: string;
+  value?: string | boolean;
+}
+
+/**
+ * Contact information display
+ */
+export interface ContactInfo {
+  icon: React.ReactNode;
+  title: string;
+  details: React.ReactNode | string;
+  subDetails?: React.ReactNode | string;
+  href?: string;
+  ariaLabel?: string;
+}
+
+/**
+ * Form submission status
+ */
+export type SubmissionStatus = 'idle' | 'validating' | 'submitting' | 'success' | 'error';
+
+/**
+ * Network status
+ */
+export interface NetworkStatus {
+  isOnline: boolean;
+  effectiveType?: string;
+  downlink?: number;
+  rtt?: number;
+}
+
+/**
+ * Analytics event data for form interactions
+ */
+export interface ContactFormAnalytics {
+  formName: string;
+  action: 'view' | 'start' | 'submit' | 'success' | 'error';
+  timestamp: string;
+  errors?: string[];
+  duration?: number;
 }
