@@ -16,8 +16,8 @@ import type {
   AppointmentData,
   TimeSlot,
 } from '@/types/appointment';
-import { clinicInfo } from '@/src/lib/clinicInfo';
-import { formatDateBR, formatTimeBR, getDayNameBR } from '@/src/lib/appointmentAvailability';
+import { clinicInfo } from '@/lib/clinicInfo';
+import { formatDateBR, formatTimeBR, getDayNameBR } from '@/lib/appointmentAvailability';
 
 const appointmentSchema = z.object({
   patient_name: z

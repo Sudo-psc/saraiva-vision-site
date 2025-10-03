@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { Calendar, Phone, MessageCircle, MapPin } from 'lucide-react';
-import { clinicInfo } from '@/src/lib/clinicInfo';
-import { NAP_CANONICAL, generateWhatsAppURL, getPhoneDisplay } from '@/src/lib/napCanonical';
-import { safeOpenUrl } from '@/src/utils/safeNavigation';
+import { clinicInfo } from '@/lib/clinicInfo';
+import { NAP_CANONICAL, generateWhatsAppURL, getPhoneDisplay } from '@/lib/napCanonical';
+import { safeOpenUrl } from '@/utils/safeNavigation';
 
 type CTAVariant = 'hero' | 'sticky' | 'default';
 
