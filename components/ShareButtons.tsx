@@ -12,9 +12,17 @@ interface ShareButtonsProps {
 
 const ShareButtons: React.FC<ShareButtonsProps> = ({ title, url, className = '' }) => {
   const [copied, setCopied] = useState(false);
+  const [shareUrl, setShareUrl] = useState(url || '');
+  const [shareTitle, setShareTitle] = useState(title || '');
 
-  const shareUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
-  const shareTitle = title || (typeof document !== 'undefined' ? document.title : '');
+  React.useEffect(() => {
+    if (!url && typeof window !== 'undefined') {
+      setShareUrl(window.location.href);
+    }
+    if (!title && typeof document !== 'undefined') {
+      setShareTitle(document.title);
+    }
+  }, [url, title]);
 
   const handleCopyLink = async () => {
     try {

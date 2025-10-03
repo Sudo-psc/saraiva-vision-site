@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Shield, Award, Eye, UserCheck, Loader2 } from 'lucide-react';
 import { trackCtaClick, trackLeadGeneration } from '@/lib/laas/analytics';
 import { LAAS_WHATSAPP_NUMBER, SOCIAL_PROOF_BADGES } from '@/lib/laas/config';

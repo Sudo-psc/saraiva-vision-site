@@ -32,12 +32,10 @@ const nextConfig = {
     return config;
   },
   
-  experimental: {
-    outputFileTracingExcludes: {
-      '*': [
-        'api/**/*',
-      ],
-    },
+  outputFileTracingExcludes: {
+    '*': [
+      'api/**/*',
+    ],
   },
 };
 

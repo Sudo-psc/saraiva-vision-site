@@ -145,7 +145,11 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
           <div className="font-medium mb-2">Ocorreu um erro inesperado</div>
           <div className="text-xs mb-2">Verifique o console do navegador para mais detalhes</div>
           <button 
-            onClick={() => window.location.reload()} 
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                window.location.reload();
+              }
+            }} 
             className="px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition-colors"
           >
             Recarregar Página

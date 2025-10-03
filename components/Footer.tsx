@@ -197,7 +197,11 @@ const Footer: React.FC = () => {
                   <Link href="/privacy" className="underline hover:text-white transition-colors">{t('privacy.link_label')}</Link>
                   <button
                     type="button"
-                    onClick={() => window.dispatchEvent(new Event('open-privacy-settings'))}
+                    onClick={() => {
+                      if (typeof window !== 'undefined') {
+                        window.dispatchEvent(new Event('open-privacy-settings'));
+                      }
+                    }}
                     className="underline hover:text-white transition-colors"
                   >
                     {t('privacy.manage_cookies')}

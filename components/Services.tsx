@@ -275,7 +275,7 @@ const Services: React.FC<ServicesProps> = ({ full = false, autoplay = true }) =>
         const r1 = first.getBoundingClientRect();
         const r2 = second.getBoundingClientRect();
         gap = Math.max(0, r2.left - r1.right);
-      } else {
+      } else if (typeof window !== 'undefined') {
         const style = window.getComputedStyle(el);
         const styleGap = parseFloat(style.columnGap || style.gap);
         if (!Number.isNaN(styleGap)) gap = styleGap;

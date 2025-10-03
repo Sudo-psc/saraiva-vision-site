@@ -407,7 +407,11 @@ const GoogleReviewsWidget: React.FC<GoogleReviewsWidgetProps> = ({
               Estamos atualizando nossas avaliações. Por favor, tente novamente mais tarde.
             </p>
             <button
-              onClick={() => window.location.reload()}
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.location.reload();
+                }
+              }}
               className="bg-amber-600 hover:bg-amber-700 text-white font-medium px-4 py-2 rounded-lg transition-colors"
             >
               Recarregar Página

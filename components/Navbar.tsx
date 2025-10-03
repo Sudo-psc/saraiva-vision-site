@@ -51,11 +51,13 @@ const Navbar: React.FC = () => {
   ], [t]);
 
   const handleContactClick = () => {
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-      window.location.href = '/sobre#contact';
+    if (typeof window !== 'undefined') {
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.location.href = '/sobre#contact';
+      }
     }
   };
 

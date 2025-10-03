@@ -18,7 +18,7 @@ const UnifiedCTA: React.FC<UnifiedCTAProps> = ({ variant = 'hero', className = '
     const validUrl = clinicInfo.validateSchedulingUrl();
     if (validUrl) {
       safeOpenUrl(validUrl);
-    } else {
+    } else if (typeof window !== 'undefined') {
       window.dispatchEvent(new Event('open-cta-modal'));
     }
   };

@@ -4,8 +4,8 @@
  * Requirements: 3.4, 4.5, 7.5, 9.5
  */
 
-import { createLogger } from '../../../../../../..../../../../src/lib/logger.js';
-import { logEvent } from '../../../../../../..../../../../src/lib/eventLogger.js';
+import { createLogger } from '@/lib/logger.js';
+import { logEvent } from '@/lib/eventLogger.js';
 
 /**
  * Fallback strategies for different services

@@ -35,15 +35,16 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   storageKey = 'saraiva-theme-profile'
 }) => {
   // Profile state
-  const [profile, setProfileState] = useState<ProfileType>(() => {
+  const [profile, setProfileState] = useState<ProfileType>(defaultProfile);
+
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem(storageKey);
       if (stored && ['familiar', 'jovem', 'senior'].includes(stored)) {
-        return stored as ProfileType;
+        setProfileState(stored as ProfileType);
       }
     }
-    return defaultProfile;
-  });
+  }, [storageKey]);
 
   // Accessibility states
   const [isDarkMode, setDarkModeState] = useState(false);

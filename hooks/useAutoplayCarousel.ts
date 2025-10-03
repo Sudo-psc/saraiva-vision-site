@@ -235,9 +235,11 @@ const autoplayReducer = (state: AutoplayState, action: AutoplayAction): Autoplay
 };
 
 const usePageVisibility = (): { isVisible: boolean; visibilityState: DocumentVisibilityState } => {
-  const [isVisible, setIsVisible] = useState(!document.hidden);
+  const [isVisible, setIsVisible] = useState(
+    typeof document !== 'undefined' ? !document.hidden : true
+  );
   const [visibilityState, setVisibilityState] = useState<DocumentVisibilityState>(
-    (document.visibilityState as DocumentVisibilityState) || 'visible'
+    (typeof document !== 'undefined' ? document.visibilityState as DocumentVisibilityState : 'visible') || 'visible'
   );
 
   useEffect(() => {
