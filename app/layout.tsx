@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import React from 'react';
+import { I18nProvider } from '@/src/components/providers/I18nProvider';
 import './globals.css';
 
 const inter = Inter({
@@ -69,7 +71,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={inter.variable}>
       <body className="antialiased">
-        {children}
+        <I18nProvider locale="pt">
+          {children}
+        </I18nProvider>
       </body>
     </html>
   );

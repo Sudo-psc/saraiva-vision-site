@@ -1,0 +1,508 @@
+/**
+ * Senior Profile Components - WCAG AAA Styles
+ * Glossary, ConfirmDialog, and other specialized components
+ */
+
+/* ===================================
+   ConfirmDialog - Error Prevention
+   =================================== */
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 9998;
+  backdrop-filter: blur(2px);
+}
+
+.confirm-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  background-color: var(--senior-bg);
+  border: 4px solid var(--senior-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+
+  /* Focus trap */
+  outline: none;
+}
+
+.dialog-content {
+  padding: var(--senior-space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--senior-space-lg);
+}
+
+/* Dialog Icon */
+.dialog-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  background-color: var(--senior-primary);
+  color: var(--senior-bg);
+}
+
+.dialog-warning .dialog-icon {
+  background-color: var(--senior-warning);
+}
+
+.dialog-danger .dialog-icon {
+  background-color: var(--senior-error);
+}
+
+/* Dialog Header */
+.dialog-header {
+  text-align: center;
+}
+
+.dialog-title {
+  font-size: var(--senior-font-h2);
+  font-weight: 700;
+  line-height: var(--senior-line-height-tight);
+  color: var(--senior-text);
+  margin: 0;
+}
+
+/* Dialog Message */
+.dialog-message {
+  text-align: center;
+}
+
+.dialog-message p {
+  font-size: var(--senior-font-large);
+  line-height: var(--senior-line-height-normal);
+  color: var(--senior-text);
+  margin-bottom: var(--senior-space-md);
+}
+
+/* Error Prevention Notice */
+.dialog-notice {
+  background-color: #FFF3CD; /* Light yellow - AAA compliant with dark text */
+  border: 3px solid var(--senior-warning);
+  border-radius: 8px;
+  padding: var(--senior-space-md);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--senior-space-sm);
+}
+
+.notice-icon {
+  font-size: 1.5em;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.notice-text {
+  flex: 1;
+  font-size: var(--senior-font-base);
+  font-weight: 600;
+  color: var(--senior-text);
+  line-height: var(--senior-line-height-normal);
+}
+
+/* Dialog Actions */
+.dialog-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--senior-space-md);
+  margin-top: var(--senior-space-md);
+}
+
+@media (max-width: 480px) {
+  .dialog-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.btn-dialog {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--senior-space-sm);
+
+  min-height: var(--senior-touch-comfortable);
+  padding: 16px 24px;
+
+  font-size: var(--senior-font-large);
+  font-weight: 700;
+  text-decoration: none;
+
+  border: 3px solid;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel {
+  color: var(--senior-text);
+  background-color: var(--senior-bg);
+  border-color: var(--senior-border);
+}
+
+.btn-cancel:hover {
+  background-color: #F5F5F5;
+  border-color: var(--senior-text);
+}
+
+.btn-confirm {
+  color: var(--senior-bg);
+  background-color: var(--senior-primary);
+  border-color: var(--senior-primary);
+}
+
+.btn-confirm:hover {
+  background-color: var(--senior-primary-hover);
+  border-color: var(--senior-primary-hover);
+  transform: scale(1.02);
+}
+
+.btn-danger {
+  background-color: var(--senior-error);
+  border-color: var(--senior-error);
+}
+
+.btn-danger:hover {
+  background-color: #990000; /* Darker red - still AAA */
+  border-color: #990000;
+}
+
+/* ===================================
+   Glossary Page
+   =================================== */
+
+.glossary-page {
+  background-color: var(--senior-bg);
+  min-height: 100vh;
+}
+
+/* Glossary Header */
+.glossary-header {
+  background-color: #F5F5F5;
+  padding: var(--senior-space-xl) 0;
+  border-bottom: 3px solid var(--senior-border-light);
+}
+
+.glossary-title {
+  text-align: center;
+  margin-bottom: var(--senior-space-md);
+}
+
+.glossary-intro {
+  text-align: center;
+  font-size: var(--senior-font-large);
+  max-width: 700px;
+  margin: 0 auto var(--senior-space-xl);
+}
+
+/* How to Use */
+.glossary-how-to {
+  background-color: var(--senior-bg);
+  border: 3px solid var(--senior-primary);
+  border-radius: 8px;
+  padding: var(--senior-space-lg);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.how-to-title {
+  font-size: var(--senior-font-h3);
+  font-weight: 700;
+  margin-bottom: var(--senior-space-md);
+  color: var(--senior-primary);
+}
+
+.how-to-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.how-to-list li {
+  font-size: var(--senior-font-base);
+  line-height: var(--senior-line-height-normal);
+  margin-bottom: var(--senior-space-sm);
+  padding-left: var(--senior-space-md);
+  position: relative;
+}
+
+.how-to-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--senior-primary);
+  font-weight: 700;
+  font-size: 1.5em;
+  line-height: 1;
+}
+
+.how-to-list strong {
+  color: var(--senior-primary);
+  font-weight: 700;
+}
+
+/* Category Navigation */
+.glossary-nav {
+  background-color: var(--senior-bg);
+  padding: var(--senior-space-lg) 0;
+  border-bottom: 2px solid var(--senior-border-light);
+  position: sticky;
+  top: 72px; /* Below main nav */
+  z-index: 100;
+}
+
+.category-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--senior-space-sm);
+  justify-content: center;
+}
+
+.category-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--senior-touch-min);
+  padding: 12px 20px;
+
+  font-size: var(--senior-font-base);
+  font-weight: 700;
+  color: var(--senior-text);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+
+  background-color: transparent;
+  border: 2px solid var(--senior-border);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.category-link:hover,
+.category-link:focus {
+  background-color: var(--senior-primary);
+  color: var(--senior-bg);
+  border-color: var(--senior-primary);
+  transform: translateY(-2px);
+}
+
+/* Glossary Content */
+.glossary-content {
+  padding: var(--senior-space-xl) 0;
+}
+
+/* Category Section */
+.glossary-category {
+  margin-bottom: var(--senior-space-xl);
+  padding-bottom: var(--senior-space-xl);
+  border-bottom: 2px solid var(--senior-border-light);
+}
+
+.glossary-category:last-child {
+  border-bottom: none;
+}
+
+.category-header {
+  margin-bottom: var(--senior-space-lg);
+}
+
+.category-title {
+  font-size: var(--senior-font-h2);
+  font-weight: 700;
+  color: var(--senior-primary);
+  margin-bottom: var(--senior-space-sm);
+}
+
+.category-description {
+  font-size: var(--senior-font-large);
+  color: var(--senior-text);
+  font-style: italic;
+}
+
+/* Terms List */
+.terms-list {
+  display: grid;
+  gap: var(--senior-space-lg);
+}
+
+.term-entry {
+  background-color: #F9F9F9;
+  border: 2px solid var(--senior-border-light);
+  border-left: 6px solid var(--senior-primary);
+  border-radius: 8px;
+  padding: var(--senior-space-md) var(--senior-space-lg);
+  scroll-margin-top: 160px; /* Account for sticky nav */
+}
+
+.term-entry:target {
+  border-color: var(--senior-primary);
+  background-color: #FFF3CD; /* Highlight when linked */
+  box-shadow: 0 0 0 4px rgba(26, 84, 144, 0.2);
+}
+
+/* Term Word (dt) */
+.term-word {
+  display: flex;
+  flex-direction: column;
+  gap: var(--senior-space-xs);
+  margin-bottom: var(--senior-space-sm);
+}
+
+.term-name {
+  font-size: var(--senior-font-h3);
+  font-weight: 700;
+  color: var(--senior-text);
+  line-height: var(--senior-line-height-tight);
+}
+
+.term-pronunciation {
+  font-size: var(--senior-font-large);
+  font-weight: 600;
+  color: var(--senior-primary);
+  font-style: italic;
+  letter-spacing: 0.08em;
+}
+
+/* Term Definition (dd) */
+.term-definition {
+  margin: 0;
+}
+
+.term-definition p {
+  font-size: var(--senior-font-base);
+  line-height: var(--senior-line-height-normal);
+  color: var(--senior-text);
+  margin: 0;
+}
+
+/* Help Section */
+.glossary-help {
+  background-color: var(--senior-primary);
+  color: var(--senior-bg);
+  padding: var(--senior-space-xl) 0;
+  text-align: center;
+}
+
+.help-title {
+  font-size: var(--senior-font-h2);
+  font-weight: 700;
+  color: var(--senior-bg);
+  margin-bottom: var(--senior-space-md);
+}
+
+.help-text {
+  font-size: var(--senior-font-large);
+  line-height: var(--senior-line-height-normal);
+  color: var(--senior-bg);
+  max-width: 700px;
+  margin: 0 auto var(--senior-space-lg);
+}
+
+.help-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--senior-space-md);
+  max-width: 400px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .help-actions {
+    flex-direction: row;
+    justify-content: center;
+    max-width: none;
+  }
+}
+
+.glossary-help .btn-primary {
+  background-color: var(--senior-bg);
+  color: var(--senior-primary);
+  border-color: var(--senior-bg);
+}
+
+.glossary-help .btn-primary:hover {
+  background-color: #F5F5F5;
+  border-color: #F5F5F5;
+  transform: scale(1.05);
+}
+
+/* Print Styles for Glossary */
+@media print {
+  .glossary-nav,
+  .glossary-help {
+    display: none;
+  }
+
+  .term-entry {
+    page-break-inside: avoid;
+    border: 2px solid #000;
+    background-color: #FFFFFF;
+  }
+
+  .category-title {
+    page-break-after: avoid;
+  }
+
+  .term-name {
+    font-size: 14pt;
+  }
+
+  .term-pronunciation {
+    font-size: 12pt;
+  }
+
+  .term-definition p {
+    font-size: 11pt;
+  }
+}
+
+/* ===================================
+   Accessibility Enhancements
+   =================================== */
+
+/* Enhanced focus for dialog buttons */
+.btn-dialog:focus {
+  outline: var(--senior-focus-width) solid var(--senior-focus);
+  outline-offset: var(--senior-focus-offset);
+  box-shadow: 0 0 0 6px rgba(0, 102, 204, 0.3);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .confirm-dialog {
+    border-width: 6px;
+  }
+
+  .dialog-notice {
+    border-width: 4px;
+  }
+
+  .term-entry {
+    border-width: 3px;
+    border-left-width: 8px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .category-link:hover {
+    transform: none;
+  }
+
+  .btn-confirm:hover {
+    transform: none;
+  }
+}

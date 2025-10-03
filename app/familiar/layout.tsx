@@ -4,6 +4,7 @@
  */
 
 import type { Metadata } from 'next';
+import React from 'react';
 import FamiliarNav from '@/components/navigation/FamiliarNav';
 import '@/styles/familiar.css';
 

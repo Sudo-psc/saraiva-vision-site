@@ -4,6 +4,7 @@
  */
 
 import type { Metadata } from 'next';
+import GoogleReviewsWidget from '@/components/GoogleReviewsWidget';
 
 export const metadata: Metadata = {
   title: 'Saraiva Vision - Sênior | Cuidado Especializado para Idosos',
@@ -151,7 +152,8 @@ export default function SeniorHomePage() {
         </div>
       </section>
 
-      {/* Emergency Contact */}
+      <GoogleReviewsWidget maxReviews={3} showStats={true} />
+
       <section className="contact-section">
         <div className="contact-container">
           <h2 className="contact-title">Entre em Contato</h2>

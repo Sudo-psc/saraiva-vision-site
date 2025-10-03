@@ -1,0 +1,229 @@
+'use client';
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { useTranslation, Trans } from 'react-i18next';
+import { ArrowRight, Eye } from 'lucide-react';
+
+import { smoothScrollTo } from '@/utils/scrollUtils';
+import ImageWithFallback from '@/components/ui/ImageWithFallback';
+import UnifiedCTA from '@/components/UnifiedCTA';
+import { Button } from '@/components/ui/button';
+
+/**
+ * TypeScript interfaces for Hero component
+ */
+interface PatientAvatarProps {
+  src: string;
+  alt: string;
+  name: string;
+  rating?: number;
+  showCheckmark?: boolean;
+}
+
+interface TechCardProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
+
+/**
+ * Hero component - Main landing section with animations and CTAs
+ */
+const Hero = () => {
+  const { t } = useTranslation();
+
+  const handleNossosServicosClick = (): void => {
+    smoothScrollTo('#services', {
+      offset: -80,
+      duration: 800,
+      easing: 'easeInOutCubic'
+    });
+  };
+
+  return (
+    <section
+      id="home"
+      className="scroll-block-internal isolate relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden overflow-x-hidden bg-hero-enhanced min-h-[100dvh]"
+    >
+      <div className="absolute inset-0 z-0 opacity-40">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_60%)]"></div>
+        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom_left,rgba(6,182,212,0.08),transparent_60%)]"></div>
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-blue-400/5 via-cyan-400/8 to-teal-400/5 rounded-full blur-3xl animate-pulse-soft"></div>
+      </div>
+
+      {/* Conteúdo centralizado com paddings responsivos em vez de margem no section,
+          mantendo o background full-bleed e evitando cortes nas laterais. */}
+      <div className="container mx-auto px-6 md:px-8 lg:px-[6%] xl:px-[7%] 2xl:px-[8%] relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex flex-col space-y-6 text-center lg:text-left"
+          >
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-2 w-fit mx-auto lg:mx-0">
+              <span className="mr-2">✦</span> {t('hero.partner')}
+            </div>
+
+            <h1 className="text-5xl md:text-6xl">
+              <Trans i18nKey="hero.title">
+                Cuidando da sua <span className="text-gradient">visão</span> com excelência
+              </Trans>
+            </h1>
+
+            <p className="md:pr-10">
+              {t('hero.subtitle')}
+            </p>
+
+            <div className="flex flex-col gap-6 pt-4">
+              <UnifiedCTA variant="hero" className="w-full lg:w-auto" />
+
+              <Button
+                variant="outline"
+                size="lg"
+                className="gap-2 glass-card hover:glass-morphism-hover focus-ring transition-all duration-300 w-full lg:w-auto"
+                onClick={handleNossosServicosClick}
+              >
+                {t('hero.services_button')}
+                <ArrowRight size={20} />
+              </Button>
+            </div>
+
+            <div className="flex items-center gap-4 pt-6 justify-center lg:justify-start">
+              <div className="flex -space-x-4">
+                <PatientAvatar
+                  src="/img/avatar-female-blonde.avif"
+                  alt={t('ui.alt.satisfied_patient_1', 'Paciente satisfeito 1')}
+                  name="Paciente 1"
+                  rating={5}
+                  showCheckmark={true}
+                />
+                <PatientAvatar
+                  src="/img/avatar-female-brunette.avif"
+                  alt={t('ui.alt.satisfied_patient_2', 'Paciente satisfeito 2')}
+                  name="Paciente 2"
+                  rating={5}
+                  showCheckmark={true}
+                />
+                <div className="relative">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500 flex items-center justify-center text-white font-bold border-2 border-white shadow-lg text-sm hover:scale-110 transition-all duration-300 ring-2 ring-white/50 hover:ring-4 hover:ring-amber-200">
+                    <div className="flex flex-col items-center">
+                      <span className="text-xs font-extrabold">+5k</span>
+                      <div className="flex -mt-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-2 h-2 text-white drop-shadow-sm" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center ring-1 ring-white">
+                    <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <p className="text-slate-600 text-sm">
+                <Trans i18nKey="hero.patients_served">
+                  <span className="font-semibold text-slate-700">Mais de 5.000 pacientes</span> atendidos com satisfação
+                </Trans>
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative"
+          >
+            <div className="hero-image-container relative z-10 rounded-3xl overflow-hidden shadow-3d hover:shadow-3d-hover transition-all duration-500 card-hover bg-gradient-to-br from-blue-50 to-cyan-50">
+              <ImageWithFallback
+                src="/img/hero.avif"
+                alt={t('ui.alt.hero_image', 'Família sorrindo - Saraiva Vision')}
+                width={800}
+                height={640}
+                loading="eager"
+                decoding="async"
+                sizes="(min-width: 1024px) 800px, 100vw"
+                className="block w-full h-auto aspect-[4/3] object-cover object-center rounded-3xl transition-transform duration-700 hover:scale-105"
+                priority={true}
+              />
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="absolute -bottom-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:-left-12 md:-bottom-4 glass-card p-4 max-w-xs"
+            >
+              <TechCard
+                icon={<Eye size={24} />}
+                title={t('hero.advanced_tech_title')}
+                description={t('hero.advanced_tech_desc')}
+              />
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/**
+ * PatientAvatar component - Displays patient avatar with rating indicator
+ */
+const PatientAvatar: React.FC<PatientAvatarProps> = ({
+  src,
+  alt,
+  showCheckmark = false
+}) => {
+  return (
+    <div className="relative group">
+      <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
+        <ImageWithFallback
+          src={src}
+          alt={alt}
+          className="w-12 h-12 object-cover rounded-full"
+          width={48}
+          height={48}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      {showCheckmark && (
+        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+          <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+          </svg>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/**
+ * TechCard component - Displays technology information card
+ */
+const TechCard: React.FC<TechCardProps> = ({
+  icon,
+  title,
+  description
+}) => {
+  return (
+    <div className="flex items-start gap-4">
+      <div className="icon-container bg-blue-100">
+        {icon}
+      </div>
+      <div>
+        <h3 className="text-base font-semibold text-slate-900">{title}</h3>
+        <p className="text-sm">{description}</p>
+      </div>
+    </div>
+  );
+};
+
+export default Hero;

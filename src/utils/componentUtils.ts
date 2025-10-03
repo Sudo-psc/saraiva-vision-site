@@ -1,4 +1,4 @@
-// Utility functions for unified component interfaces
+import React from 'react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Size, Variant, ColorTheme, BorderRadius, HoverEffect, MotionPreset } from '@/types/components';
@@ -187,23 +187,21 @@ export const manageFocus = (element: HTMLElement | null, shouldFocus: boolean = 
   element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 };
 
-// Debounce utility for performance
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,
   wait: number
-): (...args: Parameters<T>) => void => {
-  let timeout: NodeJS.Timeout;
+): ((...args: Parameters<T>) => void) => {
+  let timeout: ReturnType<typeof setTimeout>;
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
   };
 };
 
-// Throttle utility for scroll events
 export const throttle = <T extends (...args: any[]) => any>(
   func: T,
   limit: number
-): (...args: Parameters<T>) => void => {
+): ((...args: Parameters<T>) => void) => {
   let inThrottle: boolean;
   return (...args: Parameters<T>) => {
     if (!inThrottle) {

@@ -1,0 +1,496 @@
+/* Jovem Profile Styles */
+
+/* CSS Variables for Jovem Profile */
+.jovem-layout {
+  --jovem-primary: #8b5cf6;
+  --jovem-secondary: #ec4899;
+  --jovem-accent: #3b82f6;
+  --jovem-gradient-start: #8b5cf6;
+  --jovem-gradient-end: #ec4899;
+  --jovem-tech: #06b6d4;
+  --jovem-success: #10b981;
+  --jovem-warning: #f59e0b;
+  --jovem-text: #1f2937;
+  --jovem-text-light: #6b7280;
+  --jovem-bg: #ffffff;
+  --jovem-bg-light: #faf5ff;
+  --jovem-bg-dark: #1f2937;
+  --jovem-border: #e5e7eb;
+  --jovem-shadow: rgba(139, 92, 246, 0.1);
+  --jovem-radius: 1rem;
+  --jovem-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Root Layout */
+.jovem-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #faf5ff 0%, #fdf4ff 50%, #fef3c7 100%);
+  position: relative;
+}
+
+.jovem-layout::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Main Content */
+.jovem-main {
+  flex: 1;
+  margin-top: 80px;
+  padding: 2rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Footer Styles */
+.jovem-footer {
+  background: var(--jovem-bg-dark);
+  color: white;
+  padding: 3rem 0 1rem;
+  margin-top: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-glass {
+  background: rgba(31, 41, 55, 0.8);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.footer-section h4 {
+  color: #a78bfa;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--jovem-gradient-start), var(--jovem-gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footer-text {
+  color: #d1d5db;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  color: #d1d5db;
+  text-decoration: none;
+  transition: var(--jovem-transition);
+  padding: 0.25rem 0;
+  display: inline-block;
+  position: relative;
+}
+
+.footer-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--jovem-gradient-start), var(--jovem-gradient-end));
+  transition: width 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: white;
+}
+
+.footer-links a:hover::after {
+  width: 100%;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-link {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: var(--jovem-transition);
+  font-size: 1.2rem;
+}
+
+.social-link:hover {
+  background: linear-gradient(135deg, var(--jovem-gradient-start), var(--jovem-gradient-end));
+  transform: translateY(-2px);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+  text-align: center;
+}
+
+.footer-copyright {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Subscription Cards */
+.jovem-plan-card {
+  background: white;
+  border-radius: var(--jovem-radius);
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transition: var(--jovem-transition);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--jovem-border);
+}
+
+.jovem-plan-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(236, 72, 153, 0.05));
+  pointer-events: none;
+}
+
+.jovem-plan-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+}
+
+.jovem-plan-featured {
+  background: linear-gradient(135deg, var(--jovem-gradient-start), var(--jovem-gradient-end));
+  color: white;
+  transform: scale(1.05);
+}
+
+.jovem-plan-featured::before {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.jovem-plan-badge {
+  background: var(--jovem-warning);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.jovem-plan-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.jovem-plan-price {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+.jovem-plan-period {
+  color: var(--jovem-text-light);
+  margin-bottom: 1.5rem;
+}
+
+.jovem-plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+}
+
+.jovem-plan-feature {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  color: var(--jovem-text);
+}
+
+.jovem-plan-featured .jovem-plan-feature {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.jovem-plan-feature-icon {
+  width: 20px;
+  height: 20px;
+  background: var(--jovem-success);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  color: white;
+  font-size: 0.75rem;
+}
+
+.jovem-plan-cta {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--jovem-transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.jovem-plan-cta-primary {
+  background: linear-gradient(135deg, var(--jovem-gradient-start), var(--jovem-gradient-end));
+  color: white;
+}
+
+.jovem-plan-cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+}
+
+.jovem-plan-cta-secondary {
+  background: var(--jovem-bg-light);
+  color: var(--jovem-text);
+  border: 2px solid var(--jovem-border);
+}
+
+.jovem-plan-cta-secondary:hover {
+  background: var(--jovem-primary);
+  color: white;
+}
+
+/* Technology Showcase */
+.jovem-tech-showcase {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+  border-radius: var(--jovem-radius);
+  padding: 3rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.jovem-tech-showcase::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.jovem-tech-content {
+  position: relative;
+  z-index: 1;
+}
+
+.jovem-tech-title {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--jovem-gradient-start), var(--jovem-gradient-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.jovem-tech-description {
+  text-align: center;
+  color: var(--jovem-text-light);
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.jovem-tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.jovem-tech-card {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: var(--jovem-transition);
+}
+
+.jovem-tech-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);
+}
+
+.jovem-tech-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--jovem-gradient-start), var(--jovem-gradient-end));
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.jovem-tech-name {
+  font-weight: 600;
+  color: var(--jovem-text);
+  margin-bottom: 0.5rem;
+}
+
+.jovem-tech-info {
+  color: var(--jovem-text-light);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .jovem-main {
+    padding: 1rem 0;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .jovem-plan-card {
+    padding: 1.5rem;
+  }
+
+  .jovem-plan-featured {
+    transform: scale(1);
+  }
+
+  .jovem-tech-showcase {
+    padding: 2rem 1.5rem;
+  }
+
+  .jovem-tech-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.jovem-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Accessibility Enhancements */
+@media (prefers-reduced-motion: reduce) {
+  .jovem-plan-card,
+  .jovem-plan-cta,
+  .jovem-tech-card,
+  .social-link,
+  .footer-links a {
+    transition: none;
+  }
+
+  .jovem-tech-showcase::before {
+    animation: none;
+  }
+
+  .jovem-float {
+    animation: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .jovem-footer {
+    background: white;
+    color: black;
+    border-top: 1px solid #ccc;
+  }
+
+  .jovem-plan-card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  .jovem-tech-showcase {
+    background: none;
+  }
+}

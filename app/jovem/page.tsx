@@ -1,9 +1,5 @@
-/**
- * Jovem Profile Home Page
- * Modern, tech-focused landing page with subscription emphasis
- */
-
 import type { Metadata } from 'next';
+import GoogleReviewsWidget from '@/components/GoogleReviewsWidget';
 
 export const metadata: Metadata = {
   title: 'Saraiva Vision - Jovem | Visão do Futuro',
@@ -14,7 +10,6 @@ export const metadata: Metadata = {
 export default function JovemHomePage() {
   return (
     <div className="jovem-home">
-      {/* Hero Section with Gradient */}
       <section className="hero-section gradient-bg">
         <div className="hero-container">
           <div className="hero-content">
@@ -46,7 +41,6 @@ export default function JovemHomePage() {
         </div>
       </section>
 
-      {/* Subscription Plans */}
       <section className="plans-section">
         <div className="section-container">
           <h2 className="section-title gradient-text">Planos de Assinatura</h2>
@@ -106,7 +100,6 @@ export default function JovemHomePage() {
         </div>
       </section>
 
-      {/* Technology Showcase */}
       <section className="tech-section">
         <div className="section-container">
           <h2 className="section-title">Tecnologia de Ponta</h2>
@@ -130,7 +123,8 @@ export default function JovemHomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      <GoogleReviewsWidget maxReviews={3} showStats={true} />
+
       <section className="cta-section gradient-bg">
         <div className="cta-container">
           <h2 className="cta-title gradient-text">Pronto para ver melhor?</h2>

@@ -4,6 +4,7 @@
  */
 
 import type { Metadata } from 'next';
+import React from 'react';
 import JovemNav from '@/components/navigation/JovemNav';
 import '@/styles/jovem.css';
 

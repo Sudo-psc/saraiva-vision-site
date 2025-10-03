@@ -4,8 +4,10 @@
  */
 
 import type { Metadata } from 'next';
+import React from 'react';
 import SeniorNav from '@/components/navigation/SeniorNav';
 import '@/styles/senior.css';
+import '@/styles/senior-components.css';
 
 export const metadata: Metadata = {
   title: 'Saraiva Vision - Cuidado Acessível para a Melhor Idade',

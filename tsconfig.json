@@ -2,10 +2,13 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "skipLibCheck": true,
-
     /* Next.js specific */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -14,7 +17,6 @@
     "noEmit": true,
     "jsx": "preserve",
     "incremental": true,
-
     /* Linting */
     "strict": false,
     "noImplicitAny": true,
@@ -23,27 +25,59 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": false,
-
     /* Path mapping */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./*"
+      ],
+      "@/components/*": [
+        "components/*",
+        "src/components/*"
+      ],
+      "@/lib/*": [
+        "lib/*",
+        "src/lib/*"
+      ],
+      "@/types/*": [
+        "types/*",
+        "src/types/*"
+      ],
+      "@/hooks/*": [
+        "src/hooks/*"
+      ],
+      "@/styles/*": [
+        "src/styles/*",
+        "styles/*"
+      ],
+      "@/utils/*": [
+        "src/utils/*"
+      ],
+      "@/services/*": [
+        "src/services/*"
+      ],
+      "@/config/*": [
+        "src/config/*"
+      ],
+      "@/app/*": [
+        "app/*"
+      ]
     },
-
     /* Additional options for better DX */
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-
     /* Type checking */
-    "types": ["node"],
-
+    "types": [
+      "node"
+    ],
     /* Plugin configuration */
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "allowJs": true
   },
   "include": [
     "next-env.d.ts",

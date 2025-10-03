@@ -4,6 +4,7 @@
  */
 
 import type { Metadata } from 'next';
+import GoogleReviewsWidget from '@/components/GoogleReviewsWidget';
 
 export const metadata: Metadata = {
   title: 'Saraiva Vision - Família | Cuidado Preventivo com a Visão',
@@ -118,6 +119,9 @@ export default function FamiliarHomePage() {
           </div>
         </div>
       </section>
+
+      {/* Google Reviews Widget */}
+      <GoogleReviewsWidget maxReviews={3} showStats={true} />
 
       {/* CTA Section */}
       <section className="cta-section">

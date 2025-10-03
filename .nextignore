@@ -1,0 +1,2 @@
+# Ignore API directory in Next.js build
+api/

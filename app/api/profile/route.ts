@@ -1,49 +1,88 @@
-import { cookies } from 'next/headers';
+/**
+ * Profile API Route
+ * POST /api/profile - Set user profile preference
+ * GET /api/profile - Get current profile
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
+import { profileSchema } from '@/lib/validations/api';
+import type { ProfileResponse } from '@/types/api';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { profile } = body;
 
-    const validProfiles = ['familiar', 'jovem', 'senior'];
+    const validationResult = profileSchema.safeParse(body);
 
-    if (!profile || !validProfiles.includes(profile)) {
+    if (!validationResult.success) {
       return NextResponse.json(
-        { error: 'Invalid profile' },
+        {
+          success: false,
+          error: 'Invalid profile data',
+          details: validationResult.error.flatten().fieldErrors,
+        },
         { status: 400 }
       );
     }
 
-    const cookieStore = await cookies();
+    const { profile, source, confidence } = validationResult.data;
 
-    // Set profile cookie with 1 year expiration
-    cookieStore.set('profile', profile, {
-      maxAge: 60 * 60 * 24 * 365, // 1 year
-      path: '/',
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-    });
-
-    return NextResponse.json({
+    const response: ProfileResponse = {
       success: true,
-      profile,
-      redirectUrl: `/${profile}`
+      data: {
+        profile,
+        detectedAt: new Date().toISOString(),
+        source,
+        confidence,
+      },
+      message: 'Profile preference saved successfully',
+    };
+
+    // Set cookie
+    const cookieResponse = NextResponse.json(response, { status: 200 });
+    cookieResponse.cookies.set('profile-preference', profile, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 31536000,
+      path: '/',
     });
+
+    return cookieResponse;
   } catch (error) {
-    console.error('Profile API error:', error);
+    console.error('Profile API Error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     );
   }
 }
 
-export async function GET() {
-  const cookieStore = await cookies();
-  const profileCookie = cookieStore.get('profile');
+export async function GET(request: NextRequest) {
+  const profile = request.cookies.get('profile-preference')?.value as
+    | 'familiar'
+    | 'jovem'
+    | 'senior'
+    | undefined;
 
-  return NextResponse.json({
-    profile: profileCookie?.value || null,
-  });
+  if (!profile) {
+    return NextResponse.json(
+      { success: false, error: 'No profile preference set' },
+      { status: 404 }
+    );
+  }
+
+  const response: ProfileResponse = {
+    success: true,
+    data: {
+      profile,
+      detectedAt: new Date().toISOString(),
+      source: 'manual',
+    },
+  };
+
+  return NextResponse.json(response, { status: 200 });
 }
+
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
