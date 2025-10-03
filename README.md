@@ -22,6 +22,7 @@ sudo bash /home/saraiva-vision-site/DEPLOY_NOW.sh
 - **Projeto**: [`CLAUDE.md`](./CLAUDE.md) - Documentação principal do projeto
 - **Troubleshooting**: [`TROUBLESHOOTING.md`](./TROUBLESHOOTING.md) - Resolução de problemas
 - **Security**: [`SECURITY.md`](./SECURITY.md) - Práticas de segurança
+- **Next.js Migration**: [`docs/NEXTJS_MIGRATION_GUIDE.md`](./docs/NEXTJS_MIGRATION_GUIDE.md) - 🚧 Migração para Next.js 15
 
 ## 🛠️ Development
 

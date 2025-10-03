@@ -4,9 +4,23 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class', // Enable dark mode via class
   theme: {
     extend: {
       colors: {
+        // Multi-Profile System Colors
+        // These work alongside existing colors for backward compatibility
+        'familiar-primary': '#0ea5e9',
+        'familiar-secondary': '#d946ef',
+        'familiar-accent': '#d97706',
+        'jovem-primary': '#d946ef',
+        'jovem-secondary': '#10b981',
+        'jovem-accent': '#f43f5e',
+        'senior-primary': '#0066cc',
+        'senior-secondary': '#16a34a',
+        'senior-accent': '#d97706',
+
+        // Existing Saraiva Vision colors (preserved for backward compatibility)
         // Azul Petróleo - Primária
         primary: {
           50: '#F1F5F4',   // Off-white com tom petróleo
@@ -290,6 +304,39 @@ export default {
           },
         },
       }),
+      // Profile-specific animations for Jovem theme
+      animation: {
+        'gradient-x': 'gradient-x 15s ease infinite',
+        'gradient-y': 'gradient-y 15s ease infinite',
+        'gradient-xy': 'gradient-xy 15s ease infinite',
+        'float': 'float 3s ease-in-out infinite',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'shimmer': 'shimmer 2s linear infinite'
+      },
+      keyframes: {
+        'gradient-x': {
+          '0%, 100%': { 'background-position': '0% 50%' },
+          '50%': { 'background-position': '100% 50%' }
+        },
+        'gradient-y': {
+          '0%, 100%': { 'background-position': '50% 0%' },
+          '50%': { 'background-position': '50% 100%' }
+        },
+        'gradient-xy': {
+          '0%, 100%': { 'background-position': '0% 0%' },
+          '25%': { 'background-position': '100% 0%' },
+          '50%': { 'background-position': '100% 100%' },
+          '75%': { 'background-position': '0% 100%' }
+        },
+        'float': {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-10px)' }
+        },
+        'shimmer': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' }
+        }
+      }
     },
   },
   plugins: [

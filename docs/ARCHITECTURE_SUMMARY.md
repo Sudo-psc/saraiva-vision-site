@@ -273,4 +273,30 @@ ESLint → TypeScript Check → Test Coverage → Accessibility Scan → Medical
 
 ---
 
+## 🚧 Future Architecture: Next.js Migration
+
+### Planned Migration (Q1 2025)
+
+**Current:** React 18 + Vite (CSR) → **Future:** Next.js 15 (SSR + SSG + ISR)
+
+**Key Changes:**
+- **Rendering:** Client-Side → Server-Side + Static Generation
+- **Routing:** React Router → Next.js App Router (file-based)
+- **SEO:** Limited (prerender) → Native SSR/SSG
+- **API:** Express.js separate → Next.js API Routes integrated
+- **Blog:** Static JS data → Markdown + ISR
+
+**Documentation:**
+- [📖 Migration Guide](./NEXTJS_MIGRATION_GUIDE.md) - Complete migration plan
+- [🧩 Component Migration](./NEXTJS_COMPONENT_MIGRATION.md) - Technical guide
+- [🔧 Conversion Scripts](./NEXTJS_CONVERSION_SCRIPTS.md) - Automation tools
+- [❓ FAQ](./NEXTJS_FAQ.md) - Common questions
+- [📋 Index](./NEXTJS_INDEX.md) - Documentation hub
+
+**Timeline:** 9 weeks (January-March 2025)
+
+**Status:** 🚧 Planning Phase
+
+---
+
 *This architecture summary provides a high-level overview. For detailed implementation information, consult the complete PROJECT_DOCUMENTATION.md file.*

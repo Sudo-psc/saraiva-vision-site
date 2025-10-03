@@ -10,10 +10,12 @@ Clínica oftalmológica em Caratinga, MG, Brasil. VPS nativo, blog estático, co
 
 ## 🛠 Tech Stack
 
-**Frontend**: React 18 + TypeScript 5.x + Vite + Tailwind + Radix UI
+**Frontend**: Next.js 13+ +TypeScript 5.x + Vite + Tailwind + Radix UI
 **Backend**: Node.js 22+ + Express.js + Nginx + Redis + ES modules
-**Integrações**: Google Maps/Places API, Resend API, Instagram Graph API, WhatsApp/Spotify APIs
+**Integrações**: Google Maps/Places API, Resend API, WhatsApp/Spotify APIs
 **Arquitetura**: 100% estática (WordPress/Supabase removidos)
+
+**🚧 Migração para Next.js**: Ver `docs/NEXTJS_MIGRATION_GUIDE.md`
 
 ### ⭐ Features Principais
 

@@ -6,13 +6,14 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
-    /* Bundler mode */
+    /* Next.js specific */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
+    "incremental": true,
 
     /* Linting */
     "strict": false,
@@ -34,22 +35,32 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
 
-    /* Type checking for Node.js */
-    "types": ["vite/client", "node"]
+    /* Type checking */
+    "types": ["node"],
+
+    /* Plugin configuration */
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
     "src/**/*",
     "api/**/*",
-    "*.ts",
-    "*.tsx"
+    "app/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist",
     "build",
     "coverage",
+    ".next",
     "**/*.test.*",
     "**/*.spec.*"
-  ],
-
+  ]
 }

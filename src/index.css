@@ -1,3 +1,94 @@
+/* MULTI-PROFILE THEME SYSTEM - CSS VARIABLES */
+/* Default theme variables (loaded dynamically via ThemeProvider) */
+:root {
+  /* Theme colors - defaults to Familiar profile */
+  --color-primary: #0ea5e9;
+  --color-secondary: #d946ef;
+  --color-accent: #d97706;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
+  /* Surface colors */
+  --color-background: #ffffff;
+  --color-foreground: #f8fafc;
+  --color-card: #ffffff;
+
+  /* Text colors */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-border: #e2e8f0;
+  --color-focus: #0ea5e9;
+
+  /* Typography */
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Poppins', 'Inter', sans-serif;
+  --font-display: 'Poppins', 'Inter', sans-serif;
+  --font-size-body: 1rem;
+  --line-height-normal: 1.5;
+
+  /* Spacing */
+  --spacing-section: 4rem;
+  --spacing-card: 1.5rem;
+  --spacing-element: 1rem;
+
+  /* Motion */
+  --duration-normal: 300ms;
+  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Accessibility */
+  --focus-ring-width: 2px;
+  --focus-ring-color: #0ea5e9;
+  --min-touch-width: 44px;
+  --min-touch-height: 44px;
+}
+
+/* Dark mode overrides (primarily for Jovem profile) */
+.dark {
+  --color-background: #18181b;
+  --color-foreground: #27272a;
+  --color-card: #27272a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a1a1aa;
+  --color-border: #3f3f46;
+}
+
+/* High contrast mode (primarily for Senior profile) */
+.high-contrast {
+  --color-text-primary: #000000;
+  --color-background: #ffffff;
+  --color-border: #000000;
+  --focus-ring-width: 3px;
+}
+
+/* Reduced motion (primarily for Senior profile) */
+.reduce-motion,
+.reduce-motion * {
+  animation-duration: 0ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0ms !important;
+}
+
+/* Profile-specific body classes */
+[data-profile="familiar"] {
+  --profile-radius: 1rem;
+  --profile-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+[data-profile="jovem"] {
+  --profile-radius: 1.5rem;
+  --profile-shadow: 0 8px 24px rgba(217, 70, 239, 0.3);
+}
+
+[data-profile="senior"] {
+  --profile-radius: 0.25rem;
+  --profile-shadow: none;
+  --font-size-body: 1.125rem;
+  --min-touch-width: 48px;
+  --min-touch-height: 48px;
+}
+
 /* IMPORTA DESIGN SYSTEM ENHANCEMENTS */
 @import './styles/design-system.css';
 

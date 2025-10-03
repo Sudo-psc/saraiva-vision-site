@@ -1,0 +1,126 @@
+name: Blog Compliance Check
+
+on:
+  push:
+    branches: [ main, blog-spa ]
+    paths:
+      - 'src/data/blogPosts.js'
+      - 'public/Blog/**'
+      - 'scripts/validate-blog-compliance.js'
+  pull_request:
+    branches: [ main, blog-spa ]
+    paths:
+      - 'src/data/blogPosts.js'
+      - 'public/Blog/**'
+      - 'scripts/validate-blog-compliance.js'
+  schedule:
+    # Executa toda sexta-feira às 14:00 UTC (11:00 BRT)
+    - cron: '0 14 * * 5'
+  workflow_dispatch:
+
+jobs:
+  blog-compliance:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci --production=false
+
+    - name: Run Blog Compliance Validation
+      id: compliance
+      run: |
+        mkdir -p reports
+        ./scripts/ci-blog-compliance-check.sh true
+        echo "compliance_report=reports/image-compliance-report.json" >> $GITHUB_OUTPUT
+        echo "summary_file=reports/ci-compliance-summary.md" >> $GITHUB_OUTPUT
+
+    - name: Upload Compliance Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: blog-compliance-report
+        path: |
+          reports/image-compliance-report.json
+          reports/ci-compliance-summary.md
+        retention-days: 30
+
+    - name: Comment PR with Results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const path = 'reports/ci-compliance-summary.md';
+
+          if (fs.existsSync(path)) {
+            const summary = fs.readFileSync(path, 'utf8');
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🏥 Blog Compliance Check\n\n${summary}`
+            });
+          }
+
+    - name: Check for CFM Violations
+      run: |
+        if [ -f "reports/image-compliance-report.json" ]; then
+          CFM_VIOLATIONS=$(grep -o '"cfmViolations": *[0-9]*' reports/image-compliance-report.json | grep -o '[0-9]*' || echo "0")
+          if [ "$CFM_VIOLATIONS" -gt 0 ]; then
+            echo "::error::CFM violations detected: $CFM_VIOLATIONS"
+            echo "These violations must be fixed before merging to main branch"
+            exit 1
+          fi
+        fi
+
+    - name: Performance Impact Check
+      run: |
+        echo "🔍 Checking performance impact of images..."
+
+        # Count large files
+        LARGE_FILES=$(find public/Blog -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" | xargs -I {} sh -c '[ -f "{}" ] && du -h "{}" | grep -E "M[[:space:]]*[2-9][0-9]" | wc -l' || echo "0")
+
+        if [ "$LARGE_FILES" -gt 0 ]; then
+          echo "::warning::Found $LARGE_FILES large image files (>2MB). Consider optimizing."
+        else
+          echo "✅ No large image files found"
+        fi
+
+        # Check for modern formats
+        MODERN_FORMATS=$(find public/Blog -name "*.avif" -o -name "*.webp" | wc -l)
+        LEGACY_FORMATS=$(find public/Blog -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" | wc -l)
+
+        echo "📊 Image Format Analysis:"
+        echo "  Modern formats (AVIF/WebP): $MODERN_FORMATS"
+        echo "  Legacy formats (PNG/JPG): $LEGACY_FORMATS"
+
+        if [ "$LEGACY_FORMATS" -gt "$MODERN_FORMATS" ]; then
+          echo "::warning::More legacy formats than modern. Consider conversion."
+        fi
+
+    - name: Generate Badge Data
+      if: github.ref == 'refs/heads/main'
+      run: |
+        echo "Generating compliance badge data..."
+
+        if [ -f "reports/image-compliance-report.json" ]; then
+          # Extract stats for badge
+          TOTAL=$(grep -o '"total": *[0-9]*' reports/image-compliance-report.json | grep -o '[0-9]*' || echo "0")
+          PASSED=$(grep -o '"passed": *[0-9]*' reports/image-compliance-report.json | grep -o '[0-9]*' || echo "0")
+
+          if [ "$TOTAL" -gt 0 ]; then
+            PERCENT=$((PASSED * 100 / TOTAL))
+            echo "compliance_percentage=$PERCENT" >> $GITHUB_ENV
+            echo "compliance_color=$(if [ $PERCENT -ge 95 ]; then echo "brightgreen"; elif [ $PERCENT -ge 80 ]; then echo "yellow"; else echo "red"; fi)" >> $GITHUB_ENV
+          fi
+        fi

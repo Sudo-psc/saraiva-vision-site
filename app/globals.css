@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    @apply font-sans;
+  }
+}
+
+/* Profile-specific themes */
+[data-profile="familiar"] {
+  --theme-primary: theme('colors.blue.600');
+  --theme-secondary: theme('colors.blue.400');
+}
+
+[data-profile="jovem"] {
+  --theme-primary: theme('colors.purple.600');
+  --theme-secondary: theme('colors.blue.500');
+}
+
+[data-profile="senior"] {
+  --theme-primary: theme('colors.amber.600');
+  --theme-secondary: theme('colors.orange.500');
+}
