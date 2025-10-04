@@ -36,6 +36,10 @@ cp .env.example .env
 npm run dev
 ```
 
+#### Next.js Migration
+- **[NEXTJS_MIGRATION_DEBUG_GUIDE.md](./NEXTJS_MIGRATION_DEBUG_GUIDE.md)** - Comprehensive debugging guide for React to Next.js migration
+- **[NEXTJS_QUICK_REFERENCE.md](./NEXTJS_QUICK_REFERENCE.md)** - Quick reference for common debugging tasks
+
 #### For DevOps
 ```bash
 # 1. VPS setup
@@ -81,6 +85,7 @@ sudo ./setup-vps-native.sh
 | Topic | Document Section | Description |
 |-------|------------------|-------------|
 | **Getting Started** | [Development Workflows](./PROJECT_DOCUMENTATION.md#development-workflows) | Local setup and development |
+| **Next.js Migration** | [Migration Debug Guide](./NEXTJS_MIGRATION_DEBUG_GUIDE.md) | Comprehensive Next.js migration debugging |
 | **Architecture** | [Architecture & Technology Stack](./PROJECT_DOCUMENTATION.md#architecture--technology-stack) | System design and components |
 | **Recent Changes** | [Recent Improvements & Fixes](./PROJECT_DOCUMENTATION.md#recent-improvements--fixes) | Latest updates and fixes |
 | **API Integration** | [API Integration Patterns](./PROJECT_DOCUMENTATION.md#api-integration-patterns) | External service integrations |
