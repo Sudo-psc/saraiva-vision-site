@@ -83,6 +83,7 @@ export const clinicInfo = {
   responsiblePhysicianCRM: 'CRM-MG 69.870',
   responsiblePhysicianTitle: 'Responsável Técnico Médico',
   responsibleNurse: 'Ana Lúcia',
+  responsibleNurseCOREN: 'COREN-MG 834184',
   responsibleNurseTitle: 'Enfermeira',
   responsibleNursePhone: '+55 33 98420-7437',
   // Data Protection Officer contact (LGPD Art.41)

@@ -100,7 +100,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-slate-800 text-slate-300 pb-8 w-full">
+    <footer className="bg-slate-800 text-slate-300 pb-8 w-full" role="contentinfo">
       <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div>
@@ -184,7 +184,7 @@ const Footer = () => {
             <div className="flex-1 space-y-2">
               <p className="text-slate-400 text-xs leading-snug">
                 <span className="block font-medium text-slate-300">{clinicInfo.responsiblePhysician} • {clinicInfo.responsiblePhysicianCRM} • {clinicInfo.responsiblePhysicianTitle}</span>
-                <span className="block">{clinicInfo.responsibleNurse} • {clinicInfo.responsibleNurseTitle}</span>
+                <span className="block">{clinicInfo.responsibleNurse} • {clinicInfo.responsibleNurseCOREN} • {clinicInfo.responsibleNurseTitle}</span>
                 <span className="block">CNPJ: {clinicInfo.taxId}</span>
                 <span className="block">DPO: <a href={`mailto:${clinicInfo.dpoEmail}`} className="underline hover:text-white transition-colors">{clinicInfo.dpoEmail}</a></span>
                 <span className="block space-x-3">
