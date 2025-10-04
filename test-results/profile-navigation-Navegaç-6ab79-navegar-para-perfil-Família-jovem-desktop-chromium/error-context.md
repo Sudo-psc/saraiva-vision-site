@@ -1,0 +1,634 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic "Links de navegação rápida":
+    - link "Pular para conteúdo principal" [ref=e2] [cursor=pointer]:
+      - /url: "#main-content"
+    - link "Pular para navegação" [ref=e3] [cursor=pointer]:
+      - /url: "#navigation"
+    - link "Pular para rodapé" [ref=e4] [cursor=pointer]:
+      - /url: "#footer"
+  - banner [ref=e5]:
+    - generic [ref=e7]:
+      - link "Ir para a página inicial" [ref=e9] [cursor=pointer]:
+        - /url: /
+        - img "Saraiva Vision Logo" [ref=e10] [cursor=pointer]
+      - navigation "Navegação principal" [ref=e11]:
+        - link "Início" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img [ref=e13] [cursor=pointer]
+          - text: Início
+        - link "Serviços" [ref=e16] [cursor=pointer]:
+          - /url: /servicos
+          - img [ref=e17] [cursor=pointer]
+          - text: Serviços
+        - link "Lentes" [ref=e21] [cursor=pointer]:
+          - /url: /lentes
+          - img [ref=e22] [cursor=pointer]
+          - text: Lentes
+        - link "Blog" [ref=e25] [cursor=pointer]:
+          - /url: /blog
+          - img [ref=e26] [cursor=pointer]
+          - text: Blog
+        - link "Podcast" [ref=e29] [cursor=pointer]:
+          - /url: /podcast
+          - img [ref=e30] [cursor=pointer]
+          - text: Podcast
+        - link "Sobre Nós" [ref=e32] [cursor=pointer]:
+          - /url: /sobre
+          - img [ref=e33] [cursor=pointer]
+          - text: Sobre Nós
+        - link "FAQ" [ref=e36] [cursor=pointer]:
+          - /url: /faq
+          - img [ref=e37] [cursor=pointer]
+          - text: FAQ
+      - button "Agendar" [ref=e41] [cursor=pointer]:
+        - img [ref=e42] [cursor=pointer]
+        - generic [ref=e44] [cursor=pointer]: Agendar
+  - main [ref=e45]:
+    - generic [ref=e46]:
+      - main [ref=e47]:
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - generic [ref=e56]:
+              - generic [ref=e57]: ✦
+              - text: Parceiro Oficial Amor e Saúde
+            - heading "Cuidando da sua visão com excelência em Caratinga" [level=1] [ref=e58]:
+              - text: Cuidando da sua
+              - generic [ref=e59]: visão
+              - text: com excelência em Caratinga
+            - paragraph [ref=e60]: Tecnologia de ponta e atendimento humanizado com o Dr. Philipe Saraiva (CRM-MG 69.870).
+            - generic [ref=e61]:
+              - generic [ref=e62]:
+                - button "Agendar consulta oftalmológica online com Dr. Philipe Saraiva" [ref=e63] [cursor=pointer]:
+                  - generic [ref=e64] [cursor=pointer]:
+                    - img [ref=e65] [cursor=pointer]
+                    - text: Agendar Consulta Online
+                - group "Contatos rápidos" [ref=e67]:
+                  - link "Ligar para clínica - telefone +55 33 99860-1427" [ref=e68] [cursor=pointer]:
+                    - /url: tel:+5533998601427
+                    - img [ref=e69] [cursor=pointer]
+                    - generic [ref=e71] [cursor=pointer]: Ligar
+                  - link "Enviar mensagem via WhatsApp para +55 33 99860-1427" [ref=e72] [cursor=pointer]:
+                    - /url: https://wa.me/5533998601427?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20consulta.
+                    - img [ref=e73] [cursor=pointer]
+                    - generic [ref=e75] [cursor=pointer]: WhatsApp
+                - link "Ver localização da clínica no Google Maps (abre em nova aba)" [ref=e76] [cursor=pointer]:
+                  - /url: https://maps.app.goo.gl/YOUR_GOOGLE_PLACE_ID
+                  - img [ref=e77] [cursor=pointer]
+                  - text: Como chegar
+              - button "Nossos Serviços" [ref=e80] [cursor=pointer]:
+                - text: Nossos Serviços
+                - img [ref=e81] [cursor=pointer]
+            - generic [ref=e83]:
+              - generic [ref=e84]:
+                - generic [ref=e85]:
+                  - img "Paciente satisfeita sorrindo." [ref=e87]
+                  - img [ref=e89]
+                - generic [ref=e91]:
+                  - img "Paciente satisfeito sorrindo." [ref=e93]
+                  - img [ref=e95]
+                - generic [ref=e97]:
+                  - generic [ref=e99]:
+                    - generic [ref=e100]: +5k
+                    - generic [ref=e101]:
+                      - img [ref=e102]
+                      - img [ref=e104]
+                      - img [ref=e106]
+                      - img [ref=e108]
+                      - img [ref=e110]
+                  - img [ref=e113]
+              - paragraph [ref=e115]:
+                - generic [ref=e116]: Mais de 5.000 pacientes
+                - text: atendidos com satisfação
+          - generic [ref=e117]:
+            - img "Dr. Philipe Saraiva, oftalmologista em Caratinga, com uma paciente." [ref=e119]
+            - generic [ref=e121]:
+              - img [ref=e123]
+              - generic [ref=e126]:
+                - heading "Tecnologia Avançada" [level=3] [ref=e127]
+                - paragraph [ref=e128]: Equipamentos de última geração para diagnósticos precisos.
+        - generic [ref=e133]:
+          - generic [ref=e134]:
+            - generic [ref=e135]: Nossos Serviços
+            - heading "Cuidados Oftalmológicos Completos" [level=2] [ref=e136]
+            - paragraph [ref=e137]: services.subtitle
+          - generic "services.title" [ref=e138]:
+            - button "Anterior" [ref=e139] [cursor=pointer]:
+              - img [ref=e140] [cursor=pointer]
+            - button "Próximo" [ref=e142] [cursor=pointer]:
+              - img [ref=e143] [cursor=pointer]
+            - tablist "Navegação do carrossel de serviços" [ref=e146]:
+              - tab "Ir para página 1" [selected] [ref=e147] [cursor=pointer]
+        - generic [ref=e149]:
+          - generic [ref=e150]:
+            - generic [ref=e153]:
+              - generic [ref=e154]:
+                - img "Consultório oftalmológico moderno da Saraiva Vision" [ref=e156]
+                - img "Dr. Philipe Saraiva realizando exame oftalmológico detalhado" [ref=e158]
+              - generic [ref=e159]:
+                - img "Paciente satisfeito após consulta na Saraiva Vision" [ref=e161]
+                - img "Equipamento oftalmológico de última geração" [ref=e163]
+            - generic [ref=e164]:
+              - generic [ref=e165]:
+                - generic [ref=e166]: ✦
+                - generic [ref=e167]: Sobre Nós
+              - heading "Dedicados à Excelência em Cada Detalhe da Sua Visão" [level=2] [ref=e168]:
+                - generic [ref=e169]: Dedicados à Excelência em Cada Detalhe da Sua Visão
+              - generic [ref=e170]:
+                - paragraph [ref=e171]: A Saraiva Vision nasceu do sonho de oferecer um atendimento oftalmológico de alta qualidade em Caratinga e região, unindo tecnologia de ponta a uma abordagem humana e personalizada. Desde nossa fundação, construímos uma reputação sólida baseada na confiança, competência técnica e no compromisso inabalável com a saúde ocular de nossos pacientes.
+                - paragraph [ref=e172]: Nossa missão transcende o simples tratamento de doenças oculares. Acreditamos na prevenção como o melhor caminho para preservar a visão, oferecemos diagnósticos precisos utilizando equipamentos de última geração, e desenvolvemos tratamentos eficazes e individualizados. Cada paciente é único, e nosso atendimento reflete essa filosofia, priorizando sempre o bem-estar, a satisfação e os resultados duradouros.
+                - paragraph [ref=e173]: Como parceiros oficiais da rede Amor e Saúde, mantemos os mais altos padrões de qualidade e segurança. Nossa infraestrutura moderna, localizada estrategicamente no coração de Caratinga, foi projetada para oferecer conforto e tranquilidade durante todo o processo de cuidado com sua visão.
+              - generic [ref=e174]:
+                - generic [ref=e175]:
+                  - img [ref=e177]
+                  - generic [ref=e179]: Infraestrutura Moderna e Equipada
+                - generic [ref=e180]:
+                  - img [ref=e182]
+                  - generic [ref=e184]: Profissionais Altamente Qualificados
+                - generic [ref=e185]:
+                  - img [ref=e187]
+                  - generic [ref=e189]: Atendimento Humanizado e Personalizado
+                - generic [ref=e190]:
+                  - img [ref=e192]
+                  - generic [ref=e194]: Compromisso com Resultados Duradouros
+                - generic [ref=e195]:
+                  - img [ref=e197]
+                  - generic [ref=e199]: Tecnologia de Ponta em Diagnósticos
+                - generic [ref=e200]:
+                  - img [ref=e202]
+                  - generic [ref=e204]: Parceria com Rede Amor e Saúde
+          - generic [ref=e209]:
+            - img "Dr. Philipe Saraiva - Oftalmologista especialista em saúde ocular CRM/MG 69.870" [ref=e214]
+            - generic [ref=e217]:
+              - generic [ref=e218]:
+                - heading "Conheça Nosso Especialista" [level=3] [ref=e219]
+                - paragraph [ref=e220]: Dr. Philipe Saraiva – Oftalmologista CRM/MG 69.870
+              - paragraph [ref=e222]: Médico oftalmologista com sólida formação acadêmica e vasta experiência em diagnósticos precisos, tratamentos personalizados e cirurgias oculares. Especializado em diversas áreas da oftalmologia, incluindo catarata, glaucoma, doenças da retina e refração. Sua abordagem combina conhecimento técnico atualizado com um cuidado genuíno pelos pacientes, garantindo não apenas tratamentos eficazes, mas também uma experiência acolhedora e tranquilizadora durante todo o processo de cuidado com a visão. Comprometido com a educação continuada e sempre atualizado com as mais recentes técnicas e tecnologias em oftalmologia, Dr. Philipe oferece o que há de mais moderno em cuidados oculares para a comunidade de Caratinga e região.
+        - paragraph [ref=e227]: Carregando avaliações...
+        - region "Encontre-nos" [ref=e228]:
+          - generic [ref=e231]:
+            - generic [ref=e232]:
+              - generic [ref=e233]:
+                - img [ref=e236]
+                - heading "Encontre-nos" [level=2] [ref=e239]
+                - paragraph [ref=e240]: Localização verificada no Google. Facilite sua rota e avalie nosso atendimento.
+              - generic [ref=e241]:
+                - generic [ref=e242]:
+                  - img [ref=e244]
+                  - generic [ref=e247]:
+                    - heading "Endereço" [level=3] [ref=e248]
+                    - generic [ref=e249]:
+                      - text: Rua Catarina Maria Passos, 97, Santa Zita
+                      - text: Caratinga - MG
+                      - text: "CEP: 35300-299"
+                - generic [ref=e250]:
+                  - img [ref=e252]
+                  - generic [ref=e254]:
+                    - heading "Avaliações" [level=3] [ref=e255]
+                    - paragraph [ref=e256]: Avaliações em tempo real no Google
+              - group "Ações principais de localização" [ref=e257]:
+                - link "Abrir perfil da clínica no Google Maps (nova aba)" [ref=e258] [cursor=pointer]:
+                  - /url: https://www.google.com/maps/place/?q=place_id:ChIJVUKww7WRugARF7u2lAe7BeE
+                  - text: Ver no Google Maps
+                  - img [ref=e259] [cursor=pointer]
+                - link "Abrir página de avaliações no Google (nova aba)" [ref=e263] [cursor=pointer]:
+                  - /url: https://search.google.com/local/writereview?placeid=ChIJVUKww7WRugARF7u2lAe7BeE
+                  - text: Avalie-nos no Google
+                  - img [ref=e264] [cursor=pointer]
+            - generic [ref=e267]:
+              - generic [ref=e270]:
+                - img [ref=e271]
+                - generic [ref=e273]: Loading map...
+              - generic [ref=e277]: Clínica Saraiva Vision
+        - generic [ref=e279]:
+          - generic [ref=e280]:
+            - generic [ref=e281]:
+              - img [ref=e282]
+              - text: Perguntas Frequentes
+            - heading "Dúvidas Frequentes" [level=2] [ref=e285]
+            - paragraph [ref=e286]: Encontre respostas para as perguntas mais comuns sobre nossos serviços
+          - generic [ref=e288]:
+            - img [ref=e289]
+            - textbox "Buscar dúvidas..." [ref=e292]
+          - generic [ref=e294]:
+            - button "Vocês atendem convênio ou particular?" [ref=e296] [cursor=pointer]:
+              - heading "Vocês atendem convênio ou particular?" [level=3] [ref=e297] [cursor=pointer]
+              - img [ref=e299] [cursor=pointer]
+            - button "Que tipos de exames oftalmológicos vocês realizam?" [ref=e302] [cursor=pointer]:
+              - heading "Que tipos de exames oftalmológicos vocês realizam?" [level=3] [ref=e303] [cursor=pointer]
+              - img [ref=e305] [cursor=pointer]
+            - button "Atendem crianças e fazem exames pediátricos?" [ref=e308] [cursor=pointer]:
+              - heading "Atendem crianças e fazem exames pediátricos?" [level=3] [ref=e309] [cursor=pointer]
+              - img [ref=e311] [cursor=pointer]
+            - button "Fazem cirurgias oftalmológicas?" [ref=e314] [cursor=pointer]:
+              - heading "Fazem cirurgias oftalmológicas?" [level=3] [ref=e315] [cursor=pointer]
+              - img [ref=e317] [cursor=pointer]
+            - button "Como funciona o agendamento online?" [ref=e320] [cursor=pointer]:
+              - heading "Como funciona o agendamento online?" [level=3] [ref=e321] [cursor=pointer]
+              - img [ref=e323] [cursor=pointer]
+            - button "Qual o tempo de espera para conseguir uma consulta?" [ref=e326] [cursor=pointer]:
+              - heading "Qual o tempo de espera para conseguir uma consulta?" [level=3] [ref=e327] [cursor=pointer]
+              - img [ref=e329] [cursor=pointer]
+            - button "Vocês fazem teste de lentes de contato?" [ref=e332] [cursor=pointer]:
+              - heading "Vocês fazem teste de lentes de contato?" [level=3] [ref=e333] [cursor=pointer]
+              - img [ref=e335] [cursor=pointer]
+            - button "Onde fica localizada a clínica?" [ref=e338] [cursor=pointer]:
+              - heading "Onde fica localizada a clínica?" [level=3] [ref=e339] [cursor=pointer]
+              - img [ref=e341] [cursor=pointer]
+          - generic [ref=e343]:
+            - paragraph [ref=e344]: Não encontrou sua dúvida? Entre em contato conosco!
+            - button "Fale Conosco" [ref=e345] [cursor=pointer]:
+              - img [ref=e346] [cursor=pointer]
+              - text: Fale Conosco
+        - generic [ref=e350]:
+          - generic [ref=e351]:
+            - generic [ref=e352]:
+              - img [ref=e354]
+              - generic [ref=e357]: Podcast
+            - heading "Podcast em Destaque" [level=2] [ref=e359]:
+              - generic [ref=e360]: Podcast em Destaque
+            - paragraph [ref=e361]: Confira nosso episódio mais recente sobre saúde ocular. Informação de qualidade para cuidar melhor dos seus olhos.
+            - generic [ref=e362]:
+              - generic [ref=e363]:
+                - img [ref=e364]
+                - generic [ref=e366]: Episódio em Destaque
+              - generic [ref=e369]: Mais no Spotify
+          - generic [ref=e375]:
+            - generic [ref=e377]:
+              - img [ref=e379]
+              - 'button "Reproduzir Cirurgia Refrativa: Sua Visão Transformada" [ref=e383] [cursor=pointer]':
+                - img [ref=e384] [cursor=pointer]
+            - generic [ref=e386]:
+              - 'heading "Cirurgia Refrativa: Sua Visão Transformada" [level=3] [ref=e387]'
+              - paragraph [ref=e389]: Descubra como a cirurgia refrativa pode transformar sua visão. Entenda os procedimentos, benefícios e cuidados necessários.
+            - button "Abrir no Spotify" [ref=e391] [cursor=pointer]:
+              - img [ref=e392] [cursor=pointer]
+          - generic [ref=e396]:
+            - link "Ver todos os episódios" [ref=e399] [cursor=pointer]:
+              - /url: /podcast
+              - button "Ver Todos os Episódios" [ref=e400] [cursor=pointer]:
+                - img [ref=e401] [cursor=pointer]
+                - text: Ver Todos os Episódios
+                - img [ref=e403] [cursor=pointer]
+            - paragraph [ref=e405]: Descubra mais episódios sobre saúde ocular na nossa página dedicada
+        - generic [ref=e410]:
+          - generic [ref=e411]:
+            - generic [ref=e412]:
+              - img [ref=e414]
+              - generic [ref=e418]: Blog
+            - heading "Últimas do Blog" [level=2] [ref=e419]:
+              - generic [ref=e420]: Últimas do Blog
+            - paragraph [ref=e421]: Artigos e novidades sobre saúde ocular para manter você bem informado.
+          - img [ref=e423]
+        - region "Entre em Contato" [ref=e425]:
+          - link "Pular para o formul�rio de contato" [ref=e426] [cursor=pointer]:
+            - /url: "#form-title"
+          - status [ref=e427]
+          - generic [ref=e428]:
+            - generic [ref=e429]:
+              - heading "Entre em Contato" [level=2] [ref=e430]
+              - paragraph [ref=e431]: Agende sua consulta ou tire suas dúvidas. Estamos em contato para ajudar você.
+            - generic [ref=e432]:
+              - generic [ref=e434]:
+                - heading "Formulário de Contato" [level=3] [ref=e435]
+                - form "Formulário de Contato" [ref=e436]:
+                  - paragraph [ref=e437]: Formul�rio de contato para agendar consulta ou tirar d�vidas. Todos os campos marcados com asterisco s�o obrigat�rios.
+                  - generic [ref=e438]:
+                    - generic [ref=e439]:
+                      - text: Nome completo
+                      - generic [ref=e440]: "*"
+                    - generic [ref=e441]:
+                      - textbox "Nome completo" [ref=e442]
+                      - generic [ref=e443]: Digite seu nome completo. Este campo � obrigat�rio.
+                  - generic [ref=e445]:
+                    - generic [ref=e446]:
+                      - generic [ref=e447]:
+                        - text: E-mail
+                        - generic [ref=e448]: "*"
+                      - generic [ref=e449]:
+                        - textbox "E-mail" [ref=e450]
+                        - generic [ref=e451]: Digite um endere�o de e-mail v�lido. Este campo � obrigat�rio.
+                    - generic [ref=e453]:
+                      - generic [ref=e454]:
+                        - text: Telefone
+                        - generic [ref=e455]: "*"
+                      - generic [ref=e456]:
+                        - textbox "Telefone" [ref=e457]
+                        - generic [ref=e458]: "Digite seu n�mero de telefone com DDD. Formato: (XX) XXXXX-XXXX. Este campo � obrigat�rio."
+                  - generic [ref=e460]:
+                    - generic [ref=e461]:
+                      - text: Mensagem
+                      - generic [ref=e462]: "*"
+                    - textbox "Mensagem" [ref=e464]
+                    - generic [ref=e465]:
+                      - paragraph [ref=e467]: M�nimo 10 caracteres, m�ximo 2000 caracteres
+                      - generic [ref=e468]: 0/2000
+                  - generic [ref=e470]:
+                    - generic [ref=e471]:
+                      - img [ref=e472]
+                      - generic [ref=e474]:
+                        - heading "Prote��o de Dados Pessoais (LGPD)" [level=4] [ref=e475]
+                        - paragraph [ref=e476]: Seus dados pessoais ser�o utilizados exclusivamente para responder � sua consulta m�dica. Coletamos apenas as informa��es necess�rias (nome, e-mail, telefone e mensagem) para que Dr. Philipe possa entrar em contato e fornecer orienta��es oftalmol�gicas adequadas.
+                    - generic [ref=e477]:
+                      - heading "Seus direitos:" [level=5] [ref=e478]
+                      - list [ref=e479]:
+                        - listitem [ref=e480]: "\" Acesso aos seus dados pessoais"
+                        - listitem [ref=e481]: "\" Corre��o de dados incompletos ou incorretos"
+                        - listitem [ref=e482]: "\" Exclus�o dos dados quando solicitado"
+                        - listitem [ref=e483]: "\" Portabilidade dos dados para outro prestador"
+                    - generic [ref=e484] [cursor=pointer]:
+                      - checkbox "Concordo com o tratamento dos meus dados pessoais * Ao marcar esta op��o, voc� autoriza o uso dos seus dados conforme descrito acima, em conformidade com a Lei Geral de Prote��o de Dados (LGPD - Lei 13.709/2018)." [ref=e485]
+                      - generic [ref=e486] [cursor=pointer]:
+                        - generic [ref=e487] [cursor=pointer]: Concordo com o tratamento dos meus dados pessoais *
+                        - paragraph [ref=e488] [cursor=pointer]: Ao marcar esta op��o, voc� autoriza o uso dos seus dados conforme descrito acima, em conformidade com a Lei Geral de Prote��o de Dados (LGPD - Lei 13.709/2018).
+                    - paragraph [ref=e489]: "Para exercer seus direitos ou esclarecer d�vidas sobre o tratamento de dados, entre em contato conosco atrav�s do e-mail: saraivavision@gmail.com"
+                  - generic [ref=e490]:
+                    - generic [ref=e491]:
+                      - img [ref=e492]
+                      - generic [ref=e494]: Verificação de Segurança
+                    - paragraph [ref=e495]: Verificação de segurança indisponível. Tente novamente.
+                    - paragraph [ref=e496]: Certifique-se de que est� conectado � internet e recarregue a p�gina.
+                  - 'button "Bot�o desabilitado: carregando verifica��o de seguran�a" [disabled]':
+                    - img
+                    - generic: Carregando verifica��o de seguran�a...
+                  - generic [ref=e498]: Para enviar o formul�rio, certifique-se de que todos os campos obrigat�rios est�o preenchidos corretamente e que voc� tem conex�o com a internet.
+              - complementary "Op��es de contato e agendamento" [ref=e499]:
+                - generic [ref=e500]: Clínica Saraiva Vision
+                - heading "Op��es de contato e agendamento" [level=3] [ref=e501]
+                - link "Agendamento Online Agende sua consulta online de forma rápida e segura. Disponível 24/7" [ref=e502] [cursor=pointer]:
+                  - /url: https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613
+                  - generic [ref=e503] [cursor=pointer]:
+                    - img [ref=e505] [cursor=pointer]
+                    - generic [ref=e508] [cursor=pointer]:
+                      - heading "Agendamento Online" [level=4] [ref=e509] [cursor=pointer]
+                      - generic [ref=e510] [cursor=pointer]: Agende sua consulta online de forma rápida e segura.
+                      - generic [ref=e511] [cursor=pointer]: Disponível 24/7
+                - link "Assistente Virtual Tire suas dúvidas com nosso assistente de IA especializado. Disponível imediatamente" [ref=e512] [cursor=pointer]:
+                  - /url: https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica?model=gpt-4o
+                  - generic [ref=e513] [cursor=pointer]:
+                    - img [ref=e515] [cursor=pointer]
+                    - generic [ref=e518] [cursor=pointer]:
+                      - heading "Assistente Virtual" [level=4] [ref=e519] [cursor=pointer]
+                      - generic [ref=e520] [cursor=pointer]: Tire suas dúvidas com nosso assistente de IA especializado.
+                      - generic [ref=e521] [cursor=pointer]: Disponível imediatamente
+                - list "Informa��es de contato" [ref=e522]:
+                  - listitem [ref=e523]:
+                    - generic [ref=e524]:
+                      - img [ref=e526]
+                      - generic [ref=e529]:
+                        - heading "Endereço" [level=4] [ref=e530]
+                        - link "Ver localiza��o no Google Maps (nova aba)" [ref=e532] [cursor=pointer]:
+                          - /url: https://www.google.com/maps/place/?q=place_id:ChIJVUKww7WRugARF7u2lAe7BeE
+                          - generic [ref=e533] [cursor=pointer]: Caratinga, MG
+                        - link "=� Ver no Google Maps" [ref=e535] [cursor=pointer]:
+                          - /url: https://www.google.com/maps/place/?q=place_id:ChIJVUKww7WRugARF7u2lAe7BeE
+                  - listitem [ref=e536]:
+                    - generic [ref=e537]:
+                      - img [ref=e539]
+                      - generic [ref=e541]:
+                        - heading "Telefone" [level=4] [ref=e542]
+                        - generic [ref=e544]:
+                          - button "Ligar para +55 33 99860-1427" [ref=e545] [cursor=pointer]: +55 33 99860-1427
+                          - generic [ref=e546]: +55 33 99860-1427
+                        - generic [ref=e548]:
+                          - button "Contactar via WhatsApp" [ref=e549] [cursor=pointer]:
+                            - img [ref=e550] [cursor=pointer]
+                            - text: WhatsApp
+                          - link "Auto Atendimento WhatsApp" [ref=e552] [cursor=pointer]:
+                            - /url: https://wa.me/5533998601427?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20consulta.
+                            - img [ref=e553] [cursor=pointer]
+                            - text: Auto Atendimento WhatsApp
+                          - link "Urg�ncia - Enfermeira Ana" [ref=e555] [cursor=pointer]:
+                            - /url: https://api.whatsapp.com/send/?phone=5533984207437&text&type=phone_number&app_absent=0
+                            - img [ref=e556] [cursor=pointer]
+                            - text: Urg�ncia - Enfermeira Ana
+                  - listitem [ref=e558]:
+                    - generic [ref=e559]:
+                      - img [ref=e561]
+                      - generic [ref=e564]:
+                        - heading "E-mail" [level=4] [ref=e565]
+                        - link "saraivavision@gmail.com" [ref=e567] [cursor=pointer]:
+                          - /url: mailto:saraivavision@gmail.com
+                        - generic [ref=e568]: Resposta em até 24h
+                  - listitem [ref=e569]:
+                    - generic [ref=e570]:
+                      - img [ref=e572]
+                      - generic [ref=e575]:
+                        - heading "Horário" [level=4] [ref=e576]
+                        - generic [ref=e577]: Segunda a Sexta, 08h às 18h
+                        - generic [ref=e578]: Sábados mediante agendamento
+      - generic [ref=e580]:
+        - generic [ref=e581]:
+          - generic [ref=e582]:
+            - img "Saraiva Vision Logo" [ref=e583]
+            - paragraph [ref=e584]: Clínica oftalmológica especializada em Caratinga, MG. Cuidado completo para sua visão com tecnologia de ponta.
+            - generic [ref=e585]:
+              - link "Facebook" [ref=e586] [cursor=pointer]:
+                - /url: https://www.facebook.com/philipeoftalmo
+                - text: 📘
+              - link "Instagram" [ref=e587] [cursor=pointer]:
+                - /url: https://www.instagram.com/saraiva_vision/
+                - text: 📷
+              - link "WhatsApp" [ref=e588] [cursor=pointer]:
+                - /url: https://wa.me/5533998601427
+                - text: 💬
+              - link "Google Reviews" [ref=e589] [cursor=pointer]:
+                - /url: https://search.google.com/local/writereview?placeid=ChIJVUKww7WRugARF7u2lAe7BeE
+                - text: ⭐
+          - generic [ref=e590]:
+            - heading "Links Rápidos" [level=3] [ref=e591]
+            - list [ref=e592]:
+              - listitem [ref=e593]:
+                - link "Início" [ref=e594] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e595]:
+                - link "Serviços" [ref=e596] [cursor=pointer]:
+                  - /url: /servicos
+              - listitem [ref=e597]:
+                - link "Sobre" [ref=e598] [cursor=pointer]:
+                  - /url: /sobre
+              - listitem [ref=e599]:
+                - link "Blog" [ref=e600] [cursor=pointer]:
+                  - /url: /blog
+              - listitem [ref=e601]:
+                - link "Contato" [ref=e602] [cursor=pointer]:
+                  - /url: /#contato
+          - generic [ref=e603]:
+            - heading "Serviços" [level=3] [ref=e604]
+            - list [ref=e605]:
+              - listitem [ref=e606]:
+                - link "Consultas" [ref=e607] [cursor=pointer]:
+                  - /url: /servicos
+              - listitem [ref=e608]:
+                - link "Cirurgia de Catarata" [ref=e609] [cursor=pointer]:
+                  - /url: /servicos/catarata
+              - listitem [ref=e610]:
+                - link "Tratamento de Glaucoma" [ref=e611] [cursor=pointer]:
+                  - /url: /servicos/glaucoma
+              - listitem [ref=e612]:
+                - link "Lentes de Contato" [ref=e613] [cursor=pointer]:
+                  - /url: /lentes
+              - listitem [ref=e614]:
+                - link "Exames de Vista" [ref=e615] [cursor=pointer]:
+                  - /url: /servicos/exames
+          - generic [ref=e616]:
+            - heading "Contato" [level=3] [ref=e617]
+            - list [ref=e618]:
+              - listitem [ref=e619]:
+                - img [ref=e620]
+                - generic [ref=e623]:
+                  - text: Rua Catarina Maria Passos, 97, Santa Zita
+                  - text: Caratinga-MG, CEP 35300-299
+              - listitem [ref=e624]:
+                - img [ref=e625]
+                - link "+55 33 99860-1427" [ref=e627] [cursor=pointer]:
+                  - /url: tel:+5533998601427
+              - listitem [ref=e628]:
+                - img [ref=e629]
+                - link "saraivavision@gmail.com" [ref=e632] [cursor=pointer]:
+                  - /url: mailto:saraivavision@gmail.com
+              - listitem [ref=e633]:
+                - img [ref=e634]
+                - generic [ref=e637]:
+                  - text: "Segunda a Sexta: 8h às 18h"
+                  - text: "Sábado: 8h às 12h"
+        - generic [ref=e639]:
+          - generic [ref=e640]:
+            - paragraph [ref=e641]:
+              - generic [ref=e642]: Dr. Philipe Saraiva Cruz • CRM-MG 69.870
+              - generic [ref=e643]: "CNPJ: 53.864.119/0001-79"
+              - generic [ref=e644]:
+                - text: "DPO:"
+                - link "saraivavision@gmail.com" [ref=e645] [cursor=pointer]:
+                  - /url: mailto:saraivavision@gmail.com
+              - generic [ref=e646]:
+                - link "Política de Privacidade" [ref=e647] [cursor=pointer]:
+                  - /url: /privacy
+                - button "Gerenciar Cookies" [ref=e648] [cursor=pointer]
+            - paragraph [ref=e649]: Os conteúdos e informações neste site têm caráter meramente informativo e educacional. Não substituem consulta médica, diagnóstico ou tratamento.
+            - paragraph [ref=e650]: © 2025 Clínica Saraiva Vision. Todos os direitos reservados.
+          - button "Voltar ao topo" [ref=e652] [cursor=pointer]:
+            - img [ref=e653] [cursor=pointer]
+  - contentinfo [ref=e655]:
+    - generic [ref=e656]:
+      - generic [ref=e657]:
+        - generic [ref=e658]:
+          - img "Saraiva Vision Logo" [ref=e659]
+          - paragraph [ref=e660]: Excelência no cuidado com a visão, perto de você.
+          - paragraph [ref=e661]: Parceiro da
+          - link "Abrir site do parceiro Amor e Saúde (nova aba)" [ref=e662] [cursor=pointer]:
+            - /url: https://www.amorsaude.com.br/clinica/caratinga-mg/
+            - img "Logo da Clínica Amor e Saúde" [ref=e663] [cursor=pointer]
+        - generic [ref=e664]:
+          - heading "Links Rápidos" [level=3] [ref=e665]
+          - list [ref=e666]:
+            - listitem [ref=e667]:
+              - link "Início" [ref=e668] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e669]:
+              - link "Serviços" [ref=e670] [cursor=pointer]:
+                - /url: /servicos
+            - listitem [ref=e671]:
+              - link "Sobre Nós" [ref=e672] [cursor=pointer]:
+                - /url: /sobre
+        - generic [ref=e673]:
+          - heading "Serviços" [level=3] [ref=e674]
+          - list [ref=e675]:
+            - listitem [ref=e676]:
+              - link "Consultas" [ref=e677] [cursor=pointer]:
+                - /url: /servicos
+            - listitem [ref=e678]:
+              - link "Exames de Refração e Adaptação de Lentes de Contato" [ref=e679] [cursor=pointer]:
+                - /url: /servicos
+            - listitem [ref=e680]:
+              - link "Tratamentos" [ref=e681] [cursor=pointer]:
+                - /url: /servicos
+            - listitem [ref=e682]:
+              - link "Cirurgias" [ref=e683] [cursor=pointer]:
+                - /url: /servicos
+            - listitem [ref=e684]:
+              - link "Acompanhamento Pediátrico" [ref=e685] [cursor=pointer]:
+                - /url: /servicos
+            - listitem [ref=e686]:
+              - link "Laudos" [ref=e687] [cursor=pointer]:
+                - /url: /servicos
+        - generic [ref=e688]:
+          - heading "Contato" [level=3] [ref=e689]
+          - list [ref=e690]:
+            - listitem [ref=e691]: Rua Catarina Maria Passos, 97 – Santa Zita
+            - listitem [ref=e692]: Caratinga/MG – CEP 35300-299 (Clínica Amor e Saúde)
+            - listitem [ref=e693]:
+              - link "saraivavision@gmail.com" [ref=e694] [cursor=pointer]:
+                - /url: mailto:saraivavision@gmail.com
+            - listitem [ref=e695]:
+              - link "+55 33 99860-1427" [ref=e696] [cursor=pointer]:
+                - /url: https://wa.me/5533998601427
+                - img [ref=e697] [cursor=pointer]
+                - text: +55 33 99860-1427
+            - listitem [ref=e699]:
+              - link "Assistente IA 24h" [ref=e700] [cursor=pointer]:
+                - /url: https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica
+                - img [ref=e701] [cursor=pointer]
+                - text: Assistente IA 24h
+            - listitem [ref=e704]: "Seg - Sex: 8h às 18h"
+      - generic [ref=e706]:
+        - generic [ref=e707]:
+          - paragraph [ref=e708]:
+            - generic [ref=e709]: Dr. Philipe Saraiva Cruz • CRM-MG 69.870 • Responsável Técnico Médico
+            - generic [ref=e710]: Ana Lúcia • Enfermeira
+            - generic [ref=e711]: "CNPJ: 53.864.119/0001-79"
+            - generic [ref=e712]:
+              - text: "DPO:"
+              - link "saraivavision@gmail.com" [ref=e713] [cursor=pointer]:
+                - /url: mailto:saraivavision@gmail.com
+            - generic [ref=e714]:
+              - link "Privacidade" [ref=e715] [cursor=pointer]:
+                - /url: /privacy
+              - button "Gerenciar Cookies" [ref=e716] [cursor=pointer]
+            - generic [ref=e717]:
+              - text: Este site é protegido pelo reCAPTCHA e se aplicam a
+              - link "Política de Privacidade" [ref=e718] [cursor=pointer]:
+                - /url: https://policies.google.com/privacy
+              - text: e os
+              - link "Termos de Serviço" [ref=e719] [cursor=pointer]:
+                - /url: https://policies.google.com/terms
+              - text: do Google.
+          - paragraph [ref=e720]: As informações aqui não substituem avaliação médica individual.
+          - paragraph [ref=e721]: Conteúdo informativo sem promessa de resultados. Consulte o médico responsável para avaliação personalizada.
+          - paragraph [ref=e722]: © 2025 Saraiva Vision. Todos os direitos reservados.
+        - generic [ref=e724]:
+          - list "Social media links" [ref=e725]:
+            - listitem "Visit our Facebook page" [ref=e726] [cursor=pointer]:
+              - img "Facebook icon" [ref=e727] [cursor=pointer]
+            - listitem "Visit our Instagram page" [ref=e728] [cursor=pointer]:
+              - img "Instagram icon" [ref=e729] [cursor=pointer]
+            - listitem "Visit our LinkedIn page" [ref=e730] [cursor=pointer]:
+              - img "LinkedIn icon" [ref=e731] [cursor=pointer]
+            - listitem "Visit our X page" [ref=e732] [cursor=pointer]:
+              - img "X icon" [ref=e733] [cursor=pointer]
+            - listitem "Visit our TikTok page" [ref=e734] [cursor=pointer]:
+              - img "TikTok icon" [ref=e735] [cursor=pointer]
+          - button "Voltar ao topo" [ref=e736] [cursor=pointer]:
+            - img [ref=e737] [cursor=pointer]
+  - region "Notifications (F8)":
+    - list
+  - dialog "Aviso sobre cookies" [ref=e739]:
+    - generic [ref=e741]:
+      - img [ref=e743]
+      - generic [ref=e745]:
+        - generic [ref=e746]:
+          - heading "Aviso sobre cookies" [level=2] [ref=e747]
+          - paragraph [ref=e748]:
+            - text: Usamos cookies para melhorar sua experiência e analisar o uso do site. Ao continuar navegando, você concorda com nossa
+            - link "Política de Privacidade" [ref=e749] [cursor=pointer]:
+              - /url: /privacy
+            - text: .
+        - generic [ref=e750]:
+          - button "Aceitar todos os cookies" [ref=e751] [cursor=pointer]: Aceitar Todos
+          - button "Gerenciar preferências de cookies" [ref=e752] [cursor=pointer]: Gerenciar Preferências
+  - button "Open Next.js Dev Tools" [ref=e758] [cursor=pointer]:
+    - img [ref=e759] [cursor=pointer]
+  - alert [ref=e762]
+```

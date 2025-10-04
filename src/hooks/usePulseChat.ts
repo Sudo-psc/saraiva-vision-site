@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
-import { SafeWS } from '@/utils/SafeWS';
-import { env } from '@/config/env';
+import { SafeWS } from '../utils/SafeWS';
+import { env } from '../config/env';
 
 /**
  * Hook for managing Pulse.live chat WebSocket connection

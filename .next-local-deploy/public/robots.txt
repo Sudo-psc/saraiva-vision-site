@@ -1,0 +1,59 @@
+# Robots.txt for Saraiva Vision - Medical Ophthalmology Clinic
+# Updated: 2025-09-30
+
+# Default crawler rules
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /private/
+Crawl-delay: 1
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Crawl-delay: 0.5
+
+User-agent: Googlebot-Image
+Allow: /Blog/
+Allow: /Podcasts/
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.png
+Allow: /*.webp
+Allow: /*.avif
+
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Crawl-delay: 1
+
+# Bad bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+User-agent: DotBot
+Crawl-delay: 10
+
+# Block malicious bots
+User-agent: scrapy
+Disallow: /
+
+User-agent: HTTrack
+Disallow: /
+
+User-agent: grapeshot
+Disallow: /
+
+# Sitemap location
+Sitemap: https://saraivavision.com.br/sitemap.xml

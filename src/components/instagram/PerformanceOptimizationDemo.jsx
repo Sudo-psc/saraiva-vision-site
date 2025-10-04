@@ -44,8 +44,8 @@ const PerformanceOptimizationDemo = () => {
         '/img/drphilipe_perfil.webp',
         '/img/catartat.webp',
         '/img/retina.webp',
-        '/public/images/hero-640w.webp',
-        '/public/images/drphilipe_perfil-640w.webp'
+        '/images/hero-640w.webp',
+        '/images/drphilipe_perfil-640w.webp'
     ];
 
     useEffect(() => {

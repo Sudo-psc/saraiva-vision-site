@@ -48,7 +48,12 @@ export function useGoogleMaps(): UseGoogleMapsResult {
         const apiKey = config.googleMapsApiKey;
 
         if (!apiKey) {
-          throw new Error('Google Maps API key is not configured');
+          console.warn('Google Maps API key not configured - using fallback mode');
+          if (isMounted) {
+            setError(new Error('Google Maps API key not configured - using fallback mode'));
+            setState('error');
+          }
+          return;
         }
 
         // Create a unique callback name to avoid conflicts
@@ -102,9 +107,12 @@ export function useGoogleMaps(): UseGoogleMapsResult {
           delete window[callbackName];
 
           if (isMounted) {
-            const errorMessage = loadAttempts < MAX_ATTEMPTS - 1
-              ? 'Google Maps API blocked or unavailable. Retrying...'
-              : 'Failed to load Google Maps API after multiple attempts. Please check your ad blocker or network connection.';
+            let errorMessage;
+            if (loadAttempts < MAX_ATTEMPTS - 1) {
+              errorMessage = 'Google Maps API blocked or unavailable. Retrying...';
+            } else {
+              errorMessage = 'Failed to load Google Maps API after multiple attempts. The map will show in fallback mode with location information.';
+            }
 
             setError(new Error(errorMessage));
             setState('error');

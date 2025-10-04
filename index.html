@@ -36,6 +36,44 @@
     <meta name="twitter:image" content="https://saraivavision.com.br/og-image-1200x630-optimized.jpg" />
     <meta name="twitter:image:alt" content="Clínica Saraiva Vision - Oftalmologia em Caratinga/MG" />
 
+    <!-- Resource Hints for Performance Optimization -->
+    <!-- DNS prefetch for external domains -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//maps.googleapis.com" />
+    <link rel="dns-prefetch" href="//maps.gstatic.com" />
+    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="//cdn.pulse.is" />
+    <link rel="dns-prefetch" href="//region1.google-analytics.com" />
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+
+    <!-- Preconnect for critical external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://maps.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.pulse.is" crossorigin />
+
+    <!-- Prefetch likely next pages/resources -->
+    <link rel="prefetch" href="/servicos" />
+    <link rel="prefetch" href="/sobre" />
+    <link rel="prefetch" href="/blog" />
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/src/main.jsx" as="script" crossorigin />
+
+    <!-- Critical image preloading for medical hero content -->
+    <link rel="preload" href="/img/hero-1920w.webp" as="image" type="image/webp" media="(min-width: 1920px)" />
+    <link rel="preload" href="/img/hero-1280w.webp" as="image" type="image/webp" media="(min-width: 1280px)" />
+    <link rel="preload" href="/img/hero-960w.webp" as="image" type="image/webp" media="(min-width: 960px)" />
+    <link rel="preload" href="/img/hero-640w.webp" as="image" type="image/webp" media="(min-width: 640px)" />
+    <link rel="preload" href="/img/hero-320w.webp" as="image" type="image/webp" media="(min-width: 320px)" />
+
+    <!-- Fallback for browsers without WebP support -->
+    <link rel="preload" href="/img/hero-1920w.avif" as="image" type="image/avif" media="(min-width: 1920px)" />
+    <link rel="preload" href="/img/doctor_hero_original.webp" as="image" type="image/webp" />
+
+    <!-- Critical medical images for immediate loading -->
+    <link rel="preload" href="/img/drphilipe_perfil-1280w.webp" as="image" type="image/webp" />
+    <link rel="preload" href="/img/clinic_facade.webp" as="image" type="image/webp" />
+
     <!-- Additional Meta Tags -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow" />
@@ -44,7 +82,80 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Critical application bundle - high priority -->
     <script type="module" src="/src/main.jsx"></script>
-    <script src="https://cdn.pulse.is/livechat/loader.js" data-live-chat-id="68d52f7bf91669800d0923ac" async defer></script>
+
+    <!-- Async script loader for non-critical resources -->
+    <script>
+      // Async script loading utility
+      function loadScript(src, options = {}) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = src;
+          script.async = true;
+
+          if (options.defer) script.defer = true;
+          if (options.integrity) script.integrity = options.integrity;
+          if (options.crossorigin) script.crossorigin = options.crossorigin;
+          if (options.id) script.id = options.id;
+          if (options.dataset) {
+            Object.keys(options.dataset).forEach(key => {
+              script.dataset[key] = options.dataset[key];
+            });
+          }
+
+          script.onload = () => resolve(script);
+          script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+
+          // Low priority for non-critical scripts
+          if (options.priority === 'low') {
+            script.setAttribute('data-low-priority', 'true');
+            requestIdleCallback(() => {
+              document.head.appendChild(script);
+            });
+          } else {
+            document.head.appendChild(script);
+          }
+        });
+      }
+
+      // Load non-critical scripts asynchronously
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => {
+          // Chat widget - low priority
+          loadScript('https://cdn.pulse.is/livechat/loader.js', {
+            defer: true,
+            priority: 'low',
+            dataset: {
+              liveChatId: '68d52f7bf91669800d0923ac'
+            }
+          });
+
+          // Analytics - load after user interaction or delay
+          const loadAnalytics = () => {
+            if (!window.analyticsLoaded) {
+              window.analyticsLoaded = true;
+              // Future analytics scripts can be loaded here
+            }
+          };
+
+          // Load analytics after 3 seconds or on first interaction
+          setTimeout(loadAnalytics, 3000);
+          document.addEventListener('click', loadAnalytics, { once: true });
+          document.addEventListener('scroll', loadAnalytics, { once: true });
+        });
+      } else {
+        // Fallback for browsers without requestIdleCallback
+        setTimeout(() => {
+          loadScript('https://cdn.pulse.is/livechat/loader.js', {
+            defer: true,
+            dataset: {
+              liveChatId: '68d52f7bf91669800d0923ac'
+            }
+          });
+        }, 2000);
+      }
+    </script>
   </body>
 </html>

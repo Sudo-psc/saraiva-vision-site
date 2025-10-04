@@ -1,0 +1,219 @@
+{
+  "version": 3,
+  "middleware": {
+    "/": {
+      "files": [
+        "server/edge-runtime-webpack.js",
+        "server/middleware.js"
+      ],
+      "name": "middleware",
+      "page": "/",
+      "matchers": [
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!_next\\/static|_next\\/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff|woff2|ttf|otf)$|api\\/).*))(\\.json)?[\\/#\\?]?$",
+          "originalSource": "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff|woff2|ttf|otf)$|api/).*)"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "B8_2592yy-cl6oPnVTKbK",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "o36a+FmSMRqnFaPdQN6f2Plp3y/5ue59/BJFbjrIw+Y=",
+        "__NEXT_PREVIEW_MODE_ID": "f79f565aacb0bbe06730e2db69291e8f",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "209e93ce31a948e9e9a0e53df6a73da8cdbfae10f5e1a99a44b0c4efb3bc3f94",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "0d9f3ad08c03b36e76f2d574b0ee88310576ba1473d7c60b1f74ae9cf9f62ccb"
+      }
+    }
+  },
+  "functions": {
+    "/api/blog/[slug]/route": {
+      "files": [
+        "server/server-reference-manifest.js",
+        "server/app/api/blog/[slug]/route_client-reference-manifest.js",
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/53.js",
+        "server/edge-chunks/545.js",
+        "server/edge-chunks/225.js",
+        "server/app/api/blog/[slug]/route.js"
+      ],
+      "name": "app/api/blog/[slug]/route",
+      "page": "/api/blog/[slug]/route",
+      "matchers": [
+        {
+          "regexp": "^/api/blog/(?<slug>[^/]+?)$",
+          "originalSource": "/api/blog/[slug]"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "B8_2592yy-cl6oPnVTKbK",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "o36a+FmSMRqnFaPdQN6f2Plp3y/5ue59/BJFbjrIw+Y=",
+        "__NEXT_PREVIEW_MODE_ID": "f79f565aacb0bbe06730e2db69291e8f",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "209e93ce31a948e9e9a0e53df6a73da8cdbfae10f5e1a99a44b0c4efb3bc3f94",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "0d9f3ad08c03b36e76f2d574b0ee88310576ba1473d7c60b1f74ae9cf9f62ccb"
+      }
+    },
+    "/api/blog/route": {
+      "files": [
+        "server/server-reference-manifest.js",
+        "server/app/api/blog/route_client-reference-manifest.js",
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/53.js",
+        "server/edge-chunks/545.js",
+        "server/edge-chunks/225.js",
+        "server/app/api/blog/route.js"
+      ],
+      "name": "app/api/blog/route",
+      "page": "/api/blog/route",
+      "matchers": [
+        {
+          "regexp": "^/api/blog$",
+          "originalSource": "/api/blog"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "B8_2592yy-cl6oPnVTKbK",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "o36a+FmSMRqnFaPdQN6f2Plp3y/5ue59/BJFbjrIw+Y=",
+        "__NEXT_PREVIEW_MODE_ID": "f79f565aacb0bbe06730e2db69291e8f",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "209e93ce31a948e9e9a0e53df6a73da8cdbfae10f5e1a99a44b0c4efb3bc3f94",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "0d9f3ad08c03b36e76f2d574b0ee88310576ba1473d7c60b1f74ae9cf9f62ccb"
+      }
+    },
+    "/api/health/route": {
+      "files": [
+        "server/server-reference-manifest.js",
+        "server/app/api/health/route_client-reference-manifest.js",
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/53.js",
+        "server/app/api/health/route.js"
+      ],
+      "name": "app/api/health/route",
+      "page": "/api/health/route",
+      "matchers": [
+        {
+          "regexp": "^/api/health$",
+          "originalSource": "/api/health"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "B8_2592yy-cl6oPnVTKbK",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "o36a+FmSMRqnFaPdQN6f2Plp3y/5ue59/BJFbjrIw+Y=",
+        "__NEXT_PREVIEW_MODE_ID": "f79f565aacb0bbe06730e2db69291e8f",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "209e93ce31a948e9e9a0e53df6a73da8cdbfae10f5e1a99a44b0c4efb3bc3f94",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "0d9f3ad08c03b36e76f2d574b0ee88310576ba1473d7c60b1f74ae9cf9f62ccb"
+      }
+    },
+    "/api/reviews/route": {
+      "files": [
+        "server/server-reference-manifest.js",
+        "server/app/api/reviews/route_client-reference-manifest.js",
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/53.js",
+        "server/edge-chunks/545.js",
+        "server/app/api/reviews/route.js"
+      ],
+      "name": "app/api/reviews/route",
+      "page": "/api/reviews/route",
+      "matchers": [
+        {
+          "regexp": "^/api/reviews$",
+          "originalSource": "/api/reviews"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "B8_2592yy-cl6oPnVTKbK",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "o36a+FmSMRqnFaPdQN6f2Plp3y/5ue59/BJFbjrIw+Y=",
+        "__NEXT_PREVIEW_MODE_ID": "f79f565aacb0bbe06730e2db69291e8f",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "209e93ce31a948e9e9a0e53df6a73da8cdbfae10f5e1a99a44b0c4efb3bc3f94",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "0d9f3ad08c03b36e76f2d574b0ee88310576ba1473d7c60b1f74ae9cf9f62ccb"
+      }
+    },
+    "/api/profile/route": {
+      "files": [
+        "server/server-reference-manifest.js",
+        "server/app/api/profile/route_client-reference-manifest.js",
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/53.js",
+        "server/edge-chunks/545.js",
+        "server/app/api/profile/route.js"
+      ],
+      "name": "app/api/profile/route",
+      "page": "/api/profile/route",
+      "matchers": [
+        {
+          "regexp": "^/api/profile$",
+          "originalSource": "/api/profile"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "B8_2592yy-cl6oPnVTKbK",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "o36a+FmSMRqnFaPdQN6f2Plp3y/5ue59/BJFbjrIw+Y=",
+        "__NEXT_PREVIEW_MODE_ID": "f79f565aacb0bbe06730e2db69291e8f",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "209e93ce31a948e9e9a0e53df6a73da8cdbfae10f5e1a99a44b0c4efb3bc3f94",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "0d9f3ad08c03b36e76f2d574b0ee88310576ba1473d7c60b1f74ae9cf9f62ccb"
+      }
+    },
+    "/api/instagram/route": {
+      "files": [
+        "server/server-reference-manifest.js",
+        "server/app/api/instagram/route_client-reference-manifest.js",
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/53.js",
+        "server/app/api/instagram/route.js"
+      ],
+      "name": "app/api/instagram/route",
+      "page": "/api/instagram/route",
+      "matchers": [
+        {
+          "regexp": "^/api/instagram$",
+          "originalSource": "/api/instagram"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "B8_2592yy-cl6oPnVTKbK",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "o36a+FmSMRqnFaPdQN6f2Plp3y/5ue59/BJFbjrIw+Y=",
+        "__NEXT_PREVIEW_MODE_ID": "f79f565aacb0bbe06730e2db69291e8f",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "209e93ce31a948e9e9a0e53df6a73da8cdbfae10f5e1a99a44b0c4efb3bc3f94",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "0d9f3ad08c03b36e76f2d574b0ee88310576ba1473d7c60b1f74ae9cf9f62ccb"
+      }
+    }
+  },
+  "sortedMiddleware": [
+    "/"
+  ]
+}

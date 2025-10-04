@@ -515,7 +515,7 @@ const Contact = () => {
             rel="noopener noreferrer"
             className="text-red-600 hover:underline flex items-center gap-1 text-sm font-semibold"
           >
-            <MessageCircle size={14} /> Urgência - Enfermeira Ana
+            <MessageCircle size={14} /> Urgência - Enfermeira Ana (COREN-MG 834184)
           </a>
         </div>
       )

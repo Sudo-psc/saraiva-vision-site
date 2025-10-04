@@ -16,23 +16,52 @@ export function isValidGoogleMapsKey(key) {
 export function getBuildTimeGoogleMapsKey() {
   // Em produção, NUNCA usar build-time keys para evitar exposição
   // Sempre usar runtime loading via /api/config
-  if (import.meta.env.PROD) {
+  if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'production') {
     return ''; // Força runtime loading em produção
   }
 
-  // Development: OK usar VITE_ vars
-  const key = normalizeKey(import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
+  // Development: Try Next.js vars first, then Vite vars for compatibility
+  let key = '';
+
+  // Next.js environment variables (development)
+  if (typeof process !== 'undefined' && process.env) {
+    key = normalizeKey(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
+                      process.env.GOOGLE_MAPS_API_KEY ||
+                      process.env.VITE_GOOGLE_MAPS_API_KEY);
+  }
+
+  // Fallback to Vite vars if available
+  if (!key && typeof import.meta !== 'undefined' && import.meta.env) {
+    key = normalizeKey(import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
+  }
+
   return isValidGoogleMapsKey(key) ? key : '';
 }
 
 function getMapsConfigUrl() {
   // Em produção, usar /api/config endpoint
-  if (import.meta.env.PROD) {
+  const isProduction = typeof process !== 'undefined' &&
+                      process.env?.NODE_ENV === 'production' ||
+                      (typeof import.meta !== 'undefined' && import.meta.env?.PROD);
+
+  if (isProduction) {
     return '/api/config';
   }
 
   // Development: try specific maps config first, fallback to general config
-  const base = normalizeKey(import.meta.env.VITE_API_BASE_URL);
+  let base = '';
+
+  // Try Next.js env vars first
+  if (typeof process !== 'undefined' && process.env) {
+    base = normalizeKey(process.env.NEXT_PUBLIC_API_BASE_URL ||
+                      process.env.VITE_API_BASE_URL);
+  }
+
+  // Fallback to Vite env vars
+  if (!base && typeof import.meta !== 'undefined' && import.meta.env) {
+    base = normalizeKey(import.meta.env.VITE_API_BASE_URL);
+  }
+
   if (base && base.startsWith('http')) {
     return `${base.replace(/\/$/, '')}/config`;
   }

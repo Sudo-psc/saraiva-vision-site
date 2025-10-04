@@ -124,7 +124,7 @@ export function useGoogleReviews(options = {}) {
                 language: 'pt-BR'
             });
 
-            const response = await fetch(`/api/google-reviews?${params}`, {
+            const response = await fetch(`${process.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3001'}/api/google-reviews?${params}`, {
                 signal: abortControllerRef.current.signal,
                 headers: {
                     'Content-Type': 'application/json'
@@ -253,7 +253,7 @@ export function useGoogleReviews(options = {}) {
                 includeTrends: statsOptions.includeTrends ?? false
             });
 
-            const response = await fetch(`/api/google-reviews-stats?${params}`);
+            const response = await fetch(`${process.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3001'}/api/google-reviews-stats?${params}`);
 
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -434,7 +434,7 @@ export function useGoogleReviewsStats(placeId, options = {}) {
                 includeTrends: options.includeTrends ?? false
             });
 
-            const response = await fetch(`/api/google-reviews-stats?${params}`);
+            const response = await fetch(`${process.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3001'}/api/google-reviews-stats?${params}`);
 
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);

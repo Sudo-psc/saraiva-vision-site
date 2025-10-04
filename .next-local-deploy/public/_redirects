@@ -1,0 +1,63 @@
+# Redirects for Saraiva Vision
+# Format: from to [status]
+
+# Old blog URLs to new blog structure
+/blog/post/* /blog/:splat 301
+/artigos/* /blog/:splat 301
+/posts/* /blog/:splat 301
+
+# Old service URLs
+/servico/* /servicos/:splat 301
+/services/* /servicos/:splat 301
+
+# Legacy URLs
+/sobre-nos /sobre 301
+/about-us /sobre 301
+/contato-nos /contato 301
+/contact-us /contato 301
+/agendamento /contato 301
+/agendar /contato 301
+
+# WordPress legacy URLs (se aplicável)
+/wp-content/* /Blog/:splat 301
+/wordpress/* /blog/:splat 301
+
+# Privacy and legal pages
+/politica-privacidade /privacidade 301
+/privacy-policy /privacidade 301
+/termos-uso /termos 301
+/terms-of-service /termos 301
+
+# Service-specific redirects
+/lentes-contato /lentes 301
+/contact-lenses /lentes 301
+/cirurgia-catarata /servicos/cirurgias-oftalmologicas 301
+/cataract-surgery /servicos/cirurgias-oftalmologicas 301
+
+# Old podcast URLs
+/podcasts /podcast 301
+/podcast/* /podcast/:splat 301
+
+# FAQ variations
+/perguntas-frequentes /faq 301
+/duvidas /faq 301
+/frequently-asked-questions /faq 301
+
+# Testimonials variations
+/avaliacoes /depoimentos 301
+/reviews /depoimentos 301
+/testemunhos /depoimentos 301
+
+# Home page variations (mantém trailing slash)
+/home / 301
+/inicio / 301
+/index.html / 301
+/index.php / 301
+
+# Force HTTPS and www removal (Netlify/Vercel)
+http://saraivavision.com.br/* https://saraivavision.com.br/:splat 301!
+http://www.saraivavision.com.br/* https://saraivavision.com.br/:splat 301!
+https://www.saraivavision.com.br/* https://saraivavision.com.br/:splat 301!
+
+# Catch-all 404 (SPA fallback)
+/* /index.html 200

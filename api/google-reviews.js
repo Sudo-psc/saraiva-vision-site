@@ -1,9 +1,36 @@
 /**
  * Google Reviews API Endpoint
  * Uses Google Places API to fetch reviews with your existing API key
+ * Optimized with caching and rate limiting for production
  */
 
 import { CLINIC_PLACE_ID } from './src/lib/clinicInfo.js';
+
+// Simple in-memory cache with TTL
+const reviewsCache = new Map();
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes - optimal for review data
+const MAX_CACHE_SIZE = 100; // Prevent memory leaks
+
+// Cache management functions
+const getCacheKey = (placeId, limit, language) => `${placeId}-${limit}-${language}`;
+const isCacheValid = (cacheEntry) => cacheEntry && (Date.now() - cacheEntry.timestamp < CACHE_DURATION);
+const cleanExpiredCache = () => {
+    const now = Date.now();
+    for (const [key, entry] of reviewsCache.entries()) {
+        if (now - entry.timestamp > CACHE_DURATION) {
+            reviewsCache.delete(key);
+        }
+    }
+};
+const enforceCacheSizeLimit = () => {
+    if (reviewsCache.size > MAX_CACHE_SIZE) {
+        // Delete oldest entries
+        const entries = Array.from(reviewsCache.entries());
+        entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
+        const toDelete = entries.slice(0, reviewsCache.size - MAX_CACHE_SIZE);
+        toDelete.forEach(([key]) => reviewsCache.delete(key));
+    }
+};
 
 const normalizePlaceId = (value) => {
     if (!value) return null;
@@ -52,6 +79,29 @@ export default async function handler(req, res) {
             return res.status(400).json({
                 success: false,
                 error: 'Google Place ID not configured. Please check your environment variables.'
+            });
+        }
+
+        // Clean expired cache entries periodically
+        cleanExpiredCache();
+        enforceCacheSizeLimit();
+
+        // Check cache first
+        const cacheKey = getCacheKey(resolvedPlaceId, limit, language);
+        const cachedData = reviewsCache.get(cacheKey);
+
+        if (isCacheValid(cachedData)) {
+            console.log(`✅ [CACHE HIT] Google Reviews from cache: ${cacheKey}`);
+
+            // Set cache headers for client-side caching
+            res.setHeader('Cache-Control', 'public, max-age=1800, stale-while-revalidate=300'); // 30 minutes
+
+            return res.json({
+                success: true,
+                data: cachedData.data,
+                timestamp: new Date(cachedData.timestamp).toISOString(),
+                cached: true,
+                cacheAge: Math.round((Date.now() - cachedData.timestamp) / 1000)
             });
         }
 
@@ -169,10 +219,22 @@ export default async function handler(req, res) {
 
         console.log(`Successfully fetched ${transformedReviews.length} reviews from Google Places API`);
 
+        // Cache the successful response
+        const now = Date.now();
+        reviewsCache.set(cacheKey, {
+            data: result,
+            timestamp: now
+        });
+
+        // Set cache headers for client-side caching
+        res.setHeader('Cache-Control', 'public, max-age=1800, stale-while-revalidate=300'); // 30 minutes
+
         return res.status(200).json({
             success: true,
             data: result,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            cached: false,
+            cacheAge: 0
         });
 
     } catch (error) {

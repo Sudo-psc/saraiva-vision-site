@@ -1,0 +1,12 @@
+<svg width="120" height="80" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="120" height="80" rx="8" fill="#f8fafc"/>
+  <rect x="4" y="4" width="112" height="72" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  
+  <!-- Heart Icon -->
+  <path d="M60 52c-8-8-20-12-20-20 0-6 4-10 10-10 3 0 6 1 8 3 2-2 5-3 8-3 6 0 10 4 10 10 0 8-12 12-20 20z" fill="#dc2626"/>
+  
+  <!-- Text -->
+  <text x="60" y="65" text-anchor="middle" fill="#1e293b" font-family="Arial, sans-serif" font-size="8" font-weight="600">
+    Amor e Saúde
+  </text>
+</svg>

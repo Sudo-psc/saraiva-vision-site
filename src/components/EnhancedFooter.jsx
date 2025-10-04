@@ -544,7 +544,7 @@ const EnhancedFooter = ({
                                             loading="lazy"
                                             decoding="async"
                                         />
-                                        Urgência - Enfermeira Ana
+                                        Urgência - Enfermeira Ana (COREN-MG 834184)
                                     </a>
                                 </ContactItem>
                                 <ContactItem>

@@ -1,0 +1,125 @@
+{
+  "timestamp": "2025-10-04T19:30:19.213Z",
+  "summary": {
+    "total": 6,
+    "passed": 0,
+    "failed": 6,
+    "warnings": 0
+  },
+  "issues": [
+    {
+      "postId": 1,
+      "title": "Catarata: Sintomas e Cirurgia",
+      "coverImage": "/Blog/capa-lentes-premium-catarata.png",
+      "issues": [
+        {
+          "type": "LARGE_FILE_SIZE",
+          "severity": "MEDIUM",
+          "message": "Arquivo grande: 2.45MB",
+          "recommendation": "Comprimir ou converter para AVIF"
+        },
+        {
+          "type": "LEGACY_FORMAT",
+          "severity": "LOW",
+          "message": "Formato legado: .png",
+          "recommendation": "Converter para AVIF/WebP"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "postId": 2,
+      "title": "Presbiopia: O Que É, Cura, Cirurgia e Lentes de Contato | Caratinga MG",
+      "coverImage": "/Blog/capa-exercicios-oculares.png",
+      "issues": [
+        {
+          "type": "LEGACY_FORMAT",
+          "severity": "LOW",
+          "message": "Formato legado: .png",
+          "recommendation": "Converter para AVIF/WebP"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "postId": 3,
+      "title": "Obstrução do Ducto Lacrimal e Lacrimejamento | Caratinga MG",
+      "coverImage": "/Blog/capa-ductolacrimal.png",
+      "issues": [
+        {
+          "type": "LARGE_FILE_SIZE",
+          "severity": "MEDIUM",
+          "message": "Arquivo grande: 2.32MB",
+          "recommendation": "Comprimir ou converter para AVIF"
+        },
+        {
+          "type": "LEGACY_FORMAT",
+          "severity": "LOW",
+          "message": "Formato legado: .png",
+          "recommendation": "Converter para AVIF/WebP"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "postId": 4,
+      "title": "Lentes Premium para Cirurgia de Catarata | Caratinga MG",
+      "coverImage": "/Blog/capa-lentes-premium-catarata.png",
+      "issues": [
+        {
+          "type": "LARGE_FILE_SIZE",
+          "severity": "MEDIUM",
+          "message": "Arquivo grande: 2.45MB",
+          "recommendation": "Comprimir ou converter para AVIF"
+        },
+        {
+          "type": "LEGACY_FORMAT",
+          "severity": "LOW",
+          "message": "Formato legado: .png",
+          "recommendation": "Converter para AVIF/WebP"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "postId": 5,
+      "title": "Oftalmologia Pediátrica: Quando Levar Crianças | Caratinga MG",
+      "coverImage": "/Blog/capa-pediatria.png",
+      "issues": [
+        {
+          "type": "LARGE_FILE_SIZE",
+          "severity": "MEDIUM",
+          "message": "Arquivo grande: 2.06MB",
+          "recommendation": "Comprimir ou converter para AVIF"
+        },
+        {
+          "type": "LEGACY_FORMAT",
+          "severity": "LOW",
+          "message": "Formato legado: .png",
+          "recommendation": "Converter para AVIF/WebP"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "postId": 24,
+      "title": "Pterígio: O Guia Completo sobre Prevenção, Cuidados e Cirurgia",
+      "coverImage": "/Blog/capa-post-24-imagen4-opt1-20250930-185815.png",
+      "issues": [
+        {
+          "type": "LEGACY_FORMAT",
+          "severity": "LOW",
+          "message": "Formato legado: .png",
+          "recommendation": "Converter para AVIF/WebP"
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "recommendations": [],
+  "summaryStats": {
+    "cfmViolations": 0,
+    "technicalIssues": 6
+  },
+  "generatedAt": "2025-10-04T19:30:19.217Z"
+}

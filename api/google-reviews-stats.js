@@ -1,9 +1,27 @@
 /**
  * Google Reviews Statistics API Endpoint
  * Provides statistics from Google Places API data
+ * Optimized with caching for production performance
  */
 
 import { CLINIC_PLACE_ID } from './src/lib/clinicInfo.js';
+
+// Cache for stats data (separate from reviews cache)
+const statsCache = new Map();
+const STATS_CACHE_DURATION = 60 * 60 * 1000; // 1 hour for stats (less frequent changes)
+const MAX_STATS_CACHE_SIZE = 50;
+
+// Cache management for stats
+const getStatsCacheKey = (placeId, period) => `stats-${placeId}-${period}`;
+const isStatsCacheValid = (cacheEntry) => cacheEntry && (Date.now() - cacheEntry.timestamp < STATS_CACHE_DURATION);
+const cleanExpiredStatsCache = () => {
+    const now = Date.now();
+    for (const [key, entry] of statsCache.entries()) {
+        if (now - entry.timestamp > STATS_CACHE_DURATION) {
+            statsCache.delete(key);
+        }
+    }
+};
 
 const normalizePlaceId = (value) => {
     if (!value) return null;
