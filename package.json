@@ -59,7 +59,11 @@
     "audit:blog-images": "node scripts/validate-blog-compliance-simple.js",
     "fix:image-typos": "bash scripts/fix-image-typos.sh",
     "validate:bundle": "node scripts/validate-client-bundle.js",
-    "production:check": "npm run build && npm run test:run"
+    "production:check": "npm run build && npm run test:run",
+    "nextjs:detect-client": "bash scripts/detect-client-components.sh",
+    "nextjs:validate-metadata": "bash scripts/validate-metadata.sh",
+    "nextjs:check-images": "bash scripts/check-unoptimized-images.sh",
+    "nextjs:validate-all": "npm run nextjs:detect-client && npm run nextjs:validate-metadata && npm run nextjs:check-images"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.10",
