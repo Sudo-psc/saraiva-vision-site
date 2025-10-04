@@ -97,3 +97,5 @@ public/Blog/*-1920w.*
 # Backup files
 *.backup
 src/content/blog/posts.json
+test-results/
+.next-local-deploy/

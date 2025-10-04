@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Star, ExternalLink, MessageCircle } from 'lucide-react';
 // Temporarily removing i18n dependency for build
 import { CLINIC_PLACE_ID, clinicInfo } from '@/lib/clinicInfo';
-import { Card, CardContent } from '@/components/ui/Card';
+import { Card, CardContent } from '@/components/ui/card';
 import SafeInteractiveCarousel from '@/components/ui/SafeInteractiveCarousel';
 import { createLogger } from '@/utils/structuredLogger';
 import type { NormalizedReview, PlaceDetails } from '@/types/google-reviews';

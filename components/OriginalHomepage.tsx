@@ -64,7 +64,7 @@ function OriginalHomepage() {
 
   return (
     <>
-      <SchemaMarkup type="organization" />
+      <SchemaMarkup type="clinic" />
 
        <div className="min-h-screen bg-white">
          <main>

@@ -4,6 +4,7 @@ import SectionWrapper from '@/components/SectionWrapper';
 import ContactSection from '@/components/ContactSection';
 import Link from 'next/link';
 import { ArrowRight, HelpCircle, Search, Calendar, Clock, Phone, MessageCircle } from 'lucide-react';
+import { CategoryButton } from '@/components/faq/CategoryButton';
 
 export const metadata: Metadata = {
   title: 'FAQ - Perguntas Frequentes | Saraiva Vision | Caratinga-MG',
@@ -237,32 +238,16 @@ export default function FAQPage() {
                 description: 'Cuidados, sintomas, quando procurar',
                 count: 9
               }
-            ].map((category, index) => {
+            ].map((category) => {
               const Icon = category.icon;
               return (
-                <button
+                <CategoryButton
                   key={category.title}
-                  className="p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-blue-50 border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all duration-300 text-left group"
-                  onClick={() => {
-                    const element = document.getElementById('faq-main');
-                    element?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                      <Icon className="w-6 h-6 text-blue-600" />
-                    </div>
-                    <span className="text-sm text-blue-600 font-medium bg-blue-50 px-2 py-1 rounded-full">
-                      {category.count} perguntas
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">
-                    {category.title}
-                  </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
-                    {category.description}
-                  </p>
-                </button>
+                  icon={<Icon className="w-6 h-6 text-blue-600" />}
+                  title={category.title}
+                  description={category.description}
+                  count={category.count}
+                />
               );
             })}
           </div>
