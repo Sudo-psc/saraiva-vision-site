@@ -1,0 +1,221 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic "Links de navegação rápida":
+    - link "Pular para conteúdo principal" [ref=e2] [cursor=pointer]:
+      - /url: "#main-content"
+    - link "Pular para navegação" [ref=e3] [cursor=pointer]:
+      - /url: "#navigation"
+    - link "Pular para rodapé" [ref=e4] [cursor=pointer]:
+      - /url: "#footer"
+  - banner [ref=e5]:
+    - generic [ref=e7]:
+      - generic:
+        - link "Ir para a página inicial":
+          - /url: /
+          - img "Saraiva Vision Logo"
+      - navigation "Navegação principal" [ref=e8]:
+        - link "Início" [ref=e9] [cursor=pointer]:
+          - /url: /
+          - img [ref=e10] [cursor=pointer]
+          - text: Início
+        - link "Serviços" [ref=e13] [cursor=pointer]:
+          - /url: /servicos
+          - img [ref=e14] [cursor=pointer]
+          - text: Serviços
+        - link "Lentes" [ref=e18] [cursor=pointer]:
+          - /url: /lentes
+          - img [ref=e19] [cursor=pointer]
+          - text: Lentes
+        - link "Blog" [ref=e22] [cursor=pointer]:
+          - /url: /blog
+          - img [ref=e23] [cursor=pointer]
+          - text: Blog
+        - link "Podcast" [ref=e26] [cursor=pointer]:
+          - /url: /podcast
+          - img [ref=e27] [cursor=pointer]
+          - text: Podcast
+        - link "Sobre Nós" [ref=e29] [cursor=pointer]:
+          - /url: /sobre
+          - img [ref=e30] [cursor=pointer]
+          - text: Sobre Nós
+        - link "FAQ" [ref=e33] [cursor=pointer]:
+          - /url: /faq
+          - img [ref=e34] [cursor=pointer]
+          - text: FAQ
+      - button "Agendar" [ref=e38] [cursor=pointer]:
+        - img [ref=e39] [cursor=pointer]
+        - generic [ref=e41] [cursor=pointer]: Agendar
+  - main [ref=e42]:
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - img [ref=e48]
+          - heading "Ops! Algo deu errado" [level=1] [ref=e50]
+          - paragraph [ref=e51]: Desculpe pelo inconveniente. Encontramos um problema inesperado.
+          - paragraph [ref=e53]: Cannot read properties of undefined (reading 'VITE_RECAPTCHA_SITE_KEY')
+        - generic [ref=e54]:
+          - button "Tentar Novamente" [ref=e55] [cursor=pointer]:
+            - img [ref=e56] [cursor=pointer]
+            - text: Tentar Novamente
+          - link "Voltar ao Início" [ref=e61] [cursor=pointer]:
+            - /url: /
+            - img [ref=e62] [cursor=pointer]
+            - text: Voltar ao Início
+        - generic [ref=e65]:
+          - heading "O que você pode fazer?" [level=3] [ref=e66]
+          - list [ref=e67]:
+            - listitem [ref=e68]:
+              - generic [ref=e70]: "1"
+              - generic [ref=e71]: Clique em "Tentar Novamente" para recarregar a página
+            - listitem [ref=e72]:
+              - generic [ref=e74]: "2"
+              - generic [ref=e75]: Volte à página inicial e navegue novamente
+            - listitem [ref=e76]:
+              - generic [ref=e78]: "3"
+              - generic [ref=e79]: Se o problema persistir, entre em contato conosco
+        - generic [ref=e80]:
+          - paragraph [ref=e81]: Precisa de ajuda urgente?
+          - generic [ref=e82]:
+            - link "(33) 3229-1000" [ref=e83] [cursor=pointer]:
+              - /url: tel:+553332291000
+              - generic [ref=e84] [cursor=pointer]: (33) 3229-1000
+            - generic [ref=e85]: "|"
+            - link "Formulário de Contato" [ref=e86] [cursor=pointer]:
+              - /url: /contato
+              - img [ref=e87] [cursor=pointer]
+              - text: Formulário de Contato
+      - generic [ref=e90]:
+        - paragraph [ref=e91]: Saraiva Vision - Clínica Oftalmológica | Caratinga, MG
+        - paragraph [ref=e92]: Atendimento especializado com tecnologia de ponta
+  - contentinfo [ref=e93]:
+    - generic [ref=e94]:
+      - generic [ref=e95]:
+        - generic [ref=e96]:
+          - img "Saraiva Vision Logo" [ref=e97]
+          - paragraph [ref=e98]: Excelência no cuidado com a visão, perto de você.
+          - paragraph [ref=e99]: Parceiro da
+          - link "Abrir site do parceiro Amor e Saúde (nova aba)" [ref=e100] [cursor=pointer]:
+            - /url: https://www.amorsaude.com.br/clinica/caratinga-mg/
+            - img "Logo da Clínica Amor e Saúde" [ref=e101] [cursor=pointer]
+        - generic [ref=e102]:
+          - heading "Links Rápidos" [level=3] [ref=e103]
+          - list [ref=e104]:
+            - listitem [ref=e105]:
+              - link "Início" [ref=e106] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e107]:
+              - link "Serviços" [ref=e108] [cursor=pointer]:
+                - /url: /servicos
+            - listitem [ref=e109]:
+              - link "Sobre Nós" [ref=e110] [cursor=pointer]:
+                - /url: /sobre
+        - generic [ref=e111]:
+          - heading "Serviços" [level=3] [ref=e112]
+          - list [ref=e113]:
+            - listitem [ref=e114]:
+              - link "Consultas" [ref=e115] [cursor=pointer]:
+                - /url: /servicos
+            - listitem [ref=e116]:
+              - link "Exames de Refração e Adaptação de Lentes de Contato" [ref=e117] [cursor=pointer]:
+                - /url: /servicos
+            - listitem [ref=e118]:
+              - link "Tratamentos" [ref=e119] [cursor=pointer]:
+                - /url: /servicos
+            - listitem [ref=e120]:
+              - link "Cirurgias" [ref=e121] [cursor=pointer]:
+                - /url: /servicos
+            - listitem [ref=e122]:
+              - link "Acompanhamento Pediátrico" [ref=e123] [cursor=pointer]:
+                - /url: /servicos
+            - listitem [ref=e124]:
+              - link "Laudos" [ref=e125] [cursor=pointer]:
+                - /url: /servicos
+        - generic [ref=e126]:
+          - heading "Contato" [level=3] [ref=e127]
+          - list [ref=e128]:
+            - listitem [ref=e129]: Rua Catarina Maria Passos, 97 – Santa Zita
+            - listitem [ref=e130]: Caratinga/MG – CEP 35300-299 (Clínica Amor e Saúde)
+            - listitem [ref=e131]:
+              - link "saraivavision@gmail.com" [ref=e132] [cursor=pointer]:
+                - /url: mailto:saraivavision@gmail.com
+            - listitem [ref=e133]:
+              - link "+55 33 99860-1427" [ref=e134] [cursor=pointer]:
+                - /url: https://wa.me/5533998601427
+                - img [ref=e135] [cursor=pointer]
+                - text: +55 33 99860-1427
+            - listitem [ref=e137]:
+              - link "Assistente IA 24h" [ref=e138] [cursor=pointer]:
+                - /url: https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica
+                - img [ref=e139] [cursor=pointer]
+                - text: Assistente IA 24h
+            - listitem [ref=e142]: "Seg - Sex: 8h às 18h"
+      - generic [ref=e144]:
+        - generic [ref=e145]:
+          - paragraph [ref=e146]:
+            - generic [ref=e147]: Dr. Philipe Saraiva Cruz • CRM-MG 69.870 • Responsável Técnico Médico
+            - generic [ref=e148]: Ana Lúcia • Enfermeira
+            - generic [ref=e149]: "CNPJ: 53.864.119/0001-79"
+            - generic [ref=e150]:
+              - text: "DPO:"
+              - link "saraivavision@gmail.com" [ref=e151] [cursor=pointer]:
+                - /url: mailto:saraivavision@gmail.com
+            - generic [ref=e152]:
+              - link "Privacidade" [ref=e153] [cursor=pointer]:
+                - /url: /privacy
+              - button "Gerenciar Cookies" [ref=e154] [cursor=pointer]
+            - generic [ref=e155]:
+              - text: Este site é protegido pelo reCAPTCHA e se aplicam a
+              - link "Política de Privacidade" [ref=e156] [cursor=pointer]:
+                - /url: https://policies.google.com/privacy
+              - text: e os
+              - link "Termos de Serviço" [ref=e157] [cursor=pointer]:
+                - /url: https://policies.google.com/terms
+              - text: do Google.
+          - paragraph [ref=e158]: As informações aqui não substituem avaliação médica individual.
+          - paragraph [ref=e159]: Conteúdo informativo sem promessa de resultados. Consulte o médico responsável para avaliação personalizada.
+          - paragraph [ref=e160]: © 2025 Saraiva Vision. Todos os direitos reservados.
+        - generic [ref=e162]:
+          - list "Social media links" [ref=e163]:
+            - listitem "Visit our Facebook page" [ref=e164] [cursor=pointer]:
+              - img "Facebook icon" [ref=e165] [cursor=pointer]
+            - listitem "Visit our Instagram page" [ref=e166] [cursor=pointer]:
+              - img "Instagram icon" [ref=e167] [cursor=pointer]
+            - listitem "Visit our LinkedIn page" [ref=e168] [cursor=pointer]:
+              - img "LinkedIn icon" [ref=e169] [cursor=pointer]
+            - listitem "Visit our X page" [ref=e170] [cursor=pointer]:
+              - img "X icon" [ref=e171] [cursor=pointer]
+            - listitem "Visit our TikTok page" [ref=e172] [cursor=pointer]:
+              - img "TikTok icon" [ref=e173] [cursor=pointer]
+          - button "Voltar ao topo" [ref=e174] [cursor=pointer]:
+            - img [ref=e175] [cursor=pointer]
+  - region "Notifications (F8)":
+    - list
+  - dialog "Aviso sobre cookies" [ref=e177]:
+    - generic [ref=e179]:
+      - img [ref=e181]
+      - generic [ref=e183]:
+        - generic [ref=e184]:
+          - heading "Aviso sobre cookies" [level=2] [ref=e185]
+          - paragraph [ref=e186]:
+            - text: Usamos cookies para melhorar sua experiência e analisar o uso do site. Ao continuar navegando, você concorda com nossa
+            - link "Política de Privacidade" [ref=e187] [cursor=pointer]:
+              - /url: /privacy
+            - text: .
+        - generic [ref=e188]:
+          - button "Aceitar todos os cookies" [ref=e189] [cursor=pointer]: Aceitar Todos
+          - button "Gerenciar preferências de cookies" [ref=e190] [cursor=pointer]: Gerenciar Preferências
+  - generic [ref=e195] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e196] [cursor=pointer]:
+      - img [ref=e197] [cursor=pointer]
+    - generic [ref=e200] [cursor=pointer]:
+      - button "Open issues overlay" [ref=e201] [cursor=pointer]:
+        - generic [ref=e202] [cursor=pointer]:
+          - generic [ref=e203] [cursor=pointer]: "0"
+          - generic [ref=e204] [cursor=pointer]: "1"
+        - generic [ref=e205] [cursor=pointer]: Issue
+      - button "Collapse issues badge" [ref=e206] [cursor=pointer]:
+        - img [ref=e207] [cursor=pointer]
+  - alert [ref=e209]
+```

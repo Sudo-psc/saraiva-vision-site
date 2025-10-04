@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import FAQ from '@/components/FAQ';
 import NewsletterSignup from '@/components/NewsletterSignup';
 import ShareButtons from '@/components/ShareButtons';
-import Breadcrumbs, { type BreadcrumbItem } from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import type { BreadcrumbItem } from '@/types/navigation';
 
 export const metadata: Metadata = {
   title: 'Dúvidas Frequentes - Saraiva Vision | Perguntas sobre Oftalmologia',

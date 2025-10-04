@@ -17,10 +17,18 @@ import type {
   MapState
 } from '@/types/maps';
 
-// Declare google as global for TypeScript/ESLint
-/* eslint-disable no-undef */
-declare const google: any;
-/* eslint-enable no-undef */
+// Extend Window interface and declare google namespace for Google Maps
+declare global {
+  interface Window {
+    google: any;
+  }
+
+  namespace google.maps {
+    interface MapsLibrary {}
+    interface MarkerLibrary {}
+    interface MapOptions {}
+  }
+}
 
 const GoogleMap: React.FC<GoogleMapProps> = ({
   mode = 'simple',
@@ -150,12 +158,12 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
 
       // Create map instance
       // eslint-disable-next-line no-undef
-      const { Map } = await window.google.maps.importLibrary('maps') as google.maps.MapsLibrary;
+      const { Map } = await window.google.maps.importLibrary('maps') as any;
       // eslint-disable-next-line no-undef
-      const { AdvancedMarkerElement } = await window.google.maps.importLibrary('marker') as google.maps.MarkerLibrary;
+      const { AdvancedMarkerElement } = await window.google.maps.importLibrary('marker') as any;
 
       // eslint-disable-next-line no-undef
-      const mapOptions: google.maps.MapOptions = {
+      const mapOptions: any = {
         center: mapCenter,
         zoom,
         mapId: process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || 'SARAIVA_VISION_MAP',
@@ -173,7 +181,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
       });
 
       // eslint-disable-next-line no-undef
-      const createdMarkers: google.maps.Marker[] = [defaultMarker as any];
+      const createdMarkers: any[] = [defaultMarker as any];
 
       // Create additional markers if provided
       if (markers.length > 0) {
@@ -200,7 +208,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
       if (CLINIC_PLACE_ID && window.google?.maps?.places && mode !== 'simple') {
         try {
           // eslint-disable-next-line no-undef
-          const { PlacesService } = await window.google.maps.importLibrary('places') as google.maps.PlacesLibrary;
+          const { PlacesService } = await window.google.maps.importLibrary('places') as any;
           const service = new PlacesService(map);
 
           service.getDetails(
@@ -208,9 +216,9 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
               placeId: CLINIC_PLACE_ID,
               fields: ['geometry', 'name', 'url'],
             },
-            (place, status) => {
+            (place: any, status: any) => {
               // eslint-disable-next-line no-undef
-              if (status === google.maps.places.PlacesServiceStatus.OK && place?.geometry?.location) {
+              if (status === (window.google as any).maps.places.PlacesServiceStatus.OK && place?.geometry?.location) {
                 map.setCenter(place.geometry.location);
                 defaultMarker.position = place.geometry.location;
               }

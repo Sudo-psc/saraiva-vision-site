@@ -18,7 +18,9 @@ fi
 # Deploy
 echo ""
 echo "🚀 Deploying to production..."
-sudo rsync -av --delete dist/ /var/www/html/
+sudo rsync -av --delete .next/ /var/www/saraivavision/current/
+sudo rsync -av --delete public/ /var/www/saraivavision/current/
+sudo cp package.json /var/www/saraivavision/current/
 
 # Reload nginx
 echo ""

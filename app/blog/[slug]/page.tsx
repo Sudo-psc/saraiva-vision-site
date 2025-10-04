@@ -149,7 +149,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
                       <div className="flex items-center gap-2 bg-white/20 backdrop-blur-md rounded-full px-4 py-2">
                         <Clock className="w-4 h-4" />
-                        <span className="font-medium text-sm">{readingTime} min de leitura</span>
+                        <span className="font-medium text-sm">{String(readingTime)} min de leitura</span>
                       </div>
                     </div>
                   </div>

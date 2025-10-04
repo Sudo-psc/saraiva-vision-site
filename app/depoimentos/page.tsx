@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Testimonials from '@/components/Testimonials';
 import GoogleReviewsWidget from '@/components/GoogleReviewsWidget';
 import UnifiedCTA from '@/components/UnifiedCTA';
-import Breadcrumbs, { type BreadcrumbItem } from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import type { BreadcrumbItem } from '@/types/navigation';
 
 export const metadata: Metadata = {
   title: 'Depoimentos - Saraiva Vision | O que dizem nossos pacientes',

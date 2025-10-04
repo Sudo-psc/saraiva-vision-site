@@ -38,12 +38,10 @@ const Testimonials: React.FC<TestimonialsProps> = ({ limit }) => {
 
   const {
     reviews: googleReviews,
-    loading: reviewsLoading
+    isLoading: reviewsLoading
   } = useGoogleReviews({
     placeId: CLINIC_PLACE_ID,
-    limit: limit || 6,
-    autoFetch: true,
-    refreshInterval: PERFORMANCE.AUTO_SLIDE_INTERVAL * 20
+    limit: limit || 6
   });
 
   const fallbackTestimonials = useMemo<Testimonial[]>(() => [

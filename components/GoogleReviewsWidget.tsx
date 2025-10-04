@@ -3,18 +3,14 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Star, ExternalLink, MessageCircle } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { useGoogleReviews } from '@/hooks/useGoogleReviews';
-import { fetchPlaceDetails, clearPlaceCache } from '@/lib/fetchPlaceDetails';
+// Temporarily removing i18n dependency for build
 import { CLINIC_PLACE_ID, clinicInfo } from '@/lib/clinicInfo';
 import { Card, CardContent } from '@/components/ui/Card';
 import SafeInteractiveCarousel from '@/components/ui/SafeInteractiveCarousel';
-import { normalizeReview } from '@/utils/googleReviews';
 import { createLogger } from '@/utils/structuredLogger';
-import type { PlaceDetails, NormalizedReview } from '@/types/google-reviews';
+import type { NormalizedReview, PlaceDetails } from '@/types/google-reviews';
 
 const REVIEW_REFRESH_INTERVAL = 30 * 60 * 1000;
-const PLACE_DETAILS_REFRESH_INTERVAL = 30 * 60 * 1000;
 
 const logger = createLogger('GoogleReviewsWidget');
 
@@ -65,7 +61,7 @@ const GoogleReviewsWidget: React.FC<GoogleReviewsWidgetProps> = ({
   showViewAllButton = true,
   className = ''
 }) => {
-  const { t } = useTranslation();
+  const t = (key: string, fallback?: string) => fallback || key;
   const [placeData, setPlaceData] = useState<PlaceDetails | null>(null);
   const [placeLoading, setPlaceLoading] = useState(true);
   const [placeError, setPlaceError] = useState<string | null>(null);
@@ -90,130 +86,114 @@ const GoogleReviewsWidget: React.FC<GoogleReviewsWidgetProps> = ({
     }
   }, [maxReviews]);
 
-  const {
-    reviews: apiReviews,
-    stats: apiStats,
-    loading: reviewsLoading,
-  } = useGoogleReviews({
-    placeId: CLINIC_PLACE_ID,
-    limit: maxReviews,
-    autoFetch: true,
-    refreshInterval: REVIEW_REFRESH_INTERVAL,
-    onError: handleError
-  }) as any;
+  const [apiReviews, setApiReviews] = useState<any[]>([]);
+  const [apiStats, setApiStats] = useState<any>(null);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
+  // Fetch reviews from API
+  const fetchReviewsFromAPI = useCallback(async () => {
+    if (!CLINIC_PLACE_ID) return;
+
+    const startTime = performance.now();
+    const operationId = `fetch-api-reviews-${Date.now()}`;
+
+    logger.info('Starting API reviews fetch', {
+      operationId,
+      placeId: CLINIC_PLACE_ID,
+      maxReviews
+    });
+
+    try {
+      setReviewsLoading(true);
+      setApiError(null);
+
+      const response = await fetch(`/api/reviews?limit=${maxReviews}&language=pt-BR`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'SaraivaVision/2.0'
+        },
+        cache: 'no-cache' // Ensure fresh data
+      });
+
+      const duration = Math.round(performance.now() - startTime);
+
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        setApiReviews(data.data.reviews || []);
+        setApiStats(data.data.stats || null);
+
+        logger.info('API reviews fetched successfully', {
+          operationId,
+          duration,
+          reviewCount: data.data.reviews?.length || 0,
+          hasStats: !!data.data.stats,
+          cached: data.data.metadata?.source === 'cache'
+        });
+      } else {
+        throw new Error(data.error || 'Failed to fetch reviews');
+      }
+
+    } catch (error) {
+      const duration = Math.round(performance.now() - startTime);
+      const err = error as Error;
+
+      logger.error('Failed to fetch reviews from API', {
+        operationId,
+        duration,
+        error: err.message,
+        placeId: CLINIC_PLACE_ID
+      });
+
+      setApiError(err.message);
+      handleError(err);
+    } finally {
+      setReviewsLoading(false);
+    }
+  }, [maxReviews, handleError]);
+
+  // Initial fetch and periodic refresh
+  useEffect(() => {
+    fetchReviewsFromAPI();
+
+    const intervalId = setInterval(() => {
+      logger.debug('Starting scheduled API reviews refresh', {
+        interval: REVIEW_REFRESH_INTERVAL,
+        placeId: CLINIC_PLACE_ID
+      });
+      fetchReviewsFromAPI();
+    }, REVIEW_REFRESH_INTERVAL);
+
+    return () => {
+      clearInterval(intervalId);
+      logger.info('API reviews widget cleanup', {
+        placeId: CLINIC_PLACE_ID,
+        intervalCleared: true
+      });
+    };
+  }, [fetchReviewsFromAPI]);
+
+  // Since we're using API routes, we don't need client-side Google Places data fetching
   useEffect(() => {
     if (!CLINIC_PLACE_ID) {
       logger.warn('CLINIC_PLACE_ID not configured', {
         component: 'GoogleReviewsWidget',
         hasPlaceId: false,
-        maxReviews,
-        refreshInterval: PLACE_DETAILS_REFRESH_INTERVAL
+        maxReviews
       });
       setPlaceLoading(false);
       return;
     }
 
-    let isMounted = true;
-
-    const fetchRealPlaceData = async ({ invalidateCache = false } = {}) => {
-      const startTime = performance.now();
-      const operationId = `fetch-place-${Date.now()}`;
-
-      logger.info('Starting Google Places data fetch', {
-        operationId,
-        hasPlaceId: !!CLINIC_PLACE_ID,
-        placeId: CLINIC_PLACE_ID,
-        invalidateCache,
-        maxReviews,
-        refreshInterval: PLACE_DETAILS_REFRESH_INTERVAL
-      });
-
-      try {
-        if (invalidateCache) {
-          logger.info('Clearing place cache', { operationId });
-          clearPlaceCache();
-        }
-
-        setPlaceLoading(true);
-        setPlaceError(null);
-
-        const data = await fetchPlaceDetails(CLINIC_PLACE_ID) as PlaceDetails;
-        const duration = Math.round(performance.now() - startTime);
-
-        if (!isMounted) {
-          logger.warn('Component unmounted before data fetched', { operationId, duration });
-          return;
-        }
-
-        setPlaceData(data);
-
-        logger.info('Google Places data fetched successfully', {
-          operationId,
-          duration,
-          placeId: CLINIC_PLACE_ID,
-          hasData: !!data,
-          hasReviews: data?.reviews?.length > 0,
-          reviewCount: data?.reviews?.length || 0
-        });
-
-      } catch (error) {
-        const duration = Math.round(performance.now() - startTime);
-        const err = error as Error;
-
-        if (!isMounted) {
-          logger.warn('Component unmounted during fetch error', {
-            operationId,
-            duration,
-            error: err.message
-          });
-          return;
-        }
-
-        logger.error('Failed to fetch Google Places data', {
-          operationId,
-          duration,
-          placeId: CLINIC_PLACE_ID,
-          error: err.message,
-          stack: err.stack,
-          hasPlaceId: !!CLINIC_PLACE_ID
-        });
-
-        setPlaceError(err.message);
-      } finally {
-        if (isMounted) {
-          const totalDuration = Math.round(performance.now() - startTime);
-          setPlaceLoading(false);
-
-          logger.info('Google Places fetch operation completed', {
-            operationId,
-            totalDuration,
-            hasError: !!placeError,
-            isLoading: false
-          });
-        }
-      }
-    };
-
-    fetchRealPlaceData();
-
-    const intervalId = setInterval(() => {
-      logger.debug('Starting scheduled place data refresh', {
-        interval: PLACE_DETAILS_REFRESH_INTERVAL,
-        placeId: CLINIC_PLACE_ID
-      });
-      fetchRealPlaceData({ invalidateCache: true });
-    }, PLACE_DETAILS_REFRESH_INTERVAL);
-
-    return () => {
-      isMounted = false;
-      clearInterval(intervalId);
-      logger.info('Google Places widget cleanup', {
-        placeId: CLINIC_PLACE_ID,
-        intervalCleared: true
-      });
-    };
-  }, [maxReviews, placeError]);
+    // Set loading to false since API handles the data fetching
+    setPlaceLoading(false);
+  }, [maxReviews]);
 
   const normalizedReviews = useMemo(() => {
     const startTime = performance.now();
@@ -221,22 +201,30 @@ const GoogleReviewsWidget: React.FC<GoogleReviewsWidgetProps> = ({
 
     logger.info('Starting review normalization', {
       operationId,
-      hasPlaceData: !!placeData,
-      placeDataReviewCount: (placeData as any)?.reviews?.length || 0,
       hasApiReviews: !!apiReviews,
-      apiReviewsCount: (apiReviews as any)?.length || 0,
+      apiReviewsCount: apiReviews.length || 0,
       maxReviews,
-      fallbackCount: fallbackReviews.length
+      fallbackCount: fallbackReviews.length,
+      hasApiError: !!apiError
     });
 
-    const reviewsToNormalize = (placeData as any)?.reviews || apiReviews || [];
     let normalizedResult: any[];
 
-    if (Array.isArray(reviewsToNormalize) && reviewsToNormalize.length > 0) {
-      normalizedResult = reviewsToNormalize.map(normalizeReview).slice(0, maxReviews);
-      logger.info('Reviews normalized successfully', {
+    if (Array.isArray(apiReviews) && apiReviews.length > 0) {
+      // API reviews are already normalized, just ensure they have the right structure
+      normalizedResult = apiReviews.slice(0, maxReviews).map((review: any) => ({
+        id: review.id || `api-${Date.now()}-${Math.random()}`,
+        author: review.reviewer?.displayName || review.author || 'Anônimo',
+        avatar: review.reviewer?.profilePhotoUrl || review.avatar || '/images/avatar-female-brunette-640w.avif',
+        rating: review.starRating || review.rating || 0,
+        text: review.comment || review.text || '',
+        createTime: review.createTime || review.relativeTimeDescription || new Date().toISOString(),
+        language: review.language || 'pt-BR'
+      }));
+
+      logger.info('API reviews normalized successfully', {
         operationId,
-        inputCount: reviewsToNormalize.length,
+        inputCount: apiReviews.length,
         outputCount: normalizedResult.length,
         maxReviewsApplied: normalizedResult.length === maxReviews,
         duration: Math.round(performance.now() - startTime)
@@ -245,15 +233,16 @@ const GoogleReviewsWidget: React.FC<GoogleReviewsWidgetProps> = ({
       normalizedResult = fallbackReviews;
       logger.info('Using fallback reviews', {
         operationId,
-        reason: Array.isArray(reviewsToNormalize) ? 'empty_array' : 'invalid_data',
-        reviewsType: typeof reviewsToNormalize,
+        reason: apiReviews.length === 0 ? 'empty_api_reviews' : 'api_error',
+        hasApiError: !!apiError,
+        apiError: apiError,
         fallbackCount: fallbackReviews.length,
         duration: Math.round(performance.now() - startTime)
       });
     }
 
     return normalizedResult;
-  }, [placeData, apiReviews, maxReviews]);
+  }, [apiReviews, maxReviews, apiError]);
 
   const stats: Stats = useMemo(() => {
     const startTime = performance.now();
@@ -261,27 +250,19 @@ const GoogleReviewsWidget: React.FC<GoogleReviewsWidgetProps> = ({
 
     logger.info('Starting statistics calculation', {
       operationId,
-      hasPlaceData: !!placeData,
-      placeDataError: placeData?.error,
-      placeDataRating: placeData?.rating,
-      placeDataUserRatingCount: placeData?.userRatingCount,
       hasApiStats: !!apiStats,
-      apiStatsAverageRating: (apiStats as any)?.overview?.averageRating,
-      apiStatsTotalReviews: (apiStats as any)?.overview?.totalReviews
+      apiStatsOverview: !!apiStats?.overview,
+      apiStatsAverageRating: apiStats?.overview?.averageRating,
+      apiStatsTotalReviews: apiStats?.overview?.totalReviews,
+      hasApiError: !!apiError
     });
 
     let result: Stats;
     let dataSource = 'unknown';
 
-    if (placeData && !placeData.error && placeData.rating && placeData.rating > 0) {
-      result = {
-        averageRating: placeData.rating,
-        totalReviews: placeData.userRatingCount || 0,
-      };
-      dataSource = 'placeData';
-    } else if ((apiStats as any)?.overview) {
-      const avgRating = typeof (apiStats as any).overview.averageRating === 'number' ? (apiStats as any).overview.averageRating : 0;
-      const totalReviews = typeof (apiStats as any).overview.totalReviews === 'number' ? (apiStats as any).overview.totalReviews : 0;
+    if (apiStats?.overview) {
+      const avgRating = typeof apiStats.overview.averageRating === 'number' ? apiStats.overview.averageRating : 0;
+      const totalReviews = typeof apiStats.overview.totalReviews === 'number' ? apiStats.overview.totalReviews : 0;
       result = {
         averageRating: avgRating,
         totalReviews: totalReviews,
@@ -303,14 +284,14 @@ const GoogleReviewsWidget: React.FC<GoogleReviewsWidgetProps> = ({
         totalReviews: result.totalReviews
       },
       fallbackUsed: dataSource === 'fallback',
-      hasPlaceDataIssues: !!(placeData && (placeData.error || !placeData.rating || placeData.rating <= 0)),
-      hasApiStatsIssues: !!(apiStats && !(apiStats as any).overview)
+      hasApiStatsIssues: !!(apiStats && !apiStats.overview),
+      hasApiError: !!apiError
     });
 
     return result;
-  }, [placeData, apiStats]);
+  }, [apiStats, apiError]);
 
-  const isLoading = reviewsLoading || placeLoading;
+  const isLoading = reviewsLoading;
 
   const renderStars = (rating: number, size: 'sm' | 'md' | 'lg' = 'sm') => {
     const sizeClass = size === 'lg' ? 'w-5 h-5' : size === 'md' ? 'w-4 h-4' : 'w-3 h-3';
@@ -371,11 +352,11 @@ const GoogleReviewsWidget: React.FC<GoogleReviewsWidgetProps> = ({
     </Card>
   );
 
-  const googleUrl = placeData?.url || `https://www.google.com/maps/place/?q=place_id:${CLINIC_PLACE_ID}`;
+  const googleUrl = `https://www.google.com/maps/place/?q=place_id:${CLINIC_PLACE_ID}`;
   const whatsappUrl = 'https://wa.me/message/EHTAAAAYH7SHJ1';
   const phoneHref = clinicInfo.phone ? `tel:${clinicInfo.phone.replace(/[^+\d]/g, '')}` : null;
   const clinicAddress = `${clinicInfo.streetAddress}, ${clinicInfo.city} - ${clinicInfo.state}`;
-  const clinicHours = placeData?.openingHours?.weekdayDescriptions?.[0] || 'Segunda a Sexta, 08h às 18h';
+  const clinicHours = 'Segunda a Sexta, 08h às 18h';
 
   if (isLoading) {
     return (
@@ -390,7 +371,7 @@ const GoogleReviewsWidget: React.FC<GoogleReviewsWidgetProps> = ({
     );
   }
 
-  if (placeError || (!placeData && !apiReviews && !apiStats)) {
+  if (placeError || apiError || (!apiReviews && !apiStats)) {
     return (
       <section className={`py-12 bg-white ${className}`}>
         <div className="max-w-7xl mx-auto px-[7%] text-center">
@@ -416,6 +397,11 @@ const GoogleReviewsWidget: React.FC<GoogleReviewsWidgetProps> = ({
             >
               Recarregar Página
             </button>
+            {(placeError || apiError) && (
+              <p className="text-amber-600 text-sm mt-2">
+                Erro: {placeError || apiError}
+              </p>
+            )}
           </div>
         </div>
       </section>

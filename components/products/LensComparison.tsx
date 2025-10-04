@@ -18,7 +18,7 @@ import { motion } from 'framer-motion';
 import { Check, X, Shield, Droplets, Eye, ChevronDown, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LensComparisonProps, LensComparison } from '@/types/products';
-import { Badge } from '@/components/ui/badge';
+import Badge from '@/components/ui/Badge';
 
 export const LensComparisonTable: React.FC<LensComparisonProps> = ({
   products,

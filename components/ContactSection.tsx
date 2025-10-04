@@ -51,7 +51,14 @@ export default function ContactSection({
           className="hover:text-blue-700 hover:underline transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
           aria-label="Ver localização no Google Maps (abre em nova aba)"
         >
-          <span>{typeof clinicInfo.address === 'string' ? clinicInfo.address : CONTACT.ADDRESS}</span>
+          <span>
+            {typeof clinicInfo.address === 'string'
+              ? clinicInfo.address
+              : typeof CONTACT.ADDRESS === 'string'
+              ? CONTACT.ADDRESS
+              : `${CONTACT.ADDRESS.street}, ${CONTACT.ADDRESS.city} - ${CONTACT.ADDRESS.state}`
+            }
+          </span>
         </a>
       ),
       subDetails: (

@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { useTranslation } from 'react-i18next';
+// Temporarily removing i18n dependency for build
 import { ArrowRight } from 'lucide-react';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 import { debounce } from '@/utils/componentUtils';
@@ -58,7 +58,7 @@ interface AutoplayHook {
  */
 const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
   ({ service, index = 0, lazy = true }, ref) => {
-    const { t } = useTranslation();
+    const t = (key: string, fallback?: string) => fallback || key;
     const prefersReducedMotion = useReducedMotion();
     const [visible, setVisible] = useState(!lazy);
     const cardRef = useRef<HTMLDivElement>(null);
@@ -174,7 +174,7 @@ ServiceCard.displayName = 'ServiceCard';
  * Services component - Horizontal carousel service cards with autoplay and scroll controls
  */
 const Services: React.FC<ServicesProps> = ({ full = false, autoplay = true }) => {
-  const { t } = useTranslation();
+  const t = (key: string, fallback?: string) => fallback || key;
   const [serviceItems, setServices] = useState<ServiceItem[]>([]);
   const [loading, setLoading] = useState(true);
   const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
@@ -568,7 +568,7 @@ const Services: React.FC<ServicesProps> = ({ full = false, autoplay = true }) =>
                 key={i}
                 type="button"
                 role="tab"
-                aria-label={t('services.go_to_page', { index: i + 1, defaultValue: `Ir para página ${i + 1}` })}
+                aria-label={t('services.go_to_page', `Ir para página ${i + 1}`)}
                 aria-selected={i === currentPage}
                 onClick={() => autoplayCarousel.goTo(i * Math.max(1, itemsPerView))}
                 className={`h-2.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 ${i === currentPage ? 'bg-blue-600 w-6 shadow' : 'bg-slate-300 hover:bg-slate-400 w-2.5'}`}

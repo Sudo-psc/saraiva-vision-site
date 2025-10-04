@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import AppointmentBooking from '@/components/AppointmentBooking';
-import Breadcrumbs, { type BreadcrumbItem } from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import type { BreadcrumbItem } from '@/types/navigation';
 
 export const metadata: Metadata = {
   title: 'Agendar Consulta Online - Saraiva Vision | Oftalmologia em Caratinga-MG',

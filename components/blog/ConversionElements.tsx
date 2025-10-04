@@ -77,7 +77,7 @@ export function StickyAppointmentCTA() {
  * InlineAppointmentCTA - Inline CTA for blog content
  */
 export function InlineAppointmentCTA({
-  context = 'artigo',
+  context = 'article',
   className = '',
   variant = 'default',
   showStats = true,

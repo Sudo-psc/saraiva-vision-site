@@ -44,6 +44,7 @@
         "src/types/*"
       ],
       "@/hooks/*": [
+        "hooks/*",
         "src/hooks/*"
       ],
       "@/styles/*": [

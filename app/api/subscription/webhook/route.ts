@@ -121,7 +121,7 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
     id: invoice.id,
     customer: invoice.customer,
     amount: invoice.amount_paid,
-    subscription: invoice.subscription,
+    subscription: (invoice as any).subscription,
   });
 
   // TODO: In production, update payment records
@@ -136,7 +136,7 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
   console.log('Payment failed:', {
     id: invoice.id,
     customer: invoice.customer,
-    subscription: invoice.subscription,
+    subscription: (invoice as any).subscription,
   });
 
   // TODO: In production, mark subscription as past_due

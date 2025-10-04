@@ -181,7 +181,7 @@ export async function GET(request: NextRequest) {
         updateTime: review.time
           ? new Date(review.time * 1000).toISOString()
           : new Date().toISOString(),
-        reviewReply: null,
+        reviewReply: null as any,
         isRecent: isRecentReview(review.time),
         hasResponse: false,
         wordCount: review.text ? review.text.split(' ').length : 0,

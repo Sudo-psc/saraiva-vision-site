@@ -106,10 +106,10 @@ export async function POST(request: NextRequest) {
     // Extract payment intent for client confirmation if needed
     const paymentIntent =
       typeof subscription.latest_invoice !== 'string' &&
-      subscription.latest_invoice?.payment_intent
-        ? typeof subscription.latest_invoice.payment_intent === 'string'
+      (subscription.latest_invoice as any)?.payment_intent
+        ? typeof (subscription.latest_invoice as any).payment_intent === 'string'
           ? { client_secret: null }
-          : subscription.latest_invoice.payment_intent
+          : (subscription.latest_invoice as any).payment_intent
         : null;
 
     return NextResponse.json({

@@ -38,10 +38,10 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
           ? stripeSubscription.customer
           : stripeSubscription.customer.id,
       currentPeriodStart: new Date(
-        stripeSubscription.current_period_start * 1000
+        (stripeSubscription as any).current_period_start * 1000
       ),
       currentPeriodEnd: new Date(
-        stripeSubscription.current_period_end * 1000
+        (stripeSubscription as any).current_period_end * 1000
       ),
       cancelAtPeriodEnd: stripeSubscription.cancel_at_period_end,
       canceledAt: stripeSubscription.canceled_at

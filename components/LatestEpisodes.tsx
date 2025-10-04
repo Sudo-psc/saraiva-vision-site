@@ -96,11 +96,11 @@ export default function LatestEpisodes({ maxEpisodes = 1, showPlayer = true, cla
           <div className="mb-8 max-w-4xl mx-auto">
             <div className="relative group perspective-1000">
               <div className="absolute -inset-1 bg-gradient-to-r from-blue-400/20 via-cyan-400/20 to-teal-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
-              <PodcastPlayer
-                episode={featuredEpisode}
-                mode="inline"
-                className="h-full relative glass-blue card-3d shadow-xl rounded-xl hover:shadow-2xl transition-all duration-300 group-hover:transform group-hover:scale-[1.02] border border-blue-200/40"
-              />
+              <div className="h-full relative glass-blue card-3d shadow-xl rounded-xl hover:shadow-2xl transition-all duration-300 group-hover:transform group-hover:scale-[1.02] border border-blue-200/40">
+                <PodcastPlayer
+                  episode={featuredEpisode}
+                />
+              </div>
             </div>
           </div>
         )}

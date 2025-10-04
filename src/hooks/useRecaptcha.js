@@ -2,7 +2,20 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 // Loads Google reCAPTCHA v3 script and returns an executor for actions
 export const useRecaptcha = () => {
-  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  // Handle both Vite (import.meta.env) and Next.js (process.env) environments
+  const getSiteKey = () => {
+    if (typeof window !== 'undefined') {
+      // Client-side: check both Vite and Next.js env variables
+      return import.meta.env?.VITE_RECAPTCHA_SITE_KEY ||
+             process.env?.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ||
+             process.env?.VITE_RECAPTCHA_SITE_KEY;
+    }
+    // Server-side: use Next.js env variable or return undefined
+    return process.env?.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ||
+           process.env?.VITE_RECAPTCHA_SITE_KEY;
+  };
+
+  const siteKey = getSiteKey();
   const [ready, setReady] = useState(false);
   const loadingRef = useRef(false);
 

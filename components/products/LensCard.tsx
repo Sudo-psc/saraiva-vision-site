@@ -19,7 +19,7 @@ import Image from 'next/image';
 import { Check, Shield, Eye, Droplets, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LensCardProps } from '@/types/products';
-import { Badge } from '@/components/ui/badge';
+import Badge from '@/components/ui/Badge';
 
 export const LensCard: React.FC<LensCardProps> = ({
   product,

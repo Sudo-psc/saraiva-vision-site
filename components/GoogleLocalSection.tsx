@@ -87,7 +87,7 @@ const GoogleLocalSection: React.FC<GoogleLocalSectionProps> = ({ className = '' 
               role="group"
               aria-label="Ações principais de localização"
             >
-              <Button asChild variant="medical" size="lg" className="gap-3">
+              <Button asChild variant="default" size="lg" className="gap-3">
                 <a
                   href={googleMapsProfileUrl}
                   target="_blank"
