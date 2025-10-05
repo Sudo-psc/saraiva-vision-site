@@ -60,17 +60,16 @@ export const clinicInfo = {
   x: 'https://x.com/philipe_saraiva',
   spotify: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV',
   chatbotUrl: 'https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica',
-  onlineSchedulingUrl: 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613',
-  // Security validation for external integrations
+  onlineSchedulingUrl: 'https://apolo.ninsaude.com/a/saraivavision/',
   validateSchedulingUrl: () => {
-    const url = 'https://agendarconsulta.com/perfil/dr-philipe-cruz-1678973613';
+    const url = 'https://apolo.ninsaude.com/a/saraivavision/';
     try {
       const urlObj = new URL(url);
       if (urlObj.protocol !== 'https:') {
         throw new Error('URL must use HTTPS');
       }
-      if (!urlObj.hostname.includes('agendarconsulta.com')) {
-        throw new Error('URL must be from agendarconsulta.com domain');
+      if (!urlObj.hostname.includes('ninsaude.com')) {
+        throw new Error('URL must be from ninsaude.com domain');
       }
       return url;
     } catch (error) {

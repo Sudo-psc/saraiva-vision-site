@@ -1,0 +1,45 @@
+# Checklist de Deploy - Saraiva Vision
+
+## Antes de Fazer Deploy
+
+- [ ] Código testado localmente (`npm run dev:vite`)
+- [ ] Build local bem-sucedido (`npm run build:vite`)
+- [ ] Mudanças commitadas no Git
+- [ ] IMPORTANTE: Verificar comando de build
+
+## Comandos de Build
+
+✅ CORRETO:
+  npm run build:vite
+
+❌ ERRADO (não use!):
+  npm run build
+
+## Deploy
+
+Escolha um método:
+
+[ ] Quick Deploy (rápido):
+    sudo npm run deploy:quick
+
+[ ] Deploy Atômico (completo):
+    sudo ./scripts/deploy-atomic.sh
+
+## Após Deploy
+
+- [ ] Site carrega normalmente
+- [ ] Testar funcionalidades principais
+- [ ] Hard refresh no navegador (CTRL+SHIFT+R)
+- [ ] Verificar logs se necessário
+
+## Rollback (se necessário)
+
+ls -lt /var/www/saraivavision/releases/
+sudo ln -sfn /var/www/saraivavision/releases/TIMESTAMP/dist /var/www/saraivavision/current
+sudo systemctl reload nginx
+
+## Documentação
+
+README_BUILD.md - Aviso crítico
+DEPLOY.md       - Guia completo
+CLAUDE.md       - Instruções IA

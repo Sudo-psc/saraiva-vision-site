@@ -55,7 +55,7 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 echo ""
 echo -e "${BLUE}📦 STEP 1/6: Building application...${NC}"
 cd "$PROJECT_DIR"
-npm run build
+npm run build:vite
 
 if [ $? -ne 0 ]; then
     echo -e "${RED}❌ Build failed${NC}"

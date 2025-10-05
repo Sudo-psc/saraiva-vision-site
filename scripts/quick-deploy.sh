@@ -22,7 +22,7 @@ PROD_DIR="/var/www/saraivavision/current"
 # Build
 echo "📦 Building..."
 cd /home/saraiva-vision-site
-npm run build > /dev/null 2>&1
+npm run build:vite > /dev/null 2>&1
 
 # Deploy
 echo "🚢 Deploying to $PROD_DIR..."

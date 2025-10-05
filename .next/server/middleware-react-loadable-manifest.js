@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST='{"../node_modules/@vitest/snapshot/dist/index.js -> magic-string":{"id":24543,"files":["static/chunks/4543.f9e29b8ae7436a58.js"]}}';
