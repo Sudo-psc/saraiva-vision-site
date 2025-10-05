@@ -532,7 +532,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Prevenção',
     tags: ['oftalmologia pediátrica', 'saúde infantil', 'exames', 'Caratinga', 'crianças'],
-    image: '/Blog/capa-pediatria.png',
+    image: '/Blog/capa-estrabismo-tratamento.png',
     featured: true,
     seo: {
       metaTitle: 'Oftalmologia Pediátrica Caratinga: Quando Levar Crianças ao Oftalmo',
