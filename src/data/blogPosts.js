@@ -70,7 +70,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Tratamento',
     tags: ['lentes premium', 'cirurgia de catarata', 'lentes intraoculares', 'lentes multifocais', 'Caratinga MG'],
-    image: '/Blog/capa-lentes-premium-catarata.png',
+    image: '/Blog/capa-lentes-premium-catarata.webp',
     featured: true,
     seo: {
       metaTitle: 'Lentes Premium para Cirurgia de Catarata em Caratinga, MG: Benefícios e Opções Avançadas',
@@ -165,7 +165,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Prevenção',
     tags: ['presbiopia', 'vista cansada', 'cura presbiopia', 'cirurgia presbiopia', 'lentes de contato presbiopia', 'oftalmologista Caratinga', 'saúde ocular MG', 'tratamento presbiopia'],
-    image: '/Blog/capa-exercicios-oculares.png',
+    image: '/Blog/capa-exercicios-oculares.webp',
     featured: true,
     seo: {
       metaTitle: 'Presbiopia: O Que É, Existe Cura, Opções de Cirurgia e Lentes de Contato em Caratinga, MG',
@@ -291,7 +291,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Tratamento',
     tags: ['obstrução ducto lacrimal', 'lacrimejamento', 'dacriocistite', 'vias lacrimais', 'Caratinga MG'],
-    image: '/Blog/capa-ductolacrimal.png',
+    image: '/Blog/capa-ductolacrimal.webp',
     featured: false,
     seo: {
       metaTitle: 'Obstrução do ducto lacrimal: causas e soluções em Caratinga',
@@ -304,8 +304,8 @@ export const blogPosts = [
     slug: 'lentes-premium-cirurgia-catarata-caratinga-mg',
     title: 'Lentes Premium para Cirurgia de Catarata | Caratinga MG',
     excerpt: 'Lentes intraoculares premium: multifocais, tóricas e EDOF na cirurgia de catarata. Dr. Philipe Saraiva oferece em Caratinga, MG.',
-    image: '/Blog/capa-lentes-premium-catarata.png',
-      ogImage: '/Blog/capa-lentes-premium-catarata.png',
+    image: '/Blog/capa-lentes-premium-catarata.webp',
+      ogImage: '/Blog/capa-lentes-premium-catarata.webp',
     content: `
       <h2>O Que é Catarata e Como Ela Afeta o Cotidiano?</h2>
       <p>A catarata é uma opacidade no cristalino, a lente natural do olho, que causa visão turva e pode progredir com o tempo. Ela é comum em pessoas acima dos 60 anos, mas fatores como exposição ao sol, diabetes, tabagismo ou uso prolongado de telas podem acelerá-la. Imagine tentar ler um livro ou dirigir à noite com uma névoa constante – é assim que a catarata impacta o dia a dia, limitando atividades como trabalhar no computador, praticar esportes ou até cozinhar com segurança.</p>
@@ -372,7 +372,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Tratamento',
     tags: ['lentes premium', 'cirurgia de catarata', 'lentes intraoculares', 'lentes multifocais', 'Caratinga MG'],
-    image: '/Blog/capa-lentes-premium-catarata.png',
+    image: '/Blog/capa-lentes-premium-catarata.webp',
     featured: true,
     seo: {
       metaTitle: 'Lentes Premium para Cirurgia de Catarata em Caratinga, MG: Benefícios e Opções Avançadas',
@@ -532,7 +532,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Prevenção',
     tags: ['oftalmologia pediátrica', 'saúde infantil', 'exames', 'Caratinga', 'crianças'],
-    image: '/Blog/capa-pediatria.png',
+    image: '/Blog/capa-pediatria.webp',
     featured: true,
     seo: {
       metaTitle: 'Oftalmologia Pediátrica Caratinga: Quando Levar Crianças ao Oftalmo',
@@ -616,7 +616,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['pterígio', 'carne no olho', 'cirurgia ocular', 'prevenção', 'proteção UV', 'Caratinga'],
-    image: '/Blog/capa-post-24-imagen4-opt1-20250930-185815.png',
+    image: '/Blog/capa-post-24-imagen4-opt1-20250930-185815.webp',
     featured: true,
     seo: {
       metaTitle: 'Pterígio: Guia Completo sobre Prevenção, Tratamento e Cirurgia',
