@@ -45,7 +45,9 @@
     "audit:blog-images": "node scripts/validate-blog-compliance-simple.js",
     "fix:image-typos": "bash scripts/fix-image-typos.sh",
     "validate:bundle": "node scripts/validate-client-bundle.js",
-    "production:check": "npm run build && npm run test:run"
+    "production:check": "npm run build && npm run test:run",
+    "check:system": "bash scripts/system-checkup-suite.sh",
+    "install:checkup-cron": "bash scripts/install-system-checkup-cron.sh"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.10",

@@ -31,6 +31,22 @@ npm run build            # Build para produção
 npm test                 # Testes
 ```
 
+## ✅ Checkup de Sistema
+
+Execute o checkup completo e gere relatórios de saúde:
+
+```bash
+npm run check:system
+```
+
+Instale a rotina automática com cron para monitoramento recorrente:
+
+```bash
+CRON_SCHEDULE="0 */6 * * *" npm run install:checkup-cron
+```
+
+Os relatórios são armazenados em `reports/system-checkup/`.
+
 ## 📦 Tech Stack
 
 - **Frontend**: React 18 + Vite + TypeScript + Tailwind
