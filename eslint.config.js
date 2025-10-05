@@ -15,6 +15,8 @@ export default [
       'generated/**',
       'vercel-outbox.json',
       '.vercel/**',
+      '.next/**',
+      '.next-local-deploy/**',
       'api/**',
       'scripts/**',
       'src/__tests__/**',
@@ -28,6 +30,28 @@ export default [
     },
   },
   js.configs.recommended,
+  // Node.js script files (.cjs and .mjs)
+  {
+    files: ['**/*.{cjs,mjs}'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        ...globals.node,
+      },
+    },
+    rules: {
+      'no-unused-vars': 'warn',
+      'no-undef': 'error',
+      'no-empty': 'off',
+      'no-useless-catch': 'off',
+      'no-case-declarations': 'off',
+      'no-async-promise-executor': 'off',
+      'no-control-regex': 'off',
+      'no-useless-escape': 'off',
+    },
+  },
+  // React/TypeScript files
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {

@@ -5,6 +5,7 @@ node_modules/
 dist/
 build/
 .next/
+.next-local-deploy/
 
 # Environment files (CRITICAL: Never commit these!)
 .env
@@ -96,3 +97,7 @@ public/Blog/*-1920w.*
 # Backup files
 *.backup
 src/content/blog/posts.json
+
+
+.github/instructions/kluster-code-verify.instructions.md
+.kluster
