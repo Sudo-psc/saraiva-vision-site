@@ -205,6 +205,6 @@ const CompactGoogleReviews = React.memo(() => {
             </div>
         </section>
     );
-};
+});
 
 export default CompactGoogleReviews;
