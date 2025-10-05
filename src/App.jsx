@@ -10,6 +10,7 @@ const AboutPage = createLazyComponent(() => import('./pages/AboutPage.jsx'));
 const PrivacyPolicyPage = createLazyComponent(() => import('./pages/PrivacyPolicyPage.jsx'));
 const ServiceDetailPage = createLazyComponent(() => import('./pages/ServiceDetailPage.jsx'));
 const LensesPage = createLazyComponent(() => import('./pages/LensesPage.jsx'));
+const SVLentesPage = createLazyComponent(() => import('./pages/SVLentesPage.jsx'));
 const FAQPage = createLazyComponent(() => import('./pages/FAQPage.jsx'));
 const MedicalArticleExample = createLazyComponent(() => import('./pages/MedicalArticleExample.jsx'));
 const PodcastPageConsolidated = createLazyComponent(() => import('./pages/PodcastPageConsolidated.jsx'));
@@ -73,6 +74,7 @@ function App() {
                   <Route path="/servico/:serviceId" element={<ServiceRedirect />} />
                   <Route path="/sobre" element={<AboutPage />} />
                   <Route path="/lentes" element={<LensesPage />} />
+                  <Route path="/svlentes" element={<SVLentesPage />} />
                   <Route path="/faq" element={<FAQPage />} />
                   <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
                   <Route path="/podcast" element={<PodcastPageConsolidated />} />
