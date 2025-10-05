@@ -137,17 +137,17 @@ npm run test:run -- \
 
 ```env
 # Ninsaúde API Configuration
-NINSAUDE_API_URL=https://api.ninsaude.com/v1
-NINSAUDE_ACCOUNT=saraivavision
-NINSAUDE_USERNAME=philipe
-NINSAUDE_PASSWORD=Psc451992*
-NINSAUDE_ACCOUNT_UNIT=1
+NINSAUDE_API_URL=<your-api-url>
+NINSAUDE_ACCOUNT=<your-account>
+NINSAUDE_USERNAME=<your-username>
+NINSAUDE_PASSWORD=<your-password>
+NINSAUDE_ACCOUNT_UNIT=<your-account-unit>
 
 # Next.js
 NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
 
-**⚠️ IMPORTANTE:** Essas credenciais foram testadas e estão funcionando. NÃO alterar sem necessidade.
+**⚠️ IMPORTANTE:** Replace placeholders with your actual credentials. Never commit credentials to version control. Store real values in `.env.local` and use secure environment variable storage in production.
 
 ---
 
@@ -260,12 +260,7 @@ npm run test:run
 
 ## 📞 Dados de Acesso Ninsaúde
 
-**Ambiente:** Produção  
-**Conta:** saraivavision  
-**Unidade:** Matriz (ID: 1)  
-**Profissional:** Dr. Philipe Saraiva Cruz (ID: 1)  
-**Email:** drphilipe.saraiva.oftalmo@gmail.com  
-**Conselho:** Medicine (CRM)
+Production access details redacted for security. Refer to secure environment configuration.
 
 ---
 

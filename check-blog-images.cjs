@@ -1,5 +1,4 @@
 const fs = require('fs');
-const path = require('path');
 
 // Read the blogPosts.js file
 const content = fs.readFileSync('src/data/blogPosts.js', 'utf8');

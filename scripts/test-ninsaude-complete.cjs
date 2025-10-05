@@ -1,9 +1,14 @@
 const https = require('https');
 
-const NINSAUDE_ACCOUNT = 'saraivavision';
-const NINSAUDE_USERNAME = 'philipe';
-const NINSAUDE_PASSWORD = 'Psc451992*';
-const NINSAUDE_ACCOUNT_UNIT = '1';
+const NINSAUDE_ACCOUNT = process.env.NINSAUDE_ACCOUNT;
+const NINSAUDE_USERNAME = process.env.NINSAUDE_USERNAME;
+const NINSAUDE_PASSWORD = process.env.NINSAUDE_PASSWORD;
+const NINSAUDE_ACCOUNT_UNIT = process.env.NINSAUDE_ACCOUNT_UNIT;
+
+if (!NINSAUDE_ACCOUNT || !NINSAUDE_USERNAME || !NINSAUDE_PASSWORD || !NINSAUDE_ACCOUNT_UNIT) {
+  console.error('Missing required environment variables: NINSAUDE_ACCOUNT, NINSAUDE_USERNAME, NINSAUDE_PASSWORD, NINSAUDE_ACCOUNT_UNIT');
+  process.exit(1);
+}
 
 function makeRequest(options, postData = null) {
   return new Promise((resolve, reject) => {

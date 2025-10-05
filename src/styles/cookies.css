@@ -4,7 +4,7 @@
    ============================================ */
 
 /* Banner de Cookies (Bottom) */
-.cookie-banner {
+.consent-banner {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -19,7 +19,7 @@
   padding: 16px;
 }
 
-.cookie-banner-content {
+.consent-banner-content {
   max-width: 1200px;
   margin: 0 auto;
   
@@ -28,11 +28,11 @@
   gap: 20px;
 }
 
-.cookie-banner-text {
+.consent-banner-text {
   flex: 1;
 }
 
-.cookie-banner-actions {
+.consent-banner-actions {
   display: flex;
   gap: 12px;
   flex-shrink: 0;
@@ -86,12 +86,12 @@
 
 /* Mobile: stack vertical */
 @media (max-width: 640px) {
-  .cookie-banner-content {
+  .consent-banner-content {
     flex-direction: column;
     align-items: stretch;
   }
   
-  .cookie-banner-actions {
+  .consent-banner-actions {
     flex-direction: column;
   }
   
@@ -103,7 +103,7 @@
 
 /* Safe area para dispositivos com notch */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
-  .cookie-banner {
+  .consent-banner {
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
   }
 }
@@ -123,7 +123,7 @@
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .cookie-banner {
+  .consent-banner {
     animation: none;
   }
 }

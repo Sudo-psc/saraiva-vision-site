@@ -61,6 +61,7 @@ export function setConsent(newConsent) {
   if (typeof window !== 'undefined') {
     try {
       localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(updatedConsent));
+      localStorage.setItem(`${CONSENT_STORAGE_KEY}_timestamp`, new Date().toISOString());
     } catch (error) {
       console.warn('Failed to save consent to localStorage:', error);
     }
@@ -165,8 +166,8 @@ export function getConsentStats() {
   const consent = getConsent();
 
   return {
-    granted: Object.entries(consent).filter(([_, value]) => value === 'granted').length,
-    denied: Object.entries(consent).filter(([_, value]) => value === 'denied').length,
+    granted: Object.entries(consent).filter(([, value]) => value === 'granted').length,
+    denied: Object.entries(consent).filter(([, value]) => value === 'denied').length,
     total: Object.keys(consent).length,
     breakdown: consent,
   };
@@ -245,26 +246,6 @@ export function getConsentForDisplay() {
       localStorage.getItem(`${CONSENT_STORAGE_KEY}_timestamp`) : null,
   };
 }
-
-/**
- * Update consent timestamp
- */
-function updateConsentTimestamp() {
-  if (typeof window !== 'undefined') {
-    try {
-      localStorage.setItem(`${CONSENT_STORAGE_KEY}_timestamp`, new Date().toISOString());
-    } catch (error) {
-      console.warn('Failed to update consent timestamp:', error);
-    }
-  }
-}
-
-// Override setConsent to update timestamp
-const originalSetConsent = setConsent;
-setConsent = (newConsent) => {
-  originalSetConsent(newConsent);
-  updateConsentTimestamp();
-};
 
 // Initialize on module load
 if (typeof window !== 'undefined') {

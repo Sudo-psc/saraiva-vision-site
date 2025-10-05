@@ -78,14 +78,24 @@ async function getRedisClient() {
   return redisClient;
 }
 
-// TODO: Initialize middlewares with Redis client
-// Temporarily disabled to get deployment working
-// Will be fixed in next iteration with proper async initialization
-// const initializeMiddleware = async () => {
-//   const redis = await getRedisClient();
-//   router.use(lgpdAudit(redis));
-//   router.use(rateLimiter(redis));
-// };
+const initializeMiddleware = async () => {
+  try {
+    const redis = await getRedisClient();
+    router.use(lgpdAudit(redis));
+    router.use(rateLimiter(redis));
+    console.log('[Ninsaude] LGPD audit and rate limiting middleware initialized');
+  } catch (error) {
+    console.error('[Ninsaude] Failed to initialize Redis-based middleware:', error.message);
+    console.log('[Ninsaude] Falling back to in-memory implementations');
+    
+    const MemoryCache = await import('./utils/memoryCache.js').then(m => m.MemoryCache);
+    const memoryCache = new MemoryCache();
+    
+    router.use(lgpdAudit(memoryCache));
+    router.use(rateLimiter(memoryCache));
+    console.log('[Ninsaude] In-memory middleware fallback initialized');
+  }
+};
 
 // STEP 1: Health Check Endpoint (no authentication required)
 router.get('/health', (req, res) => {
@@ -133,13 +143,22 @@ router.use('/notifications', notificationRoutes);
 // STEP 5: Error Handler (must be last in middleware chain)
 router.use(errorHandler);
 
+async function createRouter() {
+  await initializeMiddleware();
+  return router;
+}
+
 /**
- * Export router for mounting at /api/ninsaude
+ * Export router factory for mounting at /api/ninsaude
  *
  * Usage in server.js:
  * ```javascript
- * import ninsaudeRouter from './api/index.js';
+ * import { createRouter } from './api/index.js';
+ * const ninsaudeRouter = await createRouter();
  * app.use('/api/ninsaude', ninsaudeRouter);
  * ```
  */
+export { createRouter };
+
+// Legacy export for backward compatibility
 export default router;

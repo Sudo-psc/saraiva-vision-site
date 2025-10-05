@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Menu, X, Calendar, Home, Stethoscope, Eye, FileText, Headphones, User, Star, HelpCircle, Phone } from 'lucide-react';
+import { Menu, X, Calendar, Home, Stethoscope, Eye, FileText, Headphones, User, HelpCircle } from 'lucide-react';
 import { Button } from '../components/ui/button.jsx';
 import Logo from '../components/Logo.jsx';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
@@ -82,7 +82,7 @@ const Navbar = () => {
 
            <div className="hidden md:flex items-center gap-4">
              <Button
-               onClick={() => navigate('/sobre#contact')}
+               onClick={() => navigate('/agendamento-online')}
                className="flex items-center gap-2"
              >
                <Calendar size={18} />
@@ -139,7 +139,7 @@ const Navbar = () => {
               <Button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  navigate('/sobre#contact');
+                  navigate('/agendamento-online');
                 }}
                 className="flex items-center gap-2 w-full justify-center"
               >

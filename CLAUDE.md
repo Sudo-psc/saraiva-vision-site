@@ -266,11 +266,11 @@ VITE_GOOGLE_PLACE_ID=...
 **Backend/Next.js (no prefix)**:
 ```bash
 # Ninsaúde API (Scheduling)
-NINSAUDE_API_URL=https://api.ninsaude.com/v1
-NINSAUDE_ACCOUNT=saraivavision
-NINSAUDE_USERNAME=philipe
-NINSAUDE_PASSWORD=Psc451992*
-NINSAUDE_ACCOUNT_UNIT=1
+NINSAUDE_API_URL=<your_api_url>
+NINSAUDE_ACCOUNT=<your_account>
+NINSAUDE_USERNAME=<your_username>
+NINSAUDE_PASSWORD=<your_password>
+NINSAUDE_ACCOUNT_UNIT=<your_account_unit>
 
 # Next.js
 NEXT_PUBLIC_API_URL=https://saraivavision.com.br
@@ -279,7 +279,7 @@ NEXT_PUBLIC_API_URL=https://saraivavision.com.br
 RESEND_API_KEY=...
 ```
 
-**⚠️ CRITICAL**: These credentials are tested and working. Never commit to Git.
+**⚠️ CRITICAL**: Replace placeholders with your actual credentials in `.env.local`. Store real values in secure environment variable storage in production. Ensure `.env.local` is listed in `.gitignore`. Never commit credentials to Git.
 
 ## 🔧 Troubleshooting
 

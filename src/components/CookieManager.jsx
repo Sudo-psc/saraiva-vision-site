@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import CookieBanner from './CookieBanner';
+import ConsentBanner from './ConsentBanner';
 import CookieConsentModal from './CookieConsentModal';
 import { shouldShowConsentBanner } from '@/utils/consentMode';
 
@@ -34,7 +34,7 @@ const CookieManager = () => {
 
   return (
     <>
-      {showBanner && <CookieBanner onOpenModal={handleOpenModal} />}
+      {showBanner && <ConsentBanner onOpenModal={handleOpenModal} />}
       <CookieConsentModal isOpen={showModal} onClose={handleCloseModal} />
     </>
   );

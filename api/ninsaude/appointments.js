@@ -1,23 +1,34 @@
-/**
- * Ninsaúde Appointments Route - T037
- *
- * Handles appointment booking, cancellation, and rescheduling
- * Reference: /specs/001-ninsaude-integration/contracts/appointments.openapi.yaml
- *
- * Routes:
- * - POST /api/ninsaude/appointments - Create appointment
- * - DELETE /api/ninsaude/appointments/:id - Cancel appointment
- * - PATCH /api/ninsaude/appointments/:id - Reschedule appointment
- */
 
 import express from 'express';
 import { z } from 'zod';
 import axios from 'axios';
+import { randomUUID } from 'crypto';
+import rateLimit from 'express-rate-limit';
+import cors from 'cors';
+import helmet from 'helmet';
 import { createErrorResponse, createSuccessResponse, HTTP_STATUS } from '../utils/errorHandler.js';
 
 const router = express.Router();
 
-// Validation schemas
+const appointmentRateLimit = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30,
+  message: { error: 'Too many appointment requests, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+const corsOptions = {
+  origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : '*',
+  methods: ['GET', 'POST', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'x-access-token'],
+  credentials: true
+};
+
+router.use(helmet());
+router.use(cors(corsOptions));
+router.use(appointmentRateLimit);
+
 const CreateAppointmentSchema = z.object({
   patientId: z.string().uuid('Invalid patient ID format'),
   professionalId: z.string().uuid('Invalid professional ID format'),
@@ -35,12 +46,6 @@ const RescheduleAppointmentSchema = z.object({
   newProfessionalId: z.string().uuid('Invalid professional ID format').optional()
 });
 
-/**
- * POST /api/ninsaude/appointments - Create appointment
- *
- * Validates slot availability before booking to prevent race conditions
- * Triggers notification dispatch on success
- */
 router.post('/', async (req, res) => {
   try {
     // Validate request body
@@ -137,12 +142,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-/**
- * DELETE /api/ninsaude/appointments/:id - Cancel appointment
- *
- * Validates appointment exists and belongs to patient before cancellation
- * Sends cancellation notification
- */
 router.delete('/:id', async (req, res) => {
   try {
     const { id: appointmentId } = req.params;
@@ -210,12 +209,6 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-/**
- * PATCH /api/ninsaude/appointments/:id - Reschedule appointment
- *
- * Validates new slot availability before rescheduling
- * Sends rescheduling notification
- */
 router.patch('/:id', async (req, res) => {
   try {
     const { id: appointmentId } = req.params;
@@ -286,7 +279,14 @@ router.patch('/:id', async (req, res) => {
       }
     } catch (error) {
       console.error('Availability check failed:', error.message);
-      // Continue with reschedule attempt
+      return res.status(HTTP_STATUS.CONFLICT).json({
+        success: false,
+        error: {
+          code: 'SLOT_UNAVAILABLE',
+          message: 'Could not verify slot availability',
+          details: 'Please try again later'
+        }
+      });
     }
 
     // Step 3: Update appointment in Ninsaúde
@@ -487,15 +487,8 @@ function isValidUUID(uuid) {
   return uuidRegex.test(uuid);
 }
 
-/**
- * Generate UUID v4
- */
 function generateUUID() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    const r = Math.random() * 16 | 0;
-    const v = c === 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
+  return randomUUID();
 }
 
 export default router;
