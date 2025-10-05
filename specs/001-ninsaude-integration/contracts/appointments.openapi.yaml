@@ -1,0 +1,212 @@
+openapi: 3.0.3
+info:
+  title: Ninsaúde Appointment Management API
+  description: Appointment booking, cancellation, and rescheduling endpoints
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3002/api/ninsaude
+  - url: https://saraivavisao.com.br/api/ninsaude
+
+paths:
+  /appointments:
+    post:
+      summary: Create new appointment
+      operationId: createAppointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - patientId
+                - professionalId
+                - careUnitId
+                - dateTime
+                - appointmentType
+              properties:
+                patientId:
+                  type: string
+                  format: uuid
+                professionalId:
+                  type: string
+                  format: uuid
+                careUnitId:
+                  type: string
+                  format: uuid
+                dateTime:
+                  type: string
+                  format: date-time
+                  example: "2025-10-15T10:30:00"
+                duration:
+                  type: integer
+                  default: 30
+                  example: 30
+                appointmentType:
+                  type: string
+                  enum: [first_visit, return, follow_up]
+                patientNotes:
+                  type: string
+                  maxLength: 500
+
+      responses:
+        '201':
+          description: Appointment created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  appointment:
+                    $ref: '#/components/schemas/Appointment'
+        '409':
+          description: Slot no longer available (race condition)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /appointments/{appointmentId}:
+    delete:
+      summary: Cancel appointment
+      operationId: cancelAppointment
+      parameters:
+        - name: appointmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Appointment cancelled successfully
+        '404':
+          description: Appointment not found
+
+    patch:
+      summary: Reschedule appointment
+      operationId: rescheduleAppointment
+      parameters:
+        - name: appointmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - newDateTime
+              properties:
+                newDateTime:
+                  type: string
+                  format: date-time
+                newProfessionalId:
+                  type: string
+                  format: uuid
+
+      responses:
+        '200':
+          description: Appointment rescheduled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  appointment:
+                    $ref: '#/components/schemas/Appointment'
+
+  /appointments/mine:
+    get:
+      summary: List patient appointments
+      operationId: listMyAppointments
+      parameters:
+        - name: patientId
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, confirmed, cancelled]
+      responses:
+        '200':
+          description: List of appointments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  appointments:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Appointment'
+
+components:
+  schemas:
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        patientId:
+          type: string
+          format: uuid
+        professionalId:
+          type: string
+          format: uuid
+        professionalName:
+          type: string
+        careUnitId:
+          type: string
+          format: uuid
+        careUnitName:
+          type: string
+        dateTime:
+          type: string
+          format: date-time
+        duration:
+          type: integer
+        appointmentType:
+          type: string
+          enum: [first_visit, return, follow_up]
+        status:
+          type: string
+          enum: [pending, confirmed, checked_in, in_progress, completed, cancelled, no_show]
+        specialty:
+          type: string
+        patientNotes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        rescheduledFrom:
+          type: string
+          format: uuid
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        error:
+          type: string
+        details:
+          type: array
+          items:
+            type: object

@@ -10,9 +10,9 @@ Clínica oftalmológica em Caratinga, MG, Brasil. VPS nativo, blog estático, co
 
 ## 🛠 Tech Stack
 
-**Frontend**: React 18 + TypeScript 5.x + Vite + Tailwind + Radix UI
+**Frontend**: React 18 + TypeScript 5.x + Vite + Tailwind + Radix UI + Next.js 15
 **Backend**: Node.js 22+ + Express.js + Nginx + Redis + ES modules
-**Integrações**: Google Maps/Places API, Resend API, Instagram Graph API, WhatsApp/Spotify APIs
+**Integrações**: Google Maps/Places API, Resend API, Instagram Graph API, WhatsApp/Spotify APIs, **Ninsaúde API** (Agendamentos)
 **Arquitetura**: 100% estática (WordPress/Supabase removidos)
 
 ### ⭐ Features Principais
@@ -27,6 +27,14 @@ Clínica oftalmológica em Caratinga, MG, Brasil. VPS nativo, blog estático, co
 - Dados em `src/data/blogPosts.js`
 - Rota `/blog` via React Router
 - SEO-friendly, client-side search
+
+**Sistema de Agendamento Online (Ninsaúde)**:
+- OAuth2 authentication (15 min access, 15 dias refresh)
+- Next.js 15 API Routes (`/api/ninsaude/*`)
+- Endpoints: auth, units, professionals, patients, available-slots, appointments
+- LGPD compliance obrigatório
+- Rota: `/agendamento`
+- Docs: `docs/NINSAUDE_INTEGRATION_SUCCESS.md`
 
 ## 🚀 Comandos Essenciais
 
@@ -59,6 +67,12 @@ npm run validate:api        # Valida API
 ```bash
 npm run optimize:images     # Otimiza imagens
 npm run verify:blog-images  # Valida imagens blog
+```
+
+**Agendamento Ninsaúde**:
+```bash
+node scripts/test-ninsaude-complete.cjs  # Teste API Ninsaúde
+node scripts/test-nextjs-api-routes.cjs  # Teste rotas Next.js (dev rodando)
 ```
 
 ## 🏗 Arquitetura
@@ -128,6 +142,13 @@ VITE_GOOGLE_MAPS_API_KEY
 VITE_GOOGLE_PLACES_API_KEY
 VITE_GOOGLE_PLACE_ID
 RESEND_API_KEY
+
+# Ninsaúde API (Agendamentos)
+NINSAUDE_API_URL=https://api.ninsaude.com/v1
+NINSAUDE_ACCOUNT=saraivavision
+NINSAUDE_USERNAME=philipe
+NINSAUDE_PASSWORD=Psc451992*
+NINSAUDE_ACCOUNT_UNIT=1
 ```
 
 ## 🔧 Troubleshooting

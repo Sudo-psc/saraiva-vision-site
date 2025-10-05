@@ -1,0 +1,120 @@
+openapi: 3.0.3
+info:
+  title: Ninsaúde Notification Dispatch API
+  description: Email and WhatsApp notification endpoints
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3002/api/ninsaude
+  - url: https://saraivavisao.com.br/api/ninsaude
+
+paths:
+  /notifications/send:
+    post:
+      summary: Send appointment notification (email + WhatsApp)
+      operationId: sendNotification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - appointmentId
+                - patientId
+                - event
+                - email
+                - phone
+              properties:
+                appointmentId:
+                  type: string
+                  format: uuid
+                patientId:
+                  type: string
+                  format: uuid
+                event:
+                  type: string
+                  enum: [booking_confirmation, booking_reminder, cancellation_confirmation, rescheduling_confirmation]
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                  pattern: '^\\(\\d{2}\\)\\s\\d{4,5}-\\d{4}$'
+                appointmentDetails:
+                  type: object
+                  properties:
+                    dateTime:
+                      type: string
+                      format: date-time
+                    professionalName:
+                      type: string
+                    careUnitName:
+                      type: string
+
+      responses:
+        '200':
+          description: Notifications sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  emailStatus:
+                    type: string
+                    enum: [sent, failed, retry_scheduled]
+                  whatsappStatus:
+                    type: string
+                    enum: [sent, failed, retry_scheduled]
+                  notificationIds:
+                    type: array
+                    items:
+                      type: string
+                      format: uuid
+
+  /notifications/{notificationId}/status:
+    get:
+      summary: Check notification delivery status
+      operationId: getNotificationStatus
+      parameters:
+        - name: notificationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+
+      responses:
+        '200':
+          description: Notification status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationStatus'
+
+components:
+  schemas:
+    NotificationStatus:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum: [email, whatsapp]
+        status:
+          type: string
+          enum: [pending, sent, delivered, failed, retry_scheduled]
+        sentAt:
+          type: string
+          format: date-time
+        deliveredAt:
+          type: string
+          format: date-time
+        retryCount:
+          type: integer
+        errorMessage:
+          type: string

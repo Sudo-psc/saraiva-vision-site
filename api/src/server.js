@@ -83,7 +83,9 @@ const routes = [
   { path: '/api/security', handler: '../security/monitor.js' },
   { path: '/api/outbox', handler: '../outbox/drain.js' },
   { path: '/api/images', handler: '../images/proxy.js' },
-  { path: '/api/patient-data', handler: '../patient-data.js' }
+  { path: '/api/patient-data', handler: '../patient-data.js' },
+  // Ninsaúde Integration Routes (Express router)
+  { path: '/api/ninsaude', handler: '../index.js', type: 'express' }
 ];
 
 // Load routes dynamically

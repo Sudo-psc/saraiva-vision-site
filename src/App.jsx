@@ -18,6 +18,8 @@ const BlogPage = createLazyComponent(() => import('./pages/BlogPage.jsx'));
 const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
 const GoogleReviewsTestPage = createLazyComponent(() => import('./pages/GoogleReviewsTestPage.jsx'));
 const MapTestPage = createLazyComponent(() => import('./pages/MapTestPage.jsx'));
+const AgendamentoOnline = createLazyComponent(() => import('./pages/AgendamentoOnline.jsx'));
+const AgendamentoPage = createLazyComponent(() => import('./pages/AgendamentoPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
 import { Toaster } from './components/ui/toaster.jsx';
@@ -74,6 +76,8 @@ function App() {
                   <Route path="/sobre" element={<AboutPage />} />
                   <Route path="/lentes" element={<LensesPage />} />
                   <Route path="/faq" element={<FAQPage />} />
+                  <Route path="/agendamento" element={<AgendamentoPage />} />
+                  <Route path="/agendamento-online" element={<AgendamentoOnline />} />
                   <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
                   <Route path="/podcast" element={<PodcastPageConsolidated />} />
                   <Route path="/podcast/:slug" element={<PodcastPageConsolidated />} />

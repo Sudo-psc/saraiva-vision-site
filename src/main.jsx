@@ -8,7 +8,7 @@ import './styles/cta.css';
 import './styles/cookies.css';
 import './styles/forms.css';
 import ErrorBoundary from './components/ErrorBoundary';
-import './i18n'; // Initialize i18n
+import './i18n';
 import { redirectToBackup } from './utils/redirectToBackup';
 import { initializeAnalytics, trackPageView, trackWebVitals } from './utils/analytics';
 import { onCLS, onINP, onFCP, onLCP, onTTFB } from 'web-vitals';

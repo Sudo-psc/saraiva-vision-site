@@ -38,7 +38,8 @@
     /* Type checking for Node.js */
     "types": [
       "vite/client",
-      "node"
+      "node",
+      "@testing-library/jest-dom"
     ],
     "allowJs": true,
     "incremental": true,

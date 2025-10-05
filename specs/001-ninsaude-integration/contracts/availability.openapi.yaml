@@ -1,0 +1,126 @@
+openapi: 3.0.3
+info:
+  title: Ninsaúde Availability Lookup API
+  description: Available appointment slot discovery endpoints
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3002/api/ninsaude
+  - url: https://saraivavisao.com.br/api/ninsaude
+
+paths:
+  /availability:
+    get:
+      summary: List available appointment slots
+      operationId: getAvailableSlots
+      parameters:
+        - name: professionalId
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          example: "2025-10-10"
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          example: "2025-10-17"
+        - name: careUnitId
+          in: query
+          schema:
+            type: string
+            format: uuid
+
+      responses:
+        '200':
+          description: List of available slots
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  slots:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AvailableSlot'
+                  totalSlots:
+                    type: integer
+
+  /availability/check:
+    post:
+      summary: Check specific slot availability (race condition prevention)
+      operationId: checkSlotAvailability
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - professionalId
+                - dateTime
+              properties:
+                professionalId:
+                  type: string
+                  format: uuid
+                dateTime:
+                  type: string
+                  format: date-time
+
+      responses:
+        '200':
+          description: Slot availability status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  available:
+                    type: boolean
+                  slot:
+                    $ref: '#/components/schemas/AvailableSlot'
+
+components:
+  schemas:
+    AvailableSlot:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+          pattern: '^\\d{2}:\\d{2}$'
+        dateTime:
+          type: string
+          format: date-time
+        professionalId:
+          type: string
+          format: uuid
+        professionalName:
+          type: string
+        careUnitId:
+          type: string
+          format: uuid
+        careUnitName:
+          type: string
+        duration:
+          type: integer
+        specialty:
+          type: string
+        available:
+          type: boolean
+        fetchedAt:
+          type: string
+          format: date-time

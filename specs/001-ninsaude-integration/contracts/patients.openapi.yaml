@@ -1,0 +1,464 @@
+openapi: 3.0.3
+info:
+  title: Ninsaúde Patient Management API
+  description: Patient registration and retrieval endpoints for Saraiva Vision website integration
+  version: 1.0.0
+  contact:
+    name: Saraiva Vision Development Team
+
+servers:
+  - url: http://localhost:3002/api/ninsaude
+    description: Development server
+  - url: https://saraivavisao.com.br/api/ninsaude
+    description: Production server
+
+tags:
+  - name: patients
+    description: Patient registration and lookup operations
+
+paths:
+  /patients:
+    post:
+      tags:
+        - patients
+      summary: Create or retrieve patient by CPF
+      description: |
+        Implements FR-001 to FR-006. Creates new patient in Ninsaúde if CPF not found,
+        otherwise retrieves existing patient data. Includes LGPD consent collection.
+      operationId: createOrRetrievePatient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientCreateRequest'
+            examples:
+              new_patient:
+                summary: New patient registration
+                value:
+                  cpf: "123.456.789-00"
+                  name: "Maria Silva Santos"
+                  birthDate: "1990-05-15"
+                  phone: "(33) 98765-4321"
+                  email: "maria.silva@example.com"
+                  address:
+                    street: "Rua das Flores"
+                    number: "123"
+                    complement: "Apto 45"
+                    neighborhood: "Centro"
+                    city: "Caratinga"
+                    state: "MG"
+                    zipCode: "35300-000"
+                  lgpdConsent: true
+              existing_patient_lookup:
+                summary: Existing patient CPF lookup
+                value:
+                  cpf: "987.654.321-00"
+
+      responses:
+        '200':
+          description: Existing patient found and returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientResponse'
+              examples:
+                existing_patient:
+                  value:
+                    success: true
+                    isNewPatient: false
+                    patient:
+                      id: "ninsaude-patient-uuid"
+                      cpf: "987.654.321-00"
+                      name: "João Carlos Pereira"
+                      birthDate: "1985-03-22"
+                      phone: "(33) 91234-5678"
+                      email: "joao.pereira@example.com"
+                      address:
+                        street: "Avenida Central"
+                        number: "456"
+                        neighborhood: "Bairro Alto"
+                        city: "Caratinga"
+                        state: "MG"
+                        zipCode: "35300-100"
+
+        '201':
+          description: New patient created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientResponse'
+              examples:
+                new_patient_created:
+                  value:
+                    success: true
+                    isNewPatient: true
+                    patient:
+                      id: "newly-created-uuid"
+                      cpf: "123.456.789-00"
+                      name: "Maria Silva Santos"
+                      birthDate: "1990-05-15"
+                      phone: "(33) 98765-4321"
+                      email: "maria.silva@example.com"
+                      address:
+                        street: "Rua das Flores"
+                        number: "123"
+                        complement: "Apto 45"
+                        neighborhood: "Centro"
+                        city: "Caratinga"
+                        state: "MG"
+                        zipCode: "35300-000"
+
+        '400':
+          description: Validation error (invalid CPF, missing required fields)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalid_cpf:
+                  value:
+                    success: false
+                    error: "Validation failed"
+                    details:
+                      - field: "cpf"
+                        message: "CPF com dígitos verificadores inválidos"
+                missing_fields:
+                  value:
+                    success: false
+                    error: "Validation failed"
+                    details:
+                      - field: "name"
+                        message: "Nome completo obrigatório"
+                      - field: "birthDate"
+                        message: "Data de nascimento obrigatória"
+
+        '429':
+          description: Rate limit exceeded (30 req/min to Ninsaúde API)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                rate_limit:
+                  value:
+                    success: false
+                    error: "Rate limit exceeded"
+                    retryAfter: 45
+
+        '500':
+          description: Internal server error (Ninsaúde API unavailable)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                ninsaude_unavailable:
+                  value:
+                    success: false
+                    error: "Ninsaúde API temporarily unavailable"
+                    queued: true
+                    queueId: "queue-uuid-12345"
+
+        '503':
+          description: Service unavailable (retry scheduled)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                service_unavailable:
+                  value:
+                    success: false
+                    error: "Service temporarily unavailable"
+                    queued: true
+                    queueId: "queue-uuid-67890"
+                    estimatedProcessingTime: "5-10 minutes"
+
+  /patients/{patientId}:
+    get:
+      tags:
+        - patients
+      summary: Get patient by Ninsaúde ID
+      description: Retrieve patient details by Ninsaúde patient UUID
+      operationId: getPatientById
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          description: Ninsaúde patient UUID
+          schema:
+            type: string
+            format: uuid
+          example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+
+      responses:
+        '200':
+          description: Patient found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientResponse'
+
+        '404':
+          description: Patient not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                not_found:
+                  value:
+                    success: false
+                    error: "Patient not found"
+
+  /patients/validate-cpf:
+    post:
+      tags:
+        - patients
+      summary: Validate CPF format and checksum
+      description: Frontend utility endpoint to validate CPF before submission (FR-002)
+      operationId: validateCPF
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - cpf
+              properties:
+                cpf:
+                  type: string
+                  pattern: '^\d{3}\.\d{3}\.\d{3}-\d{2}$'
+                  example: "123.456.789-00"
+
+      responses:
+        '200':
+          description: CPF validation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valid:
+                    type: boolean
+                  formatted:
+                    type: string
+                    description: Formatted CPF (000.000.000-00)
+                  message:
+                    type: string
+              examples:
+                valid_cpf:
+                  value:
+                    valid: true
+                    formatted: "123.456.789-00"
+                    message: "CPF válido"
+                invalid_cpf:
+                  value:
+                    valid: false
+                    formatted: "123.456.789-00"
+                    message: "CPF com dígitos verificadores inválidos"
+
+components:
+  schemas:
+    PatientCreateRequest:
+      type: object
+      required:
+        - cpf
+      properties:
+        cpf:
+          type: string
+          pattern: '^\d{3}\.\d{3}\.\d{3}-\d{2}$'
+          description: Brazilian tax ID (CPF)
+          example: "123.456.789-00"
+        name:
+          type: string
+          minLength: 3
+          maxLength: 100
+          pattern: '^[a-zA-ZÀ-ÿ\s]+$'
+          description: Full name (required for new patients)
+          example: "Maria Silva Santos"
+        birthDate:
+          type: string
+          format: date
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+          description: Birth date in ISO 8601 format (required for new patients)
+          example: "1990-05-15"
+        phone:
+          type: string
+          pattern: '^\(\d{2}\)\s\d{4,5}-\d{4}$'
+          description: Brazilian phone number format (required for new patients)
+          example: "(33) 98765-4321"
+        email:
+          type: string
+          format: email
+          description: Email address (required for new patients)
+          example: "maria.silva@example.com"
+        address:
+          $ref: '#/components/schemas/Address'
+        gender:
+          type: string
+          enum: [M, F, Other]
+          description: Patient gender (optional)
+        emergencyContact:
+          $ref: '#/components/schemas/EmergencyContact'
+        lgpdConsent:
+          type: boolean
+          description: LGPD consent for data processing (required for new patients)
+          example: true
+
+    Address:
+      type: object
+      required:
+        - street
+        - number
+        - neighborhood
+        - city
+        - state
+        - zipCode
+      properties:
+        street:
+          type: string
+          minLength: 3
+          example: "Rua das Flores"
+        number:
+          type: string
+          minLength: 1
+          example: "123"
+        complement:
+          type: string
+          example: "Apto 45"
+        neighborhood:
+          type: string
+          minLength: 2
+          example: "Centro"
+        city:
+          type: string
+          minLength: 2
+          example: "Caratinga"
+        state:
+          type: string
+          minLength: 2
+          maxLength: 2
+          pattern: '^[A-Z]{2}$'
+          description: Brazilian state code (UF)
+          example: "MG"
+        zipCode:
+          type: string
+          pattern: '^\d{5}-\d{3}$'
+          description: Brazilian postal code (CEP)
+          example: "35300-000"
+
+    EmergencyContact:
+      type: object
+      required:
+        - name
+        - phone
+        - relationship
+      properties:
+        name:
+          type: string
+          minLength: 3
+          example: "José Silva Santos"
+        phone:
+          type: string
+          pattern: '^\(\d{2}\)\s\d{4,5}-\d{4}$'
+          example: "(33) 91234-5678"
+        relationship:
+          type: string
+          minLength: 3
+          example: "Esposo"
+
+    PatientResponse:
+      type: object
+      required:
+        - success
+        - patient
+      properties:
+        success:
+          type: boolean
+          example: true
+        isNewPatient:
+          type: boolean
+          description: True if patient was created, false if existing patient retrieved
+          example: false
+        patient:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: Ninsaúde patient UUID
+              example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+            cpf:
+              type: string
+              example: "123.456.789-00"
+            name:
+              type: string
+              example: "Maria Silva Santos"
+            birthDate:
+              type: string
+              format: date
+              example: "1990-05-15"
+            phone:
+              type: string
+              example: "(33) 98765-4321"
+            email:
+              type: string
+              format: email
+              example: "maria.silva@example.com"
+            address:
+              $ref: '#/components/schemas/Address'
+            gender:
+              type: string
+              enum: [M, F, Other]
+            emergencyContact:
+              $ref: '#/components/schemas/EmergencyContact'
+
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - error
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: Error message
+          example: "Validation failed"
+        details:
+          type: array
+          description: Detailed validation errors
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+        queued:
+          type: boolean
+          description: True if request was queued for retry
+        queueId:
+          type: string
+          format: uuid
+          description: Queue entry ID for tracking
+        retryAfter:
+          type: integer
+          description: Seconds to wait before retrying (rate limit)
+        estimatedProcessingTime:
+          type: string
+          description: Estimated time for queued request processing
+
+  securitySchemes:
+    internal:
+      type: apiKey
+      in: header
+      name: X-Internal-API-Key
+      description: Internal API key for frontend-backend communication (optional)
+
+security:
+  - internal: []
