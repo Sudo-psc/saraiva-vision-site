@@ -213,6 +213,17 @@ export default defineConfig(({ mode }) => {
       'saraivavision.com.br'
     ],
     proxy: {
+      // Ninsaude API proxy - routes to Express.js backend
+      '/api/ninsaude': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        }
+      },
       // Google Places API proxy for development
       '/api/google-places': {
         target: 'https://maps.googleapis.com',
