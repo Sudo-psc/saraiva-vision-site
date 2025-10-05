@@ -23,6 +23,9 @@ app.use(helmet({
   },
 }));
 
+// Trust proxy - required for rate limiting behind Nginx
+app.set('trust proxy', 1);
+
 // CORS configuration
 app.use(cors({
   origin: [
@@ -41,7 +44,9 @@ app.use(cors({
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.'
+  message: 'Too many requests from this IP, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 app.use('/api/', limiter);
 

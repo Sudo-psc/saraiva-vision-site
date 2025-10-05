@@ -22,6 +22,7 @@
  * - REDIS_URL (optional, defaults to localhost)
  */
 
+import express from 'express';
 import axios from 'axios';
 import crypto from 'crypto';
 
@@ -464,6 +465,87 @@ export async function getTokenStatus() {
     };
   }
 }
+
+/**
+ * Express Router for Auth Endpoints
+ */
+const router = express.Router();
+
+/**
+ * POST /api/ninsaude/auth/token
+ * Get or refresh OAuth2 access token
+ */
+router.post('/token', async (req, res, next) => {
+  try {
+    validateConfig();
+    const accessToken = await getAccessToken();
+    const status = await getTokenStatus();
+
+    res.json({
+      success: true,
+      accessToken,
+      expiresAt: status.accessTokenExpiry,
+      tokenType: 'Bearer'
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * GET /api/ninsaude/auth/status
+ * Get current token status (for monitoring)
+ */
+router.get('/status', async (req, res, next) => {
+  try {
+    const status = await getTokenStatus();
+    res.json({
+      success: true,
+      ...status
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * POST /api/ninsaude/auth/refresh
+ * Force token refresh
+ */
+router.post('/refresh', async (req, res, next) => {
+  try {
+    validateConfig();
+    const accessToken = await refreshAccessToken();
+    const status = await getTokenStatus();
+
+    res.json({
+      success: true,
+      accessToken,
+      expiresAt: status.accessTokenExpiry,
+      tokenType: 'Bearer'
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * DELETE /api/ninsaude/auth/cache
+ * Clear token cache (admin/testing only)
+ */
+router.delete('/cache', async (req, res, next) => {
+  try {
+    await clearTokenCache();
+    res.json({
+      success: true,
+      message: 'Token cache cleared successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+export default router;
 
 // Export for testing
 export const _testing = {
