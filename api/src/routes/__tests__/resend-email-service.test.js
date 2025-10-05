@@ -17,15 +17,26 @@ vi.mock('resend', () => ({
 }))
 
 // Mock crypto for consistent IDs in tests
-vi.mock('crypto', () => ({
-    randomBytes: vi.fn(() => Buffer.from('test-random-bytes-123456789012')),
-    createHmac: vi.fn(() => ({
+vi.mock('crypto', () => {
+    const mockRandomBytes = vi.fn(() => Buffer.from('test-random-bytes-123456789012'));
+    const mockCreateHmac = vi.fn(() => ({
         update: vi.fn(() => ({
             digest: vi.fn(() => 'test-hmac-digest')
         }))
-    })),
-    timingSafeEqual: vi.fn(() => true)
-}))
+    }));
+    const mockTimingSafeEqual = vi.fn(() => true);
+    
+    return {
+        randomBytes: mockRandomBytes,
+        createHmac: mockCreateHmac,
+        timingSafeEqual: mockTimingSafeEqual,
+        default: {
+            randomBytes: mockRandomBytes,
+            createHmac: mockCreateHmac,
+            timingSafeEqual: mockTimingSafeEqual
+        }
+    };
+})
 
 describe('Resend Email Service', () => {
     let emailService

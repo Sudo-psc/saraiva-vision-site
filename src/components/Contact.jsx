@@ -140,9 +140,13 @@ const Contact = () => {
       setSubmissionSuccess(false);
     }
 
-    // Real-time validation for non-honeypot fields
-    if (name !== 'honeypot' && touched[name]) {
-      validateFieldRealTime(name, newValue);
+    // Clear errors while typing to improve UX
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
     }
   };
 
