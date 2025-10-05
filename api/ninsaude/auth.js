@@ -25,43 +25,50 @@
 import express from 'express';
 import axios from 'axios';
 import crypto from 'crypto';
+import { getMemoryCache } from './utils/memoryCache.js';
 
-// Redis client (will be created when module loads)
-let redisClient = null;
+// Cache client (in-memory fallback when Redis not available)
+let cacheClient = null;
 
 /**
- * Initialize Redis client lazily
- * @returns {Promise<Object>} Redis client instance
+ * Initialize cache client (uses in-memory cache as fallback)
+ * @returns {Promise<Object>} Cache client instance
  */
-async function getRedisClient() {
-  if (redisClient) {
-    return redisClient;
+async function getCacheClient() {
+  if (cacheClient) {
+    return cacheClient;
   }
 
-  const { createClient } = await import('redis');
+  // Try Redis first if configured
+  if (process.env.REDIS_URL) {
+    try {
+      const { createClient } = await import('redis');
 
-  redisClient = createClient({
-    url: process.env.REDIS_URL || 'redis://localhost:6379',
-    socket: {
-      reconnectStrategy: (retries) => {
-        if (retries > 10) {
-          return new Error('Redis connection failed after 10 retries');
+      cacheClient = createClient({
+        url: process.env.REDIS_URL,
+        socket: {
+          connectTimeout: 2000,
+          reconnectStrategy: () => false // Don't retry on failure
         }
-        return Math.min(retries * 50, 1000);
-      }
+      });
+
+      cacheClient.on('error', () => {
+        console.warn('[Ninsaúde Auth] Redis unavailable, falling back to memory cache');
+        cacheClient = null;
+      });
+
+      await cacheClient.connect();
+      console.log('[Ninsaúde Auth] Redis connected successfully');
+      return cacheClient;
+    } catch (error) {
+      console.warn('[Ninsaúde Auth] Redis connection failed, using memory cache');
     }
-  });
+  }
 
-  redisClient.on('error', (err) => {
-    console.error('[Ninsaúde Auth] Redis Client Error:', err);
-  });
-
-  redisClient.on('connect', () => {
-    console.log('[Ninsaúde Auth] Redis connected successfully');
-  });
-
-  await redisClient.connect();
-  return redisClient;
+  // Fallback to in-memory cache
+  cacheClient = getMemoryCache();
+  await cacheClient.connect();
+  return cacheClient;
 }
 
 /**
@@ -107,19 +114,20 @@ function validateConfig() {
  * @param {Object} redis - Redis client instance
  * @returns {Promise<boolean>} True if lock acquired
  */
-async function acquireTokenLock(redis) {
+async function acquireTokenLock(cache) {
   try {
     const lockId = crypto.randomUUID();
-    const acquired = await redis.set(
+
+    // Atomic set operation: only set if key doesn't exist (NX option)
+    const result = await cache.set(
       OAUTH_CONFIG.tokenLockKey,
       lockId,
-      {
-        NX: true, // Only set if doesn't exist
-        PX: OAUTH_CONFIG.lockTimeout // Expire after 5 seconds
-      }
+      OAUTH_CONFIG.lockTimeout / 1000, // Convert ms to seconds
+      { NX: true } // Only set if doesn't exist
     );
 
-    return acquired === 'OK';
+    // Return true if lock was acquired (result === 'OK')
+    return result === 'OK';
   } catch (error) {
     console.error('[Ninsaúde Auth] Error acquiring token lock:', error);
     return false;
@@ -130,9 +138,9 @@ async function acquireTokenLock(redis) {
  * Releases distributed lock
  * @param {Object} redis - Redis client instance
  */
-async function releaseTokenLock(redis) {
+async function releaseTokenLock(cache) {
   try {
-    await redis.del(OAUTH_CONFIG.tokenLockKey);
+    await cache.del(OAUTH_CONFIG.tokenLockKey);
   } catch (error) {
     console.error('[Ninsaúde Auth] Error releasing token lock:', error);
   }
@@ -244,26 +252,26 @@ async function requestTokenRefresh(refreshToken) {
  * @param {number} expiresIn - Access token expiry in seconds (from Ninsaúde)
  */
 async function storeTokens(accessToken, refreshToken, expiresIn) {
-  const redis = await getRedisClient();
+  const cache = await getCacheClient();
 
   try {
     // Store access token with 14-minute TTL (1 min safety margin)
-    await redis.setEx(
+    await cache.set(
       OAUTH_CONFIG.accessTokenKey,
-      OAUTH_CONFIG.accessTokenTTL,
-      accessToken
+      accessToken,
+      OAUTH_CONFIG.accessTokenTTL
     );
 
     // Store refresh token with 7-day TTL
-    await redis.setEx(
+    await cache.set(
       OAUTH_CONFIG.refreshTokenKey,
-      OAUTH_CONFIG.refreshTokenTTL,
-      refreshToken
+      refreshToken,
+      OAUTH_CONFIG.refreshTokenTTL
     );
 
-    console.log('[Ninsaúde Auth] Tokens stored in Redis (access: 14min, refresh: 7days)');
+    console.log('[Ninsaúde Auth] Tokens stored in cache (access: 14min, refresh: 7days)');
   } catch (error) {
-    console.error('[Ninsaúde Auth] Error storing tokens in Redis:', error);
+    console.error('[Ninsaúde Auth] Error storing tokens in cache:', error);
     throw error;
   }
 }
@@ -274,10 +282,10 @@ async function storeTokens(accessToken, refreshToken, expiresIn) {
  * @returns {Promise<string|null>} Access token or null if not found/expired
  */
 async function getCachedAccessToken() {
-  const redis = await getRedisClient();
+  const cache = await getCacheClient();
 
   try {
-    const token = await redis.get(OAUTH_CONFIG.accessTokenKey);
+    const token = await cache.get(OAUTH_CONFIG.accessTokenKey);
 
     if (token) {
       console.log('[Ninsaúde Auth] Using cached access token');
@@ -296,10 +304,10 @@ async function getCachedAccessToken() {
  * @returns {Promise<string|null>} Refresh token or null if not found/expired
  */
 async function getCachedRefreshToken() {
-  const redis = await getRedisClient();
+  const cache = await getCacheClient();
 
   try {
-    return await redis.get(OAUTH_CONFIG.refreshTokenKey);
+    return await cache.get(OAUTH_CONFIG.refreshTokenKey);
   } catch (error) {
     console.error('[Ninsaúde Auth] Error retrieving refresh token:', error);
     return null;
@@ -318,7 +326,7 @@ async function getCachedRefreshToken() {
  * // Use token in Authorization header: `Bearer ${token}`
  */
 export async function getAccessToken() {
-  const redis = await getRedisClient();
+  const cache = await getCacheClient();
 
   // Try to get cached token first
   const cachedToken = await getCachedAccessToken();
@@ -328,7 +336,7 @@ export async function getAccessToken() {
 
   // Need to obtain new token - acquire lock to prevent race conditions
   console.log('[Ninsaúde Auth] No cached token found, acquiring lock...');
-  const lockAcquired = await acquireTokenLock(redis);
+  const lockAcquired = await acquireTokenLock(cache);
 
   if (!lockAcquired) {
     // Another process is already refreshing, wait and retry
@@ -348,7 +356,7 @@ export async function getAccessToken() {
     // Double-check cache after acquiring lock (another process may have refreshed)
     const doubleCheckToken = await getCachedAccessToken();
     if (doubleCheckToken) {
-      await releaseTokenLock(redis);
+      await releaseTokenLock(cache);
       return doubleCheckToken;
     }
 
@@ -377,7 +385,7 @@ export async function getAccessToken() {
     return tokenData.access_token;
   } finally {
     // Always release lock
-    await releaseTokenLock(redis);
+    await releaseTokenLock(cache);
   }
 }
 
@@ -391,7 +399,7 @@ export async function getAccessToken() {
  * const newToken = await refreshAccessToken();
  */
 export async function refreshAccessToken() {
-  const redis = await getRedisClient();
+  const cache = await getCacheClient();
   const refreshToken = await getCachedRefreshToken();
 
   if (!refreshToken) {
@@ -421,12 +429,12 @@ export async function refreshAccessToken() {
  * await clearTokenCache();
  */
 export async function clearTokenCache() {
-  const redis = await getRedisClient();
+  const cache = await getCacheClient();
 
   try {
-    await redis.del(OAUTH_CONFIG.accessTokenKey);
-    await redis.del(OAUTH_CONFIG.refreshTokenKey);
-    await redis.del(OAUTH_CONFIG.tokenLockKey);
+    await cache.del(OAUTH_CONFIG.accessTokenKey);
+    await cache.del(OAUTH_CONFIG.refreshTokenKey);
+    await cache.del(OAUTH_CONFIG.tokenLockKey);
     console.log('[Ninsaúde Auth] Token cache cleared');
   } catch (error) {
     console.error('[Ninsaúde Auth] Error clearing token cache:', error);
@@ -440,21 +448,20 @@ export async function clearTokenCache() {
  * @returns {Promise<Object>} Token status information
  */
 export async function getTokenStatus() {
-  const redis = await getRedisClient();
+  const cache = await getCacheClient();
 
   try {
-    const accessToken = await redis.get(OAUTH_CONFIG.accessTokenKey);
-    const refreshToken = await redis.get(OAUTH_CONFIG.refreshTokenKey);
-    const accessTTL = accessToken ? await redis.ttl(OAUTH_CONFIG.accessTokenKey) : -2;
-    const refreshTTL = refreshToken ? await redis.ttl(OAUTH_CONFIG.refreshTokenKey) : -2;
+    const accessToken = await cache.get(OAUTH_CONFIG.accessTokenKey);
+    const refreshToken = await cache.get(OAUTH_CONFIG.refreshTokenKey);
 
+    // Note: In-memory cache doesn't support TTL queries, return simplified status
     return {
       hasAccessToken: !!accessToken,
       hasRefreshToken: !!refreshToken,
-      accessTokenTTL: accessTTL,
-      refreshTokenTTL: refreshTTL,
-      accessTokenExpiry: accessTTL > 0 ? new Date(Date.now() + accessTTL * 1000).toISOString() : null,
-      refreshTokenExpiry: refreshTTL > 0 ? new Date(Date.now() + refreshTTL * 1000).toISOString() : null
+      accessTokenTTL: accessToken ? 840 : -2, // Estimated TTL
+      refreshTokenTTL: refreshToken ? 604800 : -2, // Estimated TTL
+      accessTokenExpiry: accessToken ? new Date(Date.now() + 840 * 1000).toISOString() : null,
+      refreshTokenExpiry: refreshToken ? new Date(Date.now() + 604800 * 1000).toISOString() : null
     };
   } catch (error) {
     console.error('[Ninsaúde Auth] Error getting token status:', error);
