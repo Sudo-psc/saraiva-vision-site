@@ -70,7 +70,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Tratamento',
     tags: ['lentes premium', 'cirurgia de catarata', 'lentes intraoculares', 'lentes multifocais', 'Caratinga MG'],
-    image: '/Blog/capa-lentes-premium-catarata.png',
+    image: '/Blog/capa-lentes-premium-catarata-optimized.webp',
     featured: true,
     seo: {
       metaTitle: 'Lentes Premium para Cirurgia de Catarata em Caratinga, MG: Benefícios e Opções Avançadas',
@@ -88,8 +88,8 @@ export const blogPosts = [
   },
   {
     id: 2,
-    slug: 'presbiopia-o-que-e-cura-cirurgia-lentes-contato-caratinga-mg',
-    title: 'Presbiopia: O Que É, Cura, Cirurgia e Lentes de Contato | Caratinga MG',
+    slug: 'presbiopia-o-que-e-tratamento-cirurgia-lentes-contato-caratinga-mg',
+    title: 'Presbiopia: O Que É, Tratamento, Cirurgia e Lentes de Contato | Caratinga MG',
     excerpt: 'Presbiopia (vista cansada): entenda a condição, tratamentos cirúrgicos e lentes de contato. Dr. Philipe Saraiva esclarece em Caratinga, MG.',
     content: `
       <h2>Introdução</h2>
@@ -164,11 +164,11 @@ export const blogPosts = [
     author: 'Dr. Philipe Saraiva Cruz',
     date: '2025-09-29',
     category: 'Prevenção',
-    tags: ['presbiopia', 'vista cansada', 'cura presbiopia', 'cirurgia presbiopia', 'lentes de contato presbiopia', 'oftalmologista Caratinga', 'saúde ocular MG', 'tratamento presbiopia'],
-    image: '/Blog/capa-exercicios-oculares.png',
+    tags: ['presbiopia', 'vista cansada', 'tratamento presbiopia', 'cirurgia presbiopia', 'lentes de contato presbiopia', 'oftalmologista Caratinga', 'saúde ocular MG'],
+    image: '/Blog/capa-exercicios-oculares.avif',
     featured: true,
     seo: {
-      metaTitle: 'Presbiopia: O Que É, Existe Cura, Opções de Cirurgia e Lentes de Contato em Caratinga, MG',
+      metaTitle: 'Presbiopia: O Que É, Tratamento, Opções de Cirurgia e Lentes de Contato em Caratinga, MG',
       metaDescription: 'Exercícios oculares: mitos e verdades. Dr. Philipe Saraiva esclarece o que funciona em Caratinga, MG. Cuide corretamente da visão!',
       keywords: ['presbiopia', 'vista cansada', 'cura presbiopia', 'cirurgia presbiopia', 'lentes de contato presbiopia', 'oftalmologista Caratinga', 'saúde ocular MG', 'tratamento presbiopia']
     }
@@ -291,7 +291,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Tratamento',
     tags: ['obstrução ducto lacrimal', 'lacrimejamento', 'dacriocistite', 'vias lacrimais', 'Caratinga MG'],
-    image: '/Blog/capa-ductolacrimal.png',
+    image: '/Blog/capa-ductolacrimal-optimized.webp',
     featured: false,
     seo: {
       metaTitle: 'Obstrução do ducto lacrimal: causas e soluções em Caratinga',
@@ -304,7 +304,7 @@ export const blogPosts = [
     slug: 'lentes-premium-cirurgia-catarata-caratinga-mg',
     title: 'Lentes Premium para Cirurgia de Catarata | Caratinga MG',
     excerpt: 'Lentes intraoculares premium: multifocais, tóricas e EDOF na cirurgia de catarata. Dr. Philipe Saraiva oferece em Caratinga, MG.',
-    image: '/Blog/capa-lentes-premium-catarata.png',
+    image: '/Blog/capa-lentes-premium-catarata-optimized.webp',
       ogImage: '/Blog/capa-lentes-premium-catarata.png',
     content: `
       <h2>O Que é Catarata e Como Ela Afeta o Cotidiano?</h2>
@@ -372,7 +372,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Tratamento',
     tags: ['lentes premium', 'cirurgia de catarata', 'lentes intraoculares', 'lentes multifocais', 'Caratinga MG'],
-    image: '/Blog/capa-lentes-premium-catarata.png',
+    image: '/Blog/capa-lentes-premium-catarata-optimized.webp',
     featured: true,
     seo: {
       metaTitle: 'Lentes Premium para Cirurgia de Catarata em Caratinga, MG: Benefícios e Opções Avançadas',
@@ -532,7 +532,7 @@ export const blogPosts = [
     date: '2025-09-29',
     category: 'Prevenção',
     tags: ['oftalmologia pediátrica', 'saúde infantil', 'exames', 'Caratinga', 'crianças'],
-    image: '/Blog/capa-estrabismo-tratamento.png',
+    image: '/Blog/capa-estrabismo-tratamento.avif',
     featured: true,
     seo: {
       metaTitle: 'Oftalmologia Pediátrica Caratinga: Quando Levar Crianças ao Oftalmo',
@@ -616,7 +616,7 @@ export const blogPosts = [
     date: '2025-09-30',
     category: 'Tratamento',
     tags: ['pterígio', 'carne no olho', 'cirurgia ocular', 'prevenção', 'proteção UV', 'Caratinga'],
-    image: '/Blog/capa-post-24-imagen4-opt1-20250930-185815.png',
+    image: '/Blog/capa-post-24-imagen4-opt1-20250930-185815.avif',
     featured: true,
     seo: {
       metaTitle: 'Pterígio: Guia Completo sobre Prevenção, Tratamento e Cirurgia',
