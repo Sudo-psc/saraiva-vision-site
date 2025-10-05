@@ -1,3 +1,13 @@
 {
-  "/api/ninsaude/auth/route": "app/api/ninsaude/auth/route.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/config/route": "app/api/config/route.js",
+  "/api/google-reviews/route": "app/api/google-reviews/route.js",
+  "/api/ninsaude/appointments/route": "app/api/ninsaude/appointments/route.js",
+  "/api/ninsaude/auth/route": "app/api/ninsaude/auth/route.js",
+  "/api/ninsaude/available-slots/route": "app/api/ninsaude/available-slots/route.js",
+  "/api/ninsaude/patients/route": "app/api/ninsaude/patients/route.js",
+  "/api/ninsaude/professionals/route": "app/api/ninsaude/professionals/route.js",
+  "/api/ninsaude/units/route": "app/api/ninsaude/units/route.js",
+  "/page": "app/page.js",
+  "/agendamento/page": "app/agendamento/page.js"
 }

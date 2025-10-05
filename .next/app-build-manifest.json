@@ -1,35 +1,109 @@
 {
   "pages": {
-    "/api/ninsaude/auth/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/ninsaude/auth/route.js"
-    ],
-    "/api/ninsaude/units/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/ninsaude/units/route.js"
-    ],
-    "/api/ninsaude/professionals/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/ninsaude/professionals/route.js"
-    ],
-    "/api/ninsaude/available-slots/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/ninsaude/available-slots/route.js"
-    ],
-    "/api/ninsaude/patients/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/ninsaude/patients/route.js"
+    "/_not-found/page": [
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/chunks/app/_not-found/page-1d8b4bc9b3cd38e1.js"
     ],
     "/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/layout.css",
-      "static/chunks/app/layout.js"
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/css/54afb1fee73280d5.css",
+      "static/css/27d6b93c33bed505.css",
+      "static/chunks/0e5ce63c-785942d5cc617a4b.js",
+      "static/chunks/2446-78af84367acbd3ab.js",
+      "static/chunks/app/layout-c5c058a95cfc9de0.js"
+    ],
+    "/api/config/route": [
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/chunks/app/api/config/route-72542457f3a1ad5c.js"
+    ],
+    "/api/google-reviews/route": [
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/chunks/app/api/google-reviews/route-72542457f3a1ad5c.js"
+    ],
+    "/api/ninsaude/appointments/route": [
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/chunks/app/api/ninsaude/appointments/route-72542457f3a1ad5c.js"
+    ],
+    "/api/ninsaude/auth/route": [
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/chunks/app/api/ninsaude/auth/route-72542457f3a1ad5c.js"
+    ],
+    "/api/ninsaude/available-slots/route": [
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/chunks/app/api/ninsaude/available-slots/route-72542457f3a1ad5c.js"
+    ],
+    "/api/ninsaude/patients/route": [
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/chunks/app/api/ninsaude/patients/route-72542457f3a1ad5c.js"
+    ],
+    "/api/ninsaude/professionals/route": [
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/chunks/app/api/ninsaude/professionals/route-72542457f3a1ad5c.js"
+    ],
+    "/api/ninsaude/units/route": [
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/chunks/app/api/ninsaude/units/route-72542457f3a1ad5c.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/chunks/app/page-72542457f3a1ad5c.js"
+    ],
+    "/agendamento/error": [
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/chunks/app/agendamento/error-8a6744e0dd3e5f54.js"
+    ],
+    "/agendamento/loading": [
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/chunks/app/agendamento/loading-72542457f3a1ad5c.js"
+    ],
+    "/agendamento/page": [
+      "static/chunks/webpack-640627aa45eb9efa.js",
+      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+      "static/chunks/1255-ad92d48e3e7ce61a.js",
+      "static/chunks/main-app-82a326bc14c5fcf4.js",
+      "static/chunks/0e5ce63c-785942d5cc617a4b.js",
+      "static/chunks/2446-78af84367acbd3ab.js",
+      "static/chunks/5077-e8a4d3c13bad568b.js",
+      "static/chunks/app/agendamento/page-6f813a3ca51e93bd.js"
     ]
   }
 }
