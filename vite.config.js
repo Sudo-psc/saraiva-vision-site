@@ -143,91 +143,21 @@ export default defineConfig(({ mode }) => {
     rollupOptions: {
       input: 'index.html',
       output: {
-        // Enhanced chunking strategy for healthcare platform (<200KB target per chunk)
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            // Core React packages - isolate to prevent context issues (critical for medical content)
-            if (id.includes('react/') || id.includes('react-dom/') || id.includes('react/jsx-runtime')) {
-              return 'react-core'
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'vendor-react'
             }
-
-            // React Router - separate chunk for patient navigation
             if (id.includes('react-router')) {
-              return 'router'
+              return 'vendor-router'
             }
-
-            // Radix UI - group together but optimize for accessibility compliance
-            if (id.includes('@radix-ui')) {
-              return 'radix-ui'
-            }
-
-            // Framer Motion - heavy animation library, lazy load for non-essential animations
             if (id.includes('framer-motion')) {
-              return 'motion'
+              return 'vendor-motion'
             }
-
-            // React Helmet - critical for medical SEO and compliance
-            if (id.includes('react-helmet')) {
-              return 'helmet'
+            if (id.includes('@radix-ui')) {
+              return 'vendor-ui'
             }
-
-            // Date utilities - optimized for appointment scheduling
-            if (id.includes('dayjs')) {
-              return 'date-utils'
-            }
-
-            // CSS/Styling utilities - essential for responsive medical content
-            if (id.includes('clsx') || id.includes('class-variance-authority') || id.includes('tailwind-merge')) {
-              return 'style-utils'
-            }
-
-            // Security and validation utilities (critical for healthcare compliance)
-            if (id.includes('dompurify') || id.includes('zod')) {
-              return 'security-utils'
-            }
-
-            // Healthcare-specific analytics and monitoring
-            if (id.includes('posthog') || id.includes('web-vitals')) {
-              return 'analytics'
-            }
-
-            // Icons libraries - split by usage frequency
-            if (id.includes('lucide-react')) {
-              return 'icons'
-            }
-
-            // Google Maps - critical for clinic location (medical compliance)
-            if (id.includes('googlemaps')) {
-              return 'maps'
-            }
-
-            // Internationalization - essential for Brazilian medical compliance
-            if (id.includes('i18next')) {
-              return 'i18n'
-            }
-
-            // Service worker utilities - separate for offline medical content
-            if (id.includes('workbox')) {
-              return 'sw'
-            }
-
-            // Healthcare form and contact utilities
-            if (id.includes('resend') || id.includes('marked')) {
-              return 'contact-utils'
-            }
-
-            // Image optimization for medical content
-            if (id.includes('sharp')) {
-              return 'image-utils'
-            }
-
-            // Testing and development utilities (tree-shaken in production)
-            if (id.includes('vitest') || id.includes('jsdom') || id.includes('testing-library')) {
-              return 'dev-deps'
-            }
-
-            // Other vendor libraries
-            return 'vendor-misc'
+            return 'vendor'
           }
         },
         // Optimized file naming for VPS caching with healthcare compliance

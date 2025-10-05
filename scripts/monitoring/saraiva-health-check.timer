@@ -1,0 +1,17 @@
+[Unit]
+Description=Saraiva Vision Daily Health Check Timer
+Requires=saraiva-health-check.service
+
+[Timer]
+# Executar diariamente às 06:00
+OnCalendar=daily
+OnCalendar=*-*-* 06:00:00
+
+# Se o sistema estiver desligado, executar na próxima inicialização
+Persistent=true
+
+# Executar imediatamente se o último agendamento foi perdido
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target
