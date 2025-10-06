@@ -8,21 +8,42 @@ export const useNinsaudeScheduling = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchAvailableSlots = useCallback(async (date, professionalId = null, unitId = null) => {
+  const fetchAvailableSlots = useCallback(async (date, professionalId = 1, unitId = null) => {
     setLoading(true);
     setError(null);
 
     try {
+      // Calculate 7-day range from selected date
+      const startDate = date.toISOString().split('T')[0];
+      const endDateObj = new Date(date);
+      endDateObj.setDate(endDateObj.getDate() + 6); // 7 days total
+      const endDate = endDateObj.toISOString().split('T')[0];
+
       const params = new URLSearchParams({
-        date: date.toISOString().split('T')[0],
-        ...(professionalId && { professional_id: professionalId }),
+        start_date: startDate,
+        end_date: endDate,
+        professional_id: professionalId.toString(),
         ...(unitId && { unit_id: unitId })
       });
+
+      // Get auth token first
+      const authResponse = await fetch(`${API_BASE_URL}/auth`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'login' })
+      });
+
+      if (!authResponse.ok) {
+        throw new Error('Falha na autenticação');
+      }
+
+      const { access_token } = await authResponse.json();
 
       const response = await fetch(`${API_BASE_URL}/available-slots?${params}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'x-access-token': access_token,
         },
       });
 
@@ -32,7 +53,21 @@ export const useNinsaudeScheduling = () => {
       }
 
       const data = await response.json();
-      return data.slots || data.data || [];
+      const allSlots = data.slots || data.data || [];
+
+      // Filter slots for the selected date only
+      const selectedDateStr = startDate;
+      const filteredSlots = allSlots
+        .filter(slot => slot.date === selectedDateStr)
+        .map(slot => ({
+          time: slot.startTime,  // Use startTime as display time
+          startTime: slot.startTime,
+          endTime: slot.endTime,
+          date: slot.date,
+          unitId: slot.unitId
+        }));
+
+      return filteredSlots;
     } catch (err) {
       setError(err.message);
       throw err;
