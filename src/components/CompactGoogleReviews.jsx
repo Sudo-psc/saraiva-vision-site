@@ -4,72 +4,7 @@ import { motion } from 'framer-motion';
 import { googleReviewUrl, CLINIC_PLACE_ID } from '@/lib/clinicInfo';
 import { useTranslation } from 'react-i18next';
 import { useGoogleReviews } from '@/hooks/useGoogleReviews';
-
-// Fallback reviews data with real profile photos
-const fallbackReviews = [
-    {
-        id: 'fallback-5',
-        reviewer: {
-            displayName: 'Carlos M.',
-            profilePhotoUrl: '/images/avatar-male-brown-640w.webp',
-            isAnonymous: false
-        },
-        starRating: 5,
-        comment: 'Excelente profissional! Muito atencioso e competente. A clínica é moderna e o atendimento é impecável. Recomendo a todos!',
-        relativeTimeDescription: 'há 2 semanas'
-    },
-    {
-        id: 'fallback-4',
-        reviewer: {
-            displayName: 'Ana L.',
-            profilePhotoUrl: '/images/avatar-female-redhead-640w.webp',
-            isAnonymous: false
-        },
-        starRating: 5,
-        comment: 'Fui muito bem atendida! O ambiente é acolhedor e os profissionais são extremamente gentis e capacitados.',
-        relativeTimeDescription: 'há 3 semanas'
-    },
-    {
-        id: 'fallback-3',
-        reviewer: {
-            displayName: 'Elis R.',
-            profilePhotoUrl: '/images/avatar-female-blonde-640w.webp',
-            isAnonymous: false
-        },
-        starRating: 5,
-        comment: 'Que atendimento maravilhoso! Tem pessoa que realmente nasce para exalar gentileza... Minha avó foi extremamente bem atendida, da chegada a saída da clínica.',
-        relativeTimeDescription: 'há uma semana'
-    },
-    {
-        id: 'fallback-2',
-        reviewer: {
-            displayName: 'Lais S.',
-            profilePhotoUrl: '/images/avatar-female-brunette-640w.webp',
-            isAnonymous: false
-        },
-        starRating: 5,
-        comment: 'Ótimo atendimento, excelente espaço. Obrigada',
-        relativeTimeDescription: 'há uma semana'
-    },
-    {
-        id: 'fallback-1',
-        reviewer: {
-            displayName: 'Junia B.',
-            profilePhotoUrl: '/img/avatar-female-black.webp',
-            isAnonymous: false
-        },
-        starRating: 5,
-        comment: 'Profissional extremamente competente e atencioso. Recomendo!',
-        relativeTimeDescription: 'há uma semana'
-    }
-];
-
-const fallbackStats = {
-    overview: {
-        averageRating: 4.9,
-        totalReviews: 102
-    }
-};
+import { FALLBACK_REVIEWS, FALLBACK_STATS } from '@/data/googleReviewsFallback';
 
 const CompactGoogleReviews = React.memo(() => {
     const [mounted, setMounted] = useState(false);
@@ -90,11 +25,11 @@ const CompactGoogleReviews = React.memo(() => {
 
     if (!mounted) return null;
 
-    // Use API data if available, otherwise fallback
-    const reviews = apiReviews && apiReviews.length > 0 ? apiReviews : fallbackReviews;
-    const stats = apiStats || fallbackStats;
+    // Use API data if available, otherwise fallback to real cached reviews
+    const reviews = apiReviews && apiReviews.length > 0 ? apiReviews : FALLBACK_REVIEWS;
+    const stats = apiStats || FALLBACK_STATS;
     const averageRating = stats.overview?.averageRating || stats.averageRating || 4.9;
-    const totalReviews = stats.overview?.totalReviews || stats.totalReviews || 102;
+    const totalReviews = stats.overview?.totalReviews || stats.totalReviews || 136;
 
     const renderStars = (rating) => {
         return Array.from({ length: 5 }, (_, i) => (
