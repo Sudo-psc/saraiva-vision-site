@@ -32,7 +32,7 @@ const AgendamentoPage = () => {
                 </p>
               </div>
 
-              <div className="relative mb-8">
+              <div className="relative mb-5">
                 {/* Fundo 3D com gradiente e sombras */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-600 rounded-3xl transform rotate-1 opacity-90 blur-sm"></div>
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-500 to-orange-600 rounded-3xl transform -rotate-1 opacity-80 blur-md"></div>
