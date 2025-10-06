@@ -119,7 +119,7 @@ const ScheduleDropdown = ({
                 }
               }}
             >
-              <Globe size={20} className="text-blue-600" />
+              <Globe size={20} className="text-cyan-600" />
               <div>
                 <div className="font-medium text-gray-900">{t('contact.online_scheduling_title')}</div>
                 <div className="text-xs text-gray-700">{t('contact.online_scheduling_desc')}</div>

@@ -163,7 +163,7 @@ function MyInstagramFeed() {
 
                             <button
                                 onClick={exportConfig}
-                                className="flex items-center gap-2 px-3 py-2 text-sm bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors"
+                                className="flex items-center gap-2 px-3 py-2 text-sm bg-blue-100 text-cyan-700 rounded-md hover:bg-cyan-200 transition-colors"
                             >
                                 <Download className="w-4 h-4" />
                                 Export
@@ -299,7 +299,7 @@ function MyInstagramFeed() {
                         <button
                             onClick={() => saveConfig(handleSave)}
                             disabled={!isDirty || isLoading || !validateConfig().isValid}
-                            className="px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="px-4 py-2 text-sm text-white bg-cyan-600 rounded-md hover:bg-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
                             {isLoading ? 'Saving...' : 'Save Configuration'}
                         </button>

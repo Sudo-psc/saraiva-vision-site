@@ -39,7 +39,7 @@ const PostFAQ = ({ questions = [], className = '' }) => {
         {questions.map((item, index) => (
           <div
             key={index}
-            className="border border-gray-200 rounded-xl overflow-hidden hover:border-blue-300 transition-colors"
+            className="border border-gray-200 rounded-xl overflow-hidden hover:border-cyan-300 transition-colors"
             role="listitem"
           >
             <button
@@ -53,7 +53,7 @@ const PostFAQ = ({ questions = [], className = '' }) => {
               </span>
               <div className="flex-shrink-0">
                 {openIndex === index ? (
-                  <ChevronUp className="w-5 h-5 text-blue-600" aria-hidden="true" />
+                  <ChevronUp className="w-5 h-5 text-cyan-600" aria-hidden="true" />
                 ) : (
                   <ChevronDown className="w-5 h-5 text-gray-400" aria-hidden="true" />
                 )}
@@ -91,7 +91,7 @@ const PostFAQ = ({ questions = [], className = '' }) => {
           href="https://wa.me/message/EHTAAAAYH7SHJ1"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600 transition-colors shadow-md hover:shadow-lg"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 text-white rounded-xl font-semibold hover:bg-cyan-600 transition-colors shadow-md hover:shadow-lg"
         >
           <HelpCircle className="w-5 h-5" />
           <span>Fale com Especialista</span>

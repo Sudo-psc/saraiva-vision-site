@@ -89,7 +89,7 @@ const EnhancedFooterDemo = () => {
                             <h3 className="font-medium text-blue-900 mb-2">
                                 Currently showing: {useEnhanced ? 'Enhanced Footer' : 'Original Footer'}
                             </h3>
-                            <p className="text-sm text-blue-700">
+                            <p className="text-sm text-cyan-700">
                                 {useEnhanced
                                     ? 'Enhanced version with glass morphism effects, 3D social icons, and modern animations while preserving all original functionality.'
                                     : 'Original footer component with standard styling and functionality.'

@@ -23,7 +23,7 @@ const ShareWidget = ({ title, url }) => {
       name: 'Facebook',
       icon: Facebook,
       url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
-      color: 'hover:bg-blue-50 hover:text-blue-600'
+      color: 'hover:bg-blue-50 hover:text-cyan-600'
     },
     {
       name: 'Twitter',
@@ -35,7 +35,7 @@ const ShareWidget = ({ title, url }) => {
       name: 'LinkedIn',
       icon: Linkedin,
       url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
-      color: 'hover:bg-blue-50 hover:text-blue-700'
+      color: 'hover:bg-blue-50 hover:text-cyan-700'
     }
   ];
 
@@ -48,9 +48,9 @@ const ShareWidget = ({ title, url }) => {
     >
       <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-200">
         <div className="p-2 bg-gradient-to-br from-blue-100 to-slate-100 rounded-lg">
-          <Share2 className="w-4 h-4 text-blue-600" />
+          <Share2 className="w-4 h-4 text-cyan-600" />
         </div>
-        <h3 className="text-sm font-bold bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent">
+        <h3 className="text-sm font-bold bg-gradient-to-r from-cyan-700 to-blue-500 bg-clip-text text-transparent">
           Compartilhar
         </h3>
       </div>
@@ -75,7 +75,7 @@ const ShareWidget = ({ title, url }) => {
 
         <button
           onClick={handleCopyLink}
-          className="w-full flex items-center gap-3 p-3 rounded-lg border border-slate-100 hover:bg-blue-50 hover:text-blue-600 transition-all"
+          className="w-full flex items-center gap-3 p-3 rounded-lg border border-slate-100 hover:bg-blue-50 hover:text-cyan-600 transition-all"
           aria-label="Copiar link do artigo"
         >
           {copied ? (

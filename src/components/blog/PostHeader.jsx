@@ -59,7 +59,7 @@ const PostHeader = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-blue-600 font-semibold text-sm md:text-base mb-3 uppercase tracking-wide"
+            className="text-cyan-600 font-semibold text-sm md:text-base mb-3 uppercase tracking-wide"
           >
             {tagline}
           </motion.p>
@@ -96,7 +96,7 @@ const PostHeader = ({
         >
           {/* Author */}
           <div className="flex items-center gap-2">
-            <User className="w-4 h-4 text-blue-600" aria-hidden="true" />
+            <User className="w-4 h-4 text-cyan-600" aria-hidden="true" />
             <span className="font-medium">{author}</span>
           </div>
 
@@ -104,7 +104,7 @@ const PostHeader = ({
 
           {/* Date */}
           <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-blue-600" aria-hidden="true" />
+            <Calendar className="w-4 h-4 text-cyan-600" aria-hidden="true" />
             <time dateTime={date}>
               {formatDate(date)}
             </time>
@@ -114,7 +114,7 @@ const PostHeader = ({
 
           {/* Reading Time */}
           <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-blue-600" aria-hidden="true" />
+            <Clock className="w-4 h-4 text-cyan-600" aria-hidden="true" />
             <span>{readingTime} de leitura</span>
           </div>
         </motion.div>

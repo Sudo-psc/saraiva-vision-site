@@ -397,7 +397,7 @@ const OptimizedImage = ({
                 <div className="absolute bottom-2 left-2 right-2">
                     <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
                         <div
-                            className="h-full bg-blue-500 rounded-full animate-pulse"
+                            className="h-full bg-cyan-500 rounded-full animate-pulse"
                             style={{ width: '60%' }}
                         />
                     </div>

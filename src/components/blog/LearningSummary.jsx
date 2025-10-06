@@ -19,7 +19,7 @@ const LearningSummary = ({ items = [], className = '' }) => {
       aria-labelledby="learning-summary-title"
     >
       <div className="flex items-center gap-3 mb-6">
-        <div className="bg-blue-600 rounded-full p-3 shadow-md">
+        <div className="bg-cyan-600 rounded-full p-3 shadow-md">
           <BookOpen className="w-6 h-6 text-white" aria-hidden="true" />
         </div>
         <h2 id="learning-summary-title" className="text-2xl font-bold text-gray-900">
@@ -48,7 +48,7 @@ const LearningSummary = ({ items = [], className = '' }) => {
         ))}
       </ul>
 
-      <div className="mt-6 pt-6 border-t border-blue-200">
+      <div className="mt-6 pt-6 border-t border-cyan-200">
         <p className="text-sm text-gray-600 text-center">
           📚 Tempo de leitura: ~{Math.ceil(items.length * 1.5)} minutos
         </p>

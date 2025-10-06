@@ -19,7 +19,7 @@ const ServiceHeader = ({ service, onScheduleClick }) => {
           >
             <div className="flex justify-center mb-6">
               <div className="icon-container-large">
-                {getServiceIcon(service.id, { className: "h-16 w-16 text-blue-600" })}
+                {getServiceIcon(service.id, { className: "h-16 w-16 text-cyan-600" })}
               </div>
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 mb-3 sm:mb-4 px-2">

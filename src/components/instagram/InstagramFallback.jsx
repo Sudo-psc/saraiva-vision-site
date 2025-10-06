@@ -284,7 +284,7 @@ const InstagramFallback = ({
                                                 href={post.permalink}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 rounded"
+                                                className="inline-flex items-center gap-1 text-xs text-cyan-600 hover:text-cyan-800 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 rounded"
                                             >
                                                 View on Instagram
                                                 <ExternalLink className="w-3 h-3" />
@@ -312,7 +312,7 @@ const InstagramFallback = ({
                                 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors
                                 ${isRetrying
                                     ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                    : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500'
+                                    : 'bg-cyan-600 text-white hover:bg-cyan-700 focus:ring-blue-500'
                                 }
                             `}
                             aria-label={isRetrying ? 'Retrying...' : 'Retry loading Instagram content'}

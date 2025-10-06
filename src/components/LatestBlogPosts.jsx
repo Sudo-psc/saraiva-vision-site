@@ -93,7 +93,7 @@ const LatestBlogPosts = () => {
                 <div className="p-6 flex flex-col flex-grow">
                     {/* Category and Date */}
                     <div className="flex items-center justify-between mb-4">
-                        <span className="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                        <span className="inline-block bg-blue-100 text-cyan-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
                             {getPostCategory(post)}
                         </span>
                         <div className="flex items-center text-sm text-gray-500">
@@ -114,7 +114,7 @@ const LatestBlogPosts = () => {
 
                     {/* Read More Link */}
                     <Link to={getPostLink(post)}>
-                        <Button variant="link" className="text-blue-600 hover:text-blue-700 px-0 group">
+                        <Button variant="link" className="text-cyan-600 hover:text-cyan-700 px-0 group">
                             {t('blog.read_more', 'Ler mais')}
                             <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                         </Button>
@@ -128,7 +128,7 @@ const LatestBlogPosts = () => {
         if (loading) {
             return (
                 <div className="flex justify-center items-center h-64">
-                    <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+                    <Loader2 className="h-12 w-12 animate-spin text-cyan-600" />
                 </div>
             );
         }
@@ -168,9 +168,9 @@ const LatestBlogPosts = () => {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-blue-100 via-indigo-50 to-blue-100 text-blue-700 mb-8 border border-blue-200/50 shadow-lg backdrop-blur-sm"
+                        className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-blue-100 via-indigo-50 to-blue-100 text-cyan-700 mb-8 border border-cyan-200/50 shadow-lg backdrop-blur-sm"
                     >
-                        <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                        <div className="w-8 h-8 rounded-full bg-cyan-600 flex items-center justify-center">
                             <Rss className="w-4 h-4 text-white" />
                         </div>
                         <span className="text-sm font-bold tracking-wide uppercase">
@@ -185,7 +185,7 @@ const LatestBlogPosts = () => {
                         transition={{ delay: 0.1 }}
                         className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6 leading-tight"
                     >
-                        <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 bg-clip-text text-transparent">
+                        <span className="bg-gradient-to-r from-cyan-600 via-indigo-600 to-cyan-600 bg-clip-text text-transparent">
                             Últimas do Blog
                         </span>
                     </motion.h2>
@@ -213,7 +213,7 @@ const LatestBlogPosts = () => {
                     className="text-center mt-12"
                 >
                     <Link to="/blog">
-                        <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white gap-2 px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                        <Button size="lg" className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
                             {t('blog.visitBlog', 'Visitar Blog Completo')}
                             <ArrowRight className="w-5 h-5" />
                         </Button>

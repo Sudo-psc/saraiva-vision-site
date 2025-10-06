@@ -130,7 +130,7 @@ const GoogleMapSimple = ({ height = 340 }) => {
       <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
         <div className="text-center space-y-4 max-w-sm">
           <div className="p-3 bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
-            <MapPin className="w-8 h-8 text-blue-600" />
+            <MapPin className="w-8 h-8 text-cyan-600" />
           </div>
           <div>
             <h3 className="font-semibold text-gray-900 mb-2">Localização da Clínica</h3>
@@ -160,7 +160,7 @@ const GoogleMapSimple = ({ height = 340 }) => {
                 href={`https://www.google.com/maps/search/?api=1&query=${clinicInfo.latitude},${clinicInfo.longitude}&query_place_id=${CLINIC_PLACE_ID || ''}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-600 text-white text-sm font-medium rounded-lg hover:bg-cyan-700 transition-colors"
               >
                 <ExternalLink className="w-4 h-4" />
                 Abrir no Google Maps

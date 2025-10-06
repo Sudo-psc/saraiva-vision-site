@@ -38,14 +38,14 @@ const AuthorProfile = ({
             sizes="80px"
             fallbackSrc="/img/team/default-doctor.jpg"
           />
-          <div className="absolute -bottom-1 -right-1 bg-blue-600 rounded-full p-1.5 shadow-md">
+          <div className="absolute -bottom-1 -right-1 bg-cyan-600 rounded-full p-1.5 shadow-md">
             <Award className="w-4 h-4 text-white" aria-hidden="true" />
           </div>
         </div>
 
         <div className="flex-1">
           <h3 className="text-lg font-bold text-gray-900 mb-1">{name}</h3>
-          <div className="flex items-center gap-2 text-sm text-blue-700 mb-1">
+          <div className="flex items-center gap-2 text-sm text-cyan-700 mb-1">
             <Stethoscope className="w-4 h-4" aria-hidden="true" />
             <span className="font-medium">{role}</span>
           </div>
@@ -71,7 +71,7 @@ const AuthorProfile = ({
 
           <a
             href={`mailto:${email}`}
-            className="flex items-center gap-2 text-sm text-gray-700 hover:text-blue-600 transition-colors group"
+            className="flex items-center gap-2 text-sm text-gray-700 hover:text-cyan-600 transition-colors group"
           >
             <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" aria-hidden="true" />
             <span className="text-xs">{email}</span>
@@ -79,7 +79,7 @@ const AuthorProfile = ({
 
           <a
             href={`tel:${phone.replace(/\D/g, '')}`}
-            className="flex items-center gap-2 text-sm text-gray-700 hover:text-blue-600 transition-colors group"
+            className="flex items-center gap-2 text-sm text-gray-700 hover:text-cyan-600 transition-colors group"
           >
             <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" aria-hidden="true" />
             <span className="text-xs">{phone}</span>
@@ -91,11 +91,11 @@ const AuthorProfile = ({
       <div className="mt-4 pt-4 border-t border-blue-100">
         <div className="flex items-center justify-between text-xs text-gray-600">
           <div className="flex items-center gap-1">
-            <Award className="w-3 h-3 text-blue-600" aria-hidden="true" />
+            <Award className="w-3 h-3 text-cyan-600" aria-hidden="true" />
             <span>Verificado</span>
           </div>
           <div className="flex items-center gap-1">
-            <User className="w-3 h-3 text-blue-600" aria-hidden="true" />
+            <User className="w-3 h-3 text-cyan-600" aria-hidden="true" />
             <span>Especialista</span>
           </div>
         </div>

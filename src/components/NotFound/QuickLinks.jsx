@@ -18,7 +18,7 @@ const QuickLinks = () => {
       title: 'Serviços',
       description: 'Conheça nossos tratamentos',
       href: '/servicos',
-      color: 'from-blue-500 to-blue-600'
+      color: 'from-cyan-500 to-cyan-600'
     },
     {
       icon: Eye,
@@ -96,7 +96,7 @@ const QuickLinks = () => {
                   <Icon className="w-6 h-6" />
                 </div>
 
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-cyan-600 transition-colors">
                   {link.title}
                 </h3>
 
@@ -104,7 +104,7 @@ const QuickLinks = () => {
                   {link.description}
                 </p>
 
-                <div className="flex items-center text-sm font-medium text-blue-600 group-hover:text-blue-700">
+                <div className="flex items-center text-sm font-medium text-cyan-600 group-hover:text-cyan-700">
                   <span>Acessar</span>
                   <ArrowRight className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" />
                 </div>

@@ -10,7 +10,7 @@ const Alert = ({ children, variant = 'default', className = '', ...props }) => {
             case 'success':
                 return 'bg-green-50 border-green-200 text-green-800';
             default:
-                return 'bg-blue-50 border-blue-200 text-blue-800';
+                return 'bg-blue-50 border-cyan-200 text-cyan-800';
         }
     };
 

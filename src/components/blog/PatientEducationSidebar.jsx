@@ -37,7 +37,7 @@ const PatientEducationSidebar = () => {
       icon: FileText,
       title: 'Guia da Primeira Consulta',
       description: 'O que esperar na sua primeira visita ao oftalmologista',
-      color: 'bg-blue-50 text-blue-600',
+      color: 'bg-blue-50 text-cyan-600',
       hoverColor: 'hover:bg-blue-100',
     },
     {
@@ -51,7 +51,7 @@ const PatientEducationSidebar = () => {
       icon: BookOpen,
       title: 'Cuidados Pós-Consulta',
       description: 'Orientações para medicação e recuperação',
-      color: 'bg-blue-50 text-blue-600',
+      color: 'bg-blue-50 text-cyan-600',
       hoverColor: 'hover:bg-blue-100',
     },
   ];
@@ -75,7 +75,7 @@ const PatientEducationSidebar = () => {
       >
         <div className="flex items-center gap-2 mb-4">
           <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-            <HelpCircle className="w-5 h-5 text-blue-600" />
+            <HelpCircle className="w-5 h-5 text-cyan-600" />
           </div>
           <h3 className="text-lg font-bold text-gray-900">Dúvidas Frequentes</h3>
         </div>
@@ -131,14 +131,14 @@ const PatientEducationSidebar = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg border border-blue-200/50 p-6"
+        className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg border border-cyan-200/50 p-6"
       >
         <h3 className="text-lg font-bold text-gray-900 mb-4">Dicas de Prevenção</h3>
 
         <ul className="space-y-2.5">
           {preventionTips.map((tip, index) => (
             <li key={index} className="flex items-start gap-3 text-sm text-gray-700">
-              <div className="w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <div className="w-5 h-5 bg-cyan-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                 <svg
                   className="w-3 h-3 text-white"
                   fill="none"

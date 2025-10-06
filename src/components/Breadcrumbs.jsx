@@ -22,7 +22,7 @@ const Breadcrumbs = ({ items = [], className = '' }) => {
               {item.href && !isLast ? (
                 <Link
                   to={item.href}
-                  className="px-2 py-1 rounded-lg hover:text-blue-700 hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                  className="px-2 py-1 rounded-lg hover:text-cyan-700 hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
                 >
                   {item.label}
                 </Link>

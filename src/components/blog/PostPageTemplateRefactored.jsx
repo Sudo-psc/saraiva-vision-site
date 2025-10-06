@@ -307,7 +307,7 @@ const PostPageTemplateRefactored = ({ slug }) => {
                         className="p-2 rounded-lg bg-white border border-slate-200 hover:border-blue-600 hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         aria-label="Compartilhar no Facebook"
                       >
-                        <Facebook className="w-5 h-5 text-blue-600" />
+                        <Facebook className="w-5 h-5 text-cyan-600" />
                       </button>
                       <button
                         onClick={() => handleShare('twitter')}
@@ -318,10 +318,10 @@ const PostPageTemplateRefactored = ({ slug }) => {
                       </button>
                       <button
                         onClick={() => handleShare('linkedin')}
-                        className="p-2 rounded-lg bg-white border border-slate-200 hover:border-blue-700 hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2"
+                        className="p-2 rounded-lg bg-white border border-slate-200 hover:border-cyan-700 hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2"
                         aria-label="Compartilhar no LinkedIn"
                       >
-                        <Linkedin className="w-5 h-5 text-blue-700" />
+                        <Linkedin className="w-5 h-5 text-cyan-700" />
                       </button>
                       <button
                         onClick={() => handleShare('copy')}
@@ -372,7 +372,7 @@ const PostPageTemplateRefactored = ({ slug }) => {
                     href={clinicInfo.mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   >
                     <ExternalLink className="w-5 h-5" aria-hidden="true" />
                     Ver no Google Maps
@@ -428,7 +428,7 @@ const PostPageTemplateRefactored = ({ slug }) => {
 
                 <div className="bg-white border border-slate-200 rounded-xl p-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-teal-500 to-blue-600 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
                       PS
                     </div>
                     <div>

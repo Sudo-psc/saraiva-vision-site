@@ -18,7 +18,7 @@ const ServiceCard = ({ service, index }) => {
       whileHover={{ y: -8, scale: 1.02 }}
     >
       <div className="mb-4">
-        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+        <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-500 rounded-xl flex items-center justify-center text-white text-2xl font-bold shadow-lg">
           {index + 1}
         </div>
       </div>
@@ -33,7 +33,7 @@ const ServiceCard = ({ service, index }) => {
       
       <Link
         to={`/servicos/${service.id}`}
-        className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors duration-200"
+        className="inline-flex items-center text-cyan-600 hover:text-cyan-700 font-medium text-sm transition-colors duration-200"
         aria-label={t('services.learnMore', 'Saiba mais sobre {{title}}', { title: service.title })}
       >
         {t('services.learnMore', 'Saiba mais')}
@@ -69,7 +69,7 @@ function ServicesFixed() {
     <section id="servicos" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50 relative overflow-hidden">
       {/* Background decorativo simplificado */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200/20 rounded-full blur-3xl" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-200/20 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-200/20 rounded-full blur-3xl" />
       </div>
 
@@ -77,7 +77,7 @@ function ServicesFixed() {
         {/* Header */}
         <div className="text-center mb-16">
           <motion.div
-            className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700"
+            className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 text-cyan-700"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -147,7 +147,7 @@ function ServicesFixed() {
                 onClick={() => setCurrentIndex(index)}
                 className={`w-2 h-2 rounded-full transition-all duration-200 ${
                   index === currentIndex 
-                    ? 'bg-blue-600 w-8' 
+                    ? 'bg-cyan-600 w-8' 
                     : 'bg-slate-300 hover:bg-slate-400'
                 }`}
                 aria-label={`Ir para serviço ${index + 1}`}
@@ -166,7 +166,7 @@ function ServicesFixed() {
         >
           <Link
             to="/servicos"
-            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-full hover:from-blue-700 hover:to-cyan-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-cyan-600 to-cyan-600 text-white font-semibold rounded-full hover:from-cyan-700 hover:to-cyan-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
             {t('services.viewAll', 'Ver Todos os Serviços')}
             <ArrowRight size={20} className="ml-2" />

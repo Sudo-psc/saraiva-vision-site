@@ -8,16 +8,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-blue-500/25',
+        default: 'bg-cyan-600 text-white hover:bg-cyan-700 hover:shadow-cyan-500/25',
         cta: 'bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600 hover:shadow-orange-500/30 font-bold',
-        medical: 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 hover:shadow-blue-500/30',
+        medical: 'bg-gradient-to-r from-cyan-600 to-cyan-700 text-white hover:from-cyan-700 hover:to-cyan-800 hover:shadow-cyan-500/30',
         success: 'bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 hover:shadow-green-500/30',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'border-2 border-slate-300 bg-white text-slate-800 hover:bg-slate-50 hover:border-blue-500 hover:text-blue-800',
+        outline: 'border-2 border-slate-300 bg-white text-slate-800 hover:bg-slate-50 hover:border-cyan-500 hover:text-cyan-800',
         secondary: 'bg-slate-100 text-slate-800 border border-slate-300 hover:bg-slate-200',
         ghost: 'text-slate-800 hover:bg-slate-100 hover:text-slate-900',
-        link: 'text-blue-700 underline-offset-4 hover:underline hover:text-blue-800',
-        gradient: 'bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-800 text-white hover:from-blue-700 hover:via-cyan-700 hover:to-blue-900 hover:shadow-cyan-500/30',
+        link: 'text-cyan-700 underline-offset-4 hover:underline hover:text-cyan-800',
+        gradient: 'bg-gradient-to-r from-cyan-600 via-cyan-600 to-cyan-800 text-white hover:from-cyan-700 hover:via-cyan-700 hover:to-cyan-900 hover:shadow-cyan-500/30',
       },
       size: {
         default: 'h-11 px-6 py-2',

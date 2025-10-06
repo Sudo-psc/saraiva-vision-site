@@ -69,7 +69,7 @@ const CFMCompliance = ({ content, onComplianceCheck }) => {
             case 'critical': return 'text-red-600 bg-red-50 border-red-200';
             case 'high': return 'text-orange-600 bg-orange-50 border-orange-200';
             case 'medium': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-            default: return 'text-blue-600 bg-blue-50 border-blue-200';
+            default: return 'text-cyan-600 bg-blue-50 border-cyan-200';
         }
     };
 
@@ -90,7 +90,7 @@ const CFMCompliance = ({ content, onComplianceCheck }) => {
             <div className="px-6 py-4 border-b border-gray-200">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                        <Shield className="h-6 w-6 text-blue-600" />
+                        <Shield className="h-6 w-6 text-cyan-600" />
                         <div>
                             <h3 className="text-lg font-semibold text-gray-900">
                                 Compliance CFM
@@ -132,7 +132,7 @@ const CFMCompliance = ({ content, onComplianceCheck }) => {
                     </div>
                     <button
                         onClick={() => setShowDetails(!showDetails)}
-                        className="text-sm text-blue-600 hover:text-blue-800 font-medium text-left md:text-right"
+                        className="text-sm text-cyan-600 hover:text-cyan-800 font-medium text-left md:text-right"
                     >
                         {showDetails ? 'Ocultar detalhes' : 'Ver detalhes'}
                     </button>
@@ -185,12 +185,12 @@ const CFMCompliance = ({ content, onComplianceCheck }) => {
                             <h4 className="text-lg font-semibold text-gray-900 mb-3">
                                 Recomendações de Melhoria
                             </h4>
-                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <div className="bg-blue-50 border border-cyan-200 rounded-lg p-4">
                                 <ul className="space-y-2">
                                     {complianceStatus.recommendations.map((rec, index) => (
                                         <li key={index} className="flex items-start space-x-2">
-                                            <CheckCircle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                                            <span className="text-sm text-blue-800">{rec.message}</span>
+                                            <CheckCircle className="h-4 w-4 text-cyan-600 mt-0.5 flex-shrink-0" />
+                                            <span className="text-sm text-cyan-800">{rec.message}</span>
                                         </li>
                                     ))}
                                 </ul>

@@ -32,7 +32,7 @@ const ResponsiveGridTest = () => {
                     {mockPosts.map((post) => (
                         <div
                             key={post.id}
-                            className="bg-blue-100 border border-blue-300 rounded-lg p-4 h-32 flex items-center justify-center"
+                            className="bg-blue-100 border border-cyan-300 rounded-lg p-4 h-32 flex items-center justify-center"
                         >
                             <span className="font-medium">{post.content}</span>
                         </div>

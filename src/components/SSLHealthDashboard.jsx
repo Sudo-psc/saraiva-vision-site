@@ -79,7 +79,7 @@ export function SSLHealthDashboard({ domains = [], className = '' }) {
                     <button
                         onClick={refresh}
                         disabled={loading}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {loading ? 'Refreshing...' : 'Refresh'}
                     </button>
@@ -282,7 +282,7 @@ export function SSLHealthDashboard({ domains = [], className = '' }) {
                     </p>
                     <button
                         onClick={checkAllDomains}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                        className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700"
                     >
                         Check SSL Status
                     </button>

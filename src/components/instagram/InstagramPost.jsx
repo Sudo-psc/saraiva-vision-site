@@ -490,7 +490,7 @@ const InstagramPost = ({
 
                         {needsTruncation && (
                             <button
-                                className="caption-toggle mt-1 text-blue-600 hover:text-blue-700 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-blue-500 focus:rounded px-1"
+                                className="caption-toggle mt-1 text-cyan-600 hover:text-cyan-700 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-blue-500 focus:rounded px-1"
                                 onClick={toggleCaption}
                                 aria-expanded={captionExpanded}
                                 aria-label={generateAriaLabel('expand-caption', { expanded: captionExpanded })}

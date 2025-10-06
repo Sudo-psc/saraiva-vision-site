@@ -39,7 +39,7 @@ const Hero = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex flex-col space-y-6 text-center lg:text-left"
           >
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-2 w-fit mx-auto lg:mx-0">
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-cyan-700 text-sm font-medium mb-2 w-fit mx-auto lg:mx-0">
               <span className="mr-2">✦</span> {t('hero.partner')}
             </div>
 

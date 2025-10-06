@@ -21,7 +21,7 @@ const QuickTakeaways = ({ items = [], title = 'O que você vai aprender?' }) => 
     >
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full p-3 shadow-md">
+        <div className="bg-gradient-to-br from-cyan-600 to-indigo-600 rounded-full p-3 shadow-md">
           <Lightbulb className="w-6 h-6 text-white" aria-hidden="true" />
         </div>
         <h2 className="text-2xl font-bold text-gray-900">
@@ -54,7 +54,7 @@ const QuickTakeaways = ({ items = [], title = 'O que você vai aprender?' }) => 
       </ul>
 
       {/* Decorative Element */}
-      <div className="mt-6 pt-6 border-t border-blue-200">
+      <div className="mt-6 pt-6 border-t border-cyan-200">
         <p className="text-sm text-gray-600 text-center italic">
           💡 Informação clara e confiável para cuidar da sua visão
         </p>

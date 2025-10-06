@@ -19,7 +19,7 @@ const NotFoundContent = () => {
       >
         <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-green-400 rounded-full opacity-20 blur-xl"></div>
         <div className="relative bg-white rounded-full shadow-lg p-6 md:p-8 border-2 border-blue-100">
-          <div className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+          <div className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-cyan-600 to-green-600 bg-clip-text text-transparent">
             404
           </div>
         </div>
@@ -49,7 +49,7 @@ const NotFoundContent = () => {
         transition={{ delay: 0.4, duration: 0.5 }}
         className="bg-blue-50 rounded-lg p-4 max-w-lg mx-auto border border-blue-100"
       >
-        <div className="flex items-center justify-center gap-2 text-blue-700">
+        <div className="flex items-center justify-center gap-2 text-cyan-700">
           <AlertCircle className="w-5 h-5" />
           <span className="text-sm font-medium">
             Apenas esta página está indisponível. Todo o resto do site está funcionando normalmente!

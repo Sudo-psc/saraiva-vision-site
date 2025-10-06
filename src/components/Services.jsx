@@ -51,7 +51,7 @@ const ServiceCard = React.forwardRef(({ service, index, lazy = true }, ref) => {
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.05 }}
-      className="service-card-3d group relative flex flex-col items-center text-center rounded-3xl glass-morphism shadow-3d hover:shadow-3d-hover will-change-transform transform-gpu preserve-3d w-full h-full focus-within:ring-2 focus-within:ring-blue-500/20 transition-transform duration-500 touch-manipulation"
+      className="service-card-3d group relative flex flex-col items-center text-center rounded-3xl glass-morphism shadow-3d hover:shadow-3d-hover will-change-transform transform-gpu preserve-3d w-full h-full focus-within:ring-2 focus-within:ring-cyan-500/20 transition-transform duration-500 touch-manipulation"
       style={{
         minWidth: '280px', // Garante largura mínima consistente
         scrollSnapAlign: 'start'
@@ -68,7 +68,7 @@ const ServiceCard = React.forwardRef(({ service, index, lazy = true }, ref) => {
         className="relative mb-4 w-24 h-24 flex items-center justify-center"
         whileHover={prefersReducedMotion ? {} : { scale: 1.1, rotate: 3 }}
       >
-        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/15 via-cyan-500/15 to-teal-500/15 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-cyan-500/15 via-cyan-500/15 to-teal-500/15 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
         <div className="relative w-20 h-20 drop-shadow-xl select-none flex items-center justify-center rounded-3xl">
           {visible ? service.icon : (
             <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-slate-200 to-slate-100 animate-pulse" aria-hidden="true" />
@@ -102,13 +102,13 @@ const ServiceCard = React.forwardRef(({ service, index, lazy = true }, ref) => {
           e.stopPropagation();
           console.log(`Navigating to service: ${service.id}`);
         }}
-        className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-slate-700 bg-gradient-to-r from-slate-100 to-slate-50 hover:from-blue-50 hover:to-cyan-50 border border-slate-200/70 hover:border-blue-300/60 shadow-sm hover:shadow-md transition-all group/button overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+        className="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-slate-700 bg-gradient-to-r from-slate-100 to-slate-50 hover:from-cyan-50 hover:to-cyan-50 border border-slate-200/70 hover:border-cyan-300/60 shadow-sm hover:shadow-md transition-all group/button overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
         style={{ pointerEvents: 'auto', zIndex: 10 }}
       >
-        <span className="relative z-10 group-hover/button:text-blue-700 transition-colors">{t('services.learn_more')}</span>
+        <span className="relative z-10 group-hover/button:text-cyan-700 transition-colors">{t('services.learn_more')}</span>
         <ArrowRight className="w-4 h-4 relative z-10 transition-transform group-hover/button:translate-x-1" />
         <span className="absolute inset-0 opacity-0 group-hover/button:opacity-100 bg-gradient-to-r from-blue-200/30 via-cyan-200/30 to-teal-200/30 transition-opacity" />
-        <span className="absolute -inset-px rounded-full border border-transparent group-hover/button:border-blue-400/40 transition-colors" />
+        <span className="absolute -inset-px rounded-full border border-transparent group-hover/button:border-cyan-400/40 transition-colors" />
       </Link>
 
       {/* Subtle bottom gradient edge */}
@@ -415,15 +415,15 @@ const Services = ({ full = false, autoplay = true }) => {
   return (
     <section id="services" className="py-16 lg:py-28 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/5 to-cyan-400/5" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/10 to-cyan-400/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/5 to-cyan-400/5" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-cyan-400/10 to-cyan-400/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-cyan-400/10 to-teal-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Enhanced Header Section */}
         <div className="text-center mb-20">
           {/* Badge visível para manter compatibilidade com fluxo de integração que busca 'Nossos Serviços' */}
-          <div className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700" data-testid="services-badge">
+          <div className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full bg-gradient-to-r from-cyan-100 to-cyan-100 text-cyan-700" data-testid="services-badge">
             {t('services.badge', 'Nossos Serviços')}
           </div>
           {/* Texto literal extra apenas no ambiente de teste para atender busca direta por 'Nossos Serviços' quando i18n retorna chaves */}
@@ -459,7 +459,7 @@ const Services = ({ full = false, autoplay = true }) => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex justify-center mt-8"
           >
-            <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full shadow-lg" />
+            <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-cyan-400 rounded-full shadow-lg" />
           </motion.div>
         </div>
 
@@ -470,7 +470,7 @@ const Services = ({ full = false, autoplay = true }) => {
             type="button"
             aria-label={t('ui.prev', 'Anterior')}
             onClick={() => autoplayCarousel.previous()}
-            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/80 hover:bg-white shadow-lg ring-1 ring-slate-200 backdrop-blur justify-center items-center transition focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/80 hover:bg-white shadow-lg ring-1 ring-slate-200 backdrop-blur justify-center items-center transition focus:outline-none focus:ring-2 focus:ring-cyan-500"
           >
             <svg className="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
           </button>
@@ -480,7 +480,7 @@ const Services = ({ full = false, autoplay = true }) => {
             type="button"
             aria-label={t('ui.next', 'Próximo')}
             onClick={() => autoplayCarousel.next()}
-            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/80 hover:bg-white shadow-lg ring-1 ring-slate-200 backdrop-blur justify-center items-center transition focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/80 hover:bg-white shadow-lg ring-1 ring-slate-200 backdrop-blur justify-center items-center transition focus:outline-none focus:ring-2 focus:ring-cyan-500"
           >
             <svg className="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
           </button>
@@ -528,7 +528,7 @@ const Services = ({ full = false, autoplay = true }) => {
                 aria-label={t('services.go_to_page', { index: i + 1, defaultValue: `Ir para página ${i + 1}` })}
                 aria-selected={i === currentPage}
                 onClick={() => autoplayCarousel.goTo(i * Math.max(1, itemsPerView))}
-                className={`h-2.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 ${i === currentPage ? 'bg-blue-600 w-6 shadow' : 'bg-slate-300 hover:bg-slate-400 w-2.5'}`}
+                className={`h-2.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-cyan-500 ${i === currentPage ? 'bg-cyan-600 w-6 shadow' : 'bg-slate-300 hover:bg-slate-400 w-2.5'}`}
               />
             ))}
           </div>

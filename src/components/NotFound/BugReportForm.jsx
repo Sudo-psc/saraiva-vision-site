@@ -266,9 +266,9 @@ const BugReportForm = ({ onSubmit, attemptedUrl, onCancel }) => {
             </div>
 
             {/* Info Alert */}
-            <Alert className="bg-blue-50 border-blue-200">
-              <AlertTriangle className="w-4 h-4 text-blue-600" />
-              <AlertDescription className="text-blue-700 text-sm">
+            <Alert className="bg-blue-50 border-cyan-200">
+              <AlertTriangle className="w-4 h-4 text-cyan-600" />
+              <AlertDescription className="text-cyan-700 text-sm">
                 Seu report nos ajuda a identificar e corrigir problemas no site.
                 Obrigado por colaborar com a melhoria da nossa plataforma!
               </AlertDescription>

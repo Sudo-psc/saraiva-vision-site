@@ -26,25 +26,25 @@ const NavbarFallback: React.FC = () => {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo Fallback */}
-          <Link href="/" className="text-xl font-bold text-blue-600">
+          <Link href="/" className="text-xl font-bold text-cyan-600">
             Saraiva Vision
           </Link>
 
           {/* Navigation Fallback */}
           <nav className="hidden md:flex items-center space-x-6">
-            <Link href="/" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link href="/" className="text-gray-700 hover:text-cyan-600 transition-colors">
               Início
             </Link>
-            <Link href="/servicos" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link href="/servicos" className="text-gray-700 hover:text-cyan-600 transition-colors">
               Serviços
             </Link>
-            <Link href="/sobre" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link href="/sobre" className="text-gray-700 hover:text-cyan-600 transition-colors">
               Sobre
             </Link>
-            <Link href="/contato" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link href="/contato" className="text-gray-700 hover:text-cyan-600 transition-colors">
               Contato
             </Link>
-            <Link href="/podcast" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link href="/podcast" className="text-gray-700 hover:text-cyan-600 transition-colors">
               Podcast
             </Link>
           </nav>
@@ -55,7 +55,7 @@ const NavbarFallback: React.FC = () => {
               href="https://wa.me/5511999999999"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+              className="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition-colors flex items-center gap-2"
             >
               <Phone size={16} />
               <span className="hidden sm:inline">Agendar</span>

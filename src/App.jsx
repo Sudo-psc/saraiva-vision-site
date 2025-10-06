@@ -19,6 +19,7 @@ const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
 const GoogleReviewsTestPage = createLazyComponent(() => import('./pages/GoogleReviewsTestPage.jsx'));
 const MapTestPage = createLazyComponent(() => import('./pages/MapTestPage.jsx'));
 const AgendamentoPage = createLazyComponent(() => import('./pages/AgendamentoPage.jsx'));
+const NotFoundPage = createLazyComponent(() => import('./pages/NotFoundPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
 import { Toaster } from './components/ui/toaster.jsx';
@@ -89,7 +90,7 @@ function App() {
                   {isCheckSubdomain ? (
                     <Route path="*" element={<Navigate to="/" replace />} />
                   ) : (
-                    <Route path="*" element={<Navigate to="/" replace />} />
+                    <Route path="*" element={<NotFoundPage />} />
                   )}
                   </Routes>
                </ErrorBoundary>

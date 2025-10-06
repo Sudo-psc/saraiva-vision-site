@@ -154,7 +154,7 @@ const InstagramConfigRealtime = ({
                     <div className="flex items-center gap-4">
                         <div>
                             <h1 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-                                <Zap className="w-5 h-5 text-blue-600" />
+                                <Zap className="w-5 h-5 text-cyan-600" />
                                 Real-time Configuration
                             </h1>
                             <p className="text-sm text-gray-600">
@@ -219,7 +219,7 @@ const InstagramConfigRealtime = ({
                             className={`
                                 p-2 rounded-md transition-colors
                                 ${showNotifications
-                                    ? 'text-blue-600 bg-blue-50 hover:bg-blue-100'
+                                    ? 'text-cyan-600 bg-blue-50 hover:bg-blue-100'
                                     : 'text-gray-400 bg-gray-50 hover:bg-gray-100'
                                 }
                             `}
@@ -252,7 +252,7 @@ const InstagramConfigRealtime = ({
                         <button
                             onClick={handleSave}
                             disabled={!isDirty || hasValidationErrors || isLoading}
-                            className="flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="flex items-center gap-2 px-4 py-2 text-sm bg-cyan-600 text-white rounded-md hover:bg-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
                             <Save className="w-4 h-4" />
                             {isLoading ? 'Saving...' : 'Save'}
@@ -294,7 +294,7 @@ const InstagramConfigRealtime = ({
                         {hasPendingChanges && (
                             <div className="flex items-center gap-2">
                                 <Clock className="w-4 h-4 text-blue-500" />
-                                <span className="text-sm text-blue-600">
+                                <span className="text-sm text-cyan-600">
                                     {Object.keys(pendingChanges).length} pending change{Object.keys(pendingChanges).length !== 1 ? 's' : ''}
                                 </span>
                             </div>

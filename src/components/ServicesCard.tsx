@@ -40,20 +40,20 @@ const ServicesCard: React.FC<ServicesCardProps> = ({ service }) => {
 
         {/* Category Badge */}
         {service.category && (
-          <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+          <div className="absolute top-4 left-4 bg-cyan-600 text-white px-3 py-1 rounded-full text-sm font-medium">
             {service.category}
           </div>
         )}
 
         {/* Arrow Icon */}
         <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <ArrowRight className="w-5 h-5 text-blue-600" />
+          <ArrowRight className="w-5 h-5 text-cyan-600" />
         </div>
       </div>
 
       {/* Content Section */}
       <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+        <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-cyan-600 transition-colors">
           {service.title}
         </h3>
         <p className="text-gray-600 mb-6 leading-relaxed">
@@ -64,7 +64,7 @@ const ServicesCard: React.FC<ServicesCardProps> = ({ service }) => {
         <div className="flex gap-3">
           <Button
             asChild
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+            className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white"
           >
             <Link to={`/servicos/${service.slug}`}>
               Saiba Mais
@@ -73,7 +73,7 @@ const ServicesCard: React.FC<ServicesCardProps> = ({ service }) => {
           <Button
             asChild
             variant="outline"
-            className="flex-1 border-blue-600 text-blue-600 hover:bg-blue-50"
+            className="flex-1 border-blue-600 text-cyan-600 hover:bg-blue-50"
           >
             <Link to="/contato">
               <MessageCircle className="w-4 h-4 mr-2" />

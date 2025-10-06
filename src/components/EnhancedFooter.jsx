@@ -624,10 +624,10 @@ const EnhancedFooter = ({
                                             !shouldDisableGlass ? [
                                                 "bg-gradient-to-br from-white/10 via-white/5 to-transparent",
                                                 "backdrop-blur-md border border-white/20",
-                                                "hover:bg-gradient-to-br hover:from-blue-500/20 hover:via-blue-500/10 hover:to-transparent",
+                                                "hover:bg-gradient-to-br hover:from-cyan-500/20 hover:via-blue-500/10 hover:to-transparent",
                                                 "hover:border-blue-400/30 hover:shadow-[0_8px_32px_rgba(59,130,246,0.15)]"
                                             ] : [
-                                                "bg-slate-700 hover:bg-blue-600"
+                                                "bg-slate-700 hover:bg-cyan-600"
                                             ]
                                         )}
                                         variants={!shouldReduceMotion ? animationVariants.scrollButton : undefined}

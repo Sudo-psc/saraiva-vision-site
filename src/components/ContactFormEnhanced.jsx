@@ -465,7 +465,7 @@ const ContactFormEnhanced = ({ onSuccess }) => {
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
-                className="fallback-contacts bg-blue-50 border border-blue-200 rounded-lg p-6 mt-6"
+                className="fallback-contacts bg-blue-50 border border-cyan-200 rounded-lg p-6 mt-6"
               >
                 <h3 className="font-semibold text-blue-900 mb-4">Contatos Diretos</h3>
                 <div className="grid gap-3">
@@ -473,7 +473,7 @@ const ContactFormEnhanced = ({ onSuccess }) => {
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition"
+                    className="flex items-center gap-3 p-3 bg-white border border-cyan-200 rounded-lg hover:bg-blue-50 transition"
                   >
                     <MessageCircle className="w-5 h-5 text-green-600" />
                     <div className="flex-1">
@@ -484,9 +484,9 @@ const ContactFormEnhanced = ({ onSuccess }) => {
                   
                   <a
                     href={CONTACT.PHONE.HREF}
-                    className="flex items-center gap-3 p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition"
+                    className="flex items-center gap-3 p-3 bg-white border border-cyan-200 rounded-lg hover:bg-blue-50 transition"
                   >
-                    <Phone className="w-5 h-5 text-blue-600" />
+                    <Phone className="w-5 h-5 text-cyan-600" />
                     <div className="flex-1">
                       <div className="font-medium text-sm">Telefone</div>
                       <div className="text-xs text-slate-600">{CONTACT.PHONE.DISPLAY}</div>
@@ -495,9 +495,9 @@ const ContactFormEnhanced = ({ onSuccess }) => {
                   
                   <a
                     href={`mailto:${CONTACT.EMAIL}`}
-                    className="flex items-center gap-3 p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition"
+                    className="flex items-center gap-3 p-3 bg-white border border-cyan-200 rounded-lg hover:bg-blue-50 transition"
                   >
-                    <Mail className="w-5 h-5 text-blue-600" />
+                    <Mail className="w-5 h-5 text-cyan-600" />
                     <div className="flex-1">
                       <div className="font-medium text-sm">E-mail</div>
                       <div className="text-xs text-slate-600">{CONTACT.EMAIL}</div>

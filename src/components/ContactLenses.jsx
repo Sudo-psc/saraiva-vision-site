@@ -99,7 +99,7 @@ const ContactLenses = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6"
+            className="inline-flex items-center gap-2 bg-blue-100 text-cyan-700 px-4 py-2 rounded-full text-sm font-medium mb-6"
           >
             <Sparkles className="h-4 w-4" />
             {t('contactLenses.hero_badge')}
@@ -144,8 +144,8 @@ const ContactLenses = () => {
                 />
 
                 {/* Floating decorative elements */}
-                <div className="absolute -top-6 -right-6 w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center animate-float">
-                  <Eye className="w-6 h-6 text-blue-600" />
+                <div className="absolute -top-6 -right-6 w-12 h-12 bg-cyan-500/20 rounded-full flex items-center justify-center animate-float">
+                  <Eye className="w-6 h-6 text-cyan-600" />
                 </div>
                 <div className="absolute -bottom-6 -left-6 w-10 h-10 bg-cyan-500/20 rounded-full flex items-center justify-center animate-float-delayed">
                   <Sparkles className="w-5 h-5 text-cyan-600" />
@@ -161,7 +161,7 @@ const ContactLenses = () => {
                 </div>
                 <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
                 <div className="flex items-center gap-1 text-sm text-gray-600">
-                  <Award className="w-4 h-4 text-blue-600" />
+                  <Award className="w-4 h-4 text-cyan-600" />
                   <span className="font-medium">Qualidade</span>
                 </div>
                 <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
@@ -215,7 +215,7 @@ const ContactLenses = () => {
 
               return (
                 <div key={key} className="text-center p-4 bg-white rounded-2xl shadow-sm border border-slate-100">
-                  <Icon className="h-8 w-8 text-blue-600 mx-auto mb-3" />
+                  <Icon className="h-8 w-8 text-cyan-600 mx-auto mb-3" />
                   <p className="text-sm font-semibold text-slate-900">{value}</p>
                 </div>
               );
@@ -266,7 +266,7 @@ const ContactLenses = () => {
 
                   <div className="mb-4">
                     <h4 className="font-semibold text-slate-900 mb-2">Especialidade:</h4>
-                    <p className="text-sm text-blue-600 font-medium">{brand.specialty}</p>
+                    <p className="text-sm text-cyan-600 font-medium">{brand.specialty}</p>
                   </div>
 
                   <div className="space-y-2">
@@ -313,7 +313,7 @@ const ContactLenses = () => {
                   <div className="hidden lg:block absolute top-8 left-1/2 w-full h-0.5 bg-gradient-to-r from-blue-300 to-transparent transform translate-x-8 z-0" />
                 )}
 
-                <div className="relative z-10 w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 shadow-lg">
+                <div className="relative z-10 w-16 h-16 bg-gradient-to-r from-cyan-600 to-cyan-700 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 shadow-lg">
                   {index + 1}
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">
@@ -361,7 +361,7 @@ const ContactLenses = () => {
                   <div className="relative z-10">
                     <div className="text-center mb-6">
                       <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg border border-slate-300/80">
-                        <Icon className="h-6 w-6 text-blue-600" />
+                        <Icon className="h-6 w-6 text-cyan-600" />
                       </div>
                       <h3 className="text-xl font-bold text-slate-900 mb-2">
                         {lens.title}
@@ -396,7 +396,7 @@ const ContactLenses = () => {
           >
             <div className="max-w-4xl mx-auto text-center">
               <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-cyan-600 rounded-2xl flex items-center justify-center">
                   <Shield className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900">

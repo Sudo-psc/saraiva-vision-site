@@ -54,7 +54,7 @@ const Dashboard = () => {
                     <button
                         onClick={refresh}
                         disabled={isRefreshing}
-                        className="flex items-center gap-2 px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center gap-2 px-3 py-2 text-sm bg-cyan-600 text-white rounded-md hover:bg-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
                         {isRefreshing ? 'Refreshing...' : 'Refresh'}

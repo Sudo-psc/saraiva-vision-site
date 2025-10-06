@@ -18,7 +18,7 @@ const FAQPreview = () => {
     <section className="py-16 bg-gradient-to-br from-slate-50/30 to-blue-50/30">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-4">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-cyan-700 text-sm font-medium mb-4">
             <HelpCircle size={16} className="mr-2" />
             {t('faqPreview.badge')}
           </div>
@@ -40,7 +40,7 @@ const FAQPreview = () => {
         </div>
 
         <div className="text-center mt-10">
-          <Link to="/faq" className="text-blue-600 font-medium hover:underline">
+          <Link to="/faq" className="text-cyan-600 font-medium hover:underline">
             {t('faqPreview.link')}
           </Link>
         </div>

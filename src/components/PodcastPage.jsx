@@ -25,7 +25,7 @@ function SpotifyEmbed({ embedUrl, episodeTitle, spotifyUrl }) {
                         href={spotifyUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg font-medium transition-colors"
                         aria-label={`Ouvir episódio no Spotify: ${episodeTitle}`}
                     >
                         Ouvir no Spotify
@@ -87,7 +87,7 @@ const PodcastPage = () => {
                     <div className="container mx-auto px-4">
                         <div className="max-w-4xl mx-auto">
                             <div className="flex items-center gap-3 mb-6">
-                                <Play className="w-6 h-6 text-blue-600" />
+                                <Play className="w-6 h-6 text-cyan-600" />
                                 <h2 className="text-2xl font-bold text-gray-900">
                                     Episódio Mais Recente
                                 </h2>

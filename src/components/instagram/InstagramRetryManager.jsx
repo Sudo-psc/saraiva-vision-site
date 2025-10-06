@@ -356,7 +356,7 @@ const InstagramRetryManager = ({
                     <h3 id="retry-manager-title" className="text-sm font-medium text-gray-900 flex items-center gap-2">
                         {retryState.isRetrying ? (
                             <>
-                                <RefreshCw className={`w-4 h-4 text-blue-600 ${!shouldReduceMotion() ? 'animate-spin' : ''}`} />
+                                <RefreshCw className={`w-4 h-4 text-cyan-600 ${!shouldReduceMotion() ? 'animate-spin' : ''}`} />
                                 Retrying...
                             </>
                         ) : retryState.attempts >= maxRetries ? (
@@ -391,7 +391,7 @@ const InstagramRetryManager = ({
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                             <motion.div
-                                className="h-full bg-blue-600 rounded-full"
+                                className="h-full bg-cyan-600 rounded-full"
                                 variants={progressVariants}
                                 initial="initial"
                                 animate="animate"
@@ -407,7 +407,7 @@ const InstagramRetryManager = ({
                         {canRetry && !retryState.isRetrying && (
                             <button
                                 onClick={handleManualRetry}
-                                className="flex items-center gap-1 px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+                                className="flex items-center gap-1 px-3 py-1 text-xs bg-cyan-600 text-white rounded hover:bg-cyan-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
                                 aria-label="Retry now"
                             >
                                 <RefreshCw className="w-3 h-3" />
@@ -492,7 +492,7 @@ const InstagramRetryManager = ({
                                             px-1 py-0.5 rounded text-xs font-medium
                                             ${entry.status === 'success' ? 'bg-green-100 text-green-800' :
                                                 entry.status === 'failed' ? 'bg-red-100 text-red-800' :
-                                                    entry.status === 'executing' ? 'bg-blue-100 text-blue-800' :
+                                                    entry.status === 'executing' ? 'bg-blue-100 text-cyan-800' :
                                                         'bg-gray-100 text-gray-800'}
                                         `}>
                                             {entry.status}

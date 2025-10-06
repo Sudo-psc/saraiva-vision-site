@@ -84,7 +84,7 @@ const PodcastEpisodeCard = ({
                 loading="lazy"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-400 to-blue-600">
+              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-400 to-cyan-600">
                 <Volume2 className="w-6 h-6 text-white" />
               </div>
             )}
@@ -142,7 +142,7 @@ const PodcastEpisodeCard = ({
               {description.length > 150 && (
                 <button
                   onClick={() => setShowFullDescription(!showFullDescription)}
-                  className="text-blue-600 hover:text-blue-700 font-medium mt-1 text-xs"
+                  className="text-cyan-600 hover:text-cyan-700 font-medium mt-1 text-xs"
                 >
                   {showFullDescription ? 'Ver menos' : 'Ver mais'}
                 </button>
@@ -156,7 +156,7 @@ const PodcastEpisodeCard = ({
           {spotifyUrl && (
             <button
               onClick={handleSpotifyClick}
-              className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
+              className="p-2 text-gray-400 hover:text-cyan-600 transition-colors"
               title="Abrir no Spotify"
               aria-label="Abrir no Spotify"
             >

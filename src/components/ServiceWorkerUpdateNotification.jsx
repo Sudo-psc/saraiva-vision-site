@@ -55,7 +55,7 @@ export default function ServiceWorkerUpdateNotification() {
 		<div className="fixed bottom-4 right-4 z-50 max-w-sm bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4">
 			<div className="flex items-start space-x-3">
 				<div className="flex-shrink-0">
-					<Download className="w-5 h-5 text-blue-600" />
+					<Download className="w-5 h-5 text-cyan-600" />
 				</div>
 
 				<div className="flex-1 min-w-0">
@@ -79,7 +79,7 @@ export default function ServiceWorkerUpdateNotification() {
 				<button
 					onClick={handleUpdate}
 					disabled={isUpdating}
-					className="flex items-center space-x-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white text-xs px-3 py-2 rounded-md transition-colors"
+					className="flex items-center space-x-1 bg-cyan-600 hover:bg-cyan-700 disabled:bg-blue-400 text-white text-xs px-3 py-2 rounded-md transition-colors"
 				>
 					{isUpdating ? (
 						<RefreshCw className="w-3 h-3 animate-spin" />

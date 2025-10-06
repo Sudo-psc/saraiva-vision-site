@@ -88,7 +88,7 @@ const LanguageSwitcher = ({ compact = false, className = '' }) => {
                     onClick={() => handleLanguageChange(lang.code)}
                     className={`w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors ${
                       currentLanguage === lang.code
-                        ? 'bg-blue-50 text-blue-700'
+                        ? 'bg-blue-50 text-cyan-700'
                         : 'text-slate-700 hover:bg-slate-50'
                     }`}
                     role="menuitem"
@@ -97,7 +97,7 @@ const LanguageSwitcher = ({ compact = false, className = '' }) => {
                     {lang.flag}
                     <span>{lang.nativeName}</span>
                     {currentLanguage === lang.code && (
-                      <span className="ml-auto text-blue-600">✓</span>
+                      <span className="ml-auto text-cyan-600">✓</span>
                     )}
                   </button>
                 ))}
@@ -155,7 +155,7 @@ const LanguageSwitcher = ({ compact = false, className = '' }) => {
                   onClick={() => handleLanguageChange(lang.code)}
                   className={`w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors ${
                     currentLanguage === lang.code
-                      ? 'bg-blue-50 text-blue-700'
+                      ? 'bg-blue-50 text-cyan-700'
                       : 'text-slate-700 hover:bg-slate-50'
                   }`}
                   role="menuitem"
@@ -164,7 +164,7 @@ const LanguageSwitcher = ({ compact = false, className = '' }) => {
                   {lang.flag}
                   <span className="font-medium">{lang.nativeName}</span>
                   {currentLanguage === lang.code && (
-                    <span className="ml-auto text-blue-600 font-semibold">✓</span>
+                    <span className="ml-auto text-cyan-600 font-semibold">✓</span>
                   )}
                 </button>
               ))}

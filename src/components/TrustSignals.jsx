@@ -56,7 +56,7 @@ const TrustSignals = () => {
 
   const getColorClasses = (color) => {
     const colors = {
-      blue: 'bg-blue-100 text-blue-600',
+      blue: 'bg-blue-100 text-cyan-600',
       amber: 'bg-amber-100 text-amber-600',
       green: 'bg-green-100 text-green-600',
       purple: 'bg-purple-100 text-purple-600'
@@ -163,7 +163,7 @@ const TrustSignals = () => {
         >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold text-blue-600 mb-2">98%</div>
+              <div className="text-4xl font-bold text-cyan-600 mb-2">98%</div>
               <p className="text-slate-600">{t('trust.stats.satisfaction')}</p>
             </div>
             <div>

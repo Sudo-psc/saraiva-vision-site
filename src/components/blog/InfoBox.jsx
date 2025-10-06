@@ -43,8 +43,8 @@ const InfoBox = ({
     info: {
       icon: Info,
       bgColor: 'bg-gradient-to-br from-blue-50 to-cyan-50',
-      borderColor: 'border-blue-300',
-      iconBg: 'bg-blue-500',
+      borderColor: 'border-cyan-300',
+      iconBg: 'bg-cyan-500',
       iconColor: 'text-white',
       titleColor: 'text-blue-900',
       emoji: 'ℹ️'

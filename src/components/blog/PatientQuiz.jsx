@@ -61,7 +61,7 @@ const PatientQuiz = ({
     >
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-full p-3 shadow-md">
+        <div className="bg-gradient-to-br from-cyan-600 to-cyan-700 rounded-full p-3 shadow-md">
           <HelpCircle className="w-6 h-6 text-white" aria-hidden="true" />
         </div>
         <div>
@@ -87,7 +87,7 @@ const PatientQuiz = ({
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <motion.div
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 h-2 rounded-full"
+                  className="bg-gradient-to-r from-cyan-600 to-cyan-700 h-2 rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: `${(currentQuestion / questions.length) * 100}%` }}
                   transition={{ duration: 0.5 }}
@@ -153,7 +153,7 @@ const PatientQuiz = ({
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
-                  className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200"
+                  className="mt-4 p-4 bg-blue-50 rounded-lg border border-cyan-200"
                 >
                   <p className="text-sm text-blue-900">
                     <strong>💡 Explicação:</strong> {questions[currentQuestion].explanation}
@@ -175,7 +175,7 @@ const PatientQuiz = ({
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
-              className="w-24 h-24 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
+              className="w-24 h-24 bg-gradient-to-br from-cyan-600 to-cyan-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
             >
               <Award className="w-12 h-12 text-white" />
             </motion.div>
@@ -188,7 +188,7 @@ const PatientQuiz = ({
             </p>
 
             <div className="bg-white rounded-xl p-6 shadow-md mb-6">
-              <div className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700 mb-2">
+              <div className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-cyan-700 mb-2">
                 {Math.round((score / questions.length) * 100)}%
               </div>
               <p className="text-sm text-gray-600">Taxa de acerto</p>
@@ -204,7 +204,7 @@ const PatientQuiz = ({
               </Button>
               <Button
                 onClick={() => window.location.href = '/sobre#contact'}
-                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold"
+                className="bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-semibold"
               >
                 Agendar Consulta
               </Button>

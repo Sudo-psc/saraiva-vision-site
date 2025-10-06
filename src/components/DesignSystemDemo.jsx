@@ -69,7 +69,7 @@ const DesignSystemDemo = () => {
                   </span>
                 </div>
                 <div className="bg-blue-100 rounded">
-                  <div className={`${space.class} bg-blue-500 w-4 rounded`}></div>
+                  <div className={`${space.class} bg-cyan-500 w-4 rounded`}></div>
                 </div>
               </div>
             ))}
@@ -87,7 +87,7 @@ const DesignSystemDemo = () => {
                 <span className="text-body font-medium text-green-700">Good Example</span>
               </div>
               <div className="text-center">
-                <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-overline font-medium mb-6">
+                <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-cyan-700 text-overline font-medium mb-6">
                   Our Services
                 </div>
                 <h2 className="text-heading-xl font-bold mb-6 max-w-prose mx-auto">

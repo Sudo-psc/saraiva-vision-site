@@ -263,7 +263,7 @@ class InstagramErrorBoundary extends React.Component {
                                 {this.enableRecovery && this.state.retryCount < this.maxRetries && (
                                     <button
                                         onClick={this.handleRecovery}
-                                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                                        className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-600 text-white rounded-md hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                                         disabled={this.state.isRecovering}
                                     >
                                         <RefreshCw className={`w-4 h-4 ${this.state.isRecovering ? 'animate-spin' : ''}`} />
@@ -344,11 +344,11 @@ class InstagramErrorBoundary extends React.Component {
                             )}
 
                             {/* Fallback content suggestion */}
-                            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-                                <p className="text-sm text-blue-800">
+                            <div className="mt-4 p-3 bg-blue-50 border border-cyan-200 rounded-md">
+                                <p className="text-sm text-cyan-800">
                                     <strong>What you can do:</strong>
                                 </p>
-                                <ul className="text-sm text-blue-700 mt-1 list-disc list-inside space-y-1">
+                                <ul className="text-sm text-cyan-700 mt-1 list-disc list-inside space-y-1">
                                     <li>Check your internet connection</li>
                                     <li>Refresh the page</li>
                                     <li>Try again in a few minutes</li>

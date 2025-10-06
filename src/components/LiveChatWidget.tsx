@@ -86,7 +86,7 @@ export function LiveChatWidget({
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-blue-600 text-white rounded-full p-4 shadow-lg hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="bg-cyan-600 text-white rounded-full p-4 shadow-lg hover:bg-cyan-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           aria-label="Abrir chat"
         >
           <MessageCircle size={24} />
@@ -100,7 +100,7 @@ export function LiveChatWidget({
       {isOpen && (
         <div className="bg-white rounded-lg shadow-2xl w-96 h-[500px] flex flex-col border border-gray-200">
           {/* Header */}
-          <div className="bg-blue-600 text-white p-4 rounded-t-lg flex justify-between items-center">
+          <div className="bg-cyan-600 text-white p-4 rounded-t-lg flex justify-between items-center">
             <div>
               <h3 className="font-semibold">Chat Saraiva Vision</h3>
               <p className="text-xs opacity-90">
@@ -109,7 +109,7 @@ export function LiveChatWidget({
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-white hover:bg-blue-700 rounded p-1 transition-colors"
+              className="text-white hover:bg-cyan-700 rounded p-1 transition-colors"
               aria-label="Fechar chat"
             >
               <X size={20} />
@@ -134,7 +134,7 @@ export function LiveChatWidget({
                 <div
                   className={`max-w-[80%] rounded-lg p-3 ${
                     msg.sender === 'user'
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-cyan-600 text-white'
                       : 'bg-gray-100 text-gray-800'
                   }`}
                 >
@@ -172,7 +172,7 @@ export function LiveChatWidget({
               <button
                 onClick={handleSendMessage}
                 disabled={!message.trim() || !isReady || state !== 'connected'}
-                className="bg-blue-600 text-white rounded-lg p-2 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                className="bg-cyan-600 text-white rounded-lg p-2 hover:bg-cyan-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
                 aria-label="Enviar mensagem"
               >
                 <Send size={20} />
@@ -182,7 +182,7 @@ export function LiveChatWidget({
             {/* LGPD Compliance Notice */}
             <p className="text-xs text-gray-500 mt-2">
               Ao usar este chat, você concorda com nossos {' '}
-              <a href="/privacy" className="underline hover:text-blue-600">
+              <a href="/privacy" className="underline hover:text-cyan-600">
                 termos de privacidade
               </a>
               . Não compartilhe informações médicas sensíveis.

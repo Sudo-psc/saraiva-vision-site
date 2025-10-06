@@ -34,7 +34,7 @@ const RelatedPosts = ({ posts = [], currentPostId, className = '' }) => {
     >
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full p-3 shadow-md">
+        <div className="bg-gradient-to-r from-cyan-600 to-indigo-600 rounded-full p-3 shadow-md">
           <ArrowRight className="w-6 h-6 text-white" aria-hidden="true" />
         </div>
         <div>
@@ -77,7 +77,7 @@ const RelatedPosts = ({ posts = [], currentPostId, className = '' }) => {
                   <CategoryBadge category={post.category} size="sm" />
                 </div>
 
-                <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-cyan-600 transition-colors">
                   {post.title}
                 </h3>
 
@@ -90,7 +90,7 @@ const RelatedPosts = ({ posts = [], currentPostId, className = '' }) => {
                     <Clock className="w-3 h-3" aria-hidden="true" />
                     <time dateTime={post.date}>{formatDate(post.date)}</time>
                   </div>
-                  <span className="text-blue-600 font-medium group-hover:underline flex items-center gap-1">
+                  <span className="text-cyan-600 font-medium group-hover:underline flex items-center gap-1">
                     Ler mais
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                   </span>
@@ -105,7 +105,7 @@ const RelatedPosts = ({ posts = [], currentPostId, className = '' }) => {
       <div className="mt-8 text-center">
         <Link
           to="/blog"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all group"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all group"
         >
           <span>Ver Todos os Artigos</span>
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

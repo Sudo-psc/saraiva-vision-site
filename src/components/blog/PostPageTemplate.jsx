@@ -240,7 +240,7 @@ const PostPageTemplate = ({ slug }) => {
 
       {/* Reading Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 z-50 origin-left"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-600 via-purple-600 to-pink-600 z-50 origin-left"
         style={{ scaleX: scrollYProgress }}
       />
 
@@ -257,13 +257,13 @@ const PostPageTemplate = ({ slug }) => {
             >
               <ol className="flex items-center space-x-2 text-sm text-gray-600">
                 <li>
-                  <Link to="/" className="hover:text-blue-600 transition-colors font-medium">
+                  <Link to="/" className="hover:text-cyan-600 transition-colors font-medium">
                     Home
                   </Link>
                 </li>
                 <li className="text-gray-400">/</li>
                 <li>
-                  <Link to="/blog" className="hover:text-blue-600 transition-colors font-medium">
+                  <Link to="/blog" className="hover:text-cyan-600 transition-colors font-medium">
                     Blog
                   </Link>
                 </li>
@@ -281,7 +281,7 @@ const PostPageTemplate = ({ slug }) => {
             animate={{ opacity: 1, x: 0 }}
             className="mb-8 px-4 md:px-6 relative inline-block group"
           >
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl blur opacity-0 group-hover:opacity-30 transition-opacity"></div>
+            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-xl blur opacity-0 group-hover:opacity-30 transition-opacity"></div>
             <Button
               onClick={() => navigate('/blog')}
               variant="ghost"
@@ -406,12 +406,12 @@ const PostPageTemplate = ({ slug }) => {
                 className="relative group"
               >
                 {/* 3D Shadow Layer */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                 {/* Content Container */}
                 <div className="relative bg-white/70 backdrop-blur-xl rounded-none p-0 shadow-2xl border-0">
                   {/* Liquid Glass Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 pointer-events-none"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-purple-500/5 to-pink-500/5 pointer-events-none"></div>
 
                   {/* Content with Typography Plugin */}
                   <div
@@ -448,7 +448,7 @@ const PostPageTemplate = ({ slug }) => {
                     {currentPost.tags.map(tag => (
                       <span
                         key={tag}
-                        className="px-4 py-2 bg-gradient-to-r from-blue-50 to-purple-50 text-gray-700 rounded-full text-sm font-semibold border border-blue-200 hover:border-blue-400 hover:shadow-md transition-all cursor-pointer"
+                        className="px-4 py-2 bg-gradient-to-r from-blue-50 to-purple-50 text-gray-700 rounded-full text-sm font-semibold border border-cyan-200 hover:border-blue-400 hover:shadow-md transition-all cursor-pointer"
                       >
                         #{tag}
                       </span>
@@ -467,11 +467,11 @@ const PostPageTemplate = ({ slug }) => {
                   className="relative group"
                 >
                   {/* 3D Glow */}
-                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                  <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
 
-                  <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-6 md:p-8 border-2 border-blue-200 shadow-xl">
+                  <div className="relative bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-6 md:p-8 border-2 border-cyan-200 shadow-xl">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl shadow-md">
+                      <div className="p-3 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-xl shadow-md">
                         <Headphones className="w-6 h-6 text-white" />
                       </div>
                       <div>
@@ -491,7 +491,7 @@ const PostPageTemplate = ({ slug }) => {
                           className="bg-white rounded-xl p-4 md:p-6 shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
                         >
                           <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                            <span className="text-blue-600">🎙️</span>
+                            <span className="text-cyan-600">🎙️</span>
                             {podcast.title}
                           </h4>
 
@@ -524,11 +524,11 @@ const PostPageTemplate = ({ slug }) => {
                       ))}
                     </div>
 
-                    <div className="mt-6 pt-6 border-t border-blue-200">
+                    <div className="mt-6 pt-6 border-t border-cyan-200">
                       <p className="text-sm text-gray-600 text-center">
                         <a
                           href="/podcast"
-                          className="text-blue-600 hover:text-blue-700 font-medium underline"
+                          className="text-cyan-600 hover:text-cyan-700 font-medium underline"
                         >
                           Ver todos os episódios do podcast
                         </a>
@@ -548,7 +548,7 @@ const PostPageTemplate = ({ slug }) => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6 md:p-8 shadow-xl text-white"
+                className="bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl p-6 md:p-8 shadow-xl text-white"
               >
                 <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                   <Share2 className="w-5 h-5" />
@@ -638,7 +638,7 @@ const PostPageTemplate = ({ slug }) => {
                               onClick={() => scrollToSection(section.id)}
                               className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
                                 activeSection === section.id
-                                  ? 'bg-blue-100 text-blue-700 font-semibold border-l-4 border-blue-600'
+                                  ? 'bg-blue-100 text-cyan-700 font-semibold border-l-4 border-blue-600'
                                   : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                               }`}
                             >
@@ -684,11 +684,11 @@ const PostPageTemplate = ({ slug }) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             onClick={scrollToTop}
-            className="group relative p-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full shadow-xl hover:shadow-2xl transition-all"
+            className="group relative p-3 bg-gradient-to-r from-cyan-600 to-purple-600 text-white rounded-full shadow-xl hover:shadow-2xl transition-all"
             aria-label="Voltar ao topo"
           >
             {/* 3D Glow */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur opacity-50 group-hover:opacity-75 transition-opacity"></div>
+            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full blur opacity-50 group-hover:opacity-75 transition-opacity"></div>
             <ChevronUp className="relative w-6 h-6" />
           </motion.button>
         )}
@@ -699,11 +699,11 @@ const PostPageTemplate = ({ slug }) => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setShareMenuOpen(!shareMenuOpen)}
-            className="group relative p-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full shadow-xl hover:shadow-2xl transition-all"
+            className="group relative p-3 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white rounded-full shadow-xl hover:shadow-2xl transition-all"
             aria-label="Compartilhar"
           >
             {/* 3D Glow */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full blur opacity-50 group-hover:opacity-75 transition-opacity"></div>
+            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-cyan-600 rounded-full blur opacity-50 group-hover:opacity-75 transition-opacity"></div>
             <Share2 className="relative w-6 h-6" />
           </motion.button>
 

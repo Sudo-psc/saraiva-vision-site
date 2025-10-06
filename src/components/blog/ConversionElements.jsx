@@ -37,7 +37,7 @@ export function StickyAppointmentCTA() {
         href="https://wa.me/5533998601427?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta"
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-4
+        className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold px-6 py-4
                    shadow-2xl hover:shadow-3xl transition-all rounded-full
                    focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2"
       >
@@ -56,7 +56,7 @@ export function StickyAppointmentCTA() {
 export function InlineAppointmentCTA({ context = "artigo" }) {
   return (
     <aside 
-      className="my-10 p-6 sm:p-8 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 
+      className="my-10 p-6 sm:p-8 bg-gradient-to-br from-cyan-600 via-blue-700 to-purple-700 
                  rounded-2xl text-white shadow-2xl"
       role="complementary"
       aria-label="Área de agendamento inline"
@@ -82,7 +82,7 @@ export function InlineAppointmentCTA({ context = "artigo" }) {
             href="https://wa.me/5533998601427?text=Olá!%20Li%20o%20artigo%20e%20gostaria%20de%20agendar%20uma%20consulta"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white text-blue-700 hover:bg-gray-100 font-bold px-8 py-4
+            className="bg-white text-cyan-700 hover:bg-gray-100 font-bold px-8 py-4
                      focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-4
                      focus:ring-offset-blue-700 transition-all shadow-lg text-lg"
           >
@@ -123,15 +123,15 @@ export function TrustBadges({ author }) {
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <Shield className="w-5 h-5 text-blue-600" aria-hidden="true" />
+      <Shield className="w-5 h-5 text-cyan-600" aria-hidden="true" />
       <span className="font-semibold text-gray-900">Credenciais:</span>
       <div className="flex flex-wrap gap-2">
         {credentials.map((cred, index) => (
           <span
             key={index}
             className="inline-flex items-center px-3 py-1.5 
-                     bg-blue-50 text-blue-700 text-xs font-medium 
-                     rounded-full border border-blue-200"
+                     bg-blue-50 text-cyan-700 text-xs font-medium 
+                     rounded-full border border-cyan-200"
           >
             {cred}
           </span>
@@ -150,13 +150,13 @@ export function ClinicInfoCard() {
       {/* Localização */}
       <div className="flex flex-col items-center text-center">
         <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
-          <MapPin className="w-6 h-6 text-blue-600" aria-hidden="true" />
+          <MapPin className="w-6 h-6 text-cyan-600" aria-hidden="true" />
         </div>
         <h4 className="font-bold text-gray-900 mb-1">Localização</h4>
         <p className="text-sm text-gray-600">Caratinga, MG</p>
         <Link
           to="/contato#mapa"
-          className="text-sm text-blue-600 hover:text-blue-800 hover:underline mt-1
+          className="text-sm text-cyan-600 hover:text-cyan-800 hover:underline mt-1
                    focus:outline-none focus:underline"
         >
           Ver no mapa →
@@ -228,7 +228,7 @@ export function ReviewsHighlight({ rating = 4.9, count = 127 }) {
           <p className="text-sm text-gray-600">avaliações verificadas</p>
           <Link
             to="/avaliacoes"
-            className="text-sm text-blue-600 hover:text-blue-800 hover:underline mt-1 
+            className="text-sm text-cyan-600 hover:text-cyan-800 hover:underline mt-1 
                      inline-block focus:outline-none focus:underline"
           >
             Ver todas →
@@ -314,7 +314,7 @@ export function ServicesCTA({ services = [] }) {
             key={index}
             to={`/servicos/${service.slug}`}
             className="p-4 bg-gray-50 hover:bg-blue-50 border border-gray-200 
-                     hover:border-blue-300 rounded-xl transition-all text-center
+                     hover:border-cyan-300 rounded-xl transition-all text-center
                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             <div className="text-4xl mb-2" aria-hidden="true">{service.icon}</div>
@@ -326,7 +326,7 @@ export function ServicesCTA({ services = [] }) {
       <div className="mt-6 text-center">
         <Link
           to="/servicos"
-          className="inline-flex items-center text-blue-600 hover:text-blue-800 
+          className="inline-flex items-center text-cyan-600 hover:text-cyan-800 
                    font-semibold hover:underline focus:outline-none focus:underline"
         >
           Ver todos os serviços →

@@ -83,7 +83,7 @@ const FAQ = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-4">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-cyan-700 text-sm font-medium mb-4">
             <HelpCircle size={16} className="mr-2" />
             {t('faq.badge')}
           </div>
@@ -110,7 +110,7 @@ const FAQ = () => {
               placeholder={t('faq.search.placeholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+              className="w-full pl-12 pr-4 py-4 rounded-xl border border-slate-200 focus:border-cyan-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
             />
           </div>
         </motion.div>
