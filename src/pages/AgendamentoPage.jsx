@@ -17,15 +17,18 @@ const AgendamentoPage = () => {
       </Helmet>
 
       <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
-        <div className="flex-1 pt-24 md:pt-32 pb-8">
+        <div className="flex-1 pt-32 md:pt-40 pb-8">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-6 mt-4">
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              <div className="text-center mb-8 mt-2">
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                   Agendamento Online
                 </h1>
-                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                  Agende sua consulta com o Dr. Philipe Saraiva de forma rápida e segura
+                <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-3">
+                  Agende sua consulta com o Dr. Philipe Saraiva de forma rápida e segura.
+                </p>
+                <p className="text-base text-gray-600 max-w-2xl mx-auto">
+                  Siga o fluxo e, em menos de 2 minutos, sua consulta estará agendada.
                 </p>
               </div>
 
