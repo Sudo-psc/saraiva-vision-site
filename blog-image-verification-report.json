@@ -1,17 +1,17 @@
 {
-  "timestamp": "2025-10-06T17:07:57.503Z",
+  "timestamp": "2025-10-06T18:05:28.380Z",
   "paths": {
     "imagesDirectory": "/home/saraiva-vision-site/public/Blog",
     "blogPostsFile": "/home/saraiva-vision-site/src/data/blogPosts.js"
   },
   "summary": {
-    "totalImagesAvailable": 915,
+    "totalImagesAvailable": 913,
     "totalReferences": 6,
     "validReferences": 6,
     "missingImages": 0,
     "extensionTypos": 0,
     "imagesNeedingVariants": 0,
-    "unusedImages": 909
+    "unusedImages": 907
   },
   "availableImages": [
     {
@@ -3930,16 +3930,6 @@
       "basename": "healthy-food-sources-768w"
     },
     {
-      "filename": "healthy-food-sources-test.avif",
-      "extension": ".avif",
-      "basename": "healthy-food-sources-test"
-    },
-    {
-      "filename": "healthy-food-sources-test.webp",
-      "extension": ".webp",
-      "basename": "healthy-food-sources-test"
-    },
-    {
       "filename": "healthy-food-sources.avif",
       "extension": ".avif",
       "basename": "healthy-food-sources"
@@ -7764,14 +7754,6 @@
     },
     {
       "filename": "healthy-food-sources-768w.webp",
-      "extension": ".webp"
-    },
-    {
-      "filename": "healthy-food-sources-test.avif",
-      "extension": ".avif"
-    },
-    {
-      "filename": "healthy-food-sources-test.webp",
       "extension": ".webp"
     },
     {
