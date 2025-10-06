@@ -20,7 +20,11 @@ export default defineConfig({
         // Global test configuration
         globals: true,
         environment: 'jsdom',
-        setupFiles: ['./src/__tests__/setup.js'],
+        environmentMatchGlobs: [
+            ['api/**/*.test.js', 'node'],
+            ['src/**/*.test.{js,jsx}', 'jsdom']
+        ],
+        setupFiles: ['./src/__tests__/setup.js', './api/__tests__/setup.js'],
 
         // Test file patterns
         include: [
