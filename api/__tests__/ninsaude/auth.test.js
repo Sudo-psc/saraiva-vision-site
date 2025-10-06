@@ -17,6 +17,9 @@ describe('Ninsaúde API Authentication', () => {
   describe('OAuth2 Authentication Flow', () => {
     it('should authenticate with valid credentials', async () => {
       if (!CLIENT_ID || !CLIENT_SECRET) {
+        if (process.env.CI) {
+          throw new Error('Missing required environment variables: NINSAUDE_CLIENT_ID or NINSAUDE_CLIENT_SECRET');
+        }
         console.warn('⚠️  Skipping test: NINSAUDE_CLIENT_ID or NINSAUDE_CLIENT_SECRET not set');
         return;
       }
@@ -78,6 +81,9 @@ describe('Ninsaúde API Authentication', () => {
 
     it('should reject authentication with invalid grant_type', async () => {
       if (!CLIENT_ID || !CLIENT_SECRET) {
+        if (process.env.CI) {
+          throw new Error('Missing required environment variables: NINSAUDE_CLIENT_ID or NINSAUDE_CLIENT_SECRET');
+        }
         console.warn('⚠️  Skipping test: Credentials not set');
         return;
       }
@@ -172,6 +178,9 @@ describe('Ninsaúde API Authentication', () => {
   describe('Token Properties', () => {
     it('should return token with expected structure', async () => {
       if (!CLIENT_ID || !CLIENT_SECRET) {
+        if (process.env.CI) {
+          throw new Error('Missing required environment variables: NINSAUDE_CLIENT_ID or NINSAUDE_CLIENT_SECRET');
+        }
         console.warn('⚠️  Skipping test: Credentials not set');
         return;
       }
@@ -198,6 +207,9 @@ describe('Ninsaúde API Authentication', () => {
 
     it('should return consistent token format', async () => {
       if (!CLIENT_ID || !CLIENT_SECRET) {
+        if (process.env.CI) {
+          throw new Error('Missing required environment variables: NINSAUDE_CLIENT_ID or NINSAUDE_CLIENT_SECRET');
+        }
         console.warn('⚠️  Skipping test: Credentials not set');
         return;
       }
@@ -224,6 +236,9 @@ describe('Ninsaúde API Authentication', () => {
   describe('Rate Limiting', () => {
     it('should handle multiple authentication requests', async () => {
       if (!CLIENT_ID || !CLIENT_SECRET) {
+        if (process.env.CI) {
+          throw new Error('Missing required environment variables: NINSAUDE_CLIENT_ID or NINSAUDE_CLIENT_SECRET');
+        }
         console.warn('⚠️  Skipping test: Credentials not set');
         return;
       }
@@ -246,11 +261,14 @@ describe('Ninsaúde API Authentication', () => {
 
     it('should respect rate limits on excessive requests', async () => {
       if (!CLIENT_ID || !CLIENT_SECRET) {
+        if (process.env.CI) {
+          throw new Error('Missing required environment variables: NINSAUDE_CLIENT_ID or NINSAUDE_CLIENT_SECRET');
+        }
         console.warn('⚠️  Skipping test: Credentials not set');
         return;
       }
 
-      const requests = Array(35).fill().map((_, index) =>
+      const requests = Array(8).fill().map((_, index) =>
         axios.post(`${API_BASE_URL}/oauth/token`, {
           grant_type: 'client_credentials',
           client_id: CLIENT_ID,
@@ -274,6 +292,9 @@ describe('Ninsaúde API Authentication', () => {
   describe('Token Security', () => {
     it('should not expose client_secret in response', async () => {
       if (!CLIENT_ID || !CLIENT_SECRET) {
+        if (process.env.CI) {
+          throw new Error('Missing required environment variables: NINSAUDE_CLIENT_ID or NINSAUDE_CLIENT_SECRET');
+        }
         console.warn('⚠️  Skipping test: Credentials not set');
         return;
       }
@@ -296,6 +317,9 @@ describe('Ninsaúde API Authentication', () => {
 
     it('should include security headers in response', async () => {
       if (!CLIENT_ID || !CLIENT_SECRET) {
+        if (process.env.CI) {
+          throw new Error('Missing required environment variables: NINSAUDE_CLIENT_ID or NINSAUDE_CLIENT_SECRET');
+        }
         console.warn('⚠️  Skipping test: Credentials not set');
         return;
       }

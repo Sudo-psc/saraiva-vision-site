@@ -71,22 +71,11 @@ async function refreshToken(redisClient) {
 
         const { refreshToken } = JSON.parse(refreshTokenData);
 
-        // Call token refresh endpoint (implementation in auth.js)
-        const response = await fetch(`${process.env.API_BASE_URL || 'http://localhost:3002'}${TOKEN_CONFIG.tokenRefreshEndpoint}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ refreshToken })
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error?.message || 'Token refresh failed');
-        }
-
-        const newTokenData = await response.json();
-        return newTokenData.data;
+        // Import auth module directly to avoid circular dependency
+        const { handleRefresh } = await import('../auth.js');
+        const tokenData = await handleRefresh(refreshToken);
+        
+        return tokenData;
     } catch (error) {
         console.error('Token refresh error:', error);
         throw error;

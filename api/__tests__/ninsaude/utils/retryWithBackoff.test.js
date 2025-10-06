@@ -113,7 +113,7 @@ describe('retryWithBackoff', () => {
     it('should respect max retry attempts (default 3)', async () => {
       const mockFn = vi.fn().mockRejectedValue(new Error('Always fail'));
 
-      const promise = retryWithBackoff(mockFn);
+      const promise = retryWithBackoff(mockFn).catch((err) => err);
 
       // Initial attempt
       await vi.advanceTimersByTimeAsync(0);
@@ -131,14 +131,16 @@ describe('retryWithBackoff', () => {
       expect(mockFn).toHaveBeenCalledTimes(4);
 
       // Should reject after exhausting retries
-      await expect(promise).rejects.toThrow('Always fail');
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe('Always fail');
     });
 
     it('should allow custom max retry attempts', async () => {
       const mockFn = vi.fn().mockRejectedValue(new Error('Fail'));
       const maxRetries = 2;
 
-      const promise = retryWithBackoff(mockFn, maxRetries);
+      const promise = retryWithBackoff(mockFn, maxRetries).catch((err) => err);
 
       // Initial + 2 retries
       await vi.advanceTimersByTimeAsync(0);
@@ -146,17 +148,21 @@ describe('retryWithBackoff', () => {
       await vi.advanceTimersByTimeAsync(2000);
 
       expect(mockFn).toHaveBeenCalledTimes(3);
-      await expect(promise).rejects.toThrow('Fail');
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe('Fail');
     });
 
     it('should handle zero retries', async () => {
       const mockFn = vi.fn().mockRejectedValue(new Error('Fail'));
 
-      const promise = retryWithBackoff(mockFn, 0);
+      const promise = retryWithBackoff(mockFn, 0).catch((err) => err);
       await vi.advanceTimersByTimeAsync(0);
 
       expect(mockFn).toHaveBeenCalledTimes(1);
-      await expect(promise).rejects.toThrow('Fail');
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe('Fail');
     });
   });
 
@@ -221,14 +227,16 @@ describe('retryWithBackoff', () => {
       const error = new Error('Network timeout');
       const mockFn = vi.fn().mockRejectedValue(error);
 
-      const promise = retryWithBackoff(mockFn);
+      const promise = retryWithBackoff(mockFn).catch((err) => err);
 
       await vi.advanceTimersByTimeAsync(0);
       await vi.advanceTimersByTimeAsync(1000);
       await vi.advanceTimersByTimeAsync(2000);
       await vi.advanceTimersByTimeAsync(4000);
 
-      await expect(promise).rejects.toThrow('Network timeout');
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe('Network timeout');
     });
 
     it('should preserve error details', async () => {
@@ -238,19 +246,16 @@ describe('retryWithBackoff', () => {
 
       const mockFn = vi.fn().mockRejectedValue(error);
 
-      const promise = retryWithBackoff(mockFn, 1);
+      const promise = retryWithBackoff(mockFn, 1).catch((err) => err);
 
       await vi.advanceTimersByTimeAsync(0);
       await vi.advanceTimersByTimeAsync(1000);
 
-      try {
-        await promise;
-        expect.fail('Should have thrown error');
-      } catch (err) {
-        expect(err.message).toBe('API Error');
-        expect(err.code).toBe('ECONNREFUSED');
-        expect(err.statusCode).toBe(500);
-      }
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe('API Error');
+      expect(result.code).toBe('ECONNREFUSED');
+      expect(result.statusCode).toBe(500);
     });
   });
 
@@ -258,11 +263,12 @@ describe('retryWithBackoff', () => {
     it('should propagate errors correctly', async () => {
       const mockFn = vi.fn().mockRejectedValue(new TypeError('Type error'));
 
-      const promise = retryWithBackoff(mockFn, 0);
+      const promise = retryWithBackoff(mockFn, 0).catch((err) => err);
       await vi.advanceTimersByTimeAsync(0);
 
-      await expect(promise).rejects.toThrow(TypeError);
-      await expect(promise).rejects.toThrow('Type error');
+      const result = await promise;
+      expect(result).toBeInstanceOf(TypeError);
+      expect(result.message).toBe('Type error');
     });
 
     it('should handle promise rejections', async () => {
@@ -270,10 +276,12 @@ describe('retryWithBackoff', () => {
         .fn()
         .mockImplementation(() => Promise.reject(new Error('Rejected')));
 
-      const promise = retryWithBackoff(mockFn, 0);
+      const promise = retryWithBackoff(mockFn, 0).catch((err) => err);
       await vi.advanceTimersByTimeAsync(0);
 
-      await expect(promise).rejects.toThrow('Rejected');
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe('Rejected');
     });
 
     it('should handle synchronous throws', async () => {
@@ -281,10 +289,12 @@ describe('retryWithBackoff', () => {
         throw new Error('Sync throw');
       });
 
-      const promise = retryWithBackoff(mockFn, 0);
+      const promise = retryWithBackoff(mockFn, 0).catch((err) => err);
       await vi.advanceTimersByTimeAsync(0);
 
-      await expect(promise).rejects.toThrow('Sync throw');
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe('Sync throw');
     });
   });
 
@@ -314,11 +324,13 @@ describe('retryWithBackoff', () => {
     it('should handle negative retry attempts', async () => {
       const mockFn = vi.fn().mockRejectedValue(new Error('Fail'));
 
-      const promise = retryWithBackoff(mockFn, -1);
+      const promise = retryWithBackoff(mockFn, -1).catch((err) => err);
       await vi.advanceTimersByTimeAsync(0);
 
       expect(mockFn).toHaveBeenCalledTimes(1);
-      await expect(promise).rejects.toThrow('Fail');
+      const result = await promise;
+      expect(result).toBeInstanceOf(Error);
+      expect(result.message).toBe('Fail');
     });
 
     it('should calculate backoff delay correctly', async () => {

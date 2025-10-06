@@ -138,7 +138,14 @@ curl -I https://saraivavision.com.br
 ### Rollback de Emergência (1 linha)
 
 ```bash
-sudo ln -sfn /var/www/saraivavision/releases/$(ls -t /var/www/saraivavision/releases/ | sed -n '2p') /var/www/saraivavision/current && sudo systemctl reload nginx
+# Safe rollback with proper error checking
+PREVIOUS_RELEASE=$(ls -t /var/www/saraivavision/releases/ | sed -n '2p')
+if [ -n "$PREVIOUS_RELEASE" ] && [ -d "/var/www/saraivavision/releases/$PREVIOUS_RELEASE" ]; then
+  sudo ln -sfn "/var/www/saraivavision/releases/$PREVIOUS_RELEASE" /var/www/saraivavision/current && sudo systemctl reload nginx
+else
+  echo "Error: No previous release found for rollback"
+  exit 1
+fi
 ```
 
 ---
@@ -355,7 +362,13 @@ npm run deploy:health
 ```bash
 # Limpar releases antigas manualmente
 cd /var/www/saraivavision/releases
-ls -t | tail -n +6 | xargs sudo rm -rf
+if [ "$(ls -t | tail -n +6 | wc -l)" -gt 0 ]; then
+  ls -t | tail -n +6 | while IFS= read -r old_release; do
+    sudo rm -rf -- "$old_release"
+  done
+else
+  echo "No old releases to clean up"
+fi
 
 # Backup completo
 sudo tar -czf saraivavision_backup_$(date +%Y%m%d).tar.gz /var/www/saraivavision/

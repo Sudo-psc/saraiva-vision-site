@@ -130,21 +130,22 @@ router.get('/health', (req, res) => {
 // STEP 2: Authentication Routes (no token validation needed)
 router.use('/auth', authRoutes);
 
-// STEP 3: Token Validation Middleware (for all protected routes)
-// TODO: Re-enable after fixing async initialization
-// router.use(validateToken);
-
-// STEP 4: Protected Routes (temporarily without token validation)
-router.use('/patients', patientRoutes);
-router.use('/appointments', appointmentRoutes);
-router.use('/availability', availabilityRoutes);
-router.use('/notifications', notificationRoutes);
-
-// STEP 5: Error Handler (must be last in middleware chain)
-router.use(errorHandler);
-
 async function createRouter() {
   await initializeMiddleware();
+  
+  // STEP 3: Token Validation Middleware (for all protected routes)
+  const redis = await getRedisClient();
+  router.use(validateToken(redis));
+
+  // STEP 4: Protected Routes
+  router.use(patientRoutes);
+  router.use(appointmentRoutes);
+  router.use(availabilityRoutes);
+  router.use(notificationRoutes);
+
+  // STEP 5: Error Handler (must be last in middleware chain)
+  router.use(errorHandler);
+  
   return router;
 }
 
@@ -160,5 +161,7 @@ async function createRouter() {
  */
 export { createRouter };
 
-// Legacy export for backward compatibility
-export default router;
+// Stub default export that throws error if used directly
+export default function() {
+  throw new Error('Direct router usage not supported. Use: await createRouter()');
+};
