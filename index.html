@@ -42,15 +42,13 @@
     <link rel="dns-prefetch" href="//maps.googleapis.com" />
     <link rel="dns-prefetch" href="//maps.gstatic.com" />
     <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-    <link rel="dns-prefetch" href="//cdn.pulse.is" />
-    <link rel="dns-prefetch" href="//region1.google-analytics.com" />
+      <link rel="dns-prefetch" href="//region1.google-analytics.com" />
     <link rel="dns-prefetch" href="//www.google-analytics.com" />
 
     <!-- Preconnect for critical external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://maps.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://cdn.pulse.is" crossorigin />
-
+  
     <!-- Prefetch likely next pages/resources -->
     <link rel="prefetch" href="/servicos" />
     <link rel="prefetch" href="/sobre" />
@@ -79,8 +77,20 @@
     <meta name="googlebot" content="index, follow" />
     <meta name="theme-color" content="#0057B7" />
     <meta name="msapplication-TileColor" content="#0057B7" />
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KF2NP85D');</script>
+    <!-- End Google Tag Manager -->
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KF2NP85D"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
 
     <!-- Critical application bundle - high priority -->
@@ -123,14 +133,8 @@
       // Load non-critical scripts asynchronously
       if ('requestIdleCallback' in window) {
         requestIdleCallback(() => {
-          // Chat widget - low priority
-          loadScript('https://cdn.pulse.is/livechat/loader.js', {
-            defer: true,
-            priority: 'low',
-            dataset: {
-              liveChatId: '68d52f7bf91669800d0923ac'
-            }
-          });
+          // Chat widget removido devido a falha no endpoint (404 errors)
+          // Pulse.is live chat descontinuado até nova configuração
 
           // Analytics - load after user interaction or delay
           const loadAnalytics = () => {
@@ -147,14 +151,7 @@
         });
       } else {
         // Fallback for browsers without requestIdleCallback
-        setTimeout(() => {
-          loadScript('https://cdn.pulse.is/livechat/loader.js', {
-            defer: true,
-            dataset: {
-              liveChatId: '68d52f7bf91669800d0923ac'
-            }
-          });
-        }, 2000);
+        // Pulse.is removido - sem fallback necessário
       }
     </script>
   </body>
