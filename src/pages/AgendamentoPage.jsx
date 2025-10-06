@@ -16,58 +16,61 @@ const AgendamentoPage = () => {
         <link rel="canonical" href="https://saraivavision.com.br/agendamento" />
       </Helmet>
 
-      <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
-        <div className="flex-1 pt-32 md:pt-40 pb-12">
+      {/* Background 3D com efeito de profundidade */}
+      <div className="min-h-screen flex flex-col relative overflow-hidden">
+        {/* Camadas de fundo 3D */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800"></div>
+
+        {/* Efeito de grade 3D */}
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(59, 130, 246, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '40px 40px',
+            transform: 'perspective(1000px) rotateX(60deg) scale(2)',
+            transformOrigin: 'center center'
+          }}
+        ></div>
+
+        {/* Elementos flutuantes 3D */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-3xl"></div>
+
+        <div className="flex-1 pt-32 md:pt-40 pb-12 relative z-10">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-8 mt-2">
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 drop-shadow-lg">
                   Agendamento Online
                 </h1>
-                <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-3">
+                <p className="text-lg text-blue-100 max-w-3xl mx-auto mb-3">
                   Agende sua consulta com o Dr. Philipe Saraiva de forma rápida e segura.
                 </p>
-                <p className="text-base text-gray-600 max-w-2xl mx-auto">
+                <p className="text-base text-blue-200 max-w-2xl mx-auto">
                   Siga o fluxo e, em menos de 2 minutos, sua consulta estará agendada.
                 </p>
               </div>
 
               <div className="relative mb-5">
-                {/* Fundo 3D com gradiente e sombras */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-600 rounded-3xl transform rotate-1 opacity-90 blur-sm"></div>
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-500 to-orange-600 rounded-3xl transform -rotate-1 opacity-80 blur-md"></div>
-                <div className="absolute inset-0 bg-gradient-to-br from-teal-600 via-blue-500 to-indigo-600 rounded-3xl transform rotate-0.5 opacity-70 blur-lg"></div>
-
-                {/* Container principal com efeito 3D */}
-                <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden transform perspective-1000 hover:scale-[1.02] transition-all duration-300 ease-in-out">
-                  {/* Efeito de borda 3D */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 rounded-3xl opacity-20 blur-xl animate-pulse"></div>
-
-                  {/* Sombra profunda 3D */}
-                  <div className="absolute -inset-4 bg-gradient-to-r from-gray-800 via-gray-900 to-black rounded-3xl opacity-30 blur-2xl transform translate-y-8"></div>
-
-                  {/* Iframe com evidenciação 3D */}
-                  <div className="relative bg-gradient-to-br from-gray-50 to-white rounded-3xl p-2 transform translate-y-[-4px]">
-                    <div className="bg-white rounded-2xl shadow-inner overflow-hidden">
-                      <iframe
-                        src="https://apolo.ninsaude.com/a/saraivavision/"
-                        title="Sistema de Agendamento Online - Saraiva Vision"
-                        className="w-full border-0 rounded-2xl"
-                        style={{
-                          height: '75vh',
-                          minHeight: '600px',
-                          maxHeight: '900px',
-                          boxShadow: 'inset 0 4px 20px rgba(0, 0, 0, 0.1)'
-                        }}
-                        allowFullScreen
-                        loading="eager"
-                        sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Efeito de brilho nas bordas */}
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-y-12"></div>
+                {/* Container do iframe - design integrado e natural */}
+                <div className="relative overflow-hidden">
+                  <iframe
+                    src="https://apolo.ninsaude.com/a/saraivavision/"
+                    title="Sistema de Agendamento Online - Saraiva Vision"
+                    className="w-full border-0"
+                    style={{
+                      height: '52.5vh',
+                      minHeight: '420px',
+                      maxHeight: '630px'
+                    }}
+                    allowFullScreen
+                    loading="eager"
+                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation allow-top-navigation-by-user-activation"
+                  />
                 </div>
               </div>
 
