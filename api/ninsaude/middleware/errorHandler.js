@@ -172,11 +172,41 @@ const NINSAUDE_ERROR_MAPPINGS = {
 };
 
 /**
+ * Helper function to create standardized Ninsaúde errors
+ * @param {string} code - Error code
+ * @param {string} message - Error message
+ * @param {Object} options - Additional options (statusCode, details)
+ * @returns {Error} Standardized error with code property
+ */
+export function createNinsaudeError(code, message, options = {}) {
+    const error = new Error(message);
+    error.code = code;
+    error.statusCode = options.statusCode || 500;
+    if (options.details) error.details = options.details;
+    return error;
+}
+
+/**
  * Map Ninsaúde API error to internal error code
  * @param {Error} error - Error object
  * @returns {string} Mapped error code
  */
 function mapNinsaudeError(error) {
+    // Check for standardized error code first
+    if (error.code) {
+        const knownCodes = [
+            'invalid_token', 'token_expired', 'patient_not_found', 'patient_already_exists',
+            'invalid_cpf', 'appointment_not_found', 'slot_unavailable', 'appointment_past_date',
+            'appointment_outside_hours', 'slot_conflict', 'ninsaude_rate_limit', 'ninsaude_unavailable',
+            'ninsaude_timeout', 'unauthorized', 'validation_error', 'internal_error'
+        ];
+        
+        if (knownCodes.includes(error.code)) {
+            return error.code;
+        }
+    }
+
+    // Fallback to message-based mapping
     const message = error.message?.toLowerCase() || '';
     const statusCode = error.response?.status || error.statusCode || 500;
 
@@ -205,7 +235,11 @@ function mapNinsaudeError(error) {
         return 'appointment_not_found';
     }
 
-    if (message.includes('slot') && (message.includes('unavailable') || message.includes('conflict'))) {
+    if (message.includes('slot') && message.includes('conflict')) {
+        return 'slot_conflict';
+    }
+    
+    if (message.includes('slot') && message.includes('unavailable')) {
         return 'slot_unavailable';
     }
 

@@ -118,11 +118,11 @@ async function acquireTokenLock(cache) {
   try {
     const lockId = crypto.randomUUID();
 
-    // Atomic set operation: only set if key doesn't exist (NX option)
+    // Atomic set operation: only set if key doesn't exist (NX option)  
     const result = await cache.set(
       OAUTH_CONFIG.tokenLockKey,
       lockId,
-      OAUTH_CONFIG.lockTimeout / 1000, // Convert ms to seconds
+      Math.floor(OAUTH_CONFIG.lockTimeout / 1000), // Convert ms to seconds
       { NX: true } // Only set if doesn't exist
     );
 
@@ -542,6 +542,19 @@ router.post('/refresh', async (req, res, next) => {
  */
 router.delete('/cache', async (req, res, next) => {
   try {
+    const ALLOWED_CACHE_CLEAR_ENVS = (process.env.ALLOWED_CACHE_CLEAR_ENVS || 'development,local').split(',');
+    
+    if (!ALLOWED_CACHE_CLEAR_ENVS.includes(process.env.NODE_ENV)) {
+      console.warn(`[Ninsaude] Unauthorized cache clear attempt in environment: ${process.env.NODE_ENV}`);
+      return res.status(404).json({
+        success: false,
+        error: {
+          code: 'endpoint_not_found',
+          message: 'Endpoint not available'
+        }
+      });
+    }
+
     await clearTokenCache();
     res.json({
       success: true,

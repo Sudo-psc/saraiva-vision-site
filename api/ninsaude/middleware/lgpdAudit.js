@@ -29,7 +29,10 @@ const AUDIT_CONFIG = {
 function hashData(data) {
     if (!data) return 'unknown';
 
-    const salt = process.env.AUDIT_HASH_SALT || process.env.IP_HASH_SALT || 'ninsaude-audit-salt';
+    const salt = process.env.AUDIT_HASH_SALT;
+    if (!salt) {
+        throw new Error('Missing required environment variable: AUDIT_HASH_SALT. This must be set for LGPD compliance.');
+    }
     return crypto.createHash('sha256').update(String(data) + salt).digest('hex');
 }
 
@@ -343,10 +346,9 @@ export async function queryAuditLogs(redisClient, startDate, endDate, limit = 10
  */
 export async function getAuditStats(redisClient, startDate, endDate) {
     try {
-        const logs = await queryAuditLogs(redisClient, startDate, endDate, 10000);
-
+        const batchSize = 100;
         const stats = {
-            totalRequests: logs.length,
+            totalRequests: 0,
             byAction: {},
             byEndpoint: {},
             medicalDataAccesses: 0,
@@ -356,36 +358,52 @@ export async function getAuditStats(redisClient, startDate, endDate) {
         };
 
         let totalResponseTime = 0;
+        let totalProcessedCount = 0;
+        let cursor = '0';
 
-        logs.forEach(log => {
-            // Count by action
-            stats.byAction[log.action] = (stats.byAction[log.action] || 0) + 1;
+        do {
+            // Process logs in batches using streaming/pagination
+            const logs = await queryAuditLogs(redisClient, startDate, endDate, batchSize, cursor);
+            
+            if (!logs || logs.length === 0) break;
 
-            // Count by endpoint
-            stats.byEndpoint[log.endpoint] = (stats.byEndpoint[log.endpoint] || 0) + 1;
+            logs.forEach(log => {
+                totalProcessedCount++;
+                
+                // Count by action
+                stats.byAction[log.action] = (stats.byAction[log.action] || 0) + 1;
 
-            // Medical data accesses
-            if (log.medicalDataAccessed) {
-                stats.medicalDataAccesses++;
-            }
+                // Count by endpoint
+                stats.byEndpoint[log.endpoint] = (stats.byEndpoint[log.endpoint] || 0) + 1;
 
-            // PII detections
-            if (log.piiDetected && log.piiDetected.length > 0) {
-                stats.piiDetections++;
-            }
+                // Medical data accesses
+                if (log.medicalDataAccessed) {
+                    stats.medicalDataAccesses++;
+                }
 
-            // Response time
-            if (log.responseTime) {
-                totalResponseTime += log.responseTime;
-            }
+                // PII detections
+                if (log.piiDetected && log.piiDetected.length > 0) {
+                    stats.piiDetections++;
+                }
 
-            // Errors
-            if (log.statusCode >= 400) {
-                stats.errorCount++;
-            }
-        });
+                // Response time
+                if (log.responseTime) {
+                    totalResponseTime += log.responseTime;
+                }
 
-        stats.averageResponseTime = logs.length > 0 ? Math.round(totalResponseTime / logs.length) : 0;
+                // Errors
+                if (log.statusCode >= 400) {
+                    stats.errorCount++;
+                }
+            });
+
+            // Update cursor for pagination (implementation depends on queryAuditLogs)
+            cursor = logs.length < batchSize ? '0' : String(logs[logs.length - 1].timestamp);
+            
+        } while (cursor !== '0');
+
+        stats.totalRequests = totalProcessedCount;
+        stats.averageResponseTime = totalProcessedCount > 0 ? Math.round(totalResponseTime / totalProcessedCount) : 0;
 
         return stats;
     } catch (error) {

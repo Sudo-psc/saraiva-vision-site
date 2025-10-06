@@ -1,14 +1,3 @@
-/**
- * Ninsaúde Availability Route - T038
- *
- * Handles appointment slot availability lookup
- * Reference: /specs/001-ninsaude-integration/contracts/availability.openapi.yaml
- *
- * Routes:
- * - GET /api/ninsaude/availability - List available slots
- * - POST /api/ninsaude/availability/check - Verify specific slot availability
- */
-
 import express from 'express';
 import { z } from 'zod';
 import { HTTP_STATUS } from '../utils/errorHandler.js';
@@ -63,7 +52,8 @@ router.get('/', async (req, res) => {
     const now = new Date();
 
     // Check if start date is in the past
-    if (start < now.setHours(0, 0, 0, 0)) {
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    if (start < todayStart) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
         error: {
@@ -108,13 +98,17 @@ router.get('/', async (req, res) => {
     });
 
     // Filter out past slots
-    const now2 = new Date();
-    const futureSlots = slots.filter(slot => new Date(slot.dateTime) > now2);
+    const futureSlots = slots.filter(slot => {
+      const slotTime = new Date(slot.dateTime);
+      return slotTime > now;
+    });
 
-    // Sort chronologically
-    const sortedSlots = futureSlots.sort((a, b) =>
-      new Date(a.dateTime) - new Date(b.dateTime)
-    );
+    // Sort chronologically using precomputed timestamps
+    const sortedSlots = futureSlots.sort((a, b) => {
+      const aTime = Date.parse(a.dateTime);
+      const bTime = Date.parse(b.dateTime);
+      return aTime - bTime;
+    });
 
     return res.status(HTTP_STATUS.OK).json({
       success: true,

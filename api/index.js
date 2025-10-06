@@ -51,8 +51,6 @@ import appointmentRoutes from './ninsaude/appointments.js';
 import availabilityRoutes from './ninsaude/availability.js';
 import notificationRoutes from './ninsaude/notifications.js';
 
-const router = express.Router();
-
 // Initialize Redis client for middlewares
 let redisClient = null;
 async function getRedisClient() {
@@ -78,7 +76,19 @@ async function getRedisClient() {
   return redisClient;
 }
 
-const initializeMiddleware = async () => {
+// Export function to close Redis client for cleanup
+export async function closeRedisClient() {
+  if (redisClient) {
+    await redisClient.disconnect();
+    redisClient = null;
+  }
+}
+
+// Cleanup on process shutdown
+process.on('beforeExit', closeRedisClient);
+process.on('SIGINT', closeRedisClient);
+
+const initializeMiddleware = async (router) => {
   try {
     const redis = await getRedisClient();
     router.use(lgpdAudit(redis));
@@ -88,7 +98,7 @@ const initializeMiddleware = async () => {
     console.error('[Ninsaude] Failed to initialize Redis-based middleware:', error.message);
     console.log('[Ninsaude] Falling back to in-memory implementations');
     
-    const MemoryCache = await import('./utils/memoryCache.js').then(m => m.MemoryCache);
+    const MemoryCache = await import('./ninsaude/utils/memoryCache.js').then(m => m.MemoryCache);
     const memoryCache = new MemoryCache();
     
     router.use(lgpdAudit(memoryCache));
@@ -97,53 +107,57 @@ const initializeMiddleware = async () => {
   }
 };
 
-// STEP 1: Health Check Endpoint (no authentication required)
-router.get('/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    service: 'ninsaude-integration',
-    version: '1.0.0',
-    environment: process.env.NODE_ENV || 'development',
-    features: {
-      authentication: 'OAuth2 password grant',
-      patientRegistration: 'enabled',
-      appointmentBooking: 'enabled',
-      appointmentCancellation: 'enabled',
-      appointmentRescheduling: 'enabled',
-      slotAvailability: 'enabled',
-      notifications: 'dual (email + WhatsApp)',
-      lgpdCompliance: 'enabled',
-      cfmCompliance: 'enabled'
-    },
-    config: {
-      hasNinsaudeUrl: !!process.env.NINSAUDE_API_URL,
-      hasNinsaudeAccount: !!process.env.NINSAUDE_ACCOUNT,
-      hasNinsaudeCredentials: !!(process.env.NINSAUDE_USERNAME && process.env.NINSAUDE_PASSWORD),
-      hasRedisUrl: !!process.env.REDIS_URL,
-      hasResendKey: !!process.env.RESEND_API_KEY,
-      hasEvolutionApi: !!(process.env.EVOLUTION_API_URL && process.env.EVOLUTION_API_KEY)
-    }
-  });
-});
-
-// STEP 2: Authentication Routes (no token validation needed)
-router.use('/auth', authRoutes);
 
 async function createRouter() {
-  await initializeMiddleware();
+  const router = express.Router();
   
-  // STEP 3: Token Validation Middleware (for all protected routes)
+  // STEP 1: Initialize middleware first
+  await initializeMiddleware(router);
+  
+  // STEP 2: Health Check Endpoint (no authentication required)
+  router.get('/health', (req, res) => {
+    res.json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      service: 'ninsaude-integration',
+      version: '1.0.0',
+      environment: process.env.NODE_ENV || 'development',
+      features: {
+        authentication: 'OAuth2 password grant',
+        patientRegistration: 'enabled',
+        appointmentBooking: 'enabled',
+        appointmentCancellation: 'enabled',
+        appointmentRescheduling: 'enabled',
+        slotAvailability: 'enabled',
+        notifications: 'dual (email + WhatsApp)',
+        lgpdCompliance: 'enabled',
+        cfmCompliance: 'enabled'
+      },
+      config: {
+        hasNinsaudeUrl: !!process.env.NINSAUDE_API_URL,
+        hasNinsaudeAccount: !!process.env.NINSAUDE_ACCOUNT,
+        hasNinsaudeCredentials: !!(process.env.NINSAUDE_USERNAME && process.env.NINSAUDE_PASSWORD),
+        hasRedisUrl: !!process.env.REDIS_URL,
+        hasResendKey: !!process.env.RESEND_API_KEY,
+        hasEvolutionApi: !!(process.env.EVOLUTION_API_URL && process.env.EVOLUTION_API_KEY)
+      }
+    });
+  });
+
+  // STEP 3: Authentication Routes (no token validation needed)
+  router.use('/auth', authRoutes);
+  
+  // STEP 4: Token Validation Middleware (for all protected routes)
   const redis = await getRedisClient();
   router.use(validateToken(redis));
 
-  // STEP 4: Protected Routes
+  // STEP 5: Protected Routes
   router.use(patientRoutes);
   router.use(appointmentRoutes);
   router.use(availabilityRoutes);
   router.use(notificationRoutes);
 
-  // STEP 5: Error Handler (must be last in middleware chain)
+  // STEP 6: Error Handler (must be last in middleware chain)
   router.use(errorHandler);
   
   return router;

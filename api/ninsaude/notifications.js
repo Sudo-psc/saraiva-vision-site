@@ -8,6 +8,7 @@
 
 import express from 'express';
 import crypto from 'crypto';
+import rateLimit from 'express-rate-limit';
 import { createClient } from 'redis';
 import * as emailService from './services/emailService.js';
 import * as whatsappService from './services/whatsappService.js';
@@ -22,26 +23,63 @@ const REDIS_PASSWORD = process.env.REDIS_PASSWORD || '';
 
 let redisClient = null;
 
+let connectionPromise = null;
+
 async function getRedisClient() {
   if (redisClient && redisClient.isOpen) {
     return redisClient;
   }
 
-  redisClient = createClient({
-    socket: {
-      host: REDIS_HOST,
-      port: REDIS_PORT
-    },
-    password: REDIS_PASSWORD || undefined
-  });
+  // Prevent multiple concurrent connections
+  if (connectionPromise) {
+    return connectionPromise;
+  }
 
-  redisClient.on('error', (err) => {
-    console.error('Redis Client Error:', err);
-  });
+  connectionPromise = (async () => {
+    try {
+      // Clean up existing closed client
+      if (redisClient && !redisClient.isOpen) {
+        try {
+          await redisClient.quit();
+        } catch (e) {
+          // Ignore quit errors on closed connections
+        }
+        redisClient = null;
+      }
 
-  await redisClient.connect();
-  return redisClient;
+      redisClient = createClient({
+        socket: {
+          host: REDIS_HOST,
+          port: REDIS_PORT
+        },
+        password: REDIS_PASSWORD || undefined
+      });
+
+      redisClient.on('error', (err) => {
+        console.error('Redis Client Error:', err);
+      });
+
+      await redisClient.connect();
+      return redisClient;
+    } finally {
+      connectionPromise = null;
+    }
+  })();
+
+  return connectionPromise;
 }
+
+// Rate limiter for notification endpoints
+const notificationRateLimit = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: {
+    error: 'Too many notification requests',
+    retryAfter: Math.ceil(15 * 60 / 60) + ' minutes'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 /**
  * Validate notification request
@@ -98,7 +136,7 @@ function validateNotificationRequest(req, res, next) {
  * POST /api/ninsaude/notifications/send
  * Dispatch dual-channel notifications (Email + WhatsApp)
  */
-router.post('/send', validateNotificationRequest, async (req, res) => {
+router.post('/send', notificationRateLimit, validateNotificationRequest, async (req, res) => {
   const { eventType, appointmentData } = req.body;
 
   const notificationId = crypto.randomBytes(16).toString('hex');
@@ -279,6 +317,19 @@ router.get('/health', async (req, res) => {
       status: 'unhealthy',
       error: error.message
     });
+  }
+});
+
+// Graceful shutdown handlers
+process.on('SIGTERM', async () => {
+  if (redisClient && redisClient.isOpen) {
+    await redisClient.quit();
+  }
+});
+
+process.on('SIGINT', async () => {
+  if (redisClient && redisClient.isOpen) {
+    await redisClient.quit();
   }
 });
 
