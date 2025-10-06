@@ -116,7 +116,7 @@ export default defineConfig(({ mode }) => {
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react/jsx-runtime'],
-    exclude: ['date-fns', 'crypto-js']
+    exclude: ['date-fns', 'crypto-js', 'framer-motion']
   },
   test: {
     globals: true,
@@ -129,16 +129,34 @@ export default defineConfig(({ mode }) => {
   build: {
     outDir: 'dist',
     sourcemap: false, // Disabled for production to reduce bundle size
-    chunkSizeWarningLimit: 200, // Further reduced for healthcare platform compliance
+    chunkSizeWarningLimit: 100, // Reduced to 150KB for optimal loading performance
     assetsDir: 'assets',
-    assetsInlineLimit: 1024, // Reduced to minimize inline base64 bloat for mobile
+    assetsInlineLimit: 4096, // Increased to 4KB for small assets (reduces HTTP requests)
     minify: 'esbuild',
     target: 'es2020', // Modern target for better optimization
     cssCodeSplit: true, // Split CSS for better caching
+    // Enhanced tree-shaking configuration
+    treeShake: {
+      moduleSideEffects: false,
+      propertyReadSideEffects: false,
+      trySideEffects: false
+    },
     // Enhanced minification and tree-shaking
     reportCompressedSize: true,
     modulePreload: {
       polyfill: false // Disable polyfill for modern browsers
+    },
+    // Aggressive dead code elimination
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console.log in production
+        drop_debugger: true,
+        pure_funcs: ['console.info', 'console.debug', 'console.warn'],
+        passes: 2 // Run compression twice for better results
+      },
+      mangle: {
+        safari10: true // Fix Safari 10 issues
+      }
     },
     rollupOptions: {
       input: 'index.html',
@@ -226,7 +244,26 @@ export default defineConfig(({ mode }) => {
               return 'dev-deps'
             }
 
-            // Other vendor libraries
+            if (id.includes('hypertune')) {
+              return 'hypertune'
+            }
+
+            if (id.includes('fast-xml-parser')) {
+              return 'xml-parser'
+            }
+
+            if (id.includes('esbuild')) {
+              return 'esbuild-runtime'
+            }
+
+            if (id.includes('glob')) {
+              return 'glob-utils'
+            }
+
+            if (id.includes('prop-types')) {
+              return 'prop-types'
+            }
+
             return 'vendor-misc'
           }
         },

@@ -3,19 +3,17 @@
  * Features: Web Vitals tracking, healthcare compliance validation, async loading optimization
  */
 
-import { getCLS, getFID, getFCP, getLCP, getTTFB, getINP } from 'web-vitals';
+import { onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals';
 
 /**
  * Healthcare Performance Standards
  */
 const HEALTHCARE_PERFORMANCE_THRESHOLDS = {
-  // Critical for medical content accessibility
-  LCP: { good: 2500, poor: 4000 }, // Largest Contentful Paint (ms)
-  FID: { good: 100, poor: 300 },   // First Input Delay (ms)
-  INP: { good: 200, poor: 500 },   // Interaction to Next Paint (ms)
-  CLS: { good: 0.1, poor: 0.25 },  // Cumulative Layout Shift
-  FCP: { good: 1800, poor: 3000 },  // First Contentful Paint (ms)
-  TTFB: { good: 800, poor: 1800 }  // Time to First Byte (ms)
+  LCP: { good: 2500, poor: 4000 },
+  INP: { good: 200, poor: 500 },
+  CLS: { good: 0.1, poor: 0.25 },
+  FCP: { good: 1800, poor: 3000 },
+  TTFB: { good: 800, poor: 1800 }
 };
 
 /**
@@ -62,45 +60,39 @@ class HealthcarePerformanceMonitor {
    * Track Web Vitals with healthcare context
    */
   trackWebVitals() {
-    const trackMetric = (name, getMetricFn) => {
-      getMetricFn((metric) => {
+    const trackMetric = (name, onMetricFn) => {
+      onMetricFn((metric) => {
         const threshold = HEALTHCARE_PERFORMANCE_THRESHOLDS[name];
         const rating = this.getPerformanceRating(metric.value, threshold);
 
-        // Store metric
         this.metrics.set(name, {
           value: metric.value,
           rating,
-          timestamp: metric.startTime,
+          timestamp: metric.entries?.[0]?.startTime || Date.now(),
           healthcare: true
         });
 
-        // Enhanced logging for medical content
         if (rating === 'poor') {
           console.warn(`[Healthcare Performance] ${name} is ${rating}: ${metric.value.toFixed(2)}`, metric);
         } else {
           console.info(`[Performance] ${name}: ${metric.value.toFixed(2)} (${rating})`);
         }
 
-        // Send to analytics if available
         this.sendToAnalytics('web-vital', { name, value: metric.value, rating });
       });
     };
 
-    // Track all web vitals
-    trackMetric('LCP', getLCP);
-    trackMetric('FID', getFID);
-    trackMetric('INP', getINP);
-    trackMetric('CLS', getCLS);
-    trackMetric('FCP', getFCP);
-    trackMetric('TTFB', getTTFB);
+    trackMetric('LCP', onLCP);
+    trackMetric('INP', onINP);
+    trackMetric('CLS', onCLS);
+    trackMetric('FCP', onFCP);
+    trackMetric('TTFB', onTTFB);
   }
 
   /**
    * Track resource loading performance
    */
   trackResourceLoading() {
-    // Observer for resource loading
     if ('PerformanceObserver' in window) {
       try {
         const resourceObserver = new PerformanceObserver((list) => {
@@ -118,6 +110,36 @@ class HealthcarePerformanceMonitor {
         resourceObserver.observe({ entryTypes: ['resource'] });
       } catch (error) {
         console.warn('Resource observer not supported:', error);
+      }
+
+      try {
+        const longTaskObserver = new PerformanceObserver((list) => {
+          list.getEntries().forEach((entry) => {
+            const blockingTime = entry.duration - 50;
+            if (blockingTime > 0) {
+              const taskData = {
+                duration: entry.duration,
+                startTime: entry.startTime,
+                blockingTime,
+                attribution: entry.attribution?.[0]?.name || 'unknown',
+                timestamp: Date.now()
+              };
+
+              this.metrics.set(`longtask-${entry.startTime}`, taskData);
+
+              console.warn(`⚠️ Long Task detected: ${entry.duration.toFixed(2)}ms`, {
+                blockingTime: blockingTime.toFixed(2) + 'ms',
+                attribution: taskData.attribution
+              });
+
+              this.sendToAnalytics('long-task', taskData);
+            }
+          });
+        });
+
+        longTaskObserver.observe({ entryTypes: ['longtask'] });
+      } catch (error) {
+        console.info('Long Task API not supported');
       }
     }
   }
@@ -268,12 +290,11 @@ class HealthcarePerformanceMonitor {
    */
   validateHealthcareCompliance() {
     const lcpMetric = this.metrics.get('LCP');
-    const fidMetric = this.metrics.get('FID');
+    const inpMetric = this.metrics.get('INP');
     const clsMetric = this.metrics.get('CLS');
 
     const issues = [];
 
-    // Critical metrics for medical content
     if (lcpMetric && lcpMetric.rating === 'poor') {
       issues.push({
         type: 'critical',
@@ -284,13 +305,13 @@ class HealthcarePerformanceMonitor {
       });
     }
 
-    if (fidMetric && fidMetric.rating === 'poor') {
+    if (inpMetric && inpMetric.rating === 'poor') {
       issues.push({
         type: 'critical',
-        metric: 'FID',
+        metric: 'INP',
         message: 'Medical interface response is too slow',
-        value: fidMetric.value,
-        threshold: HEALTHCARE_PERFORMANCE_THRESHOLDS.FID.poor
+        value: inpMetric.value,
+        threshold: HEALTHCARE_PERFORMANCE_THRESHOLDS.INP.poor
       });
     }
 
@@ -354,8 +375,7 @@ class HealthcarePerformanceMonitor {
     const metrics = Object.fromEntries(this.metrics);
     const healthMetrics = Object.fromEntries(this.healthMetrics);
 
-    // Calculate overall performance score
-    const vitalMetrics = ['LCP', 'FID', 'INP', 'CLS', 'FCP', 'TTFB'];
+    const vitalMetrics = ['LCP', 'INP', 'CLS', 'FCP', 'TTFB'];
     const scores = vitalMetrics.map(metric => {
       const m = metrics[metric];
       return m && m.rating === 'good' ? 1 : m && m.rating === 'needs-improvement' ? 0.5 : 0;
@@ -408,11 +428,11 @@ class HealthcarePerformanceMonitor {
       });
     }
 
-    if (criticalIssues.some(i => i.metric === 'FID')) {
+    if (criticalIssues.some(i => i.metric === 'INP')) {
       recommendations.push({
         priority: 'critical',
         action: 'Improve interface responsiveness',
-        description: 'Patient interactions should respond within 100ms'
+        description: 'Patient interactions should respond within 200ms'
       });
     }
 

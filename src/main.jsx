@@ -11,8 +11,9 @@ import ErrorBoundary from './components/ErrorBoundary';
 import './i18n'; // Initialize i18n
 import GoogleTagManager from './components/GoogleTagManager';
 import { redirectToBackup } from './utils/redirectToBackup';
-import { initializeAnalytics, trackPageView, trackWebVitals } from './utils/analytics';
+import { initializeAnalytics, trackWebVitals } from './utils/analytics';
 import { onCLS, onINP, onFCP, onLCP, onTTFB } from 'web-vitals';
+import './utils/performanceMonitor';
 
 // Enhanced error handler setup with detailed logging
 const setupGlobalErrorHandlers = () => {
