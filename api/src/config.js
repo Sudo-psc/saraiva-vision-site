@@ -13,7 +13,7 @@
 import rateLimit from 'express-rate-limit';
 
 // Rate limiter: 30 requests per 15 minutes per IP
-const configLimiter = rateLimit({
+export const configLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 30, // 30 requests per window
   message: 'Too many configuration requests, please try again later',

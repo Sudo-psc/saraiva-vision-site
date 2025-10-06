@@ -6,8 +6,24 @@
  */
 
 import { createClient } from 'redis';
+import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
 import * as emailService from '../services/emailService.js';
 import * as whatsappService from '../services/whatsappService.js';
+
+const notificationSchema = z.object({
+  type: z.enum(['email', 'whatsapp', 'dual']),
+  eventType: z.enum(['booking_confirmation', 'cancellation', 'rescheduling', 'reminder']),
+  appointmentData: z.object({
+    id: z.string().optional(),
+    patientName: z.string(),
+    patientEmail: z.string().email().optional(),
+    patientPhone: z.string().optional(),
+    professionalName: z.string(),
+    dateTime: z.string(),
+    unitName: z.string().optional()
+  })
+});
 
 const REDIS_HOST = process.env.REDIS_HOST || 'localhost';
 const REDIS_PORT = process.env.REDIS_PORT || 6379;
@@ -50,9 +66,14 @@ async function initRedis() {
 export async function enqueueNotification(notificationData) {
   const client = await initRedis();
 
+  const validationResult = notificationSchema.safeParse(notificationData);
+  if (!validationResult.success) {
+    throw new Error(`Invalid notification data: ${validationResult.error.message}`);
+  }
+
   const queueItem = {
-    id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-    data: notificationData,
+    id: uuidv4(),
+    data: validationResult.data,
     attempts: 0,
     createdAt: new Date().toISOString(),
     lastAttempt: null,
@@ -181,25 +202,42 @@ export async function processQueue() {
   const client = await initRedis();
 
   try {
-    // Get all queue keys
-    const keys = await client.keys(`${QUEUE_PREFIX}*`);
+    let allKeys = [];
+    let cursor = '0';
+    
+    // Collect all keys using SCAN
+    do {
+      const result = await client.scan(cursor, {
+        MATCH: `${QUEUE_PREFIX}*`,
+        COUNT: 100
+      });
+      
+      cursor = result.cursor;
+      allKeys = allKeys.concat(result.keys);
+    } while (cursor !== '0');
 
-    if (keys.length === 0) {
+    if (allKeys.length === 0) {
       console.log('Queue is empty');
       return { processed: 0, succeeded: 0, failed: 0 };
     }
 
-    console.log(`Processing ${keys.length} items from queue`);
+    console.log(`Processing ${allKeys.length} items from queue`);
 
     let processed = 0;
     let succeeded = 0;
     let failed = 0;
 
-    for (const key of keys) {
+    for (const key of allKeys) {
       const itemData = await client.get(key);
       if (!itemData) continue;
 
-      const queueItem = JSON.parse(itemData);
+      let queueItem;
+      try {
+        queueItem = JSON.parse(itemData);
+      } catch (parseError) {
+        console.error('Error parsing queue item:', parseError);
+        continue;
+      }
 
       // Check if item has expired (24 hours)
       const createdAt = new Date(queueItem.createdAt).getTime();
@@ -273,15 +311,31 @@ export async function getQueueStatus() {
   const client = await initRedis();
 
   try {
-    const keys = await client.keys(`${QUEUE_PREFIX}*`);
     const items = [];
-
-    for (const key of keys) {
-      const itemData = await client.get(key);
-      if (itemData) {
-        items.push(JSON.parse(itemData));
+    let cursor = '0';
+    
+    do {
+      const result = await client.scan(cursor, {
+        MATCH: `${QUEUE_PREFIX}*`,
+        COUNT: 100
+      });
+      
+      cursor = result.cursor;
+      const keys = result.keys;
+      
+      if (keys.length > 0) {
+        const values = await client.mGet(keys);
+        for (const value of values) {
+          if (value) {
+            try {
+              items.push(JSON.parse(value));
+            } catch (parseError) {
+              console.error('Error parsing queue item:', parseError);
+            }
+          }
+        }
       }
-    }
+    } while (cursor !== '0');
 
     return {
       total: items.length,

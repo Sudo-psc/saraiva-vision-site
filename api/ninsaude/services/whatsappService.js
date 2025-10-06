@@ -1,31 +1,39 @@
-/**
- * WhatsApp Service - Evolution API Integration for Ninsaúde Notifications
- * Handles appointment notifications via WhatsApp using self-hosted Evolution API
- *
- * @module api/ninsaude/services/whatsappService
- */
-
 import axios from 'axios';
 
 const EVOLUTION_API_URL = process.env.EVOLUTION_API_URL;
 const EVOLUTION_API_KEY = process.env.EVOLUTION_API_KEY;
 const EVOLUTION_INSTANCE_NAME = process.env.EVOLUTION_INSTANCE_NAME || 'saraiva_vision';
 
-/**
- * Format Brazilian phone number to WhatsApp format (+5533999999999)
- * @param {string} phone - Phone number in various formats
- * @returns {string} Formatted phone number
- */
-function formatPhoneNumber(phone) {
-  // Remove all non-numeric characters
-  const cleaned = phone.replace(/\D/g, '');
+if (!EVOLUTION_API_URL) {
+  throw new Error('Missing required environment variable: EVOLUTION_API_URL');
+}
+if (!EVOLUTION_API_KEY) {
+  throw new Error('Missing required environment variable: EVOLUTION_API_KEY');
+}
 
-  // Add country code if not present
-  if (!cleaned.startsWith('55')) {
+function formatPhoneNumber(phone) {
+  if (!phone || typeof phone !== 'string') {
+    return null;
+  }
+  
+  const cleaned = phone.trim().replace(/\D/g, '');
+  
+  if (!cleaned) {
+    return null;
+  }
+  
+  if (cleaned.startsWith('55')) {
+    if (cleaned.length === 12 || cleaned.length === 13) {
+      return cleaned;
+    }
+    return null;
+  }
+  
+  if (cleaned.length === 10 || cleaned.length === 11) {
     return `55${cleaned}`;
   }
-
-  return cleaned;
+  
+  return null;
 }
 
 /**

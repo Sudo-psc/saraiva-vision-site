@@ -1,18 +1,8 @@
-/**
- * Email Service - Resend API Integration for Ninsaúde Notifications
- * Handles appointment confirmation, cancellation, rescheduling, and reminder emails
- *
- * @module api/ninsaude/services/emailService
- */
-
 import { Resend } from 'resend';
 import crypto from 'crypto';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-/**
- * Generate email HTML template with CFM medical disclaimers and LGPD compliance
- */
 function generateEmailTemplate(data) {
   const { patientName, appointmentDate, appointmentTime, doctorName, procedure, type } = data;
 
@@ -169,9 +159,6 @@ Seus dados pessoais são tratados com segurança e confidencialidade, conforme a
   };
 }
 
-/**
- * Send booking confirmation email
- */
 export async function sendBookingConfirmation(appointmentData) {
   const { patientEmail, patientName, appointmentDate, appointmentTime, doctorName, procedure } = appointmentData;
 
@@ -215,9 +202,6 @@ export async function sendBookingConfirmation(appointmentData) {
   }
 }
 
-/**
- * Send cancellation notice email
- */
 export async function sendCancellationNotice(appointmentData) {
   const { patientEmail, patientName, appointmentDate, appointmentTime, doctorName } = appointmentData;
 
@@ -260,9 +244,6 @@ export async function sendCancellationNotice(appointmentData) {
   }
 }
 
-/**
- * Send rescheduling notice email
- */
 export async function sendReschedulingNotice(appointmentData) {
   const { patientEmail, patientName, appointmentDate, appointmentTime, doctorName } = appointmentData;
 
@@ -305,9 +286,6 @@ export async function sendReschedulingNotice(appointmentData) {
   }
 }
 
-/**
- * Send appointment reminder email
- */
 export async function sendReminder(appointmentData) {
   const { patientEmail, patientName, appointmentDate, appointmentTime, doctorName } = appointmentData;
 
