@@ -23,7 +23,7 @@ const AuthorProfile = ({
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-2xl shadow-lg border border-blue-100 sticky top-24"
+      className="bg-gradient-to-br from-cyan-50 to-white p-6 rounded-2xl shadow-lg border border-cyan-100 sticky top-24"
       aria-label="Perfil do autor"
     >
       {/* Author Header */}
@@ -54,7 +54,7 @@ const AuthorProfile = ({
       </div>
 
       {/* Specialty Badge */}
-      <div className="bg-white rounded-lg p-3 mb-4 border border-blue-100">
+      <div className="bg-white rounded-lg p-3 mb-4 border border-cyan-100">
         <p className="text-xs text-gray-500 mb-1">Especialidade</p>
         <p className="text-sm font-semibold text-gray-900">{specialty}</p>
       </div>
@@ -66,7 +66,7 @@ const AuthorProfile = ({
 
       {/* Contact Info (optional) */}
       {showContact && (
-        <div className="space-y-2 pt-4 border-t border-blue-100">
+        <div className="space-y-2 pt-4 border-t border-cyan-100">
           <h4 className="text-sm font-semibold text-gray-900 mb-3">Contato</h4>
 
           <a
@@ -88,7 +88,7 @@ const AuthorProfile = ({
       )}
 
       {/* Credibility Indicators */}
-      <div className="mt-4 pt-4 border-t border-blue-100">
+      <div className="mt-4 pt-4 border-t border-cyan-100">
         <div className="flex items-center justify-between text-xs text-gray-600">
           <div className="flex items-center gap-1">
             <Award className="w-3 h-3 text-cyan-600" aria-hidden="true" />

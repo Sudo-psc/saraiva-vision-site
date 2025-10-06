@@ -15,10 +15,10 @@ const RelatedPostsWidget = ({ posts = [], currentPostId }) => {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
-      className="sticky top-24 bg-gradient-to-br from-white/90 via-slate-50/80 to-blue-50/50 backdrop-blur-sm border border-slate-200 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
+      className="sticky top-24 bg-gradient-to-br from-white/90 via-slate-50/80 to-cyan-50/50 backdrop-blur-sm border border-slate-200 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
     >
       <div className="flex items-center gap-2 mb-5 pb-3 border-b border-slate-200">
-        <div className="p-2 bg-gradient-to-br from-blue-100 to-slate-100 rounded-lg">
+        <div className="p-2 bg-gradient-to-br from-cyan-100 to-slate-100 rounded-lg">
           <BookOpen className="w-4 h-4 text-cyan-600" />
         </div>
         <h3 className="text-sm font-bold bg-gradient-to-r from-cyan-700 to-blue-500 bg-clip-text text-transparent">

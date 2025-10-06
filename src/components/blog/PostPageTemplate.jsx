@@ -448,7 +448,7 @@ const PostPageTemplate = ({ slug }) => {
                     {currentPost.tags.map(tag => (
                       <span
                         key={tag}
-                        className="px-4 py-2 bg-gradient-to-r from-blue-50 to-purple-50 text-gray-700 rounded-full text-sm font-semibold border border-cyan-200 hover:border-blue-400 hover:shadow-md transition-all cursor-pointer"
+                        className="px-4 py-2 bg-gradient-to-r from-cyan-50 to-purple-50 text-gray-700 rounded-full text-sm font-semibold border border-cyan-200 hover:border-cyan-400 hover:shadow-md transition-all cursor-pointer"
                       >
                         #{tag}
                       </span>
@@ -638,7 +638,7 @@ const PostPageTemplate = ({ slug }) => {
                               onClick={() => scrollToSection(section.id)}
                               className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
                                 activeSection === section.id
-                                  ? 'bg-blue-100 text-cyan-700 font-semibold border-l-4 border-blue-600'
+                                  ? 'bg-cyan-100 text-cyan-700 font-semibold border-l-4 border-cyan-600'
                                   : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                               }`}
                             >
@@ -717,28 +717,28 @@ const PostPageTemplate = ({ slug }) => {
               <div className="flex flex-col gap-2">
                 <button
                   onClick={() => handleShare('twitter')}
-                  className="flex items-center gap-2 px-3 py-2 hover:bg-blue-50 rounded-lg transition-colors text-sm text-gray-700 font-medium"
+                  className="flex items-center gap-2 px-3 py-2 hover:bg-cyan-50 rounded-lg transition-colors text-sm text-gray-700 font-medium"
                 >
                   <Twitter className="w-4 h-4" />
                   Twitter
                 </button>
                 <button
                   onClick={() => handleShare('facebook')}
-                  className="flex items-center gap-2 px-3 py-2 hover:bg-blue-50 rounded-lg transition-colors text-sm text-gray-700 font-medium"
+                  className="flex items-center gap-2 px-3 py-2 hover:bg-cyan-50 rounded-lg transition-colors text-sm text-gray-700 font-medium"
                 >
                   <Facebook className="w-4 h-4" />
                   Facebook
                 </button>
                 <button
                   onClick={() => handleShare('linkedin')}
-                  className="flex items-center gap-2 px-3 py-2 hover:bg-blue-50 rounded-lg transition-colors text-sm text-gray-700 font-medium"
+                  className="flex items-center gap-2 px-3 py-2 hover:bg-cyan-50 rounded-lg transition-colors text-sm text-gray-700 font-medium"
                 >
                   <Linkedin className="w-4 h-4" />
                   LinkedIn
                 </button>
                 <button
                   onClick={() => handleShare('copy')}
-                  className="flex items-center gap-2 px-3 py-2 hover:bg-blue-50 rounded-lg transition-colors text-sm text-gray-700 font-medium"
+                  className="flex items-center gap-2 px-3 py-2 hover:bg-cyan-50 rounded-lg transition-colors text-sm text-gray-700 font-medium"
                 >
                   {copied ? (
                     <>

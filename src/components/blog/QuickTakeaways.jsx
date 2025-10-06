@@ -15,7 +15,7 @@ const QuickTakeaways = ({ items = [], title = 'O que você vai aprender?' }) => 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="my-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 shadow-lg border-2 border-blue-100"
+      className="my-8 bg-gradient-to-br from-cyan-50 to-indigo-50 rounded-2xl p-6 md:p-8 shadow-lg border-2 border-cyan-100"
       role="complementary"
       aria-label="Resumo do que você vai aprender"
     >

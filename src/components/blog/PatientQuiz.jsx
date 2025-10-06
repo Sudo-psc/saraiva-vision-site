@@ -57,7 +57,7 @@ const PatientQuiz = ({
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className={`my-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 shadow-xl border-2 border-blue-100 ${className}`}
+      className={`my-12 bg-gradient-to-br from-cyan-50 to-indigo-50 rounded-2xl p-6 md:p-8 shadow-xl border-2 border-cyan-100 ${className}`}
     >
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
@@ -124,7 +124,7 @@ const PatientQuiz = ({
                             : isCorrect
                             ? 'bg-green-50 border-green-500'
                             : 'bg-gray-50 border-gray-200'
-                          : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50 cursor-pointer'
+                          : 'border-gray-300 hover:border-cyan-400 hover:bg-cyan-50 cursor-pointer'
                       }`}
                     >
                       <div className="flex items-center gap-3">
@@ -153,9 +153,9 @@ const PatientQuiz = ({
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
-                  className="mt-4 p-4 bg-blue-50 rounded-lg border border-cyan-200"
+                  className="mt-4 p-4 bg-cyan-50 rounded-lg border border-cyan-200"
                 >
-                  <p className="text-sm text-blue-900">
+                  <p className="text-sm text-cyan-900">
                     <strong>💡 Explicação:</strong> {questions[currentQuestion].explanation}
                   </p>
                 </motion.div>

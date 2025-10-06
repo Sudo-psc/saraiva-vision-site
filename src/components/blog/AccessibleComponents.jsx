@@ -11,7 +11,7 @@ export function SkipLink({ targetId = "main-content" }) {
       className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 
                  focus:z-50 focus:px-6 focus:py-3 focus:bg-cyan-600 focus:text-white 
                  focus:font-bold focus:rounded-lg focus:shadow-2xl
-                 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2"
+                 focus:outline-none focus:ring-4 focus:ring-cyan-500 focus:ring-offset-2"
     >
       Pular para o conteúdo principal
     </a>
@@ -34,10 +34,10 @@ export function Callout({
 }) {
   const configs = {
     info: {
-      bg: 'bg-blue-50',
-      border: 'border-blue-400',
+      bg: 'bg-cyan-50',
+      border: 'border-cyan-400',
       icon: 'text-cyan-600',
-      heading: 'text-blue-900',
+      heading: 'text-cyan-900',
       text: 'text-cyan-800',
       ariaLabel: 'Informação importante',
       Icon: Info
@@ -206,7 +206,7 @@ export function ProgressiveList({
           className="flex items-start gap-3 text-gray-700 leading-relaxed"
         >
           {ordered ? (
-            <span className="flex-shrink-0 w-6 h-6 bg-blue-100 text-cyan-700 
+            <span className="flex-shrink-0 w-6 h-6 bg-cyan-100 text-cyan-700
                            rounded-full flex items-center justify-center text-sm font-bold">
               {index + 1}
             </span>
@@ -238,7 +238,7 @@ export function ExpandableSection({
     >
       <summary className="font-bold text-lg text-gray-900 cursor-pointer 
                          hover:text-cyan-600 transition-colors flex items-center gap-3
-                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded">
+                         focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 rounded">
         {icon && <span className="text-2xl" aria-hidden="true">{icon}</span>}
         <span>{title}</span>
       </summary>
@@ -259,7 +259,7 @@ export function HighlightBox({
   icon
 }) {
   const colors = {
-    blue: "border-blue-400 bg-blue-50 text-blue-900",
+    blue: "border-cyan-400 bg-cyan-50 text-cyan-900",
     green: "border-green-400 bg-green-50 text-green-900",
     purple: "border-purple-400 bg-purple-50 text-purple-900",
     orange: "border-orange-400 bg-orange-50 text-orange-900"
@@ -293,7 +293,7 @@ export function HighlightBox({
  */
 export function QuickFacts({ facts, title = "Fatos Rápidos" }) {
   return (
-    <div className="my-8 p-6 bg-gradient-to-br from-blue-50 to-purple-50 
+    <div className="my-8 p-6 bg-gradient-to-br from-cyan-50 to-purple-50
                    border-2 border-cyan-200 rounded-xl">
       <h3 className="font-bold text-xl text-gray-900 mb-4 flex items-center gap-2">
         <span className="text-2xl" aria-hidden="true">⚡</span>

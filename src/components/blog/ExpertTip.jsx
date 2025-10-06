@@ -15,7 +15,7 @@ const ExpertTip = ({
   const configs = {
     tip: {
       icon: Stethoscope,
-      bgColor: 'bg-gradient-to-br from-blue-50 to-blue-100',
+      bgColor: 'bg-gradient-to-br from-cyan-50 to-cyan-100',
       borderColor: 'border-cyan-300',
       iconBg: 'bg-cyan-600',
       titleColor: 'text-blue-900',

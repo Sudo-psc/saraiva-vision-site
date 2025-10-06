@@ -304,7 +304,7 @@ const PostPageTemplateRefactored = ({ slug }) => {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => handleShare('facebook')}
-                        className="p-2 rounded-lg bg-white border border-slate-200 hover:border-blue-600 hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        className="p-2 rounded-lg bg-white border border-slate-200 hover:border-cyan-600 hover:bg-cyan-50 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
                         aria-label="Compartilhar no Facebook"
                       >
                         <Facebook className="w-5 h-5 text-cyan-600" />
@@ -318,7 +318,7 @@ const PostPageTemplateRefactored = ({ slug }) => {
                       </button>
                       <button
                         onClick={() => handleShare('linkedin')}
-                        className="p-2 rounded-lg bg-white border border-slate-200 hover:border-cyan-700 hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2"
+                        className="p-2 rounded-lg bg-white border border-slate-200 hover:border-cyan-700 hover:bg-cyan-50 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-700 focus:ring-offset-2"
                         aria-label="Compartilhar no LinkedIn"
                       >
                         <Linkedin className="w-5 h-5 text-cyan-700" />

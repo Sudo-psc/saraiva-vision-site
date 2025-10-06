@@ -44,7 +44,7 @@ const PostFAQ = ({ questions = [], className = '' }) => {
           >
             <button
               onClick={() => toggleQuestion(index)}
-              className="w-full flex items-center justify-between p-5 text-left bg-gray-50 hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+              className="w-full flex items-center justify-between p-5 text-left bg-gray-50 hover:bg-cyan-50 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-inset"
               aria-expanded={openIndex === index}
               aria-controls={`faq-answer-${index}`}
             >

@@ -14,7 +14,7 @@ const LearningSummary = ({ items = [], className = '' }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 shadow-lg border border-blue-100 mb-8 ${className}`}
+      className={`bg-gradient-to-br from-cyan-50 to-indigo-50 rounded-2xl p-6 md:p-8 shadow-lg border border-cyan-100 mb-8 ${className}`}
       role="complementary"
       aria-labelledby="learning-summary-title"
     >

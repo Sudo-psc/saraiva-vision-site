@@ -436,7 +436,7 @@ const Accessibility = () => {
             }}
           >
             {'1234567890qwertyuiopasdfghjklçzxcvbnm'.split('').map(k => (
-              <button type="button" key={k} className="px-2 py-2 rounded bg-blue-100 hover:bg-cyan-200 text-black font-medium" onClick={() => {
+              <button type="button" key={k} className="px-2 py-2 rounded bg-cyan-100 hover:bg-cyan-200 text-black font-medium" onClick={() => {
                 const a = document.activeElement; if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) { a.value += k; a.dispatchEvent(new Event('input', { bubbles: true })); }
               }}>{k}</button>
             ))}

@@ -158,7 +158,7 @@ const OptimizedImageV2 = ({
     >
       {/* Loading placeholder with skeleton */}
       {!isLoaded && !hasError && (
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 animate-pulse">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-purple-50 to-pink-50 animate-pulse">
           <div className="absolute inset-0 flex items-center justify-center">
             <svg
               className="w-12 h-12 text-gray-300 animate-pulse"

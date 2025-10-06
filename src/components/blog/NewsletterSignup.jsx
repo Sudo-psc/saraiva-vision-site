@@ -67,7 +67,7 @@ const NewsletterSignup = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className={`my-16 bg-gradient-to-br from-blue-50 via-blue-50 to-indigo-50 rounded-3xl p-8 md:p-12 shadow-xl border-2 border-blue-100 ${className}`}
+      className={`my-16 bg-gradient-to-br from-cyan-50 via-cyan-50 to-indigo-50 rounded-3xl p-8 md:p-12 shadow-xl border-2 border-cyan-100 ${className}`}
       aria-label="Inscrição na newsletter"
     >
       <div className="max-w-4xl mx-auto">
@@ -190,7 +190,7 @@ const NewsletterSignup = ({
                     animate={{ opacity: 1, y: 0 }}
                     className={`flex items-start gap-2 p-3 rounded-lg text-sm ${
                       status === 'success'
-                        ? 'bg-blue-50 text-cyan-800 border border-cyan-200'
+                        ? 'bg-cyan-50 text-cyan-800 border border-cyan-200'
                         : 'bg-red-50 text-red-800 border border-red-200'
                     }`}
                   >

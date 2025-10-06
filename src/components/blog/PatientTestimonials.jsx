@@ -18,7 +18,7 @@ const PatientTestimonials = ({ testimonials = [], className = '' }) => {
       className={`my-12 ${className}`}
       aria-labelledby="testimonials-title"
     >
-      <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-2xl p-8 shadow-xl border border-blue-100">
+      <div className="bg-gradient-to-br from-cyan-50 via-indigo-50 to-purple-50 rounded-2xl p-8 shadow-xl border border-cyan-100">
         <div className="flex items-center gap-3 mb-8">
           <div className="bg-gradient-to-r from-cyan-600 to-indigo-600 rounded-full p-3 shadow-md">
             <Quote className="w-6 h-6 text-white" aria-hidden="true" />

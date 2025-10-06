@@ -58,7 +58,7 @@ const RelatedPosts = ({ posts = [], currentPostId, className = '' }) => {
           >
             <Link to={`/blog/${post.slug}`} className="block">
               {/* Image */}
-              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-100 to-gray-100">
+              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-cyan-100 to-gray-100">
                 <OptimizedImage
                   src={post.image}
                   alt={`Imagem ilustrativa do artigo: ${post.title}`}

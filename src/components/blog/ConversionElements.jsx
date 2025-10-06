@@ -71,7 +71,7 @@ export function InlineAppointmentCTA({ context = "artigo" }) {
           Identificou-se com este {context}?
         </h3>
         
-        <p className="text-blue-100 text-lg leading-relaxed">
+        <p className="text-cyan-100 text-lg leading-relaxed">
           Não espere os sintomas piorarem. Agende uma avaliação oftalmológica 
           completa com equipamentos de última geração.
         </p>
@@ -102,7 +102,7 @@ export function InlineAppointmentCTA({ context = "artigo" }) {
           </Button>
         </div>
         
-        <p className="text-sm text-blue-200 pt-4">
+        <p className="text-sm text-cyan-200 pt-4">
           ⚡ Resposta em até 1 hora • 📍 Caratinga, MG • ⭐ 4.9/5 (127 avaliações)
         </p>
       </div>
@@ -130,7 +130,7 @@ export function TrustBadges({ author }) {
           <span
             key={index}
             className="inline-flex items-center px-3 py-1.5 
-                     bg-blue-50 text-cyan-700 text-xs font-medium 
+                     bg-cyan-50 text-cyan-700 text-xs font-medium
                      rounded-full border border-cyan-200"
           >
             {cred}
@@ -149,7 +149,7 @@ export function ClinicInfoCard() {
     <div className="grid sm:grid-cols-3 gap-4 p-6 bg-gray-50 rounded-xl border border-gray-200">
       {/* Localização */}
       <div className="flex flex-col items-center text-center">
-        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+        <div className="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center mb-3">
           <MapPin className="w-6 h-6 text-cyan-600" aria-hidden="true" />
         </div>
         <h4 className="font-bold text-gray-900 mb-1">Localização</h4>
@@ -313,7 +313,7 @@ export function ServicesCTA({ services = [] }) {
           <Link
             key={index}
             to={`/servicos/${service.slug}`}
-            className="p-4 bg-gray-50 hover:bg-blue-50 border border-gray-200 
+            className="p-4 bg-gray-50 hover:bg-cyan-50 border border-gray-200
                      hover:border-cyan-300 rounded-xl transition-all text-center
                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >

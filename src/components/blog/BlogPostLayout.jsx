@@ -190,7 +190,7 @@ export default function BlogPostLayout({ post, children }) {
                      prose-li:text-gray-700 prose-li:leading-relaxed
                      prose-img:rounded-lg prose-img:shadow-md prose-img:my-8
                      prose-blockquote:border-l-4 prose-blockquote:border-cyan-500
-                     prose-blockquote:bg-blue-50 prose-blockquote:py-4 prose-blockquote:px-6
+                     prose-blockquote:bg-cyan-50 prose-blockquote:py-4 prose-blockquote:px-6
                      prose-blockquote:my-6 prose-blockquote:italic
                      prose-code:bg-gray-100 prose-code:px-2 prose-code:py-0.5 
                      prose-code:rounded prose-code:text-sm prose-code:font-mono
@@ -216,8 +216,8 @@ export default function BlogPostLayout({ post, children }) {
                   key={tag}
                   to={`/blog?tag=${encodeURIComponent(tag)}`}
                   className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full 
-                           hover:bg-blue-100 hover:text-cyan-700 transition-colors
-                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                           hover:bg-cyan-100 hover:text-cyan-700 transition-colors
+                           focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
                 >
                   #{tag}
                 </Link>
@@ -304,7 +304,7 @@ function SecondaryAppointmentCTA() {
         <h2 className="text-2xl sm:text-3xl font-bold">
           Cuide da Sua Visão com Excelência
         </h2>
-        <p className="text-blue-100 text-lg leading-relaxed">
+        <p className="text-cyan-100 text-lg leading-relaxed">
           Exames de rotina previnem 80% dos problemas oculares graves. 
           Não deixe para depois o que pode ser tratado hoje.
         </p>
@@ -413,7 +413,7 @@ function TrustElements({ post }) {
               {author.credentials?.map(cred => (
                 <span
                   key={cred}
-                  className="inline-flex items-center px-3 py-1 bg-blue-50 
+                  className="inline-flex items-center px-3 py-1 bg-cyan-50
                            text-cyan-700 text-xs font-medium rounded-full"
                 >
                   {cred}
