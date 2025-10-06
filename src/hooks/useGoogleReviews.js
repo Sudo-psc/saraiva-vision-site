@@ -65,7 +65,9 @@ export function useGoogleReviews(options = {}) {
     const [lastFetch, setLastFetch] = useState(null);
     const [retryCount, setRetryCount] = useState(0);
 
-    const abortControllerRef = useRef(null);
+    // Control flags to prevent duplicate requests
+    const isRequestInProgress = useRef(false);
+    const currentRequestId = useRef(0);
     const refreshIntervalRef = useRef(null);
     const maxRetries = 3;
 
@@ -73,6 +75,15 @@ export function useGoogleReviews(options = {}) {
      * Fetch reviews from Google Places API with retry logic and caching
      */
     const fetchReviews = useCallback(async (fetchOptions = {}) => {
+        // Prevent duplicate requests with a simple ID system
+        const requestId = ++currentRequestId.current;
+
+        // If a request is already in progress, skip this one
+        if (isRequestInProgress.current) {
+            console.log('Google Reviews: Request already in progress, skipping duplicate request');
+            return;
+        }
+
         const placeId = resolvePlaceId(
             fetchOptions.placeId,
             config.placeId,
@@ -106,30 +117,39 @@ export function useGoogleReviews(options = {}) {
             return;
         }
 
-        // Cancel previous request
-        if (abortControllerRef.current) {
-            abortControllerRef.current.abort();
-        }
-
-        abortControllerRef.current = new AbortController();
+        // Mark request as in progress
+        isRequestInProgress.current = true;
         setLoading(true);
         setError(null);
 
         const currentRetry = fetchOptions.retryAttempt || 0;
 
         try {
+            // Check if this is still the latest request
+            if (requestId !== currentRequestId.current) {
+                console.log('Google Reviews: Request superseded by newer one');
+                return;
+            }
+
             const params = new URLSearchParams({
                 placeId,
                 limit: fetchOptions.limit || config.limit || 5,
                 language: 'pt-BR'
             });
 
-            const response = await fetch(`${process.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3001'}/api/google-reviews?${params}`, {
-                signal: abortControllerRef.current.signal,
+            const response = await fetch(`/api/google-reviews?${params}`, {
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                // Add timeout to prevent hanging requests
+                signal: AbortSignal.timeout(10000) // 10 second timeout
             });
+
+            // Check if this is still the latest request
+            if (requestId !== currentRequestId.current) {
+                console.log('Google Reviews: Request completed but superseded');
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -164,32 +184,38 @@ export function useGoogleReviews(options = {}) {
             };
             reviewsCache.set(cacheKey, cacheData);
 
-            setReviews(newReviews || []);
+            // Final check if this is still the latest request before updating state
+            if (requestId === currentRequestId.current) {
+                setReviews(newReviews || []);
 
-            if (newStats) {
-                setStats(newStats);
-            }
+                if (newStats) {
+                    setStats(newStats);
+                }
 
-            setLastFetch(new Date());
+                setLastFetch(new Date());
 
-            // Call success callback
-            if (config.onSuccess) {
-                config.onSuccess(result.data);
+                // Call success callback
+                if (config.onSuccess) {
+                    config.onSuccess(result.data);
+                }
             }
 
         } catch (err) {
-            if (err.name === 'AbortError') {
-                return; // Request was cancelled
+            // Check if this is still the latest request
+            if (requestId !== currentRequestId.current) {
+                console.log('Google Reviews: Error from superseded request:', err.message);
+                return;
             }
 
             console.error('Google Reviews fetch error:', err);
-            
+
             // Retry logic for network errors and 5xx server errors (not 401/403)
             const isNetworkError = err.message.includes('network') ||
                                   err.message.includes('timeout') ||
                                   err.message.includes('fetch') ||
                                   err.message.includes('ECONNREFUSED') ||
                                   err.message.includes('ENOTFOUND') ||
+                                  err.message.includes('AbortError') ||
                                   (err.response && err.response.status >= 500);
 
             const isAuthError = err.message.includes('401') ||
@@ -224,9 +250,9 @@ export function useGoogleReviews(options = {}) {
                 config.onError(error);
             }
         } finally {
-            if (currentRetry === 0) { // Only set loading false on the final attempt
-                setLoading(false);
-            }
+            // Mark request as completed
+            isRequestInProgress.current = false;
+            setLoading(false);
         }
     }, [config]);
 
@@ -253,7 +279,7 @@ export function useGoogleReviews(options = {}) {
                 includeTrends: statsOptions.includeTrends ?? false
             });
 
-            const response = await fetch(`${process.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3001'}/api/google-reviews-stats?${params}`);
+            const response = await fetch(`/api/google-reviews-stats?${params}`);
 
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -333,12 +359,12 @@ export function useGoogleReviews(options = {}) {
         });
     }, [reviews]);
 
-    // Auto-fetch on mount and when dependencies change
+    // Auto-fetch on mount only
     useEffect(() => {
         if (config.autoFetch) {
             fetchReviews();
         }
-    }, [config.autoFetch]); // Remove fetchReviews dependency to prevent infinite loop
+    }, []); // Empty dependency array - only run on mount
 
     // Set up refresh interval
     useEffect(() => {
@@ -358,9 +384,8 @@ export function useGoogleReviews(options = {}) {
     // Cleanup on unmount
     useEffect(() => {
         return () => {
-            if (abortControllerRef.current) {
-                abortControllerRef.current.abort();
-            }
+            // Reset request flags on unmount
+            isRequestInProgress.current = false;
             if (refreshIntervalRef.current) {
                 clearInterval(refreshIntervalRef.current);
             }
@@ -434,7 +459,7 @@ export function useGoogleReviewsStats(placeId, options = {}) {
                 includeTrends: options.includeTrends ?? false
             });
 
-            const response = await fetch(`${process.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3001'}/api/google-reviews-stats?${params}`);
+            const response = await fetch(`/api/google-reviews-stats?${params}`);
 
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
