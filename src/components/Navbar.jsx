@@ -53,7 +53,7 @@ const Navbar = () => {
             <Link to="/" aria-label={t('navbar.home_link_label')}><Logo isWhite /></Link>
           </motion.div>
 
-          {/* Desktop Navigation - 15% larger text */}
+          {/* Desktop Navigation - 20% larger text */}
           <nav className="hidden md:flex items-center space-x-1" aria-label={t('navbar.primary_navigation')}>
             {navLinks.map((link) => {
               const IconComponent = link.icon;
@@ -61,9 +61,9 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.href}
-                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2 text-[1.15rem]"
+                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2 text-[1.2rem]"
                 >
-                  <IconComponent size={18} className="text-slate-600" />
+                  <IconComponent size={19} className="text-slate-600" />
                   {link.name}
                 </Link>
               ) : (
@@ -72,9 +72,9 @@ const Navbar = () => {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2 text-[1.15rem]"
+                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2 text-[1.2rem]"
                 >
-                  <IconComponent size={18} className="text-slate-600" />
+                  <IconComponent size={19} className="text-slate-600" />
                   {link.name}
                 </a>
               );
@@ -86,7 +86,7 @@ const Navbar = () => {
                onClick={() => navigate('/agendamento')}
                className="flex items-center gap-2 scale-[1.2] origin-center"
              >
-               <Calendar size={18} />
+               <Calendar size={20} />
                <span>{t('navbar.schedule')}</span>
              </Button>
            </div>
