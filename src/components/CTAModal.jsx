@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { Globe, MessageCircle, Phone, Mail, X, Bot } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { CONTACT } from '@/lib/constants';
-// importação dinâmica de analytics
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
-// Standalone CTA modal (no floating button). Opens via 'open-cta-modal' event.
 const CTAModal = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -94,7 +94,10 @@ const CTAModal = () => {
           {/* Online Scheduling */}
           <button
             type="button"
-            onClick={() => safeOpenExternal(clinicInfo.onlineSchedulingUrl, 'Agendamento Online')}
+            onClick={() => {
+              handleClose();
+              navigate('/agendamento');
+            }}
             className="flex items-center gap-4 p-5 rounded-2xl border-2 border-blue-300 bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 transition-all duration-200 transform hover:scale-[1.02] shadow-lg w-full text-left"
           >
             <div className="p-4 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-md">

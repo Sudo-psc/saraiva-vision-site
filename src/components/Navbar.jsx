@@ -82,7 +82,7 @@ const Navbar = () => {
 
            <div className="hidden md:flex items-center gap-4">
              <Button
-               onClick={() => navigate('/sobre#contact')}
+               onClick={() => navigate('/agendamento')}
                className="flex items-center gap-2"
              >
                <Calendar size={18} />
@@ -139,7 +139,7 @@ const Navbar = () => {
               <Button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  navigate('/sobre#contact');
+                  navigate('/agendamento');
                 }}
                 className="flex items-center gap-2 w-full justify-center"
               >

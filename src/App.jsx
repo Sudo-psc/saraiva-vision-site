@@ -18,6 +18,7 @@ const BlogPage = createLazyComponent(() => import('./pages/BlogPage.jsx'));
 const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
 const GoogleReviewsTestPage = createLazyComponent(() => import('./pages/GoogleReviewsTestPage.jsx'));
 const MapTestPage = createLazyComponent(() => import('./pages/MapTestPage.jsx'));
+const AgendamentoPage = createLazyComponent(() => import('./pages/AgendamentoPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
 import { Toaster } from './components/ui/toaster.jsx';
@@ -80,6 +81,7 @@ function App() {
                   <Route path="/blog" element={<BlogPage />} />
                   <Route path="/blog/:slug" element={<BlogPage />} />
                   <Route path="/privacy" element={<PrivacyPolicyPage />} />
+                  <Route path="/agendamento" element={<AgendamentoPage />} />
                   <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />
                   <Route path="/map-test" element={<MapTestPage />} />
                   <Route path="/wp-admin" element={<Navigate to="/blog" replace />} />
