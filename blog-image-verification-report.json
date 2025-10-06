@@ -1,17 +1,17 @@
 {
-  "timestamp": "2025-10-04T19:27:54.674Z",
+  "timestamp": "2025-10-06T17:07:57.503Z",
   "paths": {
     "imagesDirectory": "/home/saraiva-vision-site/public/Blog",
     "blogPostsFile": "/home/saraiva-vision-site/src/data/blogPosts.js"
   },
   "summary": {
-    "totalImagesAvailable": 907,
-    "totalReferences": 5,
-    "validReferences": 5,
+    "totalImagesAvailable": 915,
+    "totalReferences": 6,
+    "validReferences": 6,
     "missingImages": 0,
     "extensionTypos": 0,
     "imagesNeedingVariants": 0,
-    "unusedImages": 902
+    "unusedImages": 909
   },
   "availableImages": [
     {
@@ -648,6 +648,21 @@
       "filename": "capa-ductolacrimal-768w.webp",
       "extension": ".webp",
       "basename": "capa-ductolacrimal-768w"
+    },
+    {
+      "filename": "capa-ductolacrimal-optimized.avif",
+      "extension": ".avif",
+      "basename": "capa-ductolacrimal-optimized"
+    },
+    {
+      "filename": "capa-ductolacrimal-optimized.jpg",
+      "extension": ".jpg",
+      "basename": "capa-ductolacrimal-optimized"
+    },
+    {
+      "filename": "capa-ductolacrimal-optimized.webp",
+      "extension": ".webp",
+      "basename": "capa-ductolacrimal-optimized"
     },
     {
       "filename": "capa-ductolacrimal.avif",
@@ -1643,6 +1658,21 @@
       "filename": "capa-lentes-premium-catarata-768w.webp",
       "extension": ".webp",
       "basename": "capa-lentes-premium-catarata-768w"
+    },
+    {
+      "filename": "capa-lentes-premium-catarata-optimized.avif",
+      "extension": ".avif",
+      "basename": "capa-lentes-premium-catarata-optimized"
+    },
+    {
+      "filename": "capa-lentes-premium-catarata-optimized.jpg",
+      "extension": ".jpg",
+      "basename": "capa-lentes-premium-catarata-optimized"
+    },
+    {
+      "filename": "capa-lentes-premium-catarata-optimized.webp",
+      "extension": ".webp",
+      "basename": "capa-lentes-premium-catarata-optimized"
     },
     {
       "filename": "capa-lentes-premium-catarata.avif",
@@ -3900,6 +3930,16 @@
       "basename": "healthy-food-sources-768w"
     },
     {
+      "filename": "healthy-food-sources-test.avif",
+      "extension": ".avif",
+      "basename": "healthy-food-sources-test"
+    },
+    {
+      "filename": "healthy-food-sources-test.webp",
+      "extension": ".webp",
+      "basename": "healthy-food-sources-test"
+    },
+    {
       "filename": "healthy-food-sources.avif",
       "extension": ".avif",
       "basename": "healthy-food-sources"
@@ -4552,56 +4592,66 @@
   ],
   "imageReferences": [
     {
-      "reference": "capa-lentes-premium-catarata.png",
-      "filename": "capa-lentes-premium-catarata.png",
+      "reference": "capa-lentes-premium-catarata-optimized.webp",
+      "filename": "capa-lentes-premium-catarata-optimized.webp",
       "line": 375
     },
     {
-      "reference": "capa-exercicios-oculares.png",
-      "filename": "capa-exercicios-oculares.png",
+      "reference": "capa-exercicios-oculares.avif",
+      "filename": "capa-exercicios-oculares.avif",
       "line": 168
     },
     {
-      "reference": "capa-ductolacrimal.png",
-      "filename": "capa-ductolacrimal.png",
+      "reference": "capa-ductolacrimal-optimized.webp",
+      "filename": "capa-ductolacrimal-optimized.webp",
       "line": 294
     },
     {
-      "reference": "capa-pediatria.png",
-      "filename": "capa-pediatria.png",
+      "reference": "capa-estrabismo-tratamento.avif",
+      "filename": "capa-estrabismo-tratamento.avif",
       "line": 535
     },
     {
-      "reference": "capa-post-24-imagen4-opt1-20250930-185815.png",
-      "filename": "capa-post-24-imagen4-opt1-20250930-185815.png",
+      "reference": "capa-post-24-imagen4-opt1-20250930-185815.avif",
+      "filename": "capa-post-24-imagen4-opt1-20250930-185815.avif",
       "line": 619
+    },
+    {
+      "reference": "capa-lentes-premium-catarata.png",
+      "filename": "capa-lentes-premium-catarata.png",
+      "line": 308
     }
   ],
   "validReferences": [
     {
-      "reference": "capa-lentes-premium-catarata.png",
-      "filename": "capa-lentes-premium-catarata.png",
+      "reference": "capa-lentes-premium-catarata-optimized.webp",
+      "filename": "capa-lentes-premium-catarata-optimized.webp",
       "line": 375
     },
     {
-      "reference": "capa-exercicios-oculares.png",
-      "filename": "capa-exercicios-oculares.png",
+      "reference": "capa-exercicios-oculares.avif",
+      "filename": "capa-exercicios-oculares.avif",
       "line": 168
     },
     {
-      "reference": "capa-ductolacrimal.png",
-      "filename": "capa-ductolacrimal.png",
+      "reference": "capa-ductolacrimal-optimized.webp",
+      "filename": "capa-ductolacrimal-optimized.webp",
       "line": 294
     },
     {
-      "reference": "capa-pediatria.png",
-      "filename": "capa-pediatria.png",
+      "reference": "capa-estrabismo-tratamento.avif",
+      "filename": "capa-estrabismo-tratamento.avif",
       "line": 535
     },
     {
-      "reference": "capa-post-24-imagen4-opt1-20250930-185815.png",
-      "filename": "capa-post-24-imagen4-opt1-20250930-185815.png",
+      "reference": "capa-post-24-imagen4-opt1-20250930-185815.avif",
+      "filename": "capa-post-24-imagen4-opt1-20250930-185815.avif",
       "line": 619
+    },
+    {
+      "reference": "capa-lentes-premium-catarata.png",
+      "filename": "capa-lentes-premium-catarata.png",
+      "line": 308
     }
   ],
   "missingImages": [],
@@ -5117,8 +5167,20 @@
       "extension": ".webp"
     },
     {
+      "filename": "capa-ductolacrimal-optimized.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa-ductolacrimal-optimized.jpg",
+      "extension": ".jpg"
+    },
+    {
       "filename": "capa-ductolacrimal.avif",
       "extension": ".avif"
+    },
+    {
+      "filename": "capa-ductolacrimal.png",
+      "extension": ".png"
     },
     {
       "filename": "capa-ductolacrimal.webp",
@@ -5181,10 +5243,6 @@
       "extension": ".webp"
     },
     {
-      "filename": "capa-estrabismo-tratamento.avif",
-      "extension": ".avif"
-    },
-    {
       "filename": "capa-estrabismo-tratamento.png",
       "extension": ".png"
     },
@@ -5229,8 +5287,8 @@
       "extension": ".webp"
     },
     {
-      "filename": "capa-exercicios-oculares.avif",
-      "extension": ".avif"
+      "filename": "capa-exercicios-oculares.png",
+      "extension": ".png"
     },
     {
       "filename": "capa-exercicios-oculares.webp",
@@ -5905,6 +5963,14 @@
       "extension": ".webp"
     },
     {
+      "filename": "capa-lentes-premium-catarata-optimized.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "capa-lentes-premium-catarata-optimized.jpg",
+      "extension": ".jpg"
+    },
+    {
       "filename": "capa-lentes-premium-catarata.avif",
       "extension": ".avif"
     },
@@ -6171,6 +6237,10 @@
     {
       "filename": "capa-pediatria.avif",
       "extension": ".avif"
+    },
+    {
+      "filename": "capa-pediatria.png",
+      "extension": ".png"
     },
     {
       "filename": "capa-pediatria.webp",
@@ -6445,8 +6515,8 @@
       "extension": ".webp"
     },
     {
-      "filename": "capa-post-24-imagen4-opt1-20250930-185815.avif",
-      "extension": ".avif"
+      "filename": "capa-post-24-imagen4-opt1-20250930-185815.png",
+      "extension": ".png"
     },
     {
       "filename": "capa-post-24-imagen4-opt1-20250930-185815.webp",
@@ -7694,6 +7764,14 @@
     },
     {
       "filename": "healthy-food-sources-768w.webp",
+      "extension": ".webp"
+    },
+    {
+      "filename": "healthy-food-sources-test.avif",
+      "extension": ".avif"
+    },
+    {
+      "filename": "healthy-food-sources-test.webp",
       "extension": ".webp"
     },
     {
