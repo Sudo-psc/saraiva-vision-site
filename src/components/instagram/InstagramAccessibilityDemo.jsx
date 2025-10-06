@@ -112,7 +112,7 @@ const InstagramAccessibilityDemo = () => {
                                 <label className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                     <div className="flex items-center gap-3">
                                         {preferences.highContrast ? (
-                                            <Eye className="w-5 h-5 text-blue-600" />
+                                            <Eye className="w-5 h-5 text-cyan-600" />
                                         ) : (
                                             <EyeOff className="w-5 h-5 text-gray-400" />
                                         )}
@@ -129,7 +129,7 @@ const InstagramAccessibilityDemo = () => {
                                         type="checkbox"
                                         checked={preferences.highContrast}
                                         onChange={(e) => handleDemoSettingChange('highContrast', e.target.checked)}
-                                        className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                                        className="w-5 h-5 text-cyan-600 rounded focus:ring-2 focus:ring-blue-500"
                                         style={focusStyles}
                                     />
                                 </label>

@@ -219,7 +219,7 @@ const Footer = () => {
                 <SocialLinks socials={socialsForLinks} />
                 <button
                   onClick={scrollToTop}
-                  className="p-2.5 bg-slate-700 rounded-full text-white hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800"
+                  className="p-2.5 bg-slate-700 rounded-full text-white hover:bg-cyan-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800"
                   aria-label={t('footer.back_to_top')}
                   title={t('footer.back_to_top')}
                 >

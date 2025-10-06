@@ -45,7 +45,7 @@ const ServiceMainContent = ({ service }) => {
         <div className="space-y-3">
           {service.included.map((item, index) => (
             <div key={index} className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-blue-600 rounded-full mt-2.5 flex-shrink-0"></div>
+              <div className="w-2 h-2 bg-cyan-600 rounded-full mt-2.5 flex-shrink-0"></div>
               <span className="text-slate-600">{item}</span>
             </div>
           ))}

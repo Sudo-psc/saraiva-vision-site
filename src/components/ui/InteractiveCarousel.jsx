@@ -324,7 +324,7 @@ const InteractiveCarousel = forwardRef(({
                   className={cn(
                     'rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500',
                     {
-                      'bg-blue-600 w-6 h-2.5 shadow': isActive,
+                      'bg-cyan-600 w-6 h-2.5 shadow': isActive,
                       'bg-slate-300 hover:bg-slate-400 w-2.5 h-2.5': !isActive
                     }
                   )}
@@ -351,7 +351,7 @@ const InteractiveCarousel = forwardRef(({
                   className={cn(
                     'h-1 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500',
                     {
-                      'bg-blue-600 w-8': isActive,
+                      'bg-cyan-600 w-8': isActive,
                       'bg-slate-300 hover:bg-slate-400 w-4': !isActive
                     }
                   )}

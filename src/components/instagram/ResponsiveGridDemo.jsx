@@ -90,9 +90,9 @@ const ResponsiveGridDemo = () => {
                     performance optimizations, and accessibility features.
                 </p>
 
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                    <h3 className="font-semibold text-blue-800 mb-2">Features Demonstrated:</h3>
-                    <ul className="text-blue-700 text-sm space-y-1">
+                <div className="bg-blue-50 border border-cyan-200 rounded-lg p-4 mb-6">
+                    <h3 className="font-semibold text-cyan-800 mb-2">Features Demonstrated:</h3>
+                    <ul className="text-cyan-700 text-sm space-y-1">
                         <li>• Responsive CSS Grid layout that adapts to screen size</li>
                         <li>• Touch gesture support for mobile devices</li>
                         <li>• Optimized image loading with WebP/AVIF support</li>

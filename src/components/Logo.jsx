@@ -11,7 +11,7 @@ const Logo = ({ className = "", isWhite = false, alt: altProp }) => {
     <img
       src={logoUrl}
       alt={altText}
-      className={`h-32 md:h-36 w-auto ${className}`}
+      className={`h-32 md:h-36 w-auto scale-[1.15] ${className}`}
       loading="eager"
       decoding="async"
       width="256"

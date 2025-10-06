@@ -253,7 +253,7 @@ const ReviewCard = ({
                         {shouldTruncate && (
                             <button
                                 onClick={() => setIsExpanded(!isExpanded)}
-                                className="text-blue-600 dark:text-blue-400 text-xs font-medium hover:underline flex items-center gap-1"
+                                className="text-cyan-600 dark:text-blue-400 text-xs font-medium hover:underline flex items-center gap-1"
                             >
                                 {isExpanded ? (
                                     <>
@@ -275,19 +275,19 @@ const ReviewCard = ({
                 {showReply && reviewReply?.comment && (
                     <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-100 dark:border-blue-800/30">
                         <div className="flex items-center gap-2 mb-2">
-                            <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
+                            <div className="w-6 h-6 rounded-full bg-cyan-500 flex items-center justify-center">
                                 <MessageSquare size={12} className="text-white" />
                             </div>
-                            <span className="text-xs font-medium text-blue-700 dark:text-blue-400">
+                            <span className="text-xs font-medium text-cyan-700 dark:text-blue-400">
                                 Resposta do estabelecimento
                             </span>
                             {reviewReply?.updateTime && (
-                                <span className="text-xs text-blue-600 dark:text-blue-400">
+                                <span className="text-xs text-cyan-600 dark:text-blue-400">
                                     • {formatDate(reviewReply.updateTime)}
                                 </span>
                             )}
                         </div>
-                        <p className="text-sm text-blue-800 dark:text-blue-200 leading-relaxed">
+                        <p className="text-sm text-cyan-800 dark:text-blue-200 leading-relaxed">
                             {reviewReply?.comment}
                         </p>
                     </div>
@@ -313,7 +313,7 @@ const ReviewCard = ({
 
                             <button
                                 onClick={handleShare}
-                                className="flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                className="flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-blue-400 transition-colors"
                             >
                                 <Share2 size={14} />
                                 Compartilhar

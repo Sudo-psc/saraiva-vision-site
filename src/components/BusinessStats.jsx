@@ -297,19 +297,19 @@ const BusinessStats = ({
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/30 rounded-xl p-5 border border-blue-100 dark:border-blue-800/30"
+                            className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-cyan-800/30 rounded-xl p-5 border border-blue-100 dark:border-blue-800/30"
                         >
                             <div className="flex items-center justify-between mb-3">
-                                <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                                    <Star size={20} className="text-blue-600 dark:text-blue-400" />
+                                <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                                    <Star size={20} className="text-cyan-600 dark:text-blue-400" />
                                 </div>
                                 {showTrends && getTrendIcon(ratingTrend.direction)}
                             </div>
                             <div className="space-y-1">
-                                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                                <div className="text-2xl font-bold text-cyan-600 dark:text-blue-400">
                                     {stats.averageRating}
                                 </div>
-                                <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                                <div className="text-xs text-cyan-600 dark:text-blue-400 font-medium">
                                     Avaliação Média
                                 </div>
                                 {showTrends && ratingTrend.value > 0 && (
@@ -485,7 +485,7 @@ const BusinessStats = ({
                                         <div className="text-xs text-slate-600 dark:text-slate-400">5 estrelas</div>
                                     </div>
                                     <div>
-                                        <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                                        <div className="text-lg font-bold text-cyan-600 dark:text-blue-400">
                                             {stats.ratingDistribution?.[4] || 0}
                                         </div>
                                         <div className="text-xs text-slate-600 dark:text-slate-400">4 estrelas</div>
@@ -516,8 +516,8 @@ const BusinessStats = ({
                             className="bg-white dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700 p-6"
                         >
                             <div className="flex items-center gap-3 mb-6">
-                                <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                                    <Award size={20} className="text-blue-600 dark:text-blue-400" />
+                                <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                                    <Award size={20} className="text-cyan-600 dark:text-blue-400" />
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
@@ -560,7 +560,7 @@ const BusinessStats = ({
                                                 href={businessInfo.websiteUri}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline mt-1 block"
+                                                className="text-sm font-medium text-cyan-600 dark:text-blue-400 hover:underline mt-1 block"
                                             >
                                                 {businessInfo.websiteUri}
                                             </a>
@@ -578,7 +578,7 @@ const BusinessStats = ({
                                                 {businessInfo.categories.map((category, index) => (
                                                     <span
                                                         key={index}
-                                                        className="inline-block px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded-full"
+                                                        className="inline-block px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-cyan-700 dark:text-blue-300 text-xs rounded-full"
                                                     >
                                                         {category.displayName}
                                                     </span>
@@ -638,10 +638,10 @@ const BusinessStats = ({
                                 </div>
 
                                 <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 text-center">
-                                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-1">
+                                    <div className="text-2xl font-bold text-cyan-600 dark:text-blue-400 mb-1">
                                         {Math.round(stats.responseRate || 0)}%
                                     </div>
-                                    <div className="text-xs text-blue-700 dark:text-blue-300">
+                                    <div className="text-xs text-cyan-700 dark:text-blue-300">
                                         Taxa de resposta
                                     </div>
                                 </div>

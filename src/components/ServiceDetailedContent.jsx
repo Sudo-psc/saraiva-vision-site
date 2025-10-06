@@ -434,7 +434,7 @@ const ServiceDetailedContent = ({ serviceId, showRelatedServices = true }) => {
         className="bg-white rounded-2xl p-6 shadow-soft-light border border-slate-200/50"
       >
         <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
-          <BookOpen className="w-6 h-6 mr-3 text-blue-600" />
+          <BookOpen className="w-6 h-6 mr-3 text-cyan-600" />
           Informações Detalhadas
         </h2>
         <div className="prose prose-slate max-w-none">
@@ -476,7 +476,7 @@ const ServiceDetailedContent = ({ serviceId, showRelatedServices = true }) => {
           className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border border-blue-100"
         >
           <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
-            <ExternalLink className="w-6 h-6 mr-3 text-blue-600" />
+            <ExternalLink className="w-6 h-6 mr-3 text-cyan-600" />
             Serviços Relacionados
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -484,13 +484,13 @@ const ServiceDetailedContent = ({ serviceId, showRelatedServices = true }) => {
               <a
                 key={index}
                 href={`/servicos/${relatedServiceId}`}
-                className="bg-white rounded-lg p-4 border border-blue-200 hover:border-blue-400 transition-colors group"
+                className="bg-white rounded-lg p-4 border border-cyan-200 hover:border-blue-400 transition-colors group"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-800 font-medium group-hover:text-blue-700 transition-colors">
+                  <span className="text-slate-800 font-medium group-hover:text-cyan-700 transition-colors">
                     {relatedServiceId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                   </span>
-                  <ExternalLink className="w-4 h-4 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ExternalLink className="w-4 h-4 text-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </a>
             ))}

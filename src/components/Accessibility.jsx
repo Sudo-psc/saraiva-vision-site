@@ -279,7 +279,7 @@ const Accessibility = () => {
       onClick={onClick}
       aria-pressed={active}
       aria-label={ariaLabel}
-      className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white flex items-center gap-1 ${active ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white border-transparent shadow' : 'bg-white/80 backdrop-blur border-slate-300 text-black hover:bg-white'}`}
+      className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white flex items-center gap-1 ${active ? 'bg-gradient-to-r from-cyan-600 to-cyan-500 text-white border-transparent shadow' : 'bg-white/80 backdrop-blur border-slate-300 text-black hover:bg-white'}`}
     >
       {children}
     </button>
@@ -308,7 +308,7 @@ const Accessibility = () => {
                 aria-haspopup="dialog"
                 aria-expanded={open}
                 aria-label={t('accessibility.toggle', 'Acessibilidade')}
-                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-blue-600/35 via-cyan-500/35 to-teal-500/35 hover:from-blue-500/70 hover:via-cyan-400/70 hover:to-teal-400/70 text-white border border-white/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600/50 backdrop-blur-md transition-all duration-300 ease-in-out"
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-xl flex items-center justify-center bg-gradient-to-br from-cyan-600/35 via-cyan-500/35 to-teal-500/35 hover:from-cyan-500/70 hover:via-cyan-400/70 hover:to-teal-400/70 text-white border border-white/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600/50 backdrop-blur-md transition-all duration-300 ease-in-out"
                 style={{ touchAction: 'manipulation' }}
               >
                 <AccessibilityIcon size={22} className="text-white drop-shadow" />
@@ -332,7 +332,7 @@ const Accessibility = () => {
             exit={{ x: '-100%' }}
             transition={{ type: 'tween', duration: 0.35 }}
             ref={panelRef}
-            className="fixed top-0 left-0 h-full w-full max-w-md bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-2xl border-r border-blue-200/50 z-[95] flex flex-col focus:outline-none"
+            className="fixed top-0 left-0 h-full w-full max-w-md bg-gradient-to-br from-white via-blue-50 to-cyan-50 shadow-2xl border-r border-cyan-200/50 z-[95] flex flex-col focus:outline-none"
             style={{
               transform: 'translateZ(0)',
               willChange: 'transform'
@@ -436,11 +436,11 @@ const Accessibility = () => {
             }}
           >
             {'1234567890qwertyuiopasdfghjklçzxcvbnm'.split('').map(k => (
-              <button type="button" key={k} className="px-2 py-2 rounded bg-blue-100 hover:bg-blue-200 text-black font-medium" onClick={() => {
+              <button type="button" key={k} className="px-2 py-2 rounded bg-cyan-100 hover:bg-cyan-200 text-black font-medium" onClick={() => {
                 const a = document.activeElement; if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) { a.value += k; a.dispatchEvent(new Event('input', { bubbles: true })); }
               }}>{k}</button>
             ))}
-            <button type="button" className="col-span-2 px-2 py-2 rounded bg-blue-500 text-white font-semibold" onClick={() => { const a = document.activeElement; if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) { a.value += ' '; a.dispatchEvent(new Event('input', { bubbles: true })); } }}>Espaço</button>
+            <button type="button" className="col-span-2 px-2 py-2 rounded bg-cyan-500 text-white font-semibold" onClick={() => { const a = document.activeElement; if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) { a.value += ' '; a.dispatchEvent(new Event('input', { bubbles: true })); } }}>Espaço</button>
           </motion.div>
         )}
       </AnimatePresence>

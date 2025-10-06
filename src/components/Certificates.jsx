@@ -27,7 +27,7 @@ const Certificates = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-4">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-cyan-700 text-sm font-medium mb-4">
             {t('certificates.badge')}
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900">

@@ -119,7 +119,7 @@ const GoogleBusinessMonitorDashboard = ({
         switch (severity) {
             case 'critical': return 'text-red-600 bg-red-100 dark:text-red-400 dark:bg-red-900/20';
             case 'warning': return 'text-yellow-600 bg-yellow-100 dark:text-yellow-400 dark:bg-yellow-900/20';
-            case 'info': return 'text-blue-600 bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20';
+            case 'info': return 'text-cyan-600 bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20';
             default: return 'text-gray-600 bg-gray-100 dark:text-gray-400 dark:bg-gray-900/20';
         }
     };
@@ -212,7 +212,7 @@ const GoogleBusinessMonitorDashboard = ({
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
-                        <Globe className="w-4 h-4 text-blue-600" />
+                        <Globe className="w-4 h-4 text-cyan-600" />
                         <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
                             API Status
                         </span>

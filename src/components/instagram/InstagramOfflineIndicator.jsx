@@ -144,9 +144,9 @@ const InstagramOfflineIndicator = ({
                 return {
                     icon: RefreshCw,
                     color: 'blue',
-                    bgColor: 'bg-blue-100 border-blue-200',
-                    textColor: 'text-blue-800',
-                    iconColor: 'text-blue-600',
+                    bgColor: 'bg-blue-100 border-cyan-200',
+                    textColor: 'text-cyan-800',
+                    iconColor: 'text-cyan-600',
                     title: 'Syncing',
                     message: 'Updating content...',
                     animate: true

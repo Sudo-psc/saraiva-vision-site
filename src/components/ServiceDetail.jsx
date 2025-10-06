@@ -23,7 +23,7 @@ const ServiceDetail = ({ service, onScheduleClick, onBackClick }) => {
             >
               <div className="flex justify-center mb-6">
                 <div className="icon-container-large bg-white p-4 rounded-full shadow-lg">
-                  {getServiceIcon(service.id, { className: "h-16 w-16 text-blue-600" })}
+                  {getServiceIcon(service.id, { className: "h-16 w-16 text-cyan-600" })}
                 </div>
               </div>
               <h1 className="text-4xl md:text-5xl font-bold mb-4">{service.title}</h1>
@@ -80,7 +80,7 @@ const ServiceDetail = ({ service, onScheduleClick, onBackClick }) => {
                   <div className="space-y-4">
                     {service.included.map((item, index) => (
                       <div key={index} className="flex items-start gap-4">
-                        <div className="w-2.5 h-2.5 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                        <div className="w-2.5 h-2.5 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></div>
                         <span className="text-slate-700 text-lg">{item}</span>
                       </div>
                     ))}
@@ -100,14 +100,14 @@ const ServiceDetail = ({ service, onScheduleClick, onBackClick }) => {
                   <h3 className="text-2xl font-bold text-slate-900 mb-6">Informações Essenciais</h3>
                   <div className="space-y-6">
                     <div className="flex items-start gap-4">
-                      <Clock className="w-6 h-6 text-blue-600 mt-0.5" />
+                      <Clock className="w-6 h-6 text-cyan-600 mt-0.5" />
                       <div>
                         <div className="font-bold text-slate-800 text-lg">Duração</div>
                         <div className="text-md text-slate-600">{service.duration}</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-4">
-                      <MapPin className="w-6 h-6 text-blue-600 mt-0.5" />
+                      <MapPin className="w-6 h-6 text-cyan-600 mt-0.5" />
                       <div>
                         <div className="font-bold text-slate-800 text-lg">Local</div>
                         <div className="text-md text-slate-600">Clínica Saraiva Vision<br />Caratinga/MG</div>
@@ -125,14 +125,14 @@ const ServiceDetail = ({ service, onScheduleClick, onBackClick }) => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
-                  className="bg-blue-600 rounded-2xl p-8 text-white text-center shadow-xl"
+                  className="bg-cyan-600 rounded-2xl p-8 text-white text-center shadow-xl"
                 >
                   <h3 className="text-2xl font-bold mb-4">Pronto para Agendar?</h3>
                   <p className="mb-6">Nossa equipe está pronta para te atender com excelência.</p>
                   <Button
                     onClick={onScheduleClick}
                     size="lg"
-                    className="w-full bg-white text-blue-600 font-bold hover:bg-blue-50 transition-all duration-300 transform hover:scale-105"
+                    className="w-full bg-white text-cyan-600 font-bold hover:bg-blue-50 transition-all duration-300 transform hover:scale-105"
                   >
                     <Calendar className="w-5 h-5 mr-2" />
                     Agendar Agora

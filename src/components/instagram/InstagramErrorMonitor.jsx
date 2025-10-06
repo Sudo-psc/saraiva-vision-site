@@ -281,7 +281,7 @@ const InstagramErrorMonitor = ({
     const getTypeColor = (type) => {
         switch (type) {
             case 'network':
-                return 'text-blue-600 bg-blue-100';
+                return 'text-cyan-600 bg-blue-100';
             case 'auth':
                 return 'text-red-600 bg-red-100';
             case 'rate-limit':
@@ -439,8 +439,8 @@ const InstagramErrorMonitor = ({
                                                 )}
                                                 {monitorState.trends.trend === 'stable' && (
                                                     <>
-                                                        <BarChart3 className="w-3 h-3 text-blue-600" />
-                                                        <span className="text-xs text-blue-600">Stable</span>
+                                                        <BarChart3 className="w-3 h-3 text-cyan-600" />
+                                                        <span className="text-xs text-cyan-600">Stable</span>
                                                     </>
                                                 )}
                                             </div>

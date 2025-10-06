@@ -7,7 +7,7 @@
   - API local (/api/): Network First com fallback ao cache (quando possível)
 */
 
-const SW_VERSION = 'v1.2.3'; // CRITICAL: Force reload for podcast episode IDs update
+const SW_VERSION = 'v1.2.4'; // CRITICAL: Force reload for cyan color updates in blog components
 const RUNTIME_CACHE = `sv-runtime-${SW_VERSION}`;
 const ASSETS_CACHE = `sv-assets-${SW_VERSION}`;
 const CORE_CACHE = `sv-core-${SW_VERSION}`;

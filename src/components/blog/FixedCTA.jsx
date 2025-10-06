@@ -28,14 +28,14 @@ const FixedCTA = () => {
       icon: Calendar,
       label: 'Agendar Consulta',
       href: '/#agendar',
-      color: 'bg-blue-600 hover:bg-blue-700',
+      color: 'bg-cyan-600 hover:bg-cyan-700',
       description: 'Escolha o melhor horário',
     },
     {
       icon: MessageCircle,
       label: 'WhatsApp',
       href: 'https://wa.me/5533998765432?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta.',
-      color: 'bg-blue-600 hover:bg-blue-700',
+      color: 'bg-cyan-600 hover:bg-cyan-700',
       description: 'Atendimento rápido',
       external: true,
     },
@@ -113,7 +113,7 @@ const FixedCTA = () => {
               className={`${
                 isExpanded
                   ? 'bg-gray-900 hover:bg-black'
-                  : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'
+                  : 'bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800'
               } text-white shadow-2xl px-6 py-6 rounded-full text-base font-semibold flex items-center gap-3 transition-all`}
               aria-label={isExpanded ? 'Fechar menu de agendamento' : 'Abrir menu de agendamento'}
             >

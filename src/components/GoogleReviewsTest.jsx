@@ -46,7 +46,7 @@ const GoogleReviewsTest = ({ placeId = process.env.VITE_GOOGLE_PLACE_ID }) => {
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                         <span className="flex items-center gap-2">
-                            <MapPin className="w-5 h-5 text-blue-600" />
+                            <MapPin className="w-5 h-5 text-cyan-600" />
                             Google Places API Test
                         </span>
                         <Button
@@ -124,41 +124,41 @@ const GoogleReviewsTest = ({ placeId = process.env.VITE_GOOGLE_PLACE_ID }) => {
 
                     {/* Statistics Display */}
                     {stats && (
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                            <h3 className="font-medium text-blue-800 mb-3">Place Statistics</h3>
+                        <div className="bg-blue-50 border border-cyan-200 rounded-lg p-4 mb-6">
+                            <h3 className="font-medium text-cyan-800 mb-3">Place Statistics</h3>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-blue-600">
+                                    <div className="text-2xl font-bold text-cyan-600">
                                         {stats.overview?.averageRating || 'N/A'}
                                     </div>
-                                    <div className="text-sm text-blue-600">Avg Rating</div>
+                                    <div className="text-sm text-cyan-600">Avg Rating</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-blue-600">
+                                    <div className="text-2xl font-bold text-cyan-600">
                                         {stats.overview?.totalReviews || 'N/A'}
                                     </div>
-                                    <div className="text-sm text-blue-600">Total Reviews</div>
+                                    <div className="text-sm text-cyan-600">Total Reviews</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-blue-600">
+                                    <div className="text-2xl font-bold text-cyan-600">
                                         {stats.overview?.recentReviews || 'N/A'}
                                     </div>
-                                    <div className="text-sm text-blue-600">Recent (30d)</div>
+                                    <div className="text-sm text-cyan-600">Recent (30d)</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-blue-600">
+                                    <div className="text-2xl font-bold text-cyan-600">
                                         {stats.sentiment?.positivePercentage || 'N/A'}%
                                     </div>
-                                    <div className="text-sm text-blue-600">Positive</div>
+                                    <div className="text-sm text-cyan-600">Positive</div>
                                 </div>
                             </div>
 
                             {stats.place && (
-                                <div className="mt-4 pt-4 border-t border-blue-200">
-                                    <h4 className="font-medium text-blue-800 mb-2">Place Information</h4>
-                                    <p className="text-blue-700 text-sm"><strong>Name:</strong> {stats.place.name}</p>
+                                <div className="mt-4 pt-4 border-t border-cyan-200">
+                                    <h4 className="font-medium text-cyan-800 mb-2">Place Information</h4>
+                                    <p className="text-cyan-700 text-sm"><strong>Name:</strong> {stats.place.name}</p>
                                     {stats.place.address && (
-                                        <p className="text-blue-700 text-sm"><strong>Address:</strong> {stats.place.address}</p>
+                                        <p className="text-cyan-700 text-sm"><strong>Address:</strong> {stats.place.address}</p>
                                     )}
                                 </div>
                             )}

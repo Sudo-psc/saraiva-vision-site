@@ -48,22 +48,28 @@ const Navbar = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
+            className="ml-[6%]"
           >
             <Link to="/" aria-label={t('navbar.home_link_label')}><Logo isWhite /></Link>
           </motion.div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1" aria-label={t('navbar.primary_navigation')}>
+          {/* Desktop Navigation - Enhanced hover effects with cyan theme */}
+          <nav className="hidden md:flex items-center space-x-2" aria-label={t('navbar.primary_navigation')}>
             {navLinks.map((link) => {
               const IconComponent = link.icon;
+              const linkClasses = "group relative text-slate-700 hover:text-white font-semibold transition-all duration-300 ease-out px-5 py-2.5 rounded-xl flex items-center gap-2.5 text-[1.2rem] hover:scale-110 active:scale-95 hover:shadow-lg active:shadow-sm bg-gradient-to-br from-slate-50 to-slate-100 hover:from-cyan-600 hover:to-cyan-700 border border-slate-200 hover:border-cyan-500";
+
               return link.internal ? (
                 <Link
                   key={link.name}
                   to={link.href}
-                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2"
+                  className={linkClasses}
                 >
-                  <IconComponent size={16} className="text-slate-600" />
-                  {link.name}
+                  <IconComponent size={19} className="text-slate-600 group-hover:text-white transition-colors duration-300" />
+                  <span className="relative">
+                    {link.name}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
+                  </span>
                 </Link>
               ) : (
                 <a
@@ -71,22 +77,25 @@ const Navbar = () => {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-slate-800 hover:text-blue-700 font-medium transition-colors px-4 py-2 rounded-lg hover:bg-slate-100 flex items-center gap-2"
+                  className={linkClasses}
                 >
-                  <IconComponent size={16} className="text-slate-600" />
-                  {link.name}
+                  <IconComponent size={19} className="text-slate-600 group-hover:text-white transition-colors duration-300" />
+                  <span className="relative">
+                    {link.name}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
+                  </span>
                 </a>
               );
             })}
           </nav>
 
-           <div className="hidden md:flex items-center gap-4">
+           <div className="hidden md:flex items-center gap-4 mr-[6%]">
              <Button
-               onClick={() => navigate('/sobre#contact')}
-               className="flex items-center gap-2"
+               onClick={() => navigate('/agendamento')}
+               className="flex items-center gap-2.5 scale-[1.2] origin-center bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 ease-out hover:scale-125 active:scale-110 px-6 py-3 rounded-xl border-2 border-cyan-500 hover:border-cyan-400"
              >
-               <Calendar size={18} />
-               <span>{t('navbar.schedule')}</span>
+               <Calendar size={20} className="animate-pulse" />
+               <span className="text-base">{t('navbar.schedule')}</span>
              </Button>
            </div>
 
@@ -139,7 +148,7 @@ const Navbar = () => {
               <Button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  navigate('/sobre#contact');
+                  navigate('/agendamento');
                 }}
                 className="flex items-center gap-2 w-full justify-center"
               >

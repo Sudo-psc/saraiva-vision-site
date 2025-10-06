@@ -116,7 +116,7 @@ export function ErrorDisplay({
             case 'medium':
                 return `${baseStyles} bg-yellow-50 border-yellow-400 text-yellow-800`;
             case 'low':
-                return `${baseStyles} bg-blue-50 border-blue-400 text-blue-700`;
+                return `${baseStyles} bg-blue-50 border-blue-400 text-cyan-700`;
             default:
                 return `${baseStyles} bg-gray-50 border-gray-400 text-gray-700`;
         }
@@ -204,7 +204,7 @@ export function ErrorDisplay({
 
                 {/* Fallback information */}
                 {error.fallback && (
-                    <div className="text-xs mb-3 p-2 bg-blue-50 border border-blue-200 rounded">
+                    <div className="text-xs mb-3 p-2 bg-blue-50 border border-cyan-200 rounded">
                         <p><strong>Alternativa:</strong> {error.fallback.message}</p>
                     </div>
                 )}
@@ -216,7 +216,7 @@ export function ErrorDisplay({
                         <button
                             onClick={handleRetry}
                             disabled={isRetrying}
-                            className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                             aria-describedby={`error-${error.code}-description`}
                         >
                             {isRetrying ? (

@@ -195,7 +195,7 @@ const CompactGoogleReviews = React.memo(() => {
                         href={googleReviewUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                         aria-label={t('reviews.view_all_aria', 'Ver todas as avaliações no Google (abre em nova aba)')}
                     >
                         Ver todas no Google

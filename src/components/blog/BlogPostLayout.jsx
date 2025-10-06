@@ -58,7 +58,7 @@ export default function BlogPostLayout({ post, children }) {
             <li>
               <Link 
                 to="/" 
-                className="hover:text-blue-600 focus:outline-none focus:underline transition-colors"
+                className="hover:text-cyan-600 focus:outline-none focus:underline transition-colors"
               >
                 Início
               </Link>
@@ -67,7 +67,7 @@ export default function BlogPostLayout({ post, children }) {
             <li>
               <Link 
                 to="/blog" 
-                className="hover:text-blue-600 focus:outline-none focus:underline transition-colors"
+                className="hover:text-cyan-600 focus:outline-none focus:underline transition-colors"
               >
                 Blog
               </Link>
@@ -76,7 +76,7 @@ export default function BlogPostLayout({ post, children }) {
             <li>
               <Link 
                 to={`/blog?category=${encodeURIComponent(post.category)}`}
-                className="hover:text-blue-600 focus:outline-none focus:underline transition-colors"
+                className="hover:text-cyan-600 focus:outline-none focus:underline transition-colors"
               >
                 {post.category}
               </Link>
@@ -183,14 +183,14 @@ export default function BlogPostLayout({ post, children }) {
                      prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4
                      prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
                      prose-p:text-lg prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6
-                     prose-a:text-blue-600 prose-a:no-underline prose-a:font-medium hover:prose-a:underline
+                     prose-a:text-cyan-600 prose-a:no-underline prose-a:font-medium hover:prose-a:underline
                      prose-strong:text-gray-900 prose-strong:font-semibold
                      prose-ul:my-6 prose-ul:space-y-3 prose-ul:list-disc prose-ul:pl-5
                      prose-ol:my-6 prose-ol:space-y-3 prose-ol:list-decimal prose-ol:pl-5
                      prose-li:text-gray-700 prose-li:leading-relaxed
                      prose-img:rounded-lg prose-img:shadow-md prose-img:my-8
-                     prose-blockquote:border-l-4 prose-blockquote:border-blue-500
-                     prose-blockquote:bg-blue-50 prose-blockquote:py-4 prose-blockquote:px-6
+                     prose-blockquote:border-l-4 prose-blockquote:border-cyan-500
+                     prose-blockquote:bg-cyan-50 prose-blockquote:py-4 prose-blockquote:px-6
                      prose-blockquote:my-6 prose-blockquote:italic
                      prose-code:bg-gray-100 prose-code:px-2 prose-code:py-0.5 
                      prose-code:rounded prose-code:text-sm prose-code:font-mono
@@ -216,8 +216,8 @@ export default function BlogPostLayout({ post, children }) {
                   key={tag}
                   to={`/blog?tag=${encodeURIComponent(tag)}`}
                   className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full 
-                           hover:bg-blue-100 hover:text-blue-700 transition-colors
-                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                           hover:bg-cyan-100 hover:text-cyan-700 transition-colors
+                           focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
                 >
                   #{tag}
                 </Link>
@@ -258,7 +258,7 @@ function PrimaryAppointmentCTA() {
   return (
     <div 
       className="mb-8 p-6 bg-gradient-to-br from-blue-50 to-blue-100 
-                 border-2 border-blue-300 rounded-xl shadow-sm"
+                 border-2 border-cyan-300 rounded-xl shadow-sm"
       role="complementary"
       aria-label="Área de agendamento de consulta"
     >
@@ -276,7 +276,7 @@ function PrimaryAppointmentCTA() {
           href="https://wa.me/5533998601427?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta"
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full sm:w-auto whitespace-nowrap bg-blue-600 hover:bg-blue-700
+          className="w-full sm:w-auto whitespace-nowrap bg-cyan-600 hover:bg-cyan-700
                      text-white font-semibold px-6 py-3 rounded-lg
                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
                      transition-all shadow-md hover:shadow-lg"
@@ -295,7 +295,7 @@ function PrimaryAppointmentCTA() {
 function SecondaryAppointmentCTA() {
   return (
     <div 
-      className="mt-12 p-8 bg-gradient-to-br from-blue-600 to-blue-800 
+      className="mt-12 p-8 bg-gradient-to-br from-cyan-600 to-cyan-800 
                  rounded-xl text-white shadow-xl"
       role="complementary"
       aria-label="Área de ações finais"
@@ -304,7 +304,7 @@ function SecondaryAppointmentCTA() {
         <h2 className="text-2xl sm:text-3xl font-bold">
           Cuide da Sua Visão com Excelência
         </h2>
-        <p className="text-blue-100 text-lg leading-relaxed">
+        <p className="text-cyan-100 text-lg leading-relaxed">
           Exames de rotina previnem 80% dos problemas oculares graves. 
           Não deixe para depois o que pode ser tratado hoje.
         </p>
@@ -314,7 +314,7 @@ function SecondaryAppointmentCTA() {
             href="https://wa.me/5533998601427?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white text-blue-700 hover:bg-gray-100 font-semibold px-8 py-3
+            className="bg-white text-cyan-700 hover:bg-gray-100 font-semibold px-8 py-3
                      focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2
                      focus:ring-offset-blue-700 transition-all shadow-md"
           >
@@ -393,7 +393,7 @@ function TrustElements({ post }) {
       {/* Credenciais do Médico */}
       <div className="p-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm">
         <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <Shield className="w-5 h-5 text-blue-600" aria-hidden="true" />
+          <Shield className="w-5 h-5 text-cyan-600" aria-hidden="true" />
           Sobre o Autor
         </h3>
         <div className="flex items-start gap-4">
@@ -401,7 +401,7 @@ function TrustElements({ post }) {
             <img
               src={author.photo}
               alt={`Foto de ${author.name}`}
-              className="w-20 h-20 rounded-full object-cover border-2 border-blue-200"
+              className="w-20 h-20 rounded-full object-cover border-2 border-cyan-200"
             />
           )}
           <div className="flex-1">
@@ -413,8 +413,8 @@ function TrustElements({ post }) {
               {author.credentials?.map(cred => (
                 <span
                   key={cred}
-                  className="inline-flex items-center px-3 py-1 bg-blue-50 
-                           text-blue-700 text-xs font-medium rounded-full"
+                  className="inline-flex items-center px-3 py-1 bg-cyan-50
+                           text-cyan-700 text-xs font-medium rounded-full"
                 >
                   {cred}
                 </span>
@@ -435,7 +435,7 @@ function TrustElements({ post }) {
           <p className="text-gray-700 mb-2">{clinic.address}</p>
           <Link
             to="/contato#mapa"
-            className="text-sm text-blue-600 hover:text-blue-800 hover:underline 
+            className="text-sm text-cyan-600 hover:text-cyan-800 hover:underline 
                      font-medium focus:outline-none focus:underline"
           >
             Ver no mapa →

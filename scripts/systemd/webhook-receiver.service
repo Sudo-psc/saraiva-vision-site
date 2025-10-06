@@ -1,0 +1,34 @@
+[Unit]
+Description=GitHub Webhook Receiver for Saraiva Vision Deployments
+After=network.target
+Documentation=file:///home/saraiva-vision-site/docs/CI-CD-PIPELINE.md
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/saraiva-vision-site
+ExecStart=/usr/bin/node /home/saraiva-vision-site/scripts/webhook-receiver.cjs
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=webhook-receiver
+
+# Environment
+Environment="NODE_ENV=production"
+Environment="WEBHOOK_PORT=9000"
+EnvironmentFile=-/home/saraiva-vision-site/.env.webhook
+
+# Security
+NoNewPrivileges=false
+PrivateTmp=true
+ProtectSystem=false
+ProtectHome=false
+
+# Resource limits
+LimitNOFILE=65536
+MemoryMax=512M
+CPUQuota=50%
+
+[Install]
+WantedBy=multi-user.target

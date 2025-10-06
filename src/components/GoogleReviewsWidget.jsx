@@ -418,7 +418,7 @@ const GoogleReviewsWidget = ({
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-10">
                         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                             <div>
-                                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-50 text-blue-700 mb-3">
+                                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-50 text-cyan-700 mb-3">
                                     <MessageCircle className="w-4 h-4" />
                                     <span className="font-semibold text-sm">{t('reviews.section_title')}</span>
                                 </div>
@@ -467,7 +467,7 @@ const GoogleReviewsWidget = ({
                 {showViewAllButton && (
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center">
                         <a href={googleUrl} target="_blank" rel="noopener noreferrer" aria-label="Ver todas as avaliações no Google (abre em nova aba)">
-                            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white gap-2 px-6 py-3 shadow-lg hover:shadow-xl transition-all duration-300">
+                            <Button size="lg" className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 px-6 py-3 shadow-lg hover:shadow-xl transition-all duration-300">
                                 {t('reviews.view_all_button')}
                                 <ExternalLink className="w-4 h-4" />
                             </Button>

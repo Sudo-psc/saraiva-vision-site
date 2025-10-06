@@ -87,7 +87,7 @@ const PerformanceOptimizationDemo = () => {
             {/* Header */}
             <div className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-4">
-                    <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl">
+                    <div className="p-3 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-xl">
                         <Zap className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="text-3xl font-bold text-gray-900">
@@ -144,7 +144,7 @@ const PerformanceOptimizationDemo = () => {
                         {loadingProgress.isComplete ? (
                             <span className="text-emerald-600">Complete</span>
                         ) : loadingImages.size > 0 ? (
-                            <span className="text-blue-600">Loading...</span>
+                            <span className="text-cyan-600">Loading...</span>
                         ) : (
                             <span className="text-gray-500">Ready</span>
                         )}
@@ -163,8 +163,8 @@ const PerformanceOptimizationDemo = () => {
                             className={`
                                 flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all
                                 ${activeDemo === key
-                                    ? 'bg-blue-600 text-white shadow-lg'
-                                    : 'bg-white text-gray-700 border border-gray-200 hover:border-blue-300 hover:text-blue-600'
+                                    ? 'bg-cyan-600 text-white shadow-lg'
+                                    : 'bg-white text-gray-700 border border-gray-200 hover:border-cyan-300 hover:text-cyan-600'
                                 }
                             `}
                         >
@@ -180,7 +180,7 @@ const PerformanceOptimizationDemo = () => {
                 <div className="p-6 border-b border-gray-200">
                     <div className="flex items-center gap-3 mb-2">
                         {React.createElement(demos[activeDemo].icon, {
-                            className: "w-6 h-6 text-blue-600"
+                            className: "w-6 h-6 text-cyan-600"
                         })}
                         <h2 className="text-xl font-semibold text-gray-900">
                             {demos[activeDemo].title}
@@ -220,7 +220,7 @@ const PerformanceOptimizationDemo = () => {
             <div className="flex justify-center gap-4">
                 <button
                     onClick={() => preloadImages(demoImages)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors"
                 >
                     Preload All Images
                 </button>
@@ -361,7 +361,7 @@ const PerformanceMetricsDemo = ({ performanceMetrics, loadingProgress }) => (
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
-                            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                            className="bg-cyan-600 h-2 rounded-full transition-all duration-300"
                             style={{ width: `${loadingProgress.percentage}%` }}
                         />
                     </div>

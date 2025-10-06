@@ -229,7 +229,7 @@ const AppointmentBooking = () => {
                 {phoneLink && (
                     <a
                         href={phoneLink}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-blue-600 text-blue-700 hover:bg-blue-50 transition-colors"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-blue-600 text-cyan-700 hover:bg-blue-50 transition-colors"
                     >
                         <Phone className="w-4 h-4" />
                         Ligar {contactInfo.phoneDisplay ? `(${contactInfo.phoneDisplay})` : ''}
@@ -254,7 +254,7 @@ const AppointmentBooking = () => {
         return (
             <div className="max-w-4xl mx-auto p-6">
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <div className="bg-blue-600 text-white p-6">
+                    <div className="bg-cyan-600 text-white p-6">
                         <h2 className="text-2xl font-bold">Agendamento Online Temporariamente Indisponível</h2>
                         <p className="mt-2 opacity-90">Nossa equipe está atualizando os horários disponíveis.</p>
                     </div>
@@ -285,7 +285,7 @@ const AppointmentBooking = () => {
         <div className="max-w-4xl mx-auto p-6">
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
                 {/* Header */}
-                <div className="bg-blue-600 text-white p-6">
+                <div className="bg-cyan-600 text-white p-6">
                     <h2 className="text-2xl font-bold">Agendar Consulta</h2>
                     <p className="mt-2 opacity-90">Dr. Philipe Saraiva - Oftalmologista</p>
                 </div>
@@ -293,20 +293,20 @@ const AppointmentBooking = () => {
                 {/* Progress Steps */}
                 <div className="bg-gray-50 px-6 py-4">
                     <div className="flex items-center justify-between">
-                        <div className={`flex items-center ${step >= 1 ? 'text-blue-600' : 'text-gray-400'}`}>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-300'}`}>
+                        <div className={`flex items-center ${step >= 1 ? 'text-cyan-600' : 'text-gray-400'}`}>
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? 'bg-cyan-600 text-white' : 'bg-gray-300'}`}>
                                 1
                             </div>
                             <span className="ml-2 font-medium">Escolher Horário</span>
                         </div>
-                        <div className={`flex items-center ${step >= 2 ? 'text-blue-600' : 'text-gray-400'}`}>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-300'}`}>
+                        <div className={`flex items-center ${step >= 2 ? 'text-cyan-600' : 'text-gray-400'}`}>
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 2 ? 'bg-cyan-600 text-white' : 'bg-gray-300'}`}>
                                 2
                             </div>
                             <span className="ml-2 font-medium">Dados Pessoais</span>
                         </div>
-                        <div className={`flex items-center ${step >= 3 ? 'text-blue-600' : 'text-gray-400'}`}>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 3 ? 'bg-blue-600 text-white' : 'bg-gray-300'}`}>
+                        <div className={`flex items-center ${step >= 3 ? 'text-cyan-600' : 'text-gray-400'}`}>
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 3 ? 'bg-cyan-600 text-white' : 'bg-gray-300'}`}>
                                 3
                             </div>
                             <span className="ml-2 font-medium">Confirmação</span>
@@ -344,7 +344,7 @@ const AppointmentBooking = () => {
                                 })}
                                 <button
                                     onClick={() => loadAvailability()}
-                                    className="mt-2 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                    className="mt-2 inline-flex items-center gap-2 px-4 py-2 bg-cyan-600 text-white rounded hover:bg-cyan-700"
                                 >
                                     Atualizar horários
                                 </button>
@@ -361,7 +361,7 @@ const AppointmentBooking = () => {
                                                 <button
                                                     key={`${date}-${slot.slot_time}`}
                                                     onClick={() => handleDateTimeSelection(date, slot.slot_time)}
-                                                    className="px-3 py-2 border border-gray-300 rounded hover:bg-blue-50 hover:border-blue-300 transition-colors text-sm"
+                                                    className="px-3 py-2 border border-gray-300 rounded hover:bg-blue-50 hover:border-cyan-300 transition-colors text-sm"
                                                     disabled={!slot.is_available}
                                                 >
                                                     {formatTimeBR(slot.slot_time)}
@@ -381,9 +381,9 @@ const AppointmentBooking = () => {
                         <h3 className="text-lg font-semibold mb-4">Dados pessoais</h3>
 
                         {/* Selected appointment summary */}
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                            <h4 className="font-semibold text-blue-800">Horário selecionado:</h4>
-                            <p className="text-blue-700">
+                        <div className="bg-blue-50 border border-cyan-200 rounded-lg p-4 mb-6">
+                            <h4 className="font-semibold text-cyan-800">Horário selecionado:</h4>
+                            <p className="text-cyan-700">
                                 {getDayNameBR(selectedDate)}, {formatDateBR(selectedDate)} às {formatTimeBR(selectedTime)}
                             </p>
                         </div>
@@ -455,7 +455,7 @@ const AppointmentBooking = () => {
                             <button
                                 onClick={handleSubmitAppointment}
                                 disabled={loading}
-                                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="px-6 py-2 bg-cyan-600 text-white rounded-md hover:bg-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {loading ? 'Agendando...' : 'Agendar Consulta'}
                             </button>
@@ -493,9 +493,9 @@ const AppointmentBooking = () => {
                                 </p>
                             </div>
 
-                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                                <h4 className="font-semibold text-blue-800 mb-2">Próximos passos:</h4>
-                                <ul className="text-blue-700 text-sm space-y-1">
+                            <div className="bg-blue-50 border border-cyan-200 rounded-lg p-4 mb-6">
+                                <h4 className="font-semibold text-cyan-800 mb-2">Próximos passos:</h4>
+                                <ul className="text-cyan-700 text-sm space-y-1">
                                     <li>✓ Confirmação enviada por email e SMS</li>
                                     <li>✓ Lembretes serão enviados 24h e 2h antes da consulta</li>
                                     <li>✓ Chegue com 15 minutos de antecedência</li>
@@ -505,7 +505,7 @@ const AppointmentBooking = () => {
 
                             <button
                                 onClick={resetBooking}
-                                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                                className="px-6 py-2 bg-cyan-600 text-white rounded-md hover:bg-cyan-700"
                             >
                                 Agendar Nova Consulta
                             </button>

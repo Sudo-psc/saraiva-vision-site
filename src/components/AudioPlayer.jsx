@@ -289,10 +289,10 @@ const AudioPlayer = ({
                     tabIndex={0}
                 >
                     <div
-                        className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all group-hover:from-blue-600 group-hover:to-blue-700 relative"
+                        className="h-full bg-gradient-to-r from-cyan-500 to-cyan-600 rounded-full transition-all group-hover:from-cyan-600 group-hover:to-cyan-700 relative"
                         style={{ width: `${progress}%` }}
                     >
-                        <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-blue-500 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-cyan-500 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                 </div>
                 <div className="flex justify-between text-xs text-gray-500">
@@ -324,7 +324,7 @@ const AudioPlayer = ({
                     <button
                         onClick={togglePlayPause}
                         disabled={isLoading || !canPlay}
-                        className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white rounded-full flex items-center justify-center transition-all shadow-lg"
+                        className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 disabled:from-gray-400 disabled:to-gray-500 text-white rounded-full flex items-center justify-center transition-all shadow-lg"
                         aria-label={canPlay ? (isPlaying ? 'Pausar' : 'Reproduzir') : 'Áudio indisponível'}
                     >
                         {isLoading ? (
@@ -410,7 +410,7 @@ const AudioPlayer = ({
                                                     key={rate}
                                                     onClick={() => handlePlaybackRateChange(rate)}
                                                     className={`w-full text-left px-2 py-1 rounded-lg text-sm transition-colors ${playbackRate === rate
-                                                        ? 'bg-blue-50 text-blue-600 font-semibold border border-blue-200'
+                                                        ? 'bg-blue-50 text-cyan-600 font-semibold border border-cyan-200'
                                                         : 'text-gray-600 hover:bg-gray-100'
                                                         }`}
                                                 >
@@ -514,7 +514,7 @@ const AudioPlayer = ({
                             {episode.category && (
                                 <>
                                     <span>•</span>
-                                    <span className="bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-semibold text-xs border border-blue-200">
+                                    <span className="bg-blue-50 text-cyan-600 px-2 py-1 rounded-full font-semibold text-xs border border-cyan-200">
                                         {episode.category}
                                     </span>
                                 </>
@@ -555,7 +555,7 @@ const AudioPlayer = ({
                             {episode.category && (
                                 <>
                                     <span>•</span>
-                                    <span className="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-semibold border border-blue-200">
+                                    <span className="bg-blue-50 text-cyan-600 px-2 py-0.5 rounded-full font-semibold border border-cyan-200">
                                         {episode.category}
                                     </span>
                                 </>
@@ -585,7 +585,7 @@ const AudioPlayer = ({
                             {episode.category && (
                                 <>
                                     <span>•</span>
-                                    <span className="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-semibold border border-blue-200">
+                                    <span className="bg-blue-50 text-cyan-600 px-2 py-0.5 rounded-full font-semibold border border-cyan-200">
                                         {episode.category}
                                     </span>
                                 </>

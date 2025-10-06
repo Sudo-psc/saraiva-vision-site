@@ -39,7 +39,7 @@ export default function SocialLinks({
       url: NAP_CANONICAL.social.facebook.url,
       icon: SOCIAL_ICONS.facebook,
       label: NAP_CANONICAL.social.facebook.handle,
-      hoverColor: 'hover:bg-blue-600',
+      hoverColor: 'hover:bg-cyan-600',
     },
     {
       name: 'YouTube',
@@ -105,7 +105,7 @@ export function SocialShare({
       name: 'Facebook',
       icon: Facebook,
       url: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
-      color: 'bg-blue-600 hover:bg-blue-700',
+      color: 'bg-cyan-600 hover:bg-cyan-700',
     },
     {
       name: 'Twitter',
@@ -121,7 +121,7 @@ export function SocialShare({
       name: 'LinkedIn',
       icon: Linkedin,
       url: `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`,
-      color: 'bg-blue-700 hover:bg-blue-800',
+      color: 'bg-cyan-700 hover:bg-cyan-800',
     },
   ];
 

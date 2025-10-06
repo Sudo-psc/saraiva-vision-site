@@ -379,7 +379,7 @@ const GoogleBusinessAdmin = ({
                                 onClick={() => handleInputChange('autoRefresh', !formData.autoRefresh)}
                                 className={`
                   relative inline-flex h-6 w-11 items-center rounded-full transition-colors
-                  ${formData.autoRefresh ? 'bg-blue-500' : 'bg-slate-300 dark:bg-slate-600'}
+                  ${formData.autoRefresh ? 'bg-cyan-500' : 'bg-slate-300 dark:bg-slate-600'}
                 `}
                             >
                                 <span
@@ -513,7 +513,7 @@ const GoogleBusinessAdmin = ({
                             onClick={() => handleInputChange('cacheEnabled', !formData.cacheEnabled)}
                             className={`
                 relative inline-flex h-6 w-11 items-center rounded-full transition-colors
-                ${formData.cacheEnabled ? 'bg-blue-500' : 'bg-slate-300 dark:bg-slate-600'}
+                ${formData.cacheEnabled ? 'bg-cyan-500' : 'bg-slate-300 dark:bg-slate-600'}
               `}
                         >
                             <span
@@ -565,10 +565,10 @@ const GoogleBusinessAdmin = ({
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 text-center">
-                            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-1">
+                            <div className="text-2xl font-bold text-cyan-600 dark:text-blue-400 mb-1">
                                 {cacheStats.totalEntries || 0}
                             </div>
-                            <div className="text-xs text-blue-700 dark:text-blue-300">
+                            <div className="text-xs text-cyan-700 dark:text-blue-300">
                                 Total de Entradas
                             </div>
                         </div>
@@ -631,7 +631,7 @@ const GoogleBusinessAdmin = ({
                                         }`}>
                                         {activity.type === 'success' && <CheckCircle size={16} className="text-green-600 dark:text-green-400" />}
                                         {activity.type === 'error' && <AlertCircle size={16} className="text-red-600 dark:text-red-400" />}
-                                        {activity.type === 'info' && <Info size={16} className="text-blue-600 dark:text-blue-400" />}
+                                        {activity.type === 'info' && <Info size={16} className="text-cyan-600 dark:text-blue-400" />}
                                     </div>
                                     <div className="flex-1">
                                         <p className="text-sm font-medium text-slate-800 dark:text-slate-200">
@@ -699,8 +699,8 @@ const GoogleBusinessAdmin = ({
             {/* Header */}
             <div className="p-6 border-b border-slate-200 dark:border-slate-700">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                        <Settings size={20} className="text-blue-600 dark:text-blue-400" />
+                    <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                        <Settings size={20} className="text-cyan-600 dark:text-blue-400" />
                     </div>
                     <div>
                         <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">
@@ -764,7 +764,7 @@ const GoogleBusinessAdmin = ({
                                     className={`
                     flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-t-lg transition-colors
                     ${activeTab === tab.id
-                                            ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                                            ? 'text-cyan-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20'
                                             : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800'
                                         }
                   `}
@@ -787,7 +787,7 @@ const GoogleBusinessAdmin = ({
                             <button
                                 onClick={handleSave}
                                 disabled={saving}
-                                className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex items-center justify-center gap-2 px-6 py-3 bg-cyan-600 dark:bg-cyan-500 text-white font-medium rounded-lg hover:bg-cyan-700 dark:hover:bg-blue-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {saving ? (
                                     <RefreshCw size={16} className="animate-spin" />

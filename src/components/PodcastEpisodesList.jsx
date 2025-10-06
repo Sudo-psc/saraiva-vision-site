@@ -243,7 +243,7 @@ const PodcastEpisodesList = ({
                     {searchTerm && (
                         <button
                             onClick={() => handleSearch('')}
-                            className="text-blue-600 hover:text-blue-700 font-medium"
+                            className="text-cyan-600 hover:text-cyan-700 font-medium"
                         >
                             Limpar busca
                         </button>

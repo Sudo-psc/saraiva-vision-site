@@ -212,7 +212,7 @@ const InstagramOfflineDemo = () => {
     const getStatusColor = (status) => {
         switch (status) {
             case 'syncing':
-                return 'text-blue-600';
+                return 'text-cyan-600';
             case 'success':
                 return 'text-green-600';
             case 'error':
@@ -273,7 +273,7 @@ const InstagramOfflineDemo = () => {
                         </div>
                         <div className="flex justify-between">
                             <span className="text-gray-600">Demo Mode:</span>
-                            <span className="text-blue-600 capitalize">{demoMode}</span>
+                            <span className="text-cyan-600 capitalize">{demoMode}</span>
                         </div>
                     </div>
                 </div>
@@ -281,7 +281,7 @@ const InstagramOfflineDemo = () => {
                 {/* Cache Status */}
                 <div className="bg-white border border-gray-200 rounded-lg p-4">
                     <div className="flex items-center gap-3 mb-3">
-                        <Archive className="w-5 h-5 text-blue-600" />
+                        <Archive className="w-5 h-5 text-cyan-600" />
                         <h3 className="font-medium text-gray-900">Cache</h3>
                     </div>
                     <div className="space-y-2 text-sm">
@@ -344,7 +344,7 @@ const InstagramOfflineDemo = () => {
                     <button
                         onClick={handleCachePosts}
                         disabled={isLoading || !isServiceWorkerReady}
-                        className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-cyan-600 text-white rounded-md hover:bg-cyan-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
                     >
                         <Download className="w-4 h-4" />
                         Cache Posts
@@ -413,9 +413,9 @@ const InstagramOfflineDemo = () => {
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md"
+                        className="mt-4 p-3 bg-blue-50 border border-cyan-200 rounded-md"
                     >
-                        <p className="text-sm text-blue-800">{message}</p>
+                        <p className="text-sm text-cyan-800">{message}</p>
                     </motion.div>
                 )}
             </div>

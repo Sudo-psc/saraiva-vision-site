@@ -324,7 +324,7 @@ const ReviewsContainer = ({
                             <Filter size={16} />
                             Filtros
                             {showFilters && (
-                                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                <span className="w-2 h-2 bg-cyan-500 rounded-full"></span>
                             )}
                         </button>
                     )}
@@ -350,7 +350,7 @@ const ReviewsContainer = ({
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-100 dark:border-blue-800/30">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div className="text-center">
-                            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">
+                            <div className="text-3xl font-bold text-cyan-600 dark:text-blue-400 mb-1">
                                 {stats.averageRating}
                             </div>
                             <div className="flex items-center justify-center gap-1 mb-1">
@@ -477,7 +477,7 @@ const ReviewsContainer = ({
                         </div>
                         <button
                             onClick={resetFilters}
-                            className="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+                            className="px-4 py-2 text-sm font-medium text-cyan-600 dark:text-blue-400 hover:text-cyan-700 dark:hover:text-blue-300"
                         >
                             Limpar filtros
                         </button>
@@ -511,10 +511,10 @@ const ReviewsContainer = ({
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/30 rounded-lg p-4 flex items-start gap-3"
+                        className="bg-blue-50 dark:bg-blue-900/20 border border-cyan-200 dark:border-blue-800/30 rounded-lg p-4 flex items-start gap-3"
                     >
-                        <Info size={20} className="text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-                        <p className="text-sm text-blue-800 dark:text-blue-200">
+                        <Info size={20} className="text-cyan-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                        <p className="text-sm text-cyan-800 dark:text-blue-200">
                             {info}
                         </p>
                     </motion.div>
@@ -568,7 +568,7 @@ const ReviewsContainer = ({
                             <div className="text-center pt-4">
                                 <button
                                     onClick={() => setVisibleCount(prev => prev + 5)}
-                                    className="px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-400 transition-colors"
+                                    className="px-6 py-3 bg-cyan-600 dark:bg-cyan-500 text-white font-medium rounded-lg hover:bg-cyan-700 dark:hover:bg-blue-400 transition-colors"
                                 >
                                     Carregar mais avaliações
                                 </button>

@@ -160,10 +160,10 @@ const CookieConsentModal = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-              <p className="text-sm text-blue-900">
+            <div className="bg-cyan-50 border border-cyan-200 rounded-xl p-4">
+              <p className="text-sm text-cyan-900">
                 <strong>Política de Privacidade:</strong> Para mais informações sobre como tratamos seus dados, 
-                consulte nossa <a href="/privacy" className="underline hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded">Política de Privacidade</a>.
+                consulte nossa <a href="/privacy" className="underline hover:text-cyan-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded">Política de Privacidade</a>.
               </p>
             </div>
           </div>
@@ -179,7 +179,7 @@ const CookieConsentModal = ({ isOpen, onClose }) => {
             </Button>
             <Button
               onClick={handleSavePreferences}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               <Settings className="w-4 h-4 mr-2" aria-hidden="true" />
               Salvar Preferências

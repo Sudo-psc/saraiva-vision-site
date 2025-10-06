@@ -18,14 +18,14 @@ const ServiceSidebar = ({ service, onScheduleClick }) => {
         <h3 className={STYLES.HEADING_LG}>{t('service.quickInfo', 'Informações Rápidas')}</h3>
         <div className="space-y-4">
           <div className="flex items-start gap-3">
-            <Clock className="w-5 h-5 text-blue-600 mt-0.5" />
+            <Clock className="w-5 h-5 text-cyan-600 mt-0.5" />
             <div>
               <div className="font-medium text-slate-800">{t('service.duration', 'Duração')}</div>
               <div className="text-sm text-slate-600">{service.duration}</div>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <MapPin className="w-5 h-5 text-blue-600 mt-0.5" />
+            <MapPin className="w-5 h-5 text-cyan-600 mt-0.5" />
             <div>
               <div className="font-medium text-slate-800">{t('service.location', 'Local')}</div>
               <div className="text-sm text-slate-600">{t('clinic.name', 'Clínica Saraiva Vision')}<br />{t('clinic.location', 'Caratinga/MG')}</div>
@@ -37,7 +37,7 @@ const ServiceSidebar = ({ service, onScheduleClick }) => {
       {/* Preparation */}
       <motion.div
         {...ANIMATION_CONFIG.SLIDE_IN_RIGHT_DELAYED(0.4)}
-        className="bg-blue-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-blue-200"
+        className="bg-blue-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-cyan-200"
       >
         <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-3">{t('service.preparation', 'Preparação')}</h3>
         <p className="text-slate-600 text-sm sm:text-base">{service.preparation}</p>
@@ -52,7 +52,7 @@ const ServiceSidebar = ({ service, onScheduleClick }) => {
         <div className="space-y-3">
           <a
             href="tel:+5533998601427"
-            className="flex items-center gap-3 text-blue-600 hover:text-blue-700 transition-colors"
+            className="flex items-center gap-3 text-cyan-600 hover:text-cyan-700 transition-colors"
             aria-label={t('contact.call_number_aria', { number: '+55 33 99860-1427' })}
           >
             <Phone className="w-5 h-5" />

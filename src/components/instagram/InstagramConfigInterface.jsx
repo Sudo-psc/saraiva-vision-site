@@ -260,7 +260,7 @@ const InstagramConfigInterface = ({
                                 onClick={() => setPreviewMode(prev =>
                                     prev === 'desktop' ? 'mobile' : 'desktop'
                                 )}
-                                className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors"
+                                className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-blue-100 text-cyan-700 rounded-md hover:bg-cyan-200 transition-colors"
                             >
                                 {previewMode === 'desktop' ? (
                                     <>
@@ -290,7 +290,7 @@ const InstagramConfigInterface = ({
                         <button
                             onClick={handleSave}
                             disabled={!isDirty || isSaving}
-                            className="inline-flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="inline-flex items-center gap-2 px-4 py-2 text-sm bg-cyan-600 text-white rounded-md hover:bg-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
                             <Save className="w-4 h-4" />
                             {isSaving ? 'Saving...' : 'Save Changes'}
@@ -348,7 +348,7 @@ const InstagramConfigInterface = ({
                                 className={`
                                     flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors
                                     ${isActive
-                                        ? 'border-blue-500 text-blue-600'
+                                        ? 'border-cyan-500 text-cyan-600'
                                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                     }
                                 `}
@@ -445,7 +445,7 @@ const DisplaySettings = ({ config, updateConfig }) => (
                             type="checkbox"
                             checked={config.showStats}
                             onChange={(e) => updateConfig({ showStats: e.target.checked })}
-                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            className="rounded border-gray-300 text-cyan-600 focus:ring-blue-500"
                         />
                         <span className="ml-2 text-sm text-gray-700">Show engagement statistics</span>
                     </label>
@@ -455,7 +455,7 @@ const DisplaySettings = ({ config, updateConfig }) => (
                             type="checkbox"
                             checked={config.showCaptions}
                             onChange={(e) => updateConfig({ showCaptions: e.target.checked })}
-                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            className="rounded border-gray-300 text-cyan-600 focus:ring-blue-500"
                         />
                         <span className="ml-2 text-sm text-gray-700">Show post captions</span>
                     </label>
@@ -545,7 +545,7 @@ const ContentSettings = ({ config, updateConfig }) => {
                                             });
                                         }
                                     }}
-                                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    className="rounded border-gray-300 text-cyan-600 focus:ring-blue-500"
                                 />
                                 <span className="ml-2 text-sm text-gray-700 capitalize">
                                     {type.toLowerCase().replace('_', ' ')}
@@ -571,7 +571,7 @@ const ContentSettings = ({ config, updateConfig }) => {
                         />
                         <button
                             onClick={() => addHashtag(newHashtag)}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                            className="px-4 py-2 bg-cyan-600 text-white rounded-md hover:bg-cyan-700"
                         >
                             Add
                         </button>
@@ -580,12 +580,12 @@ const ContentSettings = ({ config, updateConfig }) => {
                         {config.hashtags.map(hashtag => (
                             <span
                                 key={hashtag}
-                                className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm"
+                                className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-cyan-800 rounded-md text-sm"
                             >
                                 #{hashtag}
                                 <button
                                     onClick={() => removeHashtag(hashtag)}
-                                    className="text-blue-600 hover:text-blue-800"
+                                    className="text-cyan-600 hover:text-cyan-800"
                                 >
                                     ×
                                 </button>
@@ -786,7 +786,7 @@ const PerformanceSettings = ({ config, updateConfig }) => (
                         type="checkbox"
                         checked={config.lazyLoading}
                         onChange={(e) => updateConfig({ lazyLoading: e.target.checked })}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="rounded border-gray-300 text-cyan-600 focus:ring-blue-500"
                     />
                     <span className="ml-2 text-sm text-gray-700">Enable lazy loading</span>
                 </label>
@@ -796,7 +796,7 @@ const PerformanceSettings = ({ config, updateConfig }) => (
                         type="checkbox"
                         checked={config.imageOptimization}
                         onChange={(e) => updateConfig({ imageOptimization: e.target.checked })}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="rounded border-gray-300 text-cyan-600 focus:ring-blue-500"
                     />
                     <span className="ml-2 text-sm text-gray-700">Enable image optimization</span>
                 </label>
@@ -806,7 +806,7 @@ const PerformanceSettings = ({ config, updateConfig }) => (
                         type="checkbox"
                         checked={config.cacheEnabled}
                         onChange={(e) => updateConfig({ cacheEnabled: e.target.checked })}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="rounded border-gray-300 text-cyan-600 focus:ring-blue-500"
                     />
                     <span className="ml-2 text-sm text-gray-700">Enable caching</span>
                 </label>
@@ -848,7 +848,7 @@ const AccessibilitySettings = ({ config, updateConfig }) => (
                         type="checkbox"
                         checked={config.altTextEnabled}
                         onChange={(e) => updateConfig({ altTextEnabled: e.target.checked })}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="rounded border-gray-300 text-cyan-600 focus:ring-blue-500"
                     />
                     <span className="ml-2 text-sm text-gray-700">Generate alt text for images</span>
                 </label>
@@ -858,7 +858,7 @@ const AccessibilitySettings = ({ config, updateConfig }) => (
                         type="checkbox"
                         checked={config.keyboardNavigation}
                         onChange={(e) => updateConfig({ keyboardNavigation: e.target.checked })}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="rounded border-gray-300 text-cyan-600 focus:ring-blue-500"
                     />
                     <span className="ml-2 text-sm text-gray-700">Enable keyboard navigation</span>
                 </label>
@@ -868,7 +868,7 @@ const AccessibilitySettings = ({ config, updateConfig }) => (
                         type="checkbox"
                         checked={config.highContrast}
                         onChange={(e) => updateConfig({ highContrast: e.target.checked })}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="rounded border-gray-300 text-cyan-600 focus:ring-blue-500"
                     />
                     <span className="ml-2 text-sm text-gray-700">High contrast mode</span>
                 </label>
@@ -878,7 +878,7 @@ const AccessibilitySettings = ({ config, updateConfig }) => (
                         type="checkbox"
                         checked={config.reducedMotion}
                         onChange={(e) => updateConfig({ reducedMotion: e.target.checked })}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="rounded border-gray-300 text-cyan-600 focus:ring-blue-500"
                     />
                     <span className="ml-2 text-sm text-gray-700">Reduced motion</span>
                 </label>

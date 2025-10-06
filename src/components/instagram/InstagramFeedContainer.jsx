@@ -648,7 +648,7 @@ const InstagramFeedContainer = ({
                     <a
                         ref={skipLinkRef}
                         href="#instagram-posts-grid"
-                        className="skip-link sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        className="skip-link sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-cyan-600 focus:text-white focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         onFocus={() => announce('Skip link focused. Press Enter to jump to Instagram posts.')}
                         aria-describedby="skip-link-description"
                     >

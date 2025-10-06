@@ -329,10 +329,10 @@ const InstagramConfigPreview = ({
             </div>
 
             {/* Preview info */}
-            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+            <div className="mt-4 p-3 bg-blue-50 border border-cyan-200 rounded-md">
                 <div className="flex items-start gap-2">
-                    <Eye className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                    <div className="text-sm text-blue-800">
+                    <Eye className="w-4 h-4 text-cyan-600 mt-0.5 flex-shrink-0" />
+                    <div className="text-sm text-cyan-800">
                         <p className="font-medium mb-1">Live Preview</p>
                         <p>
                             This preview shows how your Instagram feed will appear with the current settings.

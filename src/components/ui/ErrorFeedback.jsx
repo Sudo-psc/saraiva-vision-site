@@ -87,7 +87,7 @@ const ErrorFeedback = ({
                             <button
                                 onClick={onRetry}
                                 disabled={isRetrying}
-                                className="mt-1 text-xs text-blue-600 hover:text-blue-800 disabled:text-gray-400 flex items-center gap-1"
+                                className="mt-1 text-xs text-cyan-600 hover:text-cyan-800 disabled:text-gray-400 flex items-center gap-1"
                                 aria-describedby="retry-description"
                             >
                                 {isRetrying ? (
@@ -201,7 +201,7 @@ const ErrorFeedback = ({
                     <button
                         onClick={onRetry}
                         disabled={isRetrying}
-                        className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                        className="flex items-center gap-2 px-3 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                         aria-describedby="retry-info"
                     >
                         {isRetrying ? (
@@ -243,14 +243,14 @@ const ErrorFeedback = ({
                     <div className="flex flex-wrap gap-4">
                         <a
                             href="tel:+5533998601427"
-                            className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800"
+                            className="flex items-center gap-2 text-sm text-cyan-600 hover:text-cyan-800"
                         >
                             <Phone size={16} />
                             +55 33 99860-1427
                         </a>
                         <a
                             href="mailto:saraivavision@gmail.com"
-                            className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800"
+                            className="flex items-center gap-2 text-sm text-cyan-600 hover:text-cyan-800"
                         >
                             <Mail size={16} />
                             saraivavision@gmail.com
@@ -338,7 +338,7 @@ export const ErrorToast = ({ error, onRetry, onDismiss }) => {
                     {onRetry && (
                         <button
                             onClick={onRetry}
-                            className="mt-1 text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                            className="mt-1 text-xs text-cyan-600 hover:text-cyan-800 flex items-center gap-1"
                         >
                             <RefreshCw size={12} />
                             Tentar novamente

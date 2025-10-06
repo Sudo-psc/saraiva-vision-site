@@ -11,7 +11,7 @@ const AuthorWidget = ({ author = 'Dr. Saraiva', date, category }) => {
       className="sticky top-[900px] bg-gradient-to-br from-white/90 via-blue-50/30 to-slate-50/50 backdrop-blur-sm border border-slate-200 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
     >
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-500 rounded-full flex items-center justify-center shadow-md">
+        <div className="w-12 h-12 bg-gradient-to-br from-cyan-600 to-blue-500 rounded-full flex items-center justify-center shadow-md">
           <User className="w-6 h-6 text-white" />
         </div>
         <div>
@@ -26,8 +26,8 @@ const AuthorWidget = ({ author = 'Dr. Saraiva', date, category }) => {
 
       <div className="space-y-3 pt-4 border-t border-slate-200">
         <div className="flex items-center gap-2 text-xs text-slate-600">
-          <div className="p-1.5 bg-blue-50 rounded">
-            <Calendar className="w-3.5 h-3.5 text-blue-600" />
+          <div className="p-1.5 bg-cyan-50 rounded">
+            <Calendar className="w-3.5 h-3.5 text-cyan-600" />
           </div>
           <span>
             {date ? new Date(date).toLocaleDateString('pt-BR', {
@@ -40,8 +40,8 @@ const AuthorWidget = ({ author = 'Dr. Saraiva', date, category }) => {
 
         {category && (
           <div className="flex items-center gap-2 text-xs text-slate-600">
-            <div className="p-1.5 bg-blue-50 rounded">
-              <Award className="w-3.5 h-3.5 text-blue-600" />
+            <div className="p-1.5 bg-cyan-50 rounded">
+              <Award className="w-3.5 h-3.5 text-cyan-600" />
             </div>
             <span>{category}</span>
           </div>
@@ -51,7 +51,7 @@ const AuthorWidget = ({ author = 'Dr. Saraiva', date, category }) => {
       <div className="mt-5 pt-4 border-t border-slate-200">
         <a
           href="/sobre"
-          className="block text-center text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors py-2 px-4 bg-blue-50 hover:bg-blue-100 rounded-lg"
+          className="block text-center text-xs font-medium text-cyan-600 hover:text-cyan-700 transition-colors py-2 px-4 bg-cyan-50 hover:bg-cyan-100 rounded-lg"
         >
           Conheça o Dr. Saraiva
         </a>

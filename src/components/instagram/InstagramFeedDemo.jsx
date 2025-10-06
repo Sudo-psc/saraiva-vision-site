@@ -105,7 +105,7 @@ const InstagramFeedDemo = () => {
                             id="showStats"
                             checked={config.showStats}
                             onChange={(e) => handleConfigChange('showStats', e.target.checked)}
-                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                            className="h-4 w-4 text-cyan-600 focus:ring-blue-500 border-gray-300 rounded"
                         />
                         <label htmlFor="showStats" className="ml-2 block text-sm text-gray-700">
                             Show Statistics
@@ -119,7 +119,7 @@ const InstagramFeedDemo = () => {
                             id="lazyLoading"
                             checked={config.enableLazyLoading}
                             onChange={(e) => handleConfigChange('enableLazyLoading', e.target.checked)}
-                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                            className="h-4 w-4 text-cyan-600 focus:ring-blue-500 border-gray-300 rounded"
                         />
                         <label htmlFor="lazyLoading" className="ml-2 block text-sm text-gray-700">
                             Lazy Loading
@@ -133,7 +133,7 @@ const InstagramFeedDemo = () => {
                             id="accessibility"
                             checked={config.enableAccessibility}
                             onChange={(e) => handleConfigChange('enableAccessibility', e.target.checked)}
-                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                            className="h-4 w-4 text-cyan-600 focus:ring-blue-500 border-gray-300 rounded"
                         />
                         <label htmlFor="accessibility" className="ml-2 block text-sm text-gray-700">
                             Accessibility Features

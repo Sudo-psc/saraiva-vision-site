@@ -119,7 +119,7 @@ const ServicesStatusDashboard = () => {
                             <p className="text-gray-600 mb-4">{error}</p>
                             <button
                                 onClick={() => fetchServiceData()}
-                                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                                className="bg-cyan-600 text-white px-4 py-2 rounded-md hover:bg-cyan-700 transition-colors"
                             >
                                 Retry
                             </button>
@@ -145,7 +145,7 @@ const ServicesStatusDashboard = () => {
                                 onClick={() => { setView('overview'); setSelectedService(null); }}
                                 className={`px-4 py-2 rounded-md transition-colors ${
                                     view === 'overview' && !selectedService
-                                        ? 'bg-blue-600 text-white'
+                                        ? 'bg-cyan-600 text-white'
                                         : 'bg-white text-gray-700 hover:bg-gray-100'
                                 }`}
                             >
@@ -155,7 +155,7 @@ const ServicesStatusDashboard = () => {
                                 onClick={() => setView('detailed')}
                                 className={`px-4 py-2 rounded-md transition-colors ${
                                     view === 'detailed'
-                                        ? 'bg-blue-600 text-white'
+                                        ? 'bg-cyan-600 text-white'
                                         : 'bg-white text-gray-700 hover:bg-gray-100'
                                 }`}
                             >
@@ -165,7 +165,7 @@ const ServicesStatusDashboard = () => {
                                 onClick={() => setView('logs')}
                                 className={`px-4 py-2 rounded-md transition-colors ${
                                     view === 'logs'
-                                        ? 'bg-blue-600 text-white'
+                                        ? 'bg-cyan-600 text-white'
                                         : 'bg-white text-gray-700 hover:bg-gray-100'
                                 }`}
                             >
@@ -175,7 +175,7 @@ const ServicesStatusDashboard = () => {
                                 onClick={() => setView('metrics')}
                                 className={`px-4 py-2 rounded-md transition-colors ${
                                     view === 'metrics'
-                                        ? 'bg-blue-600 text-white'
+                                        ? 'bg-cyan-600 text-white'
                                         : 'bg-white text-gray-700 hover:bg-gray-100'
                                 }`}
                             >

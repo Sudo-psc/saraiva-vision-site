@@ -241,7 +241,7 @@ const BlogPage = () => {
             className="mt-auto focus:outline-none"
             aria-label={`Leia mais sobre: ${post.title}`}
           >
-            <Button variant="default" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            <Button variant="default" className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2">
               <span>{t('blog.read_more', 'Ler artigo completo')}</span>
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </Button>
@@ -659,7 +659,7 @@ const BlogPage = () => {
                       aria-label={`Filtrar por categoria: ${category}`}
                       className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                         isActive
-                          ? 'bg-blue-500 text-white shadow-sm hover:bg-blue-600'
+                          ? 'bg-cyan-500 text-white shadow-sm hover:bg-cyan-600'
                           : 'bg-white text-text-secondary border border-border-light hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50'
                       }`}
                     >
@@ -739,7 +739,7 @@ const BlogPage = () => {
                               variant={currentPage === pageNum ? 'default' : 'outline'}
                               className={`px-4 py-2 min-w-[44px] ${
                                 currentPage === pageNum
-                                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                  ? 'bg-cyan-600 text-white hover:bg-cyan-700'
                                   : 'hover:bg-blue-50'
                               }`}
                               aria-label={`Página ${pageNum}`}

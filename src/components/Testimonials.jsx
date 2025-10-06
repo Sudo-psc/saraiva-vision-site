@@ -134,7 +134,7 @@ const Testimonials = ({ limit }) => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-xs font-medium mb-4">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-cyan-700 text-xs font-medium mb-4">
             <Star size={16} className="mr-2" />
             {t('testimonials.badge')}
           </div>
@@ -207,7 +207,7 @@ const Testimonials = ({ limit }) => {
                   variant="ghost"
                   size="icon"
                   onClick={prevSlide}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white hover:bg-blue-700 shadow-md"
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-cyan-600 text-white hover:bg-cyan-700 shadow-md"
                   aria-label={t('testimonials.previous')}
                 >
                   <ChevronLeft size={20} />
@@ -217,7 +217,7 @@ const Testimonials = ({ limit }) => {
                   variant="ghost"
                   size="icon"
                   onClick={nextSlide}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white hover:bg-blue-700 shadow-md"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-cyan-600 text-white hover:bg-cyan-700 shadow-md"
                   aria-label={t('testimonials.next')}
                 >
                   <ChevronRight size={20} />
@@ -235,7 +235,7 @@ const Testimonials = ({ limit }) => {
                     key={index}
                     onClick={() => goToSlide(index)}
                     className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide
-                      ? 'bg-blue-600 w-8'
+                      ? 'bg-cyan-600 w-8'
                       : 'bg-slate-300 hover:bg-slate-400'
                       }`}
                     aria-label={`Ir para depoimento ${index + 1}`}
@@ -300,7 +300,7 @@ const Testimonials = ({ limit }) => {
 
         {limit && testimonials.length > limit && (
           <div className="mt-10 text-center">
-            <a href="/sobre" className="text-blue-600 font-medium hover:underline inline-flex items-center gap-1">
+            <a href="/sobre" className="text-cyan-600 font-medium hover:underline inline-flex items-center gap-1">
               {t('testimonials.viewAll', 'Ver todos depoimentos')}
               <ChevronRight size={16} />
             </a>
@@ -317,7 +317,7 @@ const Testimonials = ({ limit }) => {
         >
           <div className="inline-flex items-center gap-8 bg-white rounded-2xl p-6 shadow-soft-light border-2 border-slate-300">
             <div className="text-center">
-              <div className="text-xl font-bold text-blue-600">4.9/5</div>
+              <div className="text-xl font-bold text-cyan-600">4.9/5</div>
               <p className="text-sm text-slate-600">{t('testimonials.avgRating')}</p>
             </div>
             <div className="w-px h-12 bg-slate-200"></div>

@@ -20,11 +20,11 @@ const SpotifyEmbed = ({
   return (
     <div className={`w-full ${className}`}>
       {episodeTitle && (
-        <div className="mb-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-          <p className="text-sm text-blue-800 font-medium">
+        <div className="mb-3 p-3 bg-blue-50 rounded-lg border border-cyan-200">
+          <p className="text-sm text-cyan-800 font-medium">
             🎧 Episódio destacado: <span className="font-bold">{episodeTitle}</span>
           </p>
-          <p className="text-xs text-blue-600 mt-1">
+          <p className="text-xs text-cyan-600 mt-1">
             Role a lista abaixo para encontrar e reproduzir este episódio
           </p>
         </div>
@@ -42,7 +42,7 @@ const SpotifyEmbed = ({
           href={`https://open.spotify.com/${type === 'episode' ? 'episode' : 'show'}/${id}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 hover:text-blue-700 underline text-sm"
+          className="text-cyan-600 hover:text-cyan-700 underline text-sm"
         >
           {t('podcast.listen_spotify', 'Ouvir no Spotify')}
         </a>

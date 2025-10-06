@@ -88,7 +88,7 @@ const AccessibilityControls = ({ className = '' }) => {
       >
         <Button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-2xl"
+          className="w-14 h-14 rounded-full bg-cyan-600 hover:bg-cyan-700 shadow-2xl"
           aria-label={isOpen ? 'Fechar acessibilidade' : 'Abrir acessibilidade'}
         >
           {isOpen ? <X className="w-6 h-6" /> : <Settings className="w-6 h-6" />}
@@ -111,7 +111,7 @@ const AccessibilityControls = ({ className = '' }) => {
               exit={{ opacity: 0, y: 20 }}
               className="fixed bottom-24 right-6 w-80 bg-white rounded-2xl shadow-2xl z-40"
             >
-              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 text-white">
+              <div className="bg-gradient-to-r from-cyan-600 to-indigo-600 p-4 text-white">
                 <h3 className="font-bold text-lg flex items-center gap-2">
                   <Settings className="w-5 h-5" />
                   Acessibilidade
@@ -120,7 +120,7 @@ const AccessibilityControls = ({ className = '' }) => {
               <div className="p-4 space-y-6">
                 <div>
                   <label className="flex items-center gap-2 text-sm font-semibold mb-3">
-                    <Type className="w-4 h-4 text-blue-600" />
+                    <Type className="w-4 h-4 text-cyan-600" />
                     Tamanho da Fonte
                   </label>
                   <div className="grid grid-cols-2 gap-2">
@@ -129,7 +129,7 @@ const AccessibilityControls = ({ className = '' }) => {
                         key={key}
                         onClick={() => setFontSize(key)}
                         className={`px-3 py-2 rounded-lg text-sm transition-all ${
-                          fontSize === key ? 'bg-blue-600 text-white' : 'bg-gray-100'
+                          fontSize === key ? 'bg-cyan-600 text-white' : 'bg-gray-100'
                         }`}
                       >
                         {label}
@@ -139,7 +139,7 @@ const AccessibilityControls = ({ className = '' }) => {
                 </div>
                 <div>
                   <label className="flex items-center gap-2 text-sm font-semibold mb-3">
-                    <Contrast className="w-4 h-4 text-blue-600" />
+                    <Contrast className="w-4 h-4 text-cyan-600" />
                     Contraste
                   </label>
                   <div className="space-y-2">
@@ -148,7 +148,7 @@ const AccessibilityControls = ({ className = '' }) => {
                         key={key}
                         onClick={() => setContrast(key)}
                         className={`w-full px-3 py-2 rounded-lg text-sm ${
-                          contrast === key ? 'bg-blue-600 text-white' : 'bg-gray-100'
+                          contrast === key ? 'bg-cyan-600 text-white' : 'bg-gray-100'
                         }`}
                       >
                         {label}

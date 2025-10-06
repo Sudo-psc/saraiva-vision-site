@@ -46,7 +46,7 @@ const SectionWrapper = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-overline font-medium mb-6 w-fit mx-auto"
+                className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-cyan-700 text-overline font-medium mb-6 w-fit mx-auto"
               >
                 {overline}
               </motion.div>

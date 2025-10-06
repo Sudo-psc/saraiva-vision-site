@@ -70,7 +70,7 @@ const ButtonComponent: React.FC<{
   const baseClasses = "inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500";
 
   const variantClasses = {
-    default: "bg-blue-600 text-white hover:bg-blue-700",
+    default: "bg-cyan-600 text-white hover:bg-cyan-700",
     outline: "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50",
     ghost: "text-gray-700 hover:bg-gray-100"
   };
@@ -228,8 +228,8 @@ const NavbarNextJS: React.FC<NavbarProps> = ({ className = "" }) => {
                 {link.internal ? (
                   <Link
                     href={link.href}
-                    className={`text-gray-700 hover:text-blue-700 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      pathname === link.href ? 'text-blue-700 bg-blue-50' : ''
+                    className={`text-gray-700 hover:text-cyan-700 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                      pathname === link.href ? 'text-cyan-700 bg-blue-50' : ''
                     }`}
                   >
                     {link.name}
@@ -237,7 +237,7 @@ const NavbarNextJS: React.FC<NavbarProps> = ({ className = "" }) => {
                 ) : (
                   <button
                     onClick={() => handleExternalLink(link.href, link.name)}
-                    className="text-gray-700 hover:text-blue-700 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-1"
+                    className="text-gray-700 hover:text-cyan-700 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-1"
                   >
                     {link.name}
                     <ExternalLink size={14} />
@@ -295,8 +295,8 @@ const NavbarNextJS: React.FC<NavbarProps> = ({ className = "" }) => {
                   {link.internal ? (
                     <Link
                       href={link.href}
-                      className={`block text-gray-700 hover:text-blue-700 py-3 font-medium text-lg border-b border-gray-100 ${
-                        pathname === link.href ? 'text-blue-700' : ''
+                      className={`block text-gray-700 hover:text-cyan-700 py-3 font-medium text-lg border-b border-gray-100 ${
+                        pathname === link.href ? 'text-cyan-700' : ''
                       }`}
                       onClick={() => setMobileMenuOpen(false)}
                     >
@@ -308,7 +308,7 @@ const NavbarNextJS: React.FC<NavbarProps> = ({ className = "" }) => {
                         handleExternalLink(link.href, link.name);
                         setMobileMenuOpen(false);
                       }}
-                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 font-medium text-lg border-b border-gray-100"
+                      className="block w-full text-left text-gray-700 hover:text-cyan-700 py-3 font-medium text-lg border-b border-gray-100"
                     >
                       {link.name}
                     </button>

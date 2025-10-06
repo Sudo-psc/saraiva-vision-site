@@ -136,7 +136,7 @@ const GoogleMapsLoader = ({ apiKey: apiKeyProp }) => {
   if (mapsError) {
     return (
       <div className="bg-gray-50 rounded-lg p-8 text-center">
-        <MapPin className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+        <MapPin className="w-12 h-12 text-cyan-600 mx-auto mb-4" />
         <h3 className="text-xl font-semibold mb-4">Localização</h3>
         <div className="space-y-3 text-left max-w-md mx-auto">
           <div className="flex items-start gap-3">
@@ -163,7 +163,7 @@ const GoogleMapsLoader = ({ apiKey: apiKeyProp }) => {
           href={`https://www.google.com/maps/search/${encodeURIComponent(clinicInfo.name + ' ' + clinicInfo.address)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="inline-block mt-6 px-6 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors"
         >
           Ver no Google Maps
         </a>

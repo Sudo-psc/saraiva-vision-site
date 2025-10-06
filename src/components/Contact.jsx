@@ -460,7 +460,7 @@ const Contact = () => {
 
   const contactDetails = [
     {
-      icon: <MapPin className="h-6 w-6 text-blue-600" />,
+      icon: <MapPin className="h-6 w-6 text-cyan-600" />,
       title: t('contact.info.address_title'),
       details: (
         <>
@@ -468,7 +468,7 @@ const Contact = () => {
             href={googleMapsProfileUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-blue-700 hover:underline transition-colors cursor-pointer"
+            className="hover:text-cyan-700 hover:underline transition-colors cursor-pointer"
             aria-label="Ver localização no Google Maps (nova aba)"
           >
             <span>{typeof clinicInfo.address === 'string' ? clinicInfo.address : t('contact.info.address_details')}</span>
@@ -480,14 +480,14 @@ const Contact = () => {
           href={googleMapsProfileUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 hover:underline text-sm"
+          className="text-cyan-600 hover:underline text-sm"
         >
           📍 Ver no Google Maps
         </a>
       )
     },
     {
-      icon: <Phone className="h-6 w-6 text-blue-600" />,
+      icon: <Phone className="h-6 w-6 text-cyan-600" />,
       title: t('contact.info.phone_title'),
       details: (
         <div className="flex items-center gap-2">
@@ -499,7 +499,7 @@ const Contact = () => {
       ),
       subDetails: (
         <div className="flex flex-col gap-2">
-          <button type="button" onClick={() => window.dispatchEvent(new Event('open-cta-modal'))} className="text-blue-600 hover:underline flex items-center gap-1 text-sm font-semibold">
+          <button type="button" onClick={() => window.dispatchEvent(new Event('open-cta-modal'))} className="text-cyan-600 hover:underline flex items-center gap-1 text-sm font-semibold">
             <MessageCircle size={14} /> {t('contact.info.phone_whatsapp')}
           </button>
           <a 
@@ -522,13 +522,13 @@ const Contact = () => {
       )
     },
     {
-      icon: <Mail className="h-6 w-6 text-blue-600" />,
+      icon: <Mail className="h-6 w-6 text-cyan-600" />,
       title: t('contact.info.email_title'),
       details: <a href="mailto:saraivavision@gmail.com" className="hover:underline">saraivavision@gmail.com</a>,
       subDetails: t('contact.info.email_sub')
     },
     {
-      icon: <Clock className="h-6 w-6 text-blue-600" />,
+      icon: <Clock className="h-6 w-6 text-cyan-600" />,
       title: t('contact.info.hours_title'),
       details: t('contact.info.hours_details'),
       subDetails: t('contact.info.hours_sub')
@@ -548,7 +548,7 @@ const Contact = () => {
       {/* Skip link for keyboard navigation */}
       <a
         href="#form-title"
-        className="skip-link sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded focus:no-underline"
+        className="skip-link sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-cyan-600 focus:text-white focus:px-4 focus:py-2 focus:rounded focus:no-underline"
         onClick={(e) => {
           e.preventDefault();
           document.getElementById('name')?.focus();
@@ -890,14 +890,14 @@ const Contact = () => {
 
                 {/* LGPD Consent Section */}
                 <div className="pt-2">
-                  <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                  <div className="bg-blue-50 border border-cyan-200 p-4 rounded-lg">
                     <div className="flex items-start gap-3 mb-3">
-                      <Shield className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                      <Shield className="h-5 w-5 text-cyan-600 mt-0.5 flex-shrink-0" />
                       <div>
                         <h4 className="text-sm font-semibold text-blue-900 mb-1">
                           Proteção de Dados Pessoais (LGPD)
                         </h4>
-                        <p className="text-xs text-blue-800 leading-relaxed">
+                        <p className="text-xs text-cyan-800 leading-relaxed">
                           Seus dados pessoais serão utilizados exclusivamente para responder à sua consulta médica.
                           Coletamos apenas as informações necessárias (nome, e-mail, telefone e mensagem) para
                           que Dr. Philipe possa entrar em contato e fornecer orientações oftalmológicas adequadas.
@@ -920,7 +920,7 @@ const Contact = () => {
                         ? 'border-red-300 bg-red-50'
                         : formData.consent
                           ? 'border-green-300 bg-green-50'
-                          : 'border-blue-200 bg-white hover:bg-blue-25'
+                          : 'border-cyan-200 bg-white hover:bg-blue-25'
                         }`}
                       htmlFor="consent"
                     >
@@ -933,7 +933,7 @@ const Contact = () => {
                         aria-invalid={!!errors.consent}
                         aria-describedby={errors.consent ? 'error-consent' : 'consent-description'}
                         aria-required="true"
-                        className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 focus:ring-2 focus:ring-offset-2"
+                        className="mt-0.5 h-4 w-4 rounded border-slate-300 text-cyan-600 focus:ring-blue-500 focus:ring-2 focus:ring-offset-2"
                         required
                       />
                       <div className="flex-1">
@@ -991,7 +991,7 @@ const Contact = () => {
                 {/* reCAPTCHA v3 status (no visible widget required) */}
                 <div className="pt-2">
                   <div className="flex items-center gap-2 mb-1">
-                    <Shield className="h-4 w-4 text-blue-600" />
+                    <Shield className="h-4 w-4 text-cyan-600" />
                     <span className="text-sm font-medium text-slate-700">
                       {t('contact.recaptcha_label', 'Verificação de Segurança')}
                     </span>
@@ -1158,12 +1158,12 @@ const Contact = () => {
             >
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-blue-100 rounded-xl" aria-hidden="true">
-                  <Globe className="h-6 w-6 text-blue-600" />
+                  <Globe className="h-6 w-6 text-cyan-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-800 group-hover:text-blue-700">{t('contact.online_scheduling_title')}</h4>
+                  <h4 className="font-bold text-slate-800 group-hover:text-cyan-700">{t('contact.online_scheduling_title')}</h4>
                   <div className="mt-1" id="online-scheduling-desc">{t('contact.online_scheduling_desc')}</div>
-                  <div className="text-blue-600 text-sm mt-1 font-semibold">{t('contact.online_scheduling_benefit')}</div>
+                  <div className="text-cyan-600 text-sm mt-1 font-semibold">{t('contact.online_scheduling_benefit')}</div>
                 </div>
               </div>
             </a>

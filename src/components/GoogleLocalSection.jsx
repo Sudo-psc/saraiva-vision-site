@@ -14,7 +14,7 @@ const GoogleLocalSection = () => {
       aria-labelledby="local-heading"
       className="py-12 lg:py-16 text-white bg-gradient-to-br from-[#0a1628] via-[#13203a] to-[#0d1b2a] relative overflow-hidden"
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-indigo-900/10 to-blue-800/20" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-indigo-900/10 to-cyan-800/20" aria-hidden="true" />
 
       <div className="container mx-auto px-[7%] relative z-10">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-14 items-start lg:items-center">
@@ -23,7 +23,7 @@ const GoogleLocalSection = () => {
             {/* Header */}
             <div className="space-y-4">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
                   <Navigation className="w-6 h-6 text-white" />
                 </div>
                 <div className="h-px flex-1 bg-gradient-to-r from-blue-400/50 to-transparent"></div>
@@ -40,7 +40,7 @@ const GoogleLocalSection = () => {
             <div className="bg-white text-slate-800 rounded-2xl p-6 lg:p-8 border border-slate-200 shadow-xl space-y-5 max-w-xl">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                  <MapPin className="w-5 h-5 text-blue-600" />
+                  <MapPin className="w-5 h-5 text-cyan-600" />
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-lg font-semibold text-slate-900">Endereço</h3>
@@ -76,7 +76,7 @@ const GoogleLocalSection = () => {
                 </a>
               </Button>
 
-              <Button asChild variant="outline" size="lg" className="gap-3 text-blue-700 border-blue-500 hover:text-blue-800">
+              <Button asChild variant="outline" size="lg" className="gap-3 text-cyan-700 border-cyan-500 hover:text-cyan-800">
                 <a
                   href={googleReviewUrl}
                   target="_blank"

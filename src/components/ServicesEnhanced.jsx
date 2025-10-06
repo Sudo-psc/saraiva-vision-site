@@ -127,7 +127,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
             <div className="service-card-content-wrapper">
               {/* Seta no canto superior direito */}
               <motion.div
-                className="absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg z-10"
+                className="absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-500 text-white shadow-lg z-10"
                 whileHover={{ scale: 1.2, rotate: 5 }}
                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
               >
@@ -137,7 +137,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
               {/* Categoria */}
               {service.category && (
                 <div className="service-category-badge">
-                  <div className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 rounded-full text-xs font-semibold shadow-sm border border-blue-200/50">
+                  <div className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-100 to-blue-50 text-cyan-700 rounded-full text-xs font-semibold shadow-sm border border-cyan-200/50">
                     {service.category}
                   </div>
                 </div>
@@ -197,7 +197,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
       <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-br from-purple-400/8 to-pink-400/6 rounded-full blur-2xl animate-pulse delay-500" />
 
       {/* Floating geometric shapes for depth */}
-      <div className="absolute top-20 right-20 w-32 h-32 border border-blue-200/30 rounded-3xl rotate-12 animate-float opacity-60" />
+      <div className="absolute top-20 right-20 w-32 h-32 border border-cyan-200/30 rounded-3xl rotate-12 animate-float opacity-60" />
       <div className="absolute bottom-32 left-16 w-24 h-24 border border-cyan-200/30 rounded-2xl -rotate-12 animate-float-delayed opacity-40" />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -205,7 +205,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
         <div className="text-center mb-20">
           {/* Badge */}
           <div
-            className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700"
+            className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 text-cyan-700"
             data-testid="services-badge"
           >
             {t('services.badge', 'Nossos Serviços')}

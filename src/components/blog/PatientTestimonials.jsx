@@ -18,9 +18,9 @@ const PatientTestimonials = ({ testimonials = [], className = '' }) => {
       className={`my-12 ${className}`}
       aria-labelledby="testimonials-title"
     >
-      <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-2xl p-8 shadow-xl border border-blue-100">
+      <div className="bg-gradient-to-br from-cyan-50 via-indigo-50 to-purple-50 rounded-2xl p-8 shadow-xl border border-cyan-100">
         <div className="flex items-center gap-3 mb-8">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full p-3 shadow-md">
+          <div className="bg-gradient-to-r from-cyan-600 to-indigo-600 rounded-full p-3 shadow-md">
             <Quote className="w-6 h-6 text-white" aria-hidden="true" />
           </div>
           <div>
@@ -74,7 +74,7 @@ const PatientTestimonials = ({ testimonials = [], className = '' }) => {
           ))}
         </div>
 
-        <div className="mt-8 pt-6 border-t border-blue-200 text-center">
+        <div className="mt-8 pt-6 border-t border-cyan-200 text-center">
           <p className="text-sm text-gray-600 mb-4">
             ⭐ Mais de 136 avaliações com média 4.9/5.0
           </p>
@@ -82,7 +82,7 @@ const PatientTestimonials = ({ testimonials = [], className = '' }) => {
             href="https://g.page/r/CR7vjH0qGo18EB0/review"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
           >
             <Star className="w-5 h-5" />
             <span>Ver Todas as Avaliações</span>
