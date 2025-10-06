@@ -87,7 +87,7 @@ function PodcastPageConsolidated() {
   // Render single episode view
   if (currentEpisode) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-bg-primary via-blue-50/30 to-bg-primary">
+      <div className="min-h-screen bg-gradient-to-br from-bg-primary via-cyan-50/30 to-bg-primary">
         <Helmet>
           <title>{currentEpisode.title} | Podcast Saraiva Vision</title>
           <meta name="description" content={currentEpisode.description} />
@@ -139,14 +139,14 @@ function PodcastPageConsolidated() {
             <Button
               onClick={() => navigate('/podcast')}
               variant="ghost"
-              className="mb-8 hover:bg-blue-50 transition-colors"
+              className="mb-8 hover:bg-cyan-50 transition-colors"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar para o podcast
             </Button>
 
             {/* Episode Header */}
-            <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-8 md:p-12 mb-12 shadow-2xl">
+            <div className="bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-3xl p-8 md:p-12 mb-12 shadow-2xl">
               <div className="grid md:grid-cols-3 gap-8 items-center">
                 {/* Cover */}
                 {currentEpisode.cover && (
@@ -207,9 +207,9 @@ function PodcastPageConsolidated() {
             {/* Spotify Player */}
             {(currentEpisode.spotifyEpisodeId || currentEpisode.spotifyShowId) && (
               <div className="mb-12">
-                <div className="bg-gradient-to-br from-white via-blue-50/50 to-white rounded-2xl p-6 shadow-lg border border-blue-100">
+                <div className="bg-gradient-to-br from-white via-cyan-50/50 to-white rounded-2xl p-6 shadow-lg border border-cyan-100">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg">
+                    <div className="p-2 bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-lg">
                       <Play className="w-5 h-5 text-white" />
                     </div>
                     <h2 className="text-xl font-bold text-gray-900">
@@ -233,7 +233,7 @@ function PodcastPageConsolidated() {
             </div>
 
             {/* Call to Action */}
-            <div className="bg-gradient-to-r from-blue-500 to-blue-700 rounded-3xl p-8 md:p-12 text-center text-white shadow-2xl">
+            <div className="bg-gradient-to-r from-cyan-500 to-cyan-700 rounded-3xl p-8 md:p-12 text-center text-white shadow-2xl">
               <h2 className="text-2xl md:text-3xl font-bold mb-4">
                 Agende sua Consulta
               </h2>
@@ -243,7 +243,7 @@ function PodcastPageConsolidated() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/agendar"
-                  className="px-8 py-4 bg-white text-blue-600 hover:bg-gray-100 rounded-xl font-semibold transition-colors inline-flex items-center justify-center gap-2 shadow-lg"
+                  className="px-8 py-4 bg-white text-cyan-600 hover:bg-gray-100 rounded-xl font-semibold transition-colors inline-flex items-center justify-center gap-2 shadow-lg"
                 >
                   <Calendar className="w-5 h-5" />
                   Agendar Consulta
@@ -304,12 +304,12 @@ function PodcastPageConsolidated() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full text-white mb-6 shadow-lg">
+            <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-700 rounded-full text-white mb-6 shadow-lg">
               <Mic2 className="w-6 h-6" />
               <span className="font-semibold">Podcast</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 bg-clip-text text-transparent mb-6">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-cyan-700 via-cyan-600 to-cyan-700 bg-clip-text text-transparent mb-6">
               Saúde Ocular em Foco
             </h1>
 
@@ -326,12 +326,12 @@ function PodcastPageConsolidated() {
             transition={{ delay: 0.1 }}
             className="mb-16"
           >
-            <div className="bg-gradient-to-br from-white via-blue-50/50 to-white rounded-3xl p-8 md:p-12 shadow-xl border border-blue-100">
+            <div className="bg-gradient-to-br from-white via-cyan-50/50 to-white rounded-3xl p-8 md:p-12 shadow-xl border border-cyan-100">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl">
+                <div className="p-3 bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-xl">
                   <Play className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-700 to-blue-600 bg-clip-text text-transparent">
+                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-700 to-cyan-600 bg-clip-text text-transparent">
                   Último Episódio Lançado
                 </h2>
               </div>
@@ -379,7 +379,7 @@ function PodcastPageConsolidated() {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Buscar episódios por título, descrição ou palavra-chave..."
-                  className="w-full pl-12 pr-4 py-4 bg-white/70 backdrop-blur-sm border-2 border-blue-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
+                  className="w-full pl-12 pr-4 py-4 bg-white/70 backdrop-blur-sm border-2 border-cyan-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all"
                 />
             </div>
 
@@ -391,7 +391,7 @@ function PodcastPageConsolidated() {
                   onClick={() => setSelectedCategory(category)}
                   className={`px-6 py-3 rounded-full font-semibold transition-all ${
                     selectedCategory === category
-                      ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg scale-105'
+                      ? 'bg-gradient-to-r from-cyan-500 to-cyan-700 text-white shadow-lg scale-105'
                       : 'bg-white/70 backdrop-blur-sm text-gray-700 hover:bg-white hover:shadow-md'
                   }`}
                 >
@@ -431,11 +431,11 @@ function PodcastPageConsolidated() {
                     )}
 
                     <div className="p-5">
-                      <div className="text-xs text-blue-600 font-semibold mb-2">
+                      <div className="text-xs text-cyan-600 font-semibold mb-2">
                         {episode.category}
                       </div>
 
-                      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
+                      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-cyan-600 transition-colors line-clamp-2">
                         {episode.title}
                       </h3>
 

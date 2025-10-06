@@ -92,7 +92,7 @@ const PodcastPage = () => {
                                     Episódio Mais Recente
                                 </h2>
                             </div>
-                            <GlassContainer intensity="medium" className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+                            <GlassContainer intensity="medium" className="bg-gradient-to-r from-cyan-50 to-teal-50 rounded-xl p-6 border border-cyan-100">
                                 <div className="grid md:grid-cols-2 gap-6 items-center">
                                     {/* Episode Info */}
                                     <div>
