@@ -95,4 +95,24 @@ public/Blog/*-1920w.*
 # Backup files
 *.backup
 src/content/blog/posts.json
+
+# Environment files - Beta and Production
 .env.production
+.env.beta
+.env.webhook
+
+# Next.js build (not used in production, only for API routes)
+.next/
+
+# Deployment logs
+claudelogs/
+/reports
+/var/log/nginx/*.log
+
+# Test results
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# Deployment checklist
+.deploy-checklist
