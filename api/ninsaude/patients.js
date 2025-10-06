@@ -22,7 +22,7 @@ import axios from 'axios';
 import { z } from 'zod';
 import crypto from 'crypto';
 import { getAccessToken } from './auth.js';
-import { validateCPF, formatCPF, unformatCPF } from '../utils/ninsaude/cpfValidator.js';
+import { validateCPF, formatCPF, formatCEP, unformatCPF } from '../utils/ninsaude/cpfValidator.js';
 import { retryWithBackoff } from '../utils/ninsaude/retryWithBackoff.js';
 
 const router = express.Router();
@@ -278,7 +278,7 @@ function transformPatientResponse(ninsaudePatient) {
       neighborhood: ninsaudePatient.address.neighborhood,
       city: ninsaudePatient.address.city,
       state: ninsaudePatient.address.state,
-      zipCode: formatCPF(ninsaudePatient.address.zip_code) // Reformat CEP
+      zipCode: formatCEP(ninsaudePatient.address.zip_code) // Reformat CEP
     } : undefined,
     gender: ninsaudePatient.gender,
     emergencyContact: ninsaudePatient.emergency_contact ? {

@@ -150,3 +150,30 @@ export function isValidFormat(cpf) {
   const formatRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
   return formatRegex.test(cpf);
 }
+
+/**
+ * Format CEP (Brazilian postal code) to standard format
+ * 
+ * @param {string} cep - CEP to format (5 or 8 digits)
+ * @returns {string} Formatted CEP (XXXXX-XXX)
+ * 
+ * @example
+ * formatCEP('12345678') // '12345-678'
+ * formatCEP('12345')    // '12345'
+ */
+export function formatCEP(cep) {
+  if (!cep || typeof cep !== 'string') {
+    return '';
+  }
+  
+  // Remove any non-digits
+  const cleaned = cep.replace(/\D/g, '');
+  
+  // Return as-is if not 8 digits
+  if (cleaned.length !== 8) {
+    return cleaned;
+  }
+  
+  // Format as XXXXX-XXX
+  return `${cleaned.slice(0, 5)}-${cleaned.slice(5)}`;
+}
