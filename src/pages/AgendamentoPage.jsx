@@ -17,8 +17,8 @@ const AgendamentoPage = () => {
       </Helmet>
 
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-gray-100">
-        {/* Mobile-first spacing: pt-20 for mobile, md:pt-28 for tablets, lg:pt-32 for desktop */}
-        <div className="flex-1 pt-20 md:pt-28 lg:pt-32 pb-6 md:pb-10 lg:pb-12">
+        {/* Mobile-first spacing with extra top padding to clear navbar */}
+        <div className="flex-1 pt-28 sm:pt-32 md:pt-36 lg:pt-40 pb-6 md:pb-10 lg:pb-12">
           <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
               {/* Header Section - Mobile Optimized */}
