@@ -135,9 +135,10 @@ export default app;
 
 /**
  * Adapter to convert Vercel serverless functions to Express middleware
+ * CORS headers are already set by Express middleware, so this just needs to pass them through
  */
 function createExpressAdapter(vercelHandler) {
-  return (req, res) => {
+  return async (req, res) => {
     // Convert Express req/res to Vercel format
     const vercelReq = {
       method: req.method,
@@ -159,6 +160,7 @@ function createExpressAdapter(vercelHandler) {
         res.send(data);
       },
       setHeader: (name, value) => {
+        // Pass through to Express response (CORS headers already set by middleware)
         res.setHeader(name, value);
         return vercelRes;
       },
@@ -167,7 +169,7 @@ function createExpressAdapter(vercelHandler) {
       }
     };
 
-    // Call the Vercel handler
-    vercelHandler(vercelReq, vercelRes);
+    // Call the Vercel handler (support both sync and async)
+    await Promise.resolve(vercelHandler(vercelReq, vercelRes));
   };
 }

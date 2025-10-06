@@ -48,13 +48,12 @@ const resolvePlaceId = (explicitId) => (
 );
 
 export default async function handler(req, res) {
-    // Set CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    // CORS is handled by Express middleware in server.js
+    // No need to set headers manually here
 
     if (req.method === 'OPTIONS') {
-        return res.status(200).end();
+        // Preflight handled by cors middleware
+        return res.status(204).end();
     }
 
     if (req.method !== 'GET') {

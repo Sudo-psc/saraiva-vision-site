@@ -22,6 +22,7 @@ sudo bash /home/saraiva-vision-site/DEPLOY_NOW.sh
 - **Projeto**: [`CLAUDE.md`](./CLAUDE.md) - Documentação principal do projeto
 - **Troubleshooting**: [`TROUBLESHOOTING.md`](./TROUBLESHOOTING.md) - Resolução de problemas
 - **Security**: [`SECURITY.md`](./SECURITY.md) - Práticas de segurança
+- **CORS Configuration**: [`CORS_README.md`](./CORS_README.md) - Guia completo de configuração CORS
 
 ## 🛠️ Development
 
