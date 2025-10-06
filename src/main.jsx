@@ -9,6 +9,7 @@ import './styles/cookies.css';
 import './styles/forms.css';
 import ErrorBoundary from './components/ErrorBoundary';
 import './i18n'; // Initialize i18n
+import GoogleTagManager from './components/GoogleTagManager';
 import { redirectToBackup } from './utils/redirectToBackup';
 import { initializeAnalytics, trackPageView, trackWebVitals } from './utils/analytics';
 import { onCLS, onINP, onFCP, onLCP, onTTFB } from 'web-vitals';
@@ -107,6 +108,7 @@ try {
   root.render(
     <React.StrictMode>
       <ErrorBoundary>
+        <GoogleTagManager gtmId={import.meta.env.VITE_GTM_ID} />
         <Router future={{
           v7_startTransition: true,
           v7_relativeSplatPath: true
