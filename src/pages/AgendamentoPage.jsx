@@ -17,10 +17,10 @@ const AgendamentoPage = () => {
       </Helmet>
 
       <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
-        <div className="flex-1 pt-20 md:pt-24 pb-8">
+        <div className="flex-1 pt-24 md:pt-32 pb-8">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-6">
+              <div className="text-center mb-6 mt-4">
                 <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
                   Agendamento Online
                 </h1>
