@@ -48,6 +48,7 @@ const Navbar = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
+            className="ml-[6%]"
           >
             <Link to="/" aria-label={t('navbar.home_link_label')}><Logo isWhite /></Link>
           </motion.div>
@@ -80,7 +81,7 @@ const Navbar = () => {
             })}
           </nav>
 
-           <div className="hidden md:flex items-center gap-4">
+           <div className="hidden md:flex items-center gap-4 mr-[6%]">
              <Button
                onClick={() => navigate('/agendamento')}
                className="flex items-center gap-2"
