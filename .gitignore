@@ -95,3 +95,4 @@ public/Blog/*-1920w.*
 # Backup files
 *.backup
 src/content/blog/posts.json
+.env.production
