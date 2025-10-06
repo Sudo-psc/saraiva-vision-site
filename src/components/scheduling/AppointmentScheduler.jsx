@@ -262,8 +262,8 @@ export default function AppointmentScheduler() {
                           variant={selectedTime === slot.time ? 'default' : 'outline'}
                           className={`${
                             selectedTime === slot.time
-                              ? 'bg-primary-600 text-white hover:bg-primary-700'
-                              : 'border-border-light hover:border-primary-400'
+                              ? 'bg-blue-600 text-white hover:bg-blue-700'
+                              : 'border-border-light hover:border-blue-400 hover:bg-blue-50'
                           }`}
                           onClick={() => handleTimeSelect(slot.time)}
                         >
@@ -400,7 +400,7 @@ export default function AppointmentScheduler() {
 
               <Button
                 type="submit"
-                className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-6 text-lg"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-6 text-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
                 disabled={loading || !selectedDate || !selectedTime}
               >
                 {loading ? (
@@ -408,6 +408,8 @@ export default function AppointmentScheduler() {
                     <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                     Processando...
                   </>
+                ) : !selectedDate || !selectedTime ? (
+                  'Selecione data e horário para continuar'
                 ) : (
                   'Confirmar Agendamento'
                 )}
@@ -472,7 +474,7 @@ export default function AppointmentScheduler() {
             <Button
               onClick={confirmAppointment}
               disabled={loading}
-              className="flex-1 bg-primary-600 hover:bg-primary-700"
+              className="flex-1 bg-blue-600 hover:bg-blue-700"
             >
               {loading ? (
                 <>
@@ -528,7 +530,7 @@ export default function AppointmentScheduler() {
               </ul>
             </div>
             <Button
-              className="w-full bg-success-DEFAULT hover:bg-success-dark"
+              className="w-full bg-blue-600 hover:bg-blue-700"
               onClick={() => window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`, '_blank')}
             >
               Confirmar via WhatsApp
