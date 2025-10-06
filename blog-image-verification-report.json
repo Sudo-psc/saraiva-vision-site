@@ -4580,38 +4580,6 @@
       "basename": "terapia-genetica"
     }
   ],
-  "imageReferences": [
-    {
-      "reference": "capa-lentes-premium-catarata-optimized.webp",
-      "filename": "capa-lentes-premium-catarata-optimized.webp",
-      "line": 375
-    },
-    {
-      "reference": "capa-exercicios-oculares.avif",
-      "filename": "capa-exercicios-oculares.avif",
-      "line": 168
-    },
-    {
-      "reference": "capa-ductolacrimal-optimized.webp",
-      "filename": "capa-ductolacrimal-optimized.webp",
-      "line": 294
-    },
-    {
-      "reference": "capa-estrabismo-tratamento.avif",
-      "filename": "capa-estrabismo-tratamento.avif",
-      "line": 535
-    },
-    {
-      "reference": "capa-post-24-imagen4-opt1-20250930-185815.avif",
-      "filename": "capa-post-24-imagen4-opt1-20250930-185815.avif",
-      "line": 619
-    },
-    {
-      "reference": "capa-lentes-premium-catarata.png",
-      "filename": "capa-lentes-premium-catarata.png",
-      "line": 308
-    }
-  ],
   "validReferences": [
     {
       "reference": "capa-lentes-premium-catarata-optimized.webp",
