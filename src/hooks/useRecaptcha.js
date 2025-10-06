@@ -7,7 +7,11 @@ export const useRecaptcha = () => {
   const loadingRef = useRef(false);
 
   useEffect(() => {
-    if (!siteKey) return; // no-op if not configured
+    if (!siteKey) {
+      // Allow form to work without reCAPTCHA as fallback
+      setReady(true);
+      return;
+    }
 
     if (window.grecaptcha && window.grecaptcha.execute) {
       setReady(true);
@@ -38,7 +42,11 @@ export const useRecaptcha = () => {
   }, [siteKey]);
 
   const execute = useCallback(async (action = 'contact') => {
-    if (!siteKey || !window.grecaptcha || !ready) return null;
+    if (!siteKey) {
+      // Return null when reCAPTCHA is not configured - backend will handle with fallback
+      return null;
+    }
+    if (!window.grecaptcha || !ready) return null;
     try {
       const token = await window.grecaptcha.execute(siteKey, { action });
       return token;

@@ -285,29 +285,6 @@ const PodcastTranscript: React.FC<PodcastTranscriptProps> = ({ episode }) => {
   );
 };
 
-PodcastTranscript.propTypes = {
-  episode: PropTypes.shape({
-    transcript: PropTypes.shape({
-      summary: PropTypes.string.isRequired,
-      keywords: PropTypes.arrayOf(PropTypes.string),
-      highlights: PropTypes.arrayOf(PropTypes.shape({
-        timestamp: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
-        keywords: PropTypes.arrayOf(PropTypes.string)
-      })),
-      fullTranscript: PropTypes.string.isRequired
-    }),
-    relatedServices: PropTypes.arrayOf(PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-      icon: PropTypes.string.isRequired
-    })),
-    relatedPosts: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      slug: PropTypes.string.isRequired
-    }))
-  }).isRequired
-};
+// TypeScript interfaces provide type safety - no PropTypes needed
 
 export default PodcastTranscript;

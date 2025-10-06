@@ -247,13 +247,10 @@ const Contact = () => {
     let submissionData = null;
 
     try {
-      // Execute reCAPTCHA v3 to obtain token
+      // Execute reCAPTCHA v3 to obtain token (if available)
       const token = await executeRecaptcha('contact');
-      if (!token) {
-        setSubmissionError({ code: 'missing_token' });
-        setIsSubmitting(false);
-        return;
-      }
+      // Continue without token if reCAPTCHA is not configured
+      // Backend will handle fallback with honeypot validation
 
       // Use the enhanced API utility
       submissionData = {
