@@ -62,7 +62,10 @@ function getClientIP(req) {
  * @returns {string} SHA-256 hashed IP
  */
 function hashIP(ip) {
-    const salt = process.env.IP_HASH_SALT || 'ninsaude-rate-limit-salt';
+    const salt = process.env.IP_HASH_SALT;
+    if (!salt) {
+        throw new Error('Missing required environment variable: IP_HASH_SALT. This must be set for secure IP hashing.');
+    }
     return crypto.createHash('sha256').update(ip + salt).digest('hex');
 }
 
