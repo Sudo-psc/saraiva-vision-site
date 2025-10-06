@@ -273,7 +273,16 @@ router.get('/:id/status', async (req, res) => {
       });
     }
 
-    const status = JSON.parse(statusData);
+    let status;
+    try {
+      status = JSON.parse(statusData);
+    } catch (parseError) {
+      console.error('Invalid status data format:', parseError);
+      return res.status(500).json({
+        error: 'Invalid status data',
+        message: 'Notification status data is corrupted'
+      });
+    }
 
     return res.status(200).json({
       id: status.id,
