@@ -9,8 +9,8 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import OptimizedImage from '../OptimizedImage';
 
-// Definição das redes sociais com links placeholders (atualize com URLs reais da Clínica Saraiva Vision)
 const socialLinks = [
   {
     name: 'TikTok',
@@ -59,12 +59,10 @@ const socialLinks = [
 // Componente principal
 const SocialMediaLinks = () => {
   // Função para lidar com cliques e rastrear erros via Sentry (opcional, para depuração)
-  const handleLinkClick = (e, href) => {
+  const handleLinkClick = (href) => {
     try {
-      // Lógica adicional se necessário (ex: analytics)
       console.log(`Clicou em: ${href}`);
     } catch (error) {
-      // Captura erros locais para rastreamento
       console.error('Erro ao clicar em link:', error);
     }
   };
@@ -80,21 +78,20 @@ const SocialMediaLinks = () => {
               to={social.href}
               target="_blank"
               rel="noopener noreferrer" // Segurança para links externos
-              onClick={(e) => handleLinkClick(e, social.href)}
+              onClick={() => handleLinkClick(social.href)}
               className="social-link inline-block transition-all duration-300 ease-in-out transform hover:scale-110 hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
               // Adiciona aria-label para acessibilidade
               aria-label={`Visite nosso ${social.name}`}
             >
               {/* Ícone padronizado com img para adaptabilidade (tamanho flexível, lazy loading) */}
-              <img
+              <OptimizedImage
                 src={social.iconPath}
                 alt={social.alt}
-                className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12" // Tamanhos responsivos: mobile (8), tablet (10), desktop (12)
+                className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
+                width={48}
+                height={48}
                 loading="lazy"
-                onError={(e) => {
-                  // Rastreia erros de imagem via console
-                  console.error(`Erro ao carregar ícone: ${social.iconPath}`, e);
-                }}
+                objectFit="contain"
               />
             </Link>
           </li>

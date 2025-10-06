@@ -71,7 +71,6 @@ export default function OptimizedImage({
   const getImageSources = () => {
     if (!src) return { avif: null, webp: null, fallback: src };
 
-    const ext = src.substring(src.lastIndexOf('.'));
     const basePath = src.substring(0, src.lastIndexOf('.'));
 
     return {

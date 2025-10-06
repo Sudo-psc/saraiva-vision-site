@@ -37,6 +37,8 @@
     "deploy:verify": "./scripts/deploy-verify.sh",
     "deploy:health": "curl -f https://saraivavision.com.br || echo 'Health check failed'",
     "optimize:images": "node scripts/optimize-blog-images.js",
+    "optimize:images:all": "node scripts/optimize-all-images.js",
+    "test:image-optimization": "node scripts/test-image-optimization.js",
     "verify:blog-images": "node scripts/verify-blog-images.js",
     "test:blog-covers": "node scripts/test-cover-images.js",
     "generate:manifest": "node scripts/generate-image-manifest.js",

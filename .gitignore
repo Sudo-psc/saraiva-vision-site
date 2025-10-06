@@ -91,6 +91,25 @@ public/Blog/*-480w.*
 public/Blog/*-768w.*
 public/Blog/*-1280w.*
 public/Blog/*-1920w.*
+public/Podcasts/**/*.webp
+public/Podcasts/**/*.avif
+public/img/*.webp
+public/img/*.avif
+public/images/*.webp
+public/images/*.avif
+public/icons_social/*.webp
+public/icons_social/*.avif
+*.webp
+*.avif
+
+# Image backup files (keep originals only)
+public/**/*_old.*
+public/**/*_before_*.*
+public/**/*_clean.*
+public/**/*_final.*
+public/**/*_nobg.*
+public/**/*.bak-*
+public/.image-backups/
 
 # Backup files
 *.backup
