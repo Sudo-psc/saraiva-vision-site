@@ -12,7 +12,7 @@ vi.mock('react-i18next', () => ({
 vi.mock('@/lib/clinicInfo', () => ({
   clinicInfo: {
     name: 'Clínica Saraiva Vision',
-    onlineSchedulingUrl: 'https://apolo.ninsaude.com/a/saraivavision/'
+    onlineSchedulingUrl: 'https://www.saraivavision.com.br/agendamento'
   },
   googleMapsProfileUrl: 'https://maps.google.com',
   NAP_CANONICAL: {
