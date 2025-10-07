@@ -10,6 +10,7 @@ import './styles/forms.css';
 import ErrorBoundary from './components/ErrorBoundary';
 import './i18n'; // Initialize i18n
 import GoogleTagManager from './components/GoogleTagManager';
+import { PostHogProvider } from './providers/PostHogProvider';
 import { redirectToBackup } from './utils/redirectToBackup';
 import { initializeAnalytics, trackWebVitals } from './utils/analytics';
 import { onCLS, onINP, onFCP, onLCP, onTTFB } from 'web-vitals';
@@ -104,20 +105,22 @@ if (!rootElement) {
 
 const root = createRoot(rootElement);
 
-// Render without auth providers (removed)
+// Render with PostHog analytics provider
 try {
   root.render(
     <React.StrictMode>
       <ErrorBoundary>
-        <GoogleTagManager gtmId={import.meta.env.VITE_GTM_ID} />
-        <Router future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true
-        }}>
-          <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
-            <App />
-          </Suspense>
-        </Router>
+        <PostHogProvider>
+          <GoogleTagManager gtmId={import.meta.env.VITE_GTM_ID} />
+          <Router future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true
+          }}>
+            <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
+              <App />
+            </Suspense>
+          </Router>
+        </PostHogProvider>
       </ErrorBoundary>
     </React.StrictMode>
   );
