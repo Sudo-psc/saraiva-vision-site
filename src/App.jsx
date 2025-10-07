@@ -32,6 +32,7 @@ import ErrorBoundary from './components/ErrorBoundary.jsx';
 import Accessibility from './components/Accessibility.jsx';
 import { WidgetProvider } from './utils/widgetManager.jsx';
 import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
+import GoogleAnalytics from './components/GoogleAnalytics.jsx';
 
 import { initErrorTracking } from './utils/errorTracking.js';
 
@@ -54,6 +55,7 @@ function App() {
   return (
     <HelmetProvider>
       <LocalBusinessSchema />
+      <GoogleAnalytics />
           <WidgetProvider>
             {/*
           Envolvemos apenas o conteúdo da aplicação em um wrapper dedicado.

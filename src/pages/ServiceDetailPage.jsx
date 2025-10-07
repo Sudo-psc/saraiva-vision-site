@@ -234,7 +234,7 @@ const ServiceDetailPage = () => {
                   Entre em contato conosco para agendar seu {service.title.toLowerCase()}.
                 </p>
                 <button
-                  onClick={() => navigate('/contato')}
+                  onClick={() => window.open('https://www.saraivavision.com.br/agendamento', '_blank')}
                   className="w-full bg-white text-blue-600 font-semibold py-3 px-6 rounded-xl hover:bg-blue-50 hover:shadow-lg transition-all duration-300 transform hover:scale-105 border border-blue-100"
                 >
                   <span className="flex items-center justify-center">

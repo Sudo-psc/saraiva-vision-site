@@ -75,9 +75,9 @@ const ServicesCard: React.FC<ServicesCardProps> = ({ service }) => {
             variant="outline"
             className="flex-1 border-blue-600 text-cyan-600 hover:bg-blue-50"
           >
-            <Link to="/contato">
+            <Link to="/agendamento">
               <MessageCircle className="w-4 h-4 mr-2" />
-              Fale Conosco
+              Agendar Agora
             </Link>
           </Button>
         </div>
