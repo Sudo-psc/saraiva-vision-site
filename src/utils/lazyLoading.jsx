@@ -142,7 +142,7 @@ const createLazyComponent = (importFn, options = {}) => {
             </button>
             {isMedicalContent && (
               <a
-                href="https://wa.me/5533999240205"
+                href="https://wa.me/5533998601427"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"

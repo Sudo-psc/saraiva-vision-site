@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Check, Shield, Users, Award, Eye, ChevronDown, MessageCircle, Star, Clock, Heart, Zap, Sparkles } from 'lucide-react';
+import { NAP_CANONICAL } from '../lib/napCanonical';
 import { Button } from '@/components/ui/button';
 import ContactLensesHeroImage from './ContactLensesHeroImage';
 
@@ -67,7 +68,7 @@ const ContactLenses = () => {
   const trustBadges = t('contactLenses.trust_badges', { returnObjects: true }) || [];
 
   const whatsappMessage = encodeURIComponent('Olá! Gostaria de agendar uma consulta para adaptação de lentes de contato.');
-  const whatsappUrl = `https://wa.me/5533999887766?text=${whatsappMessage}`;
+  const whatsappUrl = `https://wa.me/${NAP_CANONICAL.phone.whatsapp.raw}?text=${whatsappMessage}`;
 
 
   return (
@@ -181,7 +182,7 @@ const ContactLenses = () => {
             transition={{ delay: 0.2 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
           >
-            <Button size="xl" variant="medical" className="w-full sm:w-auto gap-2" onClick={() => navigate('/contato')}>
+            <Button size="xl" variant="medical" className="w-full sm:w-auto gap-2" onClick={() => window.open('https://www.saraivavision.com.br/agendamento', '_blank')}>
               <Eye className="h-5 w-5" />
               {t('contactLenses.schedule_button')}
             </Button>

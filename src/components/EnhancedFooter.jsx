@@ -532,7 +532,7 @@ const EnhancedFooter = ({
                                 </ContactItem>
                                 <ContactItem>
                                     <a
-                                        href="https://api.whatsapp.com/send/?phone=5533984207437&text&type=phone_number&app_absent=0"
+                                        href="https://api.whatsapp.com/send/?phone=5533998601427&text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta."
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform text-red-400"
