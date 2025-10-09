@@ -19,6 +19,7 @@ import TableOfContents from '../components/blog/TableOfContents';
 import RelatedPostsWidget from '../components/blog/RelatedPostsWidget';
 import ShareWidget from '../components/blog/ShareWidget';
 import AuthorWidget from '../components/blog/AuthorWidget';
+import NewsletterForm from '../components/blog/NewsletterForm';
 import { trackBlogInteraction, trackPageView, trackSearchInteraction } from '../utils/analytics';
 import { generateCompleteSchemaBundle, getPostSpecificSchema } from '../lib/blogSchemaMarkup';
 
@@ -798,7 +799,7 @@ const BlogPage = () => {
             )}
 
             {/* Blog Info Section */}
-            <div className="mt-16 bg-white/70 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/50">
+            <div className="mt-12 bg-white/70 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/50">
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-text-primary mb-4">
                   Sobre Nosso Blog
@@ -838,6 +839,11 @@ const BlogPage = () => {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Newsletter Form Section */}
+            <div className="mt-8 mb-8">
+              <NewsletterForm />
             </div>
           </section>
         </div>
