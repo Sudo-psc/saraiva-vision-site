@@ -447,7 +447,7 @@ describe('API Utilities', () => {
 
                 expect(contacts).toMatchObject({
                     phone: '+55 33 99860-1427',
-                    email: 'saraivavision@gmail.com',
+                    email: 'contato@saraivavision.com.br',
                     whatsapp: expect.stringContaining('wa.me'),
                     message: expect.stringContaining('Não foi possível enviar')
                 });

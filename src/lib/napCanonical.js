@@ -56,11 +56,11 @@ export const NAP_CANONICAL = {
   },
 
   email: {
-    primary: 'saraivavision@gmail.com',
-    contact: 'saraivavision@gmail.com',
-    support: 'saraivavision@gmail.com',
-    appointments: 'saraivavision@gmail.com',
-    href: 'mailto:saraivavision@gmail.com',
+    primary: 'contato@saraivavision.com.br',
+    contact: 'contato@saraivavision.com.br',
+    support: 'contato@saraivavision.com.br',
+    appointments: 'contato@saraivavision.com.br',
+    href: 'mailto:contato@saraivavision.com.br',
   },
 
   hours: {

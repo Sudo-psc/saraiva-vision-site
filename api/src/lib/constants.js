@@ -7,7 +7,7 @@ export const CONTACT = {
     DISPLAY: '+55 33 99860-1427',
     HREF: 'tel:+5533998601427'
   },
-  EMAIL: 'saraivavision@gmail.com',
+  EMAIL: 'contato@saraivavision.com.br',
   DEFAULT_MESSAGES: {
     WHATSAPP: 'Olá! Gostaria de agendar uma consulta.',
     EMAIL_SUBJECT: 'Agendamento de Consulta'

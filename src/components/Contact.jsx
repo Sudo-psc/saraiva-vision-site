@@ -524,7 +524,7 @@ const Contact = () => {
     {
       icon: <Mail className="h-6 w-6 text-cyan-600" />,
       title: t('contact.info.email_title'),
-      details: <a href="mailto:saraivavision@gmail.com" className="hover:underline">saraivavision@gmail.com</a>,
+      details: <a href="mailto:contato@saraivavision.com.br" className="hover:underline">contato@saraivavision.com.br</a>,
       subDetails: t('contact.info.email_sub')
     },
     {
@@ -959,7 +959,7 @@ const Contact = () => {
 
                     <p className="text-xs text-slate-500 mt-2">
                       Para exercer seus direitos ou esclarecer dúvidas sobre o tratamento de dados,
-                      entre em contato conosco através do e-mail: saraivavision@gmail.com
+                      entre em contato conosco através do e-mail: contato@saraivavision.com.br
                     </p>
                   </div>
                 </div>
@@ -1040,10 +1040,10 @@ const Contact = () => {
                         +55 33 99860-1427
                       </a>
                       <a
-                        href="mailto:saraivavision@gmail.com"
+                        href="mailto:contato@saraivavision.com.br"
                         className="text-xs text-yellow-600 hover:text-yellow-800 underline"
                       >
-                        saraivavision@gmail.com
+                        contato@saraivavision.com.br
                       </a>
                     </div>
                   </div>

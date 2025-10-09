@@ -91,7 +91,7 @@ export const clinicInfo = {
   responsibleNurseTitle: 'Enfermeira',
   responsibleNursePhone: '+55 33 98420-7437',
   // Data Protection Officer contact (LGPD Art.41)
-  dpoEmail: 'saraivavision@gmail.com',
+  dpoEmail: 'dpo@saraivavision.com.br',
   taxId: '53.864.119/0001-79',
   foundingDate: '2024-02-08',
   latitude: -19.7890206,

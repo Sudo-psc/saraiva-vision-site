@@ -53,7 +53,7 @@ export const clinicInfo = {
   phoneDisplay: '+55 33 99860-1427',
   phone: '+5533998601427',
   whatsapp: '+5533998601427',
-  email: 'saraivavision@gmail.com',
+  email: 'contato@saraivavision.com.br',
   instagram: 'https://www.instagram.com/saraiva_vision/',
   facebook: 'https://www.facebook.com/philipeoftalmo',
   linkedin: 'https://www.linkedin.com/in/dr-philipe-saraiva/',
@@ -85,7 +85,7 @@ export const clinicInfo = {
   responsibleNurseTitle: 'Enfermeira',
   responsibleNursePhone: '+55 33 98420-7437',
   // Data Protection Officer contact (LGPD Art.41)
-  dpoEmail: 'saraivavision@gmail.com',
+  dpoEmail: 'dpo@saraivavision.com.br',
   taxId: '53.864.119/0001-79',
   foundingDate: '2024-02-08',
   latitude: -19.7890206,

@@ -18,7 +18,7 @@ vi.mock('@/lib/clinicInfo', () => ({
     name: 'Clínica Saraiva Vision',
     phone: '+5533998601427',
     phoneDisplay: '+55 33 99860-1427',
-    email: 'saraivavision@gmail.com',
+    email: 'contato@saraivavision.com.br',
     onlineSchedulingUrl: 'https://www.saraivavision.com.br/agendamento',
     validateSchedulingUrl: vi.fn(() => 'https://www.saraivavision.com.br/agendamento'),
     streetAddress: 'Rua Catarina Maria Passos, 97',
@@ -63,7 +63,7 @@ vi.mock('@/lib/constants', () => ({
       DISPLAY: '+55 33 99860-1427',
       HREF: 'tel:+5533998601427'
     },
-    EMAIL: 'saraivavision@gmail.com',
+    EMAIL: 'contato@saraivavision.com.br',
     DEFAULT_MESSAGES: {
       WHATSAPP: 'Olá! Gostaria de agendar uma consulta.',
       EMAIL_SUBJECT: 'Agendamento de Consulta'

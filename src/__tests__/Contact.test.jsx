@@ -286,7 +286,7 @@ describe('Contact Component Error Handling Integration', () => {
             await waitFor(() => {
                 expect(screen.getByText('Contato Alternativo')).toBeInTheDocument();
                 expect(screen.getByText('+55 33 99860-1427')).toBeInTheDocument();
-                expect(screen.getByText('saraivavision@gmail.com')).toBeInTheDocument();
+                expect(screen.getByText('contato@saraivavision.com.br')).toBeInTheDocument();
             });
         });
     });

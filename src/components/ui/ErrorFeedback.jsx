@@ -249,11 +249,11 @@ const ErrorFeedback = ({
                             +55 33 99860-1427
                         </a>
                         <a
-                            href="mailto:saraivavision@gmail.com"
+                            href="mailto:contato@saraivavision.com.br"
                             className="flex items-center gap-2 text-sm text-cyan-600 hover:text-cyan-800"
                         >
                             <Mail size={16} />
-                            saraivavision@gmail.com
+                            contato@saraivavision.com.br
                         </a>
                     </div>
                 </div>

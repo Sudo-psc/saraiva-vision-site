@@ -370,7 +370,7 @@ export const FallbackStrategies = {
     getAlternativeContacts: () => {
         return {
             phone: '+55 33 99860-1427',
-            email: 'saraivavision@gmail.com',
+            email: 'contato@saraivavision.com.br',
             whatsapp: 'https://wa.me/5533998601427',
             message: 'Não foi possível enviar sua mensagem. Por favor, entre em contato diretamente pelos meios acima.'
         };
