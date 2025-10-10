@@ -14,7 +14,7 @@ const GoogleLocalSection = () => {
       aria-labelledby="local-heading"
       className="py-12 lg:py-16 text-white bg-gradient-to-br from-[#0a1628] via-[#13203a] to-[#0d1b2a] relative overflow-hidden"
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-indigo-900/10 to-cyan-800/20" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/20 via-cyan-800/10 to-cyan-700/20" aria-hidden="true" />
 
       <div className="container mx-auto px-[7%] relative z-10">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-14 items-start lg:items-center">
@@ -26,12 +26,12 @@ const GoogleLocalSection = () => {
                 <div className="w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
                   <Navigation className="w-6 h-6 text-white" />
                 </div>
-                <div className="h-px flex-1 bg-gradient-to-r from-blue-400/50 to-transparent"></div>
+                <div className="h-px flex-1 bg-gradient-to-r from-cyan-400/50 to-transparent"></div>
               </div>
               <h2 id="local-heading" className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
                 {t('location.title', 'Encontre-nos')}
               </h2>
-              <p className="text-lg md:text-xl text-blue-100/90 leading-relaxed max-w-2xl">
+              <p className="text-lg md:text-xl text-cyan-100/90 leading-relaxed max-w-2xl">
                 {t('location.subtitle', 'Localização verificada no Google. Facilite sua rota e avalie nosso atendimento.')}
               </p>
             </div>
@@ -39,7 +39,7 @@ const GoogleLocalSection = () => {
             {/* Info Card */}
             <div className="bg-white text-slate-800 rounded-2xl p-6 lg:p-8 border border-slate-200 shadow-xl space-y-5 max-w-xl">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                   <MapPin className="w-5 h-5 text-cyan-600" />
                 </div>
                 <div className="space-y-2">
