@@ -8,6 +8,7 @@ import { getRecentPosts } from '@/content/blog';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import OptimizedImage from '@/components/blog/OptimizedImage';
+import { getPostEnrichment } from '@/data/blogPostsEnrichment';
 
 const LatestBlogPosts = () => {
     const { t, i18n } = useTranslation();
@@ -108,13 +109,31 @@ const LatestBlogPosts = () => {
                     </h3>
 
                     {/* Excerpt */}
-                    <p className="text-slate-600 mb-4 line-clamp-5 leading-relaxed flex-grow">
+                    <p className="text-slate-600 mb-4 line-clamp-3 leading-relaxed">
                         {getPostExcerpt(post)}
                     </p>
 
+                    {/* Learning Points Preview */}
+                    {(() => {
+                        const enrichment = getPostEnrichment(post.id);
+                        return enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
+                            <div className="bg-blue-50 rounded-lg p-3 mb-4 border border-blue-100">
+                                <p className="text-xs font-semibold text-blue-700 mb-2">O que você vai aprender:</p>
+                                <ul className="space-y-1">
+                                    {enrichment.learningPoints.slice(0, 2).map((point, idx) => (
+                                        <li key={idx} className="text-xs text-blue-800 flex items-start gap-2">
+                                            <span className="text-blue-600 mt-0.5">•</span>
+                                            <span>{point}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        );
+                    })()}
+
                     {/* Read More Link */}
                     <Link to={getPostLink(post)}>
-                        <Button variant="link" className="text-cyan-600 hover:text-cyan-700 px-0 group">
+                        <Button variant="link" className="text-cyan-600 hover:text-cyan-700 px-0 group mt-auto">
                             {t('blog.read_more', 'Ler mais')}
                             <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                         </Button>

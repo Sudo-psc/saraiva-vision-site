@@ -5,6 +5,72 @@
  */
 
 export const postEnrichment = {
+  // Post ID 1: Catarata - Lentes Premium
+  1: {
+    learningPoints: [
+      'O que é catarata e como ela afeta sua visão no dia a dia',
+      'Sintomas de alerta que indicam necessidade de consulta oftalmológica',
+      'Como funciona a cirurgia de catarata e suas taxas de sucesso',
+      'Diferenças entre lentes padrão e lentes premium (multifocais e tóricas)',
+      'Cuidados preventivos e hábitos para manter a saúde ocular'
+    ]
+  },
+
+  // Post ID 2: Presbiopia (Vista Cansada)
+  2: {
+    learningPoints: [
+      'O que é presbiopia e por que ela ocorre após os 40 anos',
+      'Principais sintomas da vista cansada e quando procurar ajuda',
+      'Opções de tratamento: óculos, lentes de contato e cirurgia',
+      'Como a cirurgia de presbiopia pode reduzir dependência de óculos',
+      'Diferença entre presbiopia e hipermetropia'
+    ]
+  },
+
+  // Post ID 3: Obstrução do Ducto Lacrimal
+  3: {
+    learningPoints: [
+      'Causas da obstrução do ducto lacrimal e lacrimejamento excessivo',
+      'Sintomas de alerta: quando o lacrimejamento indica problema sério',
+      'Tratamentos disponíveis: desde conservador até cirurgia',
+      'Como a cirurgia de dacriocistorrinostomia funciona',
+      'Cuidados pós-operatórios e prevenção de complicações'
+    ]
+  },
+
+  // Post ID 4: Lentes Premium para Catarata
+  4: {
+    learningPoints: [
+      'Benefícios das lentes intraoculares premium em cirurgia de catarata',
+      'Diferença entre lentes multifocais, tóricas e monofocais',
+      'Como as lentes premium corrigem múltiplos problemas visuais',
+      'Quem pode se beneficiar mais das lentes premium',
+      'Cuidados e acompanhamento após cirurgia de catarata'
+    ]
+  },
+
+  // Post ID 5: Oftalmologia Pediátrica
+  5: {
+    learningPoints: [
+      'Quando fazer a primeira consulta oftalmológica da criança',
+      'Principais problemas de visão em crianças e como identificá-los',
+      'Sinais de alerta que os pais devem observar no comportamento infantil',
+      'Importância do diagnóstico precoce para desenvolvimento visual',
+      'Tratamentos e correções disponíveis para problemas pediátricos'
+    ]
+  },
+
+  // Post ID 6: Pterígio
+  6: {
+    learningPoints: [
+      'O que é pterígio e como a exposição solar contribui para seu desenvolvimento',
+      'Sintomas iniciais e quando o pterígio requer tratamento cirúrgico',
+      'Como a cirurgia de pterígio é realizada e suas taxas de sucesso',
+      'Prevenção: importância de óculos de sol e proteção UV',
+      'Cuidados pós-operatórios e como evitar recidiva'
+    ]
+  },
+
   // Post ID 17: Cuidados visuais para esportes
   17: {
     learningPoints: [
