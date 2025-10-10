@@ -530,11 +530,11 @@ const ContactLenses = () => {
                 size="lg"
                 variant="outline"
                 className="gap-2"
-                onClick={() => window.open(`tel:${NAP_CANONICAL.phone.main.e164}`, '_self')}
-                aria-label={`Ligar para ${NAP_CANONICAL.phone.main.display}`}
+                onClick={() => window.open(`tel:${NAP_CANONICAL.phone.primary.e164}`, '_self')}
+                aria-label={`Ligar para ${NAP_CANONICAL.phone.primary.display}`}
               >
                 <Phone className="h-5 w-5" aria-hidden="true" />
-                {NAP_CANONICAL.phone.main.displayShort}
+                {NAP_CANONICAL.phone.primary.displayShort}
               </Button>
             </div>
           </motion.div>
