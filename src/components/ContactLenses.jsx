@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { Check, Shield, Users, Award, Eye, ChevronDown, MessageCircle, Star, Clock, Heart, Zap, Sparkles } from 'lucide-react';
-import { NAP_CANONICAL } from '../lib/napCanonical';
+import { Check, Shield, Users, Award, Eye, ChevronDown, MessageCircle, Star, Clock, Heart, Zap, Sparkles, Calendar, Phone } from 'lucide-react';
+import { NAP_CANONICAL, generateWhatsAppURL } from '../lib/napCanonical';
 import { Button } from '@/components/ui/button';
 import ContactLensesHeroImage from './ContactLensesHeroImage';
+import CompactGoogleReviews from './CompactGoogleReviews';
 
 const ContactLenses = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState(null);
 
   const lensTypes = [
@@ -67,9 +66,37 @@ const ContactLenses = () => {
   const faqItems = t('contactLenses.faq_items', { returnObjects: true }) || [];
   const trustBadges = t('contactLenses.trust_badges', { returnObjects: true }) || [];
 
-  const whatsappMessage = encodeURIComponent('Olá! Gostaria de agendar uma consulta para adaptação de lentes de contato.');
-  const whatsappUrl = `https://wa.me/${NAP_CANONICAL.phone.whatsapp.raw}?text=${whatsappMessage}`;
+  const whatsappMessage = 'Olá! Gostaria de agendar uma consulta para adaptação de lentes de contato.';
+  const whatsappUrl = generateWhatsAppURL(whatsappMessage);
+  const agendamentoUrl = 'https://www.saraivavision.com.br/agendamento';
 
+  const expandedFaqItems = [
+    ...faqItems,
+    {
+      question: 'Quanto tempo dura uma lente de contato?',
+      answer: 'A durabilidade depende do tipo de lente. Lentes descartáveis diárias duram um dia, lentes quinzenais duram 15 dias, mensais duram 30 dias, e lentes rígidas podem durar de 1 a 2 anos com os cuidados adequados.'
+    },
+    {
+      question: 'Posso dormir com lentes de contato?',
+      answer: 'Não é recomendado dormir com lentes de contato, exceto se forem especificamente projetadas para uso contínuo. Dormir com lentes comuns pode causar infecções e danos à córnea devido à falta de oxigenação.'
+    },
+    {
+      question: 'Como limpar corretamente as lentes de contato?',
+      answer: 'Use sempre solução específica para lentes de contato, nunca água. Lave as mãos antes de manusear, esfregue suavemente cada lente com a solução, enxágue e guarde no estojo com solução nova. Troque o estojo a cada 3 meses.'
+    },
+    {
+      question: 'Posso usar lentes de contato se tenho astigmatismo?',
+      answer: 'Sim! Existem lentes tóricas especialmente desenvolvidas para corrigir astigmatismo. Na Saraiva Vision, fazemos a adaptação completa e orientamos sobre o uso correto dessas lentes.'
+    },
+    {
+      question: 'Qual a diferença entre lentes gelatinosas e rígidas?',
+      answer: 'Lentes gelatinosas são mais confortáveis inicialmente e mais fáceis de adaptar. Lentes rígidas oferecem melhor qualidade visual, maior durabilidade e são ideais para correções complexas como alto grau de astigmatismo ou ceratocone.'
+    },
+    {
+      question: 'Preciso de prescrição médica para comprar lentes de contato?',
+      answer: 'Sim, é obrigatório por lei. As lentes de contato são dispositivos médicos que requerem prescrição oftalmológica com avaliação completa da saúde ocular, medidas específicas e orientação sobre uso correto.'
+    }
+  ];
 
   return (
     <section id="lentes-de-contato" className="relative bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30 py-16 lg:py-24 overflow-hidden">
@@ -80,20 +107,6 @@ const ContactLenses = () => {
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-gradient-conic from-blue-50/10 via-cyan-50/10 to-teal-50/10 rounded-full blur-2xl"></div>
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
-        {/* Título principal da seção */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-            {t('contactLenses.main_title')}
-          </h2>
-          <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-            {t('contactLenses.main_subtitle')}
-          </p>
-        </motion.div>
         {/* Hero Section */}
         <div className="text-center mb-20">
           <motion.div
@@ -146,7 +159,7 @@ const ContactLenses = () => {
 
                 {/* Floating decorative elements */}
                 <div className="absolute -top-6 -right-6 w-12 h-12 bg-cyan-500/20 rounded-full flex items-center justify-center animate-float">
-                  <Eye className="w-6 h-6 text-cyan-600" />
+                  <Eye className="w-6 h-6 text-cyan-600" aria-hidden="true" />
                 </div>
                 <div className="absolute -bottom-6 -left-6 w-10 h-10 bg-cyan-500/20 rounded-full flex items-center justify-center animate-float-delayed">
                   <Sparkles className="w-5 h-5 text-cyan-600" />
@@ -157,24 +170,24 @@ const ContactLenses = () => {
               {/* Trust indicators */}
               <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-lg">
                 <div className="flex items-center gap-1 text-sm text-gray-600">
-                  <Shield className="w-4 h-4 text-green-600" />
+                  <Shield className="w-4 h-4 text-green-600" aria-hidden="true" />
                   <span className="font-medium">Seguro</span>
                 </div>
                 <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
                 <div className="flex items-center gap-1 text-sm text-gray-600">
-                  <Award className="w-4 h-4 text-cyan-600" />
+                  <Award className="w-4 h-4 text-cyan-600" aria-hidden="true" />
                   <span className="font-medium">Qualidade</span>
                 </div>
                 <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
                 <div className="flex items-center gap-1 text-sm text-gray-600">
-                  <Users className="w-4 h-4 text-cyan-600" />
+                  <Users className="w-4 h-4 text-cyan-600" aria-hidden="true" />
                   <span className="font-medium">1000+ clientes</span>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Primary CTAs */}
+          {/* Primary CTAs - Destacados e Acessíveis */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -182,18 +195,35 @@ const ContactLenses = () => {
             transition={{ delay: 0.2 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
           >
-            <Button size="xl" variant="medical" className="w-full sm:w-auto gap-2" onClick={() => window.open('https://www.saraivavision.com.br/agendamento', '_blank')}>
-              <Eye className="h-5 w-5" />
-              {t('contactLenses.schedule_button')}
+            <Button 
+              size="xl" 
+              variant="medical" 
+              className="w-full sm:w-auto gap-2 text-lg font-semibold shadow-lg hover:shadow-xl transition-all" 
+              onClick={() => window.open(agendamentoUrl, '_blank')}
+              aria-label="Agendar consulta para adaptação de lentes de contato - Abre em nova aba"
+            >
+              <Calendar className="h-5 w-5" aria-hidden="true" />
+              Agendar Consulta
             </Button>
             <Button
               size="xl"
               variant="outline"
-              className="w-full sm:w-auto gap-2"
+              className="w-full sm:w-auto gap-2 text-lg font-semibold border-2 border-green-600 text-green-700 hover:bg-green-50 shadow-md hover:shadow-lg transition-all"
               onClick={() => window.open(whatsappUrl, '_blank')}
+              aria-label="Falar no WhatsApp sobre lentes de contato - Abre em nova aba"
             >
-              <MessageCircle className="h-5 w-5" />
-              {t('contactLenses.whatsapp_button')}
+              <MessageCircle className="h-5 w-5" aria-hidden="true" />
+              WhatsApp
+            </Button>
+            <Button
+              size="xl"
+              variant="default"
+              className="w-full sm:w-auto gap-2 text-lg font-semibold bg-cyan-600 hover:bg-cyan-700 shadow-md hover:shadow-lg transition-all"
+              onClick={() => window.open(agendamentoUrl, '_blank')}
+              aria-label="Assinar plano de lentes de contato - Abre em nova aba"
+            >
+              <Sparkles className="h-5 w-5" aria-hidden="true" />
+              Assinar Plano
             </Button>
           </motion.div>
 
@@ -205,7 +235,7 @@ const ContactLenses = () => {
             transition={{ delay: 0.3 }}
             className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
           >
-            {Object.entries(trustBadges).map(([key, value], index) => {
+            {Object.entries(trustBadges).map(([key, value]) => {
               const icons = {
                 experience: Clock,
                 patients: Users,
@@ -232,9 +262,9 @@ const ContactLenses = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
               {t('contactLenses.brands_section.title')}
-            </h3>
+            </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               {t('contactLenses.brands_section.subtitle')}
             </p>
@@ -273,7 +303,7 @@ const ContactLenses = () => {
                   <div className="space-y-2">
                     {brand.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center gap-2">
-                        <Star className="h-4 w-4 text-yellow-500 flex-shrink-0" />
+                        <Star className="h-4 w-4 text-yellow-500 flex-shrink-0" aria-hidden="true" />
                         <span className="text-sm text-slate-700">{feature}</span>
                       </div>
                     ))}
@@ -292,9 +322,9 @@ const ContactLenses = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
               {t('contactLenses.process_title')}
-            </h3>
+            </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               {t('contactLenses.process_subtitle')}
             </p>
@@ -336,9 +366,9 @@ const ContactLenses = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
               {t('contactLenses.types_section.title')}
-            </h3>
+            </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               {t('contactLenses.types_section.subtitle')}
             </p>
@@ -375,7 +405,7 @@ const ContactLenses = () => {
                     <ul className="space-y-3">
                       {Array.isArray(lens.features) && lens.features.map((feature, idx) => (
                         <li key={idx} className="flex items-start gap-3">
-                          <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                          <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" aria-hidden="true" />
                           <span className="text-sm text-slate-700 leading-relaxed">{feature}</span>
                         </li>
                       ))}
@@ -385,6 +415,11 @@ const ContactLenses = () => {
               );
             })}
           </div>
+        </div>
+
+        {/* Depoimentos de Pacientes */}
+        <div className="mb-24">
+          <CompactGoogleReviews />
         </div>
 
         {/* Safety Protocol */}
@@ -398,11 +433,11 @@ const ContactLenses = () => {
             <div className="max-w-4xl mx-auto text-center">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-cyan-600 rounded-2xl flex items-center justify-center">
-                  <Shield className="h-6 w-6 text-white" />
+                  <Shield className="h-6 w-6 text-white" aria-hidden="true" />
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900">
+                <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
                   {t('contactLenses.safety_title')}
-                </h3>
+                </h2>
               </div>
               <p className="text-slate-700 text-lg leading-relaxed mb-6">
                 {t('contactLenses.safety_desc')}
@@ -410,7 +445,7 @@ const ContactLenses = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto">
                 {(t('contactLenses.safety_features', { returnObjects: true }) || []).map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3 text-left">
-                    <Check className="h-5 w-5 text-green-600" />
+                    <Check className="h-5 w-5 text-green-600" aria-hidden="true" />
                     <span className="text-slate-700">{item}</span>
                   </div>
                 ))}
@@ -425,41 +460,84 @@ const ContactLenses = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
               {t('contactLenses.faq_title')}
-            </h3>
+            </h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              Respostas para as dúvidas mais comuns sobre lentes de contato
+            </p>
           </motion.div>
 
           <div className="max-w-3xl mx-auto space-y-4">
-            {faqItems.map((item, index) => (
+            {expandedFaqItems.map((item, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.05 }}
                 className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm"
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="w-full px-6 py-4 text-left hover:bg-slate-50 transition-colors flex items-center justify-between"
+                  className="w-full px-6 py-4 text-left hover:bg-slate-50 transition-colors flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                  aria-expanded={openFaq === index}
+                  aria-controls={`faq-answer-${index}`}
                 >
-                  <span className="font-semibold text-slate-900">
+                  <span className="font-semibold text-slate-900 pr-4">
                     {item.question}
                   </span>
                   <ChevronDown
-                    className={`h-5 w-5 text-slate-500 transition-transform ${openFaq === index ? 'rotate-180' : ''
-                      }`}
+                    className={`h-5 w-5 text-slate-500 transition-transform flex-shrink-0 ${openFaq === index ? 'rotate-180' : ''}`}
+                    aria-hidden="true"
                   />
                 </button>
                 {openFaq === index && (
-                  <div className="px-6 py-4 bg-slate-50 border-t border-slate-200">
+                  <div 
+                    id={`faq-answer-${index}`}
+                    className="px-6 py-4 bg-slate-50 border-t border-slate-200"
+                  >
                     <p className="text-slate-700 leading-relaxed">{item.answer}</p>
                   </div>
                 )}
               </motion.div>
             ))}
           </div>
+
+          {/* CTA para contato direto */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="text-center mt-12 p-6 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl border border-cyan-100"
+          >
+            <p className="text-lg text-slate-700 mb-4 font-medium">
+              Não encontrou a resposta que procurava?
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button
+                size="lg"
+                variant="medical"
+                className="gap-2"
+                onClick={() => window.open(whatsappUrl, '_blank')}
+                aria-label="Falar com especialista no WhatsApp - Abre em nova aba"
+              >
+                <MessageCircle className="h-5 w-5" aria-hidden="true" />
+                Falar com Especialista
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="gap-2"
+                onClick={() => window.open(`tel:${NAP_CANONICAL.phone.main.e164}`, '_self')}
+                aria-label={`Ligar para ${NAP_CANONICAL.phone.main.display}`}
+              >
+                <Phone className="h-5 w-5" aria-hidden="true" />
+                {NAP_CANONICAL.phone.main.displayShort}
+              </Button>
+            </div>
+          </motion.div>
         </div>
 
 
