@@ -33,7 +33,7 @@ app.use(cors({
     'http://localhost:3003'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token'],
   credentials: true
 }));
 
@@ -41,7 +41,11 @@ app.use(cors({
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.'
+  message: 'Too many requests from this IP, please try again later.',
+  skip: (req) => {
+    // Skip rate limiting for health check endpoints (used by load balancers)
+    return req.path === '/api/health' || req.path === '/api/maps-health';
+  }
 });
 app.use('/api/', limiter);
 
@@ -68,24 +72,22 @@ const routes = [
   { path: '/api/contact', handler: '../contact.js' },
   { path: '/api/servicos', handler: '../servicos/index.js' },
   { path: '/api/health', handler: '../health.js' },
-  { path: '/api/revalidate', handler: '../revalidate.js' },
+  // { path: '/api/revalidate', handler: '../revalidate.js' }, // Desabilitado - dependência ausente
   { path: '/api/google-reviews', handler: '../google-reviews.js' },
   { path: '/api/google-reviews-stats', handler: '../google-reviews-stats.js' },
-  { path: '/api/maps-health', handler: '../maps-health.js' },
-  { path: '/api/maps/config', handler: '../maps-config.js' },
-  { path: '/api/blog-posts', handler: '../blog-posts.js' },
+  // { path: '/api/blog-posts', handler: '../blog-posts.js' }, // Desabilitado - arquivo ausente
   { path: '/api/ping', handler: '../ping.js' },
-  { path: '/api/appointments', handler: '../appointments/availability.js' },
-  { path: '/api/podcast', handler: '../podcast/episodes.js' },
-  { path: '/api/admin', handler: '../admin/auth.js' },
-  { path: '/api/analytics', handler: '../analytics/funnel.js' },
-  { path: '/api/instagram', handler: '../instagram/posts.js' },
-  { path: '/api/security', handler: '../security/monitor.js' },
-  { path: '/api/outbox', handler: '../outbox/drain.js' },
-  { path: '/api/images', handler: '../images/proxy.js' },
-  { path: '/api/patient-data', handler: '../patient-data.js' },
+  { path: '/api/analytics/funnel', handler: '../analytics/funnel.js' },
+  { path: '/api/analytics', handler: './routes/analytics.js', type: 'express' },
   { path: '/api/bug-report', handler: './routes/bugReport.js', type: 'express' },
-  { path: '/api/track-404', handler: './routes/404tracking.js', type: 'express' }
+  { path: '/api/track-404', handler: './routes/404tracking.js', type: 'express' },
+  { path: '/api/errors', handler: './routes/errors.js', type: 'express' },
+  { path: '/api/csrf-token', handler: './routes/csrf.js', type: 'express' },
+  { path: '/api/csp-reports', handler: './routes/csp-reports.js', type: 'express' },
+  { path: '/api/webhook-appointment', handler: '../webhook-appointment.js' },
+  { path: '/api/ga', handler: './routes/ga.js', type: 'express' },
+  { path: '/api/gtm', handler: './routes/gtm.js', type: 'express' },
+  { path: '/api/maps-health', handler: './routes/maps-health.js', type: 'express' }
 ];
 
 // Load routes dynamically

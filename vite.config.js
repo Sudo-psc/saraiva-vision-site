@@ -128,7 +128,7 @@ export default defineConfig(({ mode }) => {
 
   build: {
     outDir: 'dist',
-    sourcemap: false, // Disabled for production to reduce bundle size
+    sourcemap: true, // Enabled for production debugging (CORS error tracking)
     chunkSizeWarningLimit: 100, // Reduced to 150KB for optimal loading performance
     assetsDir: 'assets',
     assetsInlineLimit: 4096, // Increased to 4KB for small assets (reduces HTTP requests)

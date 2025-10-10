@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Política de Privacidade e Termos de Serviço - Saraiva Vision - Clínica de Oftalmologia em Caratinga, MG">
+    <meta name="robots" content="index, follow">
+    <title>Política de Privacidade e Termos de Serviço | Saraiva Vision</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Política de Privacidade | Saraiva Vision">
+    <meta property="og:description" content="Políticas de privacidade e termos de serviço da Saraiva Vision - Clínica de Oftalmologia">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://saraivavision.com.br/policy.html">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0077be;
+            --secondary-color: #005a8d;
+            --text-dark: #1a1a1a;
+            --text-light: #4a5568;
+            --bg-light: #f7fafc;
+            --border-color: #e2e8f0;
+            --success-color: #48bb78;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: #ffffff;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            transition: opacity 0.2s;
+        }
+
+        .back-link:hover {
+            opacity: 0.8;
+        }
+
+        .back-link svg {
+            margin-right: 0.5rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .last-updated {
+            background-color: var(--bg-light);
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .last-updated strong {
+            color: var(--primary-color);
+        }
+
+        .toc {
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .toc h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc a {
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: color 0.2s;
+            display: block;
+            padding: 0.25rem 0;
+        }
+
+        .toc a:hover {
+            color: var(--primary-color);
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 2rem;
+        }
+
+        .section h2 {
+            font-size: 1.75rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section h3 {
+            font-size: 1.35rem;
+            color: var(--secondary-color);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section p {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            text-align: justify;
+        }
+
+        .section ul, .section ol {
+            margin-bottom: 1rem;
+            margin-left: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+        }
+
+        .highlight-box {
+            background-color: #e6f7ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .contact-info {
+            background-color: var(--bg-light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-info a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            background-color: var(--text-dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+
+            .section h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="back-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Voltar ao Site
+            </a>
+            <h1>Política de Privacidade e Termos de Serviço</h1>
+            <p>Saraiva Vision - Clínica de Oftalmologia</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="last-updated">
+            <strong>Última atualização:</strong> 08 de outubro de 2025
+        </div>
+
+        <nav class="toc">
+            <h2>Índice</h2>
+            <ul>
+                <li><a href="#introducao">1. Introdução</a></li>
+                <li><a href="#coleta-dados">2. Coleta de Dados</a></li>
+                <li><a href="#uso-dados">3. Uso dos Dados</a></li>
+                <li><a href="#compartilhamento">4. Compartilhamento de Informações</a></li>
+                <li><a href="#direitos">5. Seus Direitos (LGPD)</a></li>
+                <li><a href="#seguranca">6. Segurança dos Dados</a></li>
+                <li><a href="#cookies">7. Cookies e Tecnologias</a></li>
+                <li><a href="#retencao">8. Retenção de Dados</a></li>
+                <li><a href="#menores">9. Proteção de Menores</a></li>
+                <li><a href="#alteracoes">10. Alterações na Política</a></li>
+                <li><a href="#contato">11. Contato</a></li>
+            </ul>
+        </nav>
+
+        <section id="introducao" class="section">
+            <h2>1. Introdução</h2>
+            <p>
+                A <strong>Saraiva Vision</strong> (CNPJ: 39.106.293/0001-36), com sede na Rua Coronel Antônio Pinto,
+                265 - Sala 206, Centro, Caratinga - MG, CEP 35300-037, está comprometida com a proteção da sua
+                privacidade e a conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018) e
+                as normas do Conselho Federal de Medicina (CFM).
+            </p>
+            <p>
+                Esta política descreve como coletamos, usamos, armazenamos e protegemos suas informações pessoais
+                ao utilizar nosso website, serviços médicos e comunicações.
+            </p>
+            <div class="highlight-box">
+                <p><strong>Importante:</strong> Ao utilizar nossos serviços, você concorda com os termos descritos
+                nesta política. Caso não concorde, por favor, não utilize nossos serviços.</p>
+            </div>
+        </section>
+
+        <section id="coleta-dados" class="section">
+            <h2>2. Coleta de Dados</h2>
+
+            <h3>2.1 Dados Coletados Diretamente</h3>
+            <p>Coletamos as seguintes informações quando você:</p>
+            <ul>
+                <li><strong>Agenda uma consulta:</strong> Nome completo, CPF, data de nascimento, telefone, e-mail, endereço</li>
+                <li><strong>Preenche formulários de contato:</strong> Nome, e-mail, telefone, mensagem</li>
+                <li><strong>Se torna paciente:</strong> Histórico médico, exames, prescrições, imagens oftalmológicas</li>
+                <li><strong>Assina nossa newsletter:</strong> Nome e e-mail</li>
+            </ul>
+
+            <h3>2.2 Dados Coletados Automaticamente</h3>
+            <p>Nosso website coleta automaticamente:</p>
+            <ul>
+                <li><strong>Dados de navegação:</strong> Endereço IP, tipo de navegador, sistema operacional</li>
+                <li><strong>Cookies e identificadores:</strong> Para melhorar a experiência do usuário</li>
+                <li><strong>Analytics:</strong> Google Analytics 4, Google Tag Manager e PostHog (dados anonimizados)</li>
+                <li><strong>Geolocalização aproximada:</strong> Com base no endereço IP (cidade/estado)</li>
+            </ul>
+
+            <h3>2.3 Base Legal para Coleta (LGPD)</h3>
+            <p>Coletamos dados com base em:</p>
+            <ul>
+                <li><strong>Consentimento:</strong> Para envio de comunicações de marketing</li>
+                <li><strong>Execução de contrato:</strong> Para prestação de serviços médicos</li>
+                <li><strong>Obrigação legal:</strong> Cumprimento de normas do CFM e legislação sanitária</li>
+                <li><strong>Legítimo interesse:</strong> Melhoria de serviços e segurança do website</li>
+            </ul>
+        </section>
+
+        <section id="uso-dados" class="section">
+            <h2>3. Uso dos Dados</h2>
+            <p>Utilizamos suas informações para:</p>
+
+            <h3>3.1 Prestação de Serviços Médicos</h3>
+            <ul>
+                <li>Agendamento e confirmação de consultas</li>
+                <li>Atendimento médico oftalmológico</li>
+                <li>Manutenção de prontuário eletrônico (conforme CFM)</li>
+                <li>Prescrição de medicamentos e tratamentos</li>
+                <li>Solicitação e análise de exames</li>
+            </ul>
+
+            <h3>3.2 Comunicação</h3>
+            <ul>
+                <li>Envio de lembretes de consultas (SMS/WhatsApp/E-mail)</li>
+                <li>Comunicação sobre resultados de exames</li>
+                <li>Envio de newsletters educativas (mediante consentimento)</li>
+                <li>Respostas a dúvidas e solicitações</li>
+            </ul>
+
+            <h3>3.3 Melhoria de Serviços</h3>
+            <ul>
+                <li>Análise de uso do website (dados anonimizados)</li>
+                <li>Pesquisas de satisfação</li>
+                <li>Desenvolvimento de novos serviços</li>
+                <li>Segurança e prevenção de fraudes</li>
+            </ul>
+
+            <div class="warning-box">
+                <p><strong>Dados Sensíveis de Saúde:</strong> Informações médicas são tratadas com sigilo absoluto,
+                conforme Código de Ética Médica e normas do CFM. Acesso restrito apenas a profissionais autorizados.</p>
+            </div>
+        </section>
+
+        <section id="compartilhamento" class="section">
+            <h2>4. Compartilhamento de Informações</h2>
+
+            <h3>4.1 Não Vendemos Seus Dados</h3>
+            <p>
+                A Saraiva Vision <strong>não vende, aluga ou comercializa</strong> suas informações pessoais
+                para terceiros em nenhuma circunstância.
+            </p>
+
+            <h3>4.2 Compartilhamento Autorizado</h3>
+            <p>Podemos compartilhar dados apenas nas seguintes situações:</p>
+            <ul>
+                <li><strong>Prestadores de serviços:</strong> Laboratórios de análises clínicas, sistemas de prontuário eletrônico (sob contrato de confidencialidade)</li>
+                <li><strong>Convênios médicos:</strong> Para processamento de autorizações e reembolsos</li>
+                <li><strong>Obrigações legais:</strong> Quando exigido por lei, ordem judicial ou autoridades sanitárias</li>
+                <li><strong>Emergências médicas:</strong> Compartilhamento com hospitais/pronto-socorros para continuidade do cuidado</li>
+            </ul>
+
+            <h3>4.3 Ferramentas de Terceiros</h3>
+            <p>Utilizamos as seguintes ferramentas que podem processar dados:</p>
+            <ul>
+                <li><strong>Google Maps/Places:</strong> Para localização da clínica</li>
+                <li><strong>Google Analytics 4 e GTM:</strong> Análise de tráfego (dados anonimizados)</li>
+                <li><strong>PostHog:</strong> Análise de comportamento do usuário (dados anonimizados)</li>
+                <li><strong>Resend:</strong> Serviço de envio de e-mails transacionais</li>
+                <li><strong>Supabase:</strong> Infraestrutura de backend e autenticação</li>
+            </ul>
+        </section>
+
+        <section id="direitos" class="section">
+            <h2>5. Seus Direitos (LGPD)</h2>
+            <p>Você tem os seguintes direitos garantidos pela LGPD:</p>
+
+            <ol>
+                <li><strong>Confirmação e acesso:</strong> Verificar se tratamos seus dados e acessá-los</li>
+                <li><strong>Correção:</strong> Solicitar correção de dados incompletos, inexatos ou desatualizados</li>
+                <li><strong>Anonimização, bloqueio ou eliminação:</strong> De dados desnecessários ou tratados em desconformidade</li>
+                <li><strong>Portabilidade:</strong> Receber seus dados em formato estruturado e interoperável</li>
+                <li><strong>Revogação do consentimento:</strong> Retirar consentimento a qualquer momento</li>
+                <li><strong>Informação sobre compartilhamento:</strong> Saber com quem compartilhamos seus dados</li>
+                <li><strong>Revisão de decisões automatizadas:</strong> Contestar decisões baseadas apenas em tratamento automatizado</li>
+            </ol>
+
+            <div class="highlight-box">
+                <p><strong>Como exercer seus direitos:</strong> Entre em contato através do e-mail
+                <a href="mailto:contato@saraivavision.com.br">contato@saraivavision.com.br</a> ou telefone
+                <a href="tel:+553332291444">(33) 3229-1444</a>. Responderemos em até 15 dias.</p>
+            </div>
+
+            <h3>5.1 Limitações aos Direitos</h3>
+            <p>Alguns direitos podem ser limitados quando:</p>
+            <ul>
+                <li>O tratamento for necessário para cumprimento de obrigação legal (ex: prontuário médico)</li>
+                <li>Houver risco à segurança e saúde pública</li>
+                <li>For necessário para exercício regular de direitos em processo judicial, administrativo ou arbitral</li>
+            </ul>
+        </section>
+
+        <section id="seguranca" class="section">
+            <h2>6. Segurança dos Dados</h2>
+            <p>Implementamos medidas técnicas e organizacionais para proteger seus dados:</p>
+
+            <h3>6.1 Medidas Técnicas</h3>
+            <ul>
+                <li><strong>Criptografia SSL/TLS:</strong> Todas as transmissões de dados são criptografadas (HTTPS)</li>
+                <li><strong>Firewall e proteção DDoS:</strong> Proteção contra ataques cibernéticos</li>
+                <li><strong>Backups regulares:</strong> Cópias de segurança diárias com redundância</li>
+                <li><strong>Controle de acesso:</strong> Autenticação de dois fatores (2FA) para sistemas críticos</li>
+                <li><strong>Monitoramento 24/7:</strong> Detecção de atividades suspeitas</li>
+                <li><strong>Rate Limiting:</strong> Proteção contra abusos e tentativas de invasão</li>
+            </ul>
+
+            <h3>6.2 Medidas Organizacionais</h3>
+            <ul>
+                <li><strong>Treinamento de equipe:</strong> Capacitação regular em proteção de dados e LGPD</li>
+                <li><strong>Contratos de confidencialidade:</strong> Todos os colaboradores assinam termos de sigilo</li>
+                <li><strong>Política de acesso:</strong> Acesso a dados apenas pelo princípio da necessidade</li>
+                <li><strong>Revisões de segurança:</strong> Auditorias periódicas de segurança</li>
+            </ul>
+
+            <h3>6.3 Incidentes de Segurança</h3>
+            <p>
+                Em caso de incidente de segurança que possa causar risco ou dano relevante, notificaremos você e
+                a Autoridade Nacional de Proteção de Dados (ANPD) conforme exigido pela LGPD.
+            </p>
+        </section>
+
+        <section id="cookies" class="section">
+            <h2>7. Cookies e Tecnologias</h2>
+
+            <h3>7.1 O que são Cookies</h3>
+            <p>
+                Cookies são pequenos arquivos de texto armazenados no seu navegador que nos ajudam a melhorar
+                sua experiência no site.
+            </p>
+
+            <h3>7.2 Tipos de Cookies Utilizados</h3>
+            <ul>
+                <li><strong>Cookies essenciais:</strong> Necessários para funcionamento básico do site</li>
+                <li><strong>Cookies de desempenho:</strong> Google Analytics para entender como você usa o site</li>
+                <li><strong>Cookies funcionais:</strong> Lembrar suas preferências (ex: idioma, tema)</li>
+                <li><strong>Cookies de marketing:</strong> Google Tag Manager (GTM) para campanhas publicitárias</li>
+            </ul>
+
+            <h3>7.3 Como Gerenciar Cookies</h3>
+            <p>
+                Você pode gerenciar cookies através das configurações do seu navegador. Note que desabilitar
+                cookies pode afetar a funcionalidade do site.
+            </p>
+            <ul>
+                <li><strong>Google Chrome:</strong> Configurações → Privacidade e segurança → Cookies</li>
+                <li><strong>Firefox:</strong> Opções → Privacidade e segurança → Cookies e dados de sites</li>
+                <li><strong>Safari:</strong> Preferências → Privacidade → Cookies e dados de websites</li>
+            </ul>
+
+            <h3>7.4 Ferramentas de Analytics</h3>
+            <p>Utilizamos:</p>
+            <ul>
+                <li><strong>Google Analytics 4:</strong> Análise de tráfego e comportamento (dados anonimizados)</li>
+                <li><strong>PostHog:</strong> Análise de produto e experiência do usuário</li>
+            </ul>
+            <p>
+                Você pode desativar o rastreamento do Google Analytics instalando o
+                <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">
+                complemento de navegador</a>.
+            </p>
+        </section>
+
+        <section id="retencao" class="section">
+            <h2>8. Retenção de Dados</h2>
+
+            <h3>8.1 Prazos de Retenção</h3>
+            <ul>
+                <li><strong>Prontuário médico:</strong> Mínimo de 20 anos (Resolução CFM nº 1.821/2007)</li>
+                <li><strong>Dados de contato:</strong> Até que você solicite remoção ou 5 anos de inatividade</li>
+                <li><strong>Dados de navegação:</strong> 26 meses (Google Analytics)</li>
+                <li><strong>Imagens oftalmológicas:</strong> 20 anos (conforme CFM)</li>
+                <li><strong>Dados fiscais:</strong> 5 anos (conforme legislação tributária)</li>
+            </ul>
+
+            <h3>8.2 Exclusão de Dados</h3>
+            <p>
+                Após o período de retenção, os dados serão eliminados de forma segura, exceto quando houver
+                obrigação legal de manutenção ou necessidade de defesa em processos.
+            </p>
+        </section>
+
+        <section id="menores" class="section">
+            <h2>9. Proteção de Menores</h2>
+            <p>
+                O tratamento de dados de crianças e adolescentes é realizado com cuidado especial, conforme
+                Art. 14 da LGPD:
+            </p>
+            <ul>
+                <li><strong>Menores de 18 anos:</strong> Consentimento de pelo menos um dos pais ou responsável legal</li>
+                <li><strong>Informações simplificadas:</strong> Linguagem adequada à idade sobre coleta e uso de dados</li>
+                <li><strong>Melhor interesse:</strong> Tratamento sempre no melhor interesse da criança/adolescente</li>
+            </ul>
+            <p>
+                Dados de menores são utilizados exclusivamente para prestação de serviços médicos oftalmológicos
+                e comunicação com responsáveis.
+            </p>
+        </section>
+
+        <section id="alteracoes" class="section">
+            <h2>10. Alterações na Política</h2>
+            <p>
+                Esta política pode ser atualizada periodicamente para refletir mudanças em nossas práticas,
+                serviços ou requisitos legais.
+            </p>
+            <ul>
+                <li><strong>Notificação:</strong> Mudanças significativas serão comunicadas por e-mail ou aviso no site</li>
+                <li><strong>Data de vigência:</strong> Alterações entram em vigor imediatamente após publicação</li>
+                <li><strong>Histórico:</strong> Versões anteriores disponíveis mediante solicitação</li>
+            </ul>
+            <p>
+                Recomendamos revisar esta política periodicamente. A versão atual está disponível em:
+                <a href="https://saraivavision.com.br/policy.html">https://saraivavision.com.br/policy.html</a>
+            </p>
+        </section>
+
+        <section id="contato" class="section">
+            <h2>11. Contato</h2>
+
+            <h3>11.1 Dados do Controlador</h3>
+            <div class="contact-info">
+                <p><strong>Razão Social:</strong> Saraiva Vision</p>
+                <p><strong>CNPJ:</strong> 39.106.293/0001-36</p>
+                <p><strong>Endereço:</strong> Rua Coronel Antônio Pinto, 265 - Sala 206, Centro, Caratinga - MG, CEP 35300-037</p>
+                <p><strong>Telefone:</strong> <a href="tel:+553332291444">(33) 3229-1444</a></p>
+                <p><strong>WhatsApp:</strong> <a href="https://wa.me/5533999014213" target="_blank" rel="noopener noreferrer">(33) 99901-4213</a></p>
+                <p><strong>E-mail:</strong> <a href="mailto:contato@saraivavision.com.br">contato@saraivavision.com.br</a></p>
+                <p><strong>Website:</strong> <a href="https://saraivavision.com.br">https://saraivavision.com.br</a></p>
+            </div>
+
+            <h3>11.2 Encarregado de Dados (DPO)</h3>
+            <p>
+                Para questões relacionadas à proteção de dados pessoais, você pode entrar em contato com nosso
+                Encarregado de Proteção de Dados:
+            </p>
+            <div class="contact-info">
+                <p><strong>E-mail do DPO:</strong> <a href="mailto:dpo@saraivavision.com.br">dpo@saraivavision.com.br</a></p>
+                <p><strong>Assunto:</strong> LGPD - Proteção de Dados</p>
+            </div>
+
+            <h3>11.3 Autoridade Nacional de Proteção de Dados (ANPD)</h3>
+            <p>
+                Você também pode entrar em contato diretamente com a ANPD para questões relacionadas à proteção
+                de dados:
+            </p>
+            <div class="contact-info">
+                <p><strong>Website:</strong> <a href="https://www.gov.br/anpd" target="_blank" rel="noopener noreferrer">https://www.gov.br/anpd</a></p>
+                <p><strong>Endereço:</strong> SAS, Quadra 6, Conjunto A, Bloco A, Sala 201, Brasília - DF, CEP 70070-939</p>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>Tempo de resposta:</strong> Responderemos a todas as solicitações relacionadas à LGPD
+                em até 15 dias corridos. Para solicitações complexas, podemos solicitar prorrogação de até 30 dias.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Conformidade Legal</h2>
+            <p>Esta política está em conformidade com:</p>
+            <ul>
+                <li><strong>Lei Geral de Proteção de Dados (LGPD)</strong> - Lei nº 13.709/2018</li>
+                <li><strong>Marco Civil da Internet</strong> - Lei nº 12.965/2014</li>
+                <li><strong>Código de Defesa do Consumidor</strong> - Lei nº 8.078/1990</li>
+                <li><strong>Código de Ética Médica</strong> - Resolução CFM nº 2.217/2018</li>
+                <li><strong>Resolução CFM nº 1.821/2007</strong> - Prontuário médico</li>
+                <li><strong>Resolução CFM nº 1.638/2002</strong> - Prontuário eletrônico</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Saraiva Vision - Clínica de Oftalmologia. Todos os direitos reservados.</p>
+        <p>CNPJ: 39.106.293/0001-36 | CRM-MG: [Número do CRM]</p>
+    </footer>
+</body>
+</html>

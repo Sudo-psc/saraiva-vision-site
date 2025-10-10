@@ -3,6 +3,8 @@
  * Security and privacy compliance features for Google Business integration
  */
 
+import DOMPurify from 'dompurify';
+
 class GoogleBusinessSecurity {
     constructor(options = {}) {
         this.options = {
@@ -23,10 +25,17 @@ class GoogleBusinessSecurity {
             enableAuditLogging: options.enableAuditLogging !== false,
             auditLogRetention: options.auditLogRetention || 90, // days
 
-            // Rate limiting
+            // Rate limiting (strengthened for security)
             enableRateLimiting: options.enableRateLimiting !== false,
             rateLimitWindow: options.rateLimitWindow || 60000, // 1 minute
-            rateLimitMaxRequests: options.rateLimitMaxRequests || 100,
+            rateLimitMaxRequests: options.rateLimitMaxRequests || 30, // Reduced from 100
+
+            // Enhanced security options
+            enableStrictSanitization: options.enableStrictSanitization !== false,
+            enableInputValidation: options.enableInputValidation !== false,
+            maxInputLength: options.maxInputLength || 10000, // characters
+            allowedTags: options.allowedTags || [], // Empty array = no HTML allowed
+            allowedAttributes: options.allowedAttributes || [],
 
             ...options
         };
@@ -40,8 +49,40 @@ class GoogleBusinessSecurity {
         // Data retention timer
         this.cleanupTimer = null;
 
+        // Initialize DOMPurify config
+        this.initializeDOMPurifyConfig();
+
         // Initialize security features
         this.initialize();
+    }
+
+    /**
+     * Initialize DOMPurify configuration for strict sanitization
+     */
+    initializeDOMPurifyConfig() {
+        this.domPurifyConfig = {
+            ALLOWED_TAGS: this.options.allowedTags, // Default: empty array (no HTML allowed)
+            ALLOWED_ATTR: this.options.allowedAttributes, // Default: empty array
+            KEEP_CONTENT: false, // Remove content of disallowed tags
+            RETURN_DOM: false,
+            RETURN_DOM_FRAGMENT: false,
+            RETURN_DOM_IMPORT: false,
+            SANITIZE_DOM: true,
+            SANITIZE_NAMED_PROPS: true,
+            WHOLE_DOCUMENT: false,
+            CUSTOM_ELEMENT_HANDLING: {
+                tagNameCheck: null,
+                attributeNameCheck: null,
+                allowCustomizedBuiltInElements: false
+            },
+            FORBID_TAGS: ['script', 'object', 'embed', 'iframe', 'form', 'input', 'textarea'],
+            FORBID_ATTR: ['onerror', 'onload', 'onclick', 'onmouseover', 'onfocus', 'onblur', 'onchange', 'onsubmit'],
+            ALLOW_DATA_ATTR: false,
+            ALLOW_UNKNOWN_PROTOCOLS: false,
+            ALLOW_SELF_CLOSE_IN_ATTR: false,
+            SAFE_FOR_TEMPLATES: true,
+            SAFE_FOR_XML: false
+        };
     }
 
     /**
@@ -52,11 +93,64 @@ class GoogleBusinessSecurity {
             this.startDataCleanup();
         }
 
-        console.log('Google Business Security Service initialized');
+        // Log security configuration for monitoring
+        this.logAuditEvent({
+            type: 'security_init',
+            action: 'service_initialized',
+            clientId: 'system',
+            details: {
+                strictSanitization: this.options.enableStrictSanitization,
+                rateLimitMax: this.options.rateLimitMaxRequests,
+                rateLimitWindow: this.options.rateLimitWindow,
+                maxInputLength: this.options.maxInputLength
+            },
+            severity: 'info'
+        });
+
+        console.log('Google Business Security Service initialized with enhanced security');
     }
 
     /**
-     * Sanitize input data to prevent XSS and injection attacks
+     * Validate input before sanitization
+     */
+    validateInput(data) {
+        if (!this.options.enableInputValidation) {
+            return { isValid: true, errors: [] };
+        }
+
+        const errors = [];
+
+        // Check input length
+        if (typeof data === 'string' && data.length > this.options.maxInputLength) {
+            errors.push(`Input exceeds maximum length of ${this.options.maxInputLength} characters`);
+        }
+
+        // Check for dangerous patterns (pre-validation)
+        if (typeof data === 'string') {
+            const dangerousPatterns = [
+                /<script[^>]*>/i,
+                /javascript:/i,
+                /vbscript:/i,
+                /data:\s*text\/html/i,
+                /on\w+\s*=/i,
+                /expression\s*\(/i
+            ];
+
+            dangerousPatterns.forEach(pattern => {
+                if (pattern.test(data)) {
+                    errors.push('Input contains potentially dangerous content');
+                }
+            });
+        }
+
+        return {
+            isValid: errors.length === 0,
+            errors
+        };
+    }
+
+    /**
+     * Sanitize input data to prevent XSS and injection attacks using DOMPurify
      */
     sanitizeInput(data) {
         if (!this.options.enableInputSanitization) {
@@ -67,23 +161,73 @@ class GoogleBusinessSecurity {
             return data;
         }
 
-        // Remove potentially dangerous characters and scripts
-        const sanitized = data
-            // Remove HTML tags
-            .replace(/<[^>]*>/g, '')
-            // Remove JavaScript protocols
-            .replace(/javascript:/gi, '')
-            // Remove potentially dangerous event handlers
-            .replace(/on\w+\s*=/gi, '')
-            // Remove CSS expressions
-            .replace(/expression\(/gi, '')
-            // Remove data URIs
-            .replace(/data:\s*[^;]*;base64,/gi, '')
-            // Normalize whitespace
-            .replace(/\s+/g, ' ')
-            .trim();
+        // Validate input first
+        const validation = this.validateInput(data);
+        if (!validation.isValid) {
+            this.logAuditEvent({
+                type: 'security_violation',
+                action: 'input_validation_failed',
+                clientId: 'system',
+                details: {
+                    inputLength: data.length,
+                    errors: validation.errors,
+                    preview: data.substring(0, 100) + (data.length > 100 ? '...' : '')
+                },
+                severity: 'warning'
+            });
 
-        return sanitized;
+            // For security, we'll still sanitize but log the violation
+        }
+
+        // Check length limit before processing
+        if (data.length > this.options.maxInputLength) {
+            this.logAuditEvent({
+                type: 'security_violation',
+                action: 'input_length_exceeded',
+                clientId: 'system',
+                details: {
+                    actualLength: data.length,
+                    maxLength: this.options.maxInputLength
+                },
+                severity: 'warning'
+            });
+
+            // Truncate to safe length
+            data = data.substring(0, this.options.maxInputLength);
+        }
+
+        // Use DOMPurify for robust sanitization
+        let sanitized;
+        if (this.options.enableStrictSanitization) {
+            // Strict mode: remove all HTML, keep only plain text
+            sanitized = DOMPurify.sanitize(data, {
+                ...this.domPurifyConfig,
+                ALLOWED_TAGS: [], // No HTML allowed
+                ALLOWED_ATTR: [],  // No attributes allowed
+                KEEP_CONTENT: true // Keep text content
+            });
+        } else {
+            // Standard mode: use configured DOMPurify settings
+            sanitized = DOMPurify.sanitize(data, this.domPurifyConfig);
+        }
+
+        // Additional safety checks
+        if (sanitized !== data) {
+            this.logAuditEvent({
+                type: 'security_sanitization',
+                action: 'content_modified',
+                clientId: 'system',
+                details: {
+                    originalLength: data.length,
+                    sanitizedLength: sanitized.length,
+                    wasModified: true
+                },
+                severity: 'info'
+            });
+        }
+
+        // Final cleanup: normalize whitespace and trim
+        return sanitized.replace(/\s+/g, ' ').trim();
     }
 
     /**
@@ -143,7 +287,7 @@ class GoogleBusinessSecurity {
         }
 
         // Validate string parameters
-        if (params.pageToken) {
+        if (params.pageToken !== undefined) {
             if (typeof params.pageToken === 'string' && params.pageToken.length > 0) {
                 sanitized.pageToken = this.sanitizeInput(params.pageToken);
             } else {

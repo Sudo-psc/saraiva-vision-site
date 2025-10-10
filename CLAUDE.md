@@ -2,6 +2,55 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 🚨 CRITICAL SECURITY ISSUES
+
+### **RESOLVED: XSS Vulnerability in Google Business Security Service**
+- **File**: `src/services/googleBusinessSecurity.js` (lines 61-87)
+- **Issue**: Fragile regex-based sanitization that removed dangerous prefixes but left payload content
+- **Fix Applied**: **2025-10-08**
+  - Replaced regex-based sanitization with robust DOMPurify integration
+  - Added strict input validation with length limits and pattern detection
+  - Enhanced rate limiting (reduced from 100 to 30 req/min)
+  - Added comprehensive security audit logging
+  - Implemented strict sanitization mode (no HTML allowed by default)
+- **Mitigations**:
+  - All inputs validated before processing
+  - Automatic truncation of oversized payloads
+  - Real-time security violation monitoring
+  - Enhanced audit trail for all sanitization events
+
+### **RESOLVED: API Analytics Routes Missing Validation**
+- **File**: `api/src/routes/analytics.js` (lines 6-22)
+- **Issue**: POST endpoints without body validation and catch-all router.use
+- **Fix Applied**: **2025-10-08**
+  - Added comprehensive Zod schemas for GA/GTM payload validation
+  - Replaced router.use with explicit router.post for each endpoint
+  - Implemented rate limiting (60 req/min per IP)
+  - Added detailed error responses with 400 status codes
+  - Enhanced logging for monitoring and debugging
+
+### **RESOLVED: Webhook Memory Exhaustion Vulnerability**
+- **File**: `api/src/webhooks/base-webhook.js` (line 96) & `api/src/middleware/webhook-validator.js`
+- **Issue**: getRawBody called without maximum size enforcement
+- **Fix Applied**: **2025-10-08**
+  - Added configurable size limit parameter (default: 1MB)
+  - Implemented real-time size checking during chunk processing
+  - Added memory protection with immediate rejection of oversized payloads
+  - Enhanced monitoring with payload size logging
+
+### **RESOLVED: Appointment Webhook Missing Security Layers**
+- **File**: `api/webhook-appointment.js` (lines 22-54)
+- **Issue**: Missing security middleware, input validation, and proper error handling
+- **Fix Applied**: **2025-10-08**
+  - Added comprehensive Zod schema validation for appointment payloads
+  - Implemented rate limiting (10 req/min per IP)
+  - Added Helmet security headers and CSP protection
+  - Configured CORS with approved origin whitelist
+  - Replaced console.error with structured logger
+  - Added request ID tracking and response time monitoring
+  - Implemented generic 500 responses (no error exposure)
+  - Enhanced security with strict validation and audit logging
+
 ## 🚨 CRITICAL BUILD RULE
 
 **THIS PROJECT USES VITE, NOT NEXT.JS FOR PRODUCTION!**
@@ -17,7 +66,7 @@ npm run build
 ## Project Context
 
 **Saraiva Vision** - Medical ophthalmology clinic platform with CFM/LGPD compliance
-- **Type**: React SPA with Vite (frontend) + Next.js (minimal API backend)
+- **Type**: React SPA with Vite (frontend) + Node.js/Express (backend API)
 - **Location**: Caratinga, MG, Brazil 🇧🇷
 - **VPS**: 31.97.129.78 (native, no Docker)
 - **Production**: `/var/www/saraivavision/current/` served by Nginx
@@ -27,19 +76,42 @@ npm run build
 
 ### Dual Architecture Pattern
 ```
-Frontend (Vite/React SPA) → Backend (Next.js API minimal)
-        ↓                           ↓
-   Static Files (Nginx)      Node.js Express Service
-        ↓                           ↓
-   /var/www/saraivavision/current   API Endpoints only
+Frontend (Vite/React SPA)     Backend (Node.js/Express API)
+        ↓                              ↓
+   Static Files                  API Endpoints
+        ↓                              ↓
+   Nginx (port 443)            Nginx proxy → :3001
+        ↓                              ↓
+   /var/www/saraivavision/     127.0.0.1:3001
 ```
 
 ### Key Components
-- **Frontend**: React 18 + TypeScript + Vite + Tailwind CSS
-- **Backend**: Next.js (API routes only, no pages)
-- **Blog**: 100% static data in `src/data/blogPosts.js`
+- **Frontend**: React 18 + TypeScript + Vite + Tailwind CSS + React Router
+- **Backend**: Node.js/Express (port 3001) with Vercel-style serverless adapters
+- **Blog**: 100% static data in `src/data/blogPosts.js` (no CMS)
 - **Cache**: Redis for Google Reviews only
-- **Web Server**: Nginx (static files + API proxy)
+- **Web Server**: Nginx (static files + API proxy + rate limiting)
+
+### Critical Architecture Details
+
+**Static Content System:**
+- Blog posts are defined in `src/data/blogPosts.js` as JS objects
+- No database or CMS - completely static for performance
+- Images stored in `public/Blog/` with WebP/AVIF optimization
+- Podcast episodes in `src/data/podcastEpisodes.js`
+
+**Google Business Integration:**
+- `src/services/googleBusinessService.js` - Main service class
+- `src/services/googleBusinessSecurity.js` - Security and sanitization
+- `src/services/cachedGoogleBusinessService.js` - Redis caching layer
+- Rate limiting: 30 req/min via Nginx
+- 136+ reviews cached with 4.9/5 rating
+
+**Healthcare Compliance:**
+- `src/lib/clinicInfo.js` - Central clinic configuration (NAP data)
+- `src/utils/healthcareCompliance.js` - LGPD/CFM validation
+- All medical content validated against CFM requirements
+- PII detection and consent management throughout
 
 ## Common Development Commands
 
@@ -90,18 +162,22 @@ npm run test:cover-images   # Blog cover images validation
 │   ├── components/          # React components (PascalCase.jsx)
 │   ├── pages/              # Route components with lazy loading
 │   ├── hooks/              # Custom React hooks (camelCase.js)
-│   ├── lib/                # Utilities + LGPD compliance
-│   ├── data/               # Static data (blogPosts.js)
+│   ├── lib/                # Core utilities + LGPD compliance
+│   ├── data/               # Static data (blogPosts.js, podcastEpisodes.js)
 │   ├── utils/              # Helper functions
-│   ├── services/           # API service functions
+│   ├── services/           # API service functions + Google Business
 │   └── __tests__/          # Frontend tests
 ├── api/                    # Backend API (Node.js/Express)
-│   ├── src/                # API source code
-│   ├── routes/             # API route handlers
-│   ├── middleware/         # Express middleware
-│   ├── utils/              # API utilities
-│   └── __tests__/          # API tests
+│   ├── src/
+│   │   ├── server.js       # Main Express server (port 3001)
+│   │   ├── routes/         # Express route handlers
+│   │   ├── middleware/     # Express middleware
+│   │   ├── webhooks/       # Webhook handlers
+│   │   └── utils/          # API utilities
+│   └── *.js                # Vercel-style serverless functions (adapted)
 ├── public/                 # Static assets
+│   ├── Blog/              # Blog post images (WebP/AVIF)
+│   └── Podcasts/          # Podcast cover images
 ├── scripts/                # Build and deployment scripts
 └── docs/                   # Project documentation
 ```
@@ -110,20 +186,21 @@ npm run test:cover-images   # Blog cover images validation
 ```
 Source Code → Build → Deploy
 src/ → dist/ (Vite) → /var/www/saraivavision/current/
-api/ → .next/ (Next.js) → API routes only
+api/ → Express server (systemd service on port 3001)
 ```
 
 ### Key Configuration Files
-- `vite.config.js` - Frontend build configuration
-- `next.config.js` - Backend API configuration (minimal)
-- `src/lib/clinicInfo.js` - Frontend clinic configuration
+- `vite.config.js` - Frontend build with manual chunk splitting (healthcare-optimized)
+- `next.config.js` - Legacy (not used in production, only for dev compatibility)
+- `src/lib/clinicInfo.js` - Frontend clinic configuration (NAP canonical data)
 - `api/src/lib/clinicInfo.js` - Backend clinic configuration
 - `package.json` - Dependencies and scripts
 - `tailwind.config.js` - Styling configuration
+- `/etc/nginx/sites-enabled/saraivavision` - Nginx configuration (CSP, rate limits, proxies)
 
 ### Build Outputs
-- ✅ `/dist/` - Vite build output (USE THIS)
-- ❌ `/.next/` - Next.js build (API routes only, NOT for frontend)
+- ✅ `/dist/` - Vite build output (USE THIS FOR DEPLOYMENT)
+- ❌ `/.next/` - Next.js build (NOT USED, legacy only)
 - ✅ `/var/www/saraivavision/current/` - Production files served by Nginx
 
 ## Environment Variables
@@ -135,7 +212,7 @@ VITE_SUPABASE_URL=           # Supabase project URL
 VITE_SUPABASE_ANON_KEY=      # Supabase anonymous key
 VITE_GOOGLE_MAPS_API_KEY=    # Google Maps API key
 VITE_GOOGLE_PLACES_API_KEY=  # Google Places API key
-VITE_GOOGLE_PLACE_ID=        # Google Place ID for clinic
+VITE_GOOGLE_PLACE_ID=        # Google Place ID (fallback: ChIJVUKww7WRugARF7u2lAe7BeE)
 VITE_BASE_URL=               # Base URL (production: https://saraivavision.com.br)
 
 # Backend (API)
@@ -146,9 +223,9 @@ NODE_ENV=production          # Environment mode
 ### Optional but Recommended
 ```bash
 # Analytics
-VITE_GA_ID=                  # Google Analytics 4 ID
-VITE_GTM_ID=                 # Google Tag Manager ID
-VITE_POSTHOG_KEY=            # PostHog analytics key
+VITE_GA_ID=G-LXWRK8ELS6                              # Google Analytics 4 ID
+VITE_GTM_ID=GTM-KF2NP85D                             # Google Tag Manager ID
+VITE_POSTHOG_KEY=phc_bpyxyy0AVVh2E9LhjkDfZhi2vlfEsQhOBkijyjvyRSp  # PostHog analytics
 
 # Development
 VITE_DEV_MODE=true           # Enable development features
@@ -192,35 +269,23 @@ This script:
 ### Code Conventions
 - **Components**: PascalCase (`ContactForm.jsx`)
 - **Hooks/Utils**: camelCase (`useAuth.js`)
+- **Services**: camelCase classes (`googleBusinessService.js`)
 - **Files**: Use `.jsx` for React components, `.js` for utilities
 - **Imports**: Use `@/` alias for `src/` directory
 - **Testing**: Co-locate tests with source files using `__tests__/` or `.test.js`
 
-### File Organization
-```
-src/
-├── components/      # Reusable UI components
-├── pages/          # Route-level components (lazy loaded)
-├── hooks/          # Custom React hooks
-├── lib/            # Core utilities + LGPD compliance
-├── data/           # Static data (blogPosts.js)
-├── utils/          # Helper functions
-├── services/       # API integration
-└── __tests__/      # Test files
-```
-
 ### Performance Guidelines
-- **Lazy Loading**: All route components use lazy loading
-- **Bundle Size**: Keep chunks under 200KB for optimal loading
-- **Images**: Optimize with WebP/AVIF formats
-- **Code Splitting**: Automatic via Vite with manual chunk optimization
-- **Prerendering**: Static pages prerendered for SEO
+- **Lazy Loading**: All route components use React.lazy()
+- **Bundle Size**: Target <200KB per chunk (configured in vite.config.js)
+- **Images**: Optimize with WebP/AVIF formats, store in `public/Blog/`
+- **Code Splitting**: Manual chunks in vite.config.js for healthcare platform
+- **Prerendering**: `scripts/prerender-pages.js` runs after build
 
 ### Healthcare Compliance
-- **CFM**: Medical content validation required
-- **LGPD**: PII detection and consent management
-- **Accessibility**: WCAG 2.1 AA compliance
-- **Data Privacy**: No patient data in frontend code
+- **CFM**: Medical content validation required (all blog posts must be accurate)
+- **LGPD**: PII detection and consent management (see `src/utils/healthcareCompliance.js`)
+- **Accessibility**: WCAG 2.1 AA compliance mandatory
+- **Data Privacy**: No patient data in frontend code, all sensitive data in backend only
 
 ## Troubleshooting
 
@@ -246,6 +311,15 @@ strings /var/www/saraivavision/current/assets/index-*.js | grep "EXPECTED_TEXT"
 4. Reload Nginx: `sudo systemctl reload nginx`
 5. Clear browser cache (Ctrl+Shift+R)
 
+### CSP Issues (Content Security Policy)
+**Problem**: Scripts blocked by CSP (Google Analytics, GTM, etc.)
+
+**Location**: `/etc/nginx/sites-enabled/saraivavision` line 339
+
+**Current CSP** (Report-Only mode):
+- Allows: Google Analytics, GTM, Supabase, Maps, Spotify, Ninsaude
+- Add new domains to: `script-src`, `connect-src`, `frame-src` as needed
+
 ### Environment Variable Issues
 ```bash
 # Validate environment variables
@@ -262,89 +336,119 @@ sudo systemctl status saraiva-api
 sudo journalctl -u saraiva-api -f
 
 # Test API endpoints locally
-npm run dev  # Start Next.js dev server
-curl http://localhost:3000/api/health
+curl http://localhost:3001/health
+curl http://localhost:3001/api/health
 ```
 
 ## Key Features & Integrations
 
 ### Core Features
-- **Google Reviews Integration**: 136+ reviews (4.9/5 rating), 30 req/min rate limit
-- **Static Blog System**: SEO-friendly with client-side search, zero dependencies
-- **Appointment System**: Integrated with WhatsApp and contact forms
+- **Google Reviews Integration**: Cached reviews with Redis, 30 req/min rate limit
+- **Static Blog System**: SEO-friendly, client-side search, zero CMS dependencies
+- **Appointment System**: WhatsApp integration + contact forms
 - **Medical Content**: CFM-compliant healthcare information
-- **Podcast Platform**: Medical podcast episodes with streaming
+- **Podcast Platform**: Spotify integration with streaming
 
 ### Third-Party Integrations
-- **Google Maps/Places**: Clinic location and directions
+- **Google Maps/Places**: Clinic location (Place ID: ChIJVUKww7WRugARF7u2lAe7BeE)
 - **Resend**: Transactional email service
-- **Instagram**: Social media integration
+- **Supabase**: Backend services and authentication
 - **WhatsApp**: Contact and appointment booking
 - **Spotify**: Podcast streaming integration
 
-### Performance Features
-- **Lazy Loading**: All route components load on-demand
-- **Service Worker**: Offline caching and updates
-- **Image Optimization**: WebP/AVIF with fallbacks
-- **Bundle Splitting**: Optimized chunks for healthcare platform
-- **Prerendering**: SEO-critical pages pre-rendered
+### Security Architecture
+- **Rate Limiting**: Nginx-based (contact: 5/min, API: 30/min, general: 100/min)
+- **CSP Headers**: Content Security Policy in Report-Only mode
+- **Input Sanitization**: DOMPurify + custom sanitization in googleBusinessSecurity.js
+- **XSS Protection**: HTML tag removal, JS protocol filtering, event handler stripping
+
+## Critical Implementation Notes
+
+### Google Business Service Architecture
+The Google Business integration has layered architecture:
+1. `GoogleBusinessApiService` - Raw API communication
+2. `GoogleBusinessSecurity` - Input sanitization and XSS protection
+3. `CachedGoogleBusinessService` - Redis caching layer
+4. `GoogleBusinessMonitor` - Health monitoring and error tracking
+
+**Known Issue**: XSS sanitization in `googleBusinessSecurity.js:61-87` has incomplete regex patterns. Current implementation removes dangerous prefixes but leaves payload content. See test failures in `src/services/__tests__/googleBusinessSecurity.test.js`.
+
+### Static Content System
+Blog posts are defined as JavaScript objects in `src/data/blogPosts.js`:
+- No database queries at runtime
+- All content bundled at build time
+- Images referenced as `/Blog/image-name.jpg` (public folder)
+- Client-side search via array filtering
+
+### Nginx Configuration
+Production Nginx at `/etc/nginx/sites-enabled/saraivavision`:
+- Serves static files from `/var/www/saraivavision/current/`
+- Proxies `/api/*` to `http://127.0.0.1:3001`
+- Rate limiting zones: contact_limit, api_limit, general_limit, webhook_limit
+- CSP headers on HTML responses (line 339)
 
 ## Development Workflow
 
 ### Making Changes
 1. **Read existing code** before making changes
-2. **Plan approach** (use TodoWrite for multi-step tasks)
-3. **Test locally** with `npm run dev:vite` and `npm run test:run`
+2. **Run tests** with `npm run test:run` to understand current behavior
+3. **Test locally** with `npm run dev:vite` (frontend) and `npm run dev` (API)
 4. **Build** with `npm run build:vite`
-5. **Deploy** with `npm run deploy:quick`
-6. **Verify** deployment in production
+5. **Deploy** with `sudo npm run deploy:quick`
+6. **Verify** in production browser (hard refresh: Ctrl+Shift+R)
 
-### Git Workflow
-- Always create feature branches (never work directly on main)
-- Use descriptive commit messages: `type(scope): description`
-- Run `git status` before committing
-- Never auto-commit without review
-
-### Testing Strategy
+### Working with Blog Content
 ```bash
-# Run comprehensive test suite before major changes
-npm run test:comprehensive
+# Blog posts are in src/data/blogPosts.js
+# Add new post as JavaScript object with structure:
+# { id, slug, title, excerpt, content, image, author, date, category, tags }
 
-# Test specific areas
-npm run test:api         # API endpoints
-npm run test:frontend    # Frontend components
-npm run test:cover-images # Blog image validation
+# Validate blog images
+npm run verify:blog-images
+
+# Optimize images
+npm run optimize:images
+```
+
+### Working with Services
+```bash
+# Google Business service tests
+npm run test src/services/__tests__/googleBusiness*.test.js
+
+# Security service has known XSS issues - see test failures
+npm run test src/services/__tests__/googleBusinessSecurity.test.js
 ```
 
 ## Production Considerations
 
-### Healthcare Compliance
-- All medical content must be CFM compliant
-- LGPD consent management required
-- No patient data in frontend code
-- Accessibility (WCAG 2.1 AA) mandatory
+### Healthcare Compliance Checklist
+- [ ] Medical content reviewed by CFM-qualified professional
+- [ ] LGPD consent management implemented
+- [ ] No patient PII in frontend code
+- [ ] Accessibility tested (WCAG 2.1 AA)
+- [ ] Security headers configured (CSP, XSS, HSTS)
 
 ### Performance Monitoring
-- Monitor bundle sizes (<200KB per chunk)
-- Check Core Web Vitals regularly
-- Verify image optimization
-- Test loading performance
+- Monitor bundle sizes: `npm run build:vite` reports compressed sizes
+- Target: <200KB per chunk (configured in vite.config.js manual chunks)
+- Check Core Web Vitals in production
+- Verify image optimization (WebP/AVIF)
 
 ### Security Requirements
-- PII detection and protection
-- Secure API endpoint design
-- Regular security audits
-- SSL certificate management
+- PII detection via `src/utils/healthcareCompliance.js`
+- Input sanitization for all user inputs (DOMPurify + custom)
+- Rate limiting enforced at Nginx level
+- SSL certificate auto-renewal via Let's Encrypt
 
 ## Additional Documentation
 
 - **Deployment Guide**: `docs/deployment/DEPLOYMENT_GUIDE.md`
 - **Troubleshooting**: `TROUBLESHOOTING.md`
-- **Security**: `SECURITY.md`
-- **Project Overview**: `docs/saraiva-vision-comprehensive-documentation.md`
+- **Security Practices**: `SECURITY.md`
+- **Quick Start**: `README.md`
 
 ---
 
-**Last Updated**: 2025-01-08
-**Version**: 3.0.0
+**Last Updated**: 2025-10-08
+**Version**: 3.1.0
 **Status**: ✅ Production Ready

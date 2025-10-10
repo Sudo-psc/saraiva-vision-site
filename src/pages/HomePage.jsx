@@ -4,6 +4,7 @@ import SEOHead from '../components/SEOHead';
 import SchemaMarkup from '../components/SchemaMarkup';
 import { useHomeSEO } from '../hooks/useSEO';
 import { initScrollSystem, scrollToHash, cleanupScrollSystem } from '../utils/scrollUtils';
+import { trackPageView } from '../utils/analytics';
 
 import Hero from '../components/Hero';
 import Services from '../components/Services';
@@ -20,6 +21,15 @@ function HomePage() {
   const location = useLocation();
   const seoData = useHomeSEO();
   const isInitialized = useRef(false);
+
+  // Analytics tracking - runs only when pathname changes
+  useEffect(() => {
+    try {
+      trackPageView(location.pathname);
+    } catch (error) {
+      console.warn('Failed to track page view:', error);
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     let timer = null;

@@ -50,7 +50,7 @@ const ContactLenses = () => {
     {
       name: 'Sólotica',
       description: t('contactLenses.brand_details.solotica.description'),
-      image: '/img/solotica-hidrocor.jpeg',
+      image: '/img/solflex-toric.png',
       features: t('contactLenses.brand_details.solotica.features', { returnObjects: true }) || [],
       specialty: t('contactLenses.brand_details.solotica.specialty')
     },

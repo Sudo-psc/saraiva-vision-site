@@ -12,18 +12,15 @@ const TIMEOUT_MS = 10000; // 10 segundos timeout
  */
 export function loadGoogleMaps(apiKey) {
   if (mapsPromise) {
-    console.log('🔄 [DEBUG] Retornando promise existente do Google Maps');
     return mapsPromise;
   }
 
   mapsPromise = (async () => {
     if (typeof window === 'undefined') {
-      console.log('⚠️ [DEBUG] Ambiente servidor detectado, retornando promise rejeitada');
       throw new Error('Google Maps não pode ser carregado no servidor');
     }
 
     if (window.google && window.google.maps) {
-      console.log('✅ [DEBUG] Google Maps já carregado');
       return window.google.maps;
     }
 
@@ -52,7 +49,6 @@ export function loadGoogleMaps(apiKey) {
  * @returns {Promise<google.maps>} Promise que resolve com o objeto google.maps
  */
 function loadGoogleMapsAlternative(apiKey) {
-  console.log('🔧 [DEBUG] Usando estratégia alternativa de carregamento');
 
   return new Promise(async (resolve, reject) => {
     const script = document.createElement('script');
@@ -60,7 +56,6 @@ function loadGoogleMapsAlternative(apiKey) {
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly`;
 
     script.onload = async () => {
-      console.log('✅ [DEBUG] Estratégia alternativa: script carregado');
 
       try {
         // Poll for Google Maps availability
@@ -70,7 +65,6 @@ function loadGoogleMapsAlternative(apiKey) {
         const pollForGoogle = async () => {
           attempts++;
           if (window.google && window.google.maps && window.google.maps.importLibrary) {
-            console.log('✅ [DEBUG] Estratégia alternativa: Google Maps disponível');
             
             // Load required libraries
             await window.google.maps.importLibrary('marker');
@@ -104,26 +98,22 @@ function loadGoogleMapsAlternative(apiKey) {
 // Utility function to check if Google Maps is ready
 export function isGoogleMapsReady() {
   const ready = !!(window.google && window.google.maps);
-  console.log('🔍 [DEBUG] Google Maps ready check:', ready);
   return ready;
 }
 
 // Function to reset the loader (useful for testing)
 export function resetGoogleMapsLoader() {
-  console.log('🔄 [DEBUG] Resetando loader do Google Maps');
   mapsPromise = null;
   loadAttempts = 0;
 }
 
 function attemptGoogleMapsLoad(apiKey) {
   loadAttempts++;
-  console.log(`🚀 [DEBUG] Iniciando carregamento do Google Maps (tentativa ${loadAttempts}/${MAX_ATTEMPTS})`);
 
   return new Promise((resolve, reject) => {
     const timeoutId = setTimeout(() => {
       console.error(`⏰ [ERROR] Timeout após ${TIMEOUT_MS}ms`);
       if (loadAttempts < MAX_ATTEMPTS) {
-        console.log('🔄 [DEBUG] Tentando novamente...');
         mapsPromise = null;
         attemptGoogleMapsLoad(apiKey).then(resolve).catch(reject);
       } else {
@@ -135,15 +125,11 @@ function attemptGoogleMapsLoad(apiKey) {
 
     window[callbackName] = async () => {
       clearTimeout(timeoutId);
-      console.log('✅ [DEBUG] Callback executado com sucesso');
 
       try {
         if (window.google && window.google.maps) {
-          console.log('📚 [DEBUG] Carregando bibliotecas necessárias...');
           await window.google.maps.importLibrary('marker');
-          console.log('✅ [DEBUG] Biblioteca marker carregada');
           await window.google.maps.importLibrary('places');
-          console.log('✅ [DEBUG] Biblioteca places carregada');
           loadAttempts = 0;
           resolve(window.google.maps);
         } else {
@@ -172,7 +158,6 @@ function attemptGoogleMapsLoad(apiKey) {
       delete window[callbackName];
 
       if (loadAttempts < MAX_ATTEMPTS) {
-        console.log('🔄 [DEBUG] Tentando estratégia alternativa...');
         mapsPromise = null;
         setTimeout(() => {
           loadGoogleMapsAlternative(apiKey).then(resolve).catch(reject);
@@ -182,7 +167,6 @@ function attemptGoogleMapsLoad(apiKey) {
       }
     };
 
-    console.log('📋 [DEBUG] Adicionando script ao DOM:', script.src);
     document.head.appendChild(script);
   });
 }

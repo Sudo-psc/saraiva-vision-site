@@ -33,6 +33,7 @@ import Accessibility from './components/Accessibility.jsx';
 import { WidgetProvider } from './utils/widgetManager.jsx';
 import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
 import GoogleAnalytics from './components/GoogleAnalytics.jsx';
+import AnalyticsFallback from '@/components/AnalyticsFallback.jsx';
 
 import { initErrorTracking } from './utils/errorTracking.js';
 
@@ -103,8 +104,11 @@ function App() {
             <CookieManager />
             <ServiceWorkerUpdateNotification />
               <Accessibility />
-          </WidgetProvider>
-    </HelmetProvider>
+            </WidgetProvider>
+
+          {/* Analytics Fallback para contornar bloqueadores */}
+          <AnalyticsFallback />
+        </HelmetProvider>
   );
 }
 

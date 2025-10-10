@@ -7,6 +7,7 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import posthog from 'posthog-js';
 import PropTypes from 'prop-types';
+import { SafeBeacon } from '../lib/safeTransport';
 
 const PostHogContext = createContext(null);
 
@@ -54,7 +55,8 @@ export function PostHogProvider({ children }) {
             tel: true, // Mask phone numbers
             text: false
           },
-          maskTextSelector: '.sensitive-data, .patient-info, .medical-data'
+          maskTextSelector: '.sensitive-data, .patient-info, .medical-data',
+          recordCrossOriginIframes: false, // Security: don't record external iframes
         },
 
         // Feature Flags
@@ -67,6 +69,32 @@ export function PostHogProvider({ children }) {
           if (import.meta.env.DEV) {
             console.info('[PostHog] Initialized successfully');
             posthogInstance.debug(true);
+          }
+
+          // Wrap transport for safe state management
+          if (posthogInstance._send_request) {
+            const originalSend = posthogInstance._send_request.bind(posthogInstance);
+
+            posthogInstance._send_request = (url, data, options, callback) => {
+              try {
+                // Use SafeBeacon for beacon requests
+                if (options?.transport === 'sendBeacon' || options?.sendBeacon) {
+                  const beacon = new SafeBeacon(url);
+                  beacon.send(typeof data === 'string' ? data : JSON.stringify(data))
+                    .then(() => callback?.({ status: 1 }))
+                    .catch((error) => {
+                      console.error('[PostHog] Send error:', error);
+                      callback?.({ status: 0 });
+                    });
+                } else {
+                  // Use original transport for XHR
+                  originalSend(url, data, options, callback);
+                }
+              } catch (error) {
+                console.error('[PostHog] Transport error:', error);
+                callback?.({ status: 0 });
+              }
+            };
           }
         },
 
@@ -83,16 +111,42 @@ export function PostHogProvider({ children }) {
           });
 
           return sanitized;
+        },
+
+        // Error handling
+        on_xhr_error: (req) => {
+          console.error('[PostHog] XHR error:', req);
         }
       });
 
       // Check opt-out status
       setIsOptedOut(posthog.has_opted_out_capturing());
 
+      // Handle page visibility changes to prevent InvalidStateError
+      const handleVisibilityChange = () => {
+        if (document.hidden) {
+          console.log('[PostHog] Page hidden, pausing capture');
+          // Don't send events when page is hidden
+          posthog.opt_out_capturing();
+        } else {
+          console.log('[PostHog] Page visible, resuming capture');
+          if (!isOptedOut) {
+            posthog.opt_in_capturing();
+          }
+        }
+      };
+
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+
+      // Cleanup on unmount
+      return () => {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+      };
+
     } catch (error) {
       console.error('[PostHog] Initialization failed:', error);
     }
-  }, []);
+  }, [isOptedOut]);
 
   // Track event with healthcare context
   const trackEvent = useCallback((eventName, properties = {}) => {

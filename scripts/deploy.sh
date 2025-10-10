@@ -15,7 +15,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # Configuration
-PROD_DIR="/var/www/html"
+PROD_DIR="/var/www/saraivavision/current"
 PROJECT_DIR="/home/saraiva-vision-site"
 BACKUP_DIR="/var/backups/saraiva-vision"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
@@ -42,7 +42,7 @@ fi
 # Step 1: Build
 echo "📦 Step 1: Building application..."
 cd "$PROJECT_DIR"
-npm run build
+npm run build:vite
 
 if [ $? -eq 0 ]; then
     print_success "Build completed successfully"
@@ -58,6 +58,7 @@ mkdir -p "$BACKUP_DIR"
 BACKUP_FILE="$BACKUP_DIR/backup_$TIMESTAMP.tar.gz"
 
 if [ -d "$PROD_DIR" ]; then
+    # Backup only the current content, not the entire structure
     tar -czf "$BACKUP_FILE" -C "$PROD_DIR" . 2>/dev/null || true
     print_success "Backup created: $BACKUP_FILE"
 else
@@ -81,8 +82,10 @@ print_success "Files deployed to $PROD_DIR"
 echo ""
 echo "🖼️  Step 4: Deploying optimized images..."
 if [ -d "$PROJECT_DIR/public/Blog" ]; then
+    mkdir -p "$PROD_DIR/Blog/" 2>/dev/null || true
     cp -r "$PROJECT_DIR/public/Blog/"*.webp "$PROD_DIR/Blog/" 2>/dev/null || true
     cp -r "$PROJECT_DIR/public/Blog/"*.avif "$PROD_DIR/Blog/" 2>/dev/null || true
+    cp -r "$PROJECT_DIR/public/Podcasts/"* "$PROD_DIR/Podcasts/" 2>/dev/null || true
     print_success "Optimized images deployed"
 else
     print_warning "No blog images to deploy"
@@ -121,10 +124,14 @@ fi
 
 # Check if site is accessible
 HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/)
+HTTPS_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://saraivavision.com.br/ 2>/dev/null || echo "000")
+
 if [ "$HTTP_STATUS" == "200" ]; then
-    print_success "Site is accessible (HTTP $HTTP_STATUS)"
+    print_success "Site is accessible via HTTP (HTTP $HTTP_STATUS)"
+elif [ "$HTTPS_STATUS" == "200" ]; then
+    print_success "Site is accessible via HTTPS (HTTPS $HTTPS_STATUS)"
 else
-    print_warning "Site returned HTTP $HTTP_STATUS"
+    print_warning "Site returned HTTP $HTTP_STATUS / HTTPS $HTTPS_STATUS"
 fi
 
 # Step 7: Cleanup old backups (keep last 5)

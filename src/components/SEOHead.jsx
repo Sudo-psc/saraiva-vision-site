@@ -114,6 +114,9 @@ const SEOHead = ({
       <meta name="description" content={validatedDescription} />
       {keywords && <meta name="keywords" content={keywords} />}
 
+      {/* Referrer Policy - Allow referer for form submissions */}
+      <meta name="referrer" content="no-referrer-when-downgrade" />
+
       {/* Viewport and Mobile Optimization */}
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       <meta name="format-detection" content="telephone=yes" />

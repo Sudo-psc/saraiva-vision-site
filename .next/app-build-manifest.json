@@ -1,42 +1,20 @@
 {
   "pages": {
-    "/_not-found/page": [
-      "static/chunks/webpack-e8cc961d89a1a8c9.js",
-      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
-      "static/chunks/1255-ad92d48e3e7ce61a.js",
-      "static/chunks/main-app-82a326bc14c5fcf4.js",
-      "static/chunks/app/_not-found/page-1d8b4bc9b3cd38e1.js"
-    ],
     "/layout": [
-      "static/chunks/webpack-e8cc961d89a1a8c9.js",
-      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
-      "static/chunks/1255-ad92d48e3e7ce61a.js",
-      "static/chunks/main-app-82a326bc14c5fcf4.js",
-      "static/css/54afb1fee73280d5.css",
-      "static/css/090c5f216eb69bc2.css",
-      "static/chunks/1127-191551ebc2e15c66.js",
-      "static/chunks/app/layout-ea4eeb1b940b3ee8.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
     ],
-    "/api/config/route": [
-      "static/chunks/webpack-e8cc961d89a1a8c9.js",
-      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
-      "static/chunks/1255-ad92d48e3e7ce61a.js",
-      "static/chunks/main-app-82a326bc14c5fcf4.js",
-      "static/chunks/app/api/config/route-95015f117e61070a.js"
+    "/api/webhooks/payment/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/webhooks/payment/route.js"
     ],
-    "/api/google-reviews/route": [
-      "static/chunks/webpack-e8cc961d89a1a8c9.js",
-      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
-      "static/chunks/1255-ad92d48e3e7ce61a.js",
-      "static/chunks/main-app-82a326bc14c5fcf4.js",
-      "static/chunks/app/api/google-reviews/route-95015f117e61070a.js"
-    ],
-    "/page": [
-      "static/chunks/webpack-e8cc961d89a1a8c9.js",
-      "static/chunks/4bd1b696-100b9d70ed4e49c1.js",
-      "static/chunks/1255-ad92d48e3e7ce61a.js",
-      "static/chunks/main-app-82a326bc14c5fcf4.js",
-      "static/chunks/app/page-95015f117e61070a.js"
+    "/api/webhooks/test/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/webhooks/test/route.js"
     ]
   }
 }

@@ -1,268 +1,458 @@
-/*
-  Saraiva Vision - Service Worker
-  Objetivo: oferecer navegação offline básica e resiliência a conexões instáveis.
-  Estratégias:
-  - App shell: Network First com fallback ao cache (SPA: navegações recebem index.html do cache)
-  - Assets estáticos (js/css/imagens do diretório /assets/): Stale-While-Revalidate
-  - API local (/api/): Network First com fallback ao cache (quando possível)
-*/
+/**
+ * Service Worker Robusto para Manifest V3
+ * Trata promises, mantém alive apenas quando necessário, logging estruturado
+ */
 
-const SW_VERSION = 'v1.2.4'; // CRITICAL: Force reload for cyan color updates in blog components
-const RUNTIME_CACHE = `sv-runtime-${SW_VERSION}`;
-const ASSETS_CACHE = `sv-assets-${SW_VERSION}`;
-const CORE_CACHE = `sv-core-${SW_VERSION}`;
-const BLOG_IMAGES_CACHE = `sv-blog-images-${SW_VERSION}`;
-const BLOG_DATA_CACHE = `sv-blog-data-${SW_VERSION}`;
+// service-worker.js
 
-// Arquivos essenciais (sem hash) para boot offline básico
-const CORE_ASSETS = [
+const SW_VERSION = '1.0.0';
+const CACHE_NAME = `saraiva-vision-v${SW_VERSION}`;
+
+// Assets para cache - IMPORTANTE: Não incluir assets com hash (Vite gera nomes dinâmicos)
+// O service worker deve usar estratégia cache-first para assets, não precaching
+const PRECACHE_ASSETS = [
   '/',
-  '/index.html',
-  '/site.webmanifest',
-  '/favicon-16x16.png',
-  '/favicon-32x32.png',
-  '/apple-touch-icon.png',
-  // Accessibility floating button icon (improves A11y UX offline)
-  '/img/Acessib_icon.png',
-  // Fontes essenciais
-  '/assets/fonts/Inter-roman.var.woff2',
-  '/assets/fonts/Inter-italic.var.woff2'
+  '/index.html'
 ];
 
-self.addEventListener('install', (event) => {
-  self.skipWaiting();
-  event.waitUntil(
-    caches.open(CORE_CACHE).then((cache) => cache.addAll(CORE_ASSETS)).catch(() => undefined)
-  );
-});
+// Configuração
+const CONFIG = {
+  maxCacheAge: 86400000, // 24 horas
+  maxCacheSize: 50,
+  offlinePageUrl: '/offline.html',
+  analyticsBuffer: []
+};
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    (async () => {
-      // Limpa caches antigos
-      const names = await caches.keys();
-      await Promise.all(
-        names.map((name) => {
-          if (!name.includes(SW_VERSION)) {
-            return caches.delete(name);
-          }
-        })
-      );
-      await self.clients.claim();
-      // Notifica clientes sobre atualização
-      const clients = await self.clients.matchAll({ includeUncontrolled: true });
-      clients.forEach(client => {
-        client.postMessage({ type: 'SW_UPDATED', version: SW_VERSION });
+/**
+ * Logger estruturado
+ */
+class SWLogger {
+  static log(level, message, data = {}) {
+    const entry = {
+      level,
+      message,
+      data,
+      timestamp: new Date().toISOString(),
+      version: SW_VERSION
+    };
+
+    console.log(`[SW:${level}]`, message, data);
+
+    // Enviar para analytics quando online
+    if (level === 'error' && navigator.onLine) {
+      this.reportError(entry);
+    }
+  }
+
+  static info(message, data) {
+    this.log('INFO', message, data);
+  }
+
+  static warn(message, data) {
+    this.log('WARN', message, data);
+  }
+
+  static error(message, data) {
+    this.log('ERROR', message, data);
+  }
+
+  static async reportError(entry) {
+    try {
+      await fetch('/api/sw-errors', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry)
       });
-    })()
-  );
-});
-
-function isNavigationRequest(request) {
-  // Check if it's a navigation request or a document request for HTML pages
-  return request.mode === 'navigate' || 
-         (request.method === 'GET' && 
-          request.headers.get('accept') && 
-          request.headers.get('accept').includes('text/html'));
-}
-
-function isAssetRequest(url) {
-  return url.origin === self.location.origin && (
-    /\/assets\//.test(url.pathname) ||
-    /\.(css|js|woff2?|ttf|otf)$/i.test(url.pathname)
-  );
-}
-
-function isBlogImageRequest(url) {
-  return url.origin === self.location.origin &&
-         url.pathname.startsWith('/Blog/') &&
-         /\.(png|jpg|jpeg|gif|svg|webp|avif)$/i.test(url.pathname);
-}
-
-function isBlogDataRequest(url) {
-  return url.origin === self.location.origin &&
-         url.pathname.includes('/blog');
-}
-
-function isApiRequest(url) {
-  return url.origin === self.location.origin && url.pathname.startsWith('/api/');
-}
-
-self.addEventListener('fetch', (event) => {
-  const { request } = event;
-  const url = new URL(request.url);
-
-  // Only handle GET requests from same origin
-  if (request.method !== 'GET' || url.origin !== self.location.origin) return;
-
-  // Always fetch network for ads/web-vitals endpoints
-  if (url.pathname.startsWith('/ads') || url.pathname.startsWith('/web-vitals')) {
-    event.respondWith(fetch(request));
-    return;
-  }
-
-  // Safari fix: handle errors more gracefully
-  const handleError = (error) => {
-    // Only log in development, avoid console spam in production
-    if (self.location.hostname.includes('localhost') || self.location.hostname.includes('127.0.0.1')) {
-      console.warn('SW fetch error:', error);
+    } catch (error) {
+      console.error('[SW] Failed to report error', error);
     }
-    return Response.error();
-  };
-
-  // Navegações (SPA): Network First com fallback ao cache de index.html
-  if (isNavigationRequest(request)) {
-    // Only log in development
-    if (self.location.hostname.includes('localhost') || self.location.hostname.includes('127.0.0.1')) {
-      console.log('SW: Navigation request for:', url.pathname);
-    }
-    event.respondWith(
-      (async () => {
-        try {
-          const fresh = await fetch(request);
-          // Only cache successful responses (exclude partial responses)
-          if (fresh.status === 200 && fresh.type !== 'opaque') {
-            const cache = await caches.open(RUNTIME_CACHE);
-            cache.put('/index.html', fresh.clone());
-          }
-          return fresh;
-        } catch (error) {
-          try {
-            const cache = await caches.open(CORE_CACHE);
-            const cached = await cache.match('/index.html');
-            return cached || new Response('<!DOCTYPE html><html lang="pt-BR"><head><title>Offline</title><style>body{font-family:sans-serif;text-align:center;padding:2em;}h1{color:#2563eb;}p{color:#64748b;}</style></head><body><h1>Você está offline</h1><p>O site Saraiva Vision está sem conexão.<br>Tente novamente mais tarde.</p></body></html>', {
-              headers: { 'Content-Type': 'text/html' }
-            });
-          } catch (cacheError) {
-            return handleError(cacheError);
-          }
-        }
-      })()
-    );
-    return;
   }
+}
 
-  // APIs locais: Network First com fallback ao cache
-  if (isApiRequest(url)) {
-    event.respondWith(
-      (async () => {
-        try {
-          const cache = await caches.open(RUNTIME_CACHE);
-          const fresh = await fetch(request);
-          // Exclude partial responses (206) from caching
-          if (fresh.status === 200 && fresh.type !== 'opaque') {
-            cache.put(request, fresh.clone());
-          }
-          return fresh;
-        } catch (error) {
-          try {
-            const cache = await caches.open(RUNTIME_CACHE);
-            const cached = await cache.match(request);
-            if (cached) return cached;
-            return new Response(JSON.stringify({ error: 'offline', message: 'API indisponível offline' }), {
-              status: 503,
-              headers: { 'Content-Type': 'application/json' }
-            });
-          } catch (cacheError) {
-            return handleError(cacheError);
-          }
-        }
-      })()
-    );
-    return;
-  }
+/**
+ * Install event
+ */
+self.addEventListener('install', (event) => {
+  SWLogger.info('Installing service worker', { version: SW_VERSION });
 
-  // Blog images: Cache First with background update (para performance máxima)
-  if (isBlogImageRequest(url)) {
-    event.respondWith(
-      (async () => {
-        try {
-          const cache = await caches.open(BLOG_IMAGES_CACHE);
-          const cached = await cache.match(request);
-
-          // Return cached immediately if available
-          if (cached) {
-            // Update cache in background
-            fetch(request)
-              .then((response) => {
-                if (response.status === 200 && response.type !== 'opaque') {
-                  cache.put(request, response.clone());
-                }
-              })
-              .catch(() => {}); // Silent fail for background update
-
-            return cached;
-          }
-
-          // No cache: fetch and cache
-          const response = await fetch(request);
-          if (response.status === 200 && response.type !== 'opaque') {
-            cache.put(request, response.clone());
-          }
-          return response;
-        } catch (error) {
-          // Return offline fallback image
-          const cache = await caches.open(BLOG_IMAGES_CACHE);
-          const fallback = await cache.match(request);
-          return fallback || new Response(
-            '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><rect fill="#e2e8f0" width="800" height="600"/><text x="50%" y="50%" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="20">Imagem indisponível offline</text></svg>',
-            { headers: { 'Content-Type': 'image/svg+xml' }}
-          );
-        }
-      })()
-    );
-    return;
-  }
-
-  // Assets estáticos: Stale-While-Revalidate
-  if (isAssetRequest(url)) {
-    event.respondWith(
-      (async () => {
-        try {
-          const cache = await caches.open(ASSETS_CACHE);
-          const cached = await cache.match(request);
-          const fetchAndUpdate = fetch(request)
-            .then((response) => {
-              // Exclude partial responses (206) and opaque responses from caching
-              if (response.status === 200 && response.type !== 'opaque') {
-                cache.put(request, response.clone());
-              } else if (response.status === 206) {
-                // Return partial response without caching
-                console.warn('SW: Partial response (206) not cached for:', request.url);
-              }
-              return response;
-            })
-            .catch(() => null);
-
-          return cached || (await fetchAndUpdate) || handleError('Asset not found');
-        } catch (error) {
-          return handleError(error);
-        }
-      })()
-    );
-    return;
-  }
-
-  // Demais requests de mesma origem: Cache First com fallback
-  event.respondWith(
+  event.waitUntil(
     (async () => {
       try {
-        const cache = await caches.open(RUNTIME_CACHE);
-        const cached = await cache.match(request);
-        if (cached) return cached;
+        const cache = await caches.open(CACHE_NAME);
+        await cache.addAll(PRECACHE_ASSETS);
 
-        const fresh = await fetch(request);
-        // Exclude partial responses (206) and opaque responses from caching
-        if (fresh.status === 200 && fresh.type !== 'opaque') {
-          cache.put(request, fresh.clone());
-        } else if (fresh.status === 206) {
-          // Log partial response without caching
-          console.warn('SW: Partial response (206) not cached for:', request.url);
-        }
-        return fresh;
+        SWLogger.info('Precache completed', {
+          assets: PRECACHE_ASSETS.length
+        });
+
+        // Forçar ativação imediata
+        await self.skipWaiting();
+
       } catch (error) {
-        return handleError(error);
+        SWLogger.error('Install failed', {
+          error: error.message,
+          stack: error.stack
+        });
+        throw error;
       }
     })()
   );
 });
+
+/**
+ * Activate event
+ */
+self.addEventListener('activate', (event) => {
+  SWLogger.info('Activating service worker', { version: SW_VERSION });
+
+  event.waitUntil(
+    (async () => {
+      try {
+        // Limpar caches antigos
+        const cacheNames = await caches.keys();
+        await Promise.all(
+          cacheNames
+            .filter(name => name !== CACHE_NAME)
+            .map(name => {
+              SWLogger.info('Deleting old cache', { name });
+              return caches.delete(name);
+            })
+        );
+
+        // Tomar controle imediato
+        await self.clients.claim();
+
+        SWLogger.info('Activation completed');
+
+      } catch (error) {
+        SWLogger.error('Activation failed', {
+          error: error.message,
+          stack: error.stack
+        });
+        throw error;
+      }
+    })()
+  );
+});
+
+/**
+ * Fetch event com estratégia Network-First
+ */
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  // Ignorar extensões, chrome, etc
+  if (!url.protocol.startsWith('http')) {
+    return;
+  }
+
+  // Ignorar analytics (deixar falhar silenciosamente)
+  if (url.pathname.includes('/api/analytics/')) {
+    return;
+  }
+
+  event.respondWith(
+    (async () => {
+      try {
+        // Network-first para HTML
+        if (request.destination === 'document') {
+          return await networkFirst(request);
+        }
+
+        // Cache-first para assets estáticos
+        if (
+          request.destination === 'script' ||
+          request.destination === 'style' ||
+          request.destination === 'image'
+        ) {
+          return await cacheFirst(request);
+        }
+
+        // Network-first para o resto
+        return await networkFirst(request);
+
+      } catch (error) {
+        SWLogger.error('Fetch failed', {
+          url: request.url,
+          error: error.message
+        });
+
+        // Retornar página offline para navegação
+        if (request.destination === 'document') {
+          const cache = await caches.open(CACHE_NAME);
+          const offlinePage = await cache.match(CONFIG.offlinePageUrl);
+          if (offlinePage) {
+            return offlinePage;
+          }
+        }
+
+        throw error;
+      }
+    })()
+  );
+});
+
+/**
+ * Estratégia Network-First
+ */
+async function networkFirst(request) {
+  try {
+    const response = await fetch(request);
+
+    // Cachear resposta bem-sucedida
+    if (response.ok) {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, response.clone());
+    }
+
+    return response;
+
+  } catch (error) {
+    // Fallback para cache
+    const cachedResponse = await caches.match(request);
+
+    if (cachedResponse) {
+      SWLogger.warn('Network failed, serving from cache', {
+        url: request.url
+      });
+      return cachedResponse;
+    }
+
+    throw error;
+  }
+}
+
+/**
+ * Estratégia Cache-First
+ */
+async function cacheFirst(request) {
+  const cachedResponse = await caches.match(request);
+
+  if (cachedResponse) {
+    // Atualizar cache em background
+    updateCacheInBackground(request);
+    return cachedResponse;
+  }
+
+  // Não está em cache, buscar da rede
+  const response = await fetch(request);
+
+  if (response.ok) {
+    const cache = await caches.open(CACHE_NAME);
+    cache.put(request, response.clone());
+  }
+
+  return response;
+}
+
+/**
+ * Atualizar cache em background
+ */
+async function updateCacheInBackground(request) {
+  try {
+    const response = await fetch(request);
+
+    if (response.ok) {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put(request, response);
+    }
+  } catch (error) {
+    // Ignorar erros silenciosamente
+  }
+}
+
+/**
+ * Message handler com tratamento robusto
+ */
+self.addEventListener('message', (event) => {
+  SWLogger.info('Message received', {
+    type: event.data?.type,
+    source: event.source?.id
+  });
+
+  // Retornar promise para evitar erros
+  event.waitUntil(
+    (async () => {
+      try {
+        const { type, payload } = event.data;
+
+        let result;
+
+        switch (type) {
+          case 'SKIP_WAITING':
+            await self.skipWaiting();
+            result = { success: true };
+            break;
+
+          case 'CACHE_URLS':
+            const cache = await caches.open(CACHE_NAME);
+            await cache.addAll(payload.urls);
+            result = { success: true, cached: payload.urls.length };
+            break;
+
+          case 'CLEAR_CACHE':
+            await caches.delete(CACHE_NAME);
+            result = { success: true };
+            break;
+
+          case 'GET_VERSION':
+            result = { version: SW_VERSION };
+            break;
+
+          default:
+            result = { error: 'Unknown message type' };
+        }
+
+        // Responder ao cliente
+        if (event.ports && event.ports[0]) {
+          event.ports[0].postMessage(result);
+        }
+
+      } catch (error) {
+        SWLogger.error('Message handler error', {
+          error: error.message,
+          stack: error.stack,
+          type: event.data?.type
+        });
+
+        // Sempre retornar resposta, mesmo em erro
+        if (event.ports && event.ports[0]) {
+          event.ports[0].postMessage({
+            error: true,
+            message: error.message
+          });
+        }
+      }
+    })()
+  );
+});
+
+/**
+ * Sync event para analytics offline
+ */
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'analytics-sync') {
+    SWLogger.info('Background sync: analytics');
+
+    event.waitUntil(
+      (async () => {
+        try {
+          // Enviar analytics buffered
+          await syncAnalytics();
+        } catch (error) {
+          SWLogger.error('Analytics sync failed', {
+            error: error.message
+          });
+        }
+      })()
+    );
+  }
+});
+
+async function syncAnalytics() {
+  if (CONFIG.analyticsBuffer.length === 0) {
+    return;
+  }
+
+  const events = [...CONFIG.analyticsBuffer];
+  CONFIG.analyticsBuffer = [];
+
+  for (const event of events) {
+    try {
+      await fetch('/api/analytics/ga', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(event)
+      });
+    } catch (error) {
+      // Re-buffar se falhou
+      CONFIG.analyticsBuffer.push(event);
+    }
+  }
+}
+
+/**
+ * Periodic Background Sync (Manifest V3)
+ */
+self.addEventListener('periodicsync', (event) => {
+  if (event.tag === 'cache-cleanup') {
+    SWLogger.info('Periodic sync: cache cleanup');
+
+    event.waitUntil(
+      (async () => {
+        try {
+          await cleanupOldCache();
+        } catch (error) {
+          SWLogger.error('Cache cleanup failed', {
+            error: error.message
+          });
+        }
+      })()
+    );
+  }
+});
+
+async function cleanupOldCache() {
+  const cache = await caches.open(CACHE_NAME);
+  const requests = await cache.keys();
+
+  const now = Date.now();
+  let deletedCount = 0;
+
+  for (const request of requests) {
+    const response = await cache.match(request);
+
+    if (!response) continue;
+
+    const dateHeader = response.headers.get('date');
+    if (!dateHeader) continue;
+
+    const age = now - new Date(dateHeader).getTime();
+
+    if (age > CONFIG.maxCacheAge) {
+      await cache.delete(request);
+      deletedCount++;
+    }
+  }
+
+  SWLogger.info('Cache cleanup completed', {
+    deleted: deletedCount,
+    remaining: requests.length - deletedCount
+  });
+}
+
+/**
+ * Error handler global
+ */
+self.addEventListener('error', (event) => {
+  SWLogger.error('Global error', {
+    message: event.message || 'Unknown error',
+    filename: event.filename,
+    lineno: event.lineno,
+    colno: event.colno,
+    error: event.error ? {
+      name: event.error.name,
+      message: event.error.message,
+      stack: event.error.stack
+    } : null
+  });
+});
+
+/**
+ * Unhandled promise rejections
+ */
+self.addEventListener('unhandledrejection', (event) => {
+  SWLogger.error('Unhandled promise rejection', {
+    reason: event.reason instanceof Error ? {
+      name: event.reason.name,
+      message: event.reason.message,
+      stack: event.reason.stack
+    } : String(event.reason)
+  });
+
+  // Prevenir default (não logar no console novamente)
+  event.preventDefault();
+});
+
+SWLogger.info('Service worker loaded', { version: SW_VERSION });
