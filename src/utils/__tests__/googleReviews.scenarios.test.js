@@ -1,3 +1,4 @@
+import { describe, test, expect } from "vitest";
 // Test scenarios for Google Reviews components
 // Tests comprehensive data scenarios to ensure robustness of fixes
 

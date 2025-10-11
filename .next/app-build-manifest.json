@@ -5,16 +5,6 @@
       "static/chunks/main-app.js",
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
-    ],
-    "/api/webhooks/payment/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/webhooks/payment/route.js"
-    ],
-    "/api/webhooks/test/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/webhooks/test/route.js"
     ]
   }
 }

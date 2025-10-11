@@ -11,7 +11,7 @@ import Services from '../components/Services';
 import About from '../components/About';
 import Contact from '../components/Contact';
 import EnhancedFooter from '../components/EnhancedFooter';
-import GoogleReviewsIntegration from '../components/GoogleReviewsIntegration';
+import GoogleReviews from '../components/ui/GoogleReviews';
 import GoogleLocalSection from '../components/GoogleLocalSection';
 import FAQ from '../components/FAQ';
 import LatestEpisodes from '../components/LatestEpisodes';
@@ -78,9 +78,10 @@ function HomePage() {
           <Hero />
           <Services autoplay full={false} />
           <About />
-          <GoogleReviewsIntegration
+          <GoogleReviews
             maxReviews={3}
             showViewAllButton={true}
+            className="container mx-auto px-6 md:px-8 lg:px-[6%] xl:px-[7%] 2xl:px-[8%] mb-16"
           />
           <GoogleLocalSection />
           <FAQ />

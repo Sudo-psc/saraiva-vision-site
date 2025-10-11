@@ -542,12 +542,8 @@ const InstagramErrorMonitor = ({
                                     </div>
                                 )}
                             </div>
-                    </motion.div>
-                    </motion.div>
-                )}
+                        </motion.div>
+                    )}
         </AnimatePresence>
-        </div >
+    </div>
     );
-};
-
-export default InstagramErrorMonitor;

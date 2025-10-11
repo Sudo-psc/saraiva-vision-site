@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, act, fireEvent } from '@testing-library/react';
-import { vi } from 'vitest';
+import { describe, beforeEach, afterEach, it, expect, jest } from 'vitest';
 import { trackError } from '@/utils/errorTracker.js';
 import createLazyComponent from '../lazyLoading.jsx';
 
@@ -17,7 +17,6 @@ vi.mock('react', async () => ({
 
 describe('createLazyComponent', () => {
   let mockLazyComponent;
-  let mockError;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -242,7 +241,6 @@ describe('createLazyComponent', () => {
   describe('fallback behavior', () => {
     it('should use custom fallback when provided', async () => {
       const CustomFallback = () => <div>Custom Loading...</div>;
-      const CustomErrorFallback = () => <div>Custom Error</div>;
 
       const ErrorBoundary = ({ children, onError, fallback }) => {
         const [hasError, setHasError] = React.useState(false);

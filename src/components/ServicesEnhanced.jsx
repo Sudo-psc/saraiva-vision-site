@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 import MedicalCard from '@/components/ui/MedicalCard';
 import InteractiveCarousel from '@/components/ui/InteractiveCarousel';
+import WhatsAppCTA from '@/components/ui/WhatsAppCTA';
 
 /**
  * Enhanced Services component using unified component interfaces
@@ -311,6 +312,54 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
             className="mt-8"
           />
         )}
+
+        {/* CTA Contextual - Após lista de serviços */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-16 max-w-2xl mx-auto"
+        >
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-slate-900 mb-3">
+              Precisa de ajuda para escolher o serviço certo?
+            </h3>
+            <p className="text-slate-600 mb-6">
+              Nossa equipe está pronta para ajudar. Fale conosco pelo WhatsApp e agende sua consulta em minutos.
+            </p>
+          </div>
+
+          <WhatsAppCTA
+            variant="default"
+            size="large"
+            context="agendamento"
+            showPhone={true}
+            className="w-full sm:w-auto"
+          />
+        </motion.div>
+
+        {/* CTA secundário para emergências */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="mt-8 text-center"
+        >
+          <p className="text-sm text-slate-500 mb-4">
+            Sente-se em emergência oftalmológica?{' '}
+            <a
+              href="https://wa.me/5533998601427?text=Preciso%20de%20uma%20consulta%20o%20mais%20rápido%20possível.%20É%20uma%20emergência?"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-red-600 hover:text-red-700 font-medium underline"
+              aria-label="Agendar emergência pelo WhatsApp"
+            >
+              Chame agora no WhatsApp
+            </a>
+          </p>
+        </motion.div>
       </div>
     </section>
   );

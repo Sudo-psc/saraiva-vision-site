@@ -1,6 +1,4 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import OptimizedImage from '../OptimizedImage.jsx';
+import { describe, beforeEach, afterEach, it, expect, jest } from 'vitest';
 
 // Mock IntersectionObserver
 global.IntersectionObserver = jest.fn().mockImplementation(() => ({

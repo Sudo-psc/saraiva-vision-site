@@ -1,4 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react';
+import { vi, describe, beforeEach, it, expect } from 'vitest';
 import { useGoogleReviews } from '../useGoogleReviews';
 
 // Mock fetch

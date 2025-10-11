@@ -15,10 +15,6 @@ export const VITE_ENV = {
   GOOGLE_PLACES_API_KEY: import.meta.env.VITE_GOOGLE_PLACES_API_KEY,
   GOOGLE_PLACE_ID: import.meta.env.VITE_GOOGLE_PLACE_ID,
 
-  // Supabase
-  SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
-  SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY,
-
   // Analytics
   POSTHOG_KEY: import.meta.env.VITE_POSTHOG_KEY,
   POSTHOG_HOST: import.meta.env.VITE_POSTHOG_HOST,
@@ -94,8 +90,6 @@ export function validateEnvironment(): string[] {
   const required = {
     'VITE_GOOGLE_PLACE_ID': VITE_ENV.GOOGLE_PLACE_ID,
     'VITE_GOOGLE_MAPS_API_KEY': VITE_ENV.GOOGLE_MAPS_API_KEY,
-    'VITE_SUPABASE_URL': VITE_ENV.SUPABASE_URL,
-    'VITE_SUPABASE_ANON_KEY': VITE_ENV.SUPABASE_ANON_KEY,
   };
 
   for (const [key, value] of Object.entries(required)) {

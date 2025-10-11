@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import SEOHead from '../components/SEOHead';
 import { useLensesSEO } from '../hooks/useSEO';
-import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import ContactLenses from '../components/ContactLenses';
 import { CheckCircle, Eye, Package } from 'lucide-react';
@@ -10,26 +9,13 @@ import { CheckCircle, Eye, Package } from 'lucide-react';
 const LensesPage = () => {
   const { t } = useTranslation();
   const seoData = useLensesSEO();
+  const videoRef = useRef(null);
 
-  // Jotform widget
   useEffect(() => {
-    // Load Jotform widget script
-    const jotformScript = document.createElement('script');
-    jotformScript.src = 'https://cdn.jotfor.ms/agent/embedjs/0199cb5550dc71e79d950163cd7d0d45fee0/embed.js';
-    jotformScript.async = true;
-    jotformScript.id = 'jotform-widget-script';
-
-    // Add script to head
-    document.head.appendChild(jotformScript);
-
-    // Cleanup function to remove script when component unmounts
-    return () => {
-      const existingScript = document.getElementById('jotform-widget-script');
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
-  }, []); // Empty dependency array means this runs only once on mount
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.8; // 20% slower
+    }
+  }, []);
 
   const adaptationSteps = [
     {
@@ -78,9 +64,8 @@ const LensesPage = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-blue-50/30 to-white">
+    <>
       <SEOHead {...seoData} />
-      <Navbar />
       <main className="flex-1 pt-32 md:pt-36 lg:pt-40 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         {/* Hero Section */}
         <section className="!mb-3 !pt-0 !pb-0 text-center">
@@ -100,6 +85,7 @@ const LensesPage = () => {
         <section className="!mb-5 !pt-0 !pb-0">
           <div className="w-full bg-gradient-to-br from-slate-900 via-cyan-900 to-slate-900 rounded-2xl overflow-hidden shadow-2xl">
             <video
+              ref={videoRef}
               className="w-full h-auto object-cover"
               autoPlay
               loop
@@ -187,7 +173,7 @@ const LensesPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                 <div className="flex items-start gap-2 bg-white/10 backdrop-blur-sm rounded-xl p-3">
                   <CheckCircle className="w-5 h-5 text-cyan-200 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm md:text-base">Mais de 15 anos de experiência em adaptação de lentes</span>
+                  <span className="text-sm md:text-base">Mais de 5 anos de experiência em adaptação de lentes</span>
                 </div>
                 <div className="flex items-start gap-2 bg-white/10 backdrop-blur-sm rounded-xl p-3">
                   <CheckCircle className="w-5 h-5 text-cyan-200 flex-shrink-0 mt-0.5" />
@@ -216,7 +202,7 @@ const LensesPage = () => {
         <ContactLenses />
       </main>
       <EnhancedFooter />
-    </div>
+    </>
   );
 };
 

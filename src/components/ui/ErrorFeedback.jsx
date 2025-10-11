@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { AlertTriangle, RefreshCw, WifiOff, Shield, Mail, Phone, X, Loader2 } from 'lucide-react';
+import { AlertTriangle, RefreshCw, WifiOff, Mail, Phone, X, Loader2 } from 'lucide-react';
 import {
     getUserFriendlyError,
     getRecoverySteps,
@@ -24,6 +24,24 @@ const ErrorFeedback = ({
 }) => {
     const errorRef = useRef(null);
     const previousError = useRef(null);
+
+    // Announce error to screen readers when error changes
+    useEffect(() => {
+        if (autoAnnounce && error && error !== previousError.current) {
+            announceError(error, {
+                action: 'Erro no formulário',
+                retryAttempt: retryAttempt > 0 ? retryAttempt : undefined
+            });
+            previousError.current = error;
+        }
+    }, [error, autoAnnounce, retryAttempt]);
+
+    // Focus management for accessibility
+    useEffect(() => {
+        if (errorRef.current && !compact) {
+            errorRef.current.focus();
+        }
+    }, [error, compact]);
 
     if (!error) return null;
 

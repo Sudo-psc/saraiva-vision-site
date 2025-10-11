@@ -37,14 +37,18 @@ app.use(cors({
   credentials: true
 }));
 
-// Rate limiting
+// Rate limiting - Ajustado para desenvolvimento/testes
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 1000, // limit each IP to 1000 requests per windowMs
   message: 'Too many requests from this IP, please try again later.',
   skip: (req) => {
-    // Skip rate limiting for health check endpoints (used by load balancers)
-    return req.path === '/api/health' || req.path === '/api/maps-health';
+    // Skip rate limiting for health check and analytics endpoints
+    return req.path === '/api/health' ||
+           req.path === '/api/maps-health' ||
+           req.path.startsWith('/api/analytics') ||
+           req.path.startsWith('/api/errors') ||
+           req.path.startsWith('/api/google-reviews');
   }
 });
 app.use('/api/', limiter);

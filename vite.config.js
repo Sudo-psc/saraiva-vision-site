@@ -34,10 +34,7 @@ const plugins = [
  * @param {string} mode - Build mode (development/production)
  */
 function validateEnvironmentVariables(env, mode) {
-  const required = [
-    'VITE_SUPABASE_URL',
-    'VITE_SUPABASE_ANON_KEY',
-  ];
+  const required = [];
 
   const recommended = [
     'VITE_GOOGLE_MAPS_API_KEY',
@@ -62,24 +59,6 @@ function validateEnvironmentVariables(env, mode) {
     missingRecommended.forEach(key => console.warn(`   - ${key}`));
     console.warn('\nSome features may not work properly.\n');
   }
-
-  // Validate URL formats
-  const urlVars = {
-    VITE_SUPABASE_URL: env.VITE_SUPABASE_URL,
-  };
-
-  Object.entries(urlVars).forEach(([key, value]) => {
-    if (value && !value.includes('your_')) {
-      try {
-        new URL(value);
-      } catch {
-        console.error(`\n❌ Invalid URL format for ${key}: ${value}\n`);
-        if (mode === 'production') {
-          throw new Error(`Invalid URL format for ${key}`);
-        }
-      }
-    }
-  });
 
   // Success message
   if (missing.length === 0 && mode !== 'test') {
@@ -164,14 +143,22 @@ export default defineConfig(({ mode }) => {
         // Enhanced chunking strategy for healthcare platform (<200KB target per chunk)
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            // Core React packages - isolate to prevent context issues (critical for medical content)
-            if (id.includes('react/') || id.includes('react-dom/') || id.includes('react/jsx-runtime')) {
+            // Core React packages - further split for optimal loading
+            if (id.includes('react-dom/')) {
+              return 'react-dom'
+            }
+            if (id.includes('react/') || id.includes('react/jsx-runtime')) {
               return 'react-core'
             }
 
             // React Router - separate chunk for patient navigation
             if (id.includes('react-router')) {
               return 'router'
+            }
+
+            // Custom hooks and contexts - separate for better caching
+            if (id.includes('useGoogleReviews') || id.includes('useSEO') || id.includes('useAnalytics')) {
+              return 'hooks'
             }
 
             // Radix UI - group together but optimize for accessibility compliance

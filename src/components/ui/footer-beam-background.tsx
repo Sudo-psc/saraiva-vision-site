@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -251,7 +251,7 @@ export function FooterBeamBackground({
                 cancelAnimationFrame(animationFrameRef.current);
             }
         };
-    }, [intensity, colorScheme, capabilities]);
+    }, [intensity, colorScheme, capabilities, getBeamCount, getOpacityMultiplier]);
 
     // Don't render beams if reduced motion is preferred
     if (capabilities.prefersReducedMotion) {

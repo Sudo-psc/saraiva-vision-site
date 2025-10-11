@@ -8,6 +8,7 @@ import AuthorWidget from './AuthorWidget';
 import ShareWidget from './ShareWidget';
 import RelatedPostsWidget from './RelatedPostsWidget';
 import TableOfContents from './TableOfContents';
+import BlogPostCTA from '../ui/BlogPostCTA';
 import { formatDate } from '../../utils/dateUtils';
 
 /**
@@ -196,7 +197,9 @@ export default function BlogPostLayout({ post, children }) {
                      prose-code:rounded prose-code:text-sm prose-code:font-mono
                      prose-pre:bg-gray-900 prose-pre:text-gray-100"
         >
-          {children}
+          <BlogPostCTA content={typeof children === 'string' ? children : ''}>
+            {children}
+          </BlogPostCTA>
         </div>
 
         {/* CTA Secundário - Rodapé do conteúdo */}

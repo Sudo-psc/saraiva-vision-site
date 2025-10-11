@@ -349,4 +349,3 @@ describe('Performance and Reliability', () => {
         expect(result.results.errors[0].error).toBe('Rate limit exceeded');
     });
 });
-});

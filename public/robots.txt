@@ -1,5 +1,8 @@
 # Robots.txt for Saraiva Vision - Medical Ophthalmology Clinic
-# Updated: 2025-09-30
+# Updated: 2025-10-10
+
+# Canonical domain declaration
+# Host: saraivavision.com.br (for Yandex)
 
 # Default crawler rules
 User-agent: *

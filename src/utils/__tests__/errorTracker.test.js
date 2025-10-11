@@ -1,3 +1,4 @@
+import { jest, describe, beforeEach, it, expect, afterEach } from 'vitest';
 import { errorTracker, trackError, trackNetworkError, trackComponentError } from '../errorTracker.js';
 
 // Capture original console before mocking

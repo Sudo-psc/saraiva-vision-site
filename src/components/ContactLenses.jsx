@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Check, Shield, Users, Award, Eye, ChevronDown, MessageCircle, Star, Clock, Heart, Zap, Sparkles, Calendar, Phone } from 'lucide-react';
+import { Check, Shield, Users, Award, Eye, ChevronDown, MessageCircle, Star, Clock, Heart, Zap, Sparkles, Calendar, Phone, ExternalLink, Bot } from 'lucide-react';
 import { NAP_CANONICAL, generateWhatsAppURL } from '../lib/napCanonical';
 import { Button } from '@/components/ui/button';
 import ContactLensesHeroImage from './ContactLensesHeroImage';
@@ -69,6 +69,8 @@ const ContactLenses = () => {
   const whatsappMessage = 'Olá! Gostaria de agendar uma consulta para adaptação de lentes de contato.';
   const whatsappUrl = generateWhatsAppURL(whatsappMessage);
   const agendamentoUrl = 'https://www.saraivavision.com.br/agendamento';
+  const assinaturaUrl = 'https://pci.jotform.com/form/252817233384055';
+  const jotformAgentUrl = 'https://agent.jotform.com/0199cb5550dc71e79d950163cd7d0d45fee0';
 
   const expandedFaqItems = [
     ...faqItems,
@@ -208,19 +210,23 @@ const ContactLenses = () => {
             <Button
               size="xl"
               variant="outline"
-              className="w-full sm:w-auto gap-2 text-lg font-semibold border-2 border-green-600 text-green-700 hover:bg-green-50 shadow-md hover:shadow-lg transition-all"
-              onClick={() => window.open(whatsappUrl, '_blank')}
-              aria-label="Falar no WhatsApp sobre lentes de contato - Abre em nova aba"
+              className="w-full sm:w-auto gap-2 text-lg font-semibold border-2 border-cyan-600 text-cyan-700 hover:bg-cyan-50 shadow-md hover:shadow-lg transition-all"
+              onClick={() => window.open(
+                'https://agent.jotform.com/0199cb5550dc71e79d950163cd7d0d45fee0?embedMode=popup&parentURL='+encodeURIComponent(window.top.location.href),
+                'blank',
+                'scrollbars=yes,toolbar=no,width=700,height=500,top='+(window.outerHeight / 2 - 250)+',left='+(window.outerWidth / 2 - 350)
+              )}
+              aria-label="Felix: Atendente de Suporte ao Cliente - Abre em popup"
             >
-              <MessageCircle className="h-5 w-5" aria-hidden="true" />
-              WhatsApp
+              <Bot className="h-5 w-5" aria-hidden="true" />
+              Felix: Atendente de Suporte ao Cliente
             </Button>
             <Button
               size="xl"
               variant="default"
               className="w-full sm:w-auto gap-2 text-lg font-semibold bg-cyan-600 hover:bg-cyan-700 shadow-md hover:shadow-lg transition-all"
-              onClick={() => window.open(agendamentoUrl, '_blank')}
-              aria-label="Assinar plano de lentes de contato - Abre em nova aba"
+              onClick={() => window.open(assinaturaUrl, '_blank')}
+              aria-label="Assinar plano de lentes de contato - Abre formulário em nova aba"
             >
               <Sparkles className="h-5 w-5" aria-hidden="true" />
               Assinar Plano
@@ -515,7 +521,7 @@ const ContactLenses = () => {
             <p className="text-lg text-slate-700 mb-4 font-medium">
               Não encontrou a resposta que procurava?
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex justify-center">
               <Button
                 size="lg"
                 variant="medical"
@@ -525,16 +531,6 @@ const ContactLenses = () => {
               >
                 <MessageCircle className="h-5 w-5" aria-hidden="true" />
                 Falar com Especialista
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="gap-2"
-                onClick={() => window.open(`tel:${NAP_CANONICAL.phone.primary.e164}`, '_self')}
-                aria-label={`Ligar para ${NAP_CANONICAL.phone.primary.display}`}
-              >
-                <Phone className="h-5 w-5" aria-hidden="true" />
-                {NAP_CANONICAL.phone.primary.displayShort}
               </Button>
             </div>
           </motion.div>

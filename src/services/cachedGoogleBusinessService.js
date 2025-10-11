@@ -10,9 +10,9 @@ class CachedGoogleBusinessService extends GoogleBusinessService {
         super();
 
         this.cacheManager = new ReviewCacheManager({
-            defaultTTL: 86400, // 24 hours
-            staleTTL: 172800, // 48 hours
-            maxCachedReviews: 50,
+            defaultTTL: 43200, // 12 hours (reduced for fresher content)
+            staleTTL: 86400, // 24 hours (reduced stale time)
+            maxCachedReviews: 100, // Increased cache capacity
             enableLogging: cacheOptions.enableLogging || false,
             ...cacheOptions
         });
@@ -21,8 +21,8 @@ class CachedGoogleBusinessService extends GoogleBusinessService {
         this.cacheConfig = {
             enableStaleWhileRevalidate: cacheOptions.enableStaleWhileRevalidate !== false,
             backgroundRefresh: cacheOptions.backgroundRefresh !== false,
-            maxStaleAge: cacheOptions.maxStaleAge || 172800, // 48 hours
-            refreshThreshold: cacheOptions.refreshThreshold || 0.8, // Refresh when 80% of TTL elapsed
+            maxStaleAge: cacheOptions.maxStaleAge || 86400, // 24 hours (reduced)
+            refreshThreshold: cacheOptions.refreshThreshold || 0.7, // Refresh at 70% for better performance
         };
 
         // Background refresh tracking
