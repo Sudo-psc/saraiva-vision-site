@@ -1,6 +1,14 @@
 #!/bin/bash
 
-API_KEY="AIzaSyDpN-4P56jJu-PJuBufaM4tor7o1j-wjO0"
+# ⚠️ SECURITY: API key must be set as environment variable
+# Set with: export GOOGLE_GEMINI_API_KEY="your_key_here"
+if [ -z "$GOOGLE_GEMINI_API_KEY" ]; then
+    echo "ERROR: GOOGLE_GEMINI_API_KEY environment variable not set"
+    echo "Please set it with: export GOOGLE_GEMINI_API_KEY=\"your_key_here\""
+    exit 1
+fi
+
+API_KEY="$GOOGLE_GEMINI_API_KEY"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 OUTPUT_FILE="public/Blog/capa-retinopatia-diabetica-${TIMESTAMP}.png"
 

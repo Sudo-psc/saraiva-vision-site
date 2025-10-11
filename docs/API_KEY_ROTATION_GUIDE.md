@@ -12,7 +12,7 @@ O script `./scripts/clean-build.sh` detectou as seguintes chaves expostas em bui
 
 ### Google Maps API
 ```
-Chave: AIzaSyDvio5w5mQVZWZGBnPrys1uTwTQBglmFms
+Chave: YOUR_GOOGLE_MAPS_API_KEY_HERE
 Arquivos: dist/assets/GoogleMapSimple-*.js, dist/assets/MapTestPage-*.js
 Risco: Média (API key com restrições)
 ```
@@ -92,7 +92,7 @@ GOOGLE_PLACES_API_KEY=nova_chave_aqui  # SEM prefixo VITE_
 
 #### 1.4 Deletar Chave Antiga
 1. Google Cloud Console → Credentials
-2. Localizar chave antiga: `AIzaSyDvio5w5mQVZWZGBnPrys1uTwTQBglmFms`
+2. Localizar chave antiga: `YOUR_GOOGLE_MAPS_API_KEY_HERE`
 3. Clicar "Delete"
 4. Confirmar deleção
 

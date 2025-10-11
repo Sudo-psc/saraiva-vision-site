@@ -21,14 +21,14 @@ A API do Google Maps não está carregando na produção devido a **faturamento 
 ### ✅ Configuração Correta (Sistema)
 
 1. **Variáveis de Ambiente**: ✅ Configuradas corretamente
-   - `GOOGLE_MAPS_API_KEY=AIzaSyDvio5w5mQVZWZGBnPrys1uTwTQBglmFms`
-   - `VITE_GOOGLE_MAPS_API_KEY=AIzaSyDvio5w5mQVZWZGBnPrys1uTwTQBglmFms`
+   - `GOOGLE_MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY_HERE`
+   - `VITE_GOOGLE_MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY_HERE`
    - `GOOGLE_PLACE_ID=ChIJVUKww7WRugARF7u2lAe7BeE`
 
 2. **Endpoint /api/config**: ✅ Funcionando corretamente
    ```bash
    curl https://saraivavision.com.br/api/config
-   # Retorna: {"googleMapsApiKey":"AIzaSyDvio5w5mQVZWZGBnPrys1uTwTQBglmFms",...}
+   # Retorna: {"googleMapsApiKey":"YOUR_GOOGLE_MAPS_API_KEY_HERE",...}
    ```
 
 3. **CSP Headers**: ✅ Domínios permitidos
@@ -55,7 +55,7 @@ A API do Google Maps não está carregando na produção devido a **faturamento 
 ### Passo 1: Habilitar Faturamento no Google Cloud Console
 
 1. Acesse: https://console.cloud.google.com/apis/credentials
-2. Selecione o projeto que contém a chave `AIzaSyDvio5w5mQVZWZGBnPrys1uTwTQBglmFms`
+2. Selecione o projeto que contém a chave `YOUR_GOOGLE_MAPS_API_KEY_HERE`
 3. Vá para: **Billing** → **Link a billing account**
 4. Habilite o faturamento (Google oferece $200 de créditos gratuitos mensais)
 
@@ -87,7 +87,7 @@ Após habilitar o faturamento, execute:
 
 ```bash
 # 1. Testar Places API
-curl "https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJVUKww7WRugARF7u2lAe7BeE&key=AIzaSyDvio5w5mQVZWZGBnPrys1uTwTQBglmFms&fields=name,rating"
+curl "https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJVUKww7WRugARF7u2lAe7BeE&key=YOUR_GOOGLE_MAPS_API_KEY_HERE&fields=name,rating"
 
 # 2. Testar no navegador
 # Acesse: https://saraivavision.com.br
@@ -110,7 +110,7 @@ curl https://saraivavision.com.br/api/config | jq '.googleMapsApiKey'
 
 ## 🔐 Segurança da Chave Atual
 
-A chave `AIzaSyDvio5w5mQVZWZGBnPrys1uTwTQBglmFms` está:
+A chave `YOUR_GOOGLE_MAPS_API_KEY_HERE` está:
 
 - ✅ Não exposta no bundle JavaScript (carregamento runtime)
 - ✅ Servida via endpoint seguro `/api/config`

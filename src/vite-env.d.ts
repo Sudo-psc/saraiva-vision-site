@@ -1,11 +1,12 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  // Supabase Configuration
+  // Supabase Configuration (Public Keys Only)
   readonly VITE_SUPABASE_URL: string
   readonly VITE_SUPABASE_ANON_KEY: string
-  readonly VITE_SUPABASE_SERVICE_ROLE_KEY: string
-  
+  // ⚠️ REMOVED: VITE_SUPABASE_SERVICE_ROLE_KEY - NEVER expose admin keys to frontend!
+  // Service role keys must ONLY be used in backend (Node.js/Express) via process.env
+
   // Analytics Configuration
   readonly VITE_POSTHOG_KEY: string
   

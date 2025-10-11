@@ -13,7 +13,14 @@ from PIL import Image
 from io import BytesIO
 
 # Configuration
-API_KEY = os.environ.get('GOOGLE_GEMINI_API_KEY', 'AIzaSyDpN-4P56jJu-PJuBufaM4tor7o1j-wjO0')
+# ⚠️ SECURITY: API key MUST be set as environment variable - NO FALLBACK!
+# Set with: export GOOGLE_GEMINI_API_KEY="your_key_here"
+API_KEY = os.environ.get('GOOGLE_GEMINI_API_KEY')
+if not API_KEY:
+    raise ValueError(
+        "ERROR: GOOGLE_GEMINI_API_KEY environment variable not set.\n"
+        "Please set it with: export GOOGLE_GEMINI_API_KEY='your_key_here'"
+    )
 OUTPUT_DIR = Path(__file__).parent.parent / "public" / "Blog"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 

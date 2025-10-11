@@ -14,6 +14,13 @@ build/
 .env.backup
 .env.*.backup
 *.env.backup
+.env*.new
+.env.*.new
+
+# Scripts with API keys (NEVER COMMIT!)
+generate_retinopathy*.sh
+generate_retinopathy*.py
+*_with_api_key.*
 
 # Logs
 *.log

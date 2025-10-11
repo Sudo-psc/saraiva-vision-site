@@ -166,7 +166,7 @@ Google Places API key not configured
 
 ### 1. **Google Reviews API Key**
 - **Status:** Configurada mas requer validação
-- **Ação:** Verificar se chave `AIzaSyDvio5w5mQVZWZGBnPrys1uTwTQBglmFms` está ativa
+- **Ação:** Verificar se chave `YOUR_GOOGLE_MAPS_API_KEY_HERE` está ativa
 
 ### 2. **analytics.saraivavision.com.br SSL**
 - **Problema:** ERR_CERT_COMMON_NAME_INVALID
