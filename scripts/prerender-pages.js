@@ -123,6 +123,9 @@ function generatePrerenderedHTML(route, metadata, assets) {
     <meta name="keywords" content="${metadata.keywords}" />
     <link rel="canonical" href="${metadata.canonicalUrl}" />
 
+    <!-- Facebook Domain Verification -->
+    <meta name="facebook-domain-verification" content="tca7o4kjixltbutycd2650bdpisp5b" />
+
     <!-- Open Graph -->
     <meta property="og:title" content="${metadata.title}" />
     <meta property="og:description" content="${metadata.description}" />
