@@ -24,13 +24,11 @@ export function PostHogProvider({ children }) {
 
     // Skip initialization if no key provided
     if (!posthogKey) {
-      console.warn('[PostHog] API key not configured - analytics disabled');
       return;
     }
 
     // Skip initialization in development unless explicitly enabled
     if (import.meta.env.DEV && !import.meta.env.VITE_POSTHOG_ENABLE_DEV) {
-      console.info('[PostHog] Development mode - analytics disabled');
       return;
     }
 
@@ -67,7 +65,6 @@ export function PostHogProvider({ children }) {
           setIsInitialized(true);
 
           if (import.meta.env.DEV) {
-            console.info('[PostHog] Initialized successfully');
             posthogInstance.debug(true);
           }
 
@@ -82,8 +79,7 @@ export function PostHogProvider({ children }) {
                   const beacon = new SafeBeacon(url);
                   beacon.send(typeof data === 'string' ? data : JSON.stringify(data))
                     .then(() => callback?.({ status: 1 }))
-                    .catch((error) => {
-                      console.error('[PostHog] Send error:', error);
+                    .catch(() => {
                       callback?.({ status: 0 });
                     });
                 } else {
@@ -91,7 +87,6 @@ export function PostHogProvider({ children }) {
                   originalSend(url, data, options, callback);
                 }
               } catch (error) {
-                console.error('[PostHog] Transport error:', error);
                 callback?.({ status: 0 });
               }
             };
@@ -114,8 +109,8 @@ export function PostHogProvider({ children }) {
         },
 
         // Error handling
-        on_xhr_error: (req) => {
-          console.error('[PostHog] XHR error:', req);
+        on_xhr_error: () => {
+          // XHR errors are non-critical for analytics
         }
       });
 
@@ -125,11 +120,9 @@ export function PostHogProvider({ children }) {
       // Handle page visibility changes to prevent InvalidStateError
       const handleVisibilityChange = () => {
         if (document.hidden) {
-          console.log('[PostHog] Page hidden, pausing capture');
           // Don't send events when page is hidden
           posthog.opt_out_capturing();
         } else {
-          console.log('[PostHog] Page visible, resuming capture');
           if (!isOptedOut) {
             posthog.opt_in_capturing();
           }
@@ -144,7 +137,8 @@ export function PostHogProvider({ children }) {
       };
 
     } catch (error) {
-      console.error('[PostHog] Initialization failed:', error);
+      // CRITICAL: PostHog initialization failure
+      console.error('PostHog initialization failed:', error);
     }
   }, [isOptedOut]);
 
@@ -160,12 +154,8 @@ export function PostHogProvider({ children }) {
         page_url: window.location.pathname,
         user_agent: navigator.userAgent
       });
-
-      if (import.meta.env.DEV) {
-        console.info(`[PostHog] Event tracked: ${eventName}`, properties);
-      }
     } catch (error) {
-      console.error(`[PostHog] Failed to track event ${eventName}:`, error);
+      // Event tracking failure is non-critical
     }
   }, [isInitialized, isOptedOut]);
 
@@ -178,12 +168,8 @@ export function PostHogProvider({ children }) {
         ...properties,
         platform: 'saraiva-vision-web'
       });
-
-      if (import.meta.env.DEV) {
-        console.info('[PostHog] User identified:', userId);
-      }
     } catch (error) {
-      console.error('[PostHog] Failed to identify user:', error);
+      // User identification failure is non-critical
     }
   }, [isInitialized, isOptedOut]);
 
@@ -193,12 +179,8 @@ export function PostHogProvider({ children }) {
 
     try {
       posthog.reset();
-
-      if (import.meta.env.DEV) {
-        console.info('[PostHog] User session reset');
-      }
     } catch (error) {
-      console.error('[PostHog] Failed to reset user:', error);
+      // Session reset failure is non-critical
     }
   }, [isInitialized]);
 
@@ -209,7 +191,6 @@ export function PostHogProvider({ children }) {
     try {
       return posthog.isFeatureEnabled(flagName) ?? defaultValue;
     } catch (error) {
-      console.warn(`[PostHog] Failed to check feature flag ${flagName}:`, error);
       return defaultValue;
     }
   }, [isInitialized]);
@@ -222,7 +203,6 @@ export function PostHogProvider({ children }) {
       const value = posthog.getFeatureFlag(flagName);
       return value !== undefined ? value : defaultValue;
     } catch (error) {
-      console.warn(`[PostHog] Failed to get feature flag ${flagName}:`, error);
       return defaultValue;
     }
   }, [isInitialized]);
@@ -234,12 +214,8 @@ export function PostHogProvider({ children }) {
     try {
       posthog.opt_out_capturing();
       setIsOptedOut(true);
-
-      if (import.meta.env.DEV) {
-        console.info('[PostHog] User opted out of tracking');
-      }
     } catch (error) {
-      console.error('[PostHog] Failed to opt out:', error);
+      // Opt-out failure is non-critical
     }
   }, [isInitialized]);
 
@@ -250,12 +226,8 @@ export function PostHogProvider({ children }) {
     try {
       posthog.opt_in_capturing();
       setIsOptedOut(false);
-
-      if (import.meta.env.DEV) {
-        console.info('[PostHog] User opted in to tracking');
-      }
     } catch (error) {
-      console.error('[PostHog] Failed to opt in:', error);
+      // Opt-in failure is non-critical
     }
   }, [isInitialized]);
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import createLazyComponent from './utils/lazyLoading.jsx';
+import createLazyComponent from '@/utils/lazyLoading.jsx';
 
 // Code splitting das rotas para melhorar TTI inicial da Home com retry logic
 const HomePageLayout = createLazyComponent(() => import('./pages/HomePageLayout.jsx'));
@@ -16,6 +16,7 @@ const PodcastPageConsolidated = createLazyComponent(() => import('./pages/Podcas
 
 const BlogPage = createLazyComponent(() => import('./pages/BlogPage.jsx'));
 const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
+const PlanosOnlinePage = createLazyComponent(() => import('./pages/PlanosOnlinePage.jsx'));
 const GoogleReviewsTestPage = createLazyComponent(() => import('./pages/GoogleReviewsTestPage.jsx'));
 const MapTestPage = createLazyComponent(() => import('./pages/MapTestPage.jsx'));
 const AgendamentoPage = createLazyComponent(() => import('./pages/AgendamentoPage.jsx'));
@@ -30,7 +31,7 @@ import ServiceWorkerUpdateNotification from './components/ServiceWorkerUpdateNot
 import Navbar from './components/Navbar.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import Accessibility from './components/Accessibility.jsx';
-import { WidgetProvider } from './utils/widgetManager.jsx';
+import { WidgetProvider } from '@/utils/widgetManager.jsx';
 import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
 import GoogleAnalytics from './components/GoogleAnalytics.jsx';
 import AnalyticsFallback from '@/components/AnalyticsFallback.jsx';
@@ -57,58 +58,59 @@ function App() {
     <HelmetProvider>
       <LocalBusinessSchema />
       <GoogleAnalytics />
-          <WidgetProvider>
-            {/*
+      <WidgetProvider>
+        {/*
           Envolvemos apenas o conteúdo da aplicação em um wrapper dedicado.
           SCROLL NORMALIZADO: Container sem bloqueios que permite scroll fluido.
           Isso permite aplicar zoom/transform no conteúdo sem afetar widgets
           fixos (Chatbot IA, Acessibilidade, toasts, modais), que permanecem
           fora desse container e não sofrem com o bug de fixed + transform.
         */}
-             <div id="app-content">
-               <Navbar />
-               <ScrollToTop />
-               <ErrorBoundary>
-                  <Routes>
-                  <Route path="/" element={isCheckSubdomain ? <CheckPage /> : <HomePageLayout />} />
-                  <Route path="/check" element={<CheckPage />} />
-                  <Route path="/servicos" element={<ServicesPage />} />
-                  <Route path="/servicos/:serviceId" element={<ServiceDetailPage />} />
-                  {/* Redirecionamentos 301 para padronização de URLs */}
-                  <Route path="/servico/:serviceId" element={<ServiceRedirect />} />
-                  <Route path="/sobre" element={<AboutPage />} />
-                  <Route path="/lentes" element={<LensesPage />} />
-                  <Route path="/faq" element={<FAQPage />} />
-                  <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
-                  <Route path="/podcast" element={<PodcastPageConsolidated />} />
-                  <Route path="/podcast/:slug" element={<PodcastPageConsolidated />} />
-                  <Route path="/blog" element={<BlogPage />} />
-                  <Route path="/blog/:slug" element={<BlogPage />} />
-                  <Route path="/privacy" element={<PrivacyPolicyPage />} />
-                  <Route path="/agendamento" element={<AgendamentoPage />} />
-                  <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />
-                  <Route path="/map-test" element={<MapTestPage />} />
-                  <Route path="/wp-admin" element={<Navigate to="/blog" replace />} />
+        <div id="app-content">
+          <Navbar />
+          <ScrollToTop />
+          <ErrorBoundary>
+            <Routes>
+              <Route path="/" element={isCheckSubdomain ? <CheckPage /> : <HomePageLayout />} />
+              <Route path="/check" element={<CheckPage />} />
+              <Route path="/servicos" element={<ServicesPage />} />
+              <Route path="/servicos/:serviceId" element={<ServiceDetailPage />} />
+              {/* Redirecionamentos 301 para padronização de URLs */}
+              <Route path="/servico/:serviceId" element={<ServiceRedirect />} />
+              <Route path="/sobre" element={<AboutPage />} />
+              <Route path="/lentes" element={<LensesPage />} />
+              <Route path="/planosonline" element={<PlanosOnlinePage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
+              <Route path="/podcast" element={<PodcastPageConsolidated />} />
+              <Route path="/podcast/:slug" element={<PodcastPageConsolidated />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogPage />} />
+              <Route path="/privacy" element={<PrivacyPolicyPage />} />
+              <Route path="/agendamento" element={<AgendamentoPage />} />
+              <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />
+              <Route path="/map-test" element={<MapTestPage />} />
+              <Route path="/wp-admin" element={<Navigate to="/blog" replace />} />
 
-                  {isCheckSubdomain ? (
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                  ) : (
-                    <Route path="*" element={<NotFoundPage />} />
-                  )}
-                  </Routes>
-               </ErrorBoundary>
-            </div>
-            <Toaster />
-            <CTAModal />
-            <StickyCTA />
-            <CookieManager />
-            <ServiceWorkerUpdateNotification />
-              <Accessibility />
-            </WidgetProvider>
+              {isCheckSubdomain ? (
+                <Route path="*" element={<Navigate to="/" replace />} />
+              ) : (
+                <Route path="*" element={<NotFoundPage />} />
+              )}
+            </Routes>
+          </ErrorBoundary>
+        </div>
+        <Toaster />
+        <CTAModal />
+        <StickyCTA />
+        <CookieManager />
+        <ServiceWorkerUpdateNotification />
+        <Accessibility />
+      </WidgetProvider>
 
-          {/* Analytics Fallback para contornar bloqueadores */}
-          <AnalyticsFallback />
-        </HelmetProvider>
+      {/* Analytics Fallback para contornar bloqueadores */}
+      <AnalyticsFallback />
+    </HelmetProvider>
   );
 }
 

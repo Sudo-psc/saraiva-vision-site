@@ -42,7 +42,6 @@ class CachedGoogleBusinessService extends GoogleBusinessService {
         // Initialize the cache manager
         await this.cacheManager.initialize(cacheClients);
 
-        console.log('CachedGoogleBusinessService initialized successfully');
         return true;
     }
 
@@ -78,13 +77,11 @@ class CachedGoogleBusinessService extends GoogleBusinessService {
 
                 // If data is too stale, fetch fresh data
                 if (isTooStale) {
-                    console.log(`Cache too stale for ${locationId}, fetching fresh data`);
                     return await this.fetchFreshReviews(locationId, options);
                 }
 
                 // If data is stale but not too stale, use stale-while-revalidate
                 if (isStale && this.cacheConfig.enableStaleWhileRevalidate) {
-                    console.log(`Using stale data for ${locationId}, refreshing in background`);
                     this.backgroundRefresh(locationId, options);
                     return this.formatCachedResponse(cachedData, true); // Mark as stale
                 }
@@ -92,7 +89,6 @@ class CachedGoogleBusinessService extends GoogleBusinessService {
                 // If data is fresh enough, check if we should proactively refresh
                 const refreshThreshold = this.cacheManager.options.defaultTTL * this.cacheConfig.refreshThreshold;
                 if (cacheAge > refreshThreshold && this.cacheConfig.backgroundRefresh) {
-                    console.log(`Proactively refreshing cache for ${locationId}`);
                     this.backgroundRefresh(locationId, options);
                 }
 
@@ -101,21 +97,17 @@ class CachedGoogleBusinessService extends GoogleBusinessService {
             }
 
             // No cached data, fetch fresh
-            console.log(`No cached data for ${locationId}, fetching fresh`);
             return await this.fetchFreshReviews(locationId, options);
 
         } catch (error) {
-            console.error('Error in cached fetchReviews:', error);
-
             // Try to return stale data as fallback
             try {
                 const staleData = await this.cacheManager.getCachedReviews(locationId);
                 if (staleData) {
-                    console.log(`Returning stale data as fallback for ${locationId}`);
                     return this.formatCachedResponse(staleData, true);
                 }
             } catch (fallbackError) {
-                console.error('Fallback to stale data failed:', fallbackError);
+                // Fallback failed, re-throw original error
             }
 
             throw error;
@@ -155,12 +147,9 @@ class CachedGoogleBusinessService extends GoogleBusinessService {
             return freshData;
 
         } catch (error) {
-            console.error('Error in cached fetchBusinessInfo:', error);
-
             // Try to return cached data as fallback
             const fallbackData = await this.getCachedBusinessInfo(locationId);
             if (fallbackData) {
-                console.log(`Returning cached business info as fallback for ${locationId}`);
                 return fallbackData;
             }
 
@@ -200,12 +189,9 @@ class CachedGoogleBusinessService extends GoogleBusinessService {
             return freshStats;
 
         } catch (error) {
-            console.error('Error in cached getReviewStats:', error);
-
             // Try to return cached stats as fallback
             const fallbackStats = await this.getCachedReviewStats(locationId);
             if (fallbackStats) {
-                console.log(`Returning cached stats as fallback for ${locationId}`);
                 return fallbackStats;
             }
 
@@ -225,10 +211,8 @@ class CachedGoogleBusinessService extends GoogleBusinessService {
                 this.invalidateStatsCache(locationId)
             ]);
 
-            console.log(`Cache invalidated for location ${locationId}`);
             return true;
         } catch (error) {
-            console.error('Error invalidating location cache:', error);
             throw error;
         }
     }
@@ -239,8 +223,6 @@ class CachedGoogleBusinessService extends GoogleBusinessService {
      */
     async warmLocationCache(locationId) {
         try {
-            console.log(`Warming cache for location ${locationId}`);
-
             const promises = [
                 this.fetchReviews(locationId, { forceRefresh: true }),
                 this.fetchBusinessInfo(locationId, { forceRefresh: true }),
@@ -248,10 +230,8 @@ class CachedGoogleBusinessService extends GoogleBusinessService {
             ];
 
             await Promise.allSettled(promises);
-            console.log(`Cache warmed for location ${locationId}`);
             return true;
         } catch (error) {
-            console.error('Error warming location cache:', error);
             throw error;
         }
     }
@@ -274,10 +254,8 @@ class CachedGoogleBusinessService extends GoogleBusinessService {
         try {
             await this.cacheManager.clearAll();
             this.refreshPromises.clear();
-            console.log('All caches cleared');
             return true;
         } catch (error) {
-            console.error('Error clearing caches:', error);
             throw error;
         }
     }
@@ -327,11 +305,8 @@ class CachedGoogleBusinessService extends GoogleBusinessService {
      */
     async performBackgroundRefresh(locationId, options) {
         try {
-            console.log(`Background refresh started for ${locationId}`);
             await this.fetchFreshReviews(locationId, options);
-            console.log(`Background refresh completed for ${locationId}`);
         } catch (error) {
-            console.error(`Background refresh failed for ${locationId}:`, error);
             // Don't throw - background refresh failures shouldn't affect the main request
         }
     }

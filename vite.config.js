@@ -16,6 +16,8 @@ const plugins = [
     // Include refresh for development
     include: '**/*.{jsx,tsx}'
    })
+  // Note: removeConsolePlugin() disabled due to aggressive regex causing syntax errors
+  // Manual console removal applied to critical files instead
  ]
 
 // Workbox plugin disabled for stable deployment

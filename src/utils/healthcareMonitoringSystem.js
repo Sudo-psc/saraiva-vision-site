@@ -39,8 +39,6 @@ class HealthcareMonitoringSystem {
   async init() {
     if (this.isInitialized) return;
 
-    console.log('🏥 Initializing Healthcare Monitoring System...');
-
     try {
       // Initialize all subsystems
       await this.initializeSubsystems();
@@ -57,8 +55,6 @@ class HealthcareMonitoringSystem {
       this.isInitialized = true;
       this.monitoringActive = true;
 
-      console.log('✅ Healthcare Monitoring System initialized successfully');
-
       // Send initialization event
       this.recordEvent('system_initialized', {
         category: 'system_availability',
@@ -67,7 +63,8 @@ class HealthcareMonitoringSystem {
       });
 
     } catch (error) {
-      console.error('❌ Healthcare Monitoring System initialization failed:', error);
+      // CRITICAL: Monitoring system initialization failure
+      console.error('Healthcare Monitoring System initialization failed:', error);
       this.recordEvent('system_init_failed', {
         category: 'system_availability',
         level: 'critical',
@@ -78,8 +75,6 @@ class HealthcareMonitoringSystem {
 
   // Initialize all subsystems
   async initializeSubsystems() {
-    console.log('🔧 Initializing healthcare subsystems...');
-
     const subsystems = [
       { name: 'session_manager', instance: healthcareSessionManager },
       { name: 'token_manager', instance: healthcareTokenManager },
@@ -91,9 +86,7 @@ class HealthcareMonitoringSystem {
         if (typeof subsystem.instance.init === 'function') {
           await subsystem.instance.init();
         }
-        console.log(`✅ ${subsystem.name} initialized`);
       } catch (error) {
-        console.error(`❌ ${subsystem.name} initialization failed:`, error);
         this.recordEvent(`${subsystem.name}_init_failed`, {
           category: 'system_availability',
           level: 'critical',
@@ -289,10 +282,9 @@ class HealthcareMonitoringSystem {
       case 'error':
         return console.error;
       case 'warning':
-        return console.warn;
       case 'info':
       default:
-        return console.log;
+        return () => {}; // No-op for non-critical logs
     }
   }
 
@@ -324,7 +316,7 @@ class HealthcareMonitoringSystem {
         });
       }
     } catch (error) {
-      console.warn('⚠️ Failed to send event to analytics:', error);
+      // Analytics failure is non-critical
     }
   }
 
@@ -343,13 +335,14 @@ class HealthcareMonitoringSystem {
 
       localStorage.setItem(storageKey, JSON.stringify(existingEvents));
     } catch (error) {
-      console.warn('⚠️ Failed to store event locally:', error);
+      // Local storage failure is non-critical
     }
   }
 
   // Send immediate alert for critical events
   sendImmediateAlert(event) {
-    console.error('🚨 CRITICAL HEALTHCARE ALERT:', event);
+    // CRITICAL: Healthcare alert
+    console.error('CRITICAL HEALTHCARE ALERT:', event);
 
     // Create visual alert for clinic staff
     this.showCriticalAlert(event);
@@ -376,7 +369,6 @@ class HealthcareMonitoringSystem {
         // Atualiza timestamp leve (sem poluir interface)
         const timeEl = alertData.element.querySelector('[data-alert-time]');
         if (timeEl) timeEl.textContent = new Date().toLocaleTimeString();
-        console.info(`🔁 Alerta crítico duplicado suprimido (${key}) – total: ${alertData.count}`);
         return; // Não recria
       }
 
@@ -441,7 +433,7 @@ class HealthcareMonitoringSystem {
       }, AUTO_DISMISS_MS);
       alertElement.dataset.timeoutId = timeoutId;
     } catch (e) {
-      console.warn('⚠️ Falha ao exibir alerta crítico:', e);
+      // Visual alert failure is non-critical
     }
   }
 
@@ -506,7 +498,7 @@ class HealthcareMonitoringSystem {
         }
       }
     } catch (error) {
-      console.warn('⚠️ Performance metrics collection failed:', error);
+      // Performance metrics collection failure is non-critical
     }
   }
 
@@ -539,7 +531,7 @@ class HealthcareMonitoringSystem {
         }
       }
     } catch (error) {
-      console.warn('⚠️ Memory monitoring failed:', error);
+      // Memory monitoring failure is non-critical
     }
   }
 
@@ -558,7 +550,6 @@ class HealthcareMonitoringSystem {
         }
       });
     } catch (error) {
-      console.warn('⚠️ Critical services monitoring failed:', error);
     }
   }
 
@@ -572,8 +563,6 @@ class HealthcareMonitoringSystem {
 
   // Perform comprehensive system health check
   async performSystemHealthCheck() {
-    console.log('🔍 Performing healthcare system health check...');
-
     const healthReport = {
       timestamp: new Date().toISOString(),
       overall: 'healthy',
@@ -621,7 +610,7 @@ class HealthcareMonitoringSystem {
       });
 
     } catch (error) {
-      console.error('❌ Health check failed:', error);
+      // CRITICAL: Health check failure
       this.recordEvent('health_check_failed', {
         category: 'system_availability',
         level: 'error',
