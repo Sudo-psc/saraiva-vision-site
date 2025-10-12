@@ -16,7 +16,14 @@ const PodcastPageConsolidated = createLazyComponent(() => import('./pages/Podcas
 
 const BlogPage = createLazyComponent(() => import('./pages/BlogPage.jsx'));
 const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
+const PlansPage = createLazyComponent(() => import('./pages/PlansPage.jsx'));
+const PlanBasicoPage = createLazyComponent(() => import('./pages/PlanBasicoPage.jsx'));
+const PlanPadraoPage = createLazyComponent(() => import('./pages/PlanPadraoPage.jsx'));
+const PlanPremiumPage = createLazyComponent(() => import('./pages/PlanPremiumPage.jsx'));
 const PlanosOnlinePage = createLazyComponent(() => import('./pages/PlanosOnlinePage.jsx'));
+const PagamentoBasicoPage = createLazyComponent(() => import('./pages/PagamentoBasicoPage.jsx'));
+const PagamentoPadraoPage = createLazyComponent(() => import('./pages/PagamentoPadraoPage.jsx'));
+const PagamentoPremiumPage = createLazyComponent(() => import('./pages/PagamentoPremiumPage.jsx'));
 const PagamentoBasicoOnlinePage = createLazyComponent(() => import('./pages/PagamentoBasicoOnlinePage.jsx'));
 const PagamentoPadraoOnlinePage = createLazyComponent(() => import('./pages/PagamentoPadraoOnlinePage.jsx'));
 const PagamentoPremiumOnlinePage = createLazyComponent(() => import('./pages/PagamentoPremiumOnlinePage.jsx'));
@@ -82,9 +89,16 @@ function App() {
               <Route path="/servico/:serviceId" element={<ServiceRedirect />} />
               <Route path="/sobre" element={<AboutPage />} />
               <Route path="/lentes" element={<LensesPage />} />
+              <Route path="/planos" element={<PlansPage />} />
+              <Route path="/planobasico" element={<PlanBasicoPage />} />
+              <Route path="/planopadrao" element={<PlanPadraoPage />} />
+              <Route path="/planopremium" element={<PlanPremiumPage />} />
               <Route path="/planosonline" element={<PlanosOnlinePage />} />
-              {/* Redirect /planos to /planosonline */}
-              <Route path="/planos" element={<Navigate to="/planosonline" replace />} />
+              {/* Páginas de pagamento presencial */}
+              <Route path="/pagamentobasico" element={<PagamentoBasicoPage />} />
+              <Route path="/pagamentopadrao" element={<PagamentoPadraoPage />} />
+              <Route path="/pagamentopremium" element={<PagamentoPremiumPage />} />
+              {/* Páginas de pagamento online */}
               <Route path="/pagamentobasicoonline" element={<PagamentoBasicoOnlinePage />} />
               <Route path="/pagamentopadraoonline" element={<PagamentoPadraoOnlinePage />} />
               <Route path="/pagamentopremiumonline" element={<PagamentoPremiumOnlinePage />} />

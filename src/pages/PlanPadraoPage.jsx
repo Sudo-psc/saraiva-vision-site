@@ -40,7 +40,7 @@ const PlanPadraoPage = () => {
 
   const features = [
     'Todos os benefícios do Plano Básico',
-    '24 pares de lentes gelatinosas premium',
+    '13 pares de lentes gelatinosas premium',
     '2 consultas presenciais por ano',
     'Consultas de telemedicina ilimitadas',
     'Prioridade no agendamento',
@@ -52,7 +52,7 @@ const PlanPadraoPage = () => {
   const extraBenefits = [
     {
       title: 'Lentes Premium',
-      description: '24 pares de lentes de alta qualidade por ano'
+      description: '13 pares de lentes de alta qualidade por ano'
     },
     {
       title: 'Telemedicina Ilimitada',

@@ -57,7 +57,7 @@ const PlansPage = () => {
       description: 'Nosso plano mais completo com benefícios adicionais para quem busca máximo conforto e acompanhamento profissional.',
       features: [
         'Todos os benefícios do Plano Básico',
-        '24 pares de lentes gelatinosas premium',
+        '13 pares de lentes gelatinosas premium',
         '2 consultas presenciais por ano',
         'Consultas de telemedicina ilimitadas',
         'Prioridade no agendamento',

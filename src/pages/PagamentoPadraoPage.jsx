@@ -56,7 +56,7 @@ const PagamentoPadraoPage = () => {
             <div className="space-y-2">
               <div className="flex items-center justify-center gap-2 text-sm text-gray-700">
                 <CheckCircle className="w-4 h-4 text-gray-600" />
-                <span>24 pares de lentes premium</span>
+                <span>13 pares de lentes premium</span>
               </div>
               <div className="flex items-center justify-center gap-2 text-sm text-gray-700">
                 <CheckCircle className="w-4 h-4 text-gray-600" />

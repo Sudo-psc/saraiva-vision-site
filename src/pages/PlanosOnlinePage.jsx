@@ -52,7 +52,7 @@ const PlanosOnlinePage = () => {
       description: 'Plano completo com lentes premium e acompanhamento online prioritário.',
       features: [
         'Todos os benefícios do Plano Básico',
-        '24 pares de lentes gelatinosas premium',
+        '13 pares de lentes gelatinosas premium',
         'Telemedicina ilimitada prioritária',
         'Prioridade no agendamento',
         'Frete expresso grátis',
