@@ -232,6 +232,31 @@ const PlansPage = () => {
           </div>
         </section>
 
+        {/* CTA para Planos Online */}
+        <section className="mb-6">
+          <div className="max-w-4xl mx-auto bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-shadow">
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 bg-green-200 text-green-800 px-4 py-2 rounded-full text-sm font-bold mb-4">
+                <Package className="w-5 h-5" />
+                <span>100% ONLINE</span>
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
+                Está Fora de MG? Conheça Nossos Planos 100% Online!
+              </h3>
+              <p className="text-gray-700 mb-5 leading-relaxed">
+                Telemedicina ilimitada + Entrega em todo Brasil + Preços mais acessíveis
+              </p>
+              <Link
+                to="/planosonline"
+                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-3.5 px-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+              >
+                Ver Planos Online
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Benefits Section */}
         <section className="mb-6">
           <div className="bg-gradient-to-r from-cyan-600 to-cyan-700 rounded-2xl p-5 md:p-6 text-white shadow-xl">

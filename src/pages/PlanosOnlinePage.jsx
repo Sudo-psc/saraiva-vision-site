@@ -30,7 +30,7 @@ const PlanosOnlinePage = () => {
       description: 'Plano básico de lentes de contato com acompanhamento 100% online via telemedicina.',
       features: [
         '12 pares de lentes gelatinosas asféricas',
-        'Consultas por telemedicina ilimitadas',
+        '1 consulta de telemedicina por ano',
         'Acompanhamento médico mensal online',
         'Lembretes mensais de troca',
         'Entrega em casa sem custo adicional',
@@ -53,7 +53,7 @@ const PlanosOnlinePage = () => {
       features: [
         'Todos os benefícios do Plano Básico',
         '13 pares de lentes gelatinosas premium',
-        'Telemedicina ilimitada prioritária',
+        '2 consultas de telemedicina por ano',
         'Prioridade no agendamento',
         'Frete expresso grátis',
         'Suporte via WhatsApp 24/7'
@@ -75,9 +75,8 @@ const PlanosOnlinePage = () => {
       features: [
         'Todos os benefícios do Plano Padrão',
         '14 pares de lentes premium multifocais',
-        'Telemedicina VIP com especialistas',
+        '4 consultas de telemedicina por ano',
         'Kit premium de higienização',
-        'Consultas online a qualquer momento',
         'Atendimento personalizado exclusivo'
       ],
       highlight: false
@@ -231,7 +230,7 @@ const PlanosOnlinePage = () => {
                 </div>
                 <div className="flex items-start gap-2 bg-white/10 backdrop-blur-sm rounded-xl p-3">
                   <CheckCircle className="w-5 h-5 text-cyan-200 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm md:text-base">Telemedicina ilimitada com oftalmologistas</span>
+                  <span className="text-sm md:text-base">Consultas de telemedicina com oftalmologistas</span>
                 </div>
                 <div className="flex items-start gap-2 bg-white/10 backdrop-blur-sm rounded-xl p-3">
                   <CheckCircle className="w-5 h-5 text-cyan-200 flex-shrink-0 mt-0.5" />
