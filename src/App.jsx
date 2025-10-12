@@ -17,6 +17,7 @@ const PodcastPageConsolidated = createLazyComponent(() => import('./pages/Podcas
 const BlogPage = createLazyComponent(() => import('./pages/BlogPage.jsx'));
 const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
 const PlanosOnlinePage = createLazyComponent(() => import('./pages/PlanosOnlinePage.jsx'));
+const PagamentoBasicoOnlinePage = createLazyComponent(() => import('./pages/PagamentoBasicoOnlinePage.jsx'));
 const GoogleReviewsTestPage = createLazyComponent(() => import('./pages/GoogleReviewsTestPage.jsx'));
 const MapTestPage = createLazyComponent(() => import('./pages/MapTestPage.jsx'));
 const AgendamentoPage = createLazyComponent(() => import('./pages/AgendamentoPage.jsx'));
@@ -36,7 +37,7 @@ import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
 import GoogleAnalytics from './components/GoogleAnalytics.jsx';
 import AnalyticsFallback from '@/components/AnalyticsFallback.jsx';
 
-import { initErrorTracking } from './utils/errorTracking.js';
+import { initErrorTracking } from '@/utils/errorTracking.js';
 
 function App() {
   const isCheckSubdomain =
@@ -80,6 +81,7 @@ function App() {
               <Route path="/sobre" element={<AboutPage />} />
               <Route path="/lentes" element={<LensesPage />} />
               <Route path="/planosonline" element={<PlanosOnlinePage />} />
+              <Route path="/pagamentobasicoonline" element={<PagamentoBasicoOnlinePage />} />
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
               <Route path="/podcast" element={<PodcastPageConsolidated />} />
