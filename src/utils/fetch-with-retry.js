@@ -114,12 +114,23 @@ export class CircuitBreaker {
    * Obtém status atual do circuit breaker
    */
   getStatus() {
+    // Compute canRequest non-mutatively
+    let canRequestValue;
+    if (this.state === CircuitState.CLOSED) {
+      canRequestValue = true;
+    } else if (this.state === CircuitState.OPEN) {
+      canRequestValue = Date.now() >= this.nextAttempt;
+    } else {
+      // HALF_OPEN
+      canRequestValue = true;
+    }
+
     return {
       state: this.state,
       failures: this.failures,
       successes: this.successes,
       nextAttempt: this.nextAttempt,
-      canRequest: this.canRequest()
+      canRequest: canRequestValue
     };
   }
 

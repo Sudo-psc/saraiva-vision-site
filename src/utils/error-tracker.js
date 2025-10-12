@@ -328,10 +328,17 @@ export function trackWithLevel(level, error, context = {}) {
 /**
  * Handler para window.onerror
  */
-function handleWindowError(message, source, lineno, colno, error) {
-  track(error || new Error(message), {
+function handleWindowError(event) {
+  // Extract error information from ErrorEvent
+  const message = event.message || 'Unknown error';
+  const filename = event.filename || '';
+  const lineno = event.lineno || 0;
+  const colno = event.colno || 0;
+  const error = event.error || new Error(message);
+
+  track(error, {
     type: 'window.onerror',
-    url: source,
+    url: filename,
     line: lineno,
     column: colno
   });

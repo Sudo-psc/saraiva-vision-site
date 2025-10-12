@@ -59,9 +59,9 @@ jobs:
           CRITICAL=$(cat audit-report.json | jq '.metadata.vulnerabilities.critical')
           HIGH=$(cat audit-report.json | jq '.metadata.vulnerabilities.high')
 
-          if [ "$CRITICAL" -gt "0" ] || [ "$HIGH" -gt "5" ]; then
+          if [ "$CRITICAL" -gt "0" ] || [ "$HIGH" -gt "0" ]; then
             echo "❌ Security vulnerabilities found!"
-            echo "::error::Found $CRITICAL critical and $HIGH high vulnerabilities"
+            echo "::error::Found $CRITICAL critical and $HIGH high vulnerabilities - any high or critical vulnerability triggers failure"
             exit 1
           fi
 

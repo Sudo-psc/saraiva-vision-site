@@ -10,6 +10,7 @@
  */
 
 import blogPostsLoader from '../data/blogPostsLoader.js';
+import { blogPosts as legacyPosts } from '../data/blogPosts.js';
 
 /**
  * Category Configuration (lightweight, always available)
@@ -63,13 +64,20 @@ let legacyBlogPostsCache = null;
 const getLegacyBlogPosts = () => {
   if (legacyBlogPostsCache) return legacyBlogPostsCache;
 
-  // Synchronous require (blocks main thread)
-  // Only used as fallback for components that can't be async
+  // Use static import for SSR environments, avoid require in browser
+  if (typeof window === 'undefined') {
+    // SSR environment - use static import
+    legacyBlogPostsCache = legacyPosts;
+    return legacyBlogPostsCache;
+  }
+
+  // Browser environment - return cached posts or empty array
+  // Client bundles should use async API instead
   try {
-    const { blogPosts: posts } = require('../data/blogPosts.js');
-    legacyBlogPostsCache = posts;
-    return posts;
+    legacyBlogPostsCache = legacyPosts;
+    return legacyBlogPostsCache;
   } catch (error) {
+    console.warn('Legacy blog posts not available in browser environment, use async API instead');
     return [];
   }
 };

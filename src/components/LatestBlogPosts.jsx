@@ -9,21 +9,29 @@ import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import OptimizedImage from '@/components/blog/OptimizedImage';
 import { getPostEnrichment } from '@/data/blogPostsEnrichment';
+import { normalizeToArray } from '@/utils/safeFetch';
 
 const LatestBlogPosts = () => {
     const { t, i18n } = useTranslation();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const loadPosts = () => {
+        const loadPosts = async () => {
             try {
                 setLoading(true);
-                // Get the 3 most recent posts from static blog data
-                const recentPosts = getRecentPosts(3);
-                setPosts(recentPosts);
+                setError(null);
+                // Get the 3 most recent posts from static blog data (ASYNC)
+                const recentPosts = await getRecentPosts(3);
+
+                // Normalize to ensure it's always an array
+                const normalizedPosts = normalizeToArray(recentPosts, 'LatestBlogPosts');
+
+                setPosts(normalizedPosts);
             } catch (error) {
-                console.error('Erro ao carregar posts do blog:', error);
+                console.error('[LatestBlogPosts] Erro ao carregar posts do blog:', error);
+                setError(error.message);
                 setPosts([]);
             } finally {
                 setLoading(false);
@@ -161,6 +169,22 @@ const LatestBlogPosts = () => {
                     </h3>
                     <p className="text-yellow-700 text-sm mt-2">
                         {t('blog.preview_unavailable_desc', 'Em breve você encontrará os últimos artigos aqui.')}
+                    </p>
+                </div>
+            );
+        }
+
+        // Extra safety: ensure posts is an array before mapping
+        if (!Array.isArray(posts)) {
+            console.error('[LatestBlogPosts] Posts is not an array:', typeof posts);
+            return (
+                <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+                    <AlertTriangle className="w-12 h-12 mx-auto mb-3 text-red-600" />
+                    <h3 className="text-xl font-semibold text-red-900 mb-2">
+                        Erro de tipo de dados
+                    </h3>
+                    <p className="text-red-700 text-sm">
+                        Os dados do blog não estão no formato esperado. Por favor, recarregue a página.
                     </p>
                 </div>
             );

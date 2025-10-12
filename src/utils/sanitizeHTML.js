@@ -127,6 +127,7 @@ export function sanitizeHTML(html, options = {}) {
 
     // Log sanitization if content was modified
     if (sanitized !== html && process.env.NODE_ENV === 'development') {
+      console.log('HTML sanitized:', {
         originalLength: html.length,
         sanitizedLength: sanitized.length,
         removed: html.length - sanitized.length
@@ -148,6 +149,11 @@ export function sanitizeHTML(html, options = {}) {
  * @returns {string} Sanitized HTML with only safe JSON-LD content
  */
 function sanitizeSchemaMarkup(html) {
+  // SSR guard - return safe fallback if document is undefined
+  if (typeof document === 'undefined') {
+    return '';
+  }
+
   try {
     // Create a temporary DOM element to parse HTML
     const tempDiv = document.createElement('div');
@@ -219,7 +225,7 @@ export function createMarkup(html, options = {}) {
  */
 
 export function useSanitizedHTML(html, options = {}) {
-  return useMemo(() => createMarkup(html, options), [html, options]);
+  return useMemo(() => createMarkup(html, options), [html, JSON.stringify(options)]);
 }
 
 /**
@@ -300,6 +306,7 @@ export const sanitizers = {
  */
 export function auditDangerousHTML(componentName, html, options = {}) {
   if (process.env.NODE_ENV === 'development') {
+    console.log('DangerousHTML usage:', {
       component: componentName,
       htmlLength: html?.length || 0,
       isSanitized: options.sanitized !== false,

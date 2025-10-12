@@ -9,7 +9,7 @@ This document describes all environment files in the project, their purposes, an
 
 ## 🗂️ Environment File Structure
 
-```
+```text
 /home/saraiva-vision-site/
 ├── .env.example              # Template for all environment variables (COMMIT THIS)
 ├── .env.production           # Production configuration (DO NOT COMMIT)
@@ -141,6 +141,7 @@ api/.env
 ```
 
 ### 4. Secret Rotation Schedule
+
 | Secret Type | Rotation Frequency | Owner |
 |-------------|-------------------|-------|
 | API Keys | Every 90 days | DevOps |
@@ -226,7 +227,7 @@ npm run dev:vite    # Should start without errors
 ### Production Deployment
 ```bash
 # 1. SSH to production server
-ssh user@31.97.129.78
+ssh user@<production-server-ip>
 
 # 2. Navigate to deployment directory
 cd /var/www/saraivavision/current

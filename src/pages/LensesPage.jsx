@@ -1,13 +1,15 @@
 import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import { useLensesSEO } from '../hooks/useSEO';
 import EnhancedFooter from '../components/EnhancedFooter';
 import ContactLenses from '../components/ContactLenses';
-import { CheckCircle, Eye, Package } from 'lucide-react';
+import { CheckCircle, Eye, Package, ArrowRight } from 'lucide-react';
 
 const LensesPage = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const seoData = useLensesSEO();
   const videoRef = useRef(null);
 
@@ -194,6 +196,42 @@ const LensesPage = () => {
                   <span>Localizado em Caratinga/MG • Atendemos toda a região</span>
                 </p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Subscription Plans CTA Section */}
+        <section className="!mb-6 !pt-0 !pb-0">
+          <div className="bg-gradient-to-br from-slate-900 via-cyan-900 to-slate-900 rounded-2xl p-6 md:p-8 text-center shadow-2xl border-2 border-cyan-400/30 hover:border-cyan-400/50 transition-all">
+            <div className="max-w-3xl mx-auto">
+              <div className="inline-flex items-center gap-2 bg-cyan-400/20 backdrop-blur-sm text-cyan-200 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <Package className="w-5 h-5" />
+                <span>Planos de Assinatura</span>
+              </div>
+
+              <h3 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+                Pronto para começar?
+              </h3>
+
+              <p className="text-lg md:text-xl text-cyan-100 mb-6 leading-relaxed">
+                Escolha o plano ideal para você e tenha suas lentes de contato com entrega regular,
+                acompanhamento médico e muito mais!
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button
+                  onClick={() => navigate('/planosonline')}
+                  className="w-full sm:w-auto bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 flex items-center justify-center gap-3 group"
+                >
+                  <Package className="w-6 h-6" />
+                  <span className="text-lg">Ver Planos Disponíveis</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+
+              <p className="text-sm text-cyan-200/70 mt-4">
+                💳 Pagamento seguro via Asaas • 📦 Entrega em toda região
+              </p>
             </div>
           </div>
         </section>

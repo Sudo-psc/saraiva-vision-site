@@ -83,6 +83,8 @@ function App() {
               <Route path="/sobre" element={<AboutPage />} />
               <Route path="/lentes" element={<LensesPage />} />
               <Route path="/planosonline" element={<PlanosOnlinePage />} />
+              {/* Redirect /planos to /planosonline */}
+              <Route path="/planos" element={<Navigate to="/planosonline" replace />} />
               <Route path="/pagamentobasicoonline" element={<PagamentoBasicoOnlinePage />} />
               <Route path="/pagamentopadraoonline" element={<PagamentoPadraoOnlinePage />} />
               <Route path="/pagamentopremiumonline" element={<PagamentoPremiumOnlinePage />} />
