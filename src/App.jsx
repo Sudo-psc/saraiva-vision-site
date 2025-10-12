@@ -18,6 +18,8 @@ const BlogPage = createLazyComponent(() => import('./pages/BlogPage.jsx'));
 const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
 const PlanosOnlinePage = createLazyComponent(() => import('./pages/PlanosOnlinePage.jsx'));
 const PagamentoBasicoOnlinePage = createLazyComponent(() => import('./pages/PagamentoBasicoOnlinePage.jsx'));
+const PagamentoPadraoOnlinePage = createLazyComponent(() => import('./pages/PagamentoPadraoOnlinePage.jsx'));
+const PagamentoPremiumOnlinePage = createLazyComponent(() => import('./pages/PagamentoPremiumOnlinePage.jsx'));
 const GoogleReviewsTestPage = createLazyComponent(() => import('./pages/GoogleReviewsTestPage.jsx'));
 const MapTestPage = createLazyComponent(() => import('./pages/MapTestPage.jsx'));
 const AgendamentoPage = createLazyComponent(() => import('./pages/AgendamentoPage.jsx'));
@@ -82,6 +84,8 @@ function App() {
               <Route path="/lentes" element={<LensesPage />} />
               <Route path="/planosonline" element={<PlanosOnlinePage />} />
               <Route path="/pagamentobasicoonline" element={<PagamentoBasicoOnlinePage />} />
+              <Route path="/pagamentopadraoonline" element={<PagamentoPadraoOnlinePage />} />
+              <Route path="/pagamentopremiumonline" element={<PagamentoPremiumOnlinePage />} />
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/artigos/catarata" element={<MedicalArticleExample />} />
               <Route path="/podcast" element={<PodcastPageConsolidated />} />
