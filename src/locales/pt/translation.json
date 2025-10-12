@@ -658,14 +658,14 @@
       "name": "Dr. Philipe Saraiva",
       "title": "Oftalmologista CRM/MG 69.870",
       "heading": "Conheça Nosso Especialista",
-      "description": "Médico oftalmologista com sólida formação acadêmica e vasta experiência em diagnósticos precisos, tratamentos personalizados e cirurgias oculares. Especializado em diversas áreas da oftalmologia, incluindo catarata, glaucoma, doenças da retina e refração.\n\nSua abordagem combina conhecimento técnico atualizado com um cuidado genuíno pelos pacientes, garantindo não apenas tratamentos eficazes, mas também uma experiência acolhedora e tranquilizadora durante todo o processo de cuidado com a visão.\n\nComprometido com a educação continuada e sempre atualizado com as mais recentes técnicas e tecnologias em oftalmologia, Dr. Philipe oferece o que há de mais moderno em cuidados oculares para a comunidade de Caratinga e região.",
+      "description": "Médico oftalmologista com sólida formação acadêmica e vasta experiência em diagnósticos precisos, tratamentos personalizados e cirurgias oculares. Especializado em diversas áreas da oftalmologia, incluindo catarata, glaucoma, doenças da retina e refração. Sua abordagem combina conhecimento técnico atualizado com um cuidado genuíno pelos pacientes, garantindo não apenas tratamentos eficazes, mas também uma experiência acolhedora e tranquilizadora durante todo o processo de cuidado com a visão. Comprometido com a educação continuada e sempre atualizado com as mais recentes técnicas e tecnologias em oftalmologia, Dr. Philipe oferece o que há de mais moderno em cuidados oculares para a comunidade de Caratinga e região.",
       "alt": "Dr. Philipe Saraiva - Oftalmologista especialista em saúde ocular CRM/MG 69.870"
     },
     "team_title": "Nossa Equipe Especializada",
     "nurse": {
       "name": "Eng. Ana Lúcia",
       "title": "Enfermeira COREN-MG 834184 - Responsável e Coordenadora",
-      "description": "Profissional experiente e dedicada, responsável pela coordenação do atendimento aos pacientes e apoio especializado em todos os procedimentos clínicos. Com ampla experiência em oftalmologia, Ana Lúcia garante que cada etapa do seu atendimento seja conduzida com máximo cuidado, segurança e conforto.\n\nSua atenção aos detalhes e habilidade em criar um ambiente acolhedor fazem dela uma peça fundamental na experiência positiva de nossos pacientes, desde a recepção até o acompanhamento pós-consulta.",
+      "description": "Profissional experiente e dedicada, responsável pela coordenação do atendimento aos pacientes e apoio especializado em todos os procedimentos clínicos. Com ampla experiência em oftalmologia, Ana Lúcia garante que cada etapa do seu atendimento seja conduzida com máximo cuidado, segurança e conforto. Sua atenção aos detalhes e habilidade em criar um ambiente acolhedor fazem dela uma peça fundamental na experiência positiva de nossos pacientes, desde a recepção até o acompanhamento pós-consulta.",
       "alt": "Enfermeira Ana Lúcia - Coordenadora de atendimento da Saraiva Vision"
     }
   },
@@ -813,8 +813,8 @@
     }
   },
   "homeMeta": {
-    "title": "🏥 Oftalmologista em Caratinga | Clínica Saraiva Vision | CRM-MG 69.870",
-    "description": "🔹 Clínica Oftalmológica Saraiva Vision em Caratinga/MG: 🔍 exames de vista, 👁️ adaptação de lentes de contato, 🏥 consultas especializadas. 📞 Agende já!",
+    "title": "Oftalmologista em Caratinga | Clínica Saraiva Vision | CRM-MG 69.870",
+    "description": "Clínica Oftalmológica Saraiva Vision em Caratinga/MG: exames de vista, adaptação de lentes de contato, consultas especializadas. Agende já!",
     "keywords": "oftalmologista Caratinga, clínica oftalmológica Caratinga MG, exame de vista Caratinga, lentes de contato Caratinga, Dr Philipe Saraiva, CRM-MG 69870, consulta oftalmologista, Clínica Amor e Saúde, convênios Caratinga, convênio oftalmologista"
   },
   "serviceMeta": {
@@ -823,13 +823,13 @@
     "keywords": "{{serviceTitleLowercase}}, oftalmologia, saúde ocular, clínica de olhos"
   },
   "lensesMeta": {
-    "title": "👁️ Lentes de Contato Caratinga | Adaptação Profissional | Saraiva Vision",
-    "description": "🔍 Adaptação profissional de lentes de contato em Caratinga: Sólotica, Bioview, lentes rígidas. ⭐ Consulta especializada com CRM-MG 69.870. 📞 Agende!",
+    "title": "Lentes de Contato Caratinga | Adaptação Profissional | Saraiva Vision",
+    "description": "Adaptação profissional de lentes de contato em Caratinga: Sólotica, Bioview, lentes rígidas. Consulta especializada com CRM-MG 69.870. Agende!",
     "keywords": "lentes de contato Caratinga, adaptação lentes Caratinga MG, lentes Sólotica Caratinga, lentes Bioview, oftalmologista lentes contato, lentes rígidas Caratinga, consulta lentes"
   },
   "faqMeta": {
-    "title": "❓ Perguntas Frequentes | Clínica Oftalmológica Saraiva Vision",
-    "description": "🔍 Tire suas dúvidas sobre oftalmologia, tratamentos oculares, consultas e serviços da Clínica Saraiva Vision em Caratinga/MG. ✅ Respostas completas!",
+    "title": "Perguntas Frequentes | Clínica Oftalmológica Saraiva Vision",
+    "description": "Tire suas dúvidas sobre oftalmologia, tratamentos oculares, consultas e serviços da Clínica Saraiva Vision em Caratinga/MG. Respostas completas!",
     "keywords": "perguntas frequentes oftalmologia, FAQ clínica olhos, dúvidas consulta oftalmologista, oftalmologia Caratinga dúvidas, FAQ Saraiva Vision, perguntas tratamento ocular"
   },
   "serviceDetail": {
@@ -984,13 +984,13 @@
     "disclaimer": "Conteúdo informativo sem promessa de resultados. Consulte o médico responsável para avaliação personalizada."
   },
   "testimonialsMeta": {
-    "title": "⭐ Depoimentos de Pacientes | Clínica Saraiva Vision Caratinga",
-    "description": "📝 Leia os depoimentos reais de pacientes da Clínica Saraiva Vision em Caratinga. ⭐ Avaliações verificadas sobre nossos serviços oftalmológicos. 👁️ CRM-MG 69.870",
+    "title": "Depoimentos de Pacientes | Clínica Saraiva Vision Caratinga",
+    "description": "Leia os depoimentos reais de pacientes da Clínica Saraiva Vision em Caratinga. Avaliações verificadas sobre nossos serviços oftalmológicos. CRM-MG 69.870",
     "keywords": "depoimentos Saraiva Vision, avaliações clínica oftalmológica Caratinga, testemunhos pacientes oftalmologia, reviews Dr Philipe Saraiva, satisfação clientes Caratinga MG"
   },
   "privacyMeta": {
-    "title": "📋 Política de Privacidade | Saraiva Vision | LGPD Compliance",
-    "description": "📄 Política de Privacidade da Clínica Saraiva Vision conforme LGPD. 🔒 Como protegemos seus dados pessoais e informações médicas em Caratinga/MG.",
+    "title": "Política de Privacidade | Saraiva Vision | LGPD Compliance",
+    "description": "Política de Privacidade da Clínica Saraiva Vision conforme LGPD. Como protegemos seus dados pessoais e informações médicas em Caratinga/MG.",
     "keywords": "política privacidade Saraiva Vision, LGPD clínica oftalmológica, proteção dados médicos, privacidade pacientes Caratinga"
   },
   "reviews": {

@@ -196,7 +196,7 @@ export const podcastEpisodes = [
     id: 'daltonismo-ep1',
     slug: 'daltonismo-lentes-corretivas-caratinga',
     title: 'Daltonismo: Lentes que Revelam Cores | Saúde Ocular em Foco',
-    description: '🌈 Descubra a ciência por trás das lentes corretivas para daltonismo! Neste episódio, o Dr. Philipe Saraiva Cruz e Ana Lúcia exploram as tecnologias revolucionárias da EnChroma, Chromalite e Solotica.',
+    description: 'Descubra a ciência por trás das lentes corretivas para daltonismo! Neste episódio, o Dr. Philipe Saraiva Cruz e Ana Lúcia exploram as tecnologias revolucionárias da EnChroma, Chromalite e Solotica.',
     cover: '/Podcasts/Covers/daltonismo_cover.jpg',
     duration: '05:00',
     date: '2025-09-14',

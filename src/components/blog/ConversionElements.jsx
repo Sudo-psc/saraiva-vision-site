@@ -292,9 +292,9 @@ export function EmergencyNotice() {
  */
 export function ServicesCTA({ services = [] }) {
   const defaultServices = [
-    { name: "Cirurgia de Catarata", icon: "👁️", slug: "catarata" },
-    { name: "Exame de Vista Completo", icon: "🔍", slug: "exames" },
-    { name: "Tratamento de Glaucoma", icon: "💧", slug: "glaucoma" }
+    { name: "Cirurgia de Catarata", slug: "catarata" },
+    { name: "Exame de Vista Completo", slug: "exames" },
+    { name: "Tratamento de Glaucoma", slug: "glaucoma" }
   ];
 
   const displayServices = services.length > 0 ? services : defaultServices;
@@ -317,7 +317,6 @@ export function ServicesCTA({ services = [] }) {
                      hover:border-cyan-300 rounded-xl transition-all text-center
                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            <div className="text-4xl mb-2" aria-hidden="true">{service.icon}</div>
             <p className="font-semibold text-gray-900 text-sm">{service.name}</p>
           </Link>
         ))}

@@ -192,7 +192,6 @@ const LensesPage = () => {
               </div>
               <div className="mt-4 pt-4 border-t border-cyan-500/30 text-center">
                 <p className="text-sm md:text-base text-cyan-100 flex items-center justify-center gap-2">
-                  <span className="text-xl">📍</span>
                   <span>Localizado em Caratinga/MG • Atendemos toda a região</span>
                 </p>
               </div>
@@ -230,7 +229,7 @@ const LensesPage = () => {
               </div>
 
               <p className="text-sm text-cyan-200/70 mt-4">
-                💳 Pagamento seguro via Asaas • 📦 Entrega em toda região
+                Pagamento seguro via Asaas • Entrega em toda região
               </p>
             </div>
           </div>
