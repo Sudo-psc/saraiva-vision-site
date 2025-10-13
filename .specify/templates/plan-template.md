@@ -47,7 +47,49 @@
 ## Constitution Check
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+### I. Healthcare Compliance First
+- [ ] Does this feature handle patient data? If yes, LGPD compliance documented?
+- [ ] Does this feature include medical content? If yes, CFM validation planned?
+- [ ] Are accessibility requirements (WCAG 2.1 AA) considered in design?
+- [ ] PII detection and consent management addressed?
+
+### II. Test-First Development
+- [ ] Contract tests identified for all API endpoints?
+- [ ] Integration tests planned for all user journeys?
+- [ ] TDD approach: Tests → User approval → Failing tests → Implementation?
+- [ ] Unit tests identified for critical business logic?
+
+### III. Security by Design
+- [ ] All user inputs will be sanitized (DOMPurify + validation)?
+- [ ] Rate limiting requirements identified?
+- [ ] CSP and security headers considered?
+- [ ] Input validation schemas (Zod) planned?
+- [ ] No secrets in code - environment variables only?
+
+### IV. Performance and User Experience
+- [ ] Bundle size impact estimated (<200KB per chunk)?
+- [ ] Lazy loading strategy for new components?
+- [ ] Image optimization requirements identified (WebP/AVIF)?
+- [ ] Core Web Vitals impact assessed?
+
+### V. Static-First Architecture
+- [ ] Can this feature use static data instead of database?
+- [ ] If dynamic, is caching strategy defined?
+- [ ] SEO and prerendering requirements considered?
+
+### VI. Dual Build Architecture
+- [ ] Frontend changes use Vite build process?
+- [ ] Backend API changes follow Node.js/Express patterns?
+- [ ] Deployment strategy respects atomic deployment with rollback?
+
+### VII. Code Organization and Maintainability
+- [ ] Naming conventions respected (PascalCase components, camelCase utilities)?
+- [ ] TypeScript types defined (no `any` types)?
+- [ ] Functional components with hooks (no class components)?
+- [ ] Clear separation of concerns (components, pages, hooks, services)?
+
+**Constitutional Compliance Status**: [PASS / NEEDS REVIEW / BLOCKED]
+**Justification for Deviations**: [Document any deviations in Complexity Tracking section]
 
 ## Project Structure
 
@@ -216,4 +258,4 @@ directories captured above]
 - [ ] Complexity deviations documented
 
 ---
-*Based on Constitution v2.1.1 - See `/memory/constitution.md`*
+*Based on Constitution v1.0.0 - See `.specify/memory/constitution.md`*
