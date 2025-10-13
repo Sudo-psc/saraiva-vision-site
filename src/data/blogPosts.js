@@ -18,7 +18,7 @@ export const blogPosts = [
       "lentes de contato multifocais",
       "tratamento presbiopia"
     ],
-    "image": "/Blog/lentes-multifocais-capa-optimized-1200w.webp",
+    "image": "/Blog/capa-monovisao-lentes-multifocais-presbiopia-optimized-1200w.webp",
     "featured": false,
     "seo": {
       "metaTitle": "Monovisão ou Lentes Multifocais para Presbiopia? Guia Completo | Caratinga, MG",
