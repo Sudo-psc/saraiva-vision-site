@@ -736,14 +736,14 @@ html {
   }
 
   section {
-    padding-top: var(--space-section);
-    padding-bottom: var(--space-section);
+    padding-top: var(--space-section-sm);
+    padding-bottom: var(--space-section-sm);
   }
 
   @media (min-width: 768px) {
     section {
-      padding-top: var(--space-section-lg);
-      padding-bottom: var(--space-section-lg);
+      padding-top: var(--space-section);
+      padding-bottom: var(--space-section);
     }
   }
 

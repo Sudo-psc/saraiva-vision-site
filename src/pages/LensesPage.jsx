@@ -219,7 +219,7 @@ const LensesPage = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <button
-                  onClick={() => navigate('/planosonline')}
+                  onClick={() => navigate('/planos')}
                   className="w-full sm:w-auto bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 flex items-center justify-center gap-3 group"
                 >
                   <Package className="w-6 h-6" />

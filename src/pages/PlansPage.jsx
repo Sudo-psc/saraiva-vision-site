@@ -97,7 +97,7 @@ const PlansPage = () => {
       <SendPulseChatWidget />
       <main className="min-h-screen pt-32 md:pt-36 lg:pt-40 pb-16 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         {/* Hero Section */}
-        <section className="mb-6 text-center">
+        <section className="!mb-0 !pb-8 text-center">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-cyan-200 text-cyan-700 px-3 py-1.5 rounded-full text-sm font-semibold mb-1.5 shadow-sm">
             <Package className="w-4 h-4" />
             <span>Planos de Assinatura</span>
@@ -105,14 +105,14 @@ const PlansPage = () => {
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-1 bg-gradient-to-r from-gray-900 via-cyan-900 to-cyan-800 bg-clip-text text-transparent">
             Escolha o Plano Ideal Para Você
           </h1>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-3">
             Lentes de contato com entrega regular, acompanhamento médico e economia garantida
           </p>
         </section>
 
         {/* Plans Grid */}
-        <section className="mb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6">
+        <section className="!pt-0 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 mt-8">
             {plans.map((plan) => {
               const IconComponent = plan.icon;
 
@@ -196,7 +196,7 @@ const PlansPage = () => {
         </section>
 
         {/* Aviso de Cobertura Geográfica */}
-        <section className="mb-6">
+        <section className="!py-4 mb-4">
           <div className="max-w-4xl mx-auto bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-300 rounded-2xl p-5 md:p-6 shadow-lg">
             <div className="flex items-start gap-3 mb-4">
               <AlertCircle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-1" />
@@ -233,7 +233,7 @@ const PlansPage = () => {
         </section>
 
         {/* CTA para Planos Online */}
-        <section className="mb-6">
+        <section className="!py-4 mb-4">
           <div className="max-w-4xl mx-auto bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-xl transition-shadow">
             <div className="text-center">
               <div className="inline-flex items-center gap-2 bg-green-200 text-green-800 px-4 py-2 rounded-full text-sm font-bold mb-4">
@@ -258,7 +258,7 @@ const PlansPage = () => {
         </section>
 
         {/* Benefits Section */}
-        <section className="mb-6">
+        <section className="!py-4 mb-4">
           <div className="bg-gradient-to-r from-cyan-600 to-cyan-700 rounded-2xl p-5 md:p-6 text-white shadow-xl">
             <div className="max-w-6xl mx-auto">
               <h3 className="text-2xl md:text-3xl font-bold mb-5 flex items-center justify-center gap-3 text-white">
@@ -298,7 +298,7 @@ const PlansPage = () => {
         </section>
 
         {/* FAQ Section */}
-        <section className="mb-8">
+        <section className="!py-4 mb-4">
           <div className="max-w-4xl mx-auto">
             <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-5 text-center">
               Perguntas Frequentes

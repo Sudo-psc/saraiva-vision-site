@@ -213,10 +213,10 @@ const PlanBasicoPage = () => {
         {/* CTA Section */}
         <section className="!mb-8 !pt-0 !pb-0">
           <div className="bg-gradient-to-r from-cyan-600 to-cyan-700 rounded-2xl p-8 md:p-12 text-center text-white shadow-xl">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
               Pronto para começar?
             </h2>
-            <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-white">
               Assine agora o Plano Básico e tenha lentes de contato com entrega regular e acompanhamento médico
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
