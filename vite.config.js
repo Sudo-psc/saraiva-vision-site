@@ -38,13 +38,7 @@ const plugins = [
 function validateEnvironmentVariables(env, mode) {
   const required = [];
 
-  const recommended = [
-    'VITE_GOOGLE_MAPS_API_KEY',
-    'VITE_GOOGLE_PLACES_API_KEY',
-  ];
-
   const missing = required.filter(key => !env[key] || env[key].includes('your_'));
-  const missingRecommended = recommended.filter(key => !env[key] || env[key].includes('your_'));
 
   if (missing.length > 0) {
     console.error('\n❌ Missing required environment variables:');
@@ -54,12 +48,6 @@ function validateEnvironmentVariables(env, mode) {
     if (mode === 'production') {
       throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
     }
-  }
-
-  if (missingRecommended.length > 0 && mode !== 'test') {
-    console.warn('\n⚠️  Missing recommended environment variables:');
-    missingRecommended.forEach(key => console.warn(`   - ${key}`));
-    console.warn('\nSome features may not work properly.\n');
   }
 
   // Success message

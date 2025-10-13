@@ -100,12 +100,20 @@ const OptimizedImage = ({
 
     if (srcMatchesOptimizedPattern) {
       const [, base, size, ext] = srcMatchesOptimizedPattern;
-      if (ext.toLowerCase() === normalizedFormat) {
-        if (enableLogging) {
-          console.info(`[OptimizedImage] Using pre-optimized src for ${format}:`, { src });
-        }
-        return `${src} ${size}w`;
+      // If src already has size suffix, generate srcSet based on the base path
+      const basePath = base; // e.g., /Blog/capa-monovisao-lentes-multifocais-presbiopia-optimized
+      const baseFilename = basePath.substring(basePath.lastIndexOf('/') + 1);
+      
+      // Generate srcSet with different sizes for this format
+      const validSizes = responsiveSizes.filter(s => s <= 1920); // Don't exceed max size
+      const srcset = validSizes
+        .map(s => `${basePath.substring(0, basePath.lastIndexOf('/') + 1)}${baseFilename}-${s}w.${normalizedFormat} ${s}w`)
+        .join(', ');
+      
+      if (enableLogging) {
+        console.info(`[OptimizedImage] Using pre-optimized base for ${format}:`, { basePath, srcset: srcset.substring(0, 100) });
       }
+      return srcset;
     }
 
     // Generate srcSet with available sizes only

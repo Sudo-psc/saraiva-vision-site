@@ -9,7 +9,7 @@ import { Calendar, ArrowRight, ArrowLeft, Shield, Stethoscope, Cpu, HelpCircle, 
 import Navbar from '../components/Navbar';
 import EnhancedFooter from '../components/EnhancedFooter';
 import { Button } from '../components/ui/button';
-import { blogPosts, categoryConfig, getPostBySlug, categories } from '../content/blog';
+import { blogPosts, categoryConfig, getPostBySlug, getPostBySlugSync, categories } from '../content/blog';
 import { getPostEnrichment } from '../data/blogPostsEnrichment';
 import CategoryBadge from '../components/blog/CategoryBadge';
 import AccessibilityControls from '../components/blog/AccessibilityControls';
@@ -56,7 +56,7 @@ const BlogPage = () => {
   const [searchTerm, setSearchTerm] = React.useState('');
   const [debouncedSearch, setDebouncedSearch] = React.useState('');
   const [currentPage, setCurrentPage] = React.useState(1);
-  const POSTS_PER_PAGE = 9;
+  const POSTS_PER_PAGE = 6;
 
   // Debounce search term
   React.useEffect(() => {
@@ -67,7 +67,7 @@ const BlogPage = () => {
   }, [searchTerm]);
 
   // Check if viewing single post
-  const currentPost = slug ? getPostBySlug(slug) : null;
+  const currentPost = slug ? getPostBySlugSync(slug) : null;
 
   // Filter posts based on category and debounced search - memoized for performance
   const filteredPosts = React.useMemo(() => {
@@ -296,7 +296,7 @@ const BlogPage = () => {
           Pular para o conteúdo
         </a>
 
-        <main id="main-content" tabIndex="-1" className="py-20 md:py-24 scroll-block-internal bg-gradient-to-b from-gray-50 to-white">
+        <main id="main-content" tabIndex="-1" className="py-20 md:py-24 bg-gradient-to-b from-gray-50 to-white">
           <div className="container mx-auto px-4 md:px-6 max-w-7xl">
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb" className="mb-6">
@@ -546,7 +546,7 @@ const BlogPage = () => {
 
       <main
         id="main-content"
-        className="py-32 md:py-40 scroll-block-internal mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%] bg-gradient-to-b from-blue-50/30 via-white to-white"
+        className="py-32 md:py-40 mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%] bg-gradient-to-b from-blue-50/30 via-white to-white"
         role="main"
         aria-label="Conteúdo principal do blog"
         tabIndex="-1"

@@ -267,7 +267,7 @@ function PodcastPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-spotify-green/5 via-white to-primary-50/40 relative">
+    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-gray-50 to-primary-50/40 relative">
       {isTestEnv && <span className="sr-only">podcast.title</span>}
 
       {/* Skip Links para Acessibilidade */}
@@ -275,7 +275,7 @@ function PodcastPage() {
         ref={skipLinkRef}
         href="#main-content"
         onClick={skipToMain}
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-spotify-green text-white px-4 py-2 rounded-md z-50 focus:outline-none focus:ring-2 focus:ring-spotify-green/30 font-semibold"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-gradient-to-r from-gray-500 to-cyan-500 text-white px-4 py-2 rounded-md z-50 focus:outline-none focus:ring-2 focus:ring-cyan-300 font-semibold"
       >
         Pular para o conteúdo principal
       </a>
@@ -320,9 +320,9 @@ function PodcastPage() {
         >
           {/* Background decorations - tema médico com Spotify Green */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-spotify-green/10 to-primary-400/6 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-spotify-green/8 to-primary-300/6 rounded-full blur-3xl animate-pulse delay-1000" />
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-spotify-green/4 to-transparent rounded-full blur-3xl" />
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-cyan-100 to-gray-100 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-gray-100 to-cyan-100 rounded-full blur-3xl animate-pulse delay-1000" />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-cyan-50 to-transparent rounded-full blur-3xl" />
           </div>
 
           <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -334,10 +334,10 @@ function PodcastPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="inline-flex flex-col items-center gap-2 mb-8"
               >
-                <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-spotify-green/10 border border-spotify-green/20 font-semibold">
-                  <div className="w-3 h-3 bg-spotify-green rounded-full animate-pulse" aria-hidden="true" />
-                  <span className="text-spotify-green-dark font-bold">{t('podcast.title')}</span>
-                  <Mic2 className="w-5 h-5 text-spotify-green" aria-hidden="true" />
+                <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-gray-100 to-cyan-100 border border-cyan-200 font-semibold">
+                  <div className="w-3 h-3 bg-gradient-to-r from-gray-400 to-cyan-500 rounded-full animate-pulse" aria-hidden="true" />
+                  <span className="text-cyan-700 font-bold">{t('podcast.title')}</span>
+                  <Mic2 className="w-5 h-5 text-cyan-600" aria-hidden="true" />
                 </div>
                 <div className="text-sm font-medium text-gray-600">
                   Dr. Philipe Saraiva • Oftalmologista • CRM-MG 69.870
@@ -349,7 +349,7 @@ function PodcastPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-spotify-green-dark via-spotify-green to-primary-700 bg-clip-text text-transparent mb-6 leading-tight"
+                className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-gray-600 via-cyan-600 to-primary-700 bg-clip-text text-transparent mb-6 leading-tight"
               >
                 Saúde Ocular em Foco
               </motion.h1>
@@ -371,15 +371,15 @@ function PodcastPage() {
                 className="flex flex-wrap justify-center gap-6 text-sm font-medium"
               >
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/60 rounded-full border border-gray-200 shadow-sm">
-                  <div className="w-2 h-2 bg-spotify-green rounded-full" aria-hidden="true" />
+                  <div className="w-2 h-2 bg-gradient-to-r from-gray-400 to-cyan-500 rounded-full" aria-hidden="true" />
                   <span className="text-gray-700">Conteúdo CFM Validado</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/60 rounded-full border border-gray-200 shadow-sm">
-                  <Headphones className="w-4 h-4 text-spotify-green" aria-hidden="true" />
+                  <Headphones className="w-4 h-4 text-cyan-600" aria-hidden="true" />
                   <span className="text-gray-700">Acessibilidade WCAG 2.1 AA</span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/60 rounded-full border border-gray-200 shadow-sm">
-                  <Calendar className="w-4 h-4 text-spotify-green" aria-hidden="true" />
+                  <Calendar className="w-4 h-4 text-cyan-600" aria-hidden="true" />
                   <span className="text-gray-700">Atualizado Semanalmente</span>
                 </div>
               </motion.div>
@@ -404,10 +404,10 @@ function PodcastPage() {
                 className="mb-12"
                 aria-labelledby="featured-episode-title"
               >
-                <div className="glass-card-green rounded-3xl shadow-3d p-6 md:p-8 lg:p-10 border border-spotify-green/20 bg-white/90 backdrop-blur-xl">
+                <div className="glass-card-green rounded-3xl shadow-3d p-6 md:p-8 lg:p-10 border border-cyan-200 bg-white/90 backdrop-blur-xl">
                   <div className="flex flex-col lg:flex-row items-center gap-8">
                     <div className="flex-shrink-0 relative group">
-                      <div className="absolute -inset-1 bg-gradient-to-r from-spotify-green to-primary-400 rounded-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
+                      <div className="absolute -inset-1 bg-gradient-to-r from-gray-400 to-cyan-500 rounded-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
                       <OptimizedImage
                         src={featuredEpisode.cover}
                         alt={t('ui.alt.podcast_episode', 'Capa do episódio de podcast sobre saúde ocular') + ': ' + featuredEpisode.title}
@@ -415,12 +415,12 @@ function PodcastPage() {
                         priority={true}
                         fallbackSrc="/Podcasts/Covers/podcast.png"
                       />
-                      <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-spotify-green/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-cyan-200 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
 
                     <div className="flex-grow text-center lg:text-left">
-                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-spotify-green/10 text-spotify-green-dark rounded-full text-sm font-bold mb-4 border border-spotify-green/20">
-                        <span className="w-2 h-2 bg-spotify-green rounded-full animate-pulse" aria-hidden="true"></span>
+                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-gray-100 to-cyan-100 text-cyan-700 rounded-full text-sm font-bold mb-4 border border-cyan-200">
+                        <span className="w-2 h-2 bg-gradient-to-r from-gray-400 to-cyan-500 rounded-full animate-pulse" aria-hidden="true"></span>
                         <span>Episódio em Destaque</span>
                       </div>
 
@@ -437,7 +437,7 @@ function PodcastPage() {
 
                       <div className="flex flex-wrap items-center gap-4 mb-6 justify-center lg:justify-start">
                         <div className="flex items-center gap-2 text-sm text-gray-600 font-medium">
-                          <Calendar className="w-4 h-4 text-spotify-green" aria-hidden="true" />
+                          <Calendar className="w-4 h-4 text-cyan-600" aria-hidden="true" />
                           <time dateTime={featuredEpisode.date}>
                             {new Date(featuredEpisode.date).toLocaleDateString('pt-BR', {
                               day: 'numeric',
@@ -450,7 +450,7 @@ function PodcastPage() {
                           <>
                             <span className="text-gray-300" aria-hidden="true">•</span>
                             <div className="flex items-center gap-2 text-sm text-gray-600 font-medium">
-                              <Clock className="w-4 h-4 text-spotify-green" aria-hidden="true" />
+                              <Clock className="w-4 h-4 text-cyan-600" aria-hidden="true" />
                               <span>{featuredEpisode.duration}</span>
                             </div>
                           </>
@@ -458,7 +458,7 @@ function PodcastPage() {
                         {featuredEpisode.category && (
                           <>
                             <span className="text-gray-300" aria-hidden="true">•</span>
-                            <span className="px-3 py-1 bg-spotify-green/10 text-spotify-green-dark rounded-full text-xs font-bold border border-spotify-green/20">
+                            <span className="px-3 py-1 bg-gradient-to-r from-gray-100 to-cyan-100 text-cyan-700 rounded-full text-xs font-bold border border-cyan-200">
                               {featuredEpisode.category}
                             </span>
                           </>
@@ -470,7 +470,7 @@ function PodcastPage() {
                           href={featuredEpisode.spotifyUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-3 px-8 py-4 bg-spotify-green hover:bg-spotify-green-dark text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-spotify-green/50 focus:ring-offset-2"
+                          className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-gray-500 to-cyan-500 hover:from-gray-600 hover:to-cyan-600 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2"
                           aria-label={`Ouvir ${featuredEpisode.title} no Spotify (abre em nova janela)`}
                         >
                           <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -486,7 +486,7 @@ function PodcastPage() {
                               playerElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                               setTimeout(() => playerElement?.focus(), 500);
                             }}
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-gray-50 text-spotify-green-dark font-bold rounded-2xl border-2 border-spotify-green/20 hover:border-spotify-green/40 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-spotify-green/30 focus:ring-offset-2"
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-gray-50 text-cyan-700 font-bold rounded-2xl border-2 border-cyan-200 hover:border-cyan-400 shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2"
                             aria-label={`Reproduzir ${featuredEpisode.title} diretamente na página`}
                           >
                             <Play className="w-5 h-5" aria-hidden="true" />
@@ -510,7 +510,7 @@ function PodcastPage() {
             >
               <h2 id="filter-heading" className="sr-only">Buscar e filtrar episódios</h2>
 
-              <div className="glass-card-green rounded-2xl border border-spotify-green/20 p-6 bg-white/90 backdrop-blur-xl shadow-3d">
+              <div className="glass-card-green rounded-2xl border border-cyan-200 p-6 bg-white/90 backdrop-blur-xl shadow-3d">
                 <div className="flex flex-col lg:flex-row gap-4">
                   {/* Search */}
                   <div className="flex-grow relative">
@@ -518,7 +518,7 @@ function PodcastPage() {
                       Buscar episódios por título, descrição ou tags
                     </label>
                     <Search
-                      className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-spotify-green"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-cyan-600"
                       aria-hidden="true"
                     />
                     <input
@@ -531,7 +531,7 @@ function PodcastPage() {
                         setSearchQuery(e.target.value);
                         announceToScreenReader(`Buscando por: ${e.target.value}`);
                       }}
-                      className="w-full pl-12 pr-4 py-3 rounded-xl border border-spotify-green/20 focus:ring-2 focus:ring-spotify-green/30 focus:border-spotify-green transition-all bg-white/90 backdrop-blur-sm font-medium text-gray-700 placeholder-gray-500 shadow-sm"
+                      className="w-full pl-12 pr-4 py-3 rounded-xl border border-cyan-200 focus:ring-2 focus:ring-cyan-300 focus:border-cyan-500 transition-all bg-white/90 backdrop-blur-sm font-medium text-gray-700 placeholder-gray-500 shadow-sm"
                       aria-label="Buscar episódios por título, descrição ou tags"
                       aria-describedby="search-help"
                     />
@@ -542,7 +542,7 @@ function PodcastPage() {
 
                   {/* Category Filter */}
                   <div className="flex items-center gap-2">
-                    <Filter className="w-5 h-5 text-spotify-green flex-shrink-0" aria-hidden="true" />
+                    <Filter className="w-5 h-5 text-cyan-600 flex-shrink-0" aria-hidden="true" />
                     <label htmlFor="category-filter" className="sr-only">
                       Filtrar episódios por categoria
                     </label>
@@ -554,7 +554,7 @@ function PodcastPage() {
                         setSelectedCategory(e.target.value);
                         announceToScreenReader(`Categoria filtrada: ${e.target.value === 'all' ? 'Todas as categorias' : e.target.value}`);
                       }}
-                      className="px-4 py-3 rounded-xl border border-spotify-green/20 focus:ring-2 focus:ring-spotify-green/30 focus:border-spotify-green transition-all bg-white/90 backdrop-blur-sm min-w-[200px] font-medium text-gray-700 shadow-sm"
+                      className="px-4 py-3 rounded-xl border border-cyan-200 focus:ring-2 focus:ring-cyan-300 focus:border-cyan-500 transition-all bg-white/90 backdrop-blur-sm min-w-[200px] font-medium text-gray-700 shadow-sm"
                       aria-label="Filtrar episódios por categoria"
                     >
                       {categories.map(category => (
@@ -574,7 +574,7 @@ function PodcastPage() {
                         searchInputRef.current?.focus();
                         announceToScreenReader('Filtros limpos');
                       }}
-                      className="px-6 py-3 bg-spotify-green hover:bg-spotify-green-light text-white font-semibold rounded-xl border border-spotify-green/20 transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-spotify-green/30"
+                      className="px-6 py-3 bg-gradient-to-r from-gray-500 to-cyan-500 hover:from-gray-600 hover:to-cyan-600 text-white font-semibold rounded-xl border border-cyan-200 transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-cyan-300"
                       aria-label="Limpar todos os filtros"
                     >
                       Limpar filtros
@@ -603,8 +603,8 @@ function PodcastPage() {
               className="mb-8"
               aria-labelledby="episodes-heading"
             >
-              <h2 id="episodes-heading" className="text-3xl font-bold text-spotify-green-dark mb-8 flex items-center gap-3">
-                <div className="w-8 h-8 bg-spotify-green rounded-full flex items-center justify-center">
+              <h2 id="episodes-heading" className="text-3xl font-bold text-cyan-700 mb-8 flex items-center gap-3">
+                <div className="w-8 h-8 bg-gradient-to-r from-gray-400 to-cyan-500 rounded-full flex items-center justify-center">
                   <Headphones className="w-4 h-4 text-white" />
                 </div>
                 Todos os Episódios
@@ -637,20 +637,20 @@ function PodcastPage() {
                         <div
                           id={`player-${episode.id}`}
                           className={`
-                            glass-card-green rounded-2xl shadow-3d border border-spotify-green/10
+                            glass-card-green rounded-2xl shadow-3d border border-cyan-200
                             bg-white/95 backdrop-blur-xl p-6
-                            hover:shadow-3d-hover hover:scale-[1.03] hover:border-spotify-green/30
+                            hover:shadow-3d-hover hover:scale-[1.03] hover:border-cyan-400
                             transition-all duration-500 cursor-pointer relative overflow-hidden
-                            ${focusedEpisodeIndex === index ? 'ring-2 ring-spotify-green ring-offset-2' : ''}
+                            ${focusedEpisodeIndex === index ? 'ring-2 ring-cyan-500 ring-offset-2' : ''}
                           `}
                         >
-                          {/* Spotify green accent decoration */}
-                          <div className="absolute top-0 right-0 w-20 h-20 bg-spotify-green/10 rounded-full -mr-10 -mt-10 group-hover:bg-spotify-green/20 transition-colors duration-300" />
+                          {/* Cyan/Gray accent decoration */}
+                          <div className="absolute top-0 right-0 w-20 h-20 bg-cyan-100 rounded-full -mr-10 -mt-10 group-hover:bg-gradient-to-br group-hover:from-gray-200 group-hover:to-cyan-200 transition-colors duration-300" />
 
                           {/* Episode header with image */}
                           <div className="mb-4">
                             <div className="relative group/image">
-                              <div className="absolute -inset-1 bg-gradient-to-r from-spotify-green/20 to-spotify-green/10 rounded-xl opacity-0 group-hover/image:opacity-100 transition-opacity duration-300" />
+                              <div className="absolute -inset-1 bg-gradient-to-r from-gray-200 to-cyan-200 rounded-xl opacity-0 group-hover/image:opacity-100 transition-opacity duration-300" />
                               <OptimizedImage
                                 src={episode.cover}
                                 alt={t('ui.alt.podcast_episode', 'Capa do episódio de podcast sobre saúde ocular') + ': ' + episode.title}
@@ -661,14 +661,14 @@ function PodcastPage() {
 
                               {/* Play button overlay */}
                               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/image:opacity-100 transition-opacity duration-300">
-                                <div className="w-12 h-12 bg-spotify-green rounded-full flex items-center justify-center shadow-lg transform scale-90 group-hover/image:scale-100 transition-transform duration-300">
+                                <div className="w-12 h-12 bg-gradient-to-r from-gray-500 to-cyan-500 rounded-full flex items-center justify-center shadow-lg transform scale-90 group-hover/image:scale-100 transition-transform duration-300">
                                   <Play className="w-5 h-5 text-white ml-0.5" />
                                 </div>
                               </div>
                             </div>
 
                             <div className="mt-4">
-                              <h3 className="font-bold text-spotify-green-dark mb-2 line-clamp-2 group-hover:text-spotify-green transition-colors duration-300 text-lg">
+                              <h3 className="font-bold text-cyan-700 mb-2 line-clamp-2 group-hover:text-cyan-600 transition-colors duration-300 text-lg">
                                 {episode.title}
                               </h3>
 
@@ -684,7 +684,7 @@ function PodcastPage() {
                                   dateTime={episode.date}
                                   className="flex items-center gap-1 font-medium"
                                 >
-                                  <Calendar className="w-3 h-3 text-spotify-green" aria-hidden="true" />
+                                  <Calendar className="w-3 h-3 text-cyan-600" aria-hidden="true" />
                                   {new Date(episode.date).toLocaleDateString('pt-BR', {
                                     day: 'numeric',
                                     month: 'short'
@@ -693,13 +693,13 @@ function PodcastPage() {
 
                                 {episode.duration && (
                                   <span className="flex items-center gap-1 font-medium">
-                                    <Clock className="w-3 h-3 text-spotify-green" aria-hidden="true" />
+                                    <Clock className="w-3 h-3 text-cyan-600" aria-hidden="true" />
                                     {episode.duration}
                                   </span>
                                 )}
 
                                 {episode.category && (
-                                  <span className="px-3 py-1 bg-spotify-green/10 text-spotify-green-dark rounded-full font-semibold border border-spotify-green/20">
+                                  <span className="px-3 py-1 bg-gradient-to-r from-gray-100 to-cyan-100 text-cyan-700 rounded-full font-semibold border border-cyan-200">
                                     {episode.category}
                                   </span>
                                 )}
@@ -760,10 +760,10 @@ function PodcastPage() {
                 </div>
               ) : (
                 <div className="text-center py-20">
-                  <div className="w-24 h-24 bg-spotify-green/10 rounded-full flex items-center justify-center mx-auto mb-8">
-                    <Search className="w-12 h-12 text-spotify-green" aria-hidden="true" />
+                  <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-cyan-100 rounded-full flex items-center justify-center mx-auto mb-8">
+                    <Search className="w-12 h-12 text-cyan-600" aria-hidden="true" />
                   </div>
-                  <h3 className="text-3xl font-bold text-spotify-green-dark mb-4">
+                  <h3 className="text-3xl font-bold text-cyan-700 mb-4">
                     Nenhum episódio encontrado
                   </h3>
                   <p className="text-gray-600 mb-8 max-w-lg mx-auto text-lg leading-relaxed">
@@ -775,7 +775,7 @@ function PodcastPage() {
                       setSelectedCategory('all');
                       searchInputRef.current?.focus();
                     }}
-                    className="inline-flex items-center gap-3 px-8 py-4 bg-spotify-green hover:bg-spotify-green-light text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-spotify-green/30 focus:ring-offset-2"
+                    className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-gray-500 to-cyan-500 hover:from-gray-600 hover:to-cyan-600 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-cyan-300 focus:ring-offset-2"
                   >
                     <Filter className="w-5 h-5" aria-hidden="true" />
                     Limpar filtros

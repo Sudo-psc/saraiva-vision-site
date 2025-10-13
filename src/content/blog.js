@@ -83,20 +83,7 @@ const getLegacyBlogPosts = () => {
 };
 
 // Export for backward compatibility (synchronous, heavy)
-export const blogPosts = new Proxy([], {
-  get(target, prop) {
-    const posts = getLegacyBlogPosts();
-    return posts[prop];
-  },
-  has(target, prop) {
-    const posts = getLegacyBlogPosts();
-    return prop in posts;
-  },
-  ownKeys() {
-    const posts = getLegacyBlogPosts();
-    return Object.keys(posts);
-  }
-});
+export const blogPosts = getLegacyBlogPosts();
 
 /**
  * OPTIMIZED ASYNC API (recommended)
