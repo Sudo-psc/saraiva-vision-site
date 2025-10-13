@@ -348,6 +348,10 @@ const BlogPage = () => {
                       alt={currentPost.title}
                       className="absolute inset-0 w-full h-full object-cover"
                       loading="eager"
+                      width="1200"
+                      height="630"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1200px"
+                      fallbackSrc="/img/blog-fallback.jpg"
                     />
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
