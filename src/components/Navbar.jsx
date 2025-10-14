@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Menu, X, Calendar, Home, Stethoscope, Eye, FileText, Headphones, User, Star, HelpCircle, Phone, FileCheck } from 'lucide-react';
@@ -11,10 +11,21 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
 
   // Prevent double-scroll: lock body when mobile menu is open
   useBodyScrollLock(mobileMenuOpen);
+
+  // Handle home navigation: scroll to top if already on homepage, navigate otherwise
+  const handleHomeClick = (e) => {
+    if (location.pathname === '/') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate('/');
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,7 +64,7 @@ const Navbar = () => {
           >
             <Link
               to="/"
-              onClick={() => navigate('/')}
+              onClick={handleHomeClick}
               className="cursor-pointer hover:opacity-80 transition-opacity duration-200"
               aria-label={t('navbar.home_link_label')}
             >
@@ -67,10 +78,14 @@ const Navbar = () => {
               const IconComponent = link.icon;
               const linkClasses = "group relative text-slate-700 hover:text-white font-semibold transition-all duration-300 ease-out px-3 py-1.5 md:px-4 md:py-2 rounded-xl flex items-center gap-2 text-[0.96rem] md:text-[1rem] lg:text-[1.05rem] hover:scale-105 lg:hover:scale-108 active:scale-95 hover:shadow-lg active:shadow-sm bg-gradient-to-br from-slate-50 to-slate-100 hover:from-cyan-600 hover:to-cyan-700 border border-slate-200 hover:border-cyan-500";
 
+              // Special handling for home button: scroll to top if already on homepage
+              const isHomeLink = link.href === '/';
+
               return link.internal ? (
                 <Link
                   key={link.name}
                   to={link.href}
+                  onClick={isHomeLink ? handleHomeClick : undefined}
                   className={linkClasses}
                 >
                   <IconComponent size={15} className="text-slate-600 group-hover:text-white transition-colors duration-300 md:w-4 md:h-4 lg:w-[17px] lg:h-[17px]" />
@@ -134,6 +149,8 @@ const Navbar = () => {
           <nav className="container mx-auto px-4 py-3 sm:py-4 flex flex-col space-y-2 sm:space-y-3">
             {navLinks.map((link, index) => {
               const IconComponent = link.icon;
+              const isHomeLink = link.href === '/';
+
               return link.internal ? (
                 <motion.div
                   key={link.name}
@@ -143,7 +160,12 @@ const Navbar = () => {
                 >
                   <Link
                     to={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={(e) => {
+                      setMobileMenuOpen(false);
+                      if (isHomeLink) {
+                        handleHomeClick(e);
+                      }
+                    }}
                     className="text-slate-800 hover:text-cyan-600 hover:bg-cyan-50 active:bg-cyan-100 py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200"
                   >
                     <IconComponent size={18} className="text-slate-600 flex-shrink-0 sm:w-5 sm:h-5" />
