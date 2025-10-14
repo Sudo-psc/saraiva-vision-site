@@ -85,21 +85,20 @@ const LatestBlogPosts = () => {
                 transition={{ delay: 0.4 + index * 0.1 }}
                 className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl flex flex-col h-full"
             >
-                {/* Featured Image */}
+                {/* Featured Image - Área delimitada sem sobreposição */}
                 {featuredImage && (
-                    <div className="relative w-full h-56 flex-shrink-0 overflow-hidden bg-slate-100">
+                    <div className="w-full h-48 flex-shrink-0 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
                         <OptimizedImage
                             src={featuredImage}
                             alt={`Imagem ilustrativa do artigo: ${getPostTitle(post)}`}
-                            className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
+                            className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
                             loading="lazy"
                             aspectRatio="16/9"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
                     </div>
                 )}
 
-                <div className="p-6 flex flex-col flex-grow relative z-10">
+                <div className="p-6 flex flex-col flex-grow bg-white">
                     {/* Category and Date */}
                     <div className="flex items-center justify-between mb-3 flex-shrink-0">
                         <span className="inline-block bg-cyan-100 text-cyan-800 text-xs font-semibold px-3 py-1 rounded-full">
