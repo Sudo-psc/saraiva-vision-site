@@ -74,8 +74,6 @@ const LatestBlogPosts = () => {
     };
 
     const renderPost = (post, index) => {
-        const featuredImage = getPostImage(post);
-
         return (
             <motion.div
                 key={post.id}
@@ -85,18 +83,6 @@ const LatestBlogPosts = () => {
                 transition={{ delay: 0.4 + index * 0.1 }}
                 className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl flex flex-col h-full"
             >
-                {/* Featured Image - Área delimitada sem sobreposição */}
-                {featuredImage && (
-                    <div className="w-full h-48 flex-shrink-0 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
-                        <img
-                            src={featuredImage}
-                            alt={`Imagem ilustrativa do artigo: ${getPostTitle(post)}`}
-                            className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
-                            loading="lazy"
-                        />
-                    </div>
-                )}
-
                 <div className="p-6 flex flex-col flex-grow bg-white">
                     {/* Category and Date */}
                     <div className="flex items-center justify-between mb-3 flex-shrink-0">
