@@ -144,7 +144,7 @@ const Navbar = () => {
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="md:hidden bg-white border-t shadow-lg"
+          className="md:hidden bg-white border-t shadow-lg pointer-events-auto"
         >
           <nav className="container mx-auto px-4 py-3 sm:py-4 flex flex-col space-y-2 sm:space-y-3">
             {navLinks.map((link, index) => {
@@ -161,10 +161,11 @@ const Navbar = () => {
                   <Link
                     to={link.href}
                     onClick={(e) => {
-                      setMobileMenuOpen(false);
                       if (isHomeLink) {
                         handleHomeClick(e);
                       }
+                      // Close menu after a small delay to ensure navigation is processed
+                      setTimeout(() => setMobileMenuOpen(false), 50);
                     }}
                     className="text-slate-800 hover:text-cyan-600 hover:bg-cyan-50 active:bg-cyan-100 py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200"
                   >
@@ -183,7 +184,7 @@ const Navbar = () => {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={() => setTimeout(() => setMobileMenuOpen(false), 50)}
                     className="text-slate-800 hover:text-cyan-600 hover:bg-cyan-50 active:bg-cyan-100 py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200"
                   >
                     <IconComponent size={18} className="text-slate-600 flex-shrink-0 sm:w-5 sm:h-5" />
@@ -200,8 +201,8 @@ const Navbar = () => {
             >
               <Button
                 onClick={() => {
-                  setMobileMenuOpen(false);
                   navigate('/agendamento');
+                  setTimeout(() => setMobileMenuOpen(false), 50);
                 }}
                 className="flex items-center gap-2 w-full justify-center py-3 sm:py-3.5 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800"
               >
