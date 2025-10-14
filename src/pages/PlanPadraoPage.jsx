@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import EnhancedFooter from '@/components/EnhancedFooter';
+import JotformChatbot from '@/components/JotformChatbot';
 import { CheckCircle, Star, ArrowLeft, Phone, MapPin, AlertCircle, Package } from 'lucide-react';
 import { PLAN_PAYMENT_LINKS } from '@/config/plans';
 
@@ -71,6 +72,7 @@ const PlanPadraoPage = () => {
   return (
     <>
       <SEOHead {...seoData} />
+      <JotformChatbot />
       <main className="flex-1 pt-32 md:pt-36 lg:pt-40 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         {/* Back Navigation */}
         <div className="mb-6">
@@ -218,10 +220,10 @@ const PlanPadraoPage = () => {
         {/* CTA Section */}
         <section className="!mb-8 !pt-0 !pb-0">
           <div className="bg-gradient-to-r from-slate-600 via-cyan-600 to-slate-700 rounded-2xl p-8 md:p-12 text-center text-white shadow-xl shadow-cyan-900/30">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
               Pronto para começar?
             </h2>
-            <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-white">
               Assine agora o Plano Padrão e tenha acesso a todos os benefícios premium
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
