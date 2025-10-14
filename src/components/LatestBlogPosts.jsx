@@ -87,7 +87,7 @@ const LatestBlogPosts = () => {
             >
                 {/* Featured Image */}
                 {featuredImage && (
-                    <div className="relative w-full flex-shrink-0 overflow-hidden" style={{ paddingTop: '56.25%' }}>
+                    <div className="relative w-full h-56 flex-shrink-0 overflow-hidden bg-slate-100">
                         <OptimizedImage
                             src={featuredImage}
                             alt={`Imagem ilustrativa do artigo: ${getPostTitle(post)}`}
@@ -95,29 +95,29 @@ const LatestBlogPosts = () => {
                             loading="lazy"
                             aspectRatio="16/9"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
                     </div>
                 )}
 
-                <div className="p-6 flex flex-col flex-grow">
+                <div className="p-6 flex flex-col flex-grow relative z-10">
                     {/* Category and Date */}
-                    <div className="flex items-center justify-between mb-4 flex-shrink-0">
-                        <span className="inline-block bg-blue-100 text-cyan-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                    <div className="flex items-center justify-between mb-3 flex-shrink-0">
+                        <span className="inline-block bg-cyan-100 text-cyan-800 text-xs font-semibold px-3 py-1 rounded-full">
                             {getPostCategory(post)}
                         </span>
-                        <div className="flex items-center text-sm text-gray-500">
-                            <Calendar className="w-4 h-4 mr-1 flex-shrink-0" />
+                        <div className="flex items-center text-xs text-slate-500">
+                            <Calendar className="w-3.5 h-3.5 mr-1 flex-shrink-0" />
                             <span className="whitespace-nowrap">{formatPostDate(post.date)}</span>
                         </div>
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-xl font-bold mb-3 text-slate-900 line-clamp-2 flex-shrink-0">
+                    <h3 className="text-xl font-bold mb-3 text-slate-900 line-clamp-2 flex-shrink-0 leading-tight">
                         {getPostTitle(post)}
                     </h3>
 
                     {/* Excerpt */}
-                    <p className="text-slate-600 mb-4 line-clamp-3 leading-relaxed flex-shrink-0">
+                    <p className="text-slate-600 text-sm mb-4 line-clamp-3 leading-relaxed flex-shrink-0">
                         {getPostExcerpt(post)}
                     </p>
 
@@ -125,13 +125,13 @@ const LatestBlogPosts = () => {
                     {(() => {
                         const enrichment = getPostEnrichment(post.id);
                         return enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
-                            <div className="bg-blue-50 rounded-lg p-3 mb-4 border border-blue-100 flex-shrink-0">
-                                <p className="text-xs font-semibold text-blue-700 mb-2">O que você vai aprender:</p>
-                                <ul className="space-y-1">
+                            <div className="bg-cyan-50 rounded-lg p-3 mb-4 border border-cyan-100 flex-shrink-0">
+                                <p className="text-xs font-semibold text-cyan-700 mb-2">📚 O que você vai aprender:</p>
+                                <ul className="space-y-1.5">
                                     {enrichment.learningPoints.slice(0, 2).map((point, idx) => (
-                                        <li key={idx} className="text-xs text-blue-800 flex items-start gap-2">
-                                            <span className="text-blue-600 mt-0.5 flex-shrink-0">•</span>
-                                            <span className="line-clamp-2">{point}</span>
+                                        <li key={idx} className="text-xs text-cyan-800 flex items-start gap-2">
+                                            <span className="text-cyan-600 mt-0.5 flex-shrink-0">✓</span>
+                                            <span className="line-clamp-1">{point}</span>
                                         </li>
                                     ))}
                                 </ul>
@@ -140,10 +140,10 @@ const LatestBlogPosts = () => {
                     })()}
 
                     {/* Read More Button */}
-                    <div className="mt-auto pt-4 flex-shrink-0">
+                    <div className="mt-auto pt-3 flex-shrink-0">
                         <Link to={getPostLink(post)} className="block">
-                            <Button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group">
-                                {t('blog.read_more', 'Ler mais')}
+                            <Button className="w-full bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-semibold py-2.5 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group">
+                                {t('blog.read_more', 'Ler artigo completo')}
                                 <ArrowRight className="w-4 h-4 ml-2 inline-block transition-transform group-hover:translate-x-1" />
                             </Button>
                         </Link>
@@ -193,7 +193,7 @@ const LatestBlogPosts = () => {
         }
 
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 {posts.map((post, index) => renderPost(post, index))}
             </div>
         );
