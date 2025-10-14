@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import EnhancedFooter from '@/components/EnhancedFooter';
-import SendPulseChatWidget from '@/components/SendPulseChatWidget';
+import JotformChatbot from '@/components/JotformChatbot';
 import { CheckCircle, Package, Star, Award, Crown, ArrowRight, Wifi, Video } from 'lucide-react';
 
 const PlanosOnlinePage = () => {
@@ -86,32 +86,32 @@ const PlanosOnlinePage = () => {
   return (
     <>
       <SEOHead {...seoData} />
-      <SendPulseChatWidget />
-      <main className="min-h-screen pt-32 md:pt-36 lg:pt-40 pb-16 mx-[4%] md:mx-[6%] lg:mx-[8%]">
+      <JotformChatbot />
+      <main className="min-h-screen pt-32 md:pt-36 lg:pt-40 pb-12 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         {/* Hero Section */}
-        <section className="mb-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-100 to-green-200 text-green-700 px-3 py-1.5 rounded-full text-sm font-semibold mb-1.5 shadow-sm">
+        <section className="mb-4 text-center">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-100 to-green-200 text-green-700 px-3 py-1.5 rounded-full text-sm font-semibold mb-2 shadow-sm">
             <Wifi className="w-4 h-4" />
             <span>100% Online</span>
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-1 bg-gradient-to-r from-gray-900 via-cyan-900 to-cyan-800 bg-clip-text text-transparent">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-2 bg-gradient-to-r from-gray-900 via-cyan-900 to-cyan-800 bg-clip-text text-transparent">
             Planos Online de Lentes de Contato
           </h1>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-6">
             Atendimento 100% por telemedicina • Válido em todo o Brasil • Sem necessidade de consulta presencial
           </p>
         </section>
 
         {/* Aviso Online */}
-        <section className="mb-6">
-          <div className="max-w-4xl mx-auto bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-2xl p-5 md:p-6 shadow-lg">
-            <div className="flex items-start gap-3 mb-4">
+        <section className="mb-5">
+          <div className="max-w-4xl mx-auto bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-2xl p-4 md:p-5 shadow-lg">
+            <div className="flex items-start gap-3 mb-3">
               <Video className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
               <div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">
                   Atendimento 100% Online
                 </h3>
-                <div className="space-y-3 text-sm md:text-base text-gray-800">
+                <div className="space-y-2 text-sm md:text-base text-gray-800">
                   <div className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                     <div>
@@ -140,15 +140,15 @@ const PlanosOnlinePage = () => {
         </section>
 
         {/* Plans Grid */}
-        <section className="mb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6">
+        <section className="mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-5">
             {plans.map((plan) => {
               const IconComponent = plan.icon;
 
               return (
                 <div
                   key={plan.id}
-                  className={`relative bg-gradient-to-br ${plan.bgGradient} rounded-2xl p-5 md:p-6 border ${plan.borderColor} shadow-lg hover:shadow-xl transition-all duration-300 ${
+                  className={`relative bg-gradient-to-br ${plan.bgGradient} rounded-2xl p-4 md:p-5 border ${plan.borderColor} shadow-lg hover:shadow-xl transition-all duration-300 ${
                     plan.highlight ? 'ring-2 ring-blue-400 transform scale-105' : ''
                   }`}
                 >
@@ -160,28 +160,28 @@ const PlanosOnlinePage = () => {
                     </div>
                   )}
 
-                  <div className="flex flex-col items-center text-center mb-4">
-                    <div className={`w-14 h-14 bg-gradient-to-br ${plan.iconColor} rounded-xl flex items-center justify-center shadow-md mb-3`}>
-                      <IconComponent className="w-7 h-7 text-white" />
+                  <div className="flex flex-col items-center text-center mb-3">
+                    <div className={`w-12 h-12 bg-gradient-to-br ${plan.iconColor} rounded-xl flex items-center justify-center shadow-md mb-2`}>
+                      <IconComponent className="w-6 h-6 text-white" />
                     </div>
                     <span className={`${plan.badgeColor} px-3 py-1 rounded-full text-xs font-semibold mb-2`}>
                       {plan.badge}
                     </span>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-1">
+                    <h2 className="text-xl font-bold text-gray-900 mb-1">
                       {plan.name}
                     </h2>
-                    <p className="text-sm text-gray-600 mb-3">
+                    <p className="text-sm text-gray-600 mb-2">
                       {plan.description}
                     </p>
-                    <div className="text-3xl font-bold text-gray-900 mb-1">
+                    <div className="text-2xl font-bold text-gray-900 mb-1">
                       {plan.price}
                     </div>
                     <p className="text-xs text-gray-500">ou à vista com desconto</p>
                   </div>
 
-                  <div className="space-y-2.5 mb-5">
+                  <div className="space-y-1.5 mb-3">
                     {plan.features.map((feature, index) => (
-                      <div key={index} className="flex items-start gap-2 bg-white/70 backdrop-blur-sm rounded-lg p-2.5">
+                      <div key={index} className="flex items-start gap-2 bg-white/70 backdrop-blur-sm rounded-lg p-2">
                         <CheckCircle className={`w-4 h-4 ${
                           plan.id.includes('basico') ? 'text-cyan-600' :
                           plan.id.includes('padrao') ? 'text-slate-600' :
@@ -192,7 +192,7 @@ const PlanosOnlinePage = () => {
                     ))}
                   </div>
 
-                  <div className="space-y-2.5">
+                  <div className="space-y-2">
                     <a
                       href={plan.paymentLink}
                       target="_blank"
@@ -216,14 +216,14 @@ const PlanosOnlinePage = () => {
         </section>
 
         {/* Benefits Section */}
-        <section className="mb-6">
-          <div className="bg-gradient-to-r from-cyan-600 to-cyan-700 rounded-2xl p-5 md:p-6 text-white shadow-xl">
+        <section className="mb-5">
+          <div className="bg-gradient-to-r from-cyan-600 to-cyan-700 rounded-2xl p-4 md:p-5 text-white shadow-xl">
             <div className="max-w-6xl mx-auto">
-              <h3 className="text-2xl md:text-3xl font-bold mb-5 flex items-center justify-center gap-3 text-white">
-                <Award className="w-7 h-7 text-white" />
+              <h3 className="text-xl md:text-2xl font-bold mb-4 flex items-center justify-center gap-3 text-white">
+                <Award className="w-6 h-6 text-white" />
                 <span>Por que escolher nossos planos online?</span>
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 md:gap-3">
                 <div className="flex items-start gap-2 bg-white/10 backdrop-blur-sm rounded-xl p-3">
                   <CheckCircle className="w-5 h-5 text-cyan-200 flex-shrink-0 mt-0.5" />
                   <span className="text-sm md:text-base">Economia de até 50% comparado aos planos presenciais</span>
@@ -249,7 +249,7 @@ const PlanosOnlinePage = () => {
                   <span className="text-sm md:text-base">Suporte via WhatsApp e telemedicina</span>
                 </div>
               </div>
-              <div className="mt-5 pt-4 border-t border-cyan-500/30 text-center">
+              <div className="mt-4 pt-3 border-t border-cyan-500/30 text-center">
                 <p className="text-sm md:text-base text-cyan-100 flex items-center justify-center gap-2">
                   <span className="text-xl">🌐</span>
                   <span>Clínica Saraiva Vision • Atendimento Online • Todo o Brasil</span>
@@ -260,32 +260,32 @@ const PlanosOnlinePage = () => {
         </section>
 
         {/* FAQ Section */}
-        <section className="mb-8">
+        <section className="mb-5">
           <div className="max-w-4xl mx-auto">
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-5 text-center">
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 text-center">
               Perguntas Frequentes
             </h3>
-            <div className="space-y-3">
-              <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-200">
-                <h4 className="font-semibold text-gray-900 mb-2">Como funcionam as consultas online?</h4>
+            <div className="space-y-2.5">
+              <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm border border-gray-200">
+                <h4 className="font-semibold text-gray-900 mb-1.5">Como funcionam as consultas online?</h4>
                 <p className="text-sm text-gray-600">
                   Todas as consultas são realizadas por videochamada com oftalmologistas especializados. Você pode fazer as consultas de onde estiver, com total comodidade e segurança.
                 </p>
               </div>
-              <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-200">
-                <h4 className="font-semibold text-gray-900 mb-2">Como funciona a entrega?</h4>
+              <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm border border-gray-200">
+                <h4 className="font-semibold text-gray-900 mb-1.5">Como funciona a entrega?</h4>
                 <p className="text-sm text-gray-600">
                   As lentes são entregues mensalmente no seu endereço cadastrado, sem custo adicional de frete para todo o Brasil. Você recebe automaticamente antes de acabar suas lentes atuais.
                 </p>
               </div>
-              <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-200">
-                <h4 className="font-semibold text-gray-900 mb-2">Preciso ir à clínica alguma vez?</h4>
+              <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm border border-gray-200">
+                <h4 className="font-semibold text-gray-900 mb-1.5">Preciso ir à clínica alguma vez?</h4>
                 <p className="text-sm text-gray-600">
                   Não! Os planos online são 100% por telemedicina. Todo o acompanhamento e consultas são feitas online. Se desejar consulta presencial, veja nossos planos tradicionais.
                 </p>
               </div>
-              <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-200">
-                <h4 className="font-semibold text-gray-900 mb-2">Qual a diferença entre os planos online e presenciais?</h4>
+              <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm border border-gray-200">
+                <h4 className="font-semibold text-gray-900 mb-1.5">Qual a diferença entre os planos online e presenciais?</h4>
                 <p className="text-sm text-gray-600">
                   Os planos online oferecem todo atendimento por telemedicina com preços mais acessíveis. Os planos presenciais incluem consultas na clínica em Caratinga, Ipatinga ou Belo Horizonte.
                 </p>
@@ -295,12 +295,12 @@ const PlanosOnlinePage = () => {
         </section>
 
         {/* CTA para planos presenciais */}
-        <section className="mb-8">
-          <div className="max-w-4xl mx-auto bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-gray-300 rounded-2xl p-5 md:p-6 shadow-lg text-center">
-            <h3 className="text-xl font-bold text-gray-900 mb-3">
+        <section className="mb-6">
+          <div className="max-w-4xl mx-auto bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-gray-300 rounded-2xl p-4 md:p-5 shadow-lg text-center">
+            <h3 className="text-lg font-bold text-gray-900 mb-2">
               Prefere atendimento presencial?
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 mb-3">
               Conheça nossos planos com consultas presenciais em Caratinga, Ipatinga e Belo Horizonte
             </p>
             <Link
