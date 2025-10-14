@@ -140,8 +140,8 @@ const PlanosOnlinePage = () => {
         </section>
 
         {/* Plans Grid */}
-        <section className="!pb-2.5 mb-2.5">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-5">
+        <section className="!pb-6 mb-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-5 py-4">
             {plans.map((plan) => {
               const IconComponent = plan.icon;
 
@@ -216,7 +216,7 @@ const PlanosOnlinePage = () => {
         </section>
 
         {/* Benefits Section */}
-        <section className="!pt-2.5 !pb-3.5 mb-3.5">
+        <section className="!pt-4 !pb-4 mb-4">
           <div className="bg-gradient-to-r from-cyan-600 to-cyan-700 rounded-2xl p-4 md:p-5 text-white shadow-xl">
             <div className="max-w-6xl mx-auto">
               <h3 className="text-xl md:text-2xl font-bold mb-4 flex items-center justify-center gap-3 text-white">
@@ -260,7 +260,7 @@ const PlanosOnlinePage = () => {
         </section>
 
         {/* FAQ Section */}
-        <section className="!pt-2.5 !pb-3.5 mb-3.5">
+        <section className="!pt-4 !pb-4 mb-4">
           <div className="max-w-4xl mx-auto">
             <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 text-center">
               Perguntas Frequentes

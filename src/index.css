@@ -41,6 +41,22 @@ body {
   /* Remover bloqueios anteriores */
 }
 
+/* ANTI-SCROLL DUPLO: Previne contextos de scroll aninhados */
+#root,
+#app-content,
+main {
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+  /* Permite apenas scroll do body */
+}
+
+/* SEÇÕES: Não criar contextos de scroll próprios */
+section {
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+  /* Garante que seções não criem scrollbars próprias */
+}
+
 /* ===== PULSE.LIVE CHATBOT - CONTRASTE E LEGIBILIDADE ===== */
 /* Garantir contraste adequado para o widget do chatbot */
 [data-live-chat-id] {
