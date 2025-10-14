@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import EnhancedFooter from '@/components/EnhancedFooter';
+import JotformChatbot from '@/components/JotformChatbot';
 import { CheckCircle, Crown, ArrowLeft, Phone, Sparkles, Star, Shield, Award, Zap, Users, MapPin, AlertCircle, Package } from 'lucide-react';
 import { PLAN_PAYMENT_LINKS } from '@/config/plans';
 
@@ -81,6 +82,7 @@ const PlanPremiumPage = () => {
   return (
     <>
       <SEOHead {...seoData} />
+      <JotformChatbot />
 
       {/* Background Premium com Gradiente */}
       <div className="fixed inset-0 -z-10 bg-gradient-to-br from-blue-950 via-slate-900 to-blue-900">

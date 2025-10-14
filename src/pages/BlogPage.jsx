@@ -12,7 +12,6 @@ import { Button } from '../components/ui/button';
 import { blogPosts, categoryConfig, getPostBySlug, getPostBySlugSync, categories } from '../content/blog';
 import { getPostEnrichment } from '../data/blogPostsEnrichment';
 import CategoryBadge from '../components/blog/CategoryBadge';
-import AccessibilityControls from '../components/blog/AccessibilityControls';
 import OptimizedImage from '../components/blog/OptimizedImage';
 import SpotifyEmbed from '../components/SpotifyEmbed';
 import TableOfContents from '../components/blog/TableOfContents';
@@ -524,7 +523,6 @@ const BlogPage = () => {
         </main>
 
         <EnhancedFooter />
-        <AccessibilityControls />
       </div>
     );
   }
@@ -852,9 +850,6 @@ const BlogPage = () => {
           </section>
         </div>
       </main>
-
-      {/* Accessibility Controls */}
-      <AccessibilityControls />
 
       <EnhancedFooter />
     </div>

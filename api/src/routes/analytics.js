@@ -40,18 +40,15 @@ const analyticsRateLimit = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
-  // Use IP address for rate limiting
   keyGenerator: (req) => {
     return req.ip || req.connection.remoteAddress || 'unknown';
   },
-  // Skip successful requests from rate limiting
   skipSuccessfulRequests: false,
-  // Log rate limit hits
   handler: (req, res) => {
     console.warn(`[Analytics] Rate limit exceeded for IP: ${req.ip}`);
     res.status(429).json({
       error: 'Rate limit exceeded',
-      retryAfter: Math.ceil(60 / 1000) // Convert to seconds
+      retryAfter: Math.ceil(60 / 1000)
     });
   }
 });
@@ -75,9 +72,9 @@ router.post('/ga', (req, res) => {
       console.warn(`[Analytics] Invalid GA payload from IP ${req.ip}:`, error.errors);
       return res.status(400).json({
         error: 'Invalid request body',
-        details: error.errors.map(err => ({
-          field: err.path.join('.'),
-          message: err.message
+        details: (error.errors || []).map(err => ({
+          field: (err.path || []).join('.'),
+          message: err.message || 'Validation error'
         }))
       });
     }
@@ -107,9 +104,9 @@ router.post('/gtm', (req, res) => {
       console.warn(`[Analytics] Invalid GTM payload from IP ${req.ip}:`, error.errors);
       return res.status(400).json({
         error: 'Invalid request body',
-        details: error.errors.map(err => ({
-          field: err.path.join('.'),
-          message: err.message
+        details: (error.errors || []).map(err => ({
+          field: (err.path || []).join('.'),
+          message: err.message || 'Validation error'
         }))
       });
     }

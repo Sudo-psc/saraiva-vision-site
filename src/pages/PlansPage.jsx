@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import EnhancedFooter from '@/components/EnhancedFooter';
-import SendPulseChatWidget from '@/components/SendPulseChatWidget';
+import JotformChatbot from '@/components/JotformChatbot';
 import { CheckCircle, Package, Star, Award, Crown, ArrowRight, MapPin, AlertCircle } from 'lucide-react';
 import { PLAN_PAYMENT_LINKS } from '@/config/plans';
 
@@ -94,7 +94,7 @@ const PlansPage = () => {
   return (
     <>
       <SEOHead {...seoData} />
-      <SendPulseChatWidget />
+      <JotformChatbot />
       <main className="min-h-screen pt-32 md:pt-36 lg:pt-40 pb-16 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         {/* Hero Section */}
         <section className="!mb-0 !pb-8 text-center">

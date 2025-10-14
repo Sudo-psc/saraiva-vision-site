@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import EnhancedFooter from '@/components/EnhancedFooter';
+import JotformChatbot from '@/components/JotformChatbot';
 import { CheckCircle, Package, ArrowLeft, Phone, MapPin, AlertCircle } from 'lucide-react';
 import { PLAN_PAYMENT_LINKS } from '@/config/plans';
 
@@ -66,6 +67,7 @@ const PlanBasicoPage = () => {
   return (
     <>
       <SEOHead {...seoData} />
+      <JotformChatbot />
       <main className="flex-1 pt-32 md:pt-36 lg:pt-40 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         {/* Back Navigation */}
         <div className="mb-6">

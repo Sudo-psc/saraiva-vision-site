@@ -5,6 +5,7 @@ import SEOHead from '../components/SEOHead';
 import { useLensesSEO } from '../hooks/useSEO';
 import EnhancedFooter from '../components/EnhancedFooter';
 import ContactLenses from '../components/ContactLenses';
+import JotformChatbot from '../components/JotformChatbot';
 import { CheckCircle, Eye, Package, ArrowRight } from 'lucide-react';
 
 const LensesPage = () => {
@@ -68,6 +69,7 @@ const LensesPage = () => {
   return (
     <>
       <SEOHead {...seoData} />
+      <JotformChatbot />
       <main className="flex-1 pt-32 md:pt-36 lg:pt-40 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         {/* Hero Section */}
         <section className="!mb-3 !pt-0 !pb-0 text-center">
