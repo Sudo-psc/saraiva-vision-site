@@ -26,12 +26,17 @@ body {
 }
 
 /* CONTAINERS ESPECÍFICOS: Permitir overflow natural */
-.container,
-main,
-section {
+.container {
 	overflow-x: hidden !important;
 	overflow-y: visible !important;
 	/* overflow-y permitido para scroll natural */
+}
+
+/* MAIN e SECTION: Não forçar overflow para evitar scrollbar dupla */
+main,
+section {
+	overflow-x: hidden !important;
+	/* overflow-y não forçado - permite controle por classes específicas */
 }
 
 /* PERMITE SCROLL SUAVE APENAS QUANDO EXPLICITAMENTE HABILITADO */
