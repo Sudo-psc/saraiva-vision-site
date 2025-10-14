@@ -88,12 +88,11 @@ const LatestBlogPosts = () => {
                 {/* Featured Image - Área delimitada sem sobreposição */}
                 {featuredImage && (
                     <div className="w-full h-48 flex-shrink-0 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
-                        <OptimizedImage
+                        <img
                             src={featuredImage}
                             alt={`Imagem ilustrativa do artigo: ${getPostTitle(post)}`}
                             className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
                             loading="lazy"
-                            aspectRatio="16/9"
                         />
                     </div>
                 )}
