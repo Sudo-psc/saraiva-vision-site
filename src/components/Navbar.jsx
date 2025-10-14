@@ -51,7 +51,14 @@ const Navbar = () => {
             transition={{ duration: 0.5 }}
             className="ml-[6%]"
           >
-            <Link to="/" aria-label={t('navbar.home_link_label')}><Logo isWhite /></Link>
+            <Link
+              to="/"
+              onClick={() => navigate('/')}
+              className="cursor-pointer hover:opacity-80 transition-opacity duration-200"
+              aria-label={t('navbar.home_link_label')}
+            >
+              <Logo isWhite />
+            </Link>
           </motion.div>
 
           {/* Desktop Navigation - Enhanced hover effects with cyan theme */}
