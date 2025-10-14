@@ -339,7 +339,7 @@ export const blogPosts = [
       "retinopatia diabética",
       "glaucoma"
     ],
-    "image": "/Blog/futuristic-eye-examination-1280w.webp",
+    "image": "/Blog/futuristic-eye-examination-optimized-1200w.webp",
     "featured": true,
     "seo": {
       "metaTitle": "Como a Inteligência Artificial Está Transformando os Exames Oftalmológicos em Caratinga, MG",
@@ -725,7 +725,7 @@ export const blogPosts = [
       "proteção UV",
       "Caratinga"
     ],
-    "image": "/Blog/pterigio-capa-1280w.webp",
+    "image": "/Blog/pterigio-capa-optimized-1200w.webp",
     "featured": true,
     "seo": {
       "metaTitle": "Pterígio: Guia Completo sobre Prevenção, Tratamento e Cirurgia",
