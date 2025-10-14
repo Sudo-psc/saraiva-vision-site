@@ -16,7 +16,7 @@ class StructuredLogger {
     }
 
     generateSessionId() {
-        return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        return `session_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
     }
 
     createLogEntry(level, message, data = {}) {

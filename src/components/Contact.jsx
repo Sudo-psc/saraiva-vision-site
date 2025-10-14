@@ -503,7 +503,7 @@ const Contact = () => {
             <MessageCircle size={14} /> {t('contact.info.phone_whatsapp')}
           </button>
           <a 
-            href="https://wa.me/message/EHTAAAAYH7SHJ1"
+            href="https://wa.me/message/2QFZJG3EDJZVF1"
             target="_blank"
             rel="noopener noreferrer"
             className="text-green-600 hover:underline flex items-center gap-1 text-sm font-semibold"
@@ -511,7 +511,7 @@ const Contact = () => {
             <MessageCircle size={14} /> Auto Atendimento WhatsApp
           </a>
           <a 
-            href="https://api.whatsapp.com/send/?phone=5533998601427&text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta%20de%20urgência."
+            href="https://wa.me/message/2QFZJG3EDJZVF1"
             target="_blank"
             rel="noopener noreferrer"
             className="text-red-600 hover:underline flex items-center gap-1 text-sm font-semibold"

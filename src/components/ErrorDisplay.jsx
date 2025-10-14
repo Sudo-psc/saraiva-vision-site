@@ -92,7 +92,7 @@ export function ErrorDisplay({
         } else {
             // Default contact behavior
             const phone = '(33) 99860-1427';
-            const whatsapp = `https://wa.me/5533998601427?text=Olá, preciso de ajuda com um problema no site.`;
+            const whatsapp = `https://wa.me/message/2QFZJG3EDJZVF1?text=Olá, preciso de ajuda com um problema no site.`;
 
             if (window.confirm(`Deseja entrar em contato conosco?\n\nTelefone: ${phone}\nOu clique OK para abrir o WhatsApp.`)) {
                 window.open(whatsapp, '_blank');

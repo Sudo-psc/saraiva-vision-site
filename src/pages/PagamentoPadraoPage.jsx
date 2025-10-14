@@ -60,7 +60,7 @@ const PagamentoPadraoPage = () => {
               </div>
               <div className="flex items-center justify-center gap-2 text-sm text-gray-700">
                 <CheckCircle className="w-4 h-4 text-gray-600" />
-                <span>Consultas de telemedicina ilimitadas</span>
+                <span>Consultas online incluídas</span>
               </div>
               <div className="flex items-center justify-center gap-2 text-sm text-gray-700">
                 <CheckCircle className="w-4 h-4 text-gray-600" />

@@ -65,12 +65,12 @@ function loadGoogleMapsAlternative(apiKey) {
         const pollForGoogle = async () => {
           attempts++;
           if (window.google && window.google.maps && window.google.maps.importLibrary) {
-            
+
             // Load required libraries
             await window.google.maps.importLibrary('marker');
             await window.google.maps.importLibrary('places');
             loadAttempts = 0;
-            
+
             resolve(window.google.maps);
           } else if (attempts < maxAttempts) {
             setTimeout(pollForGoogle, 100);
@@ -121,7 +121,7 @@ function attemptGoogleMapsLoad(apiKey) {
       }
     }, TIMEOUT_MS);
 
-    const callbackName = `initGoogleMaps_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const callbackName = `initGoogleMaps_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 
     window[callbackName] = async () => {
       clearTimeout(timeoutId);

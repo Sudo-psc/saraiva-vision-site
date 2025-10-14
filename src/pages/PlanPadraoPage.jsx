@@ -43,7 +43,7 @@ const PlanPadraoPage = () => {
     'Todos os benefícios do Plano Básico',
     '13 pares de lentes gelatinosas premium',
     '2 consultas presenciais por ano',
-    'Consultas de telemedicina ilimitadas',
+    'Consultas online incluídas',
     'Prioridade no agendamento',
     'Frete expresso grátis',
     'Garantia estendida',
@@ -56,8 +56,8 @@ const PlanPadraoPage = () => {
       description: '13 pares de lentes de alta qualidade por ano'
     },
     {
-      title: 'Telemedicina Ilimitada',
-      description: 'Consultas online quando você precisar, sem limite'
+      title: 'Consultas Online Incluídas',
+      description: 'Consultas online quando você precisar'
     },
     {
       title: 'Prioridade Total',
@@ -120,7 +120,7 @@ const PlanPadraoPage = () => {
                   Assinar Agora
                 </a>
                 <a
-                  href="https://wa.me/5533998601427"
+                  href="https://wa.me/message/2QFZJG3EDJZVF1"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 flex items-center justify-center gap-2 bg-white border-2 border-slate-600 text-slate-600 hover:bg-cyan-50 hover:border-cyan-600 font-semibold py-4 px-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
@@ -168,7 +168,7 @@ const PlanPadraoPage = () => {
                   <div className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-gray-900">Telemedicina:</p>
+                      <p className="font-semibold text-gray-900">Consultas Online:</p>
                       <p>Válida em <span className="font-bold">todo o território nacional</span></p>
                     </div>
                   </div>

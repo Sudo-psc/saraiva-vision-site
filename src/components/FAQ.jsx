@@ -188,7 +188,7 @@ const FAQ = () => {
           </p>
           <Button
             onClick={() => {
-              const whatsappLink = `https://wa.me/5533998601427?text=${encodeURIComponent("Olá! Tenho uma dúvida que não encontrei no FAQ.")}`;
+              const whatsappLink = `https://wa.me/message/2QFZJG3EDJZVF1?text=${encodeURIComponent("Olá! Tenho uma dúvida que não encontrei no FAQ.")}`;
               window.open(whatsappLink, '_blank', 'noopener,noreferrer');
             }}
             size="lg"

@@ -49,7 +49,7 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <SEOHead {...seo} />
-      <main className="flex-1 pt-28 mx-[4%] md:mx-[6%] lg:mx-[8%]">
+      <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         <About />
         <Testimonials />
         <Contact />

@@ -7,7 +7,7 @@ import { AlertCircle, Shield } from 'lucide-react';
  * CFM-compliant disclaimer for medical content
  *
  * @param {Object} props
- * @param {'general'|'blog'|'telemedicine'} props.type - Type of disclaimer
+ * @param {'general'|'blog'|'online_consultations'} props.type - Type of disclaimer
  * @param {string} props.className - Additional CSS classes
  *
  * @author Dr. Philipe Saraiva Cruz
@@ -26,9 +26,9 @@ const MedicalDisclaimer = ({ type = 'general', className = '' }) => {
       icon: AlertCircle,
       color: 'cyan'
     },
-    telemedicine: {
-      title: 'Telemedicina - CFM Nº 2.314/2022',
-      text: 'A telemedicina complementa, mas não substitui consultas presenciais quando necessário. Conforme Resolução CFM Nº 2.314/2022, alguns procedimentos exigem exame físico presencial. O médico determinará a modalidade mais apropriada.',
+    online_consultations: {
+      title: 'Consultas Online - CFM Nº 2.314/2022',
+      text: 'As consultas online complementam, mas não substituem consultas presenciais quando necessário. Conforme Resolução CFM Nº 2.314/2022, alguns procedimentos exigem exame físico presencial. O médico determinará a modalidade mais apropriada.',
       icon: Shield,
       color: 'blue'
     }

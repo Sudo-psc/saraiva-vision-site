@@ -276,7 +276,7 @@ function PrimaryAppointmentCTA() {
         </div>
         <Button
           as="a"
-          href="https://wa.me/5533998601427?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta"
+          href="https://wa.me/message/2QFZJG3EDJZVF1"
           target="_blank"
           rel="noopener noreferrer"
           className="w-full sm:w-auto whitespace-nowrap bg-cyan-600 hover:bg-cyan-700
@@ -314,7 +314,7 @@ function SecondaryAppointmentCTA() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
           <Button
             as="a"
-            href="https://wa.me/5533998601427?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta"
+            href="https://wa.me/message/2QFZJG3EDJZVF1"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-white text-cyan-700 hover:bg-gray-100 font-semibold px-8 py-3

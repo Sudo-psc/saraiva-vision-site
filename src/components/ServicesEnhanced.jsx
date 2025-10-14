@@ -350,7 +350,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
           <p className="text-sm text-slate-500 mb-4">
             Sente-se em emergência oftalmológica?{' '}
             <a
-              href="https://wa.me/5533998601427?text=Preciso%20de%20uma%20consulta%20o%20mais%20rápido%20possível.%20É%20uma%20emergência?"
+              href="https://wa.me/message/2QFZJG3EDJZVF1?text=Preciso%20de%20uma%20consulta%20o%20mais%20rápido%20possível.%20É%20uma%20emergência?"
               target="_blank"
               rel="noopener noreferrer"
               className="text-red-600 hover:text-red-700 font-medium underline"

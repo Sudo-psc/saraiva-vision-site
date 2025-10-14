@@ -34,7 +34,7 @@ export function StickyAppointmentCTA() {
     >
       <Button
         as="a"
-        href="https://wa.me/5533998601427?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta"
+        href="https://wa.me/message/2QFZJG3EDJZVF1"
         target="_blank"
         rel="noopener noreferrer"
         className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold px-6 py-4
@@ -79,7 +79,7 @@ export function InlineAppointmentCTA({ context = "artigo" }) {
         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
           <Button
             as="a"
-            href="https://wa.me/5533998601427?text=Olá!%20Li%20o%20artigo%20e%20gostaria%20de%20agendar%20uma%20consulta"
+            href="https://wa.me/message/2QFZJG3EDJZVF1"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-white text-cyan-700 hover:bg-gray-100 font-bold px-8 py-4

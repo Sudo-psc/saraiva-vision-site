@@ -41,7 +41,7 @@ const PlanBasicoPage = () => {
 
   const features = [
     '12 pares de lentes gelatinosas asféricas',
-    '1 consulta por telemedicina',
+    '1 consulta online',
     '1 consulta presencial com médico',
     'Acompanhamento médico mensal',
     'Lembretes mensais de troca',
@@ -60,7 +60,7 @@ const PlanBasicoPage = () => {
     },
     {
       title: 'Acompanhamento Médico',
-      description: 'Consultas de telemedicina e presencial incluídas'
+      description: 'Consultas online e presencial incluídas'
     }
   ];
 
@@ -115,7 +115,7 @@ const PlanBasicoPage = () => {
                   Assinar Agora
                 </a>
                 <a
-                  href="https://wa.me/5533998601427"
+                  href="https://wa.me/message/2QFZJG3EDJZVF1"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 flex items-center justify-center gap-2 bg-white border-2 border-cyan-600 text-cyan-600 hover:bg-cyan-50 font-semibold py-4 px-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"

@@ -20,7 +20,7 @@ vi.mock('@/lib/clinicInfo', () => ({
       whatsapp: { raw: '5533998601427' }
     }
   },
-  generateWhatsAppURL: () => 'https://wa.me/5533998601427'
+  generateWhatsAppURL: () => 'https://wa.me/message/2QFZJG3EDJZVF1'
 }));
 
 vi.mock('framer-motion', () => ({

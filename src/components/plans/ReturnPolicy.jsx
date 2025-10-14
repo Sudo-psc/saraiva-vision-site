@@ -160,7 +160,7 @@ const ReturnPolicy = () => {
         <div className="mt-6 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl p-4 text-center text-white shadow-lg">
           <p className="text-sm font-semibold mb-2">Dúvidas sobre nossa política?</p>
           <a
-            href="https://wa.me/5533998601427"
+            href="https://wa.me/message/2QFZJG3EDJZVF1"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-white text-cyan-600 hover:bg-cyan-50 font-bold py-2 px-5 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 text-sm"

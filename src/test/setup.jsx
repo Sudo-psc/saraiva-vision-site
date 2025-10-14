@@ -43,8 +43,8 @@ vi.mock('@/lib/clinicInfo', () => ({
 
 vi.mock('@/hooks/useWhatsApp', () => ({
   useWhatsApp: () => ({
-    generateWhatsAppUrl: vi.fn(() => 'https://wa.me/5533998601427'),
-    defaultWhatsAppUrl: 'https://wa.me/5533998601427',
+    generateWhatsAppUrl: vi.fn(() => 'https://wa.me/message/2QFZJG3EDJZVF1'),
+    defaultWhatsAppUrl: 'https://wa.me/message/2QFZJG3EDJZVF1',
     openFloatingCTA: vi.fn(),
     openWhatsApp: vi.fn(),
     whatsappNumber: '5533998601427'

@@ -20,7 +20,7 @@ const ActionButtons = ({
   };
 
   const handleWhatsApp = () => {
-    window.open('https://wa.me/message/EHTAAAAYH7SHJ1', '_blank', 'noopener,noreferrer');
+    window.open('https://wa.me/message/2QFZJG3EDJZVF1', '_blank', 'noopener,noreferrer');
   };
 
   const handlePDFDownload = () => {

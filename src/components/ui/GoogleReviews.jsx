@@ -15,7 +15,7 @@ const GOOGLE_RATINGS = {
   rating: 4.9,
   totalReviews: 136,
   placeUrl: 'https://maps.google.com/?cid=17367763261775232199',
-  whatsappUrl: 'https://wa.me/5533998601427?text=Ol%C3%A9!%20Gostaria%20de%20agendar%20uma%20consulta%20oftalmol%C3%B3gica'
+  whatsappUrl: 'https://wa.me/message/2QFZJG3EDJZVF1?text=Ol%C3%A9!%20Gostaria%20de%20agendar%20uma%20consulta%20oftalmol%C3%B3gica'
 };
 
 // Avaliações realistas baseadas em feedback real de pacientes

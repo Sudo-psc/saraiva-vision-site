@@ -363,7 +363,7 @@ const GoogleReviewsWidget = ({
     );
 
     const googleUrl = placeData?.url || `https://www.google.com/maps/place/?q=place_id:${CLINIC_PLACE_ID}`;
-    const whatsappUrl = 'https://wa.me/message/EHTAAAAYH7SHJ1';
+    const whatsappUrl = 'https://wa.me/message/2QFZJG3EDJZVF1';
     const phoneHref = clinicInfo.phone ? `tel:${clinicInfo.phone.replace(/[^+\d]/g, '')}` : null;
     const clinicAddress = `${clinicInfo.streetAddress}, ${clinicInfo.city} - ${clinicInfo.state}`;
     const clinicHours = placeData?.openingHours?.weekdayDescriptions?.[0] || 'Segunda a Sexta, 08h às 18h';

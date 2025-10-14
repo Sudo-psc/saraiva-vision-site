@@ -17,7 +17,7 @@ const ServicesPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <SEOHead {...seo} />
-      <main className="flex-1 pt-28 scroll-block-internal mx-[5%] lg:mx-[10%]">
+      <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 scroll-block-internal mx-[5%] lg:mx-[10%]">
         <ServicesEnhanced full grid />
 
         {/* Prova Social */}

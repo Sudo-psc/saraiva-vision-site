@@ -194,7 +194,7 @@ class BackgroundJobScheduler {
             throw new Error(`Job type '${jobType}' not registered`);
         }
 
-        const jobId = options.jobId || `${jobType}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        const jobId = options.jobId || `${jobType}_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
         const job = {
             id: jobId,
             type: jobType,

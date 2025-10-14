@@ -609,7 +609,7 @@ export class ClientErrorHandler {
     handleContact() {
         const contactInfo = {
             phone: '(33) 99860-1427',
-            whatsapp: 'https://wa.me/5533998601427',
+            whatsapp: 'https://wa.me/message/2QFZJG3EDJZVF1',
             email: 'contato@saraivavision.com.br'
         };
 

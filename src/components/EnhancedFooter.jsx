@@ -81,14 +81,18 @@ const EnhancedFooter = ({
         whatsappLink: "https://wa.me/message/2QFZJG3EDJZVF1", // Updated WhatsApp scheduling link
         chatbotUrl: clinicInfo.chatbotUrl,
         amorSaudeLogo: "/img/amorsaude_logo.png",
-        currentYear: new Date().getFullYear()
+        currentYear: 2025
     }), []);
 
     // Navigation links (preserved from original Footer)
     const navLinks = useMemo(() => [
         { name: t('navbar.home'), href: '/' },
         { name: t('navbar.services'), href: '/servicos' },
+        { name: t('navbar.lenses'), href: '/lentes' },
+        { name: t('navbar.blog'), href: '/blog' },
+        { name: t('navbar.podcast'), href: '/podcast' },
         { name: t('navbar.about'), href: '/sobre' },
+        { name: t('navbar.plans'), href: '/planos' },
     ], [t]);
 
     // Service links (preserved from original Footer)
@@ -482,7 +486,7 @@ const EnhancedFooter = ({
                                         <span
                                             className="text-primary-400 group-hover:scale-110 transition-transform"
                                             aria-hidden="true"
-                                            style={{display: 'none'}}
+                                            style={{ display: 'none' }}
                                         >
                                             📍
                                         </span>
@@ -532,7 +536,7 @@ const EnhancedFooter = ({
                                 </ContactItem>
                                 <ContactItem>
                                     <a
-                                        href="https://api.whatsapp.com/send/?phone=5533998601427&text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta."
+                                        href="https://wa.me/message/2QFZJG3EDJZVF1"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform text-red-400"

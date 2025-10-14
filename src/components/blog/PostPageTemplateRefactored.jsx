@@ -143,7 +143,7 @@ const PostPageTemplateRefactored = ({ slug }) => {
     city: 'Caratinga/MG',
     cep: 'CEP 35300-299',
     mapsUrl: 'https://maps.app.goo.gl/HEiqAqZ3yLECBgeD8',
-    whatsappUrl: 'https://wa.me/5533998601427?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20consulta'
+    whatsappUrl: 'https://wa.me/message/2QFZJG3EDJZVF1?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20consulta'
   };
 
   const articleSchema = {

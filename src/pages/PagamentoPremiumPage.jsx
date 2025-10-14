@@ -60,7 +60,7 @@ const PagamentoPremiumPage = () => {
               </div>
               <div className="flex items-center justify-center gap-2 text-sm text-gray-700">
                 <CheckCircle className="w-4 h-4 text-amber-600" />
-                <span>Telemedicina com prioridade</span>
+                <span>Consultas online com prioridade</span>
               </div>
               <div className="flex items-center justify-center gap-2 text-sm text-gray-700">
                 <CheckCircle className="w-4 h-4 text-amber-600" />

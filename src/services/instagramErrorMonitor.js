@@ -555,14 +555,14 @@ class InstagramErrorMonitor {
      * Generate unique error ID
      */
     generateErrorId() {
-        return `ig-error-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        return `ig-error-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
     }
 
     /**
      * Generate unique alert ID
      */
     generateAlertId() {
-        return `ig-alert-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        return `ig-alert-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
     }
 
     /**
@@ -570,7 +570,7 @@ class InstagramErrorMonitor {
      */
     getSessionId() {
         if (!this.sessionId) {
-            this.sessionId = `ig-session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            this.sessionId = `ig-session-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
             this.sessionStartTime = Date.now();
         }
         return this.sessionId;

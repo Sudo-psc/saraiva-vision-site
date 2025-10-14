@@ -23,7 +23,7 @@ const Footer = () => {
     whatsappLink: `https://wa.me/${clinicInfo.phone.replace(/\D/g, '')}`,
     chatbotUrl: clinicInfo.chatbotUrl,
     amorSaudeLogo: "/img/partner-amor-saude.svg",
-    currentYear: new Date().getFullYear()
+    currentYear: 2025
   }), []);
 
   const navLinks = useMemo(() => [

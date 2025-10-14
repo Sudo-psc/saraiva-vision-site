@@ -86,7 +86,7 @@ const PagamentoPadraoOnlinePage = () => {
                 </p>
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                Consultas ilimitadas + recursos avançados
+                Consultas online + recursos avançados
               </p>
             </div>
 

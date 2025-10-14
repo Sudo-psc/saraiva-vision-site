@@ -66,7 +66,7 @@ const BlogPostCTA = ({ content, className = '' }) => {
                 </p>
               </div>
               <div class="flex justify-center">
-                <a href="https://wa.me/5533998601427?text=${encodeURIComponent(message)}"
+                <a href="https://wa.me/message/2QFZJG3EDJZVF1"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
@@ -100,7 +100,7 @@ const BlogPostCTA = ({ content, className = '' }) => {
               nossa equipe está pronta para ajudar. Fale conosco pelo WhatsApp.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="https://wa.me/5533998601427?text=Li%20seu%20artigo%20e%20gostaria%20de%20agendar%20uma%20consulta"
+              <a href="https://wa.me/message/2QFZJG3EDJZVF1"
                  target="_blank"
                  rel="noopener noreferrer"
                  class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">

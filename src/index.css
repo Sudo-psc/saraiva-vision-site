@@ -98,6 +98,22 @@ section {
 
 /* ===== FIM DA NORMALIZAÇÃO ===== */
 
+/* ===== PAGE TOP SPACING - NAVBAR OFFSET ===== */
+/* Classe utilitária para espaçamento superior consistente em páginas com navbar fixa */
+@layer components {
+  .page-top-spacing {
+    @apply pt-20 sm:pt-24 md:pt-28 lg:pt-32;
+  }
+
+  .page-top-spacing-large {
+    @apply pt-24 sm:pt-28 md:pt-32 lg:pt-36;
+  }
+
+  .page-top-spacing-xl {
+    @apply pt-28 sm:pt-32 md:pt-36 lg:pt-40;
+  }
+}
+
 /* Performance and UX optimizations */
 @layer utilities {
 

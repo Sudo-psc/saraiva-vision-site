@@ -6,21 +6,21 @@ import { Helmet } from 'react-helmet-async';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import { Calendar, ArrowRight, ArrowLeft, Shield, Stethoscope, Cpu, HelpCircle, Clock, User, ChevronLeft, ChevronRight, Headphones, X } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import EnhancedFooter from '../components/EnhancedFooter';
-import { Button } from '../components/ui/button';
-import { blogPosts, categoryConfig, getPostBySlug, getPostBySlugSync, categories } from '../content/blog';
-import { getPostEnrichment } from '../data/blogPostsEnrichment';
-import CategoryBadge from '../components/blog/CategoryBadge';
-import OptimizedImage from '../components/blog/OptimizedImage';
-import SpotifyEmbed from '../components/SpotifyEmbed';
-import TableOfContents from '../components/blog/TableOfContents';
-import RelatedPostsWidget from '../components/blog/RelatedPostsWidget';
-import ShareWidget from '../components/blog/ShareWidget';
-import AuthorWidget from '../components/blog/AuthorWidget';
-import NewsletterForm from '../components/blog/NewsletterForm';
-import { trackBlogInteraction, trackPageView, trackSearchInteraction } from '../utils/analytics';
-import { generateCompleteSchemaBundle, getPostSpecificSchema } from '../lib/blogSchemaMarkup';
+import Navbar from '@/components/Navbar';
+import EnhancedFooter from '@/components/EnhancedFooter';
+import { Button } from '@/components/ui/button';
+import { blogPosts, categoryConfig, getPostBySlug, getPostBySlugSync, categories } from '@/content/blog';
+import { getPostEnrichment } from '@/data/blogPostsEnrichment';
+import CategoryBadge from '@/components/blog/CategoryBadge';
+import OptimizedImage from '@/components/blog/OptimizedImage';
+import SpotifyEmbed from '@/components/SpotifyEmbed';
+import TableOfContents from '@/components/blog/TableOfContents';
+import RelatedPostsWidget from '@/components/blog/RelatedPostsWidget';
+import ShareWidget from '@/components/blog/ShareWidget';
+import AuthorWidget from '@/components/blog/AuthorWidget';
+import NewsletterForm from '@/components/blog/NewsletterForm';
+import { trackBlogInteraction, trackPageView, trackSearchInteraction } from '@/utils/analytics';
+import { generateCompleteSchemaBundle, getPostSpecificSchema } from '@/lib/blogSchemaMarkup';
 
 // Helper function to format dates - extracted for performance
 const formatDate = (dateString) => {
@@ -154,26 +154,26 @@ const BlogPage = () => {
         role="article"
         aria-labelledby={`post-title-${post.id}`}
       >
-          <Link
-            to={`/blog/${post.slug}`}
-            className="relative block focus:outline-none"
-            aria-label={`Ler o post: ${post.title}`}
-          >
-            <div className="relative w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gray-100 rounded-t-xl">
-              <OptimizedImage
-                src={post.image}
-                alt={`Imagem ilustrativa do artigo: ${post.title}`}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-                width="400"
-                height="225"
-                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 400px"
-                fallbackSrc="/img/blog-fallback.jpg"
-              />
-            </div>
-          </Link>
+        <Link
+          to={`/blog/${post.slug}`}
+          className="relative block focus:outline-none"
+          aria-label={`Ler o post: ${post.title}`}
+        >
+          <div className="relative w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gray-100 rounded-t-xl">
+            <OptimizedImage
+              src={post.image}
+              alt={`Imagem ilustrativa do artigo: ${post.title}`}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+              width="400"
+              height="225"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 400px"
+              fallbackSrc="/img/blog-fallback.jpg"
+            />
+          </div>
+        </Link>
 
-          <div className="p-6 flex flex-col flex-grow min-h-0">
+        <div className="p-6 flex flex-col flex-grow min-h-0">
           {/* Category Badge */}
           <div className="mb-3">
             <CategoryBadge category={post.category} size="sm" />
@@ -635,8 +635,8 @@ const BlogPage = () => {
                 )}
               </form>
 
-               {/* Clean Category Filter */}
-               <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Filtros de categoria">
+              {/* Clean Category Filter */}
+              <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Filtros de categoria">
                 {categories.map(category => {
                   const config = categoryConfig[category];
                   const iconMap = {
@@ -660,11 +660,10 @@ const BlogPage = () => {
                       }}
                       aria-pressed={isActive}
                       aria-label={`Filtrar por categoria: ${category}`}
-                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                        isActive
+                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${isActive
                           ? 'bg-cyan-500 text-white shadow-sm hover:bg-cyan-600'
                           : 'bg-white text-text-secondary border border-border-light hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50'
-                      }`}
+                        }`}
                     >
                       {Icon && <Icon className="w-4 h-4" aria-hidden="true" />}
                       <span>{category}</span>
@@ -674,103 +673,102 @@ const BlogPage = () => {
               </div>
             </div>
 
-             {/* Posts Grid */}
-             {searchTerm && searchTerm !== debouncedSearch ? (
-               <div className="flex justify-center items-center py-12">
-                 <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
-                 <span className="ml-3 text-text-secondary">Buscando artigos...</span>
-               </div>
-             ) : filteredPosts.length > 0 ? (
-               <>
-                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8 auto-rows-fr">
-                   {currentPosts.map((post, index) => renderPostCard(post, index))}
-                 </div>
+            {/* Posts Grid */}
+            {searchTerm && searchTerm !== debouncedSearch ? (
+              <div className="flex justify-center items-center py-12">
+                <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
+                <span className="ml-3 text-text-secondary">Buscando artigos...</span>
+              </div>
+            ) : filteredPosts.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8 auto-rows-fr">
+                  {currentPosts.map((post, index) => renderPostCard(post, index))}
+                </div>
 
-                 {/* Pagination */}
-                 {totalPages > 1 && (
-                   <motion.div
-                     initial={{ opacity: 0, y: 20 }}
-                     animate={{ opacity: 1, y: 0 }}
-                     transition={{ duration: 0.5, delay: 0.2 }}
-                     className="mt-12 flex justify-center items-center gap-2"
-                     role="navigation"
-                     aria-label="Navegação de páginas"
-                   >
-                     {/* Previous Button */}
-                      <Button
-                        onClick={() => {
-                          setCurrentPage(prev => Math.max(prev - 1, 1));
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }}
-                        disabled={currentPage === 1}
-                        variant="outline"
-                        className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50"
-                        aria-label="Página anterior"
-                      >
-                        <ChevronLeft className="w-5 h-5" />
-                      </Button>
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="mt-12 flex justify-center items-center gap-2"
+                    role="navigation"
+                    aria-label="Navegação de páginas"
+                  >
+                    {/* Previous Button */}
+                    <Button
+                      onClick={() => {
+                        setCurrentPage(prev => Math.max(prev - 1, 1));
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      disabled={currentPage === 1}
+                      variant="outline"
+                      className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50"
+                      aria-label="Página anterior"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </Button>
 
-                     {/* Page Numbers */}
-                     <div className="flex gap-2">
-                       {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNum => {
-                         // Show first page, last page, current page, and pages around current
-                         const showPage = pageNum === 1 ||
-                                         pageNum === totalPages ||
-                                         Math.abs(pageNum - currentPage) <= 1;
+                    {/* Page Numbers */}
+                    <div className="flex gap-2">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNum => {
+                        // Show first page, last page, current page, and pages around current
+                        const showPage = pageNum === 1 ||
+                          pageNum === totalPages ||
+                          Math.abs(pageNum - currentPage) <= 1;
 
-                         // Show ellipsis
-                         const showEllipsisBefore = pageNum === currentPage - 2 && currentPage > 3;
-                         const showEllipsisAfter = pageNum === currentPage + 2 && currentPage < totalPages - 2;
+                        // Show ellipsis
+                        const showEllipsisBefore = pageNum === currentPage - 2 && currentPage > 3;
+                        const showEllipsisAfter = pageNum === currentPage + 2 && currentPage < totalPages - 2;
 
-                         if (showEllipsisBefore || showEllipsisAfter) {
-                           return (
-                             <span key={pageNum} className="px-3 py-2 text-text-muted">
-                               ...
-                             </span>
-                           );
-                         }
-
-                         if (!showPage) return null;
-
+                        if (showEllipsisBefore || showEllipsisAfter) {
                           return (
-                            <Button
-                              key={pageNum}
-                              onClick={() => {
-                                setCurrentPage(pageNum);
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                              }}
-                              variant={currentPage === pageNum ? 'default' : 'outline'}
-                              className={`px-4 py-2 min-w-[44px] ${
-                                currentPage === pageNum
-                                  ? 'bg-cyan-600 text-white hover:bg-cyan-700'
-                                  : 'hover:bg-blue-50'
-                              }`}
-                              aria-label={`Página ${pageNum}`}
-                              aria-current={currentPage === pageNum ? 'page' : undefined}
-                            >
-                              {pageNum}
-                            </Button>
+                            <span key={pageNum} className="px-3 py-2 text-text-muted">
+                              ...
+                            </span>
                           );
-                       })}
-                     </div>
+                        }
 
-                     {/* Next Button */}
-                      <Button
-                        onClick={() => {
-                          setCurrentPage(prev => Math.min(prev + 1, totalPages));
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }}
-                        disabled={currentPage === totalPages}
-                        variant="outline"
-                        className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50"
-                        aria-label="Próxima página"
-                      >
-                        <ChevronRight className="w-5 h-5" />
-                      </Button>
-                   </motion.div>
-                 )}
-               </>
-             ) : (
+                        if (!showPage) return null;
+
+                        return (
+                          <Button
+                            key={pageNum}
+                            onClick={() => {
+                              setCurrentPage(pageNum);
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                            variant={currentPage === pageNum ? 'default' : 'outline'}
+                            className={`px-4 py-2 min-w-[44px] ${currentPage === pageNum
+                                ? 'bg-cyan-600 text-white hover:bg-cyan-700'
+                                : 'hover:bg-blue-50'
+                              }`}
+                            aria-label={`Página ${pageNum}`}
+                            aria-current={currentPage === pageNum ? 'page' : undefined}
+                          >
+                            {pageNum}
+                          </Button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Next Button */}
+                    <Button
+                      onClick={() => {
+                        setCurrentPage(prev => Math.min(prev + 1, totalPages));
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      disabled={currentPage === totalPages}
+                      variant="outline"
+                      className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50"
+                      aria-label="Próxima página"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </Button>
+                  </motion.div>
+                )}
+              </>
+            ) : (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

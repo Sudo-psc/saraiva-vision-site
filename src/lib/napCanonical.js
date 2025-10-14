@@ -50,7 +50,7 @@ export const NAP_CANONICAL = {
       raw: '5533998601427',
       e164: '+5533998601427',
       display: '+55 33 99860-1427',
-      href: 'https://wa.me/5533998601427',
+      href: 'https://wa.me/message/2QFZJG3EDJZVF1',
       defaultMessage: 'Olá! Gostaria de agendar uma consulta.',
     },
   },

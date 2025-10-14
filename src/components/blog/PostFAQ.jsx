@@ -88,7 +88,7 @@ const PostFAQ = ({ questions = [], className = '' }) => {
           Ainda tem dúvidas? Nossa equipe está pronta para ajudar!
         </p>
         <a
-          href="https://wa.me/message/EHTAAAAYH7SHJ1"
+          href="https://wa.me/message/2QFZJG3EDJZVF1"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 text-white rounded-xl font-semibold hover:bg-cyan-600 transition-colors shadow-md hover:shadow-lg"

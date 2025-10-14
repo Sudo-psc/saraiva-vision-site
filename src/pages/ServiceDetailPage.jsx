@@ -25,7 +25,7 @@ const ServiceDetailPage = () => {
       <div className="min-h-screen flex flex-col bg-white">
         <SEOHead title="Serviço não encontrado | Saraiva Vision" />
         <Navbar />
-        <main className="flex-1 pt-28 scroll-block-internal mx-[5%] lg:mx-[10%]">
+        <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 scroll-block-internal mx-[5%] lg:mx-[10%]">
           <div className="container mx-auto px-4 md:px-6 py-12 text-center">
             <h1 className="text-4xl font-bold text-slate-900 mb-4">Serviço não encontrado</h1>
             <p className="text-slate-600 mb-8">O serviço que você está procurando não existe ou foi movido.</p>
@@ -106,7 +106,7 @@ const ServiceDetailPage = () => {
       <SEOHead {...seo} />
       <Navbar />
 
-      <main className="flex-1 pt-28 scroll-block-internal mx-[5%] lg:mx-[10%]">
+      <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 scroll-block-internal mx-[5%] lg:mx-[10%]">
         <div className="container mx-auto px-4 md:px-6 py-12">
           {/* Breadcrumb e voltar */}
           <motion.div

@@ -9,8 +9,8 @@ const PlanosOnlinePage = () => {
 
   const seoData = {
     title: 'Planos Online de Lentes de Contato | Saraiva Vision',
-    description: 'Planos de assinatura de lentes de contato 100% online com telemedicina. Atendimento em todo Brasil com entrega nacional.',
-    keywords: 'planos online lentes, telemedicina lentes contato, lentes online Brasil',
+    description: 'Planos de assinatura de lentes de contato 100% online. Atendimento em todo Brasil com entrega nacional.',
+    keywords: 'planos online lentes, consultas online lentes contato, lentes online Brasil',
     canonicalUrl: 'https://saraivavision.com.br/planosonline',
     ogImage: 'https://saraivavision.com.br/og-image.jpg'
   };
@@ -27,10 +27,10 @@ const PlanosOnlinePage = () => {
       paymentLink: 'https://saraivavision.com.br/pagamentobasicoonline',
       badge: '100% Online',
       badgeColor: 'bg-cyan-100 text-cyan-700',
-      description: 'Plano básico de lentes de contato com acompanhamento 100% online via telemedicina.',
+      description: 'Plano básico de lentes de contato com acompanhamento 100% online.',
       features: [
         '12 pares de lentes gelatinosas asféricas',
-        '1 consulta de telemedicina por ano',
+        '1 consulta online por ano',
         'Acompanhamento médico mensal online',
         'Lembretes mensais de troca',
         'Entrega em casa sem custo adicional',
@@ -53,7 +53,7 @@ const PlanosOnlinePage = () => {
       features: [
         'Todos os benefícios do Plano Básico',
         '13 pares de lentes gelatinosas premium',
-        '2 consultas de telemedicina por ano',
+        '2 consultas online por ano',
         'Prioridade no agendamento',
         'Frete expresso grátis',
         'Suporte via WhatsApp 24/7'
@@ -75,7 +75,7 @@ const PlanosOnlinePage = () => {
       features: [
         'Todos os benefícios do Plano Padrão',
         '14 pares de lentes premium multifocais',
-        '4 consultas de telemedicina por ano',
+        '4 consultas online por ano',
         'Kit premium de higienização',
         'Atendimento personalizado exclusivo'
       ],
@@ -98,7 +98,7 @@ const PlanosOnlinePage = () => {
             Planos Online de Lentes de Contato
           </h1>
           <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-0">
-            Atendimento 100% por telemedicina • Válido em todo o Brasil • Sem necessidade de consulta presencial
+            Atendimento 100% online • Válido em todo o Brasil • Sem necessidade de consulta presencial
           </p>
         </section>
 
@@ -115,7 +115,7 @@ const PlanosOnlinePage = () => {
                   <div className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-gray-900">Telemedicina Completa:</p>
+                      <p className="font-semibold text-gray-900">Consultas Online:</p>
                       <p>Todas as consultas e acompanhamentos são realizados por <span className="font-bold">videochamada</span></p>
                     </div>
                   </div>
@@ -230,7 +230,7 @@ const PlanosOnlinePage = () => {
                 </div>
                 <div className="flex items-start gap-2 bg-white/10 backdrop-blur-sm rounded-xl p-3">
                   <CheckCircle className="w-5 h-5 text-cyan-200 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm md:text-base">Consultas de telemedicina com oftalmologistas</span>
+                  <span className="text-sm md:text-base">Consultas online com oftalmologistas</span>
                 </div>
                 <div className="flex items-start gap-2 bg-white/10 backdrop-blur-sm rounded-xl p-3">
                   <CheckCircle className="w-5 h-5 text-cyan-200 flex-shrink-0 mt-0.5" />
@@ -246,7 +246,7 @@ const PlanosOnlinePage = () => {
                 </div>
                 <div className="flex items-start gap-2 bg-white/10 backdrop-blur-sm rounded-xl p-3">
                   <CheckCircle className="w-5 h-5 text-cyan-200 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm md:text-base">Suporte via WhatsApp e telemedicina</span>
+                  <span className="text-sm md:text-base">Suporte via WhatsApp e consultas online</span>
                 </div>
               </div>
               <div className="mt-4 pt-3 border-t border-cyan-500/30 text-center">
@@ -281,13 +281,13 @@ const PlanosOnlinePage = () => {
               <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm border border-gray-200">
                 <h4 className="font-semibold text-gray-900 mb-1.5">Preciso ir à clínica alguma vez?</h4>
                 <p className="text-sm text-gray-600">
-                  Não! Os planos online são 100% por telemedicina. Todo o acompanhamento e consultas são feitas online. Se desejar consulta presencial, veja nossos planos tradicionais.
+                  Não! Os planos online são 100% remotos. Todo o acompanhamento e consultas são feitas online. Se desejar consulta presencial, veja nossos planos tradicionais.
                 </p>
               </div>
               <div className="bg-white rounded-xl p-3 md:p-4 shadow-sm border border-gray-200">
                 <h4 className="font-semibold text-gray-900 mb-1.5">Qual a diferença entre os planos online e presenciais?</h4>
                 <p className="text-sm text-gray-600">
-                  Os planos online oferecem todo atendimento por telemedicina com preços mais acessíveis. Os planos presenciais incluem consultas na clínica em Caratinga, Ipatinga ou Belo Horizonte.
+                  Os planos online oferecem todo atendimento remoto com preços mais acessíveis. Os planos presenciais incluem consultas na clínica em Caratinga, Ipatinga ou Belo Horizonte.
                 </p>
               </div>
             </div>

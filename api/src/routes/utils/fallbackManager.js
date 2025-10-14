@@ -246,7 +246,7 @@ export class FallbackManager {
                 isStatic: true,
                 contactInfo: {
                     phone: '(33) 99860-1427',
-                    whatsapp: 'https://wa.me/5533998601427',
+                    whatsapp: 'https://wa.me/message/2QFZJG3EDJZVF1',
                     message: 'Para agendamentos e dúvidas, entre em contato diretamente.'
                 }
             },

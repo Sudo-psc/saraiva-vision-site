@@ -33,7 +33,7 @@ const PlansPage = () => {
       description: 'Pioneiro no Brasil, nosso plano básico de assinatura de lentes de contato oferece tudo para você usar suas lentes com segurança e praticidade.',
       features: [
         '12 pares de lentes gelatinosas asféricas',
-        '1 consulta por telemedicina',
+        '1 consulta online',
         '1 consulta presencial com médico',
         'Acompanhamento médico mensal',
         'Lembretes mensais de troca',
@@ -59,7 +59,7 @@ const PlansPage = () => {
         'Todos os benefícios do Plano Básico',
         '13 pares de lentes gelatinosas premium',
         '2 consultas presenciais por ano',
-        'Consultas de telemedicina ilimitadas',
+        'Consultas online incluídas',
         'Prioridade no agendamento',
         'Frete expresso grátis'
       ],
@@ -83,7 +83,7 @@ const PlansPage = () => {
         'Todos os benefícios do Plano Padrão',
         '14 pares de lentes premium multifocais',
         '2 consultas presenciais por ano',
-        'Telemedicina com prioridade',
+        'Consultas online com prioridade',
         'Exames complementares inclusos',
         'Kit premium de higienização'
       ],
@@ -215,7 +215,7 @@ const PlansPage = () => {
                   <div className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-gray-900">Telemedicina:</p>
+                      <p className="font-semibold text-gray-900">Consultas Online:</p>
                       <p>Válida em <span className="font-bold">todo o território nacional</span></p>
                     </div>
                   </div>
@@ -244,7 +244,7 @@ const PlansPage = () => {
                 Está Fora de MG? Conheça Nossos Planos 100% Online!
               </h3>
               <p className="text-gray-700 mb-5 leading-relaxed">
-                Telemedicina ilimitada + Entrega em todo Brasil + Preços mais acessíveis
+                Consultas online + Entrega em todo Brasil + Preços mais acessíveis
               </p>
               <Link
                 to="/planosonline"
@@ -284,7 +284,7 @@ const PlansPage = () => {
                 </div>
                 <div className="flex items-start gap-2 bg-white/10 backdrop-blur-sm rounded-xl p-3">
                   <CheckCircle className="w-5 h-5 text-cyan-200 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm md:text-base">Suporte via WhatsApp e telemedicina</span>
+                  <span className="text-sm md:text-base">Suporte via WhatsApp e consultas online</span>
                 </div>
               </div>
               <div className="mt-5 pt-4 border-t border-cyan-500/30 text-center">
@@ -313,7 +313,7 @@ const PlansPage = () => {
               <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-200">
                 <h4 className="font-semibold text-gray-900 mb-2">As consultas estão incluídas?</h4>
                 <p className="text-sm text-gray-600">
-                  Sim! Todos os planos incluem consultas de acompanhamento com oftalmologista, tanto presenciais quanto por telemedicina, para garantir a saúde dos seus olhos.
+                  Sim! Todos os planos incluem consultas de acompanhamento com oftalmologista, tanto presenciais quanto online, para garantir a saúde dos seus olhos.
                 </p>
               </div>
               <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-200">

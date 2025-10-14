@@ -87,10 +87,11 @@ Frontend (Vite/React SPA)     Backend (Node.js/Express API)
 
 ### Key Components
 - **Frontend**: React 18 + TypeScript + Vite + Tailwind CSS + React Router
-- **Backend**: Node.js/Express (port 3001) with Vercel-style serverless adapters
-- **Blog**: 100% static data in `src/data/blogPosts.js` (no CMS)
+- **Backend**: Node.js/Express (port 3001) with systemd service management
+- **Blog**: 100% static data in `src/data/blogPosts.js` (no CMS, all content bundled at build time)
 - **Cache**: Redis for Google Reviews only
 - **Web Server**: Nginx (static files + API proxy + rate limiting)
+- **Testing**: Vitest (unit, integration, E2E) with jsdom for React component testing
 
 ### Critical Architecture Details
 
@@ -151,6 +152,8 @@ npm run test:api            # API tests only
 npm run test:frontend       # Frontend tests only
 npm run test:coverage       # Tests with coverage report
 npm run test:cover-images   # Blog cover images validation
+npm run test:watch          # Run tests in watch mode
+npm run test:ui             # Open Vitest UI for interactive testing
 ```
 
 ## File Structure & Organization
@@ -338,6 +341,10 @@ sudo journalctl -u saraiva-api -f
 # Test API endpoints locally
 curl http://localhost:3001/health
 curl http://localhost:3001/api/health
+
+# Restart API if needed
+sudo systemctl restart saraiva-api
+npm run restart-api  # Alternative using npm script
 ```
 
 ## Key Features & Integrations
@@ -364,6 +371,13 @@ curl http://localhost:3001/api/health
 
 ## Critical Implementation Notes
 
+### React Router & Code Splitting Architecture
+The app uses React Router v6 with aggressive code splitting:
+- All route components are lazy-loaded via `createLazyComponent()` utility (see `src/utils/lazyLoading.jsx`)
+- Retry logic built into lazy loading for failed chunk loads
+- Manual chunk splitting configured in `vite.config.js` targets <200KB per chunk
+- Healthcare-specific chunking strategy separates medical content, analytics, maps, and UI libraries
+
 ### Google Business Service Architecture
 The Google Business integration has layered architecture:
 1. `GoogleBusinessApiService` - Raw API communication
@@ -376,9 +390,18 @@ The Google Business integration has layered architecture:
 ### Static Content System
 Blog posts are defined as JavaScript objects in `src/data/blogPosts.js`:
 - No database queries at runtime
-- All content bundled at build time
+- All content bundled at build time via `scripts/build-blog-posts.js` (runs automatically before build)
 - Images referenced as `/Blog/image-name.jpg` (public folder)
 - Client-side search via array filtering
+- Prerendering for SEO via `scripts/prerender-pages.js` (runs after build)
+
+### API Service Management
+Backend API runs as systemd service `saraiva-api`:
+```bash
+sudo systemctl status saraiva-api    # Check service status
+sudo systemctl restart saraiva-api   # Restart API server
+sudo journalctl -u saraiva-api -f    # View real-time logs
+```
 
 ### Nginx Configuration
 Production Nginx at `/etc/nginx/sites-enabled/saraivavision`:
@@ -386,6 +409,7 @@ Production Nginx at `/etc/nginx/sites-enabled/saraivavision`:
 - Proxies `/api/*` to `http://127.0.0.1:3001`
 - Rate limiting zones: contact_limit, api_limit, general_limit, webhook_limit
 - CSP headers on HTML responses (line 339)
+- SPA routing support with `try_files` fallback to `index.html`
 
 ## Development Workflow
 
@@ -447,8 +471,42 @@ npm run test src/services/__tests__/googleBusinessSecurity.test.js
 - **Security Practices**: `SECURITY.md`
 - **Quick Start**: `README.md`
 
+## System Health Monitoring
+
+### Automated System Checkup
+```bash
+# Run comprehensive system health check
+npm run check:system
+
+# Install automated cron job (runs every 6 hours by default)
+CRON_SCHEDULE="0 */6 * * *" npm run install:checkup-cron
+```
+
+This generates reports in `reports/system-checkup/` covering:
+- Nginx configuration and performance
+- API service health and uptime
+- SSL certificate validity
+- Disk space and system resources
+- Security headers and rate limiting
+- Database connections (Redis)
+
+### Manual Health Checks
+```bash
+# Quick health check
+npm run deploy:health
+
+# Full system diagnostics
+bash scripts/system-health-check.sh
+
+# Security audit
+bash scripts/security-health-check.sh
+
+# Nginx status
+bash scripts/check-nginx-status.sh
+```
+
 ---
 
-**Last Updated**: 2025-10-08
-**Version**: 3.1.0
+**Last Updated**: 2025-10-14
+**Version**: 3.2.0
 **Status**: ✅ Production Ready

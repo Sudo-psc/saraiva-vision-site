@@ -44,7 +44,7 @@ const PlanPremiumPage = () => {
     'Todos os benefícios do Plano Padrão',
     '14 pares de lentes premium multifocais',
     '2 consultas presenciais por ano',
-    'Telemedicina com prioridade',
+    'Consultas online com prioridade',
     'Exames complementares inclusos',
     'Kit premium de higienização',
     'Atendimento domiciliar disponível',
@@ -158,7 +158,7 @@ const PlanPremiumPage = () => {
 
                 {/* Botão Secundário */}
                 <a
-                  href="https://wa.me/5533998601427"
+                  href="https://wa.me/message/2QFZJG3EDJZVF1"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex-1 flex items-center justify-center gap-2 bg-white border-2 border-blue-600 text-blue-900 hover:bg-blue-50 hover:border-amber-500 font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105"
@@ -211,7 +211,7 @@ const PlanPremiumPage = () => {
                   <div className="bg-white rounded-xl p-4 shadow-md border-2 border-green-200">
                     <div className="flex items-center gap-2 mb-2">
                       <CheckCircle className="w-5 h-5 text-green-600" />
-                      <p className="font-bold text-gray-900">Telemedicina</p>
+                      <p className="font-bold text-gray-900">Consultas Online</p>
                     </div>
                     <p className="text-sm text-gray-700">Válida em <span className="font-bold text-green-700">todo o território nacional</span></p>
                   </div>

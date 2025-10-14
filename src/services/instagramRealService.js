@@ -44,7 +44,7 @@ export class InstagramRealService {
     async tryPublicAPI() {
         // Esta seria a implementação com access token se disponível
         const accessToken = process.env.VITE_INSTAGRAM_ACCESS_TOKEN;
-        
+
         if (!accessToken) {
             throw new Error('No access token available');
         }
@@ -58,7 +58,7 @@ export class InstagramRealService {
         }
 
         const data = await response.json();
-        
+
         return {
             success: true,
             posts: data.data.map(post => this.normalizePost(post, 'api')),
@@ -88,7 +88,7 @@ export class InstagramRealService {
 
                 if (response.ok) {
                     const contentType = response.headers.get('content-type');
-                    
+
                     if (contentType?.includes('application/json')) {
                         const data = await response.json();
                         return this.parseJSONFeed(data);
@@ -143,10 +143,10 @@ export class InstagramRealService {
         try {
             // Usar um proxy/service para contornar CORS
             const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`${this.baseUrl}/${this.username}/`)}`;
-            
+
             const response = await fetch(proxyUrl);
             const data = await response.json();
-            
+
             if (data.status.http_code === 200) {
                 return this.parseInstagramHTML(data.contents);
             }
@@ -162,7 +162,7 @@ export class InstagramRealService {
      */
     parseJSONFeed(data) {
         const posts = [];
-        
+
         if (data.items && Array.isArray(data.items)) {
             for (const item of data.items.slice(0, 10)) {
                 const post = {
@@ -174,7 +174,7 @@ export class InstagramRealService {
                     likes: this.extractEngagement(item.content_html, 'likes'),
                     comments: this.extractEngagement(item.content_html, 'comments')
                 };
-                
+
                 if (post.imageUrl) {
                     posts.push(this.normalizePost(post, 'rss'));
                 }
@@ -194,21 +194,21 @@ export class InstagramRealService {
      */
     parseRSSFeed(xmlText) {
         const posts = [];
-        
+
         try {
             // Parse básico de RSS sem dependências externas
             const items = xmlText.match(/<item[^>]*>[\s\S]*?<\/item>/gi) || [];
-            
+
             for (const item of items.slice(0, 10)) {
                 const title = this.extractXMLContent(item, 'title');
                 const link = this.extractXMLContent(item, 'link');
                 const description = this.extractXMLContent(item, 'description');
                 const pubDate = this.extractXMLContent(item, 'pubDate');
-                
+
                 // Extract image from description or enclosure
                 const imageMatch = description.match(/<img[^>]+src="([^"]+)"/i);
                 const imageUrl = imageMatch ? imageMatch[1] : null;
-                
+
                 if (imageUrl && link) {
                     const post = {
                         id: this.extractIdFromUrl(link),
@@ -219,7 +219,7 @@ export class InstagramRealService {
                         likes: Math.floor(Math.random() * 200) + 50, // Estimativa
                         comments: Math.floor(Math.random() * 30) + 5
                     };
-                    
+
                     posts.push(this.normalizePost(post, 'rss'));
                 }
             }
@@ -240,19 +240,19 @@ export class InstagramRealService {
      */
     parseInstagramHTML(html) {
         const posts = [];
-        
+
         try {
             // Procurar por dados JSON no HTML
             const scriptMatch = html.match(/window\._sharedData\s*=\s*({.+?});/);
-            
+
             if (scriptMatch) {
                 const sharedData = JSON.parse(scriptMatch[1]);
                 const userMedia = sharedData?.entry_data?.ProfilePage?.[0]?.graphql?.user?.edge_owner_to_timeline_media?.edges;
-                
+
                 if (userMedia && Array.isArray(userMedia)) {
                     for (const edge of userMedia.slice(0, 10)) {
                         const node = edge.node;
-                        
+
                         const post = {
                             id: node.id || node.shortcode,
                             caption: node.edge_media_to_caption?.edges?.[0]?.node?.text || '',
@@ -262,7 +262,7 @@ export class InstagramRealService {
                             likes: node.edge_liked_by?.count || 0,
                             comments: node.edge_media_to_comment?.count || 0
                         };
-                        
+
                         posts.push(this.normalizePost(post, 'scraping'));
                     }
                 }
@@ -286,10 +286,10 @@ export class InstagramRealService {
         try {
             const oembedUrl = `https://api.instagram.com/oembed/?url=${encodeURIComponent(postUrl)}`;
             const response = await fetch(oembedUrl);
-            
+
             if (response.ok) {
                 const data = await response.json();
-                
+
                 return {
                     id: this.extractIdFromUrl(postUrl),
                     caption: data.title || '',
@@ -304,7 +304,7 @@ export class InstagramRealService {
         } catch (error) {
             console.warn('oEmbed failed for:', postUrl);
         }
-        
+
         return null;
     }
 
@@ -313,7 +313,7 @@ export class InstagramRealService {
      */
     normalizePost(post, source) {
         return {
-            id: post.id || `${source}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+            id: post.id || `${source}_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
             username: this.username,
             caption: this.cleanCaption(post.caption || ''),
             imageUrl: post.imageUrl || post.media_url,
@@ -347,12 +347,12 @@ export class InstagramRealService {
 
     extractEngagement(html, type) {
         if (!html) return 0;
-        
+
         const patterns = {
             likes: /(\d+)\s*(curtidas|likes)/i,
             comments: /(\d+)\s*(comentários|comments)/i
         };
-        
+
         const match = html.match(patterns[type]);
         return match ? parseInt(match[1]) : 0;
     }
@@ -382,7 +382,7 @@ export class InstagramRealService {
             const months = Math.floor(diffInDays / 30);
             return `${months} mês${months > 1 ? 'es' : ''} atrás`;
         }
-        
+
         const years = Math.floor(diffInDays / 365);
         return `${years} ano${years > 1 ? 's' : ''} atrás`;
     }
@@ -420,14 +420,14 @@ export class InstagramRealService {
 
             const data = JSON.parse(cached);
             const maxAge = 24 * 60 * 60 * 1000; // 24 horas
-            
+
             if (Date.now() - data.cachedAt < maxAge) {
                 return data;
             }
         } catch (error) {
             console.warn('Failed to load Instagram cache:', error);
         }
-        
+
         return null;
     }
 
@@ -447,11 +447,11 @@ export class InstagramRealService {
 
         // Tenta buscar dados reais
         const realData = await this.fetchRealInstagramData();
-        
+
         if (realData && realData.posts.length > 0) {
             // Salva no cache
             this.saveToCache(realData);
-            
+
             return {
                 ...realData,
                 fromCache: false,
