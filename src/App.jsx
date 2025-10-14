@@ -47,22 +47,12 @@ import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
 import GoogleAnalytics from './components/GoogleAnalytics.jsx';
 import AnalyticsFallback from '@/components/AnalyticsFallback.jsx';
 
-import { initErrorTracking } from '@/utils/errorTracking.js';
-
 function App() {
   const isCheckSubdomain =
     typeof window !== 'undefined' && window.location.hostname?.toLowerCase().startsWith('check.');
 
   useEffect(() => {
     document.documentElement.lang = 'pt-BR';
-
-    // Initialize error tracking for production with error boundary
-    try {
-      initErrorTracking();
-    } catch (error) {
-      console.warn('Failed to initialize error tracking:', error);
-      // Don't let error tracking failure break the app
-    }
   }, []);
 
   return (
