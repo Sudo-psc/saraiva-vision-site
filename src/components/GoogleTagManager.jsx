@@ -88,8 +88,9 @@ const GoogleTagManager = ({ gtmId }) => {
         }
       };
 
-      // Try multiple Google domains
+      // Try local proxy first, then Google domains
       const domains = [
+        `/gtm.js?id=${gtmId}`, // Local proxy - bypasses ad blockers
         `https://www.googletagmanager.com/gtm.js?id=${gtmId}`,
         `https://googletagmanager.com/gtm.js?id=${gtmId}`,
         `https://www.google-analytics.com/analytics.js` // Alternative GA script

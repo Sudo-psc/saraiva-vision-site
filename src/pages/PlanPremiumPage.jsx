@@ -89,7 +89,7 @@ const PlanPremiumPage = () => {
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiI+PHBhdGggZD0iTTM2IDE4YzMuMzE0IDAgNiAyLjY4NiA2IDZzLTIuNjg2IDYtNiA2LTYtMi42ODYtNi02IDIuNjg2LTYgNi02ek0yNCA0MmMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30"></div>
       </div>
 
-      <main className="flex-1 pt-32 md:pt-36 lg:pt-40 mx-[4%] md:mx-[6%] lg:mx-[8%] relative">
+      <main className="flex-1 pt-24 md:pt-28 lg:pt-32 mx-[4%] md:mx-[6%] lg:mx-[8%] relative">
         {/* Back Navigation */}
         <div className="mb-6 animate-fade-in">
           <Link
@@ -102,10 +102,10 @@ const PlanPremiumPage = () => {
         </div>
 
         {/* Hero Section with Glassmorphism */}
-        <section className="mb-12 animate-fade-in-up">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <section className="mb-8 animate-fade-in-up">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
             {/* Content */}
-            <div className="space-y-6 bg-white/95 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border-2 border-amber-400/30">
+            <div className="space-y-5 bg-white/95 backdrop-blur-xl rounded-3xl p-6 shadow-2xl border-2 border-amber-400/30">
               {/* Badge Premium com Brilho */}
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 to-amber-500 text-blue-900 px-4 py-2 rounded-full text-sm font-bold shadow-lg shadow-amber-500/50 group hover:scale-105 transition-all duration-500">
                 <Crown className="w-4 h-4 group-hover:rotate-12 transition-transform duration-500" />
@@ -114,7 +114,7 @@ const PlanPremiumPage = () => {
               </div>
 
               {/* Título */}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-900 via-blue-700 to-blue-900 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-3 bg-gradient-to-r from-blue-900 via-blue-700 to-blue-900 bg-clip-text text-transparent">
                 Plano Premium
               </h1>
 
@@ -140,7 +140,7 @@ const PlanPremiumPage = () => {
               </div>
 
               {/* Botões Premium com Animações */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 {/* Botão Principal com Brilho Animado */}
                 <a
                   href={PLAN_PAYMENT_LINKS.premium}
@@ -190,14 +190,14 @@ const PlanPremiumPage = () => {
         </section>
 
         {/* Aviso de Cobertura Geográfica */}
-        <section className="mb-12 animate-fade-in-up" style={{animationDelay: '0.15s'}}>
-          <div className="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-400 rounded-2xl p-6 md:p-8 shadow-xl">
-            <div className="flex items-start gap-4 mb-4">
+        <section className="mb-8 animate-fade-in-up" style={{animationDelay: '0.15s'}}>
+          <div className="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-400 rounded-2xl p-5 md:p-6 shadow-xl">
+            <div className="flex items-start gap-3 mb-3">
               <div className="bg-white rounded-xl p-3 shadow-lg">
                 <AlertCircle className="w-7 h-7 text-amber-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
                   Importante: Cobertura de Atendimento
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -229,9 +229,9 @@ const PlanPremiumPage = () => {
         </section>
 
         {/* Features Section */}
-        <section className="mb-12 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-          <div className="text-center mb-8 bg-white/95 backdrop-blur-xl rounded-2xl py-6 px-8 shadow-lg border-2 border-blue-300 mx-auto inline-block">
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-3">
+        <section className="mb-8 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+          <div className="text-center mb-6 bg-white/95 backdrop-blur-xl rounded-2xl py-5 px-8 shadow-lg border-2 border-blue-300 mx-auto inline-block">
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-2">
               O que está incluído?
             </h2>
             <div className="h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-amber-500 to-transparent rounded-full"></div>
@@ -239,7 +239,7 @@ const PlanPremiumPage = () => {
 
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-amber-500/10 rounded-3xl blur-3xl"></div>
-            <div className="relative bg-white/95 backdrop-blur-xl rounded-3xl p-8 md:p-10 border-2 border-blue-300 shadow-2xl">
+            <div className="relative bg-white/95 backdrop-blur-xl rounded-3xl p-6 md:p-8 border-2 border-blue-300 shadow-2xl">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {features.map((feature, index) => (
                   <div
@@ -257,15 +257,15 @@ const PlanPremiumPage = () => {
         </section>
 
         {/* Extra Benefits com Ícones */}
-        <section className="mb-12 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
-          <div className="text-center mb-8 bg-white/95 backdrop-blur-xl rounded-2xl py-6 px-8 shadow-lg border-2 border-blue-300 mx-auto inline-block">
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-3">
+        <section className="mb-8 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+          <div className="text-center mb-6 bg-white/95 backdrop-blur-xl rounded-2xl py-5 px-8 shadow-lg border-2 border-blue-300 mx-auto inline-block">
+            <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-2">
               Por que escolher este plano?
             </h2>
             <div className="h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-full"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {extraBenefits.map((benefit, index) => {
               const IconComponent = benefit.icon;
               return (
@@ -292,21 +292,21 @@ const PlanPremiumPage = () => {
         </section>
 
         {/* CTA Final Premium */}
-        <section className="mb-12 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
+        <section className="mb-8 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
           <div className="relative group">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-amber-500 to-blue-600 rounded-3xl blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
-            <div className="relative bg-gradient-to-br from-white via-blue-50 to-amber-50 rounded-3xl p-10 md:p-14 text-center border-4 border-amber-400 shadow-2xl overflow-hidden">
+            <div className="relative bg-gradient-to-br from-white via-blue-50 to-amber-50 rounded-3xl p-8 md:p-10 text-center border-4 border-amber-400 shadow-2xl overflow-hidden">
               {/* Efeito de brilho animado */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-200/20 to-transparent -translate-x-full animate-shimmer"></div>
 
-              <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-900 via-blue-700 to-blue-900 bg-clip-text text-transparent">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-900 via-blue-700 to-blue-900 bg-clip-text text-transparent">
                 Pronto para a experiência Premium?
               </h2>
-              <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto text-gray-900 font-bold leading-relaxed">
+              <p className="text-lg md:text-xl mb-6 max-w-2xl mx-auto text-gray-900 font-bold leading-relaxed">
                 Assine agora e tenha acesso <span className="text-white bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1 rounded-lg shadow-lg font-black">VIP</span> a todos os benefícios exclusivos do nosso plano mais completo
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <a
                   href={PLAN_PAYMENT_LINKS.premium}
                   target="_blank"

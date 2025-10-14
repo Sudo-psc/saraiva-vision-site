@@ -61,15 +61,16 @@ const AnalyticsFallback = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          gtmId: 'GTM-KF2NP85D',
-          eventData: {
-            event: eventName,
-            page_location: window.location.href,
-            page_title: document.title,
-            user_agent: navigator.userAgent,
-            timestamp: new Date().toISOString(),
-            ...eventData
-          }
+          event: eventName,
+          page: {
+            location: window.location.href,
+            title: document.title,
+            path: window.location.pathname
+          },
+          user_properties: {
+            user_agent: navigator.userAgent
+          },
+          ...eventData
         })
       });
 
