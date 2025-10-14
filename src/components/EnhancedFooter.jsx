@@ -78,7 +78,7 @@ const EnhancedFooter = ({
     // Memoize computed values (preserved from original Footer)
     const footerData = useMemo(() => ({
         phoneNumber: clinicInfo.phone.replace(/\D/g, ''),
-        whatsappLink: "https://wa.me/message/EHTAAAAYH7SHJ1", // Updated WhatsApp scheduling link
+        whatsappLink: "https://wa.me/message/2QFZJG3EDJZVF1", // Updated WhatsApp scheduling link
         chatbotUrl: clinicInfo.chatbotUrl,
         amorSaudeLogo: "/img/amorsaude_logo.png",
         currentYear: new Date().getFullYear()
@@ -143,7 +143,7 @@ const EnhancedFooter = ({
         },
         {
             name: "WhatsApp",
-            href: "https://wa.me/message/EHTAAAAYH7SHJ1",
+            href: "https://wa.me/message/2QFZJG3EDJZVF1",
             image: "/icons_social/whatsapp_icon.png",
             color: "#25D366"
         },
@@ -515,7 +515,7 @@ const EnhancedFooter = ({
                                 </ContactItem>
                                 <ContactItem>
                                     <a
-                                        href="https://wa.me/message/EHTAAAAYH7SHJ1"
+                                        href="https://wa.me/message/2QFZJG3EDJZVF1"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform text-green-400"
