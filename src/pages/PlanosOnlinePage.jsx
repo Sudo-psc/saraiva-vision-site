@@ -89,15 +89,15 @@ const PlanosOnlinePage = () => {
       <JotformChatbot />
       <main className="min-h-screen pt-32 md:pt-36 lg:pt-40 pb-12 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         {/* Hero Section */}
-        <section className="mb-4 text-center">
+        <section className="mb-3 text-center">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-100 to-green-200 text-green-700 px-3 py-1.5 rounded-full text-sm font-semibold mb-2 shadow-sm">
             <Wifi className="w-4 h-4" />
             <span>100% Online</span>
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-2 bg-gradient-to-r from-gray-900 via-cyan-900 to-cyan-800 bg-clip-text text-transparent">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-1.5 bg-gradient-to-r from-gray-900 via-cyan-900 to-cyan-800 bg-clip-text text-transparent">
             Planos Online de Lentes de Contato
           </h1>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-6">
+          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-3">
             Atendimento 100% por telemedicina • Válido em todo o Brasil • Sem necessidade de consulta presencial
           </p>
         </section>
