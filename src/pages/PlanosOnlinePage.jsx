@@ -140,8 +140,8 @@ const PlanosOnlinePage = () => {
         </section>
 
         {/* Plans Grid */}
-        <section className="!pb-6 mb-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-5 py-4">
+        <section className="!pt-2 !pb-6 mb-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-5 pb-4">
             {plans.map((plan) => {
               const IconComponent = plan.icon;
 
