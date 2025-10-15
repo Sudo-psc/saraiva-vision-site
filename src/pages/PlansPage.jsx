@@ -95,7 +95,7 @@ const PlansPage = () => {
     <>
       <SEOHead {...seoData} />
       <JotformChatbot />
-      <main className="min-h-screen pt-32 md:pt-36 lg:pt-40 pb-16 mx-[4%] md:mx-[6%] lg:mx-[8%]">
+      <main className="min-h-screen pt-24 md:pt-32 lg:pt-40 pb-16 px-4 md:px-[6%] lg:px-[8%]">
         {/* Hero Section */}
         <section className="!mb-0 !pb-8 text-center">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-cyan-200 text-cyan-700 px-3 py-1.5 rounded-full text-sm font-semibold mb-1.5 shadow-sm">
@@ -119,7 +119,7 @@ const PlansPage = () => {
               return (
                 <div
                   key={plan.id}
-                  className={`relative bg-gradient-to-br ${plan.bgGradient} rounded-2xl p-5 md:p-6 border ${plan.borderColor} shadow-lg hover:shadow-xl transition-all duration-300 ${plan.highlight ? 'ring-2 ring-blue-400 transform scale-105' : ''
+                  className={`relative bg-gradient-to-br ${plan.bgGradient} rounded-2xl p-5 md:p-6 border ${plan.borderColor} shadow-lg hover:shadow-xl transition-all duration-300 ${plan.highlight ? 'ring-2 ring-blue-400 lg:transform lg:scale-105' : ''
                     }`}
                 >
                   {plan.highlight && (
