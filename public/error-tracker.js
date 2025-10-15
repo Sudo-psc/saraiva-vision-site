@@ -367,14 +367,103 @@ class ErrorTracker {
       return;
     }
 
+    // 🛡️ VALIDAÇÃO 1: Verificar endpoint antes de tudo
+    if (!this.endpoint || typeof this.endpoint !== 'string' || this.endpoint.trim() === '') {
+      console.error('[ErrorTracker] Invalid endpoint configuration:', this.endpoint);
+      return;
+    }
+
+    // 🛡️ VALIDAÇÃO 2: Construir URL do endpoint de forma segura
+    let endpointUrl;
     try {
-      const response = await fetch(this.endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(report)
-      });
+      // Se endpoint é relativo, adicionar origin
+      if (this.endpoint.startsWith('/')) {
+        endpointUrl = new URL(this.endpoint, window.location.origin).toString();
+      } else if (this.endpoint.startsWith('http://') || this.endpoint.startsWith('https://')) {
+        // Endpoint já é absoluto
+        endpointUrl = new URL(this.endpoint).toString();
+      } else {
+        throw new Error(`Invalid endpoint format: ${this.endpoint}`);
+      }
+    } catch (error) {
+      console.error('[ErrorTracker] Failed to construct endpoint URL:', error.message);
+      return;
+    }
+
+    // 🛡️ VALIDAÇÃO 3: Sanitizar report.url (evita rejeição pelo backend Zod)
+    if (report.url) {
+      const invalidProtocols = ['about:', 'blob:', 'data:', 'chrome:', 'chrome-extension:', 'moz-extension:'];
+      if (invalidProtocols.some(proto => report.url.startsWith(proto))) {
+        report.url = 'https://saraivavision.com.br';
+      } else {
+        try {
+          // Validar e normalizar URL
+          const parsed = new URL(report.url);
+          if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+            report.url = 'https://saraivavision.com.br';
+          } else {
+            report.url = parsed.toString();
+          }
+        } catch {
+          report.url = 'https://saraivavision.com.br';
+        }
+      }
+    } else {
+      report.url = 'https://saraivavision.com.br';
+    }
+
+    // 🛡️ VALIDAÇÃO 4: Normalizar timestamp para ISO 8601
+    if (report.timestamp) {
+      try {
+        // Se é string, verificar se é ISO válida
+        if (typeof report.timestamp === 'string') {
+          const date = new Date(report.timestamp);
+          report.timestamp = isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString();
+        }
+        // Se é número (Unix timestamp)
+        else if (typeof report.timestamp === 'number') {
+          const ts = report.timestamp < 10000000000 ? report.timestamp * 1000 : report.timestamp;
+          report.timestamp = new Date(ts).toISOString();
+        } else {
+          report.timestamp = new Date().toISOString();
+        }
+      } catch {
+        report.timestamp = new Date().toISOString();
+      }
+    } else {
+      report.timestamp = new Date().toISOString();
+    }
+
+    // 🛡️ VALIDAÇÃO 5: Limitar tamanhos para evitar payloads gigantes
+    if (report.message && report.message.length > 1000) {
+      report.message = report.message.substring(0, 1000) + '... (truncated)';
+    }
+    if (report.stack && report.stack.length > 5000) {
+      report.stack = report.stack.substring(0, 5000) + '... (truncated)';
+    }
+
+    try {
+      // 🛡️ VALIDAÇÃO 6: Tentar criar Request antes de fetch (detectar SyntaxError cedo)
+      let request;
+      try {
+        request = new Request(endpointUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(report)
+        });
+      } catch (syntaxError) {
+        console.error('[ErrorTracker] SyntaxError creating Request:', {
+          error: syntaxError.message,
+          endpoint: endpointUrl,
+          reportUrl: report.url
+        });
+        return;
+      }
+
+      // Executar fetch
+      const response = await fetch(request);
 
       if (!response.ok) {
         // Não logar erro de 404 ou 429 - endpoint pode não estar disponível ou rate limited
@@ -386,13 +475,31 @@ class ErrorTracker {
           console.warn('[ErrorTracker] Rate limited (429), skipping error report to avoid loop');
           return;
         }
-        throw new Error(`Failed to send error report: ${response.status}`);
+        if (response.status === 400) {
+          // Logar detalhes do 400 para debug
+          try {
+            const errorBody = await response.json();
+            console.error('[ErrorTracker] 400 Bad Request:', errorBody);
+          } catch {
+            console.error('[ErrorTracker] 400 Bad Request (no JSON body)');
+          }
+          return;
+        }
+
+        console.warn(`[ErrorTracker] HTTP ${response.status}: ${response.statusText}`);
+        return;
       }
 
       console.log('[ErrorTracker] Report sent successfully');
 
     } catch (error) {
-      console.error('[ErrorTracker] Failed to send report', error);
+      // 🛡️ PROTEÇÃO CONTRA LOOP: Não logar erro se for do próprio ErrorTracker
+      if (error.message && error.message.includes('Failed to send error report')) {
+        console.debug('[ErrorTracker] Skipping recursive error');
+        return;
+      }
+
+      console.error('[ErrorTracker] Failed to send report:', error.message);
       // Não fazer retry para evitar loop infinito
     }
   }
