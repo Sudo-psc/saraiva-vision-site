@@ -11,7 +11,7 @@ const router = express.Router();
 
 // Error report schema
 const errorReportSchema = z.object({
-  type: z.enum(['error', 'unhandledrejection', 'csp_violation', 'network_error']),
+  type: z.enum(['error', 'unhandledrejection', 'csp_violation', 'network_error', 'window.onerror', 'fetch']).optional(),
   message: z.string().max(1000),
   stack: z.string().max(5000).optional(),
   filename: z.string().max(500).optional(),
@@ -31,6 +31,16 @@ const errorReportSchema = z.object({
   })).optional()
 });
 
+// Batch error schema (for error-tracker.js batching)
+const batchErrorSchema = z.object({
+  errors: z.array(errorReportSchema),
+  batch: z.object({
+    size: z.number(),
+    sessionId: z.string(),
+    timestamp: z.string().datetime()
+  })
+});
+
 // Rate limiting: 100 errors per minute per IP (generous for error reporting)
 const errorRateLimit = rateLimit({
   windowMs: 60 * 1000,
@@ -48,67 +58,88 @@ const errorRateLimit = rateLimit({
 router.use(errorRateLimit);
 
 /**
+ * Process a single error report
+ */
+function processError(error, ip) {
+  // Filter out Chrome extension errors (not our code)
+  if (error.filename?.includes('chrome-extension://')) {
+    console.log('[Errors] Ignored Chrome extension error:', error.message?.substring(0, 100));
+    return false;
+  }
+
+  // Filter out known third-party script errors
+  const ignoredDomains = [
+    'googletagmanager.com',
+    'google-analytics.com',
+    'doubleclick.net',
+    'facebook.com',
+    'connect.facebook.net'
+  ];
+
+  if (error.filename && ignoredDomains.some(domain => error.filename.includes(domain))) {
+    console.log('[Errors] Ignored third-party error:', error.filename);
+    return false;
+  }
+
+  // Log error for monitoring
+  const logLevel = error.severity === 'critical' ? 'error' : 'warn';
+  console[logLevel]('[Errors] Frontend error received:', {
+    type: error.type,
+    message: error.message?.substring(0, 200),
+    category: error.category,
+    severity: error.severity,
+    url: error.url,
+    filename: error.filename,
+    ip: ip
+  });
+
+  return true;
+}
+
+/**
  * POST /api/errors
- * Receive error reports from frontend
+ * Receive error reports from frontend (single or batch)
  */
 router.post('/', (req, res) => {
   try {
-    // Validate request body
-    const validatedError = errorReportSchema.parse(req.body);
+    // Try to parse as batch first
+    const batchValidation = batchErrorSchema.safeParse(req.body);
 
-    // Filter out Chrome extension errors (not our code)
-    if (validatedError.filename?.includes('chrome-extension://')) {
-      console.log('[Errors] Ignored Chrome extension error:', validatedError.message.substring(0, 100));
+    if (batchValidation.success) {
+      // Handle batch
+      const { errors, batch } = batchValidation.data;
+      let processedCount = 0;
+
+      for (const error of errors) {
+        if (processError(error, req.ip)) {
+          processedCount++;
+        }
+      }
+
+      console.log(`[Errors] Batch processed: ${processedCount}/${batch.size} errors (session: ${batch.sessionId})`);
       return res.status(204).send();
     }
 
-    // Filter out known third-party script errors
-    const ignoredDomains = [
-      'googletagmanager.com',
-      'google-analytics.com',
-      'doubleclick.net',
-      'facebook.com',
-      'connect.facebook.net'
-    ];
+    // Try to parse as single error
+    const singleValidation = errorReportSchema.safeParse(req.body);
 
-    if (validatedError.filename && ignoredDomains.some(domain => validatedError.filename.includes(domain))) {
-      console.log('[Errors] Ignored third-party error:', validatedError.filename);
+    if (singleValidation.success) {
+      processError(singleValidation.data, req.ip);
       return res.status(204).send();
     }
 
-    // Log error for monitoring
-    const logLevel = validatedError.severity === 'critical' ? 'error' : 'warn';
-    console[logLevel]('[Errors] Frontend error received:', {
-      type: validatedError.type,
-      message: validatedError.message.substring(0, 200),
-      category: validatedError.category,
-      severity: validatedError.severity,
-      url: validatedError.url,
-      filename: validatedError.filename,
-      ip: req.ip
+    // Both validations failed, return error
+    const errors = batchValidation.error || singleValidation.error;
+    console.warn('[Errors] Invalid error report from IP', req.ip, ':', errors.errors);
+    return res.status(400).json({
+      error: 'Invalid error report',
+      details: errors.errors.map(err => ({
+        field: err.path.join('.'),
+        message: err.message
+      }))
     });
 
-    // In production, you might want to:
-    // - Send to Sentry/LogRocket/etc
-    // - Store in database
-    // - Alert on critical errors
-    // - Aggregate metrics
-
-    // Return 204 No Content (standard for logging endpoints)
-    res.status(204).send();
-
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      console.warn('[Errors] Invalid error report from IP', req.ip, ':', error.errors);
-      return res.status(400).json({
-        error: 'Invalid error report',
-        details: error.errors.map(err => ({
-          field: err.path.join('.'),
-          message: err.message
-        }))
-      });
-    }
-
     console.error('[Errors] Failed to process error report:', error);
     res.status(500).json({ error: 'Failed to process error report' });
   }

@@ -46,6 +46,7 @@ import { WidgetProvider } from '@/utils/widgetManager.jsx';
 import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
 import GoogleAnalytics from './components/GoogleAnalytics.jsx';
 import AnalyticsFallback from '@/components/AnalyticsFallback.jsx';
+import AnalyticsProxy from '@/components/AnalyticsProxy.jsx';
 
 function App() {
   const isCheckSubdomain =
@@ -58,7 +59,7 @@ function App() {
   return (
     <HelmetProvider>
       <LocalBusinessSchema />
-      <GoogleAnalytics />
+      <AnalyticsProxy />
       <WidgetProvider>
         {/*
           Envolvemos apenas o conteúdo da aplicação em um wrapper dedicado.
