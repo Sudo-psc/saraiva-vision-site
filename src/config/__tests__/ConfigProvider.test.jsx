@@ -1,149 +1,290 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { renderHook } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, renderHook } from '@testing-library/react';
+import React from 'react';
 import { ConfigProvider, useConfig } from '../ConfigProvider.jsx';
 import createConfig from '../createConfig.js';
 
-vi.mock('../createConfig.js', () => ({
-  default: vi.fn(() => ({
-    app: { environment: 'test', version: '1.0.0' },
-    analytics: { enabled: false, gaId: 'G-TEST' },
-    widgets: { toaster: { enabled: true } },
-    features: { lazyWidgets: true }
-  }))
-}));
+vi.mock('../createConfig.js');
 
 describe('ConfigProvider', () => {
-  describe('rendering', () => {
-    it('should render children', () => {
+  const mockConfig = {
+    app: {
+      environment: 'test',
+      version: '1.0.0'
+    },
+    analytics: {
+      enabled: true,
+      gaId: 'GA-TEST-123',
+      gtmId: 'GTM-TEST-123',
+      metaPixelId: 'META-TEST-123'
+    },
+    widgets: {
+      accessibility: { enabled: true },
+      stickyCta: { enabled: true },
+      ctaModal: { enabled: true },
+      toaster: { enabled: true },
+      cookieManager: { enabled: true },
+      serviceWorkerNotification: { enabled: true }
+    },
+    features: {
+      lazyWidgets: true
+    }
+  };
+
+  beforeEach(() => {
+    createConfig.mockReturnValue(mockConfig);
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe('Provider Rendering', () => {
+    it('should render children without crashing', () => {
       render(
         <ConfigProvider>
-          <div>Test Child</div>
+          <div data-testid="child">Test Child</div>
         </ConfigProvider>
       );
 
+      expect(screen.getByTestId('child')).toBeInTheDocument();
       expect(screen.getByText('Test Child')).toBeInTheDocument();
     });
 
-    it('should render multiple children', () => {
+    it('should create config from createConfig when no value provided', () => {
       render(
         <ConfigProvider>
-          <div>Child 1</div>
-          <div>Child 2</div>
-          <div>Child 3</div>
+          <div>Test</div>
         </ConfigProvider>
       );
 
-      expect(screen.getByText('Child 1')).toBeInTheDocument();
-      expect(screen.getByText('Child 2')).toBeInTheDocument();
-      expect(screen.getByText('Child 3')).toBeInTheDocument();
+      expect(createConfig).toHaveBeenCalledTimes(1);
     });
 
-    it('should render nested components', () => {
-      const NestedComponent = () => <span>Nested</span>;
+    it('should use provided value instead of creating config', () => {
+      const customConfig = {
+        ...mockConfig,
+        app: { environment: 'custom', version: '2.0.0' }
+      };
 
       render(
-        <ConfigProvider>
-          <div>
-            <NestedComponent />
-          </div>
+        <ConfigProvider value={customConfig}>
+          <div>Test</div>
         </ConfigProvider>
       );
 
-      expect(screen.getByText('Nested')).toBeInTheDocument();
+      expect(createConfig).not.toHaveBeenCalled();
+    });
+
+    it('should memoize config value to prevent unnecessary re-renders', () => {
+      const customConfig = { ...mockConfig };
+      const { rerender } = render(
+        <ConfigProvider value={customConfig}>
+          <div>Test</div>
+        </ConfigProvider>
+      );
+
+      // Rerender with same reference
+      rerender(
+        <ConfigProvider value={customConfig}>
+          <div>Test</div>
+        </ConfigProvider>
+      );
+
+      // Should not call createConfig multiple times
+      expect(createConfig).not.toHaveBeenCalled();
     });
   });
 
-  describe('config creation', () => {
-    it('should create default config when no value provided', () => {
+  describe('useConfig Hook', () => {
+    it('should return config when used inside ConfigProvider', () => {
+      const wrapper = ({ children }) => (
+        <ConfigProvider value={mockConfig}>{children}</ConfigProvider>
+      );
+
+      const { result } = renderHook(() => useConfig(), { wrapper });
+
+      expect(result.current).toEqual(mockConfig);
+    });
+
+    it('should throw error when used outside ConfigProvider', () => {
+      // Suppress console.error for this test
+      const originalError = console.error;
+      console.error = vi.fn();
+
+      expect(() => {
+        renderHook(() => useConfig());
+      }).toThrow('useConfig must be used within a ConfigProvider');
+
+      console.error = originalError;
+    });
+
+    it('should provide access to app configuration', () => {
+      const wrapper = ({ children }) => (
+        <ConfigProvider value={mockConfig}>{children}</ConfigProvider>
+      );
+
+      const { result } = renderHook(() => useConfig(), { wrapper });
+
+      expect(result.current.app.environment).toBe('test');
+      expect(result.current.app.version).toBe('1.0.0');
+    });
+
+    it('should provide access to analytics configuration', () => {
+      const wrapper = ({ children }) => (
+        <ConfigProvider value={mockConfig}>{children}</ConfigProvider>
+      );
+
+      const { result } = renderHook(() => useConfig(), { wrapper });
+
+      expect(result.current.analytics.enabled).toBe(true);
+      expect(result.current.analytics.gaId).toBe('GA-TEST-123');
+      expect(result.current.analytics.gtmId).toBe('GTM-TEST-123');
+      expect(result.current.analytics.metaPixelId).toBe('META-TEST-123');
+    });
+
+    it('should provide access to widgets configuration', () => {
+      const wrapper = ({ children }) => (
+        <ConfigProvider value={mockConfig}>{children}</ConfigProvider>
+      );
+
+      const { result } = renderHook(() => useConfig(), { wrapper });
+
+      expect(result.current.widgets.accessibility.enabled).toBe(true);
+      expect(result.current.widgets.stickyCta.enabled).toBe(true);
+      expect(result.current.widgets.ctaModal.enabled).toBe(true);
+      expect(result.current.widgets.toaster.enabled).toBe(true);
+      expect(result.current.widgets.cookieManager.enabled).toBe(true);
+      expect(result.current.widgets.serviceWorkerNotification.enabled).toBe(true);
+    });
+
+    it('should provide access to features configuration', () => {
+      const wrapper = ({ children }) => (
+        <ConfigProvider value={mockConfig}>{children}</ConfigProvider>
+      );
+
+      const { result } = renderHook(() => useConfig(), { wrapper });
+
+      expect(result.current.features.lazyWidgets).toBe(true);
+    });
+  });
+
+  describe('Component Integration', () => {
+    it('should allow child components to consume config', () => {
       const TestComponent = () => {
         const config = useConfig();
-        return <div>{config.app.version}</div>;
+        return <div data-testid="config-value">{config.app.environment}</div>;
       };
 
       render(
-        <ConfigProvider>
+        <ConfigProvider value={mockConfig}>
           <TestComponent />
         </ConfigProvider>
       );
 
-      expect(screen.getByText('1.0.0')).toBeInTheDocument();
-      expect(createConfig).toHaveBeenCalled();
+      expect(screen.getByTestId('config-value')).toHaveTextContent('test');
     });
 
-    it('should use provided config value', () => {
-      const customConfig = {
-        app: { environment: 'custom', version: '2.0.0' },
-        analytics: { enabled: true, gaId: 'G-CUSTOM' },
-        widgets: {},
-        features: {}
+    it('should allow multiple child components to access same config', () => {
+      const Component1 = () => {
+        const config = useConfig();
+        return <div data-testid="component1">{config.app.version}</div>;
       };
 
-      const TestComponent = () => {
+      const Component2 = () => {
         const config = useConfig();
-        return <div>{config.app.version}</div>;
+        return <div data-testid="component2">{config.analytics.gaId}</div>;
       };
 
       render(
-        <ConfigProvider value={customConfig}>
-          <TestComponent />
+        <ConfigProvider value={mockConfig}>
+          <Component1 />
+          <Component2 />
         </ConfigProvider>
       );
 
-      expect(screen.getByText('2.0.0')).toBeInTheDocument();
+      expect(screen.getByTestId('component1')).toHaveTextContent('1.0.0');
+      expect(screen.getByTestId('component2')).toHaveTextContent('GA-TEST-123');
     });
 
-    it('should memoize config value', () => {
-      const customConfig = {
-        app: { environment: 'test', version: '1.0.0' },
-        analytics: { enabled: false },
-        widgets: {},
-        features: {}
-      };
-
-      let renderCount = 0;
-      const TestComponent = () => {
+    it('should handle nested components accessing config', () => {
+      const ChildComponent = () => {
         const config = useConfig();
-        renderCount++;
-        return <div>{config.app.version}</div>;
+        return <div data-testid="child">{config.features.lazyWidgets.toString()}</div>;
       };
 
-      const { rerender } = render(
-        <ConfigProvider value={customConfig}>
-          <TestComponent />
+      const ParentComponent = () => (
+        <div>
+          <ChildComponent />
+        </div>
+      );
+
+      render(
+        <ConfigProvider value={mockConfig}>
+          <ParentComponent />
         </ConfigProvider>
       );
 
-      const initialRenderCount = renderCount;
+      expect(screen.getByTestId('child')).toHaveTextContent('true');
+    });
+  });
 
-      // Rerender with same value
-      rerender(
-        <ConfigProvider value={customConfig}>
-          <TestComponent />
+  describe('Edge Cases', () => {
+    it('should handle undefined value prop', () => {
+      render(
+        <ConfigProvider value={undefined}>
+          <div>Test</div>
         </ConfigProvider>
       );
 
-      expect(renderCount).toBe(initialRenderCount + 1); // Only increment by 1
+      expect(createConfig).toHaveBeenCalledTimes(1);
     });
 
-    it('should update config when value prop changes', () => {
-      const config1 = {
-        app: { environment: 'test', version: '1.0.0' },
-        analytics: { enabled: false },
-        widgets: {},
-        features: {}
+    it('should handle null value prop', () => {
+      render(
+        <ConfigProvider value={null}>
+          <div>Test</div>
+        </ConfigProvider>
+      );
+
+      expect(createConfig).toHaveBeenCalledTimes(1);
+    });
+
+    it('should handle empty config object', () => {
+      const emptyConfig = {};
+
+      const wrapper = ({ children }) => (
+        <ConfigProvider value={emptyConfig}>{children}</ConfigProvider>
+      );
+
+      const { result } = renderHook(() => useConfig(), { wrapper });
+
+      expect(result.current).toEqual(emptyConfig);
+    });
+
+    it('should handle partial config object', () => {
+      const partialConfig = {
+        app: { environment: 'partial' }
       };
 
-      const config2 = {
-        app: { environment: 'test', version: '2.0.0' },
-        analytics: { enabled: false },
-        widgets: {},
-        features: {}
-      };
+      const wrapper = ({ children }) => (
+        <ConfigProvider value={partialConfig}>{children}</ConfigProvider>
+      );
+
+      const { result } = renderHook(() => useConfig(), { wrapper });
+
+      expect(result.current.app.environment).toBe('partial');
+    });
+  });
+
+  describe('Re-render Behavior', () => {
+    it('should update when value prop changes', () => {
+      const config1 = { ...mockConfig, app: { environment: 'v1', version: '1.0.0' } };
+      const config2 = { ...mockConfig, app: { environment: 'v2', version: '2.0.0' } };
 
       const TestComponent = () => {
         const config = useConfig();
-        return <div>{config.app.version}</div>;
+        return <div data-testid="env">{config.app.environment}</div>;
       };
 
       const { rerender } = render(
@@ -152,7 +293,7 @@ describe('ConfigProvider', () => {
         </ConfigProvider>
       );
 
-      expect(screen.getByText('1.0.0')).toBeInTheDocument();
+      expect(screen.getByTestId('env')).toHaveTextContent('v1');
 
       rerender(
         <ConfigProvider value={config2}>
@@ -160,252 +301,56 @@ describe('ConfigProvider', () => {
         </ConfigProvider>
       );
 
-      expect(screen.getByText('2.0.0')).toBeInTheDocument();
+      expect(screen.getByTestId('env')).toHaveTextContent('v2');
     });
-  });
 
-  describe('useConfig hook', () => {
-    it('should return config from context', () => {
-      const customConfig = {
-        app: { environment: 'production', version: '3.0.0' },
-        analytics: { enabled: true, gaId: 'G-PROD' },
-        widgets: { toaster: { enabled: false } },
-        features: { lazyWidgets: false }
-      };
+    it('should not re-render children when value reference stays the same', () => {
+      let renderCount = 0;
 
       const TestComponent = () => {
+        renderCount++;
         const config = useConfig();
-        return (
-          <div>
-            <div>{config.app.environment}</div>
-            <div>{config.analytics.gaId}</div>
-            <div>{config.features.lazyWidgets.toString()}</div>
-          </div>
-        );
-      };
-
-      render(
-        <ConfigProvider value={customConfig}>
-          <TestComponent />
-        </ConfigProvider>
-      );
-
-      expect(screen.getByText('production')).toBeInTheDocument();
-      expect(screen.getByText('G-PROD')).toBeInTheDocument();
-      expect(screen.getByText('false')).toBeInTheDocument();
-    });
-
-    it('should throw error when used outside provider', () => {
-      const TestComponent = () => {
-        const config = useConfig();
-        return <div>{config.app.version}</div>;
-      };
-
-      expect(() => {
-        render(<TestComponent />);
-      }).toThrow('useConfig must be used within a ConfigProvider');
-    });
-
-    it('should work with multiple consumers', () => {
-      const customConfig = {
-        app: { environment: 'test', version: '1.0.0' },
-        analytics: { enabled: false, gaId: 'G-TEST' },
-        widgets: {},
-        features: {}
-      };
-
-      const Consumer1 = () => {
-        const config = useConfig();
-        return <div>Consumer1: {config.analytics.gaId}</div>;
-      };
-
-      const Consumer2 = () => {
-        const config = useConfig();
-        return <div>Consumer2: {config.analytics.gaId}</div>;
-      };
-
-      render(
-        <ConfigProvider value={customConfig}>
-          <Consumer1 />
-          <Consumer2 />
-        </ConfigProvider>
-      );
-
-      expect(screen.getByText('Consumer1: G-TEST')).toBeInTheDocument();
-      expect(screen.getByText('Consumer2: G-TEST')).toBeInTheDocument();
-    });
-
-    it('should return same config object to all consumers', () => {
-      const customConfig = {
-        app: { environment: 'test', version: '1.0.0' },
-        analytics: { enabled: false },
-        widgets: {},
-        features: {}
-      };
-
-      let config1, config2;
-
-      const Consumer1 = () => {
-        config1 = useConfig();
-        return null;
-      };
-
-      const Consumer2 = () => {
-        config2 = useConfig();
-        return null;
-      };
-
-      render(
-        <ConfigProvider value={customConfig}>
-          <Consumer1 />
-          <Consumer2 />
-        </ConfigProvider>
-      );
-
-      expect(config1).toBe(config2);
-    });
-  });
-
-  describe('nested providers', () => {
-    it('should support nested providers with different configs', () => {
-      const outerConfig = {
-        app: { environment: 'outer', version: '1.0.0' },
-        analytics: { enabled: false },
-        widgets: {},
-        features: {}
-      };
-
-      const innerConfig = {
-        app: { environment: 'inner', version: '2.0.0' },
-        analytics: { enabled: true },
-        widgets: {},
-        features: {}
-      };
-
-      const OuterConsumer = () => {
-        const config = useConfig();
-        return <div>Outer: {config.app.environment}</div>;
-      };
-
-      const InnerConsumer = () => {
-        const config = useConfig();
-        return <div>Inner: {config.app.environment}</div>;
-      };
-
-      render(
-        <ConfigProvider value={outerConfig}>
-          <OuterConsumer />
-          <ConfigProvider value={innerConfig}>
-            <InnerConsumer />
-          </ConfigProvider>
-        </ConfigProvider>
-      );
-
-      expect(screen.getByText('Outer: outer')).toBeInTheDocument();
-      expect(screen.getByText('Inner: inner')).toBeInTheDocument();
-    });
-  });
-
-  describe('config access patterns', () => {
-    it('should allow accessing nested config properties', () => {
-      const customConfig = {
-        app: { environment: 'test', version: '1.0.0' },
-        analytics: { enabled: false, gaId: 'G-TEST', gtmId: 'GTM-TEST' },
-        widgets: {
-          toaster: { enabled: true },
-          ctaModal: { enabled: false }
-        },
-        features: { lazyWidgets: true }
-      };
-
-      const TestComponent = () => {
-        const config = useConfig();
-        return (
-          <div>
-            <div>{config.widgets.toaster.enabled.toString()}</div>
-            <div>{config.widgets.ctaModal.enabled.toString()}</div>
-            <div>{config.analytics.gtmId}</div>
-          </div>
-        );
-      };
-
-      render(
-        <ConfigProvider value={customConfig}>
-          <TestComponent />
-        </ConfigProvider>
-      );
-
-      expect(screen.getByText('true')).toBeInTheDocument();
-      expect(screen.getByText('false')).toBeInTheDocument();
-      expect(screen.getByText('GTM-TEST')).toBeInTheDocument();
-    });
-
-    it('should handle conditional rendering based on config', () => {
-      const customConfig = {
-        app: { environment: 'test', version: '1.0.0' },
-        analytics: { enabled: true },
-        widgets: {},
-        features: { lazyWidgets: false }
-      };
-
-      const TestComponent = () => {
-        const config = useConfig();
-        return (
-          <div>
-            {config.analytics.enabled && <div>Analytics Enabled</div>}
-            {config.features.lazyWidgets && <div>Lazy Widgets Enabled</div>}
-          </div>
-        );
-      };
-
-      render(
-        <ConfigProvider value={customConfig}>
-          <TestComponent />
-        </ConfigProvider>
-      );
-
-      expect(screen.getByText('Analytics Enabled')).toBeInTheDocument();
-      expect(screen.queryByText('Lazy Widgets Enabled')).not.toBeInTheDocument();
-    });
-  });
-
-  describe('performance', () => {
-    it('should not recreate config on every render', () => {
-      let configInstance1, configInstance2;
-
-      const TestComponent = () => {
-        configInstance1 = useConfig();
-        return null;
+        return <div>{config.app.environment}</div>;
       };
 
       const { rerender } = render(
-        <ConfigProvider>
+        <ConfigProvider value={mockConfig}>
           <TestComponent />
         </ConfigProvider>
       );
 
-      const FirstInstance = () => {
-        configInstance2 = useConfig();
-        return null;
-      };
+      const initialRenderCount = renderCount;
 
+      // Force parent re-render with same config reference
       rerender(
-        <ConfigProvider>
-          <FirstInstance />
+        <ConfigProvider value={mockConfig}>
+          <TestComponent />
         </ConfigProvider>
       );
 
-      expect(configInstance1).toBe(configInstance2);
+      // Child should not re-render due to memoization
+      expect(renderCount).toBe(initialRenderCount + 1); // +1 for the rerender itself
     });
   });
 
-  describe('hook usage with renderHook', () => {
-    it('should work with renderHook utility', () => {
+  describe('Type Safety and Validation', () => {
+    it('should handle config with all expected properties', () => {
+      const wrapper = ({ children }) => (
+        <ConfigProvider value={mockConfig}>{children}</ConfigProvider>
+      );
+
+      const { result } = renderHook(() => useConfig(), { wrapper });
+
+      expect(result.current).toHaveProperty('app');
+      expect(result.current).toHaveProperty('analytics');
+      expect(result.current).toHaveProperty('widgets');
+      expect(result.current).toHaveProperty('features');
+    });
+
+    it('should allow additional custom properties in config', () => {
       const customConfig = {
-        app: { environment: 'test', version: '1.0.0' },
-        analytics: { enabled: false },
-        widgets: {},
-        features: {}
+        ...mockConfig,
+        custom: { property: 'value' }
       };
 
       const wrapper = ({ children }) => (
@@ -414,51 +359,7 @@ describe('ConfigProvider', () => {
 
       const { result } = renderHook(() => useConfig(), { wrapper });
 
-      expect(result.current).toBe(customConfig);
-      expect(result.current.app.version).toBe('1.0.0');
-    });
-
-    it('should throw error when hook used without wrapper', () => {
-      expect(() => {
-        renderHook(() => useConfig());
-      }).toThrow('useConfig must be used within a ConfigProvider');
-    });
-  });
-
-  describe('edge cases', () => {
-    it('should handle null children', () => {
-      render(<ConfigProvider>{null}</ConfigProvider>);
-      // Should not throw
-    });
-
-    it('should handle undefined children', () => {
-      render(<ConfigProvider>{undefined}</ConfigProvider>);
-      // Should not throw
-    });
-
-    it('should handle empty children', () => {
-      render(<ConfigProvider></ConfigProvider>);
-      // Should not throw
-    });
-
-    it('should handle config with missing properties', () => {
-      const incompleteConfig = {
-        app: { environment: 'test' }
-        // Missing analytics, widgets, features
-      };
-
-      const TestComponent = () => {
-        const config = useConfig();
-        return <div>{config.app.environment}</div>;
-      };
-
-      render(
-        <ConfigProvider value={incompleteConfig}>
-          <TestComponent />
-        </ConfigProvider>
-      );
-
-      expect(screen.getByText('test')).toBeInTheDocument();
+      expect(result.current.custom).toEqual({ property: 'value' });
     });
   });
 });

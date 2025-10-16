@@ -102,3 +102,5 @@ describe('analytics service contract', () => {
     });
   });
 });
+
+// Note: Additional analytics configuration tests are in src/utils/__tests__/analytics.enhanced.test.js
