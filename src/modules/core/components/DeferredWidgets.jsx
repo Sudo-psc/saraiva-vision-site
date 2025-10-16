@@ -8,6 +8,11 @@ import CookieManager from '@/components/CookieManager.jsx';
 import ServiceWorkerUpdateNotification from '@/components/ServiceWorkerUpdateNotification.jsx';
 import Accessibility from '@/components/Accessibility.jsx';
 
+/**
+ * Renders configured UI widgets into a dedicated DOM container, creating the container if it does not exist.
+ * When lazy widget loading is enabled in config, defers mounting until the browser is idle.
+ * @returns {React.ReactPortal|null} A portal containing the enabled widgets, or `null` when the container is not ready or no widgets are enabled.
+ */
 function DeferredWidgets() {
   const config = useConfig();
   const [container, setContainer] = useState(null);
