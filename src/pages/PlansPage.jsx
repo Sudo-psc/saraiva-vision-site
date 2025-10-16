@@ -5,16 +5,9 @@ import EnhancedFooter from '@/components/EnhancedFooter';
 import JotformChatbot from '@/components/JotformChatbot';
 import { CheckCircle, Package, Star, Award, Crown, ArrowRight, MapPin, AlertCircle } from 'lucide-react';
 import { PLAN_PAYMENT_LINKS } from '@/config/plans';
+import { usePlansSEO } from '@/hooks/useSEO';
 
 const PlansPage = () => {
-
-  const seoData = {
-    title: 'Planos de Assinatura de Lentes de Contato | Saraiva Vision',
-    description: 'Conheça nossos planos de assinatura de lentes de contato com entrega regular, acompanhamento médico e frete grátis. Escolha o plano ideal para você.',
-    keywords: 'planos lentes de contato, assinatura lentes, lentes mensais, acompanhamento oftalmologista',
-    canonicalUrl: 'https://saraivavision.com.br/planos',
-    ogImage: 'https://saraivavision.com.br/og-image.jpg'
-  };
 
   const plans = [
     {
@@ -90,6 +83,8 @@ const PlansPage = () => {
       highlight: false
     }
   ];
+
+  const seoData = usePlansSEO(plans);
 
   return (
     <>
@@ -297,29 +292,85 @@ const PlansPage = () => {
           </div>
         </section>
 
+        {/* SEO Content Section - Long-tail Keywords */}
+        <section className="!py-4 mb-4">
+          <div className="max-w-4xl mx-auto bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-gray-200">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              Qual o Melhor Plano de Lentes de Contato Para Você?
+            </h2>
+            <div className="prose prose-gray max-w-none">
+              <p className="text-gray-700 mb-3 leading-relaxed">
+                Escolher o <strong>plano de assinatura de lentes de contato</strong> ideal depende das suas necessidades visuais e estilo de vida.
+                Na <strong>Saraiva Vision em Caratinga/MG</strong>, oferecemos três opções: <strong>Básico (R$ 100/mês)</strong>,
+                <strong> Padrão (R$ 149,99/mês)</strong> e <strong>Premium (R$ 179,99/mês)</strong>.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
+                <div className="bg-cyan-50 rounded-xl p-3 border border-cyan-200">
+                  <h4 className="font-bold text-gray-900 mb-1.5 text-sm">Plano Básico</h4>
+                  <p className="text-xs text-gray-700 leading-relaxed">
+                    Ideal para <strong>iniciantes</strong> ou uso eventual. Inclui 12 pares de <strong>lentes gelatinosas</strong>,
+                    1 consulta presencial e acompanhamento online mensal.
+                  </p>
+                </div>
+                <div className="bg-slate-50 rounded-xl p-3 border border-slate-300">
+                  <h4 className="font-bold text-gray-900 mb-1.5 text-sm">Plano Padrão</h4>
+                  <p className="text-xs text-gray-700 leading-relaxed">
+                    Mais escolhido! <strong>13 pares de lentes premium</strong>, 2 consultas presenciais/ano,
+                    prioridade no agendamento e <strong>frete expresso grátis</strong>.
+                  </p>
+                </div>
+                <div className="bg-gradient-to-br from-cyan-50 via-slate-50 to-yellow-50 rounded-xl p-3 border border-slate-300">
+                  <h4 className="font-bold text-gray-900 mb-1.5 text-sm">Plano Premium</h4>
+                  <p className="text-xs text-gray-700 leading-relaxed">
+                    Experiência VIP com <strong>14 pares de lentes multifocais</strong>, exames complementares inclusos
+                    e <strong>kit premium de higienização</strong>.
+                  </p>
+                </div>
+              </div>
+              <p className="text-gray-700 mt-4 mb-3 leading-relaxed text-sm">
+                Todos os planos incluem: <strong>entrega mensal gratuita em Caratinga e região</strong>, consultas com
+                <strong> oftalmologista especializado</strong>, lembretes de troca e garantia de <strong>lentes certificadas ANVISA</strong>.
+                Compare os preços e benefícios acima e escolha o plano ideal para suas necessidades!
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* FAQ Section */}
         <section className="!py-4 mb-4">
           <div className="max-w-4xl mx-auto">
             <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-5 text-center">
-              Perguntas Frequentes
+              Perguntas Frequentes sobre Planos de Lentes de Contato
             </h3>
             <div className="space-y-3">
               <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-200">
-                <h4 className="font-semibold text-gray-900 mb-2">Como funciona a entrega?</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">Como funciona a entrega das lentes de contato?</h4>
                 <p className="text-sm text-gray-600">
                   As lentes são entregues mensalmente no seu endereço cadastrado, sem custo adicional de frete para Caratinga e região. Você recebe automaticamente antes de acabar suas lentes atuais.
                 </p>
               </div>
               <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-200">
-                <h4 className="font-semibold text-gray-900 mb-2">As consultas estão incluídas?</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">As consultas oftalmológicas estão incluídas no plano?</h4>
                 <p className="text-sm text-gray-600">
                   Sim! Todos os planos incluem consultas de acompanhamento com oftalmologista, tanto presenciais quanto online, para garantir a saúde dos seus olhos.
                 </p>
               </div>
               <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-200">
-                <h4 className="font-semibold text-gray-900 mb-2">Qual a diferença entre os planos?</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">Qual a diferença entre os planos Básico, Padrão e Premium?</h4>
                 <p className="text-sm text-gray-600">
-                  A principal diferença está na quantidade de lentes, frequência de consultas e benefícios adicionais. O Plano Premium oferece mais consultas, atendimento prioritário e descontos em outros serviços.
+                  A principal diferença está na quantidade de lentes (12, 13 ou 14 pares), frequência de consultas presenciais, prioridade no agendamento e benefícios adicionais como kit de higienização premium no plano Premium.
+                </p>
+              </div>
+              <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-200">
+                <h4 className="font-semibold text-gray-900 mb-2">Posso cancelar minha assinatura a qualquer momento?</h4>
+                <p className="text-sm text-gray-600">
+                  O plano tem duração de 12 meses com parcelamento mensal. As condições de cancelamento antecipado variam conforme o plano escolhido. Entre em contato para mais detalhes.
+                </p>
+              </div>
+              <div className="bg-white rounded-xl p-4 md:p-5 shadow-sm border border-gray-200">
+                <h4 className="font-semibold text-gray-900 mb-2">As lentes são certificadas pela ANVISA?</h4>
+                <p className="text-sm text-gray-600">
+                  Sim, trabalhamos exclusivamente com lentes de marcas premium certificadas pela ANVISA, garantindo qualidade, segurança e procedência dos produtos.
                 </p>
               </div>
             </div>

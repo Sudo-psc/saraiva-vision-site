@@ -201,6 +201,51 @@ const LensesPage = () => {
           </div>
         </section>
 
+        {/* SEO Content Section - Long-tail Keywords */}
+        <section className="!mb-6 !pt-0 !pb-0">
+          <div className="bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-gray-200">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              Lentes de Contato em Caratinga/MG: Qualidade e Acompanhamento Profissional
+            </h2>
+            <div className="prose prose-gray max-w-none">
+              <p className="text-gray-700 mb-3 leading-relaxed">
+                Na <strong>Saraiva Vision</strong>, oferecemos o serviço pioneiro no Brasil de <strong>assinatura de lentes de contato</strong>
+                em Caratinga e região. Nossa proposta combina <strong>lentes de contato gelatinosas premium</strong> certificadas pela ANVISA
+                com <strong>acompanhamento oftalmológico especializado</strong>, garantindo saúde ocular e máximo conforto.
+              </p>
+              <p className="text-gray-700 mb-3 leading-relaxed">
+                Se você busca <strong>lentes de contato mensais com entrega em domicílio</strong>, consultas oftalmológicas incluídas
+                e economia de até 40% comparado à compra avulsa, nossos planos de assinatura são a solução ideal.
+                Trabalhamos com <strong>marcas premium de lentes</strong> e oferecemos <strong>frete grátis</strong> para toda região de Caratinga.
+              </p>
+              <div className="bg-cyan-50 rounded-xl p-4 mt-4 border border-cyan-200">
+                <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
+                  <Eye className="w-5 h-5 text-cyan-600" />
+                  Por que escolher lentes de contato com assinatura?
+                </h3>
+                <ul className="space-y-1.5 text-sm text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 text-cyan-600 flex-shrink-0 mt-0.5" />
+                    <span><strong>Economia garantida:</strong> Até 40% mais barato que comprar lentes avulsas</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 text-cyan-600 flex-shrink-0 mt-0.5" />
+                    <span><strong>Praticidade:</strong> Receba suas lentes em casa mensalmente, sem precisar ir à ótica</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 text-cyan-600 flex-shrink-0 mt-0.5" />
+                    <span><strong>Saúde ocular:</strong> Acompanhamento com oftalmologista especializado em adaptação de lentes</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 text-cyan-600 flex-shrink-0 mt-0.5" />
+                    <span><strong>Qualidade certificada:</strong> Lentes premium certificadas pela ANVISA e CBO</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Subscription Plans CTA Section */}
         <section className="!mb-6 !pt-0 !pb-0">
           <div className="bg-gradient-to-br from-slate-900 via-cyan-900 to-slate-900 rounded-2xl p-6 md:p-8 text-center shadow-2xl border-2 border-cyan-400/30 hover:border-cyan-400/50 transition-all">

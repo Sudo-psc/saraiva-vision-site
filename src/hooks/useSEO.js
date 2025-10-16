@@ -180,17 +180,33 @@ export const useServiceSEO = (service) => {
 
 // Hook específico para a página de lentes
 export const useLensesSEO = () => {
+  const { i18n } = useTranslation();
+  const currentLang = i18n.language;
+
+  const hasContactLens = Object.prototype.hasOwnProperty.call(schemaLib, 'generateContactLensProductSchema');
+  const genContactLens = hasContactLens ? schemaLib.generateContactLensProductSchema : (() => ({}));
+
   const breadcrumbs = [
     { name: 'Início', url: '/' },
     { name: 'Lentes de Contato', url: '/lentes' }
   ];
 
+  // Schema completo para lentes de contato
+  const lensesSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      genContactLens(currentLang, true),
+      schemaLib.generateBreadcrumbSchema(breadcrumbs, true)
+    ]
+  };
+
   return useSEO({
-    titleKey: 'lensesMeta.title',
-    descriptionKey: 'lensesMeta.description',
-    keywordsKey: 'lensesMeta.keywords',
-    pageType: 'page',
-    breadcrumbs
+    title: 'Lentes de Contato com Assinatura | Entrega Regular + Acompanhamento Médico | Saraiva Vision Caratinga',
+    description: 'Assinatura de lentes de contato em Caratinga/MG com entrega mensal, acompanhamento oftalmológico, frete grátis e marcas premium certificadas ANVISA. Planos a partir de R$ 100/mês.',
+    keywords: 'lentes de contato Caratinga, assinatura lentes contato MG, lentes mensais entrega domicílio, oftalmologista lentes contato, adaptação lentes Caratinga, lentes gelatinosas premium, acompanhamento médico lentes, frete grátis lentes contato, lentes ANVISA certificadas, plano assinatura lentes',
+    pageType: 'product',
+    breadcrumbs,
+    schema: lensesSchema
   });
 };
 
@@ -314,5 +330,68 @@ export const usePodcastSEO = () => {
     keywordsKey: 'podcastMeta.keywords',
     pageType: 'podcast',
     breadcrumbs
+  });
+};
+
+// Hook específico para página de planos de assinatura
+export const usePlansSEO = (plans = []) => {
+  const { i18n } = useTranslation();
+  const currentLang = i18n.language;
+
+  const hasOfferCatalog = Object.prototype.hasOwnProperty.call(schemaLib, 'generateOfferCatalogSchema');
+  const genOfferCatalog = hasOfferCatalog ? schemaLib.generateOfferCatalogSchema : (() => ({}));
+
+  const breadcrumbs = [
+    { name: 'Início', url: '/' },
+    { name: 'Lentes de Contato', url: '/lentes' },
+    { name: 'Planos de Assinatura', url: '/planos' }
+  ];
+
+  // FAQ items para schema
+  const faqItems = [
+    {
+      question: 'Como funciona a entrega das lentes de contato?',
+      answer: 'As lentes são entregues mensalmente no seu endereço cadastrado, sem custo adicional de frete para Caratinga e região. Você recebe automaticamente antes de acabar suas lentes atuais.',
+      dateCreated: '2024-01-15'
+    },
+    {
+      question: 'As consultas oftalmológicas estão incluídas no plano?',
+      answer: 'Sim! Todos os planos incluem consultas de acompanhamento com oftalmologista, tanto presenciais quanto online, para garantir a saúde dos seus olhos.',
+      dateCreated: '2024-01-15'
+    },
+    {
+      question: 'Qual a diferença entre os planos Básico, Padrão e Premium?',
+      answer: 'A principal diferença está na quantidade de lentes (12, 13 ou 14 pares), frequência de consultas presenciais, prioridade no agendamento e benefícios adicionais como kit de higienização premium no plano Premium.',
+      dateCreated: '2024-01-15'
+    },
+    {
+      question: 'Posso cancelar minha assinatura a qualquer momento?',
+      answer: 'O plano tem duração de 12 meses com parcelamento mensal. As condições de cancelamento antecipado variam conforme o plano escolhido. Entre em contato para mais detalhes.',
+      dateCreated: '2024-01-15'
+    },
+    {
+      question: 'As lentes são certificadas pela ANVISA?',
+      answer: 'Sim, trabalhamos exclusivamente com lentes de marcas premium certificadas pela ANVISA, garantindo qualidade, segurança e procedência dos produtos.',
+      dateCreated: '2024-01-15'
+    }
+  ];
+
+  // Schema completo para planos
+  const plansSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      genOfferCatalog(plans, currentLang, true),
+      schemaLib.generateFAQSchema(faqItems, currentLang, true),
+      schemaLib.generateBreadcrumbSchema(breadcrumbs, true)
+    ]
+  };
+
+  return useSEO({
+    title: 'Planos de Assinatura de Lentes de Contato | A partir de R$ 100/mês | Saraiva Vision',
+    description: 'Compare planos de assinatura de lentes de contato: Básico (R$ 100), Padrão (R$ 149,99) e Premium (R$ 179,99). Entrega mensal grátis, consultas incluídas e lentes certificadas ANVISA. Caratinga/MG.',
+    keywords: 'planos lentes contato preço, assinatura lentes valores, lentes mensais custo, quanto custa lentes contato assinatura, plano básico lentes, plano premium lentes contato, comparar planos lentes, lentes contato parcelado, consulta oftalmologista inclusa, melhor plano lentes Caratinga',
+    pageType: 'page',
+    breadcrumbs,
+    schema: plansSchema
   });
 };

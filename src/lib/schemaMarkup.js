@@ -667,19 +667,202 @@ export const generatePodcastSchema = (podcastData, language = 'pt', forGraph = f
   };
 };
 
+// Gera schema para Produto de Lentes de Contato
+export const generateContactLensProductSchema = (language = 'pt', forGraph = false) => {
+  const schema = {
+    '@type': 'Product',
+    '@id': `${withPath('/lentes')}#product`,
+    name: language === 'pt' ? 'Lentes de Contato com Assinatura - Saraiva Vision' : 'Contact Lens Subscription - Saraiva Vision',
+    description: language === 'pt'
+      ? 'Serviço de assinatura de lentes de contato com entrega regular, acompanhamento médico especializado e garantia de qualidade. Lentes premium certificadas pela ANVISA.'
+      : 'Contact lens subscription service with regular delivery, specialized medical follow-up and quality guarantee. Premium lenses certified by ANVISA.',
+    url: withPath('/lentes'),
+    image: [
+      withPath('/Videos/Hero-12.mp4'),
+      withPath('/icons_social/consulta-aval.jpeg'),
+      'https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2b4080af9238827a12d5de.png'
+    ],
+    brand: {
+      '@type': 'Brand',
+      name: 'Saraiva Vision'
+    },
+    manufacturer: {
+      '@type': 'Organization',
+      name: 'Saraiva Vision',
+      url: withPath('/')
+    },
+    category: language === 'pt' ? 'Lentes de Contato / Equipamento Médico' : 'Contact Lenses / Medical Equipment',
+    audience: {
+      '@type': 'PeopleAudience',
+      suggestedMinAge: 12,
+      audienceType: language === 'pt' ? 'Pacientes com problemas de visão' : 'Patients with vision problems'
+    },
+    offers: {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'BRL',
+      lowPrice: '100.00',
+      highPrice: '179.99',
+      priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+      availability: 'https://schema.org/InStock',
+      url: withPath('/planos'),
+      seller: {
+        '@type': 'MedicalBusiness',
+        '@id': withHash('localbusiness'),
+        name: clinicInfo.name
+      },
+      offerCount: 3
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      reviewCount: '136',
+      bestRating: '5',
+      worstRating: '1'
+    },
+    medicalSpecialty: ['Ophthalmology'],
+    relevantSpecialty: {
+      '@type': 'MedicalSpecialty',
+      name: 'Ophthalmology'
+    },
+    sameAs: [
+      withPath('/lentes'),
+      withPath('/planos')
+    ]
+  };
+
+  if (!forGraph) {
+    schema['@context'] = 'https://schema.org';
+  }
+
+  return schema;
+};
+
+// Gera schema para Plano de Assinatura Individual
+export const generateSubscriptionPlanSchema = (planData, language = 'pt', forGraph = false) => {
+  const {
+    id,
+    name,
+    price,
+    features = [],
+    description,
+    badge
+  } = planData;
+
+  const priceMatch = price.match(/R\$\s*(\d+(?:,\d{2})?)/);
+  const priceValue = priceMatch ? priceMatch[1].replace(',', '.') : '100.00';
+
+  const schema = {
+    '@type': 'Offer',
+    '@id': `${withPath(`/planos#${id}`)}`,
+    name: name,
+    description: description,
+    url: withPath(`/plano${id}`),
+    priceCurrency: 'BRL',
+    price: priceValue,
+    priceSpecification: {
+      '@type': 'UnitPriceSpecification',
+      price: priceValue,
+      priceCurrency: 'BRL',
+      billingDuration: {
+        '@type': 'QuantitativeValue',
+        value: 12,
+        unitCode: 'MON'
+      }
+    },
+    availability: 'https://schema.org/InStock',
+    validFrom: new Date().toISOString().split('T')[0],
+    priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+    category: language === 'pt' ? 'Assinatura de Lentes de Contato' : 'Contact Lens Subscription',
+    itemOffered: {
+      '@type': 'Service',
+      name: name,
+      description: description,
+      serviceType: language === 'pt' ? 'Assinatura de Lentes de Contato com Acompanhamento Médico' : 'Contact Lens Subscription with Medical Follow-up',
+      provider: {
+        '@type': 'MedicalBusiness',
+        '@id': withHash('localbusiness'),
+        name: clinicInfo.name
+      },
+      areaServed: {
+        '@type': 'State',
+        name: 'Minas Gerais'
+      },
+      audience: {
+        '@type': 'PeopleAudience',
+        audienceType: language === 'pt' ? 'Usuários de Lentes de Contato' : 'Contact Lens Users'
+      }
+    },
+    seller: {
+      '@type': 'MedicalBusiness',
+      '@id': withHash('localbusiness'),
+      name: clinicInfo.name
+    },
+    eligibleRegion: {
+      '@type': 'Country',
+      name: 'Brazil'
+    },
+    businessFunction: 'http://purl.org/goodrelations/v1#Sell'
+  };
+
+  // Adicionar features como additionalProperty
+  if (features.length > 0) {
+    schema.itemOffered.additionalProperty = features.map((feature, index) => ({
+      '@type': 'PropertyValue',
+      propertyID: `feature-${index + 1}`,
+      name: language === 'pt' ? 'Benefício' : 'Benefit',
+      value: feature
+    }));
+  }
+
+  if (!forGraph) {
+    schema['@context'] = 'https://schema.org';
+  }
+
+  return schema;
+};
+
+// Gera schema para Catálogo de Ofertas (todos os planos)
+export const generateOfferCatalogSchema = (plans, language = 'pt', forGraph = false) => {
+  const schema = {
+    '@type': 'OfferCatalog',
+    '@id': `${withPath('/planos')}#catalog`,
+    name: language === 'pt' ? 'Planos de Assinatura de Lentes de Contato' : 'Contact Lens Subscription Plans',
+    description: language === 'pt'
+      ? 'Conheça nossos planos de assinatura de lentes de contato com entrega regular, acompanhamento médico e economia garantida.'
+      : 'Discover our contact lens subscription plans with regular delivery, medical follow-up and guaranteed savings.',
+    url: withPath('/planos'),
+    publisher: {
+      '@type': 'MedicalBusiness',
+      '@id': withHash('localbusiness'),
+      name: clinicInfo.name
+    },
+    itemListElement: plans.map((plan, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: generateSubscriptionPlanSchema(plan, language, true)
+    }))
+  };
+
+  if (!forGraph) {
+    schema['@context'] = 'https://schema.org';
+  }
+
+  return schema;
+};
+
 export const injectSchema = (schema) => {
   if (typeof window === 'undefined') return;
-  
+
   const script = document.createElement('script');
   script.type = 'application/ld+json';
   script.textContent = JSON.stringify(schema, null, 2);
-  
+
   // Remove schema anterior se existir
   const existing = document.querySelector('script[data-schema-type="dynamic"]');
   if (existing) {
     existing.remove();
   }
-  
+
   script.setAttribute('data-schema-type', 'dynamic');
   document.head.appendChild(script);
 };
