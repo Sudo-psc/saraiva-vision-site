@@ -10,6 +10,11 @@ let analyticsConfig = {
   metaPixelId: import.meta.env.VITE_META_PIXEL_ID
 };
 
+/**
+ * Update the module analytics configuration by merging provided overrides into the existing analyticsConfig.
+ *
+ * @param {Object} config - Configuration overrides; supported keys include `gaId` and `metaPixelId`. Properties present in `config` replace corresponding values in the existing analyticsConfig.
+ */
 export function configureAnalytics(config = {}) {
   analyticsConfig = {
     ...analyticsConfig,
@@ -157,7 +162,15 @@ export function trackEnhancedConversion(parameters = {}) {
   return trackMeta('Lead', parameters);
 }
 
-// Bind consent updates to analytics
+/**
+ * Subscribe to consent changes and propagate those changes to analytics vendors.
+ *
+ * When consent updates occur, updates Google Analytics consent settings (analytics_storage,
+ * ad_storage, ad_user_data, ad_personalization) — using "denied" when a value is not provided —
+ * and instructs Meta Pixel to grant or revoke consent based on `ad_storage`. Updates are only
+ * sent for vendors that are present on `window`. Calling this function after it has already been
+ * bound is a no-op.
+ */
 export function bindConsentUpdates() {
   if (consentBound) return;
 
@@ -179,7 +192,13 @@ export function bindConsentUpdates() {
   consentBound = true;
 }
 
-// Initialize analytics on app start
+/**
+ * Initializes analytics trackers and binds consent updates.
+ *
+ * Applies optional configuration overrides, initializes Google Analytics and Meta Pixel when configured, and ensures consent change handling is bound. No-op when not running in a browser.
+ *
+ * @param {Object} [configOverrides] - Partial analytics configuration to merge into the current analyticsConfig (e.g., { gaId, metaPixelId }).
+ */
 export function initializeAnalytics(configOverrides) {
   if (typeof window === 'undefined') return;
 
@@ -202,7 +221,12 @@ export function initializeAnalytics(configOverrides) {
   bindConsentUpdates();
 }
 
-// Track page view
+/**
+ * Send a page view to Google Analytics using the configured GA ID.
+ *
+ * When `window.gtag` is available, issues a `config` call with `page_path`; otherwise does nothing.
+ * @param {string} pagePath - The URL path to record in Analytics. Defaults to the current location pathname.
+ */
 export function trackPageView(pagePath = window.location.pathname) {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('config', analyticsConfig.gaId, {
