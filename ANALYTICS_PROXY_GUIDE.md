@@ -1,6 +1,6 @@
 # 🛡️ Guia de Implementação: Analytics Resistente a Ad Blockers
 
-**Status:** ⚠️ Pronto para implementar (requer aprovação)
+**Status:** ✅ Implementado em produção (deploy 2025-10-16)
 **Eficácia:** ~80% de recuperação de tracking
 **Complexidade:** Baixa
 **Custo:** Gratuito
@@ -51,46 +51,37 @@ saraivavision.com.br ──> Nginx Proxy ──> googletagmanager.com
 
 ## 🚀 Implementação
 
-### Passo 1: Adicionar Configuração ao Nginx
+### Passo 1: Validar Configuração no Nginx
 
 ```bash
-# 1. Backup do Nginx
-sudo cp /etc/nginx/sites-enabled/saraivavision /etc/nginx/sites-enabled/saraivavision.backup.$(date +%Y%m%d_%H%M%S)
+# 1. Confirmar include do proxy
+sudo grep -n "gtm-proxy" /etc/nginx/sites-enabled/saraivavision
+# Deve apontar para /home/saraiva-vision-site/nginx-gtm-proxy-v2.conf
 
-# 2. Adicionar configuração de proxy (inserir ANTES do bloco "location /api/")
-sudo nano /etc/nginx/sites-enabled/saraivavision
-
-# Copiar conteúdo de: /home/saraiva-vision-site/nginx-gtm-proxy.conf
-# Inserir na linha 220 (antes de "location /api/")
-
-# 3. Testar configuração
+# 2. Validar sintaxe do Nginx
 sudo nginx -t
 
-# 4. Recarregar Nginx
+# 3. Recarregar Nginx
 sudo systemctl reload nginx
 ```
 
-### Passo 2: Substituir Analytics Tradicional
+**Arquivo de referência:** [`nginx-gtm-proxy-v2.conf`](./nginx-gtm-proxy-v2.conf)
+- Implementa `/t/gtm.js`, `/t/gtag.js`, `/t/collect` e `/t/ccm/collect`
+- Inclui cache de 1h para scripts e tratamento CORS completo
+- Preserva IP e User-Agent reais com `X-Forwarded-*`
 
-**Remover (ou comentar) no frontend:**
-```html
-<!-- Remover scripts diretos do Google -->
-<!-- <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KF2NP85D"></script> -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-LXWRK8ELS6"></script> -->
-```
+### Passo 2: Validar Frontend
 
-**Adicionar no `App.jsx` ou `index.html`:**
+**Componente React ativo:** [`src/components/AnalyticsProxy.jsx`](./src/components/AnalyticsProxy.jsx)
 ```jsx
-import AnalyticsProxy from '@/components/AnalyticsProxy';
+// src/App.jsx
+import AnalyticsProxy from '@/components/AnalyticsProxy.jsx';
 
-function App() {
-  return (
-    <>
-      <AnalyticsProxy />
-      {/* resto do app */}
-    </>
-  );
-}
+<HelmetProvider>
+  <LocalBusinessSchema />
+  <AnalyticsProxy />
+  {/* ... */}
+</HelmetProvider>
 ```
 
 ### Passo 3: Build e Deploy
@@ -140,9 +131,9 @@ DevTools → Network → Filter: "/t/"
 
 **Esperado:**
 ```
-✅ GET /t/gtm.js?id=GTM-KF2NP85D → 200 OK
-✅ GET /t/gtag.js?id=G-LXWRK8ELS6 → 200 OK
-✅ POST /t/collect → 200 OK
+✅ GET /t/gtm.js?id=GTM-KF2NP85D → 200 (via proxy)
+✅ GET /t/gtag.js?id=G-LXWRK8ELS6 → 200 (via proxy)
+✅ POST /t/collect → 204 (proxy GA4)
 ```
 
 ### Teste 3: Google Analytics Real-Time
@@ -254,8 +245,8 @@ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 ## 📞 Suporte
 
 **Arquivos criados:**
-- `/home/saraiva-vision-site/nginx-gtm-proxy.conf` - Configuração Nginx
-- `/home/saraiva-vision-site/src/components/AnalyticsProxy.jsx` - Componente React
+- `/home/saraiva-vision-site/nginx-gtm-proxy-v2.conf` - Configuração Nginx ativa
+- `/home/saraiva-vision-site/src/components/AnalyticsProxy.jsx` - Componente React em produção
 - Este guia
 
 **Referências:**
@@ -264,5 +255,5 @@ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
 ---
 
-**Última atualização:** 2025-10-15
-**Versão:** 1.0.0
+**Última atualização:** 2025-10-16
+**Versão:** 1.1.0

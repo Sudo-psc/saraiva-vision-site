@@ -15,6 +15,11 @@ Fixed critical production errors causing "Script error." and InvalidStateError b
 4. PostHog integration improvements
 5. Source maps enabled for debugging
 
+## 🆕 2025-10-16 Update
+
+- **Analytics proxy operacional:** `AnalyticsProxy` agora está ativo em produção carregando GTM/GA4 via `/t/gtm.js` e `/t/gtag.js`, com fallback automático documentado em [`src/components/AnalyticsProxy.jsx`](../src/components/AnalyticsProxy.jsx) e configuração Nginx dedicada em [`nginx-gtm-proxy-v2.conf`](../nginx-gtm-proxy-v2.conf).
+- **Error tracking robusto:** O endpoint [`api/src/routes/errors.js`](../api/src/routes/errors.js) valida payloads com Zod, aceita lotes (`errors[]`), aplica rate limit (100 req/min/IP) e ignora ruídos de terceiros, eliminando respostas 400/SyntaxError vindas do frontend.
+
 ---
 
 ## 🔧 Changes Made

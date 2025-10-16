@@ -1,57 +1,64 @@
 # Google Analytics & GTM - Activation Success Report
 
-**Data:** 2025-10-06  
-**Status:** ✅ **ATIVO EM PRODUÇÃO**
+**Data:** 2025-10-16
+**Status:** ✅ **ATIVO EM PRODUÇÃO (Proxy Nginx + AnalyticsProxy)**
 
 ---
 
 ## 📊 Sumário Executivo
 
-Google Analytics 4 e Google Tag Manager foram configurados e estão **ATIVOS** em produção.
+Google Analytics 4 e Google Tag Manager estão **ATIVOS** em produção utilizando proxy Nginx (`/t/*`) e o componente React `AnalyticsProxy` para contornar bloqueadores de anúncios.
 
 ### Configurações Aplicadas
 
 | Ferramenta | ID | Status | Método |
 |------------|----| -------|--------|
-| **Google Analytics 4** | G-LXWRK8ELS6 | ✅ Ativo | Via analytics.js + GTM |
-| **Google Tag Manager** | GTM-KF2NP85D | ✅ Ativo | React Component |
+| **Google Analytics 4** | G-LXWRK8ELS6 | ✅ Ativo | Proxy `/t/gtag.js` + `AnalyticsProxy` |
+| **Google Tag Manager** | GTM-KF2NP85D | ✅ Ativo | Proxy `/t/gtm.js` + `AnalyticsProxy` |
 | **Meta Pixel** | (não configurado) | ⏸️ Standby | Aguardando ID |
 
 ---
 
 ## ✅ O Que Foi Implementado
 
-### 1. Google Tag Manager (GTM)
+### 1. AnalyticsProxy (Frontend)
 
-**Componente React:** `src/components/GoogleTagManager.jsx`
+**Componente:** [`src/components/AnalyticsProxy.jsx`](../src/components/AnalyticsProxy.jsx)
 ```javascript
-✅ Carrega GTM dinamicamente via JavaScript
-✅ Inicializa dataLayer
-✅ Adiciona script do GTM
-✅ Adiciona fallback noscript
-✅ Usa variável de ambiente VITE_GTM_ID
+✅ Carrega GTM/GA4 via proxy `/t/gtm.js` e `/t/gtag.js`
+✅ Configura `transport_url` para `/t/collect`
+✅ Força Google Consent Mode a usar `/t/ccm/collect`
+✅ Loga fallback automático se proxy falhar
+✅ Dispara evento `analytics_loaded` com método `proxy`
 ```
 
-**Inicialização:** `src/main.jsx` linha 111
+**Uso em produção:** [`src/App.jsx`](../src/App.jsx)
 ```jsx
-<GoogleTagManager gtmId={import.meta.env.VITE_GTM_ID} />
+<HelmetProvider>
+  <LocalBusinessSchema />
+  <AnalyticsProxy />
+  {/* restante da aplicação */}
+</HelmetProvider>
 ```
 
-**Bundle:** `/assets/index-BiXWRIC1.js` ✅
+### 2. Proxy Nginx `/t/*`
 
-### 2. Google Analytics 4
+**Arquivo:** [`nginx-gtm-proxy-v2.conf`](../nginx-gtm-proxy-v2.conf)
+```nginx
+✅ `/t/gtm.js` → www.googletagmanager.com (cache 1h)
+✅ `/t/gtag.js` → www.googletagmanager.com (cache 1h)
+✅ `/t/collect` → www.google-analytics.com (POST 204)
+✅ `/t/ccm/collect` → www.google.com (Consent Mode)
+✅ Preserva IP real com `X-Forwarded-For`
+✅ Headers CORS liberados (`Access-Control-Allow-Origin: *`)
+```
 
-**Método 1: Via GTM (Recomendado)**
-- Tag GA4 configurada no GTM
-- ID: G-LXWRK8ELS6
-- Events automáticos via dataLayer
+### 3. AnalyticsFallback
 
-**Método 2: Via SDK JavaScript**
-- Código: `src/utils/analytics.js`
-- Inicialização: `src/main.jsx` linha 162
-- Usa `VITE_GA_ID` se disponível
+**Componente:** `src/components/AnalyticsFallback.jsx`
+- Mantido como contingência se proxy falhar (carrega scripts diretos)
 
-### 3. Variáveis de Ambiente
+### 4. Variáveis de Ambiente
 
 **Arquivo:** `.env.production` (não commitado)
 ```bash
@@ -66,18 +73,13 @@ VITE_GTM_ID=GTM-KF2NP85D
 
 ## 🧪 Verificação de Funcionamento
 
-### Teste 1: Verificar GTM Carregando
+### Teste 1: Verificar Proxy no Console
 
-**Browser DevTools Console:**
 ```javascript
-// Deve aparecer no console:
-"✅ GTM initialized: GTM-KF2NP85D"
-```
-
-**Network Tab:**
-```
-Filtrar: googletagmanager.com
-Deve aparecer: gtm.js?id=GTM-KF2NP85D
+// Console deve exibir (sequência esperada):
+"[AnalyticsProxy] Initializing proxied analytics"
+"[AnalyticsProxy] GTM loaded via proxy"
+"[AnalyticsProxy] GA4 loaded via proxy"
 ```
 
 ### Teste 2: Verificar DataLayer
@@ -88,25 +90,29 @@ console.log(window.dataLayer);
 // Deve retornar: Array com eventos
 ```
 
-### Teste 3: Verificar GA Events
+### Teste 3: Verificar Proxy na Aba Network
 
-**Google Analytics Real-Time:**
+```
+DevTools → Network → Filtro: /t/
+```
+
+**Esperado:**
+- `GET /t/gtm.js?id=GTM-KF2NP85D` → 200 (X-Cache-Status: HIT/BYPASS)
+- `GET /t/gtag.js?id=G-LXWRK8ELS6` → 200
+- `POST /t/collect?v=2&tid=G-LXWRK8ELS6...` → 204
+- `POST /t/ccm/collect?...` → 200
+
+### Teste 4: Real-Time GA4
+
 1. Analytics → Relatórios → Tempo real
-2. Abrir https://saraivavision.com.br em nova aba
-3. Ver contador de usuários aumentar
-
-### Teste 4: GTM Preview Mode
-
-1. GTM → Workspace → Preview
-2. URL: https://saraivavision.com.br
-3. Conectar debugger
-4. Ver tags disparando
+2. Abrir https://saraivavision.com.br com ad blocker ativado
+3. Confirmar usuário ativo
 
 ---
 
 ## 📈 Eventos Sendo Rastreados
 
-### Automáticos (Via GTM)
+### Automáticos (Via GTM via Proxy)
 
 | Evento | Descrição | Trigger |
 |--------|-----------|---------|
