@@ -25,8 +25,8 @@ export const getPostsMetadata = async () => {
   if (postsMetadataCache) return postsMetadataCache;
 
   try {
-    // Dynamic import only metadata
-    const { blogPosts } = await import('./blogPosts.js');
+    // Dynamic import only metadata (using enhanced version with educational content)
+    const { enhancedBlogPosts: blogPosts } = await import('./enhancedBlogPosts.js');
 
     postsMetadataCache = blogPosts.map(post => ({
       id: post.id,
@@ -65,8 +65,8 @@ export const getPostBySlug = async (slug) => {
       if (cached) return cached;
     }
 
-    // Load full posts data (only when needed)
-    const { blogPosts } = await import('./blogPosts.js');
+    // Load full posts data (only when needed, using enhanced version with educational content)
+    const { enhancedBlogPosts: blogPosts } = await import('./enhancedBlogPosts.js');
     const post = blogPosts.find(p => p.slug === slug);
 
     if (!post) {

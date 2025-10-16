@@ -10,7 +10,7 @@
  */
 
 import blogPostsLoader from '../data/blogPostsLoader.js';
-import { blogPosts as legacyPosts } from '../data/blogPosts.js';
+import { enhancedBlogPosts as legacyPosts } from '../data/enhancedBlogPosts.js';
 
 /**
  * Category Configuration (lightweight, always available)
