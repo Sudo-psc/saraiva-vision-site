@@ -1,21 +1,30 @@
-# Robots.txt for Saraiva Vision - Medical Ophthalmology Clinic
-# Updated: 2025-10-10
+# Robots.txt for Saraiva Vision - Clínica oftalmológica em Caratinga/MG
+# Updated: 2025-10-15
 
 # Canonical domain declaration
-# Host: saraivavision.com.br (for Yandex)
+Host: saraivavision.com.br
 
 # Default crawler rules
 User-agent: *
 Allow: /
+Allow: /blog/
+Allow: /podcast/
+Allow: /servicos/
+Allow: /planos
+Allow: /planosonline
 Disallow: /api/
 Disallow: /admin/
-Disallow: /_next/
 Disallow: /private/
+Disallow: /_next/
+Disallow: /server/
 Crawl-delay: 1
 
 # Specific rules for major search engines
 User-agent: Googlebot
 Allow: /
+Allow: /blog/
+Allow: /podcast/
+Allow: /servicos/
 Disallow: /api/
 Disallow: /admin/
 Crawl-delay: 0.5
@@ -23,19 +32,30 @@ Crawl-delay: 0.5
 User-agent: Googlebot-Image
 Allow: /Blog/
 Allow: /Podcasts/
+Allow: /images/
 Allow: /*.jpg
 Allow: /*.jpeg
 Allow: /*.png
 Allow: /*.webp
 Allow: /*.avif
 
+User-agent: Googlebot-News
+Allow: /blog/
+Disallow: /api/
+
 User-agent: Bingbot
 Allow: /
+Allow: /blog/
+Allow: /podcast/
 Disallow: /api/
 Disallow: /admin/
 Crawl-delay: 1
 
-# Bad bots
+User-agent: AdsBot-Google
+Allow: /
+Disallow: /admin/
+
+# Bad bots - slow down aggressive crawlers
 User-agent: AhrefsBot
 Crawl-delay: 10
 
