@@ -2,55 +2,6 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 🚨 CRITICAL SECURITY ISSUES
-
-### **RESOLVED: XSS Vulnerability in Google Business Security Service**
-- **File**: `src/services/googleBusinessSecurity.js` (lines 61-87)
-- **Issue**: Fragile regex-based sanitization that removed dangerous prefixes but left payload content
-- **Fix Applied**: **2025-10-08**
-  - Replaced regex-based sanitization with robust DOMPurify integration
-  - Added strict input validation with length limits and pattern detection
-  - Enhanced rate limiting (reduced from 100 to 30 req/min)
-  - Added comprehensive security audit logging
-  - Implemented strict sanitization mode (no HTML allowed by default)
-- **Mitigations**:
-  - All inputs validated before processing
-  - Automatic truncation of oversized payloads
-  - Real-time security violation monitoring
-  - Enhanced audit trail for all sanitization events
-
-### **RESOLVED: API Analytics Routes Missing Validation**
-- **File**: `api/src/routes/analytics.js` (lines 6-22)
-- **Issue**: POST endpoints without body validation and catch-all router.use
-- **Fix Applied**: **2025-10-08**
-  - Added comprehensive Zod schemas for GA/GTM payload validation
-  - Replaced router.use with explicit router.post for each endpoint
-  - Implemented rate limiting (60 req/min per IP)
-  - Added detailed error responses with 400 status codes
-  - Enhanced logging for monitoring and debugging
-
-### **RESOLVED: Webhook Memory Exhaustion Vulnerability**
-- **File**: `api/src/webhooks/base-webhook.js` (line 96) & `api/src/middleware/webhook-validator.js`
-- **Issue**: getRawBody called without maximum size enforcement
-- **Fix Applied**: **2025-10-08**
-  - Added configurable size limit parameter (default: 1MB)
-  - Implemented real-time size checking during chunk processing
-  - Added memory protection with immediate rejection of oversized payloads
-  - Enhanced monitoring with payload size logging
-
-### **RESOLVED: Appointment Webhook Missing Security Layers**
-- **File**: `api/webhook-appointment.js` (lines 22-54)
-- **Issue**: Missing security middleware, input validation, and proper error handling
-- **Fix Applied**: **2025-10-08**
-  - Added comprehensive Zod schema validation for appointment payloads
-  - Implemented rate limiting (10 req/min per IP)
-  - Added Helmet security headers and CSP protection
-  - Configured CORS with approved origin whitelist
-  - Replaced console.error with structured logger
-  - Added request ID tracking and response time monitoring
-  - Implemented generic 500 responses (no error exposure)
-  - Enhanced security with strict validation and audit logging
-
 ## 🚨 CRITICAL BUILD RULE
 
 **THIS PROJECT USES VITE, NOT NEXT.JS FOR PRODUCTION!**
@@ -59,9 +10,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # ✅ ALWAYS USE (production)
 npm run build:vite
 
-# ❌ NEVER USE for deploy (only Next.js API routes)
+# ❌ NEVER USE for deploy
 npm run build
 ```
+
+### Why This Matters
+
+- **Vite** builds the frontend into `dist/` → deployed to production
+- **Next.js** is ONLY used for API routes compatibility during development
+- The `.next/` directory is NOT deployed and can be ignored
+- `npm run build` creates Next.js build that serves NO PURPOSE in production
+- **Always verify**: Production serves files from `/var/www/saraivavision/current/` which must contain Vite output
 
 ## Project Context
 
@@ -103,7 +62,7 @@ Frontend (Vite/React SPA)     Backend (Node.js/Express API)
 
 **Google Business Integration:**
 - `src/services/googleBusinessService.js` - Main service class
-- `src/services/googleBusinessSecurity.js` - Security and sanitization
+- `src/services/googleBusinessSecurity.js` - Security and sanitization (DOMPurify-based)
 - `src/services/cachedGoogleBusinessService.js` - Redis caching layer
 - Rate limiting: 30 req/min via Nginx
 - 136+ reviews cached with 4.9/5 rating
@@ -143,6 +102,22 @@ sudo ./scripts/deploy-atomic-local.sh # Local atomic deploy
 npm run deploy:health               # Production health check
 ```
 
+### API Service Management
+```bash
+# Service control
+sudo systemctl status saraiva-api    # Check API service status
+sudo systemctl restart saraiva-api   # Restart API server
+sudo systemctl start saraiva-api     # Start API server
+sudo systemctl stop saraiva-api      # Stop API server
+
+# Logs and monitoring
+sudo journalctl -u saraiva-api -f    # View real-time API logs
+sudo journalctl -u saraiva-api -n 100 # View last 100 log entries
+
+# Alternative restart via npm
+npm run restart-api                  # Restart using npm script
+```
+
 ### Testing Commands
 ```bash
 npm run test:unit           # Unit tests only
@@ -155,6 +130,29 @@ npm run test:cover-images   # Blog cover images validation
 npm run test:watch          # Run tests in watch mode
 npm run test:ui             # Open Vitest UI for interactive testing
 ```
+
+### System Health & Monitoring
+```bash
+# Comprehensive system health check
+npm run check:system
+
+# Install automated cron job (runs every 6 hours by default)
+CRON_SCHEDULE="0 */6 * * *" npm run install:checkup-cron
+
+# Manual health checks
+npm run deploy:health                 # Quick production health check
+bash scripts/system-health-check.sh   # Full system diagnostics
+bash scripts/security-health-check.sh # Security audit
+bash scripts/check-nginx-status.sh    # Nginx status check
+```
+
+Reports are stored in `reports/system-checkup/` and cover:
+- Nginx configuration and performance
+- API service health and uptime
+- SSL certificate validity
+- Disk space and system resources
+- Security headers and rate limiting
+- Database connections (Redis)
 
 ## File Structure & Organization
 
@@ -176,13 +174,15 @@ npm run test:ui             # Open Vitest UI for interactive testing
 │   │   ├── routes/         # Express route handlers
 │   │   ├── middleware/     # Express middleware
 │   │   ├── webhooks/       # Webhook handlers
+│   │   ├── lib/            # API libraries and config
 │   │   └── utils/          # API utilities
 │   └── *.js                # Vercel-style serverless functions (adapted)
 ├── public/                 # Static assets
 │   ├── Blog/              # Blog post images (WebP/AVIF)
 │   └── Podcasts/          # Podcast cover images
 ├── scripts/                # Build and deployment scripts
-└── docs/                   # Project documentation
+├── docs/                   # Project documentation
+└── reports/                # System health reports
 ```
 
 ### Build Flow
@@ -194,7 +194,7 @@ api/ → Express server (systemd service on port 3001)
 
 ### Key Configuration Files
 - `vite.config.js` - Frontend build with manual chunk splitting (healthcare-optimized)
-- `next.config.js` - Legacy (not used in production, only for dev compatibility)
+- `next.config.js` - Legacy (dev compatibility only, NOT used in production)
 - `src/lib/clinicInfo.js` - Frontend clinic configuration (NAP canonical data)
 - `api/src/lib/clinicInfo.js` - Backend clinic configuration
 - `package.json` - Dependencies and scripts
@@ -203,14 +203,14 @@ api/ → Express server (systemd service on port 3001)
 
 ### Build Outputs
 - ✅ `/dist/` - Vite build output (USE THIS FOR DEPLOYMENT)
-- ❌ `/.next/` - Next.js build (NOT USED, legacy only)
+- ❌ `/.next/` - Next.js build (NOT USED, legacy only, can be ignored)
 - ✅ `/var/www/saraivavision/current/` - Production files served by Nginx
 
 ## Environment Variables
 
 ### Required Environment Variables
 ```bash
-# Frontend (Vite)
+# Frontend (Vite) - Required
 VITE_SUPABASE_URL=           # Supabase project URL
 VITE_SUPABASE_ANON_KEY=      # Supabase anonymous key
 VITE_GOOGLE_MAPS_API_KEY=    # Google Maps API key
@@ -218,7 +218,7 @@ VITE_GOOGLE_PLACES_API_KEY=  # Google Places API key
 VITE_GOOGLE_PLACE_ID=        # Google Place ID (fallback: ChIJVUKww7WRugARF7u2lAe7BeE)
 VITE_BASE_URL=               # Base URL (production: https://saraivavision.com.br)
 
-# Backend (API)
+# Backend (API) - Required
 RESEND_API_KEY=              # Resend email service key
 NODE_ENV=production          # Environment mode
 ```
@@ -232,6 +232,17 @@ VITE_POSTHOG_KEY=phc_bpyxyy0AVVh2E9LhjkDfZhi2vlfEsQhOBkijyjvyRSp  # PostHog anal
 
 # Development
 VITE_DEV_MODE=true           # Enable development features
+
+# Email Configuration
+DOCTOR_EMAIL=philipe_cruz@outlook.com        # Doctor's email
+CONTACT_EMAIL_FROM=noreply@saraivavision.com.br  # Contact form sender
+```
+
+### Environment Setup
+See `.env.example` for complete list of available variables. Copy and configure:
+```bash
+cp .env.example .env
+# Edit .env with your actual values
 ```
 
 ## Deployment Process
@@ -381,11 +392,9 @@ The app uses React Router v6 with aggressive code splitting:
 ### Google Business Service Architecture
 The Google Business integration has layered architecture:
 1. `GoogleBusinessApiService` - Raw API communication
-2. `GoogleBusinessSecurity` - Input sanitization and XSS protection
+2. `GoogleBusinessSecurity` - Input sanitization and XSS protection (DOMPurify-based)
 3. `CachedGoogleBusinessService` - Redis caching layer
 4. `GoogleBusinessMonitor` - Health monitoring and error tracking
-
-**Known Issue**: XSS sanitization in `googleBusinessSecurity.js:61-87` has incomplete regex patterns. Current implementation removes dangerous prefixes but leaves payload content. See test failures in `src/services/__tests__/googleBusinessSecurity.test.js`.
 
 ### Static Content System
 Blog posts are defined as JavaScript objects in `src/data/blogPosts.js`:
@@ -439,7 +448,7 @@ npm run optimize:images
 # Google Business service tests
 npm run test src/services/__tests__/googleBusiness*.test.js
 
-# Security service has known XSS issues - see test failures
+# Security service tests
 npm run test src/services/__tests__/googleBusinessSecurity.test.js
 ```
 
@@ -464,6 +473,18 @@ npm run test src/services/__tests__/googleBusinessSecurity.test.js
 - Rate limiting enforced at Nginx level
 - SSL certificate auto-renewal via Let's Encrypt
 
+## Security Notes
+
+### Resolved Security Issues (2025-10-08)
+All critical security vulnerabilities have been addressed:
+
+1. **XSS Protection**: Replaced fragile regex-based sanitization with DOMPurify integration
+2. **API Validation**: Added Zod schemas for all API endpoints with rate limiting
+3. **Webhook Security**: Implemented payload size limits and memory exhaustion protection
+4. **Input Validation**: Comprehensive validation with length limits and pattern detection
+
+For detailed security history, see commit logs from 2025-10-08.
+
 ## Additional Documentation
 
 - **Deployment Guide**: `docs/deployment/DEPLOYMENT_GUIDE.md`
@@ -471,42 +492,8 @@ npm run test src/services/__tests__/googleBusinessSecurity.test.js
 - **Security Practices**: `SECURITY.md`
 - **Quick Start**: `README.md`
 
-## System Health Monitoring
-
-### Automated System Checkup
-```bash
-# Run comprehensive system health check
-npm run check:system
-
-# Install automated cron job (runs every 6 hours by default)
-CRON_SCHEDULE="0 */6 * * *" npm run install:checkup-cron
-```
-
-This generates reports in `reports/system-checkup/` covering:
-- Nginx configuration and performance
-- API service health and uptime
-- SSL certificate validity
-- Disk space and system resources
-- Security headers and rate limiting
-- Database connections (Redis)
-
-### Manual Health Checks
-```bash
-# Quick health check
-npm run deploy:health
-
-# Full system diagnostics
-bash scripts/system-health-check.sh
-
-# Security audit
-bash scripts/security-health-check.sh
-
-# Nginx status
-bash scripts/check-nginx-status.sh
-```
-
 ---
 
-**Last Updated**: 2025-10-14
-**Version**: 3.2.0
+**Last Updated**: 2025-10-16
+**Version**: 3.3.0
 **Status**: ✅ Production Ready
