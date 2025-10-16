@@ -49,11 +49,11 @@ const SEOHead = ({
     return desc.length > 155 ? desc.substring(0, 152) + '...' : desc;
   }, [description]);
 
-  // Generate optimized image URL for social sharing (1200x630)
+  // Generate optimized image URL for social sharing
   const getOptimizedOgImage = () => {
     if (image) return image;
-    // Usar imagem OpenGraph otimizada com logo 1200x630
-    return `${baseUrl}/og-image-1200x630-optimized.jpg`;
+    // Usar logo.png como imagem padrão do Open Graph
+    return `${baseUrl}/logo.png`;
   };
 
   // Generate site name based on language
@@ -150,9 +150,9 @@ const SEOHead = ({
       <meta property="og:type" content={ogType} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:alt" content={`${validatedTitle} - Clínica Saraiva Vision`} />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
-      <meta property="og:image:type" content="image/jpeg" />
+      <meta property="og:image:width" content="1024" />
+      <meta property="og:image:height" content="1024" />
+      <meta property="og:image:type" content="image/png" />
 
       {/* Medical Business Specific Open Graph */}
       <meta property="business:contact_data:street_address" content={clinicInfo.address.street} />
