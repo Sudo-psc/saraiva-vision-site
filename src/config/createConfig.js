@@ -35,6 +35,15 @@ const FALLBACK_ANALYTICS = {
   gtmId: 'GTM-KF2NP85D'
 };
 
+/**
+ * Deeply merges `source` into `target` and returns a new object.
+ *
+ * Merges plain (non-array) objects recursively. Keys with `undefined` values in `source` are ignored.
+ * For arrays and non-object values, `source` overwrites `target`.
+ * @param {Object} target - Base object whose properties are used when not overridden.
+ * @param {Object} source - Object with properties to merge into `target`.
+ * @returns {Object} A new object containing the merged result.
+ */
 function deepMerge(target, source) {
   const output = { ...target };
   Object.keys(source).forEach((key) => {
@@ -51,6 +60,11 @@ function deepMerge(target, source) {
   return output;
 }
 
+/**
+ * Builds the application runtime configuration by merging defaults, environment values, global window overrides, and provided runtime overrides.
+ * @param {Object} runtimeOverrides - Configuration values applied last to override earlier settings.
+ * @returns {Object} The merged configuration object. The `analytics` field is normalized so `gaId` and `gtmId` use provided values or fallback IDs when missing. 
+ */
 export function createConfig(runtimeOverrides = {}) {
   const globalConfig = typeof window !== 'undefined' ? window.__APP_CONFIG__ || {} : {};
   const merged = deepMerge(defaultConfig, envConfig);

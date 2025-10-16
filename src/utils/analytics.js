@@ -10,6 +10,10 @@ let analyticsConfig = {
   metaPixelId: import.meta.env.VITE_META_PIXEL_ID
 };
 
+/**
+ * Merge provided analytics overrides into the module's analyticsConfig.
+ * @param {Object} config - Overrides to apply to analyticsConfig. Common keys: `gaId` (Google Analytics ID), `metaPixelId` (Meta Pixel ID).
+ */
 export function configureAnalytics(config = {}) {
   analyticsConfig = {
     ...analyticsConfig,
@@ -157,7 +161,12 @@ export function trackEnhancedConversion(parameters = {}) {
   return trackMeta('Lead', parameters);
 }
 
-// Bind consent updates to analytics
+/**
+ * Bind consent change notifications to update Google Analytics and Meta Pixel consent states.
+ *
+ * Subscribes to consent changes and forwards current consent values to `gtag` using the `consent` update
+ * command and to `fbq` using `consent` grant/revoke. Ensures the binding is applied only once.
+ */
 export function bindConsentUpdates() {
   if (consentBound) return;
 
@@ -179,7 +188,12 @@ export function bindConsentUpdates() {
   consentBound = true;
 }
 
-// Initialize analytics on app start
+/**
+ * Initialize analytics libraries (Google Analytics and Meta Pixel) and bind consent handling for the app.
+ *
+ * Does nothing when executed outside a browser environment.
+ * @param {Object} [configOverrides] - Optional overrides merged into the module analytics configuration (e.g., { gaId, metaPixelId }) before initialization.
+ */
 export function initializeAnalytics(configOverrides) {
   if (typeof window === 'undefined') return;
 
@@ -202,7 +216,12 @@ export function initializeAnalytics(configOverrides) {
   bindConsentUpdates();
 }
 
-// Track page view
+/**
+ * Record a page view in Google Analytics using the configured GA ID.
+ *
+ * Sends the provided path as the `page_path` to `gtag` when Google Analytics is available.
+ * @param {string} pagePath - The path to report as the page view; defaults to window.location.pathname.
+ */
 export function trackPageView(pagePath = window.location.pathname) {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('config', analyticsConfig.gaId, {
