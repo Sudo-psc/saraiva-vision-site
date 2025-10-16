@@ -24,8 +24,7 @@ updates:
     commit-message:
       prefix: "chore(deps)"
       include: "scope"
-    # Security updates only (for production stability)
-    versioning-strategy: increase-if-necessary
+    versioning-strategy: auto
     # Group dependencies to reduce PR noise
     groups:
       security-patches:
@@ -59,7 +58,7 @@ updates:
     commit-message:
       prefix: "chore(deps)"
       include: "scope"
-    versioning-strategy: increase-if-necessary
+    versioning-strategy: auto
     groups:
       security-patches:
         patterns:
