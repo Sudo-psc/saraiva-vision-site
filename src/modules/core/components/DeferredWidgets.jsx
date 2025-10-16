@@ -8,6 +8,13 @@ import CookieManager from '@/components/CookieManager.jsx';
 import ServiceWorkerUpdateNotification from '@/components/ServiceWorkerUpdateNotification.jsx';
 import Accessibility from '@/components/Accessibility.jsx';
 
+/**
+ * Render enabled UI widgets into a dedicated DOM container via a React portal, deferring initial render when lazy loading is enabled.
+ *
+ * The component creates or reuses a container element with id "deferred-widgets", builds a list of widgets based on feature flags in the application config, and portals those widgets into the container once readiness is reached.
+ *
+ * @returns {React.ReactPortal|null} A portal rendering the enabled widgets into the "#deferred-widgets" container, or `null` if the container is not yet available, readiness is not reached, or no widgets are enabled.
+ */
 function DeferredWidgets() {
   const config = useConfig();
   const [container, setContainer] = useState(null);
