@@ -123,3 +123,5 @@ describe('InstagramService contract', () => {
     );
   });
 });
+
+// Note: SafeWS wrapper tests are in src/utils/__tests__/SafeWS.enhanced.test.js
