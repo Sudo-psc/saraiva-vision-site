@@ -8,21 +8,29 @@ import './styles/cta.css';
 import './styles/cookies.css';
 import './styles/forms.css';
 import ErrorBoundary from './components/ErrorBoundary';
-import './i18n'; // Initialize i18n
+import './i18n';
 import GoogleTagManager from './components/GoogleTagManager';
 import { redirectToBackup } from './utils/redirectToBackup';
-import { initializeAnalytics, trackWebVitals } from './utils/analytics';
+import { initializeAnalytics, trackWebVitals, configureAnalytics } from './utils/analytics';
 import { onCLS, onINP, onFCP, onLCP, onTTFB } from 'web-vitals';
 import './utils/performanceMonitor';
 import errorTracker from './lib/errorTracking'; // Advanced error tracking
 import ErrorTracker from '../scripts/error-tracker.js'; // Robust error tracker
 import analytics from './services/analytics-service.js'; // Robust analytics with retry
+import { ConfigProvider, createConfig } from '@/config';
+
+const appConfig = createConfig();
+
+configureAnalytics({
+  gaId: appConfig.analytics.gaId,
+  metaPixelId: appConfig.analytics.metaPixelId
+});
 
 // Initialize robust error tracker
 const robustErrorTracker = new ErrorTracker({
   endpoint: '/api/errors',
-  environment: import.meta.env.MODE || 'production',
-  release: import.meta.env.VITE_APP_VERSION || '2.0.1',
+  environment: appConfig.app.environment,
+  release: appConfig.app.version,
   enabled: true
 });
 
@@ -71,26 +79,13 @@ const setupGlobalErrorHandlers = () => {
 setupGlobalErrorHandlers();
 
 // Initialize Analytics in production
-if (import.meta.env.PROD) {
+if (appConfig.analytics.enabled) {
   try {
-    // Forçar inicialização com valores hardcoded como fallback
-    const gaId = import.meta.env.VITE_GA_ID || 'G-LXWRK8ELS6';
-    const gtmId = import.meta.env.VITE_GTM_ID || 'GTM-KF2NP85D';
-
-    console.log('🔧 Analytics IDs:', { gaId, gtmId });
-
-    if (gaId) {
-      initializeAnalytics();
-      console.log('✅ Analytics initialized with GA ID:', gaId);
-    }
-
-    // Verificar se as variáveis foram carregadas do build
-    if (!import.meta.env.VITE_GA_ID) {
-      console.warn('⚠️ VITE_GA_ID not found in build, using fallback');
-    }
-    if (!import.meta.env.VITE_GTM_ID) {
-      console.warn('⚠️ VITE_GTM_ID not found in build, using fallback');
-    }
+    initializeAnalytics({
+      gaId: appConfig.analytics.gaId,
+      metaPixelId: appConfig.analytics.metaPixelId
+    });
+    console.log('✅ Analytics initialized with GA ID:', appConfig.analytics.gaId);
   } catch (error) {
     console.warn('❌ Failed to initialize analytics:', error);
   }
@@ -156,17 +151,19 @@ const root = createRoot(rootElement);
 try {
   root.render(
     <React.StrictMode>
-      <ErrorBoundary>
-        <GoogleTagManager gtmId={import.meta.env.VITE_GTM_ID || 'GTM-KF2NP85D'} />
-        <Router future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true
-        }}>
-          <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
-            <App />
-          </Suspense>
-        </Router>
-      </ErrorBoundary>
+      <ConfigProvider value={appConfig}>
+        <ErrorBoundary>
+          <GoogleTagManager gtmId={appConfig.analytics.gtmId} />
+          <Router future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true
+          }}>
+            <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center' }}>Carregando...</div>}>
+              <App />
+            </Suspense>
+          </Router>
+        </ErrorBoundary>
+      </ConfigProvider>
     </React.StrictMode>
   );
 } catch (error) {

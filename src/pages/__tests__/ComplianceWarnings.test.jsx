@@ -2,10 +2,10 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import PlansPage from '@/pages/PlansPage';
-import PlanBasicoPage from '@/pages/PlanBasicoPage';
-import PlanPadraoPage from '@/pages/PlanPadraoPage';
-import PlanPremiumPage from '@/pages/PlanPremiumPage';
+import PlansPage from '@/modules/payments/pages/PlansPage.jsx';
+import PlanBasicoPage from '@/modules/payments/pages/PlanBasicoPage.jsx';
+import PlanPadraoPage from '@/modules/payments/pages/PlanPadraoPage.jsx';
+import PlanPremiumPage from '@/modules/payments/pages/PlanPremiumPage.jsx';
 
 // Mock i18next for translation
 vi.mock('react-i18next', () => ({

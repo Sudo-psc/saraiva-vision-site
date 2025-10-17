@@ -3,9 +3,9 @@
  * Handles posts fetching, statistics, and real-time updates via WebSocket
  */
 
-import { SafeWS } from '../utils/SafeWS.js';
+import { SafeWS } from '@/utils/SafeWS.js';
 
-class InstagramService {
+export class InstagramService {
     constructor() {
         this.baseUrl = '/api/instagram';
         this.websocket = null;

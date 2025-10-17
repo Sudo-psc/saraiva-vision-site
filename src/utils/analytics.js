@@ -5,6 +5,18 @@
 
 import { hasConsent, onConsentChange } from './consentMode.js';
 
+let analyticsConfig = {
+  gaId: import.meta.env.VITE_GA_ID,
+  metaPixelId: import.meta.env.VITE_META_PIXEL_ID
+};
+
+export function configureAnalytics(config = {}) {
+  analyticsConfig = {
+    ...analyticsConfig,
+    ...config
+  };
+}
+
 // Global analytics state
 let gtagLoaded = false;
 let metaLoaded = false;
@@ -168,11 +180,15 @@ export function bindConsentUpdates() {
 }
 
 // Initialize analytics on app start
-export function initializeAnalytics() {
+export function initializeAnalytics(configOverrides) {
   if (typeof window === 'undefined') return;
 
-  const gaId = import.meta.env.VITE_GA_ID;
-  const metaId = import.meta.env.VITE_META_PIXEL_ID;
+  if (configOverrides) {
+    configureAnalytics(configOverrides);
+  }
+
+  const gaId = analyticsConfig.gaId;
+  const metaId = analyticsConfig.metaPixelId;
 
   if (gaId) {
     initGA(gaId);
@@ -189,7 +205,7 @@ export function initializeAnalytics() {
 // Track page view
 export function trackPageView(pagePath = window.location.pathname) {
   if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('config', import.meta.env.VITE_GA_ID, {
+    window.gtag('config', analyticsConfig.gaId, {
       page_path: pagePath,
     });
   }

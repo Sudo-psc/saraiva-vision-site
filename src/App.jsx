@@ -14,19 +14,19 @@ const FAQPage = createLazyComponent(() => import('./pages/FAQPage.jsx'));
 const MedicalArticleExample = createLazyComponent(() => import('./pages/MedicalArticleExample.jsx'));
 const PodcastPageConsolidated = createLazyComponent(() => import('./pages/PodcastPageConsolidated.jsx'));
 
-const BlogPage = createLazyComponent(() => import('./pages/BlogPage.jsx'));
+const BlogPage = createLazyComponent(() => import('@/modules/blog/pages/BlogPage.jsx'));
 const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
-const PlansPage = createLazyComponent(() => import('./pages/PlansPage.jsx'));
-const PlanBasicoPage = createLazyComponent(() => import('./pages/PlanBasicoPage.jsx'));
-const PlanPadraoPage = createLazyComponent(() => import('./pages/PlanPadraoPage.jsx'));
-const PlanPremiumPage = createLazyComponent(() => import('./pages/PlanPremiumPage.jsx'));
-const PlanosOnlinePage = createLazyComponent(() => import('./pages/PlanosOnlinePage.jsx'));
-const PagamentoBasicoPage = createLazyComponent(() => import('./pages/PagamentoBasicoPage.jsx'));
-const PagamentoPadraoPage = createLazyComponent(() => import('./pages/PagamentoPadraoPage.jsx'));
-const PagamentoPremiumPage = createLazyComponent(() => import('./pages/PagamentoPremiumPage.jsx'));
-const PagamentoBasicoOnlinePage = createLazyComponent(() => import('./pages/PagamentoBasicoOnlinePage.jsx'));
-const PagamentoPadraoOnlinePage = createLazyComponent(() => import('./pages/PagamentoPadraoOnlinePage.jsx'));
-const PagamentoPremiumOnlinePage = createLazyComponent(() => import('./pages/PagamentoPremiumOnlinePage.jsx'));
+const PlansPage = createLazyComponent(() => import('@/modules/payments/pages/PlansPage.jsx'));
+const PlanBasicoPage = createLazyComponent(() => import('@/modules/payments/pages/PlanBasicoPage.jsx'));
+const PlanPadraoPage = createLazyComponent(() => import('@/modules/payments/pages/PlanPadraoPage.jsx'));
+const PlanPremiumPage = createLazyComponent(() => import('@/modules/payments/pages/PlanPremiumPage.jsx'));
+const PlanosOnlinePage = createLazyComponent(() => import('@/modules/payments/pages/PlanosOnlinePage.jsx'));
+const PagamentoBasicoPage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoBasicoPage.jsx'));
+const PagamentoPadraoPage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoPadraoPage.jsx'));
+const PagamentoPremiumPage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoPremiumPage.jsx'));
+const PagamentoBasicoOnlinePage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoBasicoOnlinePage.jsx'));
+const PagamentoPadraoOnlinePage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoPadraoOnlinePage.jsx'));
+const PagamentoPremiumOnlinePage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoPremiumOnlinePage.jsx'));
 const GoogleReviewsTestPage = createLazyComponent(() => import('./pages/GoogleReviewsTestPage.jsx'));
 const MapTestPage = createLazyComponent(() => import('./pages/MapTestPage.jsx'));
 const AgendamentoPage = createLazyComponent(() => import('./pages/AgendamentoPage.jsx'));
@@ -34,19 +34,13 @@ const AssinePage = createLazyComponent(() => import('./pages/AssinePage.jsx'));
 const NotFoundPage = createLazyComponent(() => import('./pages/NotFoundPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
-import { Toaster } from './components/ui/toaster.jsx';
-import CTAModal from './components/CTAModal.jsx';
-import StickyCTA from './components/StickyCTA.jsx';
-import CookieManager from './components/CookieManager.jsx';
-import ServiceWorkerUpdateNotification from './components/ServiceWorkerUpdateNotification.jsx';
 import Navbar from './components/Navbar.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
-import Accessibility from './components/Accessibility.jsx';
 import { WidgetProvider } from '@/utils/widgetManager.jsx';
 import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
-import GoogleAnalytics from './components/GoogleAnalytics.jsx';
 import AnalyticsFallback from '@/components/AnalyticsFallback.jsx';
 import AnalyticsProxy from '@/components/AnalyticsProxy.jsx';
+import DeferredWidgets from '@/modules/core/components/DeferredWidgets.jsx';
 
 function App() {
   const isCheckSubdomain =
@@ -115,12 +109,7 @@ function App() {
             </Routes>
           </ErrorBoundary>
         </div>
-        <Toaster />
-        <CTAModal />
-        <StickyCTA />
-        <CookieManager />
-        <ServiceWorkerUpdateNotification />
-        <Accessibility />
+        <DeferredWidgets />
       </WidgetProvider>
 
       {/* Analytics Fallback para contornar bloqueadores */}
