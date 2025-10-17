@@ -10,6 +10,16 @@ interface SafeWSOptions {
   onMessage?: (data: string) => void;
 }
 
+type SafeWSHandlerMap = {
+  open: () => void;
+  close: () => void;
+  error: (error: Event) => void;
+  message: (data: string) => void;
+  statechange: (state: WSState) => void;
+};
+
+type SafeWSEvent = keyof SafeWSHandlerMap;
+
 /**
  * Safe WebSocket wrapper with automatic reconnection, backoff, and state management
  * Prevents InvalidStateError by checking readyState before operations
@@ -24,6 +34,8 @@ export class SafeWS {
   private maxDelay: number;
   private reconnectTimer: number | null = null;
   private options: SafeWSOptions;
+  private listeners: Map<SafeWSEvent, Set<SafeWSHandlerMap[SafeWSEvent]>> = new Map();
+  private globalScope: typeof globalThis;
 
   constructor(url: string, options: SafeWSOptions = {}) {
     this.url = url;
@@ -31,6 +43,7 @@ export class SafeWS {
     this.baseDelay = options.baseDelay ?? 1000;
     this.maxDelay = options.maxDelay ?? 30000;
     this.options = options;
+    this.globalScope = typeof window !== 'undefined' ? window : globalThis;
   }
 
   /**
@@ -41,7 +54,7 @@ export class SafeWS {
       return;
     }
 
-    this.state = 'connecting';
+    this.updateState('connecting');
 
     try {
       this.ws = new WebSocket(this.url);
@@ -52,26 +65,30 @@ export class SafeWS {
     }
 
     this.ws.onopen = () => {
-      this.state = 'open';
+      this.updateState('open');
       this.retryCount = 0;
       this.clearReconnectTimer();
       this.options.onOpen?.();
+      this.emit('open');
     };
 
     this.ws.onclose = () => {
-      this.state = 'closed';
+      this.updateState('closed');
       this.options.onClose?.();
+      this.emit('close');
       this.scheduleReconnect();
     };
 
     this.ws.onerror = (event) => {
-      this.state = 'error';
+      this.updateState('error');
       this.options.onError?.(event);
+      this.emit('error', event);
       this.scheduleReconnect();
     };
 
     this.ws.onmessage = (event) => {
       this.options.onMessage?.(event.data);
+      this.emit('message', event.data);
     };
   }
 
@@ -105,7 +122,7 @@ export class SafeWS {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       this.ws.close();
     }
-    this.state = 'closed';
+    this.updateState('closed');
   }
 
   /**
@@ -122,6 +139,33 @@ export class SafeWS {
     return this.state === 'open' && this.ws?.readyState === WebSocket.OPEN;
   }
 
+  getReadyState(): number {
+    return this.ws?.readyState ?? WebSocket.CLOSED;
+  }
+
+  send(data: string): boolean {
+    return this.sendSafe(data);
+  }
+
+  on<Event extends SafeWSEvent>(event: Event, handler: SafeWSHandlerMap[Event]): () => void {
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, new Set());
+    }
+    this.listeners.get(event)!.add(handler as SafeWSHandlerMap[SafeWSEvent]);
+    return () => this.off(event, handler);
+  }
+
+  off<Event extends SafeWSEvent>(event: Event, handler: SafeWSHandlerMap[Event]): void {
+    const handlers = this.listeners.get(event);
+    if (!handlers) {
+      return;
+    }
+    handlers.delete(handler as SafeWSHandlerMap[SafeWSEvent]);
+    if (handlers.size === 0) {
+      this.listeners.delete(event);
+    }
+  }
+
   private scheduleReconnect(): void {
     if (this.retryCount >= this.maxRetries) {
       console.warn('SafeWS: Max retries reached, giving up');
@@ -133,21 +177,39 @@ export class SafeWS {
 
     console.log(`SafeWS: Scheduling reconnect in ${delay}ms (attempt ${this.retryCount}/${this.maxRetries})`);
 
-    this.reconnectTimer = window.setTimeout(() => {
+    this.reconnectTimer = this.globalScope.setTimeout(() => {
       this.connect();
     }, delay);
   }
 
   private clearReconnectTimer(): void {
     if (this.reconnectTimer) {
-      window.clearTimeout(this.reconnectTimer);
+      this.globalScope.clearTimeout(this.reconnectTimer);
       this.reconnectTimer = null;
     }
   }
 
   private handleError(event: Event): void {
-    this.state = 'error';
+    this.updateState('error');
     this.options.onError?.(event);
     this.scheduleReconnect();
+  }
+
+  private emit<Event extends SafeWSEvent>(event: Event, ...args: Parameters<SafeWSHandlerMap[Event]>): void {
+    const handlers = this.listeners.get(event);
+    if (!handlers) {
+      return;
+    }
+    handlers.forEach((handler) => {
+      (handler as (...params: Parameters<SafeWSHandlerMap[Event]>) => void)(...args);
+    });
+  }
+
+  private updateState(state: WSState): void {
+    if (this.state === state) {
+      return;
+    }
+    this.state = state;
+    this.emit('statechange', state);
   }
 }
