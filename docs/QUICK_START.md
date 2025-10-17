@@ -87,7 +87,7 @@ curl -f https://yourdomain.com
 ### Development
 ```bash
 npm run dev              # Start development server
-npm run build            # Production build
+npm run build:vite       # Production build (Vite)
 npm run preview          # Preview production build
 npm test                 # Run tests
 npm run lint             # Code quality check

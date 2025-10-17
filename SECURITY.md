@@ -30,7 +30,7 @@ Por motivos de segurança, todas as chaves de API reais foram removidas do repos
 #### Para Produção:
 1. Configure as variáveis de ambiente no servidor/plataforma
 2. Use gerenciadores de secrets (AWS Secrets Manager, etc.)
-3. Configure no painel do Vercel/Netlify se usando essas plataformas
+3. Configure no VPS através de variáveis de ambiente do systemd ou arquivos .env seguros
 
 ### 🚨 Regras de Segurança:
 

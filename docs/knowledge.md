@@ -13,7 +13,7 @@ Saraiva Vision is a modern medical clinic website built with React 18, Vite, and
 
 ## Development Commands
 - `npm run dev` - Start development server (port 3002)
-- `npm run build` - Build for production
+- `npm run build:vite` - Build for production (Vite)
 - `npm test` - Run tests in watch mode
 - `npm run test:comprehensive` - Run all test suites
 
@@ -50,7 +50,7 @@ Saraiva Vision is a modern medical clinic website built with React 18, Vite, and
 - Performance monitoring with Core Web Vitals
 
 ## Deployment
-- Build: `npm run build`
+- Build: `npm run build:vite`
 - Deploy: Copy `dist/*` to `/var/www/html/`
 - Reload: `sudo systemctl reload nginx`
 - Server: Brazilian VPS (31.97.129.78)

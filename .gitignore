@@ -81,8 +81,7 @@ webapp/.git_disabled/
 *.idx
 
 # Nginx only deployment - clean architecture
-# No Vercel, Docker or deployment artifacts needed
-.vercel
+# No Docker or deployment artifacts needed
 
 # Python virtual environments
 venv/

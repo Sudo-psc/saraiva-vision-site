@@ -145,7 +145,7 @@ npm run deploy:health       # Verificar saúde do site
 
 ### Build
 ```bash
-npm run build               # Build de produção
+npm run build:vite          # Build de produção (Vite)
 npm run preview             # Preview local do build
 ```
 

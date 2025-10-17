@@ -27,7 +27,7 @@ sudo bash /home/saraiva-vision-site/DEPLOY_NOW.sh
 
 ```bash
 npm run dev              # Desenvolvimento (porta 3002)
-npm run build            # Build para produção
+npm run build:vite       # Build para produção (Vite)
 npm test                 # Testes
 ```
 

@@ -184,7 +184,7 @@ npm run start            # Alternative dev command
 ### Production Build
 
 ```bash
-npm run build            # Build for production
+npm run build:vite       # Build for production (Vite)
 ```
 
 **Build output:**

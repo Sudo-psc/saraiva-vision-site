@@ -176,7 +176,7 @@ Reports are stored in `reports/system-checkup/` and cover:
 │   │   ├── webhooks/       # Webhook handlers
 │   │   ├── lib/            # API libraries and config
 │   │   └── utils/          # API utilities
-│   └── *.js                # Vercel-style serverless functions (adapted)
+│   └── *.js                # Legacy serverless functions (now using Express routes)
 ├── public/                 # Static assets
 │   ├── Blog/              # Blog post images (WebP/AVIF)
 │   └── Podcasts/          # Podcast cover images

@@ -18,7 +18,7 @@
 - **SEO**: Schema.org markup in `src/lib/schemaMarkup.js`, SEO hooks in `src/hooks/useSEO.js`.
 
 ## Developer Workflows
-- **Build**: `npm run build` (production), `npm run build:norender` (skip prerender)
+- **Build**: `npm run build:vite` (production), `npm run build:norender` (skip prerender)
 - **Dev Server**: `npm run dev` (port 3002, HMR enabled)
 - **Lint**: `npm run lint`, `npm run validate:api`
 - **Test**: `npm run test:run` (all), `npx vitest run path/to/file.test.jsx` (single), `npm run test:coverage` (80%+)
