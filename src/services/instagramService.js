@@ -9,14 +9,21 @@ export class InstagramService {
     constructor() {
         this.baseUrl = '/api/instagram';
         this.websocket = null;
-        this.subscribers = new Map(); // postId -> Set of callbacks
+        this.subscribers = new Map(); // postId -> { callbacks: Set, interval: number }
         this.reconnectAttempts = 0;
         this.maxReconnectAttempts = 5;
-        this.reconnectDelay = 1000; // Start with 1 second
         this.apiToken = null; // Store API token for authenticated requests
         this.defaultHeaders = {
             'Content-Type': 'application/json'
         };
+        this.pendingMessages = [];
+        this.pingIntervalId = null;
+        this.browserCleanupRegistered = false;
+        this.handleBeforeUnload = this.handleBeforeUnload.bind(this);
+        this.handleWebSocketOpen = this.handleWebSocketOpen.bind(this);
+        this.handleWebSocketClose = this.handleWebSocketClose.bind(this);
+        this.handleWebSocketError = this.handleWebSocketError.bind(this);
+        this.handleWebSocketMessageEvent = this.handleWebSocketMessageEvent.bind(this);
     }
 
     /**
@@ -237,41 +244,41 @@ export class InstagramService {
      * @returns {Function} Unsubscribe function
      */
     subscribeToStats(postIds, callback, options = {}) {
-        const { interval = 300000 } = options; // 5 minutes default
+        if (!this.isBrowser()) {
+            return () => { };
+        }
 
-        // Store callback for each post ID
-        postIds.forEach(postId => {
+        const { interval = 300000 } = options;
+        const normalizedInterval = Number.isFinite(interval) && interval > 0 ? interval : 300000;
+        const ids = Array.isArray(postIds) ? postIds.filter(postId => this.validatePostId(postId)) : [];
+
+        if (ids.length === 0) {
+            return () => { };
+        }
+
+        ids.forEach(postId => {
             if (!this.subscribers.has(postId)) {
-                this.subscribers.set(postId, new Set());
+                this.subscribers.set(postId, {
+                    callbacks: new Set([callback]),
+                    interval: normalizedInterval
+                });
+                return;
             }
-            this.subscribers.get(postId).add(callback);
+
+            const entry = this.subscribers.get(postId);
+            entry.callbacks.add(callback);
+            entry.interval = Math.min(entry.interval ?? normalizedInterval, normalizedInterval);
         });
 
-        // Initialize WebSocket connection if needed
-        if (!this.websocket || this.websocket.readyState !== WebSocket.OPEN) {
-            this.initializeWebSocket();
-        }
+        this.initializeWebSocket();
+        this.sendThroughWebSocket({
+            type: 'subscribe',
+            postIds: ids,
+            interval: normalizedInterval
+        });
 
-        // Send subscription message when WebSocket is ready
-        const subscribe = () => {
-            if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
-                this.websocket.send(JSON.stringify({
-                    type: 'subscribe',
-                    postIds,
-                    interval
-                }));
-            }
-        };
-
-        if (this.websocket.readyState === WebSocket.OPEN) {
-            subscribe();
-        } else {
-            this.websocket.addEventListener('open', subscribe, { once: true });
-        }
-
-        // Return unsubscribe function
         return () => {
-            this.unsubscribeFromStats(postIds, callback);
+            this.unsubscribeFromStats(ids, callback);
         };
     }
 
@@ -281,36 +288,50 @@ export class InstagramService {
      * @param {Function} callback - Specific callback to remove (optional)
      */
     unsubscribeFromStats(postIds = null, callback = null) {
+        if (!this.isBrowser()) {
+            return;
+        }
+
         if (postIds) {
+            const removed = [];
+
             postIds.forEach(postId => {
-                const postSubscribers = this.subscribers.get(postId);
-                if (postSubscribers) {
-                    if (callback) {
-                        postSubscribers.delete(callback);
-                        if (postSubscribers.size === 0) {
-                            this.subscribers.delete(postId);
-                        }
-                    } else {
+                const entry = this.subscribers.get(postId);
+                if (!entry) {
+                    return;
+                }
+
+                if (callback) {
+                    entry.callbacks.delete(callback);
+                    if (entry.callbacks.size === 0) {
                         this.subscribers.delete(postId);
+                        removed.push(postId);
                     }
+                } else {
+                    this.subscribers.delete(postId);
+                    removed.push(postId);
                 }
             });
 
-            // Send unsubscribe message
-            if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
-                this.websocket.send(JSON.stringify({
+            if (removed.length > 0) {
+                this.sendThroughWebSocket({
                     type: 'unsubscribe',
-                    postIds
-                }));
+                    postIds: removed
+                }, false);
             }
         } else {
-            // Unsubscribe from all
+            const hadSubscribers = this.subscribers.size > 0;
             this.subscribers.clear();
-            if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
-                this.websocket.send(JSON.stringify({
+            if (hadSubscribers) {
+                this.sendThroughWebSocket({
                     type: 'unsubscribe'
-                }));
+                }, false);
             }
+        }
+
+        if (!this.hasSubscribers()) {
+            this.teardownWebSocket();
+            this.clearBrowserBindings();
         }
     }
 
@@ -319,40 +340,198 @@ export class InstagramService {
      * @private
      */
     initializeWebSocket() {
-        try {
-            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsUrl = `${protocol}//${window.location.host}/api/instagram/websocket`;
-
-            this.websocket = new SafeWS(wsUrl, {
-                maxRetries: 5,
-                baseDelay: 1000,
-                maxDelay: 30000,
-                onOpen: () => {
-                    console.log('Instagram WebSocket connected');
-                    this.reconnectAttempts = 0;
-                    this.reconnectDelay = 1000;
-                },
-                onMessage: (data) => {
-                    try {
-                        const message = JSON.parse(data);
-                        this.handleWebSocketMessage(message);
-                    } catch (error) {
-                        console.error('Failed to parse WebSocket message:', error);
-                    }
-                },
-                onClose: () => {
-                    console.log('Instagram WebSocket disconnected');
-                    this.handleWebSocketClose();
-                },
-                onError: (event) => {
-                    console.error('Instagram WebSocket error:', event);
-                }
-            });
-
-            this.websocket.connect();
-        } catch (error) {
-            console.error('Failed to initialize WebSocket:', error);
+        if (!this.isBrowser()) {
+            return null;
         }
+
+        this.ensureBrowserSetup();
+
+        if (this.websocket) {
+            if (!this.websocket.isReady() && this.websocket.getState() === 'closed') {
+                this.websocket.connect();
+            }
+            return this.websocket;
+        }
+
+        const browserWindow = this.getBrowserWindow();
+
+        if (!browserWindow || typeof browserWindow.WebSocket === 'undefined') {
+            console.warn('Instagram WebSocket not supported in the current environment');
+            return null;
+        }
+
+        const protocol = browserWindow.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsUrl = `${protocol}//${browserWindow.location.host}/api/instagram/websocket`;
+
+        this.websocket = new SafeWS(wsUrl, {
+            maxRetries: this.maxReconnectAttempts,
+            baseDelay: 1000,
+            maxDelay: 30000,
+            onOpen: this.handleWebSocketOpen,
+            onMessage: this.handleWebSocketMessageEvent,
+            onClose: this.handleWebSocketClose,
+            onError: this.handleWebSocketError
+        });
+
+        this.websocket.connect();
+        return this.websocket;
+    }
+
+    isBrowser() {
+        return typeof window !== 'undefined' && typeof window.document !== 'undefined';
+    }
+
+    getBrowserWindow() {
+        return this.isBrowser() ? window : null;
+    }
+
+    ensureBrowserSetup() {
+        const browserWindow = this.getBrowserWindow();
+        if (!browserWindow) {
+            return;
+        }
+
+        if (!this.pingIntervalId) {
+            this.pingIntervalId = browserWindow.setInterval(() => {
+                this.ping();
+            }, 30000);
+        }
+
+        if (!this.browserCleanupRegistered) {
+            browserWindow.addEventListener('beforeunload', this.handleBeforeUnload);
+            this.browserCleanupRegistered = true;
+        }
+    }
+
+    clearBrowserBindings() {
+        const browserWindow = this.getBrowserWindow();
+        if (!browserWindow) {
+            return;
+        }
+
+        if (this.pingIntervalId) {
+            browserWindow.clearInterval(this.pingIntervalId);
+            this.pingIntervalId = null;
+        }
+
+        if (this.browserCleanupRegistered) {
+            browserWindow.removeEventListener('beforeunload', this.handleBeforeUnload);
+            this.browserCleanupRegistered = false;
+        }
+    }
+
+    hasSubscribers() {
+        if (this.subscribers.size === 0) {
+            return false;
+        }
+
+        for (const entry of this.subscribers.values()) {
+            if (entry.callbacks.size > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    sendThroughWebSocket(payload, ensureConnection = true) {
+        const message = typeof payload === 'string' ? payload : JSON.stringify(payload);
+        const ws = ensureConnection ? this.initializeWebSocket() : this.websocket;
+
+        if (!ws) {
+            return;
+        }
+
+        if (ws.isReady()) {
+            ws.sendSafe(message);
+            return;
+        }
+
+        if (ensureConnection) {
+            this.pendingMessages.push(message);
+        }
+    }
+
+    flushPendingMessages() {
+        if (!this.websocket || !this.websocket.isReady()) {
+            return;
+        }
+
+        while (this.pendingMessages.length > 0) {
+            const message = this.pendingMessages.shift();
+            if (typeof message === 'string') {
+                this.websocket.sendSafe(message);
+            }
+        }
+    }
+
+    resubscribeAll() {
+        if (!this.websocket || !this.websocket.isReady() || !this.hasSubscribers()) {
+            return;
+        }
+
+        const grouped = new Map();
+
+        this.subscribers.forEach((entry, postId) => {
+            if (entry.callbacks.size === 0) {
+                return;
+            }
+
+            const interval = entry.interval || 300000;
+            if (!grouped.has(interval)) {
+                grouped.set(interval, []);
+            }
+
+            grouped.get(interval).push(postId);
+        });
+
+        grouped.forEach((ids, interval) => {
+            if (ids.length === 0) {
+                return;
+            }
+
+            this.websocket.sendSafe(JSON.stringify({
+                type: 'subscribe',
+                postIds: ids,
+                interval
+            }));
+        });
+    }
+
+    handleBeforeUnload() {
+        this.disconnect();
+    }
+
+    handleWebSocketOpen() {
+        console.log('Instagram WebSocket connected');
+        this.reconnectAttempts = 0;
+        this.flushPendingMessages();
+        this.resubscribeAll();
+    }
+
+    handleWebSocketError(event) {
+        console.error('Instagram WebSocket error:', event);
+    }
+
+    handleWebSocketMessageEvent(data) {
+        try {
+            const message = typeof data === 'string' ? JSON.parse(data) : data;
+            if (message) {
+                this.handleWebSocketMessage(message);
+            }
+        } catch (error) {
+            console.error('Failed to parse WebSocket message:', error);
+        }
+    }
+
+    teardownWebSocket() {
+        if (!this.websocket) {
+            return;
+        }
+
+        this.websocket.close();
+        this.websocket = null;
+        this.pendingMessages = [];
     }
 
     /**
@@ -399,9 +578,9 @@ export class InstagramService {
      * @private
      */
     handleStatsUpdate(postId, stats, timestamp) {
-        const postSubscribers = this.subscribers.get(postId);
-        if (postSubscribers) {
-            postSubscribers.forEach(callback => {
+        const entry = this.subscribers.get(postId);
+        if (entry) {
+            entry.callbacks.forEach(callback => {
                 try {
                     callback({
                         postId,
@@ -421,15 +600,15 @@ export class InstagramService {
      * @private
      */
     handleWebSocketClose() {
-        if (this.subscribers.size > 0 && this.reconnectAttempts < this.maxReconnectAttempts) {
+        console.log('Instagram WebSocket disconnected');
+        if (!this.hasSubscribers()) {
+            this.teardownWebSocket();
+            this.clearBrowserBindings();
+            return;
+        }
+
+        if (this.reconnectAttempts < this.maxReconnectAttempts) {
             this.reconnectAttempts++;
-            const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1); // Exponential backoff
-
-            console.log(`Attempting to reconnect WebSocket in ${delay}ms (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
-
-            setTimeout(() => {
-                this.initializeWebSocket();
-            }, delay);
         }
     }
 
@@ -437,7 +616,7 @@ export class InstagramService {
      * Send ping to keep WebSocket connection alive
      */
     ping() {
-        if (this.websocket) {
+        if (this.websocket && this.websocket.isReady()) {
             this.websocket.sendSafe(JSON.stringify({ type: 'ping' }));
         }
     }
@@ -447,10 +626,9 @@ export class InstagramService {
      */
     disconnect() {
         this.subscribers.clear();
-        if (this.websocket) {
-            this.websocket.close();
-            this.websocket = null;
-        }
+        this.teardownWebSocket();
+        this.clearBrowserBindings();
+        this.pendingMessages = [];
     }
 
     /**
@@ -462,7 +640,7 @@ export class InstagramService {
             connected: this.websocket && this.websocket.isReady(),
             state: this.websocket ? this.websocket.getState() : 'disconnected',
             subscribedPosts: Array.from(this.subscribers.keys()),
-            totalSubscribers: Array.from(this.subscribers.values()).reduce((total, set) => total + set.size, 0),
+            totalSubscribers: Array.from(this.subscribers.values()).reduce((total, entry) => total + entry.callbacks.size, 0),
             reconnectAttempts: this.reconnectAttempts,
             hasApiToken: !!this.apiToken
         };
@@ -547,15 +725,5 @@ export class InstagramService {
 
 // Create singleton instance
 const instagramService = new InstagramService();
-
-// Setup periodic ping to keep connection alive
-setInterval(() => {
-    instagramService.ping();
-}, 30000); // Ping every 30 seconds
-
-// Cleanup on page unload
-window.addEventListener('beforeunload', () => {
-    instagramService.disconnect();
-});
 
 export default instagramService;

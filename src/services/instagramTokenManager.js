@@ -20,8 +20,7 @@ class InstagramTokenManager {
             autoRefresh: true
         };
 
-        // Initialize the service
-        this.initialize();
+        this.initializationPromise = null;
     }
 
     /**
@@ -44,6 +43,21 @@ class InstagramTokenManager {
             console.error('Failed to initialize Instagram Token Manager:', error);
             throw error;
         }
+    }
+
+    async ensureInitialized() {
+        if (this.isInitialized) {
+            return;
+        }
+
+        if (!this.initializationPromise) {
+            this.initializationPromise = this.initialize().catch(error => {
+                this.initializationPromise = null;
+                throw error;
+            });
+        }
+
+        await this.initializationPromise;
     }
 
     /**
@@ -99,9 +113,7 @@ class InstagramTokenManager {
             metadata = {}
         } = options;
 
-        if (!this.isInitialized) {
-            throw new Error('Token manager not initialized');
-        }
+        await this.ensureInitialized();
 
         // Validate token data
         const validation = this.validateTokenData(tokenData);
@@ -150,9 +162,7 @@ class InstagramTokenManager {
      * Retrieve token
      */
     async getToken(tokenType, userId = 'default') {
-        if (!this.isInitialized) {
-            throw new Error('Token manager not initialized');
-        }
+        await this.ensureInitialized();
 
         const tokenId = this.generateTokenId(tokenType, userId);
         const tokenData = this.tokens.get(tokenId);
@@ -195,9 +205,7 @@ class InstagramTokenManager {
      * Refresh token
      */
     async refreshToken(tokenType, userId = 'default', refreshTokenData = null) {
-        if (!this.isInitialized) {
-            throw new Error('Token manager not initialized');
-        }
+        await this.ensureInitialized();
 
         const tokenId = this.generateTokenId(tokenType, userId);
         const tokenData = this.tokens.get(tokenId);
