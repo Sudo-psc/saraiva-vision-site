@@ -111,45 +111,6 @@ class GoogleBusinessSecurity {
     }
 
     /**
-     * Validate input before sanitization
-     */
-    validateInput(data) {
-        if (!this.options.enableInputValidation) {
-            return { isValid: true, errors: [] };
-        }
-
-        const errors = [];
-
-        // Check input length
-        if (typeof data === 'string' && data.length > this.options.maxInputLength) {
-            errors.push(`Input exceeds maximum length of ${this.options.maxInputLength} characters`);
-        }
-
-        // Check for dangerous patterns (pre-validation)
-        if (typeof data === 'string') {
-            const dangerousPatterns = [
-                /<script[^>]*>/i,
-                /javascript:/i,
-                /vbscript:/i,
-                /data:\s*text\/html/i,
-                /on\w+\s*=/i,
-                /expression\s*\(/i
-            ];
-
-            dangerousPatterns.forEach(pattern => {
-                if (pattern.test(data)) {
-                    errors.push('Input contains potentially dangerous content');
-                }
-            });
-        }
-
-        return {
-            isValid: errors.length === 0,
-            errors
-        };
-    }
-
-    /**
      * Sanitize input data to prevent XSS and injection attacks using DOMPurify
      */
     sanitizeInput(data) {
@@ -159,24 +120,6 @@ class GoogleBusinessSecurity {
 
         if (typeof data !== 'string') {
             return data;
-        }
-
-        // Validate input first
-        const validation = this.validateInput(data);
-        if (!validation.isValid) {
-            this.logAuditEvent({
-                type: 'security_violation',
-                action: 'input_validation_failed',
-                clientId: 'system',
-                details: {
-                    inputLength: data.length,
-                    errors: validation.errors,
-                    preview: data.substring(0, 100) + (data.length > 100 ? '...' : '')
-                },
-                severity: 'warning'
-            });
-
-            // For security, we'll still sanitize but log the violation
         }
 
         // Check length limit before processing

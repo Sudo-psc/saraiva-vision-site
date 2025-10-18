@@ -17,6 +17,7 @@ export const sanitize = {
         return input
             .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
             .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '') // Remove style tags
+            .replace(/javascript:/gi, '') // Remove javascript: protocol
             .replace(/<[^>]*>/g, '') // Remove all other HTML tags
             .replace(/&lt;/g, '<')
             .replace(/&gt;/g, '>')
@@ -199,7 +200,7 @@ export const validationErrorMap = {
     MESSAGE_TOO_LONG: 'A mensagem deve ter no máximo 2000 caracteres',
     NAME_TOO_SHORT: 'O nome deve ter pelo menos 2 caracteres',
     NAME_TOO_LONG: 'O nome deve ter no máximo 100 caracteres',
-    CONSENT_REQUIRED: 'Você deve aceitar os termos de privacidade',
+    CONSENT_REQUIRED: 'O consentimento é obrigatório. Você deve aceitar os termos de privacidade',
     SPAM_DETECTED: 'Atividade suspeita detectada. Tente novamente.',
 
     // General error codes

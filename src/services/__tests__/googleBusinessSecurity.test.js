@@ -163,6 +163,15 @@ describe('GoogleBusinessSecurity', () => {
             const result = disabledSecurity.sanitizeInput(input);
             expect(result).toBe(input);
         });
+
+        it('should neutralize HTML-encoded XSS vectors', () => {
+            // This vector uses an HTML-encoded equals sign to bypass naive regex checks.
+            const input = '<img src=x onerror&#x3D;alert(1)>';
+            const result = security.sanitizeInput(input);
+            // After sanitization, the dangerous parts should be removed.
+            expect(result).not.toContain('onerror');
+            expect(result).not.toContain('alert');
+        });
     });
 
     describe('Review Data Sanitization', () => {
