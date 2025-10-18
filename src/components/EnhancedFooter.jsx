@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 import Logo from './Logo';
-import { clinicInfo, googleMapsProfileUrl } from '../lib/clinicInfo';
+import { useConfig } from '@/config';
 import { SocialLinks3D } from './ui/social-links-3d';
 import { useGlassMorphism } from '../hooks/useGlassMorphism';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
@@ -43,6 +43,16 @@ const EnhancedFooter = ({
     ...props
 }) => {
     const { t } = useTranslation();
+
+    // Use new config system
+    const {
+        business,
+        site,
+        getWhatsAppUrl,
+        getFormattedAddress,
+        getFormattedPhone
+    } = useConfig();
+
     const {
         capabilities,
         glassIntensity,
@@ -75,14 +85,14 @@ const EnhancedFooter = ({
         });
     };
 
-    // Memoize computed values (preserved from original Footer)
+    // Memoize computed values using new config system
     const footerData = useMemo(() => ({
-        phoneNumber: clinicInfo.phone.replace(/\D/g, ''),
-        whatsappLink: "https://wa.me/message/2QFZJG3EDJZVF1", // Updated WhatsApp scheduling link
-        chatbotUrl: clinicInfo.chatbotUrl,
+        phoneNumber: business.phone.primary.e164.replace(/\D/g, ''),
+        whatsappLink: getWhatsAppUrl(),
+        chatbotUrl: business.urls.chatbot,
         amorSaudeLogo: "/img/amorsaude_logo.png",
-        currentYear: 2025
-    }), []);
+        currentYear: new Date().getFullYear()
+    }), [business, getWhatsAppUrl]);
 
     // Navigation links (preserved from original Footer)
     const navLinks = useMemo(() => [
@@ -107,29 +117,29 @@ const EnhancedFooter = ({
         }
         , [t]);
 
-    // Enhanced social media data for 3D icons
+    // Enhanced social media data for 3D icons using new config
     const socialsForLinks = useMemo(() => [
         {
             name: "Facebook",
-            href: clinicInfo.facebook,
+            href: business.social.facebook,
             image: "/icons_social/facebook_icon.png",
             color: "#1877F2"
         },
         {
             name: "Instagram",
-            href: clinicInfo.instagram,
+            href: business.social.instagram,
             image: "/icons_social/instagram_icon.png",
             color: "#E4405F"
         },
         {
             name: "LinkedIn",
-            href: clinicInfo.linkedin,
+            href: business.social.linkedin,
             image: "/icons_social/linkedin_icon.png",
             color: "#0A66C2"
         },
         {
             name: "X",
-            href: clinicInfo.x || "https://x.com/philipe_saraiva",
+            href: business.social.twitter || "https://x.com/philipe_saraiva",
             image: "/icons_social/x2 Background Removed.png",
             color: "#000000"
         },
@@ -141,7 +151,7 @@ const EnhancedFooter = ({
         },
         {
             name: "Spotify",
-            href: clinicInfo.spotify,
+            href: business.social.spotify,
             image: "/icons_social/spotify_icon.png",
             color: "#1DB954"
         },
@@ -157,7 +167,7 @@ const EnhancedFooter = ({
             image: "/icons_social/IA.png",
             color: "#4285F4"
         },
-    ], []);
+    ], [business]);
 
     // Helper components (preserved from original Footer)
     const FooterSection = ({ title, children, className }) => (
@@ -461,16 +471,16 @@ const EnhancedFooter = ({
                             <ul className="space-y-3">
                                 <ContactItem>
                                     <div className="font-semibold text-white mb-1">
-                                        {clinicInfo.name}
+                                        {business.name}
                                     </div>
                                 </ContactItem>
                                 <ContactItem>
                                     <a
-                                        href={googleMapsProfileUrl}
+                                        href={business.urls.googleMapsProfile}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="hover:text-white transition-colors inline-flex items-start gap-2 group"
-                                        aria-label={`Endereço da ${clinicInfo.name}: ${clinicInfo.streetAddress}, ${clinicInfo.neighborhood}, ${clinicInfo.city}-${clinicInfo.state}. Abrir no Google Maps (nova aba)`}
+                                        aria-label={`Endereço da ${business.name}: ${business.address.street}, ${business.address.neighborhood}, ${business.address.city}-${business.address.state}. Abrir no Google Maps (nova aba)`}
                                     >
                                         <img
                                             src="/icons_social/Pin_icon_menino.png"
@@ -491,14 +501,14 @@ const EnhancedFooter = ({
                                             📍
                                         </span>
                                         <span className="flex-1">
-                                            {clinicInfo.streetAddress}, {clinicInfo.neighborhood}
+                                            {business.address.street}, {business.address.neighborhood}
                                             <br />
-                                            {clinicInfo.city}-{clinicInfo.state}, CEP {clinicInfo.postalCode}
+                                            {business.address.city}-{business.address.state}, CEP {business.address.postalCode}
                                         </span>
                                     </a>
                                 </ContactItem>
-                                <ContactLink href={`mailto:${clinicInfo.email}`}>
-                                    {clinicInfo.email}
+                                <ContactLink href={`mailto:${business.email.primary}`}>
+                                    {business.email.primary}
                                 </ContactLink>
                                 <ContactItem>
                                     <a
@@ -514,7 +524,7 @@ const EnhancedFooter = ({
                                             loading="lazy"
                                             decoding="async"
                                         />
-                                        {clinicInfo.phoneDisplay}
+                                        {getFormattedPhone("display")}
                                     </a>
                                 </ContactItem>
                                 <ContactItem>
@@ -578,10 +588,10 @@ const EnhancedFooter = ({
                         <div className="flex flex-col lg:flex-row justify-between items-start gap-6 lg:gap-8">
                             <div className="flex-1 space-y-2">
                                 <p className="text-slate-400 text-xs leading-snug">
-                                    <span className="block font-medium text-slate-300">{clinicInfo.responsiblePhysician} • {clinicInfo.responsiblePhysicianCRM} • {clinicInfo.responsiblePhysicianTitle}</span>
-                                    <span className="block">{clinicInfo.responsibleNurse} • {clinicInfo.responsibleNurseTitle}</span>
-                                    <span className="block">CNPJ: {clinicInfo.taxId}</span>
-                                    <span className="block">DPO: <a href={`mailto:${clinicInfo.dpoEmail}`} className="underline hover:text-white transition-colors">{clinicInfo.dpoEmail}</a></span>
+                                    <span className="block font-medium text-slate-300">{business.doctor.name} • {business.doctor.crm} • {business.doctor.specialty}</span>
+                                    <span className="block">{business.team.nurse.name} • {business.team.nurse.title}</span>
+                                    <span className="block">CNPJ: {business.cnpj}</span>
+                                    <span className="block">DPO: <a href={`mailto:${business.dpo.email}`} className="underline hover:text-white transition-colors">{business.dpo.email}</a></span>
                                     <span className="block space-x-3">
                                         <a href="/privacy" className="underline hover:text-white transition-colors">{t('privacy.link_label')}</a>
                                         <button
