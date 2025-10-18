@@ -141,3 +141,7 @@ claudelogs/
 
 # Deployment checklist
 .deploy-checklist
+
+
+.github/instructions/kluster-code-verify.instructions.md
+.kluster

@@ -147,11 +147,11 @@ if (!rootElement) {
 
 const root = createRoot(rootElement);
 
-// Render app without PostHog
+// Render app with new ConfigProvider
 try {
   root.render(
     <React.StrictMode>
-      <ConfigProvider value={appConfig}>
+      <ConfigProvider>
         <ErrorBoundary>
           <GoogleTagManager gtmId={appConfig.analytics.gtmId} />
           <Router future={{

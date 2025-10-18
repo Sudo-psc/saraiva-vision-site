@@ -1,31 +1,31 @@
-import * as React from "react"
-import { cva } from "class-variance-authority"
-import { cn } from "@/lib/utils"
+import React from 'react';
 
-const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-  {
-    variants: {
-      variant: {
-        default:
-          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-        secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive:
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline: "text-foreground",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-)
+const Badge = ({ children, variant = 'default', className = '', ...props }) => {
+    const getVariantClasses = (variant) => {
+        switch (variant) {
+            case 'success':
+                return 'bg-green-100 text-green-800 border-green-200';
+            case 'warning':
+                return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+            case 'destructive':
+                return 'bg-red-100 text-red-800 border-red-200';
+            case 'outline':
+                return 'bg-transparent text-gray-700 border-gray-300';
+            case 'secondary':
+                return 'bg-gray-100 text-gray-800 border-gray-200';
+            default:
+                return 'bg-blue-100 text-cyan-800 border-cyan-200';
+        }
+    };
 
-function Badge({ className, variant, ...props }) {
-  return (
-    <div className={cn(badgeVariants({ variant }), className)} {...props} />
-  )
-}
+    return (
+        <span
+            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getVariantClasses(variant)} ${className}`}
+            {...props}
+        >
+            {children}
+        </span>
+    );
+};
 
-export { Badge, badgeVariants }
+export { Badge };
