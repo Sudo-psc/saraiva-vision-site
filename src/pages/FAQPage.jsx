@@ -5,11 +5,18 @@ import { useFAQSEO } from '../hooks/useSEO';
 import Navbar from '../components/Navbar';
 import FAQ from '../components/FAQ';
 import EnhancedFooter from '../components/EnhancedFooter';
+import Breadcrumbs from '../components/Breadcrumbs';
+import { FAQList } from '../components/FAQSchema';
+import { generalFAQs } from '../data/faqData';
 import { HelpCircle } from 'lucide-react';
 
 function FAQPage() {
   const { t } = useTranslation();
   const seoData = useFAQSEO();
+
+  const breadcrumbItems = [
+    { label: 'FAQ', href: '/faq' }
+  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -20,6 +27,9 @@ function FAQPage() {
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-blue-50 to-slate-50 pt-32 pb-16">
           <div className="container mx-auto px-4 md:px-6">
+            {/* Breadcrumbs */}
+            <Breadcrumbs items={breadcrumbItems} className="mb-8" />
+
             <div className="text-center max-w-4xl mx-auto">
               <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6">
                 <HelpCircle size={16} className="mr-2" />
@@ -35,7 +45,13 @@ function FAQPage() {
           </div>
         </section>
 
-        {/* FAQ Component */}
+        {/* FAQ Component with Schema Markup */}
+        <FAQList
+          faqs={generalFAQs}
+          title="Perguntas Frequentes sobre a Clínica Saraiva Vision"
+        />
+
+        {/* Original FAQ Component (if it has additional content) */}
         <FAQ />
       </main>
 
