@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Globe, Shield, Wifi, WifiOff, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
-import { clinicInfo, googleMapsProfileUrl } from '@/lib/clinicInfo';
+import { useConfig } from '@/config';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { useRecaptcha } from '@/hooks/useRecaptcha';
@@ -12,11 +12,11 @@ import ErrorFeedback from '@/components/ui/ErrorFeedback';
 import { validateField, validateContactSubmission } from '@/lib/validation';
 import { useAnalytics, useVisibilityTracking, useSaraivaTracking } from '@/hooks/useAnalytics';
 import { consentManager } from '@/lib/lgpd/consentManager';
-import { NAP_CANONICAL, generateWhatsAppURL } from '@/lib/napCanonical';
 
 const Contact = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const { business, getWhatsAppUrl } = useConfig();
 
   // Analytics integration
   const { trackFormView, trackFormSubmit, trackInteraction } = useAnalytics();
@@ -125,9 +125,9 @@ const Contact = () => {
 
 
 
-  const phoneNumber = NAP_CANONICAL.phone.whatsapp.raw;
-  const whatsappLink = generateWhatsAppURL();
-  const chatbotLink = "https://chatgpt.com/g/g-quepJB90J-saraiva-vision-clinica-oftalmologica?model=gpt-4o";
+  const phoneNumber = business.phone.whatsapp.e164.replace(/\D/g, '');
+  const whatsappLink = getWhatsAppUrl();
+  const chatbotLink = business.urls.chatbot;
 
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
@@ -464,20 +464,20 @@ const Contact = () => {
       title: t('contact.info.address_title'),
       details: (
         <>
-          <a 
-            href={googleMapsProfileUrl}
+          <a
+            href={business.urls.googleMapsProfile}
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-cyan-700 hover:underline transition-colors cursor-pointer"
             aria-label="Ver localização no Google Maps (nova aba)"
           >
-            <span>{typeof clinicInfo.address === 'string' ? clinicInfo.address : t('contact.info.address_details')}</span>
+            <span>{`${business.address.street}, ${business.address.city} - ${business.address.state}`}</span>
           </a>
         </>
       ),
       subDetails: (
-        <a 
-          href={googleMapsProfileUrl}
+        <a
+          href={business.urls.googleMapsProfile}
           target="_blank"
           rel="noopener noreferrer"
           className="text-cyan-600 hover:underline text-sm"
@@ -1145,12 +1145,12 @@ const Contact = () => {
             aria-labelledby="contact-options-heading"
           >
             {/* Expose clinic name for tests and SR, without altering visual UI */}
-            <div className="sr-only">{clinicInfo.name}</div>
+            <div className="sr-only">{business.name}</div>
 
             <h3 id="contact-options-heading" className="sr-only">Opções de contato e agendamento</h3>
 
             <a
-              href={clinicInfo.onlineSchedulingUrl}
+              href={business.urls.onlineScheduling}
               target="_blank"
               rel="noopener noreferrer"
               className="block modern-card-alt p-6 group mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-2xl"

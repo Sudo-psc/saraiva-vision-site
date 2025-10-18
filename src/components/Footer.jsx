@@ -3,12 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ArrowUp, MessageCircle, Bot } from 'lucide-react';
 import Logo from '@/components/Logo';
-import { clinicInfo } from '@/lib/clinicInfo';
+import { useConfig } from '@/config';
 import { SocialLinks } from '@/components/ui/social-links';
 import { cn } from '@/lib/utils';
 
 const Footer = () => {
   const { t } = useTranslation();
+  const { business, getWhatsAppUrl, getFormattedPhone } = useConfig();
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -19,12 +20,12 @@ const Footer = () => {
 
   // Memoize computed values
   const footerData = useMemo(() => ({
-    phoneNumber: clinicInfo.phone.replace(/\D/g, ''),
-    whatsappLink: `https://wa.me/${clinicInfo.phone.replace(/\D/g, '')}`,
-    chatbotUrl: clinicInfo.chatbotUrl,
+    phoneNumber: business.phone.primary.e164.replace(/\D/g, ''),
+    whatsappLink: getWhatsAppUrl(),
+    chatbotUrl: business.urls.chatbot,
     amorSaudeLogo: "/img/partner-amor-saude.svg",
-    currentYear: 2025
-  }), []);
+    currentYear: new Date().getFullYear()
+  }), [business, getWhatsAppUrl]);
 
   const navLinks = useMemo(() => [
     { name: t('navbar.home'), href: '/' },
@@ -46,30 +47,30 @@ const Footer = () => {
   const socialsForLinks = useMemo(() => [
     {
       name: "Facebook",
-      href: clinicInfo.facebook,
+      href: business.social.facebook,
       image: "/icons_social/facebook_icon.png"
     },
     {
       name: "Instagram",
-      href: clinicInfo.instagram,
+      href: business.social.instagram,
       image: "/icons_social/instagram_icon.png",
     },
     {
       name: "LinkedIn",
-      href: clinicInfo.linkedin,
+      href: business.social.linkedin,
       image: "/icons_social/linkedln_icon.png",
     },
     {
       name: "X",
-      href: clinicInfo.x || "https://x.com/philipe_saraiva",
+      href: business.social.twitter || "https://x.com/philipe_saraiva",
       image: "/icons_social/X_icon.png",
     },
     {
       name: "TikTok",
-      href: "https://www.tiktok.com/@saraivavision",
+      href: business.social.tiktok || "https://www.tiktok.com/@saraivavision",
       image: "/icons_social/tik_tok_icon.png",
     },
-  ], []);
+  ], [business]);
 
   const FooterSection = ({ title, children, className }) => (
     <div className={cn('space-y-3', className)}>
@@ -157,15 +158,15 @@ const Footer = () => {
             <ul className="space-y-3">
               <ContactItem>{t('footer.address_line1')}</ContactItem>
               <ContactItem>{t('footer.address_line2')}</ContactItem>
-              <ContactLink href={`mailto:${clinicInfo.email}`}>
-                {clinicInfo.email}
+              <ContactLink href={`mailto:${business.email.primary}`}>
+                {business.email.primary}
               </ContactLink>
               <ContactLink
                 href={footerData.whatsappLink}
                 external
                 icon={MessageCircle}
               >
-                {clinicInfo.phoneDisplay}
+                {getFormattedPhone('display')}
               </ContactLink>
               <ContactLink
                 href={footerData.chatbotUrl}
@@ -183,10 +184,10 @@ const Footer = () => {
           <div className="flex flex-col lg:flex-row justify-between items-start gap-6 lg:gap-8">
             <div className="flex-1 space-y-2">
               <p className="text-slate-400 text-xs leading-snug">
-                <span className="block font-medium text-slate-300">{clinicInfo.responsiblePhysician} • {clinicInfo.responsiblePhysicianCRM} • {clinicInfo.responsiblePhysicianTitle}</span>
-                <span className="block">{clinicInfo.responsibleNurse} • {clinicInfo.responsibleNurseTitle}</span>
-                <span className="block">CNPJ: {clinicInfo.taxId}</span>
-                <span className="block">DPO: <a href={`mailto:${clinicInfo.dpoEmail}`} className="underline hover:text-white transition-colors">{clinicInfo.dpoEmail}</a></span>
+                <span className="block font-medium text-slate-300">{business.doctor.name} • {business.doctor.crm} • {business.doctor.specialty}</span>
+                <span className="block">{business.team.nurse.name} • {business.team.nurse.title}</span>
+                <span className="block">CNPJ: {business.cnpj}</span>
+                <span className="block">DPO: <a href={`mailto:${business.dpo.email}`} className="underline hover:text-white transition-colors">{business.dpo.email}</a></span>
                 <span className="block space-x-3">
                   <a href="/privacy" className="underline hover:text-white transition-colors">{t('privacy.link_label')}</a>
                   <button
