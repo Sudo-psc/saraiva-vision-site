@@ -42,6 +42,13 @@ import AnalyticsFallback from '@/components/AnalyticsFallback.jsx';
 import AnalyticsProxy from '@/components/AnalyticsProxy.jsx';
 import DeferredWidgets from '@/modules/core/components/DeferredWidgets.jsx';
 
+/**
+ * Root application component that configures global providers, sets the document language to "pt-BR", and defines the app's top-level routes and layout.
+ *
+ * The component mounts global services (SEO, analytics, business schema, widget provider), renders the main application scaffold (navbar, routes, error boundary, deferred widgets), and selects a check-specific homepage when the hostname starts with "check.".
+ *
+ * @returns {JSX.Element} The application's root React element tree.
+ */
 function App() {
   const isCheckSubdomain =
     typeof window !== 'undefined' && window.location.hostname?.toLowerCase().startsWith('check.');
