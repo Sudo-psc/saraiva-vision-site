@@ -10,6 +10,16 @@ let analyticsConfig = {
   metaPixelId: import.meta.env.VITE_META_PIXEL_ID
 };
 
+/**
+ * Merge runtime overrides into the module's analytics configuration.
+ *
+ * Updates the module-level `analyticsConfig` by shallow-merging the provided
+ * `config` properties on top of the existing configuration.
+ *
+ * @param {Object} [config={}] - Configuration overrides to apply.
+ * @param {string} [config.gaId] - Google Analytics Measurement ID to override.
+ * @param {string} [config.metaId] - Meta (Facebook) Pixel ID to override.
+ */
 export function configureAnalytics(config = {}) {
   analyticsConfig = {
     ...analyticsConfig,
@@ -157,7 +167,15 @@ export function trackEnhancedConversion(parameters = {}) {
   return trackMeta('Lead', parameters);
 }
 
-// Bind consent updates to analytics
+/**
+ * Subscribes to consent changes and propagates current consent state to Google Analytics and Meta Pixel.
+ *
+ * When called, registers a callback via onConsentChange that:
+ * - Updates GA consent using keys `analytics_storage`, `ad_storage`, `ad_user_data`, and `ad_personalization`, defaulting each to `'denied'` when missing.
+ * - Calls Meta Pixel consent with `'grant'` if `ad_storage` is `'granted'`, otherwise `'revoke'`.
+ *
+ * The function is a no-op if consent updates have already been bound.
+ */
 export function bindConsentUpdates() {
   if (consentBound) return;
 
@@ -179,7 +197,15 @@ export function bindConsentUpdates() {
   consentBound = true;
 }
 
-// Initialize analytics on app start
+/**
+ * Initialize analytics providers and bind consent handling for the app.
+ *
+ * Applies optional runtime configuration overrides, initializes Google Analytics and Meta Pixel
+ * when their IDs are configured, and subscribes to consent updates. This function is a no-op
+ * when not running in a browser environment.
+ *
+ * @param {Object} [configOverrides] - Partial analytics configuration to merge into the runtime config; may include `gaId` and `metaPixelId`.
+ */
 export function initializeAnalytics(configOverrides) {
   if (typeof window === 'undefined') return;
 
@@ -202,7 +228,12 @@ export function initializeAnalytics(configOverrides) {
   bindConsentUpdates();
 }
 
-// Track page view
+/**
+ * Send a page view to Google Analytics for the given path.
+ *
+ * @param {string} pagePath - The path to report as the page view (defaults to window.location.pathname).
+ *                          This call is a no-op if the global `gtag` function or `window` is not available.
+ */
 export function trackPageView(pagePath = window.location.pathname) {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('config', analyticsConfig.gaId, {

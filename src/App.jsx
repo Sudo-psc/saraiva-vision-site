@@ -42,6 +42,13 @@ import AnalyticsFallback from '@/components/AnalyticsFallback.jsx';
 import AnalyticsProxy from '@/components/AnalyticsProxy.jsx';
 import DeferredWidgets from '@/modules/core/components/DeferredWidgets.jsx';
 
+/**
+ * Root React component that composes global providers, site layout and application routes.
+ *
+ * Renders top-level providers (helmet, analytics, widget context), global schema, navigation and the app route tree.
+ * On mount it sets the document's language to "pt-BR". If the hostname starts with "check." the root route and the catch-all route switch to the check subdomain behavior (CheckPage and wildcard redirect to "/").
+ * @returns {JSX.Element} The rendered application element.
+ */
 function App() {
   const isCheckSubdomain =
     typeof window !== 'undefined' && window.location.hostname?.toLowerCase().startsWith('check.');
