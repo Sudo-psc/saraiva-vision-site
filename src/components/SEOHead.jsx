@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { clinicInfo } from '@/lib/clinicInfo';
+import { useConfig } from '@/config';
 
 const resolveBaseUrl = () => {
   if (typeof window !== 'undefined' && window.location?.origin) {
@@ -32,6 +32,7 @@ const SEOHead = ({
 }) => {
   const { i18n } = useTranslation();
   const location = useLocation();
+  const { business } = useConfig();
 
   const currentLang = i18n.language || 'pt';
   const baseUrl = resolveBaseUrl();
@@ -155,12 +156,12 @@ const SEOHead = ({
       <meta property="og:image:type" content="image/png" />
 
       {/* Medical Business Specific Open Graph */}
-      <meta property="business:contact_data:street_address" content={clinicInfo.address.street} />
-      <meta property="business:contact_data:locality" content={clinicInfo.address.city} />
-      <meta property="business:contact_data:region" content={clinicInfo.address.state} />
-      <meta property="business:contact_data:postal_code" content={clinicInfo.address.zip} />
+      <meta property="business:contact_data:street_address" content={business.address.street} />
+      <meta property="business:contact_data:locality" content={business.address.city} />
+      <meta property="business:contact_data:region" content={business.address.state} />
+      <meta property="business:contact_data:postal_code" content={business.address.postalCode} />
       <meta property="business:contact_data:country_name" content="Brazil" />
-      <meta property="business:contact_data:phone_number" content={clinicInfo.phone} />
+      <meta property="business:contact_data:phone_number" content={business.phone.primary.display} />
 
       {/* Twitter Card - Enhanced */}
       <meta name="twitter:card" content="summary_large_image" />
