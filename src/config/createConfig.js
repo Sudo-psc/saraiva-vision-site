@@ -1,3 +1,5 @@
+import { site, business } from './config.base.js';
+
 const defaultConfig = {
   app: {
     environment: import.meta.env.MODE || 'production',
@@ -19,7 +21,10 @@ const defaultConfig = {
   },
   features: {
     lazyWidgets: true
-  }
+  },
+  // Add site and business from base config
+  site,
+  business
 };
 
 const envConfig = {
