@@ -76,7 +76,7 @@ const Navbar = () => {
           <nav className="hidden md:flex items-center space-x-1.5 lg:space-x-2" aria-label={t('navbar.primary_navigation')}>
             {navLinks.map((link) => {
               const IconComponent = link.icon;
-              const linkClasses = "group relative text-slate-700 hover:text-white font-semibold transition-all duration-300 ease-out px-3 py-1.5 md:px-4 md:py-2 rounded-xl flex items-center gap-2 text-[0.96rem] md:text-[1rem] lg:text-[1.05rem] hover:scale-105 lg:hover:scale-108 active:scale-95 hover:shadow-lg active:shadow-sm bg-gradient-to-br from-slate-50 to-slate-100 hover:from-cyan-600 hover:to-cyan-700 border border-slate-200 hover:border-cyan-500";
+              const linkClasses = "group relative text-slate-700 hover:text-white font-semibold transition-all duration-300 ease-out px-3 py-1.5 md:px-4 md:py-2 rounded-xl flex items-center gap-2 text-[0.96rem] md:text-[1rem] lg:text-[1.05rem] hover:scale-105 lg:hover:scale-108 active:scale-95 hover:shadow-lg active:shadow-sm bg-gradient-to-br from-slate-100 to-slate-200 hover:from-cyan-600 hover:to-cyan-700 border border-slate-300 hover:border-cyan-500";
 
               // Special handling for home button: scroll to top if already on homepage
               const isHomeLink = link.href === '/';
