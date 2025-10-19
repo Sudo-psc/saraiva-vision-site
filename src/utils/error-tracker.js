@@ -221,6 +221,138 @@ function enqueueError(error) {
 }
 
 /**
+ * Sanitiza URL para conformidade com Zod validation
+ *
+ * @param {string} url - URL a ser sanitizada
+ * @returns {string} URL válida ou fallback
+ */
+function sanitizeUrl(url) {
+  if (!url || typeof url !== 'string') {
+    return 'https://saraivavision.com.br';
+  }
+
+  // Lista de protocolos inválidos para o backend
+  const invalidProtocols = [
+    'about:',
+    'blob:',
+    'data:',
+    'chrome:',
+    'chrome-extension:',
+    'moz-extension:',
+    'safari-extension:',
+    'edge-extension:',
+    'file:'
+  ];
+
+  // Verificar se URL usa protocolo inválido
+  const hasInvalidProtocol = invalidProtocols.some(proto => url.startsWith(proto));
+  if (hasInvalidProtocol) {
+    return 'https://saraivavision.com.br';
+  }
+
+  // Tentar validar e normalizar URL
+  try {
+    const parsed = new URL(url);
+
+    // Apenas http e https são válidos para Zod z.string().url()
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+      return 'https://saraivavision.com.br';
+    }
+
+    // Remover trailing slash se pathname é apenas "/"
+    let normalized = parsed.toString();
+    if (parsed.pathname === '/' && normalized.endsWith('/')) {
+      normalized = normalized.slice(0, -1);
+    }
+
+    return normalized;
+  } catch (error) {
+    // URL malformada, usar fallback
+    return 'https://saraivavision.com.br';
+  }
+}
+
+/**
+ * Normaliza timestamp para formato ISO 8601
+ *
+ * @param {string|number|Date} timestamp - Timestamp a ser normalizado
+ * @returns {string} ISO 8601 string
+ */
+function normalizeTimestamp(timestamp) {
+  if (!timestamp) {
+    return new Date().toISOString();
+  }
+
+  try {
+    // Se é string, verificar se é ISO válida
+    if (typeof timestamp === 'string') {
+      const date = new Date(timestamp);
+      return isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString();
+    }
+
+    // Se é número (Unix timestamp em ms ou segundos)
+    if (typeof timestamp === 'number') {
+      // Se menor que 10 bilhões, é timestamp em segundos
+      const ts = timestamp < 10000000000 ? timestamp * 1000 : timestamp;
+      const date = new Date(ts);
+      return isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString();
+    }
+
+    // Se é objeto Date
+    if (timestamp instanceof Date) {
+      return isNaN(timestamp.getTime()) ? new Date().toISOString() : timestamp.toISOString();
+    }
+
+    // Fallback
+    return new Date().toISOString();
+  } catch (error) {
+    return new Date().toISOString();
+  }
+}
+
+/**
+ * Sanitiza um único erro antes de enviar
+ *
+ * @param {Object} error - Erro a ser sanitizado
+ * @returns {Object} Erro sanitizado
+ */
+function sanitizeError(error) {
+  const sanitized = { ...error };
+
+  // Sanitizar URL
+  if (sanitized.pageUrl) {
+    sanitized.pageUrl = sanitizeUrl(sanitized.pageUrl);
+  }
+  if (sanitized.url) {
+    sanitized.url = sanitizeUrl(sanitized.url);
+  }
+  if (sanitized.referrer) {
+    sanitized.referrer = sanitizeUrl(sanitized.referrer);
+  }
+
+  // Normalizar timestamp
+  if (sanitized.timestamp) {
+    sanitized.timestamp = normalizeTimestamp(sanitized.timestamp);
+  }
+
+  // Limitar tamanhos para evitar payloads gigantes
+  if (sanitized.message && typeof sanitized.message === 'string' && sanitized.message.length > 1000) {
+    sanitized.message = sanitized.message.substring(0, 1000) + '... (truncated)';
+  }
+
+  if (sanitized.stack && typeof sanitized.stack === 'string' && sanitized.stack.length > 5000) {
+    sanitized.stack = sanitized.stack.substring(0, 5000) + '... (truncated)';
+  }
+
+  // Validar campos obrigatórios
+  if (!sanitized.message || typeof sanitized.message !== 'string') {
+    sanitized.message = 'Unknown error';
+  }
+
+  return sanitized;
+}
+
+/**
  * Envia batch de erros para o servidor
  *
  * @returns {Promise<boolean>} true se enviado com sucesso
@@ -235,14 +367,23 @@ async function sendBatch(errors) {
     return false;
   }
 
+  // 🛡️ SANITIZAÇÃO: Sanitizar todos os erros antes de enviar
+  const sanitizedErrors = errors.map(error => sanitizeError(error));
+
+  // 🛡️ VALIDAÇÃO: Verificar endpoint antes de enviar
+  if (!ERROR_TRACKER_CONFIG.endpoint || typeof ERROR_TRACKER_CONFIG.endpoint !== 'string') {
+    console.error('[ErrorTracker] Invalid endpoint configuration:', ERROR_TRACKER_CONFIG.endpoint);
+    return false;
+  }
+
   try {
 
     await postJSON(
       ERROR_TRACKER_CONFIG.endpoint,
       {
-        errors,
+        errors: sanitizedErrors, // Usar erros sanitizados
         batch: {
-          size: errors.length,
+          size: sanitizedErrors.length,
           sessionId: errorTrackerState.sessionId,
           timestamp: new Date().toISOString()
         }
@@ -260,6 +401,15 @@ async function sendBatch(errors) {
 
   } catch (error) {
     errorTrackerState.circuitBreaker.recordFailure();
+
+    // 🛡️ LOG ESTRUTURADO: Logar erro com detalhes para debugging
+    console.error('[ErrorTracker] Failed to send batch:', {
+      error: error.message,
+      endpoint: ERROR_TRACKER_CONFIG.endpoint,
+      batchSize: sanitizedErrors.length,
+      circuitBreakerStatus: errorTrackerState.circuitBreaker.getStatus()
+    });
+
     return false;
   }
 }
@@ -451,6 +601,9 @@ export function clearQueue() {
   errorTrackerState.rateLimitWindow = [];
 }
 
+// Exportar funções de sanitização para testes
+export { sanitizeUrl, normalizeTimestamp, sanitizeError };
+
 // Export default como objeto com todas as funções
 export default {
   initialize,
@@ -460,5 +613,9 @@ export default {
   handleFetchError,
   flush,
   clearQueue,
-  getStatus
+  getStatus,
+  // Funções auxiliares (para testes)
+  sanitizeUrl,
+  normalizeTimestamp,
+  sanitizeError
 };

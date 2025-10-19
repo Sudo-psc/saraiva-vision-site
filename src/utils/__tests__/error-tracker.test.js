@@ -15,7 +15,10 @@ import {
   trackWithLevel,
   flush,
   clearQueue,
-  getStatus
+  getStatus,
+  sanitizeUrl,
+  normalizeTimestamp,
+  sanitizeError
 } from '../error-tracker.js';
 
 describe('Error Tracker', () => {
@@ -550,6 +553,255 @@ describe('Error Tracker', () => {
       const status = getStatus();
       // Should cap at maxQueueSize
       expect(status.queueSize).toBeLessThanOrEqual(100);
+    });
+  });
+
+  describe('sanitizeUrl', () => {
+    it('should replace invalid protocols with fallback', () => {
+      const invalidUrls = [
+        'about:blank',
+        'chrome-extension://abc123',
+        'blob:https://example.com/abc',
+        'data:text/html,<h1>Test</h1>',
+        'file:///etc/passwd',
+        'moz-extension://abc',
+        'safari-extension://abc',
+        'edge-extension://abc'
+      ];
+
+      invalidUrls.forEach(url => {
+        const sanitized = sanitizeUrl(url);
+        expect(sanitized).toBe('https://saraivavision.com.br');
+      });
+    });
+
+    it('should preserve valid HTTP URLs', () => {
+      const validUrls = [
+        'https://saraivavision.com.br',
+        'http://localhost:3000',
+        'https://example.com/path?query=value',
+        'http://192.168.1.1:8080/api'
+      ];
+
+      validUrls.forEach(url => {
+        const sanitized = sanitizeUrl(url);
+        expect(sanitized).toBe(url);
+      });
+    });
+
+    it('should handle empty or invalid URLs', () => {
+      expect(sanitizeUrl('')).toBe('https://saraivavision.com.br');
+      expect(sanitizeUrl(null)).toBe('https://saraivavision.com.br');
+      expect(sanitizeUrl(undefined)).toBe('https://saraivavision.com.br');
+      expect(sanitizeUrl('not-a-url')).toBe('https://saraivavision.com.br');
+    });
+
+    it('should normalize valid URLs', () => {
+      const url = 'https://example.com:443/path/../normalized';
+      const sanitized = sanitizeUrl(url);
+      expect(sanitized).toMatch(/^https:\/\//);
+      expect(sanitized).toBeTruthy();
+    });
+  });
+
+  describe('normalizeTimestamp', () => {
+    it('should convert Unix timestamp in milliseconds to ISO', () => {
+      const unixMs = 1729350000000; // 2024-10-19
+      const normalized = normalizeTimestamp(unixMs);
+      expect(normalized).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+    });
+
+    it('should convert Unix timestamp in seconds to ISO', () => {
+      const unixSec = 1729350000; // 2024-10-19 (in seconds)
+      const normalized = normalizeTimestamp(unixSec);
+      expect(normalized).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+    });
+
+    it('should preserve valid ISO strings', () => {
+      const iso = '2025-10-19T12:00:00.000Z';
+      const normalized = normalizeTimestamp(iso);
+      expect(normalized).toBe(iso);
+    });
+
+    it('should handle invalid timestamps', () => {
+      const invalids = ['not-a-date', 'invalid', NaN, Infinity];
+
+      invalids.forEach(invalid => {
+        const normalized = normalizeTimestamp(invalid);
+        expect(normalized).toMatch(/^\d{4}-\d{2}-\d{2}T/); // Fallback to current time
+      });
+    });
+
+    it('should handle Date objects', () => {
+      const date = new Date('2025-10-19T12:00:00.000Z');
+      const normalized = normalizeTimestamp(date);
+      expect(normalized).toBe('2025-10-19T12:00:00.000Z');
+    });
+
+    it('should fallback on null/undefined', () => {
+      const normalized1 = normalizeTimestamp(null);
+      const normalized2 = normalizeTimestamp(undefined);
+
+      expect(normalized1).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+      expect(normalized2).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    });
+  });
+
+  describe('sanitizeError', () => {
+    it('should sanitize URLs in error object', () => {
+      const error = {
+        message: 'Test error',
+        pageUrl: 'about:blank',
+        url: 'chrome-extension://abc',
+        referrer: 'blob:https://example.com/abc'
+      };
+
+      const sanitized = sanitizeError(error);
+
+      expect(sanitized.pageUrl).toBe('https://saraivavision.com.br');
+      expect(sanitized.url).toBe('https://saraivavision.com.br');
+      expect(sanitized.referrer).toBe('https://saraivavision.com.br');
+    });
+
+    it('should normalize timestamp', () => {
+      const error = {
+        message: 'Test error',
+        timestamp: 1729350000000
+      };
+
+      const sanitized = sanitizeError(error);
+
+      expect(sanitized.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+    });
+
+    it('should truncate long messages', () => {
+      const longMessage = 'a'.repeat(2000);
+      const error = {
+        message: longMessage
+      };
+
+      const sanitized = sanitizeError(error);
+
+      expect(sanitized.message.length).toBeLessThanOrEqual(1015); // 1000 + "... (truncated)"
+      expect(sanitized.message).toContain('(truncated)');
+    });
+
+    it('should truncate long stack traces', () => {
+      const longStack = 'stack trace line\n'.repeat(500);
+      const error = {
+        message: 'Test',
+        stack: longStack
+      };
+
+      const sanitized = sanitizeError(error);
+
+      expect(sanitized.stack.length).toBeLessThanOrEqual(5015); // 5000 + "... (truncated)"
+      expect(sanitized.stack).toContain('(truncated)');
+    });
+
+    it('should ensure message field exists', () => {
+      const error1 = {};
+      const error2 = { message: null };
+      const error3 = { message: '' };
+
+      expect(sanitizeError(error1).message).toBe('Unknown error');
+      expect(sanitizeError(error2).message).toBe('Unknown error');
+      expect(sanitizeError(error3).message).toBe('Unknown error');
+    });
+
+    it('should preserve other fields', () => {
+      const error = {
+        message: 'Test error',
+        name: 'TypeError',
+        stack: 'Stack trace here',
+        custom: 'Custom field',
+        level: 'error'
+      };
+
+      const sanitized = sanitizeError(error);
+
+      expect(sanitized.name).toBe('TypeError');
+      expect(sanitized.stack).toBe('Stack trace here');
+      expect(sanitized.custom).toBe('Custom field');
+      expect(sanitized.level).toBe('error');
+    });
+
+    it('should handle complex error objects', () => {
+      const error = {
+        message: 'Complex error',
+        pageUrl: 'about:blank',
+        timestamp: Date.now(),
+        stack: 'a'.repeat(10000), // Very long stack
+        custom: {
+          nested: 'value'
+        }
+      };
+
+      const sanitized = sanitizeError(error);
+
+      expect(sanitized.pageUrl).toBe('https://saraivavision.com.br');
+      expect(sanitized.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+      expect(sanitized.stack.length).toBeLessThanOrEqual(5015);
+      expect(sanitized.custom.nested).toBe('value');
+    });
+  });
+
+  describe('End-to-end sanitization', () => {
+    beforeEach(() => {
+      initialize();
+    });
+
+    it('should sanitize errors before sending to backend', async () => {
+      const error = new Error('Test error from about:blank');
+
+      // Override window.location to simulate about:blank
+      global.window.location.href = 'about:blank';
+
+      track(error);
+      await flush();
+
+      // Verify fetch was called
+      expect(global.fetch).toHaveBeenCalled();
+
+      // Extract the request body
+      const fetchCall = global.fetch.mock.calls[0];
+      const body = JSON.parse(fetchCall[1].body);
+
+      // Verify sanitization happened
+      expect(body.errors[0].pageUrl).toBe('https://saraivavision.com.br');
+      expect(body.errors[0].timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    });
+
+    it('should not throw SyntaxError with invalid URLs', async () => {
+      global.window.location.href = 'chrome-extension://abc123/page.html';
+
+      const error = new Error('Extension error');
+
+      expect(() => track(error)).not.toThrow();
+
+      await expect(flush()).resolves.not.toThrow();
+    });
+
+    it('should handle all edge cases together', async () => {
+      global.window.location.href = 'blob:https://example.com/abc';
+
+      const error = {
+        message: 'a'.repeat(2000),
+        stack: 'b'.repeat(10000),
+        url: 'data:text/html,test'
+      };
+
+      track(error);
+      await flush();
+
+      const fetchCall = global.fetch.mock.calls[0];
+      const body = JSON.parse(fetchCall[1].body);
+      const sent = body.errors[0];
+
+      expect(sent.message.length).toBeLessThanOrEqual(1015);
+      expect(sent.stack.length).toBeLessThanOrEqual(5015);
+      expect(sent.url).toBe('https://saraivavision.com.br');
+      expect(sent.pageUrl).toBe('https://saraivavision.com.br');
     });
   });
 });
