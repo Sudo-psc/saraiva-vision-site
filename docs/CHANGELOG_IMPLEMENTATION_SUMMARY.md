@@ -14,9 +14,10 @@ Successfully implemented a comprehensive automated CHANGELOG generation system f
 
 | Tool | Version | Purpose |
 |------|---------|---------|
-| **commitlint** | Latest | Validates commit message format |
-| **husky** | Latest | Git hooks for commit validation |
-| **standard-version** | Latest | Automates changelog and versioning |
+| **@commitlint/cli** | 20.1.0 | Validates commit message format |
+| **@commitlint/config-conventional** | 20.0.0 | Conventional commit rules |
+| **husky** | 9.1.7 | Git hooks for commit validation |
+| **standard-version** | 9.5.0 | Automates changelog and versioning |
 | **GitHub Actions** | N/A | CI/CD automation for releases |
 
 ### 2. Configuration Files
@@ -32,7 +33,7 @@ Successfully implemented a comprehensive automated CHANGELOG generation system f
 
 ### 3. Documentation
 
-Comprehensive documentation totaling **~68 KB**:
+Comprehensive documentation totaling **~77 KB**:
 
 | Document | Purpose | Size |
 |----------|---------|------|
