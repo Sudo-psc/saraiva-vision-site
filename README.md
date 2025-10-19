@@ -19,8 +19,10 @@ sudo bash /home/saraiva-vision-site/DEPLOY_NOW.sh
 ## 📚 Documentação Completa
 
 - **Deploy Guide**: [`docs/deployment/DEPLOYMENT_GUIDE.md`](./docs/deployment/DEPLOYMENT_GUIDE.md) - Guia completo de deployment
-- **Versionamento**: [`docs/VERSIONING.md`](./docs/VERSIONING.md) - Sistema de versionamento automático
-- **Quick Start Versioning**: [`docs/QUICK_START_VERSIONING.md`](./docs/QUICK_START_VERSIONING.md) - Guia rápido de versionamento
+- **Versionamento**: [`docs/VERSIONING_SUMMARY.md`](./docs/VERSIONING_SUMMARY.md) - 🆕 Resumo do sistema de versionamento
+  - [`docs/VERSIONING.md`](./docs/VERSIONING.md) - Documentação técnica completa
+  - [`docs/QUICK_START_VERSIONING.md`](./docs/QUICK_START_VERSIONING.md) - Guia rápido de uso
+  - [`docs/VERSIONING_EXAMPLES.md`](./docs/VERSIONING_EXAMPLES.md) - Exemplos práticos
 - **Projeto**: [`CLAUDE.md`](./CLAUDE.md) - Documentação principal do projeto
 - **Troubleshooting**: [`TROUBLESHOOTING.md`](./TROUBLESHOOTING.md) - Resolução de problemas
 - **Security**: [`SECURITY.md`](./SECURITY.md) - Práticas de segurança

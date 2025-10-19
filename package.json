@@ -55,7 +55,8 @@
     "release:dry": "semantic-release --dry-run",
     "release:ci": "semantic-release --ci",
     "version:preview": "bash scripts/version-preview.sh",
-    "validate:commit": "bash scripts/validate-commit-msg.sh"
+    "validate:commit": "bash scripts/validate-commit-msg.sh",
+    "test:versioning": "bash scripts/test-versioning-setup.sh"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.10",
