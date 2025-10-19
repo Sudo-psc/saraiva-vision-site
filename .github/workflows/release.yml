@@ -1,0 +1,155 @@
+name: 📦 Release & Changelog
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - 'CHANGELOG.md'
+
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - auto
+        default: 'auto'
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: read
+
+jobs:
+  release:
+    name: 🚀 Create Release
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'chore(release)')"
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🔧 Setup Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Check for conventional commits
+        id: check_commits
+        run: |
+          # Check last 10 commits for conventional format
+          COMMITS=$(git log -10 --pretty=format:"%s" | grep -E '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?: .+' | wc -l)
+          echo "conventional_commits=$COMMITS" >> $GITHUB_OUTPUT
+          
+          if [ "$COMMITS" -eq 0 ]; then
+            echo "⚠️ No conventional commits found in the last 10 commits"
+            echo "📝 Skipping release generation"
+            echo "skip_release=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Found $COMMITS conventional commits"
+            echo "skip_release=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 📋 Generate changelog and bump version
+        if: steps.check_commits.outputs.skip_release != 'true'
+        id: release
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.release_type }}" != "auto" ]; then
+            npm run release:${{ github.event.inputs.release_type }}
+          else
+            npm run release
+          fi
+          
+          # Get new version
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "✅ Created release v$NEW_VERSION"
+
+      - name: 📤 Push changes
+        if: steps.check_commits.outputs.skip_release != 'true'
+        run: |
+          git push --follow-tags origin ${{ github.ref_name }}
+
+      - name: 📝 Extract changelog for release
+        if: steps.check_commits.outputs.skip_release != 'true'
+        id: changelog
+        run: |
+          VERSION=${{ steps.release.outputs.new_version }}
+          
+          # Extract the changelog section for this version
+          awk "/^## \[$VERSION\]/,/^## \[/" CHANGELOG.md | sed '$d' | tail -n +2 > /tmp/release_notes.md
+          
+          # Add breaking changes warning if present
+          if grep -q "BREAKING CHANGE" /tmp/release_notes.md; then
+            echo "⚠️ **This release contains breaking changes!**" | cat - /tmp/release_notes.md > /tmp/temp && mv /tmp/temp /tmp/release_notes.md
+            echo "" >> /tmp/release_notes.md
+            echo "Please review the breaking changes section carefully before upgrading." >> /tmp/release_notes.md
+          fi
+          
+          echo "release_notes_file=/tmp/release_notes.md" >> $GITHUB_OUTPUT
+
+      - name: 🎉 Create GitHub Release
+        if: steps.check_commits.outputs.skip_release != 'true'
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ steps.release.outputs.new_version }}
+          name: Release v${{ steps.release.outputs.new_version }}
+          bodyFile: ${{ steps.changelog.outputs.release_notes_file }}
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          generateReleaseNotes: false
+          makeLatest: true
+
+      - name: 📊 Release summary
+        if: steps.check_commits.outputs.skip_release != 'true'
+        run: |
+          echo "### 🎉 Release v${{ steps.release.outputs.new_version }} Published" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Release Details:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Version: v${{ steps.release.outputs.new_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Conventional commits found: ${{ steps.check_commits.outputs.conventional_commits }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Links:**" >> $GITHUB_STEP_SUMMARY
+          echo "- [📦 View Release](https://github.com/${{ github.repository }}/releases/tag/v${{ steps.release.outputs.new_version }})" >> $GITHUB_STEP_SUMMARY
+          echo "- [📋 View Changelog](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/CHANGELOG.md)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Release Notes Preview:**" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          head -20 /tmp/release_notes.md >> $GITHUB_STEP_SUMMARY || true
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: 📝 No release needed
+        if: steps.check_commits.outputs.skip_release == 'true'
+        run: |
+          echo "### ℹ️ No Release Generated" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "No conventional commits found in the recent history." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**To trigger a release, use conventional commit messages:**" >> $GITHUB_STEP_SUMMARY
+          echo "- \`feat: add new feature\` - triggers minor version bump" >> $GITHUB_STEP_SUMMARY
+          echo "- \`fix: resolve bug\` - triggers patch version bump" >> $GITHUB_STEP_SUMMARY
+          echo "- \`feat!: breaking change\` or \`BREAKING CHANGE:\` in body - triggers major version bump" >> $GITHUB_STEP_SUMMARY

@@ -31,6 +31,26 @@ npm run build:vite       # Build para produção (Vite)
 npm test                 # Testes
 ```
 
+## 📝 Conventional Commits
+
+Este projeto utiliza [Conventional Commits](https://www.conventionalcommits.org/) para geração automática de changelog.
+
+```bash
+# Exemplos de commits
+git commit -m "feat: adiciona agendamento online"
+git commit -m "fix(blog): corrige carregamento de imagens"
+git commit -m "docs: atualiza guia de contribuição"
+
+# Gerar release
+npm run release          # Gera changelog e nova versão automaticamente
+npm run release:dry-run  # Simula release sem fazer mudanças
+```
+
+📚 **Guias**:
+- [Guia de Conventional Commits](docs/CONVENTIONAL_COMMITS_GUIDE.md)
+- [Sistema de Changelog](docs/CHANGELOG_AUTOMATION.md)
+- [Como Contribuir](CONTRIBUTING.md)
+
 ## ✅ Checkup de Sistema
 
 Execute o checkup completo e gere relatórios de saúde:
