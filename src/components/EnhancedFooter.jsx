@@ -121,25 +121,25 @@ const EnhancedFooter = ({
     const socialsForLinks = useMemo(() => [
         {
             name: "Facebook",
-            href: business.social.facebook,
+            href: site.social.facebook.url,
             image: "/icons_social/facebook_icon.png",
             color: "#1877F2"
         },
         {
             name: "Instagram",
-            href: business.social.instagram,
+            href: site.social.instagram.url,
             image: "/icons_social/instagram_icon.png",
             color: "#E4405F"
         },
         {
             name: "LinkedIn",
-            href: business.social.linkedin,
+            href: site.social.linkedin.url,
             image: "/icons_social/linkedin_icon.png",
             color: "#0A66C2"
         },
         {
             name: "X",
-            href: business.social.twitter || "https://x.com/philipe_saraiva",
+            href: site.social.twitter.url,
             image: "/icons_social/x2 Background Removed.png",
             color: "#000000"
         },
@@ -151,7 +151,7 @@ const EnhancedFooter = ({
         },
         {
             name: "Spotify",
-            href: business.social.spotify,
+            href: site.social.spotify.url,
             image: "/icons_social/spotify_icon.png",
             color: "#1DB954"
         },
