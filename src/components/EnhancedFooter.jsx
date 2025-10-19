@@ -118,7 +118,13 @@ const EnhancedFooter = ({
         , [t]);
 
     // Enhanced social media data for 3D icons using new config
-    const socialsForLinks = useMemo(() => [
+    const socialsForLinks = useMemo(() => {
+        // Guard: ensure site and social exist
+        if (!site?.social) {
+            return [];
+        }
+
+        return [
         {
             name: "Facebook",
             href: site.social.facebook.url,
@@ -167,7 +173,8 @@ const EnhancedFooter = ({
             image: "/icons_social/IA.png",
             color: "#4285F4"
         },
-    ], [business]);
+    ];
+    }, [site]);
 
     // Helper components (preserved from original Footer)
     const FooterSection = ({ title, children, className }) => (
