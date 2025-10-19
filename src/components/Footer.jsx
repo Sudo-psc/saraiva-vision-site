@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 
 const Footer = () => {
   const { t } = useTranslation();
-  const { business, getWhatsAppUrl, getFormattedPhone } = useConfig();
+  const { business, compliance, getWhatsAppUrl, getFormattedPhone } = useConfig();
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -186,8 +186,8 @@ const Footer = () => {
               <p className="text-slate-400 text-xs leading-snug">
                 <span className="block font-medium text-slate-300">{business.doctor.name} • {business.doctor.crm} • {business.doctor.specialty}</span>
                 <span className="block">{business.team.nurse.name} • {business.team.nurse.title}</span>
-                <span className="block">CNPJ: {business.cnpj}</span>
-                <span className="block">DPO: <a href={`mailto:${business.dpo.email}`} className="underline hover:text-white transition-colors">{business.dpo.email}</a></span>
+                <span className="block">CNPJ: {business.taxId}</span>
+                <span className="block">DPO: <a href={`mailto:${compliance.lgpd.dpoEmail}`} className="underline hover:text-white transition-colors">{compliance.lgpd.dpoEmail}</a></span>
                 <span className="block space-x-3">
                   <a href="/privacy" className="underline hover:text-white transition-colors">{t('privacy.link_label')}</a>
                   <button
