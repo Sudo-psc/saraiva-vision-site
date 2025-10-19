@@ -1,0 +1,52 @@
+{
+  "path": "cz-conventional-changelog",
+  "maxHeaderWidth": 100,
+  "maxLineWidth": 100,
+  "defaultType": "",
+  "defaultScope": "",
+  "defaultSubject": "",
+  "defaultBody": "",
+  "defaultIssues": "",
+  "types": {
+    "feat": {
+      "description": "✨ Uma nova funcionalidade",
+      "title": "Features"
+    },
+    "fix": {
+      "description": "🐛 Correção de um bug",
+      "title": "Bug Fixes"
+    },
+    "perf": {
+      "description": "⚡ Melhoria de performance",
+      "title": "Performance Improvements"
+    },
+    "refactor": {
+      "description": "♻️ Refatoração de código (não adiciona feature nem corrige bug)",
+      "title": "Code Refactoring"
+    },
+    "docs": {
+      "description": "📝 Alteração em documentação",
+      "title": "Documentation"
+    },
+    "style": {
+      "description": "💄 Formatação de código (espaços, vírgulas, etc)",
+      "title": "Styles"
+    },
+    "test": {
+      "description": "✅ Adição ou correção de testes",
+      "title": "Tests"
+    },
+    "build": {
+      "description": "📦 Mudanças no sistema de build ou dependências externas",
+      "title": "Build System"
+    },
+    "ci": {
+      "description": "🔧 Mudanças em arquivos e scripts de CI/CD",
+      "title": "Continuous Integration"
+    },
+    "chore": {
+      "description": "🔨 Outras mudanças que não modificam src ou test",
+      "title": "Chores"
+    }
+  }
+}

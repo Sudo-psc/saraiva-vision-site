@@ -49,7 +49,13 @@
     "validate:bundle": "node scripts/validate-client-bundle.js",
     "production:check": "npm run build && npm run test:run",
     "check:system": "bash scripts/system-checkup-suite.sh",
-    "install:checkup-cron": "bash scripts/install-system-checkup-cron.sh"
+    "install:checkup-cron": "bash scripts/install-system-checkup-cron.sh",
+    "commit": "git-cz",
+    "release": "semantic-release",
+    "release:dry": "semantic-release --dry-run",
+    "release:ci": "semantic-release --ci",
+    "version:preview": "bash scripts/version-preview.sh",
+    "validate:commit": "bash scripts/validate-commit-msg.sh"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.10",
@@ -98,6 +104,12 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.6",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.1.0",
     "@tailwindcss/typography": "^0.5.19",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^13.4.0",
@@ -108,6 +120,8 @@
     "@typescript-eslint/parser": "^8.44.0",
     "@vitejs/plugin-react": "^4.0.3",
     "autoprefixer": "^10.4.16",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.36.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -117,6 +131,7 @@
     "jsdom": "^23.0.1",
     "node-mocks-http": "^1.17.2",
     "postcss": "^8.4.31",
+    "semantic-release": "^24.2.9",
     "sharp": "^0.34.4",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.9.2",
@@ -135,5 +150,10 @@
     "sourcemap-codec": "npm:@jridgewell/sourcemap-codec@^1.5.0",
     "source-map": "^0.7.6",
     "inflight": "npm:lru-cache@^11.0.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

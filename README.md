@@ -19,6 +19,8 @@ sudo bash /home/saraiva-vision-site/DEPLOY_NOW.sh
 ## 📚 Documentação Completa
 
 - **Deploy Guide**: [`docs/deployment/DEPLOYMENT_GUIDE.md`](./docs/deployment/DEPLOYMENT_GUIDE.md) - Guia completo de deployment
+- **Versionamento**: [`docs/VERSIONING.md`](./docs/VERSIONING.md) - Sistema de versionamento automático
+- **Quick Start Versioning**: [`docs/QUICK_START_VERSIONING.md`](./docs/QUICK_START_VERSIONING.md) - Guia rápido de versionamento
 - **Projeto**: [`CLAUDE.md`](./CLAUDE.md) - Documentação principal do projeto
 - **Troubleshooting**: [`TROUBLESHOOTING.md`](./TROUBLESHOOTING.md) - Resolução de problemas
 - **Security**: [`SECURITY.md`](./SECURITY.md) - Práticas de segurança
@@ -29,6 +31,8 @@ sudo bash /home/saraiva-vision-site/DEPLOY_NOW.sh
 npm run dev              # Desenvolvimento (porta 3002)
 npm run build:vite       # Build para produção (Vite)
 npm test                 # Testes
+npm run commit           # Commit padronizado (Commitizen)
+npm run release:dry      # Testar release (dry run)
 ```
 
 ## ✅ Checkup de Sistema

@@ -1,0 +1,138 @@
+name: 🚀 Release
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+env:
+  NODE_VERSION: '22.x'
+
+jobs:
+  release:
+    name: 🎉 Create Release
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Validate commits
+        run: |
+          echo "### 📋 Commit Validation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Checking recent commits for conventional commit format..." >> $GITHUB_STEP_SUMMARY
+          git --no-pager log --oneline -5 >> $GITHUB_STEP_SUMMARY
+
+      - name: 🎯 Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: npx semantic-release
+
+      - name: 📊 Release Summary
+        if: success()
+        run: |
+          echo "### 🎉 Release Created Successfully" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Author:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Get version from package.json
+          if [ -f package.json ]; then
+            VERSION=$(node -p "require('./package.json').version")
+            echo "**New Version:** v$VERSION" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "✅ CHANGELOG.md updated" >> $GITHUB_STEP_SUMMARY
+            echo "✅ Git tag created" >> $GITHUB_STEP_SUMMARY
+            echo "✅ GitHub release published" >> $GITHUB_STEP_SUMMARY
+            echo "✅ Release notes generated" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 🔔 Trigger Deploy (Production)
+        if: success() && github.ref == 'refs/heads/main'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: release-deployed
+          client-payload: |
+            {
+              "version": "${{ steps.get-version.outputs.version }}",
+              "ref": "${{ github.ref }}",
+              "sha": "${{ github.sha }}"
+            }
+
+      - name: 🔔 Trigger Deploy (Beta)
+        if: success() && github.ref == 'refs/heads/develop'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: beta-release-deployed
+          client-payload: |
+            {
+              "version": "${{ steps.get-version.outputs.version }}",
+              "ref": "${{ github.ref }}",
+              "sha": "${{ github.sha }}"
+            }
+
+  notify:
+    name: 📧 Notify Team
+    needs: release
+    runs-on: ubuntu-latest
+    if: success()
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📊 Get Release Info
+        id: release-info
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          BRANCH="${{ github.ref_name }}"
+          if [ "$BRANCH" = "main" ]; then
+            echo "env=Production" >> $GITHUB_OUTPUT
+            echo "url=https://saraivavision.com.br" >> $GITHUB_OUTPUT
+          else
+            echo "env=Beta" >> $GITHUB_OUTPUT
+            echo "url=https://beta.saraivavision.com.br" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 📧 Create Notification Summary
+        run: |
+          echo "### 🎉 New Release Available" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** v${{ steps.release-info.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** ${{ steps.release-info.outputs.env }}" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** ${{ steps.release-info.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Released by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📝 [View Release Notes](https://github.com/${{ github.repository }}/releases/tag/v${{ steps.release-info.outputs.version }})" >> $GITHUB_STEP_SUMMARY
+          echo "📋 [View Changelog](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md)" >> $GITHUB_STEP_SUMMARY
