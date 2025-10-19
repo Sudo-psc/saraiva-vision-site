@@ -248,9 +248,16 @@ const Contact = () => {
 
     try {
       // Execute reCAPTCHA v3 to obtain token (if available)
-      const token = await executeRecaptcha('contact');
-      // Continue without token if reCAPTCHA is not configured
-      // Backend will handle fallback with honeypot validation
+      let token = null;
+      try {
+        token = await executeRecaptcha('contact');
+      } catch (recaptchaError) {
+        console.warn('reCAPTCHA execution failed, using fallback:', recaptchaError);
+        token = null;
+      }
+
+      // Ensure we always have a token value (even if null/undefined)
+      // Backend will handle fallback with honeypot validation when token is null
 
       // Use the enhanced API utility
       submissionData = {
@@ -259,7 +266,7 @@ const Contact = () => {
         phone: formData.phone,
         message: formData.message,
         consent: formData.consent,
-        token: token,
+        token: token || '', // Ensure token is always a string
         action: 'contact'
       };
 

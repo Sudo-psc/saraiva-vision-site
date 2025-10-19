@@ -168,7 +168,8 @@ export async function submitContactForm(formData, options = {}) {
     }
 
     // Validate required fields
-    const requiredFields = ['name', 'email', 'message', 'token'];
+    const requiredFields = ['name', 'email', 'message'];
+    // Token is optional - allow fallback when reCAPTCHA is not available
     const missingFields = requiredFields.filter(field => !formData[field]);
 
     if (missingFields.length > 0) {

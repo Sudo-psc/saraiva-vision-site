@@ -25,24 +25,49 @@ const AnalyticsFallback = () => {
   // Enviar dados via server-side proxy
   const sendServerSideAnalytics = useCallback(async (data) => {
     try {
+      // Sanitize data to prevent circular references
+      const sanitizedData = {
+        v: 1,
+        tid: 'G-LXWRK8ELS6',
+        cid: getClientId(),
+        t: 'pageview',
+        dl: window.location.href,
+        ua: navigator.userAgent,
+        dr: document.referrer
+      };
+
+      // Only add safe properties from data
+      if (data && typeof data === 'object') {
+        Object.keys(data).forEach(key => {
+          const value = data[key];
+          // Only include primitive values and safe objects
+          if (value === null || value === undefined ||
+              typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+            sanitizedData[key] = value;
+          } else if (typeof value === 'object' && !value.nodeType && !value.jquery) {
+            // Shallow copy safe object properties (avoid DOM elements)
+            try {
+              sanitizedData[key] = JSON.parse(JSON.stringify(value));
+            } catch (e) {
+              // Skip circular or non-serializable objects
+              console.warn(`⚠️ Skipping circular/non-serializable data for key "${key}"`);
+            }
+          }
+        });
+      }
+
       const response = await fetch('/api/analytics/ga', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          v: 1,
-          tid: 'G-LXWRK8ELS6',
-          cid: getClientId(),
-          t: 'pageview',
-          dl: window.location.href,
-          ua: navigator.userAgent,
-          dr: document.referrer,
-          ...data
-        })
+        body: JSON.stringify(sanitizedData)
       });
 
-      if (response.ok) {
+      // Handle 204 No Content responses (analytics endpoints often return empty responses)
+      if (response.status === 204) {
+        console.log('✅ Server-side analytics sent successfully');
+      } else if (response.ok) {
         console.log('✅ Server-side analytics sent successfully');
       } else {
         console.warn('⚠️ Server-side analytics failed:', response.status);
@@ -55,23 +80,45 @@ const AnalyticsFallback = () => {
   // Enviar eventos GTM via server-side
   const sendServerSideGTM = useCallback(async (eventName, eventData = {}) => {
     try {
+      // Sanitize eventData to prevent circular references
+      const sanitizedEventData = {
+        event: eventName,
+        page: {
+          location: window.location.href,
+          title: document.title,
+          path: window.location.pathname
+        },
+        user_properties: {
+          user_agent: navigator.userAgent
+        }
+      };
+
+      // Only add safe properties from eventData
+      if (eventData && typeof eventData === 'object') {
+        Object.keys(eventData).forEach(key => {
+          const value = eventData[key];
+          // Only include primitive values and safe objects
+          if (value === null || value === undefined ||
+              typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+            sanitizedEventData[key] = value;
+          } else if (typeof value === 'object' && !value.nodeType && !value.jquery) {
+            // Shallow copy safe object properties (avoid DOM elements)
+            try {
+              sanitizedEventData[key] = JSON.parse(JSON.stringify(value));
+            } catch (e) {
+              // Skip circular or non-serializable objects
+              console.warn(`⚠️ Skipping circular/non-serializable data for key "${key}"`);
+            }
+          }
+        });
+      }
+
       const response = await fetch('/api/analytics/gtm', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          event: eventName,
-          page: {
-            location: window.location.href,
-            title: document.title,
-            path: window.location.pathname
-          },
-          user_properties: {
-            user_agent: navigator.userAgent
-          },
-          ...eventData
-        })
+        body: JSON.stringify(sanitizedEventData)
       });
 
       if (response.ok) {
