@@ -362,22 +362,4 @@ const fetcher = new FetchWithRetry({
   timeout: 30000
 });
 
-// Exemplo: Request com retry
-fetcher.fetch('/api/analytics/ga', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ event: 'pageview', page: '/lentes' })
-})
-  .then(response => response.json())
-  .then(data => console.log('Success:', data))
-  .catch(error => console.error('Failed:', error));
-
-// Analytics com buffer
-const analytics = new AnalyticsService();
-
-analytics.sendGA({
-  event: 'pageview',
-  page: window.location.pathname
-});
-
 export { FetchWithRetry, CircuitBreaker, AnalyticsService };
