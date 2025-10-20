@@ -22,10 +22,51 @@ const AnalyticsFallback = () => {
     return clientId;
   }, []);
 
+  // Helper function to deeply sanitize data and remove circular references
+  const deepSanitize = useCallback((value, seen = new WeakSet()) => {
+    if (value === null || value === undefined) {
+      return value;
+    }
+
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+      return value;
+    }
+
+    if (typeof value === 'object') {
+      if (value.nodeType || value.jquery || value instanceof Element || value instanceof Node) {
+        return undefined;
+      }
+
+      if (seen.has(value)) {
+        return undefined;
+      }
+
+      seen.add(value);
+
+      if (Array.isArray(value)) {
+        return value.map(item => deepSanitize(item, seen)).filter(item => item !== undefined);
+      }
+
+      const sanitized = {};
+      for (const key of Object.keys(value)) {
+        try {
+          const sanitizedValue = deepSanitize(value[key], seen);
+          if (sanitizedValue !== undefined) {
+            sanitized[key] = sanitizedValue;
+          }
+        } catch (e) {
+          continue;
+        }
+      }
+      return sanitized;
+    }
+
+    return undefined;
+  }, []);
+
   // Enviar dados via server-side proxy
   const sendServerSideAnalytics = useCallback(async (data) => {
     try {
-      // Sanitize data to prevent circular references
       const sanitizedData = {
         v: 1,
         tid: 'G-LXWRK8ELS6',
@@ -36,24 +77,17 @@ const AnalyticsFallback = () => {
         dr: document.referrer
       };
 
-      // Only add safe properties from data
       if (data && typeof data === 'object') {
-        Object.keys(data).forEach(key => {
-          const value = data[key];
-          // Only include primitive values and safe objects
-          if (value === null || value === undefined ||
-              typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-            sanitizedData[key] = value;
-          } else if (typeof value === 'object' && !value.nodeType && !value.jquery) {
-            // Shallow copy safe object properties (avoid DOM elements)
-            try {
-              sanitizedData[key] = JSON.parse(JSON.stringify(value));
-            } catch (e) {
-              // Skip circular or non-serializable objects
-              console.warn(`⚠️ Skipping circular/non-serializable data for key "${key}"`);
-            }
-          }
-        });
+        const sanitizedCustomData = deepSanitize(data);
+        Object.assign(sanitizedData, sanitizedCustomData);
+      }
+
+      let requestBody;
+      try {
+        requestBody = JSON.stringify(sanitizedData);
+      } catch (stringifyError) {
+        console.error('❌ Failed to stringify analytics data:', stringifyError);
+        return;
       }
 
       const response = await fetch('/api/analytics/ga', {
@@ -61,10 +95,9 @@ const AnalyticsFallback = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(sanitizedData)
+        body: requestBody
       });
 
-      // Handle 204 No Content responses (analytics endpoints often return empty responses)
       if (response.status === 204) {
         console.log('✅ Server-side analytics sent successfully');
       } else if (response.ok) {
@@ -75,12 +108,11 @@ const AnalyticsFallback = () => {
     } catch (error) {
       console.error('❌ Server-side analytics error:', error);
     }
-  }, [getClientId]);
+  }, [getClientId, deepSanitize]);
 
   // Enviar eventos GTM via server-side
   const sendServerSideGTM = useCallback(async (eventName, eventData = {}) => {
     try {
-      // Sanitize eventData to prevent circular references
       const sanitizedEventData = {
         event: eventName,
         page: {
@@ -93,24 +125,17 @@ const AnalyticsFallback = () => {
         }
       };
 
-      // Only add safe properties from eventData
       if (eventData && typeof eventData === 'object') {
-        Object.keys(eventData).forEach(key => {
-          const value = eventData[key];
-          // Only include primitive values and safe objects
-          if (value === null || value === undefined ||
-              typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-            sanitizedEventData[key] = value;
-          } else if (typeof value === 'object' && !value.nodeType && !value.jquery) {
-            // Shallow copy safe object properties (avoid DOM elements)
-            try {
-              sanitizedEventData[key] = JSON.parse(JSON.stringify(value));
-            } catch (e) {
-              // Skip circular or non-serializable objects
-              console.warn(`⚠️ Skipping circular/non-serializable data for key "${key}"`);
-            }
-          }
-        });
+        const sanitizedCustomData = deepSanitize(eventData);
+        Object.assign(sanitizedEventData, sanitizedCustomData);
+      }
+
+      let requestBody;
+      try {
+        requestBody = JSON.stringify(sanitizedEventData);
+      } catch (stringifyError) {
+        console.error(`❌ Failed to stringify GTM event "${eventName}":`, stringifyError);
+        return;
       }
 
       const response = await fetch('/api/analytics/gtm', {
@@ -118,7 +143,7 @@ const AnalyticsFallback = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(sanitizedEventData)
+        body: requestBody
       });
 
       if (response.ok) {
@@ -129,7 +154,7 @@ const AnalyticsFallback = () => {
     } catch (error) {
       console.error(`❌ GTM event "${eventName}" error:`, error);
     }
-  }, []);
+  }, [deepSanitize]);
 
   useEffect(() => {
     // Verificar se scripts do Google foram bloqueados
