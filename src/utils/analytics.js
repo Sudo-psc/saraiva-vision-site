@@ -109,7 +109,14 @@ export function trackGA(eventName, parameters = {}) {
   }
 
   try {
-    window.gtag('event', eventName, parameters);
+    // Isolamento: wrap em setTimeout para evitar quebra do call stack principal
+    setTimeout(() => {
+      try {
+        window.gtag('event', eventName, parameters);
+      } catch (innerError) {
+        console.error('GA tracking error (isolated):', innerError);
+      }
+    }, 0);
     return true;
   } catch (error) {
     console.error('GA tracking error:', error);
@@ -128,7 +135,14 @@ export function trackMeta(eventName, parameters = {}) {
   }
 
   try {
-    window.fbq('track', eventName, parameters);
+    // Isolamento: wrap em setTimeout para evitar quebra do call stack principal
+    setTimeout(() => {
+      try {
+        window.fbq('track', eventName, parameters);
+      } catch (innerError) {
+        console.error('Meta tracking error (isolated):', innerError);
+      }
+    }, 0);
     return true;
   } catch (error) {
     console.error('Meta tracking error:', error);
@@ -162,18 +176,29 @@ export function bindConsentUpdates() {
   if (consentBound) return;
 
   onConsentChange((consent) => {
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('consent', 'update', {
-        analytics_storage: consent.analytics_storage || 'denied',
-        ad_storage: consent.ad_storage || 'denied',
-        ad_user_data: consent.ad_user_data || 'denied',
-        ad_personalization: consent.ad_personalization || 'denied',
-      });
-    }
+    // Isolamento: Wrap em setTimeout para evitar quebra do call stack
+    setTimeout(() => {
+      try {
+        if (typeof window !== 'undefined' && window.gtag) {
+          window.gtag('consent', 'update', {
+            analytics_storage: consent.analytics_storage || 'denied',
+            ad_storage: consent.ad_storage || 'denied',
+            ad_user_data: consent.ad_user_data || 'denied',
+            ad_personalization: consent.ad_personalization || 'denied',
+          });
+        }
+      } catch (error) {
+        console.error('gtag consent update error (isolated):', error);
+      }
 
-    if (typeof window !== 'undefined' && window.fbq) {
-      window.fbq('consent', consent.ad_storage === 'granted' ? 'grant' : 'revoke');
-    }
+      try {
+        if (typeof window !== 'undefined' && window.fbq) {
+          window.fbq('consent', consent.ad_storage === 'granted' ? 'grant' : 'revoke');
+        }
+      } catch (error) {
+        console.error('fbq consent update error (isolated):', error);
+      }
+    }, 0);
   });
 
   consentBound = true;

@@ -1,178 +1,142 @@
 import { useEffect } from 'react';
+import { loadGTM, getGTMStatus } from '../utils/gtm-wrapper.js';
 
+/**
+ * Google Tag Manager Component with Robust Error Isolation
+ *
+ * Carrega GTM com:
+ * - Isolamento completo de erros de terceiros
+ * - Circuit breaker para evitar sobrecarga
+ * - Múltiplas estratégias de fallback
+ * - Compatibilidade com adblockers
+ *
+ * @param {Object} props - Component props
+ * @param {string} props.gtmId - GTM ID (GTM-XXXXXXX)
+ */
 const GoogleTagManager = ({ gtmId }) => {
-  useEffect(() => {
-    if (!gtmId || typeof window === 'undefined') return;
+    useEffect(() => {
+        if (!gtmId || typeof window === 'undefined') return;
 
-    console.log('🏷️ Loading Google Tag Manager with anti-blocker techniques, ID:', gtmId);
+        console.log('🏷️ Loading Google Tag Manager with error isolation, ID:', gtmId);
 
-    // Anti-blocker techniques
-    const loadGTM = () => {
-      if (window.gtmLoaded) {
-        console.log('🏷️ GTM already loaded, skipping');
-        return;
-      }
+        let mounted = true;
+        let cleanupFunctions = [];
 
-      window.gtmLoaded = true;
-
-      // Initialize dataLayer
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        'gtm.start': new Date().getTime(),
-        event: 'gtm.js'
-      });
-
-      console.log('🏷️ Loading GTM script with anti-blocker techniques...');
-
-      // Technique 1: Try to load via multiple methods
-      const loadScript = (src, callback) => {
-        try {
-          // Method 1: Dynamic script injection
-          const script = document.createElement('script');
-          script.async = true;
-          script.src = src;
-          script.crossOrigin = 'anonymous';
-
-          // Anti-detection techniques
-          script.setAttribute('data-cfasync', 'false');
-          script.type = 'text/javascript';
-
-          const timestamp = new Date().getTime();
-          script.src = `${src}&t=${timestamp}`;
-
-          script.onload = () => {
-            console.log('✅ GTM script loaded successfully');
-            callback(true);
-          };
-
-          script.onerror = () => {
-            console.warn('⚠️ GTM script failed to load - likely blocked');
-
-            // Method 2: Try using fetch + eval (some blockers miss this)
+        /**
+         * Carrega GTM com isolamento de erros
+         */
+        const initializeGTM = async () => {
             try {
-              fetch(src, {
-                method: 'GET',
-                mode: 'cors',
-                cache: 'no-cache'
-              })
-              .then(response => response.text())
-              .then(scriptContent => {
-                const scriptElement = document.createElement('script');
-                scriptElement.textContent = scriptContent;
-                scriptElement.onload = () => {
-                  console.log('✅ GTM loaded via fetch+eval technique');
-                  callback(true);
-                };
-                scriptElement.onerror = () => {
-                  console.log('❌ All GTM loading methods failed');
-                  callback(false);
-                };
-                document.head.appendChild(scriptElement);
-              })
-              .catch(() => {
-                console.log('❌ All GTM loading methods failed');
-                callback(false);
-              });
+                // Verifica se já está carregado
+                const status = getGTMStatus();
+                if (status.loaded) {
+                    console.log('🏷️ GTM already loaded, skipping');
+                    return;
+                }
+
+                // Tenta carregar imediatamente
+                const loaded = await loadGTM(gtmId);
+
+                if (loaded) {
+                    console.log('✅ GTM loaded successfully');
+                } else {
+                    console.warn('⚠️ GTM failed to load (circuit breaker or network issue)');
+                }
             } catch (error) {
-              console.log('❌ Fetch+eval technique failed:', error);
-              callback(false);
+                // Isolamento: erro nunca propaga
+                console.error('[GTM Component] Initialization error (isolated):', error);
             }
-          };
+        };
 
-          const firstScript = document.getElementsByTagName('script')[0];
-          firstScript.parentNode.insertBefore(script, firstScript);
+        /**
+         * Estratégia de carregamento com delays progressivos
+         */
+        const loadWithStrategy = () => {
+            try {
+                // Imediato
+                initializeGTM();
 
-        } catch (error) {
-          console.error('❌ Error loading GTM:', error);
-          callback(false);
-        }
-      };
+                // Fallback com delays progressivos
+                const delays = [1000, 3000, 5000];
+                delays.forEach(delay => {
+                    const timerId = setTimeout(() => {
+                        if (!mounted) return;
 
-      // Try local proxy first, then Google domains
-      const domains = [
-        `/gtm.js?id=${gtmId}`, // Local proxy - bypasses ad blockers
-        `https://www.googletagmanager.com/gtm.js?id=${gtmId}`,
-        `https://googletagmanager.com/gtm.js?id=${gtmId}`,
-        `https://www.google-analytics.com/analytics.js` // Alternative GA script
-      ];
+                        const status = getGTMStatus();
+                        if (!status.loaded) {
+                            console.log(`🔄 Retrying GTM load after ${delay}ms`);
+                            initializeGTM();
+                        }
+                    }, delay);
 
-      let attemptIndex = 0;
-      const tryNextDomain = (success) => {
-        if (success) {
-          // Add noscript fallback for users with JS disabled
-          const noscript = document.createElement('noscript');
-          const iframe = document.createElement('iframe');
-          iframe.src = `https://www.googletagmanager.com/ns.html?id=${gtmId}`;
-          iframe.height = '0';
-          iframe.width = '0';
-          iframe.style.display = 'none';
-          iframe.style.visibility = 'hidden';
-          noscript.appendChild(iframe);
-          document.body.insertBefore(noscript, document.body.firstChild);
+                    cleanupFunctions.push(() => clearTimeout(timerId));
+                });
+            } catch (error) {
+                console.error('[GTM Component] loadWithStrategy error (isolated):', error);
+            }
+        };
 
-          // GTM loaded successfully
-          return;
-        }
+        /**
+         * Carrega GTM em interação do usuário (fallback final)
+         */
+        const loadOnInteraction = () => {
+            try {
+                if (!mounted) return;
 
-        attemptIndex++;
-        if (attemptIndex < domains.length) {
-          console.log(`🔄 Trying alternative domain (${attemptIndex}/${domains.length})`);
-          setTimeout(() => loadScript(domains[attemptIndex], tryNextDomain), 100);
-        } else {
-          console.log('❌ All GTM loading methods failed - likely blocked by ad blocker');
-        }
-      };
+                const status = getGTMStatus();
+                if (!status.loaded) {
+                    console.log('🏷️ Loading GTM on user interaction (final fallback)');
+                    initializeGTM();
+                }
 
-      loadScript(domains[0], tryNextDomain);
-    };
+                // Remove listeners após primeira interação
+                interactionEvents.forEach(event => {
+                    window.removeEventListener(event, loadOnInteraction);
+                });
+            } catch (error) {
+                console.error('[GTM Component] loadOnInteraction error (isolated):', error);
+            }
+        };
 
-    // Load GTM immediately with additional fallback strategies
-    const loadStrategies = [
-      () => loadGTM(), // Immediate load
-      () => setTimeout(loadGTM, 1000), // Delayed load 1s
-      () => setTimeout(loadGTM, 3000), // Delayed load 3s
-      () => setTimeout(loadGTM, 5000), // Delayed load 5s
-    ];
+        // Eventos de interação para fallback
+        const interactionEvents = ['mousedown', 'touchstart', 'scroll', 'keydown'];
 
-    // Execute all load strategies
-    loadStrategies.forEach((strategy, index) => {
-      if (index === 0) {
-        strategy(); // Execute immediately
-      } else {
-        // Only execute if GTM not loaded yet
-        setTimeout(() => {
-          if (!window.gtmLoaded) {
-            strategy();
-          }
-        }, index * 1000);
-      }
-    });
+        // Adiciona listeners com isolamento de erro
+        interactionEvents.forEach(event => {
+            try {
+                window.addEventListener(event, loadOnInteraction, {
+                    once: false,
+                    passive: true
+                });
+            } catch (error) {
+                console.error(`[GTM Component] addEventListener error for ${event} (isolated):`, error);
+            }
+        });
 
-    // Keep interaction loading as backup
-    const interactionEvents = ['mousedown', 'touchstart', 'scroll', 'keydown'];
-    const loadOnInteraction = () => {
-      if (!window.gtmLoaded) {
-        console.log('🏷️ Loading GTM on user interaction (final fallback)');
-        loadGTM();
-      }
-      interactionEvents.forEach(event => {
-        window.removeEventListener(event, loadOnInteraction);
-      });
-    };
+        // Inicia estratégia de carregamento
+        loadWithStrategy();
 
-    // Add multiple event listeners for better coverage
-    interactionEvents.forEach(event => {
-      window.addEventListener(event, loadOnInteraction, { once: false, passive: true });
-    });
+        // Cleanup
+        return () => {
+            mounted = false;
 
-    return () => {
-      interactionEvents.forEach(event => {
-        window.removeEventListener(event, loadOnInteraction);
-      });
-    };
-  }, [gtmId]);
+            // Remove event listeners
+            interactionEvents.forEach(event => {
+                try {
+                    window.removeEventListener(event, loadOnInteraction);
+                } catch {}
+            });
 
-  return null;
+            // Cleanup timers
+            cleanupFunctions.forEach(cleanup => {
+                try {
+                    cleanup();
+                } catch {}
+            });
+        };
+    }, [gtmId]);
+
+    return null;
 };
 
 export default GoogleTagManager;
