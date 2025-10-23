@@ -336,6 +336,25 @@ const PlansPage = () => {
           </div>
         </section>
 
+        {/* CTA para planos flex (sem fidelidade) */}
+        <section className="mb-6">
+          <div className="max-w-4xl mx-auto bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-2xl p-4 md:p-5 shadow-lg text-center">
+            <h3 className="text-lg font-bold text-gray-900 mb-2">
+              Prefere planos sem fidelidade?
+            </h3>
+            <p className="text-gray-600 mb-3">
+              Conheça nossos planos presenciais flex: cancele quando quiser, sem multas ou burocracia
+            </p>
+            <Link
+              to="/planosflex"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+            >
+              Ver Planos Sem Fidelidade
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </section>
+
         {/* FAQ Section */}
         <section className="!py-4 mb-4">
           <div className="max-w-4xl mx-auto">

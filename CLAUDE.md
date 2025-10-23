@@ -162,6 +162,11 @@ Reports are stored in `reports/system-checkup/` and cover:
 ├── src/                     # Frontend source code
 │   ├── components/          # React components (PascalCase.jsx)
 │   ├── pages/              # Route components with lazy loading
+│   ├── modules/            # Feature modules (blog, payments, core)
+│   │   ├── blog/           # Blog feature module
+│   │   ├── payments/       # Payment plans and subscription features
+│   │   │   └── pages/      # Plan pages (PlansPage, PlanosFlexPage, etc.)
+│   │   └── core/           # Core shared components
 │   ├── hooks/              # Custom React hooks (camelCase.js)
 │   ├── lib/                # Core utilities + LGPD compliance
 │   ├── data/               # Static data (blogPosts.js, podcastEpisodes.js)
@@ -173,7 +178,7 @@ Reports are stored in `reports/system-checkup/` and cover:
 │   │   ├── server.js       # Main Express server (port 3001)
 │   │   ├── routes/         # Express route handlers
 │   │   ├── middleware/     # Express middleware
-│   │   ├── webhooks/       # Webhook handlers
+│   │   ├── webhooks/       # Webhook handlers (Stripe integration)
 │   │   ├── lib/            # API libraries and config
 │   │   └── utils/          # API utilities
 │   └── *.js                # Legacy serverless functions (now using Express routes)
@@ -331,8 +336,13 @@ strings /var/www/saraivavision/current/assets/index-*.js | grep "EXPECTED_TEXT"
 **Location**: `/etc/nginx/sites-enabled/saraivavision` line 339
 
 **Current CSP** (Report-Only mode):
-- Allows: Google Analytics, GTM, Supabase, Maps, Spotify, Ninsaude
+- Allows: Google Analytics, GTM, Supabase, Maps, Spotify, Ninsaude, Stripe
 - Add new domains to: `script-src`, `connect-src`, `frame-src` as needed
+
+**Stripe Integration**:
+- `script-src`: Includes `https://js.stripe.com` for Pricing Table script
+- `frame-src`: Includes `https://js.stripe.com` for embedded checkout
+- Pricing table loads dynamically via custom element `<stripe-pricing-table>`
 
 ### Environment Variable Issues
 ```bash
@@ -366,6 +376,10 @@ npm run restart-api  # Alternative using npm script
 - **Appointment System**: WhatsApp integration + contact forms
 - **Medical Content**: CFM-compliant healthcare information
 - **Podcast Platform**: Spotify integration with streaming
+- **Subscription Plans**: Multiple tiers with Stripe integration
+  - **Presential Plans**: Annual commitment (Basico, Padrao, Premium)
+  - **Flex Plans**: No commitment, monthly subscription via Stripe
+  - **Online Plans**: Telemedicine with national coverage
 
 ### Third-Party Integrations
 - **Google Maps/Places**: Clinic location (Place ID: ChIJVUKww7WRugARF7u2lAe7BeE)
@@ -373,6 +387,10 @@ npm run restart-api  # Alternative using npm script
 - **Supabase**: Backend services and authentication
 - **WhatsApp**: Contact and appointment booking
 - **Spotify**: Podcast streaming integration
+- **Stripe**: Payment processing and subscription management
+  - **Pricing Table ID**: `prctbl_1SLTeeLs8MC0aCdjujaEGM3N` (Planos Flex)
+  - **Publishable Key**: `pk_live_51OJdAcLs8MC0aCdjQwfyXkqJQRyRw0Au8D5C2BzxN90ekVz0AFEI6PpG0ELGQzJiRZZkWTu4Rj4BcjNZpiyH3LI800SkEiSITH`
+  - **Webhooks**: Configured for subscription lifecycle events
 
 ### Security Architecture
 - **Rate Limiting**: Nginx-based (contact: 5/min, API: 30/min, general: 100/min)
@@ -388,6 +406,14 @@ The app uses React Router v6 with aggressive code splitting:
 - Retry logic built into lazy loading for failed chunk loads
 - Manual chunk splitting configured in `vite.config.js` targets <200KB per chunk
 - Healthcare-specific chunking strategy separates medical content, analytics, maps, and UI libraries
+
+**Payment & Subscription Routes:**
+- `/planos` - Presential annual plans (PlansPage)
+- `/planosflex` - Presential flex plans without commitment (PlanosFlexPage)
+- `/planosonline` - Online telemedicine plans (PlanosOnlinePage)
+- `/planobasico`, `/planopadrao`, `/planopremium` - Individual plan detail pages
+- `/pagamentobasico`, `/pagamentopadrao`, `/pagamentopremium` - Payment pages for presential plans
+- `/pagamentobasicoonline`, `/pagamentopadraoonline`, `/pagamentopremiumonline` - Payment pages for online plans
 
 ### Google Business Service Architecture
 The Google Business integration has layered architecture:
@@ -494,6 +520,6 @@ For detailed security history, see commit logs from 2025-10-08.
 
 ---
 
-**Last Updated**: 2025-10-16
-**Version**: 3.3.0
+**Last Updated**: 2025-10-23
+**Version**: 3.4.0
 **Status**: ✅ Production Ready

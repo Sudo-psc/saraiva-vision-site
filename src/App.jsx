@@ -21,6 +21,7 @@ const PlanBasicoPage = createLazyComponent(() => import('@/modules/payments/page
 const PlanPadraoPage = createLazyComponent(() => import('@/modules/payments/pages/PlanPadraoPage.jsx'));
 const PlanPremiumPage = createLazyComponent(() => import('@/modules/payments/pages/PlanPremiumPage.jsx'));
 const PlanosOnlinePage = createLazyComponent(() => import('@/modules/payments/pages/PlanosOnlinePage.jsx'));
+const PlanosFlexPage = createLazyComponent(() => import('@/modules/payments/pages/PlanosFlexPage.jsx'));
 const PagamentoBasicoPage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoBasicoPage.jsx'));
 const PagamentoPadraoPage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoPadraoPage.jsx'));
 const PagamentoPremiumPage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoPremiumPage.jsx'));
@@ -80,6 +81,7 @@ function App() {
               <Route path="/planopadrao" element={<PlanPadraoPage />} />
               <Route path="/planopremium" element={<PlanPremiumPage />} />
               <Route path="/planosonline" element={<PlanosOnlinePage />} />
+              <Route path="/planosflex" element={<PlanosFlexPage />} />
               {/* Páginas de pagamento presencial */}
               <Route path="/pagamentobasico" element={<PagamentoBasicoPage />} />
               <Route path="/pagamentopadrao" element={<PagamentoPadraoPage />} />
