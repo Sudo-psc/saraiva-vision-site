@@ -68,7 +68,7 @@ const WaitlistPage = () => {
         description="Primeiro plano de assinatura de lentes de contato com acompanhamento médico no brasil. Comodidade e segurança. Frete grátis e entrega garantida."
         canonicalPath="/waitlist"
         keywords="assinatura lentes de contato, lentes de contato caratinga, acompanhamento médico, SVlentes, plano de assinatura lentes"
-        image="https://opengraph.b-cdn.net/production/images/38eda430-78a4-4e66-b7e1-901ce93872f7.jpg?token=CB7PD6IRyAXUw49kByYxbJLTX_cvw9RuBmTYAm7uXxo&height=1024&width=1024&expires=33297322285"
+        image="https://opengraph.b-cdn.net/production/images/38eda430-78a4-4e66-b7e1-901ce93872f7.jpg?token=dPGRQ3CElzXkgpCoycNn5GOQj6CvajduF0qOgAX2iTA&height=1024&width=1024&expires=33297338496"
       />
 
       <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-slate-50">

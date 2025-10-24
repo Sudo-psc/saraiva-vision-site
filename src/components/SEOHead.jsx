@@ -151,8 +151,8 @@ const SEOHead = ({
       <meta property="og:type" content={ogType} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:alt" content={`${validatedTitle} - Clínica Saraiva Vision`} />
-      <meta property="og:image:width" content="886" />
-      <meta property="og:image:height" content="886" />
+      <meta property="og:image:width" content="1024" />
+      <meta property="og:image:height" content="1024" />
       <meta property="og:image:type" content="image/jpeg" />
 
       {/* Medical Business Specific Open Graph */}
