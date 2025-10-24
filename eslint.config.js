@@ -16,6 +16,7 @@ export default [
       'vercel-outbox.json',
       '.vercel/**',
       '.next/**',
+      'archive/**',
       'api/**',
       'scripts/**',
       'src/__tests__/**',
@@ -23,6 +24,7 @@ export default [
       'src/sw.workbox.js',
       'playwright-report/**',
       'test-results/**',
+      'app/**',
     ],
   },
   {
