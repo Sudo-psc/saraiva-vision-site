@@ -19,6 +19,15 @@ export const metadata: Metadata = {
     siteName: 'Saraiva Vision',
     locale: 'pt_BR',
     type: 'website',
+    images: [
+      {
+        url: '/img/logo_prata.jpeg',
+        width: 886,
+        height: 886,
+        alt: 'Saraiva Vision - Logo',
+        type: 'image/jpeg',
+      },
+    ],
   },
   robots: {
     index: true,
