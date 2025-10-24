@@ -70,10 +70,10 @@ Os relatórios são armazenados em `reports/system-checkup/`.
 ## 📦 Tech Stack
 
 - **Frontend**: React 18 + Vite + TypeScript + Tailwind
-- **Backend**: Node.js + Express + Supabase
-- **Payment**: Stripe (subscriptions & checkout)
+- **Backend**: Node.js + Express
+- **Blog**: Static data (src/data/blogPosts.js)
 - **Deploy**: VPS nativo (sem Docker)
-- **Server**: Nginx + PHP-FPM + MySQL + Redis
+- **Server**: Nginx + MySQL + Redis
 
 ---
 

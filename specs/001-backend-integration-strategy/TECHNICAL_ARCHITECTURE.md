@@ -10,23 +10,24 @@
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐      │
-│  │   Vercel CDN    │    │   VPS Linux     │    │   Supabase      │      │
+│  │   VPS Linux     │    │   MySQL DB      │    │   Redis Cache   │      │
 │  │                 │    │                 │    │                 │      │
 │  │  ┌───────────┐  │    │  ┌───────────┐  │    │  ┌───────────┐  │      │
-│  │  │ Next.js   │  │────┤  │ WordPress │  │────┤  │ PostgreSQL │  │      │
-│  │  │ App       │  │    │  │ Headless  │  │    │  │ Database  │  │      │
-│  │  │ API Routes│  │    │  │ CMS       │  │    │  │ Auth      │  │      │
-│  │  │ Edge      │  │    │  │ MariaDB   │  │    │  │ Storage   │  │      │
-│  │  └───────────┘  │    │  │ Redis     │  │    │  └───────────┘  │      │
-│  └─────────────────┘    │  └───────────┘  │    └─────────────────┘      │
-│                        └─────────────────┘                              │
-│                                  │                                      │
-│         ┌─────────────────────────────────────────────────────────────┤
+│  │  │ React SPA │  │────┤  │ MySQL     │  │────┤  │ Redis     │  │      │
+│  │  │ Node.js   │  │    │  │ App Data  │  │    │  │ Sessions  │  │      │
+│  │  │ API       │  │    │  │ Contacts  │  │    │  │ Cache     │  │      │
+│  │  │ Nginx     │  │    │  │ Appts     │  │    │  │ Real-time │  │      │
+│  │  │ Static    │  │    │  │           │  │    │  │           │  │      │
+│  │  │ Blog      │  │    │  │           │  │    │  │           │  │      │
+│  │  └───────────┘  │    │  └───────────┘  │    │  └───────────┘  │      │
+│  └─────────────────┘    └─────────────────┘    └─────────────────┘      │
+│                                  │                                        │
+│         ┌─────────────────────────────────────────────────────────────┐   │
 │         │                    External Services                          │
 │         │                                                          │
 │         │  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌───────────┐   │
-│         │  │ Resend    │  │ Zenvia    │  │ Spotify   │  │ PostHog   │   │
-│         │  │ Email     │  │ SMS       │  │ API       │  │ Analytics │   │
+│         │  │ Resend    │  │ Google    │  │ Spotify   │  │ Analytics │   │
+│         │  │ Email     │  │ APIs      │  │ API       │  │ Service   │   │
 │         │  └───────────┘  └───────────┘  └───────────┘  └───────────┘   │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -37,83 +38,48 @@
 ```
 User Browser
     ↓
-Vercel CDN (Static Assets)
+React SPA (Static + Client-side)
     ↓
-Next.js App (Client-side)
-    ↓ ← ← ← ← ← ← ← ← ← ← ← ←
-API Routes (Serverless)
+API Routes (Node.js Backend)
     ↓ → → → → → → → → → → → →
-Supabase (Database/Auth)
+MySQL (Application Data)
     ↓
-WordPress Headless (Content)
-    ↓
-External Services (Email/SMS/Spotify)
+External Services (Email/SMS/Spotify/Google)
 ```
 
 ## Component Specifications
 
-### 1. Next.js Application (Vercel)
+### 1. React Application (VPS)
 
 #### Technology Stack
-- **Framework**: Next.js 14 (App Router)
+- **Framework**: React 18 (SPA)
 - **Language**: TypeScript 5.x
-- **Runtime**: Node.js 18+ (Edge Functions)
+- **Runtime**: Node.js 22+
 - **Styling**: Tailwind CSS
 - **Forms**: React Hook Form + Zod validation
 - **State Management**: React Context + useState
-- **Data Fetching**: SWR or TanStack Query
+- **Data**: Static blog posts in src/data/blogPosts.js
 
 #### Directory Structure
 ```
-frontend/
+src/
 ├── app/
 │   ├── (pages)/
-│   │   ├── page.tsx                 # Home page
+│   │   ├── page.jsx                 # Home page
 │   │   ├── about/
 │   │   ├── contact/
 │   │   ├── appointments/
 │   │   ├── podcast/
 │   │   └── blog/
-│   ├── api/                        # API Routes
-│   │   ├── contact/
-│   │   │   └── route.ts
-│   │   ├── appointments/
-│   │   │   ├── route.ts
-│   │   │   └── confirm/
-│   │   │       └── route.ts
-│   │   ├── availability/
-│   │   │   └── route.ts
-│   │   ├── podcast/
-│   │   │   ├── episodes/
-│   │   │   │   └── route.ts
-│   │   │   └── sync/
-│   │   │       └── route.ts
-│   │   ├── outbox/
-│   │   │   └── drain/
-│   │   │       └── route.ts
-│   │   ├── webhooks/
-│   │   │   ├── resend/
-│   │   │   │   └── route.ts
-│   │   │   ├── zenvia/
-│   │   │   │   └── route.ts
-│   │   │   └── wp-revalidate/
-│   │   │       └── route.ts
-│   │   ├── chatbot/
-│   │   │   └── route.ts
-│   │   └── status/
-│   │       └── route.ts
-│   ├── layout.tsx
-│   ├── globals.css
-│   └── components/
-│       ├── ui/
-│       ├── forms/
-│       ├── layout/
-│       └── dashboard/
+│   ├── components/
+│   │   ├── ui/
+│   │   ├── forms/
+│   │   └── layout/
 ├── lib/
-│   ├── db/
-│   ├── validations/
 │   ├── services/
 │   └── utils/
+├── data/
+│   └── blogPosts.js               # Static blog content
 ├── public/
 └── types/
 ```
@@ -179,15 +145,14 @@ wp plugin install wordpress-seo --activate
 wp plugin install disable-comments --activate
 ```
 
-### 3. Database Layer (Supabase)
+### 3. Database Layer (MySQL)
 
 #### Technology Stack
-- **Database**: PostgreSQL 15+
-- **Authentication**: Supabase Auth
-- **Real-time**: Supabase Realtime
-- **Storage**: Supabase Storage
-- **RLS**: Row Level Security
+- **Database**: MySQL 8.0+
+- **Connection**: Native MySQL driver
+- **Caching**: Redis for query results
 - **Backups**: Automated daily backups
+- **Transactions**: ACID compliance for critical operations
 
 #### Schema Implementation
 ```sql
@@ -487,91 +452,99 @@ interface AlertThresholds {
 
 ## Deployment Architecture
 
-### 1. Vercel Configuration
-```json
-// vercel.json
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "app/**/*",
-      "use": "@vercel/next"
+### 1. VPS Deployment Configuration
+
+#### Nginx Configuration
+```nginx
+# /etc/nginx/sites-available/saraivavision
+server {
+    listen 80;
+    server_name saraivavision.com.br www.saraivavision.com.br;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name saraivavision.com.br www.saraivavision.com.br;
+    
+    # SSL Configuration
+    ssl_certificate /etc/letsencrypt/live/saraivavision.com.br/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/saraivavision.com.br/privkey.pem;
+    
+    # React SPA
+    root /var/www/html;
+    index index.html;
+    
+    location / {
+        try_files $uri $uri/ /index.html;
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+    
+    # API proxy
+    location /api/ {
+        proxy_pass http://localhost:3001/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  },
-  "crons": [
-    {
-      "path": "/api/outbox/drain",
-      "schedule": "*/5 * * * *"
-    },
-    {
-      "path": "/api/podcast/sync",
-      "schedule": "0,30 * * * *"
-    }
-  ]
 }
 ```
 
-### 2. External WordPress API Configuration
-
-**Note**: WordPress is hosted externally and consumed via REST API. No local installation required.
-
-**External WordPress Endpoints**:
-- **API Base**: `https://cms.saraivavision.com.br`
-- **REST API**: `https://cms.saraivavision.com.br/wp-json/wp/v2/`
-- **Authentication**: JWT tokens for admin operations
-- **Public Access**: Posts and pages via REST API (no auth required)
-
-**Environment Configuration**:
+#### Environment Configuration
 ```bash
-# .env.production
-VITE_WORDPRESS_API_URL=https://cms.saraivavision.com.br
-VITE_WORDPRESS_SITE_URL=https://cms.saraivavision.com.br
-VITE_WORDPRESS_GRAPHQL_ENDPOINT=https://cms.saraivavision.com.br/graphql
+# .env.production (VPS)
+NODE_ENV=production
+PORT=3001
+
+# Database
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=saraiva_vision
+DB_USER=api_user
+DB_PASSWORD=secure_password
+
+# Redis
+REDIS_URL=redis://localhost:6379
+
+# External Services
+VITE_GOOGLE_MAPS_API_KEY=your_key
+RESEND_API_KEY=your_key
 ```
 
-**Integration Architecture**:
-```
-React Frontend (VPS) → REST API → External WordPress CMS
-                     ↓
-                 Supabase Cache
-                     ↓
-              Fallback System
-```
+### 2. Static Blog Deployment
 
-See [WORDPRESS_CMS_URL_ARCHITECTURE.md](../../docs/WORDPRESS_CMS_URL_ARCHITECTURE.md) for complete integration details.
+**Note**: Blog content is stored in version-controlled source code (src/data/blogPosts.js). No external CMS required.
+
+**Blog Content Management**:
+- **Edit**: Modify src/data/blogPosts.js directly
+- **Version Control**: Full Git history of all content changes
+- **Deployment**: Build and deploy like any code change
+- **Zero Dependencies**: No external services or databases
+
+**Blog Data Flow**:
+```
+Git Repository → Build Process → Static Bundle → VPS Deployment
+     ↓
+src/data/blogPosts.js → Bundled in JS → Served to Browser
+```
 
 ## Disaster Recovery
 
 ### 1. Backup Strategy
 
-**External WordPress**: Managed by external hosting provider
-- Database backups handled externally
-- Content accessible via REST API
-- Local cache in Supabase provides redundancy
-
-**Local Data Backup**:
+**Application Data**: 
 ```bash
 #!/bin/bash
-# Backup Supabase cache and application data
+# Backup MySQL database and application data
 BACKUP_DIR="/backups/$(date +%Y-%m-%d)"
 mkdir -p "$BACKUP_DIR"
 
-# Supabase data backup (via pg_dump or Supabase CLI)
+# MySQL backup
+mysqldump -u root -p saraiva_vision > "$BACKUP_DIR/database.sql"
+
 # Application configuration backup
-tar -czf "$BACKUP_DIR/app-config.tar.gz" .env.production nginx-optimized.conf
+tar -czf "$BACKUP_DIR/app-config.tar.gz" .env.production /etc/nginx/sites-available/saraivavision
+
+# Blog content is version controlled in Git (no separate backup needed)
 ```
 
 ### 2. Failover Procedures
@@ -584,9 +557,6 @@ interface HealthCheck {
   // External service connectivity
   externalServices(): Promise<boolean>;
 
-  // WordPress API availability
-  wordpress(): Promise<boolean>;
-
   // Overall system health
   system(): Promise<{
     healthy: boolean;
@@ -598,7 +568,7 @@ interface HealthCheck {
 
 ## Conclusion
 
-This technical architecture provides a robust, scalable foundation for Saraiva Vision's digital transformation. The hybrid approach leverages the strengths of both Vercel (frontend performance) and VPS (CMS flexibility), while maintaining security, performance, and reliability throughout the system.
+This technical architecture provides a robust, scalable foundation for Saraiva Vision's digital transformation. The architecture leverages native VPS deployment for maximum performance and control, with a simplified static blog system that eliminates external dependencies while maintaining security, performance, and reliability throughout the system.
 
 The architecture is designed to:
 - Scale horizontally as the business grows
@@ -606,5 +576,13 @@ The architecture is designed to:
 - Provide comprehensive monitoring and observability
 - Ensure security and compliance with LGPD requirements
 - Enable rapid development and deployment cycles
+- Minimize external dependencies for maximum reliability
+
+Key advantages of this architecture:
+- **Zero CMS Overhead**: Static blog content with no database queries
+- **Version-Controlled Content**: Complete audit trail in Git
+- **Native Performance**: Direct VPS deployment without containerization
+- **Simplified Maintenance**: Fewer moving parts and external services
+- **Maximum Control**: Full control over infrastructure and deployment
 
 Regular review and optimization of this architecture will ensure it continues to meet business needs as they evolve.
