@@ -8,7 +8,7 @@ This directory contains comprehensive documentation for the Saraiva Vision medic
 - **[PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md)** - Complete project documentation (3,000+ lines)
   - Project overview and architecture
   - Frontend and backend implementation details
-  - Recent improvements and WordPress compatibility layer
+  - Recent improvements and static blog system
   - Component system and API integration patterns
   - Development workflows and testing strategies
   - Deployment guide and VPS configuration
@@ -52,13 +52,13 @@ sudo ./setup-vps-native.sh
 ### ✅ Technical Architecture
 - **React 18** with TypeScript and Vite
 - **Native VPS deployment** without Docker
-- **Hybrid database** (Supabase + MySQL)
-- **WordPress headless CMS** integration
+- **Static blog system** (no CMS/database)
+- **Supabase backend** for dynamic features
 - **Medical compliance** (CFM + LGPD)
 
 ### ✅ Recent Achievements
 - **VPS Migration**: Complete migration from Vercel to native VPS
-- **WordPress Compatibility**: GraphQL integration with backward compatibility
+- **Static Blog System**: Zero-CMS architecture with static data
 - **ReferenceError Resolution**: Fixed ES module compatibility issues
 - **Performance Optimization**: Sub-3 second load times achieved
 - **Security Enhancement**: Comprehensive input validation and monitoring
@@ -111,8 +111,7 @@ sudo ./setup-vps-native.sh
 ### Backend Stack
 - **Node.js 22+** with ES modules
 - **Supabase 2.30.0** for primary database
-- **MySQL** for WordPress and caching
-- **Redis** for session management
+- **Redis** for caching and session management
 - **Nginx** for web server and proxy
 
 ### Development Tools
@@ -126,7 +125,7 @@ sudo ./setup-vps-native.sh
 ### VPS Deployment Optimization (September 2024)
 - ✅ Complete migration from Vercel to native VPS
 - ✅ ES module compatibility fixes (ReferenceError resolution)
-- ✅ WordPress GraphQL integration with compatibility layer
+- ✅ Static blog system implementation (zero-CMS)
 - ✅ Performance optimization and build system improvements
 - ✅ Security enhancements and monitoring systems
 - ✅ Automated deployment scripts and health checks

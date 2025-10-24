@@ -33,7 +33,8 @@ nano .env
 **Required Environment Variables:**
 ```bash
 VITE_GOOGLE_MAPS_API_KEY=your_google_maps_key
-VITE_WORDPRESS_API_URL=https://blog.saraivavision.com.br/graphql
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 ### 3. Start Development Server
@@ -76,7 +77,7 @@ npm run build
 ### 3. Verify Deployment
 ```bash
 # Check services status
-sudo systemctl status nginx saraiva-api mysql redis
+sudo systemctl status nginx saraiva-api redis
 
 # Test website
 curl -f https://yourdomain.com
@@ -162,12 +163,16 @@ const response = await fetch('/api/contact', {
 const result = await response.json();
 ```
 
-### API Integration
+### Blog Posts (Static Data)
 ```javascript
-// WordPress posts
-import { getAllPosts } from './lib/wordpress-api.js';
+// Blog posts are static data in src/data/blogPosts.js
+import { blogPosts } from './data/blogPosts.js';
 
-const { posts, error } = await getAllPosts({ first: 10 });
+// Get all posts
+const posts = blogPosts;
+
+// Filter by category
+const filteredPosts = blogPosts.filter(post => post.category === 'Saúde Ocular');
 ```
 
 ## 🐛 Quick Troubleshooting
@@ -192,7 +197,7 @@ npm run dev -- --port 3003
 ### VPS Service Issues
 ```bash
 # Check all services
-sudo systemctl status nginx saraiva-api mysql redis
+sudo systemctl status nginx saraiva-api redis
 
 # Restart failed services
 sudo systemctl restart nginx saraiva-api
@@ -201,13 +206,13 @@ sudo systemctl restart nginx saraiva-api
 sudo journalctl -u saraiva-api -f
 ```
 
-### Database Connection Issues
+### API Connection Issues
 ```bash
-# Test MySQL connection
-mysql -u root -p -e "SHOW DATABASES;"
-
 # Test Node.js API health
-curl http://localhost:3001/api/monitoring/health
+curl http://localhost:3001/api/health
+
+# Test Redis cache
+redis-cli ping
 ```
 
 ## 📚 Next Steps
@@ -223,9 +228,9 @@ curl http://localhost:3001/api/monitoring/health
 3. **Backup Procedures**: [Backup Documentation](./PROJECT_DOCUMENTATION.md#deployment-guide)
 
 ### For Content Managers
-1. **WordPress Setup**: Access WordPress admin at `/wp-admin`
+1. **Blog Content**: Edit static data in `src/data/blogPosts.js`
 2. **Content Guidelines**: Follow CFM compliance requirements
-3. **Blog Management**: Use WordPress GraphQL integration
+3. **Blog Management**: All content is version-controlled in Git
 
 ## 🆘 Get Help
 
@@ -239,8 +244,8 @@ curl http://localhost:3001/api/monitoring/health
 # Site down emergency recovery
 ./emergency-recovery.sh
 
-# Database issues
-sudo systemctl restart mysql redis
+# Cache issues
+sudo systemctl restart redis
 
 # SSL certificate renewal
 sudo certbot renew --force-renewal
