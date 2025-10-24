@@ -21,7 +21,15 @@ const pages = {
     title: 'Saraiva Vision - Clínica Oftalmológica em Caratinga/MG',
     description: 'Clínica oftalmológica especializada em catarata, glaucoma, retina e cirurgia refrativa em Caratinga/MG. Atendimento médico de qualidade com tecnologia de ponta.',
     keywords: 'oftalmologia Caratinga, clínica oftalmológica MG, catarata Caratinga, cirurgia refrativa Vale do Aço',
-    canonicalUrl: 'https://saraivavision.com.br/'
+    canonicalUrl: 'https://saraivavision.com.br/',
+    ogImage: 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg'
+  },
+  '/waitlist': {
+    title: 'Saraiva Vision - Clínica Oftalmológica em Caratinga/MG',
+    description: 'Clínica oftalmológica especializada em catarata, glaucoma, retina e cirurgia refrativa em Caratinga/MG. Atendimento médico de qualidade com tecnologia de ponta.',
+    keywords: 'oftalmologia caratinga, clinica oftalmologica, catarata, glaucoma, retina, cirurgia refrativa, dr philipe saraiva',
+    canonicalUrl: 'https://saraivavision.com.br/waitlist',
+    ogImage: 'https://opengraph.b-cdn.net/production/images/c8336c5f-a9c6-45ca-a6c0-429904ebb68f.png?token=-dU3_MEG-9fSy-ZW4hFWwxGWd0S59FaoB5EkqeZwAbc&height=1024&width=1024&expires=33297338496'
   }
 };
 
@@ -133,17 +141,17 @@ function generatePrerenderedHTML(route, metadata, assets) {
     <meta property="og:url" content="${metadata.canonicalUrl}" />
     <meta property="og:site_name" content="Saraiva Vision" />
     <meta property="og:locale" content="pt_BR" />
-    <meta property="og:image" content="https://saraivavision.com.br/og-image-1200x630-optimized.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image" content="${metadata.ogImage || 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg'}" />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="1024" />
+    <meta property="og:image:type" content="${metadata.ogImage && metadata.ogImage.includes('.png') ? 'image/png' : 'image/jpeg'}" />
     <meta property="og:image:alt" content="${metadata.title} - Clínica Saraiva Vision" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${metadata.title}" />
     <meta name="twitter:description" content="${metadata.description}" />
-    <meta name="twitter:image" content="https://saraivavision.com.br/og-image-1200x630-optimized.jpg" />
+    <meta name="twitter:image" content="${metadata.ogImage || 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg'}" />
     <meta name="twitter:image:alt" content="${metadata.title} - Clínica Saraiva Vision" />
 
     <!-- Geo Meta Tags -->
