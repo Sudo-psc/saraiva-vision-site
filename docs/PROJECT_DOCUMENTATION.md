@@ -47,7 +47,8 @@ The Saraiva Vision project uses a **hybrid architecture** optimized for the Braz
 
 - **Frontend**: React SPA deployed on VPS for maximum control
 - **Backend**: Node.js API services running natively on VPS
-- **Database**: Unified MySQL for all data + Redis (caching, sessions, real-time)
+- **Database**: Unified MySQL for application data + Redis (caching, sessions, real-time)
+- **Blog**: Static blog posts stored in src/data/blogPosts.js (no external CMS)
 - **Deployment**: Native VPS deployment without Docker for optimal performance
 
 ```
@@ -61,9 +62,9 @@ The Saraiva Vision project uses a **hybrid architecture** optimized for the Braz
 │  │ Port 80/443 │  │  Port 3001  │  │  Port 3306  │        │
 │  └─────────────┘  └─────────────┘  └─────────────┘        │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │    Redis    │  │  PHP-FPM    │  │ React SPA   │        │
-│  │   (native)  │  │    8.1+     │  │/var/www/html│        │
-│  │ Port 6379   │  │  Port 9000  │  │             │        │
+│  │    Redis    │  │ Static Blog │  │ React SPA   │        │
+│  │   (native)  │  │blogPosts.js │  │/var/www/html│        │
+│  │ Port 6379   │  │  src/data/  │  │             │        │
 │  └─────────────┘  └─────────────┘  └─────────────┘        │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -110,8 +111,6 @@ src/
 │   ├── ui/             # Design system components
 │   ├── blog/           # Blog-related components
 │   ├── compliance/     # CFM compliance components
-│   ├── auth/           # Authentication components
-│   ├── admin/          # Admin panel components
 │   └── __tests__/      # Component tests
 ├── pages/              # Route-level page components
 ├── hooks/              # Custom React hooks
@@ -120,6 +119,8 @@ src/
 ├── utils/              # Helper functions
 ├── services/           # External service integrations
 ├── config/             # Configuration files
+├── data/               # Static data files
+│   └── blogPosts.js   # Static blog posts (no CMS)
 ├── workers/            # Web Workers
 └── styles/             # Global CSS files
 ```
@@ -292,69 +293,65 @@ CREATE TABLE message_outbox (
 );
 ```
 
-#### WordPress MySQL Schema
-```sql
--- Enhanced WordPress tables for medical content
-CREATE TABLE wp_posts (
-  ID bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  post_title text NOT NULL,
-  post_content longtext NOT NULL,
-  post_status varchar(20) DEFAULT 'publish',
-  post_type varchar(20) DEFAULT 'post',
-  PRIMARY KEY (ID)
-);
-
--- CFM compliance metadata
-CREATE TABLE wp_postmeta_cfm (
-  meta_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  post_id bigint(20) unsigned NOT NULL,
-  meta_key varchar(255) DEFAULT NULL,
-  meta_value longtext,
-  compliance_status enum('pending','approved','rejected') DEFAULT 'pending',
-  PRIMARY KEY (meta_id)
-);
+#### Static Blog Data Structure
+```javascript
+// src/data/blogPosts.js - Static blog posts
+export const blogPosts = [
+  {
+    id: 1,
+    slug: 'post-slug',
+    title: 'Post Title',
+    excerpt: 'Brief summary',
+    content: 'Full HTML content',
+    author: 'Dr. Name',
+    date: '2025-01-01',
+    category: 'Category Name',
+    tags: ['tag1', 'tag2'],
+    image: '/images/post-image.jpg',
+    featured: true,
+    seo: {
+      metaTitle: 'SEO Title',
+      metaDescription: 'SEO Description',
+      keywords: ['keyword1', 'keyword2']
+    }
+  },
+  // ... more posts
+];
 ```
 
 ### API Integration Patterns
 
-#### 1. Service Layer Pattern
+#### 1. Static Blog Data Pattern
 ```javascript
-// Service abstraction for external APIs
-class WordPressService {
-  constructor() {
-    this.baseURL = process.env.WORDPRESS_API_URL;
-    this.client = new GraphQLClient(this.baseURL);
-  }
+// Service for accessing static blog posts
+import { blogPosts } from '@/data/blogPosts.js';
 
-  async getAllPosts(params = {}) {
-    try {
-      const query = gql`
-        query GetAllPosts($first: Int, $after: String) {
-          posts(first: $first, after: $after) {
-            nodes {
-              id
-              databaseId
-              title
-              content
-              excerpt
-              date
-              slug
-              featuredImage {
-                node {
-                  sourceUrl
-                  altText
-                }
-              }
-            }
-          }
-        }
-      `;
-
-      const data = await this.client.request(query, params);
-      return { posts: data.posts.nodes, error: null };
-    } catch (error) {
-      return { posts: [], error: error.message };
+export class BlogService {
+  getAllPosts(filters = {}) {
+    let posts = [...blogPosts];
+    
+    // Apply category filter
+    if (filters.category) {
+      posts = posts.filter(post => post.category === filters.category);
     }
+    
+    // Apply tag filter
+    if (filters.tag) {
+      posts = posts.filter(post => post.tags.includes(filters.tag));
+    }
+    
+    // Sort by date (newest first)
+    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    return posts;
+  }
+  
+  getPostBySlug(slug) {
+    return blogPosts.find(post => post.slug === slug);
+  }
+  
+  getFeaturedPosts() {
+    return blogPosts.filter(post => post.featured);
   }
 }
 ```
@@ -442,38 +439,36 @@ import { workboxVitePlugin } from './src/utils/workbox-vite-plugin.js'
 
 **Impact**: Eliminated build failures and runtime errors in production
 
-#### 2. WordPress Compatibility Layer
+#### 2. Blog Architecture Simplification
 
-**Problem**: BlogPage.jsx had undefined function references after GraphQL migration
+**Achievement**: Migrated from external WordPress CMS to static blog data
 
-**Solution**: Created comprehensive WordPress compatibility layer
+**Solution**: Complete removal of WordPress dependencies
 ```javascript
-// wordpress-compat.js - Backward compatibility bridge
-import {
-  getAllPosts,
-  getAllCategories,
-  getPostBySlug
-} from './wordpress-api.js';
+// Static blog posts in src/data/blogPosts.js
+export const blogPosts = [
+  {
+    id: 1,
+    slug: 'post-slug',
+    title: 'Post Title',
+    content: 'Full HTML content',
+    // ... complete post structure
+  }
+];
 
-// Maps old REST API format to new GraphQL responses
-export const fetchPosts = async (params = {}) => {
-  const result = await getAllPosts(params);
-
-  // Transform GraphQL to REST API format
-  return result.posts.map(post => ({
-    id: post.databaseId,
-    title: { rendered: post.title },
-    content: { rendered: post.content },
-    // ... complete transformation
-  }));
-};
+// Blog service for filtering and retrieval
+export class BlogService {
+  getAllPosts() { return blogPosts; }
+  getPostBySlug(slug) { return blogPosts.find(p => p.slug === slug); }
+}
 ```
 
 **Benefits**:
-- Zero breaking changes to existing components
-- Seamless GraphQL integration
-- Enhanced performance with targeted queries
-- Backward compatibility maintained
+- Zero external dependencies for blog content
+- Maximum performance (no database queries)
+- Version-controlled content
+- Simplified deployment and maintenance
+- Complete control over content structure
 
 #### 3. Build System Optimization
 
@@ -500,17 +495,18 @@ const plugins = [react({
 
 #### 4. Dependency Cleanup
 
-**Removed Vercel Dependencies**:
-- `@vercel/analytics`
-- `@vercel/edge-config`
-- Vercel-specific deployment scripts
-- Vercel configuration files
+**Removed External Dependencies**:
+- `WordPress` CMS and related plugins
+- `PHP-FPM` server
+- External database queries for blog content
+- GraphQL client libraries for blog
+- WordPress-specific configuration files
 
-**Added VPS Optimizations**:
-- Native systemd service configuration
-- Nginx reverse proxy setup
-- Local MySQL and Redis integration
-- Comprehensive health monitoring
+**Added Simplifications**:
+- Static blog data in version control
+- Direct JavaScript imports for blog content
+- Eliminated CMS deployment and maintenance
+- Comprehensive blog data structure in code
 
 ### Performance Improvements
 
@@ -807,149 +803,67 @@ function AccessibleModal({ isOpen, onClose, title, children }) {
 
 ## API Integration Patterns
 
-### 1. WordPress Headless CMS Integration
+### 1. Static Blog Integration
 
-The project implements a sophisticated WordPress headless architecture using GraphQL for optimal performance:
+The blog uses a simple static data structure for maximum performance and simplicity:
 
-#### GraphQL Query Implementation
+#### Blog Data Structure
 ```javascript
-// wordpress-api.js - Modern GraphQL integration
-import { GraphQLClient, gql } from 'graphql-request';
-
-const client = new GraphQLClient(process.env.VITE_WORDPRESS_API_URL, {
-  headers: {
-    'Content-Type': 'application/json',
-    'User-Agent': 'SaraivaVision/2.0'
-  }
-});
-
-export const getAllPosts = async (params = {}) => {
-  const { first = 10, after = null, categoryId = null } = params;
-
-  const query = gql`
-    query GetAllPosts($first: Int!, $after: String, $categoryId: Int) {
-      posts(
-        first: $first,
-        after: $after,
-        where: { categoryId: $categoryId }
-      ) {
-        pageInfo {
-          hasNextPage
-          endCursor
-        }
-        nodes {
-          id
-          databaseId
-          title
-          content
-          excerpt
-          date
-          modified
-          slug
-          featuredImage {
-            node {
-              sourceUrl
-              altText
-              mediaDetails {
-                width
-                height
-                sizes {
-                  name
-                  sourceUrl
-                  width
-                  height
-                }
-              }
-            }
-          }
-          categories {
-            nodes {
-              databaseId
-              name
-              slug
-            }
-          }
-          author {
-            node {
-              name
-              avatar {
-                url
-              }
-            }
-          }
-        }
-      }
+// src/data/blogPosts.js - Static blog posts
+export const blogPosts = [
+  {
+    id: 1,
+    slug: 'post-slug',
+    title: 'Post Title',
+    excerpt: 'Brief summary',
+    content: 'Full HTML content',
+    author: 'Dr. Philipe Saraiva Cruz',
+    date: '2025-01-01',
+    category: 'Category Name',
+    tags: ['tag1', 'tag2'],
+    image: '/images/blog/post-image.jpg',
+    featured: true,
+    seo: {
+      metaTitle: 'SEO optimized title',
+      metaDescription: 'SEO description',
+      keywords: ['keyword1', 'keyword2']
     }
-  `;
-
-  try {
-    const data = await client.request(query, { first, after, categoryId });
-    return {
-      posts: data.posts.nodes,
-      pageInfo: data.posts.pageInfo,
-      error: null
-    };
-  } catch (error) {
-    console.error('GraphQL error:', error);
-    return {
-      posts: [],
-      pageInfo: null,
-      error: error.message
-    };
   }
-};
+  // ... more posts
+];
 ```
 
-#### Health Monitoring System
+#### Blog Service Implementation
 ```javascript
-// wordpress-health.js - Comprehensive health monitoring
-export class WordPressHealthMonitor {
-  constructor() {
-    this.healthState = 'unknown';
-    this.lastCheck = null;
-    this.errorCount = 0;
-    this.maxErrors = 3;
-  }
+// src/lib/blogService.js - Blog data access
+import { blogPosts } from '@/data/blogPosts.js';
 
-  async checkHealth() {
-    try {
-      const startTime = Date.now();
-      const response = await fetch(`${process.env.VITE_WORDPRESS_API_URL}/wp/v2/posts?per_page=1`);
-      const responseTime = Date.now() - startTime;
-
-      if (response.ok) {
-        this.healthState = 'healthy';
-        this.errorCount = 0;
-        this.lastCheck = new Date();
-
-        return {
-          status: 'healthy',
-          responseTime,
-          timestamp: this.lastCheck,
-          details: 'WordPress API responding normally'
-        };
-      } else {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-    } catch (error) {
-      this.errorCount++;
-      this.healthState = this.errorCount >= this.maxErrors ? 'unhealthy' : 'degraded';
-
-      return {
-        status: this.healthState,
-        error: error.message,
-        errorCount: this.errorCount,
-        timestamp: new Date()
-      };
+export class BlogService {
+  getAllPosts(filters = {}) {
+    let posts = [...blogPosts];
+    
+    if (filters.category) {
+      posts = posts.filter(post => post.category === filters.category);
     }
+    
+    if (filters.tag) {
+      posts = posts.filter(post => post.tags.includes(filters.tag));
+    }
+    
+    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+    return posts;
   }
-
-  getHealthStatus() {
-    return {
-      state: this.healthState,
-      lastCheck: this.lastCheck,
-      errorCount: this.errorCount
-    };
+  
+  getPostBySlug(slug) {
+    return blogPosts.find(post => post.slug === slug);
+  }
+  
+  getFeaturedPosts() {
+    return blogPosts.filter(post => post.featured);
+  }
+  
+  getCategories() {
+    return [...new Set(blogPosts.map(post => post.category))];
   }
 }
 ```
@@ -1273,23 +1187,6 @@ npm run validate:api          # Check API syntax and encoding
 npm run lint                  # ESLint for code quality
 ```
 
-#### WordPress Development Setup
-```bash
-# Local WordPress setup for blog development
-docker run -d \
-  --name wordpress-dev \
-  -p 8083:80 \
-  -e WORDPRESS_DB_HOST=mysql \
-  -e WORDPRESS_DB_NAME=saraiva_blog \
-  -e WORDPRESS_DB_USER=wp_user \
-  -e WORDPRESS_DB_PASSWORD=secure_password \
-  wordpress:latest
-
-# Install GraphQL plugin
-wp plugin install wp-graphql --activate
-wp plugin install wp-graphql-cors --activate
-```
-
 ### 2. Testing Strategy
 
 #### Unit Testing with Vitest
@@ -1504,7 +1401,7 @@ chore: maintenance tasks
 
 # Examples:
 feat(auth): implement patient login system
-fix(api): resolve WordPress GraphQL timeout issues
+fix(api): resolve contact form submission issues
 docs(deployment): add VPS setup instructions
 refactor(components): optimize services grid performance
 ```
@@ -1672,13 +1569,7 @@ sudo apt install redis-server -y
 sudo systemctl enable redis-server
 sudo systemctl start redis-server
 
-# 6. Install PHP-FPM for WordPress
-sudo apt install software-properties-common -y
-sudo add-apt-repository ppa:ondrej/php -y
-sudo apt update
-sudo apt install php8.1-fpm php8.1-mysql php8.1-curl php8.1-gd php8.1-xml -y
-
-# 7. Configure firewall
+# 6. Configure firewall
 sudo ufw allow ssh
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
@@ -1750,24 +1641,6 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
-    }
-
-    # WordPress blog proxy
-    location /blog/ {
-        proxy_pass http://localhost:8080/;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    # WordPress GraphQL endpoint
-    location /graphql {
-        proxy_pass http://localhost:8080/graphql;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
 ```
@@ -2109,30 +1982,6 @@ mysql -h $DB_HOST -u $DB_USER -p$DB_PASSWORD -e "SHOW DATABASES;"
 # 5. Check database permissions and table existence
 ```
 
-##### WordPress GraphQL Timeout
-**Problem**: WordPress API requests timing out
-```javascript
-// Error: Request timeout after 10000ms
-```
-
-**Solution**: Implement retry logic and health checks
-```javascript
-const retryableRequest = async (url, options, maxRetries = 3) => {
-  for (let i = 0; i < maxRetries; i++) {
-    try {
-      const response = await fetch(url, {
-        ...options,
-        timeout: 15000 // 15 second timeout
-      });
-      return response;
-    } catch (error) {
-      if (i === maxRetries - 1) throw error;
-      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
-    }
-  }
-};
-```
-
 ##### Contact Form Submission Failures
 **Problem**: Form submissions not being processed
 ```javascript
@@ -2414,13 +2263,7 @@ EOF
 # 3. Clear Redis cache
 redis-cli FLUSHDB
 
-# 4. Update WordPress
-cd /var/www/wordpress
-wp core update
-wp plugin update --all
-wp theme update --all
-
-# 5. Performance analysis
+# 4. Performance analysis
 npm run test:performance > /var/log/saraiva-vision/weekly-performance.log
 ```
 
@@ -2678,14 +2521,15 @@ This comprehensive documentation provides a complete guide to the Saraiva Vision
 
 ### Key Achievements
 - ✅ **Complete VPS Migration**: Successfully migrated from Vercel to native VPS deployment
-- ✅ **WordPress Compatibility Layer**: Seamless GraphQL integration with backward compatibility
+- ✅ **Static Blog Architecture**: Simplified blog with static data for maximum performance
 - ✅ **Performance Optimization**: Achieved sub-3 second load times with optimized builds
 - ✅ **Medical Compliance**: CFM and LGPD compliance systems integrated
 - ✅ **Production Stability**: Robust error handling and monitoring systems
 
 ### Architecture Highlights
 - **Modern React 18**: Concurrent features, TypeScript, and optimized builds
-- **Unified Database**: MySQL for all application data with Redis for caching and real-time
+- **Unified Database**: MySQL for application data with Redis for caching and real-time
+- **Static Blog**: Blog posts in version-controlled source code (no CMS overhead)
 - **Native VPS**: Direct system deployment for maximum performance control
 - **Medical-Grade Security**: Comprehensive input validation and data protection
 - **Accessibility First**: WCAG 2.1 AA compliance throughout

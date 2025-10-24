@@ -28,10 +28,11 @@ Radix UI              → Accessible component primitives
 ### Backend & Infrastructure
 ```text
 Node.js 22+           → ES modules with modern JavaScript
-MySQL                 → Primary database for all application data
+MySQL                 → Primary database for application data (contacts, appointments)
 Redis                 → Session management, caching, and real-time features
 Nginx                 → Web server and reverse proxy
 Ubuntu/Debian VPS     → Native deployment without containers
+Static Blog Data      → Blog posts stored in src/data/blogPosts.js (no CMS)
 ```
 
 ### Development & Testing
@@ -56,11 +57,11 @@ TypeScript Strict     → Maximum type safety
 │          SSL Termination + Security Headers                 │
 │                                                             │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │    React    │  │  Node.js    │  │ WordPress   │        │
-│  │     SPA     │  │     API     │  │  GraphQL    │        │
+│  │    React    │  │  Node.js    │  │ Static Blog │        │
+│  │     SPA     │  │     API     │  │    Data     │        │
 │  │             │  │             │  │             │        │
-│  │ Port :80    │  │ Port :3001  │  │ Port :8080  │        │
-│  │ /var/www/   │  │ /opt/api/   │  │ /var/www/wp │        │
+│  │ Port :80    │  │ Port :3001  │  │ blogPosts.js│        │
+│  │ /var/www/   │  │ /opt/api/   │  │ src/data/   │        │
 │  └─────────────┘  └─────────────┘  └─────────────┘        │
 └─────────────────────────────────────────────────────────────┘
                               │
@@ -68,7 +69,7 @@ TypeScript Strict     → Maximum type safety
                     │   🗄️ Databases   │
                     │                 │
                     │  MySQL          │  ← Primary data
-                    │                 │     (patients, appointments, blog)
+                    │                 │     (contacts, appointments)
                     │                 │
                     │  Redis          │  ← Sessions, cache, real-time
                     └─────────────────┘
@@ -79,13 +80,11 @@ TypeScript Strict     → Maximum type safety
 ### 1. Patient Interaction Flow
 ```text
 Patient Browser → Nginx → React SPA → Node.js API → MySQL
-                                   ↘
-                                    → WordPress GraphQL → MySQL
 ```
 
-### 2. Content Management Flow
+### 2. Blog Content Flow
 ```text
-WordPress Admin → MySQL → GraphQL API → React Components → Patient View
+Blog Posts (blogPosts.js) → Build Process → React Components → Patient View
 ```
 
 ### 3. Real-time Features
@@ -104,20 +103,21 @@ Appointment Booking → Redis Pub/Sub → WebSocket → React UI Updates
 - Lower resource overhead
 
 ### 2. Unified Database Strategy
-**Decision**: MySQL as primary database for all data
+**Decision**: MySQL as primary database for application data
 **Rationale**:
 - Single database technology stack for simplicity
 - MySQL: Mature, reliable, and well-understood
 - Redis: Real-time features and caching
 - Reduced complexity and maintenance overhead
 
-### 3. WordPress Headless Integration
-**Decision**: GraphQL-based headless WordPress
+### 3. Static Blog Architecture
+**Decision**: Static blog data in source code (src/data/blogPosts.js)
 **Rationale**:
-- Content management familiarity for medical staff
-- SEO-optimized blog functionality
-- Decoupled architecture for better performance
-- Medical content compliance workflows
+- Eliminates external CMS dependencies and complexity
+- Maximum performance with zero database queries
+- Version-controlled content for complete audit trail
+- Simplified deployment without CMS infrastructure
+- Medical content compliance through code review process
 
 ### 4. TypeScript Throughout
 **Decision**: Strict TypeScript implementation
@@ -159,6 +159,7 @@ Let's Encrypt SSL → Security Headers → Rate Limiting → Input Validation �
 ### Backend Optimizations
 - **Redis Caching**: API response, session caching, and real-time features
 - **Database Indexing**: Optimized queries for medical data in MySQL
+- **Static Blog**: Zero database overhead for blog content
 - **CDN Strategy**: Static asset optimization
 - **Compression**: Gzip for all text content
 
@@ -205,7 +206,7 @@ Daily: Application Files → Daily: MySQL Database Backup → Weekly: Redis Cach
 ### Current Architecture Supports
 - **Concurrent Users**: 1000+ simultaneous users
 - **Database Load**: Optimized for medical clinic workload with MySQL
-- **Content Volume**: Unlimited blog posts and medical content
+- **Blog Content**: Static blog posts with instant delivery (no CMS overhead)
 - **File Storage**: Local file system with Redis caching
 
 ### Future Scaling Options
@@ -254,8 +255,8 @@ ESLint → TypeScript Check → Test Coverage → Accessibility Scan → Medical
 - **Secure**: Medical-grade data protection
 
 ### for Medical Staff
-- **Easy Content Management**: WordPress admin interface
-- **Compliance Automation**: Automatic CFM validation
+- **Simple Content Management**: Direct editing of blog posts in version-controlled code
+- **Compliance Automation**: Automatic CFM validation through code review
 - **Performance Monitoring**: Real-time system health
 - **Professional Design**: Medical industry standards
 
