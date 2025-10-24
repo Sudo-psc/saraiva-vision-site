@@ -201,12 +201,13 @@ export const useLensesSEO = () => {
   };
 
   return useSEO({
-    title: 'Lentes de Contato com Assinatura | Entrega Regular + Acompanhamento Médico | Saraiva Vision Caratinga',
-    description: 'Assinatura de lentes de contato em Caratinga/MG com entrega mensal, acompanhamento oftalmológico, frete grátis e marcas premium certificadas ANVISA. Planos a partir de R$ 100/mês.',
+    title: 'SVlentes - Assinatura de lentes de contato com acompanhamento médico em caratinga.',
+    description: 'Primeiro plano de assinatura de lentes de contato com acompanhamento médico no brasil. Comodidade e segurança. Frete grátis e entrega garantida.',
     keywords: 'lentes de contato Caratinga, assinatura lentes contato MG, lentes mensais entrega domicílio, oftalmologista lentes contato, adaptação lentes Caratinga, lentes gelatinosas premium, acompanhamento médico lentes, frete grátis lentes contato, lentes ANVISA certificadas, plano assinatura lentes',
-    pageType: 'product',
+    pageType: 'website',
     breadcrumbs,
-    schema: lensesSchema
+    schema: lensesSchema,
+    image: 'https://opengraph.b-cdn.net/production/images/38eda430-78a4-4e66-b7e1-901ce93872f7.jpg?token=78_zZ4WsyYekqHN_aVKpQmlcAAbaRLwpey1Gqdt4nhI&height=1024&width=1024&expires=33297322567'
   });
 };
 
