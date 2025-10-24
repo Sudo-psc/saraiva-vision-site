@@ -19,6 +19,31 @@ This directory contains comprehensive documentation for the Saraiva Vision medic
 - **[NATIVE_VPS_DEPLOYMENT.md](../NATIVE_VPS_DEPLOYMENT.md)** - Native VPS deployment guide
 - **[TROUBLESHOOTING.md](../TROUBLESHOOTING.md)** - Common issues and solutions
 
+### 📝 CMS Migration Planning
+- **[SANITY_MIGRATION_PLAN.md](./SANITY_MIGRATION_PLAN.md)** - Comprehensive Sanity.io migration plan
+  - Architecture options (build-time vs runtime)
+  - Detailed schema design for blog posts
+  - Data migration strategy with code examples
+  - Webhook and CI/CD integration
+  - Testing strategy and compliance requirements
+  - 7-9 weeks implementation timeline
+  - Cost analysis ($0-99/mês)
+- **[SANITY_MIGRATION_QUICKSTART.md](./SANITY_MIGRATION_QUICKSTART.md)** - Quick reference guide
+  - Executive summary and benefits
+  - Before/after comparison
+  - Go/No-Go decision criteria
+- **[SANITY_TECHNICAL_COMPARISON.md](./SANITY_TECHNICAL_COMPARISON.md)** - CMS alternatives comparison
+  - Sanity.io (9.1/10) ✅ RECOMMENDED
+  - Contentful (7.2/10)
+  - Strapi (6.8/10)
+  - WordPress Headless (6.5/10)
+  - Keep Static (7.0/10)
+  - ROI analysis and recommendation matrix
+- **[SANITY_MIGRATION_CHECKLIST.md](./SANITY_MIGRATION_CHECKLIST.md)** - 7-phase implementation checklist
+  - Detailed task breakdown for each phase
+  - Progress tracking template
+  - Testing and QA requirements
+
 ### 🚀 Quick Start Guides
 
 #### For Developers
@@ -82,6 +107,7 @@ sudo ./setup-vps-native.sh
 |-------|------------------|-------------|
 | **Getting Started** | [Development Workflows](./PROJECT_DOCUMENTATION.md#development-workflows) | Local setup and development |
 | **Architecture** | [Architecture & Technology Stack](./PROJECT_DOCUMENTATION.md#architecture--technology-stack) | System design and components |
+| **CMS Migration** | [Sanity Migration Plan](./SANITY_MIGRATION_PLAN.md) | Blog migration to Sanity.io |
 | **Recent Changes** | [Recent Improvements & Fixes](./PROJECT_DOCUMENTATION.md#recent-improvements--fixes) | Latest updates and fixes |
 | **API Integration** | [API Integration Patterns](./PROJECT_DOCUMENTATION.md#api-integration-patterns) | External service integrations |
 | **Deployment** | [Deployment Guide](./PROJECT_DOCUMENTATION.md#deployment-guide) | VPS deployment procedures |
