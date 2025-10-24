@@ -8,7 +8,7 @@ dayjs.extend(localizedFormat);
 dayjs.extend(updateLocale);
 
 // Forçar pt-br como padrão
-const APP_LOCALE = import.meta.env.VITE_DEFAULT_LOCALE ?? "pt-br";
+const APP_LOCALE = process.env.NEXT_PUBLIC_DEFAULT_LOCALE ?? "pt-br";
 dayjs.locale(APP_LOCALE);
 
 // Exportar API segura

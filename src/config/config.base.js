@@ -20,10 +20,10 @@
  * @returns {string}
  */
 const getEnv = (key, defaultValue = '') => {
-  // Suporte a Vite (import.meta.env) e Node.js (process.env)
-  const value =
-    (typeof import.meta !== 'undefined' && import.meta.env?.[key]) ||
-    (typeof process !== 'undefined' && process.env?.[key]);
+  // Next.js usa process.env (tanto server quanto client com NEXT_PUBLIC_ prefix)
+  // Tentar primeiro com NEXT_PUBLIC_ prefix para variáveis do cliente
+  const nextPublicKey = `NEXT_PUBLIC_${key.replace('VITE_', '')}`;
+  const value = process.env?.[nextPublicKey] || process.env?.[key];
 
   return value || defaultValue;
 };
@@ -33,8 +33,7 @@ const getEnv = (key, defaultValue = '') => {
  * @returns {boolean}
  */
 const isProduction = () => {
-  return getEnv('NODE_ENV') === 'production' ||
-         getEnv('MODE') === 'production';
+  return process.env.NODE_ENV === 'production';
 };
 
 /**

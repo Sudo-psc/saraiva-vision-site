@@ -37,12 +37,12 @@ const SimpleApp = () => {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <PostHogProvider
-      apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
+      apiKey={process.env.NEXT_PUBLIC_POSTHOG_KEY}
       options={{
-        api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+        api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
         defaults: '2025-05-24',
         capture_exceptions: true,
-        debug: import.meta.env.MODE === 'development',
+        debug: process.env.NODE_ENV === 'development',
       }}
     >
       <Router>

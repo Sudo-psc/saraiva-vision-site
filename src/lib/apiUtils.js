@@ -27,7 +27,7 @@ export const ApiConfig = {
 // Network status monitoring
 export class NetworkMonitor {
     constructor() {
-        this.online = navigator.onLine;
+        this.online = typeof navigator !== 'undefined' ? navigator.onLine : true;
         this.listeners = [];
 
         if (typeof window !== 'undefined') {
@@ -401,6 +401,11 @@ export class ApiCache {
     }
 
     loadFromStorage() {
+        // Skip on server-side (Next.js build)
+        if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+            return;
+        }
+
         try {
             const cached = localStorage.getItem('apiCache');
             if (cached) {
@@ -413,6 +418,11 @@ export class ApiCache {
     }
 
     saveToStorage() {
+        // Skip on server-side (Next.js build)
+        if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+            return;
+        }
+
         try {
             const data = Object.fromEntries(this.cache);
             localStorage.setItem('apiCache', JSON.stringify(data));

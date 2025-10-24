@@ -3,7 +3,7 @@
 
 type AppRoutes = "/"
 type AppRouteHandlerRoutes = "/api/config" | "/api/google-reviews"
-type PageRoutes = "/AboutPage" | "/AdminPage" | "/AgendamentoPage" | "/AssinaturaPage" | "/AssinePage" | "/CheckPage" | "/FAQPage" | "/GoogleReviewsTestPage" | "/HomePage" | "/HomePageDebug" | "/HomePageLayout" | "/LensesPage" | "/LensesPageSimple" | "/MapTestPage" | "/MedicalArticleExample" | "/NotFoundPage" | "/PodcastPage" | "/PodcastPageConsolidated" | "/PodcastPageEnhanced" | "/PrivacyPolicyPage" | "/ServiceDetailPage" | "/ServicesPage" | "/ServicesPageCorrected" | "/__tests__/ComplianceWarnings.test" | "/__tests__/PodcastPage.test" | "/__tests__/ServiceDetailPage.test"
+type PageRoutes = never
 type LayoutRoutes = "/"
 type RedirectRoutes = never
 type RewriteRoutes = "/ingest/[[...path]]" | "/ingest/static/[[...path]]"
@@ -12,36 +12,10 @@ type Routes = AppRoutes | PageRoutes | LayoutRoutes | RedirectRoutes | RewriteRo
 
 interface ParamMap {
   "/": {}
-  "/__tests__/ComplianceWarnings.test": {}
-  "/__tests__/PodcastPage.test": {}
-  "/__tests__/ServiceDetailPage.test": {}
-  "/AboutPage": {}
-  "/AdminPage": {}
-  "/AgendamentoPage": {}
   "/api/config": {}
   "/api/google-reviews": {}
-  "/AssinaturaPage": {}
-  "/AssinePage": {}
-  "/CheckPage": {}
-  "/FAQPage": {}
-  "/GoogleReviewsTestPage": {}
-  "/HomePage": {}
-  "/HomePageDebug": {}
-  "/HomePageLayout": {}
   "/ingest/[[...path]]": { "path"?: string[]; }
   "/ingest/static/[[...path]]": { "path"?: string[]; }
-  "/LensesPage": {}
-  "/LensesPageSimple": {}
-  "/MapTestPage": {}
-  "/MedicalArticleExample": {}
-  "/NotFoundPage": {}
-  "/PodcastPage": {}
-  "/PodcastPageConsolidated": {}
-  "/PodcastPageEnhanced": {}
-  "/PrivacyPolicyPage": {}
-  "/ServiceDetailPage": {}
-  "/ServicesPage": {}
-  "/ServicesPageCorrected": {}
 }
 
 

@@ -1,15 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  
+
   reactStrictMode: true,
-  
+
   poweredByHeader: false,
-  
+
+  // Configure pages directory to only look in app/
+  pagesDir: 'app',
+
   typescript: {
     ignoreBuildErrors: true,
   },
-  
+
   eslint: {
     ignoreDuringBuilds: true,
   },

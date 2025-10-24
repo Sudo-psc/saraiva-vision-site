@@ -2,11 +2,11 @@ import { site, business } from './config.base.js';
 
 const defaultConfig = {
   app: {
-    environment: import.meta.env.MODE || 'production',
-    version: import.meta.env.VITE_APP_VERSION || '2.0.1'
+    environment: process.env.NODE_ENV || 'production',
+    version: process.env.NEXT_PUBLIC_APP_VERSION || '2.0.1'
   },
   analytics: {
-    enabled: import.meta.env.PROD,
+    enabled: process.env.NODE_ENV === 'production',
     gaId: '',
     gtmId: '',
     metaPixelId: ''
@@ -29,9 +29,9 @@ const defaultConfig = {
 
 const envConfig = {
   analytics: {
-    gaId: import.meta.env.VITE_GA_ID || undefined,
-    gtmId: import.meta.env.VITE_GTM_ID || undefined,
-    metaPixelId: import.meta.env.VITE_META_PIXEL_ID || undefined
+    gaId: process.env.NEXT_PUBLIC_GA_ID || undefined,
+    gtmId: process.env.NEXT_PUBLIC_GTM_ID || undefined,
+    metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID || undefined
   }
 };
 
