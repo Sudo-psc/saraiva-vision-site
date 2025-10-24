@@ -64,10 +64,11 @@ const WaitlistPage = () => {
   return (
     <>
       <SEOHead
-        title="Lista de Espera VIP - Ofertas Exclusivas | Saraiva Vision"
-        description="Cadastre-se na lista VIP e receba em primeira mão ofertas exclusivas, descontos especiais e acesso antecipado a novos tratamentos oftalmológicos. Prioridade em agendamentos e conteúdo exclusivo do Dr. Philipe Saraiva."
-        canonical="https://saraivavision.com.br/waitlist"
-        keywords="lista de espera VIP, ofertas exclusivas oftalmologia, descontos saraiva vision, prioridade agendamento, novidades oftalmologia caratinga"
+        title="SVlentes - Assinatura de lentes de contato com acompanhamento médico em caratinga."
+        description="Primeiro plano de assinatura de lentes de contato com acompanhamento médico no brasil. Comodidade e segurança. Frete grátis e entrega garantida."
+        canonicalPath="/waitlist"
+        keywords="assinatura lentes de contato, lentes de contato caratinga, acompanhamento médico, SVlentes, plano de assinatura lentes"
+        image="https://opengraph.b-cdn.net/production/images/38eda430-78a4-4e66-b7e1-901ce93872f7.jpg?token=CB7PD6IRyAXUw49kByYxbJLTX_cvw9RuBmTYAm7uXxo&height=1024&width=1024&expires=33297322285"
       />
 
       <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-slate-50">
