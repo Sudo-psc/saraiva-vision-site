@@ -1148,7 +1148,6 @@ REDIS_HOST=localhost
 REDIS_PORT=6379
 VITE_GOOGLE_MAPS_API_KEY=your_google_maps_key
 VITE_GOOGLE_PLACES_API_KEY=your_places_api_key
-VITE_WORDPRESS_API_URL=https://blog.saraivavision.com.br/graphql
 RESEND_API_KEY=your_resend_api_key
 
 # Optional for development
@@ -1523,9 +1522,9 @@ The Saraiva Vision project uses a **native VPS deployment** strategy for maximum
 │  │ Port 80/443 │  │  Port 3001  │  │  Port 3306  │        │
 │  └─────────────┘  └─────────────┘  └─────────────┘        │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │    Redis    │  │  PHP-FPM    │  │ Static Files│        │
-│  │   (native)  │  │    8.1+     │  │/var/www/html│        │
-│  │ Port 6379   │  │  Port 9000  │  │             │        │
+│  │    Redis    │  │ Static Blog │  │ React SPA   │        │
+│  │   (native)  │  │blogPosts.js │  │/var/www/html│        │
+│  │ Port 6379   │  │  src/data/  │  │             │        │
 │  └─────────────┘  └─────────────┘  └─────────────┘        │
 └─────────────────────────────────────────────────────────────┘
 ```

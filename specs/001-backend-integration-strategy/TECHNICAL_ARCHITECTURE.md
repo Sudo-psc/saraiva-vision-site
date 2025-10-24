@@ -84,66 +84,6 @@ src/
 └── types/
 ```
 
-#### Key Features
-- **SSG/ISR**: Static generation with incremental revalidation
-- **TypeScript**: Full type safety across the application
-- **API Routes**: Serverless functions for backend logic
-- **Edge Functions**: Global edge deployment for performance
-- **Environment Variables**: Secure configuration management
-
-### 2. WordPress Headless CMS (VPS)
-
-#### Technology Stack
-- **CMS**: WordPress 6.5+
-- **Language**: PHP 8.2-FPM
-- **Database**: MariaDB 10.6
-- **Web Server**: Nginx 1.24+
-- **Caching**: Redis 6.x
-- **Container**: Docker
-- **Reverse Proxy**: Nginx
-
-#### Directory Structure
-```
-/srv/wp/
-├── docker-compose.yml
-├── nginx/
-│   └── conf.d/
-│       └── cms.saraivavision.com.br.conf
-├── wordpress/
-│   ├── wp-content/
-│   │   ├── plugins/
-│   │   ├── themes/
-│   │   └── uploads/
-│   └── wp-config.php
-├── .env
-└── scripts/
-    ├── backup.sh
-    └── restore.sh
-```
-
-#### Key Features
-- **Headless Mode**: Content-only, no frontend theme
-- **GraphQL API**: WPGraphQL for flexible content queries
-- **Caching**: Redis for object and page caching
-- **Webhooks**: Content update notifications
-- **Security**: JWT authentication, rate limiting
-
-#### Required Plugins
-```bash
-# Core Functionality
-wp plugin install wp-graphql --activate
-wp plugin install wp-graphql-cors --activate
-wp plugin install redis-cache --activate
-wp plugin install wp-webhooks --activate
-
-# Security
-wp plugin install jwt-authentication-for-wp-rest-api --activate
-wp plugin install limit-login-attempts-reloaded --activate
-
-# SEO & Performance
-wp plugin install wordpress-seo --activate
-wp plugin install disable-comments --activate
-```
 
 ### 3. Database Layer (MySQL)
 
