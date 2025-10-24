@@ -32,6 +32,7 @@ const GoogleReviewsTestPage = createLazyComponent(() => import('./pages/GoogleRe
 const MapTestPage = createLazyComponent(() => import('./pages/MapTestPage.jsx'));
 const AgendamentoPage = createLazyComponent(() => import('./pages/AgendamentoPage.jsx'));
 const AssinePage = createLazyComponent(() => import('./pages/AssinePage.jsx'));
+const WaitlistPage = createLazyComponent(() => import('./pages/WaitlistPage.jsx'));
 const NotFoundPage = createLazyComponent(() => import('./pages/NotFoundPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
@@ -99,6 +100,7 @@ function App() {
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
               <Route path="/agendamento" element={<AgendamentoPage />} />
               <Route path="/assine" element={<AssinePage />} />
+              <Route path="/waitlist" element={<WaitlistPage />} />
               <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />
               <Route path="/map-test" element={<MapTestPage />} />
               <Route path="/wp-admin" element={<Navigate to="/blog" replace />} />
