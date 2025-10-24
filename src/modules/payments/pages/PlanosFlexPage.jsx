@@ -144,7 +144,7 @@ const PlanosFlexPage = () => {
         </section>
 
         {/* CTA para planos anuais e online */}
-        <section className="mb-6 space-y-4">
+        <section className="mb-6 space-y-2">
           <div className="max-w-4xl mx-auto bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-gray-300 rounded-2xl p-4 md:p-5 shadow-lg text-center">
             <h3 className="text-lg font-bold text-gray-900 mb-2">
               Quer economia maior?
