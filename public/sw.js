@@ -12,7 +12,8 @@ const CACHE_NAME = `saraiva-vision-v${SW_VERSION}`;
 // O service worker deve usar estratégia cache-first para assets, não precaching
 const PRECACHE_ASSETS = [
   '/',
-  '/index.html'
+  '/index.html',
+  '/offline.html'
 ];
 
 // Configuração
@@ -20,8 +21,102 @@ const CONFIG = {
   maxCacheAge: 86400000, // 24 horas
   maxCacheSize: 50,
   offlinePageUrl: '/offline.html',
-  analyticsBuffer: []
+  analyticsBuffer: [] // Deprecated: mantido por compatibilidade, use IndexedDB
 };
+
+// IndexedDB para persistência de analytics
+const DB_NAME = 'saraiva-analytics';
+const DB_VERSION = 1;
+const ANALYTICS_STORE = 'events';
+
+/**
+ * Inicializa IndexedDB para analytics
+ */
+async function initAnalyticsDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result);
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains(ANALYTICS_STORE)) {
+        const store = db.createObjectStore(ANALYTICS_STORE, {
+          keyPath: 'id',
+          autoIncrement: true
+        });
+        store.createIndex('timestamp', 'timestamp', { unique: false });
+      }
+    };
+  });
+}
+
+/**
+ * Adiciona evento de analytics ao IndexedDB
+ */
+async function addAnalyticsEvent(event) {
+  try {
+    const db = await initAnalyticsDB();
+    const tx = db.transaction(ANALYTICS_STORE, 'readwrite');
+    const store = tx.objectStore(ANALYTICS_STORE);
+
+    await store.add({
+      ...event,
+      timestamp: Date.now()
+    });
+
+    await tx.complete;
+    db.close();
+  } catch (error) {
+    SWLogger.error('Failed to store analytics event', { error: error.message });
+    // Fallback para buffer em memória (volátil)
+    CONFIG.analyticsBuffer.push(event);
+  }
+}
+
+/**
+ * Recupera todos os eventos de analytics do IndexedDB
+ */
+async function getAllAnalyticsEvents() {
+  try {
+    const db = await initAnalyticsDB();
+    const tx = db.transaction(ANALYTICS_STORE, 'readonly');
+    const store = tx.objectStore(ANALYTICS_STORE);
+
+    return new Promise((resolve, reject) => {
+      const request = store.getAll();
+      request.onsuccess = () => {
+        db.close();
+        resolve(request.result);
+      };
+      request.onerror = () => {
+        db.close();
+        reject(request.error);
+      };
+    });
+  } catch (error) {
+    SWLogger.error('Failed to retrieve analytics events', { error: error.message });
+    return [];
+  }
+}
+
+/**
+ * Remove evento de analytics do IndexedDB
+ */
+async function removeAnalyticsEvent(id) {
+  try {
+    const db = await initAnalyticsDB();
+    const tx = db.transaction(ANALYTICS_STORE, 'readwrite');
+    const store = tx.objectStore(ANALYTICS_STORE);
+
+    await store.delete(id);
+    await tx.complete;
+    db.close();
+  } catch (error) {
+    SWLogger.error('Failed to remove analytics event', { error: error.message, id });
+  }
+}
 
 /**
  * Logger estruturado
@@ -38,8 +133,8 @@ class SWLogger {
 
     console.log(`[SW:${level}]`, message, data);
 
-    // Enviar para analytics quando online
-    if (level === 'error' && navigator.onLine) {
+    // Enviar para analytics (tentará enviar, falhará naturalmente se offline)
+    if (level === 'error') {
       this.reportError(entry);
     }
   }
@@ -351,12 +446,14 @@ self.addEventListener('sync', (event) => {
 });
 
 async function syncAnalytics() {
-  if (CONFIG.analyticsBuffer.length === 0) {
+  // Recuperar eventos do IndexedDB (fonte persistente)
+  const events = await getAllAnalyticsEvents();
+
+  if (events.length === 0) {
     return;
   }
 
-  const events = [...CONFIG.analyticsBuffer];
-  CONFIG.analyticsBuffer = [];
+  SWLogger.info('Syncing analytics events', { count: events.length });
 
   for (const event of events) {
     try {
@@ -365,9 +462,16 @@ async function syncAnalytics() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(event)
       });
+
+      // Remover do DB apenas após sucesso
+      await removeAnalyticsEvent(event.id);
+      SWLogger.info('Analytics event sent successfully', { id: event.id });
     } catch (error) {
-      // Re-buffar se falhou
-      CONFIG.analyticsBuffer.push(event);
+      // Manter no DB para tentativas futuras
+      SWLogger.warn('Failed to send analytics event, will retry', {
+        id: event.id,
+        error: error.message
+      });
     }
   }
 }
