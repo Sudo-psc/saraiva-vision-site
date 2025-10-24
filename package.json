@@ -50,7 +50,7 @@
     "production:check": "npm run build && npm run test:run",
     "check:system": "bash scripts/system-checkup-suite.sh",
     "install:checkup-cron": "bash scripts/install-system-checkup-cron.sh",
-    "prepare": "husky",
+    "prepare": "husky || true",
     "release": "standard-version",
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",

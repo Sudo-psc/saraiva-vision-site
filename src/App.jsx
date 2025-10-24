@@ -4,18 +4,18 @@ import { HelmetProvider } from 'react-helmet-async';
 import createLazyComponent from '@/utils/lazyLoading.jsx';
 
 // Code splitting das rotas para melhorar TTI inicial da Home com retry logic
-const HomePageLayout = createLazyComponent(() => import('./pages/HomePageLayout.jsx'));
-const ServicesPage = createLazyComponent(() => import('./pages/ServicesPage.jsx'));
-const AboutPage = createLazyComponent(() => import('./pages/AboutPage.jsx'));
-const PrivacyPolicyPage = createLazyComponent(() => import('./pages/PrivacyPolicyPage.jsx'));
-const ServiceDetailPage = createLazyComponent(() => import('./pages/ServiceDetailPage.jsx'));
-const LensesPage = createLazyComponent(() => import('./pages/LensesPage.jsx'));
-const FAQPage = createLazyComponent(() => import('./pages/FAQPage.jsx'));
-const MedicalArticleExample = createLazyComponent(() => import('./pages/MedicalArticleExample.jsx'));
-const PodcastPageConsolidated = createLazyComponent(() => import('./pages/PodcastPageConsolidated.jsx'));
+const HomePageLayout = createLazyComponent(() => import('./views/HomePageLayout.jsx'));
+const ServicesPage = createLazyComponent(() => import('./views/ServicesPage.jsx'));
+const AboutPage = createLazyComponent(() => import('./views/AboutPage.jsx'));
+const PrivacyPolicyPage = createLazyComponent(() => import('./views/PrivacyPolicyPage.jsx'));
+const ServiceDetailPage = createLazyComponent(() => import('./views/ServiceDetailPage.jsx'));
+const LensesPage = createLazyComponent(() => import('./views/LensesPage.jsx'));
+const FAQPage = createLazyComponent(() => import('./views/FAQPage.jsx'));
+const MedicalArticleExample = createLazyComponent(() => import('./views/MedicalArticleExample.jsx'));
+const PodcastPageConsolidated = createLazyComponent(() => import('./views/PodcastPageConsolidated.jsx'));
 
 const BlogPage = createLazyComponent(() => import('@/modules/blog/pages/BlogPage.jsx'));
-const CheckPage = createLazyComponent(() => import('./pages/CheckPage.jsx'));
+const CheckPage = createLazyComponent(() => import('./views/CheckPage.jsx'));
 const PlansPage = createLazyComponent(() => import('@/modules/payments/pages/PlansPage.jsx'));
 const PlanBasicoPage = createLazyComponent(() => import('@/modules/payments/pages/PlanBasicoPage.jsx'));
 const PlanPadraoPage = createLazyComponent(() => import('@/modules/payments/pages/PlanPadraoPage.jsx'));
@@ -28,12 +28,12 @@ const PagamentoPremiumPage = createLazyComponent(() => import('@/modules/payment
 const PagamentoBasicoOnlinePage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoBasicoOnlinePage.jsx'));
 const PagamentoPadraoOnlinePage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoPadraoOnlinePage.jsx'));
 const PagamentoPremiumOnlinePage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoPremiumOnlinePage.jsx'));
-const GoogleReviewsTestPage = createLazyComponent(() => import('./pages/GoogleReviewsTestPage.jsx'));
-const MapTestPage = createLazyComponent(() => import('./pages/MapTestPage.jsx'));
-const AgendamentoPage = createLazyComponent(() => import('./pages/AgendamentoPage.jsx'));
-const AssinePage = createLazyComponent(() => import('./pages/AssinePage.jsx'));
-const WaitlistPage = createLazyComponent(() => import('./pages/WaitlistPage.jsx'));
-const NotFoundPage = createLazyComponent(() => import('./pages/NotFoundPage.jsx'));
+const GoogleReviewsTestPage = createLazyComponent(() => import('./views/GoogleReviewsTestPage.jsx'));
+const MapTestPage = createLazyComponent(() => import('./views/MapTestPage.jsx'));
+const AgendamentoPage = createLazyComponent(() => import('./views/AgendamentoPage.jsx'));
+const AssinePage = createLazyComponent(() => import('./views/AssinePage.jsx'));
+const WaitlistPage = createLazyComponent(() => import('./views/WaitlistPage.jsx'));
+const NotFoundPage = createLazyComponent(() => import('./views/NotFoundPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
 import Navbar from './components/Navbar.jsx';
