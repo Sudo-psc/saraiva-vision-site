@@ -167,6 +167,8 @@ const SEOHead = ({
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@saraivavisao" />
       <meta name="twitter:creator" content="@saraivavisao" />
+      <meta property="twitter:domain" content="saraivavision.com.br" />
+      <meta property="twitter:url" content={canonicalUrl} />
       <meta name="twitter:title" content={validatedTitle} />
       <meta name="twitter:description" content={validatedDescription} />
       <meta name="twitter:image" content={ogImage} />
