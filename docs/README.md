@@ -19,30 +19,49 @@ This directory contains comprehensive documentation for the Saraiva Vision medic
 - **[NATIVE_VPS_DEPLOYMENT.md](../NATIVE_VPS_DEPLOYMENT.md)** - Native VPS deployment guide
 - **[TROUBLESHOOTING.md](../TROUBLESHOOTING.md)** - Common issues and solutions
 
-### 📝 CMS Migration Planning
-- **[SANITY_MIGRATION_PLAN.md](./SANITY_MIGRATION_PLAN.md)** - Comprehensive Sanity.io migration plan
-  - Architecture options (build-time vs runtime)
-  - Detailed schema design for blog posts
-  - Data migration strategy with code examples
-  - Webhook and CI/CD integration
-  - Testing strategy and compliance requirements
-  - 7-9 weeks implementation timeline
-  - Cost analysis ($0-99/mês)
-- **[SANITY_MIGRATION_QUICKSTART.md](./SANITY_MIGRATION_QUICKSTART.md)** - Quick reference guide
-  - Executive summary and benefits
+### 📝 CMS Migration Planning (Sanity.io)
+
+**🎯 Quick Start:** Read [Executive Summary PT](./SANITY_MIGRATION_EXECUTIVE_SUMMARY_PT.md) for business overview (10 min)
+
+Complete documentation for migrating blog from static JS to Sanity.io CMS:
+
+**For Decision Makers:**
+- **[SANITY_MIGRATION_EXECUTIVE_SUMMARY_PT.md](./SANITY_MIGRATION_EXECUTIVE_SUMMARY_PT.md)** ⭐ START HERE
+  - Portuguese business summary
+  - ROI: R$ 8,100/year savings, 16-month payback
+  - Publishing speed: 30x faster (60min → 2min)
+  - Cost: R$ 11k implementation + R$ 0-500/mês
+  - FAQ and decision criteria
+
+**For Technical Review:**
+- **[SANITY_MIGRATION_QUICKSTART.md](./SANITY_MIGRATION_QUICKSTART.md)** - Quick reference (15 min)
   - Before/after comparison
-  - Go/No-Go decision criteria
-- **[SANITY_TECHNICAL_COMPARISON.md](./SANITY_TECHNICAL_COMPARISON.md)** - CMS alternatives comparison
-  - Sanity.io (9.1/10) ✅ RECOMMENDED
-  - Contentful (7.2/10)
-  - Strapi (6.8/10)
-  - WordPress Headless (6.5/10)
-  - Keep Static (7.0/10)
-  - ROI analysis and recommendation matrix
-- **[SANITY_MIGRATION_CHECKLIST.md](./SANITY_MIGRATION_CHECKLIST.md)** - 7-phase implementation checklist
-  - Detailed task breakdown for each phase
+  - Architecture diagram
+  - Go/No-Go decision matrix
+  
+- **[SANITY_TECHNICAL_COMPARISON.md](./SANITY_TECHNICAL_COMPARISON.md)** - CMS evaluation (20 min)
+  - 5 options compared (Sanity 9.1/10 ✅ RECOMMENDED)
+  - Detailed scoring and ROI analysis
+
+**For Implementation:**
+- **[SANITY_MIGRATION_PLAN.md](./SANITY_MIGRATION_PLAN.md)** - Complete technical spec (30 min)
+  - Architecture design (build-time fetching)
+  - Sanity schemas with code examples
+  - Migration strategy and integration guide
+  - 7-9 weeks timeline, phase breakdown
+  - Testing and compliance requirements
+  
+- **[SANITY_MIGRATION_CHECKLIST.md](./SANITY_MIGRATION_CHECKLIST.md)** - Implementation guide
+  - 7 phases, 180+ actionable tasks
   - Progress tracking template
-  - Testing and QA requirements
+  - Testing requirements per phase
+
+**Key Metrics:**
+- Current: 32 posts, 60min to publish, dev dependency
+- After: Visual editor, 2min to publish, zero dev dependency
+- Timeline: 7-9 weeks implementation
+- Cost: R$ 11k dev + R$ 0/mês (Free tier) or R$ 500/mês (Growth)
+- ROI: 121% in 3 years
 
 ### 🚀 Quick Start Guides
 
