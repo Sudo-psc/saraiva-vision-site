@@ -22,7 +22,7 @@ const pages = {
     description: 'Clínica oftalmológica especializada em catarata, glaucoma, retina e cirurgia refrativa em Caratinga/MG. Atendimento médico de qualidade com tecnologia de ponta.',
     keywords: 'oftalmologia Caratinga, clínica oftalmológica MG, catarata Caratinga, cirurgia refrativa Vale do Aço',
     canonicalUrl: 'https://saraivavision.com.br/',
-    ogImage: 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg'
+    ogImage: 'https://opengraph.b-cdn.net/production/images/c8336c5f-a9c6-45ca-a6c0-429904ebb68f.png?token=G6IVMbiX1P2Oic-_zMYf-wYkKYWqDDa99-O-W2nQJoI&height=1024&width=1024&expires=33297339885'
   },
   '/waitlist': {
     title: 'SVlentes - Assinatura de lentes de contato com acompanhamento médico em caratinga.',
