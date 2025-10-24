@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { SafeHelmet } from '@/components/SafeHelmet';
 import EnhancedFooter from '../components/EnhancedFooter';
 
 const AgendamentoPage = () => {
@@ -9,12 +9,14 @@ const AgendamentoPage = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Agendamento Online - Saraiva Vision</title>
-        <meta name="description" content="Agende sua consulta online com o Dr. Philipe Saraiva de forma rápida e prática. Sistema de agendamento integrado Nin Saúde." />
-        <meta name="keywords" content="agendamento online, consulta oftalmologia, Dr. Philipe Saraiva, Nin Saúde, marcar consulta" />
+      <SafeHelmet
+        title="Agendamento Online - Saraiva Vision"
+        description="Agende sua consulta online com o Dr. Philipe Saraiva de forma rápida e prática. Sistema de agendamento integrado Nin Saúde."
+        keywords="agendamento online, consulta oftalmologia, Dr. Philipe Saraiva, Nin Saúde, marcar consulta"
+        url="https://saraivavision.com.br/agendamento"
+      >
         <link rel="canonical" href="https://saraivavision.com.br/agendamento" />
-      </Helmet>
+      </SafeHelmet>
 
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-gray-100">
         {/* Mobile-first spacing with extra top padding to clear navbar */}

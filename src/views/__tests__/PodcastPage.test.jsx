@@ -3,7 +3,8 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import PodcastPage from '../../pages/PodcastPage';
+import { ConfigProvider } from '@/config/ConfigProvider';
+import PodcastPage from '../PodcastPage';
 
 // Example mock to guard against heavy dependencies (if any imported indirectly)
 vi.mock('../../components/GoogleMap', () => ({ default: () => <div /> }));
@@ -11,11 +12,13 @@ vi.mock('../../components/GoogleMap', () => ({ default: () => <div /> }));
 describe('PodcastPage (mobile-first + new episode)', () => {
   const renderComponent = () =>
     render(
-      <HelmetProvider>
-        <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-          <PodcastPage />
-        </MemoryRouter>
-      </HelmetProvider>
+      <ConfigProvider>
+        <HelmetProvider>
+          <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <PodcastPage />
+          </MemoryRouter>
+        </HelmetProvider>
+      </ConfigProvider>
     );
 
   it('renders podcast title', () => {

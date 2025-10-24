@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { SafeHelmet } from '@/components/SafeHelmet';
 import EnhancedFooter from '../components/EnhancedFooter';
 
 const AssinaturaPage = () => {
@@ -9,12 +9,14 @@ const AssinaturaPage = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Assinatura de Lentes de Contato - Saraiva Vision</title>
-        <meta name="description" content="Assine seu plano de lentes de contato com acompanhamento médico. Planos a partir de R$99 com entrega em todo o Brasil." />
-        <meta name="keywords" content="assinatura lentes contato, plano lentes, acompanhamento médico, entrega lentes, Saraiva Vision" />
+      <SafeHelmet
+        title="Assinatura de Lentes de Contato - Saraiva Vision"
+        description="Assine seu plano de lentes de contato com acompanhamento médico. Planos a partir de R$99 com entrega em todo o Brasil."
+        keywords="assinatura lentes contato, plano lentes, acompanhamento médico, entrega lentes, Saraiva Vision"
+        url="https://saraivavision.com.br/assinatura"
+      >
         <link rel="canonical" href="https://saraivavision.com.br/assinatura" />
-      </Helmet>
+      </SafeHelmet>
 
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-gray-100">
         {/* Mobile-first spacing with extra top padding to clear navbar */}

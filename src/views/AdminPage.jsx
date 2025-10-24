@@ -1,16 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { SafeHelmet } from '@/components/SafeHelmet';
 
 function AdminPage() {
   const navigate = useNavigate();
 
   return (
     <>
-      <Helmet>
-        <title>Acesso Administrativo - Dr. Philipe Saraiva</title>
+      <SafeHelmet
+        title="Acesso Administrativo - Dr. Philipe Saraiva"
+      >
         <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
+      </SafeHelmet>
       
       <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">

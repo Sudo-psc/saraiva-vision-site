@@ -15,7 +15,7 @@ export { Toaster } from './toaster';
 // Component-specific exports
 export { default as PodcastEpisodeCard } from '../PodcastEpisodeCard';
 export { default as ServicesEnhanced } from '../ServicesEnhanced';
-export { default as PodcastPageEnhanced } from '../../pages/PodcastPageEnhanced';
+export { default as PodcastPageEnhanced } from '../../views/PodcastPageEnhanced';
 
 // Type exports for TypeScript support
 export type {

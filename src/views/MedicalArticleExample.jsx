@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import { SafeHelmet } from '@/components/SafeHelmet';
 import Navbar from '@/components/Navbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import { useSEO } from '@/hooks/useSEO';
@@ -31,11 +31,12 @@ function MedicalArticleExample() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Helmet>
-        <title>{title} | Saraiva Vision</title>
-        <meta name="description" content={summary} />
+      <SafeHelmet
+        title={`${title} | Saraiva Vision`}
+        description={summary}
+      >
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
-      </Helmet>
+      </SafeHelmet>
       <Navbar />
       <main className="py-section lg:py-section-xl">
         <div className="container mx-auto px-4 md:px-6">

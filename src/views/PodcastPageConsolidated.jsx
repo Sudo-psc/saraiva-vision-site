@@ -5,7 +5,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { SafeHelmet } from '@/components/SafeHelmet';
 import { motion } from 'framer-motion';
 import {
   Play,
@@ -88,18 +88,18 @@ function PodcastPageConsolidated() {
   if (currentEpisode) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-bg-primary via-gray-50/30 to-cyan-50/20">
-        <Helmet>
-          <title>{currentEpisode.title} | Podcast Saraiva Vision</title>
-          <meta name="description" content={currentEpisode.description} />
-          <meta name="keywords" content={currentEpisode.transcript?.keywords?.join(', ')} />
-
+        <SafeHelmet
+          title={`${currentEpisode.title} | Podcast Saraiva Vision`}
+          description={currentEpisode.description}
+          keywords={currentEpisode.transcript?.keywords?.join(', ') || ''}
+        >
           {/* Schema.org */}
           {schemaBundle.map((schema, index) => (
             <script key={`schema-${index}`} type="application/ld+json">
               {JSON.stringify(schema)}
             </script>
           ))}
-        </Helmet>
+        </SafeHelmet>
 
         <Navbar />
 
@@ -272,17 +272,11 @@ function PodcastPageConsolidated() {
   // Render podcast list view
   return (
     <div className="min-h-screen bg-gradient-to-br from-bg-primary via-blue-50/30 to-bg-primary">
-      <Helmet>
-        <title>Podcast Saúde Ocular em Foco | Saraiva Vision Caratinga</title>
-        <meta
-          name="description"
-          content="Podcast sobre oftalmologia e saúde ocular. Dr. Philipe Saraiva compartilha conhecimento sobre catarata, pterígio, olho seco e mais. Caratinga, MG."
-        />
-        <meta
-          name="keywords"
-          content="podcast oftalmologia, saúde ocular, catarata, pterígio, olho seco, Caratinga MG, Dr. Philipe Saraiva"
-        />
-
+      <SafeHelmet
+        title="Podcast Saúde Ocular em Foco | Saraiva Vision Caratinga"
+        description="Podcast sobre oftalmologia e saúde ocular. Dr. Philipe Saraiva compartilha conhecimento sobre catarata, pterígio, olho seco e mais. Caratinga, MG."
+        keywords="podcast oftalmologia, saúde ocular, catarata, pterígio, olho seco, Caratinga MG, Dr. Philipe Saraiva"
+      >
         {/* Schema.org */}
         {schemaBundle.map((schema, index) => (
           <script key={`schema-${index}`} type="application/ld+json">
@@ -292,7 +286,7 @@ function PodcastPageConsolidated() {
         <script type="application/ld+json">
           {JSON.stringify(localBusinessSchema)}
         </script>
-      </Helmet>
+      </SafeHelmet>
 
       <Navbar />
 
