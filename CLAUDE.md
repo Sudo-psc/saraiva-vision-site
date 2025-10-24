@@ -187,7 +187,13 @@ Reports are stored in `reports/system-checkup/` and cover:
 │   └── Podcasts/          # Podcast cover images
 ├── scripts/                # Build and deployment scripts
 ├── docs/                   # Project documentation
-└── reports/                # System health reports
+├── reports/                # System health reports
+├── archive/                # Historical files (reports, configs, scripts, tests)
+│   ├── reports/           # Old implementation and deployment reports
+│   ├── configs/           # Legacy nginx configurations
+│   ├── scripts/           # Deprecated build/deploy scripts
+│   └── tests/             # Old test and diagnostic files
+└── AGENTS.md               # Build commands and code style for AI agents
 ```
 
 ### Build Flow
@@ -518,8 +524,16 @@ For detailed security history, see commit logs from 2025-10-08.
 - **Security Practices**: `SECURITY.md`
 - **Quick Start**: `README.md`
 
+## Recent Changes
+
+### 2025-10-24
+- ✅ Added `AGENTS.md` with build commands and code style guidelines for AI coding agents
+- ✅ Organized root directory: moved 68 files to `/archive/` (reports, configs, scripts, tests)
+- ✅ Cleaned up 37 essential files in root for better navigation
+- ✅ Removed obsolete documentation and temporary files
+
 ---
 
-**Last Updated**: 2025-10-23
-**Version**: 3.4.0
+**Last Updated**: 2025-10-24
+**Version**: 3.4.1
 **Status**: ✅ Production Ready
