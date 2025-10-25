@@ -101,28 +101,42 @@ Each feature spec directory contains:
 **Status**: 🔄 Migrated to Static
 **Description**: WordPress integration (now replaced with static blog system)
 
+---
+
+### 006 - Subscriber Area (Portal do Assinante)
+**Directory**: `006-subscriber-area/`
+**Status**: ⏳ Planning
+**Description**: Complete self-service portal for subscription management, deliveries, prescriptions, and appointments
+
 **Key Documents**:
-- [Data Model](005-wordpress-external-integration/data-model.md)
-- [Deployment Plan](005-wordpress-external-integration/deployment-plan.md)
-- [Development Environment](005-wordpress-external-integration/development-environment.md)
-- [Development Workflow](005-wordpress-external-integration/development-workflow.md)
-- [Feature Spec](005-wordpress-external-integration/feature-spec.md)
-- [Implementation Plan](005-wordpress-external-integration/implementation-plan.md)
-- [Implementation Tasks](005-wordpress-external-integration/implementation-tasks.md)
-- [Integration Interfaces](005-wordpress-external-integration/integration-interfaces.md)
-- [Proxy Architecture](005-wordpress-external-integration/proxy-architecture.md)
-- [Quickstart](005-wordpress-external-integration/quickstart.md)
-- [Research](005-wordpress-external-integration/research.md)
-- [Testing Strategy](005-wordpress-external-integration/testing-strategy.md)
-- [Contracts](005-wordpress-external-integration/contracts/)
+- [Specification](006-subscriber-area/spec.md)
+- [System Design](006-subscriber-area/SYSTEM_DESIGN.md)
+- [Implementation Status](006-subscriber-area/IMPLEMENTATION_STATUS.md)
+- [README](006-subscriber-area/README.md)
 
-**Implementation Status**: N/A (Replaced)
-- ✅ WordPress integration documented
-- ✅ Migration to static blog completed (2024-10)
-- ✅ Historical documentation preserved
-- ℹ️ Current blog system: 100% static (see `docs/architecture/BLOG_ARCHITECTURE.md`)
+**Implementation Status**: 0% (Planning Phase)
+- ⏳ Phase 1: MVP (4 weeks) - Infrastructure + core features
+- ⏳ Phase 2: Self-Service (3 weeks) - Subscription management
+- ⏳ Phase 3: Prescriptions & Appointments (3 weeks) - Medical features
+- ⏳ Phase 4: Support & Help (2 weeks) - LGPD compliance
+- ⏳ Phase 5: PWA & Optimizations (2 weeks) - Performance
 
-**Note**: This spec is now historical. WordPress was replaced with a static blog system in October 2024 for better performance, security, and maintainability.
+**Target Features**:
+- ✅ Authentication (email/password, magic link, OAuth, 2FA)
+- ✅ Dashboard with subscription overview
+- ✅ Subscription management (upgrade, pause, cancel)
+- ✅ Delivery tracking and address updates
+- ✅ Prescription upload and approval workflow
+- ✅ Appointment scheduling (presential/online)
+- ✅ Support center with tickets and FAQs
+- ✅ LGPD compliance (data export, deletion, consents)
+- ✅ Progressive Web App (PWA) with offline support
+
+**Business Impact**:
+- Target: 70% reduction in support tickets
+- Target: +15% retention rate increase
+- Target: NPS ≥8.0 for subscribers
+- Target: 80% self-service rate
 
 ---
 
@@ -173,18 +187,19 @@ Each feature spec directory contains:
 | 002 - Resend Contact Form | ✅ Complete | 100% | Medium | 2024-09-25 |
 | 003 - Backend Integration Strategy | ✅ Complete | 100% | High | 2024-09-25 |
 | 005 - WordPress Integration | 🔄 Migrated | N/A | Deprecated | 2024-10-02 |
+| 006 - Subscriber Area | ⏳ Planning | 0% | **Critical** | 2025-10-25 |
 | 009 - Performance Optimization | ⏳ Planning | 0% | Medium | 2025-10-13 |
 | 404 - Custom Error Page | ✅ Complete | 100% | Low | 2024-10-06 |
 
 ## Overall Project Status
 
-**Total Specifications**: 7
-**Completed**: 5 (71%)
+**Total Specifications**: 8
+**Completed**: 5 (62.5%)
 **In Progress**: 0 (0%)
-**Planned**: 1 (14%)
-**Deprecated**: 1 (14%)
+**Planned**: 2 (25%)
+**Deprecated**: 1 (12.5%)
 
-**Overall Completion**: 71% of active specifications implemented
+**Overall Completion**: 62.5% of active specifications implemented
 
 ## Specification Guidelines
 
