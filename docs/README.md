@@ -19,6 +19,50 @@ This directory contains comprehensive documentation for the Saraiva Vision medic
 - **[NATIVE_VPS_DEPLOYMENT.md](../NATIVE_VPS_DEPLOYMENT.md)** - Native VPS deployment guide
 - **[TROUBLESHOOTING.md](../TROUBLESHOOTING.md)** - Common issues and solutions
 
+### 📝 CMS Migration Planning (Sanity.io)
+
+**🎯 Quick Start:** Read [Executive Summary PT](./SANITY_MIGRATION_EXECUTIVE_SUMMARY_PT.md) for business overview (10 min)
+
+Complete documentation for migrating blog from static JS to Sanity.io CMS:
+
+**For Decision Makers:**
+- **[SANITY_MIGRATION_EXECUTIVE_SUMMARY_PT.md](./SANITY_MIGRATION_EXECUTIVE_SUMMARY_PT.md)** ⭐ START HERE
+  - Portuguese business summary
+  - ROI: R$ 8,100/year savings, 16-month payback
+  - Publishing speed: 30x faster (60min → 2min)
+  - Cost: R$ 11k implementation + R$ 0-500/mês
+  - FAQ and decision criteria
+
+**For Technical Review:**
+- **[SANITY_MIGRATION_QUICKSTART.md](./SANITY_MIGRATION_QUICKSTART.md)** - Quick reference (15 min)
+  - Before/after comparison
+  - Architecture diagram
+  - Go/No-Go decision matrix
+  
+- **[SANITY_TECHNICAL_COMPARISON.md](./SANITY_TECHNICAL_COMPARISON.md)** - CMS evaluation (20 min)
+  - 5 options compared (Sanity 9.1/10 ✅ RECOMMENDED)
+  - Detailed scoring and ROI analysis
+
+**For Implementation:**
+- **[SANITY_MIGRATION_PLAN.md](./SANITY_MIGRATION_PLAN.md)** - Complete technical spec (30 min)
+  - Architecture design (build-time fetching)
+  - Sanity schemas with code examples
+  - Migration strategy and integration guide
+  - 7-9 weeks timeline, phase breakdown
+  - Testing and compliance requirements
+  
+- **[SANITY_MIGRATION_CHECKLIST.md](./SANITY_MIGRATION_CHECKLIST.md)** - Implementation guide
+  - 7 phases, 180+ actionable tasks
+  - Progress tracking template
+  - Testing requirements per phase
+
+**Key Metrics:**
+- Current: 32 posts, 60min to publish, dev dependency
+- After: Visual editor, 2min to publish, zero dev dependency
+- Timeline: 7-9 weeks implementation
+- Cost: R$ 11k dev + R$ 0/mês (Free tier) or R$ 500/mês (Growth)
+- ROI: 121% in 3 years
+
 ### 🚀 Quick Start Guides
 
 #### For Developers
@@ -82,6 +126,7 @@ sudo ./setup-vps-native.sh
 |-------|------------------|-------------|
 | **Getting Started** | [Development Workflows](./PROJECT_DOCUMENTATION.md#development-workflows) | Local setup and development |
 | **Architecture** | [Architecture & Technology Stack](./PROJECT_DOCUMENTATION.md#architecture--technology-stack) | System design and components |
+| **CMS Migration** | [Sanity Migration Plan](./SANITY_MIGRATION_PLAN.md) | Blog migration to Sanity.io |
 | **Recent Changes** | [Recent Improvements & Fixes](./PROJECT_DOCUMENTATION.md#recent-improvements--fixes) | Latest updates and fixes |
 | **API Integration** | [API Integration Patterns](./PROJECT_DOCUMENTATION.md#api-integration-patterns) | External service integrations |
 | **Deployment** | [Deployment Guide](./PROJECT_DOCUMENTATION.md#deployment-guide) | VPS deployment procedures |
