@@ -5,11 +5,11 @@ import { useTranslation, Trans } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
-import { Calendar, ArrowRight, ArrowLeft, Shield, Stethoscope, Cpu, HelpCircle, Clock, User, ChevronLeft, ChevronRight, Headphones, X } from 'lucide-react';
+import { Calendar, ArrowRight, ArrowLeft, Shield, Stethoscope, Cpu, HelpCircle, Clock, User, ChevronLeft, ChevronRight, Headphones, X, Loader2 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
-import { blogPosts, categoryConfig, getPostBySlug, getPostBySlugSync, categories } from '@/content/blog';
+import { categoryConfig, categories } from '@/content/blogCategories';
 import { getPostEnrichment } from '@/data/blogPostsEnrichment';
 import CategoryBadge from '@/components/blog/CategoryBadge';
 import OptimizedImage from '@/components/blog/OptimizedImage';
@@ -21,6 +21,8 @@ import AuthorWidget from '@/components/blog/AuthorWidget';
 import NewsletterForm from '@/components/blog/NewsletterForm';
 import { trackBlogInteraction, trackPageView, trackSearchInteraction } from '@/utils/analytics';
 import { generateCompleteSchemaBundle, getPostSpecificSchema } from '@/lib/blogSchemaMarkup';
+import { fetchAllPosts, fetchPostBySlug } from '@/services/sanityBlogService';
+import PortableTextRenderer from '@/components/PortableTextRenderer';
 
 // Helper function to format dates - extracted for performance
 const formatDate = (dateString) => {
@@ -28,23 +30,17 @@ const formatDate = (dateString) => {
   return dayjs(dateString).format('DD MMMM, YYYY');
 };
 
-// Helper function to extract headings from HTML content - extracted for performance
-const extractHeadings = (htmlContent) => {
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = htmlContent;
-  const headingElements = tempDiv.querySelectorAll('h2, h3');
-
-  return Array.from(headingElements).map((heading, index) => {
-    const text = heading.textContent;
-    const id = `heading-${index}`;
-    heading.id = id; // Add ID to actual heading in content
-
-    return {
-      id,
-      text,
-      level: parseInt(heading.tagName.charAt(1))
-    };
-  });
+const extractHeadings = (content) => {
+  if (!Array.isArray(content)) return [];
+  return content
+    .filter(block => block?._type === 'block' && ['h2', 'h3'].includes(block.style))
+    .map(block => ({
+      id: block._key,
+      text: Array.isArray(block.children)
+        ? block.children.map(child => child.text).join(' ')
+        : '',
+      level: Number(block.style?.replace('h', '')) || 2
+    }));
 };
 
 const BlogPage = () => {
@@ -55,6 +51,12 @@ const BlogPage = () => {
   const [searchTerm, setSearchTerm] = React.useState('');
   const [debouncedSearch, setDebouncedSearch] = React.useState('');
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [posts, setPosts] = React.useState([]);
+  const [postsLoading, setPostsLoading] = React.useState(true);
+  const [postsError, setPostsError] = React.useState(null);
+  const [currentPost, setCurrentPost] = React.useState(null);
+  const [postLoading, setPostLoading] = React.useState(false);
+  const [postError, setPostError] = React.useState(null);
   const POSTS_PER_PAGE = 6;
 
   // Debounce search term
@@ -65,12 +67,70 @@ const BlogPage = () => {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  // Check if viewing single post
-  const currentPost = slug ? getPostBySlugSync(slug) : null;
+  React.useEffect(() => {
+    let isActive = true;
+    setPostsLoading(true);
+    setPostsError(null);
+
+    fetchAllPosts()
+      .then(data => {
+        if (!isActive) return;
+        setPosts(Array.isArray(data) ? data : []);
+        setPostsLoading(false);
+      })
+      .catch(() => {
+        if (!isActive) return;
+        setPosts([]);
+        setPostsError('error');
+        setPostsLoading(false);
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (!slug) {
+      setCurrentPost(null);
+      setPostError(null);
+      setPostLoading(false);
+      return;
+    }
+
+    const cached = posts.find(post => post.slug === slug);
+    if (cached) {
+      setCurrentPost(prev => (prev && prev.slug === slug ? {...cached, ...prev} : cached));
+    }
+
+    let isActive = true;
+    setPostLoading(true);
+    setPostError(null);
+
+    fetchPostBySlug(slug)
+      .then(post => {
+        if (!isActive) return;
+        setCurrentPost(post);
+        if (!post) {
+          setPostError('not_found');
+        }
+        setPostLoading(false);
+      })
+      .catch(() => {
+        if (!isActive) return;
+        setCurrentPost(null);
+        setPostError('error');
+        setPostLoading(false);
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [slug, posts]);
 
   // Filter posts based on category and debounced search - memoized for performance
   const filteredPosts = React.useMemo(() => {
-    return blogPosts.filter(post => {
+    return posts.filter(post => {
       const matchesCategory = selectedCategory === 'Todas' || post.category === selectedCategory;
       const matchesSearch = !debouncedSearch ||
         post.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
@@ -78,7 +138,7 @@ const BlogPage = () => {
         post.tags?.some(tag => tag.toLowerCase().includes(debouncedSearch.toLowerCase()));
       return matchesCategory && matchesSearch;
     });
-  }, [selectedCategory, debouncedSearch]);
+  }, [selectedCategory, debouncedSearch, posts]);
 
   // Calculate pagination - memoized to prevent unnecessary recalculations
   const paginationData = React.useMemo(() => {
@@ -96,21 +156,22 @@ const BlogPage = () => {
     setCurrentPage(1);
   }, [selectedCategory, debouncedSearch]);
 
-  // Track page views and blog interactions
   React.useEffect(() => {
-    if (currentPost) {
-      // Track individual post view
+    if (slug) {
+      if (!currentPost || postLoading) return;
       trackPageView(`/blog/${currentPost.slug}`);
       trackBlogInteraction('view_post', currentPost.slug, {
         post_title: currentPost.title,
         post_category: currentPost.category,
         post_author: currentPost.author
       });
-    } else {
-      // Track blog listing view
+      return;
+    }
+
+    if (!postsLoading) {
       trackPageView('/blog');
     }
-  }, [currentPost]);
+  }, [slug, currentPost, postLoading, postsLoading]);
 
   // Track search interactions
   React.useEffect(() => {
@@ -142,7 +203,8 @@ const BlogPage = () => {
   // Memoized function to render post cards for performance
   const renderPostCard = React.useCallback((post, index) => {
     const enrichment = getPostEnrichment(post.id);
-    const readingTime = Math.ceil((post.content?.length || 1000) / 1000);
+    const readingTime = post.readingTimeMinutes || 4;
+    const imageSrc = post.image || '/img/blog-fallback.jpg';
 
     return (
       <motion.article
@@ -161,7 +223,7 @@ const BlogPage = () => {
         >
           <div className="relative w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gray-100 rounded-t-xl">
             <OptimizedImage
-              src={post.image}
+              src={imageSrc}
               alt={`Imagem ilustrativa do artigo: ${post.title}`}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               loading="lazy"
@@ -169,6 +231,7 @@ const BlogPage = () => {
               height="225"
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 400px"
               fallbackSrc="/img/blog-fallback.jpg"
+              disableOptimization
             />
           </div>
         </Link>
@@ -252,7 +315,53 @@ const BlogPage = () => {
   }, [t]);
 
   // Render single post view
-  if (currentPost) {
+  if (slug) {
+    if (postLoading && !currentPost) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-white">
+          <Loader2 className="w-12 h-12 animate-spin text-cyan-600" />
+        </div>
+      );
+    }
+
+    if (postError === 'not_found') {
+      return (
+        <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4">
+          <Helmet>
+            <title>Artigo não encontrado | Saraiva Vision</title>
+          </Helmet>
+          <h1 className="text-3xl md:text-4xl font-bold text-text-primary mb-4 text-center">Artigo não encontrado</h1>
+          <p className="text-text-secondary max-w-xl text-center mb-6">
+            O conteúdo que você procura pode ter sido removido ou atualizado.
+          </p>
+          <Button onClick={() => navigate('/blog')} className="bg-cyan-600 hover:bg-cyan-700 text-white">
+            Voltar para o blog
+          </Button>
+        </div>
+      );
+    }
+
+    if (postError === 'error') {
+      return (
+        <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4">
+          <Helmet>
+            <title>Erro ao carregar artigo | Saraiva Vision</title>
+          </Helmet>
+          <h1 className="text-3xl md:text-4xl font-bold text-text-primary mb-4 text-center">Erro ao carregar o artigo</h1>
+          <p className="text-text-secondary max-w-xl text-center mb-6">
+            Não foi possível carregar o conteúdo neste momento. Tente novamente mais tarde.
+          </p>
+          <Button onClick={() => navigate('/blog')} className="bg-cyan-600 hover:bg-cyan-700 text-white">
+            Voltar para o blog
+          </Button>
+        </div>
+      );
+    }
+
+    if (!currentPost) {
+      return null;
+    }
+
     const enrichment = getPostEnrichment(currentPost.id);
 
     // Generate Schema.org structured data
@@ -261,10 +370,13 @@ const BlogPage = () => {
 
     const headings = currentPost.content ? extractHeadings(currentPost.content) : [];
 
-    // Get related posts from same category
-    const relatedPosts = blogPosts
-      .filter(post => post.category === currentPost.category && post.id !== currentPost.id)
-      .slice(0, 3);
+    const relatedPosts = currentPost.relatedPosts && currentPost.relatedPosts.length > 0
+      ? currentPost.relatedPosts
+      : posts
+        .filter(post => post.category === currentPost.category && post.id !== currentPost.id)
+        .slice(0, 3);
+
+    const heroImage = currentPost.image || '/img/blog-fallback.jpg';
 
     return (
       <div className="min-h-screen bg-white relative">
@@ -340,17 +452,18 @@ const BlogPage = () => {
               {/* Main Content Area */}
               <article className="lg:col-span-6 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                 {/* Featured Image */}
-                {currentPost.image && (
+                {heroImage && (
                   <div className="relative w-full h-64 md:h-80 lg:h-96 overflow-hidden">
                     <OptimizedImage
-                      src={currentPost.image}
-                      alt={currentPost.title}
+                      src={heroImage}
+                      alt={currentPost.imageAlt || currentPost.title}
                       className="absolute inset-0 w-full h-full object-cover"
                       loading="eager"
                       width="1200"
                       height="630"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1200px"
                       fallbackSrc="/img/blog-fallback.jpg"
+                      disableOptimization
                     />
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
@@ -383,7 +496,7 @@ const BlogPage = () => {
                     </div>
                     <div className="flex items-center gap-2 text-sm text-text-secondary">
                       <Clock className="w-4 h-4" />
-                      <span>{Math.ceil((currentPost.content?.length || 1000) / 1000)} min de leitura</span>
+                      <span>{currentPost.readingTimeMinutes || 4} min de leitura</span>
                     </div>
                   </div>
 
@@ -403,8 +516,9 @@ const BlogPage = () => {
                       prose-blockquote:border-l-4 prose-blockquote:border-primary-500 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-text-secondary
                       prose-code:text-primary-600 prose-code:bg-primary-50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
                       prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-xl prose-pre:overflow-x-auto"
-                    dangerouslySetInnerHTML={{ __html: currentPost.content }}
-                  />
+                  >
+                    <PortableTextRenderer content={currentPost.content} />
+                  </div>
 
                   {/* Tags */}
                   {currentPost.tags && currentPost.tags.length > 0 && (
@@ -674,10 +788,20 @@ const BlogPage = () => {
             </div>
 
             {/* Posts Grid */}
+            {postsError && !postsLoading && (
+              <div className="text-center py-8">
+                <p className="text-red-600 font-semibold">Não foi possível carregar os artigos. Tente novamente em instantes.</p>
+              </div>
+            )}
             {searchTerm && searchTerm !== debouncedSearch ? (
               <div className="flex justify-center items-center py-12">
                 <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
                 <span className="ml-3 text-text-secondary">Buscando artigos...</span>
+              </div>
+            ) : postsLoading ? (
+              <div className="flex justify-center items-center py-12">
+                <Loader2 className="w-10 h-10 animate-spin text-cyan-600" />
+                <span className="ml-3 text-text-secondary">Carregando artigos...</span>
               </div>
             ) : filteredPosts.length > 0 ? (
               <>

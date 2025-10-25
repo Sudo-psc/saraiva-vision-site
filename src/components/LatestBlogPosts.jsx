@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight, Rss, Calendar, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { getRecentPosts } from '@/content/blog';
+import { fetchRecentPosts } from '@/services/sanityBlogService';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import OptimizedImage from '@/components/blog/OptimizedImage';
@@ -23,7 +23,7 @@ const LatestBlogPosts = () => {
                 setLoading(true);
                 setError(null);
                 // Get the 3 most recent posts from static blog data (ASYNC)
-                const recentPosts = await getRecentPosts(3);
+                const recentPosts = await fetchRecentPosts(3);
 
                 // Normalize to ensure it's always an array
                 const normalizedPosts = normalizeToArray(recentPosts, 'LatestBlogPosts');
@@ -66,7 +66,8 @@ const LatestBlogPosts = () => {
     };
 
     const getPostLink = (post) => {
-        return `/blog/${post.slug}`;
+        const slugValue = typeof post.slug === 'string' ? post.slug : post.slug?.current;
+        return slugValue ? `/blog/${slugValue}` : '/blog';
     };
 
     const getPostImage = (post) => {
