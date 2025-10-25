@@ -3,13 +3,13 @@
  * Generates Schema.org structured data for blog posts
  */
 
-/**
- * Generate MedicalWebPage schema for blog posts
- * @param {Object} post - Blog post data
- * @param {string} url - Full URL of the post
- * @returns {Object} - Schema.org MedicalWebPage markup
- */
+const resolveImageUrl = (image) => {
+  if (!image) return null;
+  return image.startsWith('http') ? image : `https://saraivavision.com.br${image}`;
+};
+
 export function generateMedicalWebPageSchema(post, url) {
+  const imageUrl = resolveImageUrl(post.image) || 'https://saraivavision.com.br/logo.png';
   return {
     '@context': 'https://schema.org',
     '@type': 'MedicalWebPage',
@@ -50,7 +50,7 @@ export function generateMedicalWebPageSchema(post, url) {
     },
     image: {
       '@type': 'ImageObject',
-      url: `https://saraivavision.com.br${post.image}`,
+      url: imageUrl,
       caption: post.title
     },
     mainEntityOfPage: {
@@ -80,6 +80,7 @@ export function generateMedicalWebPageSchema(post, url) {
  * @returns {Object} - Schema.org Article markup
  */
 export function generateArticleSchema(post, url) {
+  const imageUrl = resolveImageUrl(post.image) || 'https://saraivavision.com.br/logo.png';
   return {
     '@context': 'https://schema.org',
     '@type': 'MedicalScholarlyArticle',
@@ -87,7 +88,7 @@ export function generateArticleSchema(post, url) {
     headline: post.title,
     alternativeHeadline: post.excerpt,
     description: post.seo?.metaDescription || post.excerpt,
-    image: `https://saraivavision.com.br${post.image}`,
+    image: imageUrl,
     datePublished: post.date,
     dateModified: post.lastModified || post.date,
     author: {
@@ -264,15 +265,21 @@ export function generateMedicalProcedureSchema(procedure) {
  * @param {string} htmlContent - HTML content
  * @returns {string} - Plain text
  */
-function extractTextFromContent(htmlContent) {
-  if (!htmlContent) return '';
+function extractTextFromContent(content) {
+  if (!content) return '';
+  if (Array.isArray(content)) {
+    const text = content
+      .filter(block => block?._type === 'block')
+      .map(block => Array.isArray(block.children) ? block.children.map(child => child.text).join(' ') : '')
+      .join(' ');
+    return text.replace(/\s+/g, ' ').trim().substring(0, 1000);
+  }
 
-  // Remove HTML tags (basic implementation)
-  return htmlContent
+  return content
     .replace(/<[^>]*>/g, '')
     .replace(/\s+/g, ' ')
     .trim()
-    .substring(0, 1000); // Limit to 1000 chars for schema
+    .substring(0, 1000);
 }
 
 /**
