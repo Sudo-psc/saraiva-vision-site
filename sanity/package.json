@@ -1,0 +1,30 @@
+{
+  "name": "saraiva-vision-blog-sanity",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Sanity Studio for Saraiva Vision Blog",
+  "private": true,
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "export": "node scripts/export-blog-posts.js",
+    "upload-images": "node scripts/upload-images.js",
+    "convert-content": "node scripts/convert-html-to-blocks.js",
+    "verify": "node scripts/verify-import.js"
+  },
+  "dependencies": {
+    "@sanity/cli": "^4.11.0",
+    "@sanity/client": "^6.24.3",
+    "@sanity/vision": "^4.11.0",
+    "sanity": "^4.11.0",
+    "styled-components": "^6.1.19"
+  },
+  "devDependencies": {
+    "@sanity/block-tools": "^3.70.0",
+    "dotenv": "^16.4.5",
+    "html-react-parser": "^5.2.7",
+    "jsdom": "^27.0.1"
+  }
+}
