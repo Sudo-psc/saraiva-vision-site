@@ -1,15 +1,19 @@
 /**
- * Blog Content API (Optimized)
- * Backward-compatible wrapper for lazy-loaded blog posts
+ * Blog Content API (Sanity CMS + Static Fallback)
+ * Backward-compatible wrapper with intelligent data sourcing
  *
- * MIGRATION STRATEGY:
+ * MIGRATION COMPLETE:
  * 1. This file maintains the same API as before
- * 2. Under the hood, uses lazy loading for performance
- * 3. Gradual migration: components can be updated one by one
- * 4. Zero breaking changes to existing code
+ * 2. Primary source: Sanity CMS for easy content management
+ * 3. Automatic fallback: Static blog posts if Sanity fails
+ * 4. Zero breaking changes to existing components
+ * 5. Circuit breaker pattern prevents repeated Sanity failures
+ *
+ * Author: Dr. Philipe Saraiva Cruz
+ * Date: 2025-10-25
  */
 
-import blogPostsLoader from '../data/blogPostsLoader.js';
+import blogDataService from '../services/blogDataService.js';
 import { enhancedBlogPosts as legacyPosts } from '../data/enhancedBlogPosts.js';
 
 /**
@@ -93,44 +97,50 @@ export const blogPosts = getLegacyBlogPosts();
 /**
  * Get posts metadata (lightweight, ~10KB)
  * Use this for blog listing, search, navigation
+ * PRIMARY: Sanity CMS | FALLBACK: Static blog posts
  */
 export const getBlogPostsMetadata = async () => {
-  return await blogPostsLoader.getPostsMetadata();
+  return await blogDataService.getPostsMetadata();
 };
 
 /**
  * Get single post by slug (loads only when needed)
+ * PRIMARY: Sanity CMS | FALLBACK: Static blog posts
  */
 export const getPostBySlug = async (slug) => {
-  return await blogPostsLoader.getPostBySlug(slug);
+  return await blogDataService.getPostBySlug(slug);
 };
 
 /**
  * Get recent posts (lightweight metadata only)
+ * PRIMARY: Sanity CMS | FALLBACK: Static blog posts
  */
 export const getRecentPosts = async (limit = 3) => {
-  return await blogPostsLoader.getRecentPosts(limit);
+  return await blogDataService.getRecentPosts(limit);
 };
 
 /**
  * Get featured posts (lightweight metadata only)
+ * PRIMARY: Sanity CMS | FALLBACK: Static blog posts
  */
 export const getFeaturedPosts = async (limit = 3) => {
-  return await blogPostsLoader.getFeaturedPosts(limit);
+  return await blogDataService.getFeaturedPosts(limit);
 };
 
 /**
  * Get posts by category (lightweight metadata only)
+ * PRIMARY: Sanity CMS | FALLBACK: Static blog posts
  */
 export const getPostsByCategory = async (category) => {
-  return await blogPostsLoader.getPostsByCategory(category);
+  return await blogDataService.getPostsByCategory(category);
 };
 
 /**
  * Search posts (lightweight metadata only)
+ * PRIMARY: Sanity CMS | FALLBACK: Static blog posts
  */
 export const searchBlogPosts = async (searchTerm) => {
-  return await blogPostsLoader.searchPosts(searchTerm);
+  return await blogDataService.searchPosts(searchTerm);
 };
 
 /**
@@ -138,7 +148,30 @@ export const searchBlogPosts = async (searchTerm) => {
  * Call this in App.jsx or main layout after initial render
  */
 export const preloadCriticalBlogPosts = () => {
-  blogPostsLoader.preloadCriticalPosts();
+  blogDataService.preloadCriticalPosts();
+};
+
+/**
+ * Force refresh from Sanity (bypass cache)
+ * Useful for admin operations or manual content updates
+ */
+export const forceRefreshBlogData = async () => {
+  return await blogDataService.forceRefresh();
+};
+
+/**
+ * Get current data source info (Sanity or static fallback)
+ * Useful for monitoring and debugging
+ */
+export const getBlogDataSource = () => {
+  return blogDataService.getDataSource();
+};
+
+/**
+ * Get cache statistics for monitoring
+ */
+export const getBlogCacheStats = () => {
+  return blogDataService.getCacheStats();
 };
 
 /**
@@ -168,7 +201,7 @@ export default {
   categoryConfig,
   categories,
 
-  // Async API (recommended, optimized)
+  // Async API (recommended, optimized - Sanity + fallback)
   getBlogPostsMetadata,
   getPostBySlug,
   getRecentPosts,
@@ -177,7 +210,12 @@ export default {
   searchBlogPosts,
   preloadCriticalBlogPosts,
 
-  // Legacy API (synchronous, heavy)
+  // Admin/Monitoring API
+  forceRefreshBlogData,
+  getBlogDataSource,
+  getBlogCacheStats,
+
+  // Legacy API (synchronous, heavy - static only)
   blogPosts,
   getPostBySlugSync,
   getRecentPostsSync

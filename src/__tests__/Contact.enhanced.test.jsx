@@ -1,6 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { HelmetProvider } from 'react-helmet-async';
+import { ConfigProvider } from '@/config/ConfigProvider';
 import Contact from '@/components/Contact';
 
 // Mock all dependencies
@@ -77,7 +79,13 @@ describe('Enhanced Contact Form', () => {
     });
 
     it('renders the enhanced contact form with LGPD consent', () => {
-        render(<Contact />);
+        render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
         // Check for form fields
         expect(screen.getByLabelText(/nome completo/i)).toBeInTheDocument();
@@ -95,7 +103,13 @@ describe('Enhanced Contact Form', () => {
 
     it('shows real-time validation feedback', async () => {
         const user = userEvent.setup();
-        render(<Contact />);
+        render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
         const nameInput = screen.getByLabelText(/nome completo/i);
 
@@ -118,7 +132,13 @@ describe('Enhanced Contact Form', () => {
     });
 
     it('shows character count for message field', () => {
-        render(<Contact />);
+        render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
         const messageField = screen.getByLabelText(/mensagem/i);
         expect(screen.getByText('0/2000')).toBeInTheDocument();
@@ -126,7 +146,13 @@ describe('Enhanced Contact Form', () => {
 
     it('displays validation icons for form fields', async () => {
         const user = userEvent.setup();
-        render(<Contact />);
+        render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
         const emailInput = screen.getByLabelText(/e-mail/i);
 
@@ -146,7 +172,13 @@ describe('Enhanced Contact Form', () => {
         submitContactForm.mockResolvedValue({ success: true });
 
         const user = userEvent.setup();
-        render(<Contact />);
+        render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
         // Fill form with valid data
         await user.type(screen.getByLabelText(/nome completo/i), 'João Silva');
@@ -166,7 +198,13 @@ describe('Enhanced Contact Form', () => {
 
     it('requires LGPD consent before submission', async () => {
         const user = userEvent.setup();
-        render(<Contact />);
+        render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
         // Fill form without consent
         await user.type(screen.getByLabelText(/nome completo/i), 'João Silva');

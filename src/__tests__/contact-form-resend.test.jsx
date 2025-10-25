@@ -8,6 +8,8 @@ import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { I18nextProvider } from 'react-i18next'
+import { HelmetProvider } from 'react-helmet-async'
+import { ConfigProvider } from '@/config/ConfigProvider'
 import i18n from '../../lib/i18n'
 import Contact from '../../components/Contact'
 
@@ -107,9 +109,13 @@ vi.mock('@/lib/clinicInfo', () => ({
 
 // Test wrapper component
 const TestWrapper = ({ children }) => (
-    <I18nextProvider i18n={i18n}>
-        {children}
-    </I18nextProvider>
+    <ConfigProvider>
+        <HelmetProvider>
+            <I18nextProvider i18n={i18n}>
+                {children}
+            </I18nextProvider>
+        </HelmetProvider>
+    </ConfigProvider>
 )
 
 describe('Contact Form Resend Integration', () => {

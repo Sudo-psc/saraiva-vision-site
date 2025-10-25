@@ -1,6 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { HelmetProvider } from 'react-helmet-async';
+import { ConfigProvider } from '@/config/ConfigProvider';
 import Contact from '@/components/Contact';
 import { submitContactForm, FallbackStrategies, networkMonitor } from '@/lib/apiUtils';
 import { getUserFriendlyError, getRecoverySteps } from '@/lib/errorHandling';
@@ -72,7 +74,13 @@ describe('Contact Component Error Handling Integration', () => {
                 recovery: 'Verifique sua conexão'
             });
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             // Fill form with valid data
             await userEvent.type(screen.getByLabelText(/nome completo/i), 'John Doe');
@@ -103,7 +111,13 @@ describe('Contact Component Error Handling Integration', () => {
                 recovery: 'Verifique sua conexão'
             });
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             // Fill and submit form
             await userEvent.type(screen.getByLabelText(/nome completo/i), 'John Doe');
@@ -131,7 +145,13 @@ describe('Contact Component Error Handling Integration', () => {
                 recovery: 'Contact support'
             });
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             // Fill and submit form
             await userEvent.type(screen.getByLabelText(/nome completo/i), 'John Doe');
@@ -157,7 +177,13 @@ describe('Contact Component Error Handling Integration', () => {
         it('disables submit button when offline', () => {
             networkMonitor.isOnline = vi.fn(() => false);
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             const submitButton = screen.getByRole('button', { name: /sem conexão/i });
             expect(submitButton).toBeDisabled();
@@ -166,7 +192,13 @@ describe('Contact Component Error Handling Integration', () => {
         it('shows connection status indicator', () => {
             networkMonitor.isOnline = vi.fn(() => false);
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             expect(screen.getByText('Sem conexão com a internet')).toBeInTheDocument();
             expect(screen.getByText('Verifique sua conexão para enviar o formulário.')).toBeInTheDocument();
@@ -176,7 +208,13 @@ describe('Contact Component Error Handling Integration', () => {
             // Initial offline state
             networkMonitor.isOnline = vi.fn(() => false);
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             // Fill form
             await userEvent.type(screen.getByLabelText(/nome completo/i), 'John Doe');
@@ -216,7 +254,13 @@ describe('Contact Component Error Handling Integration', () => {
                     timestamp: new Date().toISOString()
                 });
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             // Fill form
             await userEvent.type(screen.getByLabelText(/nome completo/i), 'John Doe');
@@ -254,7 +298,13 @@ describe('Contact Component Error Handling Integration', () => {
         it('limits retry attempts to 3', async () => {
             submitContactForm.mockRejectedValue(new Error('Persistent error'));
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             // Fill form
             await userEvent.type(screen.getByLabelText(/nome completo/i), 'John Doe');
@@ -296,7 +346,13 @@ describe('Contact Component Error Handling Integration', () => {
             submitContactForm.mockRejectedValue(new Error('Network error'));
             FallbackStrategies.storeForRetry.mockReturnValue(true);
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             // Fill and submit form
             await userEvent.type(screen.getByLabelText(/nome completo/i), 'John Doe');
@@ -329,7 +385,13 @@ describe('Contact Component Error Handling Integration', () => {
         it('shows alternative contacts for critical errors', async () => {
             submitContactForm.mockRejectedValue(new Error('Server error', { status: 500 }));
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             // Fill and submit form
             await userEvent.type(screen.getByLabelText(/nome completo/i), 'John Doe');
@@ -358,7 +420,13 @@ describe('Contact Component Error Handling Integration', () => {
                 'Entre em contato se o problema persistir'
             ]);
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             // Fill and submit form
             await userEvent.type(screen.getByLabelText(/nome completo/i), 'John Doe');
@@ -389,7 +457,13 @@ describe('Contact Component Error Handling Integration', () => {
                 recovery: 'Digite um nome válido'
             });
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             // Submit with invalid name
             await userEvent.type(screen.getByLabelText(/nome completo/i), 'Jo'); // Too short
@@ -410,7 +484,13 @@ describe('Contact Component Error Handling Integration', () => {
 
     describe('Success Scenarios', () => {
         it('resets form and shows success message on successful submission', async () => {
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             // Fill form
             await userEvent.type(screen.getByLabelText(/nome completo/i), 'John Doe');
@@ -451,7 +531,13 @@ describe('Contact Component Error Handling Integration', () => {
                 recovery: 'Tente novamente'
             });
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             // Fill form
             await userEvent.type(screen.getByLabelText(/nome completo/i), 'John Doe');
@@ -473,7 +559,13 @@ describe('Contact Component Error Handling Integration', () => {
         it('shows reCAPTCHA status', () => {
             mockRecaptcha.ready = false;
 
-            render(<Contact />);
+            render(
+                <ConfigProvider>
+                    <HelmetProvider>
+                        <Contact />
+                    </HelmetProvider>
+                </ConfigProvider>
+            );
 
             expect(screen.getByText('Verificação de segurança indisponível. Tente novamente.')).toBeInTheDocument();
             expect(screen.getByText('Certifique-se de que está conectado à internet e recarregue a página.')).toBeInTheDocument();

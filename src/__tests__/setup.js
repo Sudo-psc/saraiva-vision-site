@@ -26,12 +26,52 @@ vi.mock('../lib/appointmentAvailability.js', () => ({
 // Mock fetch globally
 global.fetch = vi.fn()
 
-// Mock IntersectionObserver for Framer Motion
+// Mock IntersectionObserver with functional implementation
 global.IntersectionObserver = class IntersectionObserver {
-    constructor() {}
-    observe() {}
-    unobserve() {}
-    disconnect() {}
+    constructor(callback, options = {}) {
+        this.callback = callback
+        this.options = options
+        this.observed = new Set()
+        this.root = options.root || null
+        this.rootMargin = options.rootMargin || '0px'
+        this.threshold = options.threshold || 0
+    }
+
+    observe(element) {
+        if (!element) return
+        this.observed.add(element)
+
+        // Immediately trigger callback with isIntersecting: true for testing
+        // This simulates the element being visible in the viewport
+        if (this.callback) {
+            const entries = [{
+                target: element,
+                isIntersecting: true,
+                boundingClientRect: element.getBoundingClientRect?.() || {},
+                intersectionRatio: 1,
+                time: Date.now(),
+                rootBounds: null,
+                intersectionRect: {}
+            }]
+
+            // Use setTimeout to simulate async behavior
+            setTimeout(() => {
+                this.callback(entries, this)
+            }, 0)
+        }
+    }
+
+    unobserve(element) {
+        this.observed.delete(element)
+    }
+
+    disconnect() {
+        this.observed.clear()
+    }
+
+    takeRecords() {
+        return []
+    }
 }
 
 // Mock console methods to reduce noise in tests

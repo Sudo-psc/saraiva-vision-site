@@ -301,7 +301,7 @@ describe('API Compression and Caching Tests', () => {
                 .expect(200);
 
             expect(response.headers['content-encoding']).toBe('gzip');
-            expect(response.headers['content-type']).toBe('application/javascript');
+            expect(response.headers['content-type']).toContain('application/javascript');
         });
 
         it('should compress CSS assets', async () => {
@@ -311,7 +311,7 @@ describe('API Compression and Caching Tests', () => {
                 .expect(200);
 
             expect(['br', 'gzip']).toContain(response.headers['content-encoding']);
-            expect(response.headers['content-type']).toBe('text/css');
+            expect(response.headers['content-type']).toContain('text/css');
         });
 
         it('should handle different compression quality levels', async () => {

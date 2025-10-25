@@ -18,6 +18,7 @@ export const sanitize = {
             .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
             .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '') // Remove style tags
             .replace(/<[^>]*>/g, '') // Remove all other HTML tags
+            .replace(/javascript:/gi, '') // Remove javascript: protocol
             .replace(/&lt;/g, '<')
             .replace(/&gt;/g, '>')
             .replace(/&amp;/g, '&')
@@ -173,7 +174,7 @@ export const contactSubmissionSchema = z.object({
         .boolean()
         .refine(
             (consent) => consent === true,
-            { message: 'Você deve aceitar os termos de privacidade para continuar' }
+            { message: 'Você deve aceitar o consentimento LGPD para continuar' }
         ),
 
     // Honeypot field for spam detection - should always be empty
@@ -199,7 +200,7 @@ export const validationErrorMap = {
     MESSAGE_TOO_LONG: 'A mensagem deve ter no máximo 2000 caracteres',
     NAME_TOO_SHORT: 'O nome deve ter pelo menos 2 caracteres',
     NAME_TOO_LONG: 'O nome deve ter no máximo 100 caracteres',
-    CONSENT_REQUIRED: 'Você deve aceitar os termos de privacidade',
+    CONSENT_REQUIRED: 'Você deve aceitar o consentimento LGPD',
     SPAM_DETECTED: 'Atividade suspeita detectada. Tente novamente.',
 
     // General error codes
