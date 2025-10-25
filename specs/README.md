@@ -148,6 +148,48 @@ Each feature spec directory contains:
 
 ---
 
+### 010 - Clerk Auth Integration
+**Directory**: `010-clerk-auth-integration/`
+**Status**: 📋 Planning
+**Description**: Complete authentication and subscription management system using Clerk
+
+**Key Documents**:
+- [Overview & Plan](010-clerk-auth-integration/README.md)
+- [Technical Specification](010-clerk-auth-integration/spec.md)
+- [Gap Analysis](010-clerk-auth-integration/gap-analysis.md)
+- [Architecture Decision Record](010-clerk-auth-integration/architecture-decision-record.md)
+
+**Implementation Status**: 0% (Planning Phase)
+- ✅ Technical research completed
+- ✅ Architecture design documented
+- ✅ Gap analysis completed
+- ✅ ADR (Architecture Decision Record) created
+- ⏳ Clerk account setup pending
+- ⏳ Database schema design pending
+- ⏳ Phase 0 (Preparation) not started
+
+**Scope**:
+- User authentication (email/password, OAuth, magic links)
+- Multi-factor authentication (MFA/TOTP)
+- User profile management
+- Subscription management (Stripe + Asaas sync)
+- Feature flags and content gating
+- LGPD compliance (data export/deletion)
+- Webhook integration (Clerk, Stripe, Asaas)
+- Audit logging
+
+**Timeline**: 6-10 weeks (5 phases)
+**Priority**: High
+**Estimated Cost**: R$ 175-400/month operational + R$ 57,600 one-time development
+
+**Next Steps**:
+1. Create Clerk account (dev/staging/prod)
+2. Define database schema for users/subscriptions/entitlements
+3. Configure OAuth providers (Google priority)
+4. Start Phase 1: Basic Authentication
+
+---
+
 ### 404 - Custom 404 Page
 **Directory**: `404-page/`
 **Status**: ✅ Implemented
@@ -174,17 +216,18 @@ Each feature spec directory contains:
 | 003 - Backend Integration Strategy | ✅ Complete | 100% | High | 2024-09-25 |
 | 005 - WordPress Integration | 🔄 Migrated | N/A | Deprecated | 2024-10-02 |
 | 009 - Performance Optimization | ⏳ Planning | 0% | Medium | 2025-10-13 |
+| 010 - Clerk Auth Integration | 📋 Planning | 0% | High | 2025-10-25 |
 | 404 - Custom Error Page | ✅ Complete | 100% | Low | 2024-10-06 |
 
 ## Overall Project Status
 
-**Total Specifications**: 7
-**Completed**: 5 (71%)
+**Total Specifications**: 8
+**Completed**: 5 (63%)
 **In Progress**: 0 (0%)
-**Planned**: 1 (14%)
-**Deprecated**: 1 (14%)
+**Planned**: 2 (25%)
+**Deprecated**: 1 (13%)
 
-**Overall Completion**: 71% of active specifications implemented
+**Overall Completion**: 63% of active specifications implemented
 
 ## Specification Guidelines
 
