@@ -1,175 +1,275 @@
 # Saraiva Vision - Documentation Index
 
-This directory contains comprehensive documentation for the Saraiva Vision medical website project.
+**Última Atualização**: 2025-10-25
+**Mantenedor**: Dr. Philipe Saraiva Cruz
+**Status**: ✅ Production Ready
 
-## Documentation Structure
+## 🚀 Quick Links
 
-### 📋 Main Documentation
-- **[PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md)** - Complete project documentation (3,000+ lines)
-  - Project overview and architecture
-  - Frontend and backend implementation details
-  - Recent improvements and static blog system
-  - Component system and API integration patterns
-  - Development workflows and testing strategies
-  - Deployment guide and VPS configuration
-  - Troubleshooting and maintenance procedures
+### Essential Guides
+- [📖 README](../README.md) - Quick start and project overview
+- [🤖 CLAUDE.md](../CLAUDE.md) - Complete development guide for AI assistants
+- [⚙️ AGENTS.md](../AGENTS.md) - Build commands and code style for all AI agents
+- [🔒 SECURITY.md](../SECURITY.md) - Security practices and compliance
+- [🔧 TROUBLESHOOTING.md](../TROUBLESHOOTING.md) - Common issues and solutions
 
-### 🏗️ Architecture Documents
-- **[CLAUDE.md](../CLAUDE.md)** - Project context for Claude Code
-- **[NATIVE_VPS_DEPLOYMENT.md](../NATIVE_VPS_DEPLOYMENT.md)** - Native VPS deployment guide
-- **[TROUBLESHOOTING.md](../TROUBLESHOOTING.md)** - Common issues and solutions
-
-### 🚀 Quick Start Guides
-
-#### For Developers
+### Quick Deploy
 ```bash
-# 1. Clone and setup
-git clone https://github.com/Sudo-psc/saraiva-vision-site.git
-cd saraiva-vision-site
-npm install
-
-# 2. Configure environment
-cp .env.example .env
-# Fill in required environment variables
-
-# 3. Start development
-npm run dev
+# On VPS (already logged in)
+sudo bash /home/saraiva-vision-site/DEPLOY_NOW.sh
 ```
 
-#### For DevOps
+### Development
 ```bash
-# 1. VPS setup
-wget https://raw.githubusercontent.com/Sudo-psc/saraiva-vision-site/main/setup-vps-native.sh
-chmod +x setup-vps-native.sh
-sudo ./setup-vps-native.sh
-
-# 2. Deploy application
-./deploy-vps-native.sh
+npm run dev:vite          # Frontend dev server (port 3002)
+npm run build:vite        # Production build (ALWAYS use this)
+sudo npm run deploy:quick # Quick deploy (90% of cases)
 ```
-
-## Key Features Documented
-
-### ✅ Technical Architecture
-- **React 18** with TypeScript and Vite
-- **Native VPS deployment** without Docker
-- **Static blog system** (no CMS/database)
-- **Supabase backend** for dynamic features
-- **Medical compliance** (CFM + LGPD)
-
-### ✅ Recent Achievements
-- **VPS Migration**: Complete migration from Vercel to native VPS
-- **Static Blog System**: Zero-CMS architecture with static data
-- **ReferenceError Resolution**: Fixed ES module compatibility issues
-- **Performance Optimization**: Sub-3 second load times achieved
-- **Security Enhancement**: Comprehensive input validation and monitoring
-
-### ✅ Development Excellence
-- **Type Safety**: Full TypeScript implementation
-- **Testing Coverage**: Unit, integration, and E2E tests
-- **Accessibility**: WCAG 2.1 AA compliance
-- **Performance Monitoring**: Real-time metrics and Core Web Vitals
-- **Error Resilience**: Comprehensive error boundaries
-
-### ✅ Operational Readiness
-- **Automated Deployment**: Single-command deployment with validation
-- **Health Monitoring**: Comprehensive service monitoring
-- **Backup Systems**: Daily, weekly, and monthly automated backups
-- **Security Monitoring**: SSL, vulnerability scanning, and log analysis
-
-## Quick Navigation
-
-| Topic | Document Section | Description |
-|-------|------------------|-------------|
-| **Getting Started** | [Development Workflows](./PROJECT_DOCUMENTATION.md#development-workflows) | Local setup and development |
-| **Architecture** | [Architecture & Technology Stack](./PROJECT_DOCUMENTATION.md#architecture--technology-stack) | System design and components |
-| **Recent Changes** | [Recent Improvements & Fixes](./PROJECT_DOCUMENTATION.md#recent-improvements--fixes) | Latest updates and fixes |
-| **API Integration** | [API Integration Patterns](./PROJECT_DOCUMENTATION.md#api-integration-patterns) | External service integrations |
-| **Deployment** | [Deployment Guide](./PROJECT_DOCUMENTATION.md#deployment-guide) | VPS deployment procedures |
-| **Troubleshooting** | [Troubleshooting](./PROJECT_DOCUMENTATION.md#troubleshooting) | Common issues and solutions |
-| **Maintenance** | [Maintenance & Monitoring](./PROJECT_DOCUMENTATION.md#maintenance--monitoring) | Ongoing operational tasks |
-
-## Project Context
-
-**Saraiva Vision** is a modern medical clinic website for ophthalmology services in Caratinga, Minas Gerais, Brazil. The project serves as a comprehensive digital healthcare platform featuring:
-
-- **Patient Management**: Registration, profiles, and appointment booking
-- **Medical Content**: Blog articles, podcast episodes, educational resources
-- **Multi-channel Communication**: Email, SMS, WhatsApp integration
-- **Social Integration**: Instagram feed, Google Reviews, testimonials
-- **Regulatory Compliance**: CFM (Brazilian Medical Council) and LGPD compliance
-- **Accessibility**: Full WCAG 2.1 AA compliance for inclusive healthcare
-
-## Technology Highlights
-
-### Frontend Stack
-- **React 18.2.0** with concurrent features
-- **TypeScript 5.9.2** for type safety
-- **Vite 7.1.7** for fast builds
-- **Tailwind CSS 3.3.3** for styling
-- **Framer Motion 12.23.19** for animations
-
-### Backend Stack
-- **Node.js 22+** with ES modules
-- **Supabase 2.30.0** for primary database
-- **Redis** for caching and session management
-- **Nginx** for web server and proxy
-
-### Development Tools
-- **Vitest 3.2.4** for testing
-- **ESLint 9.36.0** for code quality
-- **Radix UI** for accessible components
-- **React Testing Library** for component testing
-
-## Recent Major Updates
-
-### VPS Deployment Optimization (September 2024)
-- ✅ Complete migration from Vercel to native VPS
-- ✅ ES module compatibility fixes (ReferenceError resolution)
-- ✅ Static blog system implementation (zero-CMS)
-- ✅ Performance optimization and build system improvements
-- ✅ Security enhancements and monitoring systems
-- ✅ Automated deployment scripts and health checks
-
-### Medical Compliance Integration
-- ✅ CFM (Brazilian Medical Council) compliance validation
-- ✅ LGPD (Brazilian GDPR) data protection implementation
-- ✅ Medical content disclaimer systems
-- ✅ Patient data anonymization and security
-- ✅ Audit logging for regulatory compliance
-
-## Support and Maintenance
-
-### For Immediate Issues
-1. Check [Troubleshooting Section](./PROJECT_DOCUMENTATION.md#troubleshooting)
-2. Review [Common Issues and Solutions](./PROJECT_DOCUMENTATION.md#common-issues-and-solutions)
-3. Use emergency recovery procedures if site is down
-
-### For Development Questions
-1. Review [Development Workflows](./PROJECT_DOCUMENTATION.md#development-workflows)
-2. Check [Component System](./PROJECT_DOCUMENTATION.md#component-system) documentation
-3. Consult [API Integration Patterns](./PROJECT_DOCUMENTATION.md#api-integration-patterns)
-
-### For Deployment and Operations
-1. Follow [Deployment Guide](./PROJECT_DOCUMENTATION.md#deployment-guide)
-2. Use [VPS Deployment Scripts](../NATIVE_VPS_DEPLOYMENT.md)
-3. Implement [Monitoring Systems](./PROJECT_DOCUMENTATION.md#maintenance--monitoring)
-
-## Contributing
-
-When contributing to this project:
-
-1. **Read the Documentation**: Start with the main PROJECT_DOCUMENTATION.md
-2. **Follow Conventions**: Adhere to the established coding standards and patterns
-3. **Test Thoroughly**: Ensure all tests pass and add new tests for new features
-4. **Update Documentation**: Keep documentation current with any changes
-5. **Security First**: Always consider medical data protection and compliance
-
-## Contact and Support
-
-- **Repository**: [GitHub - Saraiva Vision Site](https://github.com/Sudo-psc/saraiva-vision-site)
-- **Live Site**: [https://saraivavision.com.br](https://saraivavision.com.br)
-- **Documentation**: This docs/ directory contains all technical documentation
 
 ---
 
-*This documentation is maintained to provide comprehensive guidance for developers, DevOps engineers, and system administrators working with the Saraiva Vision medical website project.*
+## 📐 Architecture Documentation
+
+### System Architecture
+- **[Blog Architecture](architecture/BLOG_ARCHITECTURE.md)** - 100% static blog system (no CMS/WordPress)
+  - Static content workflow with `src/data/blogPosts.js`
+  - Image optimization (WebP/AVIF)
+  - SEO and performance optimization
+  - Build and deployment process
+
+### Development Guidelines
+- **[SEO Components Guide](guidelines/SEO_COMPONENTS_GUIDE.md)** - SafeHelmet vs SEOHead decision matrix
+  - When to use SafeHelmet (~3KB, simple pages)
+  - When to use SEOHead (~14KB, medical pages with i18n)
+  - Component testing requirements
+
+### Technology Stack
+- **Frontend**: React 18 + TypeScript + Vite + Tailwind CSS
+- **Backend**: Node.js/Express (port 3001) + systemd service
+- **Blog**: 100% static (JS objects, no CMS)
+- **Cache**: Redis (Google Reviews only)
+- **Server**: Nginx (static files + API proxy)
+- **Testing**: Vitest (unit, integration, E2E)
+
+---
+
+## 🔧 Deployment & Operations
+
+### Deployment Guides
+- **[Deployment Guide](deployment/DEPLOYMENT_GUIDE.md)** - Complete deployment procedures
+- **[Deploy Quick Guide](DEPLOY_GUIDE.md)** - Fast deployment reference
+
+### System Health
+```bash
+npm run check:system                  # Comprehensive health check
+npm run deploy:health                 # Production health check
+bash scripts/system-health-check.sh   # Full system diagnostics
+```
+
+### Service Management
+```bash
+# API Service Control
+sudo systemctl status saraiva-api     # Check status
+sudo systemctl restart saraiva-api    # Restart API
+sudo journalctl -u saraiva-api -f     # View logs
+
+# Nginx Control
+sudo systemctl reload nginx           # Reload config
+sudo systemctl status nginx           # Check status
+```
+
+---
+
+## 📋 Feature Specifications
+
+All feature specs are located in `/specs/` directory. See [Spec Status Tracking](../specs/README.md) for implementation status.
+
+### Active Specs
+1. **[001-backend-integration-strategy](../specs/001-backend-integration-strategy/)** - API integration architecture
+2. **[001-medical-appointment-api](../specs/001-medical-appointment-api/)** - Appointment system
+3. **[002-resend-contact-form](../specs/002-resend-contact-form/)** - Email contact forms
+4. **[003-backend-integration-strategy](../specs/003-backend-integration-strategy/)** - Backend patterns
+5. **[005-wordpress-external-integration](../specs/005-wordpress-external-integration/)** - WordPress migration
+6. **[009-frontend-performance-optimization](../specs/009-frontend-performance-optimization/)** - Performance improvements
+7. **[404-page](../specs/404-page/)** - Custom error page
+
+---
+
+## 🧪 Testing Documentation
+
+### Test Commands
+```bash
+npm run test              # Tests in watch mode
+npm run test:run          # Run tests once
+npm run test:unit         # Unit tests only
+npm run test:integration  # Integration tests only
+npm run test:api          # API tests only
+npm run test:frontend     # Frontend tests only
+npm run test:comprehensive # Full test suite
+npm run test:ui           # Vitest UI
+```
+
+### Test Strategy
+- **Unit Tests**: `src/**/__tests__/*.test.js`
+- **Integration Tests**: `src/__tests__/integration/`
+- **API Tests**: `api/src/__tests__/`
+- **E2E Tests**: `tests/e2e/`
+
+### Coverage Requirements
+- ConfigProvider wrapper required for components using `useConfig` hook
+- See [Testing Architecture](../CLAUDE.md#testing-architecture) for details
+
+---
+
+## 🔌 Integrations
+
+### Third-Party Services
+- **[Google Business Integration](GOOGLE_REVIEWS_INTEGRATION.md)** - Reviews caching and display
+- **[Analytics Setup](ANALYTICS_IMPLEMENTATION.md)** - GA4, GTM, PostHog
+- **[Contact Forms](CONTACT_FORM_BACKEND.md)** - Resend email integration
+- **[Stripe Integration](integrations/)** - Payment and subscriptions
+
+### API Documentation
+- **[API Functions Guide](API-Functions-Guide.md)** - Backend API reference
+- **[Webhooks Guide](WEBHOOK-SETUP.md)** - Webhook setup and handling
+
+---
+
+## 🎨 Frontend Development
+
+### Component Guidelines
+- **Components**: PascalCase (`ContactForm.jsx`)
+- **Hooks/Utils**: camelCase (`useAuth.js`)
+- **Services**: camelCase classes (`googleBusinessService.js`)
+- **Imports**: Use `@/` alias for `src/` directory
+
+### Performance
+- **[Performance Optimization](PERFORMANCE_OPTIMIZATION.md)** - Optimization strategies
+- **[Image Optimization](IMAGE_OPTIMIZATION_GUIDE.md)** - WebP/AVIF optimization
+- **Bundle Size**: Target <200KB per chunk
+- **Lazy Loading**: All routes use React.lazy()
+
+### Blog Development
+- **[Blog Integration Guide](BLOG_INTEGRATION_GUIDE.md)** - Working with blog system
+- **[Blog Image Guidelines](BLOG_IMAGE_GUIDELINES.md)** - Image requirements
+- **[Blog Posts Audit](BLOG_POSTS_AUDIT_REPORT.md)** - Content quality audit
+
+---
+
+## 🔒 Security & Compliance
+
+### Security Documentation
+- **[Security Practices](../SECURITY.md)** - Security overview
+- **[LGPD Compliance](LGPD_COMPLIANCE_REQUIREMENTS.md)** - Data protection requirements
+- **[CSP Implementation](CSP-Implementation-Guide.md)** - Content Security Policy
+
+### Recent Security Updates (2025-10-08)
+- ✅ XSS Protection with DOMPurify
+- ✅ API Validation with Zod schemas
+- ✅ Webhook Security improvements
+- ✅ Input Validation with length limits
+
+### Healthcare Compliance
+- **CFM**: Medical content validation required
+- **LGPD**: PII detection and consent management
+- **Accessibility**: WCAG 2.1 AA compliance
+- **Data Privacy**: No patient data in frontend
+
+---
+
+## 📊 Monitoring & Analytics
+
+### System Monitoring
+- **[Logging & Monitoring](LOGGING_MONITORING_SYSTEM.md)** - System monitoring setup
+- **[Production Error Diagnosis](Production-Error-Diagnosis.md)** - Error tracking
+- **Reports**: Stored in `reports/system-checkup/`
+
+### Analytics
+- Google Analytics 4: `G-LXWRK8ELS6`
+- Google Tag Manager: `GTM-KF2NP85D`
+- PostHog: `phc_bpyxyy0AVVh2E9LhjkDfZhi2vlfEsQhOBkijyjvyRSp`
+
+---
+
+## 🗄️ Archive
+
+Historical documentation stored in `/archive/`:
+- Old implementation reports
+- Legacy Nginx configurations
+- Deprecated build/deploy scripts
+- Historical test files
+
+**Archive Organization Date**: 2025-10-10 (68 files moved)
+
+---
+
+## 📝 Documentation Standards
+
+### Document Metadata
+All documentation should include:
+```markdown
+**Autor**: Dr. Philipe Saraiva Cruz
+**Data**: YYYY-MM-DD
+**Status**: [Draft | Review | Approved | Deprecated]
+```
+
+### Version Control
+- Documentation changes commit with `docs:` prefix
+- Use conventional commits format
+- Update "Last Updated" dates when modifying
+
+### Review Schedule
+- **Core Guides**: Monthly or on major changes
+- **Architecture Docs**: Quarterly or on architectural changes
+- **Feature Specs**: After implementation completion
+- **Security Docs**: After security updates
+
+---
+
+## 🆘 Getting Help
+
+### Common Issues
+See [TROUBLESHOOTING.md](../TROUBLESHOOTING.md) for:
+- Build issues (Vite vs Next.js confusion)
+- CSP/Security header problems
+- Environment variable issues
+- API service problems
+- Deployment failures
+
+### Development Workflow
+See [CLAUDE.md - Development Workflow](../CLAUDE.md#development-workflow) for:
+1. Reading existing code
+2. Running tests
+3. Local testing
+4. Building
+5. Deploying
+6. Verification
+
+### Support Resources
+- **Project Repository**: Git history and issues
+- **System Health Reports**: `reports/system-checkup/`
+- **Error Solutions Index**: [ERROR_SOLUTIONS_INDEX.md](ERROR_SOLUTIONS_INDEX.md)
+
+---
+
+## 🎯 Project Status
+
+**Current Version**: 3.5.1
+**Status**: ✅ Production
+**URL**: https://saraivavision.com.br
+**Compliance**: CFM + LGPD
+**Location**: Caratinga, MG, Brazil 🇧🇷
+
+### Recent Updates (October 2025)
+- ✅ SEO component architecture documented
+- ✅ Blog architecture fully documented
+- ✅ SafeHelmet migration completed
+- ✅ Path inconsistencies resolved
+- ✅ Root directory organized
+- ✅ Security vulnerabilities resolved
+
+---
+
+**Mantenedor**: Dr. Philipe Saraiva Cruz
+**Revisão**: Monthly or on significant changes
+**Feedback**: Report issues or suggest improvements via Git

@@ -575,6 +575,43 @@ npm run test:ui             # Vitest UI for debugging
 npx vitest run path/to/file.test.jsx  # Single test file
 ```
 
+## Documentation Structure
+
+📚 **[Complete Documentation Index](docs/README.md)** - Central hub for all project documentation
+
+### Core Documentation
+- **CLAUDE.md** (this file) - Primary development guide for AI assistants
+- **README.md** - Quick start and project overview
+- **AGENTS.md** - Build commands and code style for all AI agents
+- **SECURITY.md** - Security practices and compliance
+- **TROUBLESHOOTING.md** - Common issues and solutions
+
+### Architecture Documentation (`/docs/architecture/`)
+- **BLOG_ARCHITECTURE.md** - Complete blog system architecture (100% static, no CMS)
+- Document author: Dr. Philipe Saraiva Cruz
+
+### Guidelines (`/docs/guidelines/`)
+- **SEO_COMPONENTS_GUIDE.md** - SafeHelmet vs SEOHead decision matrix
+
+### Deployment (`/docs/deployment/`)
+- **DEPLOYMENT_GUIDE.md** - Complete deployment procedures
+
+### Feature Specifications (`/specs/`)
+
+📊 **[Spec Status Tracking](specs/README.md)** - Implementation status for all feature specifications
+
+- 001-backend-integration-strategy - API integration architecture (✅ Complete)
+- 001-medical-appointment-api - Appointment system (✅ Complete)
+- 002-resend-contact-form - Email contact forms (✅ Complete)
+- 003-backend-integration-strategy - Backend patterns (✅ Complete)
+- 005-wordpress-external-integration - WordPress migration documentation (🔄 Replaced with static blog)
+- 009-frontend-performance-optimization - Performance improvements (⏳ Planning phase)
+- 404-page - Custom error page implementation (✅ Complete)
+
+### Archive (`/archive/`)
+- Historical reports, configs, and deprecated scripts
+- Organized 2025-10-10 for cleaner project root
+
 ## Recent Changes
 
 ### 2025-10-24
@@ -585,8 +622,14 @@ npx vitest run path/to/file.test.jsx  # Single test file
 - ✅ Organized root directory: moved 68 files to `/archive/`
 - ✅ Added `AGENTS.md` with build commands and code style guidelines
 
+### 2025-10-08
+- ✅ Resolved all critical security vulnerabilities
+- ✅ Replaced regex-based sanitization with DOMPurify
+- ✅ Added Zod schemas for API validation
+- ✅ Implemented webhook security improvements
+
 ---
 
-**Last Updated**: 2025-10-24
-**Version**: 3.5.0
+**Last Updated**: 2025-10-25
+**Version**: 3.5.1
 **Status**: ✅ Production Ready
