@@ -524,16 +524,69 @@ For detailed security history, see commit logs from 2025-10-08.
 - **Security Practices**: `SECURITY.md`
 - **Quick Start**: `README.md`
 
+## SEO Component Architecture
+
+### SafeHelmet vs SEOHead Decision Matrix
+
+**SafeHelmet** (`@/components/SafeHelmet`):
+- **Use for**: Simple pages, forms, admin areas, pages without complex structured data
+- **Features**: String validation (prevents null/undefined errors), automatic fallbacks, basic Open Graph
+- **Bundle**: ~3KB, no i18n overhead
+- **Examples**: `/admin`, `/agendamento`, `/assinatura`, `/podcast`
+
+**SEOHead** (`@/components/SEOHead`):
+- **Use for**: Medical pages, main content pages, pages requiring i18n/hreflang
+- **Features**: Full i18n integration, geo tags, medical business metadata, structured data
+- **Bundle**: ~14KB with i18n
+- **Examples**: `/`, `/servicos`, `/blog`, `/lentes`, `/faq`
+
+**Critical Rule**: Always validate strings before passing to Helmet components. Both SafeHelmet and SEOHead handle null/undefined gracefully, but SafeHelmet is specifically designed for this.
+
+See `docs/guidelines/SEO_COMPONENTS_GUIDE.md` for complete usage guide.
+
+## Testing Architecture
+
+### Test Organization
+- **Unit Tests**: `src/**/__tests__/*.test.js` or `*.test.js` co-located with source
+- **Integration Tests**: `src/__tests__/integration/`
+- **API Tests**: `api/src/__tests__/`
+- **E2E Tests**: `tests/e2e/`
+
+### ConfigProvider Requirement
+Components using `useConfig` hook **must** be wrapped with `ConfigProvider` in tests:
+```javascript
+import { ConfigProvider } from '@/config/ConfigProvider';
+
+render(
+  <ConfigProvider>
+    <HelmetProvider>
+      <YourComponent />
+    </HelmetProvider>
+  </ConfigProvider>
+);
+```
+
+### Common Test Commands
+```bash
+npm run test:unit           # Fast unit tests only
+npm run test:integration    # Integration tests
+npm run test:comprehensive  # Full suite (unit + integration + API + frontend)
+npm run test:ui             # Vitest UI for debugging
+npx vitest run path/to/file.test.jsx  # Single test file
+```
+
 ## Recent Changes
 
 ### 2025-10-24
-- ✅ Added `AGENTS.md` with build commands and code style guidelines for AI coding agents
-- ✅ Organized root directory: moved 68 files to `/archive/` (reports, configs, scripts, tests)
-- ✅ Cleaned up 37 essential files in root for better navigation
-- ✅ Removed obsolete documentation and temporary files
+- ✅ Path inconsistencies resolved (`./pages` → `src/views/`)
+- ✅ SafeHelmet migration completed (5 pages migrated)
+- ✅ SEO components documentation created (`docs/guidelines/SEO_COMPONENTS_GUIDE.md`)
+- ✅ Blog architecture documented (`docs/architecture/BLOG_ARCHITECTURE.md`)
+- ✅ Organized root directory: moved 68 files to `/archive/`
+- ✅ Added `AGENTS.md` with build commands and code style guidelines
 
 ---
 
 **Last Updated**: 2025-10-24
-**Version**: 3.4.1
+**Version**: 3.5.0
 **Status**: ✅ Production Ready
