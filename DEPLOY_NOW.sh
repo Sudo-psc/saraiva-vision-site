@@ -1,6 +1,7 @@
 #!/bin/bash
 # Enhanced Deploy Script for Saraiva Vision
 # Includes validation, backup, and new agendamento route support
+# Medical Compliance: Enforces comprehensive testing before deployment
 
 set -e  # Exit on any error
 
@@ -13,6 +14,7 @@ echo ""
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
@@ -22,6 +24,26 @@ CURRENT_LINK="$DEPLOY_DIR/current"
 BACKUP_DIR="$DEPLOY_DIR/backups"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 RELEASE_DIR="$RELEASES_DIR/$TIMESTAMP"
+
+# Pre-Deploy Validation (Medical Compliance Requirement)
+echo -e "${BLUE}🔍 Running Pre-Deploy Validation (Medical Compliance)...${NC}"
+echo ""
+
+if [ -f "scripts/pre-deploy-validation.sh" ]; then
+    if bash scripts/pre-deploy-validation.sh; then
+        echo -e "${GREEN}✓ Pre-deploy validation passed${NC}"
+        echo ""
+    else
+        echo -e "${RED}❌ Pre-deploy validation failed!${NC}"
+        echo -e "${RED}Deployment aborted for medical compliance reasons.${NC}"
+        echo -e "${YELLOW}Please review the validation report and fix all issues before deploying.${NC}"
+        exit 1
+    fi
+else
+    echo -e "${YELLOW}⚠️  Warning: Pre-deploy validation script not found${NC}"
+    echo -e "${YELLOW}Continuing without comprehensive validation...${NC}"
+    echo ""
+fi
 
 # Create necessary directories
 echo "📁 Creating deployment directories..."
