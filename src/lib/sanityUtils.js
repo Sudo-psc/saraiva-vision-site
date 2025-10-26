@@ -11,7 +11,7 @@
  */
 
 import imageUrlBuilder from '@sanity/image-url'
-import { sanityClient } from './sanityClient'
+import { sanityClient } from './sanityClient.js'
 
 /**
  * Initialize Sanity image URL builder

@@ -84,7 +84,7 @@ export default defineConfig(({ mode }) => {
     dedupe: ['react', 'react-dom'] // Prevent React duplication issues
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react/jsx-runtime'],
+    include: ['react', 'react-dom', 'react/jsx-runtime', '@portabletext/react', '@sanity/client', '@sanity/image-url'],
     exclude: ['date-fns', 'crypto-js', 'framer-motion']
   },
   test: {
@@ -209,6 +209,11 @@ export default defineConfig(({ mode }) => {
             // Healthcare form and contact utilities
             if (id.includes('resend') || id.includes('marked')) {
               return 'contact-utils'
+            }
+
+            // Sanity CMS - content management for blog
+            if (id.includes('@sanity/client') || id.includes('@sanity/image-url') || id.includes('@portabletext/react')) {
+              return 'sanity-cms'
             }
 
             // Image optimization for medical content

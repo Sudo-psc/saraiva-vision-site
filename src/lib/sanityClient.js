@@ -10,13 +10,26 @@
 
 import { createClient } from '@sanity/client'
 
+// Environment variable access that works in both Vite and Node.js
+const getEnv = (key, defaultValue = undefined) => {
+  // In Vite (browser/build), use import.meta.env
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
+    return import.meta.env[key] || defaultValue
+  }
+  // In Node.js (scripts), use process.env
+  if (typeof process !== 'undefined' && process.env) {
+    return process.env[key] || defaultValue
+  }
+  return defaultValue
+}
+
 // Sanity project configuration
 const config = {
-  projectId: import.meta.env.VITE_SANITY_PROJECT_ID || '92ocrdmp',
-  dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
+  projectId: getEnv('VITE_SANITY_PROJECT_ID', '92ocrdmp'),
+  dataset: getEnv('VITE_SANITY_DATASET', 'production'),
   apiVersion: '2025-10-25', // Use current date for API versioning
-  useCdn: import.meta.env.PROD, // Use CDN in production for better performance
-  token: import.meta.env.VITE_SANITY_TOKEN, // Optional: for authenticated requests
+  useCdn: getEnv('NODE_ENV') === 'production', // Use CDN in production for better performance
+  token: getEnv('VITE_SANITY_TOKEN'), // Optional: for authenticated requests
 }
 
 /**
