@@ -15,7 +15,6 @@ import { initializeAnalytics, trackWebVitals, configureAnalytics } from './utils
 import { onCLS, onINP, onFCP, onLCP, onTTFB } from 'web-vitals';
 import './utils/performanceMonitor';
 import errorTracker from './lib/errorTracking'; // Advanced error tracking
-import ErrorTracker from '../scripts/error-tracker.js'; // Robust error tracker
 import analytics from './services/analytics-service.js'; // Robust analytics with retry
 import { ConfigProvider, createConfig } from '@/config';
 
@@ -26,22 +25,13 @@ configureAnalytics({
   metaPixelId: appConfig.analytics.metaPixelId
 });
 
-// Initialize robust error tracker
-const robustErrorTracker = new ErrorTracker({
-  endpoint: '/api/errors',
-  environment: appConfig.app.environment,
-  release: appConfig.app.version,
-  enabled: true
-});
-
 // Expose globally for debugging
-window.errorTracker = robustErrorTracker;
+window.errorTracker = errorTracker;
 window.analytics = analytics;
 
 // Enhanced error handler setup with detailed logging
 const setupGlobalErrorHandlers = () => {
-  // Robust error tracker handles everything automatically
-  console.log('[main.jsx] Robust error tracking initialized');
+  console.log('[main.jsx] Error tracking initialized');
 
   // Legacy compatibility - still send to GA if available
   window.addEventListener('error', (event) => {
