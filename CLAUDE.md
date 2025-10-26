@@ -47,18 +47,25 @@ Frontend (Vite/React SPA)     Backend (Node.js/Express API)
 ### Key Components
 - **Frontend**: React 18 + TypeScript + Vite + Tailwind CSS + React Router
 - **Backend**: Node.js/Express (port 3001) with systemd service management
-- **Blog**: 100% static data in `src/data/blogPosts.js` (no CMS, all content bundled at build time)
+- **Blog**: Sanity CMS with static fallback (hybrid architecture for 100% uptime)
 - **Cache**: Redis for Google Reviews only
 - **Web Server**: Nginx (static files + API proxy + rate limiting)
 - **Testing**: Vitest (unit, integration, E2E) with jsdom for React component testing
 
 ### Critical Architecture Details
 
-**Static Content System:**
-- Blog posts are defined in `src/data/blogPosts.js` as JS objects
-- No database or CMS - completely static for performance
-- Images stored in `public/Blog/` with WebP/AVIF optimization
-- Podcast episodes in `src/data/podcastEpisodes.js`
+**Blog Content System (Sanity CMS + Static Fallback):**
+- **Primary Source**: Sanity CMS (Project ID: 92ocrdmp, 25 posts)
+- **Fallback**: Static posts in `src/data/blogPosts.js` for 100% uptime
+- **Architecture**: `sanityBlogService.js` → Sanity API → Fallback on error
+- **Circuit Breaker**: 5-second timeout with exponential retry
+- **Services**:
+  - `src/lib/sanityClient.js` - Universal client (Vite + Node.js compatible)
+  - `src/lib/sanityUtils.js` - GROQ queries and transformations
+  - `src/services/sanityBlogService.js` - Main blog data service
+  - `src/components/PortableTextRenderer.jsx` - Content rendering
+- **Images**: `public/Blog/` with WebP/AVIF optimization
+- **Podcast**: `src/data/podcastEpisodes.js`
 
 **Google Business Integration:**
 - `src/services/googleBusinessService.js` - Main service class
@@ -129,6 +136,19 @@ npm run test:coverage       # Tests with coverage report
 npm run test:cover-images   # Blog cover images validation
 npm run test:watch          # Run tests in watch mode
 npm run test:ui             # Open Vitest UI for interactive testing
+```
+
+### Sanity CMS Commands
+```bash
+# Blog content management
+npm run sanity:build        # Fetch posts from Sanity at build time
+npm run sanity:export       # Export static posts to Sanity
+npm run sanity:validate     # Validate Sanity schema
+npm run sanity:query        # Run ad-hoc GROQ query
+npm run sanity:delete       # Delete posts from Sanity (use with caution)
+
+# Integration testing
+node scripts/test-sanity-integration.js  # Run 9-test integration suite
 ```
 
 ### System Health & Monitoring
@@ -247,6 +267,11 @@ VITE_DEV_MODE=true           # Enable development features
 # Email Configuration
 DOCTOR_EMAIL=philipe_cruz@outlook.com        # Doctor's email
 CONTACT_EMAIL_FROM=noreply@saraivavision.com.br  # Contact form sender
+
+# Sanity CMS (optional - uses defaults if omitted)
+VITE_SANITY_PROJECT_ID=92ocrdmp             # Sanity project ID
+VITE_SANITY_DATASET=production              # Sanity dataset
+VITE_SANITY_TOKEN=                          # Optional: for draft/preview content
 ```
 
 ### Environment Setup
@@ -378,7 +403,7 @@ npm run restart-api  # Alternative using npm script
 
 ### Core Features
 - **Google Reviews Integration**: Cached reviews with Redis, 30 req/min rate limit
-- **Static Blog System**: SEO-friendly, client-side search, zero CMS dependencies
+- **Blog System**: Sanity CMS with static fallback, SEO-friendly, client-side search
 - **Appointment System**: WhatsApp integration + contact forms
 - **Medical Content**: CFM-compliant healthcare information
 - **Podcast Platform**: Spotify integration with streaming
@@ -388,6 +413,7 @@ npm run restart-api  # Alternative using npm script
   - **Online Plans**: Telemedicine with national coverage
 
 ### Third-Party Integrations
+- **Sanity.io**: Headless CMS for blog content (Project: 92ocrdmp)
 - **Google Maps/Places**: Clinic location (Place ID: ChIJVUKww7WRugARF7u2lAe7BeE)
 - **Resend**: Transactional email service
 - **Supabase**: Backend services and authentication
@@ -587,7 +613,8 @@ npx vitest run path/to/file.test.jsx  # Single test file
 - **TROUBLESHOOTING.md** - Common issues and solutions
 
 ### Architecture Documentation (`/docs/architecture/`)
-- **BLOG_ARCHITECTURE.md** - Complete blog system architecture (100% static, no CMS)
+- **BLOG_ARCHITECTURE.md** - Blog system architecture (Sanity CMS + static fallback)
+- **SANITY_INTEGRATION_GUIDE.md** - Complete Sanity CMS integration documentation
 - Document author: Dr. Philipe Saraiva Cruz
 
 ### Guidelines (`/docs/guidelines/`)
@@ -612,7 +639,100 @@ npx vitest run path/to/file.test.jsx  # Single test file
 - Historical reports, configs, and deprecated scripts
 - Organized 2025-10-10 for cleaner project root
 
+## Sanity CMS Integration
+
+### Architecture Overview
+The blog uses a **hybrid architecture** combining Sanity CMS (primary) with static fallback (reliability):
+
+```
+BlogPage Component
+       ↓
+sanityBlogService.js
+       ↓
+┌──────┴──────────────────────┐
+│  Try: Sanity CMS            │
+│  - 25 posts via API         │
+│  - 5s timeout               │
+│  - Exponential retry        │
+└──────┬──────────────────────┘
+       │ (on success)
+       ├──────→ Return Sanity data
+       │
+       │ (on failure)
+       ↓
+┌─────────────────────────────┐
+│  Fallback: Static Posts     │
+│  - src/data/blogPosts.js    │
+│  - Always available         │
+│  - Zero network dependency  │
+└──────┬──────────────────────┘
+       │
+       └──────→ Return static data
+```
+
+### Key Files
+- **`src/lib/sanityClient.js`**: Universal client (Vite + Node.js compatible via `getEnv()`)
+- **`src/lib/sanityUtils.js`**: GROQ queries, image optimization, data transformations
+- **`src/services/sanityBlogService.js`**: Main service with circuit breaker pattern
+- **`src/components/PortableTextRenderer.jsx`**: Renders Portable Text content
+- **`scripts/test-sanity-integration.js`**: 9-test integration suite
+
+### Environment Compatibility
+The Sanity client uses a universal `getEnv()` function that works in both contexts:
+- **Vite (browser/build)**: Uses `import.meta.env`
+- **Node.js (scripts)**: Uses `process.env`
+
+This allows the same code to run in build scripts and production bundles.
+
+### Testing
+```bash
+# Run full integration test suite (9 tests)
+node scripts/test-sanity-integration.js
+
+# Tests cover:
+# 1. Sanity health check
+# 2. Fetch metadata (25 posts)
+# 3. Get post by slug
+# 4. Recent posts (3)
+# 5. Featured posts (3)
+# 6. Posts by category
+# 7. Search functionality
+# 8. Cache statistics
+# 9. Cache clear operation
+```
+
+### Content Management
+```bash
+# Export static posts to Sanity (one-time migration)
+npm run sanity:export
+
+# Fetch posts from Sanity during build
+npm run sanity:build
+
+# Validate Sanity schema
+npm run sanity:validate
+```
+
+### Performance
+- **Chunk**: `sanity-cms-*.js` ~53KB (18KB gzipped)
+- **Cache**: In-memory caching for metadata and full posts
+- **Optimization**: Lazy loading, CDN-backed reads, image optimization
+
+### Fallback Behavior
+- Sanity unreachable → Automatically uses static posts
+- No user-visible errors
+- Transparent switching between sources
+- Circuit breaker prevents repeated failures
+
 ## Recent Changes
+
+### 2025-10-26
+- ✅ Sanity CMS integration complete with static fallback
+- ✅ Fixed Node.js/Vite compatibility (universal `getEnv()` function)
+- ✅ Fixed ESM imports with .js extensions
+- ✅ Build optimization: 53KB Sanity chunk (18KB gzip)
+- ✅ 9/9 integration tests passing
+- ✅ Deployed to production: https://saraivavision.com.br
 
 ### 2025-10-24
 - ✅ Path inconsistencies resolved (`./pages` → `src/views/`)
