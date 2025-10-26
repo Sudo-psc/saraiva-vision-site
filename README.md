@@ -18,6 +18,7 @@ sudo bash /home/saraiva-vision-site/DEPLOY_NOW.sh
 
 ## 📚 Documentação Completa
 
+- **Testing Guide**: [`docs/TESTING_GUIDE.md`](./docs/TESTING_GUIDE.md) - Guia completo de testes e validação
 - **Deploy Guide**: [`docs/deployment/DEPLOYMENT_GUIDE.md`](./docs/deployment/DEPLOYMENT_GUIDE.md) - Guia completo de deployment
 - **Projeto**: [`CLAUDE.md`](./CLAUDE.md) - Documentação principal do projeto
 - **Troubleshooting**: [`TROUBLESHOOTING.md`](./TROUBLESHOOTING.md) - Resolução de problemas
@@ -28,8 +29,26 @@ sudo bash /home/saraiva-vision-site/DEPLOY_NOW.sh
 ```bash
 npm run dev              # Desenvolvimento (porta 3002)
 npm run build:vite       # Build para produção (Vite)
-npm test                 # Testes
+npm run test:comprehensive  # Testes completos (obrigatório antes de deploy)
+npm run validate:pre-deploy # Validação pré-deploy (compliance médico)
 ```
+
+### 🧪 Testing (Medical Compliance)
+
+Given the regulatory weight of the medical domain (CFM/LGPD), comprehensive testing is **mandatory**:
+
+```bash
+# Run all tests before deployment
+npm run test:comprehensive
+
+# Run pre-deploy validation (includes all tests + compliance checks)
+npm run validate:pre-deploy
+
+# View Playwright test reports
+npm run test:e2e:playwright:report
+```
+
+📚 **Complete Testing Documentation**: [`docs/TESTING_GUIDE.md`](./docs/TESTING_GUIDE.md)
 
 ## 📝 Conventional Commits
 
