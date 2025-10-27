@@ -167,16 +167,12 @@ function generatePrerenderedHTML(route, metadata, assets) {
     <!-- Robots -->
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
-    <!-- Google Tag Manager -->
+    <!-- Google Tag Manager - Loaded by React Component (GoogleTagManager.jsx) -->
+    <!-- GTM initialization moved to React for better control and error isolation -->
     <script>
+      // Initialize dataLayer for GTM (will be loaded by React component)
       window.dataLayer = window.dataLayer || [];
     </script>
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-KF2NP85D');</script>
-    <!-- End Google Tag Manager -->
 
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
@@ -189,10 +185,8 @@ ${JSON.stringify(schema, null, 2)}
     ${assets.styles}
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KF2NP85D"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    <!-- Google Tag Manager (noscript) - Loaded by React Component -->
+    <!-- GTM noscript fallback will be injected by React component -->
 
     <div id="root"></div>
     </body>
