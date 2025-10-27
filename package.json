@@ -31,7 +31,7 @@
     "lint:encoding-api": "find api -name '*.js' -exec file {} \\; | grep -v 'UTF-8\\|ASCII' && (echo 'Non-UTF8 API files found' && exit 1) || echo 'All API files are UTF-8 compliant'",
     "validate:api": "npm run lint:syntax-api && npm run lint:encoding-api",
     "validate:blog-images": "bash scripts/verify-blog-images.sh",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
     "deploy": "sudo ./scripts/fixed-deploy.sh",
     "deploy:quick": "sudo ./scripts/quick-deploy.sh",
     "deploy:legacy": "sudo ./scripts/deploy.sh",
