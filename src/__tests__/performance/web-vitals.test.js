@@ -65,7 +65,7 @@ class WebVitalsValidator {
     constructor() {
         this.metrics = new Map();
         this.observers = [];
-        this.thresholds = HEALTHCARE_THRESHOLDS;
+        this.thresholds = JSON.parse(JSON.stringify(HEALTHCARE_THRESHOLDS));
         this.healthcareSpecific = true;
     }
 
@@ -99,8 +99,8 @@ class WebVitalsValidator {
             processingStart: 1235,
             processingEnd: 1250,
             duration: 15,
-            inputType: 'pointer',
-            name: 'click'
+            inputType: 'click',
+            name: 'pointer'
         };
 
         setTimeout(() => {
@@ -409,13 +409,18 @@ describe('Web Vitals Validation Tests', () => {
         });
 
         it('should collect and rate Cumulative Layout Shift (CLS)', async () => {
-            const promise = new Promise(resolve => {
-                validator.collectCLS(resolve);
+            const updates = [];
+
+            validator.collectCLS(metric => {
+                updates.push(metric);
             });
 
-            const clsMetric = await promise;
+            await new Promise(resolve => setTimeout(resolve, 200));
 
-            expect(clsMetric.value).toBe(0.1); // Sum of all shifts (0.05 + 0.03 + 0.02)
+            expect(updates.length).toBeGreaterThan(0);
+            const clsMetric = updates[updates.length - 1];
+
+            expect(clsMetric.value).toBeCloseTo(0.1, 5); // Sum of all shifts (0.05 + 0.03 + 0.02)
             expect(clsMetric.rating).toBe('needs-improvement'); // > 0.08 but < 0.18
             expect(clsMetric.entries).toHaveLength(3);
         });
@@ -446,7 +451,11 @@ describe('Web Vitals Validation Tests', () => {
         it('should handle poor performance scenarios', async () => {
             // Simulate poor LCP
             const poorValidator = new WebVitalsValidator();
-            poorValidator.thresholds.LCP.good = 1000; // Very strict for testing
+            poorValidator.thresholds.LCP = {
+                good: 1000,
+                needsImprovement: 1400,
+                poor: 1600
+            }; // Very strict for testing
 
             const promise = new Promise(resolve => {
                 poorValidator.collectLCP(resolve);

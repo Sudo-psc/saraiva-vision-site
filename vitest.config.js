@@ -29,11 +29,13 @@ export default defineConfig({
             'src/**/*.test.{js,jsx}'
         ],
         exclude: [
-            'node_modules',
-            'dist',
-            '.vercel',
-            'build',
-            'coverage'
+            '**/node_modules/**',
+            '**/.pnpm/**',
+            '**/dist/**',
+            '**/.vercel/**',
+            '**/build/**',
+            '**/coverage/**',
+            '**/.next/**'
         ],
 
         // Performance and timeout settings
