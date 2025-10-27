@@ -91,7 +91,9 @@ const routes = [
   { path: '/api/webhook-appointment', handler: '../webhook-appointment.js' },
   { path: '/api/ga', handler: './routes/ga.js', type: 'express' },
   { path: '/api/gtm', handler: './routes/gtm.js', type: 'express' },
-  { path: '/api/maps-health', handler: './routes/maps-health.js', type: 'express' }
+  { path: '/api/maps-health', handler: './routes/maps-health.js', type: 'express' },
+  { path: '/api/questionario-olho-seco', handler: './routes/questionario-olho-seco.js', type: 'express' },
+  { path: '/api/agendamento-otimizado', handler: './routes/agendamento-otimizado.js', type: 'express' }
 ];
 
 // Load routes dynamically

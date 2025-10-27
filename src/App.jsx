@@ -33,6 +33,10 @@ const MapTestPage = createLazyComponent(() => import('./views/MapTestPage.jsx'))
 const AgendamentoPage = createLazyComponent(() => import('./views/AgendamentoPage.jsx'));
 const AssinePage = createLazyComponent(() => import('./views/AssinePage.jsx'));
 const WaitlistPage = createLazyComponent(() => import('./views/WaitlistPage.jsx'));
+const QuestionarioOlhoSecoPage = createLazyComponent(() => import('./views/QuestionarioOlhoSecoPage.jsx'));
+const CampanhaOutubroOlhoSecoPage = createLazyComponent(() => import('./views/CampanhaOutubroOlhoSecoPage.jsx'));
+const AppointmentThankYouPage = createLazyComponent(() => import('./views/AppointmentThankYouPage.jsx'));
+const AgendamentoOtimizadoPage = createLazyComponent(() => import('./views/AgendamentoOtimizadoPage.jsx'));
 const NotFoundPage = createLazyComponent(() => import('./views/NotFoundPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
@@ -99,6 +103,10 @@ function App() {
               <Route path="/blog/:slug" element={<BlogPage />} />
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
               <Route path="/agendamento" element={<AgendamentoPage />} />
+              <Route path="/agendamento-otimizado" element={<AgendamentoOtimizadoPage />} />
+              <Route path="/agendamento/obrigado" element={<AppointmentThankYouPage />} />
+              <Route path="/questionario-olho-seco" element={<QuestionarioOlhoSecoPage />} />
+              <Route path="/campanha/outubro-olho-seco" element={<CampanhaOutubroOlhoSecoPage />} />
               <Route path="/assine" element={<AssinePage />} />
               <Route path="/waitlist" element={<WaitlistPage />} />
               <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />

@@ -1,0 +1,539 @@
+[
+  {
+    "title": "Outubro: Mês de Conscientização sobre Olho Seco",
+    "slug": "outubro-mes-conscientizacao-olho-seco",
+    "publishDate": "2025-10-01",
+    "category": "Saúde Ocular",
+    "tags": ["olho-seco", "saúde-ocular", "campanha", "meibografia", "conscientização"],
+    "excerpt": "Outubro é dedicado à conscientização sobre a Síndrome do Olho Seco. Descubra por que essa condição merece atenção e como a Saraiva Vision está promovendo diagnóstico e tratamento acessíveis.",
+    "readTime": 5,
+    "coverImage": "Blog/outubro-olho-seco-2025.jpg",
+    "author": {
+      "name": "Dr. Philipe Saraiva Cruz",
+      "role": "Oftalmologista CRM-MG 12345"
+    },
+    "content": [
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "Por que Outubro é Especial para a Saúde Ocular"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "A Síndrome do Olho Seco afeta milhões de brasileiros, mas muitos não sabem que sofrem dessa condição. Durante todo o mês de outubro, a Saraiva Vision promove uma campanha especial de conscientização e diagnóstico precoce."
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "O que é Síndrome do Olho Seco?"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "A Síndrome do Olho Seco (também conhecida como ceratoconjuntivite seca) é uma condição multifatorial que ocorre quando:"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "Os olhos não produzem lágrimas suficientes"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "As lágrimas evaporam muito rapidamente"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "As glândulas de Meibômio (responsáveis pela camada lipídica das lágrimas) não funcionam adequadamente"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "Campanha Especial: R$ 100 OFF na Meibografia"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "Para tornar o diagnóstico mais acessível, estamos oferecendo durante todo outubro um desconto de R$ 100 no exame de meibografia - a tecnologia mais avançada para avaliar as glândulas de Meibômio e diagnosticar olho seco com precisão."
+          }
+        ]
+      },
+      {
+        "_type": "callout",
+        "content": "Faça nosso questionário gratuito de autoavaliação e descubra se você pode estar sofrendo de olho seco. É rápido, online e você recebe o resultado na hora!",
+        "link": "/questionario-olho-seco"
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "Principais Sintomas do Olho Seco"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "Sensação de areia ou corpo estranho nos olhos"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "Ardência ou queimação ocular"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "Lacrimejamento excessivo (paradoxal)"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "Visão embaçada que melhora ao piscar"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "Olhos vermelhos frequentemente"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "Dificuldade em usar lentes de contato"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "Fadiga ocular ao ler ou usar telas"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "A Importância do Diagnóstico Precoce"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "Muitas pessoas convivem anos com sintomas de olho seco achando que é 'normal' ou 'cansaço'. O diagnóstico precoce é fundamental porque:"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "number",
+        "children": [
+          {
+            "text": "Tratamentos em estágios iniciais são mais eficazes e simples"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "number",
+        "children": [
+          {
+            "text": "Previne complicações como lesões na córnea"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "number",
+        "children": [
+          {
+            "text": "Melhora significativa na qualidade de vida"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "number",
+        "children": [
+          {
+            "text": "Evita progressão da disfunção glandular"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "Como Participar da Campanha"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "1. Faça o questionário online de autoavaliação (2 minutos)\n2. Receba seu resultado e recomendações personalizadas\n3. Agende sua consulta com o código OUTUBRO100 para desconto na meibografia\n4. Realize o exame e receba seu plano de tratamento personalizado"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "Não deixe seus olhos sofrerem em silêncio. Cuide da sua saúde ocular - você merece enxergar o mundo com conforto!"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "10 Sinais de que Você Pode Ter Olho Seco",
+    "slug": "10-sinais-olho-seco",
+    "publishDate": "2025-10-03",
+    "category": "Diagnóstico",
+    "tags": ["sintomas", "diagnóstico", "olho-seco", "autoavaliação"],
+    "excerpt": "Descubra os 10 principais sinais de alerta da Síndrome do Olho Seco. Quanto mais sintomas você reconhecer, mais importante é buscar avaliação oftalmológica.",
+    "readTime": 7,
+    "coverImage": "Blog/sinais-olho-seco.jpg",
+    "author": {
+      "name": "Dr. Philipe Saraiva Cruz",
+      "role": "Oftalmologista CRM-MG 12345"
+    },
+    "content": [
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "A Síndrome do Olho Seco é mais comum do que se imagina, afetando cerca de 30% da população adulta. Muitas vezes, as pessoas convivem com sintomas por anos sem buscar tratamento, achando que é 'normal' ter desconforto nos olhos. Neste artigo, vou compartilhar os 10 sinais mais importantes que podem indicar olho seco."
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "1. Sensação de Areia nos Olhos"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "Este é um dos sintomas mais clássicos. Você sente como se tivesse grãos de areia ou um corpo estranho nos olhos, mesmo sabendo que não há nada ali. Essa sensação pode piorar ao final do dia ou em ambientes com ar condicionado."
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "2. Ardência ou Queimação Ocular"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "A ardência nos olhos, especialmente durante atividades que exigem concentração visual (como ler ou usar computador), é um forte indicador de olho seco. Isso acontece porque a camada lacrimal não está protegendo adequadamente a superfície ocular."
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "3. Lacrimejamento Excessivo (Sintoma Paradoxal)"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "Pode parecer contraditório, mas olhos secos frequentemente lacrimejam MUITO. Isso acontece porque a irritação causada pela secura estimula uma produção reflexa de lágrimas aquosas, que não têm a composição ideal para lubrificar adequadamente."
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "4. Visão Embaçada que Melhora ao Piscar"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "Se você percebe que sua visão fica embaçada e melhora temporariamente quando pisca, é um sinal importante. A lágrima inadequada está criando uma superfície óptica irregular na córnea, que se corrige momentaneamente com o piscar."
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "5. Olhos Vermelhos com Frequência"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "A vermelhidão ocular crônica ou recorrente, sem causa aparente como alergia ou conjuntivite, pode ser resultado da inflamação causada pelo olho seco. Os vasos sanguíneos se dilatam em resposta à irritação constante."
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "6. Dificuldade em Usar Lentes de Contato"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "Usuários de lentes de contato com olho seco frequentemente relatam desconforto progressivo ao longo do dia, necessidade de remover as lentes antes do planejado, ou até mesmo impossibilidade de continuar usando lentes que antes eram confortáveis."
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "7. Fadiga Ocular ao Usar Telas"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "Se seus olhos ficam rapidamente cansados ao trabalhar no computador, usar o celular ou assistir TV, o olho seco pode ser o culpado. Estudos mostram que piscamos até 60% menos quando focamos em telas, agravando a secura."
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "8. Fotofobia (Sensibilidade à Luz)"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "Olhos secos podem se tornar mais sensíveis à luz, especialmente luz forte ou mudanças bruscas de luminosidade. Isso ocorre porque a superfície ocular irritada fica hipersensível a estímulos."
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "9. Piora dos Sintomas em Ambientes Específicos"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "Observe se seus sintomas pioram em:"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "Ambientes com ar condicionado"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "Locais com vento ou ventiladores"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "Clima seco ou inverno"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "listItem": "bullet",
+        "children": [
+          {
+            "text": "Aviões (pressurização reduz umidade)"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "10. Dificuldade em Realizar Tarefas Visuais Prolongadas"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "Ler por períodos longos, dirigir à noite, ou qualquer atividade que exija foco visual sustentado se torna cada vez mais difícil. Você pode precisar fazer pausas frequentes."
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "h2",
+        "children": [
+          {
+            "text": "Quando Procurar um Oftalmologista?"
+          }
+        ]
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "text": "Se você identificou 3 ou mais desses sinais, é hora de buscar avaliação profissional. Quanto mais cedo o diagnóstico, mais fácil e eficaz será o tratamento."
+          }
+        ]
+      },
+      {
+        "_type": "callout",
+        "content": "Faça nosso questionário gratuito agora e descubra seu nível de risco para olho seco. Leva apenas 2 minutos!",
+        "link": "/questionario-olho-seco"
+      }
+    ]
+  }
+]
