@@ -84,7 +84,15 @@ export default defineConfig(({ mode }) => {
     dedupe: ['react', 'react-dom'] // Prevent React duplication issues
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react/jsx-runtime', '@portabletext/react', '@sanity/client', '@sanity/image-url'],
+    include: [
+      'react',
+      'react-dom',
+      'react/jsx-runtime',
+      '@portabletext/react',
+      '@sanity/client',
+      '@sanity/image-url',
+      'react-hook-form' // Fix ESM initialization error
+    ],
     exclude: ['date-fns', 'crypto-js', 'framer-motion']
   },
   test: {
@@ -144,6 +152,11 @@ export default defineConfig(({ mode }) => {
             // React Router - separate chunk for patient navigation
             if (id.includes('react-router')) {
               return 'router'
+            }
+
+            // React Hook Form - separate chunk to avoid ESM initialization errors
+            if (id.includes('react-hook-form')) {
+              return 'react-hook-form'
             }
 
             // Custom hooks and contexts - separate for better caching
