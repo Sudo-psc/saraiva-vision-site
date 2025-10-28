@@ -1,5 +1,47 @@
 export const blogPosts = [
   {
+    "id": 28,
+    "slug": "olho-seco-glandulas-meibomianas-colirio-omega-3-caratinga-mg",
+    "title": "Olho Seco e Glândulas Meibomianas: Como Lubrificantes e Ômega 3 Protegem Sua Visão",
+    "excerpt": "Descubra como avaliar e tratar a disfunção das glândulas meibomianas com higiene palpebral, colírios sem conservantes e suplementação com ômega 3. Atendimento especializado na Clínica Saraiva Vision em Caratinga (MG).",
+    "content": "\n      <h2>Introdução</h2>\n\n      <p>Olhos ardendo, sensação de areia e aquela vontade constante de piscar? Esses são sinais clássicos de <strong>síndrome do olho seco</strong>, problema que já afeta mais de 20% da população brasileira — principalmente quem passa horas em frente ao computador ou vive em ambientes com ar-condicionado. Na <strong>Clínica Saraiva Vision</strong>, em Caratinga (MG), observamos que grande parte desses casos está relacionada à <strong>disfunção das glândulas meibomianas (DGM)</strong>, responsáveis por produzir a camada lipídica que evita a evaporação das lágrimas.</p>\n\n      <p>Neste guia, o <strong>Dr. Philipe Saraiva Cruz (CRM-MG 69.870)</strong> explica por que as glândulas meibomianas são tão importantes, como os colírios lubrificantes corretos e a suplementação com ômega 3 atuam na recuperação do conforto ocular e quais hábitos ajudam a manter a visão protegida.</p>\n\n      <h2>O Papel das Glândulas Meibomianas</h2>\n\n      <p>Localizadas nas pálpebras superiores e inferiores, as glândulas meibomianas liberam um óleo essencial para estabilizar o filme lacrimal. Quando ficam obstruídas ou inflamadas, o olho perde essa camada de proteção e a lágrima evapora rapidamente.</p>\n\n      <h3>Sinais de DGM para ficar atento:</h3>\n      <ul>\n        <li>Pálpebras avermelhadas, descamação ou presença de secreção espessa</li>\n        <li>Ardência, queimação e sensação de cisco persistente</li>\n        <li>Visão embaçada ao acordar ou após leitura prolongada</li>\n        <li>Lacrimejamento excessivo em ambientes ventilados</li>\n        <li>Intolerância a lentes de contato ou maquiagem</li>\n      </ul>\n\n      <p>Em casos crônicos, a DGM pode evoluir para blefarite e chalázios recorrentes. Por isso, o diagnóstico precoce é essencial para evitar cicatrizes nas glândulas.</p>\n\n      <h2>Como é feito o diagnóstico na Clínica Saraiva Vision?</h2>\n\n      <p>Utilizamos equipamentos de alta tecnologia para avaliar a qualidade e a estabilidade do filme lacrimal:</p>\n      <ul>\n        <li><strong>Meibografia digital:</strong> analisa a anatomia das glândulas meibomianas</li>\n        <li><strong>Teste de ruptura do filme lacrimal (NIBUT):</strong> mede o tempo de evaporação das lágrimas</li>\n        <li><strong>Osmolaridade e inflamação:</strong> detectam alterações químicas que agravam o quadro</li>\n        <li><strong>Avaliação com lâmpada de fenda:</strong> identifica crostas, dermatite seborreica e sinais de rosácea ocular</li>\n      </ul>\n\n      <p>Esses dados permitem montar um plano terapêutico personalizado, considerando rotina, histórico de alergias e uso de telas.</p>\n\n      <h2>Tratamento Integrado do Olho Seco Evaporativo</h2>\n\n      <p>O tratamento da DGM combina cuidados em casa e procedimentos realizados no consultório.</p>\n\n      <h3>1. Higiene Palpebral Diária</h3>\n      <ul>\n        <li>Compressas mornas (37-40ºC) por 5 a 10 minutos para fluidificar a secreção</li>\n        <li>Massagem suave nas pálpebras com movimentos de cima para baixo</li>\n        <li>Limpeza com espumas ou lenços específicos para blefarite, evitando sabonetes agressivos</li>\n      </ul>\n\n      <h3>2. Colírios Lubrificantes Sem Conservantes</h3>\n      <p>As lágrimas artificiais em frascos unidoses são as mais seguras para uso frequente. Prefira fórmulas com lipossomas, ácido hialurônico ou carboximetilcelulose, que repõem a camada aquosa e lipídica ao mesmo tempo.</p>\n      <ul>\n        <li>Aplique conforme prescrição — geralmente 4 a 6 vezes ao dia</li>\n        <li>Evite colírios vasoconstritores (\"olhos vermelhos\"), que agravam o ressecamento</li>\n        <li>Associe géis noturnos quando há desconforto ao acordar</li>\n      </ul>\n\n      <h3>3. Procedimentos em Consultório</h3>\n      <ul>\n        <li><strong>Expressão meibomiana guiada:</strong> liberação controlada das glândulas obstruídas</li>\n        <li><strong>Luz pulsada intensa (IPL):</strong> reduz inflamação e estimula a secreção meibomiana</li>\n        <li><strong>Plataformas térmicas controladas:</strong> aquecimento profundo das pálpebras com monitoramento constante</li>\n      </ul>\n\n      <h2>Ômega 3: Nutriente Estratégico para as Glândulas</h2>\n\n      <p>Estudos mostram que a suplementação com <strong>ácidos graxos ômega 3 (EPA + DHA)</strong> melhora a qualidade da secreção meibomiana e reduz marcadores inflamatórios. O ideal é consumir entre 1.000 e 2.000 mg por dia, sempre com orientação médica e atenção para quem usa anticoagulantes.</p>\n\n      <h3>Alimentos aliados do filme lacrimal:</h3>\n      <ul>\n        <li>Peixes de águas frias (salmão, sardinha, atum)</li>\n        <li>Sementes de linhaça e chia moídas na hora</li>\n        <li>Óleo de oliva extravirgem e abacate</li>\n        <li>Nozes e castanhas ricas em vitamina E</li>\n      </ul>\n\n      <p>Na Clínica Saraiva Vision, contamos com suporte nutricional para ajustar doses, identificar alergias alimentares e acompanhar exames laboratoriais.</p>\n\n      <h2>Hábitos que Potencializam o Tratamento</h2>\n\n      <ul>\n        <li>Regra 20-20-20: a cada 20 minutos diante das telas, olhe para 20 pés (6 metros) por 20 segundos</li>\n        <li>Ajuste a altura do monitor para que o olhar fique ligeiramente para baixo</li>\n        <li>Use umidificadores em ambientes com ar-condicionado e evite vento direto no rosto</li>\n        <li>Remova maquiagem antes de dormir e troque máscaras de cílios a cada 3 meses</li>\n        <li>Mantenha hidratação adequada: 30 a 35 ml de água por quilo de peso corporal</li>\n      </ul>\n\n      <h2>Quando Procurar um Oftalmologista?</h2>\n\n      <p>Agende uma consulta se você:</p>\n      <ul>\n        <li>Usa telas por mais de 6 horas diárias e sente ardência ou oscilação visual</li>\n        <li>Apresenta sensação de areia mesmo após usar lágrimas artificiais comuns</li>\n        <li>Tem histórico de blefarite, rosácea ou cirurgia refrativa</li>\n        <li>Usa lentes de contato e percebe desconforto crescente ao final do dia</li>\n        <li>Precisa de orientação sobre suplementos e cuidados complementares</li>\n      </ul>\n\n      <p><strong>Aviso importante:</strong> As informações deste conteúdo não substituem avaliação médica individualizada. Somente um oftalmologista pode definir o tratamento ideal após exame completo.</p>\n\n      <h2>Cuide da Sua Visão com a Clínica Saraiva Vision</h2>\n\n      <p>No consultório em Caratinga, oferecemos protocolos combinados para olho seco evaporativo, acompanhamento contínuo e orientações personalizadas para cada estilo de vida. O <strong>Dr. Philipe Saraiva Cruz</strong> utiliza equipamentos de alta precisão para mapear as glândulas meibomianas, indicar colírios seguros e acompanhar a resposta ao ômega 3.</p>\n\n      <p><strong>Agende sua consulta pelo telefone (33) 99860-1427 ou pelo WhatsApp e recupere o conforto ocular!</strong></p>\n\n      <h2>Referências Científicas</h2>\n      <ol>\n        <li>TFOS DEWS II Report. Ocular Surface, 2017.</li>\n        <li>Craig JP et al. Tear Film and Ocular Surface Society MGD Workshop, 2022.</li>\n        <li>Jackson MA et al. Efficacy of Omega-3 Fatty Acids for Dry Eye Disease. Cornea, 2023.</li>\n        <li>Geerling G et al. Meibomian Gland Dysfunction: Diagnosis and Therapy. Springer, 2024.</li>\n        <li>Sociedade Brasileira de Oftalmologia. Diretrizes para Síndrome do Olho Seco, 2024.</li>\n      </ol>\n\n      <p><strong>Data de atualização:</strong> 10 de fevereiro de 2025<br>\n      <strong>Revisão por:</strong> Dr. Philipe Saraiva Cruz (CRM-MG 69.870)</p>\n\n",
+    "author": "Dr. Philipe Saraiva Cruz",
+    "date": "2025-02-10",
+    "category": "Tratamento",
+    "tags": [
+      "olho seco",
+      "glândulas meibomianas",
+      "síndrome do olho seco",
+      "colírios lubrificantes",
+      "omega 3",
+      "blefarite",
+      "Caratinga MG",
+      "Dr. Philipe Saraiva Cruz"
+    ],
+    "image": "/Blog/capa-olho-seco-glandulas-meibomianas-omega3-optimized-1200w.webp",
+    "featured": true,
+    "seo": {
+      "metaTitle": "Olho Seco em Caratinga: Tratamento das Glândulas Meibomianas com Ômega 3",
+      "metaDescription": "Aprenda a aliviar o olho seco evaporativo com higiene palpebral, colírios sem conservantes e ômega 3 na Clínica Saraiva Vision em Caratinga (MG).",
+      "keywords": [
+        "olho seco Caratinga",
+        "glândulas meibomianas",
+        "colírio lubrificante sem conservante",
+        "omega 3 para olho seco",
+        "Clínica Saraiva Vision",
+        "tratamento olho seco evaporativo"
+      ]
+    },
+    "relatedPodcasts": [
+      {
+        "id": "olho-seco-ep1",
+        "title": "Olho Seco: Sintomas, Causas e Tratamentos em Caratinga",
+        "spotifyUrl": "https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV",
+        "spotifyShowId": "6sHIG7HbhF1w5O63CTtxwV"
+      }
+    ]
+  },
+  {
     "id": 27,
     "slug": "monovisao-lentes-multifocais-presbiopia-caratinga-mg",
     "title": "Monovisão ou Lentes Multifocais: Qual a Melhor Solução para Presbiopia?",
