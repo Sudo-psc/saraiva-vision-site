@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Analytics - Saraiva Vision</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .status-card {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #cbd5e0;
+        }
+
+        .status-card.success {
+            border-left-color: #48bb78;
+            background: #f0fff4;
+        }
+
+        .status-card.error {
+            border-left-color: #f56565;
+            background: #fff5f5;
+        }
+
+        .status-card.warning {
+            border-left-color: #ed8936;
+            background: #fffaf0;
+        }
+
+        .status-card h3 {
+            font-size: 14px;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .status-card .value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .status-card .icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .test-section {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .test-section h2 {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .test-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .log-container {
+            background: #1a202c;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 300px;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 4px 0;
+            border-bottom: 1px solid #2d3748;
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .log-time {
+            color: #90cdf4;
+            margin-right: 10px;
+        }
+
+        .log-success {
+            color: #68d391;
+        }
+
+        .log-error {
+            color: #fc8181;
+        }
+
+        .log-info {
+            color: #fbd38d;
+        }
+
+        .refresh-btn {
+            background: #48bb78;
+            margin-top: 20px;
+        }
+
+        .refresh-btn:hover {
+            background: #38a169;
+        }
+
+        .clear-btn {
+            background: #718096;
+        }
+
+        .clear-btn:hover {
+            background: #4a5568;
+        }
+
+        .details {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #718096;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Teste de Analytics - Saraiva Vision</h1>
+        <p class="subtitle">Diagnóstico completo de Google Analytics 4 e Google Tag Manager</p>
+
+        <div class="status-grid" id="statusGrid">
+            <!-- Status cards will be inserted here -->
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 Testes Manuais</h2>
+            <div class="test-buttons">
+                <button onclick="sendTestEvent('pageview')">📄 Enviar Pageview</button>
+                <button onclick="sendTestEvent('button_click')">🖱️ Enviar Click Event</button>
+                <button onclick="sendTestEvent('form_submit')">📋 Enviar Form Submit</button>
+                <button onclick="testCustomEvent()">✨ Evento Customizado</button>
+                <button class="clear-btn" onclick="clearLogs()">🗑️ Limpar Logs</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>📋 Console de Eventos</h2>
+            <div class="log-container" id="logContainer">
+                <div class="log-entry log-info">
+                    <span class="log-time">Aguardando eventos...</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="refresh-btn" onclick="location.reload()">🔄 Recarregar Diagnóstico</button>
+    </div>
+
+    <script>
+        // Log system
+        const logs = [];
+
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString('pt-BR');
+            logs.push({ time: timestamp, message, type });
+
+            const logContainer = document.getElementById('logContainer');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.innerHTML = `<span class="log-time">${timestamp}</span>${message}`;
+
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function clearLogs() {
+            const logContainer = document.getElementById('logContainer');
+            logContainer.innerHTML = '<div class="log-entry log-info"><span class="log-time">Logs limpos</span></div>';
+            logs.length = 0;
+        }
+
+        // Status card creator
+        function createStatusCard(title, value, icon, status = 'info') {
+            return `
+                <div class="status-card ${status}">
+                    <div class="icon">${icon}</div>
+                    <h3>${title}</h3>
+                    <div class="value">${value}</div>
+                </div>
+            `;
+        }
+
+        // Main diagnostic function
+        function runDiagnostics() {
+            const statusGrid = document.getElementById('statusGrid');
+            let html = '';
+
+            // Check dataLayer
+            const hasDataLayer = typeof window.dataLayer !== 'undefined' && Array.isArray(window.dataLayer);
+            html += createStatusCard(
+                'DataLayer',
+                hasDataLayer ? 'Disponível ✓' : 'Não Encontrado ✗',
+                hasDataLayer ? '✅' : '❌',
+                hasDataLayer ? 'success' : 'error'
+            );
+            addLog(`DataLayer: ${hasDataLayer ? 'Disponível' : 'Não encontrado'}`, hasDataLayer ? 'success' : 'error');
+
+            // Check gtag
+            const hasGtag = typeof window.gtag === 'function';
+            html += createStatusCard(
+                'gtag() Function',
+                hasGtag ? 'Disponível ✓' : 'Não Encontrado ✗',
+                hasGtag ? '✅' : '❌',
+                hasGtag ? 'success' : 'error'
+            );
+            addLog(`gtag(): ${hasGtag ? 'Disponível' : 'Não encontrado'}`, hasGtag ? 'success' : 'error');
+
+            // Check GTM loaded
+            const gtmLoaded = window.gtmLoaded === true || (hasDataLayer && window.dataLayer.some(item => item.event === 'gtm.js'));
+            html += createStatusCard(
+                'GTM Status',
+                gtmLoaded ? 'Carregado ✓' : 'Não Carregado',
+                gtmLoaded ? '🏷️' : '⚠️',
+                gtmLoaded ? 'success' : 'warning'
+            );
+            addLog(`GTM: ${gtmLoaded ? 'Carregado' : 'Não carregado'}`, gtmLoaded ? 'success' : 'warning');
+
+            // Check for GTM scripts
+            const gtmScripts = Array.from(document.scripts).filter(s =>
+                s.src.includes('googletagmanager.com') || s.src.includes('/t/gtm.js')
+            );
+            html += createStatusCard(
+                'GTM Scripts',
+                `${gtmScripts.length} encontrado(s)`,
+                gtmScripts.length > 0 ? '📜' : '⚠️',
+                gtmScripts.length > 0 ? 'success' : 'warning'
+            );
+            addLog(`GTM Scripts: ${gtmScripts.length} encontrado(s)`, gtmScripts.length > 0 ? 'success' : 'warning');
+
+            // Check GA scripts
+            const gaScripts = Array.from(document.scripts).filter(s =>
+                s.src.includes('google-analytics.com') || s.src.includes('/t/gtag.js')
+            );
+            html += createStatusCard(
+                'GA Scripts',
+                `${gaScripts.length} encontrado(s)`,
+                gaScripts.length > 0 ? '📊' : '⚠️',
+                gaScripts.length > 0 ? 'success' : 'warning'
+            );
+            addLog(`GA Scripts: ${gaScripts.length} encontrado(s)`, gaScripts.length > 0 ? 'success' : 'warning');
+
+            // Check cookies
+            const cookies = document.cookie.split(';').filter(c =>
+                c.includes('_ga') || c.includes('_gid') || c.includes('_gat')
+            );
+            html += createStatusCard(
+                'Analytics Cookies',
+                `${cookies.length} cookie(s)`,
+                cookies.length > 0 ? '🍪' : '⚠️',
+                cookies.length > 0 ? 'success' : 'warning'
+            );
+            addLog(`Cookies: ${cookies.length} cookie(s) de analytics encontrado(s)`, cookies.length > 0 ? 'success' : 'warning');
+
+            statusGrid.innerHTML = html;
+
+            // Detailed logs
+            if (hasDataLayer) {
+                addLog(`DataLayer contém ${window.dataLayer.length} item(s)`, 'info');
+                window.dataLayer.slice(-5).forEach((item, i) => {
+                    addLog(`  [${i}] ${JSON.stringify(item).substring(0, 100)}...`, 'info');
+                });
+            }
+
+            if (gtmScripts.length > 0) {
+                gtmScripts.forEach(script => {
+                    const src = script.src;
+                    const isProxy = src.includes('/t/gtm.js');
+                    addLog(`  Script GTM: ${isProxy ? '🔄 Via Proxy' : '🌐 Direto'} - ${src}`, 'info');
+                });
+            }
+
+            if (gaScripts.length > 0) {
+                gaScripts.forEach(script => {
+                    const src = script.src;
+                    const isProxy = src.includes('/t/gtag.js');
+                    addLog(`  Script GA: ${isProxy ? '🔄 Via Proxy' : '🌐 Direto'} - ${src}`, 'info');
+                });
+            }
+        }
+
+        // Test event senders
+        function sendTestEvent(eventType) {
+            addLog(`Enviando evento: ${eventType}`, 'info');
+
+            if (typeof window.gtag === 'function') {
+                window.gtag('event', eventType, {
+                    event_category: 'test',
+                    event_label: 'manual_test',
+                    value: 1,
+                    timestamp: new Date().toISOString()
+                });
+                addLog(`✓ Evento '${eventType}' enviado via gtag()`, 'success');
+            } else {
+                addLog(`✗ gtag() não disponível, evento não enviado`, 'error');
+            }
+
+            if (typeof window.dataLayer !== 'undefined') {
+                window.dataLayer.push({
+                    event: eventType,
+                    category: 'test',
+                    label: 'manual_test',
+                    timestamp: new Date().toISOString()
+                });
+                addLog(`✓ Evento '${eventType}' adicionado ao dataLayer`, 'success');
+            } else {
+                addLog(`✗ dataLayer não disponível`, 'error');
+            }
+        }
+
+        function testCustomEvent() {
+            const eventName = prompt('Nome do evento customizado:', 'custom_test_event');
+            if (eventName) {
+                sendTestEvent(eventName);
+            }
+        }
+
+        // Run diagnostics on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                addLog('========================================', 'info');
+                addLog('Iniciando diagnóstico de analytics...', 'info');
+                addLog('========================================', 'info');
+                runDiagnostics();
+                addLog('========================================', 'info');
+                addLog('Diagnóstico concluído!', 'success');
+                addLog('========================================', 'info');
+            }, 1000);
+        });
+
+        // Monitor dataLayer pushes
+        if (typeof window.dataLayer !== 'undefined') {
+            const originalPush = window.dataLayer.push;
+            window.dataLayer.push = function(...args) {
+                addLog(`📤 dataLayer.push: ${JSON.stringify(args[0]).substring(0, 80)}...`, 'info');
+                return originalPush.apply(window.dataLayer, args);
+            };
+        }
+    </script>
+</body>
+</html>

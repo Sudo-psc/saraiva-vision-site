@@ -1,118 +1,157 @@
 #!/bin/bash
+
 # ==============================================================================
-# Script: cleanup-old-bundles.sh
-# Descrição: Limpa bundles antigos mantendo apenas os referenciados no index.html
+# Cleanup Old Bundle Files
+# Remove bundles antigos mantendo apenas o atual em uso
+#
 # Autor: Dr. Philipe Saraiva Cruz
-# Data: 2025-10-25
-# Versão: 2.0 - Limpeza baseada em uso real (index.html)
+# Data: 2025-10-28
 # ==============================================================================
 
 set -e
 
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Config
 ASSETS_DIR="/var/www/saraivavision/current/assets"
-INDEX_FILE="/var/www/saraivavision/current/index.html"
-LOG_FILE="/var/log/saraivavision-cleanup.log"
+INDEX_HTML="/var/www/saraivavision/current/index.html"
+BACKUP_DIR="/var/www/saraivavision/bundles-backup-$(date +%Y%m%d-%H%M%S)"
 
-# Function to log messages
-log_message() {
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
-}
-
-echo "🧹 Limpeza de Bundles Antigos - Saraiva Vision"
-echo "================================================"
+echo -e "${BLUE}========================================${NC}"
+echo -e "${BLUE}   Limpeza de Bundles Antigos${NC}"
+echo -e "${BLUE}========================================${NC}"
 echo ""
 
-# Verificar se diretórios existem
+# Check if running as root
+if [ "$EUID" -ne 0 ]; then
+    echo -e "${RED}❌ Este script precisa ser executado como root (sudo)${NC}"
+    exit 1
+fi
+
+# Check if assets directory exists
 if [ ! -d "$ASSETS_DIR" ]; then
-    log_message "ERROR: Diretório $ASSETS_DIR não encontrado"
+    echo -e "${RED}❌ Diretório de assets não encontrado: $ASSETS_DIR${NC}"
     exit 1
 fi
 
-if [ ! -f "$INDEX_FILE" ]; then
-    log_message "ERROR: Arquivo $INDEX_FILE não encontrado"
+# Check if index.html exists
+if [ ! -f "$INDEX_HTML" ]; then
+    echo -e "${RED}❌ index.html não encontrado: $INDEX_HTML${NC}"
     exit 1
 fi
 
-# Extrair bundles em uso do index.html
-echo "📋 Identificando bundles em uso..."
-BUNDLES_IN_USE=$(grep -oP 'src="/assets/\K[^"]+' "$INDEX_FILE" 2>/dev/null || echo "")
+# Find current bundle in use
+echo -e "${YELLOW}🔍 Identificando bundle atual...${NC}"
+CURRENT_BUNDLE=$(grep -o 'index-[^"]*\.js' "$INDEX_HTML" | head -1)
 
-if [ -z "$BUNDLES_IN_USE" ]; then
-    log_message "ERROR: Não foi possível identificar bundles em uso no index.html"
+if [ -z "$CURRENT_BUNDLE" ]; then
+    echo -e "${RED}❌ Não foi possível identificar o bundle atual no index.html${NC}"
     exit 1
 fi
 
-log_message "Bundles em uso identificados:"
-echo "$BUNDLES_IN_USE" | while read bundle; do
-    log_message "  - $bundle"
-    echo "   - $bundle"
-done
+echo -e "${GREEN}✓ Bundle atual: ${CURRENT_BUNDLE}${NC}"
 echo ""
 
-# Contar arquivos antes
-BEFORE=$(find "$ASSETS_DIR" -name "*.js" | wc -l)
-SIZE_BEFORE=$(du -sh "$ASSETS_DIR" | cut -f1)
-log_message "Arquivos JS antes: $BEFORE, Tamanho: $SIZE_BEFORE"
-echo "📊 Estatísticas ANTES da limpeza:"
-echo "   - Arquivos JS: $BEFORE"
-echo "   - Tamanho total: $SIZE_BEFORE"
-echo ""
+# List all bundles
+echo -e "${YELLOW}📦 Bundles encontrados:${NC}"
+BUNDLES=$(find "$ASSETS_DIR" -name "index-*.js" -type f | sort)
+BUNDLE_COUNT=$(echo "$BUNDLES" | wc -l)
 
-# Modo dry-run por padrão
-DRY_RUN=true
-if [ "$1" = "--execute" ]; then
-    DRY_RUN=false
-    log_message "MODO EXECUÇÃO: Arquivos serão removidos"
-    echo "⚠️  MODO EXECUÇÃO: Arquivos serão REALMENTE removidos!"
-else
-    echo "ℹ️  MODO DRY-RUN: Simulação (use --execute para remover)"
-fi
-echo ""
-
-# Processar arquivos
-REMOVED_COUNT=0
-echo "🔍 Analisando arquivos JS..."
-
-find "$ASSETS_DIR" -name "*.js" -type f | while read file; do
-    basename=$(basename "$file")
-
-    # Verificar se o arquivo está em uso
-    if ! echo "$BUNDLES_IN_USE" | grep -q "$basename"; then
-        if [ "$DRY_RUN" = false ]; then
-            log_message "Removendo: $basename"
-            echo "   🗑️  Removendo: $basename"
-            rm -f "$file"
-        else
-            echo "   📋 Seria removido: $basename"
-        fi
-        REMOVED_COUNT=$((REMOVED_COUNT + 1))
+echo "$BUNDLES" | while read bundle; do
+    size=$(du -h "$bundle" | cut -f1)
+    basename=$(basename "$bundle")
+    if [ "$basename" == "$CURRENT_BUNDLE" ]; then
+        echo -e "  ${GREEN}✓ $basename ($size) [ATUAL]${NC}"
     else
-        if [ "$DRY_RUN" = false ]; then
-            log_message "Mantendo (em uso): $basename"
-        fi
+        echo -e "  ${YELLOW}○ $basename ($size) [ANTIGO]${NC}"
     fi
 done
 
 echo ""
+echo -e "${BLUE}Total: ${BUNDLE_COUNT} bundle(s)${NC}"
 
-# Contar arquivos depois (apenas se executado)
-if [ "$DRY_RUN" = false ]; then
-    AFTER=$(find "$ASSETS_DIR" -name "*.js" | wc -l)
-    SIZE_AFTER=$(du -sh "$ASSETS_DIR" | cut -f1)
+# Calculate old bundles
+OLD_BUNDLES=$(echo "$BUNDLES" | grep -v "$CURRENT_BUNDLE" || true)
+OLD_COUNT=$(echo "$OLD_BUNDLES" | grep -c "index-" || echo "0")
 
-    log_message "Arquivos JS depois: $AFTER, Tamanho: $SIZE_AFTER"
-    log_message "Removidos: $(($BEFORE - $AFTER)) arquivos"
-
-    echo "📊 Estatísticas DEPOIS da limpeza:"
-    echo "   - Arquivos JS: $AFTER"
-    echo "   - Tamanho total: $SIZE_AFTER"
-    echo ""
-    echo "✅ Limpeza concluída!"
-    echo "   - Arquivos removidos: $(($BEFORE - $AFTER))"
-else
-    echo "ℹ️  Para executar a limpeza, rode:"
-    echo "   sudo bash $0 --execute"
+if [ "$OLD_COUNT" -eq 0 ]; then
+    echo -e "${GREEN}✓ Nenhum bundle antigo para remover!${NC}"
+    exit 0
 fi
 
 echo ""
-echo "================================================"
+echo -e "${YELLOW}⚠️  ${OLD_COUNT} bundle(s) antigo(s) será(ão) removido(s)${NC}"
+
+# Calculate space to be freed
+echo ""
+echo -e "${BLUE}Espaço a ser liberado:${NC}"
+du -ch $OLD_BUNDLES 2>/dev/null | tail -1 | awk '{print "  " $1}'
+
+# Ask for confirmation
+echo ""
+read -p "$(echo -e ${YELLOW}Deseja continuar com a remoção? [s/N]:${NC} )" -n 1 -r
+echo ""
+
+if [[ ! $REPLY =~ ^[Ss]$ ]]; then
+    echo -e "${RED}❌ Operação cancelada pelo usuário${NC}"
+    exit 0
+fi
+
+# Create backup
+echo ""
+echo -e "${YELLOW}📦 Criando backup...${NC}"
+mkdir -p "$BACKUP_DIR"
+
+echo "$OLD_BUNDLES" | while read bundle; do
+    if [ -f "$bundle" ]; then
+        cp -v "$bundle" "$BACKUP_DIR/"
+    fi
+done
+
+echo -e "${GREEN}✓ Backup criado em: $BACKUP_DIR${NC}"
+
+# Remove old bundles
+echo ""
+echo -e "${YELLOW}🗑️  Removendo bundles antigos...${NC}"
+
+REMOVED_COUNT=0
+echo "$OLD_BUNDLES" | while read bundle; do
+    if [ -f "$bundle" ]; then
+        basename=$(basename "$bundle")
+        rm -f "$bundle"
+        echo -e "  ${RED}✗ Removido: $basename${NC}"
+        REMOVED_COUNT=$((REMOVED_COUNT + 1))
+    fi
+done
+
+# Final verification
+echo ""
+echo -e "${BLUE}========================================${NC}"
+echo -e "${GREEN}✓ Limpeza concluída!${NC}"
+echo -e "${BLUE}========================================${NC}"
+echo ""
+
+# List remaining bundles
+REMAINING_BUNDLES=$(find "$ASSETS_DIR" -name "index-*.js" -type f)
+REMAINING_COUNT=$(echo "$REMAINING_BUNDLES" | wc -l)
+
+echo -e "${BLUE}Bundles restantes: ${REMAINING_COUNT}${NC}"
+echo "$REMAINING_BUNDLES" | while read bundle; do
+    size=$(du -h "$bundle" | cut -f1)
+    basename=$(basename "$bundle")
+    echo -e "  ${GREEN}✓ $basename ($size)${NC}"
+done
+
+echo ""
+echo -e "${BLUE}Backup localizado em:${NC}"
+echo -e "  $BACKUP_DIR"
+echo ""
+echo -e "${YELLOW}💡 Para restaurar em caso de problemas:${NC}"
+echo -e "  sudo cp $BACKUP_DIR/*.js $ASSETS_DIR/"
+echo ""
+echo -e "${GREEN}✓ Operação concluída com sucesso!${NC}"
