@@ -98,15 +98,13 @@ const AnalyticsFallback = () => {
         body: requestBody
       });
 
-      if (response.status === 204) {
-        console.log('✅ Server-side analytics sent successfully');
-      } else if (response.ok) {
+      if (response.status === 204 || response.ok) {
         console.log('✅ Server-side analytics sent successfully');
       } else {
         console.warn('⚠️ Server-side analytics failed:', response.status);
       }
     } catch (error) {
-      console.error('❌ Server-side analytics error:', error);
+      console.warn('⚠️ Server-side analytics error:', error.message || error);
     }
   }, [getClientId, deepSanitize]);
 
@@ -146,13 +144,20 @@ const AnalyticsFallback = () => {
         body: requestBody
       });
 
-      if (response.ok) {
-        console.log(`✅ GTM event "${eventName}" sent server-side`);
+      if (response.ok || response.status === 204) {
+        // Silently succeed - don't log every event to avoid console spam
+        if (eventName !== 'heartbeat') {
+          console.log(`✅ GTM event "${eventName}" sent server-side`);
+        }
       } else {
         console.warn(`⚠️ GTM event "${eventName}" failed:`, response.status);
       }
     } catch (error) {
-      console.error(`❌ GTM event "${eventName}" error:`, error);
+      // Only log non-heartbeat errors to avoid console spam
+      if (eventName !== 'heartbeat') {
+        console.warn(`⚠️ GTM event "${eventName}" error:`, error.message || error);
+      }
+      // Silently fail for heartbeat - it's not critical
     }
   }, [deepSanitize]);
 
