@@ -912,17 +912,660 @@ export const blogPosts = [
         "Dr. Philipe Saraiva Cruz"
       ]
     }
+  },
+  {
+    "id": 28,
+    "slug": "lentes-contato-tecnologias-futuro",
+    "title": "Lentes de Contato do Futuro: 5 Tecnologias que Vão Revolucionar Sua Visão",
+    "excerpt": "Das lentes que monitoram glicose às que corrigem miopia enquanto você dorme: descubra as 5 tecnologias revolucionárias em lentes de contato que já estão transformando a oftalmologia moderna.",
+    "content": `
+<p>Imagine acordar todos os dias sem precisar colocar lentes ou usar óculos. Ou ter lentes que alertam sobre problemas de saúde antes mesmo dos sintomas aparecerem. Isso não é ficção científica - é o futuro das lentes de contato que já está acontecendo.</p>
+
+      <h2>1. Lentes de Contato Inteligentes: Monitoramento de Saúde em Tempo Real</h2>
+
+      <p>As lentes de contato do futuro vão muito além da correção visual. Empresas como Google e Novartis estão desenvolvendo lentes que podem:</p>
+
+      <ul>
+        <li>Monitorar níveis de glicose através das lágrimas (revolucionário para diabéticos)</li>
+        <li>Detectar pressão intraocular para prevenir glaucoma</li>
+        <li>Medir padrões de piscar para identificar fadiga ou problemas neurológicos</li>
+        <li>Transmitir dados para smartphones via Bluetooth</li>
+      </ul>
+
+      <blockquote>"Em 2024, a FDA aprovou os primeiros testes clínicos de lentes que monitoram glicose continuamente. Isso significa que em breve diabéticos poderão controlar sua saúde sem furar o dedo dezenas de vezes ao dia."</blockquote>
+
+      <h2>2. Ortoceratologia: Corrija Miopia Enquanto Dorme</h2>
+
+      <p>Já disponível na Saraiva Vision, a ortoceratologia (orto-k) é uma das tecnologias mais surpreendentes em lentes de contato. Você usa lentes especiais durante a noite, que remodelam suavemente a córnea, e acorda vendo perfeitamente - sem lentes ou óculos durante o dia!</p>
+
+      <h3>Como Funciona?</h3>
+
+      <p>As lentes orto-k aplicam pressão controlada sobre a córnea durante o sono, alterando temporariamente sua curvatura. O efeito dura de 24 a 48 horas, permitindo visão nítida durante todo o dia. É reversível e seguro, sendo especialmente indicado para:</p>
+
+      <ul>
+        <li>Crianças e adolescentes com miopia progressiva</li>
+        <li>Atletas que precisam de visão livre durante treinos</li>
+        <li>Profissionais que trabalham em ambientes com poeira ou produtos químicos</li>
+        <li>Pessoas que não querem cirurgia a laser</li>
+      </ul>
+
+      <h2>3. Lentes Esclerais: Conforto Incomparável para Casos Complexos</h2>
+
+      <p>As lentes esclerais são maiores que as lentes convencionais e repousam sobre a esclera (parte branca do olho), criando uma câmara de lágrimas que proporciona:</p>
+
+      <ol>
+        <li>Conforto superior mesmo em córneas irregulares</li>
+        <li>Hidratação constante para olhos secos severos</li>
+        <li>Visão nítida em casos de ceratocone, pós-transplante ou cirurgia refrativa</li>
+        <li>Estabilidade - não se deslocam durante atividades físicas</li>
+      </ol>
+
+      <p>Muitos pacientes que "não se adaptavam" a lentes convencionais encontram nas esclerais a solução perfeita. Na Saraiva Vision, fazemos a adaptação personalizada com topografia computadorizada.</p>
+
+      <h2>4. Lentes Multifocais de Última Geração: Adeus à Presbiopia</h2>
+
+      <p>A presbiopia (vista cansada) afeta 100% das pessoas após os 40 anos. As novas lentes multifocais utilizam designs ópticos avançados que permitem visão nítida em todas as distâncias:</p>
+
+      <h3>Tecnologias Revolucionárias:</h3>
+
+      <p><strong>Design de dominância pupilar</strong>: Um olho foca longe e outro perto, o cérebro integra as imagens perfeitamente.</p>
+
+      <p><strong>Zonas concêntricas otimizadas</strong>: Múltiplas zonas focais distribuídas pela lente proporcionam transição suave entre distâncias.</p>
+
+      <p><strong>Materiais de silicone-hidrogel de 5ª geração</strong>: Até 5x mais oxigênio chegando à córnea, permitindo uso prolongado com saúde ocular preservada.</p>
+
+      <p>As taxas de adaptação bem-sucedida subiram de 60% (tecnologia antiga) para mais de 90% com as lentes multifocais modernas.</p>
+
+      <h2>5. Lentes Fotocromáticas: Proteção UV Adaptativa</h2>
+
+      <p>As lentes de contato fotocromáticas ajustam automaticamente sua tonalidade conforme a exposição à luz UV:</p>
+
+      <ul>
+        <li>Escurecem em ambientes externos ensolarados (como óculos de sol)</li>
+        <li>Clareiam em ambientes internos ou à sombra</li>
+        <li>Bloqueiam 100% dos raios UVA e UVB nocivos</li>
+        <li>Reduzem fadiga ocular causada por luminosidade excessiva</li>
+      </ul>
+
+      <p>Ideal para quem pratica esportes ao ar livre, dirige muito ou trabalha alternando entre ambientes internos e externos. A transição é rápida (30-60 segundos) e totalmente automática.</p>
+
+      <h2>O Futuro é Agora: Teste Estas Tecnologias na Saraiva Vision</h2>
+
+      <p>Enquanto algumas tecnologias ainda estão em desenvolvimento, outras já estão disponíveis e transformando vidas. Na Saraiva Vision, oferecemos:</p>
+
+      <ul>
+        <li>Avaliação completa com topografia corneana computadorizada</li>
+        <li>Adaptação personalizada de lentes orto-k, esclerais e multifocais</li>
+        <li>Teste gratuito de 7 dias para você experimentar antes de comprar</li>
+        <li>Acompanhamento rigoroso para garantir saúde ocular e conforto máximo</li>
+        <li>Acesso às marcas mais inovadoras do mercado mundial</li>
+      </ul>
+
+      <p>Não importa se você é iniciante ou usuário experiente: existe uma tecnologia de lentes de contato perfeita para você. Agende uma avaliação e descubra qual é a melhor opção para seu estilo de vida e necessidades visuais.</p>
+
+      <h3>📞 Agende Sua Avaliação</h3>
+
+      <p>WhatsApp: (33) 3321-2293
+Endereço: Rua Coronel Manoel Alves, 555 - Centro, Caratinga/MG
+Horário: Segunda a Sexta, 8h às 18h | Sábado, 8h às 12h</p>
+    `,
+    "author": "Dr. Philipe Saraiva Cruz",
+    "date": "2025-11-05",
+    "category": "Tecnologia e Inovação",
+    "tags": [
+      "lentes-de-contato",
+      "tecnologia",
+      "inovação",
+      "saúde-ocular",
+      "tendências"
+    ],
+    "image": "/Blog/lentes-contato-futuro-2025.jpg",
+    "featured": false,
+    "seo": {
+      "metaTitle": "Lentes de Contato do Futuro: 5 Tecnologias que Vão Revolucionar Sua Visão",
+      "metaDescription": "Das lentes que monitoram glicose às que corrigem miopia enquanto você dorme: descubra as 5 tecnologias revolucionárias em lentes de contato que já estão transformando a oftalmologia moderna.",
+      "keywords": [
+        "lentes-de-contato",
+        "tecnologia",
+        "inovação",
+        "saúde-ocular",
+        "tendências"
+      ]
+    },
+    "relatedPodcasts": []
+  },
+  {
+    "id": 29,
+    "slug": "mitos-lentes-contato-verdades",
+    "title": "7 Mitos sobre Lentes de Contato que Você Precisa Parar de Acreditar",
+    "excerpt": "\"Lentes podem ficar presas atrás do olho\" e outros mitos que impedem pessoas de aproveitar os benefícios das lentes de contato. Descubra a verdade científica por trás das crenças mais comuns.",
+    "content": `
+<p>Você já evitou usar lentes de contato por medo de algo que ouviu falar? Não está sozinho. Milhões de pessoas deixam de aproveitar a liberdade e o conforto das lentes por conta de mitos que simplesmente não têm base científica. Vamos desmistificar as crenças mais comuns de uma vez por todas.</p>
+
+      <h2>❌ Mito #1: "Lentes de Contato Podem Ficar Presas Atrás do Olho"</h2>
+
+      <h3>✅ A VERDADE:</h3>
+
+      <p>Este é provavelmente o mito mais assustador - e totalmente impossível! A anatomia do olho simplesmente não permite isso.</p>
+
+      <p><strong>A conjuntiva</strong> é uma membrana fina e transparente que reveste o globo ocular e a parte interna das pálpebras, formando um "saco" fechado. Não existe espaço atrás do olho para uma lente se perder.</p>
+
+      <p>Sim, uma lente pode ocasionalmente se deslocar para o canto do olho (especialmente se você esfregar os olhos vigorosamente), mas isso é facilmente resolvido: pisque algumas vezes ou use gotas lubrificantes para reposicioná-la. E se isso não funcionar, consulte seu oftalmologista - ele remove em segundos.</p>
+
+      <h2>❌ Mito #2: "Lentes de Contato São Desconfortáveis e Causam Irritação"</h2>
+
+      <h3>✅ A VERDADE:</h3>
+
+      <p>Este mito era verdade... nos anos 80! As lentes modernas são radicalmente diferentes:</p>
+
+      <ul>
+        <li><strong>Materiais de silicone-hidrogel</strong> permitem 5x mais passagem de oxigênio</li>
+        <li>Conteúdo de água otimizado (38-48%) previne olhos secos</li>
+        <li>Design asférico ultra-fino (0.07mm no centro!) é imperceptível</li>
+        <li>Tecnologia de umectação mantém superfície lubrificada por 16+ horas</li>
+      </ul>
+
+      <blockquote>"Uso lentes há 15 anos e muitos dias nem lembro que estou usando. A tecnologia evoluiu tanto que é como não ter nada nos olhos." - Relato real de paciente da Saraiva Vision</blockquote>
+
+      <p>Se você sente desconforto, o problema não são as lentes - é a adaptação inadequada ou higiene imprópria. Com orientação correta e lentes de qualidade, 95% dos usuários relatam conforto total durante o dia inteiro.</p>
+
+      <h2>❌ Mito #3: "Só Pessoas Jovens Podem Usar Lentes de Contato"</h2>
+
+      <h3>✅ A VERDADE:</h3>
+
+      <p>Idade não é fator limitante! Existem lentes para cada fase da vida:</p>
+
+      <p><strong>Crianças (8-12 anos):</strong> Lentes orto-k podem frear a progressão da miopia em até 60%. Estudos mostram que crianças são muitas vezes mais cuidadosas com lentes que adultos!</p>
+
+      <p><strong>Adolescentes e adultos jovens:</strong> Perfeito para esportes, vida social ativa e liberdade sem armação de óculos.</p>
+
+      <p><strong>40+ anos (presbiopia):</strong> Lentes multifocais eliminam a necessidade de óculos de leitura. Muitos pacientes começam a usar lentes pela primeira vez justamente nesta fase!</p>
+
+      <p><strong>60+ anos:</strong> Desde que a saúde ocular esteja boa (sem olho seco severo ou doenças não controladas), não há limite de idade. Temos pacientes de 70+ anos usando lentes com sucesso total.</p>
+
+      <p>O fator determinante não é a idade, mas sim a motivação e capacidade de seguir as orientações de higiene e cuidados.</p>
+
+      <h2>❌ Mito #4: "Lentes de Contato Causam Infecções Graves"</h2>
+
+      <h3>✅ A VERDADE:</h3>
+
+      <p>Infecções são <em>raras</em> quando você segue os cuidados básicos. A taxa de ceratite microbiana grave é de apenas 4 em 10.000 usuários por ano - menor que a chance de sofrer um acidente de carro!</p>
+
+      <p><strong>99% das infecções ocorrem por:</strong></p>
+
+      <ol>
+        <li>Dormir com lentes não aprovadas para uso noturno</li>
+        <li>Nadar ou tomar banho com lentes (água pode conter microorganismos)</li>
+        <li>Usar lentes além do prazo de validade</li>
+        <li>Não lavar as mãos antes de manusear lentes</li>
+        <li>Reutilizar solução no estojo (trocar diariamente é essencial!)</li>
+      </ol>
+
+      <h3>Como Prevenir 100% das Infecções:</h3>
+
+      <ul>
+        <li>Lave sempre as mãos com sabão neutro antes de tocar nas lentes</li>
+        <li>Use apenas solução multipropósito de qualidade (nunca água ou soro fisiológico!)</li>
+        <li>Troque o estojo a cada 3 meses</li>
+        <li>Respeite rigorosamente o prazo de troca (diário, quinzenal ou mensal)</li>
+        <li>Faça revisões oftalmológicas a cada 6-12 meses</li>
+      </ul>
+
+      <p>Seguindo essas regras simples, usar lentes de contato é tão seguro quanto usar óculos - e estatisticamente mais seguro que muitas atividades cotidianas.</p>
+
+      <h2>❌ Mito #5: "Lentes de Contato São Caras Demais"</h2>
+
+      <h3>✅ A VERDADE:</h3>
+
+      <p>Vamos fazer as contas reais:</p>
+
+      <h4>Opção 1: Lentes Diárias</h4>
+
+      <ul>
+        <li>Custo: R$ 2,50 - R$ 5,00 por dia</li>
+        <li>Usando 3x/semana: R$ 30-60/mês</li>
+        <li>Vantagem: zero manutenção, máxima higiene</li>
+      </ul>
+
+      <h4>Opção 2: Lentes Mensais</h4>
+
+      <ul>
+        <li>Custo: R$ 50-150 o par (dura 30 dias)</li>
+        <li>Solução: R$ 30-50/mês</li>
+        <li>Total: R$ 80-200/mês</li>
+      </ul>
+
+      <p><strong>Compare com:</strong></p>
+
+      <ul>
+        <li>Óculos de qualidade: R$ 500-3.000 (que você pode riscar, quebrar, perder)</li>
+        <li>Óculos de sol graduado adicional: +R$ 400-2.000</li>
+        <li>Academia ou Netflix: R$ 80-150/mês (você não questiona, certo?)</li>
+      </ul>
+
+      <p>Além disso, muitos planos de saúde cobrem lentes de contato, e na Saraiva Vision oferecemos parcelamento sem juros. Investir em visão clara e liberdade de movimento não é gasto - é qualidade de vida.</p>
+
+      <h2>❌ Mito #6: "É Muito Difícil Colocar e Tirar Lentes"</h2>
+
+      <h3>✅ A VERDADE:</h3>
+
+      <p>Sim, pode parecer intimidante no início - assim como dirigir, nadar ou andar de bicicleta pareceu. Mas é uma habilidade motora simples que 99% das pessoas dominam em 3-7 dias.</p>
+
+      <h4>Nossa Abordagem na Saraiva Vision:</h4>
+
+      <ol>
+        <li><strong>Treinamento prático</strong>: Nossa equipe fica com você até conseguir colocar e tirar sozinho no consultório</li>
+        <li><strong>Vídeos educativos</strong>: Enviamos tutoriais passo a passo para você revisar em casa</li>
+        <li><strong>Suporte contínuo</strong>: WhatsApp direto para tirar dúvidas nos primeiros dias</li>
+        <li><strong>Consulta de revisão</strong>: Retorno em 1 semana para verificar adaptação</li>
+      </ol>
+
+      <p><strong>A curva de aprendizado típica:</strong></p>
+
+      <ul>
+        <li>Dia 1: 5-10 minutos com ajuda</li>
+        <li>Dia 3: 2-3 minutos sozinho</li>
+        <li>Semana 2: 30-60 segundos (automático!)</li>
+      </ul>
+
+      <p>Depois vira músculo memória - como escovar os dentes. Muitos usuários fazem no piloto automático enquanto ouvem podcast!</p>
+
+      <h2>❌ Mito #7: "Lentes de Contato Impedem Oxigênio de Chegar aos Olhos"</h2>
+
+      <h3>✅ A VERDADE:</h3>
+
+      <p>Este mito tinha fundamento... em 1970! As lentes antigas eram feitas de PMMA (polimetilmetacrilato), material totalmente impermeável ao oxigênio.</p>
+
+      <p>As lentes modernas de silicone-hidrogel têm permeabilidade ao oxigênio (Dk/t) de até 175 - o que significa que mais oxigênio chega à córnea do que se você estivesse de olhos fechados dormindo!</p>
+
+      <h4>Dados Científicos:</h4>
+
+      <ul>
+        <li>Córnea precisa: mínimo Dk/t de 24 para olhos abertos, 87 para dormir</li>
+        <li>Lentes modernas oferecem: Dk/t de 90-175+</li>
+        <li>Resultado: córnea permanece saudável mesmo com 16+ horas de uso diário</li>
+      </ul>
+
+      <p>Algumas lentes são aprovadas pela FDA para uso contínuo de até 30 dias (inclusive dormindo!). Obviamente, removê-las à noite é sempre a opção mais segura e recomendada, mas o ponto é: a tecnologia evoluiu drasticamente.</p>
+
+      <h2>Conclusão: Não Deixe Mitos Limitarem Sua Visão</h2>
+
+      <p>A maioria dos medos sobre lentes de contato vem de informações desatualizadas ou experiências de décadas atrás. A tecnologia atual é incomparavelmente superior, mais segura e mais confortável.</p>
+
+      <p><strong>Se você sempre quis experimentar lentes mas tinha receio, este é o momento perfeito. Na Saraiva Vision:</strong></p>
+
+      <ul>
+        <li>Consulta de adaptação completa sem compromisso</li>
+        <li>Período de teste gratuito de 7 dias</li>
+        <li>Treinamento personalizado até você se sentir 100% confortável</li>
+        <li>Acompanhamento rigoroso para garantir saúde ocular</li>
+      </ul>
+
+      <p>Não acredite em mitos. Acredite na ciência, na tecnologia e na sua própria experiência.</p>
+
+      <h3>📞 Agende Sua Avaliação Sem Compromisso</h3>
+
+      <p>WhatsApp: (33) 3321-2293
+Endereço: Rua Coronel Manoel Alves, 555 - Centro, Caratinga/MG
+Horário: Segunda a Sexta, 8h às 18h | Sábado, 8h às 12h</p>
+    `,
+    "author": "Dr. Philipe Saraiva Cruz",
+    "date": "2025-11-12",
+    "category": "Mitos e Verdades",
+    "tags": [
+      "lentes-de-contato",
+      "mitos",
+      "verdades",
+      "saúde-ocular",
+      "educação"
+    ],
+    "image": "/Blog/mitos-lentes-contato-2025.jpg",
+    "featured": false,
+    "seo": {
+      "metaTitle": "7 Mitos sobre Lentes de Contato que Você Precisa Parar de Acreditar",
+      "metaDescription": "\"Lentes podem ficar presas atrás do olho\" e outros mitos que impedem pessoas de aproveitar os benefícios das lentes de contato. Descubra a verdade científica por trás das crenças mais comuns.",
+      "keywords": [
+        "lentes-de-contato",
+        "mitos",
+        "verdades",
+        "saúde-ocular",
+        "educação"
+      ]
+    },
+    "relatedPodcasts": []
+  },
+  {
+    "id": 30,
+    "slug": "lentes-contato-iniciantes-guia-completo",
+    "title": "Lentes de Contato para Iniciantes: Guia Completo da Primeira Vez",
+    "excerpt": "Tudo o que você precisa saber antes de usar lentes pela primeira vez: desde a escolha do tipo certo até dicas profissionais para colocar, tirar e cuidar. Guia passo a passo aprovado por oftalmologistas.",
+    "content": `
+<p>Decidiu experimentar lentes de contato pela primeira vez? Excelente escolha! Este guia completo vai responder todas as suas dúvidas e transformar você de iniciante total a usuário confiante em poucos dias. Vamos do básico ao avançado, com dicas que só quem trabalha com lentes há décadas pode dar.</p>
+
+      <h2>Passo 1: Escolhendo o Tipo Certo de Lente para Você</h2>
+
+      <p>Não existe lente "universal". O tipo ideal depende do seu estilo de vida, grau, sensibilidade ocular e orçamento. Vamos destrinchar as opções:</p>
+
+      <h3>🔵 Lentes Diárias (Descartáveis)</h3>
+
+      <p><strong>Melhor para:</strong> Iniciantes, pessoas que usam ocasionalmente (academia, eventos, viagens), quem tem alergias ou olhos sensíveis</p>
+
+      <h4>✅ Vantagens:</h4>
+
+      <ul>
+        <li>Máxima higiene - lente nova todos os dias</li>
+        <li>Zero manutenção (sem solução, sem estojo)</li>
+        <li>Menor risco de infecções</li>
+        <li>Ideal para quem esquece de trocar lentes</li>
+      </ul>
+
+      <h4>❌ Desvantagens:</h4>
+
+      <ul>
+        <li>Custo maior se usar diariamente</li>
+        <li>Menos opções de graus altos ou astigmatismo complexo</li>
+      </ul>
+
+      <h3>🟢 Lentes Quinzenais/Mensais (Uso Prolongado)</h3>
+
+      <p><strong>Melhor para:</strong> Uso diário, quem quer economia, disponível em todos os graus e astigmatismos</p>
+
+      <h4>✅ Vantagens:</h4>
+
+      <ul>
+        <li>Custo-benefício excelente para uso frequente</li>
+        <li>Maior variedade de materiais e tecnologias</li>
+        <li>Opções para graus extremos e astigmatismos irregulares</li>
+      </ul>
+
+      <h4>❌ Desvantagens:</h4>
+
+      <ul>
+        <li>Requer disciplina com higiene e manutenção</li>
+        <li>Precisa comprar solução e estojo</li>
+        <li>Maior risco de acúmulo de depósitos se não limpar corretamente</li>
+      </ul>
+
+      <h3>🟣 Lentes Rígidas Gás-Permeáveis (RGP)</h3>
+
+      <p><strong>Melhor para:</strong> Ceratocone, astigmatismo alto, córneas irregulares, quem busca visão mais nítida</p>
+
+      <h4>✅ Vantagens:</h4>
+
+      <ul>
+        <li>Visão mais nítida que lentes gelatinosas</li>
+        <li>Duram 2-3 anos com cuidado adequado</li>
+        <li>Menos acúmulo de proteínas e depósitos</li>
+        <li>Saúde corneana superior (máxima oxigenação)</li>
+      </ul>
+
+      <h4>❌ Desvantagens:</h4>
+
+      <ul>
+        <li>Período de adaptação maior (1-2 semanas de desconforto inicial)</li>
+        <li>Custo inicial mais alto</li>
+        <li>Requer uso consistente (se parar alguns dias, desconforto volta)</li>
+      </ul>
+
+      <h3>🎯 Recomendação para Iniciantes:</h3>
+
+      <p><strong>Comece com lentes diárias se:</strong> Vai usar 2-3x/semana ou tem receio de manutenção</p>
+
+      <p><strong>Comece com lentes mensais se:</strong> Vai usar quase todo dia e quer economia</p>
+
+      <p><strong>Considere RGP apenas se:</strong> Tem indicação médica específica (ceratocone, etc) ou busca visão máxima</p>
+
+      <h2>Passo 2: Consulta de Adaptação - O Que Esperar</h2>
+
+      <p>Você NÃO PODE simplesmente comprar lentes baseado na receita dos óculos. A consulta de adaptação é obrigatória e essencial. Aqui está o que acontece:</p>
+
+      <h3>📋 Avaliação Completa (45-60 minutos)</h3>
+
+      <ol>
+        <li><strong>Refração</strong>: Determinação precisa do grau (pode diferir ligeiramente dos óculos)</li>
+        <li><strong>Topografia/Ceratometria</strong>: Mapeamento da curvatura da córnea para escolher curva base ideal</li>
+        <li><strong>Teste de Lágrima</strong>: Avalia se você tem olho seco (fator crítico para conforto)</li>
+        <li><strong>Biomicroscopia</strong>: Exame da superfície ocular com lâmpada de fenda</li>
+        <li><strong>Teste de Lentes</strong>: Você experimenta diferentes opções no consultório</li>
+        <li><strong>Avaliação de Fit</strong>: Oftalmologista verifica se lente está centralizando e movendo adequadamente</li>
+        <li><strong>Treinamento Prático</strong>: Você aprende a colocar e tirar com supervisão</li>
+      </ol>
+
+      <h3>💡 Dica Profissional:</h3>
+
+      <p>A maioria das pessoas demora 10-30 minutos para conseguir colocar as lentes pela primeira vez no consultório. Não se assuste - é totalmente normal! Nossa equipe fica com você o tempo que for necessário. Algumas pessoas conseguem na primeira tentativa, outras precisam de mais paciência. Ambos os cenários são perfeitamente ok.</p>
+
+      <h2>Passo 3: Como Colocar Lentes de Contato (Técnica Profissional)</h2>
+
+      <p>Aqui está o método passo a passo que ensinamos aos nossos pacientes - testado e aprovado por milhares de iniciantes:</p>
+
+      <h3>🖐️ Preparação:</h3>
+
+      <ol>
+        <li><strong>Lave as mãos</strong> com sabão neutro (sem perfume/hidratante). Seque com toalha limpa sem fiapos</li>
+        <li><strong>Verifique se a lente não está do avesso</strong>: Coloque na ponta do dedo indicador e olhe de lado. Se formar um U perfeito = correta. Se formar um V com bordas abrindo = avesso. Inverta se necessário.</li>
+        <li><strong>Posicione-se na frente de espelho</strong> com boa iluminação e superfície para apoiar</li>
+      </ol>
+
+      <h3>👁️ Colocação (Método de 3 Dedos):</h3>
+
+      <ol>
+        <li><strong>Mão dominante</strong>: Lente na ponta do dedo indicador, dedo médio segura pálpebra inferior puxando para baixo</li>
+        <li><strong>Mão não-dominante</strong>: Dedo indicador ou médio segura pálpebra superior puxando para cima (bem próximo aos cílios)</li>
+        <li><strong>Olhe para cima</strong> (ou direto para frente - teste qual é mais confortável para você)</li>
+        <li><strong>Aproxime a lente lentamente</strong> até tocar na parte branca do olho (esclera) - NÃO precisa ser exatamente no centro</li>
+        <li><strong>Quando a lente tocar o olho</strong>, solte as pálpebras devagar e olhe para baixo - a lente vai centralizar sozinha!</li>
+        <li><strong>Pisque algumas vezes</strong> para acomodar completamente</li>
+      </ol>
+
+      <h3>⚠️ Erros Comuns de Iniciantes:</h3>
+
+      <ul>
+        <li><strong>Não segurar as pálpebras firme o suficiente</strong> → Reflexo de piscar empurra a lente para fora</li>
+        <li><strong>Tentar colocar muito devagar</strong> → Movimento decisivo (mas não agressivo) funciona melhor</li>
+        <li><strong>Olhar diretamente para a lente chegando</strong> → Dispara reflexo de proteção. Olhe para cima ou para o lado</li>
+        <li><strong>Usar unhas compridas</strong> → Pode rasgar a lente ou machucar-se. Mantenha unhas curtas ou use pinça própria</li>
+      </ul>
+
+      <h2>Passo 4: Como Tirar Lentes de Contato (Técnica Profissional)</h2>
+
+      <p>Tirar é geralmente mais fácil que colocar. Aqui está o método mais eficiente:</p>
+
+      <h3>Método 1: Pinça de Dedos (Mais Comum)</h3>
+
+      <ol>
+        <li>Lave as mãos e seque bem</li>
+        <li>Olhe para cima</li>
+        <li>Com dedo médio, puxe pálpebra inferior para baixo</li>
+        <li>Com dedo indicador, toque suavemente a borda inferior da lente e deslize para baixo (parte branca do olho)</li>
+        <li>Faça um movimento de pinça com polegar e indicador para pegar a lente</li>
+        <li>Remova suavemente</li>
+      </ol>
+
+      <h3>Método 2: Deslizamento (Alternativo)</h3>
+
+      <ol>
+        <li>Olhe para o lado</li>
+        <li>Coloque dedo indicador no canto externo do olho</li>
+        <li>Puxe a pele levemente para trás (em direção à orelha) enquanto pisca</li>
+        <li>A lente vai dobrar e sair na sua mão</li>
+      </ol>
+
+      <h3>💧 Dica Para Lentes "Grudadas":</h3>
+
+      <p>Se a lente estiver ressecada e difícil de remover:</p>
+
+      <ul>
+        <li>Pingue 2-3 gotas de lubrificante ocular</li>
+        <li>Pisque várias vezes</li>
+        <li>Aguarde 30 segundos</li>
+        <li>Tente novamente - agora vai sair facilmente</li>
+      </ul>
+
+      <p>NUNCA force! Se mesmo com lubrificante não sair, procure seu oftalmologista.</p>
+
+      <h2>Passo 5: Cuidados e Manutenção (Lentes Mensais)</h2>
+
+      <p>A rotina de limpeza é simples e leva menos de 2 minutos:</p>
+
+      <h3>🧼 Rotina Noturna:</h3>
+
+      <ol>
+        <li>Lave as mãos e retire a lente</li>
+        <li>Coloque a lente na palma da mão</li>
+        <li>Pingue 3-4 gotas de solução multipropósito</li>
+        <li>Esfregue suavemente com dedo indicador por 10-15 segundos (movimento circular)</li>
+        <li>Enxágue com mais solução (NUNCA com água!)</li>
+        <li>Coloque no estojo com solução NOVA</li>
+        <li>Deixe no mínimo 6 horas (ideal: noite toda)</li>
+      </ol>
+
+      <h3>☀️ Rotina Matinal:</h3>
+
+      <ol>
+        <li>Lave as mãos</li>
+        <li>Retire a lente do estojo</li>
+        <li>Enxágue com solução nova (opcional mas recomendado)</li>
+        <li>Coloque no olho</li>
+        <li>Esvazie o estojo e deixe secar aberto (de cabeça para baixo sobre papel toalha)</li>
+      </ol>
+
+      <h3>🚫 NUNCA FAÇA:</h3>
+
+      <ul>
+        <li>Usar água de torneira, soro fisiológico ou saliva - SOMENTE solução própria!</li>
+        <li>Reutilizar solução do estojo ("completar") - sempre solução nova!</li>
+        <li>Dormir com lentes não aprovadas para isso</li>
+        <li>Nadar ou tomar banho com lentes (risco de Acanthamoeba!)</li>
+        <li>Usar lentes após o prazo de validade</li>
+        <li>Compartilhar lentes com outras pessoas</li>
+      </ul>
+
+      <h2>Passo 6: Período de Adaptação - O Que é Normal</h2>
+
+      <p>Os primeiros dias podem ser estranhos. Aqui está o que esperar:</p>
+
+      <h3>✅ Normal nos Primeiros 3-7 Dias:</h3>
+
+      <ul>
+        <li>Sensação de corpo estranho leve (melhora rapidamente)</li>
+        <li>Visão ligeiramente embaçada no início (estabiliza em minutos)</li>
+        <li>Lacrimejamento aumentado</li>
+        <li>Sensibilidade à luz moderada</li>
+        <li>Consciência constante das lentes (como sapato novo)</li>
+      </ul>
+
+      <h3>⚠️ NÃO Normal - Procure Oftalmologista:</h3>
+
+      <ul>
+        <li>Dor intensa ou persistente</li>
+        <li>Vermelhidão intensa que não melhora ao remover lentes</li>
+        <li>Perda de visão ou visão embaçada que não melhora piscando</li>
+        <li>Secreção purulenta (pus)</li>
+        <li>Halos ou arco-íris ao redor das luzes</li>
+        <li>Fotofobia severa (não consegue abrir olhos na luz)</li>
+      </ul>
+
+      <h2>Passo 7: Compras Essenciais - Checklist Completo</h2>
+
+      <p>Para começar, você vai precisar de:</p>
+
+      <h3>📦 Kit Básico (Lentes Mensais):</h3>
+
+      <ul>
+        <li><strong>Lentes de contato</strong> (compre 2-3 pares de reserva)</li>
+        <li><strong>Solução multipropósito</strong> de qualidade (frasco de 360-475ml dura ~1 mês)</li>
+        <li><strong>Estojo para lentes</strong> (trocar a cada 3 meses)</li>
+        <li><strong>Colírio lubrificante</strong> próprio para lentes (para emergências de ressecamento)</li>
+      </ul>
+
+      <h3>💎 Opcionais mas Recomendados:</h3>
+
+      <ul>
+        <li><strong>Removedor de proteínas</strong> (uso semanal para limpeza profunda)</li>
+        <li><strong>Espelho de aumento</strong> (facilita nos primeiros dias)</li>
+        <li><strong>Pinça para lentes</strong> (alternativa se tiver dificuldade com dedos)</li>
+        <li><strong>Estojo portátil pequeno</strong> (para bolsa/mochila em emergências)</li>
+        <li><strong>Óculos sobressalentes</strong> com grau atualizado (essencial para dias que não quiser lentes)</li>
+      </ul>
+
+      <h3>💰 Custo Mensal Estimado:</h3>
+
+      <ul>
+        <li>Lentes mensais: R$ 50-150/par</li>
+        <li>Solução: R$ 30-50</li>
+        <li>Total: R$ 80-200/mês</li>
+      </ul>
+
+      <h2>Conclusão: Você Está Pronto!</h2>
+
+      <p>Usar lentes de contato pela primeira vez pode parecer intimidante, mas com orientação adequada e prática, rapidamente se torna parte natural da sua rotina. Lembre-se:</p>
+
+      <ul>
+        <li>Todo usuário experiente foi iniciante um dia</li>
+        <li>As primeiras vezes são as mais difíceis - fica muito mais fácil rapidamente</li>
+        <li>Não tenha medo de fazer perguntas ao seu oftalmologista</li>
+        <li>Seja paciente consigo mesmo no período de adaptação</li>
+      </ul>
+
+      <p><strong>Na Saraiva Vision, você nunca está sozinho nessa jornada. Oferecemos:</strong></p>
+
+      <ul>
+        <li>Treinamento completo e personalizado</li>
+        <li>Período de teste gratuito de 7 dias</li>
+        <li>Suporte via WhatsApp para dúvidas urgentes</li>
+        <li>Revisões incluídas no primeiro mês</li>
+        <li>Garantia de troca se não se adaptar</li>
+      </ul>
+
+      <p>Pronto para dar o primeiro passo rumo à liberdade visual? Agende sua consulta de adaptação hoje mesmo!</p>
+
+      <h3>📞 Comece Sua Jornada com Lentes de Contato</h3>
+
+      <p>WhatsApp: (33) 3321-2293
+Endereço: Rua Coronel Manoel Alves, 555 - Centro, Caratinga/MG
+Horário: Segunda a Sexta, 8h às 18h | Sábado, 8h às 12h
+
+Mencione que leu este guia e ganhe 10% de desconto no kit inicial de lentes!</p>
+    `,
+    "author": "Dr. Philipe Saraiva Cruz",
+    "date": "2025-11-19",
+    "category": "Guias Práticos",
+    "tags": [
+      "lentes-de-contato",
+      "iniciantes",
+      "tutorial",
+      "guia-prático",
+      "adaptação"
+    ],
+    "image": "/Blog/lentes-iniciantes-guia-2025.jpg",
+    "featured": false,
+    "seo": {
+      "metaTitle": "Lentes de Contato para Iniciantes: Guia Completo da Primeira Vez",
+      "metaDescription": "Tudo o que você precisa saber antes de usar lentes pela primeira vez: desde a escolha do tipo certo até dicas profissionais para colocar, tirar e cuidar. Guia passo a passo aprovado por oftalmologistas.",
+      "keywords": [
+        "lentes-de-contato",
+        "iniciantes",
+        "tutorial",
+        "guia-prático",
+        "adaptação"
+      ]
+    },
+    "relatedPodcasts": []
   }
 ];
 
-export const categories = ['Todas', 'Prevenção', 'Tratamento', 'Tecnologia', 'Dúvidas Frequentes'];
+export const categories = ['Todas', 'Prevenção', 'Tratamento', 'Tecnologia', 'Dúvidas Frequentes', 'Tecnologia e Inovação', 'Mitos e Verdades', 'Guias Práticos'];
 
 export const categoryConfig = {
   'Todas': { icon: 'help-circle', color: 'gray' },
   'Prevenção': { icon: 'shield', color: 'green' },
   'Tratamento': { icon: 'stethoscope', color: 'blue' },
   'Tecnologia': { icon: 'cpu', color: 'purple' },
-  'Dúvidas Frequentes': { icon: 'help-circle', color: 'orange' }
+  'Dúvidas Frequentes': { icon: 'help-circle', color: 'orange' },
+  'Tecnologia e Inovação': { icon: 'cpu', color: 'indigo' },
+  'Mitos e Verdades': { icon: 'help-circle', color: 'red' },
+  'Guias Práticos': { icon: 'book', color: 'teal' }
 };
 
 export const getPostBySlug = (slug) => {

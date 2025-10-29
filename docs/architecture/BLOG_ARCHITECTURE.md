@@ -1,45 +1,66 @@
 # Arquitetura do Blog - Saraiva Vision
 
 **Autor**: Dr. Philipe Saraiva Cruz
-**Data**: 2025-10-24
+**Data**: 2025-10-28
 **Status**: Documentação oficial ✅
 
 ## Visão Geral
 
-O blog da Saraiva Vision opera em modo **100% estático** sem CMS (Content Management System) ou WordPress ativo. Todo o conteúdo é bundled no build time para máxima performance e SEO.
+O blog da Saraiva Vision opera em modo **híbrido** combinando Sanity CMS (fonte primária) com fallback estático (garantia de confiabilidade). Esta arquitetura oferece:
+
+- ✅ **100% de uptime** - Fallback automático para conteúdo estático se Sanity falhar
+- ⚡ **Performance otimizada** - Leituras via CDN com cache agressivo
+- 🔄 **Atualizações sem deploy** - Conteúdo atualizado sem necessidade de redeploy
+- 🛡️ **Circuit breaker** - Previne falhas em cascata
+- 📊 **Monitoramento integrado** - Health checks e estatísticas de cache
+
+> **Nota**: Para documentação técnica completa da integração Sanity, consulte [SANITY_INTEGRATION_GUIDE.md](./SANITY_INTEGRATION_GUIDE.md)
 
 ## Arquitetura Atual (2025)
 
-### Sistema de Conteúdo Estático
+### Sistema Híbrido: Sanity CMS + Fallback Estático
 
 ```
 ┌─────────────────────────────────────────────┐
-│  Fonte de Dados: src/data/blogPosts.js     │
-│  (JavaScript Objects - Version Controlled)   │
-└─────────────────┬───────────────────────────┘
-                  │
-                  ▼
-┌─────────────────────────────────────────────┐
-│  Build Time Processing                      │
-│  - scripts/build-blog-posts.js              │
-│  - Vite bundling                            │
-│  - Image optimization                       │
-└─────────────────┬───────────────────────────┘
-                  │
-                  ▼
-┌─────────────────────────────────────────────┐
-│  Production Bundle                          │
-│  - Static HTML/JS/CSS                       │
-│  - Optimized images (WebP/AVIF)             │
-│  - Pre-rendered pages                       │
-└─────────────────┬───────────────────────────┘
-                  │
-                  ▼
-┌─────────────────────────────────────────────┐
-│  Nginx serving from:                        │
-│  /var/www/saraivavision/current/            │
-└─────────────────────────────────────────────┘
+│         BlogPage Component                  │
+│      (React Router Lazy Loaded)             │
+└──────────────────┬──────────────────────────┘
+                   │
+                   ▼
+┌──────────────────────────────────────────────┐
+│    blogDataService.js (API Principal)        │
+│    - Circuit breaker pattern                 │
+│    - Cache em memória                        │
+│    - Health check tracking                   │
+│    - Orquestração de fallback                │
+└───────┬──────────────────────┬───────────────┘
+        │                      │
+  ┌─────▼──────┐        ┌──────▼────────────┐
+  │ Sanity CMS │        │ Static Fallback   │
+  │ (Primário) │        │ (Confiabilidade)  │
+  └─────┬──────┘        └──────┬────────────┘
+        │                      │
+        │                      │
+  ┌─────▼──────┐        ┌──────▼────────────┐
+  │ 25 posts   │        │ enhancedBlogPosts │
+  │ CDN cache  │        │ Lazy loaded       │
+  │ 5s timeout │        │ Always available  │
+  └────────────┘        └───────────────────┘
 ```
+
+### Fluxo de Requisição
+
+1. **Tentativa Sanity** (se circuit breaker permitir):
+   - Busca dados via Sanity API
+   - Timeout: 5 segundos
+   - Retry exponencial (2 tentativas)
+   - Cache CDN global
+
+2. **Fallback Automático** (em caso de falha):
+   - Carrega posts estáticos
+   - Lazy import (só carrega quando necessário)
+   - Zero dependência de rede
+   - Sempre disponível
 
 ## Estrutura de Dados
 
@@ -163,47 +184,63 @@ sudo npm run deploy:quick
 - 🛠️ **Automated tests**: Validação de links, imagens, formato
 - 🛠️ **No dependencies**: Sem updates de WordPress/plugins
 
-## Comparação: Estático vs WordPress
+## Comparação: Híbrido vs Estático vs WordPress
 
-| Aspecto | Blog Estático (Atual) | WordPress |
-|---------|----------------------|-----------|
-| **Performance** | Excelente (TTI <2s) | Moderado (TTI 3-5s) |
-| **Security** | Alto (sem database) | Médio (requer updates) |
-| **Maintenance** | Baixo (Git only) | Alto (updates, plugins) |
-| **SEO** | Excelente (pre-render) | Bom (SSR) |
-| **Scalability** | Infinito (static files) | Limitado (server resources) |
-| **Cost** | Mínimo | Médio/Alto (hosting, backups) |
-| **Flexibility** | Alta (código direto) | Média (limitado por plugins) |
-| **Content Editing** | Git + Code Editor | GUI (mais fácil para não-dev) |
-| **Backup** | Git (automatic) | Manual/Plugin |
-| **Rollback** | Instant (git revert) | Complexo (database restore) |
+| Aspecto | Blog Híbrido (Atual) | Blog Estático | WordPress |
+|---------|---------------------|---------------|-----------|
+| **Performance** | Excelente (CDN + cache) | Excelente (TTI <2s) | Moderado (TTI 3-5s) |
+| **Security** | Alto (API only) | Alto (sem database) | Médio (requer updates) |
+| **Maintenance** | Baixo (Sanity managed) | Baixo (Git only) | Alto (updates, plugins) |
+| **SEO** | Excelente (pre-render) | Excelente (pre-render) | Bom (SSR) |
+| **Scalability** | Infinito (CDN + static) | Infinito (static files) | Limitado (server resources) |
+| **Cost** | Baixo (free tier Sanity) | Mínimo | Médio/Alto (hosting, backups) |
+| **Flexibility** | Muito Alta (CMS + código) | Alta (código direto) | Média (limitado por plugins) |
+| **Content Editing** | Sanity Studio (GUI) | Git + Code Editor | GUI (mais fácil para não-dev) |
+| **Backup** | Sanity + Git fallback | Git (automatic) | Manual/Plugin |
+| **Rollback** | Instant (Git fallback) | Instant (git revert) | Complexo (database restore) |
+| **Uptime** | 100% (fallback garantido) | 100% (static) | 95-99% (server dependent) |
+| **Content Updates** | Instant (sem deploy) | Requer deploy | Instant |
 
-## Histórico: WordPress → Estático
+## Histórico: WordPress → Estático → Híbrido
 
-### 2024-08 a 2024-10: Transição
+### 2024-08 a 2024-10: Transição WordPress → Estático
 - **Motivo**: Performance, segurança, e manutenção simplificada
 - **Migração**: Conteúdo exportado de WordPress para JS objects
 - **Status**: WordPress desativado, URL `/wp-admin` redireciona para `/blog`
 
+### 2025-10-25: Evolução para Sistema Híbrido
+- **Motivo**: Flexibilidade de CMS + confiabilidade de estático
+- **Implementação**: Sanity CMS como fonte primária
+- **Fallback**: Posts estáticos para 100% uptime
+- **Status**: 25 posts em Sanity, sistema híbrido em produção
+
 ### Decisões Arquiteturais
 
-1. **Por que não usar Headless CMS?**
-   - Volume baixo de posts (< 50 posts/ano)
-   - Custo adicional desnecessário
-   - Overhead de infraestrutura
-   - Git é suficiente para versionamento
+1. **Por que Sanity CMS agora?**
+   - Headless CMS moderno com API robusta
+   - Portable Text para conteúdo estruturado
+   - CDN global com cache inteligente
+   - Mantém fallback estático para confiabilidade
+   - Edição de conteúdo sem necessidade de deploy
 
-2. **Por que não usar Markdown?**
-   - JavaScript objects oferecem type safety via TypeScript
-   - Melhor integração com código React
-   - Validação em build time
-   - Structured data mais fácil
-
-3. **Por que não usar Database?**
-   - Zero latência de queries
-   - Deploy mais simples (apenas arquivos)
+2. **Por que manter fallback estático?**
+   - Garante 100% de disponibilidade (zero downtime)
+   - Circuit breaker previne falhas em cascata
+   - Custo zero de infraestrutura para fallback
+   - Deploy simples (apenas arquivos)
    - Backup automático via Git
-   - Não precisa de migrations
+
+3. **Por que não usar apenas Sanity?**
+   - Dependência de serviço externo (risco de downtime)
+   - Latência de rede pode afetar UX
+   - Custo de API requests (embora baixo)
+   - Sistema híbrido oferece melhor resiliência
+
+4. **Por que não usar Database tradicional?**
+   - Sanity oferece CDN global (melhor que database local)
+   - Portable Text mais flexível que HTML/Markdown em DB
+   - Sem necessidade de gerenciar infraestrutura
+   - Fallback estático elimina risco de database downtime
 
 ## Workflow de Publicação
 
@@ -379,14 +416,35 @@ node -c src/data/blogPosts.js
 
 ## Recursos Relacionados
 
-- [Blog Component](/src/modules/blog/pages/BlogPage.jsx)
-- [Blog Posts Data](/src/data/blogPosts.js)
-- [Build Script](/scripts/build-blog-posts.js)
-- [Image Optimization Guide](/docs/performance/IMAGE_OPTIMIZATION.md)
+### Documentação Técnica
+- **[Sanity Integration Guide](./SANITY_INTEGRATION_GUIDE.md)** - Documentação completa da integração Sanity
 - [SEO Components Guide](/docs/guidelines/SEO_COMPONENTS_GUIDE.md)
+- [Image Optimization Guide](/docs/performance/IMAGE_OPTIMIZATION.md)
+
+### Código Principal
+- [Blog Data Service](/src/services/blogDataService.js) - API principal (USE ESTE)
+- [Sanity Blog Service](/src/services/sanityBlogService.js) - Operações Sanity
+- [Sanity Client](/src/lib/sanityClient.js) - Cliente universal
+- [Blog Component](/src/modules/blog/pages/BlogPage.jsx)
+- [React Hooks](/src/hooks/useSanityBlog.js)
+- [Portable Text Renderer](/src/components/PortableTextRenderer.jsx)
+
+### Scripts e Testes
+- [Integration Test Suite](/scripts/test-sanity-integration.js) - 9 testes
+- [Build Script](/scripts/build-blog-posts.js)
+
+### Dados
+- [Static Fallback](/src/data/enhancedBlogPosts.js) - Posts estáticos
+- [Sanity Export](/src/data/blogPosts.sanity.js) - Export build-time
+
+### Links Externos
+- [Sanity Studio](https://saraivavision.sanity.studio) - Editor de conteúdo
+- [Sanity Docs](https://www.sanity.io/docs)
+- [GROQ Query Language](https://www.sanity.io/docs/groq)
 
 ---
 
-**Última atualização**: 2025-10-24
+**Última atualização**: 2025-10-28
 **Mantenedor**: Dr. Philipe Saraiva Cruz
+**Versão**: 2.0.0 (Sistema Híbrido)
 **Revisão**: Trimestral ou quando houver mudanças na arquitetura

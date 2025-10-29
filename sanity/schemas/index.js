@@ -1,8 +1,8 @@
-import blockContent from './blockContent'
-import category from './category'
-import author from './author'
-import blogPost from './blogPost'
-import seo from './seo'
+import blockContent from './blockContent.js'
+import category from './category.js'
+import author from './author.js'
+import blogPost from './blogPost.js'
+import seo from './seo.js'
 
 export const schemaTypes = [
   // Object types
