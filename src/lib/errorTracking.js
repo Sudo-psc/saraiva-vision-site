@@ -108,7 +108,15 @@ class ErrorTracker {
   }
 
   captureError(errorData) {
-    console.error('[ErrorTracker] Error captured:', errorData);
+    // Filter out known safe/expected errors
+    if (this.shouldIgnoreError(errorData)) {
+      return;
+    }
+
+    // Only log in development or if error is critical
+    if (import.meta.env.DEV || this.isCriticalError(errorData)) {
+      console.error('[ErrorTracker] Error captured:', errorData);
+    }
 
     this.errors.push(errorData);
 
@@ -127,9 +135,66 @@ class ErrorTracker {
   }
 
   captureResourceError(errorData) {
-    console.error('[ErrorTracker] Resource error:', errorData);
+    // Filter out third-party resources and known issues
+    if (this.shouldIgnoreResourceError(errorData)) {
+      return;
+    }
+
+    // Only log resource errors in development
+    if (import.meta.env.DEV) {
+      console.warn('[ErrorTracker] Resource error:', errorData);
+    }
+
     this.errors.push(errorData);
     this.persistErrors();
+  }
+
+  shouldIgnoreError(errorData) {
+    const message = (errorData.message || '').toLowerCase();
+    const filename = (errorData.filename || '').toLowerCase();
+
+    // Ignore third-party scripts
+    if (filename.includes('googletagmanager') || filename.includes('google-analytics')) return true;
+    if (filename.includes('gtag') || filename.includes('gtm.js')) return true;
+    if (filename.includes('facebook') || filename.includes('fbevents')) return true;
+    if (filename.includes('jotform')) return true;
+
+    // Ignore ResizeObserver errors
+    if (message.includes('resizeobserver')) return true;
+
+    // Ignore InvalidStateError from analytics
+    if (message.includes('invalid state')) return true;
+
+    // Ignore network errors from third-party
+    if (message.includes('failed to fetch') && filename.includes('analytics')) return true;
+
+    // Ignore React minified errors that are expected
+    if (message.includes('minified react error #231')) return true;
+
+    return false;
+  }
+
+  shouldIgnoreResourceError(errorData) {
+    const src = (errorData.src || '').toLowerCase();
+    
+    // Ignore third-party resources
+    if (src.includes('googletagmanager') || src.includes('google-analytics')) return true;
+    if (src.includes('facebook') || src.includes('fbevents')) return true;
+    if (src.includes('jotform')) return true;
+    if (src.includes('doubleclick')) return true;
+
+    return false;
+  }
+
+  isCriticalError(errorData) {
+    const message = (errorData.message || '').toLowerCase();
+    
+    // Critical errors that should always be logged
+    if (message.includes('typeerror') || message.includes('referenceerror')) return true;
+    if (message.includes('syntaxerror')) return true;
+    if (message.includes('rangeerror')) return true;
+    
+    return false;
   }
 
   log(category, data) {
