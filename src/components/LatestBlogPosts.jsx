@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight, Rss, Calendar, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { fetchRecentPosts } from '@/services/sanityBlogService';
+import { blogPosts } from '@/data/blogPosts';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import OptimizedImage from '@/components/blog/OptimizedImage';
@@ -18,12 +18,15 @@ const LatestBlogPosts = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const loadPosts = async () => {
+        const loadPosts = () => {
             try {
                 setLoading(true);
                 setError(null);
-                // Get the 3 most recent posts from static blog data (ASYNC)
-                const recentPosts = await fetchRecentPosts(3);
+                
+                // Get the 3 most recent posts from static blog data
+                const recentPosts = blogPosts
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    .slice(0, 3);
 
                 // Normalize to ensure it's always an array
                 const normalizedPosts = normalizeToArray(recentPosts, 'LatestBlogPosts');
