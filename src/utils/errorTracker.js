@@ -1,5 +1,13 @@
 /**
  * Error tracking utility for reducing console noise and providing observability
+ *
+ * Features:
+ * - Debounced error logging to prevent spam
+ * - Global resource error handler
+ * - CORS error filtering (expected behavior for iframes)
+ * - Automatic initialization on import
+ *
+ * @author Dr. Philipe Saraiva Cruz
  */
 
 class ErrorTracker {
@@ -8,6 +16,98 @@ class ErrorTracker {
     this.errorHashes = new Set();
     this.debounceTimers = new Map();
     this.maxLogFrequency = 5000; // 5 seconds between same error logs
+    this.initialized = false;
+
+    // Error patterns to ignore (expected behavior)
+    this.ignoredPatterns = [
+      /Blocked a frame with origin.*from accessing a cross-origin frame/i,
+      /SecurityError.*cross-origin/i,
+      /Unable to post message to.*Permission denied/i,
+      /postMessage.*different origin/i,
+    ];
+  }
+
+  /**
+   * Initialize global error handlers
+   * Call this once when the app starts
+   */
+  initialize() {
+    if (this.initialized || typeof window === 'undefined') {
+      return;
+    }
+
+    this.initialized = true;
+
+    // Global error handler
+    window.addEventListener('error', (event) => {
+      // Check if error should be ignored
+      if (this.shouldIgnoreError(event.error || event.message)) {
+        event.preventDefault(); // Prevent error from appearing in console
+        return;
+      }
+
+      // Handle resource loading errors
+      if (event.target !== window) {
+        this.handleResourceError(event);
+        return;
+      }
+
+      // Handle JS errors
+      const error = event.error || new Error(event.message);
+      this.trackError(error, {
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        type: 'unhandled'
+      }, 'global');
+    });
+
+    // Global unhandled promise rejection handler
+    window.addEventListener('unhandledrejection', (event) => {
+      if (this.shouldIgnoreError(event.reason)) {
+        event.preventDefault();
+        return;
+      }
+
+      const error = event.reason instanceof Error
+        ? event.reason
+        : new Error(String(event.reason));
+
+      this.trackError(error, {
+        type: 'promise',
+        promise: event.promise
+      }, 'promise');
+    });
+
+    console.log('✅ ErrorTracker initialized with global handlers');
+  }
+
+  /**
+   * Check if error matches ignored patterns (CORS, etc.)
+   */
+  shouldIgnoreError(error) {
+    if (!error) return false;
+
+    const errorString = error.message || String(error);
+    return this.ignoredPatterns.some(pattern => pattern.test(errorString));
+  }
+
+  /**
+   * Handle resource loading errors (images, scripts, stylesheets)
+   */
+  handleResourceError(event) {
+    const target = event.target;
+    const tagName = target.tagName?.toLowerCase();
+    const src = target.src || target.href;
+
+    if (!src) return;
+
+    const error = new Error(`Failed to load ${tagName}: ${src}`);
+    this.trackError(error, {
+      tagName,
+      src,
+      type: 'resource'
+    }, 'resource');
   }
 
   /**
@@ -161,6 +261,16 @@ class ErrorTracker {
 
 // Export singleton instance
 export const errorTracker = new ErrorTracker();
+
+// Auto-initialize in browser environment
+if (typeof window !== 'undefined') {
+  // Initialize after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => errorTracker.initialize());
+  } else {
+    errorTracker.initialize();
+  }
+}
 
 // Export convenience functions
 export const trackError = (error, context, category) =>

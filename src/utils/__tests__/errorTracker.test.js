@@ -1,4 +1,4 @@
-import { jest, describe, beforeEach, it, expect, afterEach } from 'vitest';
+import { vi, describe, beforeEach, it, expect, afterEach } from 'vitest';
 import { errorTracker, trackError, trackNetworkError, trackComponentError } from '../errorTracker.js';
 
 // Capture original console before mocking
@@ -6,15 +6,15 @@ const originalConsole = global.console;
 
 // Mock console methods
 const mockConsole = {
-  groupCollapsed: jest.fn(),
-  error: jest.fn(),
-  log: jest.fn(),
-  groupEnd: jest.fn(),
-  debug: jest.fn()
+  groupCollapsed: vi.fn(),
+  error: vi.fn(),
+  log: vi.fn(),
+  groupEnd: vi.fn(),
+  debug: vi.fn()
 };
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   global.console = mockConsole;
 });
 
@@ -32,6 +32,10 @@ describe('ErrorTracker', () => {
     it('should generate consistent hashes for same error', () => {
       const error1 = new Error('Test error');
       const error2 = new Error('Test error');
+
+      // Remove stack to ensure consistency
+      error1.stack = 'Error: Test error';
+      error2.stack = 'Error: Test error';
 
       const hash1 = errorTracker.generateErrorHash(error1);
       const hash2 = errorTracker.generateErrorHash(error2);
@@ -63,11 +67,11 @@ describe('ErrorTracker', () => {
   describe('error logging frequency', () => {
     beforeEach(() => {
       // Mock timers
-      jest.useFakeTimers();
+      vi.useFakeTimers();
     });
 
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     it('should log new errors immediately', () => {
@@ -88,7 +92,7 @@ describe('ErrorTracker', () => {
       expect(errorTracker.shouldLogError(error, 'test')).toBe(false);
 
       // Advance timer past debounce period
-      jest.advanceTimersByTime(6000);
+      vi.advanceTimersByTime(6000);
 
       // Should log again after debounce
       expect(errorTracker.shouldLogError(error, 'test')).toBe(true);
@@ -97,15 +101,15 @@ describe('ErrorTracker', () => {
     it('should log every 10th occurrence', () => {
       const error = new Error('Test error');
 
-      // First occurrence
-      errorTracker.shouldLogError(error, 'test');
+      // First occurrence logs (count = 1, new error)
+      expect(errorTracker.shouldLogError(error, 'test')).toBe(true);
 
-      // Simulate 9 more occurrences
+      // Next 9 occurrences don't log (count 2-10, none are % 10 === 0)
       for (let i = 0; i < 9; i++) {
-        errorTracker.shouldLogError(error, 'test');
+        expect(errorTracker.shouldLogError(error, 'test')).toBe(false);
       }
 
-      // 10th occurrence should log
+      // 11th occurrence should log (count = 10, 10 % 10 === 0)
       expect(errorTracker.shouldLogError(error, 'test')).toBe(true);
     });
 
@@ -161,6 +165,10 @@ describe('ErrorTracker', () => {
     });
 
     it('should send to monitoring service when online', () => {
+      // Save original NODE_ENV
+      const originalEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'development';
+
       const error = new Error('Test error');
       const context = { component: 'TestComponent' };
 
@@ -175,6 +183,9 @@ describe('ErrorTracker', () => {
           url: expect.any(String)
         })
       );
+
+      // Restore NODE_ENV
+      process.env.NODE_ENV = originalEnv;
     });
 
     it('should not send to monitoring service when offline', () => {
@@ -265,7 +276,7 @@ describe('ErrorTracker', () => {
     });
 
     it('should clear debounce timers', () => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
 
       const error = new Error('Test error');
 
@@ -278,7 +289,7 @@ describe('ErrorTracker', () => {
 
       expect(errorTracker.debounceTimers.size).toBe(0);
 
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
   });
 });

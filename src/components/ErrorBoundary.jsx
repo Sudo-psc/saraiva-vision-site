@@ -17,6 +17,18 @@ class ErrorBoundary extends React.Component {
     const errorMessage = error?.message || 'Unknown error';
     const errorStack = error?.stack || 'No stack trace available';
 
+    // Ignore expected CORS errors from iframes (JotForm, etc.)
+    const isCORSError = errorMessage.includes('cross-origin') ||
+                       errorMessage.includes('SecurityError') ||
+                       errorMessage.includes('Permission denied') ||
+                       errorMessage.includes('postMessage');
+
+    if (isCORSError) {
+      console.debug('[ErrorBoundary] Ignoring expected CORS error from iframe:', errorMessage);
+      // Don't track or propagate CORS errors - they're expected behavior
+      return;
+    }
+
     // Track component error with centralized error tracker
     trackComponentError(
       this.constructor.name || 'ErrorBoundary',

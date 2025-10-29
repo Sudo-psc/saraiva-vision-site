@@ -114,7 +114,15 @@ const NewsletterForm = () => {
             <iframe
               id="JotFormIFrame-252818674112054"
               title="Receba informações exclusivas, dicas de especialistas, novidades sobre tratamentos e promoções da SaraivaVision direto no seu e-mail! "
-              onLoad="window.parent.scrollTo(0,0)"
+              onLoad={() => {
+                // Scroll to top when iframe loads (safe function call)
+                try {
+                  window.parent.scrollTo(0, 0);
+                } catch (e) {
+                  // Ignore CORS errors - expected behavior for cross-origin iframes
+                  console.debug('[JotForm] CORS restriction on scrollTo - this is expected and safe');
+                }
+              }}
               allowTransparency="true"
               allow="payment; fullscreen"
               src="https://form.jotform.com/252818674112054"
