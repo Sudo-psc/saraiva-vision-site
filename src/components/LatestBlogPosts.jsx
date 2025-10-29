@@ -75,6 +75,8 @@ const LatestBlogPosts = () => {
     };
 
     const renderPost = (post, index) => {
+        const postImage = getPostImage(post);
+        
         return (
             <motion.div
                 key={post.id}
@@ -84,6 +86,18 @@ const LatestBlogPosts = () => {
                 transition={{ delay: 0.4 + index * 0.1 }}
                 className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl flex flex-col h-full"
             >
+                {/* Blog Post Image */}
+                {postImage && (
+                    <div className="relative w-full h-48 overflow-hidden">
+                        <OptimizedImage
+                            src={postImage}
+                            alt={getPostTitle(post)}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                        />
+                    </div>
+                )}
+
                 <div className="p-6 flex flex-col flex-grow bg-white">
                     {/* Category and Date */}
                     <div className="flex items-center justify-between mb-3 flex-shrink-0">
