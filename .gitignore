@@ -146,3 +146,7 @@ claudelogs/
 .github/instructions/kluster-code-verify.instructions.md
 .kluster
 backups/
+
+# Monit credentials (never commit)
+monit-credentials.txt
+monitrc.new
