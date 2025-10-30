@@ -54,8 +54,8 @@ const NotFoundPage = () => {
 
     // Track 404 error
     try {
-      if (typeof gtag !== 'undefined') {
-        gtag('event', '404_error', {
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', '404_error', {
           custom_parameter_1: location.pathname,
           custom_parameter_2: document.referrer || 'direct',
           custom_parameter_3: navigator.userAgent
