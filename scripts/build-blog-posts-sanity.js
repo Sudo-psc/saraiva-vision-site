@@ -69,7 +69,7 @@ function transformPost(sanityPost) {
 async function fetchPostsFromSanity() {
   console.log('📡 Fetching blog posts from Sanity CMS...\n')
 
-  const query = `*[_type == "blogPost"] | order(date desc) {
+  const query = `*[_type == "blogPost"] | order(publishedAt desc) {
     _id,
     id,
     slug,
@@ -78,7 +78,6 @@ async function fetchPostsFromSanity() {
     content,
     image,
     author,
-    date,
     publishedAt,
     updatedAt,
     category,

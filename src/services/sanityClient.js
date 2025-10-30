@@ -127,15 +127,15 @@ export const queries = {
    * Get all blog posts with metadata (no full content)
    */
   getAllPostsMetadata: () => `
-    *[_type == "blogPost"] | order(date desc) {
+    *[_type == "blogPost"] | order(publishedAt desc) {
       _id,
       id,
-      slug,
+      'slug': slug.current,
       title,
       excerpt,
-      author,
-      date,
-      category,
+      'author': author->name,
+      publishedAt,
+      'category': category->title,
       tags,
       "image": image.asset->url,
       featured,
@@ -151,13 +151,13 @@ export const queries = {
     *[_type == "blogPost" && slug.current == $slug][0] {
       _id,
       id,
-      slug,
+      'slug': slug.current,
       title,
       excerpt,
       content,
-      author,
-      date,
-      category,
+      'author': author->name,
+      publishedAt,
+      'category': category->title,
       tags,
       "image": image.asset->url,
       featured,
@@ -170,15 +170,15 @@ export const queries = {
    * Get posts by category
    */
   getPostsByCategory: () => `
-    *[_type == "blogPost" && category == $category] | order(date desc) {
+    *[_type == "blogPost" && category->title == $category] | order(publishedAt desc) {
       _id,
       id,
-      slug,
+      'slug': slug.current,
       title,
       excerpt,
-      author,
-      date,
-      category,
+      'author': author->name,
+      publishedAt,
+      'category': category->title,
       tags,
       "image": image.asset->url,
       featured,
@@ -190,15 +190,15 @@ export const queries = {
    * Get featured posts
    */
   getFeaturedPosts: () => `
-    *[_type == "blogPost" && featured == true] | order(date desc) [0...$limit] {
+    *[_type == "blogPost" && featured == true] | order(publishedAt desc) [0...$limit] {
       _id,
       id,
-      slug,
+      'slug': slug.current,
       title,
       excerpt,
-      author,
-      date,
-      category,
+      'author': author->name,
+      publishedAt,
+      'category': category->title,
       tags,
       "image": image.asset->url,
       featured,
@@ -210,15 +210,15 @@ export const queries = {
    * Get recent posts
    */
   getRecentPosts: () => `
-    *[_type == "blogPost"] | order(date desc) [0...$limit] {
+    *[_type == "blogPost"] | order(publishedAt desc) [0...$limit] {
       _id,
       id,
-      slug,
+      'slug': slug.current,
       title,
       excerpt,
-      author,
-      date,
-      category,
+      'author': author->name,
+      publishedAt,
+      'category': category->title,
       tags,
       "image": image.asset->url,
       featured,
@@ -234,15 +234,15 @@ export const queries = {
       title match $term ||
       excerpt match $term ||
       $term in tags
-    )] | order(date desc) {
+    )] | order(publishedAt desc) {
       _id,
       id,
-      slug,
+      'slug': slug.current,
       title,
       excerpt,
-      author,
-      date,
-      category,
+      'author': author->name,
+      publishedAt,
+      'category': category->title,
       tags,
       "image": image.asset->url,
       featured,

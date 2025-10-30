@@ -21,7 +21,7 @@ import AuthorWidget from '@/components/blog/AuthorWidget';
 import NewsletterForm from '@/components/blog/NewsletterForm';
 import { trackBlogInteraction, trackPageView, trackSearchInteraction } from '@/utils/analytics';
 import { generateCompleteSchemaBundle, getPostSpecificSchema } from '@/lib/blogSchemaMarkup';
-import { blogPosts } from '@/data/blogPosts';
+import { getPostsMetadata, getPostBySlug } from '@/services/blogDataService';
 import PortableTextRenderer from '@/components/PortableTextRenderer';
 
 // Helper function to format dates - extracted for performance
@@ -68,47 +68,56 @@ const BlogPage = () => {
   }, [searchTerm]);
 
   React.useEffect(() => {
-    try {
-      setPostsLoading(true);
-      setPostsError(null);
-      
-      // Use local blog posts data
-      setPosts(Array.isArray(blogPosts) ? blogPosts : []);
-      setPostsLoading(false);
-    } catch (error) {
-      console.error('[BlogPage] Error loading posts:', error);
-      setPosts([]);
-      setPostsError('error');
-      setPostsLoading(false);
-    }
+    const loadPosts = async () => {
+      try {
+        setPostsLoading(true);
+        setPostsError(null);
+
+        // Use blogDataService for Sanity + static fallback
+        const postsData = await getPostsMetadata();
+        setPosts(Array.isArray(postsData) ? postsData : []);
+        setPostsLoading(false);
+      } catch (error) {
+        console.error('[BlogPage] Error loading posts:', error);
+        setPosts([]);
+        setPostsError('error');
+        setPostsLoading(false);
+      }
+    };
+
+    loadPosts();
   }, []);
 
   React.useEffect(() => {
-    if (!slug) {
-      setCurrentPost(null);
-      setPostError(null);
-      setPostLoading(false);
-      return;
-    }
-
-    try {
-      setPostLoading(true);
-      setPostError(null);
-
-      // Find post from local data
-      const post = blogPosts.find(p => p.slug === slug);
-      
-      setCurrentPost(post || null);
-      if (!post) {
-        setPostError('not_found');
+    const loadPost = async () => {
+      if (!slug) {
+        setCurrentPost(null);
+        setPostError(null);
+        setPostLoading(false);
+        return;
       }
-      setPostLoading(false);
-    } catch (error) {
-      console.error('[BlogPage] Error loading post:', error);
-      setCurrentPost(null);
-      setPostError('error');
-      setPostLoading(false);
-    }
+
+      try {
+        setPostLoading(true);
+        setPostError(null);
+
+        // Use blogDataService to fetch from Sanity or fallback
+        const post = await getPostBySlug(slug);
+
+        setCurrentPost(post || null);
+        if (!post) {
+          setPostError('not_found');
+        }
+        setPostLoading(false);
+      } catch (error) {
+        console.error('[BlogPage] Error loading post:', error);
+        setCurrentPost(null);
+        setPostError('error');
+        setPostLoading(false);
+      }
+    };
+
+    loadPost();
   }, [slug]);
 
   // Filter posts based on category and debounced search - memoized for performance
@@ -500,7 +509,12 @@ const BlogPage = () => {
                       prose-code:text-primary-600 prose-code:bg-primary-50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
                       prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-xl prose-pre:overflow-x-auto"
                   >
-                    <PortableTextRenderer content={currentPost.content} />
+                    {/* Render HTML strings (static posts) or Portable Text (Sanity posts) */}
+                    {typeof currentPost.content === 'string' ? (
+                      <div dangerouslySetInnerHTML={{ __html: currentPost.content }} />
+                    ) : (
+                      <PortableTextRenderer content={currentPost.content} />
+                    )}
                   </div>
 
                   {/* Tags */}

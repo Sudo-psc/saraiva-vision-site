@@ -129,15 +129,15 @@ describeOrSkip('Sanity.io Integration', () => {
   })
 
   describe('GROQ Queries', () => {
-    it('should fetch posts ordered by date descending', async () => {
-      const query = '*[_type == "blogPost"] | order(date desc)[0...5]'
+    it('should fetch posts ordered by publishedAt descending', async () => {
+      const query = '*[_type == "blogPost"] | order(publishedAt desc)[0...5]'
       const posts = await client.fetch(query)
 
       expect(posts.length).toBeGreaterThan(0)
 
       for (let i = 0; i < posts.length - 1; i++) {
-        const currentDate = new Date(posts[i].date)
-        const nextDate = new Date(posts[i + 1].date)
+        const currentDate = new Date(posts[i].publishedAt)
+        const nextDate = new Date(posts[i + 1].publishedAt)
         expect(currentDate >= nextDate).toBe(true)
       }
     })
@@ -221,7 +221,7 @@ describeOrSkip('Sanity.io Integration', () => {
         expect(post.slug.current).toBeTruthy()
         expect(post.excerpt).toBeTruthy()
         expect(post.content).toBeTruthy()
-        expect(post.date).toBeTruthy()
+        expect(post.publishedAt).toBeTruthy()
       })
     })
   })
@@ -239,7 +239,7 @@ describeOrSkip('Sanity.io Integration', () => {
     it('should handle projection queries efficiently', async () => {
       const startTime = Date.now()
 
-      const query = '*[_type == "blogPost"]{ _id, title, slug, date }'
+      const query = '*[_type == "blogPost"]{ _id, title, slug, publishedAt }'
       await client.fetch(query)
 
       const duration = Date.now() - startTime

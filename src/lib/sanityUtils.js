@@ -64,14 +64,14 @@ export function transformBlogPost(sanityPost) {
 
   return {
     id: sanityPost.id || sanityPost._id.replace('blogPost-', ''),
-    slug: sanityPost.slug?.current || sanityPost.slug,
+    slug: sanityPost.slug, // Already extracted as string from slug.current
     title: sanityPost.title,
     excerpt: sanityPost.excerpt,
     content: sanityPost.content,
     image: sanityPost.image, // Keep existing path format
     author: sanityPost.author || 'Dr. Philipe Saraiva Cruz',
-    date: sanityPost.date || sanityPost.publishedAt,
-    category: sanityPost.category,
+    date: sanityPost.publishedAt, // Use publishedAt as date
+    category: sanityPost.category, // Already dereferenced from category->title
     tags: sanityPost.tags || [],
     featured: sanityPost.featured || false,
     seo: sanityPost.seo || {
@@ -97,21 +97,20 @@ export function transformBlogPosts(sanityPosts) {
  */
 export const queries = {
   /**
-   * Get all published blog posts, ordered by date descending
+   * Get all published blog posts, ordered by publishedAt descending
    */
-  allPosts: `*[_type == "blogPost"] | order(date desc) {
+  allPosts: `*[_type == "blogPost"] | order(publishedAt desc) {
     _id,
     id,
-    slug,
+    'slug': slug.current,
     title,
     excerpt,
     content,
     image,
-    author,
-    date,
+    'author': author->name,
     publishedAt,
     updatedAt,
-    category,
+    'category': category->title,
     tags,
     featured,
     seo,
@@ -124,16 +123,15 @@ export const queries = {
   postBySlug: (slug) => `*[_type == "blogPost" && slug.current == "${slug}"][0] {
     _id,
     id,
-    slug,
+    'slug': slug.current,
     title,
     excerpt,
     content,
     image,
-    author,
-    date,
+    'author': author->name,
     publishedAt,
     updatedAt,
-    category,
+    'category': category->title,
     tags,
     featured,
     seo,
@@ -143,60 +141,60 @@ export const queries = {
   /**
    * Get posts by category
    */
-  postsByCategory: (category) => `*[_type == "blogPost" && category == "${category}"] | order(date desc) {
+  postsByCategory: (category) => `*[_type == "blogPost" && category->title == "${category}"] | order(publishedAt desc) {
     _id,
     id,
-    slug,
+    'slug': slug.current,
     title,
     excerpt,
     image,
-    date,
-    category,
+    publishedAt,
+    'category': category->title,
     tags
   }`,
 
   /**
    * Get posts by tag
    */
-  postsByTag: (tag) => `*[_type == "blogPost" && "${tag}" in tags] | order(date desc) {
+  postsByTag: (tag) => `*[_type == "blogPost" && "${tag}" in tags] | order(publishedAt desc) {
     _id,
     id,
-    slug,
+    'slug': slug.current,
     title,
     excerpt,
     image,
-    date,
-    category,
+    publishedAt,
+    'category': category->title,
     tags
   }`,
 
   /**
    * Get featured posts
    */
-  featuredPosts: `*[_type == "blogPost" && featured == true] | order(date desc) [0...3] {
+  featuredPosts: `*[_type == "blogPost" && featured == true] | order(publishedAt desc) [0...3] {
     _id,
     id,
-    slug,
+    'slug': slug.current,
     title,
     excerpt,
     image,
-    date,
-    category,
+    publishedAt,
+    'category': category->title,
     featured
   }`,
 
   /**
    * Get recent posts (limit to N)
    */
-  recentPosts: (limit = 5) => `*[_type == "blogPost"] | order(date desc) [0...${limit}] {
+  recentPosts: (limit = 5) => `*[_type == "blogPost"] | order(publishedAt desc) [0...${limit}] {
     _id,
     id,
-    slug,
+    'slug': slug.current,
     title,
     excerpt,
     image,
-    date,
-    category
+    publishedAt,
+    'category': category->title
   }`,
 
   /**
@@ -206,15 +204,15 @@ export const queries = {
     title match "*${searchTerm}*" ||
     excerpt match "*${searchTerm}*" ||
     content match "*${searchTerm}*"
-  )] | order(date desc) {
+  )] | order(publishedAt desc) {
     _id,
     id,
-    slug,
+    'slug': slug.current,
     title,
     excerpt,
     image,
-    date,
-    category,
+    publishedAt,
+    'category': category->title,
     tags
   }`,
 }

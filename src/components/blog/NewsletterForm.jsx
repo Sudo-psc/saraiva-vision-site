@@ -110,7 +110,7 @@ const NewsletterForm = () => {
         {/* Form Section */}
         <div className="px-8 pb-8">
           {/* Jotform Iframe */}
-          <div className="w-full bg-white rounded-2xl shadow-lg overflow-hidden border border-cyan-100">
+          <div className="w-full bg-white rounded-2xl shadow-lg overflow-auto border border-cyan-100">
             <iframe
               id="JotFormIFrame-252818674112054"
               title="Receba informações exclusivas, dicas de especialistas, novidades sobre tratamentos e promoções da SaraivaVision direto no seu e-mail! "
@@ -130,10 +130,11 @@ const NewsletterForm = () => {
               style={{
                 minWidth: '100%',
                 maxWidth: '100%',
-                height: '539px',
+                height: '700px',
+                minHeight: '600px',
                 border: 'none'
               }}
-              scrolling="no"
+              scrolling="yes"
             />
           </div>
         </div>

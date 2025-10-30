@@ -150,3 +150,7 @@ backups/
 # Monit credentials (never commit)
 monit-credentials.txt
 monitrc.new
+
+# Stakpak local files
+.stakpak
+.vercel
