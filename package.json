@@ -50,6 +50,8 @@
     "validate:bundle": "node scripts/validate-client-bundle.js",
     "production:check": "npm run build && npm run test:run",
     "check:system": "bash scripts/system-checkup-suite.sh",
+    "send:daily-report": "node scripts/send-daily-report.js",
+    "check:and-email": "bash scripts/run-checkup-and-email.sh",
     "install:checkup-cron": "bash scripts/install-system-checkup-cron.sh",
     "prepare": "husky || true",
     "release": "standard-version",
