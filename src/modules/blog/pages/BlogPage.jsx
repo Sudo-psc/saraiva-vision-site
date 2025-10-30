@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { categoryConfig, categories } from '@/content/blogCategories';
 import { getPostEnrichment } from '@/data/blogPostsEnrichment';
 import CategoryBadge from '@/components/blog/CategoryBadge';
-import OptimizedImage from '@/components/blog/OptimizedImage';
+// OptimizedImage removed for text-only design
 import SpotifyEmbed from '@/components/SpotifyEmbed';
 import TableOfContents from '@/components/blog/TableOfContents';
 import RelatedPostsWidget from '@/components/blog/RelatedPostsWidget';
@@ -192,11 +192,21 @@ const BlogPage = () => {
     e.preventDefault();
   };
 
-  // Memoized function to render post cards for performance
+  // Memoized function to render post cards for performance - Text-only design
   const renderPostCard = React.useCallback((post, index) => {
     const enrichment = getPostEnrichment(post.id);
     const readingTime = post.readingTimeMinutes || 4;
-    const imageSrc = post.image || '/img/blog-fallback.jpg';
+
+    // Category color mapping for decorative accents
+    const categoryColors = {
+      'Prevenção': 'from-emerald-100 to-teal-50 border-emerald-200',
+      'Tratamentos': 'from-blue-100 to-cyan-50 border-blue-200',
+      'Tecnologia': 'from-purple-100 to-indigo-50 border-purple-200',
+      'Dúvidas Frequentes': 'from-amber-100 to-yellow-50 border-amber-200',
+      'default': 'from-gray-100 to-slate-50 border-gray-200'
+    };
+
+    const categoryGradient = categoryColors[post.category] || categoryColors.default;
 
     return (
       <motion.article
@@ -204,85 +214,71 @@ const BlogPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: index * 0.1 }}
-        className="group relative flex flex-col bg-white rounded-xl border border-border-light hover:border-primary-300 hover:shadow-lg transition-all overflow-hidden h-full"
+        className="group relative flex flex-col bg-gradient-to-br from-white to-gray-50/30 rounded-2xl border border-gray-200/60 hover:border-gray-300 hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-300 overflow-hidden h-full"
         role="article"
         aria-labelledby={`post-title-${post.id}`}
       >
-        <Link
-          to={`/blog/${post.slug}`}
-          className="relative block focus:outline-none"
-          aria-label={`Ler o post: ${post.title}`}
-        >
-          <div className="relative w-full h-48 sm:h-52 md:h-56 overflow-hidden bg-gray-100 rounded-t-xl">
-            <OptimizedImage
-              src={imageSrc}
-              alt={`Imagem ilustrativa do artigo: ${post.title}`}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
-              width="400"
-              height="225"
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 400px"
-              fallbackSrc="/img/blog-fallback.jpg"
-              disableOptimization
-            />
-          </div>
-        </Link>
+        {/* Decorative top accent bar */}
+        <div className={`h-1.5 bg-gradient-to-r ${categoryGradient} border-b`}></div>
 
-        <div className="p-6 flex flex-col flex-grow min-h-0">
-          {/* Category Badge */}
-          <div className="mb-3">
-            <CategoryBadge category={post.category} size="sm" />
+        <div className="p-8 flex flex-col flex-grow min-h-0">
+          {/* Category Badge - Minimalist design */}
+          <div className="mb-5">
+            <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider uppercase bg-white/80 backdrop-blur-sm text-gray-700 rounded-full border border-gray-200/80 shadow-sm">
+              {post.category}
+            </span>
           </div>
 
-          {/* Title */}
+          {/* Title - Large, elegant typography */}
           <h3
             id={`post-title-${post.id}`}
-            className="text-xl font-bold mb-3 text-text-primary leading-tight"
+            className="text-2xl md:text-3xl font-serif font-bold mb-4 text-gray-900 leading-tight tracking-tight"
           >
             <Link
               to={`/blog/${post.slug}`}
-              className="hover:text-primary-600 focus:outline-none focus:text-primary-600 focus:underline transition-colors"
+              className="hover:text-teal-700 focus:outline-none focus:text-teal-700 transition-colors duration-200 group-hover:underline decoration-2 decoration-teal-400 underline-offset-4"
             >
               {post.title}
             </Link>
           </h3>
 
-          {/* Excerpt */}
-          <p className="text-text-secondary mb-4 text-sm leading-relaxed line-clamp-3 flex-shrink-0">
+          {/* Excerpt - Generous line height for readability */}
+          <p className="text-gray-600 mb-6 text-base leading-loose line-clamp-4 flex-shrink-0">
             {post.excerpt}
           </p>
 
-          {/* Metadata Row */}
-          <div className="flex items-center justify-between text-xs text-text-muted mb-4 pt-4 border-t border-gray-100">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
-                <time
-                  dateTime={post.date}
-                  aria-label={`Publicado em ${formatDate(post.date)}`}
-                >
-                  {formatDate(post.date)}
-                </time>
-              </div>
-              <div className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>{readingTime} min de leitura</span>
-              </div>
+          {/* Metadata Row - Refined with subtle dividers */}
+          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6 pt-6 border-t border-gray-200/60">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-teal-600" aria-hidden="true" />
+              <time
+                dateTime={post.date}
+                aria-label={`Publicado em ${formatDate(post.date)}`}
+                className="font-light"
+              >
+                {formatDate(post.date)}
+              </time>
             </div>
-            <div className="flex items-center gap-1">
-              <User className="w-3.5 h-3.5" aria-hidden="true" />
-              <span className="font-medium">{post.author || 'Dr. Saraiva'}</span>
+            <span className="text-gray-300">•</span>
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-teal-600" aria-hidden="true" />
+              <span className="font-light">{readingTime} min</span>
+            </div>
+            <span className="text-gray-300">•</span>
+            <div className="flex items-center gap-2">
+              <User className="w-4 h-4 text-teal-600" aria-hidden="true" />
+              <span className="font-medium text-gray-700">{post.author || 'Dr. Saraiva'}</span>
             </div>
           </div>
 
-          {/* Learning Points Preview */}
+          {/* Learning Points Preview - Soft background */}
           {enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
-            <div className="bg-primary-50 rounded-lg p-3 mb-4 border border-primary-100">
-              <p className="text-xs font-semibold text-primary-700 mb-2">O que você vai aprender:</p>
-              <ul className="space-y-1">
+            <div className="bg-gradient-to-br from-teal-50 to-cyan-50/30 rounded-xl p-5 mb-6 border border-teal-100/60">
+              <p className="text-sm font-semibold text-teal-800 mb-3">Você vai aprender:</p>
+              <ul className="space-y-2.5">
                 {enrichment.learningPoints.slice(0, 2).map((point, idx) => (
-                  <li key={idx} className="text-xs text-primary-800 flex items-start gap-2">
-                    <span className="text-primary-600 mt-0.5">•</span>
+                  <li key={idx} className="text-sm text-gray-700 flex items-start gap-3 leading-relaxed">
+                    <span className="text-teal-600 mt-1 flex-shrink-0">✓</span>
                     <span>{point}</span>
                   </li>
                 ))}
@@ -290,16 +286,18 @@ const BlogPage = () => {
             </div>
           )}
 
-          {/* Clean CTA Button */}
+          {/* Clean CTA - Subtle, elegant */}
           <Link
             to={`/blog/${post.slug}`}
-            className="mt-auto focus:outline-none"
+            className="mt-auto focus:outline-none group/button"
             aria-label={`Leia mais sobre: ${post.title}`}
           >
-            <Button variant="default" className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2">
-              <span>{t('blog.read_more', 'Ler artigo completo')}</span>
-              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-            </Button>
+            <div className="flex items-center justify-between px-6 py-4 bg-white border-2 border-gray-200 hover:border-teal-500 rounded-xl transition-all duration-300 group-hover/button:shadow-md">
+              <span className="text-base font-medium text-gray-700 group-hover/button:text-teal-700 transition-colors">
+                {t('blog.read_more', 'Ler artigo completo')}
+              </span>
+              <ArrowRight className="w-5 h-5 text-gray-400 group-hover/button:text-teal-600 transition-all duration-300 group-hover/button:translate-x-1" aria-hidden="true" />
+            </div>
           </Link>
         </div>
       </motion.article>
@@ -368,10 +366,8 @@ const BlogPage = () => {
         .filter(post => post.category === currentPost.category && post.id !== currentPost.id)
         .slice(0, 3);
 
-    const heroImage = currentPost.image || '/img/blog-fallback.jpg';
-
     return (
-      <div className="min-h-screen bg-white relative">
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 relative">
         <Helmet>
           <title>{currentPost.seo?.metaTitle || currentPost.title} | Saraiva Vision</title>
           <meta name="description" content={currentPost.seo?.metaDescription || currentPost.excerpt} />
@@ -441,73 +437,62 @@ const BlogPage = () => {
                 </div>
               </aside>
 
-              {/* Main Content Area */}
-              <article className="lg:col-span-6 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                {/* Featured Image */}
-                {heroImage && (
-                  <div className="relative w-full h-64 md:h-80 lg:h-96 overflow-hidden">
-                    <OptimizedImage
-                      src={heroImage}
-                      alt={currentPost.imageAlt || currentPost.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                      loading="eager"
-                      width="1200"
-                      height="630"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1200px"
-                      fallbackSrc="/img/blog-fallback.jpg"
-                      disableOptimization
-                    />
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-
-                    {/* Category Badge on Image */}
-                    <div className="absolute top-4 left-4">
-                      <CategoryBadge category={currentPost.category} size="md" onImage={true} />
-                    </div>
-                  </div>
-                )}
+              {/* Main Content Area - Text-only design */}
+              <article className="lg:col-span-6 bg-gradient-to-br from-white to-gray-50/30 rounded-3xl shadow-2xl border border-gray-200/60 overflow-hidden">
+                {/* Decorative header accent */}
+                <div className="h-2 bg-gradient-to-r from-teal-400 via-cyan-400 to-blue-400"></div>
 
                 {/* Content Container */}
-                <div className="p-6 md:p-8 lg:p-10">
-                  {/* Title */}
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-6 leading-tight">
+                <div className="p-8 md:p-12 lg:p-14">
+                  {/* Category Badge */}
+                  <div className="mb-6">
+                    <span className="inline-block px-5 py-2 text-sm font-semibold tracking-wider uppercase bg-gradient-to-r from-teal-50 to-cyan-50 text-teal-700 rounded-full border-2 border-teal-200/60 shadow-sm">
+                      {currentPost.category}
+                    </span>
+                  </div>
+
+                  {/* Title - Extra large, serif typography */}
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-gray-900 mb-8 leading-tight tracking-tight">
                     {currentPost.title}
                   </h1>
 
-                  {/* Metadata Row */}
-                  <div className="flex flex-wrap items-center gap-4 pb-6 mb-8 border-b border-gray-200">
-                    <div className="flex items-center gap-2 text-sm text-text-secondary">
-                      <User className="w-4 h-4" />
-                      <span className="font-medium">{currentPost.author}</span>
+                  {/* Metadata Row - Elegant spacing */}
+                  <div className="flex flex-wrap items-center gap-5 pb-8 mb-10 border-b-2 border-gray-200/60">
+                    <div className="flex items-center gap-2.5 text-base text-gray-600">
+                      <User className="w-5 h-5 text-teal-600" />
+                      <span className="font-semibold text-gray-800">{currentPost.author}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-text-secondary">
-                      <Calendar className="w-4 h-4" />
-                      <time dateTime={currentPost.date}>
+                    <span className="text-gray-300">•</span>
+                    <div className="flex items-center gap-2.5 text-base text-gray-600">
+                      <Calendar className="w-5 h-5 text-teal-600" />
+                      <time dateTime={currentPost.date} className="font-light">
                         {formatDate(currentPost.date)}
                       </time>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-text-secondary">
-                      <Clock className="w-4 h-4" />
-                      <span>{currentPost.readingTimeMinutes || 4} min de leitura</span>
+                    <span className="text-gray-300">•</span>
+                    <div className="flex items-center gap-2.5 text-base text-gray-600">
+                      <Clock className="w-5 h-5 text-teal-600" />
+                      <span className="font-light">{currentPost.readingTimeMinutes || 4} min de leitura</span>
                     </div>
                   </div>
 
-                  {/* Article Content */}
+                  {/* Article Content - Relaxing typography */}
                   <div
-                    className="prose prose-lg max-w-none
-                      prose-headings:font-bold prose-headings:text-text-primary
-                      prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-gray-200
-                      prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3
-                      prose-p:text-text-secondary prose-p:leading-relaxed prose-p:mb-4
-                      prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline
-                      prose-strong:text-text-primary prose-strong:font-semibold
-                      prose-ul:my-4 prose-ul:ml-6
-                      prose-ol:my-4 prose-ol:ml-6
-                      prose-li:text-text-secondary prose-li:mb-2
-                      prose-img:rounded-xl prose-img:shadow-md prose-img:my-6
-                      prose-blockquote:border-l-4 prose-blockquote:border-primary-500 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-text-secondary
-                      prose-code:text-primary-600 prose-code:bg-primary-50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-                      prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-xl prose-pre:overflow-x-auto"
+                    className="prose prose-xl max-w-none
+                      prose-headings:font-serif prose-headings:font-bold prose-headings:text-gray-900
+                      prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b-2 prose-h2:border-gray-200/60
+                      prose-h3:text-2xl prose-h3:mt-10 prose-h3:mb-5 prose-h3:text-gray-800
+                      prose-p:text-gray-700 prose-p:leading-loose prose-p:mb-6 prose-p:text-lg
+                      prose-a:text-teal-600 prose-a:no-underline hover:prose-a:underline hover:prose-a:text-teal-700 prose-a:transition-colors
+                      prose-strong:text-gray-900 prose-strong:font-semibold
+                      prose-ul:my-6 prose-ul:ml-8 prose-ul:space-y-3
+                      prose-ol:my-6 prose-ol:ml-8 prose-ol:space-y-3
+                      prose-li:text-gray-700 prose-li:leading-loose prose-li:text-lg
+                      prose-li:marker:text-teal-600
+                      prose-img:rounded-2xl prose-img:shadow-xl prose-img:my-10
+                      prose-blockquote:border-l-4 prose-blockquote:border-teal-400 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-600 prose-blockquote:bg-teal-50/30 prose-blockquote:py-4 prose-blockquote:pr-4 prose-blockquote:rounded-r-xl
+                      prose-code:text-teal-700 prose-code:bg-teal-50 prose-code:px-2 prose-code:py-1 prose-code:rounded-md prose-code:text-base prose-code:font-mono
+                      prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-6 prose-pre:rounded-2xl prose-pre:overflow-x-auto prose-pre:shadow-lg"
                   >
                     {/* Render HTML strings (static posts) or Portable Text (Sanity posts) */}
                     {typeof currentPost.content === 'string' ? (
@@ -517,15 +502,15 @@ const BlogPage = () => {
                     )}
                   </div>
 
-                  {/* Tags */}
+                  {/* Tags - Elegant design */}
                   {currentPost.tags && currentPost.tags.length > 0 && (
-                    <div className="mt-10 pt-6 border-t border-gray-200">
-                      <h3 className="text-sm font-semibold text-text-muted mb-3">Tags relacionadas:</h3>
-                      <div className="flex flex-wrap gap-2">
+                    <div className="mt-12 pt-8 border-t-2 border-gray-200/60">
+                      <h3 className="text-base font-semibold text-gray-700 mb-4 tracking-wide">Tags relacionadas</h3>
+                      <div className="flex flex-wrap gap-3">
                         {currentPost.tags.map(tag => (
                           <span
                             key={tag}
-                            className="px-3 py-1.5 bg-gradient-to-r from-primary-50 to-secondary-50 text-primary-700 rounded-full text-sm font-medium border border-primary-100 hover:border-primary-300 transition-colors"
+                            className="px-4 py-2 bg-gradient-to-r from-teal-50 to-cyan-50 text-teal-700 rounded-full text-sm font-medium border-2 border-teal-200/60 hover:border-teal-400 hover:shadow-md transition-all duration-200"
                           >
                             #{tag}
                           </span>
@@ -659,7 +644,7 @@ const BlogPage = () => {
 
       <main
         id="main-content"
-        className="py-32 md:py-40 mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%] bg-gradient-to-b from-blue-50/30 via-white to-white"
+        className="py-32 md:py-40 mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%] bg-gradient-to-b from-gray-50 via-white to-gray-50"
         role="main"
         aria-label="Conteúdo principal do blog"
         tabIndex="-1"
@@ -669,26 +654,36 @@ const BlogPage = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-6"
+            className="text-center mb-16"
           >
-            {/* Clean header aligned with homepage */}
-            <div className="relative">
-              <h1 className="text-5xl md:text-6xl font-bold mb-4">
+            {/* Elegant minimalist header */}
+            <div className="relative max-w-4xl mx-auto">
+              {/* Decorative line accent */}
+              <div className="w-24 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 mx-auto mb-8 rounded-full"></div>
+
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-6 text-gray-900 leading-tight tracking-tight">
                 <Trans i18nKey="blog.title">
-                  Blog <span className="text-gradient">Saraiva Vision</span>
+                  Blog <span className="bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">Saraiva Vision</span>
                 </Trans>
               </h1>
-              <p className="text-base md:text-lg text-text-secondary font-normal max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg md:text-xl text-gray-600 font-light max-w-3xl mx-auto leading-loose">
                 Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos
               </p>
+
+              {/* Decorative bottom accent */}
+              <div className="mt-8 flex items-center justify-center gap-2">
+                <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
+                <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+              </div>
             </div>
           </motion.header>
 
           <section aria-label="Posts do blog">
             {/* Search and Filter Section */}
-            <div className="mb-10">
-              {/* Clean Search Bar */}
-              <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-8">
+            <div className="mb-14">
+              {/* Elegant Search Bar */}
+              <form onSubmit={handleSearch} className="max-w-3xl mx-auto mb-10">
                 <div className="relative">
                   <input
                     type="text"
@@ -697,13 +692,13 @@ const BlogPage = () => {
                     placeholder="Buscar artigos por título, conteúdo ou tags..."
                     aria-label="Buscar artigos no blog"
                     aria-describedby="search-help"
-                    className="w-full pl-12 pr-12 py-3.5 bg-white border border-border-light rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all text-text-primary placeholder:text-text-muted shadow-sm hover:shadow-md"
+                    className="w-full pl-14 pr-14 py-5 bg-gradient-to-br from-white to-gray-50/50 border-2 border-gray-200/60 rounded-2xl focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400 transition-all text-gray-900 placeholder:text-gray-400 text-lg shadow-lg hover:shadow-xl hover:border-gray-300"
                   />
 
                   {/* Search icon */}
-                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                    <svg className="w-5 h-5 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  <div className="absolute left-5 top-1/2 transform -translate-y-1/2">
+                    <svg className="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   </div>
 
@@ -712,17 +707,17 @@ const BlogPage = () => {
                     <button
                       type="button"
                       onClick={() => setSearchTerm('')}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
+                      className="absolute right-5 top-1/2 transform -translate-y-1/2 p-2 hover:bg-red-50 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-red-300"
                       aria-label="Limpar busca"
                     >
-                      <X className="w-4 h-4 text-text-secondary hover:text-primary-600 transition-colors" />
+                      <X className="w-5 h-5 text-gray-400 hover:text-red-600 transition-colors" />
                     </button>
                   )}
 
                   {/* Loading spinner */}
                   {searchTerm && searchTerm !== debouncedSearch && (
-                    <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
-                      <div className="w-4 h-4 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
+                    <div className="absolute right-14 top-1/2 transform -translate-y-1/2">
+                      <div className="w-5 h-5 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
                     </div>
                   )}
                 </div>
@@ -732,22 +727,22 @@ const BlogPage = () => {
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-3"
+                    className="mt-4"
                   >
-                    <p className="text-sm font-medium text-center text-primary-600" id="search-help" aria-live="polite" aria-atomic="true">
+                    <p className="text-base font-medium text-center text-teal-700 bg-teal-50 py-2 px-4 rounded-full inline-block mx-auto" id="search-help" aria-live="polite" aria-atomic="true">
                       ✨ {filteredPosts.length} {filteredPosts.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
                     </p>
                   </motion.div>
                 )}
                 {!debouncedSearch && (
-                  <p className="text-xs text-text-muted mt-3 text-center" id="search-help">
-                    🔍 Digite para buscar artigos por título, conteúdo ou tags
+                  <p className="text-sm text-gray-500 mt-4 text-center font-light" id="search-help">
+                    Digite para buscar artigos por título, conteúdo ou tags
                   </p>
                 )}
               </form>
 
-              {/* Clean Category Filter */}
-              <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Filtros de categoria">
+              {/* Elegant Category Filter */}
+              <div className="flex flex-wrap justify-center gap-3" role="group" aria-label="Filtros de categoria">
                 {categories.map(category => {
                   const config = categoryConfig[category];
                   const iconMap = {
@@ -771,12 +766,12 @@ const BlogPage = () => {
                       }}
                       aria-pressed={isActive}
                       aria-label={`Filtrar por categoria: ${category}`}
-                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${isActive
-                          ? 'bg-cyan-500 text-white shadow-sm hover:bg-cyan-600'
-                          : 'bg-white text-text-secondary border border-border-light hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50'
+                      className={`inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl text-base font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 ${isActive
+                          ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg hover:shadow-xl hover:from-teal-600 hover:to-cyan-600 scale-105'
+                          : 'bg-white text-gray-700 border-2 border-gray-200/60 hover:border-teal-300 hover:text-teal-700 hover:bg-teal-50/50 shadow-md hover:shadow-lg'
                         }`}
                     >
-                      {Icon && <Icon className="w-4 h-4" aria-hidden="true" />}
+                      {Icon && <Icon className="w-5 h-5" aria-hidden="true" />}
                       <span>{category}</span>
                     </button>
                   );
