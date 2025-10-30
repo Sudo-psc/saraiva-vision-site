@@ -108,12 +108,10 @@ export const getFormProgressInfo = (formName) => {
  * Hook React para auto-save
  */
 export const useFormAutoSave = (formName, formData, { enabled = true, debounceMs = 1000, expiryHours = DEFAULT_EXPIRY_HOURS } = {}) => {
-  if (typeof window === 'undefined') return;
-
   const React = require('react');
 
   React.useEffect(() => {
-    if (!enabled || !formData) return;
+    if (typeof window === 'undefined' || !enabled || !formData) return;
 
     // Debounce para não salvar a cada keystroke
     const timeoutId = setTimeout(() => {
