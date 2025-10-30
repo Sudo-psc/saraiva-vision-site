@@ -340,7 +340,7 @@ export const blogPosts = [
       "retinopatia diabética",
       "glaucoma"
     ],
-    "image": "/Blog/futuristic-eye-examination-optimized-1200w.webp",
+    "image": "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=1200&q=80",
     "featured": true,
     "seo": {
       "metaTitle": "Como a Inteligência Artificial Está Transformando os Exames Oftalmológicos em Caratinga, MG",
@@ -445,7 +445,7 @@ export const blogPosts = [
       "estudos digitais",
       "saúde ocular Caratinga"
     ],
-    "image": "/Blog/capa-digital-optimized-1200w.webp",
+    "image": "https://images.unsplash.com/photo-1488998427799-e3362cec87c3?w=1200&q=80",
     "featured": true,
     "seo": {
       "metaTitle": "Síndrome da Visão de Computador: Prevenção e Manejo em Caratinga, MG",
@@ -597,7 +597,7 @@ export const blogPosts = [
       "dicas visão saudável",
       "oftalmologista Caratinga MG"
     ],
-    "image": "/Blog/capa-geral-optimized-1200w.webp",
+    "image": "https://images.unsplash.com/photo-1584744982491-665216d95f8b?w=1200&q=80",
     "featured": true,
     "seo": {
       "metaTitle": "Mitos e Verdades Sobre Saúde Ocular: O Que a Ciência Diz | Saraiva Vision Caratinga",
@@ -901,7 +901,7 @@ export const blogPosts = [
       "Caratinga",
       "crianças"
     ],
-    "image": "/Blog/capa-pediatria.webp",
+    "image": "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=1200&q=80",
     "featured": true,
     "seo": {
       "metaTitle": "Oftalmologia Pediátrica Caratinga: Quando Levar Crianças ao Oftalmo",
