@@ -29,7 +29,7 @@ const config = {
   dataset: getEnv('VITE_SANITY_DATASET', 'production'),
   apiVersion: '2025-10-25', // Use current date for API versioning
   useCdn: getEnv('NODE_ENV') === 'production', // Use CDN in production for better performance
-  token: getEnv('VITE_SANITY_TOKEN'), // Optional: for authenticated requests
+  token: getEnv('VITE_SANITY_TOKEN') || getEnv('SANITY_TOKEN'), // Optional: for authenticated requests (supports both variable names)
 }
 
 /**
