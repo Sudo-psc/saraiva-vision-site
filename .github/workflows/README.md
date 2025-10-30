@@ -190,5 +190,5 @@ Os workflows usam cache em múltiplos níveis:
 
 ---
 
-**Última atualização:** 2025-10-30
+**Última atualização:** 2025-10-25
 **Versão:** 1.0.0
