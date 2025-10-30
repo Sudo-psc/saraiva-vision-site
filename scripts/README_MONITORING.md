@@ -4,6 +4,8 @@
 
 This comprehensive monitoring system has been deployed for the Saraiva Vision medical platform to ensure continuous health monitoring, alerting, and performance tracking for production stability.
 
+> **🆕 NEW**: Automated daily email reports using Resend API. See [Daily Email Reports Documentation](../docs/DAILY_EMAIL_REPORTS.md) for details.
+
 ## 📁 Monitoring Scripts
 
 ### Core Scripts
@@ -111,12 +113,45 @@ The dashboard provides real-time visibility into:
 | `nginx/error.log` | Web error logs | `/var/log/nginx/` |
 | System journal | Service logs | `journalctl -u saraiva-api` |
 
+## 📧 Daily Email Reports
+
+### Automated System Checkup Reports
+The monitoring system now includes automated daily email reports that provide comprehensive system health information:
+
+```bash
+# Install cron job for daily reports (runs at 8 AM)
+npm run install:checkup-cron
+
+# Send report manually
+npm run check:and-email
+
+# Send existing report
+npm run send:daily-report
+```
+
+**Features:**
+- ✅ Complete system checkup (linting, tests, build)
+- ✅ Professional HTML email template
+- ✅ Success/failure statistics
+- ✅ Detailed test results
+- ✅ Automatic retry on failure
+- ✅ Priority-based delivery
+
+**Configuration Required:**
+```bash
+RESEND_API_KEY=your_resend_api_key_here
+DOCTOR_EMAIL=your_email@example.com
+```
+
+For complete documentation, see [Daily Email Reports Guide](../docs/DAILY_EMAIL_REPORTS.md).
+
 ## ⚙️ Configuration
 
 ### Monitoring Intervals
 - **Health Checks**: Every 5 minutes (300 seconds)
 - **Dashboard Refresh**: Every 30 seconds (continuous mode)
 - **Alert Checks**: On-demand (can be automated via cron)
+- **Daily Email Reports**: 8:00 AM (configurable via CRON_SCHEDULE)
 
 ### Thresholds (configurable in scripts)
 - CPU: 80% usage alert
