@@ -62,6 +62,7 @@
     "release:first": "standard-version --first-release",
     "sanity:export": "node scripts/sanity/export-to-sanity.js export",
     "sanity:upload-images": "node scripts/upload-blog-images-to-sanity.js",
+    "sanity:test-images": "node scripts/test-blog-images-sanity.js",
     "sanity:validate": "node scripts/sanity/export-to-sanity.js validate",
     "sanity:query": "node scripts/sanity/export-to-sanity.js query",
     "sanity:delete": "node scripts/sanity/export-to-sanity.js delete",
