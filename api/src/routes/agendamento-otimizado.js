@@ -22,7 +22,10 @@ const agendamentoLimiter = rateLimit({
 });
 
 /**
- * Sanitize input
+ * Sanitizes a string by removing potentially malicious content.
+ * @param {string} str The string to sanitize.
+ * @returns {string} The sanitized string.
+ * @private
  */
 const sanitize = (str) => {
   if (typeof str !== 'string') return '';
@@ -34,7 +37,10 @@ const sanitize = (str) => {
 };
 
 /**
- * Validate agendamento data
+ * Validates the appointment scheduling data.
+ * @param {object} data The appointment data to validate.
+ * @returns {{isValid: boolean, errors: string[]}} An object containing the validation result.
+ * @private
  */
 const validateAgendamento = (data) => {
   const errors = [];
@@ -63,7 +69,10 @@ const validateAgendamento = (data) => {
 };
 
 /**
- * Gerar HTML do email para o médico
+ * Generates the HTML for the appointment notification email sent to the doctor.
+ * @param {object} data The appointment data.
+ * @returns {string} The HTML content of the email.
+ * @private
  */
 const generateDoctorEmail = (data) => {
   const { nome, telefone, motivo, convenio, variant, timestamp } = data;
@@ -170,8 +179,10 @@ const generateDoctorEmail = (data) => {
 };
 
 /**
- * Enviar para Google Sheets (webhook)
- * Você pode configurar um webhook do Google Apps Script ou usar API direta
+ * Sends appointment data to a Google Sheets webhook.
+ * @param {object} data The appointment data.
+ * @returns {Promise<{success: boolean, message?: string, error?: string}>} The result of the operation.
+ * @private
  */
 const sendToGoogleSheets = async (data) => {
   // Se você tiver um webhook do Google Sheets configurado
@@ -210,8 +221,39 @@ const sendToGoogleSheets = async (data) => {
 };
 
 /**
- * POST /api/agendamento-otimizado
- * Recebe agendamento do formulário otimizado
+ * @swagger
+ * /api/agendamento-otimizado:
+ *   post:
+ *     summary: Receives an optimized appointment scheduling request.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nome:
+ *                 type: string
+ *               telefone:
+ *                 type: string
+ *               motivo:
+ *                 type: string
+ *               convenio:
+ *                 type: string
+ *               variant:
+ *                 type: string
+ *               timestamp:
+ *                 type: string
+ *                 format: date-time
+ *     responses:
+ *       201:
+ *         description: The appointment was received successfully.
+ *       400:
+ *         description: Bad request. Invalid data.
+ *       429:
+ *         description: Too many requests.
+ *       500:
+ *         description: Internal server error.
  */
 router.post('/', agendamentoLimiter, async (req, res) => {
   try {
@@ -316,8 +358,15 @@ router.post('/', agendamentoLimiter, async (req, res) => {
 });
 
 /**
- * GET /api/agendamento-otimizado/stats
- * Estatísticas de agendamentos (admin apenas)
+ * @swagger
+ * /api/agendamento-otimizado/stats:
+ *   get:
+ *     summary: Retrieves statistics for optimized appointments. This is an admin-only endpoint.
+ *     responses:
+ *       200:
+ *         description: The statistics were retrieved successfully.
+ *       500:
+ *         description: Internal server error.
  */
 router.get('/stats', async (req, res) => {
   try {

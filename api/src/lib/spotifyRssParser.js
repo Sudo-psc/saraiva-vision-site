@@ -5,7 +5,13 @@
 
 import { XMLParser } from 'fast-xml-parser';
 
+/**
+ * A parser for Spotify podcast RSS feeds.
+ */
 export class SpotifyRssParser {
+    /**
+     * Creates an instance of SpotifyRssParser.
+     */
     constructor() {
         this.parser = new XMLParser({
             ignoreAttributes: false,
@@ -17,9 +23,11 @@ export class SpotifyRssParser {
     }
 
     /**
-     * Parse RSS feed from URL
-     * @param {string} rssUrl - The RSS feed URL
-     * @returns {Promise<Object>} Parsed podcast data
+     * Parses a podcast RSS feed from a given URL.
+     *
+     * @param {string} rssUrl The URL of the RSS feed.
+     * @returns {Promise<object>} A promise that resolves with the parsed podcast data.
+     * @throws {Error} An error if the feed cannot be fetched or parsed.
      */
     async parseFromUrl(rssUrl) {
         try {
@@ -41,9 +49,11 @@ export class SpotifyRssParser {
     }
 
     /**
-     * Parse XML string
-     * @param {string} xmlData - Raw XML data
-     * @returns {Object} Parsed podcast data
+     * Parses a podcast RSS feed from an XML string.
+     *
+     * @param {string} xmlData The XML data of the RSS feed.
+     * @returns {object} The parsed podcast data.
+     * @throws {Error} An error if the XML cannot be parsed.
      */
     parseXml(xmlData) {
         try {
@@ -64,9 +74,11 @@ export class SpotifyRssParser {
     }
 
     /**
-     * Extract podcast metadata
-     * @param {Object} channel - RSS channel object
-     * @returns {Object} Podcast information
+     * Extracts podcast metadata from the RSS channel object.
+     *
+     * @param {object} channel The RSS channel object.
+     * @returns {object} An object containing the podcast information.
+     * @private
      */
     extractPodcastInfo(channel) {
         return {
@@ -80,9 +92,11 @@ export class SpotifyRssParser {
     }
 
     /**
-     * Extract episodes from RSS items
-     * @param {Array} items - RSS item array
-     * @returns {Array} Processed episodes
+     * Extracts and processes episodes from the RSS item array.
+     *
+     * @param {Array<object>} items An array of RSS item objects.
+     * @returns {Array<object>} An array of processed episode objects.
+     * @private
      */
     extractEpisodes(items) {
         const itemsArray = Array.isArray(items) ? items : [items];
@@ -94,9 +108,11 @@ export class SpotifyRssParser {
     }
 
     /**
-     * Extract individual episode data
-     * @param {Object} item - RSS item object
-     * @returns {Object|null} Episode data or null if invalid
+     * Extracts and processes individual episode data from an RSS item object.
+     *
+     * @param {object} item The RSS item object.
+     * @returns {object|null} An object containing the episode data, or `null` if the item is invalid.
+     * @private
      */
     extractEpisodeData(item) {
         try {
@@ -131,10 +147,12 @@ export class SpotifyRssParser {
     }
 
     /**
-     * Extract Spotify ID from GUID or link
-     * @param {string} guid - Episode GUID
-     * @param {string} link - Episode link
-     * @returns {string|null} Spotify episode ID
+     * Extracts the Spotify episode ID from a GUID or link.
+     *
+     * @param {string} guid The episode GUID.
+     * @param {string} link The episode link.
+     * @returns {string|null} The Spotify episode ID, or `null` if not found.
+     * @private
      */
     extractSpotifyId(guid, link) {
         // Try to extract from GUID first
@@ -153,10 +171,12 @@ export class SpotifyRssParser {
     }
 
     /**
-     * Extract Spotify URL
-     * @param {string} link - Episode link
-     * @param {string} guid - Episode GUID
-     * @returns {string|null} Spotify URL
+     * Extracts the Spotify URL for an episode.
+     *
+     * @param {string} link The episode link.
+     * @param {string} guid The episode GUID.
+     * @returns {string|null} The Spotify URL, or `null` if not found.
+     * @private
      */
     extractSpotifyUrl(link, guid) {
         if (link && link.includes('spotify.com')) {
@@ -168,18 +188,22 @@ export class SpotifyRssParser {
     }
 
     /**
-     * Generate Spotify embed URL
-     * @param {string} spotifyId - Spotify episode ID
-     * @returns {string} Embed URL
+     * Generates a Spotify embed URL for an episode.
+     *
+     * @param {string} spotifyId The Spotify episode ID.
+     * @returns {string} The Spotify embed URL.
+     * @private
      */
     generateEmbedUrl(spotifyId) {
         return `https://open.spotify.com/embed/episode/${spotifyId}?utm_source=generator&theme=0`;
     }
 
     /**
-     * Extract image URL
-     * @param {Object} data - RSS data object
-     * @returns {string|null} Image URL
+     * Extracts an image URL from an RSS data object.
+     *
+     * @param {object} data The RSS data object.
+     * @returns {string|null} The image URL, or `null` if not found.
+     * @private
      */
     extractImage(data) {
         // Try iTunes image first
@@ -201,18 +225,22 @@ export class SpotifyRssParser {
     }
 
     /**
-     * Extract episode-specific image
-     * @param {Object} item - RSS item
-     * @returns {string|null} Episode image URL
+     * Extracts the image URL for an episode.
+     *
+     * @param {object} item The RSS item object.
+     * @returns {string|null} The episode image URL, or `null` if not found.
+     * @private
      */
     extractEpisodeImage(item) {
         return this.extractImage(item) || null;
     }
 
     /**
-     * Parse duration from various formats
-     * @param {string|number} duration - Duration string or number
-     * @returns {number|null} Duration in milliseconds
+     * Parses a duration string (e.g., "HH:MM:SS", "MM:SS", or seconds) into milliseconds.
+     *
+     * @param {string|number} duration The duration string or number of seconds.
+     * @returns {number|null} The duration in milliseconds, or `null` if parsing fails.
+     * @private
      */
     parseDuration(duration) {
         if (!duration) return null;
@@ -241,9 +269,11 @@ export class SpotifyRssParser {
     }
 
     /**
-     * Parse date string to ISO format
-     * @param {string} dateString - Date string
-     * @returns {string|null} ISO date string
+     * Parses a date string into an ISO 8601 formatted string.
+     *
+     * @param {string} dateString The date string to parse.
+     * @returns {string|null} The ISO 8601 formatted date string, or `null` if parsing fails.
+     * @private
      */
     parseDate(dateString) {
         if (!dateString) return null;
@@ -258,9 +288,11 @@ export class SpotifyRssParser {
     }
 
     /**
-     * Clean and sanitize text content
-     * @param {string} text - Raw text
-     * @returns {string} Cleaned text
+     * Cleans and sanitizes text content by removing HTML tags and decoding HTML entities.
+     *
+     * @param {string} text The raw text to clean.
+     * @returns {string} The cleaned text.
+     * @private
      */
     cleanText(text) {
         if (!text) return '';
@@ -277,9 +309,10 @@ export class SpotifyRssParser {
     }
 
     /**
-     * Validate episode data
-     * @param {Object} episode - Episode object
-     * @returns {boolean} Is valid episode
+     * Validates that an episode object has the required properties.
+     *
+     * @param {object} episode The episode object to validate.
+     * @returns {boolean} `true` if the episode is valid, `false` otherwise.
      */
     validateEpisode(episode) {
         return !!(

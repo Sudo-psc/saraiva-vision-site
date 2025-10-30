@@ -105,9 +105,27 @@ const FALLBACK_REVIEWS = [
     }
 ];
 
-// Cache management functions
+/**
+ * Generates a cache key for a given set of parameters.
+ *
+ * @param {string} placeId The Google Place ID.
+ * @param {number} limit The maximum number of reviews to fetch.
+ * @param {string} language The language of the reviews.
+ * @returns {string} The generated cache key.
+ */
 const getCacheKey = (placeId, limit, language) => `${placeId}-${limit}-${language}`;
+
+/**
+ * Checks if a cache entry is still valid.
+ *
+ * @param {object} cacheEntry The cache entry to check.
+ * @returns {boolean} `true` if the cache entry is valid, `false` otherwise.
+ */
 const isCacheValid = (cacheEntry) => cacheEntry && (Date.now() - cacheEntry.timestamp < CACHE_DURATION);
+
+/**
+ * Removes expired entries from the cache.
+ */
 const cleanExpiredCache = () => {
     const now = Date.now();
     for (const [key, entry] of reviewsCache.entries()) {
@@ -116,6 +134,10 @@ const cleanExpiredCache = () => {
         }
     }
 };
+
+/**
+ * Enforces the maximum cache size by removing the oldest entries.
+ */
 const enforceCacheSizeLimit = () => {
     if (reviewsCache.size > MAX_CACHE_SIZE) {
         // Delete oldest entries
@@ -126,6 +148,12 @@ const enforceCacheSizeLimit = () => {
     }
 };
 
+/**
+ * Normalizes a Google Place ID by trimming whitespace and checking for placeholder values.
+ *
+ * @param {string} value The Place ID to normalize.
+ * @returns {string|null} The normalized Place ID, or `null` if the value is invalid.
+ */
 const normalizePlaceId = (value) => {
     if (!value) return null;
     const cleaned = String(value).trim();
@@ -134,6 +162,12 @@ const normalizePlaceId = (value) => {
     return cleaned;
 };
 
+/**
+ * Resolves the Google Place ID to use by checking explicit, environment, and fallback values.
+ *
+ * @param {string} explicitId An explicitly provided Place ID.
+ * @returns {string|null} The resolved Place ID, or `null` if none is available.
+ */
 const resolvePlaceId = (explicitId) => (
     normalizePlaceId(explicitId) ||
     normalizePlaceId(process.env.GOOGLE_PLACE_ID) ||
@@ -141,6 +175,13 @@ const resolvePlaceId = (explicitId) => (
     CLINIC_PLACE_ID
 );
 
+/**
+ * Handles the request for Google Reviews.
+ *
+ * @param {object} req The HTTP request object.
+ * @param {object} res The HTTP response object.
+ * @returns {Promise<void>} A promise that resolves when the request is handled.
+ */
 export default async function handler(req, res) {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');

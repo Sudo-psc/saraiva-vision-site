@@ -12,7 +12,11 @@
 
 import rateLimit from 'express-rate-limit';
 
-// Rate limiter: 30 requests per 15 minutes per IP
+/**
+ * Rate limiter for the configuration endpoint.
+ *
+ * @type {import('express-rate-limit').RateLimitRequestHandler}
+ */
 const configLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 30, // 30 requests per window
@@ -22,8 +26,11 @@ const configLimiter = rateLimit({
 });
 
 /**
- * GET /api/config
- * Returns public environment configuration
+ * Handles the request for public environment configuration.
+ *
+ * @param {object} req The HTTP request object.
+ * @param {object} res The HTTP response object.
+ * @returns {void}
  */
 export default function handler(req, res) {
   // Only allow GET requests

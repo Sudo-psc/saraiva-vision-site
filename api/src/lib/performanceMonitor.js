@@ -6,9 +6,12 @@
 import { createLogger } from './logger.js';
 
 /**
- * Performance Metrics Collector
+ * A class for collecting and analyzing performance metrics.
  */
 class PerformanceMonitor {
+    /**
+     * Creates an instance of PerformanceMonitor.
+     */
     constructor() {
         this.logger = createLogger('performance');
         this.metrics = new Map();
@@ -18,7 +21,13 @@ class PerformanceMonitor {
     }
 
     /**
-     * Record API call performance
+     * Records the performance of an API call.
+     *
+     * @param {string} endpoint The API endpoint.
+     * @param {string} method The HTTP method.
+     * @param {number} statusCode The HTTP status code of the response.
+     * @param {number} responseTime The response time in milliseconds.
+     * @param {object} [metadata={}] Additional metadata to log.
      */
     recordApiCall(endpoint, method, statusCode, responseTime, metadata = {}) {
         const key = `${method}:${endpoint}`;
@@ -45,7 +54,13 @@ class PerformanceMonitor {
     }
 
     /**
-     * Record database operation performance
+     * Records the performance of a database operation.
+     *
+     * @param {string} operation The type of database operation (e.g., 'query', 'insert').
+     * @param {string} table The name of the database table.
+     * @param {number} responseTime The response time in milliseconds.
+     * @param {boolean} [success=true] Whether the operation was successful.
+     * @param {object} [metadata={}] Additional metadata to log.
      */
     recordDbOperation(operation, table, responseTime, success = true, metadata = {}) {
         const key = `db:${operation}:${table}`;
@@ -68,7 +83,13 @@ class PerformanceMonitor {
     }
 
     /**
-     * Record external service call performance
+     * Records the performance of an external service call.
+     *
+     * @param {string} service The name of the external service.
+     * @param {string} operation The operation performed on the service.
+     * @param {number} responseTime The response time in milliseconds.
+     * @param {boolean} [success=true] Whether the call was successful.
+     * @param {object} [metadata={}] Additional metadata to log.
      */
     recordExternalCall(service, operation, responseTime, success = true, metadata = {}) {
         const key = `external:${service}:${operation}`;
@@ -91,7 +112,11 @@ class PerformanceMonitor {
     }
 
     /**
-     * Calculate statistics for a metric
+     * Calculates statistics for a given set of numeric values.
+     *
+     * @param {number[]} values An array of numbers.
+     * @returns {object} An object containing the calculated statistics.
+     * @private
      */
     calculateStats(values) {
         if (!values || values.length === 0) {
@@ -113,7 +138,9 @@ class PerformanceMonitor {
     }
 
     /**
-     * Get performance summary
+     * Gets a summary of the collected performance metrics.
+     *
+     * @returns {object} An object containing the performance summary.
      */
     getPerformanceSummary() {
         const summary = {
@@ -155,7 +182,7 @@ class PerformanceMonitor {
     }
 
     /**
-     * Reset metrics (useful for periodic reporting)
+     * Resets the collected metrics. This is useful for periodic reporting.
      */
     reset() {
         this.metrics.clear();
@@ -165,7 +192,9 @@ class PerformanceMonitor {
     }
 
     /**
-     * Check if error rates exceed thresholds
+     * Checks if any error rates have exceeded their defined thresholds.
+     *
+     * @returns {Array<object>} An array of alert objects for any thresholds that have been exceeded.
      */
     checkErrorThresholds() {
         const alerts = [];
@@ -187,7 +216,9 @@ class PerformanceMonitor {
     }
 
     /**
-     * Check if response times exceed thresholds
+     * Checks if any response times have exceeded their defined thresholds.
+     *
+     * @returns {Array<object>} An array of alert objects for any thresholds that have been exceeded.
      */
     checkPerformanceThresholds() {
         const alerts = [];
@@ -221,7 +252,9 @@ class PerformanceMonitor {
     }
 
     /**
-     * Generate performance report
+     * Generates a performance report.
+     *
+     * @returns {Promise<object>} A promise that resolves with the performance report object.
      */
     async generateReport() {
         const summary = this.getPerformanceSummary();
@@ -254,12 +287,17 @@ class PerformanceMonitor {
 }
 
 /**
- * Global performance monitor instance
+ * The global singleton instance of the PerformanceMonitor.
+ * @type {PerformanceMonitor}
  */
 const performanceMonitor = new PerformanceMonitor();
 
 /**
- * Middleware to track API performance
+ * An Express middleware for tracking API performance.
+ *
+ * @param {object} req The Express request object.
+ * @param {object} res The Express response object.
+ * @param {function(): void} next The next middleware function.
  */
 export function performanceTrackingMiddleware(req, res, next) {
     const startTime = Date.now();
@@ -288,7 +326,11 @@ export function performanceTrackingMiddleware(req, res, next) {
 }
 
 /**
- * Database operation wrapper with performance tracking
+ * A decorator for tracking the performance of database operations.
+ *
+ * @param {string} operation The type of database operation.
+ * @param {string} table The name of the database table.
+ * @returns {function(object, string, object): object} A decorator function.
  */
 export function trackDbOperation(operation, table) {
     return function (target, propertyKey, descriptor) {
@@ -319,7 +361,11 @@ export function trackDbOperation(operation, table) {
 }
 
 /**
- * External service call wrapper with performance tracking
+ * A decorator for tracking the performance of external service calls.
+ *
+ * @param {string} service The name of the external service.
+ * @param {string} operation The operation performed on the service.
+ * @returns {function(object, string, object): object} A decorator function.
  */
 export function trackExternalCall(service, operation) {
     return function (target, propertyKey, descriptor) {
@@ -350,14 +396,18 @@ export function trackExternalCall(service, operation) {
 }
 
 /**
- * Get performance metrics
+ * Gets a summary of the collected performance metrics.
+ *
+ * @returns {object} An object containing the performance summary.
  */
 export function getPerformanceMetrics() {
     return performanceMonitor.getPerformanceSummary();
 }
 
 /**
- * Generate performance report
+ * Generates a performance report.
+ *
+ * @returns {Promise<object>} A promise that resolves with the performance report object.
  */
 export function generatePerformanceReport() {
     return performanceMonitor.generateReport();

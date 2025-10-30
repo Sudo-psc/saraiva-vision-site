@@ -24,8 +24,13 @@ export const ApiConfig = {
     retryDelay: 1000
 };
 
-// Network status monitoring
+/**
+ * Monitors the network status and notifies listeners of changes.
+ */
 export class NetworkMonitor {
+    /**
+     * Creates an instance of NetworkMonitor.
+     */
     constructor() {
         this.online = navigator.onLine;
         this.listeners = [];
@@ -36,11 +41,21 @@ export class NetworkMonitor {
         }
     }
 
+    /**
+     * Handles changes in the network status.
+     * @param {boolean} online - The current network status.
+     * @private
+     */
     handleStatusChange(online) {
         this.online = online;
         this.listeners.forEach(listener => listener(online));
     }
 
+    /**
+     * Subscribes to network status changes.
+     * @param {function(boolean): void} callback - The callback to invoke when the network status changes.
+     * @returns {function(): void} A function to unsubscribe from the network status changes.
+     */
     subscribe(callback) {
         this.listeners.push(callback);
         return () => {
@@ -48,6 +63,10 @@ export class NetworkMonitor {
         };
     }
 
+    /**
+     * Checks if the browser is currently online.
+     * @returns {boolean} `true` if the browser is online, `false` otherwise.
+     */
     isOnline() {
         return this.online;
     }
@@ -56,7 +75,15 @@ export class NetworkMonitor {
 // Global network monitor instance
 export const networkMonitor = new NetworkMonitor();
 
-// Enhanced fetch with timeout and error handling
+/**
+ * Fetches a resource with a specified timeout.
+ *
+ * @param {string} url The URL to fetch.
+ * @param {object} [options={}] The options for the fetch request.
+ * @param {number} [timeout=ApiConfig.timeout] The timeout in milliseconds.
+ * @returns {Promise<Response>} A promise that resolves with the fetch response.
+ * @throws {object} An error object if the request fails or times out.
+ */
 export async function fetchWithTimeout(url, options = {}, timeout = ApiConfig.timeout) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -105,7 +132,14 @@ export async function fetchWithTimeout(url, options = {}, timeout = ApiConfig.ti
     }
 }
 
-// Enhanced API request with comprehensive retry logic and error handling
+/**
+ * Makes an API request with retry logic and error handling.
+ *
+ * @param {string} endpoint The API endpoint to request.
+ * @param {object} [options={}] The options for the request.
+ * @returns {Promise<any>} A promise that resolves with the API response data.
+ * @throws {object} An error object if the request fails after all retries.
+ */
 export async function apiRequest(endpoint, options = {}) {
     const url = `${ApiConfig.baseUrl}${endpoint}`;
     const config = {
@@ -155,7 +189,14 @@ export async function apiRequest(endpoint, options = {}) {
     }
 }
 
-// Enhanced contact form API with comprehensive error handling and retry logic
+/**
+ * Submits the contact form data with error handling and retry logic.
+ *
+ * @param {object} formData The form data to submit.
+ * @param {object} [options={}] Additional options for the submission.
+ * @returns {Promise<object>} A promise that resolves with the submission result.
+ * @throws {object} An error object if the submission fails.
+ */
 export async function submitContactForm(formData, options = {}) {
     if (!networkMonitor.isOnline()) {
         const offlineError = {
@@ -257,7 +298,13 @@ export async function submitContactForm(formData, options = {}) {
     }
 }
 
-// Sanitize form data for logging (remove sensitive information)
+/**
+ * Sanitizes form data for logging by removing sensitive information.
+ *
+ * @param {object} formData The form data to sanitize.
+ * @returns {object} The sanitized form data.
+ * @private
+ */
 function sanitizeFormData(formData) {
     const sanitized = { ...formData };
     // Remove token from logs
@@ -265,7 +312,11 @@ function sanitizeFormData(formData) {
     return sanitized;
 }
 
-// Health check for API availability
+/**
+ * Checks the health of the API.
+ *
+ * @returns {Promise<object>} A promise that resolves with an object containing the health status.
+ */
 export async function checkApiHealth() {
     try {
         const response = await apiRequest('/health', {
@@ -288,9 +339,16 @@ export async function checkApiHealth() {
     }
 }
 
-// Graceful degradation fallbacks
+/**
+ * Provides fallback strategies for graceful degradation of API-dependent features.
+ */
 export const FallbackStrategies = {
-    // Store failed submissions for later retry
+    /**
+     * Stores a failed form submission in local storage for later retry.
+     *
+     * @param {object} formData The form data to store.
+     * @returns {boolean} `true` if the submission was stored successfully, `false` otherwise.
+     */
     storeForRetry: (formData) => {
         try {
             const failedSubmissions = JSON.parse(
@@ -314,7 +372,11 @@ export const FallbackStrategies = {
         }
     },
 
-    // Retry failed submissions
+    /**
+     * Retries failed form submissions stored in local storage.
+     *
+     * @returns {Promise<object>} A promise that resolves with the result of the retry attempts.
+     */
     retryFailedSubmissions: async () => {
         try {
             const failedSubmissions = JSON.parse(
@@ -366,7 +428,11 @@ export const FallbackStrategies = {
         }
     },
 
-    // Provide alternative contact methods
+    /**
+     * Gets alternative contact methods.
+     *
+     * @returns {object} An object containing alternative contact information.
+     */
     getAlternativeContacts: () => {
         return {
             phone: '+55 33 99860-1427',
@@ -377,7 +443,11 @@ export const FallbackStrategies = {
     }
 };
 
-// Connection status utility
+/**
+ * A React hook that provides the current network connection status.
+ *
+ * @returns {{isOnline: boolean, lastChecked: string}} An object containing the connection status and the last check time.
+ */
 export function useConnectionStatus() {
     const [isOnline, setIsOnline] = React.useState(networkMonitor.isOnline());
 
@@ -392,13 +462,22 @@ export function useConnectionStatus() {
     };
 }
 
-// API response caching for offline scenarios
+/**
+ * A class for caching API responses in local storage.
+ */
 export class ApiCache {
+    /**
+     * Creates an instance of ApiCache.
+     */
     constructor() {
         this.cache = new Map();
         this.loadFromStorage();
     }
 
+    /**
+     * Loads the cache from local storage.
+     * @private
+     */
     loadFromStorage() {
         try {
             const cached = localStorage.getItem('apiCache');
@@ -411,6 +490,10 @@ export class ApiCache {
         }
     }
 
+    /**
+     * Saves the cache to local storage.
+     * @private
+     */
     saveToStorage() {
         try {
             const data = Object.fromEntries(this.cache);
@@ -420,12 +503,25 @@ export class ApiCache {
         }
     }
 
+    /**
+     * Sets a value in the cache.
+     *
+     * @param {string} key The key to set.
+     * @param {any} data The data to store.
+     * @param {number} [ttl=300000] The time-to-live in milliseconds.
+     */
     set(key, data, ttl = 5 * 60 * 1000) { // 5 minutes default TTL
         const expiry = Date.now() + ttl;
         this.cache.set(key, { data, expiry });
         this.saveToStorage();
     }
 
+    /**
+     * Gets a value from the cache.
+     *
+     * @param {string} key The key to get.
+     * @returns {any|null} The cached data, or `null` if the key is not found or has expired.
+     */
     get(key) {
         const item = this.cache.get(key);
         if (!item) return null;
@@ -439,6 +535,9 @@ export class ApiCache {
         return item.data;
     }
 
+    /**
+     * Clears the cache.
+     */
     clear() {
         this.cache.clear();
         this.saveToStorage();

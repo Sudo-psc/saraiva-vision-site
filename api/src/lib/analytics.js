@@ -80,7 +80,10 @@ export const disableAnalytics = () => {
 };
 
 /**
- * Track conversion funnel events
+ * Tracks a conversion funnel event.
+ *
+ * @param {string} eventName The name of the funnel event to track.
+ * @param {object} [properties={}] Additional properties to associate with the event.
  */
 export const trackFunnelEvent = (eventName, properties = {}) => {
     if (!analyticsInitialized || !posthog.has_opted_in_capturing()) {
@@ -115,7 +118,7 @@ export const trackFunnelEvent = (eventName, properties = {}) => {
 };
 
 /**
- * Extract and track UTM parameters
+ * Extracts and tracks UTM parameters from the current URL.
  */
 export const trackUTMParameters = () => {
     if (!analyticsInitialized || !posthog.has_opted_in_capturing()) {
@@ -155,7 +158,12 @@ export const trackUTMParameters = () => {
 };
 
 /**
- * Track Core Web Vitals
+ * Tracks a Core Web Vitals metric.
+ *
+ * @param {object} metric The metric object to track.
+ * @param {string} metric.name The name of the metric.
+ * @param {number} metric.value The value of the metric.
+ * @param {string} metric.rating The rating of the metric ('good', 'needs-improvement', or 'poor').
  */
 export const trackWebVitals = (metric) => {
     if (!analyticsInitialized || !posthog.has_opted_in_capturing()) {
@@ -175,7 +183,9 @@ export const trackWebVitals = (metric) => {
 };
 
 /**
- * Track page views manually
+ * Tracks a page view manually.
+ *
+ * @param {string} [path=null] The path of the page to track. If not provided, it defaults to the current path.
  */
 export const trackPageView = (path = null) => {
     if (!analyticsInitialized || !posthog.has_opted_in_capturing()) {
@@ -195,7 +205,11 @@ export const trackPageView = (path = null) => {
 };
 
 /**
- * Track user interactions
+ * Tracks a user interaction event.
+ *
+ * @param {string} action The action performed by the user (e.g., 'click', 'submit').
+ * @param {string} element The element that was interacted with (e.g., 'button', 'link').
+ * @param {object} [properties={}] Additional properties to associate with the event.
  */
 export const trackUserInteraction = (action, element, properties = {}) => {
     if (!analyticsInitialized || !posthog.has_opted_in_capturing()) {
@@ -215,7 +229,10 @@ export const trackUserInteraction = (action, element, properties = {}) => {
 };
 
 /**
- * Track appointment completion rates
+ * Tracks appointment-related metrics.
+ *
+ * @param {string} status The status of the appointment (e.g., 'started', 'completed').
+ * @param {object} [appointmentData={}] Additional data related to the appointment.
  */
 export const trackAppointmentMetrics = (status, appointmentData = {}) => {
     if (!analyticsInitialized || !posthog.has_opted_in_capturing()) {
@@ -247,14 +264,18 @@ export const trackAppointmentMetrics = (status, appointmentData = {}) => {
 };
 
 /**
- * Get analytics instance for advanced usage
+ * Gets the PostHog instance for advanced usage.
+ *
+ * @returns {object|null} The PostHog instance, or `null` if not initialized.
  */
 export const getAnalyticsInstance = () => {
     return analyticsInitialized ? posthog : null;
 };
 
 /**
- * Check if analytics is initialized and user has opted in
+ * Checks if analytics is initialized and the user has opted in to tracking.
+ *
+ * @returns {boolean} `true` if analytics is enabled, `false` otherwise.
  */
 export const isAnalyticsEnabled = () => {
     return analyticsInitialized && posthog.has_opted_in_capturing();

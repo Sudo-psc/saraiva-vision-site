@@ -4,8 +4,11 @@ let loaderInstance = null;
 let loadPromise = null;
 
 /**
- * Enhanced Google Maps loader using official @googlemaps/js-api-loader
- * with comprehensive error handling and fallback strategies
+ * Loads the Google Maps JavaScript API using the official `@googlemaps/js-api-loader`.
+ * This function handles singleton instantiation, error handling, and timeouts.
+ *
+ * @param {string} apiKey The Google Maps API key.
+ * @returns {Promise<object>} A promise that resolves with the `google.maps` object.
  */
 export function loadGoogleMaps(apiKey) {
   if (typeof window === 'undefined') {
@@ -77,14 +80,17 @@ export function loadGoogleMaps(apiKey) {
 }
 
 /**
- * Check if Google Maps is ready
+ * Checks if the Google Maps API is ready and available.
+ *
+ * @returns {boolean} `true` if the Google Maps API is ready, `false` otherwise.
  */
 export function isGoogleMapsReady() {
   return !!(window.google?.maps?.importLibrary);
 }
 
 /**
- * Reset loader for testing or retry scenarios
+ * Resets the Google Maps API loader, allowing it to be called again.
+ * This is useful for testing or retry scenarios.
  */
 export function resetGoogleMapsLoader() {
   console.log('🔄 [GoogleMaps] Resetting loader');
@@ -93,7 +99,9 @@ export function resetGoogleMapsLoader() {
 }
 
 /**
- * Get loader instance for advanced usage
+ * Gets the singleton instance of the Google Maps loader for advanced usage.
+ *
+ * @returns {object|null} The loader instance, or `null` if not initialized.
  */
 export function getLoaderInstance() {
   return loaderInstance;

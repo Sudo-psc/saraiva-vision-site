@@ -9,6 +9,11 @@ export const corsHeaders = {
     'Access-Control-Allow-Credentials': 'true'
 };
 
+/**
+ * Sets the CORS headers on an HTTP response object.
+ *
+ * @param {object} res The HTTP response object.
+ */
 export const setCorsHeaders = (res) => {
     Object.entries(corsHeaders).forEach(([key, value]) => {
         res.setHeader(key, value);

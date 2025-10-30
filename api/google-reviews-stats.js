@@ -11,9 +11,26 @@ const statsCache = new Map();
 const STATS_CACHE_DURATION = 60 * 60 * 1000; // 1 hour for stats (less frequent changes)
 const MAX_STATS_CACHE_SIZE = 50;
 
-// Cache management for stats
+/**
+ * Generates a cache key for statistics data.
+ *
+ * @param {string} placeId The Google Place ID.
+ * @param {string} period The time period for the statistics.
+ * @returns {string} The generated cache key.
+ */
 const getStatsCacheKey = (placeId, period) => `stats-${placeId}-${period}`;
+
+/**
+ * Checks if a statistics cache entry is still valid.
+ *
+ * @param {object} cacheEntry The cache entry to check.
+ * @returns {boolean} `true` if the cache entry is valid, `false` otherwise.
+ */
 const isStatsCacheValid = (cacheEntry) => cacheEntry && (Date.now() - cacheEntry.timestamp < STATS_CACHE_DURATION);
+
+/**
+ * Removes expired entries from the statistics cache.
+ */
 const cleanExpiredStatsCache = () => {
     const now = Date.now();
     for (const [key, entry] of statsCache.entries()) {
@@ -23,6 +40,12 @@ const cleanExpiredStatsCache = () => {
     }
 };
 
+/**
+ * Normalizes a Google Place ID by trimming whitespace and checking for placeholder values.
+ *
+ * @param {string} value The Place ID to normalize.
+ * @returns {string|null} The normalized Place ID, or `null` if the value is invalid.
+ */
 const normalizePlaceId = (value) => {
     if (!value) return null;
     const cleaned = String(value).trim();
@@ -31,6 +54,12 @@ const normalizePlaceId = (value) => {
     return cleaned;
 };
 
+/**
+ * Resolves the Google Place ID to use by checking explicit, environment, and fallback values.
+ *
+ * @param {string} explicitId An explicitly provided Place ID.
+ * @returns {string|null} The resolved Place ID, or `null` if none is available.
+ */
 const resolvePlaceId = (explicitId) => (
     normalizePlaceId(explicitId) ||
     normalizePlaceId(process.env.GOOGLE_PLACE_ID) ||
@@ -38,6 +67,13 @@ const resolvePlaceId = (explicitId) => (
     CLINIC_PLACE_ID
 );
 
+/**
+ * Handles the request for Google Reviews statistics.
+ *
+ * @param {object} req The HTTP request object.
+ * @param {object} res The HTTP response object.
+ * @returns {Promise<void>} A promise that resolves when the request is handled.
+ */
 export default async function handler(req, res) {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -150,7 +186,15 @@ export default async function handler(req, res) {
 }
 
 /**
- * Calculate comprehensive statistics from reviews
+ * Calculates comprehensive statistics from Google Reviews data.
+ *
+ * @param {Array<object>} reviews An array of review objects.
+ * @param {object} place A place object from the Google Places API.
+ * @param {object} options An object of options for calculating statistics.
+ * @param {number} options.periodDays The number of days to consider for recent reviews.
+ * @param {boolean} options.includeDistribution Whether to include the rating distribution.
+ * @param {boolean} options.includeTrends Whether to include trends (not currently supported).
+ * @returns {object} An object containing the calculated statistics.
  */
 function calculateComprehensiveStats(reviews, place, options = {}) {
     const {

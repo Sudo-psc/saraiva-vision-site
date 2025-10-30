@@ -11,17 +11,21 @@
 import crypto from 'crypto';
 
 /**
- * Generate cryptographically secure nonce
- * @returns {string} Base64-encoded random nonce
+ * Generates a cryptographically secure nonce.
+ *
+ * @returns {string} A Base64-encoded random nonce.
+ * @private
  */
 function generateNonce() {
   return crypto.randomBytes(16).toString('base64');
 }
 
 /**
- * CSP configuration with nonce support
- * @param {string} nonce - Request-specific nonce
- * @returns {string} Complete CSP header value
+ * Builds a Content Security Policy (CSP) string with nonce support.
+ *
+ * @param {string} nonce The request-specific nonce.
+ * @returns {string} The complete CSP header value.
+ * @private
  */
 function buildCSP(nonce) {
   // Pre-compute nonce token to ensure proper interpolation
@@ -132,12 +136,12 @@ function buildCSP(nonce) {
 }
 
 /**
- * Nonce-based CSP middleware
- * Generates nonce per request and injects into CSP header
+ * An Express middleware for generating a nonce-based Content Security Policy (CSP).
  *
- * @param {object} options - Configuration options
- * @param {boolean} options.reportOnly - Use CSP Report-Only mode
- * @param {string} options.reportUri - URI for CSP violation reports
+ * @param {object} [options={}] Configuration options for the middleware.
+ * @param {boolean} [options.reportOnly=false] If `true`, the `Content-Security-Policy-Report-Only` header will be used.
+ * @param {string} [options.reportUri='/api/csp-reports'] The URI to send CSP violation reports to.
+ * @returns {function(object, object, function(): void): void} The Express middleware function.
  */
 export function nonceCSP(options = {}) {
   const {
@@ -188,9 +192,9 @@ export function nonceCSP(options = {}) {
 }
 
 /**
- * Environment-aware CSP middleware
- * - Production: Enforcing CSP
- * - Development: Report-Only CSP
+ * An environment-aware CSP middleware that uses "report-only" mode in development and enforcing mode in production.
+ *
+ * @returns {function(object, object, function(): void): void} The Express middleware function.
  */
 export function adaptiveCSP() {
   const isProduction = process.env.NODE_ENV === 'production';
@@ -202,8 +206,9 @@ export function adaptiveCSP() {
 }
 
 /**
- * Strict CSP for admin/sensitive endpoints
- * More restrictive than public CSP
+ * An Express middleware that applies a stricter Content Security Policy (CSP) for admin or other sensitive endpoints.
+ *
+ * @returns {function(object, object, function(): void): void} The Express middleware function.
  */
 export function strictCSP() {
   return (req, res, next) => {
@@ -241,8 +246,10 @@ export function strictCSP() {
 }
 
 /**
- * CSP violation report handler
- * Logs CSP violations for security monitoring
+ * An Express route handler for receiving and logging Content Security Policy (CSP) violation reports.
+ *
+ * @param {object} logger A logger instance with a `warn` method.
+ * @returns {function(object, object): void} The Express route handler function.
  */
 export function cspReportHandler(logger) {
   return (req, res) => {
@@ -270,20 +277,22 @@ export function cspReportHandler(logger) {
 }
 
 /**
- * Helper: Create script tag with nonce
- * @param {string} nonce - CSP nonce
- * @param {string} content - Script content
- * @returns {string} Script tag with nonce
+ * A helper function to create a script tag with a nonce attribute.
+ *
+ * @param {string} nonce The CSP nonce.
+ * @param {string} content The content of the script tag.
+ * @returns {string} The HTML script tag with the nonce attribute.
  */
 export function scriptWithNonce(nonce, content) {
   return `<script nonce="${nonce}">${content}</script>`;
 }
 
 /**
- * Helper: Create inline style tag with nonce
- * @param {string} nonce - CSP nonce
- * @param {string} content - CSS content
- * @returns {string} Style tag with nonce
+ * A helper function to create a style tag with a nonce attribute.
+ *
+ * @param {string} nonce The CSP nonce.
+ * @param {string} content The content of the style tag.
+ * @returns {string} The HTML style tag with the nonce attribute.
  */
 export function styleWithNonce(nonce, content) {
   return `<style nonce="${nonce}">${content}</style>`;

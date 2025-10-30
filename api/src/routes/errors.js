@@ -58,7 +58,12 @@ const errorRateLimit = rateLimit({
 router.use(errorRateLimit);
 
 /**
- * Process a single error report
+ * Processes a single error report, filtering out irrelevant errors and logging valid ones.
+ *
+ * @param {object} error The error report object.
+ * @param {string} ip The IP address of the client.
+ * @returns {boolean} `true` if the error was processed, `false` if it was ignored.
+ * @private
  */
 function processError(error, ip) {
   // Filter out Chrome extension errors (not our code)
@@ -97,8 +102,27 @@ function processError(error, ip) {
 }
 
 /**
- * POST /api/errors
- * Receive error reports from frontend (single or batch)
+ * @swagger
+ * /api/errors:
+ *   post:
+ *     summary: Receives error reports from the frontend.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             oneOf:
+ *               - $ref: '#/components/schemas/errorReportSchema'
+ *               - $ref: '#/components/schemas/batchErrorSchema'
+ *     responses:
+ *       204:
+ *         description: The error report was received successfully.
+ *       400:
+ *         description: Bad request. Invalid report format.
+ *       429:
+ *         description: Too many requests.
+ *       500:
+ *         description: Internal server error.
  */
 router.post('/', (req, res) => {
   try {
@@ -146,8 +170,13 @@ router.post('/', (req, res) => {
 });
 
 /**
- * GET /api/errors
- * Not allowed - only POST accepted
+ * @swagger
+ * /api/errors:
+ *   get:
+ *     summary: Method not allowed.
+ *     responses:
+ *       405:
+ *         description: Method not allowed.
  */
 router.get('/', (req, res) => {
   res.status(405).json({ error: 'Method not allowed' });

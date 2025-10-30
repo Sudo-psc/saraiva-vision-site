@@ -3,6 +3,13 @@
 const FALLBACK_PLACE_ID = 'ChIJVUKww7WRugARF7u2lAe7BeE';
 const PLACEHOLDER_TOKENS = ['GOOGLE_PLACE_ID_PLACEHOLDER', 'your_google_place_id_here', 'PLACEHOLDER'];
 
+/**
+ * Normalizes a Google Place ID by trimming whitespace and checking for placeholder values.
+ *
+ * @param {string} value The Place ID to normalize.
+ * @returns {string|null} The normalized Place ID, or `null` if the value is invalid.
+ * @private
+ */
 const normalizePlaceId = (value) => {
   if (!value) return null;
   const cleanedValue = String(value).trim();
@@ -13,6 +20,12 @@ const normalizePlaceId = (value) => {
   return cleanedValue;
 };
 
+/**
+ * Resolves the Google Place ID to use by checking environment variables and falling back to a default value.
+ *
+ * @returns {string} The resolved Google Place ID.
+ * @private
+ */
 const resolvePlaceId = () => {
   const candidates = [];
 

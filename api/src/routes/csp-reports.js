@@ -26,7 +26,11 @@ if (!fs.existsSync(logsDir)) {
 const logFilePath = path.join(logsDir, 'csp-violations.log');
 
 /**
- * Parse CSP report from both old and new formats
+ * Parses a Content Security Policy (CSP) violation report from both legacy and modern formats.
+ *
+ * @param {object|Array<object>} body The request body containing the CSP report.
+ * @returns {Array<object>|null} An array of parsed report objects, or `null` if the format is invalid.
+ * @private
  */
 function parseCSPReport(body) {
   // New Reporting API format
@@ -73,7 +77,28 @@ function parseCSPReport(body) {
 }
 
 /**
- * CSP violation report endpoint
+ * @swagger
+ * /api/csp-reports:
+ *   post:
+ *     summary: Receives Content Security Policy (CSP) violation reports.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/csp-report:
+ *           schema:
+ *             type: object
+ *         application/reports+json:
+ *           schema:
+ *             type: array
+ *             items:
+ *               type: object
+ *     responses:
+ *       204:
+ *         description: The report was received successfully.
+ *       400:
+ *         description: Bad request. Invalid report format.
+ *       500:
+ *         description: Internal server error.
  */
 router.post('/', (req, res) => {
   try {
@@ -123,7 +148,15 @@ router.post('/', (req, res) => {
 });
 
 /**
- * Health check endpoint for CSP reporting
+ * @swagger
+ * /api/csp-reports/health:
+ *   get:
+ *     summary: Checks the health of the CSP reporting endpoint.
+ *     responses:
+ *       200:
+ *         description: The endpoint is healthy.
+ *       500:
+ *         description: Internal server error.
  */
 router.get('/health', (req, res) => {
   try {

@@ -6,6 +6,11 @@ const hypertuneSource = createSource({
   // Local fallback or Redis-based configuration can be added here if needed
 });
 
+/**
+ * Initializes and returns a Hypertune root object for feature flagging.
+ *
+ * @returns {Promise<object>} A promise that resolves with the Hypertune root object.
+ */
 export default async function getHypertune() {
   await hypertuneSource.initIfNeeded(); // Check for flag updates
 

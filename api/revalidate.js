@@ -10,6 +10,12 @@ const revalidationAttempts = new Map();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 const MAX_ATTEMPTS = 10; // Max 10 revalidation attempts per minute
 
+/**
+ * Checks if a given IP address is rate-limited.
+ *
+ * @param {string} ip The IP address to check.
+ * @returns {boolean} `true` if the IP is rate-limited, `false` otherwise.
+ */
 const isRateLimited = (ip) => {
     const now = Date.now();
     const attempts = revalidationAttempts.get(ip) || [];
@@ -21,6 +27,11 @@ const isRateLimited = (ip) => {
     return recentAttempts.length >= MAX_ATTEMPTS;
 };
 
+/**
+ * Records a revalidation attempt for a given IP address.
+ *
+ * @param {string} ip The IP address to record the attempt for.
+ */
 const recordAttempt = (ip) => {
     const now = Date.now();
     const attempts = revalidationAttempts.get(ip) || [];
@@ -28,6 +39,13 @@ const recordAttempt = (ip) => {
     revalidationAttempts.set(ip, attempts);
 };
 
+/**
+ * Handles the revalidation request from a WordPress webhook.
+ *
+ * @param {object} req The HTTP request object.
+ * @param {object} res The HTTP response object.
+ * @returns {Promise<void>} A promise that resolves when the request is handled.
+ */
 export default async function handler(req, res) {
     // Set CORS headers for WordPress webhook
     res.setHeader('Access-Control-Allow-Origin', process.env.WORDPRESS_DOMAIN || '*');

@@ -34,7 +34,9 @@ const POSTHOG_CONFIG = {
 };
 
 /**
- * Initialize PostHog
+ * Initializes the PostHog analytics and feature flagging library.
+ *
+ * @returns {object|null} The PostHog instance, or `null` if the key is not found.
  */
 export const initializePostHog = () => {
     const posthogKey = process.env.VITE_POSTHOG_KEY;
@@ -57,14 +59,15 @@ export const initializePostHog = () => {
 };
 
 /**
- * Feature flag utilities
+ * A utility class for working with PostHog feature flags.
  */
 export class FeatureFlags {
     /**
-     * Check if a feature flag is enabled
-     * @param {string} flagName - The name of the feature flag
-     * @param {boolean} defaultValue - Default value if flag is not available
-     * @returns {boolean}
+     * Checks if a feature flag is enabled.
+     *
+     * @param {string} flagName The name of the feature flag.
+     * @param {boolean} [defaultValue=false] The default value to return if the flag is not available.
+     * @returns {boolean} `true` if the feature flag is enabled, `false` otherwise.
      */
     static isEnabled(flagName, defaultValue = false) {
         try {
@@ -80,9 +83,10 @@ export class FeatureFlags {
     }
     
     /**
-     * Wait for feature flags to load, then execute callback
-     * @param {Function} callback - Function to execute after flags are loaded
-     * @param {number} timeout - Timeout in milliseconds (default: 3000)
+     * Executes a callback function after the feature flags have been loaded.
+     *
+     * @param {function(): void} callback The function to execute.
+     * @param {number} [timeout=3000] The timeout in milliseconds to wait for the flags to load.
      */
     static onFeatureFlags(callback, timeout = 3000) {
         if (typeof window === 'undefined') {
@@ -103,10 +107,11 @@ export class FeatureFlags {
     }
     
     /**
-     * Get the value of a feature flag
-     * @param {string} flagName - The name of the feature flag
-     * @param {any} defaultValue - Default value if flag is not available
-     * @returns {any}
+     * Gets the value of a feature flag.
+     *
+     * @param {string} flagName The name of the feature flag.
+     * @param {any} [defaultValue=null] The default value to return if the flag is not available.
+     * @returns {any} The value of the feature flag, or the default value.
      */
     static getFeatureFlag(flagName, defaultValue = null) {
         try {
@@ -123,32 +128,36 @@ export class FeatureFlags {
     }
     
     /**
-     * Instagram integration feature flag
-     * @returns {boolean}
+     * Checks if the Instagram integration feature flag is enabled.
+     *
+     * @returns {boolean} `true` if the Instagram integration is enabled, `false` otherwise.
      */
     static isInstagramIntegrationEnabled() {
         return this.isEnabled('instagram_integration', true); // Default to true for fallback
     }
     
     /**
-     * Instagram web crawler feature flag
-     * @returns {boolean}
+     * Checks if the Instagram web crawler feature flag is enabled.
+     *
+     * @returns {boolean} `true` if the Instagram web crawler is enabled, `false` otherwise.
      */
     static isInstagramWebCrawlerEnabled() {
         return this.isEnabled('instagram_web_crawler', true); // Default to true
     }
     
     /**
-     * Instagram real data feature flag
-     * @returns {boolean}
+     * Checks if the Instagram real data feature flag is enabled.
+     *
+     * @returns {boolean} `true` if the Instagram real data feature is enabled, `false` otherwise.
      */
     static isInstagramRealDataEnabled() {
         return this.isEnabled('instagram_real_data', true); // Default to true
     }
     
     /**
-     * Analytics features
-     * @returns {boolean}
+     * Checks if the analytics features are enabled.
+     *
+     * @returns {boolean} `true` if analytics are enabled, `false` otherwise.
      */
     static isAnalyticsEnabled() {
         return this.isEnabled('analytics_enabled', true);
@@ -156,13 +165,14 @@ export class FeatureFlags {
 }
 
 /**
- * Event tracking utilities
+ * A utility class for tracking analytics events with PostHog.
  */
 export class Analytics {
     /**
-     * Track an event
-     * @param {string} event - Event name
-     * @param {object} properties - Event properties
+     * Tracks a custom event.
+     *
+     * @param {string} event The name of the event to track.
+     * @param {object} [properties={}] Additional properties to associate with the event.
      */
     static track(event, properties = {}) {
         try {
@@ -181,7 +191,10 @@ export class Analytics {
     }
     
     /**
-     * Track Instagram integration events
+     * Tracks an event related to the Instagram integration.
+     *
+     * @param {string} action The specific action that occurred (e.g., 'view', 'click').
+     * @param {object} [properties={}] Additional properties to associate with the event.
      */
     static trackInstagramIntegration(action, properties = {}) {
         this.track('instagram_integration', {
@@ -191,7 +204,9 @@ export class Analytics {
     }
     
     /**
-     * Track page views
+     * Tracks a page view event.
+     *
+     * @param {string} pageName The name of the page being viewed.
      */
     static trackPageView(pageName) {
         this.track('page_view', {
@@ -201,9 +216,10 @@ export class Analytics {
     }
     
     /**
-     * Identify user
-     * @param {string} userId - User ID
-     * @param {object} properties - User properties
+     * Identifies a user and associates them with subsequent events.
+     *
+     * @param {string} userId A unique identifier for the user.
+     * @param {object} [properties={}] Additional properties to set on the user's profile.
      */
     static identify(userId, properties = {}) {
         try {

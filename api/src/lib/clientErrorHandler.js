@@ -28,9 +28,13 @@ export const ERROR_ACTIONS = {
 };
 
 /**
- * Client-side error handler class
+ * A class for handling client-side errors with user-friendly feedback and recovery mechanisms.
  */
 export class ClientErrorHandler {
+    /**
+     * Creates an instance of ClientErrorHandler.
+     * @param {object} [options={}] Configuration options for the error handler.
+     */
     constructor(options = {}) {
         this.options = {
             defaultDisplayType: ERROR_DISPLAY_TYPES.TOAST,
@@ -53,7 +57,8 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Initialize accessibility features
+     * Initializes accessibility features, such as ARIA live regions.
+     * @private
      */
     initializeAccessibility() {
         // Create ARIA live region for error announcements
@@ -96,10 +101,11 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Handle error with comprehensive user feedback
-     * @param {Error|Object} error - Error object or API error response
-     * @param {Object} options - Handling options
-     * @returns {Promise<Object>} Error handling result
+     * Handles an error with comprehensive user feedback, logging, and recovery options.
+     *
+     * @param {Error|object} error The error object or API error response.
+     * @param {object} [options={}] Options for handling the error.
+     * @returns {Promise<object>} A promise that resolves with the result of the error handling.
      */
     async handleError(error, options = {}) {
         const errorId = this.generateErrorId();
@@ -168,9 +174,11 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Parse error from various sources
-     * @param {Error|Object} error - Error to parse
-     * @returns {Object} Parsed error object
+     * Parses an error from various sources into a standardized format.
+     *
+     * @param {Error|object} error The error to parse.
+     * @returns {object} The parsed error object.
+     * @private
      */
     parseError(error) {
         // API error response
@@ -219,10 +227,12 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Create display configuration for error
-     * @param {Object} friendlyError - User-friendly error object
-     * @param {Object} options - Display options
-     * @returns {Object} Display configuration
+     * Creates a configuration object for displaying an error to the user.
+     *
+     * @param {object} friendlyError The user-friendly error object.
+     * @param {object} options Display options.
+     * @returns {object} The display configuration object.
+     * @private
      */
     createDisplayConfig(friendlyError, options) {
         const displayType = options.displayType || this.options.defaultDisplayType;
@@ -265,9 +275,11 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Get error title based on severity and type
-     * @param {Object} friendlyError - User-friendly error object
-     * @returns {string} Error title
+     * Gets the title for an error based on its severity and type.
+     *
+     * @param {object} friendlyError The user-friendly error object.
+     * @returns {string} The error title.
+     * @private
      */
     getErrorTitle(friendlyError) {
         switch (friendlyError.severity) {
@@ -285,10 +297,12 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Get available actions for error
-     * @param {Object} friendlyError - User-friendly error object
-     * @param {Object} options - Action options
-     * @returns {Array} Array of available actions
+     * Gets the available actions for an error.
+     *
+     * @param {object} friendlyError The user-friendly error object.
+     * @param {object} options Action options.
+     * @returns {Array<object>} An array of available action objects.
+     * @private
      */
     getErrorActions(friendlyError, options) {
         const actions = [];
@@ -334,9 +348,11 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Get error styling based on severity
-     * @param {string} severity - Error severity
-     * @returns {Object} Styling configuration
+     * Gets the styling for an error based on its severity.
+     *
+     * @param {string} severity The error severity.
+     * @returns {object} The styling configuration object.
+     * @private
      */
     getErrorStyling(severity) {
         const baseStyles = {
@@ -396,9 +412,11 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Display error to user
-     * @param {Object} displayConfig - Display configuration
-     * @returns {Promise<Object>} Display result
+     * Displays an error to the user.
+     *
+     * @param {object} displayConfig The display configuration object.
+     * @returns {Promise<object>} A promise that resolves with the display result.
+     * @private
      */
     async displayError(displayConfig) {
         try {
@@ -421,9 +439,11 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Display toast notification
-     * @param {Object} config - Display configuration
-     * @returns {Promise<Object>} Display result
+     * Displays a toast notification for an error.
+     *
+     * @param {object} config The display configuration object.
+     * @returns {Promise<object>} A promise that resolves with the display result.
+     * @private
      */
     async displayToast(config) {
         // Implementation would integrate with toast library or custom toast system
@@ -438,9 +458,11 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Display inline error message
-     * @param {Object} config - Display configuration
-     * @returns {Promise<Object>} Display result
+     * Displays an inline error message.
+     *
+     * @param {object} config The display configuration object.
+     * @returns {Promise<object>} A promise that resolves with the display result.
+     * @private
      */
     async displayInline(config) {
         // Implementation would update form field or component with error
@@ -450,9 +472,11 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Display modal error dialog
-     * @param {Object} config - Display configuration
-     * @returns {Promise<Object>} Display result
+     * Displays a modal error dialog.
+     *
+     * @param {object} config The display configuration object.
+     * @returns {Promise<object>} A promise that resolves with the display result.
+     * @private
      */
     async displayModal(config) {
         // Implementation would show modal dialog
@@ -462,9 +486,11 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Display banner error message
-     * @param {Object} config - Display configuration
-     * @returns {Promise<Object>} Display result
+     * Displays a banner error message.
+     *
+     * @param {object} config The display configuration object.
+     * @returns {Promise<object>} A promise that resolves with the display result.
+     * @private
      */
     async displayBanner(config) {
         // Implementation would show banner at top of page
@@ -474,9 +500,11 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Announce error to screen readers
-     * @param {Object} friendlyError - User-friendly error object
-     * @param {Object} context - Error context
+     * Announces an error to screen readers.
+     *
+     * @param {object} friendlyError The user-friendly error object.
+     * @param {object} context The error context.
+     * @private
      */
     announceError(friendlyError, context) {
         const message = friendlyError.ariaLabel ||
@@ -488,10 +516,12 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Check if error should auto-retry
-     * @param {Object} friendlyError - User-friendly error object
-     * @param {Object} context - Error context
-     * @returns {boolean} Whether to auto-retry
+     * Checks if an error should be automatically retried.
+     *
+     * @param {object} friendlyError The user-friendly error object.
+     * @param {object} context The error context.
+     * @returns {boolean} `true` if the error should be retried, `false` otherwise.
+     * @private
      */
     shouldAutoRetry(friendlyError, context) {
         if (!this.options.autoRetry || !friendlyError.retryable) {
@@ -503,11 +533,13 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Handle automatic retry
-     * @param {Function} retryFunction - Function to retry
-     * @param {Object} friendlyError - User-friendly error object
-     * @param {Object} context - Error context
-     * @returns {Promise<Object>} Retry result
+     * Handles the automatic retry of a failed operation.
+     *
+     * @param {function(): Promise<any>} retryFunction The function to retry.
+     * @param {object} friendlyError The user-friendly error object.
+     * @param {object} context The error context.
+     * @returns {Promise<object>} A promise that resolves with the retry result.
+     * @private
      */
     async handleAutoRetry(retryFunction, friendlyError, context) {
         if (!retryFunction) {
@@ -566,9 +598,11 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Calculate retry delay with exponential backoff
-     * @param {number} attempt - Attempt number
-     * @returns {number} Delay in milliseconds
+     * Calculates the retry delay with exponential backoff and jitter.
+     *
+     * @param {number} attempt The current attempt number.
+     * @returns {number} The calculated delay in milliseconds.
+     * @private
      */
     calculateRetryDelay(attempt) {
         const baseDelay = this.options.retryDelay;
@@ -579,10 +613,12 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Handle manual retry
-     * @param {Function} retryFunction - Function to retry
-     * @param {Object} friendlyError - User-friendly error object
-     * @returns {Promise<Object>} Retry result
+     * Handles the manual retry of a failed operation.
+     *
+     * @param {function(): Promise<any>} retryFunction The function to retry.
+     * @param {object} friendlyError The user-friendly error object.
+     * @returns {Promise<object>} A promise that resolves with the retry result.
+     * @private
      */
     async handleRetry(retryFunction, friendlyError) {
         try {
@@ -604,7 +640,8 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Handle contact action
+     * Handles the "contact" action for an error.
+     * @private
      */
     handleContact() {
         const contactInfo = {
@@ -625,8 +662,10 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Dismiss error
-     * @param {string} errorId - Error ID to dismiss
+     * Dismisses an error.
+     *
+     * @param {string} errorId The ID of the error to dismiss.
+     * @private
      */
     dismissError(errorId) {
         // Implementation would remove error from UI
@@ -636,18 +675,22 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Check if error should auto-close
-     * @param {Object} friendlyError - User-friendly error object
-     * @returns {boolean} Whether error should auto-close
+     * Checks if an error should be automatically closed.
+     *
+     * @param {object} friendlyError The user-friendly error object.
+     * @returns {boolean} `true` if the error should auto-close, `false` otherwise.
+     * @private
      */
     shouldAutoClose(friendlyError) {
         return friendlyError.severity === 'low' || friendlyError.severity === 'medium';
     }
 
     /**
-     * Get field label for validation errors
-     * @param {string} field - Field name
-     * @returns {string} Human-readable field label
+     * Gets a human-readable label for a form field.
+     *
+     * @param {string} field The name of the form field.
+     * @returns {string} The human-readable label for the field.
+     * @private
      */
     getFieldLabel(field) {
         const labels = {
@@ -664,10 +707,12 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Handle fallback error when error handler fails
-     * @param {Error} originalError - Original error
-     * @param {Object} context - Error context
-     * @returns {Object} Fallback error result
+     * Handles a fallback error that occurs within the error handler itself.
+     *
+     * @param {Error} originalError The original error.
+     * @param {object} context The error context.
+     * @returns {object} The fallback error result.
+     * @private
      */
     handleFallbackError(originalError, context) {
         const fallbackMessage = 'Ocorreu um erro inesperado. Tente novamente ou entre em contato conosco.';
@@ -691,9 +736,11 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Log error for monitoring
-     * @param {Object} error - Error object
-     * @param {Object} context - Error context
+     * Logs an error for monitoring purposes.
+     *
+     * @param {object} error The error object.
+     * @param {object} context The error context.
+     * @private
      */
     logError(error, context) {
         const logEntry = {
@@ -722,8 +769,10 @@ export class ClientErrorHandler {
     }
 
     /**
-     * Generate unique error ID
-     * @returns {string} Unique error ID
+     * Generates a unique ID for an error.
+     *
+     * @returns {string} A unique error ID.
+     * @private
      */
     generateErrorId() {
         const timestamp = Date.now().toString(36);
@@ -743,20 +792,22 @@ export const globalErrorHandler = new ClientErrorHandler({
 });
 
 /**
- * Convenience function for handling errors
- * @param {Error|Object} error - Error to handle
- * @param {Object} options - Handling options
- * @returns {Promise<Object>} Error handling result
+ * A convenience function for handling client-side errors using the global error handler.
+ *
+ * @param {Error|object} error The error to handle.
+ * @param {object} [options={}] Options for handling the error.
+ * @returns {Promise<object>} A promise that resolves with the result of the error handling.
  */
 export async function handleClientError(error, options = {}) {
     return await globalErrorHandler.handleError(error, options);
 }
 
 /**
- * Convenience function for handling API errors
- * @param {Object} apiResponse - API error response
- * @param {Object} options - Handling options
- * @returns {Promise<Object>} Error handling result
+ * A convenience function for handling API errors using the global error handler.
+ *
+ * @param {object} apiResponse The API error response.
+ * @param {object} [options={}] Options for handling the error.
+ * @returns {Promise<object>} A promise that resolves with the result of the error handling.
  */
 export async function handleApiError(apiResponse, options = {}) {
     return await globalErrorHandler.handleError(apiResponse, {
@@ -766,10 +817,11 @@ export async function handleApiError(apiResponse, options = {}) {
 }
 
 /**
- * Convenience function for handling form errors
- * @param {Object} formError - Form validation error
- * @param {Object} options - Handling options
- * @returns {Promise<Object>} Error handling result
+ * A convenience function for handling form errors using the global error handler.
+ *
+ * @param {object} formError The form validation error.
+ * @param {object} [options={}] Options for handling the error.
+ * @returns {Promise<object>} A promise that resolves with the result of the error handling.
  */
 export async function handleFormError(formError, options = {}) {
     return await globalErrorHandler.handleError(formError, {

@@ -11,9 +11,10 @@
 import crypto from 'crypto';
 
 /**
- * CSP Middleware
- * @param {string} mode - 'report-only' or 'production'
- * @returns {Function} Express middleware
+ * An Express middleware for setting the Content Security Policy (CSP) headers.
+ *
+ * @param {string} [mode='report-only'] The mode to run the middleware in. Can be 'report-only' or 'production'.
+ * @returns {function(object, object, function(): void): void} The Express middleware function.
  */
 function cspMiddleware(mode = 'report-only') {
   return (req, res, next) => {

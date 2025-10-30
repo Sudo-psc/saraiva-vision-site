@@ -13,7 +13,41 @@ const trackingLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// POST /api/track-404
+/**
+ * @swagger
+ * /api/track-404:
+ *   post:
+ *     summary: Tracks a 404 error.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               timestamp:
+ *                 type: string
+ *                 format: date-time
+ *               attemptedUrl:
+ *                 type: string
+ *               referrer:
+ *                 type: string
+ *               userAgent:
+ *                 type: string
+ *               sessionId:
+ *                 type: string
+ *               id:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: The 404 error was tracked successfully.
+ *       400:
+ *         description: Bad request. Missing required fields.
+ *       429:
+ *         description: Too many requests.
+ *       500:
+ *         description: Internal server error.
+ */
 router.post('/', trackingLimiter, async (req, res) => {
   try {
     const {
@@ -98,7 +132,17 @@ router.post('/', trackingLimiter, async (req, res) => {
   }
 });
 
-// GET /api/404-analytics (admin only)
+/**
+ * @swagger
+ * /api/404-analytics:
+ *   get:
+ *     summary: Retrieves analytics for 404 errors. This is an admin-only endpoint.
+ *     responses:
+ *       200:
+ *         description: The analytics were retrieved successfully.
+ *       500:
+ *         description: Internal server error.
+ */
 router.get('/analytics', async (req, res) => {
   try {
     // In production, add authentication check here
@@ -137,7 +181,11 @@ router.get('/analytics', async (req, res) => {
   }
 });
 
-// Helper functions
+/**
+ * Gets the top 10 most frequent 404 URLs.
+ * @returns {Array<object>} An array of objects, each with a `url` and `count` property.
+ * @private
+ */
 function getTopUrls() {
   if (!global.error404Data) return [];
 
@@ -153,6 +201,11 @@ function getTopUrls() {
     .map(([url, count]) => ({ url, count }));
 }
 
+/**
+ * Gets the top 10 most frequent referrers for 404 errors.
+ * @returns {Array<object>} An array of objects, each with a `referrer` and `count` property.
+ * @private
+ */
 function getTopReferrers() {
   if (!global.error404Data) return [];
 

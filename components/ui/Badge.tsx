@@ -6,6 +6,15 @@ interface BadgeProps {
   className?: string;
 }
 
+/**
+ * A React component that displays a badge.
+ *
+ * @param {object} props The component's props.
+ * @param {React.ReactNode} props.children The content to display inside the badge.
+ * @param {'default' | 'secondary' | 'destructive' | 'outline'} [props.variant='default'] The visual style of the badge.
+ * @param {string} [props.className=''] Additional CSS classes to apply to the badge.
+ * @returns {React.ReactElement} The rendered badge component.
+ */
 const Badge = ({
   children,
   variant = 'default',

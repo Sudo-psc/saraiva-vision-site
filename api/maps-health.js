@@ -2,9 +2,11 @@
 // Health check endpoint para Google Maps API
 
 /**
- * Health check endpoint para verificar se o Google Maps API está funcionando
- * @param {*} req - Request object
- * @param {*} res - Response object
+ * Handles the health check request for the Google Maps API.
+ *
+ * @param {object} req The HTTP request object.
+ * @param {object} res The HTTP response object.
+ * @returns {Promise<void>} A promise that resolves when the request is handled.
  */
 export default async function handler(req, res) {
   // Definir headers CORS
@@ -75,7 +77,12 @@ export default async function handler(req, res) {
   }
 }
 
-// Para uso standalone (não Next.js/Vercel)
+/**
+ * Performs a health check on the Google Maps API.
+ * This function is intended for standalone use (e.g., in a script) and not as a request handler.
+ *
+ * @returns {Promise<object>} An object containing the health check result.
+ */
 export const mapHealthCheck = async () => {
   try {
     const googleMapsApiKey = process.env.VITE_GOOGLE_MAPS_API_KEY || process.env.GOOGLE_MAPS_API_KEY;

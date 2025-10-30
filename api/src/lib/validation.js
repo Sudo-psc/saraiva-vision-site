@@ -1,13 +1,14 @@
 import { z } from 'zod';
 
 /**
- * Input sanitization functions for XSS prevention and security
+ * A collection of input sanitization functions for XSS prevention and security.
  */
 export const sanitize = {
     /**
-     * Sanitize HTML content to prevent XSS attacks
-     * @param {string} input - Raw HTML input
-     * @returns {string} Sanitized HTML
+     * Sanitizes HTML content to prevent XSS attacks by removing scripts, styles, and all other HTML tags.
+     *
+     * @param {string} input The raw HTML input.
+     * @returns {string} The sanitized HTML.
      */
     html: (input) => {
         if (typeof input !== 'string') return '';
@@ -28,9 +29,10 @@ export const sanitize = {
     },
 
     /**
-     * Sanitize text input by removing potentially dangerous characters
-     * @param {string} input - Raw text input
-     * @returns {string} Sanitized text
+     * Sanitizes text input by removing HTML tags, control characters, and normalizing whitespace.
+     *
+     * @param {string} input The raw text input.
+     * @returns {string} The sanitized text.
      */
     text: (input) => {
         if (typeof input !== 'string') return '';
@@ -43,9 +45,10 @@ export const sanitize = {
     },
 
     /**
-     * Sanitize email input
-     * @param {string} input - Raw email input
-     * @returns {string} Sanitized email
+     * Sanitizes an email input by trimming whitespace and converting it to lowercase.
+     *
+     * @param {string} input The raw email input.
+     * @returns {string} The sanitized email.
      */
     email: (input) => {
         if (typeof input !== 'string') return '';
@@ -54,9 +57,10 @@ export const sanitize = {
     },
 
     /**
-     * Sanitize phone number input
-     * @param {string} input - Raw phone input
-     * @returns {string} Sanitized phone
+     * Sanitizes a phone number input by removing all characters except digits, spaces, parentheses, hyphens, and the plus sign.
+     *
+     * @param {string} input The raw phone number input.
+     * @returns {string} The sanitized phone number.
      */
     phone: (input) => {
         if (typeof input !== 'string') return '';
@@ -66,9 +70,11 @@ export const sanitize = {
 };
 
 /**
- * Helper function to validate Brazilian phone numbers
- * @param {string} digits - Phone number digits without country code
- * @returns {boolean} Whether the number is valid
+ * A helper function to validate Brazilian phone numbers.
+ *
+ * @param {string} digits The phone number digits without the country code.
+ * @returns {boolean} `true` if the number is a valid Brazilian phone number, `false` otherwise.
+ * @private
  */
 function validateBrazilianNumber(digits) {
     // Should be 10 or 11 digits (area code + number)
@@ -217,9 +223,10 @@ export const validationErrorMap = {
 };
 
 /**
- * Maps Zod validation errors to user-friendly messages
- * @param {z.ZodError} zodError - Zod validation error
- * @returns {Object} Mapped error object with field-specific messages
+ * Maps a Zod validation error to a more user-friendly error object with field-specific messages.
+ *
+ * @param {z.ZodError} zodError The Zod validation error.
+ * @returns {object} An object where keys are field names and values are error messages.
  */
 export const mapValidationErrors = (zodError) => {
     const errors = {};
@@ -292,9 +299,10 @@ export const mapValidationErrors = (zodError) => {
 };
 
 /**
- * Validates contact form submission data
- * @param {Object} data - Form data to validate
- * @returns {Object} Validation result with success flag and data/errors
+ * Validates the contact form submission data against the `contactSubmissionSchema`.
+ *
+ * @param {object} data The form data to validate.
+ * @returns {{success: boolean, data: object|null, errors: object|null}} An object containing the validation result.
  */
 export const validateContactSubmission = (data) => {
     try {
@@ -323,11 +331,12 @@ export const validateContactSubmission = (data) => {
 };
 
 /**
- * Validates individual form fields for real-time feedback
- * @param {string} field - Field name to validate
- * @param {any} value - Field value
- * @param {Object} allData - All form data for context
- * @returns {Object} Field validation result
+ * Validates an individual form field for real-time feedback.
+ *
+ * @param {string} field The name of the field to validate.
+ * @param {any} value The value of the field.
+ * @param {object} [allData={}] All form data for context, though not used in this implementation.
+ * @returns {{success: boolean, value: any|null, error: string|null}} An object containing the validation result for the field.
  */
 export const validateField = (field, value, allData = {}) => {
     try {
@@ -362,7 +371,7 @@ export const validateField = (field, value, allData = {}) => {
 };
 
 /**
- * Message Outbox validation schema for reliable email delivery
+ * Zod schema for validating message outbox data for reliable email delivery.
  */
 export const messageOutboxSchema = z.object({
     message_type: z.enum(['email', 'sms'], {
@@ -404,9 +413,10 @@ export const messageOutboxSchema = z.object({
 });
 
 /**
- * Validates message outbox data for reliable delivery
- * @param {Object} data - Outbox message data
- * @returns {Object} Validation result
+ * Validates message outbox data against the `messageOutboxSchema`.
+ *
+ * @param {object} data The outbox message data to validate.
+ * @returns {{success: boolean, data: object|null, errors: object|null}} An object containing the validation result.
  */
 export const validateMessageOutbox = (data) => {
     try {

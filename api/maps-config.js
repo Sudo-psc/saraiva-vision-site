@@ -5,6 +5,12 @@ const ALLOWED_ORIGINS = new Set([
   'http://localhost:3002'
 ]);
 
+/**
+ * Applies CORS headers to the response based on the request's origin.
+ *
+ * @param {object} req The HTTP request object.
+ * @param {object} res The HTTP response object.
+ */
 function applyCors(req, res) {
   const origin = req.headers.origin;
   if (origin && ALLOWED_ORIGINS.has(origin)) {
@@ -16,6 +22,11 @@ function applyCors(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
 }
 
+/**
+ * Resolves the Google Maps API key from environment variables.
+ *
+ * @returns {string} The Google Maps API key, or an empty string if not found.
+ */
 function resolveApiKey() {
   return (
     process.env.VITE_GOOGLE_MAPS_API_KEY ||
@@ -24,6 +35,13 @@ function resolveApiKey() {
   );
 }
 
+/**
+ * Handles the request for the Google Maps API key.
+ *
+ * @param {object} req The HTTP request object.
+ * @param {object} res The HTTP response object.
+ * @returns {Promise<void>} A promise that resolves when the request is handled.
+ */
 export default async function handler(req, res) {
   applyCors(req, res);
 

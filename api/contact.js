@@ -8,27 +8,57 @@ const rateLimitStore = new Map();
 const RATE_LIMIT_WINDOW = 15 * 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 5;
 
+/**
+ * Sanitizes a string input by trimming whitespace and limiting its length.
+ *
+ * @param {string} input The string to sanitize.
+ * @returns {string} The sanitized string, or an empty string if the input is not a string.
+ */
 function sanitizeInput(input) {
   if (typeof input !== 'string') return '';
   return input.trim().slice(0, 1000);
 }
 
+/**
+ * Validates an email address using a regular expression.
+ *
+ * @param {string} email The email address to validate.
+ * @returns {boolean} `true` if the email is valid, `false` otherwise.
+ */
 function validateEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
 
+/**
+ * Validates a phone number using a regular expression.
+ *
+ * @param {string} phone The phone number to validate.
+ * @returns {boolean} `true` if the phone number is valid, `false` otherwise.
+ */
 function validatePhone(phone) {
   const phoneRegex = /^[\d\s\(\)\-\+]{10,20}$/;
   return phoneRegex.test(phone);
 }
 
+/**
+ * Gets the client's IP address from the request headers.
+ *
+ * @param {object} req The HTTP request object.
+ * @returns {string} The client's IP address, or 'unknown' if not found.
+ */
 function getClientIP(req) {
   return req.headers['x-forwarded-for']?.split(',')[0].trim() ||
          req.headers['x-real-ip'] ||
          'unknown';
 }
 
+/**
+ * Checks if a request from a given IP address is rate-limited.
+ *
+ * @param {string} ip The IP address to check.
+ * @returns {{allowed: boolean, retryAfter?: number}} An object indicating if the request is allowed and, if not, the retry-after time in seconds.
+ */
 function checkRateLimit(ip) {
   const now = Date.now();
   const userRequests = rateLimitStore.get(ip) || [];
@@ -48,6 +78,13 @@ function checkRateLimit(ip) {
   return { allowed: true };
 }
 
+/**
+ * Verifies a reCAPTCHA token with Google's siteverify API.
+ *
+ * @param {string} token The reCAPTCHA token to verify.
+ * @param {string} ip The client's IP address.
+ * @returns {Promise<{success: boolean, score?: number, action?: string, error?: string, details?: any}>} An object indicating the verification result.
+ */
 async function verifyRecaptcha(token, ip) {
   if (!RECAPTCHA_SECRET) {
     console.warn('RECAPTCHA_SECRET_KEY not configured, skipping verification');
@@ -100,6 +137,19 @@ async function verifyRecaptcha(token, ip) {
   }
 }
 
+/**
+ * Validates the contact form data.
+ *
+ * @param {object} data The contact form data.
+ * @param {string} data.name The sender's name.
+ * @param {string} data.email The sender's email.
+ * @param {string} data.phone The sender's phone number.
+ * @param {string} data.message The message content.
+ * @param {boolean} data.consent The LGPD consent.
+ * @param {string} data.token The reCAPTCHA token.
+ * @param {string} data.honeypot The honeypot field.
+ * @returns {{isValid: boolean, errors: Array<{field: string, message: string}>}} An object indicating if the data is valid and a list of errors.
+ */
 function validateContactData(data) {
   const errors = [];
 
@@ -137,6 +187,13 @@ function validateContactData(data) {
   };
 }
 
+/**
+ * Handles the contact form submission.
+ *
+ * @param {object} req The HTTP request object.
+ * @param {object} res The HTTP response object.
+ * @returns {Promise<void>} A promise that resolves when the request is handled.
+ */
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({

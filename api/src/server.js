@@ -137,7 +137,14 @@ app.listen(PORT, () => {
 export default app;
 
 /**
- * Adapter to convert Vercel serverless functions to Express middleware
+ * Creates an Express middleware adapter for a Vercel serverless function.
+ *
+ * This allows Vercel-style handlers to be used in an Express application
+ * by converting the Express request and response objects to a format
+ * compatible with the Vercel handler.
+ *
+ * @param {function(object, object): void} vercelHandler The Vercel serverless function to adapt.
+ * @returns {function(object, object): void} An Express middleware function.
  */
 function createExpressAdapter(vercelHandler) {
   return (req, res) => {

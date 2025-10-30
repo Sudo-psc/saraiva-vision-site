@@ -56,7 +56,27 @@ const analyticsRateLimit = rateLimit({
 // Apply rate limiting to all analytics routes
 router.use(analyticsRateLimit);
 
-// Google Analytics endpoint with validation
+/**
+ * @swagger
+ * /api/analytics/ga:
+ *   post:
+ *     summary: Receives a Google Analytics event.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/gaEventSchema'
+ *     responses:
+ *       204:
+ *         description: The event was received successfully.
+ *       400:
+ *         description: Bad request. Invalid request body.
+ *       429:
+ *         description: Too many requests.
+ *       500:
+ *         description: Internal server error.
+ */
 router.post('/ga', (req, res) => {
   try {
     // Validate request body
@@ -88,7 +108,27 @@ router.get('/ga', (req, res) => {
   res.status(405).json({ error: 'Method not allowed' });
 });
 
-// Google Tag Manager endpoint with validation
+/**
+ * @swagger
+ * /api/analytics/gtm:
+ *   post:
+ *     summary: Receives a Google Tag Manager event.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/gtmEventSchema'
+ *     responses:
+ *       204:
+ *         description: The event was received successfully.
+ *       400:
+ *         description: Bad request. Invalid request body.
+ *       429:
+ *         description: Too many requests.
+ *       500:
+ *         description: Internal server error.
+ */
 router.post('/gtm', (req, res) => {
   try {
     // Validate request body

@@ -9,7 +9,8 @@ import path from 'path';
 const LOG_DIR = path.join(process.cwd(), 'api', 'logs', 'webhooks');
 
 /**
- * Garante que o diretório de logs existe
+ * Ensures that the log directory exists.
+ * @private
  */
 async function ensureLogDirectory() {
   try {
@@ -20,8 +21,9 @@ async function ensureLogDirectory() {
 }
 
 /**
- * Gera nome de arquivo de log baseado na data
- * @returns {string}
+ * Generates a log file name based on the current date.
+ * @returns {string} The log file name.
+ * @private
  */
 function getLogFileName() {
   const now = new Date();
@@ -32,9 +34,10 @@ function getLogFileName() {
 }
 
 /**
- * Formata entrada de log
- * @param {Object} data
- * @returns {string}
+ * Formats a log entry as a JSON string.
+ * @param {object} data The data to log.
+ * @returns {string} The formatted log entry.
+ * @private
  */
 function formatLogEntry(data) {
   const timestamp = new Date().toISOString();
@@ -45,8 +48,9 @@ function formatLogEntry(data) {
 }
 
 /**
- * Registra evento de webhook (fire-and-forget, não bloqueia)
- * @param {Object} event
+ * Logs a webhook event asynchronously. This is a "fire-and-forget" function that does not block the request-response cycle.
+ *
+ * @param {object} event The webhook event object to log.
  */
 export function logWebhookEvent(event) {
   // Fire-and-forget: não bloqueia o webhook response
@@ -63,9 +67,10 @@ export function logWebhookEvent(event) {
 }
 
 /**
- * Middleware para logging automático de requisições
- * @param {string} webhookName - Nome do webhook
- * @returns {Function}
+ * Creates a middleware function for logging webhook requests.
+ *
+ * @param {string} webhookName The name of the webhook.
+ * @returns {function(object, object, object): void} The middleware function.
  */
 export function createWebhookLogger(webhookName) {
   return (req, payload, result) => {
@@ -99,9 +104,10 @@ export function createWebhookLogger(webhookName) {
 }
 
 /**
- * Lê logs de webhook
- * @param {string} date - Data no formato YYYY-MM-DD
- * @returns {Promise<Array>}
+ * Reads and parses webhook logs for a given date.
+ *
+ * @param {string} date The date of the logs to read, in YYYY-MM-DD format.
+ * @returns {Promise<Array<object>>} A promise that resolves with an array of log entry objects.
  */
 export async function readWebhookLogs(date) {
   try {

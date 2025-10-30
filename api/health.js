@@ -1,3 +1,10 @@
+/**
+ * Handles the health check request for the API.
+ *
+ * @param {object} req The HTTP request object.
+ * @param {object} res The HTTP response object.
+ * @returns {void}
+ */
 export default function handler(req, res) {
   // Log request for monitoring
   console.log(`Health check from ${req.headers['x-forwarded-for'] || 'unknown'}`);
@@ -45,8 +52,12 @@ export default function handler(req, res) {
 }
 
 /**
- * Safe validation of email service configuration without importing emailService
- * to avoid Resend initialization when API key is missing
+ * Safely validates the email service configuration without initializing the service.
+ *
+ * This function checks for the presence and validity of required environment variables
+ * for the email service to avoid runtime errors when the service is not configured.
+ *
+ * @returns {{isValid: boolean, errors: string[]}} An object indicating if the configuration is valid and a list of errors.
  */
 function validateEmailServiceConfigSafe() {
   const errors = [];

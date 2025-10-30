@@ -3,7 +3,12 @@ let loadAttempts = 0;
 const MAX_ATTEMPTS = 3;
 const TIMEOUT_MS = 15000; // 15 segundos timeout
 
-// Advanced Google Maps API loader with debugging and fallback strategies
+/**
+ * Loads the Google Maps JavaScript API with advanced error handling and fallback strategies.
+ *
+ * @param {string} apiKey The Google Maps API key.
+ * @returns {Promise<object>} A promise that resolves with the `google.maps` object.
+ */
 export function loadGoogleMaps(apiKey) {
   console.log('🔍 [DEBUG] loadGoogleMaps chamado com:', {
     apiKey: apiKey ? `${apiKey.substring(0, 10)}...` : 'null',
@@ -149,7 +154,13 @@ export function loadGoogleMaps(apiKey) {
   return mapsPromise;
 }
 
-// Alternative loading strategy without callback
+/**
+ * An alternative strategy for loading the Google Maps API without a callback.
+ *
+ * @param {string} apiKey The Google Maps API key.
+ * @returns {Promise<object>} A promise that resolves with the `google.maps` object.
+ * @private
+ */
 function loadGoogleMapsAlternative(apiKey) {
   console.log('🔧 [DEBUG] Usando estratégia alternativa de carregamento');
 
@@ -189,14 +200,21 @@ function loadGoogleMapsAlternative(apiKey) {
   });
 }
 
-// Utility function to check if Google Maps is ready
+/**
+ * Checks if the Google Maps API is ready and available.
+ *
+ * @returns {boolean} `true` if the Google Maps API is ready, `false` otherwise.
+ */
 export function isGoogleMapsReady() {
   const ready = !!(window.google && window.google.maps);
   console.log('🔍 [DEBUG] Google Maps ready check:', ready);
   return ready;
 }
 
-// Function to reset the loader (useful for testing)
+/**
+ * Resets the Google Maps API loader, allowing it to be called again.
+ * This is useful for testing purposes.
+ */
 export function resetGoogleMapsLoader() {
   console.log('🔄 [DEBUG] Resetando loader do Google Maps');
   mapsPromise = null;

@@ -1,6 +1,14 @@
 // FAQ Schema markup for services - SEO structured data
 import { clinicInfo } from './clinicInfo';
 
+/**
+ * Generates the JSON-LD schema markup for a service's FAQ page.
+ *
+ * @param {string} serviceId The ID of the service.
+ * @param {Array<object>} faqs An array of FAQ items, each with a `question` and `answer` property.
+ * @param {string} serviceTitle The title of the service.
+ * @returns {object|null} The FAQPage schema object, or `null` if no FAQs are provided.
+ */
 export const generateServiceFAQSchema = (serviceId, faqs, serviceTitle) => {
   if (!faqs || faqs.length === 0) {
     return null;

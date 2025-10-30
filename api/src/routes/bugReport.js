@@ -16,7 +16,13 @@ const bugReportLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// Validate bug report data
+/**
+ * Validates the bug report data.
+ *
+ * @param {object} data The bug report data to validate.
+ * @returns {{isValid: boolean, errors: string[], sanitized: object}} An object containing the validation result.
+ * @private
+ */
 const validateBugReport = (data) => {
   const errors = [];
 
@@ -56,7 +62,46 @@ const validateBugReport = (data) => {
   };
 };
 
-// POST /api/bug-report
+/**
+ * @swagger
+ * /api/bug-report:
+ *   post:
+ *     summary: Submits a bug report.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               problemType:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               attemptedUrl:
+ *                 type: string
+ *               timestamp:
+ *                 type: string
+ *                 format: date-time
+ *               userAgent:
+ *                 type: string
+ *               screenshot:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: The bug report was submitted successfully.
+ *       400:
+ *         description: Bad request. Invalid data.
+ *       413:
+ *         description: Payload too large.
+ *       429:
+ *         description: Too many requests.
+ *       500:
+ *         description: Internal server error.
+ */
 router.post('/', bugReportLimiter, async (req, res) => {
   try {
     // Check payload size limit (prevent large screenshot issues)
@@ -148,7 +193,17 @@ router.post('/', bugReportLimiter, async (req, res) => {
   }
 });
 
-// GET /api/bug-report (admin only - would need authentication)
+/**
+ * @swagger
+ * /api/bug-report:
+ *   get:
+ *     summary: Retrieves all bug reports. This is an admin-only endpoint.
+ *     responses:
+ *       200:
+ *         description: The bug reports were retrieved successfully.
+ *       500:
+ *         description: Internal server error.
+ */
 router.get('/', async (req, res) => {
   try {
     // In production, add authentication check here

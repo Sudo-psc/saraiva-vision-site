@@ -1,6 +1,12 @@
 import { clinicInfo } from './clinicInfo.js';
 
-// Gera schema markup para MedicalClinic seguindo as melhores práticas
+/**
+ * Generates the JSON-LD schema markup for a MedicalClinic.
+ *
+ * @param {string} [language='pt'] The language of the schema ('pt' or 'en').
+ * @param {boolean} [forGraph=false] Whether the schema is part of a @graph. If `true`, the @context property is omitted.
+ * @returns {object} The MedicalClinic schema object.
+ */
 export const generateMedicalClinicSchema = (language = 'pt', forGraph = false) => {
   const baseSchema = {
     '@type': 'MedicalClinic',
@@ -187,7 +193,14 @@ export const generateMedicalClinicSchema = (language = 'pt', forGraph = false) =
   return baseSchema;
 };
 
-// Gera schema para FAQ
+/**
+ * Generates the JSON-LD schema markup for an FAQ page.
+ *
+ * @param {Array<object>} faqItems An array of FAQ items, each with a `question` and `answer` property.
+ * @param {string} [language='pt'] The language of the schema ('pt' or 'en').
+ * @param {boolean} [forGraph=false] Whether the schema is part of a @graph. If `true`, the @context property is omitted.
+ * @returns {object} The FAQPage schema object.
+ */
 export const generateFAQSchema = (faqItems, language = 'pt', forGraph = false) => {
   const schema = {
     '@type': 'FAQPage',
@@ -210,7 +223,14 @@ export const generateFAQSchema = (faqItems, language = 'pt', forGraph = false) =
   return schema;
 };
 
-// Gera schema para páginas de serviços específicos
+/**
+ * Generates the JSON-LD schema markup for a medical procedure.
+ *
+ * @param {object} service An object containing the service details.
+ * @param {string} [language='pt'] The language of the schema ('pt' or 'en').
+ * @param {boolean} [forGraph=false] Whether the schema is part of a @graph. If `true`, the @context property is omitted.
+ * @returns {object} The MedicalProcedure schema object.
+ */
 export const generateMedicalProcedureSchema = (service, language = 'pt', forGraph = false) => {
   const schema = {
     '@type': 'MedicalProcedure',
@@ -234,7 +254,14 @@ export const generateMedicalProcedureSchema = (service, language = 'pt', forGrap
   return schema;
 };
 
-// Gera schema para WebPage médica
+/**
+ * Generates the JSON-LD schema markup for a medical web page.
+ *
+ * @param {object} pageInfo An object containing the page information.
+ * @param {string} [language='pt'] The language of the schema ('pt' or 'en').
+ * @param {boolean} [forGraph=false] Whether the schema is part of a @graph. If `true`, the @context property is omitted.
+ * @returns {object} The MedicalWebPage schema object.
+ */
 export const generateMedicalWebPageSchema = (pageInfo, language = 'pt', forGraph = false) => {
   const schema = {
     '@type': 'MedicalWebPage',
@@ -281,7 +308,13 @@ export const generateMedicalWebPageSchema = (pageInfo, language = 'pt', forGraph
   return schema;
 };
 
-// Gera schema para breadcrumbs
+/**
+ * Generates the JSON-LD schema markup for breadcrumbs.
+ *
+ * @param {Array<object>} breadcrumbs An array of breadcrumb objects, each with a `name` and `url` property.
+ * @param {boolean} [forGraph=false] Whether the schema is part of a @graph. If `true`, the @context property is omitted.
+ * @returns {object} The BreadcrumbList schema object.
+ */
 export const generateBreadcrumbSchema = (breadcrumbs, forGraph = false) => {
   const schema = {
     '@type': 'BreadcrumbList',
@@ -301,7 +334,13 @@ export const generateBreadcrumbSchema = (breadcrumbs, forGraph = false) => {
   return schema;
 };
 
-// Gera schema para WebSite
+/**
+ * Generates the JSON-LD schema markup for a WebSite.
+ *
+ * @param {string} [language='pt'] The language of the schema ('pt' or 'en').
+ * @param {boolean} [forGraph=false] Whether the schema is part of a @graph. If `true`, the @context property is omitted.
+ * @returns {object} The WebSite schema object.
+ */
 export const generateWebSiteSchema = (language = 'pt', forGraph = false) => {
   const schema = {
     '@type': 'WebSite',
@@ -334,7 +373,13 @@ export const generateWebSiteSchema = (language = 'pt', forGraph = false) => {
   return schema;
 };
 
-// Gera schema para Organization (parent type)
+/**
+ * Generates the JSON-LD schema markup for an Organization.
+ *
+ * @param {string} [language='pt'] The language of the schema ('pt' or 'en').
+ * @param {boolean} [forGraph=false] Whether the schema is part of a @graph. If `true`, the @context property is omitted.
+ * @returns {object} The Organization schema object.
+ */
 export const generateOrganizationSchema = (language = 'pt', forGraph = false) => {
   const schema = {
     '@type': 'Organization',
@@ -377,7 +422,14 @@ export const generateOrganizationSchema = (language = 'pt', forGraph = false) =>
   return schema;
 };
 
-// Utilitário para injetar schema no head
+/**
+ * Generates the JSON-LD schema markup for a podcast series and its episodes.
+ *
+ * @param {object} podcastData An object containing the podcast data.
+ * @param {string} [language='pt'] The language of the schema ('pt' or 'en').
+ * @param {boolean} [forGraph=false] Whether the schema is part of a @graph. If `true`, the @context property is omitted.
+ * @returns {object} The PodcastSeries schema object.
+ */
 export const generatePodcastSchema = (podcastData, language = 'pt', forGraph = false) => {
   const { episodes = [] } = podcastData;
   
@@ -451,6 +503,11 @@ export const generatePodcastSchema = (podcastData, language = 'pt', forGraph = f
   };
 };
 
+/**
+ * Injects a JSON-LD schema into the document's head.
+ *
+ * @param {object} schema The JSON-LD schema object.
+ */
 export const injectSchema = (schema) => {
   if (typeof window === 'undefined') return;
   

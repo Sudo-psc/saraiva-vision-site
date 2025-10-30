@@ -342,7 +342,12 @@ export const ErrorMessages = {
     }
 };
 
-// Error classification helper
+/**
+ * Classifies an error into a standardized type and code.
+ *
+ * @param {Error|object} error The error to classify.
+ * @returns {{type: string, code: string}} An object containing the error type and code.
+ */
 export function classifyError(error) {
     if (!error) return { type: ErrorTypes.UNKNOWN, code: 'unknown' };
 
@@ -404,7 +409,12 @@ export function classifyError(error) {
     return { type: ErrorTypes.UNKNOWN, code: 'unknown' };
 }
 
-// Get user-friendly error message
+/**
+ * Gets a user-friendly error object based on a given error.
+ *
+ * @param {Error|object} error The error to convert.
+ * @returns {object} A user-friendly error object.
+ */
 export function getUserFriendlyError(error) {
     const { type, code } = classifyError(error);
     const errorConfig = ErrorMessages[code] || ErrorMessages['unknown'];
@@ -417,7 +427,9 @@ export function getUserFriendlyError(error) {
     };
 }
 
-// Enhanced retry configuration with different strategies
+/**
+ * Configuration for retry strategies.
+ */
 export const RetryConfig = {
     // Default configuration
     default: {
@@ -453,7 +465,14 @@ export const RetryConfig = {
     }
 };
 
-// Enhanced exponential backoff with configurable strategies
+/**
+ * Calculates the retry delay using exponential backoff with jitter.
+ *
+ * @param {number} attempt The current attempt number.
+ * @param {string} [errorType='default'] The type of error, used to select a retry strategy.
+ * @param {object} [customConfig=null] A custom retry configuration to use.
+ * @returns {number} The calculated delay in milliseconds.
+ */
 export function calculateRetryDelay(attempt, errorType = 'default', customConfig = null) {
     const config = customConfig || RetryConfig[errorType] || RetryConfig.default;
 
@@ -469,7 +488,12 @@ export function calculateRetryDelay(attempt, errorType = 'default', customConfig
     return Math.floor(Math.min(totalDelay, config.maxDelay));
 }
 
-// Get retry configuration for specific error
+/**
+ * Gets the retry configuration for a specific error.
+ *
+ * @param {Error|object} error The error to get the retry configuration for.
+ * @returns {object|null} The retry configuration object, or `null` if the error is not retryable.
+ */
 export function getRetryConfig(error) {
     const { type } = classifyError(error);
     const errorConfig = getUserFriendlyError(error);
@@ -521,7 +545,13 @@ export function getRetryConfig(error) {
     }
 }
 
-// Enhanced retry function with comprehensive error handling
+/**
+ * A higher-order function that adds retry logic to an asynchronous function.
+ *
+ * @param {function(): Promise<any>} fn The asynchronous function to execute.
+ * @param {object} [options={}] Options for the retry logic.
+ * @returns {Promise<any>} A promise that resolves with the result of the function, or rejects if all retries fail.
+ */
 export async function withRetry(fn, options = {}) {
     const config = options.config || RetryConfig.default;
     const maxAttempts = options.maxAttempts || config.maxAttempts;
@@ -590,7 +620,14 @@ export async function withRetry(fn, options = {}) {
     throw lastError;
 }
 
-// Specialized retry function for form submissions
+/**
+ * A specialized retry function for form submissions that provides accessibility announcements.
+ *
+ * @param {function(object): Promise<any>} submitFn The function to submit the form.
+ * @param {object} formData The form data to submit.
+ * @param {object} [options={}] Options for the retry logic.
+ * @returns {Promise<any>} A promise that resolves with the result of the submission, or rejects if all retries fail.
+ */
 export async function withFormRetry(submitFn, formData, options = {}) {
     const retryOptions = {
         ...options,
@@ -610,7 +647,13 @@ export async function withFormRetry(submitFn, formData, options = {}) {
     return withRetry(() => submitFn(formData), retryOptions);
 }
 
-// Error logging utility
+/**
+ * Logs an error for monitoring and debugging purposes.
+ *
+ * @param {Error|object} error The error to log.
+ * @param {object} [context={}] Additional context for the error.
+ * @returns {object} The log entry object.
+ */
 export function logError(error, context = {}) {
     const errorInfo = classifyError(error);
     const timestamp = new Date().toISOString();
@@ -636,7 +679,12 @@ export function logError(error, context = {}) {
     };
 }
 
-// Error recovery suggestions
+/**
+ * Gets a list of recovery steps for a given error.
+ *
+ * @param {Error|object} error The error to get recovery steps for.
+ * @returns {string[]} An array of recovery step strings.
+ */
 export function getRecoverySteps(error) {
     const friendlyError = getUserFriendlyError(error);
     const steps = [];
@@ -674,7 +722,12 @@ export function getRecoverySteps(error) {
     return steps.filter(step => step && step.trim() !== '');
 }
 
-// Create error boundary compatible error object
+/**
+ * Creates an error object compatible with React's Error Boundary.
+ *
+ * @param {Error|object} error The error to convert.
+ * @returns {object} An error boundary compatible error object.
+ */
 export function createErrorBoundaryError(error) {
     const friendlyError = getUserFriendlyError(error);
     return {
@@ -686,7 +739,12 @@ export function createErrorBoundaryError(error) {
     };
 }
 
-// Check if error is recoverable
+/**
+ * Checks if an error is recoverable.
+ *
+ * @param {Error|object} error The error to check.
+ * @returns {boolean} `true` if the error is recoverable, `false` otherwise.
+ */
 export function isRecoverable(error) {
     const friendlyError = getUserFriendlyError(error);
 
@@ -702,7 +760,12 @@ export function isRecoverable(error) {
     return !nonRecoverableTypes.includes(type) && friendlyError.severity !== ErrorSeverity.CRITICAL;
 }
 
-// Accessibility-compliant error announcements for screen readers
+/**
+ * Announces a message to screen readers using an ARIA live region.
+ *
+ * @param {string} message The message to announce.
+ * @param {string} [priority='polite'] The priority of the announcement ('polite' or 'assertive').
+ */
 export function announceToScreenReader(message, priority = 'polite') {
     if (typeof document === 'undefined') return;
 
@@ -735,7 +798,13 @@ export function announceToScreenReader(message, priority = 'polite') {
     }, 10000);
 }
 
-// Announce error with context
+/**
+ * Announces an error to screen readers with context.
+ *
+ * @param {Error|object} error The error to announce.
+ * @param {object} [context={}] Additional context for the announcement.
+ * @returns {string} The announced message.
+ */
 export function announceError(error, context = {}) {
     const friendlyError = getUserFriendlyError(error);
     const severity = getSeverityIndicator(friendlyError.severity);
@@ -760,14 +829,24 @@ export function announceError(error, context = {}) {
     return message;
 }
 
-// Announce retry attempts
+/**
+ * Announces a retry attempt to screen readers.
+ *
+ * @param {number} attempt The current attempt number.
+ * @param {number} maxAttempts The maximum number of attempts.
+ * @param {number} delay The delay before the next attempt in milliseconds.
+ */
 export function announceRetry(attempt, maxAttempts, delay) {
     const message = `Tentativa ${attempt} de ${maxAttempts} falhou. ` +
         `Tentando novamente em ${Math.ceil(delay / 1000)} segundos.`;
     announceToScreenReader(message, 'polite');
 }
 
-// Announce success after retry
+/**
+ * Announces a successful operation after one or more retries.
+ *
+ * @param {number} attempt The attempt number on which the operation succeeded.
+ */
 export function announceRetrySuccess(attempt) {
     const message = attempt > 1
         ? `Sucesso na tentativa ${attempt}. Formulário enviado com êxito.`
@@ -775,7 +854,12 @@ export function announceRetrySuccess(attempt) {
     announceToScreenReader(message, 'polite');
 }
 
-// Error severity indicator for UI with accessibility enhancements
+/**
+ * Gets a severity indicator object for UI and accessibility enhancements.
+ *
+ * @param {string} severity The severity level of the error.
+ * @returns {object} A severity indicator object.
+ */
 export function getSeverityIndicator(severity) {
     switch (severity) {
         case ErrorSeverity.LOW:
@@ -821,7 +905,13 @@ export function getSeverityIndicator(severity) {
     }
 }
 
-// Enhanced error boundary compatible error object with accessibility
+/**
+ * Creates an error object compatible with React's Error Boundary, with added accessibility information.
+ *
+ * @param {Error|object} error The error to convert.
+ * @param {object} [context={}] Additional context for the error.
+ * @returns {object} An error boundary compatible error object.
+ */
 export function createAccessibleErrorBoundaryError(error, context = {}) {
     const friendlyError = getUserFriendlyError(error);
     const announcement = announceError(error, context);

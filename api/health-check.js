@@ -15,6 +15,12 @@ const APIS = [
     "https://saraivavision.com.br/graphql"
 ];
 
+/**
+ * Checks the status of a systemd service.
+ *
+ * @param {string} service The name of the service to check.
+ * @returns {Promise<{status: string, details: string}>} An object containing the service status and details.
+ */
 async function checkService(service) {
     try {
         const { stdout } = await execAsync(`systemctl is-active ${service}`);
@@ -31,6 +37,12 @@ async function checkService(service) {
     }
 }
 
+/**
+ * Checks the status of a website.
+ *
+ * @param {string} url The URL of the website to check.
+ * @returns {Promise<{status: string, details: string}>} An object containing the website status and details.
+ */
 async function checkWebsite(url) {
     try {
         const startTime = Date.now();
@@ -81,6 +93,12 @@ async function checkWebsite(url) {
     }
 }
 
+/**
+ * Checks the status of an API endpoint.
+ *
+ * @param {string} url The URL of the API endpoint to check.
+ * @returns {Promise<{status: string, details: string}>} An object containing the API status and details.
+ */
 async function checkAPI(url) {
     try {
         const startTime = Date.now();
@@ -113,6 +131,11 @@ async function checkAPI(url) {
     }
 }
 
+/**
+ * Checks the system's CPU, memory, and disk usage.
+ *
+ * @returns {Promise<object>} An object containing the status of system resources.
+ */
 async function checkSystemResources() {
     try {
         // CPU usage
@@ -151,6 +174,11 @@ async function checkSystemResources() {
     }
 }
 
+/**
+ * Checks the status of the database connection.
+ *
+ * @returns {Promise<{status: string, details: string}>} An object containing the database status and details.
+ */
 async function checkDatabase() {
     try {
         await execAsync('mysql -e "SELECT 1;"');
@@ -166,6 +194,13 @@ async function checkDatabase() {
     }
 }
 
+/**
+ * Handles the health check request.
+ *
+ * @param {object} req The HTTP request object.
+ * @param {object} res The HTTP response object.
+ * @returns {Promise<void>} A promise that resolves when the request is handled.
+ */
 export default async function handler(req, res) {
     if (req.method !== 'GET') {
         return res.status(405).json({ error: 'Method not allowed' });

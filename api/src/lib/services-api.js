@@ -1,6 +1,11 @@
 // API client for services data
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://31.97.129.78:3001/api';
 
+/**
+ * Fetches the services data from the API, with a fallback to mock data.
+ *
+ * @returns {Promise<Array<object>>} A promise that resolves with an array of service objects.
+ */
 export async function getServicesData() {
   try {
     const response = await fetch(`${API_BASE_URL}/servicos`, {

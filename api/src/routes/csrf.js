@@ -22,8 +22,15 @@ setInterval(() => {
 }, 60000); // Cleanup a cada 1 minuto
 
 /**
- * GET /api/csrf-token
- * Gera um novo CSRF token
+ * @swagger
+ * /api/csrf-token:
+ *   get:
+ *     summary: Generates a new CSRF token.
+ *     responses:
+ *       200:
+ *         description: The CSRF token was generated successfully.
+ *       500:
+ *         description: Internal server error.
  */
 router.get('/csrf-token', (req, res) => {
   try {
@@ -53,8 +60,11 @@ router.get('/csrf-token', (req, res) => {
 });
 
 /**
- * Middleware de validação CSRF
- * Usar em rotas que precisam de proteção CSRF
+ * An Express middleware for validating CSRF tokens.
+ *
+ * @param {object} req The Express request object.
+ * @param {object} res The Express response object.
+ * @param {function(): void} next The next middleware function.
  */
 export function validateCSRF(req, res, next) {
   const token = req.headers['x-csrf-token'];

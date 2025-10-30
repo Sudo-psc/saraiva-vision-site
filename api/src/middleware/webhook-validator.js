@@ -6,11 +6,12 @@
 import crypto from 'crypto';
 
 /**
- * Valida assinatura HMAC SHA256
- * @param {string} payload - Corpo da requisição (raw)
- * @param {string} signature - Assinatura enviada pelo webhook
- * @param {string} secret - Segredo compartilhado
- * @returns {boolean}
+ * Validates an HMAC SHA256 signature.
+ *
+ * @param {string} payload The raw request body.
+ * @param {string} signature The signature from the webhook.
+ * @param {string} secret The shared secret.
+ * @returns {boolean} `true` if the signature is valid, `false` otherwise.
  */
 export function validateHmacSignature(payload, signature, secret) {
   if (!payload || !signature || !secret) {
@@ -29,11 +30,12 @@ export function validateHmacSignature(payload, signature, secret) {
 }
 
 /**
- * Valida assinatura Stripe (SHA256 com timestamp)
- * @param {string} payload - Corpo da requisição (raw)
- * @param {string} signature - Header stripe-signature
- * @param {string} secret - Webhook secret do Stripe
- * @returns {boolean}
+ * Validates a Stripe webhook signature.
+ *
+ * @param {string} payload The raw request body.
+ * @param {string} signature The value of the `stripe-signature` header.
+ * @param {string} secret The Stripe webhook secret.
+ * @returns {boolean} `true` if the signature is valid, `false` otherwise.
  */
 export function validateStripeSignature(payload, signature, secret) {
   if (!payload || !signature || !secret) {
@@ -83,9 +85,10 @@ export function validateStripeSignature(payload, signature, secret) {
 }
 
 /**
- * Middleware para validação de IP whitelist
- * @param {string[]} allowedIPs - Lista de IPs permitidos
- * @returns {Function}
+ * Creates a middleware function to validate that a request is from an allowed IP address.
+ *
+ * @param {string[]} [allowedIPs=[]] An array of allowed IP addresses.
+ * @returns {function(object): boolean} A function that returns `true` if the request's IP is in the whitelist, `false` otherwise.
  */
 export function validateIPWhitelist(allowedIPs = []) {
   return (req) => {
@@ -102,10 +105,12 @@ export function validateIPWhitelist(allowedIPs = []) {
 }
 
 /**
- * Extrai raw body de uma requisição Next.js com limite de tamanho
- * @param {NextRequest} req
- * @param {number} sizeLimit - Tamanho máximo do payload em bytes (default: 1MB)
- * @returns {Promise<string>}
+ * Extracts the raw body from a Next.js API route request, with a size limit.
+ *
+ * @param {object} req The Next.js API route request object.
+ * @param {number} [sizeLimit=1048576] The maximum payload size in bytes (default: 1MB).
+ * @returns {Promise<string>} A promise that resolves with the raw request body as a string.
+ * @throws {Error} An error if the payload size limit is exceeded.
  */
 export async function getRawBody(req, sizeLimit = 1024 * 1024) { // Default: 1MB
   try {
