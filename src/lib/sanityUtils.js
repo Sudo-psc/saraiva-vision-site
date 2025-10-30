@@ -62,13 +62,20 @@ export function getImageUrl(source, width, height, format = 'webp', quality = 80
 export function transformBlogPost(sanityPost) {
   if (!sanityPost) return null
 
+  // Generate image URL from mainImage using urlFor()
+  const imageUrl = sanityPost.mainImage
+    ? urlFor(sanityPost.mainImage).width(1200).quality(85).url()
+    : null
+
   return {
     id: sanityPost.id || sanityPost._id.replace('blogPost-', ''),
     slug: sanityPost.slug, // Already extracted as string from slug.current
     title: sanityPost.title,
     excerpt: sanityPost.excerpt,
     content: sanityPost.content,
-    image: sanityPost.image, // Keep existing path format
+    image: imageUrl, // Generate URL from mainImage
+    imageAlt: sanityPost.mainImage?.alt || sanityPost.title,
+    coverImage: sanityPost.mainImage || null, // Preserve raw mainImage for components
     author: sanityPost.author || 'Dr. Philipe Saraiva Cruz',
     date: sanityPost.publishedAt, // Use publishedAt as date
     category: sanityPost.category, // Already dereferenced from category->title
@@ -106,7 +113,7 @@ export const queries = {
     title,
     excerpt,
     content,
-    image,
+    mainImage,
     'author': author->name,
     publishedAt,
     updatedAt,
@@ -127,7 +134,7 @@ export const queries = {
     title,
     excerpt,
     content,
-    image,
+    mainImage,
     'author': author->name,
     publishedAt,
     updatedAt,
@@ -147,7 +154,7 @@ export const queries = {
     'slug': slug.current,
     title,
     excerpt,
-    image,
+    mainImage,
     publishedAt,
     'category': category->title,
     tags
@@ -162,7 +169,7 @@ export const queries = {
     'slug': slug.current,
     title,
     excerpt,
-    image,
+    mainImage,
     publishedAt,
     'category': category->title,
     tags
@@ -177,7 +184,7 @@ export const queries = {
     'slug': slug.current,
     title,
     excerpt,
-    image,
+    mainImage,
     publishedAt,
     'category': category->title,
     featured
@@ -192,7 +199,7 @@ export const queries = {
     'slug': slug.current,
     title,
     excerpt,
-    image,
+    mainImage,
     publishedAt,
     'category': category->title
   }`,
@@ -210,7 +217,7 @@ export const queries = {
     'slug': slug.current,
     title,
     excerpt,
-    image,
+    mainImage,
     publishedAt,
     'category': category->title,
     tags

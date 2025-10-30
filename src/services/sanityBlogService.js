@@ -1,5 +1,5 @@
-import sanityClient from '@/lib/sanityClient.js'
-import { urlFor } from '@/lib/sanityUtils.js'
+import { sanityClient } from '../lib/sanityClient.js'
+import { urlFor } from '../lib/sanityUtils.js'
 
 const metadataProjection = `{
   _id,

@@ -71,6 +71,23 @@ export default function OptimizedImage({
   const getImageSources = () => {
     if (!src) return { avif: null, webp: null, fallback: src };
 
+    // Check if URL is from Sanity CDN
+    const isSanityUrl = src.includes('cdn.sanity.io');
+
+    if (isSanityUrl) {
+      // For Sanity CDN, use format parameter (fm)
+      // Note: Sanity supports WebP but not AVIF (returns 400)
+      const hasParams = src.includes('?');
+      const separator = hasParams ? '&' : '?';
+
+      return {
+        avif: null, // Sanity CDN doesn't support AVIF format
+        webp: `${src}${separator}fm=webp`,
+        fallback: src
+      };
+    }
+
+    // For local images, change extension
     const basePath = src.substring(0, src.lastIndexOf('.'));
 
     return {
