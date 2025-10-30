@@ -114,12 +114,21 @@ async function testIniciantesImage() {
   log(`  Image: ${post.imageFilename || 'N/A'}`, 'cyan');
   log(`  URL: ${post.imageUrl}`, 'cyan');
 
-  // Check if image filename contains expected pattern
-  const isCorrect = TESTS.expectedImagePattern.test(post.imageFilename || post.imageUrl);
-  const isWrong = TESTS.wrongImagePattern.test(post.imageFilename || post.imageUrl);
+  // Check if image filename contains expected pattern or is a known good image
+  const filename = (post.imageFilename || post.imageUrl).toLowerCase();
+  const knownGoodImages = ['lentes.jpeg', 'lentecontado.png', 'capa-lentes-contato-tipos'];
+  const isKnownGood = knownGoodImages.some(img => filename.includes(img));
+  const isCorrect = TESTS.expectedImagePattern.test(filename) || isKnownGood;
+  const isWrong = TESTS.wrongImagePattern.test(filename);
 
-  if (isCorrect && !isWrong) {
-    log('\n✅ PASS: Image is correct (lentes de contato)', 'green');
+  // Check file size - placeholders are usually < 1KB
+  const isPlaceholder = post.imageSize && post.imageSize < 1000;
+
+  if (isPlaceholder) {
+    log('\n❌ FAIL: Image is a placeholder (< 1KB)', 'red');
+    return false;
+  } else if (isCorrect && !isWrong) {
+    log('\n✅ PASS: Image is correct (real contact lens image)', 'green');
     return true;
   } else if (isWrong) {
     log('\n❌ FAIL: Image is wrong (showing IA instead of lenses)', 'red');

@@ -19,11 +19,12 @@ async function fixImage() {
   console.log('🔧 Fixing "Lentes de Contato para Iniciantes" image\n');
 
   // Try multiple image options in order of preference
+  // Note: Avoid small PNG files (~480-484 bytes) - they are placeholders
   const imageOptions = [
-    'capa-lentes-de-contato-gelatinosas-optimized-1200w.webp',
-    'lentecontado.png',
-    'lentes.jpeg',
-    'capa-lentes-contato-tipos-optimized-1200w.webp'
+    'lentes.jpeg',                                          // 132KB - Real image
+    'lentecontado.png',                                     // 544KB - Real image
+    'capa-lentes-contato-tipos-optimized-1200w.jpeg',      // 81KB - Real optimized
+    'capa-lentes-contato-tipos.png'                        // 332KB - Real image
   ];
 
   let selectedImage = null;
