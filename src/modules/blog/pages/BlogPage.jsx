@@ -192,18 +192,42 @@ const BlogPage = () => {
     e.preventDefault();
   };
 
-  // Memoized function to render post cards for performance - Text-only design
+  // Hook for scroll reveal effects
+  const [visibleCards, setVisibleCards] = React.useState(new Set());
+  const cardRefs = React.useRef({});
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleCards((prev) => new Set([...prev, entry.target.dataset.postId]));
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -100px 0px' }
+    );
+
+    Object.values(cardRefs.current).forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, [currentPosts]);
+
+  // Memoized function to render horizontal stacked cards
   const renderPostCard = React.useCallback((post, index) => {
     const enrichment = getPostEnrichment(post.id);
     const readingTime = post.readingTimeMinutes || 4;
+    const isVisible = visibleCards.has(post.id);
 
-    // Category color mapping for decorative accents
+    // Category color mapping for accent elements
     const categoryColors = {
-      'Prevenção': 'from-emerald-100 to-teal-50 border-emerald-200',
-      'Tratamentos': 'from-blue-100 to-cyan-50 border-blue-200',
-      'Tecnologia': 'from-purple-100 to-indigo-50 border-purple-200',
-      'Dúvidas Frequentes': 'from-amber-100 to-yellow-50 border-amber-200',
-      'default': 'from-gray-100 to-slate-50 border-gray-200'
+      'Prevenção': 'from-emerald-500 to-teal-500',
+      'Tratamentos': 'from-blue-500 to-cyan-500',
+      'Tecnologia': 'from-purple-500 to-indigo-500',
+      'Dúvidas Frequentes': 'from-amber-500 to-orange-500',
+      'default': 'from-gray-500 to-slate-500'
     };
 
     const categoryGradient = categoryColors[post.category] || categoryColors.default;
@@ -211,98 +235,111 @@ const BlogPage = () => {
     return (
       <motion.article
         key={post.id}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.1 }}
-        className="group relative flex flex-col bg-gradient-to-br from-white to-gray-50/30 rounded-2xl border border-gray-200/60 hover:border-gray-300 hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-300 overflow-hidden h-full"
+        ref={(el) => (cardRefs.current[post.id] = el)}
+        data-post-id={post.id}
+        initial={{ opacity: 0, x: -50 }}
+        animate={{
+          opacity: isVisible ? 1 : 0,
+          x: isVisible ? 0 : -50
+        }}
+        transition={{ duration: 0.6, delay: index * 0.1 }}
+        className="group relative flex flex-col md:flex-row items-stretch bg-gradient-to-br from-white via-gray-50/50 to-white rounded-3xl border-2 border-gray-200/60 hover:border-teal-400 hover:shadow-2xl hover:shadow-teal-100/50 transition-all duration-500 overflow-hidden cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
         role="article"
         aria-labelledby={`post-title-${post.id}`}
       >
-        {/* Decorative top accent bar */}
-        <div className={`h-1.5 bg-gradient-to-r ${categoryGradient} border-b`}></div>
+        {/* Left vertical accent bar */}
+        <div className={`w-2 md:w-3 bg-gradient-to-b ${categoryGradient} flex-shrink-0`}></div>
 
-        <div className="p-8 flex flex-col flex-grow min-h-0">
-          {/* Category Badge - Minimalist design */}
-          <div className="mb-5">
-            <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider uppercase bg-white/80 backdrop-blur-sm text-gray-700 rounded-full border border-gray-200/80 shadow-sm">
-              {post.category}
-            </span>
-          </div>
+        {/* Main content area - Horizontal layout */}
+        <div className="flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-between">
+          <div>
+            {/* Top row: Category badge and metadata */}
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
+              {/* Category badge */}
+              <span className={`inline-flex items-center px-4 py-2 text-xs font-bold tracking-widest uppercase bg-gradient-to-r ${categoryGradient} text-white rounded-full shadow-lg`}>
+                {post.category}
+              </span>
 
-          {/* Title - Large, elegant typography */}
-          <h3
-            id={`post-title-${post.id}`}
-            className="text-2xl md:text-3xl font-serif font-bold mb-4 text-gray-900 leading-tight tracking-tight"
-          >
-            <Link
-              to={`/blog/${post.slug}`}
-              className="hover:text-teal-700 focus:outline-none focus:text-teal-700 transition-colors duration-200 group-hover:underline decoration-2 decoration-teal-400 underline-offset-4"
+              {/* Metadata row - Compact */}
+              <div className="flex items-center gap-3 text-xs text-gray-500">
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-teal-600" aria-hidden="true" />
+                  <time dateTime={post.date} className="font-light">
+                    {formatDate(post.date)}
+                  </time>
+                </div>
+                <span className="text-gray-300">•</span>
+                <div className="flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-teal-600" aria-hidden="true" />
+                  <span className="font-light">{readingTime} min</span>
+                </div>
+                <span className="text-gray-300">•</span>
+                <div className="flex items-center gap-1.5">
+                  <User className="w-3.5 h-3.5 text-teal-600" aria-hidden="true" />
+                  <span className="font-medium text-gray-700">{post.author || 'Dr. Saraiva'}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Title - Extra large, dominant */}
+            <h3
+              id={`post-title-${post.id}`}
+              className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-5 text-gray-900 leading-tight tracking-tight group-hover:text-teal-700 transition-colors duration-300"
             >
-              {post.title}
-            </Link>
-          </h3>
-
-          {/* Excerpt - Generous line height for readability */}
-          <p className="text-gray-600 mb-6 text-base leading-loose line-clamp-4 flex-shrink-0">
-            {post.excerpt}
-          </p>
-
-          {/* Metadata Row - Refined with subtle dividers */}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6 pt-6 border-t border-gray-200/60">
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-teal-600" aria-hidden="true" />
-              <time
-                dateTime={post.date}
-                aria-label={`Publicado em ${formatDate(post.date)}`}
-                className="font-light"
+              <Link
+                to={`/blog/${post.slug}`}
+                className="hover:underline decoration-2 decoration-teal-400 underline-offset-8 focus:outline-none focus:text-teal-700"
               >
-                {formatDate(post.date)}
-              </time>
-            </div>
-            <span className="text-gray-300">•</span>
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-teal-600" aria-hidden="true" />
-              <span className="font-light">{readingTime} min</span>
-            </div>
-            <span className="text-gray-300">•</span>
-            <div className="flex items-center gap-2">
-              <User className="w-4 h-4 text-teal-600" aria-hidden="true" />
-              <span className="font-medium text-gray-700">{post.author || 'Dr. Saraiva'}</span>
+                {post.title}
+              </Link>
+            </h3>
+
+            {/* Excerpt - Two columns on larger screens */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                {post.excerpt}
+              </p>
+
+              {/* Learning Points - Compact in second column */}
+              {enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
+                <div className="bg-gradient-to-br from-teal-50/80 to-cyan-50/50 rounded-2xl p-5 border border-teal-200/40">
+                  <p className="text-sm font-bold text-teal-800 mb-3 flex items-center gap-2">
+                    <span className="text-xl">✓</span>
+                    <span>Você vai aprender:</span>
+                  </p>
+                  <ul className="space-y-2">
+                    {enrichment.learningPoints.slice(0, 3).map((point, idx) => (
+                      <li key={idx} className="text-sm text-gray-700 flex items-start gap-2 leading-snug">
+                        <span className="text-teal-600 mt-0.5 flex-shrink-0 text-xs">▸</span>
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Learning Points Preview - Soft background */}
-          {enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
-            <div className="bg-gradient-to-br from-teal-50 to-cyan-50/30 rounded-xl p-5 mb-6 border border-teal-100/60">
-              <p className="text-sm font-semibold text-teal-800 mb-3">Você vai aprender:</p>
-              <ul className="space-y-2.5">
-                {enrichment.learningPoints.slice(0, 2).map((point, idx) => (
-                  <li key={idx} className="text-sm text-gray-700 flex items-start gap-3 leading-relaxed">
-                    <span className="text-teal-600 mt-1 flex-shrink-0">✓</span>
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Clean CTA - Subtle, elegant */}
+          {/* Bottom CTA - Full width */}
           <Link
             to={`/blog/${post.slug}`}
-            className="mt-auto focus:outline-none group/button"
+            className="mt-auto focus:outline-none group/button block"
             aria-label={`Leia mais sobre: ${post.title}`}
           >
-            <div className="flex items-center justify-between px-6 py-4 bg-white border-2 border-gray-200 hover:border-teal-500 rounded-xl transition-all duration-300 group-hover/button:shadow-md">
-              <span className="text-base font-medium text-gray-700 group-hover/button:text-teal-700 transition-colors">
+            <div className="flex items-center justify-between px-8 py-5 bg-gradient-to-r from-teal-50 to-cyan-50 hover:from-teal-100 hover:to-cyan-100 border-2 border-teal-200/60 hover:border-teal-400 rounded-2xl transition-all duration-300 group-hover/button:shadow-lg">
+              <span className="text-lg font-semibold text-gray-800 group-hover/button:text-teal-700 transition-colors">
                 {t('blog.read_more', 'Ler artigo completo')}
               </span>
-              <ArrowRight className="w-5 h-5 text-gray-400 group-hover/button:text-teal-600 transition-all duration-300 group-hover/button:translate-x-1" aria-hidden="true" />
+              <ArrowRight className="w-6 h-6 text-teal-600 transition-all duration-300 group-hover/button:translate-x-2" aria-hidden="true" />
             </div>
           </Link>
         </div>
+
+        {/* Hover glow effect */}
+        <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-teal-400/0 via-cyan-400/0 to-blue-400/0 group-hover:from-teal-400/10 group-hover:via-cyan-400/10 group-hover:to-blue-400/10 transition-all duration-500 pointer-events-none"></div>
       </motion.article>
     );
-  }, [t]);
+  }, [t, visibleCards]);
 
   // Render single post view
   if (slug) {
@@ -797,7 +834,8 @@ const BlogPage = () => {
               </div>
             ) : filteredPosts.length > 0 ? (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8 auto-rows-fr">
+                {/* Stacked horizontal cards layout */}
+                <div className="flex flex-col space-y-8 max-w-6xl mx-auto">
                   {currentPosts.map((post, index) => renderPostCard(post, index))}
                 </div>
 
