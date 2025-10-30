@@ -7,6 +7,6 @@ export default defineCliConfig({
   },
   deployment: {
     appId: 'ngblxman3ukym2lida97y3q7',
-    hostname: 'saraivavision'
+    autoUpdates: true
   }
 })

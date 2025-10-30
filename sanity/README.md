@@ -6,6 +6,7 @@ Este diretório contém a configuração do Sanity Studio para o gerenciamento d
 
 - **Project ID**: `92ocrdmp`
 - **Dataset**: `production`
+- **Studio URL**: https://studio.saraivavision.com.br
 - **Template**: Clean (configuração customizada)
 
 ## 🚀 Primeiros Passos
@@ -168,6 +169,7 @@ Após a migração inicial:
 
 ## 🔗 Links Úteis
 
+- [Studio de Produção](https://studio.saraivavision.com.br)
 - [Documentação do Sanity](https://www.sanity.io/docs)
 - [GROQ Cheat Sheet](https://www.sanity.io/docs/query-cheat-sheet)
 - [Sanity Management](https://sanity.io/manage/project/92ocrdmp)
