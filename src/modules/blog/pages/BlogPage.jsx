@@ -192,34 +192,10 @@ const BlogPage = () => {
     e.preventDefault();
   };
 
-  // Hook for scroll reveal effects
-  const [visibleCards, setVisibleCards] = React.useState(new Set());
-  const cardRefs = React.useRef({});
-
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisibleCards((prev) => new Set([...prev, entry.target.dataset.postId]));
-          }
-        });
-      },
-      { threshold: 0.2, rootMargin: '0px 0px -100px 0px' }
-    );
-
-    Object.values(cardRefs.current).forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    return () => observer.disconnect();
-  }, [currentPosts]);
-
   // Memoized function to render horizontal stacked cards
   const renderPostCard = React.useCallback((post, index) => {
     const enrichment = getPostEnrichment(post.id);
     const readingTime = post.readingTimeMinutes || 4;
-    const isVisible = visibleCards.has(post.id);
 
     // Category color mapping for accent elements
     const categoryColors = {
@@ -235,14 +211,10 @@ const BlogPage = () => {
     return (
       <motion.article
         key={post.id}
-        ref={(el) => (cardRefs.current[post.id] = el)}
-        data-post-id={post.id}
         initial={{ opacity: 0, x: -50 }}
-        animate={{
-          opacity: isVisible ? 1 : 0,
-          x: isVisible ? 0 : -50
-        }}
-        transition={{ duration: 0.6, delay: index * 0.1 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: '-50px' }}
+        transition={{ duration: 0.5, delay: index * 0.08 }}
         className="group relative flex flex-col md:flex-row items-stretch bg-gradient-to-br from-white via-gray-50/50 to-white rounded-3xl border-2 border-gray-200/60 hover:border-teal-400 hover:shadow-2xl hover:shadow-teal-100/50 transition-all duration-500 overflow-hidden cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
         role="article"
         aria-labelledby={`post-title-${post.id}`}
@@ -339,7 +311,7 @@ const BlogPage = () => {
         <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-teal-400/0 via-cyan-400/0 to-blue-400/0 group-hover:from-teal-400/10 group-hover:via-cyan-400/10 group-hover:to-blue-400/10 transition-all duration-500 pointer-events-none"></div>
       </motion.article>
     );
-  }, [t, visibleCards]);
+  }, [t]);
 
   // Render single post view
   if (slug) {
