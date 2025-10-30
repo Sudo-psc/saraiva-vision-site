@@ -19,30 +19,6 @@ const ServiceDetailPage = () => {
   const serviceConfig = createServiceConfig(t);
   const service = serviceConfig[serviceId];
 
-  // Se o serviço não for encontrado, mostra página de erro
-  if (!service) {
-    return (
-      <div className="min-h-screen flex flex-col bg-white">
-        <SEOHead title="Serviço não encontrado | Saraiva Vision" />
-        <Navbar />
-        <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 scroll-block-internal mx-[5%] lg:mx-[10%]">
-          <div className="container mx-auto px-4 md:px-6 py-12 text-center">
-            <h1 className="text-4xl font-bold text-slate-900 mb-4">Serviço não encontrado</h1>
-            <p className="text-slate-600 mb-8">O serviço que você está procurando não existe ou foi movido.</p>
-            <button
-              onClick={() => navigate('/servicos')}
-              className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Voltar aos Serviços
-            </button>
-          </div>
-        </main>
-        <EnhancedFooter />
-      </div>
-    );
-  }
-
   // Generate FAQ schema for SEO
   useEffect(() => {
     if (service) {
@@ -94,6 +70,30 @@ const ServiceDetailPage = () => {
       }
     };
   }, [serviceId, service]);
+
+  // Se o serviço não for encontrado, mostra página de erro
+  if (!service) {
+    return (
+      <div className="min-h-screen flex flex-col bg-white">
+        <SEOHead title="Serviço não encontrado | Saraiva Vision" />
+        <Navbar />
+        <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 scroll-block-internal mx-[5%] lg:mx-[10%]">
+          <div className="container mx-auto px-4 md:px-6 py-12 text-center">
+            <h1 className="text-4xl font-bold text-slate-900 mb-4">Serviço não encontrado</h1>
+            <p className="text-slate-600 mb-8">O serviço que você está procurando não existe ou foi movido.</p>
+            <button
+              onClick={() => navigate('/servicos')}
+              className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar aos Serviços
+            </button>
+          </div>
+        </main>
+        <EnhancedFooter />
+      </div>
+    );
+  }
 
   const seo = {
     title: service.title + ' | Saraiva Vision',

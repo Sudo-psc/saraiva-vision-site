@@ -5,21 +5,6 @@ import { BlogContentProcessor, IS_DEVELOPMENT } from '../../utils/blogDebug';
  * SafeContentRenderer - Safely renders HTML content with error handling
  */
 const SafeContentRenderer = ({ content, className = '', fallback = null }) => {
-  if (!content) {
-    if (IS_DEVELOPMENT) {
-      console.warn('⚠️  [Blog Debug] SafeContentRenderer: No content provided');
-    }
-    return fallback || <p className="text-gray-500">Conteúdo não disponível.</p>;
-  }
-
-  // Validate content
-  const contentIssues = BlogContentProcessor.validateContentHTML(content);
-  if (contentIssues.length > 0) {
-    if (IS_DEVELOPMENT) {
-      console.warn('⚠️  [Blog Debug] SafeContentRenderer: Content issues detected:', contentIssues);
-    }
-  }
-
   // Safe content processing with error boundary
   const [renderError, setRenderError] = React.useState(null);
   const [isProcessing, setIsProcessing] = React.useState(false);
@@ -41,6 +26,21 @@ const SafeContentRenderer = ({ content, className = '', fallback = null }) => {
       }
     }
   }, [content]);
+
+  if (!content) {
+    if (IS_DEVELOPMENT) {
+      console.warn('⚠️  [Blog Debug] SafeContentRenderer: No content provided');
+    }
+    return fallback || <p className="text-gray-500">Conteúdo não disponível.</p>;
+  }
+
+  // Validate content
+  const contentIssues = BlogContentProcessor.validateContentHTML(content);
+  if (contentIssues.length > 0) {
+    if (IS_DEVELOPMENT) {
+      console.warn('⚠️  [Blog Debug] SafeContentRenderer: Content issues detected:', contentIssues);
+    }
+  }
 
   if (renderError) {
     return (
