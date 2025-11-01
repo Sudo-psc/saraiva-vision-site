@@ -3,7 +3,6 @@ import React from 'react';
 import EnhancedFooter from '../components/EnhancedFooter.jsx';
 import SEOHead from '../components/SEOHead.jsx';
 import ServicesEnhanced from '../components/ServicesEnhanced.jsx';
-import SocialProof from '../components/ui/SocialProof.jsx';
 import { useTranslation } from 'react-i18next';
 
 const ServicesPage = () => {
@@ -19,9 +18,6 @@ const ServicesPage = () => {
       <SEOHead {...seo} />
       <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 scroll-block-internal mx-[5%] lg:mx-[10%]">
         <ServicesEnhanced full grid />
-
-        {/* Prova Social */}
-        <SocialProof variant="minimal" className="mt-16" />
       </main>
       <EnhancedFooter />
     </div>

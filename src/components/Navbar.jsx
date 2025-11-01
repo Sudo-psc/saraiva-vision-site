@@ -2,11 +2,23 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Menu, X, Calendar, Home, Stethoscope, Eye, FileText, Headphones, User, HelpCircle, Phone, FileCheck } from 'lucide-react';
+import { Menu, X, Calendar, Phone } from 'lucide-react';
 import { Button } from '../components/ui/button.jsx';
 import Logo from '../components/Logo.jsx';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 
+/**
+ * Enhanced Navbar Component - UX Optimized for Healthcare Platform
+ *
+ * Design Principles:
+ * - Medical premium aesthetic (teal-700/800 instead of cyan)
+ * - Simplified desktop navigation (no icons) for 50+ audience
+ * - Clear active state indication for wayfinding
+ * - Minimum 16px font size for accessibility
+ * - High contrast (slate-900) for readability
+ * - Sticky header with shrink effect on scroll
+ * - Mobile-first with full-height glass morphism menu
+ */
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -14,10 +26,10 @@ const Navbar = () => {
   const location = useLocation();
   const { t } = useTranslation();
 
-  // Prevent double-scroll: lock body when mobile menu is open
+  // UX Enhancement: Prevent double-scroll by locking body when mobile menu is open
   useBodyScrollLock(mobileMenuOpen);
 
-  // Handle home navigation: scroll to top if already on homepage, navigate otherwise
+  // UX Enhancement: Handle home navigation with smooth scroll for better UX
   const handleHomeClick = (e) => {
     if (location.pathname === '/') {
       e.preventDefault();
@@ -27,6 +39,7 @@ const Navbar = () => {
     }
   };
 
+  // UX Enhancement: Sticky navbar with shrink effect for better screen real estate
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -36,15 +49,16 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Navigation structure - simplified for clarity
   const navLinks = useMemo(() => [
-    { name: t('navbar.home'), href: '/', internal: true, icon: Home },
-    { name: t('navbar.services'), href: '/servicos', internal: true, icon: Stethoscope },
-    { name: t('navbar.lenses'), href: '/lentes', internal: true, icon: Eye },
-    { name: t('navbar.blog'), href: '/blog', internal: true, icon: FileText },
-    { name: t('navbar.podcast'), href: '/podcast', internal: true, icon: Headphones },
-    { name: t('navbar.about'), href: '/sobre', internal: true, icon: User },
-    { name: t('navbar.plans'), href: '/planos', internal: true, icon: FileCheck },
-    { name: t('navbar.faq'), href: '/faq', internal: true, icon: HelpCircle },
+    { name: t('navbar.home'), href: '/', internal: true },
+    { name: t('navbar.services'), href: '/servicos', internal: true },
+    { name: t('navbar.lenses'), href: '/lentes', internal: true },
+    { name: t('navbar.blog'), href: '/blog', internal: true },
+    { name: t('navbar.podcast'), href: '/podcast', internal: true },
+    { name: t('navbar.about'), href: '/sobre', internal: true },
+    { name: t('navbar.plans'), href: '/planos', internal: true },
+    { name: t('navbar.faq'), href: '/faq', internal: true },
   ], [t]);
 
   return (
@@ -56,6 +70,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 md:px-6 no-scrollbar-x pointer-events-auto">
         <div className="flex flex-wrap items-center justify-between gap-3 md:gap-4 lg:gap-6 w-full">
+          {/* Logo - Brand Identity */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -72,29 +87,36 @@ const Navbar = () => {
             </Link>
           </motion.div>
 
-          {/* Desktop Navigation - Enhanced hover effects with cyan theme */}
+          {/* Desktop Navigation - UX Optimized: No icons for cleaner look, better for 50+ users */}
           <nav
             className="hidden md:flex flex-1 items-center justify-center flex-wrap gap-1.5 lg:gap-2 xl:gap-3"
             aria-label={t('navbar.primary_navigation')}
           >
             {navLinks.map((link) => {
-              const IconComponent = link.icon;
-              const linkClasses = "group relative text-slate-700 hover:text-white font-semibold transition-all duration-300 ease-out px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl flex items-center gap-2 text-[0.9rem] md:text-[0.95rem] lg:text-[1rem] xl:text-[1.05rem] hover:scale-[1.03] xl:hover:scale-105 active:scale-95 hover:shadow-lg active:shadow-sm bg-gradient-to-br from-slate-100 to-slate-200 hover:from-cyan-600 hover:to-cyan-700 border border-slate-300 hover:border-cyan-500";
-
-              // Special handling for home button: scroll to top if already on homepage
+              // UX Enhancement: Active page indicator for wayfinding
+              const isActive = location.pathname === link.href;
               const isHomeLink = link.href === '/';
+
+              // UX Color Palette: Teal-700/800 for premium medical aesthetic
+              const linkClasses = `group relative font-semibold transition-all duration-300 ease-out px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl text-base lg:text-[1.05rem] hover:scale-[1.03] xl:hover:scale-105 active:scale-95 hover:shadow-lg active:shadow-sm ${
+                isActive
+                  ? 'bg-gradient-to-br from-teal-700 to-teal-800 text-white border-2 border-teal-600'
+                  : 'text-slate-900 bg-gradient-to-br from-slate-100 to-slate-200 hover:from-teal-700 hover:to-teal-800 hover:text-white border border-slate-300 hover:border-teal-600'
+              }`;
 
               return link.internal ? (
                 <Link
                   key={link.name}
                   to={link.href}
                   onClick={isHomeLink ? handleHomeClick : undefined}
-                  className={`${linkClasses} min-w-[7.5rem] justify-center lg:justify-start`}
+                  className={`${linkClasses} min-w-[7.5rem] justify-center`}
                 >
-                  <IconComponent size={15} className="text-slate-600 group-hover:text-white transition-colors duration-300 md:w-4 md:h-4 lg:w-[17px] lg:h-[17px]" />
                   <span className="relative">
                     {link.name}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
+                    {/* UX Enhancement: Animated underline on hover for feedback */}
+                    {!isActive && (
+                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
+                    )}
                   </span>
                 </Link>
               ) : (
@@ -103,41 +125,47 @@ const Navbar = () => {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${linkClasses} min-w-[7.5rem] justify-center lg:justify-start`}
+                  className={`${linkClasses} min-w-[7.5rem] justify-center`}
                 >
-                  <IconComponent size={15} className="text-slate-600 group-hover:text-white transition-colors duration-300 md:w-4 md:h-4 lg:w-[17px] lg:h-[17px]" />
                   <span className="relative">
                     {link.name}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
+                    {!isActive && (
+                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
+                    )}
                   </span>
                 </a>
               );
             })}
           </nav>
 
+          {/* CTAs - Icons maintained here as they add clarity to actions */}
           <div className="hidden md:flex items-center justify-end gap-2 lg:gap-3 xl:gap-4 mr-[6%] flex-shrink-0">
+            {/* Secondary CTA - Contact */}
             <Button
               variant="outline"
               onClick={() => navigate('/contato')}
-              className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-xl border-cyan-500 text-cyan-700 hover:text-white hover:bg-cyan-600 hover:border-cyan-600 transition-colors duration-300"
+              className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-xl border-teal-600 text-teal-800 hover:text-white hover:bg-teal-700 hover:border-teal-700 transition-colors duration-300 text-base"
             >
-              <Phone size={16} className="md:w-[18px] md:h-[18px]" />
-              <span className="text-sm md:text-[0.95rem]">{t('navbar.contact')}</span>
+              <Phone size={18} />
+              <span>{t('navbar.contact')}</span>
             </Button>
+
+            {/* Primary CTA - Prominent scheduling button */}
             <Button
               onClick={() => navigate('/agendamento')}
-              className="flex items-center gap-2 scale-[0.95] md:scale-100 lg:scale-105 origin-center bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 ease-out hover:scale-105 lg:hover:scale-110 active:scale-95 px-4 py-2 md:px-5 md:py-2.5 rounded-xl border-2 border-cyan-500 hover:border-cyan-400"
+              className="flex items-center gap-2 scale-[0.95] md:scale-100 lg:scale-105 origin-center bg-gradient-to-r from-teal-700 to-teal-800 hover:from-teal-800 hover:to-teal-900 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 ease-out hover:scale-105 lg:hover:scale-110 active:scale-95 px-4 py-2 md:px-5 md:py-2.5 rounded-xl border-2 border-teal-600 hover:border-teal-500 text-base lg:text-lg"
             >
-              <Calendar size={16} className="animate-pulse md:w-[18px] md:h-[18px] lg:w-5 lg:h-5" />
-              <span className="text-sm md:text-[0.95rem] lg:text-base">{t('navbar.schedule')}</span>
+              <Calendar size={20} className="animate-pulse" />
+              <span>{t('navbar.schedule')}</span>
             </Button>
           </div>
 
+          {/* Mobile Menu Toggle - Maintained teal theme */}
           <div className="md:hidden flex items-center gap-2">
             <Button
               variant="outline"
               size="icon"
-              className="!h-12 !w-12 rounded-2xl border-blue-500 text-blue-700 bg-white shadow-3d hover:shadow-3d-hover"
+              className="!h-12 !w-12 rounded-2xl border-teal-600 text-teal-800 bg-white shadow-3d hover:shadow-3d-hover"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? t('navbar.close_menu') : t('navbar.open_menu')}
               aria-expanded={mobileMenuOpen}
@@ -149,6 +177,7 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* Mobile Menu - Full-height with glass morphism for premium feel */}
       {mobileMenuOpen && (
         <motion.div
           initial={{ opacity: 0, height: 0 }}
@@ -159,7 +188,7 @@ const Navbar = () => {
         >
           <nav className="container mx-auto px-4 py-3 sm:py-4 flex flex-col space-y-2 sm:space-y-3">
             {navLinks.map((link, index) => {
-              const IconComponent = link.icon;
+              const isActive = location.pathname === link.href;
               const isHomeLink = link.href === '/';
 
               return link.internal ? (
@@ -175,12 +204,14 @@ const Navbar = () => {
                       if (isHomeLink) {
                         handleHomeClick(e);
                       }
-                      // Close menu after a small delay to ensure navigation is processed
                       setTimeout(() => setMobileMenuOpen(false), 50);
                     }}
-                    className="text-slate-800 hover:text-cyan-600 hover:bg-cyan-50 active:bg-cyan-100 py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200"
+                    className={`py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200 ${
+                      isActive
+                        ? 'text-white bg-teal-700 font-semibold'
+                        : 'text-slate-900 hover:text-teal-700 hover:bg-teal-50 active:bg-teal-100'
+                    }`}
                   >
-                    <IconComponent size={18} className="text-slate-600 flex-shrink-0 sm:w-5 sm:h-5" />
                     <span className="flex-1">{link.name}</span>
                   </Link>
                 </motion.div>
@@ -196,14 +227,15 @@ const Navbar = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setTimeout(() => setMobileMenuOpen(false), 50)}
-                    className="text-slate-800 hover:text-cyan-600 hover:bg-cyan-50 active:bg-cyan-100 py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200"
+                    className="text-slate-900 hover:text-teal-700 hover:bg-teal-50 active:bg-teal-100 py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200"
                   >
-                    <IconComponent size={18} className="text-slate-600 flex-shrink-0 sm:w-5 sm:h-5" />
                     <span className="flex-1">{link.name}</span>
                   </a>
                 </motion.div>
               );
             })}
+
+            {/* Mobile CTA - Prominent scheduling button */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -215,16 +247,15 @@ const Navbar = () => {
                   navigate('/agendamento');
                   setTimeout(() => setMobileMenuOpen(false), 50);
                 }}
-                className="flex items-center gap-2 w-full justify-center py-3 sm:py-3.5 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800"
+                className="flex items-center gap-2 w-full justify-center py-3 sm:py-3.5 bg-gradient-to-r from-teal-700 to-teal-800 hover:from-teal-800 hover:to-teal-900 text-base sm:text-lg"
               >
-                <Calendar size={18} className="sm:w-5 sm:h-5" />
-                <span className="text-base sm:text-lg">{t('navbar.schedule_consultation')}</span>
+                <Calendar size={20} />
+                <span>{t('navbar.schedule_consultation')}</span>
               </Button>
             </motion.div>
           </nav>
         </motion.div>
       )}
-
 
     </header>
   );
