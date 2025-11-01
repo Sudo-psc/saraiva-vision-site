@@ -119,6 +119,55 @@ export const podcastEpisodes = [
 ];
 ```
 
+## Design e UI/UX
+
+### Layout de Blog Posts
+
+O blog utiliza **design horizontal moderno** com cards empilhados verticalmente:
+
+#### Características do Design (2025-10-30)
+
+**LatestBlogPosts** (`src/components/LatestBlogPosts.jsx`):
+- 📱 **Layout responsivo**: Horizontal em desktop, vertical em mobile
+- 🎨 **Cards empilhados**: Máximo 3 posts recentes em coluna única
+- 🎭 **Barra de categoria**: Accent bar colorida à esquerda
+- 📊 **Duas colunas**: Excerpt + Learning Points lado a lado
+- ✨ **Efeitos de hover**: Scale, glow, e transições suaves
+- 🎯 **CTA integrado**: Botão "Ler artigo completo" em destaque
+
+**BlogPage** (`src/modules/blog/pages/BlogPage.jsx`):
+- 📚 **Lista completa**: Todos os posts em layout horizontal
+- 🔍 **Busca e filtros**: Search bar + category filters
+- 📄 **Paginação**: 6 posts por página
+- 🎨 **Consistência visual**: Mesmo design do LatestBlogPosts
+
+#### Mapeamento de Cores por Categoria
+
+```javascript
+const categoryColors = {
+  'Prevenção': 'from-emerald-500 to-teal-500',      // Verde
+  'Tratamentos': 'from-blue-500 to-cyan-500',        // Azul
+  'Tecnologia': 'from-purple-500 to-indigo-500',     // Roxo
+  'Dúvidas Frequentes': 'from-amber-500 to-orange-500', // Laranja
+  'default': 'from-gray-500 to-slate-500'            // Cinza
+};
+```
+
+#### Hierarquia Tipográfica
+
+- **Título**: `text-2xl md:text-3xl lg:text-4xl font-serif` (36-48px)
+- **Excerpt**: `text-base md:text-lg` (16-18px)
+- **Metadata**: `text-xs` (12px)
+- **Learning Points**: `text-sm` (14px)
+
+#### Vantagens do Design Horizontal
+
+- ✅ **Melhor escaneabilidade**: Linha do tempo vertical natural
+- ✅ **Mais espaço para conteúdo**: Cards largos permitem mais texto
+- ✅ **Destaque para títulos**: Tipografia grande e dominante
+- ✅ **Foco no conteúdo**: Menos distrações visuais
+- ✅ **Acessibilidade**: Estrutura semântica com roles ARIA
+
 ## Fluxo de Build
 
 ### 1. Desenvolvimento Local
@@ -418,6 +467,7 @@ node -c src/data/blogPosts.js
 
 ### Documentação Técnica
 - **[Sanity Integration Guide](./SANITY_INTEGRATION_GUIDE.md)** - Documentação completa da integração Sanity
+- **[Blog No Images Design](/docs/BLOG_NO_IMAGES_DESIGN.md)** - Design sem imagens de capa
 - [SEO Components Guide](/docs/guidelines/SEO_COMPONENTS_GUIDE.md)
 - [Image Optimization Guide](/docs/performance/IMAGE_OPTIMIZATION.md)
 
@@ -444,7 +494,23 @@ node -c src/data/blogPosts.js
 
 ---
 
-**Última atualização**: 2025-10-28
+**Última atualização**: 2025-10-30
 **Mantenedor**: Dr. Philipe Saraiva Cruz
-**Versão**: 2.0.0 (Sistema Híbrido)
+**Versão**: 2.1.0 (Sistema Híbrido + Design Horizontal)
 **Revisão**: Trimestral ou quando houver mudanças na arquitetura
+
+### Changelog
+
+**2.1.0** (2025-10-30):
+- ✨ Implementado design horizontal para blog post previews
+- 🎨 Cards empilhados verticalmente com layout responsivo
+- 📊 Duas colunas para excerpt e learning points
+- 🎭 Sistema de cores por categoria
+- ✨ Efeitos de hover aprimorados
+- 📱 Mobile-first design
+
+**2.0.0** (2025-10-28):
+- 🔄 Sistema híbrido Sanity CMS + fallback estático
+- ⚡ Circuit breaker pattern
+- 📊 Cache em memória
+- 🎯 100% uptime garantido

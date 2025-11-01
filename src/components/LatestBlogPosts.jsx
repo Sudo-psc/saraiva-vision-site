@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import { blogPosts } from '@/data/blogPosts';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
-import OptimizedImage from '@/components/blog/OptimizedImage';
 import { getPostEnrichment } from '@/data/blogPostsEnrichment';
 import { normalizeToArray } from '@/utils/safeFetch';
 
@@ -73,85 +72,117 @@ const LatestBlogPosts = () => {
         return slugValue ? `/blog/${slugValue}` : '/blog';
     };
 
-    const getPostImage = (post) => {
-        return post.image || null;
-    };
-
     const renderPost = (post, index) => {
-        const postImage = getPostImage(post);
-        
-        return (
-            <motion.div
-                key={post.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-                className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl flex flex-col h-full"
-            >
-                {/* Blog Post Image */}
-                {postImage && (
-                    <div className="relative w-full h-48 overflow-hidden">
-                        <OptimizedImage
-                            src={postImage}
-                            alt={getPostTitle(post)}
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                            loading="lazy"
-                        />
-                    </div>
-                )}
+        const enrichment = getPostEnrichment(post.id);
+        const readingTime = post.readingTimeMinutes || 4;
 
-                <div className="p-6 flex flex-col flex-grow bg-white">
-                    {/* Category and Date */}
-                    <div className="flex items-center justify-between mb-3 flex-shrink-0">
-                        <span className="inline-block bg-cyan-100 text-cyan-800 text-xs font-semibold px-3 py-1 rounded-full">
-                            {getPostCategory(post)}
-                        </span>
-                        <div className="flex items-center text-xs text-slate-500">
-                            <Calendar className="w-3.5 h-3.5 mr-1 flex-shrink-0" />
-                            <span className="whitespace-nowrap">{formatPostDate(post.date)}</span>
+        // Category color mapping for accent elements
+        const categoryColors = {
+            'Prevenção': 'from-emerald-500 to-teal-500',
+            'Tratamentos': 'from-blue-500 to-cyan-500',
+            'Tecnologia': 'from-purple-500 to-indigo-500',
+            'Dúvidas Frequentes': 'from-amber-500 to-orange-500',
+            'default': 'from-gray-500 to-slate-500'
+        };
+
+        const categoryGradient = categoryColors[getPostCategory(post)] || categoryColors.default;
+
+        return (
+            <motion.article
+                key={post.id}
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="group relative flex flex-col md:flex-row items-stretch bg-gradient-to-br from-white via-gray-50/50 to-white rounded-3xl border-2 border-gray-200/60 hover:border-teal-400 hover:shadow-2xl hover:shadow-teal-100/50 transition-all duration-500 overflow-hidden cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                role="article"
+                aria-labelledby={`post-title-${post.id}`}
+            >
+                {/* Left vertical accent bar */}
+                <div className={`w-2 md:w-3 bg-gradient-to-b ${categoryGradient} flex-shrink-0`}></div>
+
+                {/* Main content area - Horizontal layout */}
+                <div className="flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-between">
+                    <div>
+                        {/* Top row: Category badge and metadata */}
+                        <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
+                            {/* Category badge */}
+                            <span className={`inline-flex items-center px-4 py-2 text-xs font-bold tracking-widest uppercase bg-gradient-to-r ${categoryGradient} text-white rounded-full shadow-lg`}>
+                                {getPostCategory(post)}
+                            </span>
+
+                            {/* Metadata row - Compact */}
+                            <div className="flex items-center gap-3 text-xs text-gray-500">
+                                <div className="flex items-center gap-1.5">
+                                    <Calendar className="w-3.5 h-3.5 text-teal-600" aria-hidden="true" />
+                                    <time dateTime={post.date} className="font-light">
+                                        {formatPostDate(post.date)}
+                                    </time>
+                                </div>
+                                <span className="text-gray-300">•</span>
+                                <div className="flex items-center gap-1.5">
+                                    <span className="font-light">{readingTime} min</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Title - Large, dominant */}
+                        <h3
+                            id={`post-title-${post.id}`}
+                            className="text-2xl md:text-3xl lg:text-4xl font-serif font-bold mb-4 text-gray-900 leading-tight tracking-tight group-hover:text-teal-700 transition-colors duration-300"
+                        >
+                            <Link
+                                to={getPostLink(post)}
+                                className="hover:underline decoration-2 decoration-teal-400 underline-offset-8 focus:outline-none focus:text-teal-700"
+                            >
+                                {getPostTitle(post)}
+                            </Link>
+                        </h3>
+
+                        {/* Excerpt - Two columns on larger screens */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                            <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                                {getPostExcerpt(post)}
+                            </p>
+
+                            {/* Learning Points - Compact in second column */}
+                            {enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
+                                <div className="bg-gradient-to-br from-teal-50/80 to-cyan-50/50 rounded-2xl p-5 border border-teal-200/40">
+                                    <p className="text-sm font-bold text-teal-800 mb-3 flex items-center gap-2">
+                                        <span className="text-xl">✓</span>
+                                        <span>Você vai aprender:</span>
+                                    </p>
+                                    <ul className="space-y-2">
+                                        {enrichment.learningPoints.slice(0, 3).map((point, idx) => (
+                                            <li key={idx} className="text-sm text-gray-700 flex items-start gap-2 leading-snug">
+                                                <span className="text-teal-600 mt-0.5 flex-shrink-0 text-xs">▸</span>
+                                                <span>{point}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                         </div>
                     </div>
 
-                    {/* Title */}
-                    <h3 className="text-xl font-bold mb-3 text-slate-900 line-clamp-2 flex-shrink-0 leading-tight">
-                        {getPostTitle(post)}
-                    </h3>
-
-                    {/* Excerpt */}
-                    <p className="text-slate-600 text-sm mb-4 line-clamp-3 leading-relaxed flex-shrink-0">
-                        {getPostExcerpt(post)}
-                    </p>
-
-                    {/* Learning Points Preview */}
-                    {(() => {
-                        const enrichment = getPostEnrichment(post.id);
-                        return enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
-                            <div className="bg-cyan-50 rounded-lg p-3 mb-4 border border-cyan-100 flex-shrink-0">
-                                <p className="text-xs font-semibold text-cyan-700 mb-2">📚 O que você vai aprender:</p>
-                                <ul className="space-y-1.5">
-                                    {enrichment.learningPoints.slice(0, 2).map((point, idx) => (
-                                        <li key={idx} className="text-xs text-cyan-800 flex items-start gap-2">
-                                            <span className="text-cyan-600 mt-0.5 flex-shrink-0">✓</span>
-                                            <span className="line-clamp-1">{point}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        );
-                    })()}
-
-                    {/* Read More Button */}
-                    <div className="mt-auto pt-3 flex-shrink-0">
-                        <Link to={getPostLink(post)} className="block">
-                            <Button className="w-full bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-semibold py-2.5 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group">
+                    {/* Bottom CTA - Full width */}
+                    <Link
+                        to={getPostLink(post)}
+                        className="mt-auto focus:outline-none group/button block"
+                        aria-label={`Leia mais sobre: ${getPostTitle(post)}`}
+                    >
+                        <div className="flex items-center justify-between px-8 py-5 bg-gradient-to-r from-teal-50 to-cyan-50 hover:from-teal-100 hover:to-cyan-100 border-2 border-teal-200/60 hover:border-teal-400 rounded-2xl transition-all duration-300 group-hover/button:shadow-lg">
+                            <span className="text-lg font-semibold text-gray-800 group-hover/button:text-teal-700 transition-colors">
                                 {t('blog.read_more', 'Ler artigo completo')}
-                                <ArrowRight className="w-4 h-4 ml-2 inline-block transition-transform group-hover:translate-x-1" />
-                            </Button>
-                        </Link>
-                    </div>
+                            </span>
+                            <ArrowRight className="w-6 h-6 text-teal-600 transition-all duration-300 group-hover/button:translate-x-2" aria-hidden="true" />
+                        </div>
+                    </Link>
                 </div>
-            </motion.div>
+
+                {/* Hover glow effect */}
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-teal-400/0 via-cyan-400/0 to-blue-400/0 group-hover:from-teal-400/10 group-hover:via-cyan-400/10 group-hover:to-blue-400/10 transition-all duration-500 pointer-events-none"></div>
+            </motion.article>
         );
     };
 
@@ -195,7 +226,7 @@ const LatestBlogPosts = () => {
         }
 
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <div className="flex flex-col space-y-8 max-w-6xl mx-auto">
                 {posts.map((post, index) => renderPost(post, index))}
             </div>
         );
