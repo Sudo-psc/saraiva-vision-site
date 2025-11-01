@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Menu, X, Calendar, Home, Stethoscope, Eye, FileText, Headphones, User, Star, HelpCircle, Phone, FileCheck } from 'lucide-react';
+import { Menu, X, Calendar, Home, Stethoscope, Eye, FileText, Headphones, User, HelpCircle, Phone, FileCheck } from 'lucide-react';
 import { Button } from '../components/ui/button.jsx';
 import Logo from '../components/Logo.jsx';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
@@ -55,12 +55,12 @@ const Navbar = () => {
         }`}
     >
       <div className="container mx-auto px-4 md:px-6 no-scrollbar-x pointer-events-auto">
-        <div className="flex items-center justify-between w-full">
+        <div className="flex flex-wrap items-center justify-between gap-3 md:gap-4 lg:gap-6 w-full">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="ml-[6%]"
+            className="ml-[6%] flex-shrink-0"
           >
             <Link
               to="/"
@@ -73,10 +73,13 @@ const Navbar = () => {
           </motion.div>
 
           {/* Desktop Navigation - Enhanced hover effects with cyan theme */}
-          <nav className="hidden md:flex items-center space-x-1.5 lg:space-x-2" aria-label={t('navbar.primary_navigation')}>
+          <nav
+            className="hidden md:flex flex-1 items-center justify-center flex-wrap gap-1.5 lg:gap-2 xl:gap-3"
+            aria-label={t('navbar.primary_navigation')}
+          >
             {navLinks.map((link) => {
               const IconComponent = link.icon;
-              const linkClasses = "group relative text-slate-700 hover:text-white font-semibold transition-all duration-300 ease-out px-3 py-1.5 md:px-4 md:py-2 rounded-xl flex items-center gap-2 text-[0.96rem] md:text-[1rem] lg:text-[1.05rem] hover:scale-105 lg:hover:scale-108 active:scale-95 hover:shadow-lg active:shadow-sm bg-gradient-to-br from-slate-100 to-slate-200 hover:from-cyan-600 hover:to-cyan-700 border border-slate-300 hover:border-cyan-500";
+              const linkClasses = "group relative text-slate-700 hover:text-white font-semibold transition-all duration-300 ease-out px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl flex items-center gap-2 text-[0.9rem] md:text-[0.95rem] lg:text-[1rem] xl:text-[1.05rem] hover:scale-[1.03] xl:hover:scale-105 active:scale-95 hover:shadow-lg active:shadow-sm bg-gradient-to-br from-slate-100 to-slate-200 hover:from-cyan-600 hover:to-cyan-700 border border-slate-300 hover:border-cyan-500";
 
               // Special handling for home button: scroll to top if already on homepage
               const isHomeLink = link.href === '/';
@@ -86,7 +89,7 @@ const Navbar = () => {
                   key={link.name}
                   to={link.href}
                   onClick={isHomeLink ? handleHomeClick : undefined}
-                  className={linkClasses}
+                  className={`${linkClasses} min-w-[7.5rem] justify-center lg:justify-start`}
                 >
                   <IconComponent size={15} className="text-slate-600 group-hover:text-white transition-colors duration-300 md:w-4 md:h-4 lg:w-[17px] lg:h-[17px]" />
                   <span className="relative">
@@ -100,7 +103,7 @@ const Navbar = () => {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={linkClasses}
+                  className={`${linkClasses} min-w-[7.5rem] justify-center lg:justify-start`}
                 >
                   <IconComponent size={15} className="text-slate-600 group-hover:text-white transition-colors duration-300 md:w-4 md:h-4 lg:w-[17px] lg:h-[17px]" />
                   <span className="relative">
@@ -112,15 +115,23 @@ const Navbar = () => {
             })}
           </nav>
 
-           <div className="hidden md:flex items-center gap-3 lg:gap-4 mr-[6%]">
-             <Button
-               onClick={() => navigate('/agendamento')}
-               className="flex items-center gap-2 scale-[0.96] md:scale-100 lg:scale-105 origin-center bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 ease-out hover:scale-105 lg:hover:scale-110 active:scale-95 px-4 py-2 md:px-5 md:py-2.5 rounded-xl border-2 border-cyan-500 hover:border-cyan-400"
-             >
-               <Calendar size={16} className="animate-pulse md:w-[18px] md:h-[18px] lg:w-5 lg:h-5" />
-               <span className="text-sm md:text-[0.95rem] lg:text-base">{t('navbar.schedule')}</span>
-             </Button>
-           </div>
+          <div className="hidden md:flex items-center justify-end gap-2 lg:gap-3 xl:gap-4 mr-[6%] flex-shrink-0">
+            <Button
+              variant="outline"
+              onClick={() => navigate('/contato')}
+              className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-xl border-cyan-500 text-cyan-700 hover:text-white hover:bg-cyan-600 hover:border-cyan-600 transition-colors duration-300"
+            >
+              <Phone size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="text-sm md:text-[0.95rem]">{t('navbar.contact')}</span>
+            </Button>
+            <Button
+              onClick={() => navigate('/agendamento')}
+              className="flex items-center gap-2 scale-[0.95] md:scale-100 lg:scale-105 origin-center bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 ease-out hover:scale-105 lg:hover:scale-110 active:scale-95 px-4 py-2 md:px-5 md:py-2.5 rounded-xl border-2 border-cyan-500 hover:border-cyan-400"
+            >
+              <Calendar size={16} className="animate-pulse md:w-[18px] md:h-[18px] lg:w-5 lg:h-5" />
+              <span className="text-sm md:text-[0.95rem] lg:text-base">{t('navbar.schedule')}</span>
+            </Button>
+          </div>
 
           <div className="md:hidden flex items-center gap-2">
             <Button
