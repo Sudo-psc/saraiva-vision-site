@@ -46,63 +46,67 @@ export default function BlogPostLayout({ post, children }) {
       ref={mainContentRef}
       id="main-content"
       tabIndex={-1}
-      className="blog-post outline-none"
+      className="blog-post outline-none relative overflow-hidden rounded-[44px] border border-[#e1d4bd] bg-[#fffaf0] shadow-[0_32px_100px_rgba(126,108,90,0.22)]"
       itemScope
       itemType="https://schema.org/BlogPosting"
     >
-      {/* Container otimizado - max-w-3xl para legibilidade */}
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95),_rgba(248,240,224,0.92))]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 opacity-45 bg-[linear-gradient(0deg,_rgba(214,200,180,0.25)_1px,_transparent_1px)] bg-[length:100%_52px]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 opacity-35 bg-[linear-gradient(90deg,_rgba(214,200,180,0.2)_1px,_transparent_1px)] bg-[length:68px_100%]" />
+      <div className="pointer-events-none absolute -top-10 left-16 h-12 w-36 rounded-sm bg-[#f0e3c1]/80 shadow-md rotate-[-6deg]" />
+      <div className="pointer-events-none absolute -top-12 right-20 h-12 w-32 rounded-sm bg-[#f0e3c1]/70 shadow-md rotate-[5deg]" />
+      <div className="relative z-10 max-w-3xl mx-auto px-6 sm:px-8 lg:px-10 py-10 sm:py-14">
         
         {/* Breadcrumbs para SEO e navegação */}
         <nav aria-label="Breadcrumb" className="mb-6">
-          <ol className="flex items-center space-x-2 text-sm text-gray-600">
+          <ol className="flex items-center space-x-2 text-sm text-[#7f7666]">
             <li>
-              <Link 
-                to="/" 
-                className="hover:text-cyan-600 focus:outline-none focus:underline transition-colors"
+              <Link
+                to="/"
+                className="hover:text-[#2e675d] focus:outline-none focus:underline transition-colors"
               >
                 Início
               </Link>
             </li>
-            <li aria-hidden="true" className="text-gray-400">/</li>
+            <li aria-hidden="true" className="text-[#d0c2aa]">/</li>
             <li>
-              <Link 
-                to="/blog" 
-                className="hover:text-cyan-600 focus:outline-none focus:underline transition-colors"
+              <Link
+                to="/blog"
+                className="hover:text-[#2e675d] focus:outline-none focus:underline transition-colors"
               >
                 Blog
               </Link>
             </li>
-            <li aria-hidden="true" className="text-gray-400">/</li>
+            <li aria-hidden="true" className="text-[#d0c2aa]">/</li>
             <li>
-              <Link 
+              <Link
                 to={`/blog?category=${encodeURIComponent(post.category)}`}
-                className="hover:text-cyan-600 focus:outline-none focus:underline transition-colors"
+                className="hover:text-[#2e675d] focus:outline-none focus:underline transition-colors"
               >
                 {post.category}
               </Link>
             </li>
-            <li aria-hidden="true" className="text-gray-400">/</li>
-            <li className="text-gray-900 font-medium" aria-current="page">
+            <li aria-hidden="true" className="text-[#d0c2aa]">/</li>
+            <li className="text-[#2e2923] font-medium" aria-current="page">
               {post.title}
             </li>
           </ol>
         </nav>
 
         {/* Header do Post */}
-        <header className="mb-8 space-y-4">
+        <header className="mb-10 space-y-4 border-b border-[#e1d4bd] pb-8">
           {/* Categoria e Data */}
           <div className="flex items-center gap-3 flex-wrap">
             <CategoryBadge category={post.category} />
-            <time 
+            <time
               dateTime={post.publishedAt}
               itemProp="datePublished"
-              className="text-sm text-gray-600"
+              className="text-sm text-[#7f7666]"
             >
               {formatDate(post.publishedAt)}
             </time>
             {post.readTime && (
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-[#7f7666]">
                 • {post.readTime} min de leitura
               </span>
             )}
@@ -111,23 +115,23 @@ export default function BlogPostLayout({ post, children }) {
           {/* Título H1 - Tipografia otimizada */}
           <h1 
             itemProp="headline"
-            className="font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight text-gray-900"
+            className="font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight text-[#2e2923]"
           >
             {post.title}
           </h1>
 
           {/* Subtítulo/Excerpt se disponível */}
           {post.excerpt && (
-            <p 
+            <p
               itemProp="description"
-              className="text-lg sm:text-xl text-gray-700 leading-relaxed"
+              className="text-lg sm:text-xl text-[#5f574b] leading-relaxed"
             >
               {post.excerpt}
             </p>
           )}
 
           {/* Meta do Autor */}
-          <div className="flex items-center gap-3 pt-4 border-t border-gray-200">
+          <div className="flex items-center gap-3 pt-4 border-t border-[#e1d4bd]">
             {post.author?.photo && (
               <img
                 src={post.author.photo}
@@ -136,10 +140,10 @@ export default function BlogPostLayout({ post, children }) {
               />
             )}
             <div>
-              <p className="font-semibold text-gray-900" itemProp="author">
+              <p className="font-semibold text-[#2e2923]" itemProp="author">
                 {post.author?.name || 'Dr. Philipe Saraiva'}
               </p>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-[#7f7666]">
                 {post.author?.title || 'Oftalmologista - CRM-MG 12345'}
               </p>
             </div>
@@ -148,7 +152,7 @@ export default function BlogPostLayout({ post, children }) {
 
         {/* Imagem de Capa */}
         {post.image && (
-          <figure className="mb-8 sm:rounded-xl overflow-hidden">
+          <figure className="mb-8 overflow-hidden rounded-[28px] border border-[#e1d4bd] shadow-[0_24px_70px_rgba(120,102,84,0.18)]">
             <OptimizedImage
               src={post.image}
               alt={post.coverImageAlt || `Ilustração sobre ${post.title}`}
@@ -158,7 +162,7 @@ export default function BlogPostLayout({ post, children }) {
               sizes="(max-width: 768px) 100vw, 896px"
             />
             {post.coverImageCaption && (
-              <figcaption className="mt-3 text-sm text-gray-600 text-center px-4">
+              <figcaption className="mt-3 text-sm text-[#7f7666] text-center px-4">
                 {post.coverImageCaption}
               </figcaption>
             )}
@@ -209,18 +213,18 @@ export default function BlogPostLayout({ post, children }) {
         <TrustElements post={post} />
 
         {/* Rodapé do Post */}
-        <footer className="mt-12 pt-8 border-t border-gray-200 space-y-8">
+        <footer className="mt-12 pt-8 border-t border-[#e1d4bd] space-y-8">
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              <span className="text-sm font-semibold text-gray-700 mr-2">Tags:</span>
+              <span className="text-sm font-semibold text-[#5f574b] mr-2">Tags:</span>
               {post.tags.map(tag => (
                 <Link
                   key={tag}
                   to={`/blog?tag=${encodeURIComponent(tag)}`}
-                  className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full 
-                           hover:bg-cyan-100 hover:text-cyan-700 transition-colors
-                           focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                  className="px-3 py-1 bg-[#f7e9c7] text-[#2e675d] text-sm rounded-full border border-[#d9c9ae]
+                           hover:bg-[#f0ddba] hover:text-[#245a50] transition-colors
+                           focus:outline-none focus:ring-2 focus:ring-[#2e675d] focus:ring-offset-2"
                 >
                   #{tag}
                 </Link>
