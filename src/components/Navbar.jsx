@@ -11,13 +11,18 @@ import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
  * Enhanced Navbar Component - UX Optimized for Healthcare Platform
  *
  * Design Principles:
- * - Medical premium aesthetic (teal-700/800 instead of cyan)
- * - Simplified desktop navigation (no icons) for 50+ audience
+ * - Modern cyan palette (#06B6D4) for technology-forward brand identity
+ * - Simplified desktop navigation (no icons) for 50+ audience clarity
  * - Clear active state indication for wayfinding
- * - Minimum 16px font size for accessibility
+ * - Minimum 16px font size for accessibility (WCAG 2.1 AA)
  * - High contrast (slate-900) for readability
  * - Sticky header with shrink effect on scroll
- * - Mobile-first with full-height glass morphism menu
+ * - Mobile-first with glass morphism menu
+ *
+ * Color Philosophy:
+ * Cyan was chosen over teal to maintain the brand's technology-forward,
+ * innovative positioning while still conveying medical professionalism.
+ * The vibrant cyan (#06B6D4) balances modernity with trust.
  */
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -97,11 +102,11 @@ const Navbar = () => {
               const isActive = location.pathname === link.href;
               const isHomeLink = link.href === '/';
 
-              // UX Color Palette: Teal-700/800 for premium medical aesthetic
+              // UX Color Palette: Cyan for modern, technology-forward brand identity
               const linkClasses = `group relative font-semibold transition-all duration-300 ease-out px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl text-base lg:text-[1.05rem] hover:scale-[1.03] xl:hover:scale-105 active:scale-95 hover:shadow-lg active:shadow-sm ${
                 isActive
-                  ? 'bg-gradient-to-br from-teal-700 to-teal-800 text-white border-2 border-teal-600'
-                  : 'text-slate-900 bg-gradient-to-br from-slate-100 to-slate-200 hover:from-teal-700 hover:to-teal-800 hover:text-white border border-slate-300 hover:border-teal-600'
+                  ? 'bg-gradient-to-br from-cyan-600 to-cyan-700 text-white border-2 border-cyan-500'
+                  : 'text-slate-900 bg-gradient-to-br from-slate-100 to-slate-200 hover:from-cyan-600 hover:to-cyan-700 hover:text-white border border-slate-300 hover:border-cyan-500'
               }`;
 
               return link.internal ? (
@@ -144,7 +149,7 @@ const Navbar = () => {
             <Button
               variant="outline"
               onClick={() => navigate('/contato')}
-              className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-xl border-teal-600 text-teal-800 hover:text-white hover:bg-teal-700 hover:border-teal-700 transition-colors duration-300 text-base"
+              className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-xl border-cyan-500 text-cyan-700 hover:text-white hover:bg-cyan-600 hover:border-cyan-600 transition-colors duration-300 text-base"
             >
               <Phone size={18} />
               <span>{t('navbar.contact')}</span>
@@ -153,19 +158,19 @@ const Navbar = () => {
             {/* Primary CTA - Prominent scheduling button */}
             <Button
               onClick={() => navigate('/agendamento')}
-              className="flex items-center gap-2 scale-[0.95] md:scale-100 lg:scale-105 origin-center bg-gradient-to-r from-teal-700 to-teal-800 hover:from-teal-800 hover:to-teal-900 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 ease-out hover:scale-105 lg:hover:scale-110 active:scale-95 px-4 py-2 md:px-5 md:py-2.5 rounded-xl border-2 border-teal-600 hover:border-teal-500 text-base lg:text-lg"
+              className="flex items-center gap-2 scale-[0.95] md:scale-100 lg:scale-105 origin-center bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 ease-out hover:scale-105 lg:hover:scale-110 active:scale-95 px-4 py-2 md:px-5 md:py-2.5 rounded-xl border-2 border-cyan-500 hover:border-cyan-400 text-base lg:text-lg"
             >
               <Calendar size={20} className="animate-pulse" />
               <span>{t('navbar.schedule')}</span>
             </Button>
           </div>
 
-          {/* Mobile Menu Toggle - Maintained teal theme */}
+          {/* Mobile Menu Toggle - Cyan theme */}
           <div className="md:hidden flex items-center gap-2">
             <Button
               variant="outline"
               size="icon"
-              className="!h-12 !w-12 rounded-2xl border-teal-600 text-teal-800 bg-white shadow-3d hover:shadow-3d-hover"
+              className="!h-12 !w-12 rounded-2xl border-blue-500 text-blue-700 bg-white shadow-3d hover:shadow-3d-hover"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? t('navbar.close_menu') : t('navbar.open_menu')}
               aria-expanded={mobileMenuOpen}
@@ -208,8 +213,8 @@ const Navbar = () => {
                     }}
                     className={`py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200 ${
                       isActive
-                        ? 'text-white bg-teal-700 font-semibold'
-                        : 'text-slate-900 hover:text-teal-700 hover:bg-teal-50 active:bg-teal-100'
+                        ? 'text-white bg-cyan-600 font-semibold'
+                        : 'text-slate-900 hover:text-cyan-600 hover:bg-cyan-50 active:bg-cyan-100'
                     }`}
                   >
                     <span className="flex-1">{link.name}</span>
@@ -227,7 +232,7 @@ const Navbar = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setTimeout(() => setMobileMenuOpen(false), 50)}
-                    className="text-slate-900 hover:text-teal-700 hover:bg-teal-50 active:bg-teal-100 py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200"
+                    className="text-slate-900 hover:text-cyan-600 hover:bg-cyan-50 active:bg-cyan-100 py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200"
                   >
                     <span className="flex-1">{link.name}</span>
                   </a>
@@ -247,7 +252,7 @@ const Navbar = () => {
                   navigate('/agendamento');
                   setTimeout(() => setMobileMenuOpen(false), 50);
                 }}
-                className="flex items-center gap-2 w-full justify-center py-3 sm:py-3.5 bg-gradient-to-r from-teal-700 to-teal-800 hover:from-teal-800 hover:to-teal-900 text-base sm:text-lg"
+                className="flex items-center gap-2 w-full justify-center py-3 sm:py-3.5 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-base sm:text-lg"
               >
                 <Calendar size={20} />
                 <span>{t('navbar.schedule_consultation')}</span>

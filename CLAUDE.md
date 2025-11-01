@@ -337,6 +337,38 @@ This script:
 - **Accessibility**: WCAG 2.1 AA compliance mandatory
 - **Data Privacy**: No patient data in frontend code, all sensitive data in backend only
 
+### Design Guidelines
+
+**Complete Documentation:** See `docs/guidelines/NAVBAR_DESIGN_GUIDELINES.md` for detailed rationale
+
+#### Color Palette Decision (2025-11-01)
+- **Primary Brand Color:** Cyan (#06B6D4) - `cyan-600/700` in Tailwind
+- **Rationale:** Technology-forward positioning, innovation, modernity
+- **Not Teal:** Rejected teal (#0F766E) - too conservative for brand identity
+- **Usage:** All CTAs, active states, hover effects, mobile menu highlights
+
+#### Navbar UX Principles
+1. **Simplified Navigation (50+ audience)**
+   - No icons in main nav links (reduces visual clutter)
+   - Icons ONLY in CTAs (Phone, Calendar) for action clarity
+
+2. **Clear Active State**
+   - Cyan gradient background on current page
+   - 2px border for emphasis
+   - Immediate wayfinding for users
+
+3. **Accessibility (WCAG 2.1 AA/AAA)**
+   - Minimum 16px font size (`text-base`)
+   - 7:1 contrast ratio (slate-900 on white)
+   - 44px minimum touch targets on mobile
+
+4. **Microinteractions**
+   - Hover: scale + shadow + animated underline
+   - Active: scale-down feedback
+   - Sticky: shrink effect on scroll
+
+**When modifying Navbar:** Consult design guidelines document first to maintain consistency.
+
 ## Troubleshooting
 
 ### Build Issues
