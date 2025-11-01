@@ -215,40 +215,44 @@ const BlogPage = () => {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.5, delay: index * 0.08 }}
-        className="group relative flex flex-col md:flex-row items-stretch bg-gradient-to-br from-white via-gray-50/50 to-white rounded-3xl border-2 border-gray-200/60 hover:border-teal-400 hover:shadow-2xl hover:shadow-teal-100/50 transition-all duration-500 overflow-hidden cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+        className="group relative flex flex-col md:flex-row items-stretch overflow-hidden rounded-[32px] border border-[#e1d4bd] bg-[#fffaf0] shadow-[0_26px_70px_rgba(126,108,90,0.18)] transition-all duration-500 cursor-pointer hover:-translate-y-1 hover:shadow-[0_40px_90px_rgba(115,98,82,0.22)]"
         role="article"
         aria-labelledby={`post-title-${post.id}`}
       >
-        {/* Left vertical accent bar */}
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.95),_rgba(247,238,220,0.9))]" />
+        <div className="pointer-events-none absolute inset-0 -z-10 opacity-45 bg-[linear-gradient(0deg,_rgba(216,202,178,0.25)_1px,_transparent_1px)] bg-[length:100%_56px]" />
+        <div className="pointer-events-none absolute inset-0 -z-10 opacity-35 bg-[linear-gradient(90deg,_rgba(216,202,178,0.2)_1px,_transparent_1px)] bg-[length:68px_100%]" />
+        <div className="pointer-events-none absolute -top-8 left-14 h-10 w-32 rounded-sm bg-[#f0e3c1]/80 shadow-md rotate-[-5deg]" />
+        <div className="pointer-events-none absolute -top-10 right-16 h-10 w-28 rounded-sm bg-[#f0e3c1]/70 shadow-md rotate-[4deg]" />
+
         <div className={`w-2 md:w-3 bg-gradient-to-b ${categoryGradient} flex-shrink-0`}></div>
 
-        {/* Main content area - Horizontal layout */}
-        <div className="flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-between">
+        <div className="relative z-10 flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-between">
           <div>
             {/* Top row: Category badge and metadata */}
-            <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
-              {/* Category badge */}
-              <span className={`inline-flex items-center px-4 py-2 text-xs font-bold tracking-widest uppercase bg-gradient-to-r ${categoryGradient} text-white rounded-full shadow-lg`}>
-                {post.category}
-              </span>
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
+                {/* Category badge */}
+                <span className="inline-flex items-center px-4 py-2 text-[0.7rem] font-semibold tracking-[0.32em] uppercase bg-[#f4e9cf] text-[#3b3324] border border-[#decfae] rounded-full shadow-sm">
+                  {post.category}
+                </span>
 
               {/* Metadata row - Compact */}
-              <div className="flex items-center gap-3 text-xs text-gray-500">
+              <div className="flex items-center gap-3 text-xs text-[#6b6256]">
                 <div className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-teal-600" aria-hidden="true" />
+                  <Calendar className="w-3.5 h-3.5 text-[#5b9086]" aria-hidden="true" />
                   <time dateTime={post.date} className="font-light">
                     {formatDate(post.date)}
                   </time>
                 </div>
-                <span className="text-gray-300">•</span>
+                <span className="text-[#d0c2aa]">•</span>
                 <div className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-teal-600" aria-hidden="true" />
+                  <Clock className="w-3.5 h-3.5 text-[#5b9086]" aria-hidden="true" />
                   <span className="font-light">{readingTime} min</span>
                 </div>
-                <span className="text-gray-300">•</span>
+                <span className="text-[#d0c2aa]">•</span>
                 <div className="flex items-center gap-1.5">
-                  <User className="w-3.5 h-3.5 text-teal-600" aria-hidden="true" />
-                  <span className="font-medium text-gray-700">{post.author || 'Dr. Saraiva'}</span>
+                  <User className="w-3.5 h-3.5 text-[#5b9086]" aria-hidden="true" />
+                  <span className="font-medium text-[#4b4439]">{post.author || 'Dr. Saraiva'}</span>
                 </div>
               </div>
             </div>
@@ -268,21 +272,21 @@ const BlogPage = () => {
 
             {/* Excerpt - Two columns on larger screens */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+              <p className="text-[#5a5245] text-base md:text-lg leading-relaxed">
                 {post.excerpt}
               </p>
 
               {/* Learning Points - Compact in second column */}
               {enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
-                <div className="bg-gradient-to-br from-teal-50/80 to-cyan-50/50 rounded-2xl p-5 border border-teal-200/40">
-                  <p className="text-sm font-bold text-teal-800 mb-3 flex items-center gap-2">
+                <div className="rounded-2xl p-5 border border-[#d7c7aa] bg-[#f7f0df] shadow-inner">
+                  <p className="text-sm font-semibold text-[#3f372a] mb-3 flex items-center gap-2">
                     <span className="text-xl">✓</span>
                     <span>Você vai aprender:</span>
                   </p>
                   <ul className="space-y-2">
                     {enrichment.learningPoints.slice(0, 3).map((point, idx) => (
-                      <li key={idx} className="text-sm text-gray-700 flex items-start gap-2 leading-snug">
-                        <span className="text-teal-600 mt-0.5 flex-shrink-0 text-xs">▸</span>
+                      <li key={idx} className="text-sm text-[#5a5245] flex items-start gap-2 leading-snug">
+                        <span className="text-[#5b9086] mt-0.5 flex-shrink-0 text-xs">▸</span>
                         <span>{point}</span>
                       </li>
                     ))}
@@ -293,22 +297,22 @@ const BlogPage = () => {
           </div>
 
           {/* Bottom CTA - Full width */}
-          <Link
-            to={`/blog/${post.slug}`}
-            className="mt-auto focus:outline-none group/button block"
-            aria-label={`Leia mais sobre: ${post.title}`}
-          >
-            <div className="flex items-center justify-between px-8 py-5 bg-gradient-to-r from-teal-50 to-cyan-50 hover:from-teal-100 hover:to-cyan-100 border-2 border-teal-200/60 hover:border-teal-400 rounded-2xl transition-all duration-300 group-hover/button:shadow-lg">
-              <span className="text-lg font-semibold text-gray-800 group-hover/button:text-teal-700 transition-colors">
-                {t('blog.read_more', 'Ler artigo completo')}
-              </span>
-              <ArrowRight className="w-6 h-6 text-teal-600 transition-all duration-300 group-hover/button:translate-x-2" aria-hidden="true" />
-            </div>
-          </Link>
+            <Link
+              to={`/blog/${post.slug}`}
+              className="mt-auto focus:outline-none group/button block"
+              aria-label={`Leia mais sobre: ${post.title}`}
+            >
+              <div className="flex items-center justify-between px-8 py-5 bg-[#f2ede2] hover:bg-[#ebe3d5] border border-[#d7c9af] rounded-2xl transition-all duration-300 group-hover/button:shadow-lg">
+                <span className="text-lg font-semibold text-[#443c31] group-hover/button:text-[#2e675d] transition-colors">
+                  {t('blog.read_more', 'Ler artigo completo')}
+                </span>
+                <ArrowRight className="w-6 h-6 text-[#2e675d] transition-all duration-300 group-hover/button:translate-x-2" aria-hidden="true" />
+              </div>
+            </Link>
         </div>
 
         {/* Hover glow effect */}
-        <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-teal-400/0 via-cyan-400/0 to-blue-400/0 group-hover:from-teal-400/10 group-hover:via-cyan-400/10 group-hover:to-blue-400/10 transition-all duration-500 pointer-events-none"></div>
+        <div className="absolute inset-0 rounded-[32px] bg-gradient-to-r from-transparent via-transparent to-transparent group-hover:from-[#2e675d0d] group-hover:via-[#4a7f720d] group-hover:to-[#2e675d0d] transition-all duration-500 pointer-events-none"></div>
       </motion.article>
     );
   }, [t]);
@@ -376,7 +380,10 @@ const BlogPage = () => {
         .slice(0, 3);
 
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 relative">
+      <div className="min-h-screen relative overflow-hidden bg-[#f3ede2]">
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95),_rgba(241,232,214,0.9))]" />
+        <div className="pointer-events-none absolute inset-0 -z-10 mix-blend-multiply opacity-60 bg-[linear-gradient(0deg,_rgba(216,204,186,0.18)_1px,_transparent_1px)] bg-[length:100%_56px]" />
+        <div className="pointer-events-none absolute inset-0 -z-10 mix-blend-multiply opacity-40 bg-[linear-gradient(90deg,_rgba(216,204,186,0.14)_1px,_transparent_1px)] bg-[length:64px_100%]" />
         <Helmet>
           <title>{currentPost.seo?.metaTitle || currentPost.title} | Saraiva Vision</title>
           <meta name="description" content={currentPost.seo?.metaDescription || currentPost.excerpt} />
@@ -404,8 +411,16 @@ const BlogPage = () => {
           Pular para o conteúdo
         </a>
 
-        <main id="main-content" tabIndex="-1" className="py-20 md:py-24 bg-gradient-to-b from-gray-50 to-white">
-          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+        <main
+          id="main-content"
+          tabIndex="-1"
+          className="relative overflow-hidden py-20 md:py-24 mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%] rounded-[40px] border border-[#e4d7c5] shadow-[0_32px_90px_rgba(126,108,90,0.18)] bg-[#fefaf2]"
+        >
+          <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.9),_rgba(249,243,230,0.9))]" />
+          <div className="pointer-events-none absolute inset-0 -z-10 opacity-40 bg-[linear-gradient(0deg,_rgba(214,200,180,0.25)_1px,_transparent_1px)] bg-[length:100%_54px]" />
+          <div className="pointer-events-none absolute inset-0 -z-10 opacity-35 bg-[linear-gradient(90deg,_rgba(214,200,180,0.2)_1px,_transparent_1px)] bg-[length:68px_100%]" />
+          <div className="relative z-10">
+            <div className="container mx-auto px-4 md:px-6 max-w-7xl">
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex items-center space-x-2 text-sm text-text-secondary">
@@ -447,12 +462,13 @@ const BlogPage = () => {
               </aside>
 
               {/* Main Content Area - Text-only design */}
-              <article className="lg:col-span-6 bg-gradient-to-br from-white to-gray-50/30 rounded-3xl shadow-2xl border border-gray-200/60 overflow-hidden">
-                {/* Decorative header accent */}
-                <div className="h-2 bg-gradient-to-r from-teal-400 via-cyan-400 to-blue-400"></div>
-
-                {/* Content Container */}
-                <div className="p-8 md:p-12 lg:p-14">
+              <article className="relative lg:col-span-6 overflow-hidden rounded-[36px] border border-[#e3d6c1] bg-[#fffdf5] shadow-[0_28px_60px_rgba(120,102,84,0.18)]">
+                <div className="pointer-events-none absolute inset-0 -z-10 opacity-70 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95),_rgba(248,239,222,0.9))]" />
+                <div className="pointer-events-none absolute inset-0 -z-10 opacity-45 bg-[linear-gradient(0deg,_rgba(220,204,182,0.25)_1px,_transparent_1px)] bg-[length:100%_52px]" />
+                <div className="pointer-events-none absolute inset-0 -z-10 opacity-30 bg-[linear-gradient(90deg,_rgba(220,204,182,0.25)_1px,_transparent_1px)] bg-[length:62px_100%]" />
+                <div className="pointer-events-none absolute -top-6 left-12 h-10 w-32 rounded-sm bg-[#f0e3c1]/80 shadow-md rotate-[-4deg]" />
+                <div className="pointer-events-none absolute -top-8 right-16 h-10 w-28 rounded-sm bg-[#f0e3c1]/70 shadow-md rotate-[6deg]" />
+                <div className="relative z-10 p-8 md:p-12 lg:p-14">
                   {/* Category Badge */}
                   <div className="mb-6">
                     <span className="inline-block px-5 py-2 text-sm font-semibold tracking-wider uppercase bg-gradient-to-r from-teal-50 to-cyan-50 text-teal-700 rounded-full border-2 border-teal-200/60 shadow-sm">
@@ -625,16 +641,20 @@ const BlogPage = () => {
               </motion.div>
             )}
           </div>
-        </main>
+        </div>
+      </main>
 
-        <EnhancedFooter />
+      <EnhancedFooter />
       </div>
     );
   }
 
 
   return (
-    <div className="min-h-screen bg-white relative">
+    <div className="min-h-screen relative overflow-hidden bg-[#f3ede2]">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95),_rgba(241,232,214,0.9))]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 mix-blend-multiply opacity-60 bg-[linear-gradient(0deg,_rgba(216,204,186,0.18)_1px,_transparent_1px)] bg-[length:100%_56px]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 mix-blend-multiply opacity-40 bg-[linear-gradient(90deg,_rgba(216,204,186,0.14)_1px,_transparent_1px)] bg-[length:64px_100%]" />
       <Helmet>
         <title>Blog | Saraiva Vision</title>
         <meta name="description" content="Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos na Clínica Saraiva Vision." />
@@ -653,37 +673,45 @@ const BlogPage = () => {
 
       <main
         id="main-content"
-        className="py-32 md:py-40 mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%] bg-gradient-to-b from-gray-50 via-white to-gray-50"
+        className="relative overflow-hidden py-32 md:py-40 mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%] rounded-[48px] border border-[#e4d7c5] shadow-[0_36px_100px_rgba(126,108,90,0.2)] bg-[#fefaf2]"
         role="main"
         aria-label="Conteúdo principal do blog"
         tabIndex="-1"
       >
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.92),_rgba(249,243,230,0.92))]" />
+        <div className="pointer-events-none absolute inset-0 -z-10 opacity-45 bg-[linear-gradient(0deg,_rgba(214,200,180,0.25)_1px,_transparent_1px)] bg-[length:100%_54px]" />
+        <div className="pointer-events-none absolute inset-0 -z-10 opacity-35 bg-[linear-gradient(90deg,_rgba(214,200,180,0.2)_1px,_transparent_1px)] bg-[length:68px_100%]" />
+        <div className="relative z-10">
+          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <motion.header
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-16"
+            className="mb-16"
           >
-            {/* Elegant minimalist header */}
-            <div className="relative max-w-4xl mx-auto">
-              {/* Decorative line accent */}
-              <div className="w-24 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 mx-auto mb-8 rounded-full"></div>
-
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-6 text-gray-900 leading-tight tracking-tight">
-                <Trans i18nKey="blog.title">
-                  Blog <span className="bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">Saraiva Vision</span>
-                </Trans>
-              </h1>
-              <p className="text-lg md:text-xl text-gray-600 font-light max-w-3xl mx-auto leading-loose">
-                Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos
-              </p>
-
-              {/* Decorative bottom accent */}
-              <div className="mt-8 flex items-center justify-center gap-2">
-                <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
-                <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
-                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+            <div className="relative max-w-4xl mx-auto overflow-hidden rounded-[36px] border border-[#e1d4bd] bg-[#fffaf0] px-8 py-16 shadow-[0_28px_80px_rgba(120,102,84,0.2)]">
+              <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95),_rgba(248,240,224,0.92))]" />
+              <div className="pointer-events-none absolute inset-0 -z-10 opacity-45 bg-[linear-gradient(0deg,_rgba(214,200,180,0.25)_1px,_transparent_1px)] bg-[length:100%_48px]" />
+              <div className="pointer-events-none absolute inset-0 -z-10 opacity-35 bg-[linear-gradient(90deg,_rgba(214,200,180,0.2)_1px,_transparent_1px)] bg-[length:64px_100%]" />
+              <div className="pointer-events-none absolute -top-8 left-16 h-10 w-32 rounded-sm bg-[#f0e3c1]/80 shadow-md rotate-[-5deg]" />
+              <div className="pointer-events-none absolute -top-10 right-20 h-10 w-28 rounded-sm bg-[#f0e3c1]/70 shadow-md rotate-[4deg]" />
+              <div className="relative z-10 text-center space-y-6">
+                <span className="inline-block text-xs font-semibold tracking-[0.5em] uppercase text-[#7c7464]">
+                  Jornal de Saúde Ocular
+                </span>
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight tracking-tight text-[#2e2923]">
+                  <Trans i18nKey="blog.title">
+                    Blog <span className="bg-gradient-to-r from-[#2e675d] to-[#49a598] bg-clip-text text-transparent">Saraiva Vision</span>
+                  </Trans>
+                </h1>
+                <p className="text-lg md:text-xl text-[#5f574b] font-light max-w-3xl mx-auto leading-loose">
+                  Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos
+                </p>
+                <div className="flex items-center justify-center gap-2">
+                  <div className="h-px w-20 bg-[#d6c8af]"></div>
+                  <div className="h-3 w-3 rounded-full border border-[#bba985] bg-[#f7e9c7]"></div>
+                  <div className="h-px w-20 bg-[#d6c8af]"></div>
+                </div>
               </div>
             </div>
           </motion.header>
@@ -701,12 +729,12 @@ const BlogPage = () => {
                     placeholder="Buscar artigos por título, conteúdo ou tags..."
                     aria-label="Buscar artigos no blog"
                     aria-describedby="search-help"
-                    className="w-full pl-14 pr-14 py-5 bg-gradient-to-br from-white to-gray-50/50 border-2 border-gray-200/60 rounded-2xl focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400 transition-all text-gray-900 placeholder:text-gray-400 text-lg shadow-lg hover:shadow-xl hover:border-gray-300"
+                    className="w-full pl-14 pr-14 py-5 rounded-3xl border border-[#deceb0] bg-[#fffaf5] text-[#3f372a] placeholder:text-[#a69b88] text-lg shadow-[0_16px_40px_rgba(140,120,90,0.18)] transition-all focus:outline-none focus:ring-2 focus:ring-[#2e675d] focus:border-[#2e675d] hover:shadow-[0_24px_55px_rgba(130,112,84,0.22)] hover:border-[#d3c3a2]"
                   />
 
                   {/* Search icon */}
                   <div className="absolute left-5 top-1/2 transform -translate-y-1/2">
-                    <svg className="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <svg className="w-6 h-6 text-[#2e675d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   </div>
@@ -716,17 +744,17 @@ const BlogPage = () => {
                     <button
                       type="button"
                       onClick={() => setSearchTerm('')}
-                      className="absolute right-5 top-1/2 transform -translate-y-1/2 p-2 hover:bg-red-50 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-red-300"
+                      className="absolute right-5 top-1/2 transform -translate-y-1/2 p-2 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-[#c8ab6f] hover:bg-[#f7e9c7]"
                       aria-label="Limpar busca"
                     >
-                      <X className="w-5 h-5 text-gray-400 hover:text-red-600 transition-colors" />
+                      <X className="w-5 h-5 text-[#9b8f7b] transition-colors hover:text-[#7d6b55]" />
                     </button>
                   )}
 
                   {/* Loading spinner */}
                   {searchTerm && searchTerm !== debouncedSearch && (
                     <div className="absolute right-14 top-1/2 transform -translate-y-1/2">
-                      <div className="w-5 h-5 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
+                      <div className="w-5 h-5 border-2 border-[#2e675d] border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
                     </div>
                   )}
                 </div>
@@ -738,13 +766,13 @@ const BlogPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="mt-4"
                   >
-                    <p className="text-base font-medium text-center text-teal-700 bg-teal-50 py-2 px-4 rounded-full inline-block mx-auto" id="search-help" aria-live="polite" aria-atomic="true">
+                    <p className="text-base font-medium text-center text-[#2e675d] bg-[#f7e9c7] py-2 px-4 rounded-full inline-block mx-auto" id="search-help" aria-live="polite" aria-atomic="true">
                       ✨ {filteredPosts.length} {filteredPosts.length === 1 ? 'resultado encontrado' : 'resultados encontrados'}
                     </p>
                   </motion.div>
                 )}
                 {!debouncedSearch && (
-                  <p className="text-sm text-gray-500 mt-4 text-center font-light" id="search-help">
+                  <p className="text-sm text-[#7f7666] mt-4 text-center font-light" id="search-help">
                     Digite para buscar artigos por título, conteúdo ou tags
                   </p>
                 )}
@@ -775,9 +803,9 @@ const BlogPage = () => {
                       }}
                       aria-pressed={isActive}
                       aria-label={`Filtrar por categoria: ${category}`}
-                      className={`inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl text-base font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 ${isActive
-                          ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg hover:shadow-xl hover:from-teal-600 hover:to-cyan-600 scale-105'
-                          : 'bg-white text-gray-700 border-2 border-gray-200/60 hover:border-teal-300 hover:text-teal-700 hover:bg-teal-50/50 shadow-md hover:shadow-lg'
+                      className={`inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl text-base font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#2e675d] focus:ring-offset-2 ${isActive
+                          ? 'bg-gradient-to-r from-[#2e675d] to-[#49a598] text-white shadow-lg hover:shadow-xl hover:from-[#285b52] hover:to-[#3f8c81] scale-105'
+                          : 'bg-[#fffaf0] text-[#4b4439] border border-[#d9c9ae] hover:border-[#2e675d] hover:text-[#2e675d] hover:bg-[#f7e9c7] shadow-[0_10px_28px_rgba(150,132,110,0.12)]'
                         }`}
                     >
                       {Icon && <Icon className="w-5 h-5" aria-hidden="true" />}
@@ -801,7 +829,7 @@ const BlogPage = () => {
               </div>
             ) : postsLoading ? (
               <div className="flex justify-center items-center py-12">
-                <Loader2 className="w-10 h-10 animate-spin text-cyan-600" />
+                <Loader2 className="w-10 h-10 animate-spin text-[#2e675d]" />
                 <span className="ml-3 text-text-secondary">Carregando artigos...</span>
               </div>
             ) : filteredPosts.length > 0 ? (
@@ -829,7 +857,7 @@ const BlogPage = () => {
                       }}
                       disabled={currentPage === 1}
                       variant="outline"
-                      className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50"
+                      className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#f7e9c7]"
                       aria-label="Página anterior"
                     >
                       <ChevronLeft className="w-5 h-5" />
@@ -866,8 +894,8 @@ const BlogPage = () => {
                             }}
                             variant={currentPage === pageNum ? 'default' : 'outline'}
                             className={`px-4 py-2 min-w-[44px] ${currentPage === pageNum
-                                ? 'bg-cyan-600 text-white hover:bg-cyan-700'
-                                : 'hover:bg-blue-50'
+                                ? 'bg-[#2e675d] text-white hover:bg-[#285b52]'
+                                : 'hover:bg-[#f7e9c7]'
                               }`}
                             aria-label={`Página ${pageNum}`}
                             aria-current={currentPage === pageNum ? 'page' : undefined}
@@ -886,7 +914,7 @@ const BlogPage = () => {
                       }}
                       disabled={currentPage === totalPages}
                       variant="outline"
-                      className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50"
+                      className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#f7e9c7]"
                       aria-label="Próxima página"
                     >
                       <ChevronRight className="w-5 h-5" />
@@ -898,17 +926,17 @@ const BlogPage = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-center p-12 bg-white/70 backdrop-blur-md rounded-2xl shadow-lg border border-white/50"
+                className="text-center p-12 rounded-[32px] border border-[#e1d4bd] bg-[#fff3dd]/95 shadow-[0_24px_70px_rgba(130,112,94,0.18)]"
               >
-                <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-10 h-10 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 bg-[#f7e9c7] text-[#2e675d]">
+                  <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-text-primary mb-2">
+                <h3 className="text-xl font-semibold text-[#2e2923] mb-2">
                   Nenhum artigo encontrado
                 </h3>
-                <p className="text-text-secondary mb-6">
+                <p className="text-[#5f574b] mb-6">
                   Tente ajustar sua busca ou filtros para encontrar mais artigos.
                 </p>
                 <Button
@@ -917,7 +945,7 @@ const BlogPage = () => {
                     setSelectedCategory('Todas');
                   }}
                   variant="outline"
-                  className="mx-auto"
+                  className="mx-auto border-[#d9c9ae] text-[#2e675d] hover:bg-[#f7e9c7]"
                 >
                   Limpar filtros
                 </Button>
@@ -925,43 +953,43 @@ const BlogPage = () => {
             )}
 
             {/* Blog Info Section */}
-            <div className="mt-12 bg-white/70 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/50">
+            <div className="mt-12 rounded-[32px] border border-[#e1d4bd] bg-[#fffaf0]/95 p-8 shadow-[0_28px_80px_rgba(120,102,84,0.2)]">
               <div className="text-center">
-                <h2 className="text-2xl font-bold text-text-primary mb-4">
+                <h2 className="text-2xl font-bold text-[#2e2923] mb-4">
                   Sobre Nosso Blog
                 </h2>
-                <p className="text-text-secondary max-w-3xl mx-auto mb-6">
+                <p className="text-[#5f574b] max-w-3xl mx-auto mb-6">
                   No blog Saraiva Vision, compartilhamos conhecimento especializado sobre saúde ocular,
                   prevenção de doenças e as tecnologias mais modernas em oftalmologia.
                   Nossa missão é educar e informar sobre a importância dos cuidados com a visão.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                   <div className="text-center">
-                    <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 bg-[#f7e9c7] text-[#2e675d]">
+                      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                       </svg>
                     </div>
-                    <h3 className="font-semibold text-text-primary mb-2">Conteúdo Especializado</h3>
-                    <p className="text-sm text-text-secondary">Artigos elaborados por oftalmologistas experientes</p>
+                    <h3 className="font-semibold text-[#2e2923] mb-2">Conteúdo Especializado</h3>
+                    <p className="text-sm text-[#5f574b]">Artigos elaborados por oftalmologistas experientes</p>
                   </div>
                   <div className="text-center">
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 bg-[#e6f1ec] text-[#2e675d]">
+                      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <h3 className="font-semibold text-text-primary mb-2">Prevenção e Saúde</h3>
-                    <p className="text-sm text-text-secondary">Foco na prevenção e cuidados com a saúde ocular</p>
+                    <h3 className="font-semibold text-[#2e2923] mb-2">Prevenção e Saúde</h3>
+                    <p className="text-sm text-[#5f574b]">Foco na prevenção e cuidados com a saúde ocular</p>
                   </div>
                   <div className="text-center">
-                    <div className="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <svg className="w-8 h-8 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 bg-[#f4e4cc] text-[#8a6d3b]">
+                      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
-                    <h3 className="font-semibold text-text-primary mb-2">Atualizações Regulares</h3>
-                    <p className="text-sm text-text-secondary">Novo conteúdo adicionado mensalmente</p>
+                    <h3 className="font-semibold text-[#2e2923] mb-2">Atualizações Regulares</h3>
+                    <p className="text-sm text-[#5f574b]">Novo conteúdo adicionado mensalmente</p>
                   </div>
                 </div>
               </div>
@@ -973,6 +1001,7 @@ const BlogPage = () => {
             </div>
           </section>
         </div>
+      </div>
       </main>
 
       <EnhancedFooter />
