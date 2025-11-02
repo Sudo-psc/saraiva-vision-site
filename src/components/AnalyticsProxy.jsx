@@ -34,50 +34,50 @@ const AnalyticsProxy = () => {
     const GTM_ID = import.meta.env.VITE_GTM_ID || 'GTM-KF2NP85D';
     const GA_ID = import.meta.env.VITE_GA_ID || 'G-LXWRK8ELS6';
 
-    // === Google Tag Manager via Proxy ===
+    // === Google Tag Manager via Nginx Proxy (Anti-AdBlock) ===
     const gtmScript = document.createElement('script');
     gtmScript.async = true;
-    gtmScript.src = `/t/gtm.js?id=${GTM_ID}`;
+    gtmScript.src = `/gtm.js?id=${GTM_ID}`;  // CORRIGIDO: /gtm.js em vez de /t/gtm.js
     gtmScript.onload = () => {
-      console.log('[AnalyticsProxy] GTM loaded via proxy');
+      console.log('[AnalyticsProxy] ✅ GTM loaded via Nginx proxy (anti-adblock)');
     };
     gtmScript.onerror = () => {
-      console.warn('[AnalyticsProxy] GTM proxy failed, trying fallback');
+      console.warn('[AnalyticsProxy] ⚠️ GTM proxy failed, trying direct fallback');
       loadDirectGTM();
     };
     document.head.appendChild(gtmScript);
 
-    // === Google Analytics 4 via Proxy ===
+    // === Google Analytics 4 via Direct Load ===
+    // Nota: Nginx não tem proxy para gtag.js ainda, usando direto
+    // Para adicionar proxy: criar location /gtag.js no Nginx
     const gtagScript = document.createElement('script');
     gtagScript.async = true;
-    gtagScript.src = `/t/gtag.js?id=${GA_ID}`;
+    gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;  // CORRIGIDO: direto do Google
     gtagScript.onload = () => {
-      console.log('[AnalyticsProxy] GA4 loaded via proxy');
+      console.log('[AnalyticsProxy] ✅ GA4 loaded (direct from Google)');
 
-      // Configurar GA4
+      // Configurar GA4 (sem proxy para collect por enquanto)
       gtag('js', new Date());
       gtag('config', GA_ID, {
         send_page_view: true,
         cookie_domain: 'saraivavision.com.br',
-        cookie_flags: 'SameSite=None;Secure',
-        // IMPORTANTE: Sobrescrever endpoints para usar proxy
-        transport_url: '/t/collect',
-        first_party_collection: true
+        cookie_flags: 'SameSite=None;Secure'
+        // Removido transport_url (não temos proxy /collect ainda)
       });
 
-      // Configurar Google Consent Mode para usar proxy
+      // Configurar Google Consent Mode
       gtag('consent', 'default', {
         'ad_storage': 'denied',
         'ad_user_data': 'denied',
         'ad_personalization': 'denied',
         'analytics_storage': 'granted',
-        'transport_url': '/t/ccm/collect',  // Proxy para Consent Mode
         'url_passthrough': true
       });
+
+      console.log('[AnalyticsProxy] ✅ GA4 configured successfully');
     };
     gtagScript.onerror = () => {
-      console.warn('[AnalyticsProxy] GA4 proxy failed, trying fallback');
-      loadDirectGA4();
+      console.error('[AnalyticsProxy] ❌ GA4 load failed completely');
     };
     document.head.appendChild(gtagScript);
 
@@ -102,13 +102,6 @@ const AnalyticsProxy = () => {
       };
       document.head.appendChild(script);
     }
-
-    // Track proxy effectiveness
-    const trackingMethod = 'proxy';
-    gtag('event', 'analytics_loaded', {
-      method: trackingMethod,
-      timestamp: new Date().toISOString()
-    });
 
     // Cleanup
     return () => {
