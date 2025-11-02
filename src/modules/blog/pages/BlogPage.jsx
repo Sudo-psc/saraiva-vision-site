@@ -211,19 +211,19 @@ const BlogPage = () => {
     return (
       <motion.article
         key={post.id}
-        initial={{ opacity: 0, x: -50 }}
-        whileInView={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
-        transition={{ duration: 0.5, delay: index * 0.08 }}
-        className="group relative flex flex-col md:flex-row items-stretch bg-gradient-to-br from-white via-gray-50/50 to-white rounded-3xl border-2 border-gray-200/60 hover:border-teal-400 hover:shadow-2xl hover:shadow-teal-100/50 transition-all duration-500 overflow-hidden cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+        transition={{ duration: 0.5, delay: index * 0.05 }}
+        className="group relative flex flex-col items-stretch bg-gradient-to-br from-white via-gray-50/50 to-white rounded-3xl border-2 border-gray-200/60 hover:border-teal-400 hover:shadow-2xl hover:shadow-teal-100/50 transition-all duration-500 overflow-hidden cursor-pointer hover:scale-[1.01] active:scale-[0.99] h-full"
         role="article"
         aria-labelledby={`post-title-${post.id}`}
       >
-        {/* Left vertical accent bar */}
-        <div className={`w-2 md:w-3 bg-gradient-to-b ${categoryGradient} flex-shrink-0`}></div>
+        {/* Top horizontal accent bar */}
+        <div className={`h-2 bg-gradient-to-r ${categoryGradient} flex-shrink-0`}></div>
 
-        {/* Main content area - Horizontal layout */}
-        <div className="flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-between">
+        {/* Main content area - Vertical layout */}
+        <div className="flex-1 p-6 md:p-8 flex flex-col justify-between">
           <div>
             {/* Top row: Category badge and metadata */}
             <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
@@ -253,56 +253,54 @@ const BlogPage = () => {
               </div>
             </div>
 
-            {/* Title - Extra large, dominant */}
+            {/* Title - Responsive sizing */}
             <h3
               id={`post-title-${post.id}`}
-              className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-5 text-gray-900 leading-tight tracking-tight group-hover:text-teal-700 transition-colors duration-300"
+              className="text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-serif font-bold mb-4 text-gray-900 leading-tight tracking-tight group-hover:text-teal-700 transition-colors duration-300 line-clamp-3"
             >
               <Link
                 to={`/blog/${post.slug}`}
-                className="hover:underline decoration-2 decoration-teal-400 underline-offset-8 focus:outline-none focus:text-teal-700"
+                className="hover:underline decoration-2 decoration-teal-400 underline-offset-4 focus:outline-none focus:text-teal-700"
               >
                 {post.title}
               </Link>
             </h3>
 
-            {/* Excerpt - Two columns on larger screens */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              <p className="text-gray-600 text-base md:text-lg leading-relaxed">
-                {post.excerpt}
-              </p>
+            {/* Excerpt - Single column, compact */}
+            <p className="text-gray-600 text-base leading-relaxed mb-5 line-clamp-3">
+              {post.excerpt}
+            </p>
 
-              {/* Learning Points - Compact in second column */}
-              {enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
-                <div className="bg-gradient-to-br from-teal-50/80 to-cyan-50/50 rounded-2xl p-5 border border-teal-200/40">
-                  <p className="text-sm font-bold text-teal-800 mb-3 flex items-center gap-2">
-                    <span className="text-xl">✓</span>
-                    <span>Você vai aprender:</span>
-                  </p>
-                  <ul className="space-y-2">
-                    {enrichment.learningPoints.slice(0, 3).map((point, idx) => (
-                      <li key={idx} className="text-sm text-gray-700 flex items-start gap-2 leading-snug">
-                        <span className="text-teal-600 mt-0.5 flex-shrink-0 text-xs">▸</span>
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
+            {/* Learning Points - Compact inline */}
+            {enrichment?.learningPoints && enrichment.learningPoints.length > 0 && (
+              <div className="bg-gradient-to-br from-teal-50/80 to-cyan-50/50 rounded-2xl p-4 border border-teal-200/40 mb-5">
+                <p className="text-xs font-bold text-teal-800 mb-2 flex items-center gap-2">
+                  <span className="text-lg">✓</span>
+                  <span>Você vai aprender:</span>
+                </p>
+                <ul className="space-y-1.5">
+                  {enrichment.learningPoints.slice(0, 3).map((point, idx) => (
+                    <li key={idx} className="text-sm text-gray-700 flex items-start gap-2 leading-snug">
+                      <span className="text-teal-600 mt-0.5 flex-shrink-0 text-xs">▸</span>
+                      <span className="line-clamp-2">{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
-          {/* Bottom CTA - Full width */}
+          {/* Bottom CTA - Compact */}
           <Link
             to={`/blog/${post.slug}`}
             className="mt-auto focus:outline-none group/button block"
             aria-label={`Leia mais sobre: ${post.title}`}
           >
-            <div className="flex items-center justify-between px-8 py-5 bg-gradient-to-r from-teal-50 to-cyan-50 hover:from-teal-100 hover:to-cyan-100 border-2 border-teal-200/60 hover:border-teal-400 rounded-2xl transition-all duration-300 group-hover/button:shadow-lg">
-              <span className="text-lg font-semibold text-gray-800 group-hover/button:text-teal-700 transition-colors">
+            <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-teal-50 to-cyan-50 hover:from-teal-100 hover:to-cyan-100 border-2 border-teal-200/60 hover:border-teal-400 rounded-2xl transition-all duration-300 group-hover/button:shadow-lg">
+              <span className="text-base font-semibold text-gray-800 group-hover/button:text-teal-700 transition-colors">
                 {t('blog.read_more', 'Ler artigo completo')}
               </span>
-              <ArrowRight className="w-6 h-6 text-teal-600 transition-all duration-300 group-hover/button:translate-x-2" aria-hidden="true" />
+              <ArrowRight className="w-5 h-5 text-teal-600 transition-all duration-300 group-hover/button:translate-x-2" aria-hidden="true" />
             </div>
           </Link>
         </div>
@@ -405,7 +403,7 @@ const BlogPage = () => {
         </a>
 
         <main id="main-content" tabIndex="-1" className="py-20 md:py-24 bg-gradient-to-b from-gray-50 to-white">
-          <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+          <div className="container mx-auto px-4 md:px-6 max-w-[1600px]">
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex items-center space-x-2 text-sm text-text-secondary">
@@ -437,17 +435,17 @@ const BlogPage = () => {
               Voltar para o blog
             </Button>
 
-            {/* 3-Column Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+            {/* 3-Column Layout - Optimized for wide screens */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-10">
               {/* Left Sidebar - Table of Contents (Hidden on mobile) */}
-              <aside className="hidden lg:block lg:col-span-3">
+              <aside className="hidden lg:block lg:col-span-3 xl:col-span-2">
                 <div className="sticky top-24">
                   <TableOfContents headings={headings} />
                 </div>
               </aside>
 
               {/* Main Content Area - Text-only design */}
-              <article className="lg:col-span-6 bg-gradient-to-br from-white to-gray-50/30 rounded-3xl shadow-2xl border border-gray-200/60 overflow-hidden">
+              <article className="lg:col-span-6 xl:col-span-8 bg-gradient-to-br from-white to-gray-50/30 rounded-3xl shadow-2xl border border-gray-200/60 overflow-hidden">
                 {/* Decorative header accent */}
                 <div className="h-2 bg-gradient-to-r from-teal-400 via-cyan-400 to-blue-400"></div>
 
@@ -485,23 +483,23 @@ const BlogPage = () => {
                     </div>
                   </div>
 
-                  {/* Article Content - Relaxing typography */}
+                  {/* Article Content - Optimized typography for wide screens */}
                   <div
-                    className="prose prose-xl max-w-none
+                    className="prose prose-lg xl:prose-xl max-w-none
                       prose-headings:font-serif prose-headings:font-bold prose-headings:text-gray-900
-                      prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b-2 prose-h2:border-gray-200/60
-                      prose-h3:text-2xl prose-h3:mt-10 prose-h3:mb-5 prose-h3:text-gray-800
-                      prose-p:text-gray-700 prose-p:leading-loose prose-p:mb-6 prose-p:text-lg
+                      prose-h2:text-2xl xl:prose-h2:text-3xl prose-h2:mt-10 xl:prose-h2:mt-12 prose-h2:mb-5 xl:prose-h2:mb-6 prose-h2:pb-3 xl:prose-h2:pb-4 prose-h2:border-b-2 prose-h2:border-gray-200/60
+                      prose-h3:text-xl xl:prose-h3:text-2xl prose-h3:mt-8 xl:prose-h3:mt-10 prose-h3:mb-4 xl:prose-h3:mb-5 prose-h3:text-gray-800
+                      prose-p:text-gray-700 prose-p:leading-relaxed xl:prose-p:leading-loose prose-p:mb-5 xl:prose-p:mb-6 prose-p:text-base xl:prose-p:text-lg
                       prose-a:text-teal-600 prose-a:no-underline hover:prose-a:underline hover:prose-a:text-teal-700 prose-a:transition-colors
                       prose-strong:text-gray-900 prose-strong:font-semibold
-                      prose-ul:my-6 prose-ul:ml-8 prose-ul:space-y-3
-                      prose-ol:my-6 prose-ol:ml-8 prose-ol:space-y-3
-                      prose-li:text-gray-700 prose-li:leading-loose prose-li:text-lg
+                      prose-ul:my-5 xl:prose-ul:my-6 prose-ul:ml-6 xl:prose-ul:ml-8 prose-ul:space-y-2 xl:prose-ul:space-y-3
+                      prose-ol:my-5 xl:prose-ol:my-6 prose-ol:ml-6 xl:prose-ol:ml-8 prose-ol:space-y-2 xl:prose-ol:space-y-3
+                      prose-li:text-gray-700 prose-li:leading-relaxed xl:prose-li:leading-loose prose-li:text-base xl:prose-li:text-lg
                       prose-li:marker:text-teal-600
-                      prose-img:rounded-2xl prose-img:shadow-xl prose-img:my-10
-                      prose-blockquote:border-l-4 prose-blockquote:border-teal-400 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-600 prose-blockquote:bg-teal-50/30 prose-blockquote:py-4 prose-blockquote:pr-4 prose-blockquote:rounded-r-xl
-                      prose-code:text-teal-700 prose-code:bg-teal-50 prose-code:px-2 prose-code:py-1 prose-code:rounded-md prose-code:text-base prose-code:font-mono
-                      prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-6 prose-pre:rounded-2xl prose-pre:overflow-x-auto prose-pre:shadow-lg"
+                      prose-img:rounded-2xl prose-img:shadow-xl prose-img:my-8 xl:prose-img:my-10
+                      prose-blockquote:border-l-4 prose-blockquote:border-teal-400 prose-blockquote:pl-5 xl:prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-600 prose-blockquote:bg-teal-50/30 prose-blockquote:py-3 xl:prose-blockquote:py-4 prose-blockquote:pr-3 xl:prose-blockquote:pr-4 prose-blockquote:rounded-r-xl
+                      prose-code:text-teal-700 prose-code:bg-teal-50 prose-code:px-2 prose-code:py-1 prose-code:rounded-md prose-code:text-sm xl:prose-code:text-base prose-code:font-mono
+                      prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-5 xl:prose-pre:p-6 prose-pre:rounded-2xl prose-pre:overflow-x-auto prose-pre:shadow-lg"
                   >
                     {/* Render HTML strings (static posts) or Portable Text (Sanity posts) */}
                     {typeof currentPost.content === 'string' ? (
@@ -531,7 +529,7 @@ const BlogPage = () => {
               </article>
 
               {/* Right Sidebar - Interactive Widgets */}
-              <aside className="lg:col-span-3 space-y-6">
+              <aside className="lg:col-span-3 xl:col-span-2 space-y-6">
                 <div className="sticky top-24 space-y-6">
                   <AuthorWidget
                     author={currentPost.author}
@@ -653,12 +651,12 @@ const BlogPage = () => {
 
       <main
         id="main-content"
-        className="py-32 md:py-40 mx-[4%] md:mx-[6%] lg:mx-[8%] xl:mx-[10%] 2xl:mx-[12%] bg-gradient-to-b from-gray-50 via-white to-gray-50"
+        className="py-32 md:py-40 mx-[4%] md:mx-[6%] lg:mx-[4%] xl:mx-[6%] 2xl:mx-[8%] bg-gradient-to-b from-gray-50 via-white to-gray-50"
         role="main"
         aria-label="Conteúdo principal do blog"
         tabIndex="-1"
       >
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+        <div className="container mx-auto px-4 md:px-6 max-w-[1600px]">
           <motion.header
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -806,8 +804,8 @@ const BlogPage = () => {
               </div>
             ) : filteredPosts.length > 0 ? (
               <>
-                {/* Stacked horizontal cards layout */}
-                <div className="flex flex-col space-y-8 max-w-6xl mx-auto">
+                {/* Grid layout - 2 columns on large screens */}
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 max-w-[1600px] mx-auto">
                   {currentPosts.map((post, index) => renderPostCard(post, index))}
                 </div>
 
