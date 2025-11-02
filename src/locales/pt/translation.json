@@ -141,15 +141,15 @@
       },
       "lenses_cost": {
         "question": "Quanto custa uma adaptação de lentes de contato em Caratinga?",
-        "answer": "O valor da adaptação de lentes de contato em Caratinga varia de acordo com o tipo de lente (gelatinosa, rígida ou especial para ceratocone), a complexidade do caso e os exames incluídos. Na Saraiva Vision, o processo envolve consulta oftalmológica, testes de adaptação e acompanhamento inicial para garantir conforto e visão nítida. O custo é acessível e proporcional à segurança oferecida, já que a adaptação correta evita complicações como infecções ou desconforto ocular. Investir na adaptação adequada garante saúde visual e bem-estar a longo prazo."
+        "answer": "O valor da adaptação de lentes de contato em Caratinga varia de acordo com o tipo de lente (gelatinosa, rígida ou especial para ceratocone), a complexidade do caso e os exames incluídos. Na Saraiva Vision, o processo envolve consulta oftalmológica, testes de adaptação e acompanhamento inicial para promover conforto e visão nítida conforme cada necessidade. O custo é calculado de maneira proporcional à segurança oferecida, já que a adaptação correta ajuda a evitar complicações como infecções ou desconforto ocular. Investir na adaptação adequada contribui para a saúde visual e o bem-estar a longo prazo."
       },
       "pediatric_age": {
         "question": "Qual a idade ideal para levar a criança ao oftalmologista?",
-        "answer": "A primeira consulta oftalmológica deve ocorrer ainda no primeiro ano de vida, por volta dos 6 meses. Depois, recomenda-se nova avaliação aos 3 anos e antes da alfabetização. Em Caratinga, muitos pais procuram a Saraiva Vision para garantir que seus filhos não apresentem problemas de visão que prejudiquem o aprendizado. Sintomas como aproximar-se demais da TV, coçar os olhos com frequência ou ter dificuldade para enxergar a lousa são sinais de alerta. A detecção precoce previne estrabismo, ambliopia e erros refrativos."
+        "answer": "A primeira consulta oftalmológica deve ocorrer ainda no primeiro ano de vida, por volta dos 6 meses. Depois, recomenda-se nova avaliação aos 3 anos e antes da alfabetização. Em Caratinga, muitos pais procuram a Saraiva Vision para acompanhar o desenvolvimento visual dos filhos e identificar precocemente eventuais dificuldades. Sintomas como aproximar-se demais da TV, coçar os olhos com frequência ou ter dificuldade para enxergar a lousa são sinais de alerta. A detecção precoce ajuda a prevenir estrabismo, ambliopia e erros refrativos."
       },
       "medical_report": {
         "question": "Como funciona o exame para laudo oftalmológico?",
-        "answer": "O exame para laudo oftalmológico em Caratinga realizado pela Saraiva Vision segue rigorosos critérios técnicos. Inclui acuidade visual, avaliação da motilidade ocular, teste de visão de cores, tonometria e exame de fundo de olho quando necessário. O laudo é emitido no mesmo dia, com validade legal e assinatura médica (CRM), sendo aceito em órgãos como DETRAN, concursos públicos e processos de admissão. Esse documento garante segurança jurídica e clínica, confirmando a aptidão visual do paciente para atividades profissionais ou de habilitação."
+        "answer": "O exame para laudo oftalmológico em Caratinga realizado pela Saraiva Vision segue rigorosos critérios técnicos. Inclui acuidade visual, avaliação da motilidade ocular, teste de visão de cores, tonometria e exame de fundo de olho quando necessário. O laudo é emitido no mesmo dia, com validade legal e assinatura médica (CRM), sendo aceito em órgãos como DETRAN, concursos públicos e processos de admissão. Esse documento oferece respaldo jurídico e clínico, atestando a aptidão visual do paciente para atividades profissionais ou de habilitação conforme avaliação médica."
       },
       "glaucoma_treatment": {
         "question": "Quanto tempo demora para tratar glaucoma?",
@@ -157,7 +157,7 @@
       },
       "vision_symptoms": {
         "question": "Quais os sintomas que indicam problema de visão?",
-        "answer": "Entre os principais sintomas de problemas de visão estão: visão borrada, dor ocular, dificuldade para ler de perto ou enxergar de longe, vermelhidão, sensibilidade à luz e dores de cabeça frequentes. Em crianças, sinais incluem baixo rendimento escolar, tropeços constantes e aproximação excessiva de telas. Na Saraiva Vision, exames completos permitem identificar desde miopia, hipermetropia e astigmatismo até doenças mais graves, como glaucoma e catarata. Procurar atendimento precoce é fundamental para preservar a visão e garantir qualidade de vida."
+        "answer": "Entre os principais sintomas de problemas de visão estão: visão borrada, dor ocular, dificuldade para ler de perto ou enxergar de longe, vermelhidão, sensibilidade à luz e dores de cabeça frequentes. Em crianças, sinais incluem baixo rendimento escolar, tropeços constantes e aproximação excessiva de telas. Na Saraiva Vision, exames completos permitem identificar desde miopia, hipermetropia e astigmatismo até doenças mais graves, como glaucoma e catarata. Procurar atendimento precoce é fundamental para preservar a visão e contribuir para a qualidade de vida."
       }
     }
   },
@@ -286,28 +286,28 @@
     "items": {
       "consultations": {
         "title": "Consultas Oftalmológicas Completas",
-        "description": "Exame oftalmológico abrangente com Dr. Philipe Saraiva em Caratinga. Tecnologia de ponta, diagnóstico preciso e acompanhamento personalizado para preservar sua visão com excelência.",
-        "fullDescription": "A consulta oftalmológica na Clínica Saraiva Vision é um processo completo e minucioso conduzido pelo Dr. Philipe Saraiva (CRM-MG 69.870), especialista com mais de 15 anos de experiência em oftalmologia. Iniciamos com uma anamnese detalhada, investigando seu histórico ocular, sintomas atuais, medicamentos em uso e fatores de risco. Em seguida, realizamos uma bateria de exames especializados: teste de acuidade visual com tabelas padronizadas, refração computadorizada para determinação precisa do grau, biomicroscopia do segmento anterior para avaliar córnea, cristalino e estruturas adjacentes, tonometria para medição da pressão intraocular (fundamental na prevenção do glaucoma), e mapeamento de retina com oftalmoscopia direta e indireta. Quando necessário, complementamos com exames adicionais como gonioscopia, campimetria visual e tomografia de coerência óptica (OCT). Nossa abordagem preventiva permite detectar precocemente doenças como glaucoma, catarata, degeneração macular e retinopatia diabética, proporcionando tratamento mais eficaz e preservação da qualidade visual."
+        "description": "Exame oftalmológico abrangente com o Dr. Philipe Saraiva em Caratinga. Tecnologia de ponta, avaliação minuciosa e plano de acompanhamento personalizado para cuidar da sua visão com segurança.",
+        "fullDescription": "A consulta oftalmológica na Clínica Saraiva Vision é um processo completo e minucioso conduzido pelo Dr. Philipe Saraiva (CRM-MG 69.870), especialista com mais de 15 anos de experiência em oftalmologia. Iniciamos com uma anamnese detalhada, investigando seu histórico ocular, sintomas atuais, medicamentos em uso e fatores de risco. Em seguida, realizamos uma bateria de exames especializados: teste de acuidade visual com tabelas padronizadas, refração computadorizada para determinação precisa do grau, biomicroscopia do segmento anterior para avaliar córnea, cristalino e estruturas adjacentes, tonometria para medição da pressão intraocular (fundamental na prevenção do glaucoma), e mapeamento de retina com oftalmoscopia direta e indireta. Quando necessário, complementamos com exames adicionais como gonioscopia, campimetria visual e tomografia de coerência óptica (OCT). Nossa abordagem preventiva permite detectar precocemente doenças como glaucoma, catarata, degeneração macular e retinopatia diabética, favorecendo tratamentos oportunos e auxiliando na preservação da qualidade visual."
       },
       "refraction": {
         "title": "Exames de Refração e Adaptação de Lentes de Contato",
-        "description": "Determinação precisa do grau para óculos e adaptação especializada de lentes de contato. Avaliação completa da refração ocular com equipamentos de última geração para máxima precisão no diagnóstico."
+        "description": "Determinação precisa do grau para óculos e adaptação especializada de lentes de contato. Avaliação completa da refração ocular com equipamentos de última geração, buscando alta precisão no diagnóstico."
       },
       "specialized": {
         "title": "Tratamentos Especializados",
-        "description": "Tratamentos avançados para glaucoma, catarata, degeneração macular, retinopatia diabética e outras condições oculares. Terapia personalizada com equipamentos de última geração para preservar e melhorar sua visão."
+        "description": "Tratamentos avançados para glaucoma, catarata, degeneração macular, retinopatia diabética e outras condições oculares. Planos terapêuticos personalizados com equipamentos de última geração, definidos após avaliação individualizada."
       },
       "surgeries": {
         "title": "Cirurgias Oftalmológicas",
-        "description": "Cirurgias oftalmológicas de alta precisão incluindo catarata, correção de grau, pterígio e procedimentos de pálpebras. Centro cirúrgico moderno com tecnologia avançada e equipe especializada."
+        "description": "Cirurgias oftalmológicas de alta precisão, incluindo catarata, correção de grau, pterígio e procedimentos de pálpebras. Procedimentos realizados em estrutura moderna, com tecnologia avançada e equipe especializada, sempre mediante indicação médica."
       },
       "pediatric": {
         "title": "Oftalmologia Pediátrica",
-        "description": "Cuidado especializado da saúde ocular infantil desde o nascimento até a adolescência. Diagnóstico precoce de ambliopia, estrabismo e erros refrativos com ambiente lúdico e acolhedor para as crianças."
+        "description": "Cuidado especializado da saúde ocular infantil desde o nascimento até a adolescência. Diagnóstico precoce de ambliopia, estrabismo e erros refrativos com ambiente lúdico, acolhedor e protocolos adaptados às crianças."
       },
       "reports": {
         "title": "Laudos Especializados",
-        "description": "Emissão de laudos técnicos detalhados para CNH, concursos públicos, laudos ocupacionais e pareceres médicos especializados. Documentação precisa e confiável."
+        "description": "Emissão de laudos técnicos detalhados para CNH, concursos públicos, laudos ocupacionais e pareceres médicos especializados. Documentação elaborada conforme normas vigentes e assinada pelo responsável técnico."
       },
       "gonioscopy": {
         "title": "Gonioscopia",
@@ -351,7 +351,7 @@
       "macularDegeneration": "Acompanhamento de degeneração macular",
       "individualProtocol": "Protocolo individualizado",
       "microinvasiveTechniques": "Técnicas microinvasivas",
-      "quickRecovery": "Recuperação rápida",
+      "quickRecovery": "Orientação para recuperação gradual, conforme avaliação médica",
       "equippedCenter": "Centro cirúrgico equipado",
       "safeAnesthesia": "Anestesia local segura",
       "postOpFollowup": "Acompanhamento pós-operatório",
@@ -365,7 +365,7 @@
       "occupationalEvals": "Avaliações ocupacionais",
       "digitalSignature": "Assinatura digital",
       "fastDelivery": "Entrega rápida e segura",
-      "preciseDiagnosis": "Diagnóstico preciso do glaucoma",
+      "preciseDiagnosis": "Avaliação detalhada do glaucoma",
       "glaucomaClassification": "Classificação do tipo de glaucoma",
       "angleEvaluation": "Avaliação do ângulo iridocorneano",
       "directedGuidance": "Orientação terapêutica direcionada",
@@ -374,7 +374,7 @@
       "peripheralEvaluation": "Avaliação da retina periférica",
       "detachmentDiagnosis": "Diagnóstico de descolamento de retina",
       "diabeticMonitoring": "Monitoramento de retinopatia diabética",
-      "painlessExam": "Exame indolor e seguro",
+      "painlessExam": "Exame com contato mínimo e geralmente bem tolerado",
       "keratoconeDiagnosis": "Diagnóstico precoce de ceratocone",
       "refractivePlanning": "Planejamento de cirurgia refrativa",
       "specialLensAdaptation": "Adaptação de lentes especiais",
@@ -384,7 +384,7 @@
       "glaucomaAid": "Auxílio no diagnóstico de glaucoma",
       "refractiveSurgeryEval": "Avaliação para cirurgia refrativa",
       "keratoconeMonitoring": "Monitoramento de ceratocone",
-      "quickPainless": "Exame rápido e indolor",
+      "quickPainless": "Avaliação ágil e confortável, conforme orientação clínica",
       "photographicDocumentation": "Documentação fotográfica da retina",
       "diseaseFollowup": "Acompanhamento de doenças oculares",
       "diabeticRetinaMonitoring": "Monitoramento de retinopatia diabética",
@@ -506,10 +506,10 @@
   },
   "contactLenses": {
     "main_title": "Lentes de Contato",
-    "main_subtitle": "Especialistas em adaptação de lentes de contato com tecnologia avançada e acompanhamento personalizado para sua visão perfeita.",
+    "main_subtitle": "Especialistas em adaptação de lentes de contato com tecnologia avançada e acompanhamento personalizado para uma experiência visual confortável.",
     "title": "Especialistas em Adaptação de Lentes de Contato",
     "subtitle": "Soluções completas da prescrição ao acompanhamento personalizado",
-    "description": "Oferecemos serviços completos de lentes de contato, desde a consulta inicial até o acompanhamento contínuo, garantindo conforto ideal e saúde ocular.",
+    "description": "Oferecemos serviços completos de lentes de contato, desde a consulta inicial até o acompanhamento contínuo, priorizando conforto ideal e saúde ocular.",
     "adaptation": "Nosso processo de adaptação personalizado prioriza segurança e conforto, com avaliações minuciosas e protocolos de adaptação gradual.",
     "brands": "Trabalhamos com marcas premium incluindo Sólotica (lentes gelatinosas e rígidas gás permeáveis) e Bioview (lentes gelatinosas).",
     "safety_title": "Protocolo de Segurança e Higiene",
@@ -534,7 +534,7 @@
       },
       {
         "title": "Acompanhamento",
-        "description": "Consultas regulares para garantir conforto ideal e saúde ocular."
+        "description": "Consultas regulares para acompanhar conforto e saúde ocular."
       }
     ],
     "types": {
@@ -629,7 +629,7 @@
       "title": "Tipos de Lentes Disponíveis",
       "subtitle": "Cada tipo atende necessidades específicas para proporcionar a melhor experiência visual"
     },
-    "process_subtitle": "Um processo cuidadoso e personalizado para garantir o melhor resultado",
+    "process_subtitle": "Um processo cuidadoso e personalizado para entregar o melhor resultado possível conforme orientação clínica",
     "safety_features": [
       "Equipamentos esterilizados",
       "Avaliação completa da saúde ocular",
@@ -641,13 +641,13 @@
     "tag": "Sobre Nós",
     "title": "Dedicados à Excelência em Cada Detalhe da Sua Visão",
     "p1": "A Saraiva Vision nasceu do sonho de oferecer um atendimento oftalmológico de alta qualidade em Caratinga e região, unindo tecnologia de ponta a uma abordagem humana e personalizada. Desde nossa fundação, construímos uma reputação sólida baseada na confiança, competência técnica e no compromisso inabalável com a saúde ocular de nossos pacientes.",
-    "p2": "Nossa missão transcende o simples tratamento de doenças oculares. Acreditamos na prevenção como o melhor caminho para preservar a visão, oferecemos diagnósticos precisos utilizando equipamentos de última geração, e desenvolvemos tratamentos eficazes e individualizados. Cada paciente é único, e nosso atendimento reflete essa filosofia, priorizando sempre o bem-estar, a satisfação e os resultados duradouros.",
+    "p2": "Nossa missão transcende o simples tratamento de doenças oculares. Valorizamos a prevenção como caminho essencial para preservar a visão, realizamos diagnósticos fundamentados em evidências com equipamentos de última geração e indicamos terapias personalizadas conforme cada avaliação clínica. Cada paciente é único, e nosso atendimento reflete essa filosofia, priorizando sempre o bem-estar, a segurança e o acompanhamento contínuo.",
     "p3": "Como parceiros oficiais da rede Amor e Saúde, mantemos os mais altos padrões de qualidade e segurança. Nossa infraestrutura moderna, localizada estrategicamente no coração de Caratinga, foi projetada para oferecer conforto e tranquilidade durante todo o processo de cuidado com sua visão.",
     "features": [
       "Infraestrutura Moderna e Equipada",
       "Profissionais Altamente Qualificados",
       "Atendimento Humanizado e Personalizado",
-      "Compromisso com Resultados Duradouros",
+      "Acompanhamento Contínuo e Preventivo",
       "Tecnologia de Ponta em Diagnósticos",
       "Parceria com Rede Amor e Saúde"
     ],
@@ -659,14 +659,14 @@
       "name": "Dr. Philipe Saraiva",
       "title": "Oftalmologista CRM/MG 69.870",
       "heading": "Conheça Nosso Especialista",
-      "description": "Médico oftalmologista com sólida formação acadêmica e vasta experiência em diagnósticos precisos, tratamentos personalizados e cirurgias oculares. Especializado em diversas áreas da oftalmologia, incluindo catarata, glaucoma, doenças da retina e refração. Sua abordagem combina conhecimento técnico atualizado com um cuidado genuíno pelos pacientes, garantindo não apenas tratamentos eficazes, mas também uma experiência acolhedora e tranquilizadora durante todo o processo de cuidado com a visão. Comprometido com a educação continuada e sempre atualizado com as mais recentes técnicas e tecnologias em oftalmologia, Dr. Philipe oferece o que há de mais moderno em cuidados oculares para a comunidade de Caratinga e região.",
+      "description": "Médico oftalmologista com sólida formação acadêmica e vasta experiência em diagnósticos detalhados, tratamentos personalizados e cirurgias oculares. Especializado em diversas áreas da oftalmologia, incluindo catarata, glaucoma, doenças da retina e refração. Sua abordagem combina conhecimento técnico atualizado com um cuidado genuíno pelos pacientes, oferecendo orientações claras e um ambiente acolhedor durante todo o processo de cuidado com a visão. Comprometido com a educação continuada e sempre atualizado com as mais recentes técnicas e tecnologias em oftalmologia, Dr. Philipe disponibiliza o que há de mais moderno em cuidados oculares para a comunidade de Caratinga e região.",
       "alt": "Dr. Philipe Saraiva - Oftalmologista especialista em saúde ocular CRM/MG 69.870"
     },
     "team_title": "Nossa Equipe Especializada",
     "nurse": {
       "name": "Eng. Ana Lúcia",
       "title": "Enfermeira COREN-MG 834184 - Responsável e Coordenadora",
-      "description": "Profissional experiente e dedicada, responsável pela coordenação do atendimento aos pacientes e apoio especializado em todos os procedimentos clínicos. Com ampla experiência em oftalmologia, Ana Lúcia garante que cada etapa do seu atendimento seja conduzida com máximo cuidado, segurança e conforto. Sua atenção aos detalhes e habilidade em criar um ambiente acolhedor fazem dela uma peça fundamental na experiência positiva de nossos pacientes, desde a recepção até o acompanhamento pós-consulta.",
+      "description": "Profissional experiente e dedicada, responsável pela coordenação do atendimento aos pacientes e apoio especializado em todos os procedimentos clínicos. Com ampla experiência em oftalmologia, Ana Lúcia atua para que cada etapa do atendimento seja conduzida com cuidado, segurança e conforto. Sua atenção aos detalhes e habilidade em criar um ambiente acolhedor fazem dela uma peça fundamental na experiência positiva de nossos pacientes, desde a recepção até o acompanhamento pós-consulta.",
       "alt": "Enfermeira Ana Lúcia - Coordenadora de atendimento da Saraiva Vision"
     }
   },
@@ -844,7 +844,7 @@
     "services": {
       "consultas-oftalmologicas": {
         "title": "Consultas Oftalmológicas Completas",
-        "description": "Nossas consultas abrangem uma avaliação detalhada da sua saúde ocular, identificando e tratando diversas condições para garantir a melhor visão possível.",
+        "description": "Nossas consultas abrangem uma avaliação detalhada da sua saúde ocular, identificando e tratando diversas condições para contribuir com a melhor visão possível.",
         "details": [
           {
             "title": "Avaliação Abrangente",
@@ -862,7 +862,7 @@
       },
       "exames-de-refracao": {
         "title": "Exames de Refração e Prescrição de Óculos",
-        "description": "Realizamos exames de refração precisos para determinar o grau exato dos seus óculos ou lentes de contato, garantindo uma visão nítida e confortável.",
+        "description": "Realizamos exames de refração precisos para determinar o grau dos seus óculos ou lentes de contato, buscando proporcionar uma visão nítida e confortável.",
         "details": [
           {
             "title": "Precisão no Diagnóstico",
@@ -874,7 +874,7 @@
           },
           {
             "title": "Acompanhamento Contínuo",
-            "text": "Reavaliações periódicas para garantir a saúde e o conforto da sua visão."
+            "text": "Reavaliações periódicas para favorecer a saúde e o conforto da sua visão."
           }
         ]
       },
@@ -902,11 +902,11 @@
         "details": [
           {
             "title": "Cirurgia de Catarata",
-            "text": "Procedimento rápido e seguro para remover a catarata e implantar lentes intraoculares."
+            "text": "Procedimento frequentemente breve, realizado com técnicas seguras para remover a catarata e implantar lentes intraoculares conforme indicação médica."
           },
           {
             "title": "Cirurgia Refrativa (LASIK/PRK)",
-            "text": "Correção de miopia, hipermetropia e astigmatismo para reduzir ou eliminar a dependência de óculos."
+            "text": "Correção de miopia, hipermetropia e astigmatismo com objetivo de reduzir a dependência de óculos."
           },
           {
             "title": "Cirurgias de Glaucoma",
@@ -916,7 +916,7 @@
       },
       "acompanhamento-pediatrico": {
         "title": "Acompanhamento Oftalmológico Pediátrico",
-        "description": "Cuidamos da saúde ocular das crianças com atenção especial, diagnosticando e tratando problemas visuais desde cedo para garantir um desenvolvimento saudável.",
+        "description": "Cuidamos da saúde ocular das crianças com atenção especial, diagnosticando e tratando problemas visuais desde cedo para apoiar um desenvolvimento saudável.",
         "details": [
           {
             "title": "Exames Lúdicos",
