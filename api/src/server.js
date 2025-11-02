@@ -93,7 +93,8 @@ const routes = [
   { path: '/api/gtm', handler: './routes/gtm.js', type: 'express' },
   { path: '/api/maps-health', handler: './routes/maps-health.js', type: 'express' },
   { path: '/api/questionario-olho-seco', handler: './routes/questionario-olho-seco.js', type: 'express' },
-  { path: '/api/agendamento-otimizado', handler: './routes/agendamento-otimizado.js', type: 'express' }
+  { path: '/api/agendamento-otimizado', handler: './routes/agendamento-otimizado.js', type: 'express' },
+  { path: '/api/llm-info', handler: './routes/llm-info.js', type: 'express' }
 ];
 
 // Load routes dynamically

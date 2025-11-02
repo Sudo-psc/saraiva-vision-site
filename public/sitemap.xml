@@ -1,532 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <!-- Primary pages -->
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Generated: 2025-11-02T15:10:22.742Z -->
+  <!-- Saraiva Vision - Clínica Oftalmológica -->
+  <!-- Dr. Philipe Saraiva Cruz - CRM-MG 69.870 -->
+
   <url>
     <loc>https://saraivavision.com.br/</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <image:image>
-      <image:loc>https://storage.googleapis.com/hostinger-horizons-assets-prod/979f9a5f-43ca-4577-b86e-f6adc587dcb8/ab3221659a2bb4080af9238827a12d5de.png</image:loc>
-      <image:title>Saraiva Vision Logo</image:title>
-      <image:caption>Clínica Oftalmológica Saraiva Vision em Caratinga/MG</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>https://saraivavision.com.br/consultorio.jpg</image:loc>
-      <image:title>Consultório Saraiva Vision</image:title>
-    </image:image>
   </url>
-
   <url>
     <loc>https://saraivavision.com.br/servicos</loc>
-    <lastmod>2025-10-12</lastmod>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
+    <priority>0.9</priority>
   </url>
-
   <url>
     <loc>https://saraivavision.com.br/sobre</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/lentes</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/planos</loc>
-    <lastmod>2025-10-11</lastmod>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/planosonline</loc>
-    <lastmod>2025-10-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/faq</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
   <url>
     <loc>https://saraivavision.com.br/agendamento</loc>
-    <lastmod>2025-10-12</lastmod>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.9</priority>
   </url>
-
   <url>
-    <loc>https://saraivavision.com.br/assine</loc>
-    <lastmod>2025-10-12</lastmod>
+    <loc>https://saraivavision.com.br/lentes</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/planos</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/planobasico</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/planopadrao</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/planopremium</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/planosonline</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/planosflex</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/blog</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/podcast</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
-
+  <url>
+    <loc>https://saraivavision.com.br/faq</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/questionario-olho-seco</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/campanha/outubro-olho-seco</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/artigos/catarata</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url>
     <loc>https://saraivavision.com.br/privacy</loc>
-    <lastmod>2025-10-12</lastmod>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/agendamento/obrigado</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
-  <!-- Services detail pages -->
   <url>
-    <loc>https://saraivavision.com.br/servicos/consultas-oftalmologicas</loc>
-    <lastmod>2025-10-12</lastmod>
+    <loc>https://saraivavision.com.br/assine</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.5</priority>
   </url>
-
   <url>
-    <loc>https://saraivavision.com.br/servicos/exames-de-refracao</loc>
-    <lastmod>2025-10-12</lastmod>
+    <loc>https://saraivavision.com.br/waitlist</loc>
+    <lastmod>2025-11-02T15:10:22.742Z</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/servicos/tratamentos-especializados</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/servicos/cirurgias-oftalmologicas</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.88</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/servicos/acompanhamento-pediatrico</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/servicos/laudos-especializados</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/servicos/gonioscopia</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.82</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/servicos/mapeamento-de-retina</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.82</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/servicos/topografia-corneana</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/servicos/paquimetria</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/servicos/retinografia</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.78</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/servicos/campo-visual</loc>
-    <lastmod>2025-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.78</priority>
-  </url>
-
-  <!-- Planos e pagamentos -->
-  <url>
-    <loc>https://saraivavision.com.br/planobasico</loc>
-    <lastmod>2025-10-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/planopadrao</loc>
-    <lastmod>2025-10-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/planopremium</loc>
-    <lastmod>2025-10-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/pagamentobasico</loc>
-    <lastmod>2025-10-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/pagamentopadrao</loc>
-    <lastmod>2025-10-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/pagamentopremium</loc>
-    <lastmod>2025-10-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/pagamentobasicoonline</loc>
-    <lastmod>2025-10-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/pagamentopadraoonline</loc>
-    <lastmod>2025-10-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/pagamentopremiumonline</loc>
-    <lastmod>2025-10-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <!-- Conteúdo do blog -->
-  <url>
-    <loc>https://saraivavision.com.br/blog</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://saraivavision.com.br/Blog/capa-geral-optimized-1200w.jpeg</image:loc>
-      <image:title>Blog Saraiva Vision</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/monovisao-lentes-multifocais-presbiopia-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.65</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/tipos-lentes-contato-guia-completo-adaptacao-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.65</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/amaurose-congenita-leber-tratamento-genetico</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.64</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/teste-olhinho-retinoblastoma-prevencao-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.64</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/retinose-pigmentar-luxturna-caratinga</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.64</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/moscas-volantes-quando-preocupar-caratinga</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.63</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/cuidados-visuais-esportes-caratinga</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.63</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/lentes-especiais-daltonismo-caratinga</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.63</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/descolamento-retina-mitos-verdades-caratinga</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.63</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/como-inteligencia-artificial-transforma-exames-oftalmologicos-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.63</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/doenca-de-coats-meninos-jovens-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.63</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/terapias-geneticas-celulas-tronco-oftalmologia-doencas-hereditarias-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.62</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/sindrome-visao-computador-prevencao-manejo-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.62</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/olho-seco-blefarite-lacrimejamento-caratinga-tratamento</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.62</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/estrabismo-quando-desconfiar-procurar-oftalmologista-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.62</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/alimentacao-microbioma-ocular-saude-visao-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.62</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/mitos-verdades-saude-ocular-ciencia-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.62</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/cirurgia-refrativa-lentes-intraoculares-caratinga</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.61</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/presbiopia-o-que-e-cura-cirurgia-lentes-contato-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.61</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/pterigio-guia-completo-prevencao-cuidados-cirurgia</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.61</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/sensibilidade-a-luz-causas-tratamentos-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.61</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/lentes-de-contato-para-presbiopia-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.61</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/obstrucao-ducto-lacrimal-lacrimejamento-caratinga</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.61</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/lentes-premium-cirurgia-catarata-caratinga-mg</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.61</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/blog/oftalmologia-pediatrica-caratinga-quando-levar-criancas</loc>
-    <lastmod>2025-10-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.61</priority>
-  </url>
-
-  <!-- Podcast episodes -->
-  <url>
-    <loc>https://saraivavision.com.br/podcast</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/catarata-cirurgia-caratinga-mg</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/ceratocone-tratamento-crosslinking</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/cirurgia-refrativa-lasik-prk</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/daltonismo-lentes-corretivas-caratinga</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/glaucoma-prevencao-tratamento</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/lentes-contato-rigidas-gelatinosas</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/lentes-premium-catarata</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/lentes-premium-catarata-futuro-visao</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/olho-seco-causas-tratamentos</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/olho-seco-sintomas-tratamento-caratinga</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/presbiopia-vista-cansada-40-anos</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/ptergio-causas-tratamento</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/ptergio-cirurgia-caratinga</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/saude-ocular-dmri-prevencao</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
-  </url>
-
-  <url>
-    <loc>https://saraivavision.com.br/podcast/saude-ocular-duvidas-frequentes</loc>
-    <lastmod>2025-10-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.55</priority>
+    <priority>0.5</priority>
   </url>
 </urlset>
