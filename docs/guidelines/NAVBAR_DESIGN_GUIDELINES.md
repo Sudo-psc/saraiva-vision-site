@@ -13,15 +13,17 @@ A Navbar da Saraiva Vision foi redesenhada para equilibrar **profissionalismo m�
 
 ## 📐 Princípios UX Fundamentais
 
-### 1. **Simplicidade Visual**
-**Público-alvo:** Usuários 50+ com baixa alfabetização digital
+### 1. **Reconhecimento Visual com Ícones**
+**Público-alvo:** Usuários diversos (18-70+ anos) com diferentes níveis de alfabetização digital
 
 **Implementação:**
-- ✅ Removidos ícones dos links de navegação principais
-- ✅ Mantidos ícones **apenas** em CTAs (Phone, Calendar)
-- ✅ Hierarquia visual clara: Logo → Links → CTAs
+- ✅ Ícones presentes em **todos** os links de navegação (Home, Stethoscope, Eye, etc.)
+- ✅ Ícones em CTAs para reforçar ação (Phone, Calendar)
+- ✅ Hierarquia visual clara: Logo → Links com ícones → CTAs
+- ✅ Gap melhorado entre ícone e texto (2.5 = 10px)
+- ✅ Whitespace-nowrap para evitar quebra de texto
 
-**Razão:** Excesso de ícones causa poluição visual e confusão para público maduro.
+**Razão:** Ícones funcionam como âncoras visuais que facilitam reconhecimento rápido de seções, especialmente benéfico para navegação por escaneamento visual. A combinação ícone + texto oferece dupla pista para identificação.
 
 ---
 
@@ -145,8 +147,8 @@ isScrolled
 
 ## 🚫 Anti-Patterns (O que NÃO fazer)
 
-1. ❌ **Não adicionar ícones nos links principais**
-   - Mantém visual limpo para 50+
+1. ❌ **Não usar ícones sem texto descritivo**
+   - Sempre combinar ícone + texto para clareza
 
 2. ❌ **Não usar cores escuras demais**
    - Evitar preto puro, usar slate-900
@@ -157,8 +159,8 @@ isScrolled
 4. ❌ **Não usar fontes < 16px**
    - Acessibilidade não-negociável
 
-5. ❌ **Não criar CTAs sem ícones**
-   - Ícones em CTAs **aumentam** clareza
+5. ❌ **Não comprometer espaçamento dos botões**
+   - Manter gap adequado (2.5) e whitespace-nowrap
 
 ---
 
@@ -183,10 +185,18 @@ isScrolled
 
 ## 🔄 Histórico de Versões
 
-### v2.0 (2025-11-01) - **ATUAL**
+### v2.1 (2025-11-01) - **ATUAL**
+- ✅ Restaurados ícones em todos os links de navegação
+- ✅ Melhorado layout de botões (gap-2.5, whitespace-nowrap)
+- ✅ Aumentado padding em CTAs (px-5 py-2.5, md:px-6 md:py-3)
+- ✅ Primary CTA agora usa font-bold
+- ✅ Ícones com flex-shrink-0 para consistência de tamanho
+- ✅ Mobile menu com padding aumentado (py-3.5 sm:py-4)
+
+### v2.0 (2025-11-01)
 - ✅ Rollback para paleta cyan
 - ✅ Documentação de design rationale
-- ✅ Mantidas melhorias UX (sem ícones, estado ativo, a11y)
+- ✅ Mantidas melhorias UX (estado ativo, a11y, contraste AAA)
 
 ### v1.0 (2025-10-31)
 - ✅ Implementada paleta teal

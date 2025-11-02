@@ -2,27 +2,33 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Menu, X, Calendar, Phone } from 'lucide-react';
+import { Menu, X, Calendar, Home, Stethoscope, Eye, FileText, Headphones, User, HelpCircle, Phone, FileCheck } from 'lucide-react';
 import { Button } from '../components/ui/button.jsx';
 import Logo from '../components/Logo.jsx';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
+import { clinicInfo } from '../lib/clinicInfo.js';
 
 /**
  * Enhanced Navbar Component - UX Optimized for Healthcare Platform
  *
  * Design Principles:
  * - Modern cyan palette (#06B6D4) for technology-forward brand identity
- * - Simplified desktop navigation (no icons) for 50+ audience clarity
+ * - Icons restored for better visual recognition and accessibility
  * - Clear active state indication for wayfinding
  * - Minimum 16px font size for accessibility (WCAG 2.1 AA)
  * - High contrast (slate-900) for readability
  * - Sticky header with shrink effect on scroll
  * - Mobile-first with glass morphism menu
+ * - Improved button text layout with better spacing
  *
  * Color Philosophy:
- * Cyan was chosen over teal to maintain the brand's technology-forward,
+ * Cyan was chosen to maintain the brand's technology-forward,
  * innovative positioning while still conveying medical professionalism.
  * The vibrant cyan (#06B6D4) balances modernity with trust.
+ *
+ * Icon Philosophy:
+ * Icons provide visual anchors for navigation, helping users quickly
+ * identify sections. Combined with text labels for clarity.
  */
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -54,16 +60,16 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Navigation structure - simplified for clarity
+  // Navigation structure with icons for better visual recognition
   const navLinks = useMemo(() => [
-    { name: t('navbar.home'), href: '/', internal: true },
-    { name: t('navbar.services'), href: '/servicos', internal: true },
-    { name: t('navbar.lenses'), href: '/lentes', internal: true },
-    { name: t('navbar.blog'), href: '/blog', internal: true },
-    { name: t('navbar.podcast'), href: '/podcast', internal: true },
-    { name: t('navbar.about'), href: '/sobre', internal: true },
-    { name: t('navbar.plans'), href: '/planos', internal: true },
-    { name: t('navbar.faq'), href: '/faq', internal: true },
+    { name: t('navbar.home'), href: '/', internal: true, icon: Home },
+    { name: t('navbar.services'), href: '/servicos', internal: true, icon: Stethoscope },
+    { name: t('navbar.lenses'), href: '/lentes', internal: true, icon: Eye },
+    { name: t('navbar.blog'), href: '/blog', internal: true, icon: FileText },
+    { name: t('navbar.podcast'), href: '/podcast', internal: true, icon: Headphones },
+    { name: t('navbar.about'), href: '/sobre', internal: true, icon: User },
+    { name: t('navbar.plans'), href: '/planos', internal: true, icon: FileCheck },
+    { name: t('navbar.faq'), href: '/faq', internal: true, icon: HelpCircle },
   ], [t]);
 
   return (
@@ -92,12 +98,13 @@ const Navbar = () => {
             </Link>
           </motion.div>
 
-          {/* Desktop Navigation - UX Optimized: No icons for cleaner look, better for 50+ users */}
+          {/* Desktop Navigation - With icons for visual recognition */}
           <nav
             className="hidden md:flex flex-1 items-center justify-center flex-wrap gap-1.5 lg:gap-2 xl:gap-3"
             aria-label={t('navbar.primary_navigation')}
           >
             {navLinks.map((link) => {
+              const IconComponent = link.icon;
               // UX Enhancement: Active page indicator for wayfinding
               const isActive = location.pathname === link.href;
               const isHomeLink = link.href === '/';
@@ -114,8 +121,14 @@ const Navbar = () => {
                   key={link.name}
                   to={link.href}
                   onClick={isHomeLink ? handleHomeClick : undefined}
-                  className={`${linkClasses} min-w-[7.5rem] justify-center`}
+                  className={`${linkClasses} min-w-[7.5rem] flex items-center justify-center gap-2`}
                 >
+                  <IconComponent
+                    size={16}
+                    className={`flex-shrink-0 transition-colors duration-300 ${
+                      isActive ? 'text-white' : 'text-slate-600 group-hover:text-white'
+                    }`}
+                  />
                   <span className="relative">
                     {link.name}
                     {/* UX Enhancement: Animated underline on hover for feedback */}
@@ -130,8 +143,14 @@ const Navbar = () => {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${linkClasses} min-w-[7.5rem] justify-center`}
+                  className={`${linkClasses} min-w-[7.5rem] flex items-center justify-center gap-2`}
                 >
+                  <IconComponent
+                    size={16}
+                    className={`flex-shrink-0 transition-colors duration-300 ${
+                      isActive ? 'text-white' : 'text-slate-600 group-hover:text-white'
+                    }`}
+                  />
                   <span className="relative">
                     {link.name}
                     {!isActive && (
@@ -143,25 +162,27 @@ const Navbar = () => {
             })}
           </nav>
 
-          {/* CTAs - Icons maintained here as they add clarity to actions */}
+          {/* CTAs - Improved layout with better text spacing */}
           <div className="hidden md:flex items-center justify-end gap-2 lg:gap-3 xl:gap-4 mr-[6%] flex-shrink-0">
-            {/* Secondary CTA - Contact */}
-            <Button
-              variant="outline"
-              onClick={() => navigate('/contato')}
-              className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-xl border-cyan-500 text-cyan-700 hover:text-white hover:bg-cyan-600 hover:border-cyan-600 transition-colors duration-300 text-base"
+            {/* Secondary CTA - WhatsApp Contact */}
+            <a
+              href={clinicInfo.whatsapp24h}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden lg:flex items-center gap-2.5 px-5 py-2.5 rounded-xl border-2 border-cyan-500 text-cyan-700 hover:text-white hover:bg-cyan-600 hover:border-cyan-600 transition-colors duration-300 text-base font-semibold bg-white hover:shadow-lg"
+              aria-label={t('navbar.contact')}
             >
-              <Phone size={18} />
-              <span>{t('navbar.contact')}</span>
-            </Button>
+              <Phone size={18} className="flex-shrink-0" />
+              <span className="whitespace-nowrap">{t('navbar.contact')}</span>
+            </a>
 
-            {/* Primary CTA - Prominent scheduling button */}
+            {/* Primary CTA - Prominent scheduling button with improved layout */}
             <Button
               onClick={() => navigate('/agendamento')}
-              className="flex items-center gap-2 scale-[0.95] md:scale-100 lg:scale-105 origin-center bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 ease-out hover:scale-105 lg:hover:scale-110 active:scale-95 px-4 py-2 md:px-5 md:py-2.5 rounded-xl border-2 border-cyan-500 hover:border-cyan-400 text-base lg:text-lg"
+              className="flex items-center gap-2.5 scale-[0.95] md:scale-100 lg:scale-105 origin-center bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300 ease-out hover:scale-105 lg:hover:scale-110 active:scale-95 px-5 py-2.5 md:px-6 md:py-3 rounded-xl border-2 border-cyan-500 hover:border-cyan-400 text-base lg:text-lg"
             >
-              <Calendar size={20} className="animate-pulse" />
-              <span>{t('navbar.schedule')}</span>
+              <Calendar size={20} className="animate-pulse flex-shrink-0" />
+              <span className="whitespace-nowrap">{t('navbar.schedule')}</span>
             </Button>
           </div>
 
@@ -182,7 +203,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu - Full-height with glass morphism for premium feel */}
+      {/* Mobile Menu - Full-height with glass morphism */}
       {mobileMenuOpen && (
         <motion.div
           initial={{ opacity: 0, height: 0 }}
@@ -193,6 +214,7 @@ const Navbar = () => {
         >
           <nav className="container mx-auto px-4 py-3 sm:py-4 flex flex-col space-y-2 sm:space-y-3">
             {navLinks.map((link, index) => {
+              const IconComponent = link.icon;
               const isActive = location.pathname === link.href;
               const isHomeLink = link.href === '/';
 
@@ -211,12 +233,13 @@ const Navbar = () => {
                       }
                       setTimeout(() => setMobileMenuOpen(false), 50);
                     }}
-                    className={`py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200 ${
+                    className={`py-3 sm:py-3.5 px-4 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200 ${
                       isActive
                         ? 'text-white bg-cyan-600 font-semibold'
                         : 'text-slate-900 hover:text-cyan-600 hover:bg-cyan-50 active:bg-cyan-100'
                     }`}
                   >
+                    <IconComponent size={20} className="flex-shrink-0" />
                     <span className="flex-1">{link.name}</span>
                   </Link>
                 </motion.div>
@@ -232,29 +255,43 @@ const Navbar = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setTimeout(() => setMobileMenuOpen(false), 50)}
-                    className="text-slate-900 hover:text-cyan-600 hover:bg-cyan-50 active:bg-cyan-100 py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200"
+                    className="text-slate-900 hover:text-cyan-600 hover:bg-cyan-50 active:bg-cyan-100 py-3 sm:py-3.5 px-4 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200"
                   >
+                    <IconComponent size={20} className="flex-shrink-0" />
                     <span className="flex-1">{link.name}</span>
                   </a>
                 </motion.div>
               );
             })}
 
-            {/* Mobile CTA - Prominent scheduling button */}
+            {/* Mobile CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: navLinks.length * 0.05, duration: 0.3 }}
-              className="pt-2 sm:pt-3"
+              className="pt-2 sm:pt-3 flex flex-col gap-2"
             >
+              {/* WhatsApp Contact Button */}
+              <a
+                href={clinicInfo.whatsapp24h}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setTimeout(() => setMobileMenuOpen(false), 50)}
+                className="flex items-center justify-center gap-3 w-full py-3.5 sm:py-4 border-2 border-cyan-600 text-cyan-700 font-bold rounded-lg hover:bg-cyan-50 transition-colors duration-200 text-base sm:text-lg"
+              >
+                <Phone size={22} />
+                <span>{t('navbar.contact')}</span>
+              </a>
+
+              {/* Schedule Button */}
               <Button
                 onClick={() => {
                   navigate('/agendamento');
                   setTimeout(() => setMobileMenuOpen(false), 50);
                 }}
-                className="flex items-center gap-2 w-full justify-center py-3 sm:py-3.5 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-base sm:text-lg"
+                className="flex items-center justify-center gap-3 w-full py-3.5 sm:py-4 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-base sm:text-lg font-bold"
               >
-                <Calendar size={20} />
+                <Calendar size={22} />
                 <span>{t('navbar.schedule_consultation')}</span>
               </Button>
             </motion.div>
