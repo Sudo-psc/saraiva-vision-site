@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import createLazyComponent from '@/utils/lazyLoading.jsx';
 
@@ -47,14 +47,53 @@ import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
 import AnalyticsFallback from '@/components/AnalyticsFallback.jsx';
 import AnalyticsProxy from '@/components/AnalyticsProxy.jsx';
 import DeferredWidgets from '@/modules/core/components/DeferredWidgets.jsx';
+import SkipLinks from '@/components/SkipLinks.jsx';
 
 function App() {
   const isCheckSubdomain =
     typeof window !== 'undefined' && window.location.hostname?.toLowerCase().startsWith('check.');
+  const location = useLocation();
 
   useEffect(() => {
     document.documentElement.lang = 'pt-BR';
   }, []);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    const mainElement = document.querySelector('main');
+    if (mainElement) {
+      if (!mainElement.id) {
+        mainElement.setAttribute('id', 'main-content');
+      }
+      if (!mainElement.hasAttribute('tabindex')) {
+        mainElement.setAttribute('tabindex', '-1');
+      }
+      if (!mainElement.hasAttribute('role')) {
+        mainElement.setAttribute('role', 'main');
+      }
+
+      if (document.activeElement !== mainElement) {
+        const focusMain = () => {
+          if (typeof mainElement.focus === 'function') {
+            try {
+              mainElement.focus({ preventScroll: true });
+            } catch (error) {
+              mainElement.focus();
+            }
+          }
+        };
+
+        if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function') {
+          window.requestAnimationFrame(focusMain);
+        } else {
+          focusMain();
+        }
+      }
+    }
+  }, [location.pathname]);
 
   return (
     <HelmetProvider>
@@ -69,6 +108,7 @@ function App() {
           fora desse container e não sofrem com o bug de fixed + transform.
         */}
         <div id="app-content">
+          <SkipLinks />
           <Navbar />
           <ScrollToTop />
           <ErrorBoundary>

@@ -1,5 +1,20 @@
 /* Accessibility Styles for Instagram Components */
 
+:root {
+    --focus-ring-color: #0e7490;
+}
+
+*:focus-visible {
+    outline: 3px solid var(--focus-ring-color);
+    outline-offset: 3px;
+}
+
+a:focus-visible,
+button:focus-visible,
+[role='button']:focus-visible {
+    box-shadow: 0 0 0 3px rgba(14, 116, 144, 0.35);
+}
+
 /* High Contrast Mode */
 .high-contrast {
     --bg-primary: #ffffff;

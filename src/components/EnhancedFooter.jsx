@@ -40,6 +40,7 @@ const EnhancedFooter = ({
     glassBlur = null,
     enableAnimations = true,
     useGlassEffect = false,
+    id: footerId = 'footer',
     ...props
 }) => {
     const { t } = useTranslation();
@@ -395,6 +396,8 @@ const EnhancedFooter = ({
             initial={isAnimationEnabled && !shouldReduceMotion ? 'hidden' : false}
             animate={isAnimationEnabled && !shouldReduceMotion && isFooterVisible ? 'visible' : 'hidden'}
             style={customProperties}
+            id={footerId}
+            tabIndex={-1}
             {...getFooterAriaProps()}
             {...props}
         >
