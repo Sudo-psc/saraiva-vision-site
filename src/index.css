@@ -38,6 +38,8 @@ body {
   scroll-behavior: smooth !important;
   margin: 0 !important;
   padding: 0 !important;
+  color: #0f172a;
+  background-color: #ffffff;
   /* Remover bloqueios anteriores */
 }
 
@@ -94,6 +96,11 @@ section {
 *::after {
   /* Permitir scroll-behavior nativo */
   scroll-behavior: smooth;
+}
+
+:focus-visible {
+  outline: 3px solid #0e7490;
+  outline-offset: 3px;
 }
 
 /* ===== FIM DA NORMALIZAÇÃO ===== */

@@ -33,6 +33,9 @@ const Footer = () => {
     { name: t('navbar.about'), href: '/sobre' },
   ], [t]);
 
+  const interactiveLinkClasses = 'inline-block text-slate-200 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded-md';
+  const interactiveFlexLinkClasses = 'flex items-center gap-2 text-slate-200 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded-md';
+
   const serviceLinks = useMemo(() =>
     t('footer.service_links', { returnObjects: true }) || {
       "consultations": "Consultations",
@@ -80,13 +83,13 @@ const Footer = () => {
   );
 
   const ContactItem = ({ children, className }) => (
-    <li className={cn('text-slate-400', className)}>{children}</li>
+    <li className={cn('text-slate-200', className)}>{children}</li>
   );
 
   const ContactLink = ({ href, children, external = false, icon: Icon, className }) => {
     const linkProps = {
       href,
-      className: cn('hover:text-white transition-colors flex items-center gap-2', className),
+      className: cn(interactiveFlexLinkClasses, className),
       ...(external && { target: '_blank', rel: 'noopener noreferrer' })
     };
 
@@ -101,15 +104,15 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-slate-800 text-slate-300 pb-8 w-full">
+    <footer id="footer" role="contentinfo" className="bg-slate-800 text-slate-300 pb-8 w-full">
       <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div>
             <Logo isWhite />
-            <p className="mt-4 mb-6 text-slate-400">
+            <p className="mt-4 mb-6 text-slate-200">
               {t('footer.slogan')}
             </p>
-            <p className="text-slate-400 mb-2 text-sm">{t('footer.partner_of')}</p>
+            <p className="text-slate-200 mb-2 text-sm">{t('footer.partner_of')}</p>
             <a
               href="https://www.amorsaude.com.br/clinica/caratinga-mg/"
               target="_blank"
@@ -134,7 +137,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {navLinks.map(link => (
                 <li key={link.href}>
-                  <Link to={link.href} className="hover:text-white transition-colors inline-block">
+                  <Link to={link.href} className={interactiveLinkClasses}>
                     {link.name}
                   </Link>
                 </li>
@@ -146,7 +149,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {Object.entries(serviceLinks).map(([key, serviceName]) => (
                 <li key={key}>
-                  <Link to="/servicos" className="hover:text-white transition-colors inline-block">
+                  <Link to="/servicos" className={interactiveLinkClasses}>
                     {serviceName}
                   </Link>
                 </li>
@@ -183,17 +186,17 @@ const Footer = () => {
         <div className="border-t border-slate-700 pt-8">
           <div className="flex flex-col lg:flex-row justify-between items-start gap-6 lg:gap-8">
             <div className="flex-1 space-y-2">
-              <p className="text-slate-400 text-xs leading-snug">
-                <span className="block font-medium text-slate-300">{business.doctor.name} • {business.doctor.crm} • {business.doctor.specialty}</span>
+              <p className="text-slate-200 text-xs leading-snug">
+                <span className="block font-medium text-slate-100">{business.doctor.name} • {business.doctor.crm} • {business.doctor.specialty}</span>
                 <span className="block">{business.team.nurse.name} • {business.team.nurse.title}</span>
                 <span className="block">CNPJ: {business.taxId}</span>
-                <span className="block">DPO: <a href={`mailto:${compliance.lgpd.dpoEmail}`} className="underline hover:text-white transition-colors">{compliance.lgpd.dpoEmail}</a></span>
+                <span className="block">DPO: <a href={`mailto:${compliance.lgpd.dpoEmail}`} className="underline hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded-sm">{compliance.lgpd.dpoEmail}</a></span>
                 <span className="block space-x-3">
-                  <a href="/privacy" className="underline hover:text-white transition-colors">{t('privacy.link_label')}</a>
+                  <a href="/privacy" className="underline hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded-sm">{t('privacy.link_label')}</a>
                   <button
                     type="button"
                     onClick={() => window.dispatchEvent(new Event('open-privacy-settings'))}
-                    className="underline hover:text-white transition-colors"
+                    className="underline hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded-sm"
                   >
                     {t('privacy.manage_cookies')}
                   </button>
@@ -209,9 +212,9 @@ const Footer = () => {
                   }}
                 />
               </p>
-              <p className="text-slate-500 text-xs">{t('privacy.disclaimer')}</p>
-              <p className="text-slate-500 text-xs">{t('cfm.disclaimer')}</p>
-              <p className="text-slate-400 text-xs mt-2">{t('footer.copyright', { year: footerData.currentYear })}</p>
+              <p className="text-slate-200 text-xs">{t('privacy.disclaimer')}</p>
+              <p className="text-slate-200 text-xs">{t('cfm.disclaimer')}</p>
+              <p className="text-slate-200 text-xs mt-2">{t('footer.copyright', { year: footerData.currentYear })}</p>
             </div>
 
             <div className="flex flex-col items-center gap-4 lg:items-end">

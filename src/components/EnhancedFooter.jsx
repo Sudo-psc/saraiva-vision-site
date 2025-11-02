@@ -106,6 +106,10 @@ const EnhancedFooter = ({
         { name: t('navbar.plans'), href: '/planos' },
     ], [t]);
 
+    const interactiveLinkClasses = 'inline-block text-slate-200 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded-md';
+    const interactiveInlineLinkClasses = 'inline-flex items-start gap-2 text-slate-200 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded-md';
+    const interactiveFlexLinkClasses = 'flex items-center gap-2 text-slate-200 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded-md';
+
     // Service links (preserved from original Footer)
     const serviceLinks = useMemo(() =>
         t('footer.service_links', { returnObjects: true }) || {
@@ -186,7 +190,7 @@ const EnhancedFooter = ({
     );
 
     const ContactItem = ({ children, className }) => (
-        <li className={cn('text-slate-400', className)}>{children}</li>
+        <li className={cn('text-slate-200', className)}>{children}</li>
     );
 
     // Working hours status
@@ -237,7 +241,7 @@ const EnhancedFooter = ({
     const ContactLink = ({ href, children, external = false, icon: Icon, className }) => {
         const linkProps = {
             href,
-            className: cn('hover:text-white transition-colors flex items-center gap-2', className),
+            className: cn(interactiveFlexLinkClasses, className),
             ...(external && { target: '_blank', rel: 'noopener noreferrer' })
         };
 
@@ -388,7 +392,9 @@ const EnhancedFooter = ({
     });
 
     return (
-        <motion.div
+        <motion.footer
+            id="footer"
+            role="contentinfo"
             ref={footerRef}
             className={cn(footerClasses, 'footer-liquid', className)}
             variants={isAnimationEnabled && !shouldReduceMotion ? containerVariants : undefined}
@@ -424,10 +430,10 @@ const EnhancedFooter = ({
                         {/* Logo and Partner Section */}
                         <div>
                             <Logo isWhite />
-                            <p className="mt-4 mb-6 text-slate-400">
+                            <p className="mt-4 mb-6 text-slate-200">
                                 {t('footer.slogan')}
                             </p>
-                            <p className="text-slate-400 mb-2 text-sm">{t('footer.partner_of')}</p>
+                            <p className="text-slate-200 mb-2 text-sm">{t('footer.partner_of')}</p>
                             <a
                                 href="https://www.amorsaude.com.br/clinica/caratinga-mg/"
                                 target="_blank"
@@ -453,7 +459,7 @@ const EnhancedFooter = ({
                             <ul className="space-y-3">
                                 {navLinks.map(link => (
                                     <li key={link.href}>
-                                        <Link to={link.href} className="hover:text-white transition-colors inline-block">
+                                        <Link to={link.href} className={interactiveLinkClasses}>
                                             {link.name}
                                         </Link>
                                     </li>
@@ -466,7 +472,7 @@ const EnhancedFooter = ({
                             <ul className="space-y-3">
                                 {Object.entries(serviceLinks).map(([key, serviceName]) => (
                                     <li key={key}>
-                                        <Link to="/servicos" className="hover:text-white transition-colors inline-block">
+                                        <Link to="/servicos" className={interactiveLinkClasses}>
                                             {serviceName}
                                         </Link>
                                     </li>
@@ -487,7 +493,7 @@ const EnhancedFooter = ({
                                         href={business.urls.googleMapsProfile}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="hover:text-white transition-colors inline-flex items-start gap-2 group"
+                                        className={cn(interactiveInlineLinkClasses, 'group')}
                                         aria-label={`Endereço da ${business.name}: ${business.address.street}, ${business.address.neighborhood}, ${business.address.city}-${business.address.state}. Abrir no Google Maps (nova aba)`}
                                     >
                                         <img
@@ -523,7 +529,7 @@ const EnhancedFooter = ({
                                         href={footerData.whatsappLink}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform"
+                                        className={cn(interactiveFlexLinkClasses, 'hover:scale-110 transition-all duration-300 transform')}
                                     >
                                         <img
                                             src="/icons_social/whatsapp_icon.png"
@@ -540,7 +546,7 @@ const EnhancedFooter = ({
                                         href="https://wa.me/message/2QFZJG3EDJZVF1"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform text-green-400"
+                                        className={cn(interactiveFlexLinkClasses, 'hover:scale-110 transition-all duration-300 transform text-green-400')}
                                     >
                                         <img
                                             src="/icons_social/whatsapp_icon.png"
@@ -557,7 +563,7 @@ const EnhancedFooter = ({
                                         href="https://wa.me/message/2QFZJG3EDJZVF1"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform text-red-400"
+                                        className={cn(interactiveFlexLinkClasses, 'hover:scale-110 transition-all duration-300 transform text-red-400')}
                                     >
                                         <img
                                             src="/icons_social/whatsapp_icon.png"
@@ -574,7 +580,7 @@ const EnhancedFooter = ({
                                         href={footerData.chatbotUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform"
+                                        className={cn(interactiveFlexLinkClasses, 'hover:scale-110 transition-all duration-300 transform')}
                                     >
                                         <img
                                             src="/icons_social/IA.png"
@@ -595,17 +601,17 @@ const EnhancedFooter = ({
                     <div className="border-t border-slate-700 pt-8">
                         <div className="flex flex-col lg:flex-row justify-between items-start gap-6 lg:gap-8">
                             <div className="flex-1 space-y-2">
-                                <p className="text-slate-400 text-xs leading-snug">
-                                    <span className="block font-medium text-slate-300">{business.doctor.name} • {business.doctor.crm} • {business.doctor.specialty}</span>
+                                <p className="text-slate-200 text-xs leading-snug">
+                                    <span className="block font-medium text-slate-100">{business.doctor.name} • {business.doctor.crm} • {business.doctor.specialty}</span>
                                     <span className="block">{business.team.nurse.name} • {business.team.nurse.title}</span>
                                     <span className="block">CNPJ: {business.taxId}</span>
-                                    <span className="block">DPO: <a href={`mailto:${compliance.lgpd.dpoEmail}`} className="underline hover:text-white transition-colors">{compliance.lgpd.dpoEmail}</a></span>
+                                    <span className="block">DPO: <a href={`mailto:${compliance.lgpd.dpoEmail}`} className="underline hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded-sm">{compliance.lgpd.dpoEmail}</a></span>
                                     <span className="block space-x-3">
-                                        <a href="/privacy" className="underline hover:text-white transition-colors">{t('privacy.link_label')}</a>
+                                        <a href="/privacy" className="underline hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded-sm">{t('privacy.link_label')}</a>
                                         <button
                                             type="button"
                                             onClick={() => window.dispatchEvent(new Event('open-cookie-modal'))}
-                                            className="underline hover:text-white transition-colors"
+                                            className="underline hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded-sm"
                                         >
                                             {t('privacy.manage_cookies')}
                                         </button>
@@ -621,9 +627,9 @@ const EnhancedFooter = ({
                                         }}
                                     />
                                 </p>
-                                <p className="text-slate-500 text-xs">{t('privacy.disclaimer')}</p>
-                                <p className="text-slate-500 text-xs">{t('cfm.disclaimer')}</p>
-                                <p className="text-slate-400 text-xs mt-2">{t('footer.copyright', { year: footerData.currentYear })}</p>
+                                <p className="text-slate-200 text-xs">{t('privacy.disclaimer')}</p>
+                                <p className="text-slate-200 text-xs">{t('cfm.disclaimer')}</p>
+                                <p className="text-slate-200 text-xs mt-2">{t('footer.copyright', { year: footerData.currentYear })}</p>
                             </div>
 
                             <div className="flex flex-col items-center gap-4 lg:items-end">
@@ -685,7 +691,7 @@ const EnhancedFooter = ({
             </div>
 
 
-        </motion.div>
+        </motion.footer>
     );
 };
 

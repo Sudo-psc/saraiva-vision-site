@@ -16,25 +16,6 @@ import React from 'react';
  * <SkipLinks />
  */
 const SkipLinks = () => {
-  const skipLinkStyle = {
-    position: 'absolute',
-    left: '-10000px',
-    top: 'auto',
-    width: '1px',
-    height: '1px',
-    overflow: 'hidden',
-    // When focused, bring into view
-    '&:focus': {
-      position: 'fixed',
-      top: '10px',
-      left: '10px',
-      width: 'auto',
-      height: 'auto',
-      overflow: 'visible',
-      zIndex: 999999
-    }
-  };
-
   const links = [
     {
       href: '#main-content',
@@ -53,66 +34,23 @@ const SkipLinks = () => {
     }
   ];
 
+  const linkClasses =
+    'sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[999999] focus:px-5 focus:py-3 focus:rounded-lg focus:bg-cyan-700 focus:text-white focus:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-cyan-700 focus:scale-105 transition-all duration-200';
+
   return (
-    <div className="skip-links" role="navigation" aria-label="Links de atalho para navegação">
+    <nav className="relative" aria-label="Links de atalho para navegação">
       {links.map((link, index) => (
         <a
           key={index}
           href={link.href}
-          className="skip-link sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[999999] focus:bg-cyan-600 focus:text-white focus:px-6 focus:py-3 focus:rounded-lg focus:shadow-2xl focus:font-bold focus:text-lg focus:outline-none focus:ring-4 focus:ring-cyan-300 focus:ring-offset-2 focus:transform focus:scale-105 transition-all duration-200"
+          className={linkClasses}
           aria-label={link.ariaLabel}
           tabIndex={0}
         >
           {link.label}
         </a>
       ))}
-
-      {/* Additional styles for screen reader and focus behavior */}
-      <style jsx>{`
-        .skip-links {
-          position: relative;
-        }
-
-        .skip-link {
-          /* Visually hidden but accessible to screen readers */
-          clip: rect(1px, 1px, 1px, 1px);
-          clip-path: inset(50%);
-          height: 1px;
-          width: 1px;
-          margin: -1px;
-          overflow: hidden;
-          padding: 0;
-          position: absolute;
-          white-space: nowrap;
-        }
-
-        .skip-link:focus {
-          /* Make visible when focused */
-          clip: auto;
-          clip-path: none;
-          height: auto;
-          width: auto;
-          margin: 0;
-          overflow: visible;
-          padding: 0.75rem 1.5rem;
-          position: fixed;
-          white-space: normal;
-        }
-
-        /* Smooth scroll behavior when using skip links */
-        html {
-          scroll-behavior: smooth;
-        }
-
-        /* Ensure target elements receive focus properly */
-        #main-content:focus,
-        #navigation:focus,
-        #footer:focus {
-          outline: 3px solid #0891b2; /* cyan-600 */
-          outline-offset: 4px;
-        }
-      `}</style>
-    </div>
+    </nav>
   );
 };
 

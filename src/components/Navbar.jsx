@@ -49,6 +49,8 @@ const Navbar = () => {
 
   return (
     <header
+      id="navigation"
+      role="banner"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 pointer-events-none ${isScrolled
         ? 'bg-white/95 backdrop-blur-sm shadow-md py-2'
         : 'bg-white/90 backdrop-blur border-b border-slate-200/60 md:bg-transparent md:border-0 py-3'
@@ -76,13 +78,15 @@ const Navbar = () => {
           <nav
             className="hidden md:flex flex-1 items-center justify-center flex-wrap gap-1.5 lg:gap-2 xl:gap-3"
             aria-label={t('navbar.primary_navigation')}
+            role="navigation"
           >
             {navLinks.map((link) => {
               const IconComponent = link.icon;
-              const linkClasses = "group relative text-slate-700 hover:text-white font-semibold transition-all duration-300 ease-out px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl flex items-center gap-2 text-[0.9rem] md:text-[0.95rem] lg:text-[1rem] xl:text-[1.05rem] hover:scale-[1.03] xl:hover:scale-105 active:scale-95 hover:shadow-lg active:shadow-sm bg-gradient-to-br from-slate-100 to-slate-200 hover:from-cyan-600 hover:to-cyan-700 border border-slate-300 hover:border-cyan-500";
+              const linkClasses = "group relative text-slate-800 hover:text-white font-semibold transition-all duration-300 ease-out px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl flex items-center gap-2 text-[0.9rem] md:text-[0.95rem] lg:text-[1rem] xl:text-[1.05rem] hover:scale-[1.03] xl:hover:scale-105 active:scale-95 hover:shadow-lg active:shadow-sm bg-gradient-to-br from-slate-100 to-slate-200 hover:from-cyan-600 hover:to-cyan-700 border border-slate-300 hover:border-cyan-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white";
 
               // Special handling for home button: scroll to top if already on homepage
               const isHomeLink = link.href === '/';
+              const isActive = location.pathname === link.href;
 
               return link.internal ? (
                 <Link
@@ -90,8 +94,9 @@ const Navbar = () => {
                   to={link.href}
                   onClick={isHomeLink ? handleHomeClick : undefined}
                   className={`${linkClasses} min-w-[7.5rem] justify-center lg:justify-start`}
+                  aria-current={isActive ? 'page' : undefined}
                 >
-                  <IconComponent size={15} className="text-slate-600 group-hover:text-white transition-colors duration-300 md:w-4 md:h-4 lg:w-[17px] lg:h-[17px]" />
+                  <IconComponent size={15} className="text-slate-700 group-hover:text-white transition-colors duration-300 md:w-4 md:h-4 lg:w-[17px] lg:h-[17px]" />
                   <span className="relative">
                     {link.name}
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
@@ -105,7 +110,7 @@ const Navbar = () => {
                   rel="noopener noreferrer"
                   className={`${linkClasses} min-w-[7.5rem] justify-center lg:justify-start`}
                 >
-                  <IconComponent size={15} className="text-slate-600 group-hover:text-white transition-colors duration-300 md:w-4 md:h-4 lg:w-[17px] lg:h-[17px]" />
+                  <IconComponent size={15} className="text-slate-700 group-hover:text-white transition-colors duration-300 md:w-4 md:h-4 lg:w-[17px] lg:h-[17px]" />
                   <span className="relative">
                     {link.name}
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
@@ -157,10 +162,16 @@ const Navbar = () => {
           transition={{ duration: 0.3, ease: 'easeInOut' }}
           className="md:hidden bg-white border-t shadow-lg pointer-events-auto"
         >
-          <nav className="container mx-auto px-4 py-3 sm:py-4 flex flex-col space-y-2 sm:space-y-3">
+          <nav
+            id="mobile-primary-navigation"
+            className="container mx-auto px-4 py-3 sm:py-4 flex flex-col space-y-2 sm:space-y-3"
+            aria-label={t('navbar.primary_navigation')}
+            role="navigation"
+          >
             {navLinks.map((link, index) => {
               const IconComponent = link.icon;
               const isHomeLink = link.href === '/';
+              const isActive = location.pathname === link.href;
 
               return link.internal ? (
                 <motion.div
@@ -178,9 +189,10 @@ const Navbar = () => {
                       // Close menu after a small delay to ensure navigation is processed
                       setTimeout(() => setMobileMenuOpen(false), 50);
                     }}
-                    className="text-slate-800 hover:text-cyan-600 hover:bg-cyan-50 active:bg-cyan-100 py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200"
+                    className="text-slate-900 hover:text-cyan-700 hover:bg-cyan-50 active:bg-cyan-100 py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2"
+                    aria-current={isActive ? 'page' : undefined}
                   >
-                    <IconComponent size={18} className="text-slate-600 flex-shrink-0 sm:w-5 sm:h-5" />
+                    <IconComponent size={18} className="text-slate-700 flex-shrink-0 sm:w-5 sm:h-5" />
                     <span className="flex-1">{link.name}</span>
                   </Link>
                 </motion.div>
@@ -196,9 +208,9 @@ const Navbar = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setTimeout(() => setMobileMenuOpen(false), 50)}
-                    className="text-slate-800 hover:text-cyan-600 hover:bg-cyan-50 active:bg-cyan-100 py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200"
+                    className="text-slate-900 hover:text-cyan-700 hover:bg-cyan-50 active:bg-cyan-100 py-2.5 sm:py-3 px-3 rounded-lg font-medium text-base sm:text-lg flex items-center gap-3 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2"
                   >
-                    <IconComponent size={18} className="text-slate-600 flex-shrink-0 sm:w-5 sm:h-5" />
+                    <IconComponent size={18} className="text-slate-700 flex-shrink-0 sm:w-5 sm:h-5" />
                     <span className="flex-1">{link.name}</span>
                   </a>
                 </motion.div>

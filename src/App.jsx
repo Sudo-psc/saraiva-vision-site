@@ -47,10 +47,14 @@ import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
 import AnalyticsFallback from '@/components/AnalyticsFallback.jsx';
 import AnalyticsProxy from '@/components/AnalyticsProxy.jsx';
 import DeferredWidgets from '@/modules/core/components/DeferredWidgets.jsx';
+import SkipLinks from '@/components/SkipLinks.jsx';
+import { useFocusOnRouteChange } from '@/hooks/useFocusOnRouteChange.js';
 
 function App() {
   const isCheckSubdomain =
     typeof window !== 'undefined' && window.location.hostname?.toLowerCase().startsWith('check.');
+
+  useFocusOnRouteChange();
 
   useEffect(() => {
     document.documentElement.lang = 'pt-BR';
@@ -69,14 +73,21 @@ function App() {
           fora desse container e não sofrem com o bug de fixed + transform.
         */}
         <div id="app-content">
+          <SkipLinks />
           <Navbar />
           <ScrollToTop />
           <ErrorBoundary>
-            <Routes>
-              <Route path="/" element={isCheckSubdomain ? <CheckPage /> : <HomePageLayout />} />
-              <Route path="/check" element={<CheckPage />} />
-              <Route path="/servicos" element={<ServicesPage />} />
-              <Route path="/servicos/:serviceId" element={<ServiceDetailPage />} />
+            <main
+              id="main-content"
+              tabIndex={-1}
+              role="main"
+              className="min-h-screen focus:outline-none focus-visible:ring-4 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            >
+              <Routes>
+                <Route path="/" element={isCheckSubdomain ? <CheckPage /> : <HomePageLayout />} />
+                <Route path="/check" element={<CheckPage />} />
+                <Route path="/servicos" element={<ServicesPage />} />
+                <Route path="/servicos/:serviceId" element={<ServiceDetailPage />} />
               {/* Redirecionamentos 301 para padronização de URLs */}
               <Route path="/servico/:serviceId" element={<ServiceRedirect />} />
               <Route path="/sobre" element={<AboutPage />} />
@@ -118,7 +129,8 @@ function App() {
               ) : (
                 <Route path="*" element={<NotFoundPage />} />
               )}
-            </Routes>
+              </Routes>
+            </main>
           </ErrorBoundary>
         </div>
         <DeferredWidgets />

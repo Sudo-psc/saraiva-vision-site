@@ -39,7 +39,7 @@ const Hero = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="flex flex-col space-y-6 text-center lg:text-left"
           >
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-cyan-700 text-sm font-medium mb-2 w-fit mx-auto lg:mx-0">
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-cyan-100 text-cyan-900 text-sm font-medium mb-2 w-fit mx-auto lg:mx-0">
               <span className="mr-2">✦</span> {t('hero.partner')}
             </div>
 
@@ -49,7 +49,7 @@ const Hero = () => {
               </Trans>
             </h1>
 
-            <p className="md:pr-10">
+            <p className="md:pr-10 text-slate-700">
               {t('hero.subtitle')}
             </p>
 
@@ -125,7 +125,7 @@ const Hero = () => {
                   </div>
                 </div>
               </div >
-              <p className="text-slate-600 text-sm">
+              <p className="text-slate-700 text-sm">
                 <Trans i18nKey="hero.patients_served">
                   <span className="font-semibold text-slate-700">Mais de 5.000 pacientes</span> atendidos com satisfação
                 </Trans>
