@@ -21,7 +21,7 @@ export const generalFAQs = [
   {
     question: 'Onde fica a Clínica Saraiva Vision em Caratinga?',
     answer: `
-      <p><strong>Endereço:</strong> Rua Catarina Maria Passos, 97 - Santa Zita, Caratinga/MG - CEP 35300-000</p>
+      <p><strong>Endereço:</strong> Rua Catarina Maria Passos, 97 - Santa Zita, Caratinga/MG - CEP 35300-299</p>
       <p>Estamos localizados em uma região de fácil acesso, com estacionamento próximo e transporte público.</p>
       <p><a href="https://maps.google.com/?q=-19.7896,-42.1397" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:underline">Ver no Google Maps</a></p>
     `,

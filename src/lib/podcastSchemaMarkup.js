@@ -26,7 +26,7 @@ export function generatePodcastSeriesSchema() {
           streetAddress: 'Rua Catarina Maria Passos, 97',
           addressLocality: 'Caratinga',
           addressRegion: 'MG',
-          postalCode: '35300-000',
+          postalCode: '35300-299',
           addressCountry: 'BR'
         },
         telephone: '+55-33-99860-1427',

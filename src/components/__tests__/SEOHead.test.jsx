@@ -7,7 +7,7 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 // Mock clinicInfo com estrutura esperada por SEOHead
 vi.mock('@/lib/clinicInfo', () => ({
   clinicInfo: {
-    address: { street: 'Rua Exemplo', city: 'Caratinga', state: 'MG', zip: '35300-000' },
+    address: { street: 'Rua Exemplo', city: 'Caratinga', state: 'MG', zip: '35300-299' },
     phone: '+5533998601427'
   }
 }));
