@@ -44,7 +44,6 @@ import {
 const FORM_NAME = 'appointment_booking';
 
 const MOTIVOS_CONSULTA = [
-  { value: '', label: 'Selecione o motivo' },
   { value: 'primeira-consulta', label: 'Primeira Consulta' },
   { value: 'retorno', label: 'Retorno' },
   { value: 'exame-vista', label: 'Exame de Vista para Óculos' },
@@ -57,7 +56,6 @@ const MOTIVOS_CONSULTA = [
 ];
 
 const CONVENIOS = [
-  { value: '', label: 'Selecione seu convênio' },
   { value: 'particular', label: 'Particular (sem convênio)' },
   { value: 'unimed', label: 'Unimed' },
   { value: 'bradesco', label: 'Bradesco Saúde' },
@@ -426,6 +424,7 @@ const OptimizedAppointmentForm = ({ variant = 'A', onSuccess }) => {
             </div>
             <select
               id="motivo"
+              defaultValue="primeira-consulta"
               className={`
                 w-full pl-12 pr-10 py-3 border rounded-xl
                 text-base
@@ -444,6 +443,19 @@ const OptimizedAppointmentForm = ({ variant = 'A', onSuccess }) => {
               })}
               onFocus={() => handleFieldFocus('motivo')}
               onBlur={() => handleFieldBlur('motivo')}
+              onChange={(e) => {
+                // Scroll suave para o próximo campo no mobile após seleção
+                if (window.innerWidth < 768 && e.target.value) {
+                  setTimeout(() => {
+                    const nextField = variant === 'B' ? document.getElementById('convenio') : null;
+                    const submitButton = document.querySelector('button[type="submit"]');
+                    const targetElement = nextField || submitButton;
+                    if (targetElement) {
+                      targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                  }, 300);
+                }
+              }}
             >
               {MOTIVOS_CONSULTA.map(option => (
                 <option key={option.value} value={option.value}>
@@ -484,10 +496,22 @@ const OptimizedAppointmentForm = ({ variant = 'A', onSuccess }) => {
               </div>
               <select
                 id="convenio"
+                defaultValue="particular"
                 className="w-full pl-12 pr-10 py-3 border border-gray-300 rounded-xl text-base appearance-none focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
                 {...register('convenio')}
                 onFocus={() => handleFieldFocus('convenio')}
                 onBlur={() => handleFieldBlur('convenio')}
+                onChange={(e) => {
+                  // Scroll suave para o botão de submit no mobile após seleção
+                  if (window.innerWidth < 768 && e.target.value) {
+                    setTimeout(() => {
+                      const submitButton = document.querySelector('button[type="submit"]');
+                      if (submitButton) {
+                        submitButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }
+                    }, 300);
+                  }
+                }}
               >
                 {CONVENIOS.map(option => (
                   <option key={option.value} value={option.value}>

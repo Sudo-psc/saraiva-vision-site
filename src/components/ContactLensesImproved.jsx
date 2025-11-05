@@ -69,6 +69,7 @@ const ContactLenses = () => {
   const whatsappMessage = 'Olá! Gostaria de agendar uma consulta para adaptação de lentes de contato.';
   const whatsappUrl = generateWhatsAppURL(whatsappMessage);
   const agendamentoUrl = 'https://www.saraivavision.com.br/agendamento';
+  const planosUrl = '/planos';
 
   const expandedFaqItems = [
     ...faqItems,
@@ -207,11 +208,11 @@ const ContactLenses = () => {
               size="xl"
               variant="default"
               className="w-full sm:w-auto gap-2 text-lg font-semibold bg-cyan-600 hover:bg-cyan-700 shadow-md hover:shadow-lg transition-all"
-              onClick={() => window.open(agendamentoUrl, '_blank')}
-              aria-label="Assinar plano de lentes de contato - Abre em nova aba"
+              onClick={() => window.location.href = planosUrl}
+              aria-label="Ver planos de assinatura - Navega para página de planos"
             >
               <Sparkles className="h-5 w-5" aria-hidden="true" />
-              Assinar Plano
+              Ver Planos
             </Button>
           </motion.div>
 
