@@ -80,8 +80,8 @@ export const wikiTags = [
 ];
 
 export const wikiFilters = {
-  lensTypes: ['Gelatinosa', 'RGP', 'Híbrida', 'Escleral', 'Colorida', 'Terapêutica'],
-  conditions: ['Miopia', 'Hipermetropia', 'Astigmatismo', 'Presbiopia', 'Olho seco', 'Ceratocone'],
+  lensTypes: ['Gelatinosa', 'RGP', 'Híbrida', 'Escleral', 'Colorida', 'Terapêutica', 'Silicone-Hidrogel'],
+  conditions: ['Miopia', 'Hipermetropia', 'Astigmatismo', 'Presbiopia', 'Olho seco', 'Ceratocone', 'Baixa visão', 'Alergias'],
   brands: ['Acuvue', 'CooperVision', 'Alcon', 'Bausch + Lomb', 'Menicon', 'Johnson & Johnson'],
   routines: ['Diária', 'Quinzenal', 'Mensal', 'Uso prolongado', 'Sob demanda'],
   experienceLevels: ['Iniciantes', 'Intermediário', 'Avançado']
@@ -230,7 +230,7 @@ export const wikiTopics = [
         ]
       }
     ],
-    relatedIds: ['faq', 'glossario']
+    relatedIds: ['higiene-manutencao', 'primeiros-passos']
   },
   {
     id: 'higiene-manutencao',
@@ -282,7 +282,7 @@ export const wikiTopics = [
         ]
       }
     ],
-    relatedIds: ['checklist-seguranca', 'faq']
+    relatedIds: ['seguranca-riscos', 'adaptacao-clinica']
   },
   {
     id: 'conforto-ergonomia',
@@ -421,7 +421,7 @@ export const wikiTopics = [
         ]
       }
     ],
-    relatedIds: ['tipos-materiais', 'plano-editorial']
+    relatedIds: ['tipos-materiais', 'adaptacao-clinica']
   },
   {
     id: 'estilo-vida',
@@ -465,7 +465,7 @@ export const wikiTopics = [
         ]
       }
     ],
-    relatedIds: ['conforto-ergonomia', 'plano-editorial']
+    relatedIds: ['conforto-ergonomia', 'tipos-materiais']
   },
   {
     id: 'acessibilidade-inclusiva',
@@ -695,7 +695,7 @@ export const crossReferences = [
   },
   {
     fromId: 'seguranca-riscos',
-    toId: 'faq',
-    description: 'Consulte as perguntas frequentes para reforçar condutas de segurança.'
+    toId: 'adaptacao-clinica',
+    description: 'Consulte o tópico de adaptação clínica para reforçar condutas de segurança.'
   }
 ];

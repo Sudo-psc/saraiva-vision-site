@@ -45,7 +45,10 @@ const ContactLensWikiPage = () => {
     const items = new Set();
     wikiTopics.forEach((topic) => {
       items.add(topic.title);
-      topic.tags.forEach((tag) => items.add(tag));
+      topic.tags.forEach((tagId) => {
+        const tagObj = wikiTags.find((t) => t.id === tagId);
+        if (tagObj) items.add(tagObj.label);
+      });
       topic.conditions.forEach((condition) => items.add(condition));
       topic.lensTypes.forEach((lens) => items.add(lens));
     });
@@ -62,7 +65,10 @@ const ContactLensWikiPage = () => {
         !normalizedSearch ||
         topic.title.toLowerCase().includes(normalizedSearch) ||
         topic.summary.toLowerCase().includes(normalizedSearch) ||
-        topic.tags.some((tag) => tag.toLowerCase().includes(normalizedSearch));
+        topic.tags.some((tagId) => {
+          const tagObj = wikiTags.find((t) => t.id === tagId);
+          return tagObj && tagObj.label.toLowerCase().includes(normalizedSearch);
+        });
       const matchesLens = !selectedLensType || topic.lensTypes.includes(selectedLensType);
       const matchesCondition = !selectedCondition || topic.conditions.includes(selectedCondition);
       const matchesBrand = !selectedBrand || topic.brands.includes(selectedBrand);
@@ -127,19 +133,19 @@ const ContactLensWikiPage = () => {
     setSelectedLevel('');
   };
 
-  const renderContentSection = (section) => {
+  const renderContentSection = (section, sectionIndex) => {
     if (section.kind === 'paragraph') {
       return (
-        <p key={section.title} className="text-slate-600 leading-relaxed">{section.content}</p>
+        <p key={sectionIndex} className="text-slate-600 leading-relaxed">{section.content}</p>
       );
     }
     if (section.kind === 'list') {
       return (
-        <div key={section.title} className="space-y-3">
+        <div key={sectionIndex} className="space-y-3">
           <h4 className="text-lg font-semibold text-slate-800">{section.title}</h4>
           <ul className="list-disc list-inside space-y-2 text-slate-600">
-            {section.items.map((item) => (
-              <li key={item}>{item}</li>
+            {section.items.map((item, itemIndex) => (
+              <li key={itemIndex}>{item}</li>
             ))}
           </ul>
         </div>
@@ -147,11 +153,11 @@ const ContactLensWikiPage = () => {
     }
     if (section.kind === 'grid') {
       return (
-        <div key={section.title} className="space-y-3">
+        <div key={sectionIndex} className="space-y-3">
           <h4 className="text-lg font-semibold text-slate-800">{section.title}</h4>
           <div className="grid gap-4 md:grid-cols-3">
-            {section.items.map((item) => (
-              <div key={item.heading} className="rounded-2xl border border-cyan-100 bg-cyan-50/60 p-4 shadow-sm">
+            {section.items.map((item, itemIndex) => (
+              <div key={itemIndex} className="rounded-2xl border border-cyan-100 bg-cyan-50/60 p-4 shadow-sm">
                 <h5 className="text-base font-semibold text-cyan-900">{item.heading}</h5>
                 <p className="mt-2 text-sm text-cyan-900/90">{item.description}</p>
               </div>
@@ -162,15 +168,15 @@ const ContactLensWikiPage = () => {
     }
     if (section.kind === 'table') {
       return (
-        <div key={section.title} className="space-y-3 overflow-hidden rounded-2xl border border-slate-200">
+        <div key={sectionIndex} className="space-y-3 overflow-hidden rounded-2xl border border-slate-200">
           <h4 className="px-4 pt-4 text-lg font-semibold text-slate-800">{section.title}</h4>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-slate-200">
               <thead className="bg-slate-50">
                 <tr>
-                  {section.headers.map((header) => (
+                  {section.headers.map((header, headerIndex) => (
                     <th
-                      key={header}
+                      key={headerIndex}
                       scope="col"
                       className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600"
                     >
@@ -198,7 +204,7 @@ const ContactLensWikiPage = () => {
     if (section.kind === 'callout') {
       return (
         <div
-          key={section.content}
+          key={sectionIndex}
           className={`flex items-start gap-3 rounded-2xl border px-4 py-3 ${
             section.tone === 'warning' ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-cyan-200 bg-cyan-50 text-cyan-900'
           }`}
@@ -253,8 +259,8 @@ const ContactLensWikiPage = () => {
                   aria-describedby="search-helper"
                 />
                 <datalist id="wiki-suggestions">
-                  {suggestions.map((suggestion) => (
-                    <option key={suggestion} value={suggestion} />
+                  {suggestions.map((suggestion, index) => (
+                    <option key={index} value={suggestion} />
                   ))}
                 </datalist>
                 <p id="search-helper" className="mt-2 text-xs text-slate-500">
@@ -278,8 +284,8 @@ const ContactLensWikiPage = () => {
                       onChange={(event) => setSelectedLensType(event.target.value)}
                     >
                       <option value="">Todas</option>
-                      {wikiFilters.lensTypes.map((lens) => (
-                        <option key={lens} value={lens}>
+                      {wikiFilters.lensTypes.map((lens, index) => (
+                        <option key={index} value={lens}>
                           {lens}
                         </option>
                       ))}
@@ -296,8 +302,8 @@ const ContactLensWikiPage = () => {
                       onChange={(event) => setSelectedCondition(event.target.value)}
                     >
                       <option value="">Todas</option>
-                      {wikiFilters.conditions.map((condition) => (
-                        <option key={condition} value={condition}>
+                      {wikiFilters.conditions.map((condition, index) => (
+                        <option key={index} value={condition}>
                           {condition}
                         </option>
                       ))}
@@ -314,8 +320,8 @@ const ContactLensWikiPage = () => {
                       onChange={(event) => setSelectedBrand(event.target.value)}
                     >
                       <option value="">Todas</option>
-                      {wikiFilters.brands.map((brand) => (
-                        <option key={brand} value={brand}>
+                      {wikiFilters.brands.map((brand, index) => (
+                        <option key={index} value={brand}>
                           {brand}
                         </option>
                       ))}
@@ -332,8 +338,8 @@ const ContactLensWikiPage = () => {
                       onChange={(event) => setSelectedRoutine(event.target.value)}
                     >
                       <option value="">Todas</option>
-                      {wikiFilters.routines.map((routine) => (
-                        <option key={routine} value={routine}>
+                      {wikiFilters.routines.map((routine, index) => (
+                        <option key={index} value={routine}>
                           {routine}
                         </option>
                       ))}
@@ -350,8 +356,8 @@ const ContactLensWikiPage = () => {
                       onChange={(event) => setSelectedLevel(event.target.value)}
                     >
                       <option value="">Todos</option>
-                      {wikiFilters.experienceLevels.map((level) => (
-                        <option key={level} value={level}>
+                      {wikiFilters.experienceLevels.map((level, index) => (
+                        <option key={index} value={level}>
                           {level}
                         </option>
                       ))}
@@ -489,11 +495,11 @@ const ContactLensWikiPage = () => {
                         </div>
                       </div>
                       <div className="mt-6 space-y-6">
-                        {topic.contentSections.map((section) => renderContentSection(section))}
+                        {topic.contentSections.map((section, sectionIndex) => renderContentSection(section, sectionIndex))}
                       </div>
                       <div className="mt-6 flex flex-wrap items-center gap-2">
-                        {topic.tags.map((tag) => (
-                          <span key={tag} className="rounded-full bg-cyan-100 px-3 py-1 text-xs font-semibold text-cyan-700">
+                        {topic.tags.map((tag, tagIndex) => (
+                          <span key={tagIndex} className="rounded-full bg-cyan-100 px-3 py-1 text-xs font-semibold text-cyan-700">
                             #{tag}
                           </span>
                         ))}
