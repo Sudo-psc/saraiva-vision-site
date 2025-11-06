@@ -498,11 +498,15 @@ const ContactLensWikiPage = () => {
                         {topic.contentSections.map((section, sectionIndex) => renderContentSection(section, sectionIndex))}
                       </div>
                       <div className="mt-6 flex flex-wrap items-center gap-2">
-                        {topic.tags.map((tag, tagIndex) => (
-                          <span key={tagIndex} className="rounded-full bg-cyan-100 px-3 py-1 text-xs font-semibold text-cyan-700">
-                            #{tag}
-                          </span>
-                        ))}
+                        {topic.tags.map((tagId, tagIndex) => {
+                          const tagObj = wikiTags.find((t) => t.id === tagId);
+                          const tagLabel = tagObj ? tagObj.label : tagId;
+                          return (
+                            <span key={tagIndex} className="rounded-full bg-cyan-100 px-3 py-1 text-xs font-semibold text-cyan-700">
+                              #{tagLabel}
+                            </span>
+                          );
+                        })}
                       </div>
                       {crossLinkMap[topic.id] && (
                         <div className="mt-6 rounded-2xl border border-cyan-100 bg-cyan-50 p-4">
