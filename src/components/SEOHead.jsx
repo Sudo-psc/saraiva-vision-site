@@ -53,7 +53,7 @@ const SEOHead = ({
   // Generate optimized image URL for social sharing
   const getOptimizedOgImage = () => {
     if (image) return image;
-    // Usar logo_prata.jpeg como imagem padrão do Open Graph
+    // Usar logo_prata.jpeg como imagem padrão do Open Graph para todas as páginas
     return `${baseUrl}/img/logo_prata.jpeg`;
   };
 
