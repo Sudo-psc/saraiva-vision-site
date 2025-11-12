@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Search, Filter, Tag, BookOpenCheck, ShieldCheck, Sparkles, AlertTriangle, Bookmark } from 'lucide-react';
+import { Search, Filter, Tag, BookOpenCheck, ShieldCheck, Sparkles, AlertTriangle, Bookmark, Eye, Droplet, Sun, Clock, Users, Glasses, Award, TrendingUp } from 'lucide-react';
 import SEOHead from '@/components/SEOHead.jsx';
 import EnhancedFooter from '@/components/EnhancedFooter.jsx';
 import {
@@ -127,7 +127,7 @@ const ContactLensWikiPage = () => {
     setSelectedLevel('');
   };
 
-  const const renderContentSection = (section) => {
+  const renderContentSection = (section) => {
     if (section.kind === 'paragraph') {
       return (
         <p key={section.title} className="text-slate-600 leading-relaxed mb-4">{section.content}</p>
@@ -210,109 +210,54 @@ const ContactLensWikiPage = () => {
     }
     return null;
   };
-      );
-    }
-    if (section.kind === 'list') {
-      return (
-        <div key={section.title} className="space-y-3">
-          <h4 className="text-lg font-semibold text-slate-800">{section.title}</h4>
-          <ul className="list-disc list-inside space-y-2 text-slate-600">
-            {section.items.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      );
-    }
-    if (section.kind === 'grid') {
-      return (
-        <div key={section.title} className="space-y-3">
-          <h4 className="text-lg font-semibold text-slate-800">{section.title}</h4>
-          <div className="grid gap-4 md:grid-cols-3">
-            {section.items.map((item) => (
-              <div key={item.heading} className="rounded-2xl border border-cyan-100 bg-cyan-50/60 p-4 shadow-sm">
-                <h5 className="text-base font-semibold text-cyan-900">{item.heading}</h5>
-                <p className="mt-2 text-sm text-cyan-900/90">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    if (section.kind === 'table') {
-      return (
-        <div key={section.title} className="space-y-3 overflow-hidden rounded-2xl border border-slate-200">
-          <h4 className="px-4 pt-4 text-lg font-semibold text-slate-800">{section.title}</h4>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-slate-200">
-              <thead className="bg-slate-50">
-                <tr>
-                  {section.headers.map((header) => (
-                    <th
-                      key={header}
-                      scope="col"
-                      className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600"
-                    >
-                      {header}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 bg-white">
-                {section.rows.map((row, rowIndex) => (
-                  <tr key={rowIndex} className="hover:bg-slate-50/70">
-                    {row.map((cell, cellIndex) => (
-                      <td key={`${rowIndex}-${cellIndex}`} className="px-4 py-3 text-sm text-slate-600">
-                        {cell}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      );
-    }
-    if (section.kind === 'callout') {
-      return (
-        <div
-          key={section.content}
-          className={`flex items-start gap-3 rounded-2xl border px-4 py-3 ${
-            section.tone === 'warning' ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-cyan-200 bg-cyan-50 text-cyan-900'
-          }`}
-        >
-          <AlertTriangle className="mt-1 h-5 w-5 flex-shrink-0" />
-          <p className="text-sm leading-relaxed">{section.content}</p>
-        </div>
-      );
-    }
-    return null;
-  };
 
   return (
     <>
       <SEOHead {...seoData} />
       <main className="flex-1 bg-gradient-to-br from-slate-50 via-white to-cyan-50 pt-32 md:pt-36">
         <header className="mx-auto w-full max-w-6xl px-6 md:px-10">
-          <div className="rounded-3xl bg-white/90 p-8 shadow-xl ring-1 ring-cyan-100">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div className="space-y-4">
-                <span className="inline-flex items-center gap-2 rounded-full bg-cyan-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cyan-700">
-                  <Sparkles className="h-4 w-4" />
-                  Enciclopédia das Lentes de Contato
-                </span>
-                <h1 className="text-3xl font-bold leading-tight text-slate-900 md:text-4xl">
-                  Guia prático, clínico e visual para usuários de lentes de contato
+          <div className="rounded-3xl bg-gradient-to-br from-white via-cyan-50/30 to-white p-8 shadow-2xl ring-1 ring-cyan-200">
+            <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+              <div className="flex-1 space-y-4">
+                <div className="flex items-center gap-3">
+                  <Eye className="h-8 w-8 text-cyan-600" />
+                  <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-100 to-blue-100 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-cyan-700">
+                    <Sparkles className="h-4 w-4" />
+                    Enciclopédia Completa de Lentes de Contato
+                  </span>
+                </div>
+                <h1 className="text-4xl font-extrabold leading-tight bg-gradient-to-r from-slate-900 via-cyan-800 to-slate-900 bg-clip-text text-transparent md:text-5xl">
+                  Guia Definitivo de Lentes de Contato
                 </h1>
-                <p className="max-w-2xl text-base text-slate-600 md:text-lg">
-                  Explore fundamentos, materiais avançados, protocolos de adaptação, rotinas de higiene e estratégias de segurança em um só lugar. Busque por condição ocular, rotina de uso, marcas ou nível de experiência e encontre respostas rápidas com base em evidências.
+                <p className="max-w-2xl text-base text-slate-700 md:text-lg leading-relaxed">
+                  Explore o conhecimento completo sobre lentes de contato: fundamentos científicos, materiais de última geração, protocolos clínicos validados, técnicas de adaptação profissional e práticas de segurança baseadas em evidências. Um recurso completo para usuários, profissionais e curiosos.
                 </p>
+                <div className="flex flex-wrap gap-3 pt-2">
+                  <div className="flex items-center gap-2 rounded-full bg-cyan-50 px-4 py-2 text-sm text-cyan-900">
+                    <BookOpenCheck className="h-4 w-4" />
+                    <span className="font-semibold">{wikiTopics.length}+ tópicos</span>
+                  </div>
+                  <div className="flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm text-emerald-900">
+                    <Award className="h-4 w-4" />
+                    <span className="font-semibold">Conteúdo validado</span>
+                  </div>
+                  <div className="flex items-center gap-2 rounded-full bg-amber-50 px-4 py-2 text-sm text-amber-900">
+                    <TrendingUp className="h-4 w-4" />
+                    <span className="font-semibold">Atualizado mensalmente</span>
+                  </div>
+                </div>
               </div>
-              <div className="flex h-full flex-col items-center justify-center gap-3 rounded-2xl border border-cyan-100 bg-cyan-50 px-6 py-5 text-center text-cyan-800 md:w-64">
-                <ShieldCheck className="h-10 w-10" />
-                <p className="text-sm font-semibold">Conteúdo revisado clinicamente</p>
-                <p className="text-xs text-cyan-900/80">Última atualização registrada em {updateLog[0].date}</p>
+              <div className="flex h-full flex-col items-center justify-center gap-4 rounded-2xl border-2 border-cyan-200 bg-gradient-to-br from-cyan-50 to-blue-50 px-8 py-6 text-center text-cyan-800 shadow-lg md:w-72">
+                <ShieldCheck className="h-12 w-12 text-cyan-600" />
+                <div>
+                  <p className="text-base font-bold text-cyan-900">Conteúdo Clinicamente Revisado</p>
+                  <p className="mt-1 text-xs text-cyan-800">Dr. Philipe Saraiva Cruz</p>
+                  <p className="text-xs text-cyan-700">CRM-MG 69.870</p>
+                </div>
+                <div className="w-full border-t border-cyan-200 pt-3">
+                  <p className="text-xs font-semibold text-cyan-900">Última atualização</p>
+                  <p className="text-xs text-cyan-700">{updateLog[0].date}</p>
+                </div>
               </div>
             </div>
             <form className="mt-8 space-y-6" onSubmit={(event) => event.preventDefault()}>
@@ -452,70 +397,113 @@ const ContactLensWikiPage = () => {
           </div>
         </header>
 
-        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10">
-          <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Acesso rápido</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
+        <section className="mx-auto mt-12 w-full max-w-6xl px-6 md:px-10">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl mb-3">Acesso Rápido aos Tópicos</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto">
+              Navegue diretamente para as seções mais importantes e encontre as informações que você precisa rapidamente.
+            </p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
             {quickLinks.map((item) => (
               <a
                 key={item.id}
                 href={`#${item.id}`}
-                className="group flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-cyan-300 hover:shadow-lg"
+                className="group relative flex flex-col gap-4 rounded-2xl border-2 border-slate-200 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:border-cyan-400 hover:shadow-2xl"
               >
-                <BookOpenCheck className="h-6 w-6 text-cyan-600 group-hover:text-cyan-700" />
-                <div>
-                  <h3 className="text-lg font-semibold text-slate-900">{item.label}</h3>
-                  <p className="mt-1 text-sm text-slate-600">{item.description}</p>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-50/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="relative">
+                  <div className="inline-flex rounded-xl bg-cyan-100 p-3 text-cyan-700 group-hover:bg-cyan-600 group-hover:text-white transition-colors duration-300">
+                    <BookOpenCheck className="h-6 w-6" />
+                  </div>
+                </div>
+                <div className="relative">
+                  <h3 className="text-xl font-bold text-slate-900 group-hover:text-cyan-700 transition-colors duration-300">{item.label}</h3>
+                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">{item.description}</p>
                 </div>
               </a>
             ))}
           </div>
         </section>
 
-        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
-            <div className="flex-1 space-y-4">
-              <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Taxonomia de categorias</h2>
-              <p className="text-slate-600">
-                Navegue por tópicos clínicos, de cuidado diário ou estilo de vida. Cada categoria exibe o volume de conteúdos disponíveis e integra links cruzados para aprofundamento.
-              </p>
-              <div className="grid gap-4 md:grid-cols-2">
-                {wikiCategories.map((category) => {
+        <section className="mx-auto mt-12 w-full max-w-6xl px-6 md:px-10">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
+            <div className="flex-1 space-y-6">
+              <div className="text-center lg:text-left">
+                <h2 className="text-3xl font-bold text-slate-900 md:text-4xl mb-3">Explore por Categoria</h2>
+                <p className="text-slate-600 max-w-xl">
+                  Navegue por tópicos clínicos, cuidados diários e estilo de vida. Cada categoria apresenta conteúdo especializado com referências cruzadas para aprofundamento.
+                </p>
+              </div>
+              <div className="grid gap-5 md:grid-cols-2">
+                {wikiCategories.map((category, index) => {
                   const relatedCount = wikiTopics.filter((topic) => topic.categoryId === category.id).length;
+                  const categoryIcons = [
+                    <Glasses className="h-6 w-6" />,
+                    <ShieldCheck className="h-6 w-6" />,
+                    <Droplet className="h-6 w-6" />,
+                    <Eye className="h-6 w-6" />,
+                    <AlertTriangle className="h-6 w-6" />,
+                    <Sparkles className="h-6 w-6" />,
+                    <Sun className="h-6 w-6" />,
+                    <Clock className="h-6 w-6" />,
+                    <TrendingUp className="h-6 w-6" />,
+                    <Users className="h-6 w-6" />
+                  ];
                   return (
                     <a
                       key={category.id}
                       href={`#categoria-${category.id}`}
-                      className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-cyan-300 hover:shadow-lg"
+                      className="group flex flex-col gap-4 rounded-2xl border-2 border-slate-200 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400 hover:shadow-xl"
                     >
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-semibold uppercase tracking-wide text-cyan-600">{category.name}</span>
-                        <span className="rounded-full bg-cyan-50 px-3 py-1 text-xs font-semibold text-cyan-700">
-                          {relatedCount} tópicos
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="rounded-xl bg-gradient-to-br from-cyan-100 to-cyan-200 p-2.5 text-cyan-700 group-hover:from-cyan-600 group-hover:to-cyan-700 group-hover:text-white transition-all duration-300">
+                            {categoryIcons[index % categoryIcons.length]}
+                          </div>
+                          <span className="text-sm font-bold uppercase tracking-wide text-cyan-700 group-hover:text-cyan-800">
+                            {category.name}
+                          </span>
+                        </div>
+                        <span className="rounded-full bg-cyan-100 px-3 py-1 text-xs font-bold text-cyan-800 group-hover:bg-cyan-600 group-hover:text-white transition-colors duration-300">
+                          {relatedCount} {relatedCount === 1 ? 'tópico' : 'tópicos'}
                         </span>
                       </div>
-                      <p className="text-sm text-slate-600">{category.description}</p>
+                      <p className="text-sm text-slate-600 leading-relaxed group-hover:text-slate-700">
+                        {category.description}
+                      </p>
                     </a>
                   );
                 })}
               </div>
             </div>
-            <aside className="w-full max-w-xs space-y-4 rounded-3xl border border-cyan-100 bg-white p-5 shadow-md">
-              <h3 className="flex items-center gap-2 text-lg font-semibold text-slate-900">
-                <Tag className="h-5 w-5 text-cyan-600" />
-                Sistema de tags
-              </h3>
-              <p className="text-sm text-slate-600">Filtre rapidamente por finalidade clínica, material ou nível de experiência.</p>
-              <div className="flex flex-wrap gap-2">
+            <aside className="w-full lg:w-80 space-y-4 rounded-3xl border-2 border-cyan-200 bg-gradient-to-br from-white to-cyan-50/30 p-6 shadow-lg sticky top-24">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="rounded-lg bg-cyan-100 p-2">
+                  <Tag className="h-5 w-5 text-cyan-700" />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900">Sistema de Tags</h3>
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Filtre rapidamente por finalidade clínica, tipo de material ou nível de experiência para encontrar exatamente o que procura.
+              </p>
+              <div className="flex flex-wrap gap-2 pt-2">
                 {tagUsage.map((tag) => (
-                  <span
+                  <button
                     key={tag.id}
-                    className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold transition ${
-                      tag.count > 0 ? 'bg-cyan-100 text-cyan-700' : 'bg-slate-100 text-slate-500'
+                    onClick={() => setSearchTerm(tag.label)}
+                    className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold transition-all duration-200 ${
+                      tag.count > 0 
+                        ? 'bg-cyan-100 text-cyan-800 hover:bg-cyan-600 hover:text-white cursor-pointer shadow-sm hover:shadow-md' 
+                        : 'bg-slate-100 text-slate-500 cursor-not-allowed'
                     }`}
+                    disabled={tag.count === 0}
                   >
                     #{tag.label}
-                    <span className="rounded-full bg-white/70 px-2 text-[10px] font-bold text-slate-700">{tag.count}</span>
-                  </span>
+                    <span className="rounded-full bg-white/80 px-2 text-[10px] font-bold text-slate-700">
+                      {tag.count}
+                    </span>
+                  </button>
                 ))}
               </div>
             </aside>
@@ -607,133 +595,266 @@ const ContactLensWikiPage = () => {
           </div>
         </section>
 
-        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10" id="checklist-seguranca">
-          <div className="rounded-3xl border border-red-100 bg-red-50 p-6 shadow-sm">
-            <h2 className="flex items-center gap-3 text-2xl font-bold text-red-800 md:text-3xl">
-              <ShieldCheck className="h-7 w-7" />
-              Checklist de segurança imprimível
-            </h2>
-            <p className="mt-2 text-sm text-red-900/90">
-              Revise diariamente e imprima para manter próximo ao kit de lentes. Clique para gerar uma versão amigável para impressão.
-            </p>
-            <button
-              type="button"
-              onClick={() => typeof window !== 'undefined' && window.print()}
-              className="mt-4 inline-flex items-center gap-2 rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
-            >
-              Imprimir checklist
-            </button>
-            <ul className="mt-6 grid gap-3 md:grid-cols-2">
-              {safetyChecklist.map((item) => (
-                <li key={item} className="flex items-start gap-3 rounded-2xl bg-white/70 p-4 text-sm text-red-900">
-                  <span className="mt-1 h-2 w-2 rounded-full bg-red-500" aria-hidden="true" />
-                  {item}
-                </li>
+        <section className="mx-auto mt-12 w-full max-w-6xl px-6 md:px-10" id="checklist-seguranca">
+          <div className="rounded-3xl bg-gradient-to-br from-red-50 via-orange-50 to-red-50 p-8 shadow-2xl border-2 border-red-200">
+            <div className="flex flex-col md:flex-row md:items-start gap-6">
+              <div className="flex-shrink-0">
+                <div className="inline-flex rounded-2xl bg-red-100 p-4">
+                  <ShieldCheck className="h-12 w-12 text-red-600" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <h2 className="flex items-center gap-3 text-3xl font-bold text-red-900 md:text-4xl mb-3">
+                  Checklist de Segurança Essencial
+                </h2>
+                <p className="text-base text-red-800 mb-4 leading-relaxed">
+                  Revise diariamente estas práticas fundamentais para manter a saúde dos seus olhos. Imprima e mantenha próximo ao seu kit de lentes para consulta rápida.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => typeof window !== 'undefined' && window.print()}
+                  className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-6 py-3 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:bg-red-700 hover:shadow-xl hover:-translate-y-0.5"
+                >
+                  <Bookmark className="h-4 w-4" />
+                  Imprimir Checklist Completo
+                </button>
+              </div>
+            </div>
+            <div className="mt-8 grid gap-4 md:grid-cols-2">
+              {safetyChecklist.map((item, index) => (
+                <div key={item} className="flex items-start gap-4 rounded-2xl bg-white/90 p-5 shadow-md border border-red-100 hover:shadow-lg transition-shadow duration-200">
+                  <div className="flex-shrink-0">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 text-sm font-bold text-red-700">
+                      {index + 1}
+                    </div>
+                  </div>
+                  <p className="text-sm text-red-900 leading-relaxed font-medium">{item}</p>
+                </div>
               ))}
-            </ul>
+            </div>
+            <div className="mt-6 rounded-2xl bg-white/80 p-6 border-2 border-red-200">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="h-6 w-6 text-red-600 flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="text-lg font-bold text-red-900 mb-2">Importante:</h3>
+                  <p className="text-sm text-red-800 leading-relaxed">
+                    O não cumprimento destas diretrizes pode resultar em complicações graves, incluindo infecções oculares, úlceras de córnea e até perda de visão. Em caso de dúvida, sempre consulte seu oftalmologista.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10">
-          <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Galeria de recursos visuais</h2>
-          <p className="mt-2 text-sm text-slate-600">
-            Imagens, diagramas e infográficos obtidos após curadoria em repositórios profissionais, fabricantes e entidades de saúde ocular.
-          </p>
-          <div className="mt-6 grid gap-6 md:grid-cols-2">
+        <section className="mx-auto mt-12 w-full max-w-6xl px-6 md:px-10">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl mb-3">Galeria de Recursos Visuais</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              Imagens educativas, diagramas técnicos e infográficos cuidadosamente selecionados de fontes profissionais, fabricantes certificados e entidades de saúde ocular reconhecidas.
+            </p>
+          </div>
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
             {imageResources.map((resource) => (
-              <figure key={resource.title} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-                <img src={resource.url} alt={resource.description} className="h-56 w-full object-cover" loading="lazy" />
-                <figcaption className="space-y-2 p-5">
-                  <h3 className="text-lg font-semibold text-slate-900">{resource.title}</h3>
-                  <p className="text-sm text-slate-600">{resource.description}</p>
-                  <p className="text-xs text-slate-500">Fonte: {resource.source}</p>
-                  <p className="text-xs text-slate-400">Licença: {resource.license} • Atualizado em {resource.lastUpdated}</p>
+              <figure key={resource.title} className="group overflow-hidden rounded-3xl border-2 border-slate-200 bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                <div className="relative overflow-hidden bg-slate-100">
+                  <img 
+                    src={resource.url} 
+                    alt={resource.description} 
+                    className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                    loading="lazy" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+                <figcaption className="space-y-3 p-6">
+                  <h3 className="text-xl font-bold text-slate-900 group-hover:text-cyan-700 transition-colors duration-300">
+                    {resource.title}
+                  </h3>
+                  <p className="text-sm text-slate-700 leading-relaxed">{resource.description}</p>
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-cyan-50 px-3 py-1 text-xs font-semibold text-cyan-700">
+                      <BookOpenCheck className="h-3 w-3" />
+                      {resource.source}
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                      {resource.license}
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 pt-2">
+                    Atualizado em {resource.lastUpdated}
+                  </p>
                 </figcaption>
               </figure>
             ))}
           </div>
         </section>
 
-        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10" id="faq">
-          <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Perguntas frequentes</h2>
-          <div className="mt-6 space-y-4">
-            {wikiFaq.map((faq) => (
-              <details key={faq.question} className="group rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-                <summary className="cursor-pointer text-base font-semibold text-slate-800 transition group-open:text-cyan-700">
-                  {faq.question}
+        <section className="mx-auto mt-12 w-full max-w-6xl px-6 md:px-10" id="faq">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl mb-3">Perguntas Frequentes</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              Respostas claras e baseadas em evidências para as dúvidas mais comuns sobre lentes de contato.
+            </p>
+          </div>
+          <div className="space-y-4">
+            {wikiFaq.map((faq, index) => (
+              <details 
+                key={faq.question} 
+                className="group rounded-2xl border-2 border-slate-200 bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:border-cyan-300"
+              >
+                <summary className="flex cursor-pointer items-start gap-4 text-base font-bold text-slate-800 transition-colors duration-200 group-open:text-cyan-700 list-none">
+                  <div className="flex-shrink-0">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-cyan-100 text-sm font-bold text-cyan-700 group-open:bg-cyan-600 group-open:text-white transition-colors duration-200">
+                      {index + 1}
+                    </div>
+                  </div>
+                  <span className="flex-1 leading-relaxed">{faq.question}</span>
+                  <svg className="h-5 w-5 flex-shrink-0 text-slate-400 transition-transform duration-200 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
                 </summary>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600">{faq.answer}</p>
+                <div className="mt-4 pl-12 text-sm leading-relaxed text-slate-600 border-l-4 border-cyan-200 pl-6">
+                  {faq.answer}
+                </div>
               </details>
             ))}
           </div>
         </section>
 
-        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10" id="glossario">
-          <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Glossário técnico</h2>
-          <dl className="mt-6 grid gap-4 md:grid-cols-2">
+        <section className="mx-auto mt-12 w-full max-w-6xl px-6 md:px-10" id="glossario">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl mb-3">Glossário Técnico</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              Termos técnicos e científicos explicados de forma clara e acessível.
+            </p>
+          </div>
+          <dl className="grid gap-6 md:grid-cols-2">
             {wikiGlossary.map((entry) => (
-              <div key={entry.term} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-                <dt className="text-lg font-semibold text-cyan-700">{entry.term}</dt>
-                <dd className="mt-2 text-sm text-slate-600">{entry.definition}</dd>
+              <div 
+                key={entry.term} 
+                className="group rounded-2xl border-2 border-slate-200 bg-gradient-to-br from-white to-cyan-50/30 p-6 shadow-md transition-all duration-300 hover:shadow-xl hover:border-cyan-300 hover:-translate-y-1"
+              >
+                <dt className="flex items-center gap-2 text-lg font-bold text-cyan-700 mb-3 group-hover:text-cyan-800">
+                  <BookOpenCheck className="h-5 w-5" />
+                  {entry.term}
+                </dt>
+                <dd className="text-sm text-slate-700 leading-relaxed pl-7">
+                  {entry.definition}
+                </dd>
               </div>
             ))}
           </dl>
         </section>
 
-        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10" id="plano-editorial">
-          <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Plano editorial e governança</h2>
-          <p className="mt-2 text-sm text-slate-600">{editorialPlan.cadence}</p>
-          <div className="mt-6 grid gap-6 md:grid-cols-3">
-            {editorialPlan.owners.map((owner) => (
-              <div key={owner.role} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-cyan-700">{owner.role}</h3>
-                <p className="mt-1 text-base font-semibold text-slate-900">{owner.name}</p>
-                <p className="mt-2 text-sm text-slate-600">{owner.focus}</p>
-              </div>
-            ))}
+        <section className="mx-auto mt-12 w-full max-w-6xl px-6 md:px-10" id="plano-editorial">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl mb-3">Plano Editorial e Governança</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              {editorialPlan.cadence}
+            </p>
           </div>
-          <div className="mt-8 overflow-hidden rounded-3xl border border-slate-200">
+          <div className="grid gap-6 md:grid-cols-3 mb-8">
+            {editorialPlan.owners.map((owner, index) => {
+              const ownerIcons = [
+                <Award className="h-6 w-6" />,
+                <Users className="h-6 w-6" />,
+                <BookOpenCheck className="h-6 w-6" />
+              ];
+              return (
+                <div 
+                  key={owner.role} 
+                  className="rounded-2xl border-2 border-slate-200 bg-gradient-to-br from-white to-slate-50 p-6 shadow-md hover:shadow-xl transition-all duration-300"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="rounded-lg bg-cyan-100 p-2 text-cyan-700">
+                      {ownerIcons[index % ownerIcons.length]}
+                    </div>
+                    <h3 className="text-sm font-bold uppercase tracking-wide text-cyan-700">
+                      {owner.role}
+                    </h3>
+                  </div>
+                  <p className="text-lg font-bold text-slate-900 mb-2">{owner.name}</p>
+                  <p className="text-sm text-slate-600 leading-relaxed">{owner.focus}</p>
+                </div>
+              );
+            })}
+          </div>
+          <div className="overflow-hidden rounded-3xl border-2 border-slate-200 shadow-lg mb-8">
             <table className="min-w-full divide-y divide-slate-200">
-              <thead className="bg-slate-50">
+              <thead className="bg-gradient-to-r from-slate-100 to-cyan-50">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Marco</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Periodicidade</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Entregáveis</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wide text-slate-700">Marco</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wide text-slate-700">Periodicidade</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wide text-slate-700">Entregáveis</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 bg-white">
-                {editorialPlan.schedule.map((item) => (
-                  <tr key={item.milestone} className="hover:bg-slate-50/70">
-                    <td className="px-4 py-3 text-sm text-slate-600">{item.milestone}</td>
-                    <td className="px-4 py-3 text-sm text-slate-600">{item.due}</td>
-                    <td className="px-4 py-3 text-sm text-slate-600">{item.deliverables}</td>
+                {editorialPlan.schedule.map((item, index) => (
+                  <tr key={item.milestone} className={`transition-colors duration-200 ${index % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'} hover:bg-cyan-50/30`}>
+                    <td className="px-6 py-4 text-sm font-semibold text-slate-800">{item.milestone}</td>
+                    <td className="px-6 py-4 text-sm text-slate-600">{item.due}</td>
+                    <td className="px-6 py-4 text-sm text-slate-600">{item.deliverables}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h3 className="flex items-center gap-2 text-lg font-semibold text-slate-900">
-              <BookOpenCheck className="h-5 w-5 text-cyan-600" />
-              Fontes principais consultadas
-            </h3>
-            <ul className="mt-3 list-disc list-inside space-y-2 text-sm text-slate-600">
+          <div className="rounded-3xl border-2 border-cyan-200 bg-gradient-to-br from-white to-cyan-50/30 p-8 shadow-lg">
+            <div className="flex items-start gap-4 mb-4">
+              <div className="rounded-lg bg-cyan-100 p-3">
+                <BookOpenCheck className="h-6 w-6 text-cyan-700" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900">
+                Fontes Principais Consultadas
+              </h3>
+            </div>
+            <ul className="grid md:grid-cols-2 gap-3">
               {editorialPlan.sources.map((source) => (
-                <li key={source}>{source}</li>
+                <li key={source} className="flex items-start gap-3 text-sm text-slate-700 leading-relaxed">
+                  <span className="mt-1.5 h-2 w-2 rounded-full bg-cyan-600 flex-shrink-0" />
+                  <span>{source}</span>
+                </li>
               ))}
             </ul>
           </div>
         </section>
 
-        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10">
-          <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Histórico de atualizações</h2>
-          <ul className="mt-6 space-y-3">
-            {updateLog.map((entry) => (
-              <li key={entry.date} className="rounded-3xl border border-slate-200 bg-white p-4 text-sm text-slate-600">
-                <span className="font-semibold text-slate-900">{entry.date}:</span> {entry.summary}
-              </li>
+        <section className="mx-auto mt-12 w-full max-w-6xl px-6 md:px-10">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl mb-3">Histórico de Atualizações</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              Acompanhe as melhorias e novos conteúdos adicionados à enciclopédia.
+            </p>
+          </div>
+          <div className="space-y-4">
+            {updateLog.map((entry, index) => (
+              <div 
+                key={entry.date} 
+                className="group relative rounded-2xl border-2 border-slate-200 bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:border-cyan-300"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-cyan-100 to-cyan-200 text-sm font-bold text-cyan-700 group-hover:from-cyan-600 group-hover:to-cyan-700 group-hover:text-white transition-all duration-300">
+                      {index + 1}
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="inline-flex items-center gap-2 rounded-full bg-cyan-50 px-3 py-1 text-xs font-bold text-cyan-700">
+                        <Clock className="h-3 w-3" />
+                        {entry.date}
+                      </span>
+                      {index === 0 && (
+                        <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">
+                          Mais recente
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-slate-700 leading-relaxed">{entry.summary}</p>
+                  </div>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         </section>
       </main>
       <EnhancedFooter />

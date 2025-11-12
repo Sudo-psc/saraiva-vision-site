@@ -569,7 +569,7 @@ export const safetyChecklist = [
   'Agende revisões conforme orientação (inicial, 6 meses e anual).'
 ];
 
-export const export const imageResources = [
+export const imageResources = [
   {
     title: 'Comparativo de tipos de lentes de contato',
     description: 'Visão geral dos principais tipos de lentes: gelatinosas, RGP, esclerais e multifocais para diferentes necessidades visuais.',
@@ -604,7 +604,7 @@ export const export const imageResources = [
   }
 ];;
 
-export const export const editorialPlan = {
+export const editorialPlan = {
   cadence: 'Revisão clínica trimestral e auditoria editorial semestral.',
   owners: [
     {
@@ -647,7 +647,7 @@ export const export const editorialPlan = {
     'CooperVision. Specialty Lens Portfolio Handbook, 2025.',
     'Bausch + Lomb. Safety Update on Peroxide Disinfection Systems, 2024.'
   ]
-};;
+};
 
 export const quickLinks = [
   {

@@ -974,7 +974,7 @@ export const blogPosts = [
         <li>Transmitir dados para smartphones via Bluetooth</li>
       </ul>
 
-      <blockquote>"Em 2024, a FDA aprovou os primeiros testes clínicos de lentes que monitoram glicose continuamente. Isso significa que em breve diabéticos poderão controlar sua saúde sem furar o dedo dezenas de vezes ao dia."</blockquote>
+      <blockquote>"Pesquisas sobre lentes de contato com monitoramento contínuo de glicose continuam em desenvolvimento, mas nenhuma aprovação da FDA foi registrada publicamente em 2024. Grandes desenvolvedores pausaram ou descontinuaram programas devido a desafios técnicos na medição precisa através da lágrima. Fonte: <a href='https://www.fda.gov/medical-devices' target='_blank' rel='noopener noreferrer'>FDA Medical Devices</a>"</blockquote>
 
       <h2>2. Ortoceratologia: Corrija Miopia Enquanto Dorme</h2>
 
