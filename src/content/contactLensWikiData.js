@@ -569,57 +569,57 @@ export const safetyChecklist = [
   'Agende revisões conforme orientação (inicial, 6 meses e anual).'
 ];
 
-export const imageResources = [
+export const export const imageResources = [
   {
-    title: 'Mapa topográfico corneano para ceratocone',
-    description: 'Exemplo de topografia com exibição de elevação anterior para planejamento de lentes esclerais.',
-    url: 'https://raw.githubusercontent.com/learnmedicaldata/contact-lens-assets/main/images/corneal-topography-keratoconus.png',
-    source: 'Review of Contact Lenses Clinical Atlas, 2024',
-    license: 'Uso educacional autorizado pelo autor',
-    lastUpdated: '2025-02-15'
+    title: 'Comparativo de tipos de lentes de contato',
+    description: 'Visão geral dos principais tipos de lentes: gelatinosas, RGP, esclerais e multifocais para diferentes necessidades visuais.',
+    url: '/Blog/capa-lentes-contato-tipos-optimized-1200w.jpeg',
+    source: 'Saraiva Vision - Arquivo clínico',
+    license: 'Uso educacional autorizado pela clínica',
+    lastUpdated: '2025-11-12'
   },
   {
-    title: 'Infográfico de higiene das lentes',
-    description: 'Checklist visual com etapas de fricção, enxágue e desinfecção.',
-    url: 'https://raw.githubusercontent.com/learnmedicaldata/contact-lens-assets/main/images/contact-lens-hygiene-infographic.png',
-    source: 'American Academy of Optometry, 2024',
-    license: 'Creative Commons BY-NC-SA 4.0',
-    lastUpdated: '2025-01-22'
+    title: 'Lentes de contato para ceratocone',
+    description: 'Opções especializadas de lentes para correção de ceratocone: lentes RGP, esclerais e híbridas.',
+    url: '/Blog/capa-lentes-de-contato-para-ceratocone-optimized-1200w.jpeg',
+    source: 'Saraiva Vision - Departamento de Lentes Especiais',
+    license: 'Material educativo clínico',
+    lastUpdated: '2025-11-12'
   },
   {
-    title: 'Diagrama de estabilização tórica',
-    description: 'Representação dos mecanismos prism ballast e thin zones.',
-    url: 'https://raw.githubusercontent.com/learnmedicaldata/contact-lens-assets/main/images/toric-stabilization-diagram.png',
-    source: 'CooperVision Professional Education, 2025',
-    license: 'Uso interno autorizado para materiais clínicos',
-    lastUpdated: '2025-03-02'
+    title: 'Lentes multifocais para presbiopia',
+    description: 'Tecnologias modernas de correção da presbiopia com lentes de contato multifocais.',
+    url: '/Blog/capa-lentes-presbiopia-optimized-1200w.jpeg',
+    source: 'Saraiva Vision - Área de Adaptometria',
+    license: 'Recurso educacional para pacientes',
+    lastUpdated: '2025-11-12'
   },
   {
-    title: 'Comparativo de Dk/t por material',
-    description: 'Gráfico de barras com transmissibilidade média para hidrogel, silicone-hidrogel, RGP e esclerais.',
-    url: 'https://raw.githubusercontent.com/learnmedicaldata/contact-lens-assets/main/images/dkt-comparison-chart.png',
-    source: 'Journal of Contact Lens Technology, vol. 39, 2024',
-    license: 'Creative Commons BY 4.0',
-    lastUpdated: '2025-04-12'
+    title: 'Cuidados e higiene com lentes de contato',
+    description: 'Protocolos completos de limpeza, desinfecção e manutenção para segurança e saúde ocular.',
+    url: '/Blog/lentes-iniciantes-guia-2025.jpg',
+    source: 'Saraiva Vision - Protocolo clínico',
+    license: 'Guia educacional para usuários',
+    lastUpdated: '2025-11-12'
   }
-];
+];;
 
-export const editorialPlan = {
+export const export const editorialPlan = {
   cadence: 'Revisão clínica trimestral e auditoria editorial semestral.',
   owners: [
     {
       role: 'Responsável técnico',
-      name: 'Dra. Marina Silva, CRM 12345',
+      name: 'Dr. Philipe Saraiva Cruz, CRM 69.870',
       focus: 'Validação clínica, atualização de protocolos e farmacovigilância.'
     },
     {
       role: 'Editor científico',
-      name: 'Dr. Paulo Andrade, CO 54321',
+      name: 'Dr. Philipe Saraiva Cruz, CRM 69.870',
       focus: 'Revisão bibliográfica, atualização de referências e padronização terminológica.'
     },
     {
       role: 'Designer de informação',
-      name: 'Camila Torres',
+      name: 'Equipe Saraiva Vision',
       focus: 'Curadoria de infográficos, acessibilidade visual e atualização de imagens.'
     }
   ],
@@ -647,7 +647,7 @@ export const editorialPlan = {
     'CooperVision. Specialty Lens Portfolio Handbook, 2025.',
     'Bausch + Lomb. Safety Update on Peroxide Disinfection Systems, 2024.'
   ]
-};
+};;
 
 export const quickLinks = [
   {

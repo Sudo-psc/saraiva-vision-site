@@ -127,10 +127,89 @@ const ContactLensWikiPage = () => {
     setSelectedLevel('');
   };
 
-  const renderContentSection = (section) => {
+  const const renderContentSection = (section) => {
     if (section.kind === 'paragraph') {
       return (
-        <p key={section.title} className="text-slate-600 leading-relaxed">{section.content}</p>
+        <p key={section.title} className="text-slate-600 leading-relaxed mb-4">{section.content}</p>
+      );
+    }
+    if (section.kind === 'list') {
+      return (
+        <div key={section.title} className="mb-6">
+          <h4 className="text-lg font-semibold text-slate-800 mb-3">{section.title}</h4>
+          <ul className="list-disc list-inside space-y-2 text-slate-600">
+            {section.items.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+    if (section.kind === 'grid') {
+      return (
+        <div key={section.title} className="mb-6">
+          <h4 className="text-lg font-semibold text-slate-800 mb-3">{section.title}</h4>
+          <div className="grid gap-4 md:grid-cols-3">
+            {section.items.map((item) => (
+              <div key={item.heading} className="rounded-2xl border border-cyan-100 bg-cyan-50/60 p-4 shadow-sm">
+                <h5 className="text-base font-semibold text-cyan-900">{item.heading}</h5>
+                <p className="mt-2 text-sm text-cyan-900/90">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    if (section.kind === 'table') {
+      return (
+        <div key={section.title} className="mb-6 overflow-hidden rounded-2xl border border-slate-200">
+          <h4 className="px-4 pt-4 text-lg font-semibold text-slate-800 mb-3">{section.title}</h4>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-slate-200">
+              <thead className="bg-slate-50">
+                <tr>
+                  {section.headers.map((header) => (
+                    <th
+                      key={header}
+                      scope="col"
+                      className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600"
+                    >
+                      {header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 bg-white">
+                {section.rows.map((row, rowIndex) => (
+                  <tr key={rowIndex} className="hover:bg-slate-50/70">
+                    {row.map((cell, cellIndex) => (
+                      <td key={`${rowIndex}-${cellIndex}`} className="px-4 py-3 text-sm text-slate-600">
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      );
+    }
+    if (section.kind === 'callout') {
+      return (
+        <div
+          key={section.content}
+          className={`flex items-start gap-3 rounded-2xl border px-4 py-3 mb-6 ${
+            section.tone === 'warning' ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-cyan-200 bg-cyan-50 text-cyan-900'
+          }`}
+        >
+          <AlertTriangle className="mt-1 h-5 w-5 flex-shrink-0" />
+          <p className="text-sm leading-relaxed">{section.content}</p>
+        </div>
+      );
+    }
+    return null;
+  };
       );
     }
     if (section.kind === 'list') {
@@ -373,7 +452,7 @@ const ContactLensWikiPage = () => {
           </div>
         </header>
 
-        <section className="mx-auto mt-12 w-full max-w-6xl px-6 md:px-10">
+        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10">
           <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Acesso rápido</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {quickLinks.map((item) => (
@@ -392,7 +471,7 @@ const ContactLensWikiPage = () => {
           </div>
         </section>
 
-        <section className="mx-auto mt-12 w-full max-w-6xl px-6 md:px-10">
+        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
             <div className="flex-1 space-y-4">
               <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Taxonomia de categorias</h2>
@@ -443,19 +522,19 @@ const ContactLensWikiPage = () => {
           </div>
         </section>
 
-        <section className="mx-auto mt-16 w-full max-w-6xl px-6 md:px-10">
+        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Resultados</h2>
             <span className="text-sm text-slate-500">{filteredTopics.length} tópicos encontrados</span>
           </div>
-          <div className="mt-6 space-y-10">
+          <div className="mt-6 space-y-8">
             {groupedTopics.map((group) => (
-              <article key={group.category.id} id={`categoria-${group.category.id}`} className="space-y-6">
+              <article key={group.category.id} id={`categoria-${group.category.id}`} className="space-y-4">
                 <header className="flex flex-col gap-2">
                   <span className="text-xs font-semibold uppercase tracking-wide text-cyan-600">{group.category.name}</span>
                   <h3 className="text-xl font-bold text-slate-900">{group.category.description}</h3>
                 </header>
-                <div className="space-y-8">
+                <div className="space-y-6">
                   {group.topics.map((topic) => (
                     <section key={topic.id} id={topic.id} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -488,7 +567,7 @@ const ContactLensWikiPage = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="mt-6 space-y-6">
+                      <div className="mt-4 space-y-4">
                         {topic.contentSections.map((section) => renderContentSection(section))}
                       </div>
                       <div className="mt-6 flex flex-wrap items-center gap-2">
@@ -528,7 +607,7 @@ const ContactLensWikiPage = () => {
           </div>
         </section>
 
-        <section className="mx-auto mt-16 w-full max-w-6xl px-6 md:px-10" id="checklist-seguranca">
+        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10" id="checklist-seguranca">
           <div className="rounded-3xl border border-red-100 bg-red-50 p-6 shadow-sm">
             <h2 className="flex items-center gap-3 text-2xl font-bold text-red-800 md:text-3xl">
               <ShieldCheck className="h-7 w-7" />
@@ -555,7 +634,7 @@ const ContactLensWikiPage = () => {
           </div>
         </section>
 
-        <section className="mx-auto mt-16 w-full max-w-6xl px-6 md:px-10">
+        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10">
           <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Galeria de recursos visuais</h2>
           <p className="mt-2 text-sm text-slate-600">
             Imagens, diagramas e infográficos obtidos após curadoria em repositórios profissionais, fabricantes e entidades de saúde ocular.
@@ -575,7 +654,7 @@ const ContactLensWikiPage = () => {
           </div>
         </section>
 
-        <section className="mx-auto mt-16 w-full max-w-6xl px-6 md:px-10" id="faq">
+        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10" id="faq">
           <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Perguntas frequentes</h2>
           <div className="mt-6 space-y-4">
             {wikiFaq.map((faq) => (
@@ -589,7 +668,7 @@ const ContactLensWikiPage = () => {
           </div>
         </section>
 
-        <section className="mx-auto mt-16 w-full max-w-6xl px-6 md:px-10" id="glossario">
+        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10" id="glossario">
           <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Glossário técnico</h2>
           <dl className="mt-6 grid gap-4 md:grid-cols-2">
             {wikiGlossary.map((entry) => (
@@ -601,7 +680,7 @@ const ContactLensWikiPage = () => {
           </dl>
         </section>
 
-        <section className="mx-auto mt-16 w-full max-w-6xl px-6 md:px-10" id="plano-editorial">
+        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10" id="plano-editorial">
           <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Plano editorial e governança</h2>
           <p className="mt-2 text-sm text-slate-600">{editorialPlan.cadence}</p>
           <div className="mt-6 grid gap-6 md:grid-cols-3">
@@ -646,7 +725,7 @@ const ContactLensWikiPage = () => {
           </div>
         </section>
 
-        <section className="mx-auto mt-16 w-full max-w-6xl px-6 md:px-10">
+        <section className="mx-auto mt-8 w-full max-w-6xl px-6 md:px-10">
           <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">Histórico de atualizações</h2>
           <ul className="mt-6 space-y-3">
             {updateLog.map((entry) => (
