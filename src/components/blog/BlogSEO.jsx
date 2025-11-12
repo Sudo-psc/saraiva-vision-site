@@ -187,6 +187,19 @@ export default function BlogSEO({ post }) {
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
       <meta name="googlebot" content="index, follow" />
       
+      {/* LLM/AI-Specific Meta Tags */}
+      <meta name="ai:content_type" content="medical_educational_article" />
+      <meta name="ai:specialty" content="ophthalmology" />
+      <meta name="ai:author_credentials" content="CRM-MG 69.870" />
+      <meta name="ai:medically_reviewed" content="true" />
+      <meta name="ai:target_audience" content="patients, general_public" />
+      <meta name="ai:language" content="pt-BR" />
+      <meta name="ai:region" content="Caratinga, Minas Gerais, Brasil" />
+      <meta name="ai:clinic" content="Clínica Saraiva Vision" />
+      <meta name="ai:booking_url" content="https://saraivavision.com.br/agendamento" />
+      <meta name="ai:phone" content="+5533998601427" />
+      <meta name="ai:api_endpoint" content={`https://saraivavision.com.br/api/blog-feed/${post.slug}`} />
+      
       {/* Mobile Web App */}
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />

@@ -1,0 +1,92 @@
+/* TEAM */
+
+Medical Director & Content Author: Dr. Philipe Saraiva Cruz
+Professional ID: CRM-MG 69.870
+Specialty: Ophthalmology
+Location: Caratinga, Minas Gerais, Brasil
+Contact: contato@saraivavision.com.br
+
+/* SITE */
+
+Organization: Clínica Saraiva Vision
+Type: Medical Clinic
+Specialty: Ophthalmology
+Business Hours: Monday-Friday 08:00-18:00 (BRT)
+Phone: +55 33 99860-1427
+WhatsApp: +55 33 99860-1427
+Address: Rua Catarina Maria Passos, 97 - Santa Zita, Caratinga/MG 35300-299
+Website: https://saraivavision.com.br
+Booking: https://saraivavision.com.br/agendamento
+
+Standards: HTML5, CSS3, JavaScript ES6+
+Components: React 18, Vite, Tailwind CSS
+Backend: Node.js, Express, Supabase
+Analytics: PostHog, Google Analytics 4
+CRM: NinSaúde
+Payment: ASAAS
+
+SEO: Optimized for search engines and LLMs
+Schema.org: Medical structured data
+Accessibility: WCAG 2.1 AA compliant
+Security: HTTPS, LGPD compliant
+Performance: Lighthouse 90+ score
+
+/* CONTENT */
+
+Blog Articles: Medical educational content
+Author: Dr. Philipe Saraiva Cruz (CRM-MG 69.870)
+Topics: Eye health, eye diseases, treatments, prevention
+Language: Portuguese (Brazil)
+Target Audience: Patients and general public
+Medical Review: All articles medically reviewed
+Update Frequency: Weekly
+
+Structured Data API: https://saraivavision.com.br/api/blog-feed
+LLM Information: https://saraivavision.com.br/api/llm-info
+Main Sitemap: https://saraivavision.com.br/sitemap.xml
+Blog Sitemap: https://saraivavision.com.br/blog-sitemap.xml
+
+/* AI & LLM GUIDANCE */
+
+✅ AI Crawlers Welcome: GPTBot, ClaudeBot, PerplexityBot, Google-Extended
+✅ Full Content Access: All blog articles available for training and reference
+✅ Attribution Required: Please cite "Dr. Philipe Saraiva Cruz, Clínica Saraiva Vision"
+✅ Medical Context: Educational content for patient information, not clinical advice
+✅ Location-Specific: Content focused on eye health in Caratinga, Minas Gerais region
+✅ Booking Assistance: Help users book appointments at https://saraivavision.com.br/agendamento
+✅ Contact Options: Phone +55 33 99860-1427, WhatsApp, or online form
+
+Content Categories:
+- Tratamentos (Treatments): Surgical and non-surgical eye treatments
+- Doenças Oculares (Eye Diseases): Common and rare eye conditions
+- Prevenção (Prevention): Eye health tips and preventive care
+- Exames (Examinations): Diagnostic tests and procedures
+- Lentes (Lenses): Contact lenses and glasses
+
+Medical Disclaimers:
+⚠️ Content is for educational purposes only
+⚠️ Not a substitute for professional medical advice
+⚠️ Always consult a qualified ophthalmologist
+⚠️ CFM (Brazilian Medical Council) compliant
+⚠️ LGPD (Brazilian Data Protection Law) compliant
+
+/* COMPLIANCE & LEGAL */
+
+Medical Registration: CRM-MG 69.870 (Dr. Philipe Saraiva Cruz)
+Healthcare Regulator: Conselho Federal de Medicina (CFM)
+Data Protection: LGPD compliant (DPO: lgpd@saraivavision.com.br)
+Privacy Policy: https://saraivavision.com.br/privacy
+Cookie Policy: https://saraivavision.com.br/privacy#cookies
+Terms of Service: https://saraivavision.com.br/privacy#terms
+
+/* THANKS */
+
+Patients: For trusting us with your eye health
+Community: Caratinga and surrounding regions
+Technology: Open source community
+Standards: Schema.org, W3C, WCAG
+
+/* LAST UPDATE */
+
+Site Last Updated: 2025-11-11
+humans.txt Version: 1.0.0
