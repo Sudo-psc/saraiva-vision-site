@@ -29,6 +29,7 @@ const PlansPage = () => {
         '1 consulta online',
         '1 consulta presencial com médico',
         'Acompanhamento médico mensal',
+        '1 exame de topografia e meibografia incluídos por ano',
         'Lembretes mensais de troca',
         'Entrega em casa sem custo adicional'
       ],
@@ -53,6 +54,7 @@ const PlansPage = () => {
         '13 pares de lentes gelatinosas premium',
         '2 consultas presenciais por ano',
         'Consultas online incluídas',
+        '1 exame de topografia e meibografia incluídos por ano',
         'Prioridade no agendamento',
         'Frete expresso grátis'
       ],
@@ -77,6 +79,7 @@ const PlansPage = () => {
         '14 pares de lentes premium multifocais',
         '2 consultas presenciais por ano',
         'Consultas online com prioridade',
+        '1 exame de topografia e meibografia incluídos por ano',
         'Exames complementares inclusos',
         'Kit premium de higienização'
       ],

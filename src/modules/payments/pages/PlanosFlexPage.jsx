@@ -94,6 +94,13 @@ const PlanosFlexPage = () => {
                   <p className="text-sm text-gray-700">Receba suas lentes regularmente</p>
                 </div>
               </div>
+              <div className="flex items-start gap-2 bg-white/70 backdrop-blur-sm rounded-lg p-3">
+                <CheckCircle className="w-5 h-5 text-cyan-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold text-gray-900">Exames Incluídos</p>
+                  <p className="text-sm text-gray-700">1 exame de topografia e meibografia por ano</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>

@@ -44,6 +44,7 @@ const PlanPadraoPage = () => {
     '13 pares de lentes gelatinosas premium',
     '2 consultas presenciais por ano',
     'Consultas online incluídas',
+    '1 exame de topografia e meibografia incluídos por ano',
     'Prioridade no agendamento',
     'Frete expresso grátis',
     'Garantia estendida',

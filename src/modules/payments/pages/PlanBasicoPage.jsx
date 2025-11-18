@@ -44,6 +44,7 @@ const PlanBasicoPage = () => {
     '1 consulta online',
     '1 consulta presencial com médico',
     'Acompanhamento médico mensal',
+    '1 exame de topografia e meibografia incluídos por ano',
     'Lembretes mensais de troca',
     'Entrega em casa sem custo adicional',
     '12 meses de lentes novinhas'

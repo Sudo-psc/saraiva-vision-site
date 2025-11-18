@@ -45,6 +45,7 @@ const PlanPremiumPage = () => {
     '14 pares de lentes premium multifocais',
     '2 consultas presenciais por ano',
     'Consultas online com prioridade',
+    '1 exame de topografia e meibografia incluídos por ano',
     'Exames complementares inclusos',
     'Kit premium de higienização',
     'Atendimento domiciliar disponível',
