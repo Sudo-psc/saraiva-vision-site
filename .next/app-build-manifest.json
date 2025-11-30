@@ -7,6 +7,13 @@
       "static/chunks/main-app-3fe07511d2447142.js",
       "static/chunks/app/_not-found/page-263487a95cf03dc4.js"
     ],
+    "/api/google-reviews/route": [
+      "static/chunks/webpack-3130ccaf08a1e43f.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/892-6355cbef55dd5a25.js",
+      "static/chunks/main-app-3fe07511d2447142.js",
+      "static/chunks/app/api/google-reviews/route-9b3e79377ea4106f.js"
+    ],
     "/layout": [
       "static/chunks/webpack-3130ccaf08a1e43f.js",
       "static/chunks/4bd1b696-c023c6e3521b1417.js",
@@ -23,13 +30,6 @@
       "static/chunks/892-6355cbef55dd5a25.js",
       "static/chunks/main-app-3fe07511d2447142.js",
       "static/chunks/app/api/config/route-9b3e79377ea4106f.js"
-    ],
-    "/api/google-reviews/route": [
-      "static/chunks/webpack-3130ccaf08a1e43f.js",
-      "static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "static/chunks/892-6355cbef55dd5a25.js",
-      "static/chunks/main-app-3fe07511d2447142.js",
-      "static/chunks/app/api/google-reviews/route-9b3e79377ea4106f.js"
     ],
     "/page": [
       "static/chunks/webpack-3130ccaf08a1e43f.js",

@@ -455,9 +455,9 @@ const serviceContentData = {
   },
 
   'remocao-xantelasma': {
-    infographicImage: '/Xantelasma.png',
-    infographicAlt: 'Tratamento de Xantelasma com Jato de Plasma - Guia Completo para Pacientes da Clínica Saraiva Vision',
-    infographicTitle: 'Guia Completo do Tratamento',
+    infographicImage: '/infografico_xantelasma.jpg',
+    infographicAlt: 'Protocolo de Tratamento de Xantelasma com Jato de Plasma - Pré e Pós-Procedimento',
+    infographicTitle: 'Protocolo de Tratamento',
     detailedContent: `
       O xantelasma é caracterizado por placas amareladas compostas por depósitos de colesterol que aparecem nas pálpebras, geralmente próximas ao canto interno dos olhos. Embora seja uma condição benigna, pode causar desconforto estético significativo. A remoção com jato de plasma oferece uma solução eficaz, segura e com excelentes resultados estéticos.
 

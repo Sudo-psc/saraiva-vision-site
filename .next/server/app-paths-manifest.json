@@ -1,7 +1,7 @@
 {
+  "/api/google-reviews/route": "app/api/google-reviews/route.js",
   "/_not-found/page": "app/_not-found/page.js",
   "/api/config/route": "app/api/config/route.js",
-  "/api/google-reviews/route": "app/api/google-reviews/route.js",
   "/page": "app/page.js",
   "/api/blog/recent/route": "app/api/blog/recent/route.js"
 }
