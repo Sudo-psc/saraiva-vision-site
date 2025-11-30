@@ -134,9 +134,9 @@ export default function BlogSEO({ post }) {
   };
 
   // Imagem OG otimizada (1200x630 para Facebook)
-  const ogImage = post.coverImage 
+  const ogImage = post.coverImage
     ? `${post.coverImage}?w=1200&h=630&fit=crop`
-    : `${baseUrl}/og-default.jpg`;
+    : `${baseUrl}/og-image-1200x630-optimized.jpg`;
 
   return (
     <Helmet>

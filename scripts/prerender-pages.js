@@ -22,14 +22,14 @@ const pages = {
     description: 'Clínica oftalmológica especializada em catarata, glaucoma, retina e cirurgia refrativa em Caratinga/MG. Atendimento médico de qualidade com tecnologia de ponta.',
     keywords: 'oftalmologia Caratinga, clínica oftalmológica MG, catarata Caratinga, cirurgia refrativa Vale do Aço',
     canonicalUrl: 'https://saraivavision.com.br/',
-    ogImage: 'https://saraivavision.com.br/img/logo_prata.jpeg'
+    ogImage: 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg'
   },
   '/waitlist': {
     title: 'SVlentes - Assinatura de lentes de contato com acompanhamento médico em caratinga.',
     description: 'Primeiro plano de assinatura de lentes de contato com acompanhamento médico no brasil. Comodidade e segurança. Frete grátis e entrega garantida.',
     keywords: 'assinatura lentes de contato, lentes de contato caratinga, acompanhamento médico, SVlentes, plano assinatura lentes',
     canonicalUrl: 'https://saraivavision.com.br/waitlist',
-    ogImage: 'https://saraivavision.com.br/img/logo_prata.jpeg'
+    ogImage: 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg'
   }
 };
 
@@ -141,9 +141,9 @@ function generatePrerenderedHTML(route, metadata, assets) {
     <meta property="og:url" content="${metadata.canonicalUrl}" />
     <meta property="og:site_name" content="Saraiva Vision" />
     <meta property="og:locale" content="pt_BR" />
-    <meta property="og:image" content="${metadata.ogImage || 'https://saraivavision.com.br/img/logo_prata.jpeg'}" />
-    <meta property="og:image:width" content="1024" />
-    <meta property="og:image:height" content="1024" />
+    <meta property="og:image" content="${metadata.ogImage || 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg'}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:alt" content="${metadata.title} - Clínica Saraiva Vision" />
 
@@ -151,7 +151,7 @@ function generatePrerenderedHTML(route, metadata, assets) {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${metadata.title}" />
     <meta name="twitter:description" content="${metadata.description}" />
-    <meta name="twitter:image" content="${metadata.ogImage || 'https://saraivavision.com.br/img/logo_prata.jpeg'}" />
+    <meta name="twitter:image" content="${metadata.ogImage || 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg'}" />
     <meta name="twitter:image:alt" content="${metadata.title} - Clínica Saraiva Vision" />
 
     <!-- Geo Meta Tags -->

@@ -184,6 +184,67 @@ export const VisualFieldIcon = ({ className = "h-8 w-8" }) => {
   );
 };
 
+export const MeibographyIcon = ({ className = "h-8 w-8" }) => {
+  const { t } = useTranslation();
+  return (
+    <ImageWithFallback
+      src="/img/meibografia icon.png"
+      alt={t('ui.alt.meibography', 'Meibografia')}
+      className={className}
+      loading="lazy"
+      decoding="async"
+      width="64"
+      height="64"
+    />
+  );
+};
+
+// Ícones de Procedimentos com Jato de Plasma
+export const PlasmaLiftBlepharoplastyIcon = ({ className = "h-8 w-8" }) => {
+  const { t } = useTranslation();
+  return (
+    <ImageWithFallback
+      src="/icone_blefaroplastia_plasma.JPG"
+      alt={t('ui.alt.plasma_blepharoplasty', 'Blefaroplastia com Jato de Plasma')}
+      className={className}
+      loading="lazy"
+      decoding="async"
+      width="64"
+      height="64"
+    />
+  );
+};
+
+export const XanthelasmaRemovalIcon = ({ className = "h-8 w-8" }) => {
+  const { t } = useTranslation();
+  return (
+    <ImageWithFallback
+      src="/icone_tx_xantelasma.png"
+      alt={t('ui.alt.xanthelasma_removal', 'Remoção de Xantelasma')}
+      className={className}
+      loading="lazy"
+      decoding="async"
+      width="64"
+      height="64"
+    />
+  );
+};
+
+export const DpnTreatmentIcon = ({ className = "h-8 w-8" }) => {
+  const { t } = useTranslation();
+  return (
+    <ImageWithFallback
+      src="/Icone_DPN.jpg"
+      alt={t('ui.alt.dpn_treatment', 'Tratamento de DPN')}
+      className={className}
+      loading="lazy"
+      decoding="async"
+      width="64"
+      height="64"
+    />
+  );
+};
+
 // Service icon mapping
 export const serviceIconMap = {
   'consultas-oftalmologicas': ConsultationIcon,
@@ -198,6 +259,10 @@ export const serviceIconMap = {
   'paquimetria': PachymetryIcon,
   'retinografia': RetinographyIcon,
   'campo-visual': VisualFieldIcon,
+  'meibografia': MeibographyIcon,
+  'blefaroplastia-jato-plasma': PlasmaLiftBlepharoplastyIcon,
+  'remocao-xantelasma': XanthelasmaRemovalIcon,
+  'tratamento-dpn': DpnTreatmentIcon,
 };
 
 export const getServiceIcon = (serviceId, props = {}) => {

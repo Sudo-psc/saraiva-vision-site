@@ -13,7 +13,7 @@ interface SafeHelmetProps {
 
 const DEFAULT_TITLE = 'Saraiva Vision - Oftalmologia em Caratinga, MG';
 const DEFAULT_DESCRIPTION = 'Clínica oftalmológica especializada com Dr. Philipe Saraiva Cruz (CRM-MG 69.870). Atendimento humanizado e tecnologia de ponta em Caratinga, MG.';
-const DEFAULT_IMAGE = 'https://saraivavision.com.br/img/logo_prata.jpeg';
+const DEFAULT_IMAGE = 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg';
 
 /**
  * Safe wrapper for Helmet that ensures all values are valid strings

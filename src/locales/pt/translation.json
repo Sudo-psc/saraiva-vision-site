@@ -333,6 +333,22 @@
       "visualField": {
         "title": "Campo Visual Computadorizado",
         "description": "Exame que avalia a sensibilidade visual periférica e central, vital para diagnóstico e seguimento do glaucoma."
+      },
+      "meibography": {
+        "title": "Meibografia",
+        "description": "Exame de imagem das glândulas de Meibômio que avalia a estrutura e função glandular, essencial no diagnóstico preciso da síndrome do olho seco."
+      },
+      "plasmaLiftBlepharoplasty": {
+        "title": "Blefaroplastia com Jato de Plasma",
+        "description": "Procedimento não cirúrgico para rejuvenescer a área dos olhos, tratando flacidez e bolsas sem uso de bisturi. Flacidez e bolsas sem cortes, com rápida recuperação."
+      },
+      "xanthelasmaRemoval": {
+        "title": "Remoção de Xantelasma",
+        "description": "Técnica segura para remover depósitos de colesterol ao redor dos olhos, melhorando a estética e o conforto."
+      },
+      "dpnTreatment": {
+        "title": "Tratamento de DPN",
+        "description": "Método eficaz para eliminar Dermatose Papulosa Nigra (DPN), pequenas lesões benignas comuns no rosto e pescoço."
       }
     },
     "benefits": {
@@ -395,7 +411,12 @@
       "opticNeuropathyEval": "Avaliação de neuropatias ópticas",
       "progressionMonitoring": "Monitoramento da progressão",
       "scotomaDetection": "Detecção de escotomas",
-      "reliableProtocol": "Protocolo automatizado confiável"
+      "reliableProtocol": "Protocolo automatizado confiável",
+      "meibomianGlandEval": "Avaliação das glândulas de Meibômio",
+      "dryEyeDiagnosis": "Diagnóstico preciso de olho seco",
+      "glandStructureAnalysis": "Análise da estrutura glandular",
+      "directedTreatment": "Orientação de tratamento direcionado",
+      "nonInvasiveImaging": "Imagem não invasiva e rápida"
     },
     "duration": {
       "consultation": "45-60 minutos",
@@ -409,7 +430,8 @@
       "cornealTopography": "10-15 minutos",
       "pachymetry": "5-10 minutos",
       "retinography": "10-15 minutos",
-      "visualField": "20-30 minutos por olho"
+      "visualField": "20-30 minutos por olho",
+      "meibography": "10-15 minutos"
     },
     "preparation": {
       "consultation": "Traga seus óculos atuais e exames anteriores",
@@ -423,7 +445,8 @@
       "cornealTopography": "Suspender uso de lentes de contato conforme orientação médica",
       "pachymetry": "Suspender lentes de contato 24h antes do exame",
       "retinography": "Pode ser necessária dilatação pupilar",
-      "visualField": "Use seus óculos habituais e evite cansaço visual antes do exame"
+      "visualField": "Use seus óculos habituais e evite cansaço visual antes do exame",
+      "meibography": "Evite uso de maquiagem nos olhos no dia do exame"
     },
     "included": {
       "anamnesis": "Anamnese detalhada",

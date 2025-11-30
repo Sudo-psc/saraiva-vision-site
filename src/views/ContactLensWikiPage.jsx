@@ -10,7 +10,6 @@ import {
   wikiFaq,
   wikiGlossary,
   safetyChecklist,
-  imageResources,
   editorialPlan,
   quickLinks,
   updateLog,
@@ -643,48 +642,6 @@ const ContactLensWikiPage = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-
-        <section className="mx-auto mt-12 w-full max-w-6xl px-6 md:px-10">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl mb-3">Galeria de Recursos Visuais</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto leading-relaxed">
-              Imagens educativas, diagramas técnicos e infográficos cuidadosamente selecionados de fontes profissionais, fabricantes certificados e entidades de saúde ocular reconhecidas.
-            </p>
-          </div>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
-            {imageResources.map((resource) => (
-              <figure key={resource.title} className="group overflow-hidden rounded-3xl border-2 border-slate-200 bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-                <div className="relative overflow-hidden bg-slate-100">
-                  <img 
-                    src={resource.url} 
-                    alt={resource.description} 
-                    className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105" 
-                    loading="lazy" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-                <figcaption className="space-y-3 p-6">
-                  <h3 className="text-xl font-bold text-slate-900 group-hover:text-cyan-700 transition-colors duration-300">
-                    {resource.title}
-                  </h3>
-                  <p className="text-sm text-slate-700 leading-relaxed">{resource.description}</p>
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    <span className="inline-flex items-center gap-1 rounded-full bg-cyan-50 px-3 py-1 text-xs font-semibold text-cyan-700">
-                      <BookOpenCheck className="h-3 w-3" />
-                      {resource.source}
-                    </span>
-                    <span className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-                      {resource.license}
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-500 pt-2">
-                    Atualizado em {resource.lastUpdated}
-                  </p>
-                </figcaption>
-              </figure>
-            ))}
           </div>
         </section>
 

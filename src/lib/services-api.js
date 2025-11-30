@@ -55,5 +55,29 @@ export const mockServicesData = [
     imageUrl: '/images/src/avatar-female-blonde.png',
     slug: 'oftalmologia-pediatrica',
     category: 'Pediatria'
+  },
+  {
+    id: 'blefaroplastia-jato-plasma',
+    title: 'Blefaroplastia com Jato de Plasma',
+    description: 'Procedimento não cirúrgico para rejuvenescer a área dos olhos, tratando flacidez e bolsas sem uso de bisturi.',
+    imageUrl: '/icone_blefaroplastia_plasma.JPG',
+    slug: 'blefaroplastia-jato-plasma',
+    category: 'Cirurgias'
+  },
+  {
+    id: 'remocao-xantelasma',
+    title: 'Remoção de Xantelasma',
+    description: 'Técnica segura para remover depósitos de colesterol ao redor dos olhos, melhorando a estética e o conforto.',
+    imageUrl: '/icone_tx_xantelasma.png',
+    slug: 'remocao-xantelasma',
+    category: 'Tratamentos'
+  },
+  {
+    id: 'tratamento-dpn',
+    title: 'Tratamento de DPN',
+    description: 'Método eficaz para eliminar Dermatose Papulosa Nigra (DPN), pequenas lesões benignas comuns no rosto e pescoço.',
+    imageUrl: '/Icone_DPN.jpg',
+    slug: 'tratamento-dpn',
+    category: 'Tratamentos'
   }
 ];

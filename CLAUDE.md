@@ -659,13 +659,23 @@ npx vitest run path/to/file.test.jsx  # Single test file
 
 📊 **[Spec Status Tracking](specs/README.md)** - Implementation status for all feature specifications
 
+**Completed (7)**:
 - 001-backend-integration-strategy - API integration architecture (✅ Complete)
 - 001-medical-appointment-api - Appointment system (✅ Complete)
 - 002-resend-contact-form - Email contact forms (✅ Complete)
 - 003-backend-integration-strategy - Backend patterns (✅ Complete)
-- 005-wordpress-external-integration - WordPress migration documentation (🔄 Replaced with static blog)
-- 009-frontend-performance-optimization - Performance improvements (⏳ Planning phase)
+- 007-subscription-plans-stripe - Multi-tier subscription system with Stripe (✅ Complete)
+- 008-blog-sanity-cms - Blog system with Sanity CMS and static fallback (✅ Complete)
 - 404-page - Custom error page implementation (✅ Complete)
+
+**In Planning (2)**:
+- 006-subscriber-area - Self-service portal (⏳ Planning - High Priority)
+- 009-frontend-performance-optimization - Performance improvements (⏳ Planning)
+
+**Deprecated (1)**:
+- 005-wordpress-external-integration - WordPress migration (📦 Replaced with Sanity CMS)
+
+**Overall Progress**: 77.8% (7/9 active specs completed)
 
 ### Archive (`/archive/`)
 - Historical reports, configs, and deprecated scripts
@@ -758,6 +768,14 @@ npm run sanity:validate
 
 ## Recent Changes
 
+### 2025-11-16
+- 📚 **Documentation Update**: Comprehensive spec update
+  - ✅ Created Spec 007: Subscription Plans & Stripe Integration
+  - ✅ Created Spec 008: Blog System with Sanity CMS
+  - ✅ Updated specs/README.md with current implementation status
+  - ✅ Updated CLAUDE.md with new specs and progress tracking
+  - ✅ Overall project completion: 77.8% (7/9 active specs)
+
 ### 2025-10-26
 - ✅ Sanity CMS integration complete with static fallback
 - ✅ Fixed Node.js/Vite compatibility (universal `getEnv()` function)
@@ -782,6 +800,6 @@ npm run sanity:validate
 
 ---
 
-**Last Updated**: 2025-10-25
-**Version**: 3.5.1
+**Last Updated**: 2025-11-16
+**Version**: 3.6.0
 **Status**: ✅ Production Ready

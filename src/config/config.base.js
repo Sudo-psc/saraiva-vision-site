@@ -138,11 +138,11 @@ const business = {
 
     // Formatações pré-computadas
     formatted: {
-      short: 'Rua Catarina Maria Passos, 97 - Caratinga/MG',
-      medium: 'Rua Catarina Maria Passos, 97 - Santa Zita, Caratinga/MG',
-      long: 'Rua Catarina Maria Passos, 97 - Santa Zita, Caratinga - MG, 35300-299',
-      full: 'Rua Catarina Maria Passos, 97 - Santa Zita, Caratinga - MG, 35300-299',
-      singleLine: 'Rua Catarina Maria Passos, 97 - Santa Zita, Caratinga/MG 35300-299'
+      short: 'R. Catarina Maria Passos, 97 - Caratinga/MG',
+      medium: 'R. Catarina Maria Passos, 97 - Santa Zita, Caratinga/MG',
+      long: 'R. Catarina Maria Passos, 97 - Santa Zita, Caratinga - MG, 35300-299',
+      full: 'R. Catarina Maria Passos, 97 - Santa Zita, Caratinga - MG, 35300-299',
+      singleLine: 'R. Catarina Maria Passos, 97 - Santa Zita, Caratinga - MG, 35300-299'
     }
   },
 

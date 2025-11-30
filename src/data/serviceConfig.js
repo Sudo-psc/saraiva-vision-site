@@ -276,6 +276,105 @@ export const createServiceConfig = (t) => ({
       t('services.included.specializedInterpretation', 'Interpretação especializada'),
       t('services.included.resultGuidance', 'Orientações sobre resultados')
     ]
+  },
+  'meibografia': {
+    id: 'meibografia',
+    title: t('services.items.meibography.title', 'Meibografia'),
+    description: t('services.items.meibography.description', 'Exame de imagem não invasivo que visualiza as glândulas de Meibômio'),
+    fullDescription: t('services.items.meibography.fullDescription', 'Meibografia é um exame avançado por imagem infravermelha que permite visualizar em alta definição as glândulas de Meibômio, responsáveis pela produção da camada lipídica da lágrima. Essencial para diagnóstico preciso de olho seco evaporativo e disfunção das glândulas de Meibômio (DGM).'),
+    benefits: [
+      t('services.benefits.meibomianDiagnosis', 'Diagnóstico preciso da disfunção das glândulas de Meibômio'),
+      t('services.benefits.nonInvasiveExam', 'Exame não invasivo, rápido e indolor'),
+      t('services.benefits.highDefVisualization', 'Visualização em alta definição das glândulas'),
+      t('services.benefits.earlyDetection', 'Identificação precoce de alterações glandulares'),
+      t('services.benefits.personalizedTreatmentPlan', 'Planejamento de tratamento personalizado'),
+      t('services.benefits.treatmentMonitoring', 'Monitoramento da resposta ao tratamento'),
+      t('services.benefits.dryEyeClassification', 'Diferenciação entre olho seco aquoso e evaporativo')
+    ],
+    duration: t('services.duration.meibography', '10-15 minutos'),
+    preparation: t('services.preparation.meibography', 'Não usar lentes de contato no dia do exame, evitar maquiagem nos olhos'),
+    included: [
+      t('services.included.clinicalEvaluation', 'Avaliação clínica das pálpebras'),
+      t('services.included.infraredImaging', 'Captura de imagens por infravermelho'),
+      t('services.included.glandAnalysis', 'Análise das glândulas superior e inferior'),
+      t('services.included.atrophyClassification', 'Classificação do grau de atrofia'),
+      t('services.included.digitalDocumentation', 'Documentação fotográfica digital'),
+      t('services.included.detailedTechnicalReport', 'Relatório técnico detalhado'),
+      t('services.included.treatmentGuidance', 'Orientações sobre tratamento indicado')
+    ]
+  },
+  // Procedimentos com Jato de Plasma
+  'blefaroplastia-jato-plasma': {
+    id: 'blefaroplastia-jato-plasma',
+    title: t('services.items.plasmaLiftBlepharoplasty.title', 'Blefaroplastia com Jato de Plasma'),
+    description: t('services.items.plasmaLiftBlepharoplasty.description', 'Procedimento não cirúrgico para rejuvenescer a área dos olhos, tratando flacidez e bolsas sem cortes.'),
+    fullDescription: 'A blefaroplastia com jato de plasma é um procedimento estético minimamente invasivo que utiliza tecnologia de plasma para tratar a flacidez, rugas e excesso de pele nas pálpebras superiores e inferiores — sem necessidade de cortes, suturas ou anestesia geral. É uma alternativa moderna e segura à cirurgia tradicional de pálpebras.',
+    benefits: [
+      'Procedimento sem cortes ou suturas',
+      'Recuperação rápida (5-7 dias)',
+      'Resultados naturais e duradouros',
+      'Baixo risco de complicações',
+      'Realizado com anestesia tópica',
+      'Alternativa segura à cirurgia convencional'
+    ],
+    duration: '30-60 minutos',
+    preparation: 'Evitar uso de maquiagem no dia. Não utilizar cremes ou ácidos na região 48h antes.',
+    included: [
+      'Avaliação pré-procedimento',
+      'Anestesia tópica',
+      'Procedimento com jato de plasma',
+      'Orientações pós-procedimento',
+      'Retorno de acompanhamento',
+      'Suporte durante recuperação'
+    ]
+  },
+  'remocao-xantelasma': {
+    id: 'remocao-xantelasma',
+    title: t('services.items.xanthelasmaRemoval.title', 'Remoção de Xantelasma'),
+    description: t('services.items.xanthelasmaRemoval.description', 'Técnica segura para remover depósitos de colesterol ao redor dos olhos.'),
+    fullDescription: 'O xantelasma é caracterizado por placas amareladas compostas por depósitos de colesterol que aparecem nas pálpebras. A remoção com jato de plasma oferece uma solução eficaz, segura e com excelentes resultados estéticos, sem necessidade de cirurgia invasiva.',
+    benefits: [
+      'Remoção precisa das lesões',
+      'Mínimo risco de cicatrizes',
+      'Procedimento ambulatorial',
+      'Recuperação rápida',
+      'Resultados estéticos excelentes',
+      'Avaliação laboratorial inclusa'
+    ],
+    duration: '20-40 minutos',
+    preparation: 'Trazer exames de perfil lipídico. Evitar anticoagulantes conforme orientação médica.',
+    included: [
+      'Avaliação das lesões',
+      'Orientação sobre perfil lipídico',
+      'Anestesia tópica ou local',
+      'Remoção com jato de plasma',
+      'Orientações pós-procedimento',
+      'Retorno de acompanhamento'
+    ]
+  },
+  'tratamento-dpn': {
+    id: 'tratamento-dpn',
+    title: t('services.items.dpnTreatment.title', 'Tratamento de DPN'),
+    description: t('services.items.dpnTreatment.description', 'Método eficaz para eliminar Dermatose Papulosa Nigra (DPN).'),
+    fullDescription: 'A Dermatose Papulosa Nigra (DPN) consiste em pequenas lesões pigmentadas benignas que aparecem principalmente no rosto e pescoço, mais comuns em pessoas de pele negra e morena. O tratamento com jato de plasma é uma das técnicas mais eficazes e seguras para sua remoção.',
+    benefits: [
+      'Seguro para peles escuras',
+      'Baixo risco de manchas',
+      'Remoção de múltiplas lesões por sessão',
+      'Recuperação rápida',
+      'Resultados permanentes nas lesões tratadas',
+      'Técnica precisa e controlada'
+    ],
+    duration: '30-60 minutos',
+    preparation: 'Evitar exposição solar intensa 1 semana antes. Não usar ácidos ou clareadores 48h antes.',
+    included: [
+      'Mapeamento das lesões',
+      'Anestesia tópica',
+      'Remoção com jato de plasma',
+      'Protetor solar FPS 50+',
+      'Orientações pós-procedimento',
+      'Retorno de acompanhamento'
+    ]
   }
 });
 

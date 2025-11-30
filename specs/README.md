@@ -1,6 +1,6 @@
 # Feature Specifications - Implementation Status
 
-**Última Atualização**: 2025-10-25
+**Última Atualização**: 2025-11-16
 **Mantenedor**: Dr. Philipe Saraiva Cruz
 
 ## Overview
@@ -122,21 +122,114 @@ Each feature spec directory contains:
 - ⏳ Phase 5: PWA & Optimizations (2 weeks) - Performance
 
 **Target Features**:
-- ✅ Authentication (email/password, magic link, OAuth, 2FA)
-- ✅ Dashboard with subscription overview
-- ✅ Subscription management (upgrade, pause, cancel)
-- ✅ Delivery tracking and address updates
-- ✅ Prescription upload and approval workflow
-- ✅ Appointment scheduling (presential/online)
-- ✅ Support center with tickets and FAQs
-- ✅ LGPD compliance (data export, deletion, consents)
-- ✅ Progressive Web App (PWA) with offline support
+- ⏳ Authentication (email/password, magic link, OAuth, 2FA)
+- ⏳ Dashboard with subscription overview
+- ⏳ Subscription management (upgrade, pause, cancel)
+- ⏳ Delivery tracking and address updates
+- ⏳ Prescription upload and approval workflow
+- ⏳ Appointment scheduling (presential/online)
+- ⏳ Support center with tickets and FAQs
+- ⏳ LGPD compliance (data export, deletion, consents)
+- ⏳ Progressive Web App (PWA) with offline support
 
 **Business Impact**:
 - Target: 70% reduction in support tickets
 - Target: +15% retention rate increase
 - Target: NPS ≥8.0 for subscribers
 - Target: 80% self-service rate
+
+---
+
+### 007 - Subscription Plans & Stripe Integration
+**Directory**: `007-subscription-plans-stripe/` (to be created)
+**Status**: ✅ Implemented
+**Description**: Multi-tier subscription plans with Stripe payment integration
+
+**Implementation Status**: 100%
+- ✅ **Presential Plans** (Annual commitment):
+  - Plano Básico: 12x R$ 100,00 (12 pairs + consultations)
+  - Plano Padrão: 12x R$ 149,99 (most popular, premium features)
+  - Plano Premium: 12x R$ 249,99 (VIP treatment, extra benefits)
+- ✅ **Flex Plans** (No commitment, monthly):
+  - Stripe Pricing Table integration (prctbl_1SLTeeLs8MC0aCdjujaEGM3N)
+  - Cancel anytime, no bureaucracy
+  - Automated billing via Stripe
+- ✅ **Online Plans** (Telemedicine):
+  - National coverage via telemedicine
+  - Online consultations and monitoring
+  - Home delivery nationwide
+
+**Key Features**:
+- ✅ Plan comparison pages (`/planos`, `/planosflex`, `/planosonline`)
+- ✅ Individual plan detail pages (`/planobasico`, `/planopadrao`, `/planopremium`)
+- ✅ Payment pages for each plan tier
+- ✅ Stripe integration with webhook support
+- ✅ Responsive design with accessibility (WCAG 2.1 AA)
+- ✅ SEO optimization for all plan pages
+
+**Payment Routes**:
+- `/pagamentobasico`, `/pagamentopadrao`, `/pagamentopremium` (Presential)
+- `/pagamentobasicoonline`, `/pagamentopadraoonline`, `/pagamentopremiumonline` (Online)
+
+**Business Impact**:
+- ✅ Multi-tier pricing strategy implemented
+- ✅ Flexible payment options (annual/monthly)
+- ✅ Automated subscription management via Stripe
+- ✅ Reduced friction in conversion funnel
+
+---
+
+### 008 - Blog System with Sanity CMS
+**Directory**: `008-blog-sanity-cms/` (to be created)
+**Status**: ✅ Implemented
+**Description**: Hybrid blog architecture with Sanity CMS and static fallback
+
+**Implementation Status**: 100%
+- ✅ **Sanity CMS Integration**:
+  - Project ID: 92ocrdmp
+  - 25+ blog posts migrated
+  - Portable Text rendering
+  - Image optimization via Sanity CDN
+  - 5-second timeout with circuit breaker
+- ✅ **Static Fallback System**:
+  - Zero network dependency
+  - 100% uptime guarantee
+  - Transparent switching
+  - No user-visible errors
+- ✅ **Content Features**:
+  - Client-side search
+  - Category filtering
+  - Featured posts
+  - Recent posts
+  - SEO-friendly URLs
+  - Prerendering for SEO
+
+**Key Files**:
+- `src/lib/sanityClient.js` - Universal client (Vite + Node.js)
+- `src/lib/sanityUtils.js` - GROQ queries and transformations
+- `src/services/sanityBlogService.js` - Main service with circuit breaker
+- `src/components/PortableTextRenderer.jsx` - Content rendering
+- `src/data/blogPosts.js` - Static fallback data
+
+**Architecture**:
+```
+BlogPage → sanityBlogService.js
+           ↓
+    Try: Sanity CMS (5s timeout)
+           ↓
+    Fallback: Static Posts (always available)
+```
+
+**Performance**:
+- Chunk: `sanity-cms-*.js` ~53KB (18KB gzipped)
+- In-memory caching for metadata and posts
+- Lazy loading and CDN-backed reads
+
+**Business Impact**:
+- ✅ Professional blog platform
+- ✅ 100% uptime guarantee
+- ✅ Easy content management via Sanity Studio
+- ✅ SEO optimization with structured data
 
 ---
 
@@ -186,20 +279,22 @@ Each feature spec directory contains:
 | 001 - Medical Appointment API | ✅ Complete | 100% | High | 2024-10-02 |
 | 002 - Resend Contact Form | ✅ Complete | 100% | Medium | 2024-09-25 |
 | 003 - Backend Integration Strategy | ✅ Complete | 100% | High | 2024-09-25 |
-| 005 - WordPress Integration | 🔄 Migrated | N/A | Deprecated | 2024-10-02 |
+| 005 - WordPress Integration | 📦 Deprecated | N/A | N/A | 2024-10-02 |
 | 006 - Subscriber Area | ⏳ Planning | 0% | **Critical** | 2025-10-25 |
+| 007 - Subscription Plans & Stripe | ✅ Complete | 100% | High | 2025-11-16 |
+| 008 - Blog System (Sanity CMS) | ✅ Complete | 100% | High | 2025-10-26 |
 | 009 - Performance Optimization | ⏳ Planning | 0% | Medium | 2025-10-13 |
 | 404 - Custom Error Page | ✅ Complete | 100% | Low | 2024-10-06 |
 
 ## Overall Project Status
 
-**Total Specifications**: 8
-**Completed**: 5 (62.5%)
+**Total Specifications**: 10
+**Completed**: 7 (70%)
 **In Progress**: 0 (0%)
-**Planned**: 2 (25%)
-**Deprecated**: 1 (12.5%)
+**Planned**: 2 (20%)
+**Deprecated**: 1 (10%)
 
-**Overall Completion**: 62.5% of active specifications implemented
+**Overall Completion**: 77.8% of active specifications implemented (7/9 active specs)
 
 ## Specification Guidelines
 

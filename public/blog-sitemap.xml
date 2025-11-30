@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <!-- Generated: 2025-11-12T01:42:24.920Z -->
+  <!-- Generated: 2025-11-21T13:29:38.695Z -->
   <!-- Blog Articles - Saraiva Vision - Oftalmologia em Caratinga/MG -->
   <!-- Dr. Philipe Saraiva Cruz - CRM-MG 69.870 -->
-  <!-- Total articles: 29 -->
+  <!-- Total articles: 30 -->
   <!-- All articles are medically reviewed and optimized for LLMs and AI agents -->
   
   <!-- Blog Index Page -->
   <url>
     <loc>https://saraivavision.com.br/blog</loc>
-    <lastmod>2025-11-12T01:42:24.920Z</lastmod>
+    <lastmod>2025-11-21T13:29:38.695Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="pt-br" href="https://saraivavision.com.br/blog" />
@@ -220,5 +220,12 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-br" href="https://saraivavision.com.br/blog/lentes-contato-iniciantes-guia-completo" />
+  </url>
+  <url>
+    <loc>https://saraivavision.com.br/blog/blefaroplastia-jato-plasma-caratinga-mg</loc>
+    <lastmod>2025-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt-br" href="https://saraivavision.com.br/blog/blefaroplastia-jato-plasma-caratinga-mg" />
   </url>
 </urlset>

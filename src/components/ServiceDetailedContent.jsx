@@ -411,12 +411,132 @@ const serviceContentData = {
       "European Glaucoma Society. Perimetry Guidelines, 6th Edition, 2021.",
       "American Academy of Ophthalmology. Visual Field Testing Preferred Practice Pattern, 2022."
     ]
+  },
+
+  'blefaroplastia-jato-plasma': {
+    infographicImage: '/infografico_protocolo_blefaroplastia_plasma.jpg',
+    infographicAlt: 'Protocolo Pré e Pós-Blefaroplastia com Jato de Plasma - Prevenção da Hiperpigmentação Pós-Inflamatória',
+    infographicTitle: 'Protocolo Pré e Pós-Procedimento',
+    detailedContent: `
+      A blefaroplastia com jato de plasma é um procedimento estético minimamente invasivo que utiliza tecnologia de plasma para tratar a flacidez, rugas e excesso de pele nas pálpebras superiores e inferiores — sem necessidade de cortes, suturas ou anestesia geral. É uma alternativa moderna e segura à cirurgia tradicional de pálpebras.
+
+      O procedimento funciona através de um dispositivo que gera plasma a partir da ionização de gases atmosféricos. Quando aplicado à pele, cria micropontos de sublimação que estimulam a retração imediata do tecido e a produção de colágeno, resultando em um efeito lifting natural e duradouro na região periorbital.
+
+      Na Clínica Saraiva Vision, o procedimento é realizado com anestesia tópica, garantindo conforto durante a aplicação. A técnica preserva as estruturas oculares importantes e permite recuperação rápida, com retorno às atividades normais em poucos dias. Os resultados são progressivos, melhorando ao longo das semanas seguintes ao tratamento.
+    `,
+    faqs: [
+      {
+        question: "A blefaroplastia com jato de plasma dói?",
+        answer: "Não. Utilizamos anestesia tópica que elimina qualquer desconforto durante o procedimento. Você pode sentir apenas uma leve sensação de calor, que é bem tolerada."
+      },
+      {
+        question: "Qual é o tempo de recuperação?",
+        answer: "A recuperação inicial leva de 5 a 7 dias, período em que as crostas formadas pelos micropontos se desprendem naturalmente. O resultado final é observado em 4 a 6 semanas."
+      },
+      {
+        question: "Quantas sessões são necessárias?",
+        answer: "Na maioria dos casos, uma única sessão é suficiente para obter resultados significativos. Em casos de flacidez mais acentuada, pode ser indicada uma segunda sessão após 2-3 meses."
+      },
+      {
+        question: "Os resultados são permanentes?",
+        answer: "Os resultados são duradouros, geralmente de 2 a 4 anos, dependendo de fatores como idade, genética e cuidados com a pele. Sessões de manutenção podem prolongar os resultados."
+      },
+      {
+        question: "Quem pode fazer esse procedimento?",
+        answer: "O procedimento é indicado para pessoas com flacidez leve a moderada nas pálpebras, rugas finas e excesso de pele periorbital. Contraindicações incluem gestantes, portadores de marca-passo e pessoas com queloides."
+      }
+    ],
+    relatedServices: ['cirurgias-oftalmologicas', 'remocao-xantelasma', 'tratamento-dpn'],
+    references: [
+      "De Mendonça, R.D.S. et al. (2023) — Uso do jato de plasma para tratamento de blefaroplastia não cirúrgica: revisão da literatura. Brazilian Journal of Development, v. 9, n. 5.",
+      "Sociedade Brasileira de Dermatologia. Procedimentos Estéticos Minimamente Invasivos, 2023.",
+      "International Society of Aesthetic Plastic Surgery. Non-Surgical Blepharoplasty Guidelines, 2022."
+    ]
+  },
+
+  'remocao-xantelasma': {
+    infographicImage: '/Xantelasma.png',
+    infographicAlt: 'Tratamento de Xantelasma com Jato de Plasma - Guia Completo para Pacientes da Clínica Saraiva Vision',
+    infographicTitle: 'Guia Completo do Tratamento',
+    detailedContent: `
+      O xantelasma é caracterizado por placas amareladas compostas por depósitos de colesterol que aparecem nas pálpebras, geralmente próximas ao canto interno dos olhos. Embora seja uma condição benigna, pode causar desconforto estético significativo. A remoção com jato de plasma oferece uma solução eficaz, segura e com excelentes resultados estéticos.
+
+      O procedimento utiliza energia de plasma para sublimar precisamente o tecido do xantelasma, camada por camada, preservando a pele saudável ao redor. A técnica permite controle preciso da profundidade do tratamento, minimizando riscos de cicatrizes e garantindo resultados naturais.
+
+      Na Clínica Saraiva Vision, realizamos avaliação completa antes do procedimento, incluindo exames laboratoriais para verificar níveis de colesterol, já que o xantelasma pode estar associado a dislipidemias. O tratamento é ambulatorial, realizado com anestesia tópica, e a recuperação é rápida, permitindo retorno às atividades normais em poucos dias.
+    `,
+    faqs: [
+      {
+        question: "O xantelasma pode voltar após a remoção?",
+        answer: "Existe possibilidade de recorrência, especialmente se os níveis de colesterol permanecerem elevados. Controlar a dislipidemia com dieta, exercícios e medicação quando indicada reduz significativamente o risco."
+      },
+      {
+        question: "A remoção deixa cicatriz?",
+        answer: "Com a técnica de jato de plasma, o risco de cicatrizes é muito baixo. A cicatrização ocorre de dentro para fora, geralmente resultando em pele com aparência normal após completa recuperação."
+      },
+      {
+        question: "Quantas sessões são necessárias?",
+        answer: "Xantelasmas pequenos geralmente são removidos em uma única sessão. Lesões maiores ou múltiplas podem requerer 2-3 sessões com intervalo de 4-6 semanas entre elas."
+      },
+      {
+        question: "O procedimento é doloroso?",
+        answer: "Não. Utilizamos anestesia tópica ou local que elimina qualquer dor durante o procedimento. Após o tratamento, pode haver leve desconforto que é facilmente controlado."
+      },
+      {
+        question: "Preciso fazer exames antes do procedimento?",
+        answer: "Sim, recomendamos perfil lipídico completo (colesterol total, HDL, LDL e triglicerídeos) para avaliar a associação com dislipidemias e orientar tratamento sistêmico quando necessário."
+      }
+    ],
+    relatedServices: ['blefaroplastia-jato-plasma', 'tratamento-dpn', 'consultas-oftalmologicas'],
+    references: [
+      "Sociedade Brasileira de Dermatologia. Tratamento de Xantelasma: Protocolo Atualizado, 2023.",
+      "American Academy of Dermatology. Xanthelasma Management Guidelines, 2022.",
+      "Journal of Cosmetic Dermatology. Plasma Technology for Xanthelasma Removal, 2021."
+    ]
+  },
+
+  'tratamento-dpn': {
+    detailedContent: `
+      A Dermatose Papulosa Nigra (DPN) consiste em pequenas lesões pigmentadas benignas que aparecem principalmente no rosto, pescoço e região do decote. São mais comuns em pessoas de pele negra e morena, e embora não representem risco à saúde, podem causar desconforto estético significativo.
+
+      O tratamento com jato de plasma é uma das técnicas mais eficazes e seguras para remoção de DPN. O procedimento utiliza energia de plasma para vaporizar precisamente as lesões, sem afetar o tecido saudável ao redor. A grande vantagem é o baixo risco de alterações pigmentares pós-tratamento, comum em outras técnicas quando aplicadas em peles mais escuras.
+
+      Na Clínica Saraiva Vision, realizamos mapeamento detalhado das lesões antes do tratamento e aplicamos protocolos específicos para diferentes tipos de pele. O procedimento é ambulatorial, realizado com anestesia tópica, e permite tratar múltiplas lesões em uma única sessão. A recuperação é rápida, com formação de pequenas crostas que se desprendem naturalmente em 5-7 dias.
+    `,
+    faqs: [
+      {
+        question: "O tratamento de DPN é definitivo?",
+        answer: "As lesões tratadas são removidas definitivamente. No entanto, novas lesões podem surgir com o tempo devido à predisposição genética. Sessões de manutenção periódicas podem ser realizadas."
+      },
+      {
+        question: "O jato de plasma mancha a pele escura?",
+        answer: "O jato de plasma é uma das técnicas mais seguras para peles escuras justamente por causar menos alterações pigmentares. Seguindo os cuidados pós-procedimento, o risco de manchas é muito baixo."
+      },
+      {
+        question: "Quantas lesões podem ser tratadas por sessão?",
+        answer: "Dependendo do tamanho e localização, podem ser tratadas dezenas de lesões em uma única sessão. O número é determinado durante a consulta de avaliação."
+      },
+      {
+        question: "Qual é o tempo de recuperação?",
+        answer: "A recuperação é rápida. As crostas formadas se desprendem em 5-7 dias. Recomenda-se evitar exposição solar direta e usar protetor solar FPS 50+ por pelo menos 30 dias."
+      },
+      {
+        question: "O procedimento dói?",
+        answer: "Não. Com anestesia tópica, o procedimento é confortável. Pode haver leve sensação de calor ou formigamento, facilmente tolerável."
+      }
+    ],
+    relatedServices: ['blefaroplastia-jato-plasma', 'remocao-xantelasma', 'consultas-oftalmologicas'],
+    references: [
+      "Journal of the American Academy of Dermatology. Dermatosis Papulosa Nigra: Treatment Options, 2023.",
+      "Skin of Color Society. Guidelines for Treating DPN in Darker Skin Types, 2022.",
+      "Brazilian Journal of Dermatology. Plasma Technology for Benign Skin Lesions, 2023."
+    ]
   }
 };
 
 const ServiceDetailedContent = ({ serviceId, showRelatedServices = true }) => {
   const content = serviceContentData[serviceId];
-  
+
   if (!content) {
     return null;
   }
@@ -445,6 +565,32 @@ const ServiceDetailedContent = ({ serviceId, showRelatedServices = true }) => {
           ))}
         </div>
       </motion.section>
+
+      {/* Infográfico - se disponível */}
+      {content.infographicImage && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl p-6 shadow-soft-light border border-cyan-200"
+        >
+          <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+            <BookOpen className="w-6 h-6 mr-3 text-cyan-600" />
+            {content.infographicTitle || 'Guia Visual do Procedimento'}
+          </h2>
+          <div className="flex justify-center">
+            <img
+              src={content.infographicImage}
+              alt={content.infographicAlt || 'Infográfico do procedimento'}
+              className="max-w-full h-auto rounded-xl shadow-lg border border-slate-200"
+              loading="lazy"
+            />
+          </div>
+          <p className="text-center text-sm text-slate-500 mt-4">
+            Clique na imagem para ampliar • Responsável Técnico: Dr. Philipe Saraiva Cruz (CRM-MG 89.870)
+          </p>
+        </motion.section>
+      )}
 
       {/* FAQs */}
       <motion.section
@@ -509,7 +655,7 @@ const ServiceDetailedContent = ({ serviceId, showRelatedServices = true }) => {
         <p className="text-green-100 mb-6">
           Entre em contato para agendar seu exame e esclarecer suas dúvidas com nossa equipe especializada.
         </p>
-        
+
         <div className="flex flex-col sm:flex-row gap-4">
           <a
             href={whatsappUrl}
@@ -520,7 +666,7 @@ const ServiceDetailedContent = ({ serviceId, showRelatedServices = true }) => {
             <MessageSquare className="w-5 h-5 mr-2" />
             WhatsApp
           </a>
-          
+
           <a
             href={`tel:${clinicInfo.phone}`}
             className="flex-1 bg-green-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-green-400 transition-colors flex items-center justify-center"
@@ -529,7 +675,7 @@ const ServiceDetailedContent = ({ serviceId, showRelatedServices = true }) => {
             Ligar Agora
           </a>
         </div>
-        
+
         <div className="mt-4 text-center text-green-100 text-sm">
           <p>{clinicInfo.address.street}, {clinicInfo.address.city} - {clinicInfo.address.state}</p>
           <p>Tel: {clinicInfo.phoneDisplay}</p>
@@ -552,7 +698,7 @@ const ServiceDetailedContent = ({ serviceId, showRelatedServices = true }) => {
             {clinicInfo.responsiblePhysicianCRM}
           </p>
         </div>
-        
+
         <div className="border-t border-slate-200 pt-4">
           <h4 className="font-semibold text-slate-900 mb-3">Referências Técnicas:</h4>
           <ul className="text-sm text-slate-600 space-y-1">

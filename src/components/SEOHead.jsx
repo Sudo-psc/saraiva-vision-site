@@ -53,8 +53,8 @@ const SEOHead = ({
   // Generate optimized image URL for social sharing
   const getOptimizedOgImage = () => {
     if (image) return image;
-    // Usar logo_prata.jpeg como imagem padrão do Open Graph para todas as páginas
-    return `${baseUrl}/img/logo_prata.jpeg`;
+    // Usar imagem otimizada para OpenGraph (1200x630)
+    return `${baseUrl}/og-image-1200x630-optimized.jpg`;
   };
 
   // Generate site name based on language
@@ -151,8 +151,8 @@ const SEOHead = ({
       <meta property="og:type" content={ogType} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:alt" content={`${validatedTitle} - Clínica Saraiva Vision`} />
-      <meta property="og:image:width" content="1024" />
-      <meta property="og:image:height" content="1024" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       <meta property="og:image:type" content="image/jpeg" />
 
       {/* Medical Business Specific Open Graph */}

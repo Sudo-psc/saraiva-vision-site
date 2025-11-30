@@ -85,7 +85,11 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
       { id: 'topografia-corneana', title: t('services.items.cornealTopography.title'), description: t('services.items.cornealTopography.description'), category: 'Exames' },
       { id: 'paquimetria', title: t('services.items.pachymetry.title'), description: t('services.items.pachymetry.description'), category: 'Exames' },
       { id: 'retinografia', title: t('services.items.retinography.title'), description: t('services.items.retinography.description'), category: 'Exames' },
-      { id: 'campo-visual', title: t('services.items.visualField.title'), description: t('services.items.visualField.description'), category: 'Exames' }
+      { id: 'campo-visual', title: t('services.items.visualField.title'), description: t('services.items.visualField.description'), category: 'Exames' },
+      { id: 'meibografia', title: t('services.items.meibography.title'), description: t('services.items.meibography.description'), category: 'Exames' },
+      { id: 'blefaroplastia-jato-plasma', title: t('services.items.plasmaLiftBlepharoplasty.title'), description: t('services.items.plasmaLiftBlepharoplasty.description'), category: 'Cirurgias' },
+      { id: 'remocao-xantelasma', title: t('services.items.xanthelasmaRemoval.title'), description: t('services.items.xanthelasmaRemoval.description'), category: 'Tratamentos' },
+      { id: 'tratamento-dpn', title: t('services.items.dpnTreatment.title'), description: t('services.items.dpnTreatment.description'), category: 'Tratamentos' }
     ];
 
     // Add icons and shuffle for dynamic experience
