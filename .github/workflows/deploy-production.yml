@@ -1,0 +1,373 @@
+name: 🏭 Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "DEPLOY TO PRODUCTION" to confirm'
+        required: true
+        type: string
+      release_notes:
+        description: 'Release notes (optional)'
+        required: false
+        type: string
+
+env:
+  NODE_VERSION: '22.x'
+  DEPLOY_USER: root
+  DEPLOY_HOST: ${{ secrets.VPS_HOST }}
+  DEPLOY_PATH: /var/www/saraivavision/current
+  ENVIRONMENT: production
+
+jobs:
+  # ==============================================================================
+  # Validation & Approval
+  # ==============================================================================
+  validate-deployment:
+    name: ✅ Validate Deployment Request
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔒 Validate confirmation
+        run: |
+          if [ "${{ github.event.inputs.confirm }}" != "DEPLOY TO PRODUCTION" ]; then
+            echo "❌ Invalid confirmation. You must type exactly: DEPLOY TO PRODUCTION"
+            exit 1
+          fi
+          echo "✅ Deployment confirmed"
+
+      - name: 📋 Deployment info
+        run: |
+          echo "### 🏭 Production Deployment Request" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Requested by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ github.event.inputs.release_notes }}" ]; then
+            echo "**Release Notes:**" >> $GITHUB_STEP_SUMMARY
+            echo "${{ github.event.inputs.release_notes }}" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # ==============================================================================
+  # Build & Test (Production)
+  # ==============================================================================
+  build-production:
+    name: 🔨 Build Production
+    runs-on: ubuntu-latest
+    needs: validate-deployment
+    environment:
+      name: production-build
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Lint code (strict)
+        run: npm run lint
+
+      - name: 🧪 Run full test suite
+        run: npm run test:comprehensive
+
+      - name: 🏗️ Build for production
+        env:
+          NODE_ENV: production
+          ENVIRONMENT: production
+          VITE_ENVIRONMENT: production
+          VITE_API_URL: https://saraivavision.com.br/api
+          VITE_BASE_URL: https://saraivavision.com.br
+          VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          VITE_GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+          VITE_GOOGLE_PLACE_ID: ${{ secrets.GOOGLE_PLACE_ID }}
+          VITE_SHOW_BETA_BANNER: false
+          VITE_ENABLE_DEBUG: false
+          VITE_ENABLE_ANALYTICS: true
+          VITE_GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID }}
+        run: |
+          npm run build:vite
+          echo "PRODUCTION BUILD - $(date -u +"%Y-%m-%dT%H:%M:%SZ")" > dist/BUILD_INFO.txt
+          echo "COMMIT: ${{ github.sha }}" >> dist/BUILD_INFO.txt
+          echo "BRANCH: ${{ github.ref_name }}" >> dist/BUILD_INFO.txt
+          echo "DEPLOYED_BY: ${{ github.actor }}" >> dist/BUILD_INFO.txt
+
+      - name: 📊 Build validation
+        run: |
+          echo "### Production Build Validation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Build size:** $(du -sh dist/)" >> $GITHUB_STEP_SUMMARY
+          echo "**Assets count:** $(find dist/assets -type f | wc -l) files" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Validate critical files exist
+          CRITICAL_FILES=(
+            "dist/index.html"
+            "dist/assets"
+            "dist/robots.txt"
+            "dist/sitemap.xml"
+          )
+
+          for file in "${CRITICAL_FILES[@]}"; do
+            if [ -e "$file" ]; then
+              echo "✅ $file" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "❌ Missing: $file" >> $GITHUB_STEP_SUMMARY
+              exit 1
+            fi
+          done
+
+      - name: 📤 Upload production build
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build
+          path: dist/
+          retention-days: 30
+
+  # ==============================================================================
+  # Manual Approval Required
+  # ==============================================================================
+  await-approval:
+    name: ⏸️ Awaiting Final Approval
+    runs-on: ubuntu-latest
+    needs: build-production
+    environment:
+      name: production
+      url: https://saraivavision.com.br
+
+    steps:
+      - name: 📋 Approval notice
+        run: |
+          echo "### ⏸️ Awaiting Production Approval" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "A team member must approve this deployment before it proceeds." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Pre-deployment checklist:**" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Beta environment tested thoroughly" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] All tests passing" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Code review completed" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Stakeholders notified" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Rollback plan ready" >> $GITHUB_STEP_SUMMARY
+
+  # ==============================================================================
+  # Deploy to Production
+  # ==============================================================================
+  deploy-production:
+    name: 🏭 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: await-approval
+    environment:
+      name: production
+      url: https://saraivavision.com.br
+
+    steps:
+      - name: 📥 Download production build
+        uses: actions/download-artifact@v4
+        with:
+          name: production-build
+          path: dist/
+
+      - name: 🔑 Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: 📝 Add VPS to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 📸 Backup current production
+        run: |
+          BACKUP_NAME="production_backup_$(date +%Y%m%d_%H%M%S)"
+
+          ssh ${{ env.DEPLOY_USER }}@${{ env.DEPLOY_HOST }} "
+            mkdir -p /var/www/saraivavision/backups/production
+
+            # Backup current production
+            if [ -L ${{ env.DEPLOY_PATH }} ]; then
+              cp -rL ${{ env.DEPLOY_PATH }} /var/www/saraivavision/backups/production/$BACKUP_NAME
+              echo \"✅ Production backup created: $BACKUP_NAME\"
+            fi
+
+            # Also backup Nginx config
+            cp /etc/nginx/sites-enabled/saraivavision /var/www/saraivavision/backups/production/nginx_$BACKUP_NAME.conf
+          "
+
+      - name: 🚀 Deploy to production
+        run: |
+          # Create release directory
+          RELEASE_DIR="/var/www/saraivavision/releases/production/$(date +%Y%m%d_%H%M%S)"
+
+          ssh ${{ env.DEPLOY_USER }}@${{ env.DEPLOY_HOST }} "
+            mkdir -p /var/www/saraivavision/releases/production
+          "
+
+          # Upload build
+          ssh ${{ env.DEPLOY_USER }}@${{ env.DEPLOY_HOST }} "mkdir -p $RELEASE_DIR"
+          scp -r dist/* ${{ env.DEPLOY_USER }}@${{ env.DEPLOY_HOST }}:$RELEASE_DIR/
+
+          # Atomic deployment
+          ssh ${{ env.DEPLOY_USER }}@${{ env.DEPLOY_HOST }} "
+            # Switch symlink
+            ln -sfn $RELEASE_DIR ${{ env.DEPLOY_PATH }}
+            echo \"✅ Symlink updated to $RELEASE_DIR\"
+
+            # Reload Nginx
+            systemctl reload nginx
+            echo \"✅ Nginx reloaded\"
+
+            # Verify deployment
+            if [ -f ${{ env.DEPLOY_PATH }}/index.html ]; then
+              echo \"✅ index.html verified\"
+            else
+              echo \"❌ Deployment verification failed\"
+              exit 1
+            fi
+          "
+
+      - name: 🏥 Production health check
+        run: |
+          echo "Waiting for deployment to stabilize..."
+          sleep 15
+
+          # Multiple health checks
+          for i in {1..5}; do
+            RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://saraivavision.com.br || echo "000")
+
+            if [ "$RESPONSE" = "200" ]; then
+              echo "✅ Health check $i/5 passed (HTTP $RESPONSE)"
+            else
+              echo "❌ Health check $i/5 failed (HTTP $RESPONSE)"
+              exit 1
+            fi
+
+            sleep 3
+          done
+
+          echo "✅ All production health checks passed"
+
+      - name: 🧹 Cleanup old releases
+        run: |
+          ssh ${{ env.DEPLOY_USER }}@${{ env.DEPLOY_HOST }} "
+            # Keep last 10 production releases
+            cd /var/www/saraivavision/releases/production
+            ls -t | tail -n +11 | xargs -r rm -rf
+            echo \"✅ Old releases cleaned up\"
+
+            # Keep last 5 production backups
+            cd /var/www/saraivavision/backups/production
+            ls -t production_backup_* | tail -n +6 | xargs -r rm -rf
+            echo \"✅ Old backups cleaned up\"
+          "
+
+      - name: 📊 Deployment summary
+        run: |
+          echo "### 🎉 Production Deployment Successful" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** Production" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** https://saraivavision.com.br" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployed by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ github.event.inputs.release_notes }}" ]; then
+            echo "**Release Notes:**" >> $GITHUB_STEP_SUMMARY
+            echo "${{ github.event.inputs.release_notes }}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "**Post-deployment:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Monitor error logs for the next 30 minutes" >> $GITHUB_STEP_SUMMARY
+          echo "- Check analytics for unusual patterns" >> $GITHUB_STEP_SUMMARY
+          echo "- Verify contact form functionality" >> $GITHUB_STEP_SUMMARY
+          echo "- Test Google Maps integration" >> $GITHUB_STEP_SUMMARY
+
+      - name: 🔄 Create rollback script
+        run: |
+          cat > rollback.sh << 'EOF'
+          #!/bin/bash
+          # Emergency rollback script for production deployment
+          # Generated: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+          DEPLOY_USER="${{ env.DEPLOY_USER }}"
+          DEPLOY_HOST="${{ secrets.VPS_HOST }}"
+          DEPLOY_PATH="${{ env.DEPLOY_PATH }}"
+
+          echo "🔄 Rolling back production deployment..."
+
+          ssh $DEPLOY_USER@$DEPLOY_HOST "
+            # Find previous release
+            CURRENT_RELEASE=\$(readlink $DEPLOY_PATH)
+            PREVIOUS_RELEASE=\$(ls -t /var/www/saraivavision/releases/production | sed -n 2p)
+
+            if [ -n \"\$PREVIOUS_RELEASE\" ]; then
+              ln -sfn /var/www/saraivavision/releases/production/\$PREVIOUS_RELEASE $DEPLOY_PATH
+              systemctl reload nginx
+              echo \"✅ Rolled back to \$PREVIOUS_RELEASE\"
+            else
+              echo \"❌ No previous release found\"
+              exit 1
+            fi
+          "
+          EOF
+
+          chmod +x rollback.sh
+          echo "✅ Rollback script created and saved as artifact"
+
+      - name: 📤 Upload rollback script
+        uses: actions/upload-artifact@v4
+        with:
+          name: rollback-script
+          path: rollback.sh
+          retention-days: 30
+
+  # ==============================================================================
+  # Post-Deployment Monitoring
+  # ==============================================================================
+  post-deployment-check:
+    name: 📊 Post-Deployment Monitoring
+    runs-on: ubuntu-latest
+    needs: deploy-production
+
+    steps:
+      - name: 🔍 Monitor deployment
+        run: |
+          echo "Monitoring production for 60 seconds..."
+
+          for i in {1..12}; do
+            RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://saraivavision.com.br || echo "000")
+            RESPONSE_TIME=$(curl -s -o /dev/null -w "%{time_total}" https://saraivavision.com.br || echo "0")
+
+            echo "Check $i/12 - HTTP: $RESPONSE, Time: ${RESPONSE_TIME}s"
+
+            if [ "$RESPONSE" != "200" ]; then
+              echo "⚠️ Warning: HTTP $RESPONSE detected"
+            fi
+
+            sleep 5
+          done
+
+          echo "✅ Post-deployment monitoring completed"
+
+      - name: 📧 Notify team
+        run: |
+          echo "### 📧 Production Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The production deployment has been completed successfully." >> $GITHUB_STEP_SUMMARY
+          echo "Please monitor the site for the next 30 minutes." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Quick links:**" >> $GITHUB_STEP_SUMMARY
+          echo "- [Production site](https://saraivavision.com.br)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Beta environment](https://beta.saraivavision.com.br)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Rollback script](../../actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
