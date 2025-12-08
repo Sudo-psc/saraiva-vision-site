@@ -15,10 +15,10 @@
     "verify": "node scripts/verify-import.js"
   },
   "dependencies": {
-    "@sanity/cli": "^4.11.0",
+    "@sanity/cli": "^4.13.0",
     "@sanity/client": "^6.24.3",
     "@sanity/vision": "^4.11.0",
-    "sanity": "^4.11.0",
+    "sanity": "^4.13.0",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
