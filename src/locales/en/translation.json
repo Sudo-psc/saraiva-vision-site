@@ -1019,6 +1019,84 @@
     "main_content_label": "Blog main content",
     "posts_section_label": "Blog posts"
   },
+  "olhoSecoPage": {
+    "badge": "TFOS DEWS III aligned protocol",
+    "title": "Dedicated center for dry eye diagnosis and treatment",
+    "subtitle": "Comprehensive evidence-based assessment to identify the cause of symptoms and offer personalized therapies that restore ocular comfort and tear film function.",
+    "integralCare": "Comprehensive care line",
+    "specificExams": "Specific exams for dry eye",
+    "objectiveSeverity": "Objective severity stratification",
+    "viewAllServices": "View all services",
+    "advancedLine": "Advanced line",
+    "dryEyeProgram": "Dry eye program",
+    "phenotypeClassification": "Classification by evaporative, aqueous and neurosensory phenotype.",
+    "therapeuticPlan": "Therapeutic plan with measurable goals and quarterly reassessment.",
+    "photographicIntegration": "Integration of photographic exams and objective data at each visit.",
+    "cfmLgpd": "CFM and LGPD",
+    "standardizedReports": "Standardized reports",
+    "imageDocumentation": "Image documentation",
+    "comfortHygiene": "Comfort and guided hygiene",
+    "completeTraceableDiagnosis": "Complete and traceable diagnosis",
+    "diagnosticDescription": "All exams follow TFOS DEWS III terminology and decision flows to correlate symptoms, tear film stability and meibomian health, allowing identification of the root cause of ocular discomfort.",
+    "diagnosticItems": {
+      "meibography": {
+        "title": "High-definition meibography",
+        "description": "Direct visualization of Meibomian glands to identify dropout, obstructions and structural patterns of MGD."
+      },
+      "fbut": {
+        "title": "Fluorescein FBUT",
+        "description": "Tear film breakup time measured in seconds with TFOS DEWS III protocol to classify stability."
+      },
+      "meniscometry": {
+        "title": "Optical meniscometry",
+        "description": "Objective measurement of tear meniscus height to quantify basal volume and guide aqueous replacement."
+      },
+      "vitalStains": {
+        "title": "Vital stains with lissamine green",
+        "description": "Mapping of areas of epithelial drying and ocular surface inflammation with standardized scoring."
+      },
+      "schirmer": {
+        "title": "Schirmer test I and II",
+        "description": "Quantitative assessment of basal and reflex tear production with interpretation in conjunction with meniscometry."
+      },
+      "lacrimalPathways": {
+        "title": "Lacrimal pathway assessment",
+        "description": "Jones I and II tests, probing and irrigation to exclude obstructions that perpetuate dry eye symptoms."
+      }
+    },
+    "personalizedTreatments": "Personalized treatments",
+    "treatmentDescription": "The protocols combine structural, anti-inflammatory and ocular surface rehabilitation interventions, always adjusted to the dry eye phenotype and each patient's clinical response.",
+    "treatmentItems": {
+      "tfosProtocols": "Protocols aligned with TFOS DEWS III with severity stratification",
+      "punctalPlugs": "Punctal plugs for refractory aqueous deficiency cases",
+      "lidMargin": "Lid margin microexfoliation and assisted glandular desobstruction",
+      "thermalTherapies": "Thermal therapies, guided lid hygiene and anti-inflammatory drops",
+      "omega3": "Omega-3 supplementation and nutritional approach for lipid stability",
+      "monitoring": "Photographic monitoring and periodic reassessment of objective markers"
+    },
+    "safetyTraceability": "Safety and traceability",
+    "comfortFunctionalVision": "Focus on comfort and functional vision",
+    "tfosDewsCompliance": "TFOS DEWS III",
+    "complianceDescription": "Compliance",
+    "complianceItems": {
+      "structuredClassification": "Structured classification by signs, symptoms and objective markers.",
+      "photographicDocumentation": "Photographic documentation of glands and ocular surface.",
+      "serialRecording": "Serial recording of FBUT, Schirmer and meniscometry.",
+      "informedConsent": "Informed consent and data protection according to LGPD."
+    },
+    "scheduleEvaluation": "Schedule evaluation",
+    "continuousCare": "Continuous care",
+    "continuousCareDescription": "Programmed follow-up with symptom reassessment, tear film stability and progressive therapeutic adjustment to keep the ocular surface protected.",
+    "guidedLidHygiene": "Guided lid hygiene",
+    "personalizedLubrication": "Personalized lubrication",
+    "environmentalDigitalTraining": "Environmental and digital training",
+    "nutritionalReinforcement": "Nutritional reinforcement",
+    "seo": {
+      "title": "Dry Eye Clinic | Diagnosis and Treatment with TFOS DEWS III | Saraiva Vision",
+      "description": "Complete protocols for dry eye diagnosis and treatment with meibography, FBUT, meniscometry, Schirmer tests and lissamine green, following TFOS DEWS III.",
+      "keywords": "dry eye, TFOS DEWS III, meibography, FBUT, meniscometry, lissamine green, Schirmer, punctal plugs, lid margin microexfoliation"
+    }
+  },
   "check": {
     "badge": "Infrastructure monitor",
     "title": "Saraiva Vision infrastructure diagnostics",

@@ -1149,6 +1149,84 @@
     "loginError": "Erro ao fazer login. Verifique suas credenciais.",
     "backToBlog": "Voltar ao Blog"
   },
+  "olhoSecoPage": {
+    "badge": "Protocolo alinhado ao TFOS DEWS III",
+    "title": "Centro dedicado ao diagnóstico e tratamento de olho seco",
+    "subtitle": "Avaliação completa baseada em evidências para identificar a causa dos sintomas e oferecer terapias personalizadas que restauram o conforto ocular e a função do filme lacrimal.",
+    "integralCare": "Linha de cuidado integral",
+    "specificExams": "Exames específicos para olho seco",
+    "objectiveSeverity": "Estratificação objetiva de severidade",
+    "viewAllServices": "Ver todos os serviços",
+    "advancedLine": "Linha avançada",
+    "dryEyeProgram": "Programa olho seco",
+    "phenotypeClassification": "Classificação por fenótipo evaporativo, aquoso e neurosensorial.",
+    "therapeuticPlan": "Plano terapêutico com metas mensuráveis e reavaliação trimestral.",
+    "photographicIntegration": "Integração de exames fotográficos e dados objetivos em cada visita.",
+    "cfmLgpd": "CFM e LGPD",
+    "standardizedReports": "Relatórios padronizados",
+    "imageDocumentation": "Documentação em imagem",
+    "comfortHygiene": "Conforto e higiene guiada",
+    "completeTraceableDiagnosis": "Diagnóstico completo e rastreável",
+    "diagnosticDescription": "Todos os exames seguem a terminologia e os fluxos decisórios do TFOS DEWS III para correlacionar sintomas, estabilidade do filme lacrimal e saúde meibomiana, permitindo identificar a causa raiz do desconforto ocular.",
+    "diagnosticItems": {
+      "meibography": {
+        "title": "Meibografia de alta definição",
+        "description": "Visualização direta das glândulas de Meibômio para identificar dropout, obstruções e padrões estruturais da DGM."
+      },
+      "fbut": {
+        "title": "FBUT com fluoresceína",
+        "description": "Tempo de ruptura do filme lacrimal mensurado em segundos com protocolo TFOS DEWS III para classificar estabilidade."
+      },
+      "meniscometry": {
+        "title": "Meniscometria óptica",
+        "description": "Medição objetiva da altura do menisco lacrimal para quantificar o volume basal e orientar reposição aquosa."
+      },
+      "vitalStains": {
+        "title": "Corantes vitais com lisamina verde",
+        "description": "Mapeamento de áreas de ressecamento epitelial e inflamação da superfície ocular com scoring padronizado."
+      },
+      "schirmer": {
+        "title": "Teste de Schirmer I e II",
+        "description": "Avaliação quantitativa da produção lacrimal basal e reflexa com interpretação em conjunto com meniscometria."
+      },
+      "lacrimalPathways": {
+        "title": "Avaliação das vias lacrimais",
+        "description": "Testes de Jones I e II, sondagem e irrigação para excluir obstruções que perpetuam sintomas de olho seco."
+      }
+    },
+    "personalizedTreatments": "Tratamentos personalizados",
+    "treatmentDescription": "Os protocolos combinam intervenções estruturais, anti-inflamatórias e de reabilitação da superfície ocular, sempre ajustados ao fenótipo do olho seco e à resposta clínica de cada paciente.",
+    "treatmentItems": {
+      "tfosProtocols": "Protocolos alinhados ao TFOS DEWS III com estratificação por severidade",
+      "punctalPlugs": "Plugs lacrimais para casos de deficiência aquosa refratária",
+      "lidMargin": "Microesfoliação da margem palpebral e desobstrução glandular assistida",
+      "thermalTherapies": "Terapias térmicas, higiene palpebral guiada e colírios anti-inflamatórios",
+      "omega3": "Suplementação de ômega-3 e abordagem nutricional para estabilidade lipídica",
+      "monitoring": "Monitoramento fotográfico e reavaliação periódica dos marcadores objetivos"
+    },
+    "safetyTraceability": "Segurança e rastreabilidade",
+    "comfortFunctionalVision": "Foco em conforto e visão funcional",
+    "tfosDewsCompliance": "TFOS DEWS III",
+    "complianceDescription": "Conformidade",
+    "complianceItems": {
+      "structuredClassification": "Classificação estruturada por sinais, sintomas e marcadores objetivos.",
+      "photographicDocumentation": "Documentação fotográfica de glândulas e superfície ocular.",
+      "serialRecording": "Registro seriado de FBUT, Schirmer e meniscometria.",
+      "informedConsent": "Consentimento informado e proteção de dados conforme LGPD."
+    },
+    "scheduleEvaluation": "Agendar avaliação",
+    "continuousCare": "Cuidados contínuos",
+    "continuousCareDescription": "Seguimento programado com reavaliação de sintomas, estabilidade do filme lacrimal e ajuste terapêutico progressivo para manter a superfície ocular protegida.",
+    "guidedLidHygiene": "Higiene palpebral guiada",
+    "personalizedLubrication": "Lubrificação personalizada",
+    "environmentalDigitalTraining": "Treino ambiental e digital",
+    "nutritionalReinforcement": "Reforço nutricional",
+    "seo": {
+      "title": "Clínica de Olho Seco | Diagnóstico e Tratamento com TFOS DEWS III | Saraiva Vision",
+      "description": "Protocolos completos para diagnóstico e tratamento de olho seco com meibografia, FBUT, meniscometria, testes de Schirmer e lisamina verde, seguindo TFOS DEWS III.",
+      "keywords": "olho seco, TFOS DEWS III, meibografia, FBUT, meniscometria, lisamina verde, Schirmer, plugs lacrimais, microesfoliação palpebral"
+    }
+  },
   "check": {
     "badge": "Monitoramento de infraestrutura",
     "title": "Diagnóstico da infraestrutura Saraiva Vision",

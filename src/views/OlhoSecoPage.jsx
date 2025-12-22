@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import SEOHead from '@/components/SEOHead';
@@ -6,57 +6,57 @@ import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button.jsx';
 import { Droplets, ShieldCheck, CheckCircle, Microscope, Timer, Activity, Leaf, Sparkles, ArrowRight, Gauge } from 'lucide-react';
 
-const diagnosticItems = [
-  {
-    title: 'Meibografia de alta definição',
-    description: 'Visualização direta das glândulas de Meibômio para identificar dropout, obstruções e padrões estruturais da DGM.',
-    icon: Microscope
-  },
-  {
-    title: 'FBUT com fluoresceína',
-    description: 'Tempo de ruptura do filme lacrimal mensurado em segundos com protocolo TFOS DEWS III para classificar estabilidade.',
-    icon: Timer
-  },
-  {
-    title: 'Meniscometria óptica',
-    description: 'Medição objetiva da altura do menisco lacrimal para quantificar o volume basal e orientar reposição aquosa.',
-    icon: Gauge
-  },
-  {
-    title: 'Corantes vitais com lisamina verde',
-    description: 'Mapeamento de áreas de ressecamento epitelial e inflamação da superfície ocular com scoring padronizado.',
-    icon: Sparkles
-  },
-  {
-    title: 'Teste de Schirmer I e II',
-    description: 'Avaliação quantitativa da produção lacrimal basal e reflexa com interpretação em conjunto com meniscometria.',
-    icon: Droplets
-  },
-  {
-    title: 'Avaliação das vias lacrimais',
-    description: 'Testes de Jones I e II, sondagem e irrigação para excluir obstruções que perpetuam sintomas de olho seco.',
-    icon: Activity
-  }
-];
-
-const treatmentItems = [
-  'Protocolos alinhados ao TFOS DEWS III com estratificação por severidade',
-  'Plugs lacrimais para casos de deficiência aquosa refratária',
-  'Microesfoliação da margem palpebral e desobstrução glandular assistida',
-  'Terapias térmicas, higiene palpebral guiada e colírios anti-inflamatórios',
-  'Suplementação de ômega-3 e abordagem nutricional para estabilidade lipídica',
-  'Monitoramento fotográfico e reavaliação periódica dos marcadores objetivos'
-];
-
 const OlhoSecoPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const seo = {
-    title: 'Clínica de Olho Seco | Diagnóstico e Tratamento com TFOS DEWS III | Saraiva Vision',
-    description: 'Protocolos completos para diagnóstico e tratamento de olho seco com meibografia, FBUT, meniscometria, testes de Schirmer e lisamina verde, seguindo TFOS DEWS III.',
-    keywords: 'olho seco, TFOS DEWS III, meibografia, FBUT, meniscometria, lisamina verde, Schirmer, plugs lacrimais, microesfoliação palpebral'
-  };
+  const diagnosticItems = useMemo(() => [
+    {
+      title: t('olhoSecoPage.diagnosticItems.meibography.title'),
+      description: t('olhoSecoPage.diagnosticItems.meibography.description'),
+      icon: Microscope
+    },
+    {
+      title: t('olhoSecoPage.diagnosticItems.fbut.title'),
+      description: t('olhoSecoPage.diagnosticItems.fbut.description'),
+      icon: Timer
+    },
+    {
+      title: t('olhoSecoPage.diagnosticItems.meniscometry.title'),
+      description: t('olhoSecoPage.diagnosticItems.meniscometry.description'),
+      icon: Gauge
+    },
+    {
+      title: t('olhoSecoPage.diagnosticItems.vitalStains.title'),
+      description: t('olhoSecoPage.diagnosticItems.vitalStains.description'),
+      icon: Sparkles
+    },
+    {
+      title: t('olhoSecoPage.diagnosticItems.schirmer.title'),
+      description: t('olhoSecoPage.diagnosticItems.schirmer.description'),
+      icon: Droplets
+    },
+    {
+      title: t('olhoSecoPage.diagnosticItems.lacrimalPathways.title'),
+      description: t('olhoSecoPage.diagnosticItems.lacrimalPathways.description'),
+      icon: Activity
+    }
+  ], [t]);
+
+  const treatmentItems = useMemo(() => [
+    t('olhoSecoPage.treatmentItems.tfosProtocols'),
+    t('olhoSecoPage.treatmentItems.punctalPlugs'),
+    t('olhoSecoPage.treatmentItems.lidMargin'),
+    t('olhoSecoPage.treatmentItems.thermalTherapies'),
+    t('olhoSecoPage.treatmentItems.omega3'),
+    t('olhoSecoPage.treatmentItems.monitoring')
+  ], [t]);
+
+  const seo = useMemo(() => ({
+    title: t('olhoSecoPage.seo.title'),
+    description: t('olhoSecoPage.seo.description'),
+    keywords: t('olhoSecoPage.seo.keywords')
+  }), [t]);
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -67,28 +67,28 @@ const OlhoSecoPage = () => {
             <div className="flex flex-col gap-6">
               <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 text-emerald-700 px-4 py-2 text-sm font-semibold w-fit">
                 <ShieldCheck className="w-4 h-4" />
-                <span>Protocolo alinhado ao TFOS DEWS III</span>
+                <span>{t('olhoSecoPage.badge')}</span>
               </div>
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
                 <div className="lg:col-span-3 space-y-4">
                   <h1 className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight">
-                    Centro dedicado ao diagnóstico e tratamento de olho seco
+                    {t('olhoSecoPage.title')}
                   </h1>
                   <p className="text-lg text-slate-700 leading-relaxed">
-                    Avaliação completa baseada em evidências para identificar a causa dos sintomas e oferecer terapias personalizadas que restauram o conforto ocular e a função do filme lacrimal.
+                    {t('olhoSecoPage.subtitle')}
                   </p>
                   <div className="flex flex-wrap gap-3">
                     <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-4 py-2 shadow-sm">
                       <Droplets className="w-4 h-4 text-cyan-600" />
-                      <span className="text-sm font-semibold text-slate-800">Linha de cuidado integral</span>
+                      <span className="text-sm font-semibold text-slate-800">{t('olhoSecoPage.integralCare')}</span>
                     </div>
                     <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-4 py-2 shadow-sm">
                       <Microscope className="w-4 h-4 text-cyan-600" />
-                      <span className="text-sm font-semibold text-slate-800">Exames específicos para olho seco</span>
+                      <span className="text-sm font-semibold text-slate-800">{t('olhoSecoPage.specificExams')}</span>
                     </div>
                     <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-4 py-2 shadow-sm">
                       <CheckCircle className="w-4 h-4 text-cyan-600" />
-                      <span className="text-sm font-semibold text-slate-800">Estratificação objetiva de severidade</span>
+                      <span className="text-sm font-semibold text-slate-800">{t('olhoSecoPage.objectiveSeverity')}</span>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-4">
@@ -112,31 +112,31 @@ const OlhoSecoPage = () => {
                   <div className="flex items-center gap-3">
                     <Droplets className="w-10 h-10 text-cyan-600" />
                     <div>
-                      <p className="text-sm font-semibold text-emerald-600">Linha avançada</p>
-                      <p className="text-xl font-bold text-slate-900">Programa olho seco</p>
+                      <p className="text-sm font-semibold text-emerald-600">{t('olhoSecoPage.advancedLine')}</p>
+                      <p className="text-xl font-bold text-slate-900">{t('olhoSecoPage.dryEyeProgram')}</p>
                     </div>
                   </div>
                   <div className="space-y-2 text-slate-700">
-                    <p>Classificação por fenótipo evaporativo, aquoso e neurosensorial.</p>
-                    <p>Plano terapêutico com metas mensuráveis e reavaliação trimestral.</p>
-                    <p>Integração de exames fotográficos e dados objetivos em cada visita.</p>
+                    <p>{t('olhoSecoPage.phenotypeClassification')}</p>
+                    <p>{t('olhoSecoPage.therapeuticPlan')}</p>
+                    <p>{t('olhoSecoPage.photographicIntegration')}</p>
                   </div>
                   <div className="grid grid-cols-2 gap-3 text-sm text-slate-800">
                     <div className="flex items-center gap-2">
                       <ShieldCheck className="w-4 h-4 text-cyan-600" />
-                      <span>CFM e LGPD</span>
+                      <span>{t('olhoSecoPage.cfmLgpd')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-cyan-600" />
-                      <span>Relatórios padronizados</span>
+                      <span>{t('olhoSecoPage.standardizedReports')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Microscope className="w-4 h-4 text-cyan-600" />
-                      <span>Documentação em imagem</span>
+                      <span>{t('olhoSecoPage.imageDocumentation')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Sparkles className="w-4 h-4 text-cyan-600" />
-                      <span>Conforto e higiene guiada</span>
+                      <span>{t('olhoSecoPage.comfortHygiene')}</span>
                     </div>
                   </div>
                 </div>
@@ -148,10 +148,10 @@ const OlhoSecoPage = () => {
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-6">
                   <div className="flex items-center gap-3">
                     <Microscope className="w-6 h-6 text-cyan-700" />
-                    <h2 className="text-2xl font-bold text-slate-900">Diagnóstico completo e rastreável</h2>
+                    <h2 className="text-2xl font-bold text-slate-900">{t('olhoSecoPage.completeTraceableDiagnosis')}</h2>
                   </div>
                   <p className="text-slate-700 leading-relaxed">
-                    Todos os exames seguem a terminologia e os fluxos decisórios do TFOS DEWS III para correlacionar sintomas, estabilidade do filme lacrimal e saúde meibomiana, permitindo identificar a causa raiz do desconforto ocular.
+                    {t('olhoSecoPage.diagnosticDescription')}
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {diagnosticItems.map((item) => {
@@ -174,10 +174,10 @@ const OlhoSecoPage = () => {
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-6">
                   <div className="flex items-center gap-3">
                     <Droplets className="w-6 h-6 text-cyan-700" />
-                    <h2 className="text-2xl font-bold text-slate-900">Tratamentos personalizados</h2>
+                    <h2 className="text-2xl font-bold text-slate-900">{t('olhoSecoPage.personalizedTreatments')}</h2>
                   </div>
                   <p className="text-slate-700 leading-relaxed">
-                    Os protocolos combinam intervenções estruturais, anti-inflamatórias e de reabilitação da superfície ocular, sempre ajustados ao fenótipo do olho seco e à resposta clínica de cada paciente.
+                    {t('olhoSecoPage.treatmentDescription')}
                   </p>
                   <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {treatmentItems.map((item) => (
@@ -190,11 +190,11 @@ const OlhoSecoPage = () => {
                   <div className="flex flex-wrap gap-3">
                     <div className="flex items-center gap-2 text-sm text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-full px-4 py-2">
                       <ShieldCheck className="w-4 h-4" />
-                      <span>Segurança e rastreabilidade</span>
+                      <span>{t('olhoSecoPage.safetyTraceability')}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-cyan-700 bg-cyan-50 border border-cyan-100 rounded-full px-4 py-2">
                       <Sparkles className="w-4 h-4" />
-                      <span>Foco em conforto e visão funcional</span>
+                      <span>{t('olhoSecoPage.comfortFunctionalVision')}</span>
                     </div>
                   </div>
                 </div>
@@ -205,49 +205,49 @@ const OlhoSecoPage = () => {
                   <div className="flex items-center gap-3">
                     <ShieldCheck className="w-5 h-5 text-emerald-300" />
                     <div>
-                      <p className="text-sm text-emerald-200 font-semibold">Conformidade</p>
-                      <p className="text-xl font-bold">TFOS DEWS III</p>
+                      <p className="text-sm text-emerald-200 font-semibold">{t('olhoSecoPage.complianceDescription')}</p>
+                      <p className="text-xl font-bold">{t('olhoSecoPage.tfosDewsCompliance')}</p>
                     </div>
                   </div>
                   <ul className="space-y-2 text-sm leading-relaxed">
                     <li className="flex gap-2">
                       <CheckCircle className="w-4 h-4 text-emerald-300 mt-1" />
-                      <span>Classificação estruturada por sinais, sintomas e marcadores objetivos.</span>
+                      <span>{t('olhoSecoPage.complianceItems.structuredClassification')}</span>
                     </li>
                     <li className="flex gap-2">
                       <CheckCircle className="w-4 h-4 text-emerald-300 mt-1" />
-                      <span>Documentação fotográfica de glândulas e superfície ocular.</span>
+                      <span>{t('olhoSecoPage.complianceItems.photographicDocumentation')}</span>
                     </li>
                     <li className="flex gap-2">
                       <CheckCircle className="w-4 h-4 text-emerald-300 mt-1" />
-                      <span>Registro seriado de FBUT, Schirmer e meniscometria.</span>
+                      <span>{t('olhoSecoPage.complianceItems.serialRecording')}</span>
                     </li>
                     <li className="flex gap-2">
                       <CheckCircle className="w-4 h-4 text-emerald-300 mt-1" />
-                      <span>Consentimento informado e proteção de dados conforme LGPD.</span>
+                      <span>{t('olhoSecoPage.complianceItems.informedConsent')}</span>
                     </li>
                   </ul>
                   <Button
                     onClick={() => navigate('/agendamento')}
                     className="w-full bg-emerald-400 hover:bg-emerald-300 text-slate-900 font-semibold"
                   >
-                    Agendar avaliação
+                    {t('olhoSecoPage.scheduleEvaluation')}
                   </Button>
                 </div>
 
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-4">
                   <div className="flex items-center gap-3">
                     <Leaf className="w-5 h-5 text-cyan-700" />
-                    <h3 className="text-xl font-bold text-slate-900">Cuidados contínuos</h3>
+                    <h3 className="text-xl font-bold text-slate-900">{t('olhoSecoPage.continuousCare')}</h3>
                   </div>
                   <p className="text-slate-700 text-sm leading-relaxed">
-                    Seguimento programado com reavaliação de sintomas, estabilidade do filme lacrimal e ajuste terapêutico progressivo para manter a superfície ocular protegida.
+                    {t('olhoSecoPage.continuousCareDescription')}
                   </p>
                   <div className="grid grid-cols-2 gap-3 text-sm text-slate-800">
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">Higiene palpebral guiada</div>
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">Lubrificação personalizada</div>
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">Treino ambiental e digital</div>
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">Reforço nutricional</div>
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">{t('olhoSecoPage.guidedLidHygiene')}</div>
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">{t('olhoSecoPage.personalizedLubrication')}</div>
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">{t('olhoSecoPage.environmentalDigitalTraining')}</div>
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">{t('olhoSecoPage.nutritionalReinforcement')}</div>
                   </div>
                 </div>
               </div>
