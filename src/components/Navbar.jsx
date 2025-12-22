@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Menu, X, Calendar, Home, Stethoscope, Eye, FileText, Headphones, User, HelpCircle, Phone, FileCheck, BookOpenCheck } from 'lucide-react';
+import { Menu, X, Calendar, Home, Stethoscope, Eye, FileText, Headphones, User, HelpCircle, Phone, FileCheck, BookOpenCheck, Droplets } from 'lucide-react';
 import { Button } from '../components/ui/button.jsx';
 import Logo from '../components/Logo.jsx';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
@@ -64,6 +64,7 @@ const Navbar = () => {
   const navLinks = useMemo(() => [
     { name: t('navbar.home'), href: '/', internal: true, icon: Home },
     { name: t('navbar.services'), href: '/servicos', internal: true, icon: Stethoscope },
+    { name: t('navbar.dry_eye'), href: '/olho-seco', internal: true, icon: Droplets },
     { name: t('navbar.lenses'), href: '/lentes', internal: true, icon: Eye },
     { name: t('navbar.lens_wiki'), href: '/lentes/wiki', internal: true, icon: BookOpenCheck },
     { name: t('navbar.blog'), href: '/blog', internal: true, icon: FileText },

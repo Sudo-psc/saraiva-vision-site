@@ -39,6 +39,7 @@ const CampanhaOutubroOlhoSecoPage = createLazyComponent(() => import('./views/Ca
 const AppointmentThankYouPage = createLazyComponent(() => import('./views/AppointmentThankYouPage.jsx'));
 const AgendamentoOtimizadoPage = createLazyComponent(() => import('./views/AgendamentoOtimizadoPage.jsx'));
 const MeibografiaPage = createLazyComponent(() => import('./views/MeibografiaPage.jsx'));
+const OlhoSecoPage = createLazyComponent(() => import('./views/OlhoSecoPage.jsx'));
 const NotFoundPage = createLazyComponent(() => import('./views/NotFoundPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
@@ -110,6 +111,7 @@ function App() {
               <Route path="/agendamento/obrigado" element={<AppointmentThankYouPage />} />
               <Route path="/questionario-olho-seco" element={<QuestionarioOlhoSecoPage />} />
               <Route path="/campanha/outubro-olho-seco" element={<CampanhaOutubroOlhoSecoPage />} />
+              <Route path="/olho-seco" element={<OlhoSecoPage />} />
               <Route path="/meibografia" element={<MeibografiaPage />} />
               <Route path="/assine" element={<AssinePage />} />
               <Route path="/waitlist" element={<WaitlistPage />} />
