@@ -29,6 +29,7 @@ const PagamentoPremiumPage = createLazyComponent(() => import('@/modules/payment
 const PagamentoBasicoOnlinePage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoBasicoOnlinePage.jsx'));
 const PagamentoPadraoOnlinePage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoPadraoOnlinePage.jsx'));
 const PagamentoPremiumOnlinePage = createLazyComponent(() => import('@/modules/payments/pages/PagamentoPremiumOnlinePage.jsx'));
+const ReviewsPage = createLazyComponent(() => import('./views/ReviewsPage.jsx'));
 const GoogleReviewsTestPage = createLazyComponent(() => import('./views/GoogleReviewsTestPage.jsx'));
 const MapTestPage = createLazyComponent(() => import('./views/MapTestPage.jsx'));
 const AgendamentoPage = createLazyComponent(() => import('./views/AgendamentoPage.jsx'));
@@ -40,6 +41,7 @@ const AppointmentThankYouPage = createLazyComponent(() => import('./views/Appoin
 const AgendamentoOtimizadoPage = createLazyComponent(() => import('./views/AgendamentoOtimizadoPage.jsx'));
 const MeibografiaPage = createLazyComponent(() => import('./views/MeibografiaPage.jsx'));
 const OlhoSecoPage = createLazyComponent(() => import('./views/OlhoSecoPage.jsx'));
+const BlefaroplastiaJatoPlasmaPage = createLazyComponent(() => import('./views/BlefaroplastiaJatoPlasmaPage.jsx'));
 const NotFoundPage = createLazyComponent(() => import('./views/NotFoundPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
@@ -109,10 +111,13 @@ function App() {
               <Route path="/agendamento" element={<AgendamentoPage />} />
               <Route path="/agendamento-otimizado" element={<AgendamentoOtimizadoPage />} />
               <Route path="/agendamento/obrigado" element={<AppointmentThankYouPage />} />
+              <Route path="/avaliacoes" element={<ReviewsPage />} />
+              <Route path="/avaliacoes-e-reputacao" element={<Navigate to="/avaliacoes" replace />} />
               <Route path="/questionario-olho-seco" element={<QuestionarioOlhoSecoPage />} />
               <Route path="/campanha/outubro-olho-seco" element={<CampanhaOutubroOlhoSecoPage />} />
               <Route path="/olho-seco" element={<OlhoSecoPage />} />
               <Route path="/meibografia" element={<MeibografiaPage />} />
+              <Route path="/blefaroplastia-jato-plasma" element={<BlefaroplastiaJatoPlasmaPage />} />
               <Route path="/assine" element={<AssinePage />} />
               <Route path="/waitlist" element={<WaitlistPage />} />
               <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />

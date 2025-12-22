@@ -52,7 +52,20 @@ const calculateReadingTime = plainText => {
 const mapSanityPost = (doc, {includeContent = false} = {}) => {
   if (!doc) return null
   const plainText = doc.plainText || ''
-  const imageUrl = doc.mainImage ? urlFor(doc.mainImage).width(1200).quality(85).url() : doc.legacyImageUrl || null
+
+  // Safely generate image URL - only if mainImage has valid asset reference
+  let imageUrl = null
+  if (doc.mainImage && doc.mainImage.asset) {
+    try {
+      imageUrl = urlFor(doc.mainImage).width(1200).quality(85).url()
+    } catch (err) {
+      console.warn(`[Sanity] Failed to generate image URL for post "${doc.title}":`, err.message)
+      imageUrl = doc.legacyImageUrl || null
+    }
+  } else {
+    imageUrl = doc.legacyImageUrl || null
+  }
+
   const imageAlt = doc.mainImage?.alt || doc.title
   const slugValue = typeof doc.slug === 'string' ? doc.slug : doc.slug?.current
   const base = {

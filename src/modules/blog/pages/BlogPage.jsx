@@ -5,7 +5,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
-import { Calendar, ArrowRight, ArrowLeft, Shield, Stethoscope, Cpu, HelpCircle, Clock, User, ChevronLeft, ChevronRight, Headphones, X, Loader2 } from 'lucide-react';
+import { Calendar, ArrowRight, ArrowLeft, Shield, Stethoscope, Cpu, HelpCircle, Clock, User, ChevronLeft, ChevronRight, Headphones, X, Loader2, Droplets } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
@@ -201,6 +201,8 @@ const BlogPage = () => {
     const categoryColors = {
       'Prevenção': 'from-emerald-500 to-teal-500',
       'Tratamentos': 'from-blue-500 to-cyan-500',
+      'Tratamento': 'from-blue-500 to-cyan-500',
+      'Olho Seco': 'from-blue-400 to-sky-500',
       'Tecnologia': 'from-purple-500 to-indigo-500',
       'Dúvidas Frequentes': 'from-amber-500 to-orange-500',
       'default': 'from-gray-500 to-slate-500'
@@ -756,7 +758,8 @@ const BlogPage = () => {
                     'shield': Shield,
                     'stethoscope': Stethoscope,
                     'cpu': Cpu,
-                    'help-circle': HelpCircle
+                    'help-circle': HelpCircle,
+                    'droplets': Droplets
                   };
                   const Icon = config ? iconMap[config.icon] : null;
                   const isActive = selectedCategory === category;

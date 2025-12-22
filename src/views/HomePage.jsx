@@ -11,7 +11,8 @@ import Services from '../components/Services';
 import About from '../components/About';
 import Contact from '../components/Contact';
 import EnhancedFooter from '../components/EnhancedFooter';
-import GoogleReviews from '../components/ui/GoogleReviews';
+import GoogleReviewsEnhanced from '../components/GoogleReviewsEnhanced';
+import TrustBanner from '../components/TrustBanner';
 import GoogleLocalSection from '../components/GoogleLocalSection';
 import FAQ from '../components/FAQ';
 import LatestEpisodes from '../components/LatestEpisodes';
@@ -73,16 +74,22 @@ function HomePage() {
       <SEOHead {...seoData} />
       <SchemaMarkup type="organization" />
 
-       <div className="min-h-screen bg-white">
-         <main>
+      <div className="min-h-screen bg-white">
+        {/* Trust Banner no topo */}
+        <TrustBanner />
+
+        <main>
           <Hero />
           <Services autoplay full={false} />
           <About />
-          <GoogleReviews
+
+          {/* Google Reviews Enhanced - Substituindo o componente antigo */}
+          <GoogleReviewsEnhanced
             maxReviews={3}
-            showViewAllButton={true}
-            className="container mx-auto px-6 md:px-8 lg:px-[6%] xl:px-[7%] 2xl:px-[8%] mb-16"
+            showWidget={true}
+            className="mb-16"
           />
+
           <GoogleLocalSection />
           <FAQ />
           <LatestEpisodes />

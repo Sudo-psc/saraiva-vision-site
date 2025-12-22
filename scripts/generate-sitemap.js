@@ -47,6 +47,8 @@ const routes = [
 
   // Medical content
   { path: '/artigos/catarata', priority: 0.7, changefreq: 'yearly' },
+  { path: '/meibografia', priority: 0.75, changefreq: 'monthly' },
+  { path: '/blefaroplastia-jato-plasma', priority: 0.8, changefreq: 'monthly' },
 
   // Legal
   { path: '/privacy', priority: 0.4, changefreq: 'yearly' },

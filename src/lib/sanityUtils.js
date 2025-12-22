@@ -62,10 +62,15 @@ export function getImageUrl(source, width, height, format = 'webp', quality = 80
 export function transformBlogPost(sanityPost) {
   if (!sanityPost) return null
 
-  // Generate image URL from mainImage using urlFor()
-  const imageUrl = sanityPost.mainImage
-    ? urlFor(sanityPost.mainImage).width(1200).quality(85).url()
-    : null
+  // Safely generate image URL - only if mainImage has valid asset reference
+  let imageUrl = null
+  if (sanityPost.mainImage && sanityPost.mainImage.asset) {
+    try {
+      imageUrl = urlFor(sanityPost.mainImage).width(1200).quality(85).url()
+    } catch (err) {
+      console.warn(`[Sanity] Failed to generate image URL for post "${sanityPost.title}":`, err.message)
+    }
+  }
 
   return {
     id: sanityPost.id || sanityPost._id.replace('blogPost-', ''),
