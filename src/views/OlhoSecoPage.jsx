@@ -6,51 +6,54 @@ import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button.jsx';
 import { Droplets, ShieldCheck, CheckCircle, Microscope, Timer, Activity, Leaf, Sparkles, ArrowRight, Gauge } from 'lucide-react';
 
-const diagnosticItems = [
-  {
-    title: 'Meibografia de alta definição',
-    description: 'Visualização direta das glândulas de Meibômio para identificar dropout, obstruções e padrões estruturais da DGM.',
-    icon: Microscope
-  },
-  {
-    title: 'FBUT com fluoresceína',
-    description: 'Tempo de ruptura do filme lacrimal mensurado em segundos com protocolo TFOS DEWS III para classificar estabilidade.',
-    icon: Timer
-  },
-  {
-    title: 'Meniscometria óptica',
-    description: 'Medição objetiva da altura do menisco lacrimal para quantificar o volume basal e orientar reposição aquosa.',
-    icon: Gauge
-  },
-  {
-    title: 'Corantes vitais com lisamina verde',
-    description: 'Mapeamento de áreas de ressecamento epitelial e inflamação da superfície ocular com scoring padronizado.',
-    icon: Sparkles
-  },
-  {
-    title: 'Teste de Schirmer I e II',
-    description: 'Avaliação quantitativa da produção lacrimal basal e reflexa com interpretação em conjunto com meniscometria.',
-    icon: Droplets
-  },
-  {
-    title: 'Avaliação das vias lacrimais',
-    description: 'Testes de Jones I e II, sondagem e irrigação para excluir obstruções que perpetuam sintomas de olho seco.',
-    icon: Activity
-  }
-];
 
-const treatmentItems = [
-  'Protocolos alinhados ao TFOS DEWS III com estratificação por severidade',
-  'Plugs lacrimais para casos de deficiência aquosa refratária',
-  'Microesfoliação da margem palpebral e desobstrução glandular assistida',
-  'Terapias térmicas, higiene palpebral guiada e colírios anti-inflamatórios',
-  'Suplementação de ômega-3 e abordagem nutricional para estabilidade lipídica',
-  'Monitoramento fotográfico e reavaliação periódica dos marcadores objetivos'
-];
+  const diagnosticItems = React.useMemo(
+    () => [
+      {
+        title: t('olhoSeco.diagnosticItems.0.title'),
+        description: t('olhoSeco.diagnosticItems.0.description'),
+        icon: Microscope
+      },
+      {
+        title: t('olhoSeco.diagnosticItems.1.title'),
+        description: t('olhoSeco.diagnosticItems.1.description'),
+        icon: Timer
+      },
+      {
+        title: t('olhoSeco.diagnosticItems.2.title'),
+        description: t('olhoSeco.diagnosticItems.2.description'),
+        icon: Gauge
+      },
+      {
+        title: t('olhoSeco.diagnosticItems.3.title'),
+        description: t('olhoSeco.diagnosticItems.3.description'),
+        icon: Sparkles
+      },
+      {
+        title: t('olhoSeco.diagnosticItems.4.title'),
+        description: t('olhoSeco.diagnosticItems.4.description'),
+        icon: Droplets
+      },
+      {
+        title: t('olhoSeco.diagnosticItems.5.title'),
+        description: t('olhoSeco.diagnosticItems.5.description'),
+        icon: Activity
+      }
+    ],
+    [t]
+  );
 
-const OlhoSecoPage = () => {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
+  const treatmentItems = React.useMemo(
+    () => [
+      t('olhoSeco.treatmentItems.0'),
+      t('olhoSeco.treatmentItems.1'),
+      t('olhoSeco.treatmentItems.2'),
+      t('olhoSeco.treatmentItems.3'),
+      t('olhoSeco.treatmentItems.4'),
+      t('olhoSeco.treatmentItems.5')
+    ],
+    [t]
+  );
 
   const seo = {
     title: 'Clínica de Olho Seco | Diagnóstico e Tratamento com TFOS DEWS III | Saraiva Vision',
