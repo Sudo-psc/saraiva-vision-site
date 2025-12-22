@@ -104,7 +104,7 @@ const OlhoSecoPage = () => {
                       onClick={() => navigate('/servicos')}
                       className="border-cyan-600 text-cyan-700 hover:bg-cyan-50 px-6 py-3 rounded-xl text-base font-semibold"
                     >
-                      Ver todos os serviços
+                      {t('olhoSecoPage.viewAllServices')}
                     </Button>
                   </div>
                 </div>
