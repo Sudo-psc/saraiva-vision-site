@@ -974,6 +974,45 @@
     "loginError": "Login error. Check your credentials.",
     "backToBlog": "Back to Blog"
   },
+  "olhoSeco": {
+    "diagnosticItems": [
+      {
+        "title": "High-definition Meibography",
+        "description": "Direct visualization of Meibomian glands to identify dropout, obstructions and MGD structural patterns."
+      },
+      {
+        "title": "FBUT (Film Break-Up Time)",
+        "description": "Evaluation of tear film stability and break-up time, key marker for evaporative classification."
+      },
+      {
+        "title": "Meniscometry",
+        "description": "Objective measurement of tear volume in the lower meniscus, indicator of aqueous production."
+      },
+      {
+        "title": "Lissamine Green Staining",
+        "description": "Identification of epithelial damage in conjunctiva and cornea, complementing fluorescein."
+      },
+      {
+        "title": "Schirmer Test",
+        "description": "Quantification of basal and reflex tear production to differentiate aqueous deficits."
+      },
+      {
+        "title": "Palpebral Functional Assessment",
+        "description": "Analysis of closure, blink frequency and quality of meibomian expression."
+      }
+    ],
+    "treatmentItems": [
+      "TFOS DEWS III aligned protocols with severity stratification",
+      "Punctal plugs for tear film retention in aqueous-deficient dry eye",
+      "Lid margin microexfoliation for blepharitis and meibomian dysfunction",
+      "Guided lid hygiene with warm compresses and gland massage",
+      "Personalized lubricants according to viscosity and osmolarity",
+      "Topical anti-inflammatory modulation when clinically indicated"
+    ]
+  },
+  "olhoSecoPage": {
+    "viewAllServices": "View All Services"
+  },
   "blog": {
     "page_title": "Blog",
     "page_description": "Articles and news about eye health.",

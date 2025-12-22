@@ -6,6 +6,9 @@ import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button.jsx';
 import { Droplets, ShieldCheck, CheckCircle, Microscope, Timer, Activity, Leaf, Sparkles, ArrowRight, Gauge } from 'lucide-react';
 
+const OlhoSecoPage = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const diagnosticItems = React.useMemo(
     () => [

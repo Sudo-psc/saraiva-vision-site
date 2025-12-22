@@ -1149,6 +1149,45 @@
     "loginError": "Erro ao fazer login. Verifique suas credenciais.",
     "backToBlog": "Voltar ao Blog"
   },
+  "olhoSeco": {
+    "diagnosticItems": [
+      {
+        "title": "Meibografia de alta definição",
+        "description": "Visualização direta das glândulas de Meibômio para identificar dropout, obstruções e padrões estruturais da DGM."
+      },
+      {
+        "title": "FBUT (Film Break-Up Time)",
+        "description": "Avaliação da estabilidade do filme lacrimal e tempo de ruptura, marcador-chave para classificação evaporativa."
+      },
+      {
+        "title": "Meniscometria",
+        "description": "Medição objetiva do volume lacrimal no menisco inferior, indicador de produção aquosa."
+      },
+      {
+        "title": "Coloração com lisamina verde",
+        "description": "Identificação de dano epitelial na conjuntiva e córnea, complementando fluoresceína."
+      },
+      {
+        "title": "Teste de Schirmer",
+        "description": "Quantificação da produção lacrimal basal e reflexa para diferenciar déficits aquosos."
+      },
+      {
+        "title": "Avaliação funcional palpebral",
+        "description": "Análise de fechamento, frequência de piscar e qualidade de expressão meibomiana."
+      }
+    ],
+    "treatmentItems": [
+      "Protocolos alinhados ao TFOS DEWS III com estratificação por severidade",
+      "Plugs lacrimais para retenção do filme lacrimal em olho seco aquoso-deficiente",
+      "Microesfoliação palpebral para blefarite e disfunção meibomiana",
+      "Higiene palpebral orientada com compressas térmicas e massagem glandular",
+      "Lubrificantes personalizados conforme viscosidade e osmolaridade",
+      "Modulação anti-inflamatória tópica quando indicada clinicamente"
+    ]
+  },
+  "olhoSecoPage": {
+    "viewAllServices": "Ver Todos os Serviços"
+  },
   "check": {
     "badge": "Monitoramento de infraestrutura",
     "title": "Diagnóstico da infraestrutura Saraiva Vision",
