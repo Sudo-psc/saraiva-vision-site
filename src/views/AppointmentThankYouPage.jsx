@@ -64,8 +64,8 @@ const AppointmentThankYouPage = () => {
       descricao: 'Você receberá confirmação com todos os detalhes da consulta',
       tempo: 'Após confirmação',
       icone: Calendar,
-      cor: 'text-purple-600',
-      corBg: 'bg-purple-100'
+      cor: 'text-cyan-600',
+      corBg: 'bg-cyan-100'
     }
   ];
 

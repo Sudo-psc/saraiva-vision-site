@@ -236,6 +236,122 @@ const MeibografiaPage = () => {
                                 </div>
                             </motion.section>
 
+                            {/* Anatomia da Lágrima e DGM */}
+                            <motion.section
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.27 }}
+                                className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl p-6 shadow-soft-light border border-cyan-200/50"
+                            >
+                                <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                                    <Droplets className="w-6 h-6 mr-3 text-cyan-600" />
+                                    Anatomia da Lágrima e as Glândulas de Meibômio
+                                </h2>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-4">
+                                        <p className="text-slate-700 leading-relaxed">
+                                            O filme lacrimal é composto por três camadas essenciais: a <strong>camada lipídica</strong> (produzida pelas glândulas de Meibômio), a <strong>camada aquosa</strong> e a <strong>camada mucínica</strong>. A camada lipídica é fundamental para evitar a evaporação da lágrima.
+                                        </p>
+                                        <div className="bg-white rounded-xl p-4 border border-cyan-200">
+                                            <h4 className="font-semibold text-slate-900 mb-2">O que acontece na DGM?</h4>
+                                            <p className="text-sm text-slate-600">
+                                                Quando as glândulas de Meibômio estão obstruídas ou atrofiadas, a camada lipídica fica comprometida, causando evaporação rápida da lágrima e todos os sintomas de olho seco evaporativo.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="relative rounded-xl overflow-hidden shadow-lg border border-cyan-200">
+                                        <img
+                                            src="/E-eye/anatomia_DGM-lagrima.jpeg"
+                                            alt="Anatomia do filme lacrimal e glândulas de Meibômio - ilustração mostrando as camadas da lágrima"
+                                            className="w-full h-auto"
+                                            loading="lazy"
+                                        />
+                                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
+                                            <p className="text-white text-xs font-medium">
+                                                Anatomia do filme lacrimal e glândulas de Meibômio
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.section>
+
+                            {/* Exemplo de Meibografia */}
+                            <motion.section
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.28 }}
+                                className="bg-white rounded-2xl p-6 shadow-soft-light border border-slate-200/50"
+                            >
+                                <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                                    <Eye className="w-6 h-6 mr-3 text-cyan-600" />
+                                    Exemplos de Meibografia
+                                </h2>
+                                <div className="space-y-6">
+                                    <p className="text-slate-700 leading-relaxed">
+                                        A meibografia permite visualizar as glândulas de Meibômio em alta resolução através de luz infravermelha. Veja exemplos reais de imagens capturadas durante o exame, demonstrando diferentes padrões de saúde glandular.
+                                    </p>
+
+                                    {/* Galeria de exemplos */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="relative rounded-xl overflow-hidden shadow-lg border border-slate-200 group">
+                                            <img
+                                                src="/E-eye/meibografia_best_exemple.jpeg"
+                                                alt="Meibografia de alta qualidade mostrando glândulas de Meibômio bem preservadas"
+                                                className="w-full h-auto transition-transform group-hover:scale-105"
+                                                loading="lazy"
+                                            />
+                                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                                                <p className="text-white text-sm font-medium">
+                                                    Meibografia HD - Glândulas preservadas
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="relative rounded-xl overflow-hidden shadow-lg border border-slate-200 group">
+                                            <img
+                                                src="/E-eye/meibografia marcacao.jpeg"
+                                                alt="Meibografia com marcações anatômicas para identificação das glândulas"
+                                                className="w-full h-auto transition-transform group-hover:scale-105"
+                                                loading="lazy"
+                                            />
+                                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                                                <p className="text-white text-sm font-medium">
+                                                    Meibografia com marcações anatômicas
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Imagem principal com análise */}
+                                    <div className="relative rounded-xl overflow-hidden shadow-lg border border-slate-200">
+                                        <img
+                                            src="/E-eye/meibografia-exeplos.jpeg"
+                                            alt="Comparativo de meibografia mostrando diferentes graus de comprometimento das glândulas de Meibômio"
+                                            className="w-full h-auto"
+                                            loading="lazy"
+                                        />
+                                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                                            <p className="text-white text-sm font-medium">
+                                                Comparativo: diferentes graus de comprometimento glandular
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-cyan-50 border border-cyan-200 rounded-xl p-4">
+                                        <h3 className="font-semibold text-cyan-900 mb-2 flex items-center">
+                                            <AlertCircle className="w-4 h-4 mr-2" />
+                                            Como Interpretar a Meibografia
+                                        </h3>
+                                        <ul className="text-sm text-cyan-800 space-y-1">
+                                            <li>• <strong>Estruturas claras verticais:</strong> Glândulas de Meibômio saudáveis e funcionais</li>
+                                            <li>• <strong>Áreas escuras entre glândulas:</strong> Dropout glandular (perda/atrofia)</li>
+                                            <li>• <strong>Glândulas encurtadas:</strong> Indicam atrofia parcial progressiva</li>
+                                            <li>• <strong>Tortuosidades e dilatações:</strong> Podem indicar obstruções crônicas</li>
+                                            <li>• <strong>Distribuição irregular:</strong> Sugere DGM em diferentes estágios</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </motion.section>
+
                             {/* Benefícios */}
                             <motion.section
                                 initial={{ opacity: 0, y: 20 }}

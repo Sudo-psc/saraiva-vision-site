@@ -41,6 +41,8 @@ const AppointmentThankYouPage = createLazyComponent(() => import('./views/Appoin
 const AgendamentoOtimizadoPage = createLazyComponent(() => import('./views/AgendamentoOtimizadoPage.jsx'));
 const MeibografiaPage = createLazyComponent(() => import('./views/MeibografiaPage.jsx'));
 const OlhoSecoPage = createLazyComponent(() => import('./views/OlhoSecoPage.jsx'));
+const TesteOlhoSecoPage = createLazyComponent(() => import('./views/TesteOlhoSecoPage.jsx'));
+const IRPLPage = createLazyComponent(() => import('./views/IRPLPage.jsx'));
 const BlefaroplastiaJatoPlasmaPage = createLazyComponent(() => import('./views/BlefaroplastiaJatoPlasmaPage.jsx'));
 const NotFoundPage = createLazyComponent(() => import('./views/NotFoundPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
@@ -52,6 +54,7 @@ import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
 import AnalyticsFallback from '@/components/AnalyticsFallback.jsx';
 import AnalyticsProxy from '@/components/AnalyticsProxy.jsx';
 import DeferredWidgets from '@/modules/core/components/DeferredWidgets.jsx';
+import IRPLAnnouncement from '@/components/IRPLAnnouncement.jsx';
 
 function App() {
   const isCheckSubdomain =
@@ -116,6 +119,8 @@ function App() {
               <Route path="/questionario-olho-seco" element={<QuestionarioOlhoSecoPage />} />
               <Route path="/campanha/outubro-olho-seco" element={<CampanhaOutubroOlhoSecoPage />} />
               <Route path="/olho-seco" element={<OlhoSecoPage />} />
+              <Route path="/olho-seco/teste-rapido" element={<TesteOlhoSecoPage />} />
+              <Route path="/luz-pulsada-irpl" element={<IRPLPage />} />
               <Route path="/meibografia" element={<MeibografiaPage />} />
               <Route path="/blefaroplastia-jato-plasma" element={<BlefaroplastiaJatoPlasmaPage />} />
               <Route path="/assine" element={<AssinePage />} />
@@ -133,6 +138,7 @@ function App() {
           </ErrorBoundary>
         </div>
         <DeferredWidgets />
+        <IRPLAnnouncement />
       </WidgetProvider>
 
       {/* Analytics Fallback para contornar bloqueadores */}

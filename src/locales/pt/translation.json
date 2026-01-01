@@ -351,6 +351,10 @@
       "dpnTreatment": {
         "title": "Tratamento de DPN",
         "description": "Método eficaz para eliminar Dermatose Papulosa Nigra (DPN), pequenas lesões benignas comuns no rosto e pescoço."
+      },
+      "dryEye": {
+        "title": "Tratamento de Olho Seco",
+        "description": "Diagnóstico preciso e tratamento personalizado para síndrome do olho seco, com meibografia e terapias avançadas."
       }
     },
     "benefits": {

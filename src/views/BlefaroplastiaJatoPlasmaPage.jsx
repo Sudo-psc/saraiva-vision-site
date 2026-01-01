@@ -365,7 +365,7 @@ const BlefaroplastiaJatoPlasmaPage = () => {
                 <FileText className="w-4 h-4 mr-1.5" />
                 Estudos PubMed
               </span>
-              <span className="inline-flex items-center px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full text-sm font-medium border border-purple-200">
+              <span className="inline-flex items-center px-3 py-1.5 bg-cyan-50 text-cyan-700 rounded-full text-sm font-medium border border-cyan-200">
                 <Eye className="w-4 h-4 mr-1.5" />
                 Segurança Palpebral
               </span>
@@ -576,7 +576,7 @@ const BlefaroplastiaJatoPlasmaPage = () => {
                 className="bg-white rounded-2xl p-6 shadow-soft-light border border-slate-200/50"
               >
                 <h2 className="text-2xl font-bold text-slate-900 mb-4 flex items-center">
-                  <Eye className="w-6 h-6 mr-3 text-purple-600" />
+                  <Eye className="w-6 h-6 mr-3 text-cyan-600" />
                   Resultados Clínicos Documentados
                 </h2>
                 <p className="text-slate-600 mb-6 text-sm leading-relaxed">
@@ -591,14 +591,14 @@ const BlefaroplastiaJatoPlasmaPage = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => trackExternalLink('result_gallery', gallery.url)}
-                      className="block bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-4 border border-purple-200 hover:border-purple-400 hover:shadow-md transition-all group"
+                      className="block bg-gradient-to-br from-cyan-50 to-blue-50 rounded-xl p-4 border border-cyan-200 hover:border-cyan-400 hover:shadow-md transition-all group"
                     >
-                      <h3 className="font-semibold text-slate-900 mb-2 group-hover:text-purple-700 flex items-center">
+                      <h3 className="font-semibold text-slate-900 mb-2 group-hover:text-cyan-700 flex items-center">
                         {gallery.title}
                         <ExternalLink className="w-4 h-4 ml-2 opacity-50 group-hover:opacity-100" />
                       </h3>
                       <p className="text-slate-600 text-sm mb-2">{gallery.description}</p>
-                      <span className="text-xs text-purple-600 font-medium">{gallery.source}</span>
+                      <span className="text-xs text-cyan-600 font-medium">{gallery.source}</span>
                     </a>
                   ))}
                 </div>
