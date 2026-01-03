@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
@@ -47,6 +47,7 @@ const BlogPage = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [selectedCategory, setSelectedCategory] = React.useState('Todas');
   const [searchTerm, setSearchTerm] = React.useState('');
   const [debouncedSearch, setDebouncedSearch] = React.useState('');
@@ -58,6 +59,14 @@ const BlogPage = () => {
   const [postLoading, setPostLoading] = React.useState(false);
   const [postError, setPostError] = React.useState(null);
   const POSTS_PER_PAGE = 6;
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const category = params.get('category');
+    if (category && categories.includes(category)) {
+      setSelectedCategory(category);
+    }
+  }, [location.search]);
 
   // Debounce search term
   React.useEffect(() => {
@@ -676,7 +685,11 @@ const BlogPage = () => {
                 </Trans>
               </h1>
               <p className="text-lg md:text-xl text-gray-600 font-light max-w-3xl mx-auto leading-loose">
-                Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos
+                Artigos informativos sobre saúde ocular, prevenção e tratamentos oftalmológicos.
+                <br />
+                <span className="font-medium text-teal-600">
+                  Única clínica no interior de Minas Gerais com o tratamento padrão-ouro IRPL e-eye para Olho Seco.
+                </span>
               </p>
 
               {/* Decorative bottom accent */}

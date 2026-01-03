@@ -73,6 +73,9 @@ const DryEyeCenterSection = () => {
           <p className="text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed">
             Serviço especializado com diagnóstico completo, meibografia e tratamentos avançados como IRPL®.
             Protocolos alinhados ao TFOS DEWS III para resultados objetivos e duradouros.
+            <span className="block mt-2 font-medium text-cyan-300">
+              Única clínica no interior de Minas Gerais com o tratamento padrão-ouro IRPL e-eye para Olho Seco.
+            </span>
           </p>
         </motion.div>
 

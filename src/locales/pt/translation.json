@@ -280,7 +280,7 @@
     "subtitle": "Oferecemos uma gama completa de serviços oftalmológicos para cuidar da sua visão com a máxima qualidade e tecnologia.",
     "badge": "Nossos Serviços",
     "learn_more": "Saiba Mais",
-    "view_all": "Ver todos os 12 serviços",
+    "view_all": "Ver todos os serviços",
     "show_less": "Mostrar menos",
     "carousel_navigation": "Navegação do carrossel de serviços",
     "go_to": "Ir para serviço {{index}}",
@@ -339,6 +339,16 @@
       "meibography": {
         "title": "Meibografia",
         "description": "Exame de imagem das glândulas de Meibômio que avalia a estrutura e função glandular, essencial no diagnóstico preciso da síndrome do olho seco."
+      },
+      "irplEEye": {
+        "title": "IRPL com E-Eye (Olho Seco)",
+        "description": "Luz pulsada regulada específica para DGM e estabilização da camada lipídica da lágrima. Única clínica no interior de Minas Gerais com o tratamento padrão-ouro IRPL e-eye para Olho Seco.",
+        "fullDescription": "Tratamento de luz pulsada regulada (IRPL®) com o dispositivo E-Eye para reduzir inflamação palpebral, reativar glândulas de Meibômio e aliviar os sintomas de olho seco evaporativo."
+      },
+      "lacrimalPlugs": {
+        "title": "Plugs do Ducto Lacrimal",
+        "description": "Oclusão dos pontos lacrimais para manter a lágrima por mais tempo e aliviar o olho seco.",
+        "fullDescription": "Procedimento ambulatorial com inserção de plugs de silicone ou colágeno nos pontos lacrimais para reduzir o escoamento das lágrimas e melhorar a hidratação da superfície ocular."
       },
       "plasmaLiftBlepharoplasty": {
         "title": "Blefaroplastia com Jato de Plasma",
@@ -422,7 +432,18 @@
       "dryEyeDiagnosis": "Diagnóstico preciso de olho seco",
       "glandStructureAnalysis": "Análise da estrutura glandular",
       "directedTreatment": "Orientação de tratamento direcionado",
-      "nonInvasiveImaging": "Imagem não invasiva e rápida"
+      "nonInvasiveImaging": "Imagem não invasiva e rápida",
+      "regulatedPulseTech": "Pulsos regulados específicos para glândulas de Meibômio",
+      "inflammatoryControl": "Controle da inflamação palpebral e telangiectasias",
+      "meibumNormalization": "Normalização da camada lipídica da lágrima",
+      "quickComfort": "Alívio progressivo de ardor, areia e fotofobia",
+      "nonInvasiveFast": "Sessões rápidas, sem downtime e ambulatoriais",
+      "lacrimalRetention": "Aumento do tempo de permanência da lágrima na superfície ocular",
+      "symptomRelief": "Redução de ardor, sensação de areia e vermelhidão",
+      "tearFilmStability": "Estabilidade aprimorada do filme lacrimal",
+      "reversibleOption": "Procedimento reversível e ajustável",
+      "nonSurgical": "Procedimento ambulatorial e minimamente invasivo",
+      "dryEyeSevere": "Indicado para casos moderados a graves de olho seco"
     },
     "duration": {
       "consultation": "45-60 minutos",
@@ -437,7 +458,9 @@
       "pachymetry": "5-10 minutos",
       "retinography": "10-15 minutos",
       "visualField": "20-30 minutos por olho",
-      "meibography": "10-15 minutos"
+      "meibography": "10-15 minutos",
+      "irplEEye": "15-20 minutos por sessão",
+      "lacrimalPlugs": "20-30 minutos"
     },
     "preparation": {
       "consultation": "Traga seus óculos atuais e exames anteriores",
@@ -452,7 +475,9 @@
       "pachymetry": "Suspender lentes de contato 24h antes do exame",
       "retinography": "Pode ser necessária dilatação pupilar",
       "visualField": "Use seus óculos habituais e evite cansaço visual antes do exame",
-      "meibography": "Evite uso de maquiagem nos olhos no dia do exame"
+      "meibography": "Evite uso de maquiagem nos olhos no dia do exame",
+      "irplEEye": "Evite bronzeamento, maquiagem e uso de lentes de contato 24h antes da sessão",
+      "lacrimalPlugs": "Informe colírios em uso e evite maquiagem nos olhos no dia."
     },
     "included": {
       "anamnesis": "Anamnese detalhada",
@@ -525,7 +550,19 @@
       "progressionAnalysis": "Análise de progressão quando disponível",
       "reliabilityIndexes": "Índices de confiabilidade",
       "specializedInterpretation": "Interpretação especializada",
-      "resultGuidance": "Orientações sobre resultados"
+      "resultGuidance": "Orientações sobre resultados",
+      "ocularSurfaceEval": "Avaliação da superfície ocular e meibografia prévia",
+      "eyeProtection": "Proteção ocular e filtro cutâneo específico",
+      "irplProtocol": "Sequência de pulsos IRPL® calibrados por fototipo",
+      "meibomianExpression": "Expressão suave das glândulas de Meibômio",
+      "postProcedureCare": "Higienização, lubrificação e fotoproteção orientadas",
+      "maintenancePlan": "Plano de manutenção e sessões de reforço",
+      "ocularSurfaceAssessment": "Avaliação da superfície ocular e dos pontos lacrimais",
+      "plugSizing": "Escolha do tamanho e tipo de plug",
+      "punctalOcclusion": "Inserção do plug no ponto lacrimal",
+      "lubricationAdjustment": "Ajuste do plano de lubrificação",
+      "postProcedureGuidance": "Orientações de cuidados e sinais de alerta",
+      "followUpPlan": "Plano de retorno para reavaliação"
     },
     "consultation": "Consulta Oftalmológica",
     "refraction": "Refração",
@@ -669,16 +706,16 @@
   },
   "about": {
     "tag": "Sobre Nós",
-    "title": "Dedicados à Excelência em Cada Detalhe da Sua Visão",
-    "p1": "A Saraiva Vision nasceu do sonho de oferecer um atendimento oftalmológico de alta qualidade em Caratinga e região, unindo tecnologia de ponta a uma abordagem humana e personalizada. Desde nossa fundação, construímos uma reputação sólida baseada na confiança, competência técnica e no compromisso inabalável com a saúde ocular de nossos pacientes.",
-    "p2": "Nossa missão transcende o simples tratamento de doenças oculares. Valorizamos a prevenção como caminho essencial para preservar a visão, realizamos diagnósticos fundamentados em evidências com equipamentos de última geração e indicamos terapias personalizadas conforme cada avaliação clínica. Cada paciente é único, e nosso atendimento reflete essa filosofia, priorizando sempre o bem-estar, a segurança e o acompanhamento contínuo.",
-    "p3": "Como parceiros oficiais da rede Amor e Saúde, mantemos os mais altos padrões de qualidade e segurança. Nossa infraestrutura moderna, localizada estrategicamente no coração de Caratinga, foi projetada para oferecer conforto e tranquilidade durante todo o processo de cuidado com sua visão.",
+    "title": "Pioneirismo e Excelência em Saúde Ocular em Caratinga",
+    "p1": "A Saraiva Vision nasceu para oferecer atendimento oftalmológico de alta qualidade em Caratinga e região, unindo tecnologia de ponta a uma abordagem humana e personalizada. Somos reconhecidos pelo cuidado avançado da superfície ocular e pela atenção às necessidades de quem convive com olho seco.",
+    "p2": "Nosso cuidado é individualizado e fundamentado em evidências. Para casos relacionados à Disfunção das Glândulas de Meibômio, disponibilizamos o tratamento com IRPL E-Eye, tecnologia aprovada pela Anvisa e oferecida com exclusividade regional na clínica, sempre após avaliação médica criteriosa.",
+    "p3": "Como parceiros oficiais da rede Amor e Saúde, mantemos os mais altos padrões de qualidade e segurança. Nossa infraestrutura moderna, no coração de Caratinga, foi planejada para oferecer conforto, acolhimento e acompanhamento contínuo em cada etapa do cuidado visual.",
     "features": [
-      "Infraestrutura Moderna e Equipada",
+      "Pioneirismo no Cuidado do Olho Seco",
       "Profissionais Altamente Qualificados",
       "Atendimento Humanizado e Personalizado",
       "Acompanhamento Contínuo e Preventivo",
-      "Tecnologia de Ponta em Diagnósticos",
+      "Tecnologia Avançada em Diagnósticos",
       "Parceria com Rede Amor e Saúde"
     ],
     "alt1": "Consultório oftalmológico moderno da Saraiva Vision",
@@ -845,8 +882,8 @@
   },
   "homeMeta": {
     "title": "Oftalmologista em Caratinga | Clínica Saraiva Vision | CRM-MG 69.870",
-    "description": "Clínica Oftalmológica Saraiva Vision em Caratinga/MG: exames de vista, adaptação de lentes de contato, consultas especializadas. Agende já!",
-    "keywords": "oftalmologista Caratinga, clínica oftalmológica Caratinga MG, exame de vista Caratinga, lentes de contato Caratinga, Dr Philipe Saraiva, CRM-MG 69870, consulta oftalmologista, Clínica Amor e Saúde, convênios Caratinga, convênio oftalmologista"
+    "description": "Clínica especializada em olho seco em Caratinga/MG, única do interior de MG com tratamento de olho seco aprovado pela ANVISA com IRPL E-Eye. Consultas, exames e lentes de contato.",
+    "keywords": "olho seco Caratinga, clínica especializada olho seco MG, IRPL E-Eye ANVISA, tratamento olho seco interior MG, oftalmologista Caratinga, clínica oftalmológica Caratinga MG, exame de vista Caratinga, lentes de contato Caratinga, Dr Philipe Saraiva, CRM-MG 69870, consulta oftalmologista, Clínica Amor e Saúde, convênios Caratinga, convênio oftalmologista"
   },
   "serviceMeta": {
     "title": "{{serviceTitle}} | Clínica Saraiva Vision",
@@ -1088,6 +1125,7 @@
       "pachymetry": "Paquimetria",
       "retinography": "Retinografia",
       "visual_field": "Campo Visual",
+      "lacrimal_plug": "Plugs lacrimais",
       "hero_image": "Dr. Philipe Saraiva, oftalmologista em Caratinga, com uma paciente.",
       "satisfied_patient_1": "Paciente satisfeita sorrindo.",
       "satisfied_patient_2": "Paciente satisfeito sorrindo.",
