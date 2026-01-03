@@ -113,7 +113,7 @@ const GoogleReviews = ({ maxReviews = 3, showViewAllButton = true, className = '
     const colors = [
       'bg-blue-500',
       'bg-green-500',
-      'bg-purple-500',
+      'bg-cyan-500',
       'bg-pink-500',
       'bg-indigo-500',
       'bg-teal-500',
@@ -175,7 +175,7 @@ const GoogleReviews = ({ maxReviews = 3, showViewAllButton = true, className = '
 
   return (
     <section className={`py-16 bg-gradient-to-br from-gray-50 to-white ${className}`}>
-      <div className="max-w-7xl mx-auto px-[7%]">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -51,7 +51,11 @@ const ServiceCard = React.forwardRef(({ service, index, lazy = true }, ref) => {
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.05 }}
-      className="service-card-3d group relative flex flex-col items-center text-center rounded-3xl glass-morphism shadow-3d hover:shadow-3d-hover will-change-transform transform-gpu preserve-3d w-full h-full focus-within:ring-2 focus-within:ring-cyan-500/20 transition-transform duration-500 touch-manipulation"
+      className={`service-card-3d group relative flex flex-col items-center text-center rounded-3xl glass-morphism will-change-transform transform-gpu preserve-3d w-full h-full focus-within:ring-2 transition-transform duration-500 touch-manipulation ${
+        service.featured
+          ? 'shadow-3d-featured hover:shadow-3d-featured-hover ring-2 ring-cyan-500/40 bg-gradient-to-br from-cyan-50/80 to-teal-50/80 focus-within:ring-cyan-600/50'
+          : 'shadow-3d hover:shadow-3d-hover focus-within:ring-cyan-500/20'
+      }`}
       style={{
         minWidth: '280px', // Garante largura mínima consistente
         scrollSnapAlign: 'start'
@@ -59,6 +63,13 @@ const ServiceCard = React.forwardRef(({ service, index, lazy = true }, ref) => {
       whileHover={prefersReducedMotion ? {} : { y: -8 }}
       exit={{ opacity: 0, y: 10, scale: 0.98 }}
     >
+      {/* Featured Badge */}
+      {service.featured && (
+        <div className="absolute -top-3 -right-3 z-10 bg-gradient-to-r from-cyan-600 to-teal-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg ring-2 ring-white">
+          ✨ DESTAQUE
+        </div>
+      )}
+
       {/* Ambient gradient halo */}
       <div className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ background: 'radial-gradient(circle at 30% 20%, rgba(96,165,250,0.35), transparent 60%)' }} />
       <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 mix-blend-overlay" style={{ background: 'linear-gradient(140deg, rgba(147,51,234,0.15), rgba(236,72,153,0.12), rgba(59,130,246,0.12))' }} />
@@ -124,27 +135,29 @@ const Services = ({ full = false, autoplay = true }) => {
   const [serviceItems, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
-  
+
   const loadServices = useCallback(async () => {
     setLoading(true);
     const clinicServices = [
-        { id: 'consultas-oftalmologicas', icon: getServiceIcon('consultas-oftalmologicas', { className: 'w-full h-full object-contain' }), title: t('services.items.consultations.title'), description: t('services.items.consultations.description') },
-        { id: 'exames-de-refracao', icon: getServiceIcon('exames-de-refracao', { className: 'w-full h-full object-contain' }), title: t('services.items.refraction.title'), description: t('services.items.refraction.description') },
-        { id: 'tratamentos-especializados', icon: getServiceIcon('tratamentos-especializados', { className: 'w-full h-full object-contain' }), title: t('services.items.specialized.title'), description: t('services.items.specialized.description') },
-        { id: 'cirurgias-oftalmologicas', icon: getServiceIcon('cirurgias-oftalmologicas', { className: 'w-full h-full object-contain' }), title: t('services.items.surgeries.title'), description: t('services.items.surgeries.description') },
-        { id: 'acompanhamento-pediatrico', icon: getServiceIcon('acompanhamento-pediatrico', { className: 'w-full h-full object-contain' }), title: t('services.items.pediatric.title'), description: t('services.items.pediatric.description') },
-        { id: 'laudos-especializados', icon: getServiceIcon('laudos-especializados', { className: 'w-full h-full object-contain' }), title: t('services.items.reports.title'), description: t('services.items.reports.description') },
-        { id: 'gonioscopia', icon: getServiceIcon('gonioscopia', { className: 'w-full h-full object-contain' }), title: t('services.items.gonioscopy.title'), description: t('services.items.gonioscopy.description') },
-        { id: 'mapeamento-de-retina', icon: getServiceIcon('mapeamento-de-retina', { className: 'w-full h-full object-contain' }), title: t('services.items.retinaMapping.title'), description: t('services.items.retinaMapping.description') },
-        { id: 'topografia-corneana', icon: getServiceIcon('topografia-corneana', { className: 'w-full h-full object-contain' }), title: t('services.items.cornealTopography.title'), description: t('services.items.cornealTopography.description') },
-        { id: 'paquimetria', icon: getServiceIcon('paquimetria', { className: 'w-full h-full object-contain' }), title: t('services.items.pachymetry.title'), description: t('services.items.pachymetry.description') },
-        { id: 'retinografia', icon: getServiceIcon('retinografia', { className: 'w-full h-full object-contain' }), title: t('services.items.retinography.title'), description: t('services.items.retinography.description') },
-        { id: 'campo-visual', icon: getServiceIcon('campo-visual', { className: 'w-full h-full object-contain' }), title: t('services.items.visualField.title'), description: t('services.items.visualField.description') }
+      { id: 'irpl', icon: getServiceIcon('irpl', { className: 'w-full h-full object-contain' }), title: t('services.items.irpl.title', 'Tratamento IRPL (E-Eye)'), description: t('services.items.irpl.description', 'Tecnologia avançada de Luz Pulsada Regulada Intensa para tratamento de olho seco e disfunção das glândulas meibomianas'), featured: true },
+      { id: 'olho-seco', icon: getServiceIcon('olho-seco', { className: 'w-full h-full object-contain' }), title: t('services.items.dryEye.title'), description: t('services.items.dryEye.description') },
+      { id: 'consultas-oftalmologicas', icon: getServiceIcon('consultas-oftalmologicas', { className: 'w-full h-full object-contain' }), title: t('services.items.consultations.title'), description: t('services.items.consultations.description') },
+      { id: 'exames-de-refracao', icon: getServiceIcon('exames-de-refracao', { className: 'w-full h-full object-contain' }), title: t('services.items.refraction.title'), description: t('services.items.refraction.description') },
+      { id: 'tratamentos-especializados', icon: getServiceIcon('tratamentos-especializados', { className: 'w-full h-full object-contain' }), title: t('services.items.specialized.title'), description: t('services.items.specialized.description') },
+      { id: 'cirurgias-oftalmologicas', icon: getServiceIcon('cirurgias-oftalmologicas', { className: 'w-full h-full object-contain' }), title: t('services.items.surgeries.title'), description: t('services.items.surgeries.description') },
+      { id: 'acompanhamento-pediatrico', icon: getServiceIcon('acompanhamento-pediatrico', { className: 'w-full h-full object-contain' }), title: t('services.items.pediatric.title'), description: t('services.items.pediatric.description') },
+      { id: 'laudos-especializados', icon: getServiceIcon('laudos-especializados', { className: 'w-full h-full object-contain' }), title: t('services.items.reports.title'), description: t('services.items.reports.description') },
+      { id: 'gonioscopia', icon: getServiceIcon('gonioscopia', { className: 'w-full h-full object-contain' }), title: t('services.items.gonioscopy.title'), description: t('services.items.gonioscopy.description') },
+      { id: 'mapeamento-de-retina', icon: getServiceIcon('mapeamento-de-retina', { className: 'w-full h-full object-contain' }), title: t('services.items.retinaMapping.title'), description: t('services.items.retinaMapping.description') },
+      { id: 'topografia-corneana', icon: getServiceIcon('topografia-corneana', { className: 'w-full h-full object-contain' }), title: t('services.items.cornealTopography.title'), description: t('services.items.cornealTopography.description') },
+      { id: 'paquimetria', icon: getServiceIcon('paquimetria', { className: 'w-full h-full object-contain' }), title: t('services.items.pachymetry.title'), description: t('services.items.pachymetry.description') },
+      { id: 'retinografia', icon: getServiceIcon('retinografia', { className: 'w-full h-full object-contain' }), title: t('services.items.retinography.title'), description: t('services.items.retinography.description') },
+      { id: 'campo-visual', icon: getServiceIcon('campo-visual', { className: 'w-full h-full object-contain' }), title: t('services.items.visualField.title'), description: t('services.items.visualField.description') }
     ];
     setServices(clinicServices);
     setLoading(false);
   }, [t]);
-  
+
   useEffect(() => {
     loadServices();
   }, [loadServices]);
@@ -308,12 +321,12 @@ const Services = ({ full = false, autoplay = true }) => {
 
     // IMPORTANTE: Não iniciar drag se o clique foi em um link ou botão
     const target = e.target;
-    const isInteractiveElement = 
-      target.tagName === 'A' || 
+    const isInteractiveElement =
+      target.tagName === 'A' ||
       target.tagName === 'BUTTON' ||
-      target.closest('a') || 
+      target.closest('a') ||
       target.closest('button');
-    
+
     if (isInteractiveElement) {
       // Permitir que links e botões funcionem normalmente
       return;
@@ -390,7 +403,7 @@ const Services = ({ full = false, autoplay = true }) => {
 
     // Attach hook's event handlers for hover/focus pause behavior
     const handlers = autoplayCarousel.handlers;
-    
+
     el.addEventListener('mouseenter', handlers.onMouseEnter);
     el.addEventListener('mouseleave', handlers.onMouseLeave);
     el.addEventListener('focusin', handlers.onFocus);

@@ -245,6 +245,51 @@ export const DpnTreatmentIcon = ({ className = "h-8 w-8" }) => {
   );
 };
 
+export const DryEyeIcon = ({ className = "h-8 w-8" }) => {
+  const { t } = useTranslation();
+  return (
+    <ImageWithFallback
+      src="/icons_social/075B9668-4FBF-4038-BFED-04CE9C504E0D_1_105_c.jpeg"
+      alt={t('ui.alt.dry_eye', 'Tratamento de Olho Seco')}
+      className={className}
+      loading="lazy"
+      decoding="async"
+      width="64"
+      height="64"
+    />
+  );
+};
+
+export const EEyeIRPLIcon = ({ className = "h-8 w-8" }) => {
+  const { t } = useTranslation();
+  return (
+    <ImageWithFallback
+      src="/icons/icon_e-eye.png"
+      alt={t('ui.alt.irpl_e_eye', 'Tratamento IRPL E-Eye')}
+      className={className}
+      loading="lazy"
+      decoding="async"
+      width="64"
+      height="64"
+    />
+  );
+};
+
+export const LacrimalPlugIcon = ({ className = "h-8 w-8" }) => {
+  const { t } = useTranslation();
+  return (
+    <ImageWithFallback
+      src="/icons/icon_plug.jpeg"
+      alt={t('ui.alt.lacrimal_plug', 'Plugs lacrimais')}
+      className={className}
+      loading="lazy"
+      decoding="async"
+      width="64"
+      height="64"
+    />
+  );
+};
+
 // Service icon mapping
 export const serviceIconMap = {
   'consultas-oftalmologicas': ConsultationIcon,
@@ -260,9 +305,13 @@ export const serviceIconMap = {
   'retinografia': RetinographyIcon,
   'campo-visual': VisualFieldIcon,
   'meibografia': MeibographyIcon,
+  'irpl': EEyeIRPLIcon,
+  'irpl-e-eye': EEyeIRPLIcon,
+  'plugs-ducto-lacrimal': LacrimalPlugIcon,
   'blefaroplastia-jato-plasma': PlasmaLiftBlepharoplastyIcon,
   'remocao-xantelasma': XanthelasmaRemovalIcon,
   'tratamento-dpn': DpnTreatmentIcon,
+  'olho-seco': DryEyeIcon,
 };
 
 export const getServiceIcon = (serviceId, props = {}) => {

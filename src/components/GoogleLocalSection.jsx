@@ -12,11 +12,11 @@ const GoogleLocalSection = () => {
     <section
       id="local"
       aria-labelledby="local-heading"
-      className="py-12 lg:py-16 text-white bg-gradient-to-br from-[#0a1628] via-[#13203a] to-[#0d1b2a] relative overflow-hidden"
+      className="py-8 lg:py-12 text-white bg-gradient-to-br from-[#0a1628] via-[#13203a] to-[#0d1b2a] relative overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/20 via-cyan-800/10 to-cyan-700/20" aria-hidden="true" />
 
-      <div className="container mx-auto px-[7%] relative z-10">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-[96%] relative z-10">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-14 items-start lg:items-center">
           {/* Content Side - alinhado e com largura ótima */}
           <div className="flex-1 space-y-6 lg:pr-8 max-w-3xl">
@@ -91,9 +91,9 @@ const GoogleLocalSection = () => {
           </div>
 
           {/* Map Side - Box do Google Maps corrigido e alinhado */}
-          <div className="flex-1 max-w-2xl lg:self-center">
+          <div className="flex-1 max-w-3xl lg:self-center">
             {/* Container externo com altura fixa e padding interno para não cortar o mapa */}
-            <div className="h-[304px] lg:h-[336px] rounded-2xl shadow-xl bg-white border border-slate-200 relative p-2">
+            <div className="h-[340px] lg:h-[400px] rounded-2xl shadow-xl bg-white border border-slate-200 relative p-2">
               <div className="relative w-full h-full rounded-xl overflow-hidden bg-gray-100">
                 <GoogleMapRobust height="100%" />
               </div>
