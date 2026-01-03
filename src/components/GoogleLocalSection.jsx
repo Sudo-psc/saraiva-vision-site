@@ -16,10 +16,10 @@ const GoogleLocalSection = () => {
     >
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/20 via-cyan-800/10 to-cyan-700/20" aria-hidden="true" />
 
-      <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-[96%] relative z-10">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-14 items-start lg:items-center">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-7xl relative z-10">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start lg:items-center justify-center">
           {/* Content Side - alinhado e com largura ótima */}
-          <div className="flex-1 space-y-6 lg:pr-8 max-w-3xl">
+          <div className="flex-1 space-y-6 lg:pr-4 max-w-2xl">
             {/* Header */}
             <div className="space-y-4">
               <div className="flex items-center gap-3 mb-4">
@@ -91,7 +91,7 @@ const GoogleLocalSection = () => {
           </div>
 
           {/* Map Side - Box do Google Maps corrigido e alinhado */}
-          <div className="flex-1 max-w-3xl lg:self-center">
+          <div className="flex-1 max-w-2xl lg:self-center">
             {/* Container externo com altura fixa e padding interno para não cortar o mapa */}
             <div className="h-[340px] lg:h-[400px] rounded-2xl shadow-xl bg-white border border-slate-200 relative p-2">
               <div className="relative w-full h-full rounded-xl overflow-hidden bg-gray-100">
