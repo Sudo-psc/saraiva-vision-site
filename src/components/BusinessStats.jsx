@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Star, TrendingUp, TrendingDown, Users, MessageSquare, Clock, Award, AlertCircle } from 'lucide-react';
 import CachedGoogleBusinessService from '../services/cachedGoogleBusinessService';
@@ -59,7 +59,7 @@ const BusinessStats = ({
         };
 
         initializeServices();
-    }, [locationId]);
+    }, [locationId, fetchBusinessData]);
 
     // Auto-refresh functionality
     useEffect(() => {
@@ -72,10 +72,10 @@ const BusinessStats = ({
         }, refreshInterval);
 
         return () => clearInterval(interval);
-    }, [autoRefresh, refreshInterval, config?.locationId]);
+    }, [autoRefresh, refreshInterval, config?.locationId, refreshBusinessData]);
 
     // Fetch business data
-    const fetchBusinessData = async (locId) => {
+    const fetchBusinessData = useCallback(async (locId) => {
         if (!service) return;
 
         try {
@@ -106,10 +106,10 @@ const BusinessStats = ({
         } finally {
             setLoading(false);
         }
-    };
+    }, [service, onError]);
 
     // Refresh business data
-    const refreshBusinessData = async (locId) => {
+    const refreshBusinessData = useCallback(async (locId) => {
         if (!service) return;
 
         try {
@@ -135,7 +135,7 @@ const BusinessStats = ({
         } finally {
             setIsRefreshing(false);
         }
-    };
+    }, [service]);
 
     // Calculate rating trend (mock implementation)
     const getRatingTrend = () => {
@@ -353,21 +353,21 @@ const BusinessStats = ({
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
-                            className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/30 rounded-xl p-5 border border-purple-100 dark:border-purple-800/30"
+                            className="bg-gradient-to-br from-cyan-50 to-cyan-100 dark:from-cyan-900/20 dark:to-cyan-800/30 rounded-xl p-5 border border-cyan-100 dark:border-cyan-800/30"
                         >
                             <div className="flex items-center justify-between mb-3">
-                                <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                                    <Clock size={20} className="text-purple-600 dark:text-purple-400" />
+                                <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                                    <Clock size={20} className="text-cyan-600 dark:text-cyan-400" />
                                 </div>
                             </div>
                             <div className="space-y-1">
-                                <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                                <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
                                     {stats.recentReviews || 0}
                                 </div>
-                                <div className="text-xs text-purple-600 dark:text-purple-400 font-medium">
+                                <div className="text-xs text-cyan-600 dark:text-cyan-400 font-medium">
                                     Avaliações Recentes
                                 </div>
-                                <div className="text-xs text-purple-500 dark:text-purple-400">
+                                <div className="text-xs text-cyan-500 dark:text-cyan-400">
                                     Últimos 30 dias
                                 </div>
                             </div>
@@ -646,11 +646,11 @@ const BusinessStats = ({
                                     </div>
                                 </div>
 
-                                <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 text-center">
-                                    <div className="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-1">
+                                <div className="bg-cyan-50 dark:bg-cyan-900/20 rounded-lg p-4 text-center">
+                                    <div className="text-2xl font-bold text-cyan-600 dark:text-cyan-400 mb-1">
                                         {stats.averageRating}
                                     </div>
-                                    <div className="text-xs text-purple-700 dark:text-purple-300">
+                                    <div className="text-xs text-cyan-700 dark:text-cyan-300">
                                         Média de satisfação
                                     </div>
                                 </div>
