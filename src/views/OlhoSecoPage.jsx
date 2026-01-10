@@ -220,31 +220,41 @@ const OlhoSecoPage = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-8 lg:p-10 space-y-6">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-8 lg:p-10 space-y-8">
               <div className="flex items-center gap-3">
                 <ShieldCheck className="w-6 h-6 text-cyan-700" />
                 <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Por que este serviço é diferente?</h2>
               </div>
-              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-700">
-                <li className="flex gap-3 bg-slate-50 border border-slate-200 rounded-xl p-4">
-                  <CheckCircle className="w-5 h-5 text-cyan-600 mt-0.5" />
-                  <span>Pioneirismo em meibografia na cidade, com documentação fotográfica de alta definição.</span>
+              <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 text-slate-700">
+                <li className="flex flex-col gap-3 bg-slate-50 border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                  <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600">
+                    <Microscope className="w-5 h-5" />
+                  </div>
+                  <span className="font-medium">Pioneirismo em meibografia na cidade, com documentação fotográfica de alta definição.</span>
                 </li>
-                <li className="flex gap-3 bg-slate-50 border border-slate-200 rounded-xl p-4">
-                  <CheckCircle className="w-5 h-5 text-cyan-600 mt-0.5" />
-                  <span>Único serviço local dedicado exclusivamente ao olho seco em Caratinga.</span>
+                <li className="flex flex-col gap-3 bg-slate-50 border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                  <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600">
+                    <Star className="w-5 h-5" />
+                  </div>
+                  <span className="font-medium">Único serviço local dedicado exclusivamente ao olho seco em Caratinga.</span>
                 </li>
-                <li className="flex gap-3 bg-slate-50 border border-slate-200 rounded-xl p-4">
-                  <CheckCircle className="w-5 h-5 text-cyan-600 mt-0.5" />
-                  <span>Protocolos diagnósticos alinhados ao TFOS DEWS III com critérios internacionais.</span>
+                <li className="flex flex-col gap-3 bg-slate-50 border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                  <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <span className="font-medium">Protocolos diagnósticos alinhados ao TFOS DEWS III com critérios internacionais.</span>
                 </li>
-                <li className="flex gap-3 bg-slate-50 border border-slate-200 rounded-xl p-4">
-                  <CheckCircle className="w-5 h-5 text-cyan-600 mt-0.5" />
-                  <span>Registro e acompanhamento fotográfico seriado da DGM para seguimento estruturado.</span>
+                <li className="flex flex-col gap-3 bg-slate-50 border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                  <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600">
+                    <CheckCircle className="w-5 h-5" />
+                  </div>
+                  <span className="font-medium">Registro e acompanhamento fotográfico seriado da DGM para seguimento estruturado.</span>
                 </li>
-                <li className="flex gap-3 bg-slate-50 border border-slate-200 rounded-xl p-4">
-                  <CheckCircle className="w-5 h-5 text-cyan-600 mt-0.5" />
-                  <span>Avaliação integrada da superfície ocular e das vias lacrimais no mesmo local.</span>
+                <li className="flex flex-col gap-3 bg-slate-50 border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                  <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-600">
+                    <Eye className="w-5 h-5" />
+                  </div>
+                  <span className="font-medium">Avaliação integrada da superfície ocular e das vias lacrimais no mesmo local.</span>
                 </li>
               </ul>
             </div>
@@ -431,9 +441,107 @@ const OlhoSecoPage = () => {
               </div>
             </div>
 
+            {/* MODIFIED: Tratamento Escalonado (TFOS DEWS) - Moved to full width */}
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-8 lg:p-10 space-y-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <Layers className="w-8 h-8 text-cyan-700" />
+                  <div>
+                    <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Tratamento Escalonado</h2>
+                    <p className="text-slate-500">Baseado no relatório de manejo e terapia do TFOS DEWS III</p>
+                  </div>
+                </div>
+                <img 
+                  src="/E-eye/icone_olho_seco_tratamento.jpeg" 
+                  alt="Ícone de tratamento de olho seco" 
+                  className="w-16 h-16 rounded-lg object-cover border border-slate-100 shadow-sm hidden md:block"
+                />
+              </div>
+              
+              <p className="text-slate-700 leading-relaxed max-w-4xl">
+                Adotamos uma abordagem terapêutica em degraus, ajustando a intensidade do tratamento conforme a severidade dos sinais e sintomas. O objetivo é restaurar o equilíbrio da superfície ocular de forma progressiva e personalizada.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                {/* Nível 1 */}
+                <div className="border-t-4 border-emerald-400 bg-emerald-50/50 p-5 rounded-b-xl hover:shadow-md transition-shadow h-full flex flex-col">
+                  <h3 className="font-bold text-emerald-800 mb-3 flex items-center gap-2">
+                    <span className="bg-emerald-200 text-emerald-800 text-xs px-2 py-0.5 rounded-full shrink-0">Nível 1</span>
+                    Educação & Modificações
+                  </h3>
+                  <ul className="text-sm text-slate-700 space-y-2 list-disc pl-4 marker:text-emerald-500 flex-1">
+                    <li>Educação sobre a condição, dieta e ambiente.</li>
+                    <li>Higiene palpebral e compressas mornas.</li>
+                    <li>Lágrimas artificiais (com conservantes leves ou sem).</li>
+                    <li>Modificação de medicações sistêmicas (se possível).</li>
+                  </ul>
+                </div>
+
+                {/* Nível 2 */}
+                <div className="border-t-4 border-cyan-400 bg-cyan-50/50 p-5 rounded-b-xl hover:shadow-md transition-shadow h-full flex flex-col">
+                  <h3 className="font-bold text-cyan-800 mb-3 flex items-center gap-2">
+                    <span className="bg-cyan-200 text-cyan-800 text-xs px-2 py-0.5 rounded-full shrink-0">Nível 2</span>
+                    Terapias Específicas
+                  </h3>
+                  <ul className="text-sm text-slate-700 space-y-2 list-disc pl-4 marker:text-cyan-500 flex-1">
+                    <li>Lágrimas artificiais sem conservantes.</li>
+                    <li>Tratamentos para Demodex (ácido hipocloroso).</li>
+                    <li>Oclusão pontual (plugs lacrimais).</li>
+                    <li>Terapias em consultório: Luz Pulsada (IPL) e pulsação térmica.</li>
+                    <li>Medicamentos prescritos.</li>
+                  </ul>
+                  <div className="flex gap-2 mt-3 pt-3 border-t border-cyan-100">
+                    <img src="/E-eye/Icon_acdiohipocloroso.jpeg" alt="Ácido Hipocloroso" className="w-8 h-8 rounded shadow-sm border border-white" title="Tratamento para Demodex" />
+                    <img src="/E-eye/icon_plugLacrimal.jpeg" alt="Plugs Lacrimais" className="w-8 h-8 rounded shadow-sm border border-white" title="Oclusão pontual" />
+                  </div>
+                </div>
+
+                {/* Nível 3 */}
+                <div className="border-t-4 border-sky-400 bg-sky-50/50 p-5 rounded-b-xl hover:shadow-md transition-shadow h-full flex flex-col">
+                  <h3 className="font-bold text-sky-800 mb-3 flex items-center gap-2">
+                    <span className="bg-sky-200 text-sky-800 text-xs px-2 py-0.5 rounded-full shrink-0">Nível 3</span>
+                    Terapias Avançadas
+                  </h3>
+                  <ul className="text-sm text-slate-700 space-y-2 list-disc pl-4 marker:text-sky-500 flex-1">
+                    <li>Colírio de soro autólogo (produzido a partir do sangue).</li>
+                    <li>Lentes de contato terapêuticas ou esclerais.</li>
+                    <li>Secretagogos orais.</li>
+                  </ul>
+                  <div className="flex gap-2 mt-3 pt-3 border-t border-sky-100">
+                    <img src="/E-eye/icon_lente_escleral.jpeg" alt="Lente Escleral" className="w-8 h-8 rounded shadow-sm border border-white" title="Lentes Esclerais" />
+                  </div>
+                </div>
+
+                {/* Nível 4 */}
+                <div className="border-t-4 border-rose-400 bg-rose-50/50 p-5 rounded-b-xl hover:shadow-md transition-shadow h-full flex flex-col">
+                  <h3 className="font-bold text-rose-800 mb-3 flex items-center gap-2">
+                    <span className="bg-rose-200 text-rose-800 text-xs px-2 py-0.5 rounded-full shrink-0">Nível 4</span>
+                    Longo Prazo/Cirúrgico
+                  </h3>
+                  <ul className="text-sm text-slate-700 space-y-2 list-disc pl-4 marker:text-rose-500 flex-1">
+                    <li>Corticosteroides tópicos de longa duração.</li>
+                    <li>Enxerto de membrana amniótica.</li>
+                    <li>Oclusão pontual cirúrgica (permanente).</li>
+                    <li>Outras abordagens cirúrgicas.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t border-slate-100">
+                <div className="flex items-center gap-2 text-sm text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-full px-4 py-2">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Segurança e rastreabilidade</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-cyan-700 bg-cyan-50 border border-cyan-100 rounded-full px-4 py-2">
+                  <Sparkles className="w-4 h-4" />
+                  <span>Foco em conforto e visão funcional</span>
+                </div>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-6">
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-6">
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-6 h-full">
                   <div className="flex items-center gap-3">
                     <Microscope className="w-6 h-6 text-cyan-700" />
                     <h2 className="text-2xl font-bold text-slate-900">Diagnóstico completo em um único local</h2>
@@ -441,196 +549,142 @@ const OlhoSecoPage = () => {
                   <p className="text-slate-700 leading-relaxed">
                     No serviço especializado em olho seco em Caratinga, a avaliação integra superfície ocular, filme lacrimal, vias lacrimais e função meibomiana, com dados objetivos e rastreáveis. Os exames seguem a terminologia e os fluxos decisórios do TFOS DEWS III para correlacionar sintomas, sinais e biomarcadores.
                   </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-700">
-                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                      <CheckCircle className="w-4 h-4 text-cyan-600" />
-                      <span>Superfície ocular e filme lacrimal</span>
-                    </div>
-                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                      <CheckCircle className="w-4 h-4 text-cyan-600" />
-                      <span>Vias lacrimais e drenagem</span>
-                    </div>
-                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                      <CheckCircle className="w-4 h-4 text-cyan-600" />
-                      <span>Função meibomiana e DGM</span>
-                    </div>
-                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                      <CheckCircle className="w-4 h-4 text-cyan-600" />
-                      <span>Documentação fotográfica seriada</span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  
+                  {/* DIAGNOSTIC ITEMS GRID: Improved for better horizontal usage */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     {diagnosticItems.map((item) => {
                       const Icon = item.icon;
                       return (
-                        <div key={item.title} className="flex gap-4 p-4 border border-slate-200 rounded-xl bg-slate-50">
-                          <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700">
+                        <div key={item.title} className="flex flex-col gap-3 p-4 border border-slate-200 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors h-full">
+                          <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 shrink-0">
                             <Icon className="w-5 h-5" />
                           </div>
                           <div className="space-y-1">
-                            <h3 className="text-lg font-semibold text-slate-900">{item.title}</h3>
-                            <p className="text-sm text-slate-700 leading-relaxed">{item.description}</p>
+                            <h3 className="text-base font-semibold text-slate-900">{item.title}</h3>
+                            <p className="text-xs text-slate-700 leading-relaxed">{item.description}</p>
                           </div>
                         </div>
                       );
                     })}
                   </div>
                 </div>
+              </div>
 
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-6">
+              {/* Sidebar moved content */}
+              <div className="space-y-6">
+                <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-6 shadow-xl space-y-5">
                   <div className="flex items-center gap-3">
-                    <Droplets className="w-6 h-6 text-cyan-700" />
-                    <div>
-                      <h2 className="text-2xl font-bold text-slate-900">Meibografia e DGM</h2>
-                      <p className="text-sm text-slate-500">Meibografia em Caratinga com documentação seriada</p>
-                    </div>
-                  </div>
-                  <p className="text-slate-700 leading-relaxed">
-                    A Disfunção das Glândulas de Meibômio (DGM) é a principal causa de olho seco evaporativo. A{' '}
-                    <Link
-                      to="/meibografia"
-                      className="inline-flex items-center gap-2 font-semibold text-cyan-700 hover:text-cyan-800 transition-transform duration-200 hover:scale-105"
-                      aria-label="Clique para saber mais sobre o exame de meibografia"
-                      title="Clique para saber mais sobre o exame de meibografia"
-                    >
+                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 border border-white/10">
                       <img
-                        src="/img/meibografia icon.png"
-                        alt="Clique para saber mais sobre o exame de meibografia"
-                        className="w-5 h-5 object-contain"
+                        src="/icons_social/Badge_TFOS_DEWSIII.png"
+                        alt="Diretrizes TFOS DEWS III 2025"
+                        className="w-9 h-9 object-contain"
                         loading="lazy"
                         decoding="async"
                       />
-                      <span className="underline decoration-cyan-300 underline-offset-4">meibografia</span>
-                    </Link>
-                    {' '}permite visualizar, documentar e acompanhar a estrutura glandular ao longo do tempo, orientando decisões clínicas com base em imagens.
+                    </div>
+                    <div>
+                      <p className="text-sm text-emerald-200 font-semibold">Autoridade científica</p>
+                      <p className="text-xl font-bold">TFOS DEWS III (2025)</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-slate-100 leading-relaxed">
+                    O TFOS DEWS III é o consenso internacional que define critérios diagnósticos e classificação clínica da Doença do Olho Seco. Ele orienta a interpretação conjunta de sintomas, sinais e testes objetivos.
                   </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-700">
-                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                      <CheckCircle className="w-4 h-4 text-cyan-600" />
-                      <span>Visualização detalhada das glândulas</span>
-                    </div>
-                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                      <CheckCircle className="w-4 h-4 text-cyan-600" />
-                      <span>Registro fotográfico e comparativo</span>
-                    </div>
-                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                      <CheckCircle className="w-4 h-4 text-cyan-600" />
-                      <span>Seguimento estruturado da DGM</span>
-                    </div>
-                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                      <CheckCircle className="w-4 h-4 text-cyan-600" />
-                      <span>Disponível exclusivamente neste serviço na cidade</span>
-                    </div>
+                  <ul className="space-y-2 text-sm leading-relaxed">
+                    <li className="flex gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-300 mt-1" />
+                      <span>Mais precisão diagnóstica ao integrar superfície ocular, filme lacrimal e função meibomiana.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-300 mt-1" />
+                      <span>Documentação fotográfica e parâmetros mensuráveis para seguimento rastreável.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <CheckCircle className="w-4 h-4 text-emerald-300 mt-1" />
+                      <span>Padronização clínica reconhecida mundialmente para olho seco.</span>
+                    </li>
+                  </ul>
+                  <div className="space-y-2">
+                    <Button
+                      onClick={() => navigate('/agendamento')}
+                      className="w-full bg-emerald-400 hover:bg-emerald-300 text-slate-900 font-semibold"
+                    >
+                      Agendar avaliação completa de Olho Seco
+                    </Button>
+                    <p className="text-xs text-slate-200">
+                      Diagnóstico objetivo e documentação fotográfica em todas as etapas.
+                    </p>
                   </div>
                 </div>
 
-                {/* MODIFIED: Tratamento Escalonado (TFOS DEWS) */}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-6">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <Layers className="w-6 h-6 text-cyan-700" />
-                      <div>
-                        <h2 className="text-2xl font-bold text-slate-900">Tratamento Escalonado</h2>
-                        <p className="text-sm text-slate-500">Baseado no relatório de manejo e terapia do TFOS DEWS III</p>
-                      </div>
-                    </div>
-                    <img 
-                      src="/E-eye/icone_olho_seco_tratamento.jpeg" 
-                      alt="Ícone de tratamento de olho seco" 
-                      className="w-16 h-16 rounded-lg object-cover border border-slate-100 shadow-sm"
-                    />
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <Leaf className="w-5 h-5 text-cyan-700" />
+                    <h3 className="text-xl font-bold text-slate-900">Cuidados contínuos</h3>
                   </div>
-                  
-                  <p className="text-slate-700 leading-relaxed">
-                    Adotamos uma abordagem terapêutica em degraus, ajustando a intensidade do tratamento conforme a severidade dos sinais e sintomas. O objetivo é restaurar o equilíbrio da superfície ocular.
+                  <p className="text-slate-700 text-sm leading-relaxed">
+                    Seguimento programado com reavaliação de sintomas, estabilidade do filme lacrimal e ajuste terapêutico progressivo para manter a superfície ocular protegida.
                   </p>
-                  
-                  <div className="space-y-4">
-                    {/* Nível 1 */}
-                    <div className="border-l-4 border-emerald-400 bg-emerald-50/50 p-4 rounded-r-xl">
-                      <h3 className="font-bold text-emerald-800 mb-2 flex items-center gap-2">
-                        <span className="bg-emerald-200 text-emerald-800 text-xs px-2 py-0.5 rounded-full">Nível 1</span>
-                        Educação e Modificações Iniciais
-                      </h3>
-                      <ul className="text-sm text-slate-700 space-y-1 list-disc pl-4 marker:text-emerald-500">
-                        <li>Educação sobre a condição, dieta e ambiente (umidade, pausas digitais).</li>
-                        <li>Higiene palpebral e compressas mornas.</li>
-                        <li>Lágrimas artificiais (com conservantes leves ou sem).</li>
-                        <li>Modificação de medicações sistêmicas (se possível).</li>
-                      </ul>
-                    </div>
-
-                    {/* Nível 2 */}
-                    <div className="border-l-4 border-cyan-400 bg-cyan-50/50 p-4 rounded-r-xl">
-                      <div className="flex justify-between items-start gap-4">
-                        <div className="flex-1">
-                          <h3 className="font-bold text-cyan-800 mb-2 flex items-center gap-2">
-                            <span className="bg-cyan-200 text-cyan-800 text-xs px-2 py-0.5 rounded-full">Nível 2</span>
-                            Terapias Específicas e Não-Preservadas
-                          </h3>
-                          <ul className="text-sm text-slate-700 space-y-1 list-disc pl-4 marker:text-cyan-500">
-                            <li>Lágrimas artificiais sem conservantes.</li>
-                            <li>Tratamentos para Demodex (ex: ácido hipocloroso).</li>
-                            <li>Oclusão pontual (plugs lacrimais) para retenção da lágrima.</li>
-                            <li>Óculos de câmara úmida e tratamentos noturnos (pomadas).</li>
-                            <li>Terapias em consultório: Luz Pulsada Intensa (IPL) e pulsação térmica.</li>
-                            <li>Medicamentos prescritos: corticosteroides tópicos (curto prazo), secretagogos, imunomoduladores (ciclosporina).</li>
-                          </ul>
-                        </div>
-                        <div className="flex flex-col gap-2 shrink-0">
-                          <img src="/E-eye/Icon_acdiohipocloroso.jpeg" alt="Ácido Hipocloroso" className="w-10 h-10 rounded shadow-sm border border-white" title="Tratamento para Demodex" />
-                          <img src="/E-eye/icon_plugLacrimal.jpeg" alt="Plugs Lacrimais" className="w-10 h-10 rounded shadow-sm border border-white" title="Oclusão pontual" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Nível 3 */}
-                    <div className="border-l-4 border-sky-400 bg-sky-50/50 p-4 rounded-r-xl">
-                      <div className="flex justify-between items-start gap-4">
-                        <div className="flex-1">
-                          <h3 className="font-bold text-sky-800 mb-2 flex items-center gap-2">
-                            <span className="bg-sky-200 text-sky-800 text-xs px-2 py-0.5 rounded-full">Nível 3</span>
-                            Terapias Avançadas e Biológicas
-                          </h3>
-                          <ul className="text-sm text-slate-700 space-y-1 list-disc pl-4 marker:text-sky-500">
-                            <li>Colírio de soro autólogo (produzido a partir do sangue do paciente).</li>
-                            <li>Lentes de contato terapêuticas ou esclerais.</li>
-                            <li>Secretagogos orais.</li>
-                          </ul>
-                        </div>
-                        <img src="/E-eye/icon_lente_escleral.jpeg" alt="Lente Escleral" className="w-12 h-12 rounded shadow-sm border border-white shrink-0" title="Lentes Esclerais" />
-                      </div>
-                    </div>
-
-                    {/* Nível 4 */}
-                    <div className="border-l-4 border-rose-400 bg-rose-50/50 p-4 rounded-r-xl">
-                      <h3 className="font-bold text-rose-800 mb-2 flex items-center gap-2">
-                        <span className="bg-rose-200 text-rose-800 text-xs px-2 py-0.5 rounded-full">Nível 4</span>
-                        Intervenções Cirúrgicas e Longo Prazo
-                      </h3>
-                      <ul className="text-sm text-slate-700 space-y-1 list-disc pl-4 marker:text-rose-500">
-                        <li>Corticosteroides tópicos de longa duração.</li>
-                        <li>Enxerto de membrana amniótica.</li>
-                        <li>Oclusão pontual cirúrgica (permanente).</li>
-                        <li>Outras abordagens cirúrgicas (tarsorrafia, etc).</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t border-slate-100">
-                    <div className="flex items-center gap-2 text-sm text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-full px-4 py-2">
-                      <ShieldCheck className="w-4 h-4" />
-                      <span>Segurança e rastreabilidade</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-cyan-700 bg-cyan-50 border border-cyan-100 rounded-full px-4 py-2">
-                      <Sparkles className="w-4 h-4" />
-                      <span>Foco em conforto e visão funcional</span>
-                    </div>
+                  <div className="grid grid-cols-2 gap-3 text-sm text-slate-800">
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">Higiene palpebral guiada</div>
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">Lubrificação personalizada</div>
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">Treino ambiental e digital</div>
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">Reforço nutricional</div>
                   </div>
                 </div>
+              </div>
+            </div>
 
-                {/* IRPL® - Reeducação Neurológica das Glândulas */}
-                <div className="bg-gradient-to-br from-cyan-50 via-white to-sky-50 rounded-2xl border border-cyan-200 shadow-soft-light p-6 space-y-6">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-6">
+              <div className="flex items-center gap-3">
+                <Droplets className="w-6 h-6 text-cyan-700" />
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-900">Meibografia e DGM</h2>
+                  <p className="text-sm text-slate-500">Meibografia em Caratinga com documentação seriada</p>
+                </div>
+              </div>
+              <p className="text-slate-700 leading-relaxed">
+                A Disfunção das Glândulas de Meibômio (DGM) é a principal causa de olho seco evaporativo. A{' '}
+                <Link
+                  to="/meibografia"
+                  className="inline-flex items-center gap-2 font-semibold text-cyan-700 hover:text-cyan-800 transition-transform duration-200 hover:scale-105"
+                  aria-label="Clique para saber mais sobre o exame de meibografia"
+                  title="Clique para saber mais sobre o exame de meibografia"
+                >
+                  <img
+                    src="/img/meibografia icon.png"
+                    alt="Clique para saber mais sobre o exame de meibografia"
+                    className="w-5 h-5 object-contain"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className="underline decoration-cyan-300 underline-offset-4">meibografia</span>
+                </Link>
+                {' '}permite visualizar, documentar e acompanhar a estrutura glandular ao longo do tempo, orientando decisões clínicas com base em imagens.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm text-slate-700">
+                <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                  <CheckCircle className="w-4 h-4 text-cyan-600" />
+                  <span>Visualização detalhada das glândulas</span>
+                </div>
+                <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                  <CheckCircle className="w-4 h-4 text-cyan-600" />
+                  <span>Registro fotográfico e comparativo</span>
+                </div>
+                <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                  <CheckCircle className="w-4 h-4 text-cyan-600" />
+                  <span>Seguimento estruturado da DGM</span>
+                </div>
+                <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                  <CheckCircle className="w-4 h-4 text-cyan-600" />
+                  <span>Disponível exclusivamente neste serviço</span>
+                </div>
+              </div>
+            </div>
+
+            {/* IRPL® - Reeducação Neurológica das Glândulas */}
+            <div className="bg-gradient-to-br from-cyan-50 via-white to-sky-50 rounded-2xl border border-cyan-200 shadow-soft-light p-6 space-y-6">
                   {/* Badges de Pioneirismo */}
                   <div className="flex flex-wrap gap-3">
                     <div className="inline-flex items-center gap-2 rounded-full bg-cyan-100 text-cyan-700 px-4 py-2 text-sm font-semibold">
