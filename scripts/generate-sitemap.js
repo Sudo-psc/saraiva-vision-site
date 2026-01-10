@@ -27,6 +27,11 @@ const routes = [
 
   // Services - Important
   { path: '/lentes', priority: 0.8, changefreq: 'monthly' },
+  { path: '/lentes/wiki', priority: 0.75, changefreq: 'monthly' },
+  { path: '/olho-seco', priority: 0.95, changefreq: 'weekly' },
+  { path: '/luz-pulsada-irpl', priority: 0.95, changefreq: 'monthly' },
+  { path: '/olho-seco/teste-rapido', priority: 0.7, changefreq: 'monthly' },
+  { path: '/avaliacoes', priority: 0.7, changefreq: 'weekly' },
 
   // Plans - High conversion pages
   { path: '/planos', priority: 0.9, changefreq: 'monthly' },
@@ -40,6 +45,8 @@ const routes = [
   { path: '/blog', priority: 0.8, changefreq: 'weekly' },
   { path: '/podcast', priority: 0.7, changefreq: 'weekly' },
   { path: '/faq', priority: 0.7, changefreq: 'monthly' },
+  { path: '/faq/olho-seco', priority: 0.8, changefreq: 'monthly' },
+  { path: '/faq/luz-pulsada', priority: 0.8, changefreq: 'monthly' },
 
   // Campaign pages
   { path: '/questionario-olho-seco', priority: 0.6, changefreq: 'monthly' },

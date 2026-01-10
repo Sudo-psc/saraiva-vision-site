@@ -18,9 +18,9 @@ const __dirname = path.dirname(__filename);
 // Other routes are handled by Nginx fallback to /index.html
 const pages = {
   '/': {
-    title: 'Saraiva Vision - Clínica Oftalmológica em Caratinga/MG',
-    description: 'Clínica oftalmológica especializada em catarata, glaucoma, retina e cirurgia refrativa em Caratinga/MG. Atendimento médico de qualidade com tecnologia de ponta.',
-    keywords: 'oftalmologia Caratinga, clínica oftalmológica MG, catarata Caratinga, cirurgia refrativa Vale do Aço',
+    title: 'Clínica especializada em olho seco em Caratinga/MG | Saraiva Vision',
+    description: 'Clínica especializada em olho seco em Caratinga/MG, única do interior de MG com tratamento de olho seco aprovado pela ANVISA com IRPL E-Eye. Consultas, exames e lentes de contato.',
+    keywords: 'olho seco Caratinga, clínica especializada olho seco MG, IRPL E-Eye ANVISA, tratamento olho seco interior MG, oftalmologia Caratinga, clínica oftalmológica MG',
     canonicalUrl: 'https://saraivavision.com.br/',
     ogImage: 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg'
   },
@@ -30,6 +30,34 @@ const pages = {
     keywords: 'assinatura lentes de contato, lentes de contato caratinga, acompanhamento médico, SVlentes, plano assinatura lentes',
     canonicalUrl: 'https://saraivavision.com.br/waitlist',
     ogImage: 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg'
+  },
+  '/olho-seco': {
+    title: 'Centro Especializado em Olho Seco em Caratinga | TFOS DEWS III | Saraiva Vision',
+    description: 'Serviço especializado em olho seco em Caratinga, com diagnóstico completo e meibografia, seguindo protocolos TFOS DEWS III e documentação fotográfica seriada.',
+    keywords: 'olho seco Caratinga, meibografia Caratinga, serviço especializado olho seco, TFOS DEWS III, DGM, tratamento olho seco MG, oftalmologista olho seco',
+    canonicalUrl: 'https://saraivavision.com.br/olho-seco',
+    ogImage: 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg'
+  },
+  '/luz-pulsada-irpl': {
+    title: 'IRPL E-Eye para Olho Seco e DGM em Caratinga | Saraiva Vision',
+    description: 'Tratamento de olho seco com luz pulsada IRPL E-Eye em Caratinga, MG. Tecnologia francesa aprovada pela ANVISA, não invasiva, para Disfunção das Glândulas de Meibômio.',
+    keywords: 'IRPL Caratinga, E-Eye Caratinga, luz pulsada olho seco, DGM tratamento, luz intensa pulsada oftalmologia, tratamento olho seco Caratinga, IRPL E-Eye ANVISA',
+    canonicalUrl: 'https://saraivavision.com.br/luz-pulsada-irpl',
+    ogImage: 'https://saraivavision.com.br/E-eye/e-eye-equipAnvisa.jpeg'
+  },
+  '/faq/olho-seco': {
+    title: 'FAQ Olho Seco: Respostas para suas Dúvidas | Saraiva Vision',
+    description: 'Tire suas dúvidas sobre Síndrome do Olho Seco: sintomas, causas (DGM), diagnóstico com meibografia e tratamentos modernos em Caratinga.',
+    keywords: 'FAQ olho seco, dúvidas olho seco, sintomas olho seco, tratamento olho seco, DGM, meibografia, oftalmologista Caratinga',
+    canonicalUrl: 'https://saraivavision.com.br/faq/olho-seco',
+    ogImage: 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg'
+  },
+  '/faq/luz-pulsada': {
+    title: 'FAQ Luz Pulsada (IRPL) E-Eye: 10 Perguntas e Respostas | Saraiva Vision',
+    description: 'Guia completo sobre tratamento de Olho Seco com E-Eye IRPL: como funciona, diferença para IPL, sessões, resultados e contraindicações. Aprovado pela Anvisa.',
+    keywords: 'FAQ IRPL, perguntas luz pulsada, E-Eye como funciona, IRPL vs IPL, tratamento DGM, sessões IRPL, contraindicações luz pulsada',
+    canonicalUrl: 'https://saraivavision.com.br/faq/luz-pulsada',
+    ogImage: 'https://saraivavision.com.br/E-eye/e-eye-equipAnvisa.jpeg'
   }
 };
 

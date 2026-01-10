@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import SEOHead from '@/components/SEOHead';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button.jsx';
-import { Droplets, ShieldCheck, CheckCircle, Microscope, Timer, Activity, Leaf, Sparkles, ArrowRight, Gauge, AlertCircle, Layers, Eye, Sun, Droplet, Zap, Brain, Award, MapPin, Star, ClipboardCheck, TrendingUp, Loader2, Info } from 'lucide-react';
+import { Droplets, ShieldCheck, CheckCircle, Microscope, Timer, Activity, Leaf, Sparkles, ArrowRight, Gauge, AlertCircle, Layers, Eye, Sun, Droplet, Zap, Brain, Award, MapPin, Star, ClipboardCheck, TrendingUp, Loader2, Info, Headphones } from 'lucide-react';
 
 // Lazy load dos componentes interativos para melhor performance
 const SymptomChecklist = lazy(() => import('@/components/olhoseco/SymptomChecklist'));
@@ -58,10 +58,51 @@ const OlhoSecoPage = () => {
     [t]
   );
 
+  // Schema.org MedicalCondition for Dry Eye Disease
+  const medicalConditionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalCondition',
+    name: 'Síndrome do Olho Seco',
+    alternateName: ['Dry Eye Disease', 'DED', 'Olho Seco Evaporativo', 'Doença do Olho Seco'],
+    description: 'Condição multifatorial da superfície ocular caracterizada por perda da homeostase do filme lacrimal, causando sintomas oculares como desconforto, alterações visuais e potencial dano à superfície ocular.',
+    associatedAnatomy: {
+      '@type': 'AnatomicalStructure',
+      name: 'Superfície Ocular',
+      subStructure: [
+        { '@type': 'AnatomicalStructure', name: 'Glândulas de Meibômio' },
+        { '@type': 'AnatomicalStructure', name: 'Filme Lacrimal' },
+        { '@type': 'AnatomicalStructure', name: 'Córnea' }
+      ]
+    },
+    cause: [
+      { '@type': 'MedicalCause', name: 'Disfunção das Glândulas de Meibômio (DGM)' },
+      { '@type': 'MedicalCause', name: 'Deficiência aquosa' },
+      { '@type': 'MedicalCause', name: 'Uso prolongado de telas' },
+      { '@type': 'MedicalCause', name: 'Envelhecimento' }
+    ],
+    signOrSymptom: [
+      { '@type': 'MedicalSignOrSymptom', name: 'Ardência ocular' },
+      { '@type': 'MedicalSignOrSymptom', name: 'Sensação de areia nos olhos' },
+      { '@type': 'MedicalSignOrSymptom', name: 'Visão embaçada' },
+      { '@type': 'MedicalSignOrSymptom', name: 'Lacrimejamento paradoxal' }
+    ],
+    possibleTreatment: [
+      { '@type': 'MedicalTherapy', name: 'IRPL E-Eye' },
+      { '@type': 'MedicalTherapy', name: 'Plugs Lacrimais' },
+      { '@type': 'MedicalTherapy', name: 'Colírios Lubrificantes' },
+      { '@type': 'MedicalTherapy', name: 'Microesfoliação Palpebral' }
+    ],
+    relevantSpecialty: {
+      '@type': 'MedicalSpecialty',
+      name: 'Ophthalmology'
+    }
+  };
+
   const seo = {
     title: 'Centro Especializado em Olho Seco em Caratinga | TFOS DEWS III | Saraiva Vision',
     description: 'Serviço especializado em olho seco em Caratinga, com diagnóstico completo e meibografia, seguindo protocolos TFOS DEWS III e documentação fotográfica seriada.',
-    keywords: 'olho seco em Caratinga, meibografia em Caratinga, serviço especializado em olho seco em Caratinga, TFOS DEWS III, meibografia, FBUT, meniscometria, lisamina verde, Schirmer, plugs lacrimais, microesfoliação palpebral'
+    keywords: 'olho seco em Caratinga, meibografia em Caratinga, serviço especializado em olho seco em Caratinga, TFOS DEWS III, meibografia, FBUT, meniscometria, lisamina verde, Schirmer, plugs lacrimais, microesfoliação palpebral, tratamento olho seco, síndrome olho seco',
+    structuredData: medicalConditionSchema
   };
 
   return (
@@ -69,7 +110,7 @@ const OlhoSecoPage = () => {
       <SEOHead {...seo} />
       <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 scroll-block-internal">
         <section className="bg-gradient-to-br from-cyan-50 via-white to-sky-50">
-          <div className="max-w-6xl mx-auto px-6 lg:px-12 py-12 lg:py-16 space-y-10">
+          <div className="max-w-[90rem] mx-auto px-6 lg:px-12 py-12 lg:py-16 space-y-10">
             {/* Hero Section */}
             <div className="flex flex-col gap-6">
               <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 text-emerald-700 px-4 py-2 text-sm font-semibold w-fit">
@@ -253,7 +294,7 @@ const OlhoSecoPage = () => {
 
             {/* NEW SECTION: Anatomia do Filme Lacrimal */}
             <div className="bg-white rounded-2xl border border-slate-200 p-8 lg:p-10 space-y-10">
-              <div className="max-w-3xl">
+              <div className="max-w-[60rem]">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="bg-cyan-100 p-2 rounded-lg">
                     <Layers className="w-6 h-6 text-cyan-700" />
@@ -618,10 +659,12 @@ const OlhoSecoPage = () => {
 
                   {/* Video Section for IRPL */}
                   <div className="relative rounded-2xl overflow-hidden shadow-xl border border-cyan-100 bg-slate-900 aspect-video mb-6">
-                    <video 
-                      controls 
+                    <video
+                      controls
+                      preload="metadata"
+                      playsInline
                       className="w-full h-full object-cover"
-                      poster="/E-eye/e-eye-equip.jpeg"
+                      poster="/E-eye/E-eye-equip.jpeg"
                     >
                       <source src="/Videos/E-EYE-IRPL-Treatment.mp4" type="video/mp4" />
                       Seu navegador não suporta a tag de vídeo.
@@ -760,6 +803,40 @@ const OlhoSecoPage = () => {
                     </div>
                   </Link>
 
+                  {/* Podcast sobre IRPL */}
+                  <div className="bg-white rounded-xl border border-cyan-100 p-5 shadow-sm">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-sky-600 flex items-center justify-center">
+                        <Headphones className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-cyan-600 font-semibold uppercase tracking-wider">Podcast</p>
+                        <h4 className="font-bold text-slate-900 text-sm">Ouça sobre o IRPL E-Eye</h4>
+                      </div>
+                    </div>
+                    <iframe
+                      style={{ borderRadius: '12px' }}
+                      src="https://open.spotify.com/embed/episode/3y3EDK6kGHoXQgwm5W1kVp?utm_source=generator&t=0"
+                      width="100%"
+                      height="152"
+                      frameBorder="0"
+                      allowFullScreen
+                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                      loading="lazy"
+                      title="Podcast IRPL E-Eye para Olho Seco"
+                    />
+                    <div className="mt-3 flex items-center justify-between">
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-2 py-1 rounded-full bg-cyan-50 text-cyan-700 text-xs font-medium">IRPL</span>
+                        <span className="px-2 py-1 rounded-full bg-cyan-50 text-cyan-700 text-xs font-medium">E-Eye</span>
+                        <span className="px-2 py-1 rounded-full bg-cyan-50 text-cyan-700 text-xs font-medium">DGM</span>
+                      </div>
+                      <Link to="/podcast" className="text-xs text-cyan-600 hover:text-cyan-800 font-medium flex items-center gap-1">
+                        Mais episódios <ArrowRight className="w-3 h-3" />
+                      </Link>
+                    </div>
+                  </div>
+
                   {/* Simulador de Melhora IRPL */}
                   <div className="mt-6">
                     <Suspense fallback={<LoadingFallback />}>
@@ -834,7 +911,7 @@ const OlhoSecoPage = () => {
               </div>
             </div>
             <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8 lg:p-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-              <div className="space-y-3 max-w-3xl">
+              <div className="space-y-3 max-w-[60rem]">
                 <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Agende uma avaliação completa de olho seco em Caratinga</h2>
                 <p className="text-slate-700 leading-relaxed">
                   Diagnóstico objetivo e documentação fotográfica da DGM, com protocolos alinhados ao TFOS DEWS III e acompanhamento seriado da superfície ocular.
