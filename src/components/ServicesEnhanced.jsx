@@ -1,12 +1,83 @@
 import React, { useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Zap, Play, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 import MedicalCard from '@/components/ui/MedicalCard';
 import InteractiveCarousel from '@/components/ui/InteractiveCarousel';
 import WhatsAppCTA from '@/components/ui/WhatsAppCTA';
+
+const FeaturedService = ({ t }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+      className="mt-20 mb-16 relative"
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-3xl -rotate-1 opacity-10 blur-xl scale-105" />
+      <div className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100 relative z-10 flex flex-col lg:flex-row">
+        {/* Video Section */}
+        <div className="lg:w-1/2 relative bg-slate-900 min-h-[300px] lg:min-h-full flex items-center justify-center group overflow-hidden">
+          <video
+            className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-500"
+            src="/Videos/E-EYE-IRPL-Treatment.mp4"
+            muted
+            loop
+            playsInline
+            autoPlay
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80" />
+          
+          <div className="relative z-10 text-center p-8">
+            <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-4 border border-white/30 text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <Play className="w-8 h-8 fill-current ml-1" />
+            </div>
+            <span className="text-white font-medium tracking-wide uppercase text-sm">{t('services.featured_video_label', 'Assista ao Procedimento')}</span>
+          </div>
+        </div>
+
+        {/* Content Section */}
+        <div className="lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-bold uppercase tracking-wider w-fit mb-6 border border-amber-100">
+            <Zap className="w-3 h-3" />
+            {t('services.featured_badge', 'Tecnologia Exclusiva')}
+          </div>
+
+          <h3 className="text-3xl font-bold text-slate-900 mb-4">
+            {t('services.items.irplEEye.title')}
+          </h3>
+          
+          <p className="text-slate-600 text-lg mb-8 leading-relaxed">
+            {t('services.items.irplEEye.fullDescription')}
+          </p>
+
+          <div className="space-y-4 mb-10">
+            {[
+              t('services.irpl_benefit_1', 'Tratamento da causa raiz do olho seco (DGM)'),
+              t('services.irpl_benefit_2', 'Procedimento rápido, indolor e não invasivo'),
+              t('services.irpl_benefit_3', 'Efeito duradouro e melhora progressiva')
+            ].map((benefit, index) => (
+              <div key={index} className="flex items-start gap-3">
+                <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 shrink-0" />
+                <span className="text-slate-700 font-medium">{benefit}</span>
+              </div>
+            ))}
+          </div>
+
+          <Link to="/luz-pulsada-irpl">
+            <button className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 flex items-center justify-center gap-2 group">
+              {t('services.learn_more', 'Saiba Mais Sobre IRPL')}
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </Link>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 /**
  * Enhanced Services component using unified component interfaces
@@ -80,6 +151,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
       { id: 'cirurgias-oftalmologicas', title: t('services.items.surgeries.title'), description: t('services.items.surgeries.description'), category: 'Cirurgias' },
       { id: 'acompanhamento-pediatrico', title: t('services.items.pediatric.title'), description: t('services.items.pediatric.description'), category: 'Pediatria' },
       { id: 'laudos-especializados', title: t('services.items.reports.title'), description: t('services.items.reports.description'), category: 'Laudos' },
+      { id: 'irpl-e-eye', title: t('services.items.irplEEye.title'), description: t('services.items.irplEEye.description'), category: 'Tratamentos', featured: true },
       { id: 'gonioscopia', title: t('services.items.gonioscopy.title'), description: t('services.items.gonioscopy.description'), category: 'Exames' },
       { id: 'mapeamento-de-retina', title: t('services.items.retinaMapping.title'), description: t('services.items.retinaMapping.description'), category: 'Exames' },
       { id: 'topografia-corneana', title: t('services.items.cornealTopography.title'), description: t('services.items.cornealTopography.description'), category: 'Exames' },
@@ -104,13 +176,16 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
       [servicesWithIcons[i], servicesWithIcons[j]] = [servicesWithIcons[j], servicesWithIcons[i]];
     }
 
+    // Ensure IRPL is prominently placed if shuffling (optional: move it to front or let it shuffle)
+    // For now, let it shuffle as it's also featured below.
+
     return servicesWithIcons;
   }, [t, isTestEnv]);
 
   const renderServiceCard = (service, index) => {
     return (
       <Link
-        to={`/servicos/${service.id}`}
+        to={service.id === 'irpl-e-eye' ? '/luz-pulsada-irpl' : `/servicos/${service.id}`}
         className="block h-full"
         aria-label={`Ver detalhes sobre ${service.title}`}
       >
@@ -125,14 +200,14 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
           clickable
           hoverEffects="pronounced"
           cfmCompliant
-          className="service-card-3d service-card-enhanced service-glass-enhanced bg-white/60 backdrop-blur-lg transition-all duration-500 transform-gpu hover:-translate-y-2 hover:shadow-3d-hover cursor-pointer w-full h-full"
+          className={`service-card-3d service-card-enhanced service-glass-enhanced bg-white/60 backdrop-blur-lg transition-all duration-500 transform-gpu hover:-translate-y-2 hover:shadow-3d-hover cursor-pointer w-full h-full ${service.featured ? 'ring-2 ring-amber-300 shadow-amber-100' : ''}`}
           aria-label={`${service.title} - ${service.description}`}
           data-testid={service.testKey ? `service-card-${service.id}` : undefined}
           body={
             <div className="service-card-content-wrapper">
               {/* Seta no canto superior direito */}
               <motion.div
-                className="absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-500 text-white shadow-lg z-10"
+                className={`absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-full text-white shadow-lg z-10 ${service.featured ? 'bg-gradient-to-r from-amber-500 to-orange-500' : 'bg-gradient-to-r from-cyan-500 to-cyan-500'}`}
                 whileHover={{ scale: 1.2, rotate: 5 }}
                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
               >
@@ -142,7 +217,8 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
               {/* Categoria */}
               {service.category && (
                 <div className="service-category-badge">
-                  <div className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-100 to-blue-50 text-cyan-700 rounded-full text-xs font-semibold shadow-sm border border-cyan-200/50">
+                  <div className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm border ${service.featured ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-gradient-to-r from-blue-100 to-blue-50 text-cyan-700 border-cyan-200/50'}`}>
+                    {service.featured && <Zap className="w-3 h-3 mr-1 fill-current" />}
                     {service.category}
                   </div>
                 </div>
@@ -316,6 +392,9 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
             className="mt-8"
           />
         )}
+
+        {/* Featured Service Section - IRPL */}
+        <FeaturedService t={t} />
 
         {/* CTA Contextual - Após lista de serviços */}
         <motion.div
