@@ -125,7 +125,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
           clickable
           hoverEffects="pronounced"
           cfmCompliant
-          className="service-card-3d service-card-enhanced service-glass-enhanced bg-white/60 backdrop-blur-lg transition-all duration-500 transform-gpu hover:-translate-y-3 hover:shadow-3d-hover cursor-pointer w-full h-full"
+          className="service-card-3d service-card-enhanced service-glass-enhanced bg-white/60 backdrop-blur-lg transition-all duration-500 transform-gpu hover:-translate-y-2 hover:shadow-3d-hover cursor-pointer w-full h-full"
           aria-label={`${service.title} - ${service.description}`}
           data-testid={service.testKey ? `service-card-${service.id}` : undefined}
           body={
@@ -262,7 +262,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
 
         {/* Grid Layout - Layout responsivo padronizado */}
         {grid ? (
-          <div className="mt-8 services-grid-enhanced grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="mt-8 services-grid-enhanced grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
             {serviceItems.map((service, index) => (
               <div key={service.id} className="flex h-full">
                 {renderServiceCard(service, index)}
