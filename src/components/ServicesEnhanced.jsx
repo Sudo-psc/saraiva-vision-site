@@ -204,7 +204,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
           aria-label={`${service.title} - ${service.description}`}
           data-testid={service.testKey ? `service-card-${service.id}` : undefined}
           body={
-            <div className="service-card-content-wrapper">
+            <div className="service-card-content-wrapper flex flex-col h-full">
               {/* Seta no canto superior direito */}
               <motion.div
                 className={`absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-full text-white shadow-lg z-10 ${service.featured ? 'bg-gradient-to-r from-amber-500 to-orange-500' : 'bg-gradient-to-r from-cyan-500 to-cyan-500'}`}
@@ -216,7 +216,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
 
               {/* Categoria */}
               {service.category && (
-                <div className="service-category-badge">
+                <div className="service-category-badge mb-4">
                   <div className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm border ${service.featured ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-gradient-to-r from-blue-100 to-blue-50 text-cyan-700 border-cyan-200/50'}`}>
                     {service.featured && <Zap className="w-3 h-3 mr-1 fill-current" />}
                     {service.category}
@@ -226,13 +226,13 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
 
               {/* Ícone */}
               <motion.div
-                className="service-icon-container"
+                className="service-icon-container h-24 mb-6 flex items-center justify-center"
                 whileHover={{ scale: 1.05, rotate: 2 }}
               >
-                <div className="relative drop-shadow-lg select-none">
+                <div className="relative drop-shadow-lg select-none w-full h-full flex items-center justify-center">
                   {React.isValidElement(service.icon) ?
                     React.cloneElement(service.icon, {
-                      className: 'service-icon-image'
+                      className: 'service-icon-image max-h-full w-auto object-contain'
                     }) :
                     service.icon
                   }
@@ -240,9 +240,9 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
               </motion.div>
 
               {/* Conteúdo principal */}
-              <div className="flex-grow flex flex-col justify-center">
+              <div className="flex-grow flex flex-col justify-start">
                 <motion.h3
-                  className="service-text-enhanced"
+                  className="service-text-enhanced text-xl font-bold text-slate-900 mb-3 min-h-[3.5rem] flex items-end"
                   whileHover={{ scale: 1.02 }}
                 >
                   {service.title}
@@ -251,7 +251,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
                   )}
                 </motion.h3>
 
-                <p className="service-description-enhanced">
+                <p className="service-description-enhanced text-slate-600 text-sm leading-relaxed line-clamp-4">
                   {service.description}
                 </p>
               </div>
@@ -338,7 +338,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
 
         {/* Grid Layout - Layout responsivo padronizado */}
         {grid ? (
-          <div className="mt-8 services-grid-enhanced grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
+          <div className="mt-8 services-grid-enhanced grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {serviceItems.map((service, index) => (
               <div key={service.id} className="flex h-full">
                 {renderServiceCard(service, index)}
