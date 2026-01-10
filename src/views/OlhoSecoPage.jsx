@@ -220,6 +220,7 @@ const OlhoSecoPage = () => {
               </div>
             </div>
 
+            {/* Why Different Section */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-8 lg:p-10 space-y-8">
               <div className="flex items-center gap-3">
                 <ShieldCheck className="w-6 h-6 text-cyan-700" />
@@ -302,7 +303,7 @@ const OlhoSecoPage = () => {
               </div>
             </div>
 
-            {/* NEW SECTION: Anatomia do Filme Lacrimal */}
+            {/* SECTION: Anatomia do Filme Lacrimal */}
             <div className="bg-white rounded-2xl border border-slate-200 p-8 lg:p-10 space-y-10">
               <div className="max-w-[60rem]">
                 <div className="flex items-center gap-3 mb-4">
@@ -441,7 +442,7 @@ const OlhoSecoPage = () => {
               </div>
             </div>
 
-            {/* MODIFIED: Tratamento Escalonado (TFOS DEWS) - Moved to full width */}
+            {/* SECTION: Tratamento Escalonado (Full Width) */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-8 lg:p-10 space-y-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
@@ -539,6 +540,7 @@ const OlhoSecoPage = () => {
               </div>
             </div>
 
+            {/* SECTION: Diagnostic + Sidebar (Grid) */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-6">
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-6 h-full">
@@ -550,7 +552,7 @@ const OlhoSecoPage = () => {
                     No serviço especializado em olho seco em Caratinga, a avaliação integra superfície ocular, filme lacrimal, vias lacrimais e função meibomiana, com dados objetivos e rastreáveis. Os exames seguem a terminologia e os fluxos decisórios do TFOS DEWS III para correlacionar sintomas, sinais e biomarcadores.
                   </p>
                   
-                  {/* DIAGNOSTIC ITEMS GRID: Improved for better horizontal usage */}
+                  {/* DIAGNOSTIC ITEMS GRID */}
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     {diagnosticItems.map((item) => {
                       const Icon = item.icon;
@@ -568,9 +570,56 @@ const OlhoSecoPage = () => {
                     })}
                   </div>
                 </div>
+
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-6">
+                  <div className="flex items-center gap-3">
+                    <Droplets className="w-6 h-6 text-cyan-700" />
+                    <div>
+                      <h2 className="text-2xl font-bold text-slate-900">Meibografia e DGM</h2>
+                      <p className="text-sm text-slate-500">Meibografia em Caratinga com documentação seriada</p>
+                    </div>
+                  </div>
+                  <p className="text-slate-700 leading-relaxed">
+                    A Disfunção das Glândulas de Meibômio (DGM) é a principal causa de olho seco evaporativo. A{' '}
+                    <Link
+                      to="/meibografia"
+                      className="inline-flex items-center gap-2 font-semibold text-cyan-700 hover:text-cyan-800 transition-transform duration-200 hover:scale-105"
+                      aria-label="Clique para saber mais sobre o exame de meibografia"
+                      title="Clique para saber mais sobre o exame de meibografia"
+                    >
+                      <img
+                        src="/img/meibografia icon.png"
+                        alt="Clique para saber mais sobre o exame de meibografia"
+                        className="w-5 h-5 object-contain"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <span className="underline decoration-cyan-300 underline-offset-4">meibografia</span>
+                    </Link>
+                    {' '}permite visualizar, documentar e acompanhar a estrutura glandular ao longo do tempo, orientando decisões clínicas com base em imagens.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm text-slate-700">
+                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                      <CheckCircle className="w-4 h-4 text-cyan-600" />
+                      <span>Visualização detalhada das glândulas</span>
+                    </div>
+                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                      <CheckCircle className="w-4 h-4 text-cyan-600" />
+                      <span>Registro fotográfico e comparativo</span>
+                    </div>
+                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                      <CheckCircle className="w-4 h-4 text-cyan-600" />
+                      <span>Seguimento estruturado da DGM</span>
+                    </div>
+                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                      <CheckCircle className="w-4 h-4 text-cyan-600" />
+                      <span>Disponível exclusivamente neste serviço</span>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Sidebar moved content */}
+              {/* Sidebar */}
               <div className="space-y-6">
                 <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-6 shadow-xl space-y-5">
                   <div className="flex items-center gap-3">
@@ -636,334 +685,223 @@ const OlhoSecoPage = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-6">
-              <div className="flex items-center gap-3">
-                <Droplets className="w-6 h-6 text-cyan-700" />
-                <div>
-                  <h2 className="text-2xl font-bold text-slate-900">Meibografia e DGM</h2>
-                  <p className="text-sm text-slate-500">Meibografia em Caratinga com documentação seriada</p>
-                </div>
-              </div>
-              <p className="text-slate-700 leading-relaxed">
-                A Disfunção das Glândulas de Meibômio (DGM) é a principal causa de olho seco evaporativo. A{' '}
-                <Link
-                  to="/meibografia"
-                  className="inline-flex items-center gap-2 font-semibold text-cyan-700 hover:text-cyan-800 transition-transform duration-200 hover:scale-105"
-                  aria-label="Clique para saber mais sobre o exame de meibografia"
-                  title="Clique para saber mais sobre o exame de meibografia"
-                >
-                  <img
-                    src="/img/meibografia icon.png"
-                    alt="Clique para saber mais sobre o exame de meibografia"
-                    className="w-5 h-5 object-contain"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span className="underline decoration-cyan-300 underline-offset-4">meibografia</span>
-                </Link>
-                {' '}permite visualizar, documentar e acompanhar a estrutura glandular ao longo do tempo, orientando decisões clínicas com base em imagens.
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm text-slate-700">
-                <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                  <CheckCircle className="w-4 h-4 text-cyan-600" />
-                  <span>Visualização detalhada das glândulas</span>
-                </div>
-                <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                  <CheckCircle className="w-4 h-4 text-cyan-600" />
-                  <span>Registro fotográfico e comparativo</span>
-                </div>
-                <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                  <CheckCircle className="w-4 h-4 text-cyan-600" />
-                  <span>Seguimento estruturado da DGM</span>
-                </div>
-                <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
-                  <CheckCircle className="w-4 h-4 text-cyan-600" />
-                  <span>Disponível exclusivamente neste serviço</span>
-                </div>
-              </div>
-            </div>
-
-            {/* IRPL® - Reeducação Neurológica das Glândulas */}
+            {/* SECTION: IRPL (Full Width) */}
             <div className="bg-gradient-to-br from-cyan-50 via-white to-sky-50 rounded-2xl border border-cyan-200 shadow-soft-light p-6 space-y-6">
-                  {/* Badges de Pioneirismo */}
-                  <div className="flex flex-wrap gap-3">
-                    <div className="inline-flex items-center gap-2 rounded-full bg-cyan-100 text-cyan-700 px-4 py-2 text-sm font-semibold">
-                      <Award className="w-4 h-4" />
-                      <span>Pioneiros no Interior de MG</span>
-                    </div>
-                    <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 text-amber-700 px-4 py-2 text-sm font-semibold">
-                      <Star className="w-4 h-4" />
-                      <span>Padrão Ouro Mundial</span>
-                    </div>
-                    <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 text-emerald-700 px-4 py-2 text-sm font-semibold">
-                      <ShieldCheck className="w-4 h-4" />
-                      <span>Não Invasivo e Seguro</span>
-                    </div>
+              {/* Badges de Pioneirismo */}
+              <div className="flex flex-wrap gap-3">
+                <div className="inline-flex items-center gap-2 rounded-full bg-cyan-100 text-cyan-700 px-4 py-2 text-sm font-semibold">
+                  <Award className="w-4 h-4" />
+                  <span>Pioneiros no Interior de MG</span>
+                </div>
+                <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 text-amber-700 px-4 py-2 text-sm font-semibold">
+                  <Star className="w-4 h-4" />
+                  <span>Padrão Ouro Mundial</span>
+                </div>
+                <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 text-emerald-700 px-4 py-2 text-sm font-semibold">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Não Invasivo e Seguro</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-sky-600 flex items-center justify-center shadow-lg">
+                  <Zap className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-900">Como o IRPL® promove a reeducação neurológica das glândulas?</h2>
+                  <p className="text-sm text-cyan-600 font-medium">Tecnologia E-Eye Francesa • Intense Regulated Pulsed Light</p>
+                </div>
+              </div>
+
+              {/* Video Section for IRPL */}
+              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-cyan-100 bg-slate-900 aspect-video mb-6">
+                <video
+                  controls
+                  preload="metadata"
+                  playsInline
+                  className="w-full h-full object-cover"
+                  poster="/E-eye/E-eye-equip.jpeg"
+                >
+                  <source src="/Videos/E-EYE-IRPL-Treatment.mp4" type="video/mp4" />
+                  Seu navegador não suporta a tag de vídeo.
+                </video>
+                <div className="absolute top-4 left-4 bg-cyan-500/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
+                  Tecnologia E-Eye em Ação
+                </div>
+              </div>
+
+              {/* Destaque Exclusividade */}
+              <div className="bg-gradient-to-r from-cyan-600 to-sky-600 text-white rounded-xl p-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                    <MapPin className="w-6 h-6 text-white" />
                   </div>
-
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-sky-600 flex items-center justify-center shadow-lg">
-                      <Zap className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-slate-900">Como o IRPL® promove a reeducação neurológica das glândulas?</h2>
-                      <p className="text-sm text-cyan-600 font-medium">Tecnologia E-Eye Francesa • Intense Regulated Pulsed Light</p>
-                    </div>
-                  </div>
-
-                  {/* Video Section for IRPL */}
-                  <div className="relative rounded-2xl overflow-hidden shadow-xl border border-cyan-100 bg-slate-900 aspect-video mb-6">
-                    <video
-                      controls
-                      preload="metadata"
-                      playsInline
-                      className="w-full h-full object-cover"
-                      poster="/E-eye/E-eye-equip.jpeg"
-                    >
-                      <source src="/Videos/E-EYE-IRPL-Treatment.mp4" type="video/mp4" />
-                      Seu navegador não suporta a tag de vídeo.
-                    </video>
-                    <div className="absolute top-4 left-4 bg-cyan-500/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
-                      Tecnologia E-Eye em Ação
-                    </div>
-                  </div>
-
-                  {/* Destaque Exclusividade */}
-                  <div className="bg-gradient-to-r from-cyan-600 to-sky-600 text-white rounded-xl p-5">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                        <MapPin className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold mb-2">Exclusivo no Interior de Minas Gerais</h3>
-                        <p className="text-cyan-100 text-sm leading-relaxed">
-                          Somos <strong className="text-white">pioneiros no uso do IRPL®</strong> para tratamento de olho seco na região,
-                          utilizando o equipamento <strong className="text-white">E-Eye de origem francesa</strong> — considerado
-                          <strong className="text-white"> padrão ouro mundial</strong> para tratamento da Disfunção das Glândulas de Meibômio.
-                          Procedimento não invasivo, seguro e com resultados duradouros.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-slate-700 leading-relaxed">
-                    A tecnologia <strong className="text-cyan-700">IRPL® (Intense Regulated Pulsed Light)</strong>, utilizada em dispositivos como o E-Eye, promove a <strong>reeducação neurológica</strong> das glândulas de Meibômio através de um estímulo direto no sistema nervoso autônomo que controla a secreção glandular.
-                  </p>
-
-                  <p className="text-slate-700 leading-relaxed">
-                    Diferente da luz pulsada (IPL) convencional, que atua principalmente por mecanismos térmicos e vasculares superficiais, o IRPL® foi especificamente projetado para atingir as <strong>vias neurais</strong> que regulam a Unidade Funcional Lacrimal.
-                  </p>
-
-                  {/* Mecanismo de Ação */}
-                  <div className="bg-white rounded-xl border border-cyan-100 p-5 space-y-4">
-                    <div className="flex items-center gap-2">
-                      <Brain className="w-5 h-5 text-cyan-600" />
-                      <h3 className="text-lg font-bold text-slate-900">O Mecanismo de Ação Neurológica</h3>
-                    </div>
-                    <p className="text-slate-700 text-sm leading-relaxed">
-                      A reeducação neurológica ocorre por meio dos seguintes processos fundamentais:
+                  <div>
+                    <h3 className="text-lg font-bold mb-2">Exclusivo no Interior de Minas Gerais</h3>
+                    <p className="text-cyan-100 text-sm leading-relaxed">
+                      Somos <strong className="text-white">pioneiros no uso do IRPL®</strong> para tratamento de olho seco na região,
+                      utilizando o equipamento <strong className="text-white">E-Eye de origem francesa</strong> — considerado
+                      <strong className="text-white"> padrão ouro mundial</strong> para tratamento da Disfunção das Glândulas de Meibômio.
+                      Procedimento não invasivo, seguro e com resultados duradouros.
                     </p>
-                    <div className="space-y-3">
-                      <div className="flex gap-3 bg-cyan-50/50 p-4 rounded-lg border border-cyan-100">
-                        <div className="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold text-sm shrink-0">1</div>
-                        <div>
-                          <h4 className="font-semibold text-slate-900 mb-1">Alvo Anatômico Estratégico</h4>
-                          <p className="text-sm text-slate-700">Os disparos de luz são aplicados nas <strong>regiões infraorbital e zigomática</strong> da face. Essas áreas são pontos de passagem de ramos do <strong>nervo parassimpático</strong>, que é o principal responsável por enviar ordens de secreção para as glândulas lacrimais e meibomianas.</p>
-                        </div>
-                      </div>
-                      <div className="flex gap-3 bg-cyan-50/50 p-4 rounded-lg border border-cyan-100">
-                        <div className="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold text-sm shrink-0">2</div>
-                        <div>
-                          <h4 className="font-semibold text-slate-900 mb-1">Microgradiente de Temperatura</h4>
-                          <p className="text-sm text-slate-700">A tecnologia IRPL® utiliza sequências de <strong>pulsos de luz perfeitamente calibrados e "esculturados"</strong> (trens de pulsos). Um único disparo é composto por sub-pulsos com comprimentos de onda variados: alguns penetram até 4 mm na derme, enquanto outros (na faixa de 1200 nm) atingem níveis mais profundos, superiores a <strong>5 mm</strong>. Essa combinação cria um <strong>microgradiente de temperatura</strong> que atua sobre o tecido nervoso.</p>
-                        </div>
-                      </div>
-                      <div className="flex gap-3 bg-cyan-50/50 p-4 rounded-lg border border-cyan-100">
-                        <div className="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold text-sm shrink-0">3</div>
-                        <div>
-                          <h4 className="font-semibold text-slate-900 mb-1">Liberação de Neurotransmissores</h4>
-                          <p className="text-sm text-slate-700">Esse gradiente térmico controlado estimula o <strong>neurônio pós-ganglionar</strong>, que está conectado aos gânglios parassimpáticos. Esse estímulo provoca a <strong>liberação de neurotransmissores</strong> específicos que interagem diretamente com as glândulas de Meibômio, "ordenando" que elas retomem sua atividade normal de secreção.</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Restauração da Função */}
-                  <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-200 p-5 space-y-3">
-                    <div className="flex items-center gap-2">
-                      <Activity className="w-5 h-5 text-emerald-600" />
-                      <h3 className="text-lg font-bold text-slate-900">Restauração da Função Glandular e Efeito Duradouro</h3>
-                    </div>
-                    <p className="text-slate-700 text-sm leading-relaxed">
-                      Ao reativar a comunicação neurológica, o tratamento não apenas derrete o meibum (gordura) obstruído pelo calor, mas <strong className="text-emerald-700">restabelece o fluxo natural de lipídios</strong> e proteínas para o filme lacrimal.
-                    </p>
-                    <p className="text-slate-700 text-sm leading-relaxed">
-                      Esse processo de "reeducação" justifica o porquê de o efeito ser <strong>cumulativo e de longa duração</strong>. Enquanto tratamentos puramente térmicos podem oferecer alívio por apenas algumas semanas, a estimulação neurológica do IRPL® visa a <strong className="text-emerald-700">restauração funcional sustentada</strong>, com benefícios que podem durar de <strong>6 meses a 3 anos</strong> após o ciclo inicial de tratamento (geralmente composto por 3 a 4 sessões).
-                    </p>
-                    <div className="flex flex-wrap gap-3 pt-2">
-                      <div className="flex items-center gap-2 bg-white border border-emerald-200 rounded-full px-4 py-2 text-sm">
-                        <Timer className="w-4 h-4 text-emerald-600" />
-                        <span className="font-medium text-slate-700">3-4 sessões iniciais</span>
-                      </div>
-                      <div className="flex items-center gap-2 bg-white border border-emerald-200 rounded-full px-4 py-2 text-sm">
-                        <Sparkles className="w-4 h-4 text-emerald-600" />
-                        <span className="font-medium text-slate-700">Duração: 6 meses a 3 anos</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Conclusão */}
-                  <div className="bg-slate-900 text-white rounded-xl p-5 space-y-3">
-                    <p className="text-slate-100 leading-relaxed">
-                      Em suma, o IRPL® não apenas limpa os "canos" (ductos) das glândulas, mas <strong className="text-sky-300">reativa o "interruptor" (nervo)</strong> que faz a fábrica glandular funcionar de forma autônoma e eficiente novamente.
-                    </p>
-                  </div>
-
-                  {/* Analogia */}
-                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
-                    <div className="flex gap-3">
-                      <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
-                        <span className="text-lg">💡</span>
-                      </div>
-                      <div>
-                        <p className="text-sm text-amber-900 leading-relaxed italic">
-                          <strong>Analogia:</strong> A reeducação neurológica pelo IRPL® é como restabelecer a energia elétrica e os comandos de um computador que estava travado: não basta apenas limpar o teclado (higiene) ou esquentar o processador (calor); é necessário enviar o sinal correto para que o sistema volte a processar as informações e funcionar por conta própria.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* CTA para página dedicada IRPL */}
-                  <Link
-                    to="/luz-pulsada-irpl"
-                    className="group block bg-gradient-to-r from-cyan-600 via-sky-600 to-blue-600 hover:from-cyan-700 hover:via-sky-700 hover:to-blue-700 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <Zap className="w-5 h-5 text-amber-300" />
-                          <span className="text-sm font-semibold text-cyan-200 uppercase tracking-wide">Tecnologia Exclusiva</span>
-                        </div>
-                        <h3 className="text-xl font-bold">Conheça o Tratamento IRPL® E-Eye</h3>
-                        <p className="text-sky-100 text-sm">
-                          Saiba mais sobre o tratamento revolucionário de luz pulsada para olho seco. Pioneiros no interior de Minas Gerais.
-                        </p>
-                      </div>
-                      <div className="ml-4 shrink-0">
-                        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
-                          <ArrowRight className="w-6 h-6 text-white group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-
-                  {/* Podcast sobre IRPL */}
-                  <div className="bg-white rounded-xl border border-cyan-100 p-5 shadow-sm">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-sky-600 flex items-center justify-center">
-                        <Headphones className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-cyan-600 font-semibold uppercase tracking-wider">Podcast</p>
-                        <h4 className="font-bold text-slate-900 text-sm">Ouça sobre o IRPL E-Eye</h4>
-                      </div>
-                    </div>
-                    <iframe
-                      style={{ borderRadius: '12px' }}
-                      src="https://open.spotify.com/embed/episode/3y3EDK6kGHoXQgwm5W1kVp?utm_source=generator&t=0"
-                      width="100%"
-                      height="152"
-                      frameBorder="0"
-                      allowFullScreen
-                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                      loading="lazy"
-                      title="Podcast IRPL E-Eye para Olho Seco"
-                    />
-                    <div className="mt-3 flex items-center justify-between">
-                      <div className="flex flex-wrap gap-2">
-                        <span className="px-2 py-1 rounded-full bg-cyan-50 text-cyan-700 text-xs font-medium">IRPL</span>
-                        <span className="px-2 py-1 rounded-full bg-cyan-50 text-cyan-700 text-xs font-medium">E-Eye</span>
-                        <span className="px-2 py-1 rounded-full bg-cyan-50 text-cyan-700 text-xs font-medium">DGM</span>
-                      </div>
-                      <Link to="/podcast" className="text-xs text-cyan-600 hover:text-cyan-800 font-medium flex items-center gap-1">
-                        Mais episódios <ArrowRight className="w-3 h-3" />
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Simulador de Melhora IRPL */}
-                  <div className="mt-6">
-                    <Suspense fallback={<LoadingFallback />}>
-                      <IRPLProgressSimulator />
-                    </Suspense>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-6">
-                <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-6 shadow-xl space-y-5">
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 border border-white/10">
-                      <img
-                        src="/icons_social/Badge_TFOS_DEWSIII.png"
-                        alt="Diretrizes TFOS DEWS III 2025"
-                        className="w-9 h-9 object-contain"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </div>
+              <p className="text-slate-700 leading-relaxed">
+                A tecnologia <strong className="text-cyan-700">IRPL® (Intense Regulated Pulsed Light)</strong>, utilizada em dispositivos como o E-Eye, promove a <strong>reeducação neurológica</strong> das glândulas de Meibômio através de um estímulo direto no sistema nervoso autônomo que controla a secreção glandular.
+              </p>
+
+              <p className="text-slate-700 leading-relaxed">
+                Diferente da luz pulsada (IPL) convencional, que atua principalmente por mecanismos térmicos e vasculares superficiais, o IRPL® foi especificamente projetado para atingir as <strong>vias neurais</strong> que regulam a Unidade Funcional Lacrimal.
+              </p>
+
+              {/* Mecanismo de Ação */}
+              <div className="bg-white rounded-xl border border-cyan-100 p-5 space-y-4">
+                <div className="flex items-center gap-2">
+                  <Brain className="w-5 h-5 text-cyan-600" />
+                  <h3 className="text-lg font-bold text-slate-900">O Mecanismo de Ação Neurológica</h3>
+                </div>
+                <p className="text-slate-700 text-sm leading-relaxed">
+                  A reeducação neurológica ocorre por meio dos seguintes processos fundamentais:
+                </p>
+                <div className="space-y-3">
+                  <div className="flex gap-3 bg-cyan-50/50 p-4 rounded-lg border border-cyan-100">
+                    <div className="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold text-sm shrink-0">1</div>
                     <div>
-                      <p className="text-sm text-emerald-200 font-semibold">Autoridade científica</p>
-                      <p className="text-xl font-bold">TFOS DEWS III (2025)</p>
+                      <h4 className="font-semibold text-slate-900 mb-1">Alvo Anatômico Estratégico</h4>
+                      <p className="text-sm text-slate-700">Os disparos de luz são aplicados nas <strong>regiões infraorbital e zigomática</strong> da face. Essas áreas são pontos de passagem de ramos do <strong>nervo parassimpático</strong>, que é o principal responsável por enviar ordens de secreção para as glândulas lacrimais e meibomianas.</p>
                     </div>
                   </div>
-                  <p className="text-sm text-slate-100 leading-relaxed">
-                    O TFOS DEWS III é o consenso internacional que define critérios diagnósticos e classificação clínica da Doença do Olho Seco. Ele orienta a interpretação conjunta de sintomas, sinais e testes objetivos.
-                  </p>
-                  <ul className="space-y-2 text-sm leading-relaxed">
-                    <li className="flex gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-300 mt-1" />
-                      <span>Mais precisão diagnóstica ao integrar superfície ocular, filme lacrimal e função meibomiana.</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-300 mt-1" />
-                      <span>Documentação fotográfica e parâmetros mensuráveis para seguimento rastreável.</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-300 mt-1" />
-                      <span>Padronização clínica reconhecida mundialmente para olho seco.</span>
-                    </li>
-                  </ul>
-                  <div className="space-y-2">
-                    <Button
-                      onClick={() => navigate('/agendamento')}
-                      className="w-full bg-emerald-400 hover:bg-emerald-300 text-slate-900 font-semibold"
-                    >
-                      Agendar avaliação completa de Olho Seco
-                    </Button>
-                    <p className="text-xs text-slate-200">
-                      Diagnóstico objetivo e documentação fotográfica em todas as etapas.
+                  <div className="flex gap-3 bg-cyan-50/50 p-4 rounded-lg border border-cyan-100">
+                    <div className="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold text-sm shrink-0">2</div>
+                    <div>
+                      <h4 className="font-semibold text-slate-900 mb-1">Microgradiente de Temperatura</h4>
+                      <p className="text-sm text-slate-700">A tecnologia IRPL® utiliza sequências de <strong>pulsos de luz perfeitamente calibrados e "esculturados"</strong> (trens de pulsos). Um único disparo é composto por sub-pulsos com comprimentos de onda variados: alguns penetram até 4 mm na derme, enquanto outros (na faixa de 1200 nm) atingem níveis mais profundos, superiores a <strong>5 mm</strong>. Essa combinação cria um <strong>microgradiente de temperatura</strong> que atua sobre o tecido nervoso.</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3 bg-cyan-50/50 p-4 rounded-lg border border-cyan-100">
+                    <div className="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold text-sm shrink-0">3</div>
+                    <div>
+                      <h4 className="font-semibold text-slate-900 mb-1">Liberação de Neurotransmissores</h4>
+                      <p className="text-sm text-slate-700">Esse gradiente térmico controlado estimula o <strong>neurônio pós-ganglionar</strong>, que está conectado aos gânglios parassimpáticos. Esse estímulo provoca a <strong>liberação de neurotransmissores</strong> específicos que interagem diretamente com as glândulas de Meibômio, "ordenando" que elas retomem sua atividade normal de secreção.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Restauração da Função */}
+              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-200 p-5 space-y-3">
+                <div className="flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-emerald-600" />
+                  <h3 className="text-lg font-bold text-slate-900">Restauração da Função Glandular e Efeito Duradouro</h3>
+                </div>
+                <p className="text-slate-700 text-sm leading-relaxed">
+                  Ao reativar a comunicação neurológica, o tratamento não apenas derrete o meibum (gordura) obstruído pelo calor, mas <strong className="text-emerald-700">restabelece o fluxo natural de lipídios</strong> e proteínas para o filme lacrimal.
+                </p>
+                <p className="text-slate-700 text-sm leading-relaxed">
+                  Esse processo de "reeducação" justifica o porquê de o efeito ser <strong>cumulativo e de longa duração</strong>. Enquanto tratamentos puramente térmicos podem oferecer alívio por apenas algumas semanas, a estimulação neurológica do IRPL® visa a <strong className="text-emerald-700">restauração funcional sustentada</strong>, com benefícios que podem durar de <strong>6 meses a 3 anos</strong> após o ciclo inicial de tratamento (geralmente composto por 3 a 4 sessões).
+                </p>
+                <div className="flex flex-wrap gap-3 pt-2">
+                  <div className="flex items-center gap-2 bg-white border border-emerald-200 rounded-full px-4 py-2 text-sm">
+                    <Timer className="w-4 h-4 text-emerald-600" />
+                    <span className="font-medium text-slate-700">3-4 sessões iniciais</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-white border border-emerald-200 rounded-full px-4 py-2 text-sm">
+                    <Sparkles className="w-4 h-4 text-emerald-600" />
+                    <span className="font-medium text-slate-700">Duração: 6 meses a 3 anos</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Conclusão */}
+              <div className="bg-slate-900 text-white rounded-xl p-5 space-y-3">
+                <p className="text-slate-100 leading-relaxed">
+                  Em suma, o IRPL® não apenas limpa os "canos" (ductos) das glândulas, mas <strong className="text-sky-300">reativa o "interruptor" (nervo)</strong> que faz a fábrica glandular funcionar de forma autônoma e eficiente novamente.
+                </p>
+              </div>
+
+              {/* Analogia */}
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+                <div className="flex gap-3">
+                  <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
+                    <span className="text-lg">💡</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-amber-900 leading-relaxed italic">
+                      <strong>Analogia:</strong> A reeducação neurológica pelo IRPL® é como restabelecer a energia elétrica e os comandos de um computador que estava travado: não basta apenas limpar o teclado (higiene) ou esquentar o processador (calor); é necessário enviar o sinal correto para que o sistema volte a processar as informações e funcionar por conta própria.
                     </p>
                   </div>
                 </div>
+              </div>
 
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Leaf className="w-5 h-5 text-cyan-700" />
-                    <h3 className="text-xl font-bold text-slate-900">Cuidados contínuos</h3>
+              {/* CTA para página dedicada IRPL */}
+              <Link
+                to="/luz-pulsada-irpl"
+                className="group block bg-gradient-to-r from-cyan-600 via-sky-600 to-blue-600 hover:from-cyan-700 hover:via-sky-700 hover:to-blue-700 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Zap className="w-5 h-5 text-amber-300" />
+                      <span className="text-sm font-semibold text-cyan-200 uppercase tracking-wide">Tecnologia Exclusiva</span>
+                    </div>
+                    <h3 className="text-xl font-bold">Conheça o Tratamento IRPL® E-Eye</h3>
+                    <p className="text-sky-100 text-sm">
+                      Saiba mais sobre o tratamento revolucionário de luz pulsada para olho seco. Pioneiros no interior de Minas Gerais.
+                    </p>
                   </div>
-                  <p className="text-slate-700 text-sm leading-relaxed">
-                    Seguimento programado com reavaliação de sintomas, estabilidade do filme lacrimal e ajuste terapêutico progressivo para manter a superfície ocular protegida.
-                  </p>
-                  <div className="grid grid-cols-2 gap-3 text-sm text-slate-800">
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">Higiene palpebral guiada</div>
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">Lubrificação personalizada</div>
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">Treino ambiental e digital</div>
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">Reforço nutricional</div>
+                  <div className="ml-4 shrink-0">
+                    <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                      <ArrowRight className="w-6 h-6 text-white group-hover:translate-x-1 transition-transform" />
+                    </div>
                   </div>
                 </div>
+              </Link>
+
+              {/* Podcast sobre IRPL */}
+              <div className="bg-white rounded-xl border border-cyan-100 p-5 shadow-sm">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-sky-600 flex items-center justify-center">
+                    <Headphones className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-cyan-600 font-semibold uppercase tracking-wider">Podcast</p>
+                    <h4 className="font-bold text-slate-900 text-sm">Ouça sobre o IRPL E-Eye</h4>
+                  </div>
+                </div>
+                <iframe
+                  style={{ borderRadius: '12px' }}
+                  src="https://open.spotify.com/embed/episode/3y3EDK6kGHoXQgwm5W1kVp?utm_source=generator&t=0"
+                  width="100%"
+                  height="152"
+                  frameBorder="0"
+                  allowFullScreen
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  title="Podcast IRPL E-Eye para Olho Seco"
+                />
+                <div className="mt-3 flex items-center justify-between">
+                  <div className="flex flex-wrap gap-2">
+                    <span className="px-2 py-1 rounded-full bg-cyan-50 text-cyan-700 text-xs font-medium">IRPL</span>
+                    <span className="px-2 py-1 rounded-full bg-cyan-50 text-cyan-700 text-xs font-medium">E-Eye</span>
+                    <span className="px-2 py-1 rounded-full bg-cyan-50 text-cyan-700 text-xs font-medium">DGM</span>
+                  </div>
+                  <Link to="/podcast" className="text-xs text-cyan-600 hover:text-cyan-800 font-medium flex items-center gap-1">
+                    Mais episódios <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Simulador de Melhora IRPL */}
+              <div className="mt-6">
+                <Suspense fallback={<LoadingFallback />}>
+                  <IRPLProgressSimulator />
+                </Suspense>
               </div>
             </div>
+
+            {/* Bottom CTA */}
             <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8 lg:p-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
               <div className="space-y-3 max-w-[60rem]">
                 <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Agende uma avaliação completa de olho seco em Caratinga</h2>
