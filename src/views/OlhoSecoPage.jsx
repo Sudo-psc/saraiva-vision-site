@@ -543,7 +543,7 @@ const OlhoSecoPage = () => {
             {/* SECTION: Diagnostic + Sidebar (Grid) */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 space-y-6">
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-6 h-full">
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-soft-light p-6 space-y-6">
                   <div className="flex items-center gap-3">
                     <Microscope className="w-6 h-6 text-cyan-700" />
                     <h2 className="text-2xl font-bold text-slate-900">Diagnóstico completo em um único local</h2>
