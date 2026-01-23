@@ -13,10 +13,23 @@ import deferScriptsPlugin from './vite-plugin-defer-scripts.js'
 // Enable workbox plugin with VPS environment check
 const plugins = [
   react({
-    // Use automatic JSX runtime - production mode handled by Vite
+    // Use automatic JSX runtime with production mode enforced
     jsxRuntime: 'automatic',
+    // Disable jsxDEV in production builds - critical fix for production
+    jsxImportSource: 'react',
+    // Only use fast refresh in development
+    fastRefresh: process.env.NODE_ENV !== 'production',
     // Include refresh for development only
-    include: '**/*.{jsx,tsx}'
+    include: '**/*.{jsx,tsx}',
+    // Babel configuration to ensure production JSX transform
+    babel: {
+      plugins: process.env.NODE_ENV === 'production' ? [
+        ['@babel/plugin-transform-react-jsx', {
+          runtime: 'automatic',
+          development: false
+        }]
+      ] : []
+    }
   }),
   // Async CSS loading - eliminates render-blocking stylesheets
   asyncCssPlugin(),
@@ -77,7 +90,7 @@ export default defineConfig(({ mode }) => {
     base: '/', // Ensure proper base path for VPS deployment
     define: {
       // Fallback for legacy process.env usage in libraries
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
+      'process.env.NODE_ENV': JSON.stringify(mode)
     },
     esbuild: {
       charset: 'utf8',

@@ -12,9 +12,19 @@ body {
 }
 
 /* PERMISSÃO DE SCROLL NATIVO: Remove bloqueios desnecessários */
-* {
+/* EXCEÇÃO: Não aplicar a iframes e containers de iframe para evitar conflitos */
+*:not(iframe):not(.ninsaude-iframe):not(.ninsaude-iframe-container):not(.ninsaude-iframe-container *) {
 	/* Permitir scroll-behavior nativo */
 	scroll-behavior: smooth;
+}
+
+/* EXCEÇÃO CRÍTICA: Ninsaude iframe isolation */
+.ninsaude-iframe-container,
+.ninsaude-iframe-container *,
+.ninsaude-iframe,
+iframe[src*="ninsaude"] {
+	scroll-behavior: auto !important;
+	overscroll-behavior: auto !important;
 }
 
 /* CONTAINERS: Apenas overflow-x bloqueado */

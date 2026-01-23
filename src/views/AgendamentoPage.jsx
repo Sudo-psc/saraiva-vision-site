@@ -1,10 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { SafeHelmet } from '@/components/SafeHelmet';
 import EnhancedFooter from '../components/EnhancedFooter';
 
+const NINSAUDE_URL = 'https://apolo.ninsaude.com/a/saraivavision/';
+
 const AgendamentoPage = () => {
+  const iframeRef = useRef(null);
+  const [iframeKey] = useState(() => Date.now()); // Stable key prevents re-renders
+
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  // Prevent parent scroll interference when iframe is focused
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+
+    const handleIframeFocus = () => {
+      // Temporarily disable smooth scroll on body when iframe is active
+      document.body.style.scrollBehavior = 'auto';
+    };
+
+    const handleIframeBlur = () => {
+      // Re-enable smooth scroll when iframe loses focus
+      document.body.style.scrollBehavior = 'smooth';
+    };
+
+    iframe.addEventListener('mouseenter', handleIframeFocus);
+    iframe.addEventListener('mouseleave', handleIframeBlur);
+    iframe.addEventListener('touchstart', handleIframeFocus, { passive: true });
+
+    return () => {
+      iframe.removeEventListener('mouseenter', handleIframeFocus);
+      iframe.removeEventListener('mouseleave', handleIframeBlur);
+      iframe.removeEventListener('touchstart', handleIframeFocus);
+      document.body.style.scrollBehavior = 'smooth';
+    };
   }, []);
 
   return (
@@ -36,13 +68,15 @@ const AgendamentoPage = () => {
                 </p>
               </div>
 
-              {/* Iframe Container - Mobile First with Responsive Heights */}
-              <div className="relative mb-4 sm:mb-6 md:mb-8 z-10">
+              {/* Iframe Container - Isolated from parent scroll system */}
+              <div className="relative mb-4 sm:mb-6 md:mb-8 z-10 ninsaude-iframe-container">
                 <div className="bg-white rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl overflow-hidden">
                   <iframe
-                    src="https://apolo.ninsaude.com/a/saraivavision/"
+                    ref={iframeRef}
+                    key={iframeKey}
+                    src={NINSAUDE_URL}
                     title="Sistema de Agendamento Online - Saraiva Vision"
-                    className="w-full border-0"
+                    className="w-full border-0 ninsaude-iframe"
                     style={{
                       // Mobile: 70vh, Tablet: 80vh, Desktop: 86vh
                       height: 'clamp(500px, 70vh, 1035px)',
@@ -51,7 +85,8 @@ const AgendamentoPage = () => {
                     }}
                     allowFullScreen
                     loading="eager"
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation allow-top-navigation-by-user-activation"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allow="payment *; geolocation *; camera *; microphone *; clipboard-write *; clipboard-read *; fullscreen *"
                   />
                 </div>
               </div>

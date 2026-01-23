@@ -7,20 +7,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== FONT DISPLAY OPTIMIZATION - Prevent FOIT (Flash of Invisible Text) ===== */
-/* Ensure fonts render with fallback immediately, swap when loaded */
-@layer base {
-  /* Google Fonts with font-display: swap */
-  @font-face {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 100 900;
-    font-display: swap;
-    src: local('Inter'), url('https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfMZg.woff2') format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-  }
-}
-
 /* ===== CLS PREVENTION - Image and Container Aspect Ratios ===== */
 @layer utilities {
   /* Common image aspect ratios to prevent layout shift */
@@ -1955,6 +1941,74 @@ html {
   word-break: break-word;
   overflow-wrap: anywhere;
   white-space: normal;
+}
+
+/* ===== NINSAUDE IFRAME ISOLATION - Prevents scroll conflicts ===== */
+/* Critical fix: Isolates Ninsaude scheduling iframe from global scroll rules */
+
+.ninsaude-iframe-container {
+  /* Create isolated stacking context */
+  isolation: isolate;
+  contain: layout style;
+
+  /* Remove all scroll behavior inheritance */
+  scroll-behavior: auto !important;
+  overscroll-behavior: auto !important;
+  -webkit-overflow-scrolling: auto !important;
+
+  /* Ensure touch events pass through correctly */
+  touch-action: auto !important;
+  -ms-touch-action: auto !important;
+}
+
+.ninsaude-iframe {
+  /* Complete isolation from parent scroll system */
+  scroll-behavior: auto !important;
+  overscroll-behavior: auto !important;
+  -webkit-overflow-scrolling: auto !important;
+
+  /* Ensure iframe has full control */
+  touch-action: auto !important;
+  -ms-touch-action: auto !important;
+  pointer-events: auto !important;
+
+  /* Prevent any CSS transforms that might interfere */
+  transform: none !important;
+  will-change: auto !important;
+
+  /* Block transition interference */
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Prevent global smooth scroll from capturing iframe interactions */
+.ninsaude-iframe-container,
+.ninsaude-iframe-container *:not(iframe) {
+  scroll-behavior: auto !important;
+}
+
+/* Mobile-specific fixes for iframe touch handling */
+@media (hover: none) and (pointer: coarse) {
+  .ninsaude-iframe {
+    /* Ensure touch events work properly on mobile */
+    touch-action: auto !important;
+    -webkit-touch-callout: default !important;
+    -webkit-user-select: auto !important;
+  }
+
+  .ninsaude-iframe-container {
+    /* Disable any snap behavior that could interfere */
+    scroll-snap-type: none !important;
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .ninsaude-iframe {
+    /* Fix for iOS iframe scrolling issues */
+    -webkit-overflow-scrolling: touch !important;
+    overflow: auto !important;
+  }
 }
 
 /* ===== CORREÇÃO COMPLETA DA MOLDURA CINZA DO FOOTER ===== */
