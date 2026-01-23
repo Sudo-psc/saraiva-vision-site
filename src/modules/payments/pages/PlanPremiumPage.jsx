@@ -37,7 +37,7 @@ const PlanPremiumPage = () => {
     description: 'Experiência VIP com as melhores lentes e atendimento personalizado exclusivo para você e sua família.',
     keywords: 'plano premium lentes, lentes VIP, assinatura lentes premium',
     canonicalUrl: 'https://saraivavision.com.br/planopremium',
-    ogImage: 'https://saraivavision.com.br/og-image.jpg'
+    ogImage: 'https://saraivavision.com.br/opengraph-logo.png'
   };
 
   const features = [

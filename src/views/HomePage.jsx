@@ -1,36 +1,96 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import SEOHead from '../components/SEOHead';
-import SchemaMarkup from '../components/SchemaMarkup';
-import { useHomeSEO } from '../hooks/useSEO';
-import { initScrollSystem, scrollToHash, cleanupScrollSystem } from '../utils/scrollUtils';
-import { trackPageView } from '../utils/analytics';
+import SEOHead from '@/components/SEOHead';
+import SchemaMarkup from '@/components/SchemaMarkup';
+import { useHomeSEO } from '@/hooks/useSEO';
+import { initScrollSystem, scrollToHash, cleanupScrollSystem } from '@/utils/scrollUtils';
+import createLazyComponent from '@/utils/lazyLoading.jsx';
+import DeferredSection from '@/components/DeferredSection';
 
-import Hero from '../components/Hero';
-import Services from '../components/Services';
-import About from '../components/About';
-import Contact from '../components/Contact';
-import EnhancedFooter from '../components/EnhancedFooter';
-import GoogleReviewsEnhanced from '../components/GoogleReviewsEnhanced';
-import TrustBanner from '../components/TrustBanner';
-import GoogleLocalSection from '../components/GoogleLocalSection';
-import FAQ from '../components/FAQ';
-import LatestEpisodes from '../components/LatestEpisodes';
-import LatestBlogPosts from '../components/LatestBlogPosts';
+import Hero from '@/components/Hero';
+const Services = createLazyComponent(() => import('@/components/Services'));
+const About = createLazyComponent(() => import('@/components/About'));
+const TrustBanner = React.lazy(() => import('@/components/TrustBanner'));
+
+const DryEyeCenterSection = createLazyComponent(() => import('@/components/DryEyeCenterSection'));
+const GoogleReviewsEnhanced = createLazyComponent(() => import('@/components/GoogleReviewsEnhanced'));
+const GoogleLocalSection = createLazyComponent(() => import('@/components/GoogleLocalSection'));
+const FAQ = createLazyComponent(() => import('@/components/FAQ'));
+const LatestEpisodes = createLazyComponent(() => import('@/components/LatestEpisodes'));
+const LatestBlogPosts = createLazyComponent(() => import('@/components/LatestBlogPosts'));
+const Contact = createLazyComponent(() => import('@/components/Contact'));
+const EnhancedFooter = createLazyComponent(() => import('@/components/EnhancedFooter'));
 
 function HomePage() {
   const location = useLocation();
   const seoData = useHomeSEO();
   const isInitialized = useRef(false);
+  const [showTrustBanner, setShowTrustBanner] = useState(false);
 
   // Analytics tracking - runs only when pathname changes
   useEffect(() => {
-    try {
-      trackPageView(location.pathname);
-    } catch (error) {
-      console.warn('Failed to track page view:', error);
+    let cancelled = false;
+    let idleId;
+    let timeoutId;
+
+    const run = () => {
+      import('@/utils/analytics')
+        .then(({ trackPageView }) => {
+          if (!cancelled) {
+            trackPageView(location.pathname);
+          }
+        })
+        .catch(() => {});
+    };
+
+    if (typeof window !== 'undefined') {
+      if ('requestIdleCallback' in window) {
+        idleId = window.requestIdleCallback(run, { timeout: 2000 });
+      } else {
+        timeoutId = window.setTimeout(run, 2000);
+      }
+    } else {
+      run();
     }
+
+    return () => {
+      cancelled = true;
+      if (idleId && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [location.pathname]);
+
+  useEffect(() => {
+    let idleId;
+    let timeoutId;
+
+    const run = () => {
+      setShowTrustBanner(true);
+    };
+
+    if (typeof window !== 'undefined') {
+      if ('requestIdleCallback' in window) {
+        idleId = window.requestIdleCallback(run, { timeout: 2000 });
+      } else {
+        timeoutId = window.setTimeout(run, 2000);
+      }
+    } else {
+      run();
+    }
+
+    return () => {
+      if (idleId && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     let timer = null;
@@ -76,28 +136,50 @@ function HomePage() {
 
       <div className="min-h-screen bg-white">
         {/* Trust Banner no topo */}
-        <TrustBanner />
+        {showTrustBanner && (
+          <React.Suspense fallback={null}>
+            <TrustBanner />
+          </React.Suspense>
+        )}
 
         <main>
           <Hero />
-          <Services autoplay full={false} />
-          <About />
-
-          {/* Google Reviews Enhanced - Substituindo o componente antigo */}
-          <GoogleReviewsEnhanced
-            maxReviews={3}
-            showWidget={true}
-            className="mb-16"
-          />
-
-          <GoogleLocalSection />
-          <FAQ />
-          <LatestEpisodes />
-          <LatestBlogPosts />
-          <Contact />
+          <DeferredSection className="min-h-[520px]">
+            <Services autoplay full={false} />
+          </DeferredSection>
+          <DeferredSection className="min-h-[360px]">
+            <DryEyeCenterSection />
+          </DeferredSection>
+          <DeferredSection className="min-h-[520px]">
+            <About />
+          </DeferredSection>
+          <DeferredSection className="min-h-[420px]">
+            <GoogleReviewsEnhanced
+              maxReviews={3}
+              showWidget={true}
+              className="mb-16"
+            />
+          </DeferredSection>
+          <DeferredSection className="min-h-[420px]">
+            <GoogleLocalSection />
+          </DeferredSection>
+          <DeferredSection className="min-h-[360px]">
+            <FAQ />
+          </DeferredSection>
+          <DeferredSection className="min-h-[520px]">
+            <LatestEpisodes />
+          </DeferredSection>
+          <DeferredSection className="min-h-[480px]">
+            <LatestBlogPosts />
+          </DeferredSection>
+          <DeferredSection className="min-h-[420px]">
+            <Contact />
+          </DeferredSection>
         </main>
 
-        <EnhancedFooter />
+        <DeferredSection className="min-h-[360px]">
+          <EnhancedFooter />
+        </DeferredSection>
       </div>
     </>
   );

@@ -21,11 +21,11 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/img/logo_prata.jpeg',
-        width: 886,
-        height: 886,
-        alt: 'Saraiva Vision - Logo',
-        type: 'image/jpeg',
+        url: '/opengraph-logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Saraiva Vision - Open Graph',
+        type: 'image/png',
       },
     ],
   },

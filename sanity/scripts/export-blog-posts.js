@@ -189,7 +189,7 @@ async function exportPost(post, index, total) {
       },
       tags: post.tags || [],
       publishedAt: new Date(post.date).toISOString(),
-      featured: false,
+      featured: Boolean(post.featured),
       seo: post.seo ? {
         _type: 'seo',
         metaTitle: post.seo.metaTitle,
@@ -226,7 +226,7 @@ async function main() {
     process.exit(1)
   }
 
-  console.log(`   - Token: ${process.env.SANITY_TOKEN.substring(0, 20)}... (verificado)`)
+  console.log('   - Token: configurado')
 
   // Carregar posts
   const posts = await loadBlogPosts()

@@ -12,7 +12,7 @@ const PlanosOnlinePage = () => {
     description: 'Planos de assinatura de lentes de contato 100% online. Atendimento em todo Brasil com entrega nacional.',
     keywords: 'planos online lentes, consultas online lentes contato, lentes online Brasil',
     canonicalUrl: 'https://saraivavision.com.br/planosonline',
-    ogImage: 'https://saraivavision.com.br/og-image.jpg'
+    ogImage: 'https://saraivavision.com.br/opengraph-logo.png'
   };
 
   const plans = [

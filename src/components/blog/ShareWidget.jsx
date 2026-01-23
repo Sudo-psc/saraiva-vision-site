@@ -44,7 +44,7 @@ const ShareWidget = ({ title, url }) => {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.4 }}
-      className="sticky top-[600px] bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
+      className="bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
     >
       <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-200">
         <div className="p-2 bg-gradient-to-br from-cyan-100 to-slate-100 rounded-lg">

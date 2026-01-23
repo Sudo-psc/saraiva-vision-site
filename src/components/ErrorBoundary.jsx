@@ -19,9 +19,9 @@ class ErrorBoundary extends React.Component {
 
     // Ignore expected CORS errors from iframes (JotForm, etc.)
     const isCORSError = errorMessage.includes('cross-origin') ||
-                       errorMessage.includes('SecurityError') ||
-                       errorMessage.includes('Permission denied') ||
-                       errorMessage.includes('postMessage');
+      errorMessage.includes('SecurityError') ||
+      errorMessage.includes('Permission denied') ||
+      errorMessage.includes('postMessage');
 
     if (isCORSError) {
       console.debug('[ErrorBoundary] Ignoring expected CORS error from iframe:', errorMessage);
@@ -76,46 +76,40 @@ class ErrorBoundary extends React.Component {
 
     // Enhanced error categorization for better handling
     const isChunkLoadError = errorMessage.includes('ChunkLoadError') ||
-                            errorMessage.includes('Failed to fetch dynamically imported module') ||
-                            errorMessage.includes('Loading chunk') ||
-                            errorMessage.includes('Loading CSS chunk');
+      errorMessage.includes('Failed to fetch dynamically imported module') ||
+      errorMessage.includes('Loading chunk') ||
+      errorMessage.includes('Loading CSS chunk');
 
     const isNetworkError = errorMessage.includes('Network Error') ||
-                          errorMessage.includes('Failed to fetch') ||
-                          errorMessage.includes('NetworkError') ||
-                          errorMessage.includes('ECONNREFUSED') ||
-                          errorMessage.includes('ENOTFOUND');
+      errorMessage.includes('Failed to fetch') ||
+      errorMessage.includes('NetworkError') ||
+      errorMessage.includes('ECONNREFUSED') ||
+      errorMessage.includes('ENOTFOUND');
 
     const isAuthError = errorMessage.includes('401') ||
-                       errorMessage.includes('403') ||
-                       errorMessage.includes('Unauthorized') ||
-                       errorMessage.includes('Forbidden');
+      errorMessage.includes('403') ||
+      errorMessage.includes('Unauthorized') ||
+      errorMessage.includes('Forbidden');
 
     const isNullError = errorMessage.includes('Cannot read properties of null') ||
-                      errorMessage.includes('Cannot read properties of undefined');
+      errorMessage.includes('Cannot read properties of undefined');
 
-    // Only redirect to backup for critical errors that make the app unusable
-    // Don't redirect for minor errors that can be recovered from
+    // Log the error but don't redirect automatically - it causes redirect loops
+    // and makes debugging harder. Show error UI instead.
     const isCriticalError = errorMessage.includes('Minified React error') ||
-                          isChunkLoadError ||
-                          isNetworkError ||
-                          (isNullError && !errorMessage.includes('displayName')) ||
-                          isAuthError;
+      isChunkLoadError ||
+      isNetworkError ||
+      (isNullError && !errorMessage.includes('displayName')) ||
+      isAuthError;
 
     if (isCriticalError) {
-      console.warn('Critical error detected, redirecting to backup...', {
+      console.warn('Critical error detected - showing error UI (backup redirect disabled)', {
         errorType: isChunkLoadError ? 'Chunk Load' :
-                  isNetworkError ? 'Network' :
-                  isAuthError ? 'Authentication' : 'React Critical'
+          isNetworkError ? 'Network' :
+            isAuthError ? 'Authentication' : 'React Critical'
       });
-
-      setTimeout(() => {
-        try {
-          redirectToBackup();
-        } catch (e) {
-          console.error('Backup redirect failed:', e);
-        }
-      }, isChunkLoadError ? 1000 : 2000); // Faster redirect for chunk errors
+      // DISABLED: redirectToBackup() was causing redirect loops
+      // The error UI will be shown instead, allowing users to reload or report the issue
     } else {
       console.warn('Non-critical error caught, showing error UI instead of redirecting', {
         errorType: isNullError ? 'Null Reference' : 'Generic'
@@ -129,8 +123,8 @@ class ErrorBoundary extends React.Component {
         <div role="alert" className="p-4 text-sm text-red-700 bg-red-50 rounded-md">
           <div className="font-medium mb-2">Ocorreu um erro inesperado</div>
           <div className="text-xs mb-2">Verifique o console do navegador para mais detalhes</div>
-          <button 
-            onClick={() => window.location.reload()} 
+          <button
+            onClick={() => window.location.reload()}
             className="px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700"
           >
             Recarregar Página

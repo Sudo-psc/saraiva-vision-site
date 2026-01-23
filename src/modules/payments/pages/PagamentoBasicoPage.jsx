@@ -21,7 +21,7 @@ const PagamentoBasicoPage = () => {
     description: 'Finalize o pagamento do Plano Básico de assinatura de lentes de contato. 12x de R$ 100,00 com entrega regular e acompanhamento médico.',
     keywords: 'pagamento lentes contato, plano básico, assinatura lentes',
     canonicalUrl: 'https://saraivavision.com.br/pagamentobasico',
-    ogImage: 'https://saraivavision.com.br/og-image.jpg'
+    ogImage: 'https://saraivavision.com.br/opengraph-logo.png'
   };
 
   return (

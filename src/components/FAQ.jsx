@@ -74,8 +74,8 @@ const FAQ = () => {
   return (
     <>
       <SchemaMarkup faqItems={faqs} />
-      <section id="faq" className="py-24 bg-gradient-to-br from-slate-50 to-blue-50 scroll-block-internal">
-      <div className="container mx-auto px-[7%]">
+      <section id="faq" className="py-16 lg:py-24 bg-gradient-to-br from-slate-50 to-blue-50 scroll-block-internal">
+        <div className="container mx-auto px-6 md:px-8 lg:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -315,7 +315,7 @@ const SymptomChecklist = () => {
       </div>
 
       {/* Questions */}
-      <div className="p-6 space-y-4 max-h-[500px] overflow-y-auto">
+      <div className="p-4 sm:p-6 space-y-4 max-h-[60vh] sm:max-h-[500px] overflow-y-auto scroll-smooth">
         {symptoms.map((symptom) => {
           const Icon = symptom.icon;
           const isAnswered = answers[symptom.id] !== undefined;
@@ -343,12 +343,12 @@ const SymptomChecklist = () => {
               </div>
 
               {/* Frequency Options */}
-              <div className="grid grid-cols-5 gap-2">
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                 {frequencyOptions.map((option) => (
                   <button
                     key={option.value}
                     onClick={() => handleAnswer(symptom.id, option.value)}
-                    className={`py-2 px-1 rounded-lg text-xs font-medium border transition-all duration-200 ${
+                    className={`py-2.5 px-2 rounded-lg text-xs sm:text-sm font-medium border transition-all duration-200 min-h-[44px] ${
                       answers[symptom.id] === option.value
                         ? `${option.color} ring-2 ring-offset-1 ring-current`
                         : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'

@@ -99,7 +99,7 @@ export const useSEO = ({
       '@context': 'https://schema.org',
       '@graph': structuredData
     };
-    const resolvedImage = image || `${baseUrl}/og-image-${currentLang}.jpg`;
+    const resolvedImage = image || `${baseUrl}/opengraph-logo.png`;
     const twitterCard = image ? 'summary_large_image' : 'summary';
 
     const result = {
@@ -220,7 +220,7 @@ export const useHomeSEO = () => {
     description: t('homeMeta.description'),
     keywords: t('homeMeta.keywords'),
     pageType: 'website',
-    image: `${baseUrl}/og-image-1200x630-optimized.jpg`
+    image: `${baseUrl}/opengraph-logo.png`
   });
 };
 

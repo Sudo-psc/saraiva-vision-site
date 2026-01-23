@@ -14,7 +14,16 @@
  */
 
 import blogDataService from '../services/blogDataService.js';
-import { enhancedBlogPosts as legacyPosts } from '../data/enhancedBlogPosts.js';
+
+// Dynamic import for legacy posts to avoid 375KB in critical path
+let legacyPosts = null;
+const getLegacyPostsModule = async () => {
+  if (!legacyPosts) {
+    const module = await import('../data/enhancedBlogPosts.js');
+    legacyPosts = module.enhancedBlogPosts || [];
+  }
+  return legacyPosts;
+};
 
 /**
  * Category Configuration (lightweight, always available)
@@ -62,31 +71,36 @@ export const categories = Object.keys(categoryConfig);
  * Prefer async versions below for better performance
  */
 
-// Legacy synchronous import (heavy)
+// Legacy async import (deferred loading)
 let legacyBlogPostsCache = null;
 
-const getLegacyBlogPosts = () => {
+// Async function to get legacy posts (use async API instead of sync)
+const getLegacyBlogPostsAsync = async () => {
   if (legacyBlogPostsCache) return legacyBlogPostsCache;
-
-  // Use static import for SSR environments, avoid require in browser
-  if (typeof window === 'undefined') {
-    // SSR environment - use static import
-    legacyBlogPostsCache = legacyPosts;
-    return legacyBlogPostsCache;
-  }
-
-  // Browser environment - return cached posts or empty array
-  // Client bundles should use async API instead
-  try {
-    legacyBlogPostsCache = legacyPosts;
-    return legacyBlogPostsCache;
-  } catch (error) {
-    console.warn('Legacy blog posts not available in browser environment, use async API instead');
-    return [];
-  }
+  legacyBlogPostsCache = await getLegacyPostsModule();
+  return legacyBlogPostsCache;
 };
 
-// Export for backward compatibility (synchronous, heavy)
+// Synchronous getter returns cached value or empty array
+// DEPRECATED: Use async API instead for better performance
+const getLegacyBlogPosts = () => {
+  // Return cached posts if already loaded
+  if (legacyBlogPostsCache) return legacyBlogPostsCache;
+
+  // In browser, trigger async load and return empty array
+  // Components using this should migrate to async API
+  if (typeof window !== 'undefined') {
+    // Trigger async load for future calls
+    getLegacyBlogPostsAsync().catch(console.warn);
+    console.warn('[blog.js] Synchronous blogPosts access deprecated. Use async API instead.');
+    return [];
+  }
+
+  return [];
+};
+
+// Export for backward compatibility (returns empty array until async loaded)
+// DEPRECATED: Use getBlogPostsMetadata() instead
 export const blogPosts = getLegacyBlogPosts();
 
 /**
@@ -180,17 +194,27 @@ export const getBlogCacheStats = () => {
  */
 
 // Synchronous fallback for getPostBySlug (legacy)
+// DEPRECATED: Use getPostBySlug() async version instead
 export const getPostBySlugSync = (slug) => {
-  const posts = getLegacyBlogPosts();
-  return posts.find(post => post.slug === slug) || null;
+  // Return from cache if available
+  if (legacyBlogPostsCache) {
+    return legacyBlogPostsCache.find(post => post.slug === slug) || null;
+  }
+  console.warn('[blog.js] getPostBySlugSync deprecated. Use getPostBySlug() async.');
+  return null;
 };
 
 // Synchronous fallback for getRecentPosts (legacy)
+// DEPRECATED: Use getRecentPosts() async version instead
 export const getRecentPostsSync = (limit = 3) => {
-  const posts = getLegacyBlogPosts();
-  return posts
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, limit);
+  // Return from cache if available
+  if (legacyBlogPostsCache) {
+    return legacyBlogPostsCache
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .slice(0, limit);
+  }
+  console.warn('[blog.js] getRecentPostsSync deprecated. Use getRecentPosts() async.');
+  return [];
 };
 
 /**

@@ -292,6 +292,8 @@ const ContactLenses = () => {
                     alt={t('contactLenses.brand_logo_alt', 'Logo da marca {{brandName}} - Lentes de contato de qualidade', { brandName: brand.name })}
                     sizes="(min-width: 1024px) 33vw, 100vw"
                     className="w-full h-full object-contain transition-transform duration-300 hover:scale-110"
+                    width={640}
+                    height={360}
                   />
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
                     <span className="text-sm font-semibold text-slate-800">{brand.name}</span>

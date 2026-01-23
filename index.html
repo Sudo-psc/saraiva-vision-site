@@ -30,7 +30,7 @@
   <meta property="og:title" content="Oftalmologista Caratinga/MG | Dr. Philipe Saraiva" />
   <meta property="og:description"
     content="Clínica oftalmológica em Caratinga/MG: catarata, glaucoma, retina, lentes. Dr. Philipe Saraiva CRM-MG 69.870. Agende online ou WhatsApp!" />
-  <meta property="og:image" content="https://saraivavision.com.br/logo.png" />
+  <meta property="og:image" content="https://saraivavision.com.br/opengraph-logo.png" />
   <meta property="og:image:width" content="1024" />
   <meta property="og:image:height" content="1024" />
   <meta property="og:image:alt" content="Logo Saraiva Vision - Clínica Oftalmológica em Caratinga/MG" />
@@ -43,38 +43,271 @@
   <meta name="twitter:title" content="Oftalmologista Caratinga/MG | Dr. Philipe Saraiva" />
   <meta name="twitter:description"
     content="Clínica oftalmológica em Caratinga/MG: catarata, glaucoma, retina, lentes. Dr. Philipe Saraiva CRM-MG 69.870. Agende online ou WhatsApp!" />
-  <meta name="twitter:image" content="https://saraivavision.com.br/logo.png" />
+  <meta name="twitter:image" content="https://saraivavision.com.br/opengraph-logo.png" />
   <meta name="twitter:image:alt" content="Logo Saraiva Vision - Clínica Oftalmológica em Caratinga/MG" />
 
   <!-- Resource Hints for Performance Optimization -->
-  <!-- DNS prefetch for external domains (early DNS resolution) -->
-  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-  <link rel="dns-prefetch" href="//maps.googleapis.com" />
-  <link rel="dns-prefetch" href="//maps.gstatic.com" />
-  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-  <link rel="dns-prefetch" href="//region1.google-analytics.com" />
-  <link rel="dns-prefetch" href="//www.google-analytics.com" />
-
-  <!-- Preconnect for critical external resources (DNS + TCP + TLS) -->
+  <!-- Preconnect for critical external resources (DNS + TCP + TLS) - HIGHEST PRIORITY -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- DNS prefetch for external domains (early DNS resolution) -->
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+  <link rel="dns-prefetch" href="https://maps.googleapis.com" />
+  <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+  <link rel="dns-prefetch" href="https://www.google.com" />
+
+  <!-- Preconnect for non-critical but commonly used resources -->
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
   <link rel="preconnect" href="https://maps.googleapis.com" crossorigin />
-  <link rel="preconnect" href="https://www.googletagmanager.com" />
+  <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
 
-  <!-- Prefetch likely next pages (low priority background loading) -->
-  <link rel="prefetch" href="/servicos" as="document" />
-  <link rel="prefetch" href="/sobre" as="document" />
-  <link rel="prefetch" href="/blog" as="document" />
+  <!-- Async Google Fonts loading - prevents render blocking -->
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    media="print" onload="this.media='all';this.onload=null;" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  </noscript>
 
-  <!-- Preload critical resources (highest priority) -->
+  <!-- Preload LCP image - responsive optimized versions -->
+  <link rel="preload" as="image" type="image/webp" href="/img/responsive/hero-637.webp" fetchpriority="high"
+    imagesrcset="/img/responsive/hero-400.webp 400w, /img/responsive/hero-637.webp 637w, /img/responsive/hero-800.webp 800w"
+    imagesizes="(min-width: 1024px) 637px, 100vw" />
+
+  <!-- Preload critical logo - responsive optimized -->
+  <link rel="preload" as="image" type="image/webp" href="/img/responsive/logo_prata-224.webp" fetchpriority="high" />
+
+  <!-- Modulepreload for main entry point - Vite will inject actual paths -->
   <link rel="modulepreload" href="/src/main.jsx" />
 
-  <!-- Preload critical images -->
-  <link rel="preload" as="image" type="image/avif" href="/img/logo_prata.avif" fetchpriority="high" />
-  <link rel="preload" as="image" type="image/avif" href="/img/hero.avif" fetchpriority="high" />
+  <!-- Critical CSS - Inlined for instant above-the-fold rendering -->
+  <style id="critical-css">
+    /* Critical CSS - Above the fold only */
+    *,
+    ::before,
+    ::after {
+      box-sizing: border-box;
+      border: 0 solid #e5e7eb
+    }
 
-  <!-- Critical CSS (inline or preload) - Será gerado pelo Vite -->
-  <!-- Vite will inject critical CSS bundles here automatically -->
+    html {
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif
+    }
+
+    body {
+      margin: 0;
+      line-height: inherit;
+      background-color: #fff
+    }
+
+    #root {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column
+    }
+
+    /* Loading state - prevents CLS */
+    .loading-skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 200% 0
+      }
+
+      100% {
+        background-position: -200% 0
+      }
+    }
+
+    /* Hero section critical styles */
+    .hero-section {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden
+    }
+
+    .hero-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      width: 100%
+    }
+
+    /* Navbar critical - prevent CLS */
+    nav,
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #fff;
+      height: 64px
+    }
+
+    @media(min-width:1024px) {
+
+      nav,
+      .navbar {
+        height: 80px
+      }
+    }
+
+    /* Typography essentials */
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #0f172a
+    }
+
+    @media(min-width:768px) {
+      h1 {
+        font-size: 3rem
+      }
+    }
+
+    @media(min-width:1024px) {
+      h1 {
+        font-size: 3.75rem
+      }
+    }
+
+    /* Button critical */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .75rem 1.5rem;
+      font-weight: 600;
+      color: #fff;
+      background: #0891b2;
+      border-radius: .5rem;
+      transition: background .2s
+    }
+
+    .btn-primary:hover {
+      background: #0e7490
+    }
+
+    /* Image containers - prevent CLS */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block
+    }
+
+    .aspect-hero {
+      aspect-ratio: 4/3
+    }
+
+    .aspect-video {
+      aspect-ratio: 16/9
+    }
+
+    /* Flexbox utilities */
+    .flex {
+      display: flex
+    }
+
+    .flex-col {
+      flex-direction: column
+    }
+
+    .items-center {
+      align-items: center
+    }
+
+    .justify-center {
+      justify-content: center
+    }
+
+    .justify-between {
+      justify-content: space-between
+    }
+
+    .gap-4 {
+      gap: 1rem
+    }
+
+    .gap-6 {
+      gap: 1.5rem
+    }
+
+    /* Grid utilities */
+    .grid {
+      display: grid
+    }
+
+    @media(min-width:768px) {
+      .md\:grid-cols-2 {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    @media(min-width:1024px) {
+      .lg\:grid-cols-3 {
+        grid-template-columns: repeat(3, 1fr)
+      }
+    }
+
+    /* Spacing utilities */
+    .p-4 {
+      padding: 1rem
+    }
+
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem
+    }
+
+    .py-8 {
+      padding-top: 2rem;
+      padding-bottom: 2rem
+    }
+
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto
+    }
+
+    .max-w-7xl {
+      max-width: 80rem
+    }
+
+    /* Text utilities */
+    .text-center {
+      text-align: center
+    }
+
+    .text-white {
+      color: #fff
+    }
+
+    .text-slate-600 {
+      color: #475569
+    }
+
+    /* Hide non-critical content until CSS loads */
+    .below-fold {
+      opacity: 0;
+      transition: opacity .3s
+    }
+
+    .css-loaded .below-fold {
+      opacity: 1
+    }
+  </style>
 
   <!-- Additional Meta Tags -->
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
@@ -86,13 +319,31 @@
 
 <body>
 
+  <!-- requestIdleCallback polyfill for Safari -->
+  <script>
+    window.requestIdleCallback = window.requestIdleCallback || function (cb, options) {
+      var start = Date.now();
+      return setTimeout(function () {
+        cb({
+          didTimeout: false,
+          timeRemaining: function () {
+            return Math.max(0, 50 - (Date.now() - start));
+          }
+        });
+      }, options && options.timeout ? Math.min(options.timeout, 1) : 1);
+    };
+    window.cancelIdleCallback = window.cancelIdleCallback || function (id) {
+      clearTimeout(id);
+    };
+  </script>
+
   <div id="root"></div>
 
   <!-- Critical application bundle - high priority -->
   <script type="module" src="/src/main.jsx"></script>
 
   <!-- Async script loader for non-critical resources -->
-  <script>
+  <script type="module">
     // Async script loading utility
     function loadScript(src, options = {}) {
       return new Promise((resolve, reject) => {
@@ -128,15 +379,6 @@
     // Load non-critical scripts asynchronously
     if ('requestIdleCallback' in window) {
       requestIdleCallback(() => {
-        // Chat widget removido devido a falha no endpoint (404 errors)
-        // Pulse.is live chat - carregado com SRI para segurança
-        loadScript('https://cdn.pulse.is/app.js', {
-          integrity: 'sha384-3l5M8w7G1c3V2c9e2J4K4N9N8Q7P6R5S4T2U1V0W9Y8X7Z6A5B4C3D2E1F0',
-          crossorigin: 'anonymous',
-          id: 'pulse-is-script',
-          priority: 'low'
-        });
-
         // Analytics - load after user interaction or delay
         const loadAnalytics = () => {
           if (!window.analyticsLoaded) {
@@ -149,15 +391,6 @@
         setTimeout(loadAnalytics, 3000);
         document.addEventListener('click', loadAnalytics, { once: true });
         document.addEventListener('scroll', loadAnalytics, { once: true });
-      });
-    } else {
-      // Fallback for browsers without requestIdleCallback
-      // Pulse.is carregado com SRI para segurança mesmo sem requestIdleCallback
-      loadScript('https://cdn.pulse.is/app.js', {
-        integrity: 'sha384-3l5M8w7G1c3V2c9e2J4K4N9N8Q7P6R5S4T2U1V0W9Y8X7Z6A5B4C3D2E1F0',
-        crossorigin: 'anonymous',
-        id: 'pulse-is-script',
-        priority: 'low'
       });
     }
   </script>

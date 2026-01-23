@@ -1,98 +1,87 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SafeHelmet } from '@/components/SafeHelmet';
+import BlockingRequests from '@/components/admin/BlockingRequests';
 
 function AdminPage() {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('requests');
 
   return (
     <>
       <SafeHelmet
-        title="Acesso Administrativo - Dr. Philipe Saraiva"
+        title="Painel Administrativo - Saraiva Vision"
       >
         <meta name="robots" content="noindex, nofollow" />
       </SafeHelmet>
       
-      <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="mx-auto w-32 h-32 flex items-center justify-center bg-brand-blue rounded-full mb-8">
-            <svg 
-              className="w-16 h-16 text-white" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" 
-              />
-            </svg>
-          </div>
-          <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
-            Área Administrativa
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Esta é uma área restrita do site
-          </p>
-        </div>
-
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <div className="text-center">
-              <div className="rounded-md bg-yellow-50 p-4 mb-6">
-                <div className="flex">
-                  <div className="flex-shrink-0">
-                    <svg 
-                      className="h-5 w-5 text-yellow-400" 
-                      viewBox="0 0 20 20" 
-                      fill="currentColor"
-                    >
-                      <path 
-                        fillRule="evenodd" 
-                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" 
-                        clipRule="evenodd" 
-                      />
+      <div className="min-h-screen bg-gray-50">
+        <div className="bg-white shadow">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between h-16">
+              <div className="flex">
+                <div className="flex-shrink-0 flex items-center">
+                  <div className="w-8 h-8 bg-brand-blue rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
                   </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-yellow-800">
-                      Acesso Restrito
-                    </h3>
-                    <div className="mt-2 text-sm text-yellow-700">
-                      <p>
-                        Esta página é destinada apenas para administradores do sistema.
-                        Para gerenciar o conteúdo do site, entre em contato com o suporte técnico.
-                      </p>
-                    </div>
-                  </div>
+                  <span className="ml-3 font-bold text-gray-900 text-lg">Painel Admin</span>
+                </div>
+                <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+                  <button
+                    onClick={() => setActiveTab('requests')}
+                    className={`${activeTab === 'requests' ? 'border-brand-blue text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+                  >
+                    Solicitações de Bloqueio
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('security')}
+                    className={`${activeTab === 'security' ? 'border-brand-blue text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+                  >
+                    Segurança
+                  </button>
                 </div>
               </div>
-              
-              <div className="space-y-4">
+              <div className="flex items-center">
                 <button
                   onClick={() => navigate('/')}
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-blue hover:bg-brand-blue/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue transition-colors"
+                  className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue"
                 >
-                  Voltar ao Site Principal
-                </button>
-                
-                <button
-                  onClick={() => navigate('/contato')}
-                  className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue transition-colors"
-                >
-                  Entrar em Contato
+                  <span className="sr-only">Sair</span>
+                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
                 </button>
               </div>
             </div>
           </div>
         </div>
-        
-        <div className="mt-8 text-center">
-          <p className="text-xs text-gray-500">
-            © 2024 Dr. Philipe Saraiva - Oftalmologista
-          </p>
+
+        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          {activeTab === 'requests' && (
+            <BlockingRequests />
+          )}
+          
+          {activeTab === 'security' && (
+            <div className="bg-white shadow sm:rounded-lg p-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Status de Segurança</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                  <div className="text-sm text-green-600 font-semibold">Firewall (WAF)</div>
+                  <div className="mt-1 text-2xl font-bold text-green-800">Ativo</div>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <div className="text-sm text-blue-600 font-semibold">Rate Limit</div>
+                  <div className="mt-1 text-2xl font-bold text-blue-800">100 req/min</div>
+                </div>
+                <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                  <div className="text-sm text-yellow-600 font-semibold">IPs Bloqueados</div>
+                  <div className="mt-1 text-2xl font-bold text-yellow-800">12</div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

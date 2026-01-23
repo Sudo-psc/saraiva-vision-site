@@ -4,7 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import createLazyComponent from '@/utils/lazyLoading.jsx';
 
 // Code splitting das rotas para melhorar TTI inicial da Home com retry logic
-const HomePageLayout = createLazyComponent(() => import('./views/HomePageLayout.jsx'));
+import HomePageLayout from './views/HomePageLayout.jsx';
 const ServicesPage = createLazyComponent(() => import('./views/ServicesPage.jsx'));
 const AboutPage = createLazyComponent(() => import('./views/AboutPage.jsx'));
 const PrivacyPolicyPage = createLazyComponent(() => import('./views/PrivacyPolicyPage.jsx'));
@@ -47,14 +47,15 @@ const BlefaroplastiaJatoPlasmaPage = createLazyComponent(() => import('./views/B
 const NotFoundPage = createLazyComponent(() => import('./views/NotFoundPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
-import Navbar from './components/Navbar.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { WidgetProvider } from '@/utils/widgetManager.jsx';
 import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
-import AnalyticsFallback from '@/components/AnalyticsFallback.jsx';
-import AnalyticsProxy from '@/components/AnalyticsProxy.jsx';
-import DeferredWidgets from '@/modules/core/components/DeferredWidgets.jsx';
-import IRPLAnnouncement from '@/components/IRPLAnnouncement.jsx';
+
+import Navbar from './components/Navbar.jsx';
+const AnalyticsProxy = React.lazy(() => import('@/components/AnalyticsProxy.jsx'));
+const AnalyticsFallback = React.lazy(() => import('@/components/AnalyticsFallback.jsx'));
+const DeferredWidgets = React.lazy(() => import('@/modules/core/components/DeferredWidgets.jsx'));
+const IRPLAnnouncement = React.lazy(() => import('@/components/IRPLAnnouncement.jsx'));
 
 function App() {
   const isCheckSubdomain =
@@ -67,7 +68,9 @@ function App() {
   return (
     <HelmetProvider>
       <LocalBusinessSchema />
-      <AnalyticsProxy />
+      <React.Suspense fallback={null}>
+        <AnalyticsProxy />
+      </React.Suspense>
       <WidgetProvider>
         {/*
           Envolvemos apenas o conteúdo da aplicação em um wrapper dedicado.
@@ -137,12 +140,18 @@ function App() {
             </Routes>
           </ErrorBoundary>
         </div>
-        <DeferredWidgets />
-        <IRPLAnnouncement />
+        <React.Suspense fallback={null}>
+          <DeferredWidgets />
+        </React.Suspense>
+        <React.Suspense fallback={null}>
+          <IRPLAnnouncement />
+        </React.Suspense>
       </WidgetProvider>
 
       {/* Analytics Fallback para contornar bloqueadores */}
-      <AnalyticsFallback />
+      <React.Suspense fallback={null}>
+        <AnalyticsFallback />
+      </React.Suspense>
     </HelmetProvider>
   );
 }

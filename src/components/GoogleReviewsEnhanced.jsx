@@ -152,8 +152,8 @@ const GoogleReviewsEnhanced = ({ maxReviews = 3, showWidget = true, className = 
   );
 
   return (
-    <section className={`py-16 bg-gradient-to-br from-slate-50 to-white ${className}`}>
-      <div className="max-w-7xl mx-auto px-[7%]">
+    <section className={`py-16 lg:py-24 bg-gradient-to-br from-slate-50 to-white ${className}`}>
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
         {/* Header Principal com Prova Social Destacada */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

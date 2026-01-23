@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
-import { Menu, X, Calendar, Home, Stethoscope, Eye, FileText, Headphones, User, HelpCircle, Phone, FileCheck, BookOpenCheck, Droplets, Star } from 'lucide-react';
+import { Menu, X, Calendar, Home, Stethoscope, Eye, FileText, Headphones, User, HelpCircle, Phone, FileCheck, BookOpenCheck, Droplets, Star, Zap } from 'lucide-react';
 import { Button } from '../components/ui/button.jsx';
 import Logo from '../components/Logo.jsx';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
@@ -65,6 +64,7 @@ const Navbar = () => {
     { name: t('navbar.home'), href: '/', internal: true, icon: Home },
     { name: t('navbar.services'), href: '/servicos', internal: true, icon: Stethoscope },
     { name: t('navbar.dry_eye'), href: '/olho-seco', internal: true, icon: Droplets },
+    { name: t('navbar.irpl'), href: '/luz-pulsada-irpl', internal: true, icon: Zap },
     { name: t('navbar.lenses'), href: '/lentes', internal: true, icon: Eye },
     { name: t('navbar.lens_wiki'), href: '/lentes/wiki', internal: true, icon: BookOpenCheck },
     { name: t('navbar.blog'), href: '/blog', internal: true, icon: FileText },
@@ -85,10 +85,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 md:px-6 no-scrollbar-x pointer-events-auto">
         <div className="flex flex-wrap items-center justify-between gap-3 md:gap-4 lg:gap-6 w-full">
           {/* Logo - Brand Identity */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+          <div
             className="ml-[6%] flex-shrink-0"
           >
             <Link
@@ -99,7 +96,7 @@ const Navbar = () => {
             >
               <Logo isWhite />
             </Link>
-          </motion.div>
+          </div>
 
           {/* Desktop Navigation - With icons for visual recognition */}
           <nav
@@ -208,11 +205,7 @@ const Navbar = () => {
 
       {/* Mobile Menu - Full-height with glass morphism */}
       {mobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        <div
           className="md:hidden bg-white border-t shadow-lg pointer-events-auto"
         >
           <nav className="container mx-auto px-4 py-3 sm:py-4 flex flex-col space-y-2 sm:space-y-3">
@@ -222,12 +215,7 @@ const Navbar = () => {
               const isHomeLink = link.href === '/';
 
               return link.internal ? (
-                <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05, duration: 0.3 }}
-                >
+                <div key={link.name}>
                   <Link
                     to={link.href}
                     onClick={(e) => {
@@ -245,14 +233,9 @@ const Navbar = () => {
                     <IconComponent size={20} className="flex-shrink-0" />
                     <span className="flex-1">{link.name}</span>
                   </Link>
-                </motion.div>
+                </div>
               ) : (
-                <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05, duration: 0.3 }}
-                >
+                <div key={link.name}>
                   <a
                     href={link.href}
                     target="_blank"
@@ -263,17 +246,12 @@ const Navbar = () => {
                     <IconComponent size={20} className="flex-shrink-0" />
                     <span className="flex-1">{link.name}</span>
                   </a>
-                </motion.div>
+                </div>
               );
             })}
 
             {/* Mobile CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: navLinks.length * 0.05, duration: 0.3 }}
-              className="pt-2 sm:pt-3 flex flex-col gap-2"
-            >
+            <div className="pt-2 sm:pt-3 flex flex-col gap-2">
               {/* WhatsApp Contact Button */}
               <a
                 href={clinicInfo.whatsapp24h}
@@ -297,9 +275,9 @@ const Navbar = () => {
                 <Calendar size={22} />
                 <span>{t('navbar.schedule_consultation')}</span>
               </Button>
-            </motion.div>
+            </div>
           </nav>
-        </motion.div>
+        </div>
       )}
 
     </header>

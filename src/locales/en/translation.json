@@ -26,7 +26,11 @@
     "scheduling_error": "Service unavailable. Use WhatsApp or call (33) 99860-1427",
     "external_link_warning": "You will be redirected to {serviceName}. Continue?",
     "external_link_title": "Opens in new tab: {serviceName}",
-    "services_link": "View all services"
+    "services_link": "View all services",
+    "blog": "Blog",
+    "reviews": "Reviews",
+    "irpl": "Pulsed Light",
+    "brand": "Saraiva Vision"
   },
   "common": {
     "logo_alt": "Saraiva Vision Logo"
@@ -136,6 +140,36 @@
         "title": "Visual Field",
         "description": "Computerized exam that maps the field of vision to detect glaucoma and optic neuropathies.",
         "fullDescription": "Visual field testing is a comprehensive computerized examination that maps peripheral vision and detects visual defects. It's fundamental for glaucoma diagnosis and monitoring, as well as evaluation of optic neuropathies and neurological conditions."
+      },
+      "meibography": {
+        "title": "Meibography",
+        "description": "Imaging exam of the Meibomian glands that evaluates glandular structure and function, essential for accurate diagnosis of dry eye syndrome."
+      },
+      "irplEEye": {
+        "title": "IRPL with E-Eye (Dry Eye)",
+        "description": "Specific regulated pulsed light for MGD and stabilization of the tear lipid layer. The only clinic in the interior of Minas Gerais with the gold standard IRPL e-eye treatment for Dry Eye.",
+        "fullDescription": "Regulated Intense Pulsed Light (IRPL®) treatment with the E-Eye device to reduce eyelid inflammation, reactivate Meibomian glands, and relieve symptoms of evaporative dry eye."
+      },
+      "lacrimalPlugs": {
+        "title": "Lacrimal Duct Plugs",
+        "description": "Occlusion of lacrimal points to maintain tears longer and relieve dry eye.",
+        "fullDescription": "Outpatient procedure with insertion of silicone or collagen plugs in the lacrimal points to reduce tear drainage and improve ocular surface hydration."
+      },
+      "plasmaLiftBlepharoplasty": {
+        "title": "Plasma Jet Blepharoplasty",
+        "description": "Non-surgical procedure to rejuvenate the eye area, treating sagging and bags without the use of a scalpel. Sagging and bags without cuts, with quick recovery."
+      },
+      "xanthelasmaRemoval": {
+        "title": "Xanthelasma Removal",
+        "description": "Safe technique to remove cholesterol deposits around the eyes, improving aesthetics and comfort."
+      },
+      "dpnTreatment": {
+        "title": "DPN Treatment",
+        "description": "Effective method to eliminate Dermatosis Papulosa Nigra (DPN), small benign lesions common on the face and neck."
+      },
+      "dryEye": {
+        "title": "Dry Eye Treatment",
+        "description": "Accurate diagnosis and personalized treatment for dry eye syndrome, with meibography and advanced therapies."
       }
     },
     "benefits": {
@@ -937,6 +971,13 @@
       "pachymetry": "Pachymetry",
       "retinography": "Retinography",
       "visual_field": "Visual Field",
+      "lacrimal_plug": "Lacrimal Plugs",
+      "meibography": "Meibography",
+      "irpl_e_eye": "IRPL E-Eye Treatment",
+      "dry_eye": "Dry Eye Treatment",
+      "plasma_blepharoplasty": "Plasma Jet Blepharoplasty",
+      "xanthelasma_removal": "Xanthelasma Removal",
+      "dpn_treatment": "DPN Treatment",
       "hero_image": "Smiling family - Saraiva Vision",
       "satisfied_patient_1": "Satisfied patient 1",
       "satisfied_patient_2": "Satisfied patient 2",

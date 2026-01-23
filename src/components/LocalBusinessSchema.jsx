@@ -12,7 +12,7 @@ export default function LocalBusinessSchema() {
     description: NAP_CANONICAL.seo.longDescription,
     url: 'https://saraivavision.com.br',
     logo: 'https://saraivavision.com.br/logo.png',
-    image: 'https://saraivavision.com.br/og-image-1200x630-optimized.jpg',
+    image: 'https://saraivavision.com.br/opengraph-logo.png',
     priceRange: NAP_CANONICAL.business.priceRange,
     slogan: NAP_CANONICAL.business.slogan,
     foundingDate: NAP_CANONICAL.business.founded,

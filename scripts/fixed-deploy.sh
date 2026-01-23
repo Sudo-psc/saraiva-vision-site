@@ -53,7 +53,7 @@ print_success "Previous build cleaned"
 # Step 2: Build
 echo ""
 echo "📦 Step 2: Building application..."
-npm run build
+npm run build:vite
 
 if [ $? -eq 0 ]; then
     print_success "Build completed successfully"

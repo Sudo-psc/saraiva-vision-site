@@ -10,13 +10,13 @@ const ServicesPage = () => {
   const seo = {
     title: t('services.title') + ' | Saraiva Vision',
     description: t('services.subtitle'),
-    keywords: 'oftalmologia, serviços, consultas, exames, cirurgias',
+    keywords: 'oftalmologia, serviços, consultas, exames, cirurgias, olho seco, IRPL, luz pulsada',
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-slate-50">
       <SEOHead {...seo} />
-      <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 scroll-block-internal">
+      <main className="flex-1 pt-16 sm:pt-20">
         <ServicesEnhanced full grid />
       </main>
       <EnhancedFooter />

@@ -321,7 +321,7 @@ const seo = {
     siteName: 'Saraiva Vision',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/opengraph-logo.png',
         width: 1200,
         height: 630,
         alt: 'Saraiva Vision - Clínica Oftalmológica'

@@ -283,7 +283,7 @@ describe('Critical User Flows Integration Tests', () => {
       renderWithRouter(<HomePage />);
       
       // Hero section should be immediately available
-      const heroSection = screen.getByText(/Cuidando da sua/i);
+      const heroSection = screen.getByText(/Alívio real para/i);
       expect(heroSection).toBeInTheDocument();
       
       // Check that key CTAs are visible

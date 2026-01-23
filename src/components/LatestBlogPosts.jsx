@@ -1,31 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, Rss, Calendar, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { blogPosts } from '@/data/blogPosts';
+// Use lightweight blog data for homepage (saves ~350KB)
+import { getLatestPostsLite } from '@/data/blogPostsLite';
 import { format } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
 import { getPostEnrichment } from '@/data/blogPostsEnrichment';
 import { normalizeToArray } from '@/utils/safeFetch';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 
+/**
+ * LatestBlogPosts - Performance optimized component
+ *
+ * Optimizations applied:
+ * 1. Uses blogPostsLite instead of full blogPosts (saves ~350KB)
+ * 2. Lazy loads data only when section is visible (Intersection Observer)
+ * 3. Uses CSS animations instead of framer-motion (saves ~78KB)
+ * 4. Staggered animation delays via CSS custom properties
+ */
 const LatestBlogPosts = () => {
     const { t, i18n } = useTranslation();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Intersection Observer for lazy loading
+    const [sectionRef, isVisible] = useIntersectionObserver({
+        threshold: 0.1,
+        rootMargin: '200px' // Start loading 200px before visible
+    });
+    const hasLoaded = useRef(false);
+
     useEffect(() => {
+        // Only load when section becomes visible (lazy loading)
+        if (!isVisible || hasLoaded.current) return;
+        hasLoaded.current = true;
+
         const loadPosts = () => {
             try {
                 setLoading(true);
                 setError(null);
-                
-                // Get the 3 most recent posts from static blog data
-                const recentPosts = blogPosts
-                    .sort((a, b) => new Date(b.date) - new Date(a.date))
-                    .slice(0, 3);
+
+                // Use lightweight blog data (no full content)
+                const recentPosts = getLatestPostsLite(3);
 
                 // Normalize to ensure it's always an array
                 const normalizedPosts = normalizeToArray(recentPosts, 'LatestBlogPosts');
@@ -41,7 +60,7 @@ const LatestBlogPosts = () => {
         };
 
         loadPosts();
-    }, []);
+    }, [isVisible]);
 
     const getDateLocale = () => {
         return i18n.language === 'pt' ? ptBR : enUS;
@@ -80,6 +99,7 @@ const LatestBlogPosts = () => {
         const categoryColors = {
             'Prevenção': 'from-emerald-500 to-teal-500',
             'Tratamentos': 'from-blue-500 to-cyan-500',
+            'Tratamento': 'from-blue-500 to-cyan-500',
             'Tecnologia': 'from-purple-500 to-indigo-500',
             'Dúvidas Frequentes': 'from-amber-500 to-orange-500',
             'default': 'from-gray-500 to-slate-500'
@@ -87,14 +107,17 @@ const LatestBlogPosts = () => {
 
         const categoryGradient = categoryColors[getPostCategory(post)] || categoryColors.default;
 
+        // CSS animation with staggered delay
+        const animationStyle = {
+            '--animation-delay': `${index * 100}ms`,
+            animationDelay: `${index * 100}ms`
+        };
+
         return (
-            <motion.article
+            <article
                 key={post.id}
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="group relative flex flex-col md:flex-row items-stretch bg-gradient-to-br from-white via-gray-50/50 to-white rounded-3xl border-2 border-gray-200/60 hover:border-teal-400 hover:shadow-2xl hover:shadow-teal-100/50 transition-all duration-500 overflow-hidden cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                style={animationStyle}
+                className="group relative flex flex-col md:flex-row items-stretch bg-gradient-to-br from-white via-gray-50/50 to-white rounded-3xl border-2 border-gray-200/60 hover:border-teal-400 hover:shadow-2xl hover:shadow-teal-100/50 transition-all duration-500 overflow-hidden cursor-pointer hover:scale-[1.02] active:scale-[0.98] animate-fade-in-up"
                 role="article"
                 aria-labelledby={`post-title-${post.id}`}
             >
@@ -182,11 +205,20 @@ const LatestBlogPosts = () => {
 
                 {/* Hover glow effect */}
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-teal-400/0 via-cyan-400/0 to-blue-400/0 group-hover:from-teal-400/10 group-hover:via-cyan-400/10 group-hover:to-blue-400/10 transition-all duration-500 pointer-events-none"></div>
-            </motion.article>
+            </article>
         );
     };
 
     const renderContent = () => {
+        // Show placeholder before section is visible
+        if (!isVisible) {
+            return (
+                <div className="flex justify-center items-center h-64">
+                    <div className="text-gray-400 text-sm">Carregando...</div>
+                </div>
+            );
+        }
+
         if (loading) {
             return (
                 <div className="flex justify-center items-center h-64">
@@ -233,20 +265,37 @@ const LatestBlogPosts = () => {
     };
 
     return (
-        <section className="py-10 md:py-12 lg:py-16 bg-white relative overflow-hidden scroll-block-internal">
+        <section ref={sectionRef} className="py-16 lg:py-24 bg-white relative overflow-hidden scroll-block-internal">
+            {/* CSS Keyframes for animations (injected via style tag to avoid framer-motion) */}
+            <style>{`
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                .animate-fade-in-up {
+                    animation: fadeInUp 0.6s ease-out forwards;
+                    animation-delay: var(--animation-delay, 0ms);
+                    opacity: 0;
+                }
+            `}</style>
+
             {/* Background Decorations */}
             <div className="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-indigo-50/30" />
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/5 to-indigo-400/5 rounded-full blur-3xl" />
             <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-indigo-400/5 to-blue-400/5 rounded-full blur-3xl" />
 
-            <div className="container mx-auto px-[7%] relative z-10">
-                {/* Header Section */}
+            <div className="container mx-auto px-6 md:px-8 lg:px-12 relative z-10">
+                {/* Header Section - CSS animations instead of framer-motion */}
                 <div className="text-center mb-10 md:mb-12">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-blue-100 via-indigo-50 to-blue-100 text-cyan-700 mb-8 border border-cyan-200/50 shadow-lg backdrop-blur-sm"
+                    <div
+                        className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-blue-100 via-indigo-50 to-blue-100 text-cyan-700 mb-8 border border-cyan-200/50 shadow-lg backdrop-blur-sm animate-fade-in-up"
+                        style={{ '--animation-delay': '0ms' }}
                     >
                         <div className="w-8 h-8 rounded-full bg-cyan-600 flex items-center justify-center">
                             <Rss className="w-4 h-4 text-white" />
@@ -254,41 +303,32 @@ const LatestBlogPosts = () => {
                         <span className="text-sm font-bold tracking-wide uppercase">
                             {t('blog.title', 'Blog')}
                         </span>
-                    </motion.div>
+                    </div>
 
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6 leading-tight"
+                    <h2
+                        className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6 leading-tight animate-fade-in-up"
+                        style={{ '--animation-delay': '100ms' }}
                     >
                         <span className="bg-gradient-to-r from-cyan-600 via-indigo-600 to-cyan-600 bg-clip-text text-transparent">
                             Últimas do Blog
                         </span>
-                    </motion.h2>
+                    </h2>
 
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                        className="text-lg md:text-xl text-slate-600 mb-10 max-w-4xl mx-auto leading-relaxed font-medium"
+                    <p
+                        className="text-lg md:text-xl text-slate-600 mb-10 max-w-4xl mx-auto leading-relaxed font-medium animate-fade-in-up"
+                        style={{ '--animation-delay': '200ms' }}
                     >
                         Artigos e novidades sobre saúde ocular para manter você bem informado.
-                    </motion.p>
+                    </p>
                 </div>
 
                 {/* Posts Content */}
                 {renderContent()}
 
                 {/* Call to Action */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.6 }}
-                    className="text-center mt-12"
+                <div
+                    className="text-center mt-12 animate-fade-in-up"
+                    style={{ '--animation-delay': '600ms' }}
                 >
                     <Link to="/blog">
                         <Button size="lg" className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
@@ -296,7 +336,7 @@ const LatestBlogPosts = () => {
                             <ArrowRight className="w-5 h-5" />
                         </Button>
                     </Link>
-                </motion.div>
+                </div>
             </div>
         </section>
     );

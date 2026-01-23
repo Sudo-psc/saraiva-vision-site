@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import CookieBanner from './CookieBanner';
 import CookieConsentModal from './CookieConsentModal';
 import { shouldShowConsentBanner } from '@/utils/consentMode';
+import '../styles/cookies.css';
 
 const CookieManager = () => {
   const [showModal, setShowModal] = useState(false);

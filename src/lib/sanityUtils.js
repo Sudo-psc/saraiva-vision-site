@@ -78,6 +78,7 @@ export function transformBlogPost(sanityPost) {
     title: sanityPost.title,
     excerpt: sanityPost.excerpt,
     content: sanityPost.content,
+    htmlContent: sanityPost.htmlContent || '',
     image: imageUrl, // Generate URL from mainImage
     imageAlt: sanityPost.mainImage?.alt || sanityPost.title,
     coverImage: sanityPost.mainImage || null, // Preserve raw mainImage for components
@@ -118,6 +119,7 @@ export const queries = {
     title,
     excerpt,
     content,
+    htmlContent,
     mainImage,
     'author': author->name,
     publishedAt,
@@ -139,6 +141,7 @@ export const queries = {
     title,
     excerpt,
     content,
+    htmlContent,
     mainImage,
     'author': author->name,
     publishedAt,

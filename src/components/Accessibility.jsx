@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 
 import { useWidgetManager } from '../utils/widgetManager.jsx';
+import '@/styles/accessibility.css';
 
 // Helper to announce changes to screen readers
 const ariaAnnounce = (msg) => {

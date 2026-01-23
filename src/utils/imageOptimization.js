@@ -9,8 +9,8 @@ const MEDICAL_IMAGE_CONFIG = {
   // Critical clinic images for immediate loading
   critical: {
     logo: '/img/logo_prata.webp',
-    drPhilipe: '/img/drphilipe_perfil-1280w.webp',
-    heroBackground: '/img/hero-1920w.webp',
+    drPhilipe: '/img/drphilipe_perfil.webp',
+    heroBackground: '/img/hero.webp',
     clinicFacade: '/img/clinic_facade.webp'
   },
 
@@ -44,12 +44,7 @@ const MEDICAL_IMAGE_CONFIG = {
 };
 
 // Critical images that must be preloaded (above the fold)
-const PRELOAD_IMAGES = [
-  MEDICAL_IMAGE_CONFIG.critical.heroBackground,
-  MEDICAL_IMAGE_CONFIG.critical.drPhilipe,
-  MEDICAL_IMAGE_CONFIG.critical.clinicFacade,
-  MEDICAL_IMAGE_CONFIG.critical.logo
-];
+const PRELOAD_IMAGES = [MEDICAL_IMAGE_CONFIG.critical.logo];
 
 // Enhanced lazy loading with medical compliance and retry logic
 class ImageLazyLoader {
@@ -156,7 +151,16 @@ class ImageLazyLoader {
 
 // Preload de imagens críticas
 export function preloadCriticalImages() {
-  PRELOAD_IMAGES.forEach(src => {
+  const imagesToPreload = [...PRELOAD_IMAGES];
+
+  if (typeof window !== 'undefined') {
+    const path = window.location?.pathname || '/';
+    if (path === '/' || path === '') {
+      imagesToPreload.push(MEDICAL_IMAGE_CONFIG.critical.heroBackground);
+    }
+  }
+
+  imagesToPreload.forEach(src => {
     const link = document.createElement('link');
     link.rel = 'preload';
     link.as = 'image';

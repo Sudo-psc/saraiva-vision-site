@@ -23,6 +23,7 @@ import { trackBlogInteraction, trackPageView, trackSearchInteraction } from '@/u
 import { generateCompleteSchemaBundle, getPostSpecificSchema } from '@/lib/blogSchemaMarkup';
 import { getPostsMetadata, getPostBySlug } from '@/services/blogDataService';
 import PortableTextRenderer from '@/components/PortableTextRenderer';
+import { useSanitizedHTML } from '@/utils/sanitizeHTML';
 
 // Helper function to format dates - extracted for performance
 const formatDate = (dateString) => {
@@ -59,6 +60,8 @@ const BlogPage = () => {
   const [postLoading, setPostLoading] = React.useState(false);
   const [postError, setPostError] = React.useState(null);
   const POSTS_PER_PAGE = 6;
+  const htmlContent = currentPost?.htmlContent || (typeof currentPost?.content === 'string' ? currentPost.content : '');
+  const sanitizedHtmlContent = useSanitizedHTML(htmlContent);
 
   React.useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -512,9 +515,8 @@ const BlogPage = () => {
                       prose-code:text-teal-700 prose-code:bg-teal-50 prose-code:px-2 prose-code:py-1 prose-code:rounded-md prose-code:text-sm xl:prose-code:text-base prose-code:font-mono
                       prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:p-5 xl:prose-pre:p-6 prose-pre:rounded-2xl prose-pre:overflow-x-auto prose-pre:shadow-lg"
                   >
-                    {/* Render HTML strings (static posts) or Portable Text (Sanity posts) */}
-                    {typeof currentPost.content === 'string' ? (
-                      <div dangerouslySetInnerHTML={{ __html: currentPost.content }} />
+                    {htmlContent ? (
+                      <div dangerouslySetInnerHTML={sanitizedHtmlContent} />
                     ) : (
                       <PortableTextRenderer content={currentPost.content} />
                     )}

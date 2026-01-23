@@ -137,6 +137,8 @@ const OlhoSecoPage = () => {
                         src="/img/meibografia icon.png"
                         alt="Clique para saber mais sobre o exame de meibografia"
                         className="w-5 h-5 object-contain"
+                        width={20}
+                        height={20}
                         loading="lazy"
                         decoding="async"
                       />
@@ -292,6 +294,10 @@ const OlhoSecoPage = () => {
                     src="/E-eye/sintomas-olho-seco.jpeg" 
                     alt="Infográfico de sintomas do olho seco" 
                     className="rounded-2xl shadow-xl w-full object-cover border border-slate-200 transition-transform duration-500 group-hover:scale-[1.02]"
+                    width={800}
+                    height={600}
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="absolute -bottom-4 -right-4 bg-white p-4 rounded-xl shadow-lg border border-slate-100 hidden md:flex items-center gap-3 max-w-xs">
                     <div className="bg-amber-100 p-2 rounded-full">
@@ -366,6 +372,10 @@ const OlhoSecoPage = () => {
                         src="/E-eye/anatomia_lagrima.jpeg" 
                         alt="Anatomia do filme lacrimal" 
                         className="rounded-xl border border-slate-200 shadow-md w-full"
+                        width={640}
+                        height={480}
+                        loading="lazy"
+                        decoding="async"
                       />
                       <p className="text-[10px] text-slate-500 text-center italic uppercase tracking-wider">Estrutura do Filme Lacrimal</p>
                     </div>
@@ -374,6 +384,10 @@ const OlhoSecoPage = () => {
                         src="/E-eye/anatomia_DGM-lagrima.jpeg" 
                         alt="Anatomia DGM e Lágrima" 
                         className="rounded-xl border border-slate-200 shadow-md w-full"
+                        width={640}
+                        height={480}
+                        loading="lazy"
+                        decoding="async"
                       />
                       <p className="text-[10px] text-slate-500 text-center italic uppercase tracking-wider">Glândulas de Meibômio e Estabilidade</p>
                     </div>
@@ -456,6 +470,10 @@ const OlhoSecoPage = () => {
                   src="/E-eye/icone_olho_seco_tratamento.jpeg" 
                   alt="Ícone de tratamento de olho seco" 
                   className="w-16 h-16 rounded-lg object-cover border border-slate-100 shadow-sm hidden md:block"
+                  width={64}
+                  height={64}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               
@@ -492,8 +510,8 @@ const OlhoSecoPage = () => {
                     <li>Medicamentos prescritos.</li>
                   </ul>
                   <div className="flex gap-2 mt-3 pt-3 border-t border-cyan-100">
-                    <img src="/E-eye/Icon_acdiohipocloroso.jpeg" alt="Ácido Hipocloroso" className="w-8 h-8 rounded shadow-sm border border-white" title="Tratamento para Demodex" />
-                    <img src="/E-eye/icon_plugLacrimal.jpeg" alt="Plugs Lacrimais" className="w-8 h-8 rounded shadow-sm border border-white" title="Oclusão pontual" />
+                    <img src="/E-eye/Icon_acdiohipocloroso.jpeg" alt="Ácido Hipocloroso" className="w-8 h-8 rounded shadow-sm border border-white" title="Tratamento para Demodex" width={32} height={32} loading="lazy" decoding="async" />
+                    <img src="/E-eye/icon_plugLacrimal.jpeg" alt="Plugs Lacrimais" className="w-8 h-8 rounded shadow-sm border border-white" title="Oclusão pontual" width={32} height={32} loading="lazy" decoding="async" />
                   </div>
                 </div>
 
@@ -509,7 +527,7 @@ const OlhoSecoPage = () => {
                     <li>Secretagogos orais.</li>
                   </ul>
                   <div className="flex gap-2 mt-3 pt-3 border-t border-sky-100">
-                    <img src="/E-eye/icon_lente_escleral.jpeg" alt="Lente Escleral" className="w-8 h-8 rounded shadow-sm border border-white" title="Lentes Esclerais" />
+                    <img src="/E-eye/icon_lente_escleral.jpeg" alt="Lente Escleral" className="w-8 h-8 rounded shadow-sm border border-white" title="Lentes Esclerais" width={32} height={32} loading="lazy" decoding="async" />
                   </div>
                 </div>
 
@@ -591,6 +609,8 @@ const OlhoSecoPage = () => {
                         src="/img/meibografia icon.png"
                         alt="Clique para saber mais sobre o exame de meibografia"
                         className="w-5 h-5 object-contain"
+                        width={20}
+                        height={20}
                         loading="lazy"
                         decoding="async"
                       />
@@ -628,6 +648,8 @@ const OlhoSecoPage = () => {
                         src="/icons_social/Badge_TFOS_DEWSIII.png"
                         alt="Diretrizes TFOS DEWS III 2025"
                         className="w-9 h-9 object-contain"
+                        width={36}
+                        height={36}
                         loading="lazy"
                         decoding="async"
                       />

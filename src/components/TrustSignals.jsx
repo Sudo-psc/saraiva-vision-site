@@ -145,6 +145,8 @@ const TrustSignals = () => {
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
                     loading="lazy"
                     decoding="async"
+                    width={128}
+                    height={80}
                   />
                 </div>
               </motion.div>

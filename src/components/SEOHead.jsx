@@ -37,6 +37,7 @@ const SEOHead = ({
   const currentLang = i18n.language || 'pt';
   const baseUrl = resolveBaseUrl();
   const currentPath = location.pathname;
+  const isHome = currentPath === '/' || currentPath === '';
 
   // Validar limites de caracteres para SEO
   const validatedTitle = React.useMemo(() => {
@@ -54,7 +55,7 @@ const SEOHead = ({
   const getOptimizedOgImage = () => {
     if (image) return image;
     // Usar imagem otimizada para OpenGraph (1200x630)
-    return `${baseUrl}/og-image-1200x630-optimized.jpg`;
+    return `${baseUrl}/opengraph-logo.png`;
   };
 
   // Generate site name based on language
@@ -106,6 +107,14 @@ const SEOHead = ({
     ? `${baseUrl}${normalizedCanonicalPath}`
     : `${baseUrl}${currentPath}`;
   const ogImage = getOptimizedOgImage();
+  const ogImageType = React.useMemo(() => {
+    const normalized = ogImage ? ogImage.split('?')[0].toLowerCase() : '';
+    if (normalized.endsWith('.png')) return 'image/png';
+    if (normalized.endsWith('.webp')) return 'image/webp';
+    if (normalized.endsWith('.avif')) return 'image/avif';
+    if (normalized.endsWith('.svg')) return 'image/svg+xml';
+    return 'image/jpeg';
+  }, [ogImage]);
 
   return (
     <Helmet>
@@ -153,7 +162,7 @@ const SEOHead = ({
       <meta property="og:image:alt" content={`${validatedTitle} - Clínica Saraiva Vision`} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta property="og:image:type" content="image/jpeg" />
+      <meta property="og:image:type" content={ogImageType} />
 
       {/* Medical Business Specific Open Graph */}
       <meta property="business:contact_data:street_address" content={business.address.street} />
@@ -215,17 +224,16 @@ const SEOHead = ({
       <link rel="preconnect" href="https://www.google-analytics.com" />
       <link rel="preconnect" href="https://connect.facebook.net" />
 
-      {/* Hero Image Preload (Dr. Philipe) */}
-      <link
-        rel="preload"
-        as="image"
-        href="/images/drphilipe_jaleco Medium.jpeg"
-        imagesrcset="/images/drphilipe_jaleco Medium.jpeg 800w, /images/drphilipe_jaleco2 Medium.jpeg 800w"
-        imagesizes="(min-width:1024px) 800px, 100vw"
-      />
-      {/* AVIF/WebP variants for modern browsers */}
-      <link rel="preload" as="image" href="/images/drphilipe_perfil-1280w.avif" type="image/avif" />
-      <link rel="preload" as="image" href="/images/drphilipe_perfil-1280w.webp" type="image/webp" />
+      {isHome && (
+        <link
+          rel="preload"
+          as="image"
+          href="/img/responsive/hero-637.webp"
+          type="image/webp"
+          imagesrcset="/img/responsive/hero-400.webp 400w, /img/responsive/hero-637.webp 637w, /img/responsive/hero-800.webp 800w"
+          imagesizes="(min-width:1024px) 637px, (min-width:768px) 500px, 100vw"
+        />
+      )}
 
       {/* DNS Prefetch for External Resources */}
       <link rel="dns-prefetch" href="//www.googletagmanager.com" />

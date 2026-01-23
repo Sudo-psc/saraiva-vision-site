@@ -12,7 +12,7 @@ const blogPosts = [
         title: 'Exame de Visão em Caratinga: Onde Fazer e Quando Agendar',
         excerpt: 'Descubra onde realizar exame de vista em Caratinga e quando é o momento ideal para agendar sua consulta.',
           content: `<p>Manter a saúde ocular em dia é essencial para quem vive em Caratinga. Na <strong>${clinicInfo.name}</strong>, utilizamos equipamentos modernos para garantir diagnósticos precisos.</p>
-<img src="https://images.unsplash.com/photo-1551886754-55a4801b4f32?auto=format&fit=crop&w=800&q=80" alt="Paciente realizando exame de visão" class="rounded-lg my-6" />
+  <img src="https://images.unsplash.com/photo-1551886754-55a4801b4f32?auto=format&fit=crop&w=800&q=80" alt="Paciente realizando exame de visão" class="rounded-lg my-6" loading="lazy" decoding="async" />
 <p>Recomenda-se que adultos façam um exame de visão a cada dois anos, ou anualmente se já usam lentes ou possuem histórico familiar de doenças oculares. Crianças devem ser avaliadas ao entrar na escola e sempre que apresentarem sinais de dificuldade.</p>
 <h2>Quando procurar um oftalmologista</h2>
 <p>Visão embaçada, dores de cabeça frequentes, sensibilidade à luz e dificuldade para focar de perto ou de longe são sinais de que está na hora de consultar um especialista. Mesmo sem sintomas, avaliações regulares ajudam a identificar problemas antes que se agravem.</p>
@@ -26,7 +26,7 @@ const blogPosts = [
         title: 'Eye Exam in Caratinga: Where to Go and When to Schedule',
         excerpt: 'Find out where to get an eye exam in Caratinga and the best time to schedule your appointment.',
           content: `<p>Keeping your eyes healthy is essential, especially in Caratinga. At <strong>${clinicInfo.name}</strong>, we use modern equipment to ensure precise diagnoses.</p>
-<img src="https://images.unsplash.com/photo-1551886754-55a4801b4f32?auto=format&fit=crop&w=800&q=80" alt="Patient undergoing eye examination" class="rounded-lg my-6" />
+  <img src="https://images.unsplash.com/photo-1551886754-55a4801b4f32?auto=format&fit=crop&w=800&q=80" alt="Patient undergoing eye examination" class="rounded-lg my-6" loading="lazy" decoding="async" />
 <p>Adults should schedule an eye exam every two years, or annually if they already wear lenses or have a family history of eye disease. Children need an evaluation when starting school and whenever they show signs of difficulty.</p>
 <h2>When to see an ophthalmologist</h2>
 <p>Blurred vision, frequent headaches, light sensitivity and trouble focusing up close or at a distance signal it's time for a checkup. Even without symptoms, regular exams help detect issues before they worsen.</p>
@@ -49,7 +49,7 @@ const blogPosts = [
         title: 'Lentes de Contato em Caratinga: Guia Completo para Iniciantes',
         excerpt: 'Veja como escolher e cuidar das lentes de contato em Caratinga com dicas dos nossos especialistas.',
           content: `<p>As lentes de contato são uma alternativa prática aos óculos para os moradores de Caratinga. Elas proporcionam liberdade para praticar esportes e garantem um campo de visão mais amplo.</p>
-<img src="https://images.unsplash.com/photo-1606312619284-c26c6a61dcd5?auto=format&fit=crop&w=800&q=80" alt="Estojo com lentes de contato" class="rounded-lg my-6" />
+  <img src="https://images.unsplash.com/photo-1606312619284-c26c6a61dcd5?auto=format&fit=crop&w=800&q=80" alt="Estojo com lentes de contato" class="rounded-lg my-6" loading="lazy" decoding="async" />
 <p>Existem lentes diárias, mensais e rígidas, cada uma indicada para necessidades diferentes. Nossos especialistas avaliam qual modelo se adapta melhor ao seu estilo de vida.</p>
 <h2>Cuidados essenciais</h2>
 <p>Lavar as mãos antes de manusear as lentes, usar solução adequada e respeitar o tempo de uso são passos fundamentais para evitar infecções. Nunca durma com as lentes sem orientação médica.</p>
@@ -63,7 +63,7 @@ const blogPosts = [
         title: 'Contact Lenses in Caratinga: A Beginner\'s Guide',
         excerpt: 'Learn how to choose and care for contact lenses in Caratinga with tips from our specialists.',
           content: `<p>Contact lenses are a practical alternative to glasses for residents of Caratinga. They offer freedom for sports and provide a wider field of view.</p>
-<img src="https://images.unsplash.com/photo-1606312619284-c26c6a61dcd5?auto=format&fit=crop&w=800&q=80" alt="Contact lens case" class="rounded-lg my-6" />
+  <img src="https://images.unsplash.com/photo-1606312619284-c26c6a61dcd5?auto=format&fit=crop&w=800&q=80" alt="Contact lens case" class="rounded-lg my-6" loading="lazy" decoding="async" />
 <p>There are daily, monthly and rigid lenses, each recommended for different needs. Our specialists evaluate which model best fits your lifestyle.</p>
 <h2>Essential care</h2>
 <p>Wash your hands before handling lenses, use the proper solution and respect the recommended wearing time to avoid infections. Never sleep with lenses without medical guidance.</p>

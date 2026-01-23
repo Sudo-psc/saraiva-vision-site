@@ -16,6 +16,7 @@ import {
   Timer,
   Sparkles,
   ArrowRight,
+  Play,
   Eye,
   Star,
   BadgeCheck,
@@ -122,9 +123,9 @@ const IRPLPage = () => {
       <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 scroll-block-internal">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-cyan-50 via-white to-sky-50">
-          <div className="max-w-6xl mx-auto px-6 lg:px-12 py-12 lg:py-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-              <div className="space-y-6">
+          <div className="max-w-[90rem] mx-auto px-6 lg:px-12 py-12 lg:py-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20 items-center">
+              <div className="space-y-8">
                 <div className="flex flex-wrap gap-3">
                   <div className="inline-flex items-center gap-2 rounded-full bg-cyan-100 text-cyan-700 px-4 py-2 text-sm font-semibold">
                     <Award className="w-4 h-4" />
@@ -136,38 +137,36 @@ const IRPLPage = () => {
                   </div>
                 </div>
 
-                <h1 className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
                   IRPL E-Eye para <span className="text-cyan-600">Olho Seco e DGM</span> em Caratinga
                 </h1>
 
-                <p className="text-lg text-slate-700 leading-relaxed">
+                <p className="text-xl text-slate-700 leading-relaxed max-w-2xl">
                   Tecnologia de luz pulsada regulada (<strong>IRPL®</strong>) com dispositivo E-Eye, aprovada pela
                   ANVISA, indicada para manejo do olho seco relacionado à Disfunção das Glândulas de Meibômio.
                   Na literatura, é reconhecida como padrão-ouro não invasivo para DGM.
-                  O protocolo é não invasivo e faz parte de um plano clínico individualizado, conforme avaliação
-                  da superfície ocular.
                 </p>
 
-                  <div className="flex items-center gap-3 bg-white border border-cyan-200 rounded-xl p-4 shadow-sm">
-                    <MapPin className="w-6 h-6 text-cyan-600 shrink-0" />
+                  <div className="flex items-center gap-4 bg-white border border-cyan-200 rounded-xl p-5 shadow-sm max-w-xl">
+                    <MapPin className="w-8 h-8 text-cyan-600 shrink-0" />
                     <div>
-                      <p className="font-semibold text-slate-900">Disponível em Caratinga e região</p>
-                      <p className="text-sm text-slate-600">Disponibilidade exclusiva no interior de Minas Gerais</p>
+                      <p className="font-bold text-slate-900 text-lg">Disponível em Caratinga e região</p>
+                      <p className="text-slate-600">Disponibilidade exclusiva no interior de Minas Gerais</p>
                     </div>
                   </div>
 
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-4 pt-4">
                   <Button
                     onClick={() => navigate('/agendamento')}
-                    className="bg-gradient-to-r from-cyan-600 to-sky-600 hover:from-cyan-700 hover:to-sky-700 text-white px-6 py-3 rounded-xl text-base font-semibold shadow-lg hover:shadow-xl"
+                    className="bg-gradient-to-r from-cyan-600 to-sky-600 hover:from-cyan-700 hover:to-sky-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-transform hover:scale-105"
                   >
                     Agendar Avaliação de Olho Seco
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                   <Button
                     variant="outline"
                     onClick={() => navigate('/olho-seco')}
-                    className="border-cyan-600 text-cyan-700 hover:bg-cyan-50 px-6 py-3 rounded-xl text-base font-semibold"
+                    className="border-cyan-600 text-cyan-700 hover:bg-cyan-50 px-8 py-4 rounded-xl text-lg font-semibold"
                   >
                     Ver Programa Olho Seco
                   </Button>
@@ -175,59 +174,66 @@ const IRPLPage = () => {
               </div>
 
               {/* Card E-Eye com Imagem do Equipamento */}
-              <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-8 shadow-2xl">
+              <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-8 lg:p-10 shadow-2xl relative overflow-hidden">
+                {/* Background effect */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                
                 {/* Imagem do Equipamento E-Eye */}
-                <div className="relative rounded-xl overflow-hidden mb-6 border border-white/20">
+                <div className="relative rounded-2xl overflow-hidden mb-8 border border-white/20 shadow-xl group">
                   <img
                     src="/E-eye/e-eye-equipAnvisa.jpeg"
                     alt="Equipamento E-Eye IRPL com certificação ANVISA - tecnologia francesa para tratamento de olho seco"
-                    className="w-full h-auto"
-                    loading="lazy"
+                    className="w-full h-auto transform transition-transform duration-700 group-hover:scale-105"
+                    width={1200}
+                    height={800}
+                    loading="eager"
+                    decoding="async"
+                    fetchPriority="high"
                   />
-                  <div className="absolute top-3 right-3 bg-emerald-500/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full">
+                  <div className="absolute top-4 right-4 bg-emerald-500/90 backdrop-blur-md text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">
                     ANVISA Aprovado
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500 to-sky-600 flex items-center justify-center shadow-lg">
-                    <Zap className="w-8 h-8 text-white" />
+                <div className="flex items-center gap-5 mb-8">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500 to-sky-600 flex items-center justify-center shadow-lg transform rotate-3">
+                    <Zap className="w-10 h-10 text-white" />
                   </div>
                   <div>
-                    <p className="text-cyan-300 font-semibold">Tecnologia E-Eye</p>
-                    <p className="text-2xl font-bold">IRPL® Francês</p>
+                    <p className="text-cyan-300 font-semibold tracking-wide uppercase text-sm">Tecnologia E-Eye</p>
+                    <p className="text-3xl font-bold">IRPL® Francês</p>
                   </div>
                 </div>
 
-                <p className="text-slate-300 mb-6 leading-relaxed">
+                <p className="text-slate-300 mb-8 leading-relaxed text-lg">
                   O E-Eye utiliza a tecnologia IRPL® (Intense Regulated Pulsed Light), desenvolvida para
                   uso oftalmológico na DGM. A indicação é feita após avaliação clínica e diagnóstico da
                   superfície ocular.
                 </p>
 
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-3">
-                    <BadgeCheck className="w-5 h-5 text-emerald-400" />
-                    <span>Aprovado pela ANVISA e CE Mark</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                  <div className="flex items-center gap-3 bg-white/5 p-3 rounded-lg">
+                    <BadgeCheck className="w-5 h-5 text-emerald-400 shrink-0" />
+                    <span className="text-sm font-medium">Aprovado ANVISA/CE</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <BadgeCheck className="w-5 h-5 text-emerald-400" />
-                    <span>Equipamento médico dedicado à oftalmologia</span>
+                  <div className="flex items-center gap-3 bg-white/5 p-3 rounded-lg">
+                    <BadgeCheck className="w-5 h-5 text-emerald-400 shrink-0" />
+                    <span className="text-sm font-medium">Equipamento médico</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <BadgeCheck className="w-5 h-5 text-emerald-400" />
-                    <span>Protocolos alinhados a diretrizes internacionais</span>
+                  <div className="flex items-center gap-3 bg-white/5 p-3 rounded-lg">
+                    <BadgeCheck className="w-5 h-5 text-emerald-400 shrink-0" />
+                    <span className="text-sm font-medium">Protocolos internacionais</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <BadgeCheck className="w-5 h-5 text-emerald-400" />
-                    <span>Diferente do IPL convencional (estético)</span>
+                  <div className="flex items-center gap-3 bg-white/5 p-3 rounded-lg">
+                    <BadgeCheck className="w-5 h-5 text-emerald-400 shrink-0" />
+                    <span className="text-sm font-medium">Diferente de IPL estético</span>
                   </div>
                 </div>
 
-                <div className="bg-white/10 rounded-xl p-4 border border-white/20">
-                  <p className="text-sm text-cyan-200">
-                    <strong className="text-white">Importante:</strong> IRPL® não é IPL estético.
-                    O objetivo é atuar na DGM com pulsos regulados e parâmetros clínicos adequados.
+                <div className="bg-white/10 rounded-xl p-5 border border-white/20 backdrop-blur-sm">
+                  <p className="text-base text-cyan-100">
+                    <strong className="text-white block mb-1">Importante:</strong>
+                    IRPL® não é IPL estético. O objetivo é atuar na DGM com pulsos regulados e parâmetros clínicos adequados.
                   </p>
                 </div>
               </div>
@@ -236,56 +242,65 @@ const IRPLPage = () => {
         </section>
 
         {/* Como Funciona */}
-        <section className="bg-white py-16">
-          <div className="max-w-6xl mx-auto px-6 lg:px-12">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+        <section className="bg-white py-20 lg:py-24">
+          <div className="max-w-[90rem] mx-auto px-6 lg:px-12">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">
                 Como o IRPL® Trata o Olho Seco?
               </h2>
-              <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+              <p className="text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
                 O IRPL® atua em mecanismos associados à Disfunção das Glândulas de Meibômio (DGM),
                 contribuindo para estabilidade do filme lacrimal dentro de um plano multimodal.
               </p>
             </div>
 
             {/* Infográfico Como Funciona */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12 items-center">
-              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-cyan-200">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 mb-20 items-center">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-cyan-100 group">
                 <img
                   src="/E-eye/como_funciona_e-eye.jpeg"
                   alt="Infográfico explicando como o tratamento E-Eye IRPL funciona - mecanismo de ação da luz pulsada nas glândulas de Meibômio"
-                  className="w-full h-auto"
+                  className="w-full h-auto transform transition-transform duration-700 group-hover:scale-105"
+                  width={1200}
+                  height={800}
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
-              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-cyan-200 bg-slate-900 aspect-video">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-cyan-100 bg-slate-900 aspect-video group">
                 <video
                   controls
                   preload="metadata"
                   playsInline
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
                   poster="/E-eye/E-eye-equip.jpeg"
                 >
                   <source src="/Videos/E-EYE-IRPL-Treatment.mp4" type="video/mp4" />
                   Seu navegador não suporta a tag de vídeo.
                 </video>
-                <div className="absolute top-4 left-4 bg-cyan-500/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
+                <div className="absolute top-6 left-6 bg-cyan-500/90 backdrop-blur-md text-white text-sm font-bold px-4 py-2 rounded-lg uppercase tracking-wider shadow-lg">
                   Vídeo Demonstrativo
                 </div>
               </div>
             </div>
 
-            <div className="bg-slate-900 rounded-2xl border border-cyan-200 overflow-hidden shadow-xl mb-12">
-              <div className="px-6 py-4 bg-gradient-to-r from-cyan-600 to-sky-600 text-white">
-                <h3 className="text-lg font-semibold">Vídeo: IRPL com E-Eye em ação</h3>
-                <p className="text-sm text-cyan-100">Demonstração clínica do procedimento e da aplicação</p>
+            {/* Video Destaque */}
+            <div className="bg-slate-900 rounded-3xl border border-cyan-900/50 overflow-hidden shadow-2xl mb-20 max-w-5xl mx-auto">
+              <div className="px-8 py-6 bg-gradient-to-r from-cyan-900 to-slate-900 text-white flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-bold flex items-center gap-3">
+                    <Play className="w-6 h-6 text-cyan-400 fill-current" />
+                    Vídeo: IRPL com E-Eye em ação
+                  </h3>
+                  <p className="text-cyan-200 mt-1 pl-9">Demonstração clínica do procedimento e da aplicação</p>
+                </div>
               </div>
-              <div className="aspect-video">
+              <div className="aspect-video bg-black">
                 <video
                   controls
                   preload="metadata"
                   playsInline
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   poster="/E-eye/E-eye-equip.jpeg"
                 >
                   <source src="/Videos/E-%20Eye%20IRPL%C2%AE.mp4" type="video/mp4" />
@@ -294,138 +309,157 @@ const IRPLPage = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-              <div className="bg-slate-50 rounded-2xl border border-slate-200 p-8">
-                <h3 className="text-2xl font-bold text-slate-900 mb-4">Por que o E-Eye é diferente</h3>
-                <p className="text-sm text-slate-600 leading-relaxed mb-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 mb-20">
+              <div className="bg-slate-50 rounded-3xl border border-slate-200 p-10 h-full flex flex-col justify-center">
+                <h3 className="text-3xl font-bold text-slate-900 mb-6">Por que o E-Eye é diferente</h3>
+                <p className="text-lg text-slate-600 leading-relaxed mb-6">
                   O E-Eye utiliza tecnologia IRPL® com pulsos regulados e homogêneos, desenvolvidos para
                   uso oftalmológico na DGM. É o único dispositivo aprovado pela ANVISA para olho seco
                   relacionado à Disfunção das Glândulas de Meibômio.
                 </p>
-                <p className="text-sm text-slate-600 leading-relaxed">
+                <p className="text-lg text-slate-600 leading-relaxed">
                   A indicação é clínica e individual, com avaliação completa da superfície ocular.
                   Em Caratinga e região, o acesso a essa tecnologia é exclusivo no interior de Minas Gerais.
                 </p>
-                <div className="mt-6 flex flex-wrap gap-3 text-xs text-slate-600">
-                  <span className="px-3 py-1 rounded-full bg-white border border-slate-200">Aprovado pela ANVISA</span>
-                  <span className="px-3 py-1 rounded-full bg-white border border-slate-200">IRPL® E-Eye</span>
-                  <span className="px-3 py-1 rounded-full bg-white border border-slate-200">Exclusivo na região</span>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <span className="px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-700 font-medium shadow-sm">Aprovado pela ANVISA</span>
+                  <span className="px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-700 font-medium shadow-sm">IRPL® E-Eye</span>
+                  <span className="px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-700 font-medium shadow-sm">Exclusivo na região</span>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-lg hover:shadow-xl transition-shadow">
                   <img
                     src="/E-eye/e-eye-equipAnvisa.jpeg"
                     alt="Equipamento E-Eye com certificação ANVISA para tratamento de olho seco por DGM"
-                    className="w-full h-auto rounded-xl"
+                    className="w-full h-auto rounded-xl mb-4"
+                    width={640}
+                    height={480}
                     loading="lazy"
+                    decoding="async"
                   />
-                  <p className="text-xs text-slate-600 mt-3">Equipamento E-Eye com certificação ANVISA.</p>
+                  <p className="text-sm font-medium text-slate-700">Equipamento E-Eye com certificação ANVISA.</p>
                 </div>
-                <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+                <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-lg hover:shadow-xl transition-shadow">
                   <img
                     src="/E-eye/infografico IRPL.jpeg"
                     alt="Infográfico sobre o tratamento IRPL para olho seco por DGM"
-                    className="w-full h-auto rounded-xl"
+                    className="w-full h-auto rounded-xl mb-4"
+                    width={640}
+                    height={480}
                     loading="lazy"
+                    decoding="async"
                   />
-                  <p className="text-xs text-slate-600 mt-3">Resumo visual do mecanismo IRPL®.</p>
+                  <p className="text-sm font-medium text-slate-700">Resumo visual do mecanismo IRPL®.</p>
                 </div>
-                <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+                <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-lg hover:shadow-xl transition-shadow">
                   <img
                     src="/E-eye/anatomia_DGM-lagrima.jpeg"
                     alt="Ilustração da anatomia da lágrima e da DGM"
-                    className="w-full h-auto rounded-xl"
+                    className="w-full h-auto rounded-xl mb-4"
+                    width={640}
+                    height={480}
                     loading="lazy"
+                    decoding="async"
                   />
-                  <p className="text-xs text-slate-600 mt-3">Camadas da lágrima e papel da DGM.</p>
+                  <p className="text-sm font-medium text-slate-700">Camadas da lágrima e papel da DGM.</p>
                 </div>
-                <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+                <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-lg hover:shadow-xl transition-shadow">
                   <img
                     src="/E-eye/exemplo-meibografia.jpeg"
                     alt="Exemplo de meibografia para avaliação das glândulas de Meibômio"
-                    className="w-full h-auto rounded-xl"
+                    className="w-full h-auto rounded-xl mb-4"
+                    width={640}
+                    height={480}
                     loading="lazy"
+                    decoding="async"
                   />
-                  <p className="text-xs text-slate-600 mt-3">Meibografia para diagnóstico preciso.</p>
+                  <p className="text-sm font-medium text-slate-700">Meibografia para diagnóstico preciso.</p>
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 mb-20">
               {/* Mecanismo de Ação */}
-              <div className="bg-gradient-to-br from-cyan-50 to-sky-50 rounded-2xl p-8 border border-cyan-100">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
-                    <Brain className="w-8 h-8 text-cyan-600" />
+              <div className="bg-gradient-to-br from-cyan-50 to-sky-50 rounded-3xl p-10 border border-cyan-100 shadow-lg">
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-white rounded-xl shadow-sm">
+                      <Brain className="w-8 h-8 text-cyan-600" />
+                    </div>
                     <h3 className="text-2xl font-bold text-slate-900">Reeducação Neurológica</h3>
                   </div>
                   <button
                     onClick={() => setShowNeuroModal(true)}
-                    className="flex items-center gap-2 text-cyan-700 hover:text-cyan-900 hover:bg-cyan-100 px-3 py-2 rounded-lg transition-colors text-sm font-semibold"
+                    className="flex items-center gap-2 text-cyan-700 hover:text-cyan-900 hover:bg-white/50 px-4 py-2 rounded-lg transition-colors text-sm font-bold"
                     aria-label="Saiba mais sobre o efeito neurológico do IRPL"
                   >
-                    <Info className="w-4 h-4" />
-                    <span>Entenda o Mecanismo</span>
+                    <Info className="w-5 h-5" />
+                    <span>Saiba mais</span>
                   </button>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold shrink-0">1</div>
+                <div className="space-y-6">
+                  <div className="flex gap-5">
+                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-cyan-700 font-bold text-xl shadow-sm shrink-0 border border-cyan-100">1</div>
                     <div>
-                      <h4 className="font-semibold text-slate-900">Alvo Estratégico</h4>
-                      <p className="text-sm text-slate-600">Pulsos aplicados nas regiões infraorbital e zigomática, onde passam os nervos parassimpáticos.</p>
+                      <h4 className="font-bold text-slate-900 text-lg mb-1">Alvo Estratégico</h4>
+                      <p className="text-slate-600 leading-relaxed">Pulsos aplicados nas regiões infraorbital e zigomática, onde passam os nervos parassimpáticos.</p>
                     </div>
                   </div>
-                  <div className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold shrink-0">2</div>
+                  <div className="flex gap-5">
+                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-cyan-700 font-bold text-xl shadow-sm shrink-0 border border-cyan-100">2</div>
                     <div>
-                      <h4 className="font-semibold text-slate-900">Microgradiente Térmico</h4>
-                      <p className="text-sm text-slate-600">Trens de pulsos calibrados penetram até 5mm, criando estímulo nervoso controlado.</p>
+                      <h4 className="font-bold text-slate-900 text-lg mb-1">Microgradiente Térmico</h4>
+                      <p className="text-slate-600 leading-relaxed">Trens de pulsos calibrados penetram até 5mm, criando estímulo nervoso controlado.</p>
                     </div>
                   </div>
-                  <div className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold shrink-0">3</div>
+                  <div className="flex gap-5">
+                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-cyan-700 font-bold text-xl shadow-sm shrink-0 border border-cyan-100">3</div>
                     <div>
-                      <h4 className="font-semibold text-slate-900">Liberação de Neurotransmissores</h4>
-                      <p className="text-sm text-slate-600">Reativa a comunicação neural que "ordena" as glândulas a secretar normalmente.</p>
+                      <h4 className="font-bold text-slate-900 text-lg mb-1">Liberação de Neurotransmissores</h4>
+                      <p className="text-slate-600 leading-relaxed">Reativa a comunicação neural que "ordena" as glândulas a secretar normalmente.</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Benefícios vs IPL */}
-              <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-                <div className="flex items-center gap-3 mb-6">
-                  <Activity className="w-8 h-8 text-emerald-600" />
+              <div className="bg-white rounded-3xl p-10 border border-slate-200 shadow-lg">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="p-3 bg-emerald-50 rounded-xl">
+                    <Activity className="w-8 h-8 text-emerald-600" />
+                  </div>
                   <h3 className="text-2xl font-bold text-slate-900">IRPL® vs IPL Convencional</h3>
                 </div>
 
                 {/* Imagem comparativa */}
-                <div className="relative rounded-xl overflow-hidden mb-6 border border-slate-200">
+                <div className="relative rounded-2xl overflow-hidden mb-8 border border-slate-200 shadow-md">
                   <img
                     src="/E-eye/comparativo-e-eye.jpeg"
                     alt="Comparativo entre IRPL E-Eye e IPL convencional - diferenças técnicas e resultados"
                     className="w-full h-auto"
+                    width={1200}
+                    height={800}
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
 
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
-                      <p className="font-semibold text-emerald-800 mb-2">IRPL® (E-Eye)</p>
-                      <ul className="space-y-1 text-emerald-700">
+                <div className="space-y-6">
+                  <div className="grid grid-cols-2 gap-6 text-sm">
+                    <div className="bg-emerald-50 p-6 rounded-2xl border border-emerald-100">
+                      <p className="font-bold text-emerald-800 mb-3 text-lg">IRPL® (E-Eye)</p>
+                      <ul className="space-y-2 text-emerald-700 font-medium">
                         <li>• Projetado para oftalmologia</li>
                         <li>• Pulsos regulados e homogêneos</li>
                         <li>• Foco em DGM e superfície ocular</li>
                         <li>• Protocolo clínico individualizado</li>
                       </ul>
                     </div>
-                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                      <p className="font-semibold text-slate-700 mb-2">IPL Convencional</p>
-                      <ul className="space-y-1 text-slate-600">
+                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                      <p className="font-bold text-slate-700 mb-3 text-lg">IPL Convencional</p>
+                      <ul className="space-y-2 text-slate-600">
                         <li>• Projetado para estética</li>
                         <li>• Energia com decaimento no pulso</li>
                         <li>• Indicação primária dermatológica</li>
@@ -434,8 +468,9 @@ const IRPLPage = () => {
                     </div>
                   </div>
 
-                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-                    <p className="text-sm text-amber-800">
+                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex gap-3">
+                    <Info className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
+                    <p className="text-sm text-amber-800 font-medium leading-relaxed">
                       <strong>Nota clínica:</strong> IRPL® utiliza parâmetros regulados e protocolo
                       oftalmológico específico, com indicação após avaliação da superfície ocular.
                     </p>
@@ -445,14 +480,14 @@ const IRPLPage = () => {
             </div>
 
             {/* Benefícios Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
               {benefits.map((benefit, index) => (
-                <div key={index} className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="w-12 h-12 rounded-full bg-cyan-100 flex items-center justify-center mb-4">
-                    <benefit.icon className="w-6 h-6 text-cyan-600" />
+                <div key={index} className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                  <div className="w-14 h-14 rounded-2xl bg-cyan-50 flex items-center justify-center mb-6">
+                    <benefit.icon className="w-7 h-7 text-cyan-600" />
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-2">{benefit.title}</h3>
-                  <p className="text-sm text-slate-600">{benefit.description}</p>
+                  <h3 className="text-xl font-bold text-slate-900 mb-3">{benefit.title}</h3>
+                  <p className="text-slate-600 leading-relaxed">{benefit.description}</p>
                 </div>
               ))}
             </div>
@@ -460,121 +495,137 @@ const IRPLPage = () => {
         </section>
 
         {/* Protocolo de Tratamento */}
-        <section className="bg-slate-50 py-16">
-          <div className="max-w-6xl mx-auto px-6 lg:px-12">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+        <section className="bg-slate-50 py-20 lg:py-24 border-y border-slate-200">
+          <div className="max-w-[90rem] mx-auto px-6 lg:px-12">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">
                 Protocolo de Tratamento IRPL
               </h2>
-              <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
                 O ciclo é definido após avaliação clínica e pode incluir 3 a 4 sessões, com ajustes conforme resposta.
               </p>
             </div>
 
             {/* Imagens do protocolo e aplicação */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-              <div className="relative rounded-2xl overflow-hidden shadow-lg border border-cyan-200">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16">
+              <div className="relative rounded-3xl overflow-hidden shadow-xl border border-white">
                 <img
                   src="/E-eye/aplicacao-e-eye2.jpeg"
                   alt="Aplicação do tratamento E-Eye IRPL na região periocular - procedimento não invasivo e indolor"
-                  className="w-full h-auto"
+                  className="w-full h-auto transform hover:scale-105 transition-transform duration-700"
+                  width={1200}
+                  height={800}
                   loading="lazy"
+                  decoding="async"
                 />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                  <p className="text-white text-sm font-medium">
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-8">
+                  <p className="text-white text-lg font-bold">
                     Aplicação do IRPL® na região periocular
                   </p>
                 </div>
               </div>
-              <div className="relative rounded-2xl overflow-hidden shadow-lg border border-cyan-200">
+              <div className="relative rounded-3xl overflow-hidden shadow-xl border border-white">
                 <img
                   src="/E-eye/protocolo-eye.jpeg"
                   alt="Protocolo de tratamento E-Eye IRPL - sessões e acompanhamento"
-                  className="w-full h-auto"
+                  className="w-full h-auto transform hover:scale-105 transition-transform duration-700"
+                  width={1200}
+                  height={800}
                   loading="lazy"
+                  decoding="async"
                 />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                  <p className="text-white text-sm font-medium">
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-8">
+                  <p className="text-white text-lg font-bold">
                     Protocolo padrão de tratamento
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
               {steps.map((step, index) => (
-                <div key={index} className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm relative">
-                  <div className="text-5xl font-black text-cyan-100 absolute top-4 right-4">{step.number}</div>
+                <div key={index} className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm relative overflow-hidden group hover:border-cyan-200 transition-colors">
+                  <div className="text-6xl font-black text-slate-100 absolute top-4 right-4 group-hover:text-cyan-50 transition-colors">{step.number}</div>
                   <div className="relative z-10">
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">{step.title}</h3>
-                    <p className="text-sm text-slate-600">{step.description}</p>
+                    <h3 className="text-xl font-bold text-slate-900 mb-3">{step.title}</h3>
+                    <p className="text-slate-600 leading-relaxed">{step.description}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-10 bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <div>
-                  <p className="text-4xl font-bold text-cyan-600 mb-2">3-4</p>
-                  <p className="text-slate-600">Sessões no ciclo inicial</p>
+            <div className="mt-12 bg-white rounded-3xl p-10 border border-slate-200 shadow-lg">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-slate-100">
+                <div className="p-4">
+                  <p className="text-5xl font-bold text-cyan-600 mb-3">3-4</p>
+                  <p className="text-lg text-slate-700 font-medium">Sessões no ciclo inicial</p>
                 </div>
-                <div>
-                  <p className="text-4xl font-bold text-cyan-600 mb-2">10-15</p>
-                  <p className="text-slate-600">Minutos por sessão</p>
+                <div className="p-4">
+                  <p className="text-5xl font-bold text-cyan-600 mb-3">10-15</p>
+                  <p className="text-lg text-slate-700 font-medium">Minutos por sessão</p>
                 </div>
-                <div>
-                  <p className="text-4xl font-bold text-cyan-600 mb-2">1</p>
-                  <p className="text-slate-600">Plano de manutenção individual</p>
+                <div className="p-4">
+                  <p className="text-5xl font-bold text-cyan-600 mb-3">1</p>
+                  <p className="text-lg text-slate-700 font-medium">Plano de manutenção individual</p>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="bg-white py-16">
-          <div className="max-w-6xl mx-auto px-6 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-              <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">O que esperar na avaliação</h2>
-                <p className="text-sm text-slate-600 leading-relaxed mb-6">
+        <section className="bg-white py-20 lg:py-24">
+          <div className="max-w-[90rem] mx-auto px-6 lg:px-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-20">
+              <div className="bg-white rounded-3xl border border-slate-200 p-10 shadow-lg">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-3 bg-cyan-50 rounded-xl">
+                    <Eye className="w-8 h-8 text-cyan-600" />
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900">O que esperar na avaliação</h2>
+                </div>
+                <p className="text-lg text-slate-600 leading-relaxed mb-8">
                   A avaliação inclui histórico clínico, exame da superfície ocular e, quando indicado,
                   testes específicos para definir o tipo de olho seco. O objetivo é identificar o fenótipo
                   e montar um plano seguro e eficaz.
                 </p>
-                <ul className="space-y-3 text-sm text-slate-700">
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Meibografia para analisar as glândulas de Meibômio.</span>
+                <ul className="space-y-4 text-slate-700">
+                  <li className="flex items-start gap-4">
+                    <CheckCircle className="w-6 h-6 text-emerald-500 mt-0.5 shrink-0" />
+                    <span className="text-lg">Meibografia para analisar as glândulas de Meibômio.</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Avaliação de estabilidade do filme lacrimal e sinais de inflamação.</span>
+                  <li className="flex items-start gap-4">
+                    <CheckCircle className="w-6 h-6 text-emerald-500 mt-0.5 shrink-0" />
+                    <span className="text-lg">Avaliação de estabilidade do filme lacrimal e sinais de inflamação.</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Orientações de cuidados diários e ajustes de rotina.</span>
+                  <li className="flex items-start gap-4">
+                    <CheckCircle className="w-6 h-6 text-emerald-500 mt-0.5 shrink-0" />
+                    <span className="text-lg">Orientações de cuidados diários e ajustes de rotina.</span>
                   </li>
                 </ul>
               </div>
-              <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">Segurança e contraindicações</h2>
-                <p className="text-sm text-slate-600 leading-relaxed mb-6">
+              <div className="bg-white rounded-3xl border border-slate-200 p-10 shadow-lg">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-3 bg-amber-50 rounded-xl">
+                    <ShieldCheck className="w-8 h-8 text-amber-600" />
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Segurança e contraindicações</h2>
+                </div>
+                <p className="text-lg text-slate-600 leading-relaxed mb-8">
                   O IRPL® é um procedimento não invasivo, indicado após avaliação médica. Algumas condições
                   exigem cuidado especial ou contraindicam o tratamento, por isso a decisão é individual.
                 </p>
-                <ul className="space-y-3 text-sm text-slate-700">
-                  <li className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-cyan-600 mt-0.5 shrink-0" />
-                    <span>Gestação, uso de fármacos fotossensibilizantes ou pele muito bronzeada.</span>
+                <ul className="space-y-4 text-slate-700">
+                  <li className="flex items-start gap-4">
+                    <Info className="w-6 h-6 text-cyan-600 mt-0.5 shrink-0" />
+                    <span className="text-lg">Gestação, uso de fármacos fotossensibilizantes ou pele muito bronzeada.</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-cyan-600 mt-0.5 shrink-0" />
-                    <span>Lesões ativas na área tratada ou infecções oculares em curso.</span>
+                  <li className="flex items-start gap-4">
+                    <Info className="w-6 h-6 text-cyan-600 mt-0.5 shrink-0" />
+                    <span className="text-lg">Lesões ativas na área tratada ou infecções oculares em curso.</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-cyan-600 mt-0.5 shrink-0" />
-                    <span>Uso de lentes de contato deve ser ajustado conforme orientação médica.</span>
+                  <li className="flex items-start gap-4">
+                    <Info className="w-6 h-6 text-cyan-600 mt-0.5 shrink-0" />
+                    <span className="text-lg">Uso de lentes de contato deve ser ajustado conforme orientação médica.</span>
                   </li>
                 </ul>
               </div>
@@ -583,76 +634,92 @@ const IRPLPage = () => {
         </section>
 
         {/* Indicações */}
-        <section className="bg-white py-16">
-          <div className="max-w-6xl mx-auto px-6 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <section className="bg-slate-50 py-20 lg:py-24 border-t border-slate-200">
+          <div className="max-w-[90rem] mx-auto px-6 lg:px-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20">
               <div>
-                <h2 className="text-3xl font-bold text-slate-900 mb-6">
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-8">
                   Para Quem é Indicado?
                 </h2>
-                <div className="space-y-4">
-                  <div className="flex gap-3 bg-emerald-50 p-4 rounded-xl border border-emerald-100">
-                    <CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" />
+                <div className="grid gap-6">
+                  <div className="flex gap-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
+                      <CheckCircle className="w-6 h-6 text-emerald-600" />
+                    </div>
                     <div>
-                      <p className="font-semibold text-slate-900">Olho Seco Evaporativo</p>
-                      <p className="text-sm text-slate-600">Quadro associado à Disfunção das Glândulas de Meibômio (DGM)</p>
+                      <p className="font-bold text-slate-900 text-lg mb-1">Olho Seco Evaporativo</p>
+                      <p className="text-slate-600">Quadro associado à Disfunção das Glândulas de Meibômio (DGM)</p>
                     </div>
                   </div>
-                  <div className="flex gap-3 bg-emerald-50 p-4 rounded-xl border border-emerald-100">
-                    <CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" />
+                  <div className="flex gap-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
+                      <CheckCircle className="w-6 h-6 text-emerald-600" />
+                    </div>
                     <div>
-                      <p className="font-semibold text-slate-900">Blefarite Crônica</p>
-                      <p className="text-sm text-slate-600">Inflamação persistente das pálpebras com obstrução glandular</p>
+                      <p className="font-bold text-slate-900 text-lg mb-1">Blefarite Crônica</p>
+                      <p className="text-slate-600">Inflamação persistente das pálpebras com obstrução glandular</p>
                     </div>
                   </div>
-                  <div className="flex gap-3 bg-emerald-50 p-4 rounded-xl border border-emerald-100">
-                    <CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" />
+                  <div className="flex gap-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
+                      <CheckCircle className="w-6 h-6 text-emerald-600" />
+                    </div>
                     <div>
-                      <p className="font-semibold text-slate-900">Sintomas Persistentes</p>
-                      <p className="text-sm text-slate-600">Ardor, areia, vermelhidão ou fotofobia apesar do cuidado inicial</p>
+                      <p className="font-bold text-slate-900 text-lg mb-1">Sintomas Persistentes</p>
+                      <p className="text-slate-600">Ardor, areia, vermelhidão ou fotofobia apesar do cuidado inicial</p>
                     </div>
                   </div>
-                  <div className="flex gap-3 bg-emerald-50 p-4 rounded-xl border border-emerald-100">
-                    <CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" />
+                  <div className="flex gap-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
+                      <CheckCircle className="w-6 h-6 text-emerald-600" />
+                    </div>
                     <div>
-                      <p className="font-semibold text-slate-900">Preparo para Cirurgias Oculares</p>
-                      <p className="text-sm text-slate-600">Otimização da superfície antes de catarata ou refrativa</p>
+                      <p className="font-bold text-slate-900 text-lg mb-1">Preparo para Cirurgias Oculares</p>
+                      <p className="text-slate-600">Otimização da superfície antes de catarata ou refrativa</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h2 className="text-3xl font-bold text-slate-900 mb-6">
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-8">
                   Por Que Escolher a Saraiva Vision?
                 </h2>
-                <div className="space-y-4">
-                  <div className="flex gap-3 bg-cyan-50 p-4 rounded-xl border border-cyan-100">
-                    <Award className="w-5 h-5 text-cyan-600 mt-0.5 shrink-0" />
+                <div className="grid gap-6">
+                  <div className="flex gap-5 bg-white p-6 rounded-2xl border border-cyan-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 rounded-full bg-cyan-50 flex items-center justify-center shrink-0">
+                      <Award className="w-6 h-6 text-cyan-600" />
+                    </div>
                     <div>
-                      <p className="font-semibold text-slate-900">Exclusivo no Interior de MG</p>
-                      <p className="text-sm text-slate-600">Disponível em Caratinga e região</p>
+                      <p className="font-bold text-slate-900 text-lg mb-1">Exclusivo no Interior de MG</p>
+                      <p className="text-slate-600">Disponível em Caratinga e região</p>
                     </div>
                   </div>
-                  <div className="flex gap-3 bg-cyan-50 p-4 rounded-xl border border-cyan-100">
-                    <Eye className="w-5 h-5 text-cyan-600 mt-0.5 shrink-0" />
+                  <div className="flex gap-5 bg-white p-6 rounded-2xl border border-cyan-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 rounded-full bg-cyan-50 flex items-center justify-center shrink-0">
+                      <Eye className="w-6 h-6 text-cyan-600" />
+                    </div>
                     <div>
-                      <p className="font-semibold text-slate-900">Diagnóstico Completo</p>
-                      <p className="text-sm text-slate-600">Meibografia e classificação clínica alinhadas ao TFOS DEWS III</p>
+                      <p className="font-bold text-slate-900 text-lg mb-1">Diagnóstico Completo</p>
+                      <p className="text-slate-600">Meibografia e classificação clínica alinhadas ao TFOS DEWS III</p>
                     </div>
                   </div>
-                  <div className="flex gap-3 bg-cyan-50 p-4 rounded-xl border border-cyan-100">
-                    <Heart className="w-5 h-5 text-cyan-600 mt-0.5 shrink-0" />
+                  <div className="flex gap-5 bg-white p-6 rounded-2xl border border-cyan-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 rounded-full bg-cyan-50 flex items-center justify-center shrink-0">
+                      <Heart className="w-6 h-6 text-cyan-600" />
+                    </div>
                     <div>
-                      <p className="font-semibold text-slate-900">Plano Individualizado</p>
-                      <p className="text-sm text-slate-600">Conduta definida após avaliação da superfície ocular</p>
+                      <p className="font-bold text-slate-900 text-lg mb-1">Plano Individualizado</p>
+                      <p className="text-slate-600">Conduta definida após avaliação da superfície ocular</p>
                     </div>
                   </div>
-                  <div className="flex gap-3 bg-cyan-50 p-4 rounded-xl border border-cyan-100">
-                    <ShieldCheck className="w-5 h-5 text-cyan-600 mt-0.5 shrink-0" />
+                  <div className="flex gap-5 bg-white p-6 rounded-2xl border border-cyan-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 rounded-full bg-cyan-50 flex items-center justify-center shrink-0">
+                      <ShieldCheck className="w-6 h-6 text-cyan-600" />
+                    </div>
                     <div>
-                      <p className="font-semibold text-slate-900">Equipamento Original</p>
-                      <p className="text-sm text-slate-600">E-Eye francês com certificação ANVISA e CE Mark</p>
+                      <p className="font-bold text-slate-900 text-lg mb-1">Equipamento Original</p>
+                      <p className="text-slate-600">E-Eye francês com certificação ANVISA e CE Mark</p>
                     </div>
                   </div>
                 </div>
@@ -745,6 +812,14 @@ const IRPLPage = () => {
               >
                 Falar pelo WhatsApp
               </button>
+              <a
+                href="https://docs.google.com/presentation/d/1BCnFtEPoVIfvyP93hReBXEle-hCSIb8QnF9qbsp2xQU/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border-2 border-white/60 text-white hover:bg-white/20 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300"
+              >
+                Ver apresentação IRPL
+              </a>
             </div>
             <p className="text-sm text-cyan-200 mt-6">
               A indicação e a resposta ao tratamento variam conforme cada paciente e devem ser avaliadas pelo oftalmologista.
@@ -846,6 +921,10 @@ const IRPLPage = () => {
                       src="/E-eye/Efeito_neurológico_e-eye.jpeg"
                       alt="Diagrama ilustrando o efeito neurológico do IRPL E-Eye nas glândulas de Meibômio - estimulação parassimpática"
                       className="w-full h-auto rounded-lg border border-slate-300"
+                      width={800}
+                      height={600}
+                      loading="lazy"
+                      decoding="async"
                     />
                     <p className="text-xs text-slate-500 mt-2">
                       Ilustração do mecanismo de ação neurológica do IRPL® nas regiões periorbital e zigomática
@@ -864,6 +943,10 @@ const IRPLPage = () => {
                       src="/E-eye/infografico IRPL.jpeg"
                       alt="Infográfico explicando os benefícios e mecanismo de ação do tratamento IRPL para olho seco"
                       className="w-full h-auto rounded-lg border border-slate-300"
+                      width={800}
+                      height={600}
+                      loading="lazy"
+                      decoding="async"
                     />
                     <p className="text-xs text-slate-500 mt-2">
                       Resumo visual dos benefícios e mecanismo de ação do IRPL®

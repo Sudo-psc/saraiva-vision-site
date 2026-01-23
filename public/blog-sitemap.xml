@@ -2,22 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <!-- Generated: 2025-12-22T00:33:14.829Z -->
+  <!-- Generated: 2026-01-23T18:02:06.812Z -->
   <!-- Blog Articles - Saraiva Vision - Oftalmologia em Caratinga/MG -->
   <!-- Dr. Philipe Saraiva Cruz - CRM-MG 69.870 -->
-  <!-- Total articles: 30 -->
+  <!-- Total articles: 31 -->
   <!-- All articles are medically reviewed and optimized for LLMs and AI agents -->
   
   <!-- Blog Index Page -->
   <url>
     <loc>https://saraivavision.com.br/blog</loc>
-    <lastmod>2025-12-22T00:33:14.829Z</lastmod>
+    <lastmod>2026-01-23T18:02:06.812Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="pt-br" href="https://saraivavision.com.br/blog" />
   </url>
 
   <!-- Individual Blog Articles -->
+  <url>
+    <loc>https://saraivavision.com.br/blog/olho-seco-cronico-nao-tratado-consequencias-risco-perda-visual</loc>
+    <lastmod>2025-11-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt-br" href="https://saraivavision.com.br/blog/olho-seco-cronico-nao-tratado-consequencias-risco-perda-visual" />
+  </url>
   <url>
     <loc>https://saraivavision.com.br/blog/olho-seco-plugs-lacrimais-meibografia-caratinga-mg</loc>
     <lastmod>2025-10-31</lastmod>

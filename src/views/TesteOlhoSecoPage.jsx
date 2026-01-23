@@ -5,6 +5,7 @@ import { ArrowLeft, Clock, CheckCircle, AlertTriangle, Calendar, MessageCircle, 
 import SEOHead from '@/components/SEOHead';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import Navbar from '@/components/Navbar';
+import { Button } from '@/components/ui/button.jsx';
 
 const TesteOlhoSecoPage = () => {
   const navigate = useNavigate();
@@ -375,7 +376,7 @@ const TesteOlhoSecoPage = () => {
                 </ul>
               </div>
 
-              <button 
+              <button
                 onClick={resetTest}
                 className="mt-8 text-slate-400 hover:text-white underline underline-offset-4 mb-12"
               >
@@ -385,16 +386,9 @@ const TesteOlhoSecoPage = () => {
           )}
         </AnimatePresence>
       </main>
-    </div>
-  );
-};
 
-// Componente de botão auxiliar para manter o estilo
-const Button = ({ children, className, variant, ...props }) => {
-  return (
-    <button className={`${className} transition-all duration-300`} {...props}>
-      {children}
-    </button>
+      <EnhancedFooter />
+    </div>
   );
 };
 

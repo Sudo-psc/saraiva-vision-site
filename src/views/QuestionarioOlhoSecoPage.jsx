@@ -404,7 +404,7 @@ const QuestionarioOlhoSecoPage = () => {
                     <div className="bg-green-50 border border-green-200 rounded-lg p-6">
                       <h3 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
                         <Calendar className="w-5 h-5" />
-                        Promoção Especial Outubro
+                        Promoção Especial
                       </h3>
                       <p className="text-green-800 mb-1">
                         <strong className="text-xl">R$ 100 OFF</strong> no exame de Meibografia
@@ -587,7 +587,7 @@ const QuestionarioOlhoSecoPage = () => {
                             <Calendar className="w-8 h-8 text-green-600 flex-shrink-0" />
                             <div>
                               <h3 className="font-bold text-green-900 text-xl mb-2">
-                                Promoção Especial Outubro
+                                Promoção Especial
                               </h3>
                               <p className="text-green-800 mb-3">
                                 <strong className="text-2xl">R$ 100 OFF</strong> no exame de <strong>Meibografia</strong>
@@ -620,7 +620,7 @@ const QuestionarioOlhoSecoPage = () => {
                         </Button>
                         <Button
                           className="flex-1 bg-sky-600 hover:bg-sky-700"
-                          onClick={() => window.open('https://wa.me/5533999999999?text=Olá! Fiz o questionário de olho seco e gostaria de agendar uma consulta.', '_blank')}
+                          onClick={() => window.open('https://wa.me/5533998601427?text=Olá! Fiz o questionário de olho seco e gostaria de agendar uma consulta.', '_blank')}
                         >
                           <MessageCircle className="mr-2 w-4 h-4" />
                           Agendar via WhatsApp
@@ -826,7 +826,7 @@ const QuestionarioOlhoSecoPage = () => {
                       </Button>
                       <Button
                         className="flex-1 bg-green-600 hover:bg-green-700"
-                        onClick={() => window.open('https://wa.me/553333212293?text=Olá! Fiz o questionário de olho seco e gostaria de agendar uma consulta com a promoção de meibografia.', '_blank')}
+                        onClick={() => window.open('https://wa.me/5533998601427?text=Olá! Fiz o questionário de olho seco e gostaria de agendar uma consulta com a promoção de meibografia.', '_blank')}
                       >
                         <MessageCircle className="mr-2 w-4 h-4" />
                         Agendar Agora
@@ -850,7 +850,7 @@ const QuestionarioOlhoSecoPage = () => {
                 <div className="text-center">
                   <MessageCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
                   <h3 className="font-semibold mb-1">WhatsApp</h3>
-                  <p className="text-sm text-gray-600">(33) 99999-9999</p>
+                  <p className="text-sm text-gray-600">(33) 99860-1427</p>
                 </div>
                 <div className="text-center">
                   <Mail className="w-8 h-8 text-purple-600 mx-auto mb-2" />

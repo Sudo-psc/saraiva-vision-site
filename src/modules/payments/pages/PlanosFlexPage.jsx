@@ -11,7 +11,7 @@ const PlanosFlexPage = () => {
     description: 'Planos flexíveis de lentes de contato sem fidelidade. Cancele quando quiser, sem burocracia.',
     keywords: 'planos sem fidelidade, lentes contato flexível, planos mensais lentes',
     canonicalUrl: 'https://saraivavision.com.br/planosflex',
-    ogImage: 'https://saraivavision.com.br/og-image.jpg'
+    ogImage: 'https://saraivavision.com.br/opengraph-logo.png'
   };
 
   useEffect(() => {

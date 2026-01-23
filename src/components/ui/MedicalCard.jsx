@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import SafeImage from '@/components/ui/SafeImage';
 import { Button } from '@/components/ui/button';
 import { useAnimationConfig, useMediaLoader } from '@/hooks/useUnifiedComponents';
+import '../../styles/design-system.css';
+import '../../styles/glassMorphism.css';
 import {
   cn,
   getSizeClasses,

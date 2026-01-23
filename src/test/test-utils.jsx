@@ -34,8 +34,8 @@ const mockTranslations = {
   'services.items.consultations.description': 'Exames completos para cuidar da sua visão',
   
   // Hero component
-  'hero.title': 'Cuidando da sua <1>visão</1> com excelência',
-  'hero.subtitle': 'Na Saraiva Vision, combinamos tecnologia de ponta com um atendimento humanizado',
+  'hero.title': 'Alívio real para <1>olho seco</1> com diagnóstico completo em Caratinga',
+  'hero.subtitle': 'IRPL, meibografia e plano personalizado para reduzir ardor, vermelhidão e visão embaçada com acompanhamento do Dr. Philipe Saraiva (CRM-MG 69.870).',
   'hero.schedule_button': 'Agendar Consulta',
   'hero.services_button': 'Nossos Serviços',
   'hero.microcopy_fast_confirmation': 'Preencha seus dados e receba confirmação em 1 minuto',

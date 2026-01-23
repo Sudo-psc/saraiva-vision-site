@@ -2,6 +2,8 @@ import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import removeConsolePlugin from './vite-plugin-remove-console.js'
+import asyncCssPlugin from './vite-plugin-async-css.js'
+import deferScriptsPlugin from './vite-plugin-defer-scripts.js'
 
 // Image optimization imports (commented out for compatibility)
 // Note: These plugins require additional dependencies that may need to be installed
@@ -11,14 +13,18 @@ import removeConsolePlugin from './vite-plugin-remove-console.js'
 // Enable workbox plugin with VPS environment check
 const plugins = [
   react({
-    // Use automatic JSX runtime
+    // Use automatic JSX runtime - production mode handled by Vite
     jsxRuntime: 'automatic',
-    // Include refresh for development
+    // Include refresh for development only
     include: '**/*.{jsx,tsx}'
-   })
+  }),
+  // Async CSS loading - eliminates render-blocking stylesheets
+  asyncCssPlugin(),
+  // Defer non-critical scripts to improve LCP
+  deferScriptsPlugin()
   // Note: removeConsolePlugin() disabled due to aggressive regex causing syntax errors
   // Manual console removal applied to critical files instead
- ]
+]
 
 // Workbox plugin disabled for stable deployment
 // if (process.env.NODE_ENV === 'development') {
@@ -59,6 +65,7 @@ function validateEnvironmentVariables(env, mode) {
 export default defineConfig(({ mode }) => {
   // Load environment variables
   const env = loadEnv(mode, process.cwd(), '');
+  const isProd = mode === 'production';
 
   // Validate environment variables (skip in test mode to avoid noise)
   if (mode !== 'test') {
@@ -66,290 +73,344 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
-  plugins,
-  base: '/', // Ensure proper base path for VPS deployment
-  define: {
-    // Fallback for legacy process.env usage in libraries
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
-  },
-  esbuild: {
-    charset: 'utf8'
-    // Let React plugin handle JSX transformation with automatic runtime
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
+    plugins,
+    base: '/', // Ensure proper base path for VPS deployment
+    define: {
+      // Fallback for legacy process.env usage in libraries
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
     },
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-    dedupe: ['react', 'react-dom'] // Prevent React duplication issues
-  },
-  optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react/jsx-runtime',
-      '@portabletext/react',
-      '@sanity/client',
-      '@sanity/image-url',
-      'react-hook-form' // Fix ESM initialization error
-    ],
-    exclude: ['date-fns', 'crypto-js', 'framer-motion']
-  },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./src/__tests__/setup.js'],
-    include: ['**/*.{test,spec}.{js,jsx,ts,tsx}'],
-    exclude: ['node_modules', 'dist']
-  },
-
-  build: {
-    outDir: 'dist',
-    sourcemap: true, // Enabled for production debugging (CORS error tracking)
-    chunkSizeWarningLimit: 100, // Reduced to 150KB for optimal loading performance
-    assetsDir: 'assets',
-    assetsInlineLimit: 4096, // Increased to 4KB for small assets (reduces HTTP requests)
-    minify: 'esbuild',
-    target: 'es2020', // Modern target for better optimization
-    cssCodeSplit: true, // Split CSS for better caching
-    // Enhanced tree-shaking configuration
-    treeShake: {
-      moduleSideEffects: false,
-      propertyReadSideEffects: false,
-      trySideEffects: false
+    esbuild: {
+      charset: 'utf8',
+      drop: isProd ? ['console', 'debugger'] : []
     },
-    // Enhanced minification and tree-shaking
-    reportCompressedSize: true,
-    modulePreload: {
-      polyfill: false // Disable polyfill for modern browsers
-    },
-    // Aggressive dead code elimination
-    terserOptions: {
-      compress: {
-        drop_console: true, // Remove console.log in production
-        drop_debugger: true,
-        pure_funcs: ['console.info', 'console.debug', 'console.warn'],
-        passes: 2 // Run compression twice for better results
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
       },
-      mangle: {
-        safari10: true // Fix Safari 10 issues
-      }
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+      dedupe: ['react', 'react-dom'] // Prevent React duplication issues
     },
-    rollupOptions: {
-      input: 'index.html',
-      output: {
-        // Enhanced chunking strategy for healthcare platform (<200KB target per chunk)
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            // Core React packages - further split for optimal loading
-            if (id.includes('react-dom/')) {
-              return 'react-dom'
-            }
-            if (id.includes('react/') || id.includes('react/jsx-runtime')) {
-              return 'react-core'
+    optimizeDeps: {
+      include: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        '@portabletext/react',
+        '@sanity/client',
+        '@sanity/image-url',
+        'react-hook-form' // Fix ESM initialization error
+      ],
+      exclude: ['date-fns', 'crypto-js', 'framer-motion']
+    },
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: ['./src/__tests__/setup.js'],
+      include: ['**/*.{test,spec}.{js,jsx,ts,tsx}'],
+      exclude: ['node_modules', 'dist']
+    },
+
+    build: {
+      outDir: 'dist',
+      sourcemap: true, // Enabled for production debugging (CORS error tracking)
+      chunkSizeWarningLimit: 100, // Reduced to 150KB for optimal loading performance
+      assetsDir: 'assets',
+      assetsInlineLimit: 4096, // Increased to 4KB for small assets (reduces HTTP requests)
+      minify: 'esbuild',
+      target: 'es2020', // Modern target for better optimization
+      cssCodeSplit: true, // Split CSS for better caching
+      // Enhanced tree-shaking configuration
+      treeShake: {
+        moduleSideEffects: false,
+        propertyReadSideEffects: false,
+        trySideEffects: false
+      },
+      reportCompressedSize: true,
+      modulePreload: {
+        polyfill: false // Disable polyfill for modern browsers
+      },
+      // Aggressive dead code elimination
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+          pure_funcs: ['console.info', 'console.debug', 'console.warn'],
+          passes: 2
+        },
+        mangle: {
+          safari10: true
+        }
+      },
+      rollupOptions: {
+        input: 'index.html',
+        output: {
+          // Enhanced chunking strategy for healthcare platform (<200KB target per chunk)
+          manualChunks(id) {
+            // i18n translations - deferred loading chunk
+            if (id.includes('locales/') && (id.includes('.json') || id.includes('translation'))) {
+              return 'translations'
             }
 
-            // React Router - separate chunk for patient navigation
-            if (id.includes('react-router')) {
-              return 'router'
-            }
-
-            // React Hook Form - separate chunk to avoid ESM initialization errors
-            if (id.includes('react-hook-form')) {
-              return 'react-hook-form'
-            }
-
-            // Custom hooks and contexts - separate for better caching
-            if (id.includes('useGoogleReviews') || id.includes('useSEO') || id.includes('useAnalytics')) {
-              return 'hooks'
-            }
-
-            // Radix UI - group together but optimize for accessibility compliance
-            if (id.includes('@radix-ui')) {
-              return 'radix-ui'
-            }
-
-            // Framer Motion - heavy animation library, lazy load for non-essential animations
-            if (id.includes('framer-motion')) {
-              return 'motion'
-            }
-
-            // React Helmet - critical for medical SEO and compliance
-            if (id.includes('react-helmet')) {
-              return 'helmet'
-            }
-
-            // Date utilities - optimized for appointment scheduling
-            if (id.includes('dayjs')) {
-              return 'date-utils'
-            }
-
-            // CSS/Styling utilities - essential for responsive medical content
-            if (id.includes('clsx') || id.includes('class-variance-authority') || id.includes('tailwind-merge')) {
-              return 'style-utils'
-            }
-
-            // Security and validation utilities (critical for healthcare compliance)
-            if (id.includes('dompurify') || id.includes('zod')) {
-              return 'security-utils'
-            }
-
-            // Healthcare-specific analytics and monitoring
-            if (id.includes('posthog') || id.includes('web-vitals')) {
-              return 'analytics'
-            }
-
-            // Icons libraries - split by usage frequency
-            if (id.includes('lucide-react')) {
-              return 'icons'
-            }
-
-            // Google Maps - critical for clinic location (medical compliance)
-            if (id.includes('googlemaps')) {
-              return 'maps'
-            }
-
-            // Internationalization - essential for Brazilian medical compliance
-            if (id.includes('i18next')) {
+            // i18next library - separate chunk
+            if (id.includes('i18next') || id.includes('react-i18next')) {
               return 'i18n'
             }
 
-            // Service worker utilities - separate for offline medical content
-            if (id.includes('workbox')) {
-              return 'sw'
-            }
+            if (id.includes('node_modules')) {
+              // Core React packages - further split for optimal loading
+              if (id.includes('react-dom/')) {
+                return 'react-dom'
+              }
+              if (id.includes('react/') || id.includes('react/jsx-runtime')) {
+                return 'react-core'
+              }
 
-            // Healthcare form and contact utilities
-            if (id.includes('resend') || id.includes('marked')) {
-              return 'contact-utils'
-            }
+              // React Router - separate chunk for patient navigation
+              if (id.includes('react-router')) {
+                return 'router'
+              }
 
-            // Sanity CMS - content management for blog
-            if (id.includes('@sanity/client') || id.includes('@sanity/image-url') || id.includes('@portabletext/react')) {
-              return 'sanity-cms'
-            }
+              // React Hook Form - separate chunk to avoid ESM initialization errors
+              if (id.includes('react-hook-form')) {
+                return 'react-hook-form'
+              }
 
-            // Image optimization for medical content
-            if (id.includes('sharp')) {
-              return 'image-utils'
-            }
+              // Lucide icons - heavy icon library, lazy load
+              if (id.includes('lucide-react')) {
+                return 'icons-lucide'
+              }
 
-            // Testing and development utilities (tree-shaken in production)
-            if (id.includes('vitest') || id.includes('jsdom') || id.includes('testing-library')) {
-              return 'dev-deps'
-            }
+              // Custom hooks and contexts - separate for better caching
+              if (id.includes('useGoogleReviews') || id.includes('useSEO') || id.includes('useAnalytics')) {
+                return 'hooks'
+              }
 
-            if (id.includes('hypertune')) {
-              return 'hypertune'
-            }
+              // Radix UI - group together but optimize for accessibility compliance
+              if (id.includes('@radix-ui')) {
+                return 'radix-ui'
+              }
 
-            if (id.includes('fast-xml-parser')) {
-              return 'xml-parser'
-            }
+              // Framer Motion - heavy animation library, lazy load for non-essential animations
+              if (id.includes('framer-motion')) {
+                return 'motion'
+              }
 
-            if (id.includes('esbuild')) {
-              return 'esbuild-runtime'
-            }
+              // React Helmet - critical for medical SEO and compliance
+              if (id.includes('react-helmet')) {
+                return 'helmet'
+              }
 
-            if (id.includes('glob')) {
-              return 'glob-utils'
-            }
+              // Date utilities - optimized for appointment scheduling
+              if (id.includes('dayjs')) {
+                return 'date-utils'
+              }
 
-            if (id.includes('prop-types')) {
-              return 'prop-types'
-            }
+              // Date-fns - separate chunk for blog/formatting (lazy loaded with blog components)
+              if (id.includes('date-fns')) {
+                return 'date-fns'
+              }
 
-            return 'vendor-misc'
+              // Event Source Polyfill - SSE fallback (rarely needed in modern browsers)
+              if (id.includes('event-source-polyfill')) {
+                return 'sse-polyfill'
+              }
+
+              // Get-it middleware - Sanity HTTP client (loaded with CMS content)
+              if (id.includes('get-it')) {
+                return 'sanity-http'
+              }
+
+              // CSS/Styling utilities - essential for responsive medical content
+              if (id.includes('clsx') || id.includes('class-variance-authority') || id.includes('tailwind-merge')) {
+                return 'style-utils'
+              }
+
+              // Security and validation utilities (critical for healthcare compliance)
+              if (id.includes('dompurify') || id.includes('zod')) {
+                return 'security-utils'
+              }
+
+              // Healthcare-specific analytics and monitoring
+              if (id.includes('posthog') || id.includes('web-vitals')) {
+                return 'analytics'
+              }
+
+              // Icons libraries - split by usage frequency
+              if (id.includes('lucide-react')) {
+                return 'icons'
+              }
+
+              // Google Maps - critical for clinic location (medical compliance)
+              if (id.includes('googlemaps')) {
+                return 'maps'
+              }
+
+              // Internationalization - essential for Brazilian medical compliance
+              if (id.includes('i18next')) {
+                return 'i18n'
+              }
+
+              // Service worker utilities - separate for offline medical content
+              if (id.includes('workbox')) {
+                return 'sw'
+              }
+
+              // Healthcare form and contact utilities
+              if (id.includes('resend') || id.includes('marked')) {
+                return 'contact-utils'
+              }
+
+              // Sanity CMS - content management for blog
+              if (id.includes('@sanity/client') || id.includes('@sanity/image-url') || id.includes('@portabletext/react')) {
+                return 'sanity-cms'
+              }
+
+              // Image optimization for medical content
+              if (id.includes('sharp')) {
+                return 'image-utils'
+              }
+
+              // Testing and development utilities (tree-shaken in production)
+              if (id.includes('vitest') || id.includes('jsdom') || id.includes('testing-library')) {
+                return 'dev-deps'
+              }
+
+              if (id.includes('hypertune')) {
+                return 'hypertune'
+              }
+
+              if (id.includes('fast-xml-parser')) {
+                return 'xml-parser'
+              }
+
+              if (id.includes('esbuild')) {
+                return 'esbuild-runtime'
+              }
+
+              if (id.includes('glob')) {
+                return 'glob-utils'
+              }
+
+              if (id.includes('prop-types')) {
+                return 'prop-types'
+              }
+
+              // Supabase - separate chunk for auth/database
+              if (id.includes('@supabase')) {
+                return 'supabase'
+              }
+
+              // PostHog - separate analytics chunk (lazy loaded)
+              if (id.includes('posthog')) {
+                return 'posthog-analytics'
+              }
+
+              // Resend - email service (rarely used in frontend)
+              if (id.includes('resend')) {
+                return 'email-service'
+              }
+
+              // Marked - markdown parser (blog only)
+              if (id.includes('marked')) {
+                return 'markdown-parser'
+              }
+
+              // Helmet - security headers (separate from helmet-async)
+              if (id.includes('helmet') && !id.includes('react-helmet')) {
+                return 'security-headers'
+              }
+
+              return 'vendor-misc'
+            }
+          },
+          // Optimized file naming for VPS caching with healthcare compliance
+          entryFileNames: 'assets/[name]-[hash].js',
+          chunkFileNames: 'assets/[name]-[hash].js',
+          assetFileNames: (assetInfo) => {
+            // Separate medical images for better caching strategies
+            if (assetInfo.name && assetInfo.name.includes('medical') ||
+              (assetInfo.name && assetInfo.name.includes('doctor'))) {
+              return 'assets/medical/[name]-[hash].[ext]';
+            }
+            // Separate icons for better caching
+            if (assetInfo.name && assetInfo.name.includes('icon')) {
+              return 'assets/icons/[name]-[hash].[ext]';
+            }
+            // Separate images
+            if (assetInfo.name && /\.(png|jpg|jpeg|webp|avif|svg)$/i.test(assetInfo.name)) {
+              return 'assets/images/[name]-[hash].[ext]';
+            }
+            return 'assets/[name]-[hash].[ext]';
+          }
+        }
+      },
+      copyPublicDir: true,
+      // Enhanced compression and optimization
+      rollupExternalDependencies: [],
+      experimental: {
+        renderBuiltUrl: (filename, { hostType }) => {
+          // Optimize CDN-like URLs for medical content
+          if (hostType === 'js') {
+            return { js: `/${filename}` };
+          }
+          return { relative: true };
+        }
+      },
+      // Image optimization settings for medical content
+      // Note: Advanced image processing would require vite-imagetools plugin
+      // These settings prepare the build for optimal image handling
+      generateEmptyChunk: true,
+      cssMinify: 'esbuild'
+    },
+    // Ensure all asset types are properly handled
+    assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.webp', '**/*.avif', '**/*.mp3', '**/*.wav', '**/*.mp4'],
+    server: {
+      port: 3002,
+      host: true,
+      open: false,
+      historyApiFallback: true, // Enable SPA routing support for React Router
+      allowedHosts: [
+        'localhost',
+        '127.0.0.1',
+        'www.saraivavision.com.br',
+        'saraivavision.com.br'
+      ],
+      proxy: {
+        // Google Places API proxy for development
+        '/api/google-places': {
+          target: 'https://maps.googleapis.com',
+          changeOrigin: true,
+          secure: true,
+          rewrite: (path) => path.replace(/^\/api\/google-places/, '/maps/api/place'),
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
           }
         },
-        // Optimized file naming for VPS caching with healthcare compliance
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: (assetInfo) => {
-          // Separate medical images for better caching strategies
-          if (assetInfo.name && assetInfo.name.includes('medical') ||
-              (assetInfo.name && assetInfo.name.includes('doctor'))) {
-            return 'assets/medical/[name]-[hash].[ext]';
+        // Health check API proxy for development
+        '/api/health': {
+          target: 'http://localhost:3001',
+          changeOrigin: true,
+          secure: false,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
           }
-          // Separate icons for better caching
-          if (assetInfo.name && assetInfo.name.includes('icon')) {
-            return 'assets/icons/[name]-[hash].[ext]';
+        },
+        '/api/maps-health': {
+          target: 'http://localhost:3001',
+          changeOrigin: true,
+          secure: false,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
           }
-          // Separate images
-          if (assetInfo.name && /\.(png|jpg|jpeg|webp|avif|svg)$/i.test(assetInfo.name)) {
-            return 'assets/images/[name]-[hash].[ext]';
-          }
-          return 'assets/[name]-[hash].[ext]';
-        }
-      }
-    },
-    copyPublicDir: true,
-    // Enhanced compression and optimization
-    rollupExternalDependencies: [],
-    experimental: {
-      renderBuiltUrl: (filename, { hostType }) => {
-        // Optimize CDN-like URLs for medical content
-        if (hostType === 'js') {
-          return { js: `/${filename}` };
-        }
-        return { relative: true };
-      }
-    },
-    // Image optimization settings for medical content
-    // Note: Advanced image processing would require vite-imagetools plugin
-    // These settings prepare the build for optimal image handling
-    generateEmptyChunk: true,
-    cssMinify: true
-  },
-  // Ensure all asset types are properly handled
-  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.webp', '**/*.avif', '**/*.mp3', '**/*.wav', '**/*.mp4'],
-  server: {
-    port: 3002,
-    host: true,
-    open: false,
-    historyApiFallback: true, // Enable SPA routing support for React Router
-    allowedHosts: [
-      'localhost',
-      '127.0.0.1',
-      'www.saraivavision.com.br',
-      'saraivavision.com.br'
-    ],
-    proxy: {
-      // Google Places API proxy for development
-      '/api/google-places': {
-        target: 'https://maps.googleapis.com',
-        changeOrigin: true,
-        secure: true,
-        rewrite: (path) => path.replace(/^\/api\/google-places/, '/maps/api/place'),
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-        }
-      },
-      // Health check API proxy for development
-      '/api/health': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
-        secure: false,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type'
-        }
-      },
-      '/api/maps-health': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
-        secure: false,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
         }
       }
     }
-  }
   }
 })
 
@@ -363,7 +424,7 @@ function validateClientBundle() {
     enforce: 'post',
     generateBundle(options, bundle) {
       const nodeOnlyModules = ['buffer', 'gray-matter', 'crypto', 'fs', 'path', 'stream'];
-      
+
       for (const [fileName, chunk] of Object.entries(bundle)) {
         if (chunk.type === 'chunk' && chunk.code) {
           for (const module of nodeOnlyModules) {
@@ -374,7 +435,7 @@ function validateClientBundle() {
               // Check for Buffer global reference
               module === 'buffer' ? /\bBuffer\s*\./g : null
             ].filter(Boolean);
-            
+
             for (const pattern of patterns) {
               if (pattern.test(chunk.code)) {
                 console.warn(`⚠️  Warning: ${fileName} contains reference to Node.js module "${module}"`);
@@ -388,4 +449,3 @@ function validateClientBundle() {
     }
   };
 }
-

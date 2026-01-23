@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { PERFORMANCE } from '@/lib/constants';
 import { useGoogleReviews } from '@/hooks/useGoogleReviews';
 import { CLINIC_PLACE_ID } from '@/lib/clinicInfo';
+import '../styles/scroll-testimonials-fix.css';
+import '../styles/testimonials.css';
 
 const Testimonials = ({ limit }) => {
   const { t } = useTranslation();

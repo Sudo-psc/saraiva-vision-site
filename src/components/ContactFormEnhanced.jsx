@@ -5,6 +5,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { CONTACT } from '@/lib/constants';
 import ReCAPTCHA from 'react-google-recaptcha';
+import '../styles/forms.css';
 
 const ContactFormEnhanced = ({ onSuccess }) => {
   const { toast } = useToast();

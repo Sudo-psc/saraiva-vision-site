@@ -10,11 +10,32 @@
  */
 
 import { CLINIC_PLACE_ID } from './src/lib/clinicInfo.js';
+import { createClient } from 'redis';
 
-// Simple in-memory cache with TTL
-const reviewsCache = new Map();
-const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes - optimal for review data
-const MAX_CACHE_SIZE = 100; // Prevent memory leaks
+// Redis Cache Configuration
+const CACHE_DURATION_SECONDS = 30 * 60; // 30 minutes
+const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
+
+// Initialize Redis Client
+let redisClient;
+try {
+  redisClient = createClient({ url: REDIS_URL });
+  
+  redisClient.on('error', (err) => {
+    console.warn('Redis Client Error', err);
+  });
+
+  redisClient.on('connect', () => {
+    console.log('Redis Client Connected');
+  });
+
+  // Connect asynchronously
+  redisClient.connect().catch(err => {
+    console.warn('Failed to connect to Redis:', err);
+  });
+} catch (error) {
+  console.warn('Failed to initialize Redis client:', error);
+}
 
 // Fallback reviews (static data) for when API is unavailable
 const FALLBACK_REVIEWS = [
@@ -106,25 +127,7 @@ const FALLBACK_REVIEWS = [
 ];
 
 // Cache management functions
-const getCacheKey = (placeId, limit, language) => `${placeId}-${limit}-${language}`;
-const isCacheValid = (cacheEntry) => cacheEntry && (Date.now() - cacheEntry.timestamp < CACHE_DURATION);
-const cleanExpiredCache = () => {
-    const now = Date.now();
-    for (const [key, entry] of reviewsCache.entries()) {
-        if (now - entry.timestamp > CACHE_DURATION) {
-            reviewsCache.delete(key);
-        }
-    }
-};
-const enforceCacheSizeLimit = () => {
-    if (reviewsCache.size > MAX_CACHE_SIZE) {
-        // Delete oldest entries
-        const entries = Array.from(reviewsCache.entries());
-        entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
-        const toDelete = entries.slice(0, reviewsCache.size - MAX_CACHE_SIZE);
-        toDelete.forEach(([key]) => reviewsCache.delete(key));
-    }
-};
+const getCacheKey = (placeId, limit, language) => `google-reviews:${placeId}:${limit}:${language}`;
 
 const normalizePlaceId = (value) => {
     if (!value) return null;
@@ -176,27 +179,31 @@ export default async function handler(req, res) {
             });
         }
 
-        // Clean expired cache entries periodically
-        cleanExpiredCache();
-        enforceCacheSizeLimit();
-
-        // Check cache first
+        // Check cache first (Redis)
         const cacheKey = getCacheKey(resolvedPlaceId, limit, language);
-        const cachedData = reviewsCache.get(cacheKey);
+        
+        if (redisClient && redisClient.isReady) {
+            try {
+                const cachedRaw = await redisClient.get(cacheKey);
+                if (cachedRaw) {
+                    const cachedData = JSON.parse(cachedRaw);
+                    console.log(`✅ [CACHE HIT] Google Reviews from Redis: ${cacheKey}`);
 
-        if (isCacheValid(cachedData)) {
-            console.log(`✅ [CACHE HIT] Google Reviews from cache: ${cacheKey}`);
+                    // Set cache headers for client-side caching
+                    res.setHeader('Cache-Control', 'public, max-age=1800, stale-while-revalidate=300'); // 30 minutes
 
-            // Set cache headers for client-side caching
-            res.setHeader('Cache-Control', 'public, max-age=1800, stale-while-revalidate=300'); // 30 minutes
-
-            return res.json({
-                success: true,
-                data: cachedData.data,
-                timestamp: new Date(cachedData.timestamp).toISOString(),
-                cached: true,
-                cacheAge: Math.round((Date.now() - cachedData.timestamp) / 1000)
-            });
+                    return res.json({
+                        success: true,
+                        data: cachedData.data,
+                        timestamp: cachedData.timestamp,
+                        cached: true,
+                        cacheAge: Math.round((Date.now() - new Date(cachedData.timestamp).getTime()) / 1000)
+                    });
+                }
+            } catch (err) {
+                console.error('Redis read error:', err);
+                // Continue to fetch from API
+            }
         }
 
         const apiKey = process.env.GOOGLE_PLACES_API_KEY || process.env.GOOGLE_MAPS_API_KEY || process.env.VITE_GOOGLE_PLACES_API_KEY || process.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -313,12 +320,17 @@ export default async function handler(req, res) {
 
         console.log(`Successfully fetched ${transformedReviews.length} reviews from Google Places API`);
 
-        // Cache the successful response
-        const now = Date.now();
-        reviewsCache.set(cacheKey, {
-            data: result,
-            timestamp: now
-        });
+        // Cache the successful response in Redis
+        if (redisClient && redisClient.isReady) {
+            try {
+                await redisClient.setEx(cacheKey, CACHE_DURATION_SECONDS, JSON.stringify({
+                    data: result,
+                    timestamp: new Date().toISOString()
+                }));
+            } catch (err) {
+                console.error('Redis write error:', err);
+            }
+        }
 
         // Set cache headers for client-side caching
         res.setHeader('Cache-Control', 'public, max-age=1800, stale-while-revalidate=300'); // 30 minutes
@@ -390,11 +402,17 @@ export default async function handler(req, res) {
             };
 
             // Cache the fallback response
-            const cacheKey = getCacheKey(resolvePlaceId(req.query.placeId), req.query.limit || 5, req.query.language || 'pt-BR');
-            reviewsCache.set(cacheKey, {
-                data: result,
-                timestamp: Date.now()
-            });
+            if (redisClient && redisClient.isReady) {
+                const cacheKey = getCacheKey(resolvePlaceId(req.query.placeId), req.query.limit || 5, req.query.language || 'pt-BR');
+                try {
+                     await redisClient.setEx(cacheKey, CACHE_DURATION_SECONDS, JSON.stringify({
+                        data: result,
+                        timestamp: new Date().toISOString()
+                    }));
+                } catch (err) {
+                    console.error('Redis write error:', err);
+                }
+            }
 
             return res.status(200).json({
                 success: true,

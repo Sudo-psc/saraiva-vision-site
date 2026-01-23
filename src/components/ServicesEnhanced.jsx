@@ -1,13 +1,264 @@
-import React, { useRef, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, Zap, Play, CheckCircle } from 'lucide-react';
+import {
+  ArrowRight,
+  Zap,
+  Play,
+  CheckCircle,
+  Users,
+  Award,
+  Clock,
+  Shield,
+  Sparkles,
+  Star,
+  Filter
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 import MedicalCard from '@/components/ui/MedicalCard';
 import InteractiveCarousel from '@/components/ui/InteractiveCarousel';
 import WhatsAppCTA from '@/components/ui/WhatsAppCTA';
 
+// Category configuration with colors
+const CATEGORIES = {
+  all: { label: 'Todos', color: 'slate', icon: Filter },
+  Consultas: { label: 'Consultas', color: 'blue', icon: Users },
+  Exames: { label: 'Exames', color: 'purple', icon: Shield },
+  Tratamentos: { label: 'Tratamentos', color: 'emerald', icon: Sparkles },
+  Cirurgias: { label: 'Cirurgias', color: 'rose', icon: Award },
+  Pediatria: { label: 'Pediatria', color: 'amber', icon: Star },
+  Laudos: { label: 'Laudos', color: 'cyan', icon: Clock }
+};
+
+// Statistics data
+const STATS = [
+  { value: '5.000+', label: 'Pacientes Atendidos', icon: Users },
+  { value: '4.9/5', label: 'Avaliação Google', icon: Star },
+  { value: '15+', label: 'Anos de Experiência', icon: Award },
+  { value: '17+', label: 'Serviços Especializados', icon: Sparkles }
+];
+
+// Hero Section Component
+const ServicesHero = ({ t }) => (
+  <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-900 py-20 lg:py-28">
+    {/* Animated background elements */}
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute -top-40 -right-40 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-cyan-500/10 to-transparent rounded-full" />
+
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNjB2NjBIMHoiLz48cGF0aCBkPSJNMzAgMzBtLTEgMGExIDEgMCAxIDAgMiAwYTEgMSAwIDEgMCAtMiAwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz48L2c+PC9zdmc+')] opacity-40" />
+    </div>
+
+    <div className="container mx-auto px-4 md:px-6 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="text-center max-w-4xl mx-auto"
+      >
+        {/* Badge */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-8"
+        >
+          <Sparkles className="w-4 h-4 text-cyan-400" />
+          <span className="text-sm font-medium text-white/90">Centro de Excelência em Oftalmologia</span>
+        </motion.div>
+
+        {/* Main Title */}
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+          {t('services.title_full', 'Serviços Oftalmológicos')}
+          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+            Especializados
+          </span>
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-lg md:text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed">
+          {t('services.subtitle', 'Tecnologia de ponta e atendimento humanizado para cuidar da sua visão com excelência.')}
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link to="/agendamento">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-cyan-500/30 transition-all duration-300 flex items-center justify-center gap-2"
+            >
+              Agendar Consulta
+              <ArrowRight className="w-5 h-5" />
+            </motion.button>
+          </Link>
+          <a href="#services-list">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold rounded-xl border border-white/30 transition-all duration-300"
+            >
+              Ver Todos os Serviços
+            </motion.button>
+          </a>
+        </div>
+      </motion.div>
+
+      {/* Stats Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+        className="mt-16 lg:mt-20"
+      >
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 max-w-4xl mx-auto">
+          {STATS.map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 + index * 0.1 }}
+              className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 lg:p-6 border border-white/10 text-center hover:bg-white/10 transition-colors duration-300"
+            >
+              <stat.icon className="w-6 h-6 text-cyan-400 mx-auto mb-3" />
+              <div className="text-2xl lg:text-3xl font-bold text-white mb-1">{stat.value}</div>
+              <div className="text-sm text-white/60">{stat.label}</div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+
+    {/* Bottom wave decoration */}
+    <div className="absolute bottom-0 left-0 right-0">
+      <svg className="w-full h-16 lg:h-24" viewBox="0 0 1440 100" preserveAspectRatio="none">
+        <path
+          fill="rgb(248 250 252)"
+          d="M0,50 C360,100 720,0 1080,50 C1260,75 1380,75 1440,50 L1440,100 L0,100 Z"
+        />
+      </svg>
+    </div>
+  </div>
+);
+
+// Category Filter Tabs
+const CategoryFilters = ({ activeCategory, setActiveCategory, categories }) => {
+  const availableCategories = ['all', ...Object.keys(categories).filter(c => c !== 'all')];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="flex flex-wrap justify-center gap-2 lg:gap-3 mb-12"
+    >
+      {availableCategories.map((category) => {
+        const config = CATEGORIES[category] || CATEGORIES.all;
+        const isActive = activeCategory === category;
+        const Icon = config.icon;
+
+        return (
+          <motion.button
+            key={category}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setActiveCategory(category)}
+            className={`
+              px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl font-semibold text-sm lg:text-base
+              flex items-center gap-2 transition-all duration-300
+              ${isActive
+                ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-500/30'
+                : 'bg-white text-slate-700 hover:bg-slate-50 border border-slate-200 hover:border-cyan-300'
+              }
+            `}
+          >
+            <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-500'}`} />
+            {config.label}
+          </motion.button>
+        );
+      })}
+    </motion.div>
+  );
+};
+
+// Modern Service Card
+const ServiceCard = ({ service, index }) => {
+  const categoryConfig = CATEGORIES[service.category] || CATEGORIES.all;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.05, duration: 0.5 }}
+      className="h-full"
+    >
+      <Link
+        to={service.id === 'irpl-e-eye' ? '/luz-pulsada-irpl' : `/servicos/${service.id}`}
+        className="group block h-full"
+      >
+        <div className={`
+          relative h-full bg-white rounded-2xl lg:rounded-3xl p-6 lg:p-8
+          border border-slate-100 hover:border-cyan-200
+          shadow-sm hover:shadow-xl hover:shadow-cyan-500/10
+          transition-all duration-500 transform hover:-translate-y-2
+          ${service.featured ? 'ring-2 ring-amber-400/50' : ''}
+        `}>
+          {/* Featured badge */}
+          {service.featured && (
+            <div className="absolute -top-3 left-6 px-3 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold rounded-full shadow-lg">
+              <Zap className="w-3 h-3 inline mr-1" />
+              Destaque
+            </div>
+          )}
+
+          {/* Arrow indicator */}
+          <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-slate-100 group-hover:bg-gradient-to-r group-hover:from-cyan-500 group-hover:to-blue-500 flex items-center justify-center transition-all duration-300">
+            <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors" />
+          </div>
+
+          {/* Category badge */}
+          <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold mb-5 bg-${categoryConfig.color}-50 text-${categoryConfig.color}-700`}>
+            {service.category}
+          </div>
+
+          {/* Icon */}
+          <div className="w-20 h-20 mb-6 relative group-hover:scale-110 transition-transform duration-500">
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-100 to-blue-100 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative w-full h-full flex items-center justify-center">
+              {React.isValidElement(service.icon) ?
+                React.cloneElement(service.icon, {
+                  className: 'w-16 h-16 object-contain drop-shadow-md'
+                }) :
+                service.icon
+              }
+            </div>
+          </div>
+
+          {/* Content */}
+          <h3 className="text-xl lg:text-2xl font-bold text-slate-900 mb-3 group-hover:text-cyan-700 transition-colors duration-300 pr-12">
+            {service.title}
+          </h3>
+
+          <p className="text-slate-600 text-sm lg:text-base leading-relaxed line-clamp-3">
+            {service.description}
+          </p>
+
+          {/* Hover indicator */}
+          <div className="mt-6 flex items-center gap-2 text-cyan-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="text-sm">Saiba mais</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
+};
+
+// Featured IRPL Section
 const FeaturedService = ({ t }) => {
   return (
     <motion.div
@@ -15,135 +266,173 @@ const FeaturedService = ({ t }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
-      className="mt-20 mb-16 relative"
+      className="my-20 lg:my-28"
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-3xl -rotate-1 opacity-10 blur-xl scale-105" />
-      <div className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100 relative z-10 flex flex-col lg:flex-row">
-        {/* Video Section */}
-        <div className="lg:w-1/2 relative bg-slate-900 min-h-[300px] lg:min-h-full flex items-center justify-center group overflow-hidden">
-          <video
-            className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-500"
-            src="/Videos/E-EYE-IRPL-Treatment.mp4"
-            muted
-            loop
-            playsInline
-            autoPlay
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80" />
-          
-          <div className="relative z-10 text-center p-8">
-            <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-4 border border-white/30 text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <Play className="w-8 h-8 fill-current ml-1" />
-            </div>
-            <span className="text-white font-medium tracking-wide uppercase text-sm">{t('services.featured_video_label', 'Assista ao Procedimento')}</span>
-          </div>
-        </div>
+      <div className="relative">
+        {/* Background decoration */}
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-3xl transform -rotate-1 opacity-5 scale-105" />
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-3xl transform rotate-1 opacity-5 scale-105" />
 
-        {/* Content Section */}
-        <div className="lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-bold uppercase tracking-wider w-fit mb-6 border border-amber-100">
-            <Zap className="w-3 h-3" />
-            {t('services.featured_badge', 'Tecnologia Exclusiva')}
-          </div>
+        <div className="relative bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100">
+          <div className="flex flex-col lg:flex-row">
+            {/* Video Section */}
+            <div className="lg:w-1/2 relative bg-gradient-to-br from-slate-900 to-slate-800 min-h-[350px] lg:min-h-[500px]">
+              <video
+                className="absolute inset-0 w-full h-full object-cover opacity-50"
+                src="/Videos/E-EYE-IRPL-Treatment.mp4"
+                muted
+                loop
+                playsInline
+                autoPlay
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent" />
 
-          <h3 className="text-3xl font-bold text-slate-900 mb-4">
-            {t('services.items.irplEEye.title')}
-          </h3>
-          
-          <p className="text-slate-600 text-lg mb-8 leading-relaxed">
-            {t('services.items.irplEEye.fullDescription')}
-          </p>
-
-          <div className="space-y-4 mb-10">
-            {[
-              t('services.irpl_benefit_1', 'Tratamento da causa raiz do olho seco (DGM)'),
-              t('services.irpl_benefit_2', 'Procedimento rápido, indolor e não invasivo'),
-              t('services.irpl_benefit_3', 'Efeito duradouro e melhora progressiva')
-            ].map((benefit, index) => (
-              <div key={index} className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 shrink-0" />
-                <span className="text-slate-700 font-medium">{benefit}</span>
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mb-6 border border-white/30 cursor-pointer hover:bg-white/30 transition-colors"
+                >
+                  <Play className="w-10 h-10 text-white fill-current ml-1" />
+                </motion.div>
+                <span className="text-white/90 font-medium text-lg">Assista ao Procedimento</span>
+                <p className="text-white/60 text-sm mt-2 max-w-xs">
+                  Veja como funciona o tratamento de luz pulsada
+                </p>
               </div>
-            ))}
-          </div>
 
-          <Link to="/luz-pulsada-irpl">
-            <button className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 flex items-center justify-center gap-2 group">
-              {t('services.learn_more', 'Saiba Mais Sobre IRPL')}
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </Link>
+              {/* Decorative elements */}
+              <div className="absolute top-8 left-8 w-20 h-20 border border-white/20 rounded-full" />
+              <div className="absolute bottom-8 right-8 w-32 h-32 border border-white/10 rounded-full" />
+            </div>
+
+            {/* Content Section */}
+            <div className="lg:w-1/2 p-8 lg:p-12 xl:p-16 flex flex-col justify-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 rounded-xl text-sm font-bold w-fit mb-6 border border-amber-200">
+                <Zap className="w-4 h-4" />
+                Tecnologia Exclusiva na Região
+              </div>
+
+              <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6 leading-tight">
+                {t('services.items.irplEEye.title', 'IRPL E-Eye')}
+                <span className="block text-cyan-600 text-2xl lg:text-3xl mt-2">
+                  Tratamento de Luz Pulsada
+                </span>
+              </h2>
+
+              <p className="text-slate-600 text-lg mb-8 leading-relaxed">
+                {t('services.items.irplEEye.fullDescription', 'Tratamento revolucionário para olho seco evaporativo, atuando diretamente nas glândulas de Meibomius através de luz pulsada intensa regulada.')}
+              </p>
+
+              <div className="space-y-4 mb-10">
+                {[
+                  'Tratamento da causa raiz do olho seco (DGM)',
+                  'Procedimento rápido, indolor e não invasivo',
+                  'Resultados duradouros com melhora progressiva',
+                  'Única clínica com E-Eye na região'
+                ].map((benefit, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="flex items-start gap-3"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-emerald-600" />
+                    </div>
+                    <span className="text-slate-700 font-medium">{benefit}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/luz-pulsada-irpl" className="flex-1 sm:flex-initial">
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-cyan-500/30 transition-all duration-300 flex items-center justify-center gap-2"
+                  >
+                    Conhecer IRPL
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.button>
+                </Link>
+                <Link to="/agendamento" className="flex-1 sm:flex-initial">
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="w-full bg-white hover:bg-slate-50 text-slate-700 font-semibold py-4 px-8 rounded-xl border-2 border-slate-200 hover:border-cyan-300 transition-all duration-300"
+                  >
+                    Agendar Avaliação
+                  </motion.button>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </motion.div>
   );
 };
 
+// CTA Section
+const CTASection = ({ t }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    className="mt-20 lg:mt-28"
+  >
+    <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-900 rounded-3xl p-8 lg:p-12 relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/20 rounded-full blur-3xl" />
+
+      <div className="relative z-10 text-center max-w-2xl mx-auto">
+        <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4">
+          Precisa de ajuda para escolher?
+        </h3>
+        <p className="text-white/70 mb-8 text-lg">
+          Nossa equipe está pronta para orientá-lo. Fale conosco e encontre o serviço ideal para suas necessidades.
+        </p>
+
+        <WhatsAppCTA
+          variant="default"
+          size="large"
+          context="agendamento"
+          showPhone={true}
+          className="inline-flex"
+        />
+
+        <p className="mt-6 text-white/50 text-sm">
+          Atendimento rápido • Resposta em minutos
+        </p>
+      </div>
+    </div>
+  </motion.div>
+);
+
 /**
- * Enhanced Services component using unified component interfaces
- * Maintains backward compatibility while leveraging new architecture
+ * Enhanced Services component with modern design
  */
 const ServicesEnhanced = ({ full = false, grid = false }) => {
   const { t } = useTranslation();
+  const [activeCategory, setActiveCategory] = useState('all');
   const isTestEnv = typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test';
 
   // Service items with unified interface structure
   const serviceItems = useMemo(() => {
     if (isTestEnv) {
-      // Test environment compatibility mode
       return [
-        {
-          id: 'consultas-oftalmologicas',
-          title: t('services.consultation.title', 'Consultas Especializadas'),
-          description: t('services.consultation.description', 'Avaliação completa da saúde ocular com equipamentos modernos.'),
-          icon: <div data-testid="consultation-icon" className="w-full h-full object-contain" />,
-          category: 'Consultas',
-          testKey: 'services.items.consultations.title'
-        },
-        {
-          id: 'exames-diagnosticos',
-          title: t('services.exams.title', 'Exames Diagnósticos'),
-          description: t('services.exams.description', 'Exames precisos para diagnóstico precoce de doenças oculares.'),
-          icon: <div data-testid="exam-icon" className="w-full h-full object-contain" />,
-          category: 'Exames',
-          testKey: 'services.items.refraction.title'
-        },
-        {
-          id: 'tratamentos-avancados',
-          title: t('services.treatments.title', 'Tratamentos Avançados'),
-          description: t('services.treatments.description', 'Tratamentos modernos e eficazes para diversas condições oculares.'),
-          icon: <div data-testid="treatment-icon" className="w-full h-full object-contain" />,
-          category: 'Tratamentos',
-          testKey: 'services.items.specialized.title'
-        },
-        {
-          id: 'cirurgias-oftalmologicas',
-          title: t('services.surgery.title', 'Cirurgias Especializadas'),
-          description: t('services.surgery.description', 'Procedimentos cirúrgicos com tecnologia de última geração.'),
-          icon: <div data-testid="surgery-icon" className="w-full h-full object-contain" />,
-          category: 'Cirurgias',
-          testKey: 'services.items.surgeries.title'
-        },
-        {
-          id: 'acompanhamento-pediatrico',
-          title: t('services.pediatric.title', 'Oftalmologia Pediátrica'),
-          description: t('services.pediatric.description', 'Cuidados especializados para a saúde ocular infantil.'),
-          icon: <div data-testid="pediatric-icon" className="w-full h-full object-contain" />,
-          category: 'Pediatria',
-          testKey: 'services.items.pediatric.title'
-        },
-        {
-          id: 'laudos-especializados',
-          title: t('services.reports.title', 'Laudos Especializados'),
-          description: t('services.reports.description', 'Relatórios médicos detalhados e precisos.'),
-          icon: <div data-testid="report-icon" className="w-full h-full object-contain" />,
-          category: 'Laudos',
-          testKey: 'services.items.reports.title'
-        }
+        { id: 'consultas-oftalmologicas', title: 'Consultas Especializadas', description: 'Avaliação completa da saúde ocular.', icon: <div />, category: 'Consultas' },
+        { id: 'exames-diagnosticos', title: 'Exames Diagnósticos', description: 'Exames precisos para diagnóstico.', icon: <div />, category: 'Exames' },
+        { id: 'tratamentos-avancados', title: 'Tratamentos Avançados', description: 'Tratamentos modernos e eficazes.', icon: <div />, category: 'Tratamentos' },
+        { id: 'cirurgias-oftalmologicas', title: 'Cirurgias Especializadas', description: 'Procedimentos cirúrgicos avançados.', icon: <div />, category: 'Cirurgias' },
+        { id: 'acompanhamento-pediatrico', title: 'Oftalmologia Pediátrica', description: 'Cuidados para saúde ocular infantil.', icon: <div />, category: 'Pediatria' },
+        { id: 'laudos-especializados', title: 'Laudos Especializados', description: 'Relatórios médicos detalhados.', icon: <div />, category: 'Laudos' }
       ];
     }
 
-    // Production environment - complete service list
     const fullServices = [
       { id: 'consultas-oftalmologicas', title: t('services.items.consultations.title'), description: t('services.items.consultations.description'), category: 'Consultas' },
       { id: 'exames-de-refracao', title: t('services.items.refraction.title'), description: t('services.items.refraction.description'), category: 'Exames' },
@@ -164,287 +453,158 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
       { id: 'tratamento-dpn', title: t('services.items.dpnTreatment.title'), description: t('services.items.dpnTreatment.description'), category: 'Tratamentos' }
     ];
 
-    // Add icons and shuffle for dynamic experience
-    const servicesWithIcons = fullServices.map(service => ({
+    return fullServices.map(service => ({
       ...service,
       icon: getServiceIcon(service.id, { className: 'service-icon-image' })
     }));
-
-    // Shuffle for dynamic experience
-    for (let i = servicesWithIcons.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [servicesWithIcons[i], servicesWithIcons[j]] = [servicesWithIcons[j], servicesWithIcons[i]];
-    }
-
-    // Ensure IRPL is prominently placed if shuffling (optional: move it to front or let it shuffle)
-    // For now, let it shuffle as it's also featured below.
-
-    return servicesWithIcons;
   }, [t, isTestEnv]);
 
-  const renderServiceCard = (service, index) => {
-    return (
-      <Link
-        to={service.id === 'irpl-e-eye' ? '/luz-pulsada-irpl' : `/servicos/${service.id}`}
-        className="block h-full"
-        aria-label={`Ver detalhes sobre ${service.title}`}
-      >
-        <MedicalCard
-          variant="service"
-          size="standard"
-          glassMorphism
-          shadow3D
-          gradient="none"
-          borderRadius="3xl"
-          interactive
-          clickable
-          hoverEffects="pronounced"
-          cfmCompliant
-          className={`service-card-3d service-card-enhanced service-glass-enhanced bg-white/60 backdrop-blur-lg transition-all duration-500 transform-gpu hover:-translate-y-2 hover:shadow-3d-hover cursor-pointer w-full h-full ${service.featured ? 'ring-2 ring-amber-300 shadow-amber-100' : ''}`}
-          aria-label={`${service.title} - ${service.description}`}
-          data-testid={service.testKey ? `service-card-${service.id}` : undefined}
-          body={
-            <div className="service-card-content-wrapper flex flex-col h-full">
-              {/* Seta no canto superior direito */}
-              <motion.div
-                className={`absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-full text-white shadow-lg z-10 ${service.featured ? 'bg-gradient-to-r from-amber-500 to-orange-500' : 'bg-gradient-to-r from-cyan-500 to-cyan-500'}`}
-                whileHover={{ scale: 1.2, rotate: 5 }}
-                transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              >
-                <ArrowRight className="w-4 h-4" />
-              </motion.div>
+  // Filter services by category
+  const filteredServices = useMemo(() => {
+    if (activeCategory === 'all') return serviceItems;
+    return serviceItems.filter(service => service.category === activeCategory);
+  }, [serviceItems, activeCategory]);
 
-              {/* Categoria */}
-              {service.category && (
-                <div className="service-category-badge mb-4">
-                  <div className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm border ${service.featured ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-gradient-to-r from-blue-100 to-blue-50 text-cyan-700 border-cyan-200/50'}`}>
-                    {service.featured && <Zap className="w-3 h-3 mr-1 fill-current" />}
-                    {service.category}
-                  </div>
-                </div>
-              )}
-
-              {/* Ícone */}
-              <motion.div
-                className="service-icon-container h-24 mb-6 flex items-center justify-center"
-                whileHover={{ scale: 1.05, rotate: 2 }}
-              >
-                <div className="relative drop-shadow-lg select-none w-full h-full flex items-center justify-center">
-                  {React.isValidElement(service.icon) ?
-                    React.cloneElement(service.icon, {
-                      className: 'service-icon-image max-h-full w-auto object-contain'
-                    }) :
-                    service.icon
-                  }
-                </div>
-              </motion.div>
-
-              {/* Conteúdo principal */}
-              <div className="flex-grow flex flex-col justify-start">
-                <motion.h3
-                  className="service-text-enhanced text-xl font-bold text-slate-900 mb-3 min-h-[3.5rem] flex items-end"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  {service.title}
-                  {isTestEnv && service.testKey && (
-                    <span className="sr-only">{service.testKey}</span>
-                  )}
-                </motion.h3>
-
-                <p className="service-description-enhanced text-slate-600 text-sm leading-relaxed line-clamp-4">
-                  {service.description}
-                </p>
-              </div>
-            </div>
-          }
-          actions={[]} // Removido o botão "Saiba Mais"
-          animationDelay={index * 0.05}
-          motionPreset="entrance"
-          stagger
-        />
-      </Link>
-    );
-  };
+  // Get unique categories from services
+  const availableCategories = useMemo(() => {
+    const cats = new Set(serviceItems.map(s => s.category));
+    return cats;
+  }, [serviceItems]);
 
   return (
-    <section
-      id="services"
-      className="services-page-bg py-20 lg:py-32 relative overflow-hidden min-h-screen"
-    >
-      {/* Enhanced Background Elements with 3D Effects */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/8 to-cyan-400/6" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/12 to-cyan-400/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-cyan-400/10 to-teal-400/8 rounded-full blur-3xl animate-pulse delay-1000" />
-      <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-br from-purple-400/8 to-pink-400/6 rounded-full blur-2xl animate-pulse delay-500" />
+    <>
+      {/* Hero Section - Only show on full page view */}
+      {full && <ServicesHero t={t} />}
 
-      {/* Floating geometric shapes for depth */}
-      <div className="absolute top-20 right-20 w-32 h-32 border border-cyan-200/30 rounded-3xl rotate-12 animate-float opacity-60" />
-      <div className="absolute bottom-32 left-16 w-24 h-24 border border-cyan-200/30 rounded-2xl -rotate-12 animate-float-delayed opacity-40" />
+      <section
+        id="services-list"
+        className={`bg-slate-50 ${full ? 'py-16 lg:py-24' : 'py-20 lg:py-32'} relative overflow-hidden`}
+      >
+        {/* Background decorations */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-100/30 rounded-full blur-3xl -translate-y-1/2" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-100/30 rounded-full blur-3xl translate-y-1/2" />
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        {/* Enhanced Header Section */}
-        <div className="text-center mb-20">
-          {/* Badge */}
-          <div
-            className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full bg-gradient-to-r from-blue-100 to-cyan-100 text-cyan-700"
-            data-testid="services-badge"
-          >
-            {t('services.badge', 'Nossos Serviços')}
-          </div>
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          {/* Section Header - Simplified for full page */}
+          {!full && (
+            <div className="text-center mb-16">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-50 rounded-full border border-cyan-100 mb-6"
+              >
+                <Sparkles className="w-4 h-4 text-cyan-600" />
+                <span className="text-sm font-semibold text-cyan-700">Nossos Serviços</span>
+              </motion.div>
 
-          {/* Test environment literal text */}
-          {isTestEnv && (
-            <span className="sr-only" data-testid="services-literal-text">
-              Nossos Serviços
-            </span>
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
+              >
+                Cuidados Oftalmológicos
+                <span className="block text-cyan-600">Completos</span>
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="text-lg text-slate-600 max-w-2xl mx-auto"
+              >
+                {t('services.subtitle')}
+              </motion.p>
+            </div>
           )}
 
-          {/* Main Title */}
-          <motion.h2
-            initial={{ opacity: 0, y: -30, scale: 0.9 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 drop-shadow-sm"
-          >
-            {isTestEnv
-              ? 'Cuidados Oftalmológicos Completos'
-              : t('services.title_full', full ? 'Nossos Serviços' : 'Cuidados Oftalmológicos Completos')
-            }
-          </motion.h2>
+          {/* Category Filters - Only on full/grid view */}
+          {grid && (
+            <CategoryFilters
+              activeCategory={activeCategory}
+              setActiveCategory={setActiveCategory}
+              categories={availableCategories}
+            />
+          )}
 
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed drop-shadow-sm"
-          >
-            {t('services.subtitle')}
-          </motion.p>
+          {/* Services Grid */}
+          {grid ? (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCategory}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
+              >
+                {filteredServices.map((service, index) => (
+                  <ServiceCard key={service.id} service={service} index={index} />
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          ) : (
+            <InteractiveCarousel
+              items={serviceItems}
+              renderItem={(service, index) => <ServiceCard service={service} index={index} />}
+              keyExtractor={(service) => service.id}
+              gap={24}
+              cardWidth="responsive"
+              minWidth={300}
+              maxWidth={360}
+              dragToScroll
+              wheelToScroll
+              keyboardNav
+              touchSwipe
+              autoPlay={!isTestEnv}
+              autoPlaySpeed={0.15}
+              showArrows
+              showIndicators
+              arrowPosition="outside"
+              indicatorStyle="dots"
+              snapMode="start"
+              fadeEdges
+              perspective3D
+              lazyLoad={!isTestEnv}
+              preloadAdjacent={2}
+              aria-label={t('services.title')}
+              announceChanges
+              respectReducedMotion
+              className="mt-8"
+            />
+          )}
 
-          {/* Decorative Element */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex justify-center mt-8"
-          >
-            <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full shadow-lg" />
-          </motion.div>
-        </div>
+          {/* Featured IRPL Section */}
+          {grid && <FeaturedService t={t} />}
 
-        {/* Grid Layout - Layout responsivo padronizado */}
-        {grid ? (
-          <div className="mt-8 services-grid-enhanced grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {serviceItems.map((service, index) => (
-              <div key={service.id} className="flex h-full">
-                {renderServiceCard(service, index)}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <InteractiveCarousel
-            items={serviceItems}
-            renderItem={renderServiceCard}
-            keyExtractor={(service) => service.id}
+          {/* CTA Section */}
+          {grid && <CTASection t={t} />}
 
-            // Layout Configuration
-            gap={32}
-            cardWidth="responsive"
-            minWidth={320}
-            maxWidth={380}
-
-            // Interaction Modes
-            dragToScroll
-            wheelToScroll
-            keyboardNav
-            touchSwipe
-            autoPlay={!isTestEnv} // Disable autoplay in test environment
-            autoPlaySpeed={0.18}
-
-            // Navigation Controls
-            showArrows
-            showIndicators
-            arrowPosition="outside"
-            indicatorStyle="dots"
-            indicatorGranularity="pages"
-
-            // Snap Configuration
-            snapMode="start"
-            snapForce="proximity"
-
-            // Visual Effects
-            fadeEdges
-            perspective3D
-
-            // Performance
-            lazyLoad={!isTestEnv} // Disable lazy loading in test environment
-            preloadAdjacent={2}
-
-            // Accessibility
-            aria-label={t('services.title')}
-            announceChanges
-            respectReducedMotion
-
-            className="mt-8"
-          />
-        )}
-
-        {/* Featured Service Section - IRPL */}
-        <FeaturedService t={t} />
-
-        {/* CTA Contextual - Após lista de serviços */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-16 max-w-2xl mx-auto"
-        >
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-slate-900 mb-3">
-              Precisa de ajuda para escolher o serviço certo?
-            </h3>
-            <p className="text-slate-600 mb-6">
-              Nossa equipe está pronta para ajudar. Fale conosco pelo WhatsApp e agende sua consulta em minutos.
-            </p>
-          </div>
-
-          <WhatsAppCTA
-            variant="default"
-            size="large"
-            context="agendamento"
-            showPhone={true}
-            className="w-full sm:w-auto"
-          />
-        </motion.div>
-
-        {/* CTA secundário para emergências */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-8 text-center"
-        >
-          <p className="text-sm text-slate-500 mb-4">
-            Sente-se em emergência oftalmológica?{' '}
-            <a
-              href="https://wa.me/message/2QFZJG3EDJZVF1?text=Preciso%20de%20uma%20consulta%20o%20mais%20rápido%20possível.%20É%20uma%20emergência?"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-red-600 hover:text-red-700 font-medium underline"
-              aria-label="Agendar emergência pelo WhatsApp"
+          {/* View All Link - Only on homepage carousel */}
+          {!grid && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mt-12"
             >
-              Chame agora no WhatsApp
-            </a>
-          </p>
-        </motion.div>
-      </div>
-    </section>
+              <Link to="/servicos">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white font-bold rounded-xl shadow-lg shadow-cyan-500/30 transition-all duration-300 inline-flex items-center gap-2"
+                >
+                  Ver Todos os Serviços
+                  <ArrowRight className="w-5 h-5" />
+                </motion.button>
+              </Link>
+            </motion.div>
+          )}
+        </div>
+      </section>
+    </>
   );
 };
 

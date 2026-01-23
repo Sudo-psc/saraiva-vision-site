@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import '../../styles/blog-post-layout.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
@@ -38,12 +38,27 @@ import RelatedPosts from './RelatedPosts';
 import AccessibilityControls from './AccessibilityControls';
 import PatientEducationSidebar from './PatientEducationSidebar';
 import SpotifyEmbed from '../SpotifyEmbed';
+
 import OptimizedImage from './OptimizedImage';
 
 // Import data utilities
 import { blogPosts, getPostBySlug } from '../../content/blog';
 import { getPostEnrichment } from '../../data/blogPostsEnrichment';
 import { trackBlogInteraction, trackPageView } from '../../utils/analytics';
+
+const enhanceContentImages = (html) => {
+  if (!html) return html;
+  return html.replace(/<img\b([^>]*?)(\/?)>/gi, (match, attrs, closing) => {
+    let extra = '';
+    if (!/\bloading\s*=/.test(attrs)) {
+      extra += ' loading="lazy"';
+    }
+    if (!/\bdecoding\s*=/.test(attrs)) {
+      extra += ' decoding="async"';
+    }
+    return `<img${extra}${attrs}${closing ? '/' : ''}>`;
+  });
+};
 
 /**
  * PostPageTemplate - Premium blog post template with 3D glassmorphism design
@@ -59,6 +74,10 @@ const PostPageTemplate = ({ slug }) => {
 
   // Get post data
   const currentPost = getPostBySlug(slug);
+  const contentHtml = useMemo(
+    () => enhanceContentImages(currentPost?.content),
+    [currentPost?.content]
+  );
   const enrichment = currentPost ? getPostEnrichment(currentPost.id) : null;
 
   // Scroll progress bar
@@ -416,7 +435,7 @@ const PostPageTemplate = ({ slug }) => {
                   {/* Content with Typography Plugin */}
                   <div
                     className="relative prose prose-lg lg:prose-xl max-w-none post-content px-4 md:px-6 lg:px-8 py-8 md:py-12"
-                    dangerouslySetInnerHTML={{ __html: currentPost.content }}
+                    dangerouslySetInnerHTML={{ __html: contentHtml }}
                   />
                 </div>
               </motion.div>

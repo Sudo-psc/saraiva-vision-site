@@ -8,7 +8,7 @@ const AuthorWidget = ({ author = 'Dr. Saraiva', date, category }) => {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.5 }}
-      className="sticky top-[900px] bg-gradient-to-br from-white/90 via-blue-50/30 to-slate-50/50 backdrop-blur-sm border border-slate-200 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
+      className="bg-gradient-to-br from-white/90 via-blue-50/30 to-slate-50/50 backdrop-blur-sm border border-slate-200 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
     >
       <div className="flex items-center gap-3 mb-4">
         <div className="w-12 h-12 bg-gradient-to-br from-cyan-600 to-blue-500 rounded-full flex items-center justify-center shadow-md">

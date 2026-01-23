@@ -21,7 +21,7 @@ const PagamentoPremiumPage = () => {
     description: 'Finalize o pagamento do Plano Premium de assinatura de lentes de contato. 12x de R$ 179,99 com lentes multifocais e atendimento VIP.',
     keywords: 'pagamento lentes contato, plano premium, assinatura lentes multifocais',
     canonicalUrl: 'https://saraivavision.com.br/pagamentopremium',
-    ogImage: 'https://saraivavision.com.br/og-image.jpg'
+    ogImage: 'https://saraivavision.com.br/opengraph-logo.png'
   };
 
   return (

@@ -8,6 +8,8 @@ import { debounce } from '@/utils/componentUtils';
 import { smoothScrollHorizontal } from '@/utils/scrollUtils';
 import { useAutoplayCarousel } from '@/hooks/useAutoplayCarousel';
 import '@/styles/services-fix.css';
+import '../styles/design-system.css';
+import '../styles/glassMorphism.css';
 
 const ServiceCard = React.forwardRef(({ service, index, lazy = true }, ref) => {
   const { t } = useTranslation();
@@ -139,8 +141,8 @@ const Services = ({ full = false, autoplay = true }) => {
   const loadServices = useCallback(async () => {
     setLoading(true);
     const clinicServices = [
-      { id: 'irpl', icon: getServiceIcon('irpl', { className: 'w-full h-full object-contain' }), title: t('services.items.irpl.title', 'Tratamento IRPL (E-Eye)'), description: t('services.items.irpl.description', 'Tecnologia avançada de Luz Pulsada Regulada Intensa para tratamento de olho seco e disfunção das glândulas meibomianas'), featured: true },
-      { id: 'olho-seco', icon: getServiceIcon('olho-seco', { className: 'w-full h-full object-contain' }), title: t('services.items.dryEye.title'), description: t('services.items.dryEye.description') },
+      { id: 'irpl-e-eye', icon: getServiceIcon('irpl-e-eye', { className: 'w-full h-full object-contain' }), title: t('services.items.irplEEye.title', 'IRPL com E-Eye (Olho Seco)'), description: t('services.items.irplEEye.description', 'Luz pulsada regulada específica para DGM e estabilização da camada lipídica da lágrima.'), featured: true },
+      { id: 'olho-seco', icon: getServiceIcon('olho-seco', { className: 'w-full h-full object-contain' }), title: t('services.items.dryEye.title'), description: t('services.items.dryEye.description'), featured: true },
       { id: 'consultas-oftalmologicas', icon: getServiceIcon('consultas-oftalmologicas', { className: 'w-full h-full object-contain' }), title: t('services.items.consultations.title'), description: t('services.items.consultations.description') },
       { id: 'exames-de-refracao', icon: getServiceIcon('exames-de-refracao', { className: 'w-full h-full object-contain' }), title: t('services.items.refraction.title'), description: t('services.items.refraction.description') },
       { id: 'tratamentos-especializados', icon: getServiceIcon('tratamentos-especializados', { className: 'w-full h-full object-contain' }), title: t('services.items.specialized.title'), description: t('services.items.specialized.description') },
@@ -168,6 +170,7 @@ const Services = ({ full = false, autoplay = true }) => {
   const [isDragging, setIsDragging] = useState(false);
   const dragStartXRef = useRef(0);
   const scrollStartRef = useRef(0);
+  const maxScrollRef = useRef(0);
 
   // Autoplay carousel hook integration - só inicializa quando há serviços
   const autoplayCarousel = useAutoplayCarousel({
@@ -192,8 +195,9 @@ const Services = ({ full = false, autoplay = true }) => {
   // Função para verificar se o container pode rolar mais
   const canScrollFurther = useCallback((el, deltaX) => {
     if (!el) return false;
+    const maxScroll = maxScrollRef.current;
     return deltaX > 0
-      ? el.scrollLeft + el.clientWidth < el.scrollWidth
+      ? el.scrollLeft < maxScroll
       : el.scrollLeft > 0;
   }, []);
 
@@ -225,6 +229,7 @@ const Services = ({ full = false, autoplay = true }) => {
     if (!el) return;
     const first = el.querySelector('[data-card]');
     if (first) {
+      maxScrollRef.current = Math.max(0, el.scrollWidth - el.clientWidth);
       const width = first.getBoundingClientRect().width;
       // Tenta calcular o gap real entre os cards
       const second = first.nextElementSibling;
@@ -244,6 +249,8 @@ const Services = ({ full = false, autoplay = true }) => {
       const perView = Math.max(1, Math.round(el.clientWidth / cardWidthRef.current));
       itemsPerViewRef.current = perView;
       setItemsPerView(perView);
+    } else {
+      maxScrollRef.current = Math.max(0, el.scrollWidth - el.clientWidth);
     }
   }, []);
 
@@ -339,6 +346,7 @@ const Services = ({ full = false, autoplay = true }) => {
     autoplayCarousel.pause(); // Use hook's pause method
     dragStartXRef.current = e.clientX ?? (e.touches?.[0]?.clientX || 0);
     scrollStartRef.current = el.scrollLeft;
+    maxScrollRef.current = Math.max(0, el.scrollWidth - el.clientWidth);
 
     // Apenas capture pointer para mouse, não para touch
     if (!isTouch && el.setPointerCapture) {
@@ -356,7 +364,7 @@ const Services = ({ full = false, autoplay = true }) => {
     const newScrollLeft = scrollStartRef.current - dx;
 
     // Previne scroll além dos limites
-    const maxScroll = el.scrollWidth - el.clientWidth;
+    const maxScroll = maxScrollRef.current;
     el.scrollLeft = Math.max(0, Math.min(maxScroll, newScrollLeft));
 
     // REMOVIDO: preventDefault que bloqueava scroll global
@@ -432,7 +440,7 @@ const Services = ({ full = false, autoplay = true }) => {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-cyan-400/10 to-cyan-400/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-cyan-400/10 to-teal-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
+      <div className="container mx-auto px-6 md:px-8 lg:px-12 relative z-10">
         {/* Enhanced Header Section */}
         <div className="text-center mb-20">
           {/* Badge visível para manter compatibilidade com fluxo de integração que busca 'Nossos Serviços' */}

@@ -2,6 +2,7 @@ import { Calendar, Phone, MessageCircle, MapPin } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { NAP_CANONICAL, generateWhatsAppURL, getPhoneDisplay } from '@/lib/napCanonical';
 import { safeOpenUrl } from '@/utils/safeNavigation';
+import '../styles/cta.css';
 
 const UnifiedCTA = ({ variant = 'hero', className = '' }) => {
   const handleAgendarClick = () => {

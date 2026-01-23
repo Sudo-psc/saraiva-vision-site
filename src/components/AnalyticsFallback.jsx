@@ -162,124 +162,135 @@ const AnalyticsFallback = () => {
   }, [deepSanitize]);
 
   useEffect(() => {
-    // Verificar se scripts do Google foram bloqueados
-    const checkGoogleScriptsBlocked = () => {
-      const isGTMBlocked = !window.gtag && !window.dataLayer;
-      const isGABlocked = !window.gtag && !window.ga;
+    let idleId;
+    let timeoutId;
+    let cleanupFn;
 
-      return isGTMBlocked || isGABlocked;
-    };
+    const runCheck = () => {
+      const checkGoogleScriptsBlocked = () => {
+        const isGTMBlocked = !window.gtag && !window.dataLayer;
+        const isGABlocked = !window.gtag && !window.ga;
 
-    // Se scripts não foram bloqueados, não fazer nada
-    if (!checkGoogleScriptsBlocked()) {
-      console.log('✅ Google scripts are loaded, no fallback needed');
-      return;
-    }
+        return isGTMBlocked || isGABlocked;
+      };
 
-    console.log('⚠️ Google scripts blocked, activating server-side analytics fallback');
-
-    // Enviar pageview inicial via server-side
-    sendServerSideAnalytics({
-      t: 'pageview',
-      dh: window.location.hostname,
-      dp: window.location.pathname,
-      dt: document.title
-    });
-
-    // Monitorar eventos de interação e enviar via server-side
-    const trackInteraction = (eventName, eventData = {}) => {
-      sendServerSideGTM(eventName, eventData);
-
-      // Também enviar via PostHog se disponível
-      if (window.posthog) {
-        window.posthog.capture(eventName, {
-          ...eventData,
-          fallback_method: 'server-side',
-          blocked_scripts: ['google_analytics', 'google_tag_manager']
-        });
+      if (!checkGoogleScriptsBlocked()) {
+        console.log('✅ Google scripts are loaded, no fallback needed');
+        return;
       }
-    };
 
-    // Configurar listeners para eventos comuns
-    const eventListeners = [];
+      console.log('⚠️ Google scripts blocked, activating server-side analytics fallback');
 
-    // Click events
-    const handleClick = (event) => {
-      const target = event.target.closest('a, button, [onclick]');
-      if (target) {
-        const text = target.textContent?.trim() || target.alt || target.title || 'Unknown element';
-        const href = target.href || '';
-
-        trackInteraction('click', {
-          element_type: target.tagName.toLowerCase(),
-          element_text: text.substring(0, 100),
-          destination_url: href,
-          timestamp: new Date().toISOString()
-        });
-      }
-    };
-
-    // Form submissions
-    const handleSubmit = (event) => {
-      const form = event.target;
-      const formName = form.name || form.id || form.className || 'Unknown form';
-
-      trackInteraction('form_submit', {
-        form_name: formName,
-        form_action: form.action || '',
-        timestamp: new Date().toISOString()
+      sendServerSideAnalytics({
+        t: 'pageview',
+        dh: window.location.hostname,
+        dp: window.location.pathname,
+        dt: document.title
       });
-    };
 
-    // Page visibility changes
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        trackInteraction('page_hidden', {
-          time_on_page: Date.now() - performance.timing.navigationStart,
+      const trackInteraction = (eventName, eventData = {}) => {
+        sendServerSideGTM(eventName, eventData);
+
+        if (window.posthog) {
+          window.posthog.capture(eventName, {
+            ...eventData,
+            fallback_method: 'server-side',
+            blocked_scripts: ['google_analytics', 'google_tag_manager']
+          });
+        }
+      };
+
+      const eventListeners = [];
+
+      const handleClick = (event) => {
+        const target = event.target.closest('a, button, [onclick]');
+        if (target) {
+          const text = target.textContent?.trim() || target.alt || target.title || 'Unknown element';
+          const href = target.href || '';
+
+          trackInteraction('click', {
+            element_type: target.tagName.toLowerCase(),
+            element_text: text.substring(0, 100),
+            destination_url: href,
+            timestamp: new Date().toISOString()
+          });
+        }
+      };
+
+      const handleSubmit = (event) => {
+        const form = event.target;
+        const formName = form.name || form.id || form.className || 'Unknown form';
+
+        trackInteraction('form_submit', {
+          form_name: formName,
+          form_action: form.action || '',
           timestamp: new Date().toISOString()
         });
-      } else if (document.visibilityState === 'visible') {
-        trackInteraction('page_visible', {
-          timestamp: new Date().toISOString()
-        });
-      }
-    };
+      };
 
-    // Adicionar listeners
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
+      const handleVisibilityChange = () => {
+        if (document.visibilityState === 'hidden') {
+          trackInteraction('page_hidden', {
+            time_on_page: Date.now() - performance.timing.navigationStart,
+            timestamp: new Date().toISOString()
+          });
+        } else if (document.visibilityState === 'visible') {
+          trackInteraction('page_visible', {
+            timestamp: new Date().toISOString()
+          });
+        }
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          document.addEventListener('click', handleClick, true);
+          document.addEventListener('submit', handleSubmit, true);
+          document.addEventListener('visibilitychange', handleVisibilityChange);
+        });
+      } else {
         document.addEventListener('click', handleClick, true);
         document.addEventListener('submit', handleSubmit, true);
         document.addEventListener('visibilitychange', handleVisibilityChange);
-      });
-    } else {
-      document.addEventListener('click', handleClick, true);
-      document.addEventListener('submit', handleSubmit, true);
-      document.addEventListener('visibilitychange', handleVisibilityChange);
-    }
+      }
 
-    eventListeners.push(
-      { type: 'click', handler: handleClick },
-      { type: 'submit', handler: handleSubmit },
-      { type: 'visibilitychange', handler: handleVisibilityChange }
-    );
+      eventListeners.push(
+        { type: 'click', handler: handleClick },
+        { type: 'submit', handler: handleSubmit },
+        { type: 'visibilitychange', handler: handleVisibilityChange }
+      );
 
-    // Enviar heartbeat a cada 30 segundos
-    const heartbeatInterval = setInterval(() => {
-      trackInteraction('heartbeat', {
-        session_duration: Date.now() - performance.timing.navigationStart,
-        timestamp: new Date().toISOString()
-      });
-    }, 30000);
+      const heartbeatInterval = setInterval(() => {
+        trackInteraction('heartbeat', {
+          session_duration: Date.now() - performance.timing.navigationStart,
+          timestamp: new Date().toISOString()
+        });
+      }, 30000);
 
-    // Limpeza
-    return () => {
-      eventListeners.forEach(({ type, handler }) => {
-        document.removeEventListener(type, handler, true);
-      });
-      clearInterval(heartbeatInterval);
+      cleanupFn = () => {
+        eventListeners.forEach(({ type, handler }) => {
+          document.removeEventListener(type, handler, true);
+        });
+        clearInterval(heartbeatInterval);
+      };
     };
 
+    if ('requestIdleCallback' in window) {
+      idleId = window.requestIdleCallback(runCheck, { timeout: 4000 });
+    } else {
+      timeoutId = setTimeout(runCheck, 4000);
+    }
+
+    return () => {
+      if (idleId && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      if (cleanupFn) {
+        cleanupFn();
+      }
+    };
   }, [sendServerSideAnalytics, sendServerSideGTM]);
 
   // Função global para eventos personalizados

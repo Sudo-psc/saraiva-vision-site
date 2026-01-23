@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import '../../styles/blog-post-layout.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll } from 'framer-motion';
@@ -34,6 +34,20 @@ import { blogPosts, getPostBySlug } from '../../content/blog';
 import { getPostEnrichment } from '../../data/blogPostsEnrichment';
 import { trackBlogInteraction, trackPageView } from '../../utils/analytics';
 
+const enhanceContentImages = (html) => {
+  if (!html) return html;
+  return html.replace(/<img\b([^>]*?)(\/?)>/gi, (match, attrs, closing) => {
+    let extra = '';
+    if (!/\bloading\s*=/.test(attrs)) {
+      extra += ' loading="lazy"';
+    }
+    if (!/\bdecoding\s*=/.test(attrs)) {
+      extra += ' decoding="async"';
+    }
+    return `<img${extra}${attrs}${closing ? '/' : ''}>`;
+  });
+};
+
 const PostPageTemplateRefactored = ({ slug }) => {
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
@@ -42,6 +56,10 @@ const PostPageTemplateRefactored = ({ slug }) => {
   const [showCookieModal, setShowCookieModal] = useState(false);
 
   const currentPost = getPostBySlug(slug);
+  const contentHtml = useMemo(
+    () => enhanceContentImages(currentPost?.content),
+    [currentPost?.content]
+  );
   const enrichment = currentPost ? getPostEnrichment(currentPost.id) : null;
 
   const { scrollYProgress } = useScroll();
@@ -294,7 +312,7 @@ const PostPageTemplateRefactored = ({ slug }) => {
                   prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6
                   prose-li:text-slate-700 prose-li:mb-2
                   prose-img:rounded-lg prose-img:shadow-md"
-                dangerouslySetInnerHTML={{ __html: currentPost.content }}
+                dangerouslySetInnerHTML={{ __html: contentHtml }}
               />
 
               <div className="mt-12 pt-8 border-t border-slate-200">

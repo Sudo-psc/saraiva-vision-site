@@ -155,6 +155,11 @@ function PodcastPageConsolidated() {
                       src={currentEpisode.cover}
                       alt={currentEpisode.title}
                       className="w-full aspect-square object-cover rounded-2xl shadow-2xl"
+                      width={640}
+                      height={640}
+                      loading="eager"
+                      decoding="async"
+                      fetchPriority="high"
                     />
                   </div>
                 )}
@@ -419,6 +424,10 @@ function PodcastPageConsolidated() {
                           src={episode.cover}
                           alt={episode.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          width={640}
+                          height={360}
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                     )}

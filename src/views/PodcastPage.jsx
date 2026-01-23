@@ -404,7 +404,7 @@ function PodcastPage() {
                 className="mb-12"
                 aria-labelledby="featured-episode-title"
               >
-                <div className="glass-card-green rounded-3xl shadow-3d p-6 md:p-8 lg:p-10 border border-cyan-200 bg-white/90 backdrop-blur-xl">
+                <div className="rounded-3xl shadow-3d p-6 md:p-8 lg:p-10 border border-cyan-200 bg-white/90 backdrop-blur-xl">
                   <div className="flex flex-col lg:flex-row items-center gap-8">
                     <div className="flex-shrink-0 relative group">
                       <div className="absolute -inset-1 bg-gradient-to-r from-gray-400 to-cyan-500 rounded-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
@@ -510,7 +510,7 @@ function PodcastPage() {
             >
               <h2 id="filter-heading" className="sr-only">Buscar e filtrar episódios</h2>
 
-              <div className="glass-card-green rounded-2xl border border-cyan-200 p-6 bg-white/90 backdrop-blur-xl shadow-3d">
+              <div className="rounded-2xl border border-cyan-200 p-6 bg-white/90 backdrop-blur-xl shadow-3d">
                 <div className="flex flex-col lg:flex-row gap-4">
                   {/* Search */}
                   <div className="flex-grow relative">
@@ -637,7 +637,7 @@ function PodcastPage() {
                         <div
                           id={`player-${episode.id}`}
                           className={`
-                            glass-card-green rounded-2xl shadow-3d border border-cyan-200
+                            rounded-2xl shadow-3d border border-cyan-200
                             bg-white/95 backdrop-blur-xl p-6
                             hover:shadow-3d-hover hover:scale-[1.03] hover:border-cyan-400
                             transition-all duration-500 cursor-pointer relative overflow-hidden

@@ -5,8 +5,11 @@
 
 // service-worker.js
 
-const SW_VERSION = '1.0.0';
+const SW_VERSION = '1.0.3';
 const CACHE_NAME = `saraiva-vision-v${SW_VERSION}`;
+
+// Force cache cleanup on activation
+const FORCE_CLEAN_CACHE = true;
 
 // Assets para cache - IMPORTANTE: Não incluir assets com hash (Vite gera nomes dinâmicos)
 // O service worker deve usar estratégia cache-first para assets, não precaching
@@ -203,15 +206,16 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     (async () => {
       try {
-        // Limpar caches antigos
+        // Force skip waiting on new version
+        await self.skipWaiting();
+
+        // Limpar TODOS os caches para forçar reload limpo
         const cacheNames = await caches.keys();
         await Promise.all(
-          cacheNames
-            .filter(name => name !== CACHE_NAME)
-            .map(name => {
-              SWLogger.info('Deleting old cache', { name });
-              return caches.delete(name);
-            })
+          cacheNames.map(name => {
+            SWLogger.info('Deleting cache', { name });
+            return caches.delete(name);
+          })
         );
 
         // Tomar controle imediato

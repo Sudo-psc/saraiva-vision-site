@@ -234,6 +234,10 @@ const ReviewsPage = () => {
                 src={review.avatar}
                 alt={review.author}
                 className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
+                width={48}
+                height={48}
+                loading="lazy"
+                decoding="async"
                 onError={(e) => {
                   e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(review.author)}&background=cyan&color=fff&size=96`;
                 }}
@@ -316,6 +320,10 @@ const ReviewsPage = () => {
               src={post.image}
               alt={`Post de ${post.author}`}
               className="w-full h-48 object-cover"
+              width={640}
+              height={320}
+              loading="lazy"
+              decoding="async"
               onError={(e) => {
                 e.target.style.display = 'none';
               }}

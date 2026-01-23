@@ -12,6 +12,11 @@ import { generateDarkGlassStyles, createGlassCustomProperties } from '../utils/g
 import { useFooterAccessibility } from '../hooks/useFooterAccessibility';
 import { useLiquidClasses } from '../hooks/useLiquidTheme';
 import { cn } from '../lib/utils';
+import '../styles/glassMorphism.css';
+import '../styles/liquidGlass.css';
+import '../styles/liquidGlassExtensions.css';
+import '../styles/responsive-footer.css';
+import '../styles/social-icons-3d.css';
 import {
     animationVariants,
     getOptimizedVariant,
@@ -494,6 +499,8 @@ const EnhancedFooter = ({
                                             src="/icons_social/Pin_icon_menino.png"
                                             alt="Localização"
                                             className="w-11 h-11 object-contain group-hover:scale-200 transition-transform duration-300 ease-in-out flex-shrink-0"
+                                            width={44}
+                                            height={44}
                                             loading="lazy"
                                             decoding="async"
                                             onError={(e) => {
@@ -529,6 +536,8 @@ const EnhancedFooter = ({
                                             src="/icons_social/whatsapp_icon.png"
                                             alt="WhatsApp"
                                             className="w-8 h-8 object-contain"
+                                            width={32}
+                                            height={32}
                                             loading="lazy"
                                             decoding="async"
                                         />
@@ -546,6 +555,8 @@ const EnhancedFooter = ({
                                             src="/icons_social/whatsapp_icon.png"
                                             alt="WhatsApp Auto Atendimento"
                                             className="w-6 h-6 object-contain"
+                                            width={24}
+                                            height={24}
                                             loading="lazy"
                                             decoding="async"
                                         />
@@ -563,6 +574,8 @@ const EnhancedFooter = ({
                                             src="/icons_social/whatsapp_icon.png"
                                             alt="WhatsApp Urgência"
                                             className="w-6 h-6 object-contain"
+                                            width={24}
+                                            height={24}
                                             loading="lazy"
                                             decoding="async"
                                         />
@@ -580,6 +593,8 @@ const EnhancedFooter = ({
                                             src="/icons_social/IA.png"
                                             alt="IA Chatbot"
                                             className="w-8 h-8 object-contain"
+                                            width={32}
+                                            height={32}
                                             loading="lazy"
                                             decoding="async"
                                         />

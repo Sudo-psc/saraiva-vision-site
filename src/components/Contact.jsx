@@ -12,6 +12,8 @@ import ErrorFeedback from '@/components/ui/ErrorFeedback';
 import { validateField, validateContactSubmission } from '@/lib/validation';
 import { useAnalytics, useVisibilityTracking, useSaraivaTracking } from '@/hooks/useAnalytics';
 import { consentManager } from '@/lib/lgpd/consentManager';
+import '../styles/forms.css';
+import '../styles/design-system.css';
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -575,7 +577,7 @@ const Contact = () => {
         {announceMessage}
       </div>
 
-      <div className="container mx-auto px-[7%]">
+      <div className="container mx-auto px-6 md:px-8 lg:px-12">
         <div className="text-center mb-16">
           <motion.h2
             id="contact-heading"

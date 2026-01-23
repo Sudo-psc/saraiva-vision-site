@@ -36,7 +36,7 @@ const PlanBasicoPage = () => {
     description: 'Pioneiro no Brasil, nosso plano básico de assinatura de lentes de contato oferece tudo para você usar suas lentes com segurança e praticidade.',
     keywords: 'plano básico lentes, lentes mensais, assinatura lentes básico',
     canonicalUrl: 'https://saraivavision.com.br/planobasico',
-    ogImage: 'https://saraivavision.com.br/og-image.jpg'
+    ogImage: 'https://saraivavision.com.br/opengraph-logo.png'
   };
 
   const features = [

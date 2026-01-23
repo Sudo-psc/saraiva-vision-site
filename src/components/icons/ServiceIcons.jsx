@@ -249,13 +249,14 @@ export const DryEyeIcon = ({ className = "h-8 w-8" }) => {
   const { t } = useTranslation();
   return (
     <ImageWithFallback
-      src="/icons_social/075B9668-4FBF-4038-BFED-04CE9C504E0D_1_105_c.jpeg"
+      src="/icons/icon_olhoseco.png"
       alt={t('ui.alt.dry_eye', 'Tratamento de Olho Seco')}
       className={className}
       loading="lazy"
       decoding="async"
       width="64"
       height="64"
+      usePicture={false}
     />
   );
 };
@@ -271,6 +272,7 @@ export const EEyeIRPLIcon = ({ className = "h-8 w-8" }) => {
       decoding="async"
       width="64"
       height="64"
+      usePicture={false}
     />
   );
 };

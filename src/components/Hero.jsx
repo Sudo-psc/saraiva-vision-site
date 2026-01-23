@@ -1,11 +1,13 @@
-import { motion } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Eye } from 'lucide-react';
 
 import { smoothScrollTo } from '@/utils/scrollUtils';
+import OptimizedPicture from '@/components/ui/OptimizedPicture';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 import UnifiedCTA from '@/components/UnifiedCTA';
+import '../styles/design-system.css';
+import '../styles/glassMorphism.css';
 
 const Hero = () => {
   const { t } = useTranslation();
@@ -33,10 +35,7 @@ const Hero = () => {
           mantendo o background full-bleed e evitando cortes nas laterais. */}
       <div className="container mx-auto px-6 md:px-8 lg:px-[6%] xl:px-[7%] 2xl:px-[8%] relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+          <div
             className="flex flex-col space-y-6 text-center lg:text-left"
           >
             <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-cyan-700 text-sm font-medium mb-2 w-fit mx-auto lg:mx-0">
@@ -72,7 +71,7 @@ const Hero = () => {
                 <div className="relative group">
                   <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
                     <ImageWithFallback
-                      src="/img/avatar-female-blonde.avif"
+                      src="/img/responsive/avatar-female-blonde-77.webp"
                       alt={t('ui.alt.satisfied_patient_1', 'Paciente satisfeito 1')}
                       className="w-12 h-12 object-cover rounded-full"
                       width={48}
@@ -90,7 +89,7 @@ const Hero = () => {
                 <div className="relative group">
                   <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
                     <ImageWithFallback
-                      src="/img/avatar-female-brunette.avif"
+                      src="/img/responsive/avatar-female-brunette-77.webp"
                       alt={t('ui.alt.satisfied_patient_2', 'Paciente satisfeito 2')}
                       className="w-12 h-12 object-cover rounded-full"
                       width={48}
@@ -131,32 +130,27 @@ const Hero = () => {
                 </Trans>
               </p>
             </div >
-          </motion.div >
+          </div >
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+          <div
             className="relative"
           >
             <div className="hero-image-container relative z-10 rounded-3xl overflow-hidden shadow-3d hover:shadow-3d-hover transition-all duration-500 card-hover bg-gradient-to-br from-blue-50 to-cyan-50">
-              <ImageWithFallback
-                src="/img/hero.avif"
+              <OptimizedPicture
+                src="/img/responsive/hero-637.webp"
                 alt={t('ui.alt.hero_image', 'Família sorrindo - Saraiva Vision')}
-                width={800}
-                height={640}
-                loading="eager"
-                decoding="async"
-                sizes="(min-width: 1024px) 800px, 100vw"
-                className="block w-full h-auto aspect-[4/3] object-cover object-center rounded-3xl transition-transform duration-700 hover:scale-105"
+                width={637}
+                height={637}
+                sizes="(min-width: 1024px) 637px, (min-width: 768px) 500px, 100vw"
                 priority={true}
+                disableAvif={false}
+                placeholder="shimmer"
+                className="block w-full h-auto rounded-3xl transition-transform duration-700 hover:scale-105"
+                aspectRatio="1/1"
               />
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
+            <div
               className="absolute -bottom-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:-left-12 md:-bottom-4 glass-card p-4 max-w-xs"
             >
               <div className="flex items-start gap-4">
@@ -168,8 +162,8 @@ const Hero = () => {
                   <p className="text-sm">{t('hero.advanced_tech_desc')}</p>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div >
       </div >
     </section >

@@ -36,7 +36,7 @@ const PlanPadraoPage = () => {
     description: 'Nosso plano mais completo com benefícios adicionais para quem busca máximo conforto e acompanhamento profissional.',
     keywords: 'plano padrão lentes, lentes premium, assinatura lentes padrão',
     canonicalUrl: 'https://saraivavision.com.br/planopadrao',
-    ogImage: 'https://saraivavision.com.br/og-image.jpg'
+    ogImage: 'https://saraivavision.com.br/opengraph-logo.png'
   };
 
   const features = [
