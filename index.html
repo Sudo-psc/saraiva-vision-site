@@ -73,13 +73,19 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
   </noscript>
 
-  <!-- Preload LCP image - responsive optimized versions -->
-  <link rel="preload" as="image" type="image/webp" href="/img/responsive/hero-637.webp" fetchpriority="high"
+  <!-- Preload LCP image - AVIF primary (smallest), WebP fallback -->
+  <!-- Priority: AVIF (27-60KB) < WebP (17-52KB) - AVIF is smaller so better for LCP -->
+  <link rel="preload" as="image" type="image/avif" href="/img/responsive/hero-637.avif" fetchpriority="high"
+    imagesrcset="/img/responsive/hero-400.avif 400w, /img/responsive/hero-637.avif 637w, /img/responsive/hero-800.avif 800w"
+    imagesizes="(max-width: 480px) 400px, (max-width: 768px) 637px, (min-width: 1024px) 637px, 100vw" />
+  <!-- WebP fallback for browsers without AVIF support -->
+  <link rel="preload" as="image" type="image/webp" href="/img/responsive/hero-637.webp"
     imagesrcset="/img/responsive/hero-400.webp 400w, /img/responsive/hero-637.webp 637w, /img/responsive/hero-800.webp 800w"
-    imagesizes="(min-width: 1024px) 637px, 100vw" />
+    imagesizes="(max-width: 480px) 400px, (max-width: 768px) 637px, (min-width: 1024px) 637px, 100vw" />
 
-  <!-- Preload critical logo - responsive optimized -->
-  <link rel="preload" as="image" type="image/webp" href="/img/responsive/logo_prata-224.webp" fetchpriority="high" />
+  <!-- Preload critical logo - AVIF primary -->
+  <link rel="preload" as="image" type="image/avif" href="/img/responsive/logo_prata-224.avif" fetchpriority="high" />
+  <link rel="preload" as="image" type="image/webp" href="/img/responsive/logo_prata-224.webp" />
 
   <!-- Modulepreload for main entry point - Vite will inject actual paths -->
   <link rel="modulepreload" href="/src/main.jsx" />

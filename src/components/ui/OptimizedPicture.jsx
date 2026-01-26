@@ -189,26 +189,33 @@ const OptimizedPicture = memo(({
     maxWidth: '100%',
     aspectRatio: calculatedAspectRatio,
     overflow: 'hidden',
-    backgroundColor: hasError ? '#f1f5f9' : undefined
+    backgroundColor: hasError ? '#f1f5f9' : undefined,
+    // Contain layout for LCP optimization
+    contentVisibility: priority ? 'visible' : 'auto',
+    containIntrinsicSize: width && height ? `${width}px ${height}px` : undefined
   };
 
-  // Image styles
+  // Image styles - no transitions for priority images to improve LCP
   const imgStyle = {
     width: '100%',
     height: '100%',
     objectFit,
+    // Remove ALL transitions for priority images - critical for LCP
     transition: priority ? 'none' : 'opacity 0.3s ease-in-out',
-    opacity: (priority || isLoaded) ? 1 : 0
+    opacity: 1, // Always visible immediately for priority images
+    // Prevent layout shift during load
+    display: 'block'
   };
 
-  // Placeholder styles
+  // Placeholder styles - hidden for priority images
   const placeholderStyle = {
     position: 'absolute',
     inset: 0,
     backgroundColor: '#e2e8f0',
-    opacity: (priority || isLoaded) ? 0 : 1,
+    opacity: (priority || isLoaded || placeholder === 'none') ? 0 : 1,
     transition: priority ? 'none' : 'opacity 0.3s ease-in-out',
-    pointerEvents: 'none'
+    pointerEvents: 'none',
+    display: placeholder === 'none' ? 'none' : 'block'
   };
 
   // Shimmer animation styles

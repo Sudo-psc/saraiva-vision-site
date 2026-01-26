@@ -54,11 +54,11 @@ const Hero = () => {
 
             <div className="flex flex-col gap-6 pt-4">
               <UnifiedCTA variant="hero" className="w-full lg:w-auto" />
-              
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="gap-2 glass-card hover:glass-morphism-hover focus-ring transition-all duration-300 w-full lg:w-auto" 
+
+              <Button
+                variant="outline"
+                size="lg"
+                className="gap-2 glass-card hover:glass-morphism-hover focus-ring transition-all duration-300 w-full lg:w-auto"
                 onClick={handleNossosServicosClick}
               >
                 {t('hero.services_button')}
@@ -137,15 +137,16 @@ const Hero = () => {
           >
             <div className="hero-image-container relative z-10 rounded-3xl overflow-hidden shadow-3d hover:shadow-3d-hover transition-all duration-500 card-hover bg-gradient-to-br from-blue-50 to-cyan-50">
               <OptimizedPicture
-                src="/img/responsive/hero-637.webp"
+                src="/img/responsive/hero-637.avif"
                 alt={t('ui.alt.hero_image', 'Família sorrindo - Saraiva Vision')}
                 width={637}
                 height={637}
-                sizes="(min-width: 1024px) 637px, (min-width: 768px) 500px, 100vw"
+                sizes="(max-width: 480px) 400px, (max-width: 768px) 637px, (min-width: 1024px) 637px, 100vw"
                 priority={true}
+                fetchPriority="high"
                 disableAvif={false}
-                placeholder="shimmer"
-                className="block w-full h-auto rounded-3xl transition-transform duration-700 hover:scale-105"
+                placeholder="none"
+                className="block w-full h-auto rounded-3xl"
                 aspectRatio="1/1"
               />
             </div>
