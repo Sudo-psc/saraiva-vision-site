@@ -52,6 +52,7 @@ import { WidgetProvider } from '@/utils/widgetManager.jsx';
 import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
 
 import Navbar from './components/Navbar.jsx';
+import WhatsAppBubble from '@/components/WhatsAppBubble.jsx';
 const AnalyticsProxy = React.lazy(() => import('@/components/AnalyticsProxy.jsx'));
 const AnalyticsFallback = React.lazy(() => import('@/components/AnalyticsFallback.jsx'));
 const DeferredWidgets = React.lazy(() => import('@/modules/core/components/DeferredWidgets.jsx'));
@@ -146,6 +147,7 @@ function App() {
         <React.Suspense fallback={null}>
           <IRPLAnnouncement />
         </React.Suspense>
+        <WhatsAppBubble />
       </WidgetProvider>
 
       {/* Analytics Fallback para contornar bloqueadores */}

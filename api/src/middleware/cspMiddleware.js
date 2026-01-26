@@ -54,6 +54,8 @@ function cspMiddleware(mode = 'report-only') {
         'https://gp.webformscr.com',
         'https://analytics.saraivavision.com.br',
         'https://googleads.g.doubleclick.net',
+        'https://pagead2.googlesyndication.com',
+        'https://www.googleadservices.com',
         'https://ajax.googleapis.com',
         'https://cdnjs.cloudflare.com'
       ],
@@ -73,7 +75,9 @@ function cspMiddleware(mode = 'report-only') {
         'https://maps.googleapis.com',
         'https://maps.gstatic.com',
         'https://*.supabase.co',
-        'https://i.scdn.co'
+        'https://i.scdn.co',
+        'https://pagead2.googlesyndication.com',
+        'https://www.googleadservices.com'
       ],
       'font-src': [
         "'self'",
@@ -94,6 +98,8 @@ function cspMiddleware(mode = 'report-only') {
         'https://www.google-analytics.com',
         'https://www.googletagmanager.com',
         'https://stats.g.doubleclick.net',
+        'https://pagead2.googlesyndication.com',
+        'https://www.googleadservices.com',
         'https://apolo.ninsaude.com',
         'https://*.ninsaude.com',
         'https://web.webformscr.com',

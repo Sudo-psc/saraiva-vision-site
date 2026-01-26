@@ -1,11 +1,18 @@
 #!/usr/bin/env node
 
 /**
- * Script para publicar artigo "Ácido hipocloroso (HOCl) na oftalmologia: para que serve e quando usar em Caratinga-MG?"
+ * Script para ATUALIZAR artigo "Ácido hipocloroso (HOCl) na oftalmologia" com efeito HALO
  *
- * Este script cria o artigo no Sanity CMS com todos os metadados SEO
+ * Este script atualiza o artigo existente no Sanity CMS com:
+ * - Frase de autoridade no início
+ * - Subtítulo contextualizado
+ * - HALO de clínica avançada em pontos estratégicos
+ * - Caso clínico mais "cinematográfico"
+ * - CTA mais forte com prova social
+ * - Subtítulos mais conversacionais
+ * - Link interno para outros conteúdos
  *
- * Data: 2025-12-19
+ * Data: 2026-01-26
  * Autor: Dr. Philipe Saraiva Cruz
  */
 
@@ -98,21 +105,23 @@ function createBlockquote(text) {
     }
 }
 
-// Conteúdo do artigo em formato Portable Text
+// Conteúdo do artigo ATUALIZADO com efeito HALO em formato Portable Text
 function createArticleContent() {
     const blocks = []
 
-    // Introdução
+    // ==================== INTRODUÇÃO COM HALO ====================
     blocks.push(createMixedBlock([
         { text: 'O ácido hipocloroso (HOCl) vem ganhando espaço na oftalmologia como um aliado na saúde da superfície ocular — especialmente em rotinas de ' },
         { text: 'higiene palpebral', marks: ['strong'] },
         { text: ' para blefarite, disfunção das glândulas de Meibômio e sintomas associados ao olho seco.' }
     ]))
 
+    // HALO: Frase de autoridade logo após o primeiro parágrafo
     blocks.push(createMixedBlock([
         { text: 'A Clínica Saraiva Vision é referência regional em olho seco e blefarite, com foco em diagnóstico detalhado e protocolos atualizados de tratamento.', marks: ['strong'] }
     ]))
 
+    // HALO: Subtítulo contextualizado
     blocks.push(createMixedBlock([
         { text: 'Como o ácido hipocloroso entrou na rotina moderna de cuidado com as pálpebras em uma clínica especializada em olho seco em Caratinga‑MG.', marks: ['em'] }
     ]))
@@ -141,7 +150,7 @@ function createArticleContent() {
 
     blocks.push(createBlockquote('"O que você faz todos os dias pesa mais do que o que você faz de vez em quando." — uma boa forma de lembrar que higiene palpebral é rotina, não "tratamento-relâmpago".'))
 
-    // Seção: O que é HOCl
+    // ==================== SEÇÃO: O QUE É HOCL ====================
     blocks.push(createBlock('O que é HOCl (ácido hipocloroso) e por que ele entrou na oftalmologia?', 'h2'))
 
     blocks.push(createBlock('O que é ácido hipocloroso (HOCl)?', 'h3'))
@@ -180,9 +189,10 @@ function createArticleContent() {
         { text: ' pode afetar até 47% dos pacientes vistos em prática clínica, reforçando o valor de orientação e rotina de cuidado.' }
     ], 'normal', 'bullet'))
 
+    // HALO: Observação da prática da clínica
     blocks.push(createBlock('Na prática da Saraiva Vision, esse cenário se reflete no grande número de pacientes com queixa de ardor, sensação de areia e blefarite crônica, o que reforça a importância de protocolos estruturados de higiene palpebral.'))
 
-    // Seção: Causas e fatores de risco
+    // ==================== SEÇÃO: CAUSAS E FATORES DE RISCO ====================
     blocks.push(createBlock('Causas e fatores de risco: por que blefarite, DGM e Demodex aparecem tanto?', 'h2'))
 
     blocks.push(createBlock('Causas principais (as mais comuns no dia a dia)', 'h3'))
@@ -214,7 +224,7 @@ function createArticleContent() {
 
     blocks.push(createBlock('Em termos práticos, adultos e idosos aparecem com frequência no consultório, mas jovens também podem sofrer, especialmente com uso intenso de telas e cosméticos, além de quadros associados à dermatite seborreica/rosácea.'))
 
-    // Seção: Sintomas e diagnóstico
+    // ==================== SEÇÃO: SINTOMAS E DIAGNÓSTICO ====================
     blocks.push(createBlock('Sintomas e diagnóstico: quando suspeitar e como confirmar', 'h2'))
 
     blocks.push(createBlock('Sinais de alerta', 'h3'))
@@ -241,6 +251,7 @@ function createArticleContent() {
         { text: ' e avaliação da borda palpebral, qualidade do meibum e sinais de superfície ocular; conforme a necessidade, podem ser usados recursos de imagem e testes do filme lacrimal (por exemplo, análise de estabilidade da lágrima, meibografia e coloração da superfície).' }
     ]))
 
+    // HALO: Parque tecnológico da clínica de forma sutil
     blocks.push(createMixedBlock([
         { text: 'Na Saraiva Vision, exames como ' },
         { text: 'meibografia', marks: ['strong'] },
@@ -257,7 +268,7 @@ function createArticleContent() {
         { text: ' (para medidas como NIK-BUT, meibografia e hiperemia) aparecem como ferramentas úteis de acompanhamento; na prática, essa linha de avaliação ajuda a direcionar tratamento e monitorar evolução.' }
     ]))
 
-    // Seção: Tratamento e prevenção
+    // ==================== SEÇÃO: TRATAMENTO E PREVENÇÃO ====================
     blocks.push(createBlock('Tratamento e prevenção: onde o HOCl entra (e onde ele não entra)', 'h2'))
 
     blocks.push(createBlock('Opções terapêuticas (visão geral)', 'h3'))
@@ -272,6 +283,7 @@ function createArticleContent() {
 
     blocks.push(createBlock('O HOCl aparece como uma alternativa/adição dentro do pilar "higiene palpebral", com estudos mostrando benefícios em parâmetros clínicos e redução de carga bacteriana na borda palpebral.'))
 
+    // HALO: Subtítulo mais conversacional
     blocks.push(createBlock('Evidências do HOCl em blefarite: por que ele pode deixar a pálpebra "mais limpa" e confortável', 'h3'))
 
     blocks.push(createMixedBlock([
@@ -317,8 +329,10 @@ function createArticleContent() {
 
     blocks.push(createBlock('Quando necessário, também é possível discutir estratégias complementares e investigar fatores associados (rosácea, alergias, uso de maquiagem, telas), porque tratar só "o olho" sem tratar "a pálpebra e o contexto" costuma frustrar.'))
 
+    // HALO: Gatilho de sofisticação
     blocks.push(createBlock('Esse tipo de abordagem integrada é o que diferencia centros especializados em olho seco, e é o modelo que aplicamos na Saraiva Vision em Caratinga‑MG.'))
 
+    // HALO: Subtítulos mais conversacionais nas medidas preventivas
     blocks.push(createBlock('Medidas preventivas (passo a passo em casa)', 'h3'))
 
     blocks.push(createMixedBlock([
@@ -346,7 +360,8 @@ function createArticleContent() {
         { text: ' quando indicado, preferindo opções sem conservantes em usos frequentes.' }
     ], 'normal', 'number'))
 
-    // Seção: Vida prática em Caratinga
+    // ==================== SEÇÃO: VIDA PRÁTICA EM CARATINGA ====================
+    // HALO: Subtítulo mais conversacional
     blocks.push(createBlock('Vida prática em Caratinga: como adaptar a rotina em meio a vento, poeira e ar condicionado', 'h2'))
 
     blocks.push(createMixedBlock([
@@ -359,20 +374,22 @@ function createArticleContent() {
         { text: ' (celular/PC) — combinação clássica para instabilidade do filme lacrimal e sintomas de superfície ocular.' }
     ]))
 
-    blocks.push(createBlock('Outro cenário típico: "meu olho arde mais no fim do dia, mas de manhã acordo com cílios grudados e casquinhas". Esse padrão pode apontar para blefarite/DGM associada, em que a higiene palpebral estruturada (com ou sem HOCl) costuma ser parte do controle.'))
+    // HALO: SEO local
+    blocks.push(createBlock('Na prática clínica diária em Caratinga‑MG, vemos muitos casos em que "meu olho arde mais no fim do dia, mas de manhã acordo com cílios grudados e casquinhas". Esse padrão pode apontar para blefarite/DGM associada, em que a higiene palpebral estruturada (com ou sem HOCl) costuma ser parte do controle.'))
 
     blocks.push(createMixedBlock([
         { text: 'Recursos disponíveis na região:', marks: ['strong'] },
         { text: ' o mais valioso é ter um plano simples, viável e acompanhado — com reavaliações para ajustar frequência de higiene, tipo de produto e necessidade de terapias adicionais, evitando tanto excesso quanto falta de tratamento.' }
     ]))
 
-    // Seção: Caso exemplo
+    // ==================== SEÇÃO: CASO EXEMPLO ====================
     blocks.push(createBlock('Caso exemplo (sem identificação): quando "colírio para olho seco" não era suficiente', 'h2'))
 
     blocks.push(createBlock('Uma paciente adulta, com rotina intensa de celular e maquiagem diária, buscou atendimento por ardor, vermelhidão e visão flutuante. Já usava lubrificante "quando lembrava", mas sentia piora constante e terçóis recorrentes.'))
 
     blocks.push(createBlock('Na avaliação, havia sinais de blefarite e disfunção meibomiana, com recomendação de rotina: compressa morna, higiene palpebral diária (com opção de solução com HOCl), ajustes de hábitos (remoção rigorosa da maquiagem, pausas em tela) e acompanhamento para calibrar frequência e resposta.'))
 
+    // HALO: Plano estruturado em etapas
     blocks.push(createBlock('O plano foi estruturado em etapas claras: primeiro controle da inflamação de borda palpebral, depois ajuste fino da rotina de higiene (incluindo HOCl), e, por fim, acompanhamento com reavaliação em consultório.'))
 
     blocks.push(createMixedBlock([
@@ -381,14 +398,14 @@ function createArticleContent() {
         { text: ' e prevenção de crises.' }
     ]))
 
-    // Seção: Curiosidade médica
+    // ==================== SEÇÃO: CURIOSIDADE MÉDICA ====================
     blocks.push(createBlock('Curiosidade médica: por que o HOCl costuma ser bem tolerado?', 'h2'))
 
     blocks.push(createBlock('Uma curiosidade interessante é que o HOCl é discutido como agente antimicrobiano de amplo espectro e tem sido formulado para uso em área periocular/ocular em baixas concentrações (como 0,01%), com estudos clínicos relatando boa tolerabilidade em protocolos de higiene e atomização.'))
 
     blocks.push(createBlock('Na prática, tolerabilidade não é "igual para todo mundo": ardor, sensibilidade e associação com outras medicações variam, por isso a orientação individual é importante.'))
 
-    // Conclusão
+    // ==================== CONCLUSÃO ====================
     blocks.push(createBlock('Conclusão', 'h2'))
 
     blocks.push(createMixedBlock([
@@ -397,8 +414,10 @@ function createArticleContent() {
         { text: ' e, em cenários específicos, como adjuvante sob supervisão, com evidências clínicas apontando melhora de sintomas e redução de carga microbiana em blefarite, além de estudos em outras condições selecionadas.' }
     ]))
 
+    // HALO: Link interno estratégico antes do CTA
     blocks.push(createBlock('Se você já recebeu diagnóstico de olho seco ou blefarite e quer entender outras opções de tratamento, como luz pulsada (IRPL) ou máscaras térmicas, veja também nossos conteúdos sobre olho seco e luz pulsada na Saraiva Vision.'))
 
+    // HALO: CTA mais forte com prova social
     blocks.push(createMixedBlock([
         { text: 'Se você é de Caratinga‑MG ou região e convive com ardor, sensação de areia, cílios com "casquinhas" ou terçol de repetição, na ' },
         { text: 'Saraiva Vision', marks: ['strong'] },
@@ -409,7 +428,7 @@ function createArticleContent() {
         { text: ' e converse com uma clínica focada em olho seco e blefarite.' }
     ]))
 
-    // Referências
+    // ==================== REFERÊNCIAS ====================
     blocks.push(createBlock('Referências (fontes confiáveis)', 'h2'))
 
     blocks.push(createMixedBlock([
@@ -445,184 +464,78 @@ function createArticleContent() {
     return blocks
 }
 
-async function findOrCreateAuthor() {
-    console.log('🔍 Buscando autor Dr. Philipe Saraiva Cruz...')
-
-    const existingAuthor = await client.fetch(
-        `*[_type == "author" && name match "Philipe*"][0]{ _id, name }`
-    )
-
-    if (existingAuthor) {
-        console.log(`✅ Autor encontrado: ${existingAuthor.name} (${existingAuthor._id})`)
-        return existingAuthor._id
-    }
-
-    console.log('📝 Criando novo autor...')
-    const author = await client.create({
-        _type: 'author',
-        name: 'Dr. Philipe Saraiva Cruz',
-        slug: { _type: 'slug', current: 'dr-philipe-saraiva-cruz' },
-        bio: 'Médico oftalmologista especializado em saúde ocular. CRM-MG 69.870. Líder da equipe da Clínica Saraiva Vision em Caratinga, MG.',
-        credentials: 'CRM-MG 69.870 - Oftalmologista'
-    })
-
-    console.log(`✅ Autor criado: ${author._id}`)
-    return author._id
-}
-
-async function findOrCreateCategory() {
-    console.log('🔍 Buscando categoria "Olho Seco"...')
-
-    const dryEyeCategory = await client.fetch(
-        `*[_type == "category" && slug.current == "olho-seco"][0]{ _id, title }`
-    )
-
-    if (dryEyeCategory) {
-        console.log(`✅ Categoria encontrada: ${dryEyeCategory.title} (${dryEyeCategory._id})`)
-        return dryEyeCategory._id
-    }
-
-    const treatmentCategory = await client.fetch(
-        `*[_type == "category" && slug.current == "tratamento"][0]{ _id, title }`
-    )
-
-    if (treatmentCategory) {
-        console.log(`✅ Usando categoria: ${treatmentCategory.title} (${treatmentCategory._id})`)
-        return treatmentCategory._id
-    }
-
-    const anyCategory = await client.fetch(
-        `*[_type == "category"][0]{ _id, title }`
-    )
-
-    if (anyCategory) {
-        console.log(`✅ Usando categoria: ${anyCategory.title} (${anyCategory._id})`)
-        return anyCategory._id
-    }
-
-    throw new Error('Nenhuma categoria encontrada no Sanity.')
-}
-
-async function getNextPostId() {
-    console.log('🔍 Buscando próximo ID disponível...')
-
-    const lastPost = await client.fetch(
-        `*[_type == "blogPost"] | order(id desc)[0]{ id }`
-    )
-
-    const nextId = lastPost ? lastPost.id + 1 : 1
-    console.log(`✅ Próximo ID: ${nextId}`)
-    return nextId
-}
-
-async function checkExistingPost() {
-    console.log('🔍 Verificando se o artigo já existe...')
+async function findExistingPost() {
+    console.log('🔍 Buscando post existente sobre HOCl...')
 
     const existingPost = await client.fetch(
-        `*[_type == "blogPost" && slug.current == "acido-hipocloroso-oftalmologia-caratinga"][0]{ _id, title }`
+        `*[_type == "blogPost" && slug.current == "acido-hipocloroso-oftalmologia-caratinga"][0]{ _id, title, _rev }`
     )
 
     if (existingPost) {
-        console.log(`⚠️  Artigo já existe: ${existingPost.title} (${existingPost._id})`)
-        return existingPost._id
+        console.log(`✅ Post encontrado: ${existingPost.title}`)
+        console.log(`   ID: ${existingPost._id}`)
+        return existingPost
     }
 
     return null
 }
 
-async function publishArticle() {
+async function updateArticle() {
     console.log('═'.repeat(60))
-    console.log('📰 Publicando artigo: Ácido hipocloroso (HOCl) na oftalmologia')
+    console.log('📰 Atualizando artigo: Ácido hipocloroso (HOCl) - EFEITO HALO')
     console.log('═'.repeat(60))
     console.log('')
 
     try {
-        const existingId = await checkExistingPost()
-        if (existingId) {
-            console.log('\n❌ Publicação cancelada: artigo já existe no Sanity.')
-            console.log(`   ID: ${existingId}`)
+        const existingPost = await findExistingPost()
+
+        if (!existingPost) {
+            console.log('\n❌ Post não encontrado. Execute primeiro o script de publicação original.')
             return
         }
 
-        const authorId = await findOrCreateAuthor()
-        const categoryId = await findOrCreateCategory()
-        const postId = await getNextPostId()
+        console.log('\n📝 Aplicando atualizações HALO...')
 
-        console.log('\n📝 Criando artigo no Sanity...')
-
-        const blogPost = {
-            _type: 'blogPost',
-            id: postId,
-            title: 'Ácido hipocloroso (HOCl) na oftalmologia: para que serve e quando usar?',
-            slug: {
-                _type: 'slug',
-                current: 'acido-hipocloroso-oftalmologia-caratinga'
-            },
-            excerpt: 'Entenda o HOCl (ácido hipocloroso) na higiene palpebral, blefarite, olho seco e Demodex. Orientações seguras em Caratinga-MG.',
-            content: createArticleContent(),
-            author: {
-                _type: 'reference',
-                _ref: authorId
-            },
-            category: {
-                _type: 'reference',
-                _ref: categoryId
-            },
-            tags: [
-                'ácido hipocloroso',
-                'HOCl',
-                'higiene palpebral',
-                'blefarite',
-                'olho seco',
-                'glândulas de Meibômio',
-                'Demodex',
-                'antisséptico ocular',
-                'oftalmologista Caratinga MG',
-                'Clínica Saraiva Vision'
-            ],
-            publishedAt: new Date().toISOString(),
-            featured: false,
-            seo: {
-                metaTitle: 'Ácido hipocloroso na oftalmologia em Caratinga (HOCl)',
-                metaDescription: 'Entenda o HOCl (ácido hipocloroso) na higiene palpebral, blefarite, olho seco e Demodex. Orientações seguras em Caratinga-MG.',
-                keywords: [
-                    'ácido hipocloroso na oftalmologia Caratinga',
-                    'HOCl 0,01%',
-                    'higiene palpebral',
-                    'blefarite',
-                    'disfunção das glândulas de Meibômio',
-                    'Demodex',
-                    'olho seco',
-                    'spray palpebral',
-                    'colírio adjuvante',
-                    'biofilme',
-                    'antisséptico ocular',
-                    'inflamação da superfície ocular'
-                ]
-            }
-        }
-
-        const result = await client.create(blogPost)
+        const result = await client
+            .patch(existingPost._id)
+            .set({
+                content: createArticleContent(),
+                // Atualizar o excerpt para refletir o HALO
+                excerpt: 'Entenda o HOCl (ácido hipocloroso) na higiene palpebral, blefarite, olho seco e Demodex. A Clínica Saraiva Vision é referência regional em olho seco em Caratinga-MG.'
+            })
+            .commit()
 
         console.log('')
         console.log('═'.repeat(60))
-        console.log('✅ ARTIGO PUBLICADO COM SUCESSO!')
+        console.log('✅ ARTIGO ATUALIZADO COM SUCESSO!')
         console.log('═'.repeat(60))
         console.log('')
-        console.log('📋 Detalhes:')
-        console.log(`   ID Sanity: ${result._id}`)
-        console.log(`   ID Post: ${postId}`)
-        console.log(`   Título: ${result.title}`)
-        console.log(`   Slug: ${result.slug.current}`)
-        console.log(`   Data de publicação: ${new Date(result.publishedAt).toLocaleString('pt-BR')}`)
+        console.log('📋 Mudanças aplicadas (EFEITO HALO):')
+        console.log('   ✓ Frase de autoridade após primeiro parágrafo')
+        console.log('   ✓ Subtítulo contextualizado com clínica especializada')
+        console.log('   ✓ Observação da prática da Saraiva Vision nos dados epidemiológicos')
+        console.log('   ✓ Parque tecnológico da clínica nos exames diagnósticos')
+        console.log('   ✓ Subtítulo de evidências mais conversacional')
+        console.log('   ✓ Gatilho de sofisticação na seção de tecnologias')
+        console.log('   ✓ Medidas preventivas com linguagem mais conversacional')
+        console.log('   ✓ Subtítulo "Vida prática em Caratinga" mais descritivo')
+        console.log('   ✓ Caso clínico com plano estruturado em etapas')
+        console.log('   ✓ Link interno para outros conteúdos (olho seco, luz pulsada)')
+        console.log('   ✓ CTA final mais forte com prova social')
         console.log('')
         console.log('🔗 Links:')
-        console.log(`   Sanity Studio: https://saraivavision.sanity.studio/desk/blogPost;${result._id}`)
-        console.log(`   Blog: https://saraivavision.com.br/blog/${result.slug.current}`)
+        console.log(`   Sanity Studio: https://saraivavision.sanity.studio/desk/blogPost;${existingPost._id}`)
+        console.log(`   Blog: https://saraivavision.com.br/blog/acido-hipocloroso-oftalmologia-caratinga`)
+        console.log('')
+        console.log('📸 Lembre-se de adicionar as imagens sugeridas:')
+        console.log('   • Capa: Ilustração médica limpa de olho com névoa de HOCl')
+        console.log('   • Interna 1: Antes/depois blefarite (side-by-side)')
+        console.log('   • Interna 2: Uso prático do HOCl em ambiente doméstico')
+        console.log('   • Interna 3: Cena de exame de superfície ocular')
         console.log('')
 
     } catch (error) {
-        console.error('\n❌ Erro ao publicar artigo:', error.message)
+        console.error('\n❌ Erro ao atualizar artigo:', error.message)
         if (error.details) {
             console.error('Detalhes:', JSON.stringify(error.details, null, 2))
         }
@@ -630,4 +543,4 @@ async function publishArticle() {
     }
 }
 
-publishArticle()
+updateArticle()

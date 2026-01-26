@@ -169,7 +169,7 @@ const EnhancedFooter = ({
         },
         {
             name: "WhatsApp",
-            href: "https://wa.me/message/2QFZJG3EDJZVF1",
+            href: getWhatsAppUrl(),
             image: "/icons_social/whatsapp_icon.png",
             color: "#25D366"
         },
@@ -180,7 +180,7 @@ const EnhancedFooter = ({
             color: "#4285F4"
         },
     ];
-    }, [site]);
+    }, [getWhatsAppUrl, site]);
 
     // Helper components (preserved from original Footer)
     const FooterSection = ({ title, children, className }) => (
@@ -546,7 +546,7 @@ const EnhancedFooter = ({
                                 </ContactItem>
                                 <ContactItem>
                                     <a
-                                        href="https://wa.me/message/2QFZJG3EDJZVF1"
+                                        href={getWhatsAppUrl('Olá! Gostaria de atendimento automático.')}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform text-green-400"
@@ -565,7 +565,7 @@ const EnhancedFooter = ({
                                 </ContactItem>
                                 <ContactItem>
                                     <a
-                                        href="https://wa.me/message/2QFZJG3EDJZVF1"
+                                        href={getWhatsAppUrl('Olá! Preciso de atendimento de urgência.')}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform text-red-400"

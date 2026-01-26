@@ -142,7 +142,6 @@ const Services = ({ full = false, autoplay = true }) => {
     setLoading(true);
     const clinicServices = [
       { id: 'irpl-e-eye', icon: getServiceIcon('irpl-e-eye', { className: 'w-full h-full object-contain' }), title: t('services.items.irplEEye.title', 'IRPL com E-Eye (Olho Seco)'), description: t('services.items.irplEEye.description', 'Luz pulsada regulada específica para DGM e estabilização da camada lipídica da lágrima.'), featured: true },
-      { id: 'olho-seco', icon: getServiceIcon('olho-seco', { className: 'w-full h-full object-contain' }), title: t('services.items.dryEye.title'), description: t('services.items.dryEye.description'), featured: true },
       { id: 'consultas-oftalmologicas', icon: getServiceIcon('consultas-oftalmologicas', { className: 'w-full h-full object-contain' }), title: t('services.items.consultations.title'), description: t('services.items.consultations.description') },
       { id: 'exames-de-refracao', icon: getServiceIcon('exames-de-refracao', { className: 'w-full h-full object-contain' }), title: t('services.items.refraction.title'), description: t('services.items.refraction.description') },
       { id: 'tratamentos-especializados', icon: getServiceIcon('tratamentos-especializados', { className: 'w-full h-full object-contain' }), title: t('services.items.specialized.title'), description: t('services.items.specialized.description') },

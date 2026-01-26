@@ -37,6 +37,8 @@ function buildCSP(nonce) {
       nonceToken,
       'https://www.google-analytics.com',
       'https://www.googletagmanager.com',
+      'https://pagead2.googlesyndication.com',
+      'https://www.googleadservices.com',
       'https://cdn.jsdelivr.net',
       'https://maps.googleapis.com',
       'https://*.spotify.com'
@@ -57,7 +59,9 @@ function buildCSP(nonce) {
       'https:',
       'blob:',
       'https://www.google-analytics.com',
-      'https://*.googleusercontent.com'
+      'https://*.googleusercontent.com',
+      'https://pagead2.googlesyndication.com',
+      'https://www.googleadservices.com'
     ],
 
     // Fonts: Self + Google Fonts
@@ -78,6 +82,10 @@ function buildCSP(nonce) {
       'https://analytics.google.com',
       'https://maps.googleapis.com',
       'https://places.googleapis.com',
+      'https://pagead2.googlesyndication.com',
+      'https://www.googleadservices.com',
+      'https://apolo.ninsaude.com',
+      'https://*.ninsaude.com',
       'https://*.supabase.co',
       'wss://*.supabase.co'
     ],
@@ -86,7 +94,9 @@ function buildCSP(nonce) {
     'frame-src': [
       "'self'",
       'https://open.spotify.com',
-      'https://www.google.com'
+      'https://www.google.com',
+      'https://apolo.ninsaude.com',
+      'https://*.ninsaude.com'
     ],
 
     // Frame ancestors: Prevent clickjacking

@@ -41,7 +41,7 @@ const REVIEWS_CONFIG = {
   rating: 4.9,
   totalReviews: 136,
   placeUrl: 'https://maps.google.com/?cid=17367763261775232199',
-  whatsappUrl: 'https://wa.me/message/2QFZJG3EDJZVF1',
+  whatsappUrl: 'https://wa.me/5533998601427',
   instagramUrl: 'https://www.instagram.com/saraivavision',
   embedUrl: generateMapEmbedUrl()
 };

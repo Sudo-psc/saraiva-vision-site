@@ -33,13 +33,13 @@ const SECURITY_HEADERS = {
     // Content Security Policy
     'Content-Security-Policy': [
         "default-src 'self'",
-        "script-src 'self' 'nonce-{NONCE}' https://cdn.jsdelivr.net https://unpkg.com https://www.googletagmanager.com https://www.google-analytics.com https://js.posthog.com",
+        "script-src 'self' 'nonce-{NONCE}' https://cdn.jsdelivr.net https://unpkg.com https://www.googletagmanager.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://www.googleadservices.com https://js.posthog.com",
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net",
         "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net data:",
         "img-src 'self' data: https: blob:",
         "media-src 'self' https:",
-        "connect-src 'self' https://api.resend.com https://api.zenvia.com https://api.openai.com https://api.spotify.com https://cms.saraivavision.com.br https://app.posthog.com wss://app.posthog.com",
-        "frame-src 'self' https://open.spotify.com https://www.youtube.com https://www.google.com",
+        "connect-src 'self' https://api.resend.com https://api.zenvia.com https://api.openai.com https://api.spotify.com https://cms.saraivavision.com.br https://app.posthog.com wss://app.posthog.com https://pagead2.googlesyndication.com https://www.googleadservices.com https://apolo.ninsaude.com https://*.ninsaude.com",
+        "frame-src 'self' https://open.spotify.com https://www.youtube.com https://www.google.com https://apolo.ninsaude.com https://*.ninsaude.com",
         "object-src 'none'",
         "base-uri 'self'",
         "form-action 'self'",

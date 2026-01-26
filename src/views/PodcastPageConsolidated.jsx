@@ -254,7 +254,7 @@ function PodcastPageConsolidated() {
                   Agendar Consulta
                 </Link>
                 <a
-                  href="https://wa.me/message/2QFZJG3EDJZVF1"
+                  href="https://wa.me/5533998601427"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-xl font-semibold transition-colors inline-flex items-center justify-center gap-2 border-2 border-white/50"

@@ -56,7 +56,7 @@ export const clinicInfo = {
   phoneDisplay: NAP_CANONICAL.phone.primary.display,
   phone: NAP_CANONICAL.phone.primary.e164,
   whatsapp: NAP_CANONICAL.phone.whatsapp.e164,
-  whatsapp24h: 'https://wa.me/message/2QFZJG3EDJZVF1',
+  whatsapp24h: 'https://wa.me/5533998601427',
   email: NAP_CANONICAL.email.primary,
   instagram: 'https://www.instagram.com/saraiva_vision/',
   facebook: 'https://www.facebook.com/philipeoftalmo',

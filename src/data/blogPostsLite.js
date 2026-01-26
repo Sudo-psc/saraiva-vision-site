@@ -8,6 +8,18 @@
 
 export const blogPostsLite = [
   {
+    id: 39,
+    slug: "acido-hipocloroso-oftalmologia-caratinga",
+    title: "Ácido Hipocloroso (HOCl) na Oftalmologia: Higiene Palpebral Moderna",
+    excerpt: "Entenda o HOCl na higiene palpebral, blefarite e olho seco. A Clínica Saraiva Vision é referência regional em olho seco em Caratinga-MG.",
+    author: "Dr. Philipe Saraiva Cruz",
+    date: "2025-12-20",
+    category: "Tratamento",
+    image: null,
+    featured: true,
+    readingTimeMinutes: 10
+  },
+  {
     id: 34,
     slug: "olho-seco-cronico-nao-tratado-consequencias-risco-perda-visual",
     title: "Olho Seco Crônico Não Tratado: Consequências a Longo Prazo e Risco de Perda Visual",

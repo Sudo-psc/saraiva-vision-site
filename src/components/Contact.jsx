@@ -5,7 +5,6 @@ import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot, Globe, Shield, Wi
 import { useConfig } from '@/config';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import { useRecaptcha } from '@/hooks/useRecaptcha';
 import { submitContactForm, FallbackStrategies, useConnectionStatus, networkMonitor } from '@/lib/apiUtils';
 import { getUserFriendlyError, logError } from '@/lib/errorHandling';
 import ErrorFeedback from '@/components/ui/ErrorFeedback';
@@ -46,14 +45,12 @@ const Contact = () => {
   const [fieldValidation, setFieldValidation] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
-  const [recaptchaToken, setRecaptchaToken] = useState(null);
   const [submissionError, setSubmissionError] = useState(null);
   const [isRetrying, setIsRetrying] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [showAlternativeContacts, setShowAlternativeContacts] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const [announceMessage, setAnnounceMessage] = useState('');
-  const { ready: recaptchaReady, execute: executeRecaptcha } = useRecaptcha();
   const connectionStatus = useConnectionStatus();
   const { isOnline } = connectionStatus || { isOnline: true };
 
@@ -219,7 +216,7 @@ const Contact = () => {
 
     if (!validationResult.success) {
       setErrors(validationResult.errors);
-      setTouched({ name: true, email: true, phone: true, message: true, consent: true, recaptcha: true });
+      setTouched({ name: true, email: true, phone: true, message: true, consent: true });
       setSubmissionError({
         field: Object.keys(validationResult.errors)[0] || 'validation',
         code: 'validation_failed'
@@ -249,18 +246,6 @@ const Contact = () => {
     let submissionData = null;
 
     try {
-      // Execute reCAPTCHA v3 to obtain token (if available)
-      let token = null;
-      try {
-        token = await executeRecaptcha('contact');
-      } catch (recaptchaError) {
-        console.warn('reCAPTCHA execution failed, using fallback:', recaptchaError);
-        token = null;
-      }
-
-      // Ensure we always have a token value (even if null/undefined)
-      // Backend will handle fallback with honeypot validation when token is null
-
       // Use the enhanced API utility
       submissionData = {
         name: formData.name,
@@ -268,7 +253,7 @@ const Contact = () => {
         phone: formData.phone,
         message: formData.message,
         consent: formData.consent,
-        token: token || '', // Ensure token is always a string
+        token: '', // Token not required - honeypot validation used instead
         action: 'contact'
       };
 
@@ -298,7 +283,6 @@ const Contact = () => {
       setTouched({});
       setErrors({});
       setFieldValidation({});
-      setRecaptchaToken(null);
       setSubmissionSuccess(true);
 
       // Announce success to screen readers
@@ -465,8 +449,6 @@ const Contact = () => {
     }
   }, [isOnline]);
 
-  // reCAPTCHA v3 does not require visible widget handlers
-
   const contactDetails = [
     {
       icon: <MapPin className="h-6 w-6 text-cyan-600" />,
@@ -511,16 +493,16 @@ const Contact = () => {
           <button type="button" onClick={() => window.dispatchEvent(new Event('open-cta-modal'))} className="text-cyan-600 hover:underline flex items-center gap-1 text-sm font-semibold">
             <MessageCircle size={14} /> {t('contact.info.phone_whatsapp')}
           </button>
-          <a 
-            href="https://wa.me/message/2QFZJG3EDJZVF1"
+          <a
+            href="https://wa.me/5533998601427"
             target="_blank"
             rel="noopener noreferrer"
             className="text-green-600 hover:underline flex items-center gap-1 text-sm font-semibold"
           >
             <MessageCircle size={14} /> Auto Atendimento WhatsApp
           </a>
-          <a 
-            href="https://wa.me/message/2QFZJG3EDJZVF1"
+          <a
+            href="https://wa.me/5533998601427"
             target="_blank"
             rel="noopener noreferrer"
             className="text-red-600 hover:underline flex items-center gap-1 text-sm font-semibold"
@@ -997,26 +979,6 @@ const Contact = () => {
                   )}
                 </div>
 
-                {/* reCAPTCHA v3 status (no visible widget required) */}
-                <div className="pt-2">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Shield className="h-4 w-4 text-cyan-600" />
-                    <span className="text-sm font-medium text-slate-700">
-                      {t('contact.recaptcha_label', 'Verificação de Segurança')}
-                    </span>
-                  </div>
-                  <p className={`text-xs ${recaptchaReady ? 'text-green-600' : 'text-red-500'}`}>
-                    {recaptchaReady
-                      ? t('contact.recaptcha_ready', 'Proteção automática reCAPTCHA ativada')
-                      : t('contact.recaptcha_not_ready', 'Verificação de segurança indisponível. Tente novamente.')}
-                  </p>
-                  {!recaptchaReady && (
-                    <p className="text-xs text-slate-500 mt-1">
-                      Certifique-se de que está conectado à internet e recarregue a página.
-                    </p>
-                  )}
-                </div>
-
                 {/* Error Feedback */}
                 {submissionError && (
                   <div className="mb-4">
@@ -1083,7 +1045,7 @@ const Contact = () => {
 
                 <Button
                   ref={submitButtonRef}
-                  disabled={isSubmitting || !isOnline || !recaptchaReady}
+                  disabled={isSubmitting || !isOnline}
                   type="submit"
                   size="lg"
                   className={`w-full flex items-center justify-center gap-2 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${submissionSuccess
@@ -1101,9 +1063,7 @@ const Contact = () => {
                           ? 'Mensagem enviada com sucesso'
                           : !isOnline
                             ? 'Botão desabilitado: sem conexão com a internet'
-                            : !recaptchaReady
-                              ? 'Botão desabilitado: carregando verificação de segurança'
-                              : 'Enviar mensagem de contato'
+                            : 'Enviar mensagem de contato'
                   }
                 >
                   {isSubmitting ? (
@@ -1123,9 +1083,7 @@ const Contact = () => {
                           ? 'Mensagem enviada!'
                           : !isOnline
                             ? 'Sem conexão com a internet'
-                            : !recaptchaReady
-                              ? 'Carregando verificação de segurança...'
-                              : t('contact.send_button', 'Enviar Mensagem')
+                            : t('contact.send_button', 'Enviar Mensagem')
                     }
                   </span>
                 </Button>

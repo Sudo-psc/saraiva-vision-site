@@ -159,7 +159,7 @@ const PlanPremiumPage = () => {
 
                 {/* Botão Secundário */}
                 <a
-                  href="https://wa.me/message/2QFZJG3EDJZVF1"
+                  href="https://wa.me/5533998601427"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex-1 flex items-center justify-center gap-2 bg-white border-2 border-blue-600 text-blue-900 hover:bg-blue-50 hover:border-amber-500 font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105"

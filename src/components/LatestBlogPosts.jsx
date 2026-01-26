@@ -44,7 +44,7 @@ const LatestBlogPosts = () => {
                 setError(null);
 
                 // Use lightweight blog data (no full content)
-                const recentPosts = getLatestPostsLite(3);
+                const recentPosts = getLatestPostsLite(1);
 
                 // Normalize to ensure it's always an array
                 const normalizedPosts = normalizeToArray(recentPosts, 'LatestBlogPosts');
@@ -258,7 +258,7 @@ const LatestBlogPosts = () => {
         }
 
         return (
-            <div className="flex flex-col space-y-8 max-w-6xl mx-auto">
+            <div className="flex flex-col space-y-8 max-w-4xl mx-auto">
                 {posts.map((post, index) => renderPost(post, index))}
             </div>
         );
@@ -310,7 +310,7 @@ const LatestBlogPosts = () => {
                         style={{ '--animation-delay': '100ms' }}
                     >
                         <span className="bg-gradient-to-r from-cyan-600 via-indigo-600 to-cyan-600 bg-clip-text text-transparent">
-                            Últimas do Blog
+                            Artigo em Destaque
                         </span>
                     </h2>
 
@@ -318,24 +318,30 @@ const LatestBlogPosts = () => {
                         className="text-lg md:text-xl text-slate-600 mb-10 max-w-4xl mx-auto leading-relaxed font-medium animate-fade-in-up"
                         style={{ '--animation-delay': '200ms' }}
                     >
-                        Artigos e novidades sobre saúde ocular para manter você bem informado.
+                        Confira nosso artigo em destaque sobre saúde ocular.
                     </p>
                 </div>
 
                 {/* Posts Content */}
                 {renderContent()}
 
-                {/* Call to Action */}
+                {/* Call to Action - Botões destacados */}
                 <div
                     className="text-center mt-12 animate-fade-in-up"
-                    style={{ '--animation-delay': '600ms' }}
+                    style={{ '--animation-delay': '400ms' }}
                 >
-                    <Link to="/blog">
-                        <Button size="lg" className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
-                            {t('blog.visitBlog', 'Visitar Blog Completo')}
-                            <ArrowRight className="w-5 h-5" />
-                        </Button>
-                    </Link>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <Link to="/blog">
+                            <Button size="lg" className="bg-cyan-600 hover:bg-cyan-700 text-white gap-2 px-8 py-4 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl">
+                                <Rss className="w-5 h-5" />
+                                {t('blog.visitBlog', 'Ver Todos os Artigos')}
+                                <ArrowRight className="w-5 h-5" />
+                            </Button>
+                        </Link>
+                    </div>
+                    <p className="mt-4 text-sm text-slate-500">
+                        +30 artigos sobre saúde ocular, olho seco, blefarite e muito mais
+                    </p>
                 </div>
             </div>
         </section>
