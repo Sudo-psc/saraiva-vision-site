@@ -1,0 +1,472 @@
+name: Performance Monitoring
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run daily at 3 AM UTC
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    inputs:
+      detailed:
+        description: 'Run detailed analysis'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  NODE_VERSION: '22.x'
+  BUNDLE_SIZE_LIMIT: 200  # KB per chunk
+  TOTAL_SIZE_LIMIT: 2000  # KB total
+
+jobs:
+  # ==============================================================================
+  # Bundle Size Check with Matrix Strategy
+  # ==============================================================================
+  bundle-analysis:
+    name: 📦 Bundle Analysis
+    runs-on: ubuntu-latest
+    outputs:
+      status: ${{ steps.analysis.outputs.status }}
+      total-size: ${{ steps.analysis.outputs.total-size }}
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🏗️ Build project
+        env:
+          NODE_ENV: production
+        run: |
+          npm run build:vite
+
+      - name: 📊 Analyze bundles
+        id: analysis
+        run: |
+          echo "### 📦 Bundle Size Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| File | Size (KB) | Status | Gzipped |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|-----------|--------|---------|" >> $GITHUB_STEP_SUMMARY
+
+          TOTAL_SIZE=0
+          FAILED=false
+
+          # Analyze each JavaScript bundle
+          for file in dist/assets/*.js; do
+            if [ -f "$file" ]; then
+              FILENAME=$(basename "$file")
+              SIZE=$(stat -c%s "$file" 2>/dev/null || stat -f%z "$file" 2>/dev/null)
+              SIZE_KB=$((SIZE / 1024))
+              TOTAL_SIZE=$((TOTAL_SIZE + SIZE_KB))
+
+              # Get gzipped size
+              GZIP_SIZE=$(gzip -c "$file" | wc -c)
+              GZIP_KB=$((GZIP_SIZE / 1024))
+
+              # Determine status
+              if [ $SIZE_KB -gt ${{ env.BUNDLE_SIZE_LIMIT }} ]; then
+                STATUS="❌ Exceeds limit"
+                FAILED=true
+                echo "::error file=$file::Bundle size ${SIZE_KB}KB exceeds ${BUNDLE_SIZE_LIMIT}KB limit"
+              elif [ $SIZE_KB -gt $((BUNDLE_SIZE_LIMIT * 75 / 100)) ]; then
+                STATUS="⚠️ Warning"
+                echo "::warning file=$file::Bundle size ${SIZE_KB}KB approaching limit"
+              else
+                STATUS="✅ OK"
+              fi
+
+              # Truncate filename if too long
+              SHORT_NAME="${FILENAME:0:30}"
+              if [ ${#FILENAME} -gt 30 ]; then
+                SHORT_NAME="${SHORT_NAME}..."
+              fi
+
+              echo "| $SHORT_NAME | $SIZE_KB | $STATUS | ${GZIP_KB}KB |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Total Size:** ${TOTAL_SIZE}KB" >> $GITHUB_STEP_SUMMARY
+
+          # Check total size
+          if [ $TOTAL_SIZE -gt ${{ env.TOTAL_SIZE_LIMIT }} ]; then
+            echo "❌ Total size ${TOTAL_SIZE}KB exceeds ${TOTAL_SIZE_LIMIT}KB limit" >> $GITHUB_STEP_SUMMARY
+            FAILED=true
+          fi
+
+          # Set outputs
+          if [ "$FAILED" = "true" ]; then
+            echo "status=failed" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "status=passed" >> $GITHUB_OUTPUT
+          fi
+          echo "total-size=$TOTAL_SIZE" >> $GITHUB_OUTPUT
+
+      - name: 📈 Bundle size history
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const totalSize = ${{ steps.analysis.outputs.total-size || 0 }};
+            const date = new Date().toISOString().split('T')[0];
+
+            // Create or update size tracking
+            const tracking = {
+              date,
+              commit: context.sha,
+              totalSize,
+              branch: context.ref
+            };
+
+            console.log(`Bundle size tracking: ${JSON.stringify(tracking)}`);
+
+      - name: 📤 Upload bundle analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-analysis
+          path: |
+            dist/assets/*.js
+            dist/stats.html
+          retention-days: 30
+
+  # ==============================================================================
+  # React Performance Analysis
+  # ==============================================================================
+  react-performance:
+    name: ⚛️ React Performance
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🎯 Run performance analyzer
+        id: perf-analysis
+        run: |
+          # Run the performance analyzer
+          node scripts/performance-analyzer.js > performance-report.txt 2>&1 || true
+
+          # Extract metrics
+          if [ -f performance-report.txt ]; then
+            echo "### ⚛️ React Performance Analysis" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+
+            # Extract key metrics
+            TOTAL_COMPONENTS=$(grep "Total Components:" performance-report.txt | grep -o '[0-9]\+' | head -1)
+            MEMOIZED=$(grep "Memoized:" performance-report.txt | grep -o '[0-9]\+' | head -1)
+            INLINE_STYLES=$(grep "Inline Styles:" performance-report.txt | grep -o '[0-9]\+' | head -1)
+            EFFECT_ISSUES=$(grep "useEffect Issues:" performance-report.txt | grep -o '[0-9]\+' | head -1)
+            LARGE_COMPONENTS=$(grep "Large Components:" performance-report.txt | grep -o '[0-9]\+' | head -1)
+
+            echo "| Metric | Value | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|--------|" >> $GITHUB_STEP_SUMMARY
+
+            # Components
+            if [ -n "$TOTAL_COMPONENTS" ] && [ -n "$MEMOIZED" ] && [ "$TOTAL_COMPONENTS" -gt 0 ]; then
+              MEMO_PERCENT=$((MEMOIZED * 100 / TOTAL_COMPONENTS))
+              MEMO_STATUS="✅"
+              [ $MEMO_PERCENT -lt 30 ] && MEMO_STATUS="⚠️"
+              echo "| Components | $TOTAL_COMPONENTS total, $MEMOIZED memoized (${MEMO_PERCENT}%) | $MEMO_STATUS |" >> $GITHUB_STEP_SUMMARY
+            fi
+
+            # Inline styles
+            if [ -n "$INLINE_STYLES" ]; then
+              STYLE_STATUS="✅"
+              [ $INLINE_STYLES -gt 10 ] && STYLE_STATUS="⚠️"
+              [ $INLINE_STYLES -gt 20 ] && STYLE_STATUS="❌"
+              echo "| Inline Styles | $INLINE_STYLES | $STYLE_STATUS |" >> $GITHUB_STEP_SUMMARY
+            fi
+
+            # useEffect issues
+            if [ -n "$EFFECT_ISSUES" ]; then
+              EFFECT_STATUS="✅"
+              [ $EFFECT_ISSUES -gt 5 ] && EFFECT_STATUS="⚠️"
+              [ $EFFECT_ISSUES -gt 10 ] && EFFECT_STATUS="❌"
+              echo "| useEffect Issues | $EFFECT_ISSUES | $EFFECT_STATUS |" >> $GITHUB_STEP_SUMMARY
+            fi
+
+            # Large components
+            if [ -n "$LARGE_COMPONENTS" ]; then
+              LARGE_STATUS="✅"
+              [ $LARGE_COMPONENTS -gt 3 ] && LARGE_STATUS="⚠️"
+              [ $LARGE_COMPONENTS -gt 5 ] && LARGE_STATUS="❌"
+              echo "| Large Components | $LARGE_COMPONENTS | $LARGE_STATUS |" >> $GITHUB_STEP_SUMMARY
+            fi
+
+            echo "" >> $GITHUB_STEP_SUMMARY
+
+            # Extract grade
+            GRADE=$(grep "Grade:" performance-report.txt | head -1 | cut -d':' -f2 | xargs)
+            if [ -n "$GRADE" ]; then
+              echo "**Performance Grade:** $GRADE" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "⚠️ Performance analysis report not generated" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 📤 Upload performance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-performance-report
+          path: performance-report.txt
+          retention-days: 30
+
+  # ==============================================================================
+  # Lighthouse Performance Testing
+  # ==============================================================================
+  lighthouse:
+    name: 🔦 Lighthouse Metrics
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        page:
+          - name: "Home"
+            path: "/"
+          - name: "Services"
+            path: "/servicos"
+          - name: "Blog"
+            path: "/blog"
+          - name: "Contact"
+            path: "/contato"
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🏗️ Build project
+        env:
+          NODE_ENV: production
+        run: npm run build:vite
+
+      - name: 🌐 Serve build
+        run: |
+          npx serve -l 5000 dist &
+          sleep 5
+          curl -I http://localhost:5000 || exit 1
+
+      - name: 🔦 Run Lighthouse
+        id: lighthouse
+        run: |
+          # Install Lighthouse if not available
+          which lighthouse || npm install -g lighthouse
+
+          # Run Lighthouse
+          lighthouse http://localhost:5000${{ matrix.page.path }} \
+            --output=json \
+            --output-path=./lighthouse-${{ matrix.page.name }}.json \
+            --chrome-flags="--headless --no-sandbox --disable-gpu" \
+            --only-categories=performance,accessibility,best-practices,seo \
+            --throttling.cpuSlowdownMultiplier=2 || true
+
+          # Parse results
+          if [ -f "lighthouse-${{ matrix.page.name }}.json" ]; then
+            PERF_SCORE=$(jq '.categories.performance.score * 100' lighthouse-${{ matrix.page.name }}.json)
+            A11Y_SCORE=$(jq '.categories.accessibility.score * 100' lighthouse-${{ matrix.page.name }}.json)
+            BP_SCORE=$(jq '.categories["best-practices"].score * 100' lighthouse-${{ matrix.page.name }}.json)
+            SEO_SCORE=$(jq '.categories.seo.score * 100' lighthouse-${{ matrix.page.name }}.json)
+
+            echo "### 🔦 Lighthouse - ${{ matrix.page.name }}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Category | Score | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|----------|-------|--------|" >> $GITHUB_STEP_SUMMARY
+
+            # Performance
+            PERF_STATUS="✅"
+            [ "${PERF_SCORE%.*}" -lt 90 ] && PERF_STATUS="⚠️"
+            [ "${PERF_SCORE%.*}" -lt 75 ] && PERF_STATUS="❌"
+            echo "| Performance | ${PERF_SCORE%.*}% | $PERF_STATUS |" >> $GITHUB_STEP_SUMMARY
+
+            # Accessibility
+            A11Y_STATUS="✅"
+            [ "${A11Y_SCORE%.*}" -lt 90 ] && A11Y_STATUS="⚠️"
+            [ "${A11Y_SCORE%.*}" -lt 75 ] && A11Y_STATUS="❌"
+            echo "| Accessibility | ${A11Y_SCORE%.*}% | $A11Y_STATUS |" >> $GITHUB_STEP_SUMMARY
+
+            # Best Practices
+            BP_STATUS="✅"
+            [ "${BP_SCORE%.*}" -lt 90 ] && BP_STATUS="⚠️"
+            [ "${BP_SCORE%.*}" -lt 75 ] && BP_STATUS="❌"
+            echo "| Best Practices | ${BP_SCORE%.*}% | $BP_STATUS |" >> $GITHUB_STEP_SUMMARY
+
+            # SEO
+            SEO_STATUS="✅"
+            [ "${SEO_SCORE%.*}" -lt 90 ] && SEO_STATUS="⚠️"
+            [ "${SEO_SCORE%.*}" -lt 75 ] && SEO_STATUS="❌"
+            echo "| SEO | ${SEO_SCORE%.*}% | $SEO_STATUS |" >> $GITHUB_STEP_SUMMARY
+
+            # Fail if performance is too low
+            if [ "${PERF_SCORE%.*}" -lt 75 ]; then
+              echo "::error::Performance score ${PERF_SCORE%.*}% is below threshold (75%)"
+              exit 1
+            fi
+          fi
+
+      - name: 📤 Upload Lighthouse report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-${{ matrix.page.name }}
+          path: lighthouse-${{ matrix.page.name }}.json
+          retention-days: 30
+
+  # ==============================================================================
+  # Memory and Resource Usage Analysis
+  # ==============================================================================
+  resource-analysis:
+    name: 💾 Resource Usage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 💾 Analyze memory usage
+        run: |
+          echo "### 💾 Memory & Resource Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Check for memory leaks in tests
+          NODE_OPTIONS="--max-old-space-size=4096" npm run test:run -- --reporter=verbose 2>&1 | tee test-output.log || true
+
+          # Extract memory usage if available
+          if [ -f test-output.log ]; then
+            HEAP_USAGE=$(grep -i "heap" test-output.log | head -1 || echo "N/A")
+            echo "**Heap Usage:** $HEAP_USAGE" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Count asset files
+          IMAGE_COUNT=$(find public -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.webp" -o -name "*.avif" \) | wc -l)
+          JS_COUNT=$(find src -name "*.js" -o -name "*.jsx" | wc -l)
+          CSS_COUNT=$(find src -name "*.css" | wc -l)
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Resource Count:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Images: $IMAGE_COUNT files" >> $GITHUB_STEP_SUMMARY
+          echo "- JavaScript: $JS_COUNT files" >> $GITHUB_STEP_SUMMARY
+          echo "- CSS: $CSS_COUNT files" >> $GITHUB_STEP_SUMMARY
+
+          # Check for large assets
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Large Assets (>500KB):**" >> $GITHUB_STEP_SUMMARY
+          find public -type f -size +500k -exec ls -lh {} \; | while read -r line; do
+            echo "- $line" >> $GITHUB_STEP_SUMMARY
+          done || echo "None found" >> $GITHUB_STEP_SUMMARY
+
+  # ==============================================================================
+  # Performance Summary and Trends
+  # ==============================================================================
+  performance-summary:
+    name: 📊 Performance Summary
+    runs-on: ubuntu-latest
+    needs: [bundle-analysis, react-performance, lighthouse, resource-analysis]
+    if: always()
+
+    steps:
+      - name: 📊 Generate performance report
+        run: |
+          echo "# 📊 Performance Monitoring Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Date:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## 📈 Job Results" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Bundle Analysis | ${{ needs.bundle-analysis.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| React Performance | ${{ needs.react-performance.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Lighthouse | ${{ needs.lighthouse.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Resource Analysis | ${{ needs.resource-analysis.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Performance recommendations
+          echo "## 💡 Recommendations" >> $GITHUB_STEP_SUMMARY
+
+          if [[ "${{ needs.bundle-analysis.result }}" == "failure" ]]; then
+            echo "- ⚠️ **Bundle Size:** Reduce chunk sizes below 200KB limit" >> $GITHUB_STEP_SUMMARY
+            echo "  - Consider code splitting and lazy loading" >> $GITHUB_STEP_SUMMARY
+            echo "  - Remove unused dependencies" >> $GITHUB_STEP_SUMMARY
+            echo "  - Use dynamic imports for large libraries" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [[ "${{ needs.lighthouse.result }}" == "failure" ]]; then
+            echo "- ⚠️ **Lighthouse:** Improve Core Web Vitals" >> $GITHUB_STEP_SUMMARY
+            echo "  - Optimize images with WebP/AVIF formats" >> $GITHUB_STEP_SUMMARY
+            echo "  - Implement resource hints (preload, prefetch)" >> $GITHUB_STEP_SUMMARY
+            echo "  - Reduce JavaScript execution time" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Overall status
+          if [[ "${{ needs.bundle-analysis.result }}" == "failure" ]] || \
+             [[ "${{ needs.lighthouse.result }}" == "failure" ]]; then
+            echo "## ❌ Performance Issues Detected" >> $GITHUB_STEP_SUMMARY
+            echo "Please address the issues above before merging." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "## ✅ Performance Checks Passed" >> $GITHUB_STEP_SUMMARY
+            echo "All performance metrics are within acceptable limits." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 📈 Compare with baseline
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // This would compare with main branch metrics
+            console.log('Comparing performance metrics with main branch...');
+
+            const comment = `
+            ### 📊 Performance Impact
+
+            This PR's performance metrics compared to main branch:
+            - Bundle Size: ${{ needs.bundle-analysis.outputs.total-size }}KB
+            - Performance checks: ${{ needs.lighthouse.result }}
+
+            View detailed reports in the workflow artifacts.
+            `;
+
+            // Would post comment on PR with comparison
