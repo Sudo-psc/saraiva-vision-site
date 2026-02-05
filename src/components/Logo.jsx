@@ -9,12 +9,12 @@ const Logo = ({ className = "", isWhite = false, alt: altProp }) => {
   const responsiveBase = isWhite ? "/img/responsive/logo_prata" : "/img/logo";
 
   return (
-    <picture className={`h-32 md:h-36 w-auto scale-[1.15] ${className}`}>
+    <picture className={`h-16 lg:h-20 xl:h-24 2xl:h-28 w-auto ${className}`}>
       {/* Responsive AVIF sources */}
       {isWhite && (
         <source
           srcSet="/img/responsive/logo_prata-112.avif 112w, /img/responsive/logo_prata-224.avif 224w, /img/responsive/logo_prata-300.avif 300w"
-          sizes="(min-width: 768px) 224px, 112px"
+          sizes="(min-width: 1280px) 224px, (min-width: 1024px) 160px, 112px"
           type="image/avif"
         />
       )}
@@ -22,7 +22,7 @@ const Logo = ({ className = "", isWhite = false, alt: altProp }) => {
       {isWhite && (
         <source
           srcSet="/img/responsive/logo_prata-112.webp 112w, /img/responsive/logo_prata-224.webp 224w, /img/responsive/logo_prata-300.webp 300w"
-          sizes="(min-width: 768px) 224px, 112px"
+          sizes="(min-width: 1280px) 224px, (min-width: 1024px) 160px, 112px"
           type="image/webp"
         />
       )}
@@ -42,7 +42,7 @@ const Logo = ({ className = "", isWhite = false, alt: altProp }) => {
         decoding="sync"
         fetchpriority="high"
         style={{ objectFit: 'contain' }}
-        className={`h-32 md:h-36 w-auto scale-[1.15] ${className}`}
+        className={`h-16 lg:h-20 xl:h-24 2xl:h-28 w-auto ${className}`}
       />
     </picture>
   );

@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Eye } from 'lucide-react';
 
 import { smoothScrollTo } from '@/utils/scrollUtils';
-import OptimizedPicture from '@/components/ui/OptimizedPicture';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 import UnifiedCTA from '@/components/UnifiedCTA';
 import '../styles/design-system.css';
@@ -133,34 +132,56 @@ const Hero = () => {
           </div >
 
           <div
-            className="relative"
+            className="relative mt-8 lg:mt-0"
           >
-            <div className="hero-image-container relative z-10 rounded-3xl overflow-hidden shadow-3d hover:shadow-3d-hover transition-all duration-500 card-hover bg-gradient-to-br from-blue-50 to-cyan-50">
-              <OptimizedPicture
-                src="/img/responsive/hero-637.avif"
-                alt={t('ui.alt.hero_image', 'Família sorrindo - Saraiva Vision')}
-                width={637}
-                height={637}
-                sizes="(max-width: 480px) 400px, (max-width: 768px) 637px, (min-width: 1024px) 637px, 100vw"
-                priority={true}
-                fetchPriority="high"
-                disableAvif={false}
-                placeholder="none"
-                className="block w-full h-auto rounded-3xl"
-                aspectRatio="1/1"
-              />
+            {/* Enhanced Hero Image Container with Premium Border Design */}
+            <div className="hero-image-container relative z-10 group pt-8">
+              {/* Decorative Frame */}
+              <div className="absolute inset-3 top-11 bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 rounded-[2rem] opacity-20 group-hover:opacity-30 transition-opacity duration-500 blur-sm"></div>
+
+              {/* Corner Accents */}
+              <div className="absolute top-9 left-1 w-16 h-16 border-t-4 border-l-4 border-cyan-400 rounded-tl-2xl z-20"></div>
+              <div className="absolute -bottom-2 -right-2 w-16 h-16 border-b-4 border-r-4 border-cyan-400 rounded-br-2xl z-20"></div>
+
+              {/* Floating Badge - Positioned above image */}
+              <div className="absolute top-0 right-4 z-30 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-2 rounded-full shadow-lg shadow-cyan-500/30 flex items-center gap-2 text-sm font-semibold whitespace-nowrap">
+                <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                Especialista em Olho Seco
+              </div>
+
+              {/* Main Image Container */}
+              <div className="relative overflow-hidden rounded-3xl shadow-2xl shadow-cyan-500/20 border-2 border-white/50 bg-gradient-to-br from-slate-50 to-cyan-50/50 group-hover:shadow-cyan-500/30 transition-all duration-500 mt-4">
+                <picture>
+                  <source srcSet="/img/hero_dry_eye_relief_2.avif" type="image/avif" />
+                  <source srcSet="/img/hero_dry_eye_relief_2.webp" type="image/webp" />
+                  <img
+                    src="/img/hero_dry_eye_relief_2.png"
+                    alt={t('ui.alt.hero_image', 'Tratamento de olho seco - Saraiva Vision')}
+                    width={800}
+                    height={800}
+                    className="block w-full h-auto rounded-3xl transform group-hover:scale-[1.02] transition-transform duration-700"
+                    loading="eager"
+                    decoding="async"
+                    fetchpriority="high"
+                  />
+                </picture>
+
+                {/* Subtle overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 via-transparent to-transparent rounded-3xl pointer-events-none"></div>
+              </div>
             </div>
 
+            {/* Enhanced Info Card */}
             <div
-              className="absolute -bottom-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:-left-12 md:-bottom-4 glass-card p-4 max-w-xs"
+              className="absolute -bottom-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:-left-12 md:-bottom-4 backdrop-blur-md bg-white/90 border border-cyan-200/50 shadow-xl shadow-cyan-500/10 rounded-2xl p-5 max-w-xs hover:shadow-cyan-500/20 transition-all duration-300 z-20"
             >
               <div className="flex items-start gap-4">
-                <div className="icon-container bg-blue-100">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30">
                   <Eye size={24} />
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-slate-900">{t('hero.advanced_tech_title')}</h3>
-                  <p className="text-sm">{t('hero.advanced_tech_desc')}</p>
+                  <h3 className="text-base font-bold text-slate-900">{t('hero.advanced_tech_title')}</h3>
+                  <p className="text-sm text-slate-600">{t('hero.advanced_tech_desc')}</p>
                 </div>
               </div>
             </div>

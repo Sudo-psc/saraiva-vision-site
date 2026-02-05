@@ -78,16 +78,14 @@ const Navbar = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 pointer-events-none ${isScrolled
-        ? 'bg-white/95 backdrop-blur-sm shadow-md py-2'
-        : 'bg-white/90 backdrop-blur border-b border-slate-200/60 md:bg-transparent md:border-0 py-3'
+        ? 'bg-white/95 backdrop-blur-sm shadow-md py-1 lg:py-2'
+        : 'bg-white/90 backdrop-blur border-b border-slate-200/60 lg:bg-transparent lg:border-0 py-2 lg:py-3'
         }`}
     >
-      <div className="container mx-auto px-4 md:px-6 no-scrollbar-x pointer-events-auto">
-        <div className="flex flex-wrap items-center justify-between gap-3 md:gap-4 lg:gap-6 w-full">
+      <div className="container mx-auto px-3 lg:px-4 xl:px-6 pointer-events-auto overflow-x-hidden">
+        <div className="flex items-center justify-between gap-2 lg:gap-3 xl:gap-4 w-full">
           {/* Logo - Brand Identity */}
-          <div
-            className="ml-[6%] flex-shrink-0"
-          >
+          <div className="flex-shrink-0">
             <Link
               to="/"
               onClick={handleHomeClick}
@@ -98,22 +96,19 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation - With icons for visual recognition */}
+          {/* Desktop Navigation - Text-only for space efficiency (icons only in CTAs per design guidelines) */}
           <nav
-            className="hidden md:flex flex-1 items-center justify-center flex-wrap gap-1.5 lg:gap-2 xl:gap-3"
+            className="hidden lg:flex flex-1 items-center justify-center flex-wrap gap-1 xl:gap-1.5 2xl:gap-2"
             aria-label={t('navbar.primary_navigation')}
           >
             {navLinks.map((link) => {
-              const IconComponent = link.icon;
-              // UX Enhancement: Active page indicator for wayfinding
               const isActive = location.pathname === link.href;
               const isHomeLink = link.href === '/';
 
-              // UX Color Palette: Cyan for modern, technology-forward brand identity
-              const linkClasses = `group relative font-semibold transition-all duration-300 ease-out px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl text-base lg:text-[1.05rem] hover:scale-[1.03] xl:hover:scale-105 active:scale-95 hover:shadow-lg active:shadow-sm ${
+              const linkClasses = `group relative font-semibold transition-all duration-200 ease-out px-2 py-1 xl:px-3 xl:py-1.5 2xl:px-3.5 2xl:py-2 rounded-lg text-xs xl:text-sm 2xl:text-base whitespace-nowrap hover:scale-[1.03] active:scale-95 ${
                 isActive
-                  ? 'bg-gradient-to-br from-cyan-600 to-cyan-700 text-white border-2 border-cyan-500'
-                  : 'text-slate-900 bg-gradient-to-br from-slate-100 to-slate-200 hover:from-cyan-600 hover:to-cyan-700 hover:text-white border border-slate-300 hover:border-cyan-500'
+                  ? 'bg-gradient-to-br from-cyan-600 to-cyan-700 text-white border border-cyan-500'
+                  : 'text-slate-800 hover:bg-cyan-600 hover:text-white border border-transparent hover:border-cyan-500'
               }`;
 
               return link.internal ? (
@@ -121,19 +116,12 @@ const Navbar = () => {
                   key={link.name}
                   to={link.href}
                   onClick={isHomeLink ? handleHomeClick : undefined}
-                  className={`${linkClasses} min-w-[7.5rem] flex items-center justify-center gap-2`}
+                  className={linkClasses}
                 >
-                  <IconComponent
-                    size={16}
-                    className={`flex-shrink-0 transition-colors duration-300 ${
-                      isActive ? 'text-white' : 'text-slate-600 group-hover:text-white'
-                    }`}
-                  />
                   <span className="relative">
                     {link.name}
-                    {/* UX Enhancement: Animated underline on hover for feedback */}
                     {!isActive && (
-                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
+                      <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
                     )}
                   </span>
                 </Link>
@@ -143,18 +131,12 @@ const Navbar = () => {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${linkClasses} min-w-[7.5rem] flex items-center justify-center gap-2`}
+                  className={linkClasses}
                 >
-                  <IconComponent
-                    size={16}
-                    className={`flex-shrink-0 transition-colors duration-300 ${
-                      isActive ? 'text-white' : 'text-slate-600 group-hover:text-white'
-                    }`}
-                  />
                   <span className="relative">
                     {link.name}
                     {!isActive && (
-                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
+                      <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
                     )}
                   </span>
                 </a>
@@ -162,32 +144,32 @@ const Navbar = () => {
             })}
           </nav>
 
-          {/* CTAs - Improved layout with better text spacing */}
-          <div className="hidden md:flex items-center justify-end gap-2 lg:gap-3 xl:gap-4 mr-[6%] flex-shrink-0">
-            {/* Secondary CTA - WhatsApp Contact */}
+          {/* CTAs */}
+          <div className="hidden lg:flex items-center justify-end gap-2 xl:gap-3 flex-shrink-0">
+            {/* Secondary CTA - WhatsApp Contact (only on xl+) */}
             <a
               href={clinicInfo.whatsapp24h}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden lg:flex items-center gap-2.5 px-5 py-2.5 rounded-xl border-2 border-cyan-500 text-cyan-700 hover:text-white hover:bg-cyan-600 hover:border-cyan-600 transition-colors duration-300 text-base font-semibold bg-white hover:shadow-lg"
+              className="hidden xl:flex items-center gap-2 px-3 py-2 2xl:px-4 2xl:py-2.5 rounded-lg border-2 border-cyan-500 text-cyan-700 hover:text-white hover:bg-cyan-600 hover:border-cyan-600 transition-colors duration-200 text-sm 2xl:text-base font-semibold bg-white"
               aria-label={t('navbar.contact')}
             >
-              <Phone size={18} className="flex-shrink-0" />
+              <Phone size={16} className="flex-shrink-0" />
               <span className="whitespace-nowrap">{t('navbar.contact')}</span>
             </a>
 
-            {/* Primary CTA - Prominent scheduling button with improved layout */}
+            {/* Primary CTA - Schedule */}
             <Button
               onClick={() => navigate('/agendamento')}
-              className="flex items-center gap-2.5 scale-[0.95] md:scale-100 lg:scale-105 origin-center bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300 ease-out hover:scale-105 lg:hover:scale-110 active:scale-95 px-5 py-2.5 md:px-6 md:py-3 rounded-xl border-2 border-cyan-500 hover:border-cyan-400 text-base lg:text-lg"
+              className="flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-bold shadow-md hover:shadow-lg transition-all duration-200 ease-out hover:scale-105 active:scale-95 px-3 py-2 xl:px-4 xl:py-2.5 2xl:px-5 2xl:py-3 rounded-lg border-2 border-cyan-500 hover:border-cyan-400 text-sm xl:text-base"
             >
-              <Calendar size={20} className="animate-pulse flex-shrink-0" />
+              <Calendar size={18} className="animate-pulse flex-shrink-0" />
               <span className="whitespace-nowrap">{t('navbar.schedule')}</span>
             </Button>
           </div>
 
-          {/* Mobile Menu Toggle - Cyan theme */}
-          <div className="md:hidden flex items-center gap-2">
+          {/* Mobile/Tablet Menu Toggle */}
+          <div className="lg:hidden flex items-center gap-2">
             <Button
               variant="outline"
               size="icon"
@@ -203,10 +185,10 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu - Full-height with glass morphism */}
+      {/* Mobile/Tablet Menu */}
       {mobileMenuOpen && (
         <div
-          className="md:hidden bg-white border-t shadow-lg pointer-events-auto"
+          className="lg:hidden bg-white border-t shadow-lg pointer-events-auto"
         >
           <nav className="container mx-auto px-4 py-3 sm:py-4 flex flex-col space-y-2 sm:space-y-3">
             {navLinks.map((link, index) => {

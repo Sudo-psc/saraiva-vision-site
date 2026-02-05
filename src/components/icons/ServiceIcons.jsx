@@ -211,6 +211,7 @@ export const PlasmaLiftBlepharoplastyIcon = ({ className = "h-8 w-8" }) => {
       decoding="async"
       width="64"
       height="64"
+      usePicture={false}
     />
   );
 };
@@ -226,6 +227,7 @@ export const XanthelasmaRemovalIcon = ({ className = "h-8 w-8" }) => {
       decoding="async"
       width="64"
       height="64"
+      usePicture={false}
     />
   );
 };
@@ -241,6 +243,7 @@ export const DpnTreatmentIcon = ({ className = "h-8 w-8" }) => {
       decoding="async"
       width="64"
       height="64"
+      usePicture={false}
     />
   );
 };

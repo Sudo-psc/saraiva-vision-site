@@ -2050,6 +2050,37 @@ Mencione que leu este guia e ganhe 10% de desconto no kit inicial de lentes!</p>
       ]
     },
     "relatedPodcasts": []
+  },
+  {
+    "id": 126,
+    "slug": "meibografia-olho-seco-caratinga-mg",
+    "title": "Meibografia e a importância diagnóstica no olho seco",
+    "excerpt": "Entenda o que é meibografia, como ela ajuda no diagnóstico do olho seco e quando procurar oftalmologista em Caratinga, MG.",
+    "content": "\n      <h2>Meibografia e a importância diagnóstica no olho seco</h2>\n      <p><strong>Como o exame das glândulas de Meibômio ajuda a tratar melhor o ressecamento ocular em Caratinga, MG</strong></p>\n      <p>Olhos ardendo, sensação de areia, lacrimejamento “do nada” e visão que embaça ao longo do dia: muita gente em Caratinga e região convive com isso achando que é “normal”, “da idade” ou “do tempo seco”. Só que, na prática, esses sinais podem indicar <strong>síndrome do olho seco</strong>, especialmente quando o problema está na camada oleosa da lágrima.</p>\n      <p>Na <strong>Clínica Saraiva Vision</strong>, em <strong>Caratinga (MG)</strong>, o cuidado é conduzido com atendimento humanizado pelo <strong>Dr. Philipe Saraiva Cruz (CRM-MG 69.870)</strong> e equipe, com apoio de tecnologia diagnóstica para enxergar além dos sintomas. Neste artigo, você vai entender <strong>o que é meibografia</strong>, por que ela é tão útil no diagnóstico do olho seco e como ela orienta um tratamento mais direcionado.</p>\n      \n      <h2>O que é meibografia (e o que ela avalia)</h2>\n      <p>A <strong>meibografia</strong> é um exame de imagem que permite visualizar as <strong>glândulas de Meibômio</strong>, que ficam nas pálpebras e produzem a “parte oleosa” da lágrima. Essa camada oleosa é essencial para <strong>evitar que a lágrima evapore rápido demais</strong>.</p>\n      <p>Quando essas glândulas estão obstruídas, inflamadas ou com perda estrutural (o que muitos chamam de “atrofia” ou “dropout”), a lágrima pode até existir, mas fica <strong>instável</strong> — e o olho resseca, arde e embaça com facilidade.</p>\n      \n      <h3>Por que essas glândulas importam tanto?</h3>\n      <ul>\n        <li>Elas ajudam a manter a lágrima “uniforme” sobre a córnea.</li>\n        <li>Reduzem a evaporação, principalmente em ambientes secos ou com vento.</li>\n        <li>Quando falham, o quadro costuma ser de <strong>olho seco evaporativo</strong>, frequentemente ligado à <strong>Disfunção das Glândulas de Meibômio (DGM)</strong>.</li>\n      </ul>\n      <p>Na prática, a meibografia ajuda a responder uma pergunta-chave: <strong>“o olho está seco porque falta lágrima ou porque a lágrima evapora rápido?”</strong> — e isso muda todo o plano de cuidado.</p>\n      \n      <h2>Olho seco: por que “colírio comum” nem sempre resolve</h2>\n      <p>É comum o paciente tentar várias lágrimas artificiais e sentir melhora apenas parcial. Isso acontece porque o olho seco não é uma condição única: ele pode envolver (ou combinar) três grandes eixos:</p>\n      <ul>\n        <li><strong>Evaporação aumentada</strong> (muito frequente na DGM)</li>\n        <li><strong>Produção aquosa reduzida</strong> (menos volume de lágrima)</li>\n        <li><strong>Inflamação e alteração da superfície ocular</strong>, com maior sensibilidade e desconforto</li>\n      </ul>\n      \n      <h3>Exemplos do cotidiano que pioram o olho seco (muito comuns em Caratinga e região)</h3>\n      <ul>\n        <li><strong>Telas por horas</strong> (celular, computador, TV): a gente pisca menos e a lágrima evapora mais.</li>\n        <li><strong>Ar-condicionado/ventilador</strong>: fluxo de ar direto no rosto acelera evaporação.</li>\n        <li><strong>Ambiente seco e poeira</strong>: irrita a superfície ocular e piora a inflamação.</li>\n        <li><strong>Direção e moto</strong>: vento constante + olho mais exposto.</li>\n      </ul>\n      \n      <h2>A importância diagnóstica da meibografia no olho seco</h2>\n      <p>A grande força da meibografia é “mostrar por dentro” o que muitas vezes não dá para concluir apenas olhando a olho nu: <strong>como está a arquitetura das glândulas</strong> e se existe <strong>perda glandular</strong>.</p>\n      \n      <h3>O que a meibografia pode evidenciar</h3>\n      <ul>\n        <li>Obstrução/alterações do trajeto das glândulas</li>\n        <li>Redução do número/“falhas” glandulares (dropout)</li>\n        <li>Assimetria entre pálpebra superior e inferior</li>\n      </ul>\n      \n      <h2>FAQ: dúvidas comuns em Caratinga, MG</h2>\n      <p><strong>1) A meibografia é indicada para todo mundo com olho seco?</strong></p>\n      <p>Nem sempre. Ela é especialmente útil quando há suspeita de DGM/olho seco evaporativo, blefarite ou queixas típicas (ardor e visão embaçada que piora ao longo do dia).</p>\n      <p><strong>2) O exame substitui o teste de Schirmer ou outros testes?</strong></p>\n      <p>Não. A meibografia avalia estrutura das glândulas; outros testes avaliam quantidade de lágrima, estabilidade do filme lacrimal etc. O diagnóstico costuma ser combinado.</p>\n      \n      <blockquote class=\"bg-sky-50 p-4 border-l-4 border-sky-400 my-4 italic\">\n        “Eu achava que era só alergia e cansaço, mas minha visão embaçava todo dia no trabalho. Depois da avaliação e dos exames, entendi o que estava acontecendo e comecei um tratamento que fez sentido para minha rotina.” — Paciente atendido em Caratinga\n      </blockquote>\n      \n      <h2>Próximos passos</h2>\n      <p>Se você suspeita de olho seco, o próximo passo é uma avaliação completa da superfície ocular na <strong>Clínica Saraiva Vision (Caratinga, MG)</strong>.</p>\n      <p><strong>Agende sua consulta: (33) 99860-1427</strong></p>",
+    "author": "Dr. Philipe Saraiva Cruz",
+    "date": "2026-02-02",
+    "category": "Olho Seco",
+    "tags": [
+      "meibografia em Caratinga",
+      "meibografia olho seco",
+      "disfunção das glândulas de Meibômio (DGM)",
+      "exame para olho seco",
+      "oftalmologista em Caratinga"
+    ],
+    "image": "/Blog/capa-olho-seco-optimized-1200w.webp",
+    "featured": true,
+    "seo": {
+      "metaTitle": "Meibografia no olho seco: por que esse exame faz diferença no diagnóstico (Caratinga, MG)",
+      "metaDescription": "Entenda o que é meibografia, como ela ajuda no diagnóstico do olho seco e quando procurar oftalmologista em Caratinga, MG.",
+      "keywords": [
+        "meibografia em Caratinga",
+        "meibografia olho seco",
+        "disfunção das glândulas de Meibômio (DGM)",
+        "exame para olho seco",
+        "oftalmologista em Caratinga"
+      ]
+    },
+    "relatedPodcasts": []
   }
 ];
 

@@ -42,16 +42,26 @@ const BACKUP_FILE = path.resolve(OUTPUT_DIR, 'blogPosts.static-backup.js')
  * Transform Sanity post to frontend format
  */
 function transformPost(sanityPost) {
+  // Extract image URL if available
+  let imageUrl = sanityPost.image;
+  if (sanityPost.mainImage?.asset) {
+    // Note: Since we don't have urlFor here without importing sanityClient,
+    // we'll rely on the dereferenced URL from the query if we add it,
+    // or just pass the object and let the frontend handle it.
+    // Actually, the frontend's transformBlogPost handles this.
+  }
+
   return {
     id: sanityPost.id || parseInt(sanityPost._id.replace('blogPost-', '')),
-    slug: sanityPost.slug?.current || sanityPost.slug,
+    slug: sanityPost.slug, // extracted in query
     title: sanityPost.title,
     excerpt: sanityPost.excerpt,
     content: sanityPost.content,
-    image: sanityPost.image,
+    image: sanityPost.imageUrl || null,
+    mainImage: sanityPost.mainImage, // raw image for components
     author: sanityPost.author || 'Dr. Philipe Saraiva Cruz',
     date: sanityPost.date || sanityPost.publishedAt,
-    category: sanityPost.category,
+    category: sanityPost.category, // extracted in query
     tags: sanityPost.tags || [],
     featured: sanityPost.featured || false,
     seo: sanityPost.seo || {
@@ -72,15 +82,16 @@ async function fetchPostsFromSanity() {
   const query = `*[_type == "blogPost"] | order(publishedAt desc) {
     _id,
     id,
-    slug,
+    'slug': slug.current,
     title,
     excerpt,
     content,
-    image,
-    author,
+    mainImage,
+    'imageUrl': mainImage.asset->url,
+    'author': author->name,
     publishedAt,
     updatedAt,
-    category,
+    'category': category->title,
     tags,
     featured,
     seo,

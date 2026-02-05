@@ -197,7 +197,7 @@ const ServiceCard = ({ service, index }) => {
       className="h-full"
     >
       <Link
-        to={service.id === 'irpl-e-eye' ? '/luz-pulsada-irpl' : `/servicos/${service.id}`}
+        to={service.id === 'irpl-e-eye' ? '/luz-pulsada-irpl' : service.id === 'meibografia' ? '/meibografia' : `/servicos/${service.id}`}
         className="group block h-full"
       >
         <div className={`

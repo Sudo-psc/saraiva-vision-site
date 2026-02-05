@@ -158,6 +158,26 @@ const MeibografiaPage = () => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Estatísticas sobre Olho Seco */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                            <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-slate-200">
+                                <span className="text-3xl font-bold text-blue-600">30%</span>
+                                <p className="text-xs text-slate-600 mt-1">da população adulta tem olho seco</p>
+                            </div>
+                            <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-slate-200">
+                                <span className="text-3xl font-bold text-cyan-600">86%</span>
+                                <p className="text-xs text-slate-600 mt-1">dos casos envolvem DGM</p>
+                            </div>
+                            <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-slate-200">
+                                <span className="text-3xl font-bold text-amber-600">70%</span>
+                                <p className="text-xs text-slate-600 mt-1">é olho seco evaporativo</p>
+                            </div>
+                            <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-slate-200">
+                                <span className="text-3xl font-bold text-red-600">∞</span>
+                                <p className="text-xs text-slate-600 mt-1">atrofia glandular é irreversível</p>
+                            </div>
+                        </div>
                     </motion.div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
@@ -191,6 +211,19 @@ const MeibografiaPage = () => {
                                         <li><strong>Obstruções dos ductos glandulares</strong></li>
                                         <li><strong>Percentual de área glandular preservada vs. perdida</strong></li>
                                     </ul>
+
+                                    <div className="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl p-5 mt-6 border border-amber-200">
+                                        <h4 className="font-bold text-amber-900 mb-3 flex items-center">
+                                            <Droplets className="w-5 h-5 mr-2" />
+                                            O olho seco é uma pandemia silenciosa
+                                        </h4>
+                                        <p className="text-amber-800 text-sm leading-relaxed mb-3">
+                                            A Síndrome do Olho Seco (também conhecida como Doença do Olho Seco - DED) é uma das condições oftalmológicas mais prevalentes no mundo, afetando a qualidade de vida de milhões de pessoas. Os sintomas incluem desconforto constante, visão flutuante, sensação de areia nos olhos e, paradoxalmente, lacrimejamento excessivo.
+                                        </p>
+                                        <p className="text-amber-800 text-sm leading-relaxed">
+                                            Muitos pacientes sofrem por anos sem diagnóstico correto porque os exames tradicionais não conseguem visualizar a causa estrutural do problema. <strong>A meibografia mudou esse paradigma</strong>, permitindo pela primeira vez ver diretamente o estado das glândulas de Meibômio e planejar tratamentos verdadeiramente eficazes.
+                                        </p>
+                                    </div>
                                 </div>
                             </motion.section>
 
@@ -271,6 +304,105 @@ const MeibografiaPage = () => {
                                                 Anatomia do filme lacrimal e glândulas de Meibômio
                                             </p>
                                         </div>
+                                    </div>
+                                </div>
+                            </motion.section>
+
+                            {/* Importância para Olho Seco */}
+                            <motion.section
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.27 }}
+                                className="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-6 shadow-soft-light border border-red-200/50"
+                            >
+                                <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                                    <AlertCircle className="w-6 h-6 mr-3 text-red-600" />
+                                    Importância Crucial da Meibografia para o Diagnóstico de Olho Seco
+                                </h2>
+                                <div className="space-y-6">
+                                    <div className="bg-white rounded-xl p-5 border border-red-200 shadow-sm">
+                                        <h3 className="font-bold text-red-800 mb-3 text-lg">Por que a meibografia é considerada o padrão-ouro?</h3>
+                                        <p className="text-slate-700 leading-relaxed mb-4">
+                                            O olho seco é uma das condições oftalmológicas mais comuns, afetando <strong>milhões de brasileiros</strong>. No entanto, muitos pacientes recebem tratamentos genéricos porque a <strong>causa raiz não foi identificada</strong>. A meibografia revoluciona esse cenário ao permitir visualizar diretamente as glândulas de Meibômio - algo impossível no exame clínico convencional.
+                                        </p>
+                                        <p className="text-slate-700 leading-relaxed">
+                                            Estudos científicos demonstram que <strong>aproximadamente 86% dos pacientes com olho seco</strong> apresentam algum grau de Disfunção das Glândulas de Meibômio (DGM). Sem a meibografia, essa condição frequentemente passa despercebida, levando a tratamentos inadequados e <strong>progressão irreversível da atrofia glandular</strong>.
+                                        </p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="bg-white rounded-xl p-4 border border-red-100">
+                                            <h4 className="font-semibold text-slate-900 mb-2 flex items-center">
+                                                <span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
+                                                Sem meibografia
+                                            </h4>
+                                            <ul className="text-sm text-slate-600 space-y-1">
+                                                <li>• Diagnóstico baseado apenas em sintomas</li>
+                                                <li>• Impossível quantificar perda glandular</li>
+                                                <li>• Tratamento genérico "tentativa e erro"</li>
+                                                <li>• Progressão silenciosa da DGM</li>
+                                                <li>• Atrofia irreversível não detectada</li>
+                                            </ul>
+                                        </div>
+                                        <div className="bg-white rounded-xl p-4 border border-green-200">
+                                            <h4 className="font-semibold text-slate-900 mb-2 flex items-center">
+                                                <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                                Com meibografia
+                                            </h4>
+                                            <ul className="text-sm text-slate-600 space-y-1">
+                                                <li>• Diagnóstico visual direto e objetivo</li>
+                                                <li>• Quantificação precisa da perda glandular</li>
+                                                <li>• Tratamento personalizado e direcionado</li>
+                                                <li>• Monitoramento da evolução</li>
+                                                <li>• Intervenção precoce para preservar glândulas</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-red-100 border-l-4 border-red-500 p-4 rounded-r-lg">
+                                        <p className="text-red-900 font-medium">
+                                            <strong>Atenção:</strong> A perda das glândulas de Meibômio é <strong>irreversível</strong>. Uma vez atrofiadas, essas glândulas não se regeneram. Por isso, o diagnóstico precoce através da meibografia é fundamental para intervenção a tempo e preservação da função glandular remanescente.
+                                        </p>
+                                    </div>
+                                </div>
+                            </motion.section>
+
+                            {/* Nova Imagem de Meibografia */}
+                            <motion.section
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.275 }}
+                                className="bg-white rounded-2xl p-6 shadow-soft-light border border-slate-200/50"
+                            >
+                                <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                                    <Eye className="w-6 h-6 mr-3 text-blue-600" />
+                                    Equipamento de Meibografia Eyer
+                                </h2>
+                                <div className="space-y-4">
+                                    <p className="text-slate-700 leading-relaxed">
+                                        Utilizamos o sistema <strong>Eyer</strong>, um equipamento de última geração para meibografia que oferece imagens em alta definição das glândulas de Meibômio. Esta tecnologia avançada permite diagnóstico preciso e documentação detalhada para acompanhamento do tratamento.
+                                    </p>
+                                    <div className="relative rounded-xl overflow-hidden shadow-lg border border-slate-200">
+                                        <img
+                                            src="/images/Meibografia Eyer2.png"
+                                            alt="Equipamento Eyer para exame de meibografia - tecnologia avançada para diagnóstico de olho seco"
+                                            className="w-full h-auto"
+                                            loading="lazy"
+                                        />
+                                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                            <p className="text-white text-sm font-medium">
+                                                Sistema Eyer - Meibografia em alta definição disponível na Saraiva Vision
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                                        <h4 className="font-semibold text-blue-900 mb-2">Características do equipamento Eyer:</h4>
+                                        <ul className="text-sm text-blue-800 space-y-1">
+                                            <li>• <strong>Imagens em alta resolução:</strong> Detalhamento superior das estruturas glandulares</li>
+                                            <li>• <strong>Tecnologia infravermelha avançada:</strong> Visualização profunda das glândulas</li>
+                                            <li>• <strong>Análise quantitativa:</strong> Medição precisa da área glandular afetada</li>
+                                            <li>• <strong>Documentação digital:</strong> Armazenamento para comparação em exames futuros</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </motion.section>
