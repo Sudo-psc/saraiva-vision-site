@@ -298,11 +298,6 @@
   overflow: hidden;
 }
 
-/* Framer Motion Overflow Fix */
-img, video, canvas {
-  overflow: hidden;
-}
-
 .underline-animated::after {
   content: '';
   position: absolute;

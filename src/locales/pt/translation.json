@@ -295,51 +295,63 @@
       },
       "refraction": {
         "title": "Exames de Refração e Adaptação de Lentes de Contato",
-        "description": "Determinação precisa do grau para óculos e adaptação especializada de lentes de contato. Avaliação completa da refração ocular com equipamentos de última geração, buscando alta precisão no diagnóstico."
+        "description": "Determinação precisa do grau para óculos e adaptação especializada de lentes de contato. Avaliação completa da refração ocular com equipamentos de última geração, buscando alta precisão no diagnóstico.",
+        "fullDescription": "O exame de refração na Clínica Saraiva Vision combina refração computadorizada e subjetiva para determinar com máxima precisão o grau de miopia, hipermetropia, astigmatismo ou presbiopia. Com base nos resultados, realizamos a prescrição de óculos ou a adaptação personalizada de lentes de contato — incluindo gelatinosas, rígidas e especiais (tóricas, multifocais e esclerais). Todo o processo é conduzido com equipamentos modernos, testes práticos de adaptação e orientação completa sobre uso, manuseio e cuidados com as lentes."
       },
       "specialized": {
         "title": "Tratamentos Especializados",
-        "description": "Tratamentos avançados para glaucoma, catarata, degeneração macular, retinopatia diabética e outras condições oculares. Planos terapêuticos personalizados com equipamentos de última geração, definidos após avaliação individualizada."
+        "description": "Tratamentos avançados para glaucoma, catarata, degeneração macular, retinopatia diabética e outras condições oculares. Planos terapêuticos personalizados com equipamentos de última geração, definidos após avaliação individualizada.",
+        "fullDescription": "A Clínica Saraiva Vision oferece tratamentos especializados para as principais doenças oculares, com protocolos individualizados baseados em evidências científicas. Atendemos casos de glaucoma (controle medicamentoso e acompanhamento com campo visual e OCT), retinopatia diabética (monitoramento e encaminhamento para fotocoagulação quando indicado), degeneração macular relacionada à idade (DMRI), uveítes e outras condições que exigem seguimento contínuo. Cada paciente recebe um plano terapêutico personalizado, com exames complementares e retornos programados."
       },
       "surgeries": {
         "title": "Cirurgias Oftalmológicas",
-        "description": "Cirurgias oftalmológicas de alta precisão, incluindo catarata, correção de grau, pterígio e procedimentos de pálpebras. Procedimentos realizados em estrutura moderna, com tecnologia avançada e equipe especializada, sempre mediante indicação médica."
+        "description": "Cirurgias oftalmológicas de alta precisão, incluindo catarata, correção de grau, pterígio e procedimentos de pálpebras. Procedimentos realizados em estrutura moderna, com tecnologia avançada e equipe especializada, sempre mediante indicação médica.",
+        "fullDescription": "Realizamos cirurgias oftalmológicas com técnicas modernas e minimamente invasivas, sempre mediante indicação clínica individualizada. Entre os procedimentos oferecidos estão cirurgia de catarata com implante de lente intraocular, correção de pterígio com transplante de conjuntiva, blefaroplastia e outros procedimentos palpebrais. Todos os procedimentos são realizados em centro cirúrgico equipado, com anestesia local segura e acompanhamento pós-operatório completo, incluindo retornos programados e suporte emergencial."
       },
       "pediatric": {
         "title": "Oftalmologia Pediátrica",
-        "description": "Cuidado especializado da saúde ocular infantil desde o nascimento até a adolescência. Diagnóstico precoce de ambliopia, estrabismo e erros refrativos com ambiente lúdico, acolhedor e protocolos adaptados às crianças."
+        "description": "Cuidado especializado da saúde ocular infantil desde o nascimento até a adolescência. Diagnóstico precoce de ambliopia, estrabismo e erros refrativos com ambiente lúdico, acolhedor e protocolos adaptados às crianças.",
+        "fullDescription": "O atendimento oftalmológico pediátrico na Saraiva Vision é adaptado para crianças desde o nascimento até a adolescência, em um ambiente lúdico e acolhedor. Realizamos o teste do olhinho (reflexo vermelho), avaliação do desenvolvimento visual, triagem de estrabismo, refração infantil sob cicloplegia e diagnóstico precoce de ambliopia (olho preguiçoso). A detecção e o tratamento precoces são fundamentais para o desenvolvimento visual saudável, e orientamos os pais sobre cada etapa do acompanhamento."
       },
       "reports": {
         "title": "Laudos Especializados",
-        "description": "Emissão de laudos técnicos detalhados para CNH, concursos públicos, laudos ocupacionais e pareceres médicos especializados. Documentação elaborada conforme normas vigentes e assinada pelo responsável técnico."
+        "description": "Emissão de laudos técnicos detalhados para CNH, concursos públicos, laudos ocupacionais e pareceres médicos especializados. Documentação elaborada conforme normas vigentes e assinada pelo responsável técnico.",
+        "fullDescription": "A Clínica Saraiva Vision emite laudos oftalmológicos técnicos para diversas finalidades: renovação e obtenção de CNH (todas as categorias), concursos públicos civis e militares, avaliações ocupacionais e pareceres médicos especializados. Cada laudo inclui exame oftalmológico completo com acuidade visual, tonometria, biomicroscopia e fundoscopia, conforme os requisitos específicos de cada finalidade. A documentação é elaborada segundo as normas vigentes do CONTRAN, DETRAN e órgãos competentes, com assinatura digital e entrega rápida."
       },
       "gonioscopy": {
         "title": "Gonioscopia",
-        "description": "Exame que avalia o ângulo da câmara anterior do olho, essencial no diagnóstico e classificação do glaucoma."
+        "description": "Exame que avalia o ângulo da câmara anterior do olho, essencial no diagnóstico e classificação do glaucoma.",
+        "fullDescription": "A gonioscopia é um exame realizado com lente de contato especial (goniolente) que permite visualizar o ângulo da câmara anterior do olho — a região onde ocorre a drenagem do humor aquoso. É um exame fundamental para o diagnóstico e a classificação do tipo de glaucoma (ângulo aberto ou fechado), definição da conduta terapêutica e identificação de alterações anatômicas como sinéquias, neovasos ou pigmentação anômala. O procedimento é rápido, realizado com anestesia tópica (colírio) e fornece informações que nenhum outro exame substitui."
       },
       "retinaMapping": {
         "title": "Mapeamento de Retina",
-        "description": "Avaliação ampla da retina periférica e central para detectar lesões, roturas, degenerações ou complicações vasculares."
+        "description": "Avaliação ampla da retina periférica e central para detectar lesões, roturas, degenerações ou complicações vasculares.",
+        "fullDescription": "O mapeamento de retina é um exame que avalia toda a extensão da retina — do polo posterior até a periferia — utilizando oftalmoscopia indireta binocular com lente de 20D ou 28D. Permite detectar precocemente lesões degenerativas periféricas, roturas retinianas, descolamento de retina, retinopatia diabética, oclusões vasculares e alterações do nervo óptico. É realizado com dilatação pupilar prévia (colírios midriáticos) e o paciente deve evitar dirigir nas horas seguintes ao exame. A documentação fotográfica pode ser realizada quando clinicamente indicada."
       },
       "cornealTopography": {
         "title": "Topografia Corneana",
-        "description": "Mapeamento computadorizado da curvatura corneana para diagnóstico de ceratocone, astigmatismos irregulares e planejamento cirúrgico."
+        "description": "Mapeamento computadorizado da curvatura corneana para diagnóstico de ceratocone, astigmatismos irregulares e planejamento cirúrgico.",
+        "fullDescription": "A topografia corneana é um exame computadorizado que gera mapas detalhados da curvatura da córnea, permitindo identificar irregularidades na sua superfície. É essencial para o diagnóstico precoce de ceratocone, planejamento de cirurgias refrativas (LASIK, PRK), adaptação de lentes de contato especiais e acompanhamento de ectasias corneanas. O exame produz mapas coloridos de elevação, curvatura e análise de aberrações, fornecendo dados precisos para a conduta clínica. É rápido, indolor e não exige contato com o olho."
       },
       "pachymetry": {
         "title": "Paquimetria",
-        "description": "Medição precisa da espessura corneana central. Essencial no cálculo da pressão intraocular e avaliação de ceratocone."
+        "description": "Medição precisa da espessura corneana central. Essencial no cálculo da pressão intraocular e avaliação de ceratocone.",
+        "fullDescription": "A paquimetria é o exame que mede a espessura da córnea, dado fundamental para a correta interpretação da pressão intraocular (PIO) e para o diagnóstico de ceratocone e outras ectasias. Córneas mais finas podem apresentar leituras falsamente baixas da PIO, enquanto córneas mais espessas podem superestimar a medida — o que torna a paquimetria indispensável na avaliação do glaucoma. Também é requisito para o planejamento de cirurgias refrativas. O exame é rápido (poucos minutos), indolor e realizado com anestesia tópica."
       },
       "retinography": {
         "title": "Retinografia",
-        "description": "Fotografia digital de alta resolução da retina para documentação e acompanhamento de doenças oculares."
+        "description": "Fotografia digital de alta resolução da retina para documentação e acompanhamento de doenças oculares.",
+        "fullDescription": "A retinografia é um exame de fotografia digital de alta resolução do fundo de olho, que permite documentar e acompanhar a evolução de doenças retinianas ao longo do tempo. As imagens capturam o polo posterior (mácula, disco óptico e vasos retinianos) com precisão, sendo essenciais no acompanhamento de retinopatia diabética, degeneração macular, glaucoma e outras condições. O arquivo digital permanente possibilita comparações objetivas entre consultas, facilitando a detecção de alterações progressivas."
       },
       "visualField": {
         "title": "Campo Visual Computadorizado",
-        "description": "Exame que avalia a sensibilidade visual periférica e central, vital para diagnóstico e seguimento do glaucoma."
+        "description": "Exame que avalia a sensibilidade visual periférica e central, vital para diagnóstico e seguimento do glaucoma.",
+        "fullDescription": "O campo visual computadorizado (campimetria) é um exame automatizado que mapeia a sensibilidade luminosa em toda a extensão do campo de visão, detectando áreas de perda visual (escotomas) que o paciente muitas vezes não percebe. É o exame padrão-ouro para diagnóstico e acompanhamento do glaucoma, além de ser utilizado na investigação de neuropatias ópticas, lesões neurológicas e monitoramento de medicamentos com potencial toxicidade retiniana. Utilizamos protocolos SITA Standard e Fast, com análise de progressão e índices de confiabilidade para garantir resultados precisos."
       },
       "meibography": {
         "title": "Meibografia",
-        "description": "Exame de imagem das glândulas de Meibômio que avalia a estrutura e função glandular, essencial no diagnóstico preciso da síndrome do olho seco."
+        "description": "Exame de imagem das glândulas de Meibômio que avalia a estrutura e função glandular, essencial no diagnóstico preciso da síndrome do olho seco.",
+        "fullDescription": "A meibografia é um exame avançado por imagem infravermelha que permite visualizar em alta definição as glândulas de Meibômio, responsáveis pela produção da camada lipídica do filme lacrimal. Essencial para o diagnóstico preciso do olho seco evaporativo e da disfunção das glândulas de Meibômio (DGM), o exame revela o grau de atrofia glandular e orienta a escolha do tratamento mais adequado — como higiene palpebral, expressão glandular, luz pulsada (IRPL) ou plugs lacrimais. É não invasivo, rápido e indolor."
       },
       "irplEEye": {
         "title": "IRPL com E-Eye (Olho Seco)",

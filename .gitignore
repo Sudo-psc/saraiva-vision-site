@@ -22,6 +22,9 @@ generate_retinopathy*.sh
 generate_retinopathy*.py
 *_with_api_key.*
 
+# OpenClaw config (contains API keys)
+openclaw.json
+
 # Logs
 *.log
 npm-debug.log*
@@ -151,6 +154,9 @@ backups/
 monit-credentials.txt
 monitrc.new
 
+# OpenClaw config (contains API keys)
+openclaw.json
+
 # Stakpak local files
-.stakpak
+.stakpak/session*
 .vercel

@@ -1,12 +1,33 @@
 import { site, business } from './config.base.js';
 
+// Safe environment variable access for both Node and Browser (Vite)
+const getEnvVar = (viteKey, nextKey) => {
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
+    return import.meta.env[viteKey];
+  }
+  if (typeof process !== 'undefined' && process.env) {
+    return process.env[nextKey] || process.env[viteKey];
+  }
+  return undefined;
+};
+
+const isProd = () => {
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
+    return import.meta.env.PROD;
+  }
+  if (typeof process !== 'undefined' && process.env) {
+    return process.env.NODE_ENV === 'production';
+  }
+  return true; // Default to true in unknown environments for safety
+};
+
 const defaultConfig = {
   app: {
-    environment: process.env.NODE_ENV || 'production',
-    version: process.env.NEXT_PUBLIC_APP_VERSION || '2.0.1'
+    environment: isProd() ? 'production' : 'development',
+    version: getEnvVar('VITE_APP_VERSION', 'NEXT_PUBLIC_APP_VERSION') || '2.0.1'
   },
   analytics: {
-    enabled: process.env.NODE_ENV === 'production',
+    enabled: isProd(),
     gaId: '',
     gtmId: '',
     metaPixelId: ''
@@ -29,9 +50,9 @@ const defaultConfig = {
 
 const envConfig = {
   analytics: {
-    gaId: process.env.NEXT_PUBLIC_GA_ID || undefined,
-    gtmId: process.env.NEXT_PUBLIC_GTM_ID || undefined,
-    metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID || undefined
+    gaId: getEnvVar('VITE_GA_ID', 'NEXT_PUBLIC_GA_ID') || undefined,
+    gtmId: getEnvVar('VITE_GTM_ID', 'NEXT_PUBLIC_GTM_ID') || undefined,
+    metaPixelId: getEnvVar('VITE_META_PIXEL_ID', 'NEXT_PUBLIC_META_PIXEL_ID') || undefined
   }
 };
 

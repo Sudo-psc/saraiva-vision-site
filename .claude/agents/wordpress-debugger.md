@@ -1,6 +1,24 @@
 ---
 name: wordpress-debugger
-description: Use this agent when debugging WordPress issues, optimizing WordPress performance, or troubleshooting WordPress configuration problems. This agent should be called proactively when WordPress-related errors are detected or when WordPress performance needs improvement.\n\n<example>\nContext: User is experiencing WordPress site slowness and plugin conflicts.\nuser: "My WordPress site is running slow and I'm getting plugin errors"\nassistant: "I'll analyze your WordPress configuration and identify performance bottlenecks"\n<commentary>\nSince the user is reporting WordPress performance and plugin issues, use the wordpress-debugger agent to diagnose and optimize the WordPress installation.\n</commentary>\n</example>\n\n<example>\nContext: User wants to optimize their WordPress setup for better performance.\nuser: "Can you help me optimize my WordPress site speed?"\nassistant: "I'll use the WordPress debugger to analyze your current configuration and provide optimization recommendations"\n<commentary>\nUser is requesting WordPress optimization, so proactively use the wordpress-debugger agent to analyze and improve WordPress performance.\n</commentary>\n</example>
+description: Use this agent when debugging WordPress issues, optimizing WordPress performance, or troubleshooting WordPress configuration problems. This agent should be called proactively when WordPress-related errors are detected or when WordPress performance needs improvement.
+
+<example>
+Context: User is experiencing WordPress site slowness and plugin conflicts.
+user: "My WordPress site is running slow and I'm getting plugin errors"
+assistant: "I'll analyze your WordPress configuration and identify performance bottlenecks"
+<commentary>
+Since the user is reporting WordPress performance and plugin issues, use the wordpress-debugger agent to diagnose and optimize the WordPress installation.
+</commentary>
+</example>
+
+<example>
+Context: User wants to optimize their WordPress setup for better performance.
+user: "Can you help me optimize my WordPress site speed?"
+assistant: "I'll use the WordPress debugger to analyze your current configuration and provide optimization recommendations"
+<commentary>
+User is requesting WordPress optimization, so proactively use the wordpress-debugger agent to analyze and improve WordPress performance.
+</commentary>
+</example>
 model: sonnet
 ---
 

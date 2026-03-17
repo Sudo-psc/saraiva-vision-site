@@ -21,7 +21,7 @@ const generateMapEmbedUrl = () => {
 const GOOGLE_REVIEWS_CONFIG = {
   placeId: CLINIC_PLACE_ID,
   rating: 4.9,
-  totalReviews: 136,
+  totalReviews: 150,
   placeUrl: 'https://maps.google.com/?cid=17367763261775232199',
   whatsappUrl: 'https://wa.me/5533998601427?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20consulta%20oftalmol%C3%B3gica',
   reviewWidgetUrl: `https://g.page/${CLINIC_PLACE_ID}?rs=AW`,
@@ -115,7 +115,7 @@ const GoogleReviewsEnhanced = ({ maxReviews = 3, showWidget = true, className = 
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
-                <h4 className="font-semibold text-slate-900">{review.author}</h4>
+                <p className="font-semibold text-slate-900">{review.author}</p>
                 <VerifiedBadge />
               </div>
               <div className="flex items-center gap-2 text-sm text-slate-600 mb-1">

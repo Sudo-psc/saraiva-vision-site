@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Saraiva Vision - Oftalmologia especializada em Caratinga/MG. Dr. Philipe Saraiva Cruz CRM-MG 69.870. Diagnóstico de Olho Seco com tecnologia avançada: Meibografia, IRPL/E-Eye.">
+  <meta name="keywords" content="oftalmologista Caratinga, clínica olho seco Caratinga, teste olho seco gratuito, Dr. Philipe Saraiva Cruz, oftalmologia Minas Gerais">
+  <meta name="geo.region" content="BR-MG">
+  <meta name="geo.placename" content="Caratinga, Minas Gerais, Brasil">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Saraiva Vision – Oftalmologia Especializada em Caratinga/MG">
+  <meta property="og:description" content="Cuidado oftalmológico com tecnologia e precisão. Faça o teste rápido de olho seco gratuitamente em 10 segundos.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://saraivavision.com.br/qr">
+  <link rel="canonical" href="https://saraivavision.com.br/qr">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <title>Saraiva Vision – Oftalmologia em Caratinga/MG | Dr. Philipe Saraiva Cruz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ==============================
+       CUSTOM PROPERTIES
+    ============================== */
+    :root {
+      --c-primary:       #0B3D52;
+      --c-primary-dark:  #062435;
+      --c-primary-mid:   #145472;
+      --c-accent:        #28C4B0;
+      --c-accent-dark:   #1FA896;
+      --c-accent-light:  #E0F8F5;
+      --c-cta:           #FF6535;
+      --c-cta-hover:     #E5501C;
+      --c-bg:            #F4F7FA;
+      --c-white:         #FFFFFF;
+      --c-text:          #1A2333;
+      --c-text-mid:      #4A5568;
+      --c-text-light:    #718096;
+      --c-border:        #E2E8F0;
+      --c-star:          #F59E0B;
+      --c-wa:            #25D366;
+      --radius-sm:  8px;
+      --radius-md:  16px;
+      --radius-lg:  24px;
+      --radius-xl:  32px;
+      --radius-full: 9999px;
+      --shadow-sm:  0 2px 8px  rgba(11,61,82,0.08);
+      --shadow-md:  0 4px 16px rgba(11,61,82,0.12);
+      --shadow-lg:  0 8px 32px rgba(11,61,82,0.16);
+      --shadow-xl:  0 16px 48px rgba(11,61,82,0.20);
+      --t: 0.2s ease;
+    }
+
+    /* ==============================
+       RESET & BASE
+    ============================== */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html { font-size:16px; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--c-bg);
+      color: var(--c-text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ==============================
+       PAGE WRAPPER
+    ============================== */
+    .page {
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--c-white);
+      min-height: 100vh;
+      box-shadow: var(--shadow-xl);
+    }
+
+    @media (min-width: 520px) {
+      body { padding: 24px 0 48px; background: #DDE3EA; }
+      .page { border-radius: var(--radius-lg); overflow: hidden; }
+    }
+
+    /* ==============================
+       HERO
+    ============================== */
+    .hero {
+      background: linear-gradient(155deg, var(--c-primary-dark) 0%, var(--c-primary) 55%, var(--c-primary-mid) 100%);
+      padding: 40px 24px 44px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* Decorative circles */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 280px; height: 280px;
+      border: 1.5px solid rgba(40,196,176,0.14);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 360px; height: 360px;
+      border: 1.5px solid rgba(40,196,176,0.07);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* — Logo — */
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .logo__icon {
+      width: 50px; height: 50px;
+      background: var(--c-accent);
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo__icon svg { width: 30px; height: 30px; fill: #fff; }
+    .logo__name {
+      display: block;
+      font-size: 20px; font-weight: 900;
+      color: #fff; letter-spacing: 1.8px;
+      line-height: 1.2;
+    }
+    .logo__sub {
+      display: block;
+      font-size: 11px; font-weight: 600;
+      color: var(--c-accent); letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    /* — Doctor badge — */
+    .doctor-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: var(--radius-full);
+      padding: 7px 16px;
+      margin-bottom: 26px;
+      position: relative; z-index: 1;
+    }
+    .doctor-badge svg { width: 14px; height: 14px; fill: var(--c-accent); flex-shrink: 0; }
+    .doctor-badge span { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.88); }
+
+    /* — Headline — */
+    .hero h1 {
+      font-size: 27px; font-weight: 900;
+      color: #fff; line-height: 1.22;
+      margin-bottom: 12px;
+      position: relative; z-index: 1;
+    }
+    .hero h1 em { color: var(--c-accent); font-style: normal; }
+    .hero__sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.65;
+      margin-bottom: 30px;
+      position: relative; z-index: 1;
+    }
+
+    /* — Main CTA button — */
+    .btn-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      background: linear-gradient(135deg, var(--c-cta) 0%, #FF8C42 100%);
+      color: #fff;
+      padding: 18px 20px;
+      border-radius: var(--radius-xl);
+      font-size: 16px; font-weight: 800;
+      letter-spacing: 0.4px;
+      width: 100%;
+      box-shadow: 0 8px 28px rgba(255,101,53,0.42), 0 2px 8px rgba(255,101,53,0.28);
+      position: relative; z-index: 1;
+      cursor: pointer;
+      animation: pulse-cta 2.8s ease-in-out infinite;
+      transition: transform var(--t);
+    }
+    .btn-hero:active { transform: scale(0.97); animation: none; }
+    .btn-hero__top { display: flex; align-items: center; gap: 8px; }
+    .btn-hero__top svg { width: 20px; height: 20px; fill: #fff; flex-shrink: 0; }
+    .btn-hero__sub { font-size: 12px; font-weight: 500; opacity: 0.88; }
+
+    /* Live indicator */
+    .live-tag {
+      display: flex; align-items: center; justify-content: center;
+      gap: 7px; margin-top: 14px;
+      position: relative; z-index: 1;
+    }
+    .live-dot {
+      width: 7px; height: 7px;
+      background: var(--c-accent); border-radius: 50%;
+      animation: blink 1.6s ease-in-out infinite;
+    }
+    .live-tag span { font-size: 12px; color: rgba(255,255,255,0.65); }
+
+    /* ==============================
+       QUICK ACTIONS
+    ============================== */
+    .actions {
+      padding: 28px 20px;
+      background: var(--c-bg);
+    }
+    .section-eyebrow {
+      font-size: 11px; font-weight: 700;
+      color: var(--c-text-light);
+      text-transform: uppercase; letter-spacing: 2px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .actions-grid { display: flex; flex-direction: column; gap: 12px; }
+
+    .card {
+      display: flex; align-items: center;
+      gap: 15px;
+      background: var(--c-white);
+      border-radius: var(--radius-lg);
+      padding: 18px 18px 18px 20px;
+      box-shadow: var(--shadow-md);
+      min-height: 76px;
+      position: relative; overflow: hidden;
+      cursor: pointer;
+      transition: transform var(--t), box-shadow var(--t);
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      width: 4px; height: 100%;
+    }
+    .card:active { transform: scale(0.985); box-shadow: var(--shadow-sm); }
+
+    .card--wa::before  { background: var(--c-wa); }
+    .card--ig::before  { background: linear-gradient(180deg,#833AB4,#E1306C,#F77737); }
+    .card--cal::before { background: var(--c-primary); }
+
+    .card__icon {
+      width: 50px; height: 50px;
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .card--wa  .card__icon { background: rgba(37,211,102,0.12); }
+    .card--ig  .card__icon { background: rgba(225,48,108,0.10); }
+    .card--cal .card__icon { background: rgba(11,61,82,0.10); }
+    .card__icon svg { width: 28px; height: 28px; }
+
+    .card__body { flex: 1; min-width: 0; }
+    .card__title { font-size: 15px; font-weight: 700; color: var(--c-text); margin-bottom: 2px; }
+    .card__desc  { font-size: 13px; color: var(--c-text-mid); }
+
+    .card__chevron { color: var(--c-text-light); flex-shrink: 0; }
+    .card__chevron svg { width: 18px; height: 18px; }
+
+    /* ==============================
+       AUTHORITY
+    ============================== */
+    .authority {
+      padding: 32px 20px;
+      background: var(--c-white);
+    }
+
+    .divider-label {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 24px;
+    }
+    .divider-label__line { flex: 1; height: 1px; background: var(--c-border); }
+    .divider-label__text {
+      font-size: 11px; font-weight: 700;
+      color: var(--c-text-light);
+      text-transform: uppercase; letter-spacing: 2px;
+      white-space: nowrap;
+    }
+
+    .badge-center { text-align: center; margin-bottom: 24px; }
+    .specialty-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--c-accent-light);
+      border: 1.5px solid var(--c-accent);
+      border-radius: var(--radius-full);
+      padding: 9px 20px;
+    }
+    .specialty-badge svg { width: 17px; height: 17px; fill: var(--c-accent-dark); }
+    .specialty-badge span { font-size: 13px; font-weight: 700; color: var(--c-accent-dark); }
+
+    .check-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .check-item { display: flex; align-items: flex-start; gap: 12px; }
+    .check-icon {
+      width: 24px; height: 24px;
+      background: var(--c-accent-light);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .check-icon svg { width: 13px; height: 13px; stroke: var(--c-accent-dark); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .check-text { font-size: 14px; color: var(--c-text-mid); line-height: 1.55; }
+    .check-text strong { color: var(--c-text); font-weight: 600; }
+
+    /* ==============================
+       STRATEGIC CTA
+    ============================== */
+    .strategic {
+      padding: 40px 24px;
+      background: linear-gradient(150deg, var(--c-primary-dark) 0%, var(--c-primary) 60%, var(--c-primary-mid) 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .strategic::before {
+      content: '';
+      position: absolute;
+      top: -50px; right: -50px;
+      width: 220px; height: 220px;
+      background: rgba(40,196,176,0.07);
+      border-radius: 50%;
+    }
+    .strategic::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 240px; height: 240px;
+      background: rgba(40,196,176,0.05);
+      border-radius: 50%;
+    }
+
+    .strategic__emoji { font-size: 52px; line-height: 1; display: block; margin-bottom: 18px; position: relative; z-index: 1; }
+    .strategic h2 {
+      font-size: 24px; font-weight: 900;
+      color: #fff; line-height: 1.25;
+      margin-bottom: 12px;
+      position: relative; z-index: 1;
+    }
+    .strategic__text {
+      font-size: 15px;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.65; margin-bottom: 24px;
+      position: relative; z-index: 1;
+    }
+    .strategic__text strong { color: var(--c-accent); }
+
+    .symptoms {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 8px;
+      margin-bottom: 28px;
+      position: relative; z-index: 1;
+    }
+    .symptom {
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: var(--radius-full);
+      padding: 7px 14px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .btn-strategic {
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--c-cta) 0%, #FF8C42 100%);
+      color: #fff;
+      padding: 19px 28px;
+      border-radius: var(--radius-xl);
+      font-size: 17px; font-weight: 800; letter-spacing: 0.3px;
+      width: 100%;
+      box-shadow: 0 8px 28px rgba(255,101,53,0.50);
+      position: relative; z-index: 1;
+      cursor: pointer;
+      transition: transform var(--t), box-shadow var(--t);
+    }
+    .btn-strategic:active { transform: scale(0.97); box-shadow: 0 4px 12px rgba(255,101,53,0.40); }
+    .btn-strategic svg { width: 22px; height: 22px; fill: #fff; flex-shrink: 0; }
+
+    .strategic__caption {
+      margin-top: 14px;
+      font-size: 13px; color: rgba(255,255,255,0.55);
+      position: relative; z-index: 1;
+    }
+    .strategic__caption strong { color: var(--c-accent); }
+
+    /* ==============================
+       SOCIAL PROOF
+    ============================== */
+    .social-proof {
+      padding: 36px 20px;
+      background: var(--c-white);
+      text-align: center;
+    }
+
+    .stars { display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 10px; }
+    .star { font-size: 30px; color: var(--c-star); line-height: 1; }
+
+    .rating-row { display: flex; align-items: baseline; justify-content: center; gap: 6px; margin-bottom: 6px; }
+    .rating-num { font-size: 52px; font-weight: 900; color: var(--c-text); line-height: 1; }
+    .rating-denom { font-size: 20px; font-weight: 500; color: var(--c-text-light); }
+
+    .rating-sub { font-size: 14px; color: var(--c-text-mid); margin-bottom: 24px; }
+
+    .quote-card {
+      background: var(--c-bg);
+      border-radius: var(--radius-md);
+      padding: 18px 18px 14px 40px;
+      margin-bottom: 22px;
+      position: relative;
+      text-align: left;
+    }
+    .quote-card::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px; left: 14px;
+      font-size: 52px; line-height: 0.85;
+      color: var(--c-accent);
+      font-weight: 900; font-family: Georgia, serif;
+    }
+    .quote-text { font-size: 14px; color: var(--c-text-mid); font-style: italic; line-height: 1.65; }
+    .quote-author { font-size: 12px; font-weight: 600; color: var(--c-text-light); margin-top: 10px; text-align: right; }
+
+    .btn-google {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 2px solid var(--c-border);
+      border-radius: var(--radius-full);
+      padding: 11px 22px;
+      font-size: 14px; font-weight: 600; color: var(--c-text-mid);
+      cursor: pointer;
+      transition: background var(--t), border-color var(--t);
+    }
+    .btn-google:active { background: var(--c-bg); border-color: #CBD5E0; }
+    .btn-google svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ==============================
+       FOOTER
+    ============================== */
+    footer {
+      background: var(--c-primary-dark);
+      padding: 36px 20px 28px;
+      text-align: center;
+    }
+
+    .footer-logo { font-size: 17px; font-weight: 900; color: #fff; letter-spacing: 1.5px; margin-bottom: 3px; }
+    .footer-tagline { font-size: 11px; font-weight: 600; color: var(--c-accent); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 26px; }
+
+    .footer-info { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+    .footer-row { display: flex; align-items: flex-start; gap: 10px; justify-content: center; }
+    .footer-row svg { width: 16px; height: 16px; stroke: var(--c-accent); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; margin-top: 2px; }
+    .footer-row-text { font-size: 13px; color: rgba(255,255,255,0.72); line-height: 1.6; text-align: left; }
+    .footer-row-text a { color: rgba(255,255,255,0.72); }
+
+    .footer-legal {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 18px;
+      font-size: 11px; color: rgba(255,255,255,0.38); line-height: 1.7;
+    }
+
+    /* ==============================
+       ANIMATIONS
+    ============================== */
+    @keyframes pulse-cta {
+      0%, 100% { box-shadow: 0 8px 28px rgba(255,101,53,0.42), 0 2px 8px rgba(255,101,53,0.28); }
+      50%       { box-shadow: 0 10px 36px rgba(255,101,53,0.62), 0 4px 16px rgba(255,101,53,0.45); transform: translateY(-2px); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.25; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero">
+    <!-- Logo -->
+    <div class="logo">
+      <div class="logo__icon">
+        <!-- Eye icon SVG -->
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+        </svg>
+      </div>
+      <div>
+        <span class="logo__name">SARAIVA VISION</span>
+        <span class="logo__sub">Oftalmologia</span>
+      </div>
+    </div>
+
+    <!-- Doctor badge -->
+    <div class="doctor-badge">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+      <span>Dr. Philipe Saraiva Cruz &ndash; CRM-MG 69.870</span>
+    </div>
+
+    <!-- Headline -->
+    <h1>Cuidado Oftalmológico com<br><em>Tecnologia e Precisão</em></h1>
+
+    <p class="hero__sub">
+      Diagnóstico moderno, atendimento humanizado e soluções personalizadas para sua saúde ocular.
+    </p>
+
+    <!-- Main CTA -->
+    <a href="https://olhosecocaratinga.com.br/testerapido"
+       class="btn-hero"
+       aria-label="Fazer Teste Rápido de Olho Seco gratuito">
+      <div class="btn-hero__top">
+        <!-- Lightning bolt -->
+        <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        FAZER TESTE RÁPIDO DE OLHO SECO
+      </div>
+      <span class="btn-hero__sub">Gratuito &middot; Resultado em 10 segundos</span>
+    </a>
+
+    <!-- Live indicator -->
+    <div class="live-tag">
+      <div class="live-dot"></div>
+      <span>Teste disponível agora &middot; 100% gratuito</span>
+    </div>
+  </section>
+
+  <!-- ==================== QUICK ACTIONS ==================== -->
+  <section class="actions" aria-label="Ações rápidas">
+    <p class="section-eyebrow">O que você quer fazer?</p>
+    <div class="actions-grid">
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/+55339998601427"
+         class="card card--wa"
+         aria-label="Falar com a clínica via WhatsApp">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+        </div>
+        <div class="card__body">
+          <div class="card__title">Falar com a Clínica</div>
+          <div class="card__desc">Tire dúvidas ou agende sua consulta</div>
+        </div>
+        <div class="card__chevron">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </a>
+
+      <!-- Instagram -->
+      <a href="https://instagram.com/saraiva_vision"
+         class="card card--ig"
+         aria-label="Seguir no Instagram @saraiva_vision">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="igG" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%"   stop-color="#F77737"/>
+                <stop offset="50%"  stop-color="#E1306C"/>
+                <stop offset="100%" stop-color="#833AB4"/>
+              </linearGradient>
+            </defs>
+            <path fill="url(#igG)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </div>
+        <div class="card__body">
+          <div class="card__title">Seguir no Instagram</div>
+          <div class="card__desc">Conteúdo educativo e novidades</div>
+        </div>
+        <div class="card__chevron">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </a>
+
+      <!-- Calendar -->
+      <a href="https://saraivavision.com.br/agendamento"
+         class="card card--cal"
+         aria-label="Agendar consulta oftalmológica">
+        <div class="card__icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="18" height="18" rx="2" stroke="#0B3D52" stroke-width="2"/>
+            <path d="M16 2v4M8 2v4M3 10h18" stroke="#0B3D52" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="8"  cy="15" r="1.2" fill="#0B3D52"/>
+            <circle cx="12" cy="15" r="1.2" fill="#0B3D52"/>
+            <circle cx="16" cy="15" r="1.2" fill="#0B3D52"/>
+          </svg>
+        </div>
+        <div class="card__body">
+          <div class="card__title">Agendar Consulta</div>
+          <div class="card__desc">Escolha o melhor horário</div>
+        </div>
+        <div class="card__chevron">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ==================== AUTHORITY ==================== -->
+  <section class="authority" aria-label="Credenciais e especialidade">
+    <div class="divider-label">
+      <div class="divider-label__line"></div>
+      <div class="divider-label__text">Especialidade</div>
+      <div class="divider-label__line"></div>
+    </div>
+
+    <div class="badge-center">
+      <div class="specialty-badge">
+        <!-- Shield/star icon -->
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5L12 1zm-1 14l-3-3 1.41-1.41L11 12.17l4.59-4.58L17 9l-6 6z"/>
+        </svg>
+        <span>Centro Especializado em Olho Seco</span>
+      </div>
+    </div>
+
+    <ul class="check-list">
+      <li class="check-item">
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <p class="check-text"><strong>Especialista em Oftalmologia</strong> com formação e experiência dedicada à saúde ocular</p>
+      </li>
+      <li class="check-item">
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <p class="check-text"><strong>Diagnóstico de precisão</strong> com equipamentos de última geração</p>
+      </li>
+      <li class="check-item">
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <p class="check-text"><strong>Tecnologia avançada:</strong> Meibografia, Campo Visual e IRPL/E-Eye para Olho Seco</p>
+      </li>
+      <li class="check-item">
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <p class="check-text"><strong>Atendimento em Caratinga e região</strong> do Vale do Aço e entorno</p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ==================== STRATEGIC CTA ==================== -->
+  <section class="strategic" aria-label="Teste de Olho Seco">
+    <span class="strategic__emoji" role="img" aria-label="olho">👁️</span>
+
+    <h2>Seus olhos ardem,<br>coçam ou lacrimejam?</h2>
+
+    <p class="strategic__text">
+      Descubra em 10 segundos se você pode ter <strong>Olho Seco</strong>.
+    </p>
+
+    <div class="symptoms">
+      <span class="symptom">🔥 Ardência</span>
+      <span class="symptom">😣 Coceira</span>
+      <span class="symptom">💧 Lacrimejamento</span>
+      <span class="symptom">😵 Vista cansada</span>
+      <span class="symptom">🌫️ Visão embaçada</span>
+      <span class="symptom">😴 Sensibilidade à luz</span>
+    </div>
+
+    <a href="https://olhosecocaratinga.com.br/testerapido"
+       class="btn-strategic"
+       aria-label="Iniciar Teste Gratuito de Olho Seco">
+      <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      INICIAR TESTE GRATUITO
+    </a>
+
+    <p class="strategic__caption">
+      ✅ <strong>100% gratuito</strong> &middot; Sem cadastro &middot; Resultado instantâneo
+    </p>
+  </section>
+
+  <!-- ==================== SOCIAL PROOF ==================== -->
+  <section class="social-proof" aria-label="Avaliações dos pacientes">
+    <div class="divider-label">
+      <div class="divider-label__line"></div>
+      <div class="divider-label__text">O que nossos pacientes dizem</div>
+      <div class="divider-label__line"></div>
+    </div>
+
+    <div class="stars" role="img" aria-label="Avaliação 5 estrelas no Google">
+      <span class="star">&#9733;</span>
+      <span class="star">&#9733;</span>
+      <span class="star">&#9733;</span>
+      <span class="star">&#9733;</span>
+      <span class="star">&#9733;</span>
+    </div>
+
+    <div class="rating-row">
+      <span class="rating-num">5,0</span>
+      <span class="rating-denom">/ 5</span>
+    </div>
+    <p class="rating-sub">Mais de 100 pacientes atendidos com excelência</p>
+
+    <div class="quote-card">
+      <p class="quote-text">Médico excelente, muito atencioso e competente. Explicou tudo detalhadamente e resolveu meu problema de olho seco. Recomendo muito!</p>
+      <p class="quote-author">— Paciente Google &nbsp;⭐⭐⭐⭐⭐</p>
+    </div>
+
+    <a href="https://www.google.com/search?q=Saraiva+Vision+Caratinga+avalia%C3%A7%C3%B5es"
+       class="btn-google"
+       aria-label="Ver avaliações no Google">
+      <!-- Google G logo -->
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Ver avaliações no Google
+    </a>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer>
+    <div class="footer-logo">SARAIVA VISION</div>
+    <div class="footer-tagline">Oftalmologia</div>
+
+    <div class="footer-info">
+      <!-- Address -->
+      <div class="footer-row">
+        <svg viewBox="0 0 24 24">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        <span class="footer-row-text">
+          Rua Catarina Maria Passos, 97 &ndash; Santa Zita<br>
+          Caratinga/MG (dentro da Clínica Amor e Saúde)
+        </span>
+      </div>
+
+      <!-- Phone / WhatsApp -->
+      <div class="footer-row">
+        <svg viewBox="0 0 24 24">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 17z"/>
+        </svg>
+        <span class="footer-row-text">
+          <a href="https://wa.me/+55339998601427">+55 33 99860-1427</a>
+        </span>
+      </div>
+
+      <!-- Website -->
+      <div class="footer-row">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        <span class="footer-row-text">
+          <a href="https://saraivavision.com.br">saraivavision.com.br</a>
+        </span>
+      </div>
+    </div>
+
+    <div class="footer-legal">
+      Dr. Philipe Saraiva Cruz &ndash; CRM-MG 69.870<br>
+      Conteúdo informativo. Não substitui consulta médica.
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

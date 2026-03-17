@@ -20,7 +20,7 @@ const SocialProof = ({ variant = 'default', className = '' }) => {
     patients: 5000,
     years: 15,
     rating: 4.9,
-    reviews: 136,
+    reviews: 150,
     procedures: 12000
   };
 

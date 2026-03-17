@@ -39,7 +39,7 @@ const generateMapEmbedUrl = () => {
 
 const REVIEWS_CONFIG = {
   rating: 4.9,
-  totalReviews: 136,
+  totalReviews: 150,
   placeUrl: 'https://maps.google.com/?cid=17367763261775232199',
   whatsappUrl: 'https://wa.me/5533998601427',
   instagramUrl: 'https://www.instagram.com/saraivavision',

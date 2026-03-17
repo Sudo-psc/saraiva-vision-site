@@ -1,12 +1,27 @@
 // Custom hooks for unified component interfaces
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useReducedMotion } from 'framer-motion';
 import { AnimationConfig, MediaContent } from '@/types/components';
 import { debounce, throttle } from '@/utils/componentUtils';
 
+// Native reduced-motion hook — avoids pulling 113KB framer-motion chunk
+function useNativeReducedMotion() {
+  const [prefersReduced, setPrefersReduced] = useState(
+    () => typeof window !== 'undefined'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  return prefersReduced;
+}
+
 // Hook for managing component animation preferences
 export const useAnimationConfig = (config?: Partial<AnimationConfig>) => {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useNativeReducedMotion();
 
   const animationConfig: AnimationConfig = {
     reduceMotion: prefersReducedMotion || config?.reduceMotion || false,
@@ -363,7 +378,7 @@ export const useAccessibility = (options: {
   respectReducedMotion?: boolean;
 } = {}) => {
   const [announcementText, setAnnouncementText] = useState('');
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useNativeReducedMotion();
 
   const announce = useCallback((text: string) => {
     if (!options.announceChanges) return;

@@ -22,12 +22,12 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="scroll-block-internal isolate relative pt-[132px] pb-24 md:pt-[164px] md:pb-32 overflow-hidden overflow-x-hidden bg-hero-enhanced min-h-[100dvh]"
+      className="scroll-block-internal isolate relative pt-[132px] pb-24 md:pt-[164px] md:pb-32 overflow-hidden overflow-x-hidden bg-hero-enhanced min-h-screen"
     >
       <div className="absolute inset-0 z-0 opacity-40">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_60%)]"></div>
         <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom_left,rgba(6,182,212,0.08),transparent_60%)]"></div>
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-blue-400/5 via-cyan-400/8 to-teal-400/5 rounded-full blur-3xl animate-pulse-soft"></div>
+        <div className="hidden md:block absolute top-1/2 left-1/2 w-96 h-96 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-blue-400/5 via-cyan-400/8 to-teal-400/5 rounded-full blur-3xl animate-pulse-soft"></div>
       </div>
 
       {/* Conteúdo centralizado com paddings responsivos em vez de margem no section,
@@ -37,13 +37,13 @@ const Hero = () => {
           <div
             className="flex flex-col space-y-6 text-center lg:text-left"
           >
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-cyan-700 text-sm font-medium mb-2 w-fit mx-auto lg:mx-0">
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-cyan-900 text-sm font-medium mb-2 w-fit mx-auto lg:mx-0">
               <span className="mr-2">✦</span> {t('hero.partner')}
             </div>
 
             <h1 className="text-5xl md:text-6xl">
               <Trans i18nKey="hero.title">
-                Cuidando da sua <span className="text-gradient">visão</span> com excelência
+                Alívio real para <span className="text-gradient">olho seco</span> com diagnóstico completo em Caratinga
               </Trans>
             </h1>
 
@@ -68,7 +68,7 @@ const Hero = () => {
             <div className="flex items-center gap-4 pt-6 justify-center lg:justify-start">
               <div className="flex -space-x-4">
                 <div className="relative group">
-                  <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden [@media(hover:hover)]:hover:scale-110 [@media(hover:hover)]:transition-all [@media(hover:hover)]:duration-300">
                     <ImageWithFallback
                       src="/img/responsive/avatar-female-blonde-77.webp"
                       alt={t('ui.alt.satisfied_patient_1', 'Paciente satisfeito 1')}
@@ -86,7 +86,7 @@ const Hero = () => {
                   </div>
                 </div >
                 <div className="relative group">
-                  <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden hover:scale-110 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-full bg-white border-2 border-white ring-2 ring-blue-100/60 shadow-md flex items-center justify-center overflow-hidden [@media(hover:hover)]:hover:scale-110 [@media(hover:hover)]:transition-all [@media(hover:hover)]:duration-300">
                     <ImageWithFallback
                       src="/img/responsive/avatar-female-brunette-77.webp"
                       alt={t('ui.alt.satisfied_patient_2', 'Paciente satisfeito 2')}
@@ -104,7 +104,7 @@ const Hero = () => {
                   </div>
                 </div >
                 <div className="relative">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500 flex items-center justify-center text-white font-bold border-2 border-white shadow-lg text-sm hover:scale-110 transition-all duration-300 ring-2 ring-white/50 hover:ring-4 hover:ring-amber-200">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500 flex items-center justify-center text-white font-bold border-2 border-white shadow-lg text-sm [@media(hover:hover)]:hover:scale-110 [@media(hover:hover)]:transition-all [@media(hover:hover)]:duration-300 ring-2 ring-white/50 [@media(hover:hover)]:hover:ring-4 [@media(hover:hover)]:hover:ring-amber-200">
                     <div className="flex flex-col items-center">
                       <span className="text-xs font-extrabold">+5k</span>
                       <div className="flex -mt-0.5">
@@ -145,21 +145,29 @@ const Hero = () => {
 
               {/* Floating Badge - Positioned above image */}
               <div className="absolute top-0 right-4 z-30 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-2 rounded-full shadow-lg shadow-cyan-500/30 flex items-center gap-2 text-sm font-semibold whitespace-nowrap">
-                <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                <span className="w-2 h-2 bg-white rounded-full md:animate-pulse"></span>
                 Especialista em Olho Seco
               </div>
 
               {/* Main Image Container */}
               <div className="relative overflow-hidden rounded-3xl shadow-2xl shadow-cyan-500/20 border-2 border-white/50 bg-gradient-to-br from-slate-50 to-cyan-50/50 group-hover:shadow-cyan-500/30 transition-all duration-500 mt-4">
                 <picture>
-                  <source srcSet="/img/hero_dry_eye_relief_2.avif" type="image/avif" />
-                  <source srcSet="/img/hero_dry_eye_relief_2.webp" type="image/webp" />
+                  <source
+                    type="image/avif"
+                    srcSet="/img/responsive/hero_dry_eye-400.avif 400w, /img/responsive/hero_dry_eye-640.avif 640w, /img/responsive/hero_dry_eye-1024.avif 1024w"
+                    sizes="(min-width: 1024px) calc(44vw - 2rem), calc(100vw - 3rem)"
+                  />
+                  <source
+                    type="image/webp"
+                    srcSet="/img/responsive/hero_dry_eye-400.webp 400w, /img/responsive/hero_dry_eye-640.webp 640w, /img/responsive/hero_dry_eye-1024.webp 1024w"
+                    sizes="(min-width: 1024px) calc(44vw - 2rem), calc(100vw - 3rem)"
+                  />
                   <img
-                    src="/img/hero_dry_eye_relief_2.png"
+                    src="/img/responsive/hero_dry_eye-640.webp"
                     alt={t('ui.alt.hero_image', 'Tratamento de olho seco - Saraiva Vision')}
-                    width={800}
-                    height={800}
-                    className="block w-full h-auto rounded-3xl transform group-hover:scale-[1.02] transition-transform duration-700"
+                    width={640}
+                    height={427}
+                    className="block w-full h-auto rounded-3xl transform [@media(hover:hover)]:group-hover:scale-[1.02] [@media(hover:hover)]:transition-transform [@media(hover:hover)]:duration-700"
                     loading="eager"
                     decoding="async"
                     fetchpriority="high"
@@ -171,16 +179,16 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* Enhanced Info Card */}
+            {/* Enhanced Info Card - relative on mobile (below image), absolute on lg+ */}
             <div
-              className="absolute -bottom-8 left-1/2 -translate-x-1/2 md:translate-x-0 md:-left-12 md:-bottom-4 backdrop-blur-md bg-white/90 border border-cyan-200/50 shadow-xl shadow-cyan-500/10 rounded-2xl p-5 max-w-xs hover:shadow-cyan-500/20 transition-all duration-300 z-20"
+              className="relative mt-4 mx-auto lg:absolute lg:-bottom-4 lg:-left-12 lg:mt-0 lg:mx-0 backdrop-blur-md bg-white/90 border border-cyan-200/50 shadow-xl shadow-cyan-500/10 rounded-2xl p-5 max-w-xs hover:shadow-cyan-500/20 transition-all duration-300 z-20"
             >
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30">
                   <Eye size={24} />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">{t('hero.advanced_tech_title')}</h3>
+                  <p className="text-base font-bold text-slate-900">{t('hero.advanced_tech_title')}</p>
                   <p className="text-sm text-slate-600">{t('hero.advanced_tech_desc')}</p>
                 </div>
               </div>

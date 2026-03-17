@@ -45,6 +45,13 @@ const pages = {
     canonicalUrl: 'https://saraivavision.com.br/luz-pulsada-irpl',
     ogImage: 'https://saraivavision.com.br/E-eye/e-eye-equipAnvisa.jpeg'
   },
+  '/faq': {
+    title: 'Perguntas Frequentes | FAQ | Saraiva Vision',
+    description: 'Tire suas dúvidas sobre olho seco, tratamentos oftalmológicos, luz pulsada IRPL e mais. Respostas do Dr. Philipe Saraiva Cruz.',
+    keywords: 'FAQ oftalmologia, perguntas frequentes olho seco, dúvidas tratamento IRPL, FAQ Saraiva Vision',
+    canonicalUrl: 'https://saraivavision.com.br/faq',
+    ogImage: 'https://saraivavision.com.br/opengraph-logo.png'
+  },
   '/faq/olho-seco': {
     title: 'FAQ Olho Seco: Respostas para suas Dúvidas | Saraiva Vision',
     description: 'Tire suas dúvidas sobre Síndrome do Olho Seco: sintomas, causas (DGM), diagnóstico com meibografia e tratamentos modernos em Caratinga.',
@@ -126,20 +133,35 @@ function getViteBuildAssets(distDir) {
 
   // Extract script and link tags
   const scriptMatch = indexContent.match(/<script[^>]*type="module"[^>]*src="([^"]+)"[^>]*><\/script>/);
-  const styleMatches = indexContent.match(/<link[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g);
   const modulePreloads = indexContent.match(/<link[^>]*rel="modulepreload"[^>]*>/g) || [];
+
+  // Extract stylesheet links, excluding those inside <noscript> tags
+  const contentWithoutNoscript = indexContent.replace(/<noscript>[\s\S]*?<\/noscript>/gi, '');
+  const styleMatches = contentWithoutNoscript.match(/<link[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g);
+
+  // Deduplicate styles by href (keep first occurrence, which should be the async version)
+  const seenHrefs = new Set();
+  const uniqueStyles = (styleMatches || []).filter(tag => {
+    const hrefMatch = tag.match(/href="([^"]+)"/);
+    if (!hrefMatch) return true;
+    const href = hrefMatch[1];
+    if (seenHrefs.has(href)) return false;
+    seenHrefs.add(href);
+    return true;
+  });
 
   return {
     mainScript: scriptMatch ? scriptMatch[0] : '',
-    styles: styleMatches ? styleMatches.join('\n    ') : '',
+    styles: uniqueStyles.join('\n    '),
     modulePreloads: modulePreloads.join('\n    ')
   };
 }
 
 // Critical CSS for above-the-fold rendering (prevents render-blocking)
 const CRITICAL_CSS = `
+    @font-face{font-family:'Inter Fallback';src:local('Arial');ascent-override:90.49%;descent-override:22.56%;line-gap-override:0%;size-adjust:107.64%}
     *,::before,::after{box-sizing:border-box;border:0 solid #e5e7eb}
-    html{line-height:1.5;-webkit-text-size-adjust:100%;font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+    html{line-height:1.5;-webkit-text-size-adjust:100%;font-family:Inter,'Inter Fallback',ui-sans-serif,system-ui,sans-serif}
     body{margin:0;line-height:inherit;background-color:#fff}
     #root{min-height:100vh;display:flex;flex-direction:column}
     .loading-skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
@@ -154,15 +176,6 @@ const CRITICAL_CSS = `
     .btn-primary{display:inline-flex;align-items:center;justify-content:center;padding:.75rem 1.5rem;font-weight:600;color:#fff;background:#0891b2;border-radius:.5rem;transition:background .2s}
     .btn-primary:hover{background:#0e7490}
     img{max-width:100%;height:auto;display:block}
-    .aspect-hero{aspect-ratio:4/3}.aspect-video{aspect-ratio:16/9}
-    .flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}
-    .gap-4{gap:1rem}.gap-6{gap:1.5rem}
-    .grid{display:grid}
-    @media(min-width:768px){.md\\:grid-cols-2{grid-template-columns:repeat(2,1fr)}}
-    @media(min-width:1024px){.lg\\:grid-cols-3{grid-template-columns:repeat(3,1fr)}}
-    .p-4{padding:1rem}.px-4{padding-left:1rem;padding-right:1rem}.py-8{padding-top:2rem;padding-bottom:2rem}
-    .mx-auto{margin-left:auto;margin-right:auto}.max-w-7xl{max-width:80rem}
-    .text-center{text-align:center}.text-white{color:#fff}.text-slate-600{color:#475569}
     .below-fold{opacity:0;transition:opacity .3s}.css-loaded .below-fold{opacity:1}
 `;
 
@@ -243,9 +256,14 @@ ${JSON.stringify(schema, null, 2)}
     <!-- Async Google Fonts - prevents render blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all';this.onload=null;" />
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=optional" media="print" onload="this.media='all';this.onload=null;" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=optional" /></noscript>
+
+    <!-- Preload LCP hero image - responsive srcset matching Hero.jsx -->
+    <link rel="preload" as="image" type="image/avif" fetchpriority="high"
+      href="/img/responsive/hero_dry_eye-640.avif"
+      imagesrcset="/img/responsive/hero_dry_eye-400.avif 400w, /img/responsive/hero_dry_eye-640.avif 640w, /img/responsive/hero_dry_eye-1024.avif 1024w"
+      imagesizes="(min-width: 1024px) calc(44vw - 2rem), calc(100vw - 3rem)" />
 
     <!-- Vite Build Assets -->
     ${assets.mainScript}

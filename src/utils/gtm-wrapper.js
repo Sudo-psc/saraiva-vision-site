@@ -131,6 +131,7 @@ export async function loadThirdPartyScript(url, options = {}) {
             // Handler de sucesso ISOLADO
             script.onload = () => {
                 try {
+                    script.setAttribute('data-loaded', 'true');
                     breaker.recordSuccess();
                     if (onSuccess) {
                         // Isola callback de sucesso

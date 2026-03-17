@@ -353,29 +353,45 @@ const Services = ({ full = false, autoplay = true }) => {
     }
   }, [autoplayCarousel]);
 
+  const rafRef = useRef(null);
+
   const onPointerMove = useCallback((e) => {
     if (!isDragging) return;
-    const el = scrollerRef.current;
-    if (!el) return;
+    
+    // Cancel previous frame if exists
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+    }
 
-    const clientX = e.clientX ?? (e.touches?.[0]?.clientX || 0);
-    const dx = clientX - dragStartXRef.current;
-    const newScrollLeft = scrollStartRef.current - dx;
+    rafRef.current = requestAnimationFrame(() => {
+      const el = scrollerRef.current;
+      if (!el) return;
 
-    // Previne scroll além dos limites
-    const maxScroll = maxScrollRef.current;
-    el.scrollLeft = Math.max(0, Math.min(maxScroll, newScrollLeft));
+      const clientX = e.clientX ?? (e.touches?.[0]?.clientX || 0);
+      const dx = clientX - dragStartXRef.current;
+      const newScrollLeft = scrollStartRef.current - dx;
 
-    // REMOVIDO: preventDefault que bloqueava scroll global
-    // Permite propagação natural do evento
+      // Previne scroll além dos limites
+      const maxScroll = maxScrollRef.current;
+      el.scrollLeft = Math.max(0, Math.min(maxScroll, newScrollLeft));
+    });
   }, [isDragging]);
+
+  // Clean up RAF on unmount
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, []);
 
   const endDrag = useCallback(() => {
     if (!isDragging) return;
     setIsDragging(false);
     // Resume autoplay after delay
     setTimeout(() => {
-      autoplayCarousel.resume();
+      autoplayCarousel.play();
       snapToNearest();
     }, 300);
   }, [isDragging, snapToNearest, autoplayCarousel]);
@@ -455,7 +471,7 @@ const Services = ({ full = false, autoplay = true }) => {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 drop-shadow-sm"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-6 drop-shadow-sm"
           >
             {isTestEnv
               ? 'Cuidados Oftalmológicos Completos'

@@ -39,7 +39,7 @@
 }
 
 .btn-accept-all {
-  background: #0891b2;
+  background: #0e7490;
   color: white;
   padding: 10px 24px;
   border-radius: 8px;
@@ -53,18 +53,18 @@
 }
 
 .btn-accept-all:hover {
-  background: #0e7490;
+  background: #155e75;
 }
 
 .btn-accept-all:focus-visible {
-  outline: 2px solid #0891b2;
+  outline: 2px solid #0e7490;
   outline-offset: 3px;
 }
 
 .btn-manage {
   background: transparent;
-  color: #0891b2;
-  border: 1px solid #0891b2;
+  color: #0e7490;
+  border: 1px solid #0e7490;
   padding: 10px 24px;
   border-radius: 8px;
   font-weight: 500;
@@ -80,7 +80,7 @@
 }
 
 .btn-manage:focus-visible {
-  outline: 2px solid #0891b2;
+  outline: 2px solid #0e7490;
   outline-offset: 3px;
 }
 

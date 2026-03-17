@@ -144,40 +144,40 @@ function HomePage() {
 
         <main>
           <Hero />
-          <DeferredSection className="min-h-[520px]">
+          <DeferredSection className="min-h-[640px] sm:min-h-[520px]" rootMargin="0px">
             <Services autoplay full={false} />
           </DeferredSection>
-          <DeferredSection className="min-h-[360px]">
+          <DeferredSection className="min-h-[480px] sm:min-h-[360px]">
             <DryEyeCenterSection />
           </DeferredSection>
-          <DeferredSection className="min-h-[520px]">
+          <DeferredSection className="min-h-[680px] sm:min-h-[520px]">
             <About />
           </DeferredSection>
-          <DeferredSection className="min-h-[420px]">
+          <DeferredSection className="min-h-[540px] sm:min-h-[420px]">
             <GoogleReviewsEnhanced
               maxReviews={3}
               showWidget={true}
               className="mb-16"
             />
           </DeferredSection>
-          <DeferredSection className="min-h-[420px]">
+          <DeferredSection className="min-h-[540px] sm:min-h-[420px]">
             <GoogleLocalSection />
           </DeferredSection>
-          <DeferredSection className="min-h-[360px]">
+          <DeferredSection className="min-h-[480px] sm:min-h-[360px]">
             <FAQ />
           </DeferredSection>
-          <DeferredSection className="min-h-[520px]">
+          <DeferredSection className="min-h-[680px] sm:min-h-[520px]">
             <LatestEpisodes />
           </DeferredSection>
-          <DeferredSection className="min-h-[480px]">
+          <DeferredSection className="min-h-[600px] sm:min-h-[480px]">
             <LatestBlogPosts />
           </DeferredSection>
-          <DeferredSection className="min-h-[420px]">
+          <DeferredSection className="min-h-[560px] sm:min-h-[420px]">
             <Contact />
           </DeferredSection>
         </main>
 
-        <DeferredSection className="min-h-[360px]">
+        <DeferredSection className="min-h-[480px] sm:min-h-[360px]">
           <EnhancedFooter />
         </DeferredSection>
       </div>

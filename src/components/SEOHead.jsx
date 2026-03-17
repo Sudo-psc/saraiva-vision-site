@@ -218,27 +218,8 @@ const SEOHead = ({
         </>
       )}
 
-      {/* Preconnect for Performance */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link rel="preconnect" href="https://www.google-analytics.com" />
-      <link rel="preconnect" href="https://connect.facebook.net" />
-
-      {isHome && (
-        <link
-          rel="preload"
-          as="image"
-          href="/img/responsive/hero-637.webp"
-          type="image/webp"
-          imagesrcset="/img/responsive/hero-400.webp 400w, /img/responsive/hero-637.webp 637w, /img/responsive/hero-800.webp 800w"
-          imagesizes="(min-width:1024px) 637px, (min-width:768px) 500px, 100vw"
-        />
-      )}
-
-      {/* DNS Prefetch for External Resources */}
+      {/* DNS Prefetch for deferred analytics */}
       <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-      <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-      <link rel="dns-prefetch" href="//images.unsplash.com" />
 
       {/* Structured Data */}
       {structuredData && (

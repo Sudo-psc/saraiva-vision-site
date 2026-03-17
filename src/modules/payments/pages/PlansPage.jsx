@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import EnhancedFooter from '@/components/EnhancedFooter';
-import JotformChatbot from '@/components/JotformChatbot';
+
 import { CheckCircle, Package, Star, Award, Crown, ArrowRight, MapPin, AlertCircle } from 'lucide-react';
 import { PLAN_PAYMENT_LINKS } from '@/config/plans';
 import { usePlansSEO } from '@/hooks/useSEO';
@@ -92,7 +92,7 @@ const PlansPage = () => {
   return (
     <>
       <SEOHead {...seoData} />
-      <JotformChatbot />
+
       <main className="min-h-screen pt-24 md:pt-32 lg:pt-40 pb-16 px-4 md:px-[6%] lg:px-[8%]">
         {/* Hero Section */}
         <section className="!mb-0 !pb-8 text-center">
@@ -100,7 +100,7 @@ const PlansPage = () => {
             <Package className="w-4 h-4" />
             <span>Planos de Assinatura</span>
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-1 bg-gradient-to-r from-gray-900 via-cyan-900 to-cyan-800 bg-clip-text text-transparent">
+          <h1 className="text-lg sm:text-2xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-1 bg-gradient-to-r from-gray-900 via-cyan-900 to-cyan-800 bg-clip-text text-transparent">
             Escolha o Plano Ideal Para Você
           </h1>
           <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-3">

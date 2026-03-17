@@ -180,7 +180,7 @@ export const generateLocalBusinessSchema = (language = 'pt', forGraph = false) =
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '4.9',
-      reviewCount: '500',
+      reviewCount: '136',
       bestRating: '5',
       worstRating: '1'
     },

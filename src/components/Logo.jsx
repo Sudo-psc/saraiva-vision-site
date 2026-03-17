@@ -29,12 +29,11 @@ const Logo = ({ className = "", isWhite = false, alt: altProp }) => {
       {/* Fallback for non-white logo or older browsers */}
       {!isWhite && (
         <>
-          <source srcSet="/img/logo.avif" type="image/avif" />
-          <source srcSet="/img/logo.webp" type="image/webp" />
+          {/* No logo.avif/webp available in root, using png fallback */}
         </>
       )}
       <img
-        src={isWhite ? "/img/responsive/logo_prata-224.webp" : "/img/logo.png"}
+        src={isWhite ? "/img/responsive/logo_prata-224.webp" : "/logo.png"}
         alt={altText}
         width={224}
         height={224}

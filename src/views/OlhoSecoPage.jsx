@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import SEOHead from '@/components/SEOHead';
+import FAQSchema from '@/components/FAQSchema';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button.jsx';
 import { Droplets, ShieldCheck, CheckCircle, Microscope, Timer, Activity, Leaf, Sparkles, ArrowRight, Gauge, AlertCircle, Layers, Eye, Sun, Droplet, Zap, Brain, Award, MapPin, Star, ClipboardCheck, TrendingUp, Loader2, Info, Headphones } from 'lucide-react';
@@ -98,16 +99,25 @@ const OlhoSecoPage = () => {
     }
   };
 
+  // FAQ data for rich snippets (top questions from FAQ Olho Seco)
+  const olhoSecoFAQs = [
+    { question: 'O que é olho seco?', answer: 'Olho seco é uma alteração da película de lágrimas que recobre a superfície ocular. Pode causar ardência, sensação de areia, visão embaçada e cansaço visual. As causas incluem envelhecimento, uso de telas, ambientes secos e lentes de contato.' },
+    { question: 'Quais são os tratamentos para olho seco?', answer: 'O tratamento é individualizado conforme tipo e gravidade. Inclui colírios lubrificantes, IRPL E-Eye para estimular as glândulas de Meibômio, plugs lacrimais, microesfoliação palpebral e acompanhamento com meibografia.' },
+    { question: 'Olho seco tem cura?', answer: 'Na maioria dos casos é uma condição crônica que exige controle contínuo. Com diagnóstico adequado e tratamento bem conduzido (incluindo IRPL E-Eye), é possível reduzir sintomas significativamente e melhorar a qualidade de vida.' },
+    { question: 'O que é IRPL E-Eye para olho seco?', answer: 'O IRPL E-Eye é o primeiro dispositivo médico projetado especificamente para tratar olho seco por Disfunção das Glândulas de Meibômio (DGM). Utiliza luz pulsada regulada para estimular as glândulas a retomarem a produção normal de lipídios na lágrima.' },
+  ];
+
   const seo = {
-    title: 'Centro Especializado em Olho Seco em Caratinga | TFOS DEWS III | Saraiva Vision',
-    description: 'Serviço especializado em olho seco em Caratinga, com diagnóstico completo e meibografia, seguindo protocolos TFOS DEWS III e documentação fotográfica seriada.',
-    keywords: 'olho seco em Caratinga, meibografia em Caratinga, serviço especializado em olho seco em Caratinga, TFOS DEWS III, meibografia, FBUT, meniscometria, lisamina verde, Schirmer, plugs lacrimais, microesfoliação palpebral, tratamento olho seco, síndrome olho seco',
+    title: 'Tratamento de Olho Seco em Caratinga | IRPL E-Eye e Meibografia | Saraiva Vision',
+    description: 'Tratamento de Olho Seco em Caratinga com IRPL E-Eye. Meibografia, TFOS DEWS III e acompanhamento especializado. Agende sua avaliação.',
+    keywords: 'oftalmologista olho seco Caratinga, tratamento olho seco Caratinga, meibografia Caratinga, IRPL olho seco MG, TFOS DEWS III, FBUT, meniscometria, lisamina verde, Schirmer, plugs lacrimais, microesfoliação palpebral, síndrome olho seco Caratinga',
     structuredData: medicalConditionSchema
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <SEOHead {...seo} />
+      <FAQSchema faqs={olhoSecoFAQs} />
       <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 scroll-block-internal">
         <section className="bg-gradient-to-br from-cyan-50 via-white to-sky-50">
           <div className="max-w-[90rem] mx-auto px-6 lg:px-12 py-12 lg:py-16 space-y-10">

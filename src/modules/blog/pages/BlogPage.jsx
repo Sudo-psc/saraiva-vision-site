@@ -473,7 +473,7 @@ const BlogPage = () => {
                   </div>
 
                   {/* Title - Extra large, serif typography */}
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-gray-900 mb-8 leading-tight tracking-tight">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-serif font-bold text-gray-900 mb-8 leading-tight tracking-tight">
                     {currentPost.title}
                   </h1>
 
@@ -681,7 +681,7 @@ const BlogPage = () => {
               {/* Decorative line accent */}
               <div className="w-24 h-1 bg-gradient-to-r from-teal-400 to-cyan-400 mx-auto mb-8 rounded-full"></div>
 
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-6 text-gray-900 leading-tight tracking-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold mb-6 text-gray-900 leading-tight tracking-tight">
                 <Trans i18nKey="blog.title">
                   Blog <span className="bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">Saraiva Vision</span>
                 </Trans>
