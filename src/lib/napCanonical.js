@@ -103,9 +103,10 @@ export const NAP_CANONICAL = {
   doctor: {
     name: 'Dr. Philipe Saraiva Cruz',
     crm: 'CRM-MG 69.870',
+    rqe: 'RQE 307527',
     specialty: 'Oftalmologia',
     title: 'Oftalmologista',
-    displayName: 'Dr. Philipe Saraiva Cruz (CRM-MG 69.870)',
+    displayName: 'Dr. Philipe Saraiva Cruz (CRM-MG 69.870 | RQE 307527)',
   },
 
   seo: {

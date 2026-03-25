@@ -251,7 +251,7 @@ const ContactLensWikiPage = () => {
                 <div>
                   <p className="text-base font-bold text-cyan-900">Conteúdo Clinicamente Revisado</p>
                   <p className="mt-1 text-xs text-cyan-800">Dr. Philipe Saraiva Cruz</p>
-                  <p className="text-xs text-cyan-700">CRM-MG 69.870</p>
+                  <p className="text-xs text-cyan-700">CRM-MG 69.870 | Oftalmologista RQE 307527</p>
                 </div>
                 <div className="w-full border-t border-cyan-200 pt-3">
                   <p className="text-xs font-semibold text-cyan-900">Última atualização</p>

@@ -184,11 +184,18 @@ export function generatePhysicianSchema(authorName = 'Dr. Philipe Saraiva Cruz')
     '@type': 'Physician',
     name: authorName,
     medicalSpecialty: 'Ophthalmology',
-    identifier: {
-      '@type': 'PropertyValue',
-      propertyID: 'CRM-MG',
-      value: '69870'
-    },
+    identifier: [
+      {
+        '@type': 'PropertyValue',
+        propertyID: 'CRM-MG',
+        value: '69870'
+      },
+      {
+        '@type': 'PropertyValue',
+        propertyID: 'RQE',
+        value: '307527'
+      }
+    ],
     worksFor: {
       '@type': 'MedicalClinic',
       name: 'Clínica Saraiva Vision',

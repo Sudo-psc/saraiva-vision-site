@@ -587,7 +587,7 @@ const ServiceDetailedContent = ({ serviceId, showRelatedServices = true }) => {
             />
           </div>
           <p className="text-center text-sm text-slate-500 mt-4">
-            Clique na imagem para ampliar • Responsável Técnico: Dr. Philipe Saraiva Cruz (CRM-MG 89.870)
+            Clique na imagem para ampliar • Responsável Técnico: Dr. Philipe Saraiva Cruz (CRM-MG 69.870 | Oftalmologista RQE 307527)
           </p>
         </motion.section>
       )}

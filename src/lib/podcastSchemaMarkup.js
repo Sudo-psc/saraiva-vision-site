@@ -32,11 +32,18 @@ export function generatePodcastSeriesSchema() {
         telephone: '+55-33-99860-1427',
         url: 'https://saraivavision.com.br'
       },
-      identifier: {
-        '@type': 'PropertyValue',
-        propertyID: 'CRM-MG',
-        value: '69870'
-      }
+      identifier: [
+        {
+          '@type': 'PropertyValue',
+          propertyID: 'CRM-MG',
+          value: '69870'
+        },
+        {
+          '@type': 'PropertyValue',
+          propertyID: 'RQE',
+          value: '307527'
+        }
+      ]
     },
     publisher: {
       '@type': 'Organization',

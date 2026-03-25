@@ -283,7 +283,7 @@ const ConsultaOlhoSecoPage = () => {
                   </div>
                   <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-4 py-2 shadow-sm text-sm font-semibold text-slate-800">
                     <Award className="w-4 h-4 text-cyan-600" />
-                    Dr. Philipe Saraiva CRM-MG 69.870
+                    Dr. Philipe Saraiva • CRM-MG 69.870 | RQE 307527
                   </div>
                   <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-4 py-2 shadow-sm text-sm font-semibold text-slate-800">
                     <Users className="w-4 h-4 text-slate-500" />
