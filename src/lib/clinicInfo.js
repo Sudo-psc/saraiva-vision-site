@@ -85,6 +85,8 @@ export const clinicInfo = {
   // Responsible physician (CFM compliance)
   responsiblePhysician: 'Dr. Philipe Saraiva Cruz',
   responsiblePhysicianCRM: 'CRM-MG 69.870',
+  responsiblePhysicianRQE: 'RQE 307527',
+  responsiblePhysicianSpecialty: 'Oftalmologista',
   responsiblePhysicianTitle: 'Responsável Técnico Médico',
   responsibleNurse: 'Ana Lúcia',
   responsibleNurseCOREN: 'COREN-MG 834184',

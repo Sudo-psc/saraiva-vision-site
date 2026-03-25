@@ -96,9 +96,9 @@ const ServiceDetailPage = () => {
   }
 
   const seo = {
-    title: service.title + ' | Saraiva Vision',
-    description: service.fullDescription || service.description,
-    keywords: 'oftalmologia, serviços, consultas, exames, cirurgias, ' + service.title.toLowerCase(),
+    title: service.title + ' em Caratinga | Oftalmologista Especializado | Saraiva Vision',
+    description: (service.fullDescription || service.description) + ' Agende sua consulta em Caratinga, MG.',
+    keywords: service.title.toLowerCase() + ' Caratinga, ' + service.title.toLowerCase() + ' MG, oftalmologista Caratinga, ' + service.title.toLowerCase() + ' tratamento',
   };
 
   return (

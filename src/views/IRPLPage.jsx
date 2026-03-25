@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import SEOHead from '@/components/SEOHead';
+import FAQSchema from '@/components/FAQSchema';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button.jsx';
 import {
@@ -31,6 +32,7 @@ const IRPLPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [showNeuroModal, setShowNeuroModal] = useState(false);
+  const [openFaq, setOpenFaq] = useState(null);
 
   // Schema.org MedicalProcedure for IRPL treatment
   const medicalProcedureSchema = {
@@ -64,10 +66,46 @@ const IRPLPage = () => {
     }
   };
 
+  // FAQ data for rich snippets and visual accordion
+  const irplFAQs = [
+    {
+      question: 'O tratamento IRPL dói?',
+      answer: 'Não. O procedimento é indolor. Durante cada disparo o paciente sente apenas um leve calor ou formigamento na região periocular. Não há contato direto com o olho e não são utilizadas agulhas. A sessão termina em poucos minutos e você retorna às suas atividades normais no mesmo dia.'
+    },
+    {
+      question: 'Olho seco tem cura?',
+      answer: 'O olho seco crônico, especialmente o causado por Disfunção das Glândulas de Meibômio (DGM), raramente tem "cura" definitiva, mas tem controle eficaz. O objetivo do tratamento — incluindo o IRPL — é restaurar o equilíbrio do filme lacrimal, reduzir sintomas e melhorar a qualidade de vida. Muitos pacientes ficam assintomáticos com o plano multimodal correto.'
+    },
+    {
+      question: 'Quanto tempo dura o efeito do IRPL?',
+      answer: 'Os resultados variam conforme a gravidade da DGM, hábitos e fatores ambientais. Em geral, estudos relatam benefício clínico de 6 meses a 2–3 anos após o protocolo inicial. Sessões de manutenção anuais ou semestrais são frequentemente recomendadas para sustentar os resultados.'
+    },
+    {
+      question: 'Quantas sessões de IRPL são necessárias?',
+      answer: 'O protocolo padrão do E-Eye consiste em 3 a 4 sessões, realizadas nos dias 0, 15 e 45 (e eventualmente 75). O intervalo entre sessões permite a regeneração progressiva das glândulas de Meibômio. A avaliação clínica após o protocolo define se há necessidade de manutenção.'
+    },
+    {
+      question: 'Quem pode fazer o tratamento IRPL?',
+      answer: 'A indicação é feita pelo oftalmologista após avaliação completa, que inclui meibografia e análise do filme lacrimal. Existem contraindicações relativas como pele muito escura (Fitzpatrick VI), uso de isotretinoína, histórico de fotossensibilidade e algumas condições oculares. A consulta prévia é essencial para verificar se o IRPL é adequado ao seu caso.'
+    },
+    {
+      question: 'O que é a diferença entre IRPL e IPL estético?',
+      answer: 'São tecnologias distintas com propósitos diferentes. O IPL estético é desenvolvido para dermatologia (manchas, pelos, rejuvenescimento). O IRPL® E-Eye foi projetado exclusivamente para uso oftalmológico, com pulsos regulados de energia uniforme calibrados para atuar nas glândulas de Meibômio. Usar IPL estético no olho é contraindicado e potencialmente perigoso.'
+    },
+    {
+      question: 'O que é o IRPL E-Eye?',
+      answer: 'O E-Eye é o primeiro dispositivo médico do mundo desenvolvido especificamente para o tratamento de olho seco por Disfunção das Glândulas de Meibômio (DGM). Utiliza a tecnologia patenteada IRPL® (Intense Regulated Pulsed Light), fabricado na França e aprovado pela ANVISA no Brasil.'
+    },
+    {
+      question: 'Preciso parar de usar colírio lubrificante após o IRPL?',
+      answer: 'Não necessariamente. O IRPL atua na causa da DGM, mas o uso de lubrificantes pode continuar como parte do plano multimodal, especialmente nas primeiras semanas. A partir dos resultados da reavaliação, o médico define se é possível reduzir ou suspender o uso de colírios. O objetivo é diminuir a dependência de lubrificação artificial a longo prazo.'
+    },
+  ];
+
   const seo = {
-    title: 'IRPL E-Eye para Olho Seco e DGM em Caratinga | Saraiva Vision',
-    description: 'IRPL E-Eye para olho seco e Disfunção das Glândulas de Meibômio (DGM) em Caratinga, MG. Tecnologia aprovada pela ANVISA, não invasiva, com avaliação completa da superfície ocular.',
-    keywords: 'IRPL Caratinga, E-Eye Caratinga, olho seco Caratinga, DGM Caratinga, disfunção glândulas de Meibômio, meibografia Caratinga, luz pulsada oftalmológica, oftalmologista Caratinga, TFOS DEWS III, tratamento olho seco luz pulsada, luz intensa pulsada oftalmologia',
+    title: 'Tratamento IRPL E-Eye em Caratinga | Olho Seco e DGM | Saraiva Vision',
+    description: 'Tratamento IRPL E-Eye para olho seco em Caratinga, MG. Tecnologia aprovada pela ANVISA para Disfunção das Glândulas de Meibômio. Sem cortes, sem dor. Agende sua avaliação.',
+    keywords: 'tratamento IRPL olho seco MG, IRPL E-Eye Caratinga, luz pulsada olho seco, DGM tratamento Caratinga, oftalmologista olho seco Caratinga, meibografia Caratinga, TFOS DEWS III, tratamento olho seco luz pulsada, luz intensa pulsada oftalmologia',
     structuredData: medicalProcedureSchema
   };
 
@@ -120,6 +158,7 @@ const IRPLPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <SEOHead {...seo} />
+      <FAQSchema faqs={irplFAQs} />
       <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 scroll-block-internal">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-cyan-50 via-white to-sky-50">
@@ -784,6 +823,72 @@ const IRPLPage = () => {
                 Ver todos os episódios
                 <ArrowRight className="w-4 h-4" />
               </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="bg-white py-20 lg:py-24 border-t border-slate-100">
+          <div className="max-w-4xl mx-auto px-6 lg:px-12">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 rounded-full bg-cyan-100 text-cyan-700 px-4 py-2 text-sm font-semibold mb-4">
+                <Info className="w-4 h-4" />
+                <span>Dúvidas Frequentes</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                Perguntas Reais de Pacientes sobre IRPL
+              </h2>
+              <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                Respondemos as dúvidas mais comuns de quem considera o tratamento com luz pulsada regulada para olho seco.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {irplFAQs.map((faq, index) => (
+                <div
+                  key={index}
+                  className="border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <button
+                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                    className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left bg-white hover:bg-slate-50 transition-colors"
+                    aria-expanded={openFaq === index}
+                  >
+                    <span className="font-semibold text-slate-900 text-base leading-snug">
+                      {faq.question}
+                    </span>
+                    <span
+                      className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-transform duration-300 ${
+                        openFaq === index
+                          ? 'bg-cyan-600 text-white rotate-45'
+                          : 'bg-slate-100 text-slate-500'
+                      }`}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path d="M7 1v12M1 7h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                      </svg>
+                    </span>
+                  </button>
+                  {openFaq === index && (
+                    <div className="px-6 pb-5 bg-slate-50 border-t border-slate-100">
+                      <p className="text-slate-700 leading-relaxed pt-4">{faq.answer}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 text-center">
+              <p className="text-slate-500 text-sm mb-4">
+                Tem outra dúvida? Fale diretamente com a equipe.
+              </p>
+              <button
+                onClick={() => window.open('https://wa.me/5533998601427?text=Olá! Tenho dúvidas sobre o tratamento IRPL para olho seco.', '_blank')}
+                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-semibold transition-colors shadow-sm"
+              >
+                Tirar dúvidas pelo WhatsApp
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </section>

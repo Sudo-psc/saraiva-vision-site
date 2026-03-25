@@ -5,14 +5,11 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Star, ExternalLink, X, TrendingUp, Shield, Award, Users } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { clinicInfo, CLINIC_PLACE_ID } from '@/lib/clinicInfo';
 
 const TRUST_CONFIG = {
   rating: 4.9,
-  totalReviews: 136,
+  totalReviews: 150,
   placeUrl: 'https://maps.google.com/?cid=17367763261775232199',
   autoHideDelay: 15000, // 15 segundos para auto-esconder
   showAfterScroll: 200, // mostrar após scroll de 200px
@@ -22,6 +19,13 @@ const TrustBanner = ({ className = '' }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [isDismissed, setIsDismissed] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Trigger enter animation after mount
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   // Auto-hide após delay
   useEffect(() => {
@@ -29,6 +33,7 @@ const TrustBanner = ({ className = '' }) => {
 
     const timer = setTimeout(() => {
       setIsVisible(false);
+      setIsDismissed(true);
     }, TRUST_CONFIG.autoHideDelay);
 
     return () => clearTimeout(timer);
@@ -79,28 +84,17 @@ const TrustBanner = ({ className = '' }) => {
     </div>
   );
 
+  if (!isVisible || isDismissed) return null;
+
   return (
-    <AnimatePresence>
-      {isVisible && !isDismissed && (
-        <motion.div
-          initial={{ opacity: 0, y: 100 }}
-          animate={{
-            opacity: 1,
-            y: 0,
-            transition: {
-              type: "spring",
-              stiffness: 300,
-              damping: 30,
-              mass: 0.8
-            }
-          }}
-          exit={{
-            opacity: 0,
-            y: 100,
-            transition: { duration: 0.3 }
-          }}
-          className={`fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-cyan-600 to-blue-600 shadow-lg ${className}`}
-        >
+    <div
+      className={`fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-cyan-600 to-blue-600 shadow-lg hidden md:block ${className}`}
+      style={{
+        transform: mounted ? 'translateY(0)' : 'translateY(100%)',
+        opacity: mounted ? 1 : 0,
+        transition: 'transform 0.4s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.3s ease',
+      }}
+    >
           <div className="max-w-7xl mx-auto px-[7%] py-3">
             <div className="flex items-center justify-between">
               {/* Conteúdo Principal - Link para Google */}
@@ -169,19 +163,17 @@ const TrustBanner = ({ className = '' }) => {
               </button>
             </div>
 
-            {/* Barra de Progresso (opcional para visual) */}
+            {/* Barra de Progresso */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-white/20">
-              <motion.div
-                initial={{ width: "100%" }}
-                animate={{ width: "0%" }}
-                transition={{ duration: TRUST_CONFIG.autoHideDelay / 1000, ease: "linear" }}
-                className="h-full bg-white/60"
+              <div
+                className="h-full bg-white/60 origin-left"
+                style={{
+                  animation: `trustbar-shrink ${TRUST_CONFIG.autoHideDelay}ms linear forwards`,
+                }}
               />
             </div>
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        </div>
   );
 };
 

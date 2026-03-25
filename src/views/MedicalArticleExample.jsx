@@ -10,7 +10,8 @@ function MedicalArticleExample() {
   const lastReviewed = '2025-01-15';
   const physician = {
     name: 'Dr. Philipe Saraiva Cruz',
-    crm: 'CRM-MG 69.870'
+    crm: 'CRM-MG 69.870',
+    rqe: 'RQE 307527'
   };
 
   const seoData = {

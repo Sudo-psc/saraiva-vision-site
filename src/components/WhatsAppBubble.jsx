@@ -20,7 +20,7 @@ const WhatsAppBubble = ({ className = '' }) => {
         target="_blank"
         rel="noopener noreferrer"
         aria-label={ariaLabel}
-        className="group relative flex items-center gap-2 rounded-full bg-green-500 px-4 py-3 text-white shadow-lg transition-all duration-300 hover:bg-green-600 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+        className="group relative flex items-center gap-2 rounded-full bg-green-700 px-4 py-3 text-white shadow-lg transition-all duration-300 hover:bg-green-800 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
       >
         <span className="absolute -inset-1 rounded-full bg-green-400/30 opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
         <MessageCircle className="relative h-6 w-6" />

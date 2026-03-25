@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import EnhancedFooter from '@/components/EnhancedFooter';
-import JotformChatbot from '@/components/JotformChatbot';
+
 import { CheckCircle, Package, Star, Award, Crown, ArrowRight, Wifi, Video } from 'lucide-react';
 
 const PlanosOnlinePage = () => {
@@ -86,7 +86,7 @@ const PlanosOnlinePage = () => {
   return (
     <>
       <SEOHead {...seoData} />
-      <JotformChatbot />
+
       <main className="min-h-screen pt-32 md:pt-36 lg:pt-40 pb-12 mx-[4%] md:mx-[6%] lg:mx-[8%]">
         {/* Hero Section */}
         <section className="!pt-0 !pb-2 mb-2 text-center">

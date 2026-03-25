@@ -279,7 +279,7 @@ const GoogleReviewsWidget = ({
             };
             dataSource = avgRating > 0 || totalReviews > 0 ? 'apiStats' : 'fallback';
         } else {
-            result = { averageRating: 4.9, totalReviews: 102 };
+            result = { averageRating: 4.9, totalReviews: 150 };
             dataSource = 'fallback';
         }
 

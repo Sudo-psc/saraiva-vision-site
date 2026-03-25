@@ -67,7 +67,7 @@ const fallbackReviews = [
 const fallbackStats = {
     overview: {
         averageRating: 4.9,
-        totalReviews: 136
+        totalReviews: 150
     }
 };
 
@@ -94,7 +94,7 @@ const CompactGoogleReviews = React.memo(() => {
     const reviews = apiReviews && apiReviews.length > 0 ? apiReviews : fallbackReviews;
     const stats = apiStats || fallbackStats;
     const averageRating = stats.overview?.averageRating || stats.averageRating || 4.9;
-    const totalReviews = stats.overview?.totalReviews || stats.totalReviews || 136;
+    const totalReviews = stats.overview?.totalReviews || stats.totalReviews || 150;
 
     const renderStars = (rating) => {
         return Array.from({ length: 5 }, (_, i) => (

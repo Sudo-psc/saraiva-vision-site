@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import SEOHead from '@/components/SEOHead';
+import FAQSchema from '@/components/FAQSchema';
 import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft, Clock, CheckCircle, Star, Calendar, Eye,
@@ -24,10 +25,17 @@ const BlefaroplastiaJatoPlasmaPage = () => {
   const { t } = useTranslation();
 
   // SEO otimizado para blefaroplastia com jato de plasma
+  // FAQ data for rich snippets
+  const blefaroplastiaFAQs = [
+    { question: 'O que é blefaroplastia com jato de plasma?', answer: 'É um procedimento minimamente invasivo que utiliza energia de plasma para tratar flacidez, rugas e excesso de pele nas pálpebras, sem cortes ou suturas. É uma alternativa à cirurgia convencional para casos leves a moderados de dermatochalase.' },
+    { question: 'A blefaroplastia com plasma dói?', answer: 'O procedimento é realizado com anestesia tópica (colírio e creme anestésico). O paciente sente uma leve sensação de calor durante a aplicação. O desconforto é mínimo e bem tolerado.' },
+    { question: 'Qual o tempo de recuperação?', answer: 'A recuperação é mais rápida que a cirurgia convencional. As crostas formadas nos pontos de aplicação caem naturalmente em 5 a 10 dias. O resultado final é observado em 30 a 60 dias.' },
+  ];
+
   const seo = {
-    title: 'Blefaroplastia com Jato de Plasma - Procedimento Minimamente Invasivo | Saraiva Vision',
-    description: 'Blefaroplastia não cirúrgica com jato de plasma para rejuvenescimento palpebral. Procedimento minimamente invasivo com respaldo científico em Caratinga-MG. Alternativa segura para casos leves a moderados de dermatochalase.',
-    keywords: 'blefaroplastia jato plasma, blefaroplastia não cirúrgica, plasma pen palpebral, rejuvenescimento palpebral, blefaroplastia sem cortes, plasma exeresis, oftalmologista Caratinga, dermatochalase tratamento',
+    title: 'Blefaroplastia com Jato de Plasma em Caratinga | Sem Cortes | Saraiva Vision',
+    description: 'Blefaroplastia não cirúrgica com jato de plasma em Caratinga, MG. Rejuvenescimento palpebral sem cortes, com respaldo científico. Recuperação rápida. Agende sua avaliação.',
+    keywords: 'blefaroplastia jato plasma Caratinga, blefaroplastia não cirúrgica Caratinga, plasma pen palpebral, rejuvenescimento palpebral Caratinga MG, blefaroplastia sem cortes, oftalmologista Caratinga, dermatochalase tratamento',
   };
 
   // Schema.org MedicalProcedure para SEO estruturado
@@ -305,6 +313,7 @@ const BlefaroplastiaJatoPlasmaPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <SEOHead {...seo} />
+      <FAQSchema faqs={blefaroplastiaFAQs} />
       <Navbar />
 
       <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 scroll-block-internal mx-[5%] lg:mx-[10%]">

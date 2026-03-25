@@ -6,7 +6,7 @@
 /* CTA Primário - "Agendar Consulta Online" */
 .cta-primary {
   /* Visual */
-  background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+  background: linear-gradient(135deg, #0e7490 0%, #155e75 100%);
   color: #ffffff;
   font-size: 18px;
   font-weight: 600;
@@ -37,13 +37,13 @@
 }
 
 .cta-primary:hover {
-  background: linear-gradient(135deg, #0e7490 0%, #155e75 100%);
+  background: linear-gradient(135deg, #155e75 0%, #164e63 100%);
   box-shadow: 0 6px 20px rgba(8, 145, 178, 0.45);
   transform: translateY(-2px);
 }
 
 .cta-primary:focus-visible {
-  outline: 3px solid #0891b2;
+  outline: 3px solid #0e7490;
   outline-offset: 4px;
 }
 
@@ -52,7 +52,7 @@
   box-shadow: 0 2px 8px rgba(8, 145, 178, 0.25);
 }
 
-/* Contraste WCAG AAA: 7.2:1 (branco em #0891b2) ✅ */
+/* Contraste WCAG AA: 4.6:1 (branco em cyan-700 #0e7490) ✅ */
 
 /* Mobile: full-width */
 @media (max-width: 640px) {
@@ -82,8 +82,8 @@
   gap: 8px;
   
   background: white;
-  border: 2px solid #0891b2;
-  color: #0891b2;
+  border: 2px solid #0e7490;
+  color: #0e7490;
   font-size: 15px;
   font-weight: 500;
   
@@ -99,16 +99,16 @@
 
 .quick-action-btn:hover {
   background: #ecfeff;
-  border-color: #0e7490;
-  color: #0e7490;
+  border-color: #155e75;
+  color: #155e75;
 }
 
 .quick-action-btn:focus-visible {
-  outline: 3px solid #0891b2;
+  outline: 3px solid #0e7490;
   outline-offset: 2px;
 }
 
-/* Contraste: 4.6:1 (teal-600 em branco) ✅ */
+/* Contraste WCAG AA: 4.6:1 (cyan-700 #0e7490 em branco) ✅ */
 
 /* Mobile: manter grid 50/50 */
 @media (max-width: 640px) {
@@ -132,7 +132,7 @@
   gap: 6px;
   margin-top: 12px;
   
-  color: #0891b2;
+  color: #0e7490;
   font-size: 14px;
   font-weight: 500;
   text-decoration: underline;
@@ -143,13 +143,13 @@
 }
 
 .maps-link:hover {
-  color: #0e7490;
-  text-decoration-color: #0e7490;
+  color: #155e75;
+  text-decoration-color: #155e75;
   text-decoration-thickness: 2px;
 }
 
 .maps-link:focus-visible {
-  outline: 2px solid #0891b2;
+  outline: 2px solid #0e7490;
   outline-offset: 4px;
   border-radius: 4px;
 }
@@ -186,7 +186,7 @@
 
 .sticky-cta-button {
   width: 100%;
-  background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+  background: linear-gradient(135deg, #0e7490 0%, #155e75 100%);
   color: white;
   
   display: flex;
@@ -214,7 +214,7 @@
 }
 
 .sticky-cta-button:focus-visible {
-  outline: 3px solid #0891b2;
+  outline: 3px solid #0e7490;
   outline-offset: 4px;
 }
 
@@ -237,7 +237,7 @@
    ============================================ */
 
 .cta-compact {
-  background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+  background: linear-gradient(135deg, #0e7490 0%, #155e75 100%);
   color: white;
   
   display: inline-flex;
@@ -261,13 +261,13 @@
 }
 
 .cta-compact:hover {
-  background: linear-gradient(135deg, #0e7490 0%, #155e75 100%);
+  background: linear-gradient(135deg, #155e75 0%, #164e63 100%);
   box-shadow: 0 4px 12px rgba(8, 145, 178, 0.35);
   transform: translateY(-1px);
 }
 
 .cta-compact:focus-visible {
-  outline: 2px solid #0891b2;
+  outline: 2px solid #0e7490;
   outline-offset: 3px;
 }
 

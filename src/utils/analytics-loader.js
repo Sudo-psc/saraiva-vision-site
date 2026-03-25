@@ -26,7 +26,7 @@ const ANALYTICS_CONFIG = {
   ga: {
     id: import.meta.env.VITE_GA_ID || 'G-LXWRK8ELS6',
     timeout: 5000,
-    url: 'https://www.google-analytics.com/analytics.js'
+    url: 'https://www.googletagmanager.com/gtag/js'
   },
   posthog: {
     key: import.meta.env.VITE_POSTHOG_KEY || 'phc_bpyxyy0AVVh2E9LhjkDfZhi2vlfEsQhOBkijyjvyRSp',
@@ -122,9 +122,8 @@ function loadScriptWithTimeout(url, timeout, attributes = {}) {
  */
 async function detectAdBlock() {
   try {
-    // Tenta carregar um pixel do Google Analytics
-    const testUrl = 'https://www.google-analytics.com/analytics.js';
-    const response = await fetch(testUrl, { method: 'HEAD', mode: 'no-cors' });
+    const testUrl = `https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_CONFIG.ga.id}`;
+    await fetch(testUrl, { method: 'HEAD', mode: 'no-cors' });
     return false;
   } catch (error) {
     return true;

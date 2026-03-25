@@ -21,7 +21,7 @@ const WhatsAppCTA = ({
   const baseClasses = 'relative overflow-hidden rounded-2xl transition-all duration-300';
 
   const variants = {
-    default: 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl',
+    default: 'bg-gradient-to-r from-green-700 to-green-800 hover:from-green-800 hover:to-green-900 text-white shadow-lg hover:shadow-xl',
     outline: 'border-2 border-green-500 text-green-700 hover:bg-green-50 hover:border-green-600 bg-white',
     minimal: 'text-green-600 hover:text-green-700 hover:bg-green-50 px-4 py-2 rounded-lg',
     card: 'bg-gradient-to-r from-green-500/10 to-green-600/10 border border-green-200 text-green-800 hover:border-green-300'

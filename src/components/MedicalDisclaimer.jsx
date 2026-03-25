@@ -90,7 +90,7 @@ const MedicalDisclaimer = ({ type = 'general', className = '' }) => {
           <div className={`text-xs ${colors.subtext} pt-2 border-t ${colors.border} flex items-center gap-2`}>
             <Shield className="w-3 h-3" aria-hidden="true" />
             <span>
-              <strong className={colors.text}>Dr. Philipe Saraiva Cruz</strong> • CRM-MG 69.870 • RQE 48.222
+              <strong className={colors.text}>Dr. Philipe Saraiva Cruz</strong> • CRM-MG 69.870 • Oftalmologista RQE 307527
             </span>
           </div>
         </div>

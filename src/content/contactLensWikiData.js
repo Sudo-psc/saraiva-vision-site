@@ -609,12 +609,12 @@ export const editorialPlan = {
   owners: [
     {
       role: 'Responsável técnico',
-      name: 'Dr. Philipe Saraiva Cruz, CRM 69.870',
+      name: 'Dr. Philipe Saraiva Cruz, CRM-MG 69.870 | Oftalmologista RQE 307527',
       focus: 'Validação clínica, atualização de protocolos e farmacovigilância.'
     },
     {
       role: 'Editor científico',
-      name: 'Dr. Philipe Saraiva Cruz, CRM 69.870',
+      name: 'Dr. Philipe Saraiva Cruz, CRM-MG 69.870 | Oftalmologista RQE 307527',
       focus: 'Revisão bibliográfica, atualização de referências e padronização terminológica.'
     },
     {

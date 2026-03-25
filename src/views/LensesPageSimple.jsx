@@ -1,10 +1,8 @@
 import React from 'react';
-import JotformChatbot from '../components/JotformChatbot';
 
 const LensesPageSimple = () => {
   return (
     <>
-      <JotformChatbot />
       <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="text-center">
         <h1 className="text-4xl font-bold text-slate-900 mb-4">

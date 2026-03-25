@@ -102,10 +102,13 @@ echo "🚢 Step 6: Deploying to production..."
 
 # Copy everything from dist (including assets)
 cp -r "$PROJECT_DIR/dist/"* "$PROD_DIR/"
+cp -r "$PROJECT_DIR/dist/"* "/var/www/html/"
 
 # Ensure correct permissions
 chown -R www-data:www-data "$PROD_DIR"
 chmod -R 755 "$PROD_DIR"
+chown -R www-data:www-data "/var/www/html"
+chmod -R 755 "/var/www/html"
 
 # Verify assets were copied
 COPIED_ASSETS=$(find "$PROD_DIR/assets" -name "*.js" -o -name "*.css" 2>/dev/null | wc -l)

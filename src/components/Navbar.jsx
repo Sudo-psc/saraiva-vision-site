@@ -52,7 +52,10 @@ const Navbar = () => {
   // UX Enhancement: Sticky navbar with shrink effect for better screen real estate
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(prev => {
+        const next = window.scrollY > 50;
+        return prev === next ? prev : next;
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -77,9 +80,13 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 pointer-events-none ${isScrolled
-        ? 'bg-white/95 backdrop-blur-sm shadow-md py-1 lg:py-2'
-        : 'bg-white/90 backdrop-blur border-b border-slate-200/60 lg:bg-transparent lg:border-0 py-2 lg:py-3'
+      style={mobileMenuOpen ? { backgroundColor: '#ffffff' } : undefined}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 pointer-events-none ${
+        mobileMenuOpen
+        ? 'bg-white shadow-md py-2 lg:py-3'
+        : isScrolled
+          ? 'bg-white/95 backdrop-blur-sm shadow-md py-1 lg:py-2'
+          : 'bg-white/80 backdrop-blur-sm py-2 lg:py-3'
         }`}
     >
       <div className="container mx-auto px-3 lg:px-4 xl:px-6 pointer-events-auto overflow-x-hidden">
@@ -92,20 +99,20 @@ const Navbar = () => {
               className="cursor-pointer hover:opacity-80 transition-opacity duration-200"
               aria-label={t('navbar.home_link_label')}
             >
-              <Logo isWhite />
+              <Logo isWhite={true} />
             </Link>
           </div>
 
           {/* Desktop Navigation - Text-only for space efficiency (icons only in CTAs per design guidelines) */}
           <nav
-            className="hidden lg:flex flex-1 items-center justify-center flex-wrap gap-1 xl:gap-1.5 2xl:gap-2"
+            className="hidden lg:flex flex-1 items-center justify-center gap-0.5 xl:gap-1 2xl:gap-1.5"
             aria-label={t('navbar.primary_navigation')}
           >
             {navLinks.map((link) => {
               const isActive = location.pathname === link.href;
               const isHomeLink = link.href === '/';
 
-              const linkClasses = `group relative font-semibold transition-all duration-200 ease-out px-2 py-1 xl:px-3 xl:py-1.5 2xl:px-3.5 2xl:py-2 rounded-lg text-xs xl:text-sm 2xl:text-base whitespace-nowrap hover:scale-[1.03] active:scale-95 ${
+              const linkClasses = `group relative font-semibold transition-all duration-200 ease-out px-1.5 py-1 xl:px-2 xl:py-1.5 2xl:px-3 2xl:py-2 rounded-lg text-[11px] xl:text-xs 2xl:text-sm whitespace-nowrap hover:scale-[1.03] active:scale-95 ${
                 isActive
                   ? 'bg-gradient-to-br from-cyan-600 to-cyan-700 text-white border border-cyan-500'
                   : 'text-slate-800 hover:bg-cyan-600 hover:text-white border border-transparent hover:border-cyan-500'
@@ -163,7 +170,7 @@ const Navbar = () => {
               onClick={() => navigate('/agendamento')}
               className="flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-bold shadow-md hover:shadow-lg transition-all duration-200 ease-out hover:scale-105 active:scale-95 px-3 py-2 xl:px-4 xl:py-2.5 2xl:px-5 2xl:py-3 rounded-lg border-2 border-cyan-500 hover:border-cyan-400 text-sm xl:text-base"
             >
-              <Calendar size={18} className="animate-pulse flex-shrink-0" />
+              <Calendar size={18} className="flex-shrink-0" />
               <span className="whitespace-nowrap">{t('navbar.schedule')}</span>
             </Button>
           </div>
@@ -185,10 +192,11 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile/Tablet Menu */}
+      {/* Mobile/Tablet Menu - Full overlay with explicit white background */}
       {mobileMenuOpen && (
         <div
-          className="lg:hidden bg-white border-t shadow-lg pointer-events-auto"
+          className="lg:hidden border-t shadow-lg pointer-events-auto"
+          style={{ backgroundColor: '#ffffff', minHeight: 'calc(100dvh - 60px)' }}
         >
           <nav className="container mx-auto px-4 py-3 sm:py-4 flex flex-col space-y-2 sm:space-y-3">
             {navLinks.map((link, index) => {

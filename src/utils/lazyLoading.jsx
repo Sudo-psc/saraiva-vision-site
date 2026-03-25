@@ -153,7 +153,7 @@ const createLazyComponent = (importFn, options = {}) => {
           </div>
           {isMedicalContent && (
             <p className="text-sm text-gray-500 mt-4">
-              CRM-MG 69.870 • Assistência 24h para emergências
+              CRM-MG 69.870 | Oftalmologista RQE 307527 • Assistência 24h para emergências
             </p>
           )}
         </div>
@@ -195,7 +195,7 @@ const createLazyComponent = (importFn, options = {}) => {
             )}
             {isMedicalContent && !error && (
               <div className="text-xs text-blue-600 mt-2">
-                Conteúdo médico validado pelo CRM-MG 69.870
+                Conteúdo médico validado pelo CRM-MG 69.870 | Oftalmologista RQE 307527
               </div>
             )}
           </div>

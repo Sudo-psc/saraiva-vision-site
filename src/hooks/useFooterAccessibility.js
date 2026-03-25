@@ -9,7 +9,22 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useReducedMotion } from 'framer-motion';
+
+// Native reduced-motion hook — avoids pulling 113KB framer-motion chunk
+function useNativeReducedMotion() {
+    const [prefersReduced, setPrefersReduced] = useState(
+        () => typeof window !== 'undefined'
+            ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            : false
+    );
+    useEffect(() => {
+        const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const handler = (e) => setPrefersReduced(e.matches);
+        mq.addEventListener('change', handler);
+        return () => mq.removeEventListener('change', handler);
+    }, []);
+    return prefersReduced;
+}
 
 /**
  * Hook for managing footer accessibility features
@@ -25,7 +40,7 @@ export const useFooterAccessibility = (options = {}) => {
     const [focusedSocialIndex, setFocusedSocialIndex] = useState(-1);
     const [announcementText, setAnnouncementText] = useState('');
     const [isNavigatingWithKeyboard, setIsNavigatingWithKeyboard] = useState(false);
-    const prefersReducedMotion = useReducedMotion();
+    const prefersReducedMotion = useNativeReducedMotion();
     const socialIconsRef = useRef([]);
     const lastInteractionType = useRef('mouse');
 

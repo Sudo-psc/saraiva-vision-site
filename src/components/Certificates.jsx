@@ -44,7 +44,7 @@ const Certificates = () => {
               viewport={{ once: true }}
               className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-soft-medium"
             >
-              <img src={item.img} alt={item.title} className="w-24 h-24 mb-4" />
+              <img src={item.img} alt={item.title} className="w-24 h-24 mb-4" width="96" height="96" loading="lazy" decoding="async" />
               <h3 className="text-xl font-semibold mb-2 text-slate-900">{item.title}</h3>
               <p className="text-slate-600">{item.description}</p>
             </motion.div>

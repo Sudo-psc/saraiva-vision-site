@@ -340,7 +340,7 @@ function PodcastPage() {
                   <Mic2 className="w-5 h-5 text-cyan-600" aria-hidden="true" />
                 </div>
                 <div className="text-sm font-medium text-gray-600">
-                  Dr. Philipe Saraiva • Oftalmologista • CRM-MG 69.870
+                  Dr. Philipe Saraiva • Oftalmologista RQE 307527 • CRM-MG 69.870
                 </div>
               </motion.div>
 

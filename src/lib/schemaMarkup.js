@@ -133,11 +133,18 @@ export const generateLocalBusinessSchema = (language = 'pt', forGraph = false) =
         name: clinicInfo.responsiblePhysician,
         jobTitle: language === 'pt' ? 'Oftalmologista' : 'Ophthalmologist',
         medicalSpecialty: 'Ophthalmology',
-        identifier: {
-          '@type': 'PropertyValue',
-          propertyID: 'CRM',
-          value: clinicInfo.responsiblePhysicianCRM
-        },
+        identifier: [
+          {
+            '@type': 'PropertyValue',
+            propertyID: 'CRM',
+            value: clinicInfo.responsiblePhysicianCRM
+          },
+          {
+            '@type': 'PropertyValue',
+            propertyID: 'RQE',
+            value: clinicInfo.responsiblePhysicianRQE || 'RQE 307527'
+          }
+        ],
         knowsAbout: [
           'Ophthalmology',
           'Contact Lens Fitting',
@@ -180,7 +187,7 @@ export const generateLocalBusinessSchema = (language = 'pt', forGraph = false) =
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '4.9',
-      reviewCount: '500',
+      reviewCount: '136',
       bestRating: '5',
       worstRating: '1'
     },
@@ -300,6 +307,11 @@ export const generatePhysicianSchema = (language = 'pt', forGraph = false) => {
         '@type': 'PropertyValue',
         propertyID: 'CRM',
         value: clinicInfo.responsiblePhysicianCRM
+      },
+      {
+        '@type': 'PropertyValue',
+        propertyID: 'RQE',
+        value: clinicInfo.responsiblePhysicianRQE || 'RQE 307527'
       }
     ],
 

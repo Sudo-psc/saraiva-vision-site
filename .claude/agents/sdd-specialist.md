@@ -1,6 +1,24 @@
 ---
 name: sdd-specialist
-description: Use this agent when you need specialized expertise in Software Design and Deployment (SDD) for planning complex software projects, creating deployment strategies, and managing technical implementation tasks. This agent excels at architectural planning, deployment pipeline design, and task orchestration for software delivery.\n\n<example>\nContext: User is planning a complex microservices deployment and needs expert guidance.\nuser: "I need to deploy a multi-service application to AWS with proper CI/CD"\nassistant: "I'll use the SDD specialist agent to create a comprehensive deployment plan"\n<commentary>\nSince the user is requesting deployment planning expertise, use the Task tool to launch the sdd-specialist agent to create a structured deployment strategy.\n</commentary>\n</example>\n\n<example>\nContext: User has a React application and needs to plan the deployment architecture.\nuser: "How should I structure the deployment for my React app with Node.js backend?"\nassistant: "Let me deploy the sdd-specialist agent to analyze your requirements and create a deployment architecture plan"\n<commentary>\nThe user is asking for deployment architecture guidance, which is exactly what the sdd-specialist agent is designed for. Launch the agent to provide expert deployment planning.\n</commentary>\n</example>
+description: Use this agent when you need specialized expertise in Software Design and Deployment (SDD) for planning complex software projects, creating deployment strategies, and managing technical implementation tasks. This agent excels at architectural planning, deployment pipeline design, and task orchestration for software delivery.
+
+<example>
+Context: User is planning a complex microservices deployment and needs expert guidance.
+user: "I need to deploy a multi-service application to AWS with proper CI/CD"
+assistant: "I'll use the SDD specialist agent to create a comprehensive deployment plan"
+<commentary>
+Since the user is requesting deployment planning expertise, use the Task tool to launch the sdd-specialist agent to create a structured deployment strategy.
+</commentary>
+</example>
+
+<example>
+Context: User has a React application and needs to plan the deployment architecture.
+user: "How should I structure the deployment for my React app with Node.js backend?"
+assistant: "Let me deploy the sdd-specialist agent to analyze your requirements and create a deployment architecture plan"
+<commentary>
+The user is asking for deployment architecture guidance, which is exactly what the sdd-specialist agent is designed for. Launch the agent to provide expert deployment planning.
+</commentary>
+</example>
 model: sonnet
 ---
 

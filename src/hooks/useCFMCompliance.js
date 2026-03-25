@@ -160,8 +160,8 @@ const useCFMCompliance = () => {
                 en: '⚕️ Medical Notice: This content is for informational purposes and does not replace medical consultation. For diagnosis and treatment, always seek qualified medical guidance. In case of emergency, seek immediate medical attention or call emergency services.'
             },
             crm_identification: {
-                pt: '📋 CRM Responsável: Dr. Philipe Saraiva Cruz - CRM-MG 69.870',
-                en: '📋 Responsible Physician: Dr. Philipe Saraiva Cruz - CRM-MG 69.870'
+                pt: '📋 CRM Responsável: Dr. Philipe Saraiva Cruz - CRM-MG 69.870 | Oftalmologista RQE 307527',
+                en: '📋 Responsible Physician: Dr. Philipe Saraiva Cruz - CRM-MG 69.870 | Ophthalmologist RQE 307527'
             },
             emergency_guidance: {
                 pt: 'Em caso de emergência médica, procure atendimento imediato no hospital mais próximo ou ligue para o SAMU (192).',

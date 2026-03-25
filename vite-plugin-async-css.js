@@ -2,12 +2,10 @@
  * Vite Plugin: Async CSS Loading
  *
  * Converts render-blocking CSS to non-blocking by using the media attribute swap technique.
- * This technique uses media="print" initially, then switches to media="all" on load.
+ * Uses transformIndexHtml with order:'post' to run AFTER Vite core injects CSS/JS links.
  *
- * Benefits:
- * - Eliminates render-blocking CSS
- * - Improves LCP (Largest Contentful Paint)
- * - Maintains progressive enhancement (works without JS via noscript fallback)
+ * Note: No <noscript> fallbacks for local CSS - this is a React SPA that requires JS.
+ * Google Fonts noscript fallback is handled in index.html source.
  *
  * @author Dr. Philipe Saraiva Cruz
  */
@@ -17,82 +15,71 @@ export default function asyncCssPlugin() {
     name: 'vite-plugin-async-css',
     enforce: 'post',
 
-    transformIndexHtml(html) {
-      // Match CSS link tags injected by Vite
-      const cssLinkRegex = /<link\s+rel="stylesheet"([^>]*)\s+href="([^"]+\.css)"([^>]*)>/gi;
+    transformIndexHtml: {
+      order: 'post',
+      handler(html) {
+        let result = html;
 
-      let transformedHtml = html;
-      let match;
+        // Step 1: Remove blocking Google Fonts duplicates (keep async version only)
+        const hasAsyncFont =
+          result.includes('fonts.googleapis.com') &&
+          result.includes('media="print"');
 
-      // Find all CSS links and transform them
-      while ((match = cssLinkRegex.exec(html)) !== null) {
-        const fullMatch = match[0];
-        const beforeHref = match[1] || '';
-        const href = match[2];
-        const afterHref = match[3] || '';
-
-        // Skip if already has media attribute, is a preload, or is Google Fonts (already handled in index.html)
-        if (fullMatch.includes('media=') || fullMatch.includes('rel="preload"') || href.includes('fonts.googleapis.com')) {
-          continue;
+        if (hasAsyncFont) {
+          result = result.replace(
+            /[ \t]*<link\s+rel="stylesheet"\s+href="https:\/\/fonts\.googleapis\.com[^"]*"(?:\s+crossorigin)?\s*\/?>\s*\n?/gi,
+            (match) => {
+              if (match.includes('media=') || match.includes('noscript')) {
+                return match;
+              }
+              return '';
+            }
+          );
         }
 
-        // Create async CSS link with media swap technique
-        // This loads CSS without blocking render, then applies it once loaded
-        const asyncLink = `<link rel="stylesheet"${beforeHref} href="${href}"${afterHref} media="print" onload="this.media='all';this.onload=null;">`;
+        // Step 2: Convert blocking local .css links to async, deduplicate
+        const cssRegex = /<link\s+rel="stylesheet"([^>]*?)\s+href="([^"]+\.css)"([^>]*?)>/gi;
+        const asyncHrefs = new Set();
 
-        // Add noscript fallback for users without JavaScript
-        const noscriptFallback = `<noscript><link rel="stylesheet"${beforeHref} href="${href}"${afterHref}></noscript>`;
-
-        // Also add a preload hint for faster discovery
-        const preloadLink = `<link rel="preload" as="style" href="${href}">`;
-
-        // Replace the original blocking CSS with async version
-        transformedHtml = transformedHtml.replace(
-          fullMatch,
-          `${preloadLink}\n    ${asyncLink}\n    ${noscriptFallback}`
-        );
-      }
-
-      // Add script to mark when CSS is loaded (for potential below-fold animations)
-      const cssLoadedScript = `
-    <script>
-      // Mark document as CSS-loaded when stylesheets are ready
-      (function() {
-        var links = document.querySelectorAll('link[rel="stylesheet"][media="print"]');
-        var loaded = 0;
-        var total = links.length;
-
-        if (total === 0) {
-          document.documentElement.classList.add('css-loaded');
-          return;
-        }
-
-        function checkLoaded() {
-          loaded++;
-          if (loaded >= total) {
-            document.documentElement.classList.add('css-loaded');
+        // First pass: identify which hrefs already have async versions
+        let match;
+        while ((match = cssRegex.exec(result)) !== null) {
+          if (match[0].includes('media="print"')) {
+            asyncHrefs.add(match[2]);
           }
         }
 
-        links.forEach(function(link) {
-          if (link.sheet) {
-            checkLoaded();
-          } else {
-            link.addEventListener('load', checkLoaded);
+        // Second pass: remove blocking duplicates, convert remaining to async
+        result = result.replace(cssRegex, (fullMatch, before, href, after) => {
+          // Keep existing async and noscript versions
+          if (fullMatch.includes('media=') || fullMatch.includes('noscript')) {
+            return fullMatch;
           }
+
+          if (asyncHrefs.has(href)) {
+            // Remove blocking duplicate - async version already exists
+            return '';
+          }
+
+          // Convert to async loading
+          asyncHrefs.add(href);
+          return `<link rel="stylesheet"${before} href="${href}"${after} media="print" onload="this.media='all';this.onload=null;">`;
         });
 
-        // Fallback: mark as loaded after 3 seconds regardless
-        setTimeout(function() {
-          document.documentElement.classList.add('css-loaded');
-        }, 3000);
-      })();
+        // Step 3: Clean blank lines
+        result = result.replace(/\n{3,}/g, '\n\n');
+
+        // Step 4: Add css-loaded detection script
+        if (!result.includes('css-loaded')) {
+          const script = `
+    <script>
+      (function(){var l=document.querySelectorAll('link[rel="stylesheet"][media="print"]'),c=0,t=l.length;if(!t){document.documentElement.classList.add('css-loaded');return}function d(){c++;if(c>=t)document.documentElement.classList.add('css-loaded')}l.forEach(function(e){e.sheet?d():e.addEventListener('load',d)});setTimeout(function(){document.documentElement.classList.add('css-loaded')},3000)})();
     </script>`;
+          result = result.replace('</head>', `${script}\n  </head>`);
+        }
 
-      // Insert the CSS loaded script before closing head tag
-      transformedHtml = transformedHtml.replace('</head>', `${cssLoadedScript}\n  </head>`);
-
-      return transformedHtml;
+        return result;
+      }
     }
   };
 }

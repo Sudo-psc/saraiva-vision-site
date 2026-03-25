@@ -7,6 +7,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== FONT METRIC OVERRIDES - Prevent CLS from font swap ===== */
+/* Match system font fallback metrics to Inter so text doesn't reflow */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  size-adjust: 107.64%;
+  ascent-override: 90.5%;
+  descent-override: 22.6%;
+  line-gap-override: 0%;
+}
+
 /* ===== CLS PREVENTION - Image and Container Aspect Ratios ===== */
 @layer utilities {
   /* Common image aspect ratios to prevent layout shift */
@@ -15,6 +26,12 @@
   .aspect-avatar { aspect-ratio: 1/1; }
   .aspect-blog { aspect-ratio: 3/2; }
   .aspect-podcast { aspect-ratio: 1/1; }
+
+  /* TrustBanner progress bar */
+  @keyframes trustbar-shrink {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+  }
 
   /* Skeleton loading animation for placeholders */
   @keyframes shimmer {
@@ -65,41 +82,7 @@
   }
 }
 
-/* ===== NORMALIZAÇÃO DE SCROLL - VERSÃO CORRIGIDA ===== */
-/* Normalização conforme especificações para scroll fluido */
-
-/* HTML/BODY: Overflow normalizado para scroll fluido */
-html {
-  overflow-y: auto !important;
-  overscroll-behavior-y: none !important;
-  scroll-behavior: smooth !important;
-  /* Remover bloqueios anteriores */
-}
-
-body {
-  overflow-y: auto !important;
-  overscroll-behavior-y: none !important;
-  scroll-behavior: smooth !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  /* Remover bloqueios anteriores */
-}
-
-/* ANTI-SCROLL DUPLO: Previne contextos de scroll aninhados */
-#root,
-#app-content,
-main {
-  overflow-x: hidden !important;
-  overflow-y: visible !important;
-  /* Permite apenas scroll do body */
-}
-
-/* SEÇÕES: Não criar contextos de scroll próprios */
-section {
-  overflow-x: hidden !important;
-  overflow-y: visible !important;
-  /* Garante que seções não criem scrollbars próprias */
-}
+/* Scroll normalization is handled by scroll-fix-clean.css (single source of truth) */
 
 /* ===== PULSE.LIVE CHATBOT - CONTRASTE E LEGIBILIDADE ===== */
 /* Garantir contraste adequado para o widget do chatbot */
@@ -132,15 +115,7 @@ section {
   transform: scale(1.05) !important;
 }
 
-/* Reset: Remover bloqueios globais desnecessários */
-*,
-*::before,
-*::after {
-  /* Permitir scroll-behavior nativo */
-  scroll-behavior: smooth;
-}
-
-/* ===== FIM DA NORMALIZAÇÃO ===== */
+/* ===== FIM DA NORMALIZAÇÃO (see scroll-fix-clean.css) ===== */
 
 /* ===== PAGE TOP SPACING - NAVBAR OFFSET ===== */
 /* Classe utilitária para espaçamento superior consistente em páginas com navbar fixa */
@@ -198,13 +173,9 @@ section {
     position: fixed !important;
     isolation: isolate;
     contain: layout style;
-    transform: translateZ(0);
-    will-change: transform;
-    backface-visibility: hidden;
     pointer-events: auto;
     /* Permite scroll vertical mesmo quando o gesto começa sobre o widget */
     touch-action: pan-y;
-    -ms-touch-action: pan-y;
   }
 
   /* Enhanced touch scrolling for mobile - conflicts removed */
@@ -593,76 +564,21 @@ html {
 
   body {
     background-color: hsl(var(--background));
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     font-size: 17px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
     color: hsl(var(--text-primary));
-    /* NORMALIZADO: Scroll fluido nativo conforme especificações */
-    overflow-y: auto !important;
-    overscroll-behavior-y: auto !important;
-    scroll-behavior: smooth !important;
-    /* Enhanced mobile responsiveness */
-    overflow-x: hidden !important;
-    width: 100% !important;
-    max-width: 100vw !important;
     position: relative;
-    -webkit-overflow-scrolling: touch;
+    /* Scroll rules are in scroll-fix-clean.css */
   }
 
-  /* Ensure all containers respect screen boundaries - ANTI-SCROLL DUPLO */
-  .container {
-    overflow-x: hidden !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    position: relative;
-    /* BLOQUEIO DE SCROLL: Previne scroll interno nos containers */
-    overscroll-behavior: auto !important;
-    scroll-behavior: auto !important;
-  }
-
-  /* SISTEMA ANTI-SCROLL DUPLO GLOBAL */
-  html {
-    scroll-behavior: auto !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    overscroll-behavior: auto !important;
-  }
-
-  /* BLOQUEIO DE SCROLL DENTRO DE VIEWS */
-  .view-container,
-  .page-container,
-  .route-container {
-    overflow-x: hidden !important;
-    overflow-y: visible !important;
-    scroll-behavior: auto !important;
-    overscroll-behavior: auto !important;
-    position: relative;
-    width: 100% !important;
-    max-width: 100vw !important;
-  }
+  /* Container and scroll rules are in scroll-fix-clean.css */
 
   /* Fix potential overflow from large elements */
   * {
     box-sizing: border-box;
-  }
-
-  /* Corrige overflow em elementos de mídia */
-  img,
-  video,
-  canvas {
-    overflow: hidden;
-    /* ou clip */
-    max-width: 100%;
-    height: auto;
-  }
-
-  /* Para view transitions específicas */
-  .view-transition img {
-    overflow: clip;
-    contain: layout style paint;
   }
 
   /* Media elements optimization */
@@ -675,18 +591,12 @@ html {
     display: block;
     border-style: none;
     box-sizing: border-box;
-    /* Performance optimization */
-    will-change: transform;
-    transform: translateZ(0);
   }
 
   /* Canvas-specific fixes */
   canvas {
-    image-rendering: -webkit-crisp-edges;
     image-rendering: crisp-edges;
     image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -o-crisp-edges;
   }
 
   /* View transitions optimization */
@@ -701,13 +611,6 @@ html {
     contain: layout style paint;
     backface-visibility: hidden;
     transform-style: preserve-3d;
-  }
-
-  /* Prevent images from overflowing */
-  img,
-  video {
-    max-width: 100%;
-    height: auto;
   }
 
   h1,
@@ -880,11 +783,7 @@ html {
     box-shadow: 0 0 0 2px #059669, 0 0 0 5px rgba(5, 150, 105, 0.3);
   }
 
-  /* Smooth scrolling for anchor links - DISABLED to prevent conflicts */
-  html {
-    /* scroll-behavior: smooth; -- REMOVED: conflicts with JS scroll system */
-    scroll-behavior: auto;
-  }
+  /* Scroll behavior is in scroll-fix-clean.css */
 
   /* Better text selection */
   ::selection {
@@ -1111,7 +1010,6 @@ html {
 
   .transform-gpu {
     transform: translateZ(0);
-    will-change: transform;
   }
 
   .preserve-3d {
@@ -1120,10 +1018,6 @@ html {
 
   .backface-hidden {
     backface-visibility: hidden;
-  }
-
-  .will-change-transform {
-    will-change: transform;
   }
 
   /* Enhanced 3D Shadow System for Service Cards */
@@ -1254,6 +1148,7 @@ html {
   }
 
   /* Título do card - flexível e sem restrições de altura */
+  .service-card-3d h2,
   .service-card-3d h3 {
     font-size: clamp(1rem, 2.2vw, 1.2rem) !important;
     /* Tamanho responsivo otimizado */
@@ -1271,6 +1166,7 @@ html {
   }
 
   /* Força cor preta para spans dentro do h3 */
+  .service-card-3d h2 span,
   .service-card-3d h3 span {
     color: #000000 !important;
     background: none !important;
@@ -1312,32 +1208,6 @@ html {
     font-size: 0.75rem !important;
     padding: 0.5rem 1rem !important;
     /* Padding melhorado */
-  }
-
-  /* Enhanced text contrast for service cards */
-  .service-text-enhanced {
-    color: #000000 !important;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-    transition: all 0.3s ease;
-  }
-
-  .service-card-3d:hover .service-text-enhanced {
-    color: #000000 !important;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
-  }
-
-  .service-description-enhanced {
-    color: rgb(51, 65, 85) !important;
-    font-weight: 500;
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
-    transition: all 0.3s ease;
-  }
-
-  .service-card-3d:hover .service-description-enhanced {
-    color: rgb(30, 41, 59) !important;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
   }
 
   /* Glass enhanced effects */
@@ -1449,22 +1319,6 @@ html {
     filter: drop-shadow(0 4px 8px rgba(59, 130, 246, 0.3));
   }
 
-  /* Enhanced Text Contrast for Service Cards */
-  .service-text-enhanced {
-    color: hsl(215, 28%, 17%);
-    /* Texto mais escuro para melhor contraste */
-    font-weight: 600;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-  }
-
-  .service-description-enhanced {
-    color: hsl(215, 16%, 25%);
-    /* Descrição com contraste aprimorado */
-    font-weight: 500;
-    line-height: 1.6;
-    text-shadow: 0 0.5px 1px rgba(255, 255, 255, 0.6);
-  }
-
   /* Page Background Effects for Services */
   .services-page-bg {
     background:
@@ -1516,6 +1370,25 @@ html {
     75% {
       transform: translateX(-5px) translateY(5px);
       opacity: 0.9;
+    }
+  }
+
+  /* Mobile: disable expensive infinite animation and backdrop-filter */
+  @media (max-width: 768px) {
+    .services-page-bg::before {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .service-card-3d {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    .service-glass-enhanced {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
     }
   }
 
@@ -1626,28 +1499,6 @@ html {
     }
   }
 
-  /* Floating animations for podcast hero */
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
-  }
-
-  .animate-float-delayed {
-    animation: float 3s ease-in-out infinite;
-    animation-delay: 1.5s;
-  }
-
-  @keyframes float {
-
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-
   .card-3d {
     transform-style: preserve-3d;
     transition: transform 0.3s ease-out;
@@ -1688,6 +1539,10 @@ html {
 
   .floating-animation,
   .glow-pulse {
+    animation: none;
+  }
+
+  .services-page-bg::before {
     animation: none;
   }
 
@@ -1875,36 +1730,9 @@ html {
 
 /* ===== CORREÇÕES ESPECÍFICAS PARA COMPONENTE CONTACT ===== */
 
-/* Evita rolagem dupla no componente Contact */
-#contact {
-  overflow: visible !important;
-  overscroll-behavior: none !important;
-}
-
-#contact * {
-  overscroll-behavior: none !important;
-}
-
-/* Correção específica para formulários dentro do Contact */
-#contact form,
-#contact .form-input,
-#contact textarea,
-#contact input {
-  overscroll-behavior: none !important;
-}
-
-/* Garante que textarea não cause scroll interno */
+/* Contact section - let scroll flow naturally */
 #contact textarea {
-  overflow-y: auto !important;
-  overscroll-behavior: none !important;
-  scroll-behavior: smooth !important;
-}
-
-/* Corrige cards do Contact que podem ter overflow */
-#contact .modern-card,
-#contact .modern-card-alt {
-  overflow: visible !important;
-  overscroll-behavior: none !important;
+  overflow-y: auto;
 }
 
 /* Reduce side margins visual weight in Contact and refine cards */
@@ -2022,9 +1850,9 @@ body {
     outline: none !important;
     box-shadow: none !important;
     background: #ffffff !important;
-    overflow-x: hidden !important;
     width: 100% !important;
     max-width: 100vw !important;
+    /* overflow is managed by scroll-fix-clean.css */
 }
 
 /* 2. Reset do wrapper principal da aplicação */
@@ -2125,11 +1953,11 @@ footer .bg-gradient-to-br {
     background: transparent !important;
 }
 
-/* 9. Remove backgrounds cinzas suspeitos */
-.bg-slate-100,
-.bg-gray-100,
-.bg-gray-50,
-.bg-slate-50 {
+/* 9. Remove backgrounds cinzas suspeitos (scoped to footer only) */
+footer .bg-slate-100,
+footer .bg-gray-100,
+footer .bg-gray-50,
+footer .bg-slate-50 {
     background: transparent !important;
 }
 

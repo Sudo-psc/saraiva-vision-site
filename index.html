@@ -46,49 +46,27 @@
   <meta name="twitter:image" content="https://saraivavision.com.br/opengraph-logo.png" />
   <meta name="twitter:image:alt" content="Logo Saraiva Vision - Clínica Oftalmológica em Caratinga/MG" />
 
-  <!-- Resource Hints for Performance Optimization -->
-  <!-- Preconnect for critical external resources (DNS + TCP + TLS) - HIGHEST PRIORITY -->
+  <!-- Resource Hints - Only preconnect to fonts (critical for LCP) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-  <!-- DNS prefetch for external domains (early DNS resolution) -->
-  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-  <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-  <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-  <link rel="dns-prefetch" href="https://maps.googleapis.com" />
-  <link rel="dns-prefetch" href="https://cdn.sanity.io" />
-  <link rel="dns-prefetch" href="https://www.google.com" />
-
-  <!-- Preconnect for non-critical but commonly used resources -->
-  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-  <link rel="preconnect" href="https://maps.googleapis.com" crossorigin />
-  <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
-
   <!-- Async Google Fonts loading - prevents render blocking -->
-  <link rel="preload" as="style"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+  <!-- NOTE: rel="preload" as="style" REMOVED - Vite converts it to a blocking <link rel="stylesheet"> -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=optional"
     media="print" onload="this.media='all';this.onload=null;" />
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=optional" />
   </noscript>
 
-  <!-- Preload LCP image - AVIF primary (smallest), WebP fallback -->
-  <!-- Priority: AVIF (27-60KB) < WebP (17-52KB) - AVIF is smaller so better for LCP -->
-  <link rel="preload" as="image" type="image/avif" href="/img/responsive/hero-637.avif" fetchpriority="high"
-    imagesrcset="/img/responsive/hero-400.avif 400w, /img/responsive/hero-637.avif 637w, /img/responsive/hero-800.avif 800w"
-    imagesizes="(max-width: 480px) 400px, (max-width: 768px) 637px, (min-width: 1024px) 637px, 100vw" />
-  <!-- WebP fallback for browsers without AVIF support -->
-  <link rel="preload" as="image" type="image/webp" href="/img/responsive/hero-637.webp"
-    imagesrcset="/img/responsive/hero-400.webp 400w, /img/responsive/hero-637.webp 637w, /img/responsive/hero-800.webp 800w"
-    imagesizes="(max-width: 480px) 400px, (max-width: 768px) 637px, (min-width: 1024px) 637px, 100vw" />
+  <!-- Preload LCP image - responsive srcset matching Hero.jsx -->
+  <link rel="preload" as="image" type="image/avif" fetchpriority="high"
+    href="/img/responsive/hero_dry_eye-640.avif"
+    imagesrcset="/img/responsive/hero_dry_eye-400.avif 400w, /img/responsive/hero_dry_eye-640.avif 640w, /img/responsive/hero_dry_eye-1024.avif 1024w"
+    imagesizes="(min-width: 1024px) calc(44vw - 2rem), calc(100vw - 3rem)" />
 
   <!-- Preload critical logo - AVIF primary -->
   <link rel="preload" as="image" type="image/avif" href="/img/responsive/logo_prata-224.avif" fetchpriority="high" />
   <link rel="preload" as="image" type="image/webp" href="/img/responsive/logo_prata-224.webp" />
-
-  <!-- Modulepreload for main entry point - Vite will inject actual paths -->
-  <link rel="modulepreload" href="/src/main.jsx" />
 
   <!-- Critical CSS - Inlined for instant above-the-fold rendering -->
   <style id="critical-css">
@@ -100,10 +78,20 @@
       border: 0 solid #e5e7eb
     }
 
+    /* Metric-compatible fallback font to prevent CLS during Inter loading */
+    @font-face {
+      font-family: 'Inter Fallback';
+      src: local('Arial');
+      ascent-override: 90.49%;
+      descent-override: 22.56%;
+      line-gap-override: 0%;
+      size-adjust: 107.64%;
+    }
+
     html {
       line-height: 1.5;
       -webkit-text-size-adjust: 100%;
-      font-family: Inter, ui-sans-serif, system-ui, sans-serif
+      font-family: Inter, 'Inter Fallback', ui-sans-serif, system-ui, sans-serif
     }
 
     body {
@@ -157,7 +145,7 @@
       position: sticky;
       top: 0;
       z-index: 50;
-      background: #fff;
+      background: transparent;
       height: 64px
     }
 
@@ -211,107 +199,6 @@
       max-width: 100%;
       height: auto;
       display: block
-    }
-
-    .aspect-hero {
-      aspect-ratio: 4/3
-    }
-
-    .aspect-video {
-      aspect-ratio: 16/9
-    }
-
-    /* Flexbox utilities */
-    .flex {
-      display: flex
-    }
-
-    .flex-col {
-      flex-direction: column
-    }
-
-    .items-center {
-      align-items: center
-    }
-
-    .justify-center {
-      justify-content: center
-    }
-
-    .justify-between {
-      justify-content: space-between
-    }
-
-    .gap-4 {
-      gap: 1rem
-    }
-
-    .gap-6 {
-      gap: 1.5rem
-    }
-
-    /* Grid utilities */
-    .grid {
-      display: grid
-    }
-
-    @media(min-width:768px) {
-      .md\:grid-cols-2 {
-        grid-template-columns: repeat(2, 1fr)
-      }
-    }
-
-    @media(min-width:1024px) {
-      .lg\:grid-cols-3 {
-        grid-template-columns: repeat(3, 1fr)
-      }
-    }
-
-    /* Spacing utilities */
-    .p-4 {
-      padding: 1rem
-    }
-
-    .px-4 {
-      padding-left: 1rem;
-      padding-right: 1rem
-    }
-
-    .py-8 {
-      padding-top: 2rem;
-      padding-bottom: 2rem
-    }
-
-    .mx-auto {
-      margin-left: auto;
-      margin-right: auto
-    }
-
-    .max-w-7xl {
-      max-width: 80rem
-    }
-
-    /* Text utilities */
-    .text-center {
-      text-align: center
-    }
-
-    .text-white {
-      color: #fff
-    }
-
-    .text-slate-600 {
-      color: #475569
-    }
-
-    /* Hide non-critical content until CSS loads */
-    .below-fold {
-      opacity: 0;
-      transition: opacity .3s
-    }
-
-    .css-loaded .below-fold {
-      opacity: 1
     }
   </style>
 

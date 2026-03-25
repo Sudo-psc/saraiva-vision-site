@@ -29,15 +29,15 @@ const LatestEpisodes = () => {
 
     // Episódio em destaque para a homepage
     const featuredEpisode = {
-        id: 'cirurgia-refrativa-ep1',
-        src: '/Podcasts/saude-ocular-cirurgia-refrativa.mp3',
-        title: t('podcast.episodes.cirurgia_refrativa.title'),
-        description: t('podcast.episodes.cirurgia_refrativa.description'),
-        duration: '08:15',
-        cover: '/Podcasts/Covers/refrativa.jpg',
-        category: 'Cirurgias',
-        date: '2025-09-01',
-        spotifyUrl: 'https://open.spotify.com/show/6sHIG7HbhF1w5O63CTtxwV'
+        id: 'olho-seco-alem-do-desconforto',
+        src: '/Podcasts/olho_seco.mp3',
+        title: 'Olho Seco: Além do Desconforto — Os Riscos que Você Precisa Conhecer',
+        description: 'Descubra por que o olho seco vai muito além de um simples incômodo. Dr. Philipe Saraiva Cruz revela os riscos que você precisa conhecer para proteger sua visão.',
+        duration: '10:00',
+        cover: '/Podcasts/Covers/olho_seco_cover_custom_20251008_135321.png',
+        category: 'Doenças Oculares',
+        date: '2026-02-08',
+        spotifyUrl: 'https://open.spotify.com/episode/31WPR6VGuabW12OnSOVhTt'
     };
 
     const shouldAnimate = hasAnimated.current;

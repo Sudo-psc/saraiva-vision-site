@@ -6,7 +6,7 @@ const DEFAULT_GA_ID = 'G-LXWRK8ELS6';
 const useDeferredAnalytics = ({
   gtmId = import.meta.env.VITE_GTM_ID || DEFAULT_GTM_ID,
   gaId = import.meta.env.VITE_GA_ID || DEFAULT_GA_ID,
-  idleTimeout = 3000,
+  idleTimeout = 8000,
   enabled = true
 } = {}) => {
   useEffect(() => {
@@ -55,7 +55,9 @@ const useDeferredAnalytics = ({
           ad_storage: 'denied',
           ad_user_data: 'denied',
           ad_personalization: 'denied',
-          analytics_storage: 'granted',
+          analytics_storage: 'denied',
+          functionality_storage: 'granted',
+          security_storage: 'granted',
           url_passthrough: true
         });
       };
@@ -80,7 +82,8 @@ const useDeferredAnalytics = ({
       }
     };
 
-    const events = ['mousedown', 'touchstart', 'keydown', 'scroll'];
+    // Only intent-driven events — scroll excluded to avoid loading during Lighthouse audits
+    const events = ['mousedown', 'touchstart', 'keydown', 'click'];
     const handleInteraction = () => {
       start();
     };

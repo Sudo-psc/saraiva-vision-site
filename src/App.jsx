@@ -44,6 +44,10 @@ const OlhoSecoPage = createLazyComponent(() => import('./views/OlhoSecoPage.jsx'
 const TesteOlhoSecoPage = createLazyComponent(() => import('./views/TesteOlhoSecoPage.jsx'));
 const IRPLPage = createLazyComponent(() => import('./views/IRPLPage.jsx'));
 const BlefaroplastiaJatoPlasmaPage = createLazyComponent(() => import('./views/BlefaroplastiaJatoPlasmaPage.jsx'));
+const TratamentoDGMPage = createLazyComponent(() => import('./views/TratamentoDGMPage.jsx'));
+const IRPLValeDoAcoPage = createLazyComponent(() => import('./views/IRPLValeDoAcoPage.jsx'));
+const LentesEscleraisPage = createLazyComponent(() => import('./views/LentesEscleraisPage.jsx'));
+const ConsultaOlhoSecoPage = createLazyComponent(() => import('./views/ConsultaOlhoSecoPage.jsx'));
 const NotFoundPage = createLazyComponent(() => import('./views/NotFoundPage.jsx'));
 import ScrollToTop from './components/ScrollToTop.jsx';
 import ServiceRedirect from './components/ServiceRedirect.jsx';
@@ -52,7 +56,7 @@ import { WidgetProvider } from '@/utils/widgetManager.jsx';
 import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
 
 import Navbar from './components/Navbar.jsx';
-import WhatsAppBubble from '@/components/WhatsAppBubble.jsx';
+const WhatsAppBubble = React.lazy(() => import('@/components/WhatsAppBubble.jsx'));
 const AnalyticsProxy = React.lazy(() => import('@/components/AnalyticsProxy.jsx'));
 const AnalyticsFallback = React.lazy(() => import('@/components/AnalyticsFallback.jsx'));
 const DeferredWidgets = React.lazy(() => import('@/modules/core/components/DeferredWidgets.jsx'));
@@ -127,6 +131,10 @@ function App() {
               <Route path="/luz-pulsada-irpl" element={<IRPLPage />} />
               <Route path="/meibografia" element={<MeibografiaPage />} />
               <Route path="/blefaroplastia-jato-plasma" element={<BlefaroplastiaJatoPlasmaPage />} />
+              <Route path="/tratamento-dgm-caratinga" element={<TratamentoDGMPage />} />
+              <Route path="/irpl-e-eye-vale-do-aco" element={<IRPLValeDoAcoPage />} />
+              <Route path="/lentes-esclerais-olho-seco" element={<LentesEscleraisPage />} />
+              <Route path="/consulta-primeira-vez-olho-seco" element={<ConsultaOlhoSecoPage />} />
               <Route path="/assine" element={<AssinePage />} />
               <Route path="/waitlist" element={<WaitlistPage />} />
               <Route path="/google-reviews-test" element={<GoogleReviewsTestPage />} />
@@ -147,7 +155,9 @@ function App() {
         <React.Suspense fallback={null}>
           <IRPLAnnouncement />
         </React.Suspense>
-        <WhatsAppBubble />
+        <React.Suspense fallback={null}>
+          <WhatsAppBubble />
+        </React.Suspense>
       </WidgetProvider>
 
       {/* Analytics Fallback para contornar bloqueadores */}

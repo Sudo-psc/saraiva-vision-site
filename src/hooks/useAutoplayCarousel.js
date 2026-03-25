@@ -1,5 +1,20 @@
 import { useState, useEffect, useCallback, useRef, useMemo, useReducer } from 'react';
-import { useReducedMotion } from 'framer-motion';
+
+// Native reduced motion detection (avoids importing 113KB framer-motion)
+function useNativeReducedMotion() {
+  const [prefersReduced, setPrefersReduced] = useState(
+    () => typeof window !== 'undefined'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handler = (e) => setPrefersReduced(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  return prefersReduced;
+}
 
 // Default configuration
 const DEFAULT_AUTOPLAY_CONFIG = {
@@ -189,16 +204,19 @@ export const useAutoplayCarousel = ({
   }, [userConfig]);
 
   // Detect reduced motion preference
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useNativeReducedMotion();
   
   // Page visibility
   const { isVisible } = usePageVisibility();
+
+  // Mobile detection
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
 
   // Initialize state with validated parameters
   const initialState = {
     isPlaying: false,
     isPaused: false,
-    isEnabled: config.respectReducedMotion ? !prefersReducedMotion : true,
+    isEnabled: config.respectReducedMotion ? (!prefersReducedMotion && !isMobile) : !isMobile,
     currentIndex: safeIndex,
     totalSlides: safeTotal,
     direction: 'forward',

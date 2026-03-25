@@ -125,7 +125,7 @@ export default defineConfig(({ mode }) => {
 
     build: {
       outDir: 'dist',
-      sourcemap: true, // Enabled for production debugging (CORS error tracking)
+      sourcemap: false, // Disabled — prevents public source map exposure
       chunkSizeWarningLimit: 100, // Reduced to 150KB for optimal loading performance
       assetsDir: 'assets',
       assetsInlineLimit: 4096, // Increased to 4KB for small assets (reduces HTTP requests)
@@ -142,18 +142,7 @@ export default defineConfig(({ mode }) => {
       modulePreload: {
         polyfill: false // Disable polyfill for modern browsers
       },
-      // Aggressive dead code elimination
-      terserOptions: {
-        compress: {
-          drop_console: true,
-          drop_debugger: true,
-          pure_funcs: ['console.info', 'console.debug', 'console.warn'],
-          passes: 2
-        },
-        mangle: {
-          safari10: true
-        }
-      },
+      // Note: terserOptions removed — minify is 'esbuild', not 'terser'
       rollupOptions: {
         input: 'index.html',
         output: {
@@ -203,8 +192,8 @@ export default defineConfig(({ mode }) => {
                 return 'radix-ui'
               }
 
-              // Framer Motion - heavy animation library, lazy load for non-essential animations
-              if (id.includes('framer-motion')) {
+              // Framer Motion + sub-packages - heavy animation library, lazy load
+              if (id.includes('framer-motion') || id.includes('motion-dom') || id.includes('motion-utils')) {
                 return 'motion'
               }
 
@@ -221,6 +210,11 @@ export default defineConfig(({ mode }) => {
               // Date-fns - separate chunk for blog/formatting (lazy loaded with blog components)
               if (id.includes('date-fns')) {
                 return 'date-fns'
+              }
+
+              // RxJS - transitive dep from Sanity, lazy loaded with CMS
+              if (id.includes('rxjs')) {
+                return 'sanity-http'
               }
 
               // Event Source Polyfill - SSE fallback (rarely needed in modern browsers)
@@ -246,11 +240,6 @@ export default defineConfig(({ mode }) => {
               // Healthcare-specific analytics and monitoring
               if (id.includes('posthog') || id.includes('web-vitals')) {
                 return 'analytics'
-              }
-
-              // Icons libraries - split by usage frequency
-              if (id.includes('lucide-react')) {
-                return 'icons'
               }
 
               // Google Maps - critical for clinic location (medical compliance)
@@ -311,21 +300,6 @@ export default defineConfig(({ mode }) => {
               // Supabase - separate chunk for auth/database
               if (id.includes('@supabase')) {
                 return 'supabase'
-              }
-
-              // PostHog - separate analytics chunk (lazy loaded)
-              if (id.includes('posthog')) {
-                return 'posthog-analytics'
-              }
-
-              // Resend - email service (rarely used in frontend)
-              if (id.includes('resend')) {
-                return 'email-service'
-              }
-
-              // Marked - markdown parser (blog only)
-              if (id.includes('marked')) {
-                return 'markdown-parser'
               }
 
               // Helmet - security headers (separate from helmet-async)

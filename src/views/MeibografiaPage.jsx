@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import SEOHead from '@/components/SEOHead';
+import FAQSchema from '@/components/FAQSchema';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Clock, CheckCircle, Star, Calendar, Eye, Droplets, AlertCircle, ExternalLink, Phone, MessageSquare, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -13,10 +14,47 @@ const MeibografiaPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
+    // FAQ data for rich snippets
+    const meibografiaFAQs = [
+        { question: 'O que é meibografia?', answer: 'Meibografia é um exame não invasivo que fotografa as glândulas de Meibômio em alta definição usando luz infravermelha. Permite avaliar a morfologia glandular e diagnosticar com precisão a disfunção das glândulas de Meibômio (DGM), principal causa de olho seco evaporativo.' },
+        { question: 'A meibografia dói?', answer: 'Não. A meibografia é completamente indolor. O equipamento apenas ilumina a pálpebra com luz infravermelha enquanto uma câmera captura a imagem das glândulas. O exame dura poucos minutos.' },
+        { question: 'Quando a meibografia é indicada?', answer: 'A meibografia é indicada para pacientes com sintomas de olho seco (ardência, sensação de areia, visão embaçada), usuários de lentes de contato, antes de cirurgias oculares e para monitorar a resposta ao tratamento de DGM.' },
+    ];
+
     const seo = {
-        title: 'Meibografia - Exame Avançado para Diagnóstico de Olho Seco | Saraiva Vision',
-        description: 'Meibografia é um exame não invasivo que visualiza as glândulas de Meibômio em alta definição, permitindo diagnóstico preciso de olho seco evaporativo e disfunção das glândulas de Meibômio em Caratinga-MG.',
-        keywords: 'meibografia, olho seco, glândulas de Meibômio, DGM, diagnóstico olho seco, exame oftalmológico, Caratinga MG, oftalmologia avançada',
+        title: 'Meibografia em Caratinga | Exame para Diagnóstico de Olho Seco | Saraiva Vision',
+        description: 'Meibografia em Caratinga, MG. Exame não invasivo para diagnóstico preciso de olho seco e disfunção das glândulas de Meibômio. Resultado imediato. Agende seu exame.',
+        keywords: 'meibografia Caratinga, meibografia exame Caratinga, diagnóstico olho seco Caratinga, glândulas de Meibômio, DGM exame, oftalmologista Caratinga MG, exame olho seco avançado',
+        structuredData: {
+            '@context': 'https://schema.org',
+            '@type': 'MedicalProcedure',
+            name: 'Meibografia',
+            alternateName: ['Meibomian Gland Imaging', 'Meibomography'],
+            description: 'Exame não invasivo que visualiza as glândulas de Meibômio em alta definição usando luz infravermelha, permitindo diagnóstico preciso de olho seco evaporativo.',
+            bodyLocation: 'Pálpebras superiores e inferiores',
+            procedureType: 'https://schema.org/NoninvasiveProcedure',
+            howPerformed: 'Luz infravermelha ilumina a pálpebra enquanto câmera captura imagem das glândulas de Meibômio em alta definição.',
+            preparation: 'Não requer preparo especial. Apenas remover lentes de contato antes do exame.',
+            followup: 'Resultado imediato com análise detalhada pelo oftalmologista.',
+            status: 'https://schema.org/EventScheduled',
+            relevantSpecialty: { '@type': 'MedicalSpecialty', name: 'Ophthalmology' },
+            performer: {
+                '@type': 'Physician',
+                name: clinicInfo.responsiblePhysician,
+                medicalSpecialty: 'Ophthalmology'
+            },
+            location: {
+                '@type': 'MedicalClinic',
+                name: clinicInfo.name,
+                address: {
+                    '@type': 'PostalAddress',
+                    addressLocality: 'Caratinga',
+                    addressRegion: 'MG',
+                    postalCode: '35300-000',
+                    addressCountry: 'BR'
+                }
+            }
+        }
     };
 
     const benefits = [
@@ -96,6 +134,7 @@ const MeibografiaPage = () => {
     return (
         <div className="min-h-screen flex flex-col bg-white">
             <SEOHead {...seo} />
+            <FAQSchema faqs={meibografiaFAQs} />
             <Navbar />
 
             <main className="flex-1 pt-20 sm:pt-24 md:pt-28 lg:pt-32 scroll-block-internal mx-[5%] lg:mx-[10%]">

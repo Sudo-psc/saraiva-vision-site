@@ -71,15 +71,16 @@ const ServicesHero = ({ t }) => (
         </motion.div>
 
         {/* Main Title */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-          {t('services.title_full', 'Serviços Oftalmológicos')}
+        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight px-2 sm:px-0">
+          Cuidados Oftalmológicos
+          <span className="block">Completos</span>
           <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
             Especializados
           </span>
         </h1>
 
         {/* Subtitle */}
-        <p className="text-lg md:text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-base md:text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
           {t('services.subtitle', 'Tecnologia de ponta e atendimento humanizado para cuidar da sua visão com excelência.')}
         </p>
 
@@ -239,9 +240,9 @@ const ServiceCard = ({ service, index }) => {
           </div>
 
           {/* Content */}
-          <h3 className="text-xl lg:text-2xl font-bold text-slate-900 mb-3 group-hover:text-cyan-700 transition-colors duration-300 pr-12">
+          <h2 className="text-xl lg:text-2xl font-bold text-slate-900 mb-3 group-hover:text-cyan-700 transition-colors duration-300 pr-12">
             {service.title}
-          </h3>
+          </h2>
 
           <p className="text-slate-600 text-sm lg:text-base leading-relaxed line-clamp-3">
             {service.description}
@@ -389,9 +390,9 @@ const CTASection = ({ t }) => (
       <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/20 rounded-full blur-3xl" />
 
       <div className="relative z-10 text-center max-w-2xl mx-auto">
-        <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4">
+        <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4">
           Precisa de ajuda para escolher?
-        </h3>
+        </h2>
         <p className="text-white/70 mb-8 text-lg">
           Nossa equipe está pronta para orientá-lo. Fale conosco e encontre o serviço ideal para suas necessidades.
         </p>
@@ -502,7 +503,7 @@ const ServicesEnhanced = ({ full = false, grid = false }) => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
               >
                 Cuidados Oftalmológicos
                 <span className="block text-cyan-600">Completos</span>

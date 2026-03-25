@@ -21,7 +21,6 @@ export const useIntersectionObserver = (options = {}) => {
       {
         threshold,
         rootMargin,
-        ...options
       }
     );
 
@@ -33,7 +32,7 @@ export const useIntersectionObserver = (options = {}) => {
         observer.unobserve(currentRef);
       }
     };
-  }, [threshold, rootMargin, options]);
+  }, [threshold, rootMargin]);
 
   return [ref, isIntersecting];
 };
