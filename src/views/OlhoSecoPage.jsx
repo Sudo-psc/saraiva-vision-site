@@ -162,7 +162,7 @@ const OlhoSecoPage = () => {
                   </div>
                   <div className="flex flex-wrap gap-4">
                     <Button
-                      onClick={() => navigate('/agendamento')}
+                      onClick={() => undefined}
                       className="bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white px-6 py-3 rounded-xl text-base font-semibold shadow-lg hover:shadow-xl"
                     >
                       {t('navbar.schedule')}
@@ -678,7 +678,7 @@ const OlhoSecoPage = () => {
                   </ul>
                   <div className="space-y-2">
                     <Button
-                      onClick={() => navigate('/agendamento')}
+                      onClick={() => undefined}
                       className="w-full bg-emerald-400 hover:bg-emerald-300 text-slate-900 font-semibold"
                     >
                       Agendar avaliação completa de Olho Seco
@@ -932,7 +932,7 @@ const OlhoSecoPage = () => {
                 </p>
               </div>
               <Button
-                onClick={() => navigate('/agendamento')}
+                onClick={() => undefined}
                 className="bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white px-6 py-3 rounded-xl text-base font-semibold shadow-lg hover:shadow-xl"
               >
                 Agendar avaliação completa de Olho Seco

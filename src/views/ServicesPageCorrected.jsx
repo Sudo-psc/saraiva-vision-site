@@ -188,14 +188,14 @@ const ServicesPageCorrected = () => {
                 Pronto para cuidar da sua visão?
               </h2>
               <p className="text-xl mb-8 text-blue-100">
-                Agende sua consulta hoje mesmo e tenha acesso aos melhores cuidados oftalmológicos.
+                Clínica encerrada hoje mesmo e tenha acesso aos melhores cuidados oftalmológicos.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="/contato"
                   className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center"
                 >
-                  📞 Agendar Consulta
+                  📞 Clínica encerrada
                 </a>
                 <a
                   href="/sobre"

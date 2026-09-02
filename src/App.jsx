@@ -53,6 +53,7 @@ import LocalBusinessSchema from './components/LocalBusinessSchema.jsx';
 
 import Navbar from './components/Navbar.jsx';
 import WhatsAppBubble from '@/components/WhatsAppBubble.jsx';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice.jsx';
 const AnalyticsProxy = React.lazy(() => import('@/components/AnalyticsProxy.jsx'));
 const AnalyticsFallback = React.lazy(() => import('@/components/AnalyticsFallback.jsx'));
 const DeferredWidgets = React.lazy(() => import('@/modules/core/components/DeferredWidgets.jsx'));
@@ -82,6 +83,9 @@ function App() {
         */}
         <div id="app-content">
           <Navbar />
+          <div className="pt-[88px] lg:pt-[100px]">
+            <ClinicClosedNotice variant="banner" />
+          </div>
           <ScrollToTop />
           <ErrorBoundary>
             <Routes>

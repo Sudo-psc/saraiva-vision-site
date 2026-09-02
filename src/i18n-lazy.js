@@ -15,15 +15,15 @@ const criticalTranslations = {
             // Hero section
             "hero.title": "Clínica Especializada em Olho Seco",
             "hero.subtitle": "Tratamento com IRPL E-Eye aprovado pela ANVISA",
-            "hero.cta": "Agendar Consulta",
-            "hero.whatsapp": "WhatsApp",
+            "hero.cta": "Clínica encerrada",
+            "hero.whatsapp": "Sem agenda",
             // Navigation
             "nav.home": "Início",
             "nav.services": "Serviços",
             "nav.about": "Sobre",
             "nav.contact": "Contato",
             "nav.blog": "Blog",
-            "nav.schedule": "Agendar",
+            "nav.schedule": "Clínica encerrada",
             "navbar.home": "Início",
             "navbar.services": "Serviços",
             "navbar.dry_eye": "Olho Seco",
@@ -37,7 +37,7 @@ const criticalTranslations = {
             "navbar.plans": "Planos",
             "navbar.faq": "FAQ",
             "navbar.contact": "Contato",
-            "navbar.schedule": "Agendar",
+            "navbar.schedule": "Clínica encerrada",
             "navbar.home_link_label": "Ir para a página inicial",
             // Services section (above-the-fold critical)
             "services.title": "Nossos Serviços",

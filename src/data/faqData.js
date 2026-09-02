@@ -9,13 +9,9 @@ export const generalFAQs = [
   {
     question: 'Como agendar uma consulta na Clínica Saraiva Vision?',
     answer: `
-      <p>Você pode agendar sua consulta de 3 formas:</p>
-      <ul>
-        <li><strong>WhatsApp:</strong> (33) 99860-1427 - Atendimento rápido e direto</li>
-        <li><strong>Telefone:</strong> (33) 99860-1427 - Horário comercial</li>
-        <li><strong>Online:</strong> Através do nosso <a href="/agendamento" class="text-primary-600 hover:underline">formulário de agendamento</a></li>
-      </ul>
-      <p>Nossa equipe responde rapidamente e oferece horários flexíveis para sua conveniência.</p>
+      <p>A Clínica Saraiva Vision está <strong>encerrada / em reforma</strong> e <strong>não possui agenda</strong>.</p>
+      <p>Não há consultas presenciais, online ou por WhatsApp neste momento.</p>
+      <p>Para livros e textos do Dr. Philipe Saraiva, visite <a href="https://drphilipesaraiva.com.br" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:underline">drphilipesaraiva.com.br</a>.</p>
     `,
   },
   {

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Calendar, Star, Shield, MapPin, Clock } from 'lucide-react';
 import { Button } from '../ui/button';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice';
+import { isSchedulingEnabled } from '@/lib/clinicStatus';
 
 /**
  * StickyAppointmentCTA - CTA flutuante que aparece após scroll
@@ -24,36 +26,20 @@ export function StickyAppointmentCTA() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (!isVisible) return null;
+  if (!isVisible || !isSchedulingEnabled()) return null;
 
-  return (
-    <div 
-      className="fixed bottom-6 right-6 z-50 animate-slide-up"
-      role="complementary"
-      aria-label="Botão de agendamento rápido"
-    >
-      <Button
-        as="a"
-        href="https://wa.me/5533998601427"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold px-6 py-4
-                   shadow-2xl hover:shadow-3xl transition-all rounded-full
-                   focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2"
-      >
-        <Phone className="w-6 h-6 mr-2" aria-hidden="true" />
-        <span className="hidden sm:inline">Agendar Consulta</span>
-        <span className="sm:hidden">Agendar</span>
-      </Button>
-    </div>
-  );
+  return null;
 }
 
 /**
  * InlineAppointmentCTA - CTA para inserir no meio do conteúdo
  * Deve ser colocado após ~50% do artigo para máxima conversão
  */
-export function InlineAppointmentCTA({ context = "artigo" }) {
+export function InlineAppointmentCTA() {
+  if (!isSchedulingEnabled()) {
+    return <ClinicClosedNotice variant="card" className="my-10" />;
+  }
+
   return (
     <aside 
       className="my-10 p-6 sm:p-8 bg-gradient-to-br from-cyan-600 via-blue-700 to-purple-700 
@@ -68,7 +54,7 @@ export function InlineAppointmentCTA({ context = "artigo" }) {
         </div>
         
         <h3 className="text-2xl sm:text-3xl font-bold">
-          Identificou-se com este {context}?
+          Identificou-se com este artigo?
         </h3>
         
         <p className="text-cyan-100 text-lg leading-relaxed">
@@ -170,8 +156,8 @@ export function ClinicInfoCard() {
         </div>
         <h4 className="font-bold text-gray-900 mb-1">Horário</h4>
         <p className="text-sm text-gray-600">
-          Segunda a Sexta<br />
-          8h às 18h
+          Clínica encerrada<br />
+          Sem agenda
         </p>
       </div>
 
@@ -180,14 +166,8 @@ export function ClinicInfoCard() {
         <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3">
           <Phone className="w-6 h-6 text-purple-600" aria-hidden="true" />
         </div>
-        <h4 className="font-bold text-gray-900 mb-1">Contato</h4>
-        <a
-          href="tel:+5533998601427"
-          className="text-sm text-gray-600 hover:text-purple-600 hover:underline
-                   focus:outline-none focus:underline"
-        >
-          (33) 99860-1427
-        </a>
+        <h4 className="font-bold text-gray-900 mb-1">Status</h4>
+        <p className="text-sm text-gray-600">Sem agenda</p>
       </div>
     </div>
   );
@@ -272,15 +252,9 @@ export function EmergencyNotice() {
             trauma ocular ou flashes de luz acompanhados de moscas volantes, 
             <strong> procure atendimento médico imediato</strong>.
           </p>
-          <Button
-            as="a"
-            href="tel:+5533998601427"
-            className="bg-red-600 hover:bg-red-700 text-white font-bold
-                     focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-offset-2"
-          >
-            <Phone className="w-4 h-4 mr-2" aria-hidden="true" />
-            Ligar Agora: (33) 99860-1427
-          </Button>
+          <p className="text-sm font-semibold text-red-900">
+            A clínica está encerrada e não oferece plantão ou agenda.
+          </p>
         </div>
       </div>
     </aside>

@@ -220,11 +220,11 @@ const FAQLuzPulsadaPage = () => {
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Link>
               <Link
-                to="/agendamento"
+                to="/"
                 className="inline-flex items-center px-6 py-3 rounded-xl border-2 border-white text-white font-semibold hover:bg-white/10 transition-colors"
               >
                 <Clock className="mr-2 w-4 h-4" />
-                Agendar Avaliação
+                Clínica encerrada
               </Link>
             </div>
           </div>

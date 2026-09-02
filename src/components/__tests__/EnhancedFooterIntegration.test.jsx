@@ -218,10 +218,7 @@ describe('EnhancedFooter Integration - Drop-in Replacement', () => {
         it('should preserve all external link behaviors', () => {
             renderWithRouter(<EnhancedFooter />);
 
-            // Check WhatsApp link
-            const whatsappLink = screen.getByText('(33) 99999-9999').closest('a');
-            expect(whatsappLink).toHaveAttribute('href', 'https://wa.me/5533999999999');
-            expect(whatsappLink).toHaveAttribute('target', '_blank');
+            expect(screen.getByText(/Clínica encerrada \/ em reforma/i)).toBeInTheDocument();
 
             // Check email link
             const emailLink = screen.getByText('contato@saraivavision.com.br').closest('a');

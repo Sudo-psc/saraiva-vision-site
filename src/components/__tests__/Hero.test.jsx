@@ -36,7 +36,7 @@ vi.mock('@/components/ui/ImageWithFallback', () => ({
 }));
 
 vi.mock('@/components/UnifiedCTA', () => ({
-  default: ({ className }) => <button className={className}>Agendar Consulta</button>
+  default: ({ className }) => <div className={className}>Clínica encerrada / em reforma — sem agenda</div>
 }));
 
 describe('Hero Component', () => {
@@ -55,7 +55,7 @@ describe('Hero Component', () => {
     
     // Check buttons
     expect(screen.getByText('Nossos Serviços')).toBeInTheDocument();
-    expect(screen.getByText('Agendar Consulta')).toBeInTheDocument();
+    expect(screen.getByText(/Clínica encerrada \/ em reforma/i)).toBeInTheDocument();
     
     // Check stats
     expect(screen.getByText('+5k')).toBeInTheDocument();

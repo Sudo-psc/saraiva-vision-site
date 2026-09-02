@@ -334,15 +334,15 @@ const TesteOlhoSecoPage = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Button 
-                    onClick={() => navigate('/agendamento')}
+                    onClick={() => undefined}
                     className="bg-gradient-to-r from-cyan-600 to-cyan-500 hover:from-cyan-700 hover:to-cyan-600 text-[#0a192f] font-bold py-6 rounded-xl flex items-center justify-center gap-2"
                   >
                     <Calendar className="w-5 h-5" />
-                    Agendar Consulta
+                    Clínica encerrada
                   </Button>
                   <Button 
                     variant="outline"
-                    onClick={() => window.open('https://wa.me/5533998601427?text=Fiz o teste de olho seco no site e gostaria de agendar uma avaliação.', '_blank')}
+                    onClick={() => void('https://wa.me/5533998601427?text=Fiz o teste de olho seco no site e gostaria de agendar uma avaliação.', '_blank')}
                     className="border-2 border-[#25D366] text-[#25D366] hover:bg-[#25D366] hover:text-white font-bold py-6 rounded-xl flex items-center justify-center gap-2 bg-transparent"
                   >
                     <MessageCircle className="w-5 h-5" />

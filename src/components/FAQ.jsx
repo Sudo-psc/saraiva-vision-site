@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ChevronDown, HelpCircle, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import SchemaMarkup from '@/components/SchemaMarkup';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice';
 
 const FAQ = () => {
   const { t } = useTranslation();
@@ -39,13 +40,13 @@ const FAQ = () => {
     {
       id: 5,
       question: "Como funciona o agendamento online?",
-      answer: "Nosso sistema de agendamento online está disponível 24 horas por dia. Você pode escolher o tipo de consulta, selecionar data e horário disponíveis, e receber confirmação instantânea. Também enviamos lembretes por WhatsApp. É a forma mais rápida e conveniente de agendar sua consulta conosco.",
+      answer: "A Clínica Saraiva Vision está encerrada / em reforma e não possui agenda. Não há agendamento online, presencial ou por WhatsApp neste momento.",
       category: 'agendamento'
     },
     {
       id: 6,
       question: "Qual o tempo de espera para conseguir uma consulta?",
-      answer: "Trabalhamos para oferecer consultas com agilidade. Para casos de rotina, normalmente temos disponibilidade na mesma semana. Para urgências, priorizamos o atendimento no mesmo dia ou no próximo dia útil. Recomendamos usar nosso agendamento online para visualizar as opções disponíveis em tempo real.",
+      answer: "Não há agenda no momento. A clínica está encerrada / em reforma e não está marcando consultas.",
       category: 'agendamento'
     },
     {
@@ -186,17 +187,7 @@ const FAQ = () => {
           <p className="text-slate-600 mb-6">
             {t('faq.cta.text')}
           </p>
-          <Button
-            onClick={() => {
-              const whatsappLink = `https://wa.me/5533998601427?text=${encodeURIComponent("Olá! Tenho uma dúvida que não encontrei no FAQ.")}`;
-              window.open(whatsappLink, '_blank', 'noopener,noreferrer');
-            }}
-            size="lg"
-            className="gap-2"
-          >
-            <HelpCircle size={20} />
-            {t('faq.cta.button')}
-          </Button>
+          <ClinicClosedNotice variant="inline" className="mx-auto max-w-xl text-left" />
         </motion.div>
       </div>
     </section>

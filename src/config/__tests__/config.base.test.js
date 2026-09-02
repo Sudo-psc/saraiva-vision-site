@@ -138,8 +138,8 @@ describe('config.base.js', () => {
       expect(business.hours).toHaveProperty('saturday');
       expect(business.hours).toHaveProperty('sunday');
       expect(business.hours).toHaveProperty('formatted');
-      expect(business.hours.weekdays.opens).toBe('08:00');
-      expect(business.hours.weekdays.closes).toBe('18:00');
+      expect(business.hours.weekdays.opens).toBeNull();
+      expect(business.hours.weekdays.closes).toBeNull();
     });
 
     it('deve ter informações do médico responsável (CFM)', () => {

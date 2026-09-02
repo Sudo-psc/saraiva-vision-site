@@ -88,14 +88,8 @@ const ClinicSchema = () => {
     paymentAccepted: ['Cartão de crédito', 'Cartão de débito', 'Dinheiro', 'PIX'],
 
     // Opening hours
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: '08:00',
-        closes: '18:00',
-      },
-    ],
+    publicAccess: false,
+    openingHoursSpecification: [],
 
     // Available services
     availableService: [
@@ -148,14 +142,8 @@ const ClinicSchema = () => {
       latitude: clinicInfo.latitude,
       longitude: clinicInfo.longitude,
     },
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: '08:00',
-        closes: '18:00',
-      },
-    ],
+    publicAccess: false,
+    openingHoursSpecification: [],
     priceRange: '$$',
   };
 

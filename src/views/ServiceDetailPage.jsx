@@ -229,19 +229,10 @@ const ServiceDetailPage = () => {
                 transition={{ delay: 0.6 }}
                 className="bg-gradient-to-br from-blue-600 to-cyan-600 rounded-2xl p-6 text-white"
               >
-                <h3 className="font-bold text-lg mb-3">Agende sua consulta</h3>
+                <h3 className="font-bold text-lg mb-3">Clínica encerrada / em reforma</h3>
                 <p className="text-blue-100 mb-4 text-sm">
-                  Entre em contato conosco para agendar seu {service.title.toLowerCase()}.
+                  Sem agenda no momento. Não há consultas para {service.title.toLowerCase()}.
                 </p>
-                <button
-                  onClick={() => window.open('https://www.saraivavision.com.br/agendamento', '_blank')}
-                  className="w-full bg-white text-blue-600 font-semibold py-3 px-6 rounded-xl hover:bg-blue-50 hover:shadow-lg transition-all duration-300 transform hover:scale-105 border border-blue-100"
-                >
-                  <span className="flex items-center justify-center">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    Agendar Agora
-                  </span>
-                </button>
               </motion.div>
             </div>
           </div>

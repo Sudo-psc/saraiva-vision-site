@@ -196,7 +196,7 @@ export default function BlogSEO({ post }) {
       <meta name="ai:language" content="pt-BR" />
       <meta name="ai:region" content="Caratinga, Minas Gerais, Brasil" />
       <meta name="ai:clinic" content="Clínica Saraiva Vision" />
-      <meta name="ai:booking_url" content="https://saraivavision.com.br/agendamento" />
+      <meta name="ai:clinic_status" content="closed-no-schedule" />
       <meta name="ai:phone" content="+5533998601427" />
       <meta name="ai:api_endpoint" content={`https://saraivavision.com.br/api/blog-feed/${post.slug}`} />
       

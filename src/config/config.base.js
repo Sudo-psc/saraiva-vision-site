@@ -180,9 +180,9 @@ const business = {
   // Horário de funcionamento
   hours: {
     weekdays: {
-      display: 'Segunda a Sexta: 08:00 às 18:00',
-      opens: '08:00',
-      closes: '18:00'
+      display: 'Clínica encerrada / em reforma — sem agenda',
+      opens: null,
+      closes: null
     },
     saturday: {
       display: 'Sábado: Fechado',
@@ -195,8 +195,8 @@ const business = {
       closes: null
     },
     formatted: {
-      short: 'Seg-Sex: 08:00-18:00',
-      long: 'Segunda a Sexta: 08:00 às 18:00 | Sábado e Domingo: Fechado'
+      short: 'Clínica encerrada — sem agenda',
+      long: 'Clínica encerrada / em reforma — sem agenda'
     }
   },
 
@@ -204,9 +204,10 @@ const business = {
   doctor: {
     name: 'Dr. Philipe Saraiva Cruz',
     crm: 'CRM-MG 69.870',
+    rqe: 'RQE 71.903',
     specialty: 'Oftalmologia',
     title: 'Oftalmologista',
-    displayName: 'Dr. Philipe Saraiva Cruz (CRM-MG 69.870)',
+    displayName: 'Dr. Philipe Saraiva Cruz (CRM-MG 69.870 • RQE 71.903)',
     role: 'Responsável Técnico Médico'
   },
 

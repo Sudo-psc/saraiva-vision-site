@@ -270,10 +270,10 @@ const SymptomChecklist = () => {
                 Diagnóstico completo com meibografia e classificação TFOS DEWS III para identificar a causa exata dos seus sintomas.
               </p>
               <Button
-                onClick={() => navigate('/agendamento')}
+                onClick={() => undefined}
                 className="bg-white text-cyan-700 hover:bg-cyan-50 font-semibold"
               >
-                Agendar Avaliação
+                Clínica encerrada
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>

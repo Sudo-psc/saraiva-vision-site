@@ -1,10 +1,17 @@
 import { Calendar, Phone, MessageCircle, MapPin } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { NAP_CANONICAL, generateWhatsAppURL, getPhoneDisplay } from '@/lib/napCanonical';
+import { isSchedulingEnabled } from '@/lib/clinicStatus';
 import { safeOpenUrl } from '@/utils/safeNavigation';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice';
 import '../styles/cta.css';
 
 const UnifiedCTA = ({ variant = 'hero', className = '' }) => {
+  if (!isSchedulingEnabled()) {
+    const noticeVariant = variant === 'sticky' ? 'compact' : variant === 'hero' ? 'hero' : 'inline';
+    return <ClinicClosedNotice variant={noticeVariant} className={className} />;
+  }
+
   const handleAgendarClick = () => {
     const validUrl = clinicInfo.validateSchedulingUrl();
     if (validUrl) {

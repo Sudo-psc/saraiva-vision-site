@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { isSchedulingEnabled } from '@/lib/clinicStatus';
 
 const DEFAULT_SCHEDULE = {
   sunday: { open: null, close: null },
@@ -18,6 +19,10 @@ const parseTime = (time) => {
 
 export const useWorkingHoursStatus = (schedule = DEFAULT_SCHEDULE, referenceDate = new Date()) => {
   return useMemo(() => {
+    if (!isSchedulingEnabled()) {
+      return { status: 'closed', nextOpening: null };
+    }
+
     const dayKey = referenceDate.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
     const slots = schedule[dayKey];
 

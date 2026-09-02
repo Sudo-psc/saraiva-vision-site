@@ -157,10 +157,10 @@ const IRPLPage = () => {
 
                 <div className="flex flex-wrap gap-4 pt-4">
                   <Button
-                    onClick={() => navigate('/agendamento')}
+                    onClick={() => undefined}
                     className="bg-gradient-to-r from-cyan-600 to-sky-600 hover:from-cyan-700 hover:to-sky-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-transform hover:scale-105"
                   >
-                    Agendar Avaliação de Olho Seco
+                    Clínica encerrada
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                   <Button
@@ -800,14 +800,14 @@ const IRPLPage = () => {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button
-                onClick={() => navigate('/agendamento')}
+                onClick={() => undefined}
                 className="bg-white text-cyan-700 hover:bg-cyan-50 px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl"
               >
-                Agendar Avaliação de Olho Seco
+                Clínica encerrada
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
               <button
-                onClick={() => window.open('https://wa.me/5533998601427?text=Olá! Gostaria de saber mais sobre o tratamento IRPL para olho seco.', '_blank')}
+                onClick={() => void('https://wa.me/5533998601427?text=Olá! Gostaria de saber mais sobre o tratamento IRPL para olho seco.', '_blank')}
                 className="border-2 border-white text-white hover:bg-white/20 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300"
               >
                 Falar pelo WhatsApp
@@ -986,7 +986,7 @@ const IRPLPage = () => {
                     }}
                     className="bg-white text-cyan-700 hover:bg-cyan-50 px-6 py-3 rounded-xl font-semibold"
                   >
-                    Agendar Avaliação
+                    Clínica encerrada
                   </Button>
                 </div>
               </div>

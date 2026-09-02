@@ -258,12 +258,11 @@ describe('EnhancedFooter - Existing Functionality Preservation', () => {
             expect(emailLink).toHaveAttribute('href', 'mailto:contato@saraivavision.com.br');
         });
 
-        it('should have correct WhatsApp link', () => {
+        it('shows clinic closed status instead of WhatsApp appointment links', () => {
             renderWithRouter(<EnhancedFooter />);
 
-            const whatsappLink = screen.getByText('(33) 99999-9999').closest('a');
-            expect(whatsappLink).toHaveAttribute('href', 'https://wa.me/5533999999999');
-            expect(whatsappLink).toHaveAttribute('target', '_blank');
+            expect(screen.getByText(/Clínica encerrada \/ em reforma/i)).toBeInTheDocument();
+            expect(screen.queryByText('(33) 99999-9999')).not.toBeInTheDocument();
         });
 
         it('should have correct chatbot link', () => {

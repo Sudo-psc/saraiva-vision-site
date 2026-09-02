@@ -46,7 +46,7 @@ const SEOHead = ({
   }, [title]);
 
   const validatedDescription = React.useMemo(() => {
-    const defaultDesc = 'Clínica oftalmológica em Caratinga/MG: catarata, glaucoma, retina, lentes. Dr. Philipe Saraiva CRM-MG 69.870. Agende online ou WhatsApp!';
+    const defaultDesc = 'Clínica Saraiva Vision em Caratinga/MG está encerrada / em reforma — sem agenda. Dr. Philipe Saraiva CRM-MG 69.870 • RQE 71.903.';
     const desc = description || defaultDesc;
     return desc.length > 155 ? desc.substring(0, 152) + '...' : desc;
   }, [description]);

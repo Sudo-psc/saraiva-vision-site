@@ -127,25 +127,8 @@ const ServiceDetail = ({ service, onScheduleClick, onBackClick }) => {
                   transition={{ duration: 0.5, delay: 0.3 }}
                   className="bg-cyan-600 rounded-2xl p-8 text-white text-center shadow-xl"
                 >
-                  <h3 className="text-2xl font-bold mb-4">Pronto para Agendar?</h3>
-                  <p className="mb-6">Nossa equipe está pronta para te atender com excelência.</p>
-                  <Button
-                    onClick={onScheduleClick}
-                    size="lg"
-                    className="w-full bg-white text-cyan-600 font-bold hover:bg-blue-50 transition-all duration-300 transform hover:scale-105"
-                  >
-                    <Calendar className="w-5 h-5 mr-2" />
-                    Agendar Agora
-                  </Button>
-                  <div className="mt-6 text-center">
-                    <a
-                      href="tel:+5533998601427"
-                      className="inline-flex items-center gap-2 text-blue-100 hover:text-white transition-colors"
-                    >
-                      <Phone className="w-5 h-5" />
-                      <span>+55 33 99860-1427</span>
-                    </a>
-                  </div>
+                  <h3 className="text-2xl font-bold mb-4">Clínica encerrada</h3>
+                  <p className="mb-6">Sem agenda no momento. Não há consultas presenciais, online ou por WhatsApp.</p>
                 </motion.div>
               </div>
             </div>

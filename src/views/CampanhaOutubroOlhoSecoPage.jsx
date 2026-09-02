@@ -133,10 +133,10 @@ const CampanhaOutubroOlhoSecoPage = () => {
                   size="lg"
                   variant="outline"
                   className="bg-white/10 backdrop-blur border-white text-white hover:bg-white/20 text-lg px-8"
-                  onClick={() => window.open('https://wa.me/553333212293?text=Olá! Quero agendar consulta com desconto OUTUBRO100', '_blank')}
+                  onClick={() => void('https://wa.me/553333212293?text=Olá! Quero agendar consulta com desconto OUTUBRO100', '_blank')}
                 >
                   <MessageCircle className="mr-2 w-5 h-5" />
-                  Agendar Agora
+                  Sem agenda
                 </Button>
               </div>
 
@@ -274,10 +274,10 @@ const CampanhaOutubroOlhoSecoPage = () => {
                   size="lg"
                   variant="outline"
                   className="border-2 border-white text-white hover:bg-white/10"
-                  onClick={() => window.open('https://wa.me/553333212293?text=Olá! Quero aproveitar a promoção OUTUBRO100', '_blank')}
+                  onClick={() => void('https://wa.me/553333212293?text=Olá! Quero aproveitar a promoção OUTUBRO100', '_blank')}
                 >
                   <Calendar className="mr-2 w-5 h-5" />
-                  Agendar Consulta
+                  Clínica encerrada
                 </Button>
               </div>
 

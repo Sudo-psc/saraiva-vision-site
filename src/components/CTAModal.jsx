@@ -3,10 +3,11 @@ import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Globe, MessageCircle, Phone, Mail, X, Bot } from 'lucide-react';
-import { clinicInfo } from '@/lib/clinicInfo';
 import { CONTACT } from '@/lib/constants';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice';
+import { isSchedulingEnabled } from '@/lib/clinicStatus';
 
 const CTAModal = () => {
   const { t } = useTranslation();
@@ -87,9 +88,21 @@ const CTAModal = () => {
         <button type="button" className="absolute top-3 right-3 p-2 rounded-full hover:bg-slate-100" aria-label={t('ui.close', 'Fechar')} onClick={handleClose}>
           <X size={18} />
         </button>
-        <h3 id="cta-modal-title" className="text-xl font-semibold mb-1 text-slate-800">{t('contact.schedule_consultation', 'Agendar Consulta')}</h3>
-        <p id="cta-modal-description" className="text-sm text-slate-500 mb-6">{t('contact.modal_description', 'Escolha sua forma preferida de contato. Resposta em até 1 minuto no horário comercial.')}</p>
+        <h3 id="cta-modal-title" className="text-xl font-semibold mb-1 text-slate-800">
+          {isSchedulingEnabled()
+            ? t('contact.schedule_consultation', 'Agendar Consulta')
+            : t('clinic.closed.title', 'Clínica encerrada / em reforma')}
+        </h3>
+        <p id="cta-modal-description" className="text-sm text-slate-500 mb-6">
+          {isSchedulingEnabled()
+            ? t('contact.modal_description', 'Escolha sua forma preferida de contato. Resposta em até 1 minuto no horário comercial.')
+            : t('clinic.closed.subtitle', 'Sem agenda no momento')}
+        </p>
 
+        {!isSchedulingEnabled() ? (
+          <ClinicClosedNotice variant="inline" />
+        ) : (
+        <>
         <div className="space-y-4">
           {/* Online Scheduling */}
           <button
@@ -175,6 +188,8 @@ const CTAModal = () => {
         <div className="mt-6 text-[11px] leading-snug text-slate-400">
           {t('contact.whatsapp_footer_help', 'Caso o WhatsApp não abra automaticamente, adicione o número manualmente:')} {phoneDisplay}.
         </div>
+        </>
+        )}
       </div>
     </div>
   );

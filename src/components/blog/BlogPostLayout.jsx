@@ -9,6 +9,7 @@ import ShareWidget from './ShareWidget';
 import RelatedPostsWidget from './RelatedPostsWidget';
 import TableOfContents from './TableOfContents';
 import BlogPostCTA from '../ui/BlogPostCTA';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice';
 import { formatDate } from '../../utils/dateUtils';
 
 /**
@@ -258,38 +259,7 @@ export default function BlogPostLayout({ post, children }) {
  * CTA Primário - Destaque acima do conteúdo
  */
 function PrimaryAppointmentCTA() {
-  return (
-    <div 
-      className="mb-8 p-6 bg-gradient-to-br from-blue-50 to-blue-100 
-                 border-2 border-cyan-300 rounded-xl shadow-sm"
-      role="complementary"
-      aria-label="Área de agendamento de consulta"
-    >
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex-1">
-          <h2 className="text-xl font-bold text-gray-900 mb-2">
-            Precisa de uma Consulta Oftalmológica?
-          </h2>
-          <p className="text-gray-700">
-            Agende uma avaliação completa com Dr. Philipe Saraiva em Caratinga, MG
-          </p>
-        </div>
-        <Button
-          as="a"
-          href="https://wa.me/5533998601427"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full sm:w-auto whitespace-nowrap bg-cyan-600 hover:bg-cyan-700
-                     text-white font-semibold px-6 py-3 rounded-lg
-                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                     transition-all shadow-md hover:shadow-lg"
-        >
-          <Phone className="w-5 h-5 mr-2" aria-hidden="true" />
-          Agendar no WhatsApp
-        </Button>
-      </div>
-    </div>
-  );
+  return <ClinicClosedNotice variant="card" className="mb-8" />;
 }
 
 /**
@@ -297,44 +267,12 @@ function PrimaryAppointmentCTA() {
  */
 function SecondaryAppointmentCTA() {
   return (
-    <div 
-      className="mt-12 p-8 bg-gradient-to-br from-cyan-600 to-cyan-800 
-                 rounded-xl text-white shadow-xl"
-      role="complementary"
-      aria-label="Área de ações finais"
-    >
-      <div className="max-w-2xl mx-auto text-center space-y-6">
-        <h2 className="text-2xl sm:text-3xl font-bold">
-          Cuide da Sua Visão com Excelência
-        </h2>
-        <p className="text-cyan-100 text-lg leading-relaxed">
-          Exames de rotina previnem 80% dos problemas oculares graves. 
-          Não deixe para depois o que pode ser tratado hoje.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-          <Button
-            as="a"
-            href="https://wa.me/5533998601427"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-white text-cyan-700 hover:bg-gray-100 font-semibold px-8 py-3
-                     focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2
-                     focus:ring-offset-blue-700 transition-all shadow-md"
-          >
-            <Phone className="w-5 h-5 mr-2" aria-hidden="true" />
-            Agendar Avaliação
-          </Button>
-          <Button
-            as={Link}
-            to="/servicos"
-            className="bg-transparent border-2 border-white text-white hover:bg-white/10
-                     font-semibold px-8 py-3
-                     focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2
-                     focus:ring-offset-blue-700 transition-all"
-          >
-            Nossos Serviços
-          </Button>
-        </div>
+    <div className="mt-12">
+      <ClinicClosedNotice variant="card" />
+      <div className="mt-4 text-center">
+        <Button as={Link} to="/servicos" className="font-semibold px-8 py-3">
+          Nossos Serviços
+        </Button>
       </div>
     </div>
   );

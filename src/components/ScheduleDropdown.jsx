@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Globe, MessageCircle, Calendar } from 'lucide-react';
 import { clinicInfo } from '@/lib/clinicInfo';
 import { CONTACT } from '@/lib/constants';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice';
+import { isSchedulingEnabled } from '@/lib/clinicStatus';
 
 const ScheduleDropdown = ({
   isOpen,
@@ -84,6 +86,17 @@ const ScheduleDropdown = ({
   };
 
   if (!isOpen) return null;
+
+  if (!isSchedulingEnabled()) {
+    return (
+      <>
+        <div className="fixed inset-0 z-[9998]" onClick={onClose} aria-hidden="true" />
+        <div className="fixed z-[9999] w-80 max-w-[calc(100vw-2rem)]">
+          <ClinicClosedNotice variant="card" />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
