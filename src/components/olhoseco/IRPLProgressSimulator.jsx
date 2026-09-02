@@ -400,10 +400,10 @@ const IRPLProgressSimulator = () => {
             <p className="text-violet-200 text-sm">Avaliação completa com meibografia e diagnóstico personalizado</p>
           </div>
           <Button
-            onClick={() => navigate('/agendamento')}
+            onClick={() => undefined}
             className="bg-white text-violet-700 hover:bg-violet-50 font-semibold whitespace-nowrap"
           >
-            Agendar Avaliação
+            Clínica encerrada
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>

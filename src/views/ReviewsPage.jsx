@@ -41,7 +41,7 @@ const REVIEWS_CONFIG = {
   rating: 4.9,
   totalReviews: 136,
   placeUrl: 'https://maps.google.com/?cid=17367763261775232199',
-  whatsappUrl: 'https://wa.me/5533998601427',
+  whatsappUrl: 'https://drphilipesaraiva.com.br',
   instagramUrl: 'https://www.instagram.com/saraivavision',
   embedUrl: generateMapEmbedUrl()
 };
@@ -707,7 +707,7 @@ const ReviewsPage = () => {
                   className="bg-white text-cyan-600 hover:bg-gray-100 px-8 py-4"
                 >
                   <Users className="w-5 h-5" />
-                  Agendar Consulta Agora
+                  Livros e textos do Dr. Philipe Saraiva
                 </Button>
 
                 <Button

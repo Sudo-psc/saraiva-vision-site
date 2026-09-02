@@ -67,24 +67,11 @@ export const clinicInfo = {
   // aiChatbotId: '68d52f7bf91669800d0923ac', // Pulse.live chatbot ID - REMOVIDO
   onlineSchedulingUrl: 'https://www.saraivavision.com.br/agendamento',
   validateSchedulingUrl: () => {
-    const url = 'https://www.saraivavision.com.br/agendamento';
-    try {
-      const urlObj = new URL(url);
-      if (urlObj.protocol !== 'https:') {
-        throw new Error('URL must use HTTPS');
-      }
-      if (!urlObj.hostname.includes('saraivavision.com.br')) {
-        throw new Error('URL must be from saraivavision.com.br domain');
-      }
-      return url;
-    } catch (error) {
-      console.error('Invalid scheduling URL:', error);
-      return null;
-    }
+    return null;
   },
-  // Responsible physician (CFM compliance)
   responsiblePhysician: 'Dr. Philipe Saraiva Cruz',
   responsiblePhysicianCRM: 'CRM-MG 69.870',
+  responsiblePhysicianRQE: 'RQE 71.903',
   responsiblePhysicianTitle: 'Responsável Técnico Médico',
   responsibleNurse: 'Ana Lúcia',
   responsibleNurseCOREN: 'COREN-MG 834184',

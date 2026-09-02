@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { MessageCircle } from 'lucide-react';
 import { useConfig } from '@/config';
+import { isSchedulingEnabled } from '@/lib/clinicStatus';
 
 const WhatsAppBubble = ({ className = '' }) => {
   const { getWhatsAppUrl, getFormattedPhone } = useConfig();
@@ -12,6 +13,10 @@ const WhatsAppBubble = ({ className = '' }) => {
       ariaLabel: `Falar no WhatsApp ${displayPhone}`
     };
   }, [getFormattedPhone, getWhatsAppUrl]);
+
+  if (!isSchedulingEnabled()) {
+    return null;
+  }
 
   return (
     <div className={`fixed bottom-5 right-5 z-[60] ${className}`}>

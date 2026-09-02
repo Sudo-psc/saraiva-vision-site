@@ -702,18 +702,18 @@ const MeibografiaPage = () => {
                                     Faça sua meibografia e obtenha diagnóstico preciso para tratamento efetivo do olho seco.
                                 </p>
                                 <button
-                                    onClick={() => window.open('https://www.saraivavision.com.br/agendamento', '_blank')}
+                                    onClick={() => undefined}
                                     className="w-full bg-white text-blue-600 font-semibold py-3 px-6 rounded-xl hover:bg-blue-50 hover:shadow-lg transition-all duration-300 transform hover:scale-105 border border-blue-100 mb-3"
                                 >
                                     <span className="flex items-center justify-center">
                                         <Calendar className="w-4 h-4 mr-2" />
-                                        Agendar Agora
+                                        Sem agenda
                                     </span>
                                 </button>
 
                                 <div className="border-t border-blue-400 pt-4 mt-4 space-y-3">
                                     <a
-                                        href={`https://wa.me/${clinicInfo.phone.whatsapp}?text=Olá! Gostaria de agendar uma meibografia.`}
+                                        href="https://drphilipesaraiva.com.br"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="flex items-center text-white hover:text-blue-100 text-sm transition-colors"

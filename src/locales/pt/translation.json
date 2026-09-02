@@ -11,11 +11,11 @@
     "plans": "Planos",
     "faq": "FAQ",
     "blog": "Blog",
-    "schedule": "Agendar",
-    "schedule_online": "Agendar Online",
+    "schedule": "Clínica encerrada",
+    "schedule_online": "Sem agenda",
     "close_menu": "Fechar Menu",
     "open_menu": "Abrir Menu",
-    "schedule_consultation": "Agendar Consulta",
+    "schedule_consultation": "Sem agenda",
     "primary_navigation": "Navegação principal",
     "mobile_navigation": "Navegação móvel",
     "home_link_label": "Ir para a página inicial",
@@ -42,8 +42,9 @@
     "partner": "Parceiro Oficial Amor e Saúde",
     "title": "Alívio real para <1>olho seco</1> com diagnóstico completo em Caratinga",
     "subtitle": "IRPL, meibografia e plano personalizado para reduzir ardor, vermelhidão e visão embaçada com acompanhamento do Dr. Philipe Saraiva (CRM-MG 69.870).",
-    "schedule_button": "Agendar Consulta",
-    "whatsapp_button": "Falar no WhatsApp",
+    "cta": "Clínica encerrada",
+    "schedule_button": "Clínica encerrada",
+    "whatsapp_button": "Sem agenda",
     "services_button": "Nossos Serviços",
     "trust_stats": "+5k pacientes • 4,9/5 avaliação • Parceiro Amor e Saúde",
     "patients_served": "<0>Mais de 5.000 pacientes</0> atendidos com satisfação",
@@ -768,8 +769,8 @@
       "email_title": "E-mail",
       "email_sub": "Respondemos em até 24 horas",
       "hours_title": "Horário de Atendimento",
-      "hours_details": "Seg - Sex: 8h às 18h",
-      "hours_sub": "Finais de semana: Fechado"
+      "hours_details": "Clínica encerrada / em reforma — sem agenda",
+      "hours_sub": "Sem consultas no momento"
     },
     "map_alt": "Mapa mostrando a localização da Saraiva Vision em Caratinga",
     "clinic_alt": "Fachada da Clínica Saraiva Vision",
@@ -1173,9 +1174,18 @@
       "nurse": "Enfermeira Ana Lúcia (COREN-MG 834184)"
     }
   },
+  "clinic": {
+    "closed": {
+      "badge": "Clínica encerrada",
+      "title": "Clínica encerrada / em reforma",
+      "subtitle": "Sem agenda no momento",
+      "description": "A Clínica Saraiva Vision não está recebendo agendamentos. Não há consultas presenciais, online ou por WhatsApp neste momento.",
+      "authorLink": "Livros e textos do Dr. Philipe Saraiva"
+    }
+  },
   "cta": {
-    "scheduleConsultation": "Agendar Consulta",
-    "scheduleNow": "Agendar Agora"
+    "scheduleConsultation": "Clínica encerrada",
+    "scheduleNow": "Sem agenda"
   },
   "navigation": {
     "backToServices": "Voltar aos Serviços"

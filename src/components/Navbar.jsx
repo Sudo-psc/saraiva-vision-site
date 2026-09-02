@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, Calendar, Home, Stethoscope, Eye, FileText, Headphones, User, HelpCircle, Phone, FileCheck, BookOpenCheck, Droplets, Star, Zap } from 'lucide-react';
+import { Menu, X, Home, Stethoscope, Eye, FileText, Headphones, User, HelpCircle, FileCheck, BookOpenCheck, Droplets, Star, Zap } from 'lucide-react';
 import { Button } from '../components/ui/button.jsx';
 import Logo from '../components/Logo.jsx';
+import ClinicClosedNotice from './ClinicClosedNotice.jsx';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
-import { clinicInfo } from '../lib/clinicInfo.js';
+import { isSchedulingEnabled } from '../lib/clinicStatus.js';
 
 /**
  * Enhanced Navbar Component - UX Optimized for Healthcare Platform
@@ -144,28 +145,17 @@ const Navbar = () => {
             })}
           </nav>
 
-          {/* CTAs */}
           <div className="hidden lg:flex items-center justify-end gap-2 xl:gap-3 flex-shrink-0">
-            {/* Secondary CTA - WhatsApp Contact (only on xl+) */}
-            <a
-              href={clinicInfo.whatsapp24h}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden xl:flex items-center gap-2 px-3 py-2 2xl:px-4 2xl:py-2.5 rounded-lg border-2 border-cyan-500 text-cyan-700 hover:text-white hover:bg-cyan-600 hover:border-cyan-600 transition-colors duration-200 text-sm 2xl:text-base font-semibold bg-white"
-              aria-label={t('navbar.contact')}
-            >
-              <Phone size={16} className="flex-shrink-0" />
-              <span className="whitespace-nowrap">{t('navbar.contact')}</span>
-            </a>
-
-            {/* Primary CTA - Schedule */}
-            <Button
-              onClick={() => navigate('/agendamento')}
-              className="flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-bold shadow-md hover:shadow-lg transition-all duration-200 ease-out hover:scale-105 active:scale-95 px-3 py-2 xl:px-4 xl:py-2.5 2xl:px-5 2xl:py-3 rounded-lg border-2 border-cyan-500 hover:border-cyan-400 text-sm xl:text-base"
-            >
-              <Calendar size={18} className="animate-pulse flex-shrink-0" />
-              <span className="whitespace-nowrap">{t('navbar.schedule')}</span>
-            </Button>
+            {isSchedulingEnabled() ? (
+              <Button
+                onClick={() => navigate('/agendamento')}
+                className="flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-bold shadow-md hover:shadow-lg transition-all duration-200 ease-out hover:scale-105 active:scale-95 px-3 py-2 xl:px-4 xl:py-2.5 2xl:px-5 2xl:py-3 rounded-lg border-2 border-cyan-500 hover:border-cyan-400 text-sm xl:text-base"
+              >
+                <span className="whitespace-nowrap">{t('navbar.schedule')}</span>
+              </Button>
+            ) : (
+              <ClinicClosedNotice variant="compact" showAuthorLink={false} />
+            )}
           </div>
 
           {/* Mobile/Tablet Menu Toggle */}
@@ -232,31 +222,20 @@ const Navbar = () => {
               );
             })}
 
-            {/* Mobile CTAs */}
             <div className="pt-2 sm:pt-3 flex flex-col gap-2">
-              {/* WhatsApp Contact Button */}
-              <a
-                href={clinicInfo.whatsapp24h}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setTimeout(() => setMobileMenuOpen(false), 50)}
-                className="flex items-center justify-center gap-3 w-full py-3.5 sm:py-4 border-2 border-cyan-600 text-cyan-700 font-bold rounded-lg hover:bg-cyan-50 transition-colors duration-200 text-base sm:text-lg"
-              >
-                <Phone size={22} />
-                <span>{t('navbar.contact')}</span>
-              </a>
-
-              {/* Schedule Button */}
-              <Button
-                onClick={() => {
-                  navigate('/agendamento');
-                  setTimeout(() => setMobileMenuOpen(false), 50);
-                }}
-                className="flex items-center justify-center gap-3 w-full py-3.5 sm:py-4 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-base sm:text-lg font-bold"
-              >
-                <Calendar size={22} />
-                <span>{t('navbar.schedule_consultation')}</span>
-              </Button>
+              {isSchedulingEnabled() ? (
+                <Button
+                  onClick={() => {
+                    navigate('/agendamento');
+                    setTimeout(() => setMobileMenuOpen(false), 50);
+                  }}
+                  className="flex items-center justify-center gap-3 w-full py-3.5 sm:py-4 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-base sm:text-lg font-bold"
+                >
+                  <span>{t('navbar.schedule_consultation')}</span>
+                </Button>
+              ) : (
+                <ClinicClosedNotice variant="inline" />
+              )}
             </div>
           </nav>
         </div>

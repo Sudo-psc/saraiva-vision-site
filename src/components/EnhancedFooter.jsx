@@ -28,6 +28,7 @@ import {
 import { useWorkingHoursStatus } from '../hooks/useWorkingHoursStatus';
 import { getWeekdays } from '../lib/date';
 import { WeekdaysList } from './footer/Weekdays';
+import { AUTHOR_SITE_URL, isSchedulingEnabled } from '@/lib/clinicStatus';
 import {
     initializeCompatibility,
     applyCompatibilityFixes,
@@ -525,63 +526,53 @@ const EnhancedFooter = ({
                                 <ContactLink href={`mailto:${business.email.primary}`}>
                                     {business.email.primary}
                                 </ContactLink>
-                                <ContactItem>
-                                    <a
-                                        href={footerData.whatsappLink}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform"
-                                    >
-                                        <img
-                                            src="/icons_social/whatsapp_icon.png"
-                                            alt="WhatsApp"
-                                            className="w-8 h-8 object-contain"
-                                            width={32}
-                                            height={32}
-                                            loading="lazy"
-                                            decoding="async"
-                                        />
-                                        {getFormattedPhone("display")}
-                                    </a>
-                                </ContactItem>
-                                <ContactItem>
-                                    <a
-                                        href={getWhatsAppUrl('Olá! Gostaria de atendimento automático.')}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform text-green-400"
-                                    >
-                                        <img
-                                            src="/icons_social/whatsapp_icon.png"
-                                            alt="WhatsApp Auto Atendimento"
-                                            className="w-6 h-6 object-contain"
-                                            width={24}
-                                            height={24}
-                                            loading="lazy"
-                                            decoding="async"
-                                        />
-                                        Auto Atendimento
-                                    </a>
-                                </ContactItem>
-                                <ContactItem>
-                                    <a
-                                        href={getWhatsAppUrl('Olá! Preciso de atendimento de urgência.')}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform text-red-400"
-                                    >
-                                        <img
-                                            src="/icons_social/whatsapp_icon.png"
-                                            alt="WhatsApp Urgência"
-                                            className="w-6 h-6 object-contain"
-                                            width={24}
-                                            height={24}
-                                            loading="lazy"
-                                            decoding="async"
-                                        />
-                                        Urgência - Enfermeira Ana (COREN-MG 834184)
-                                    </a>
-                                </ContactItem>
+                                {isSchedulingEnabled() ? (
+                                    <>
+                                        <ContactItem>
+                                            <a
+                                                href={footerData.whatsappLink}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform"
+                                            >
+                                                <img
+                                                    src="/icons_social/whatsapp_icon.png"
+                                                    alt="WhatsApp"
+                                                    className="w-8 h-8 object-contain"
+                                                    width={32}
+                                                    height={32}
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                />
+                                                {getFormattedPhone("display")}
+                                            </a>
+                                        </ContactItem>
+                                        <ContactItem>
+                                            <a
+                                                href={getWhatsAppUrl('Olá! Gostaria de atendimento automático.')}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="hover:text-white hover:scale-110 transition-all duration-300 flex items-center gap-2 transform text-green-400"
+                                            >
+                                                Auto Atendimento
+                                            </a>
+                                        </ContactItem>
+                                    </>
+                                ) : (
+                                    <ContactItem>
+                                        <div className="space-y-2 text-slate-300">
+                                            <p className="font-medium text-amber-200">Clínica encerrada / em reforma — sem agenda</p>
+                                            <a
+                                                href={AUTHOR_SITE_URL}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="underline hover:text-white"
+                                            >
+                                                Livros e textos do Dr. Philipe Saraiva
+                                            </a>
+                                        </div>
+                                    </ContactItem>
+                                )}
                                 <ContactItem>
                                     <a
                                         href={footerData.chatbotUrl}

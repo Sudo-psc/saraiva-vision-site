@@ -202,12 +202,9 @@ const PatientQuiz = ({
               >
                 Refazer Quiz
               </Button>
-              <Button
-                onClick={() => window.location.href = '/sobre#contact'}
-                className="bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white font-semibold"
-              >
-                Agendar Consulta
-              </Button>
+              <p className="text-sm font-semibold text-slate-700 self-center">
+                Clínica encerrada — sem agenda
+              </p>
             </div>
           </motion.div>
         )}

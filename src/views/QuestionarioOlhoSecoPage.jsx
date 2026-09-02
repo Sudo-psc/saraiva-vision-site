@@ -187,7 +187,7 @@ const getRiskData = (score) => {
         'Monitore a evolução dos sintomas',
         'Considere realizar meibografia para diagnóstico preciso'
       ],
-      cta: 'Agendar Consulta com Desconto',
+      cta: 'Clínica encerrada',
       urgencia: 'media',
       promocao: true
     },
@@ -620,7 +620,7 @@ const QuestionarioOlhoSecoPage = () => {
                         </Button>
                         <Button
                           className="flex-1 bg-sky-600 hover:bg-sky-700"
-                          onClick={() => window.open('https://wa.me/5533998601427?text=Olá! Fiz o questionário de olho seco e gostaria de agendar uma consulta.', '_blank')}
+                          onClick={() => void('https://wa.me/5533998601427?text=Olá! Fiz o questionário de olho seco e gostaria de agendar uma consulta.', '_blank')}
                         >
                           <MessageCircle className="mr-2 w-4 h-4" />
                           Agendar via WhatsApp
@@ -826,10 +826,10 @@ const QuestionarioOlhoSecoPage = () => {
                       </Button>
                       <Button
                         className="flex-1 bg-green-600 hover:bg-green-700"
-                        onClick={() => window.open('https://wa.me/5533998601427?text=Olá! Fiz o questionário de olho seco e gostaria de agendar uma consulta com a promoção de meibografia.', '_blank')}
+                        onClick={() => void('https://wa.me/5533998601427?text=Olá! Fiz o questionário de olho seco e gostaria de agendar uma consulta com a promoção de meibografia.', '_blank')}
                       >
                         <MessageCircle className="mr-2 w-4 h-4" />
-                        Agendar Agora
+                        Sem agenda
                       </Button>
                     </div>
                   </CardContent>

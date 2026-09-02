@@ -192,7 +192,7 @@ const ContactLenses = () => {
               aria-label="Agendar consulta para adaptação de lentes de contato - Abre em nova aba"
             >
               <Calendar className="h-5 w-5" aria-hidden="true" />
-              Agendar Consulta
+              Clínica encerrada
             </Button>
             <Button
               size="xl"

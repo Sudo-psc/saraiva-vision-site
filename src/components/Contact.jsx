@@ -481,35 +481,17 @@ const Contact = () => {
       icon: <Phone className="h-6 w-6 text-cyan-600" />,
       title: t('contact.info.phone_title'),
       details: (
-        <div className="flex items-center gap-2">
-          <button type="button" onClick={() => window.dispatchEvent(new Event('open-cta-modal'))} className="hover:underline font-medium text-left">
-            +55 33 99860-1427
-          </button>
-          <span className="sr-only">+55 33 99860-1427</span>
-        </div>
+        <p className="font-medium text-slate-800">Clínica encerrada / em reforma — sem agenda</p>
       ),
       subDetails: (
-        <div className="flex flex-col gap-2">
-          <button type="button" onClick={() => window.dispatchEvent(new Event('open-cta-modal'))} className="text-cyan-600 hover:underline flex items-center gap-1 text-sm font-semibold">
-            <MessageCircle size={14} /> {t('contact.info.phone_whatsapp')}
-          </button>
-          <a
-            href="https://wa.me/5533998601427"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-green-600 hover:underline flex items-center gap-1 text-sm font-semibold"
-          >
-            <MessageCircle size={14} /> Auto Atendimento WhatsApp
-          </a>
-          <a
-            href="https://wa.me/5533998601427"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-red-600 hover:underline flex items-center gap-1 text-sm font-semibold"
-          >
-            <MessageCircle size={14} /> Urgência - Enfermeira Ana (COREN-MG 834184)
-          </a>
-        </div>
+        <a
+          href="https://drphilipesaraiva.com.br"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-slate-700 hover:underline text-sm font-medium"
+        >
+          Livros e textos do Dr. Philipe Saraiva
+        </a>
       )
     },
     {

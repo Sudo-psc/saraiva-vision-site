@@ -287,7 +287,7 @@ const GoogleReviewsEnhanced = ({ maxReviews = 3, showWidget = true, className = 
 
             <p className="text-slate-600 max-w-2xl mx-auto mb-6">
               Experimente o atendimento que tem conquistado a confiança da comunidade de Caratinga e região.
-              Agende sua consulta e descubra por que nossa avaliação é 4.9 estrelas no Google.
+              Clínica encerrada e descubra por que nossa avaliação é 4.9 estrelas no Google.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -300,7 +300,7 @@ const GoogleReviewsEnhanced = ({ maxReviews = 3, showWidget = true, className = 
                 className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4"
               >
                 <Users className="w-5 h-5" />
-                Agendar Consulta Agora
+                Clínica encerrada
               </Button>
 
               <Button

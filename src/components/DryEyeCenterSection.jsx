@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Droplets, Microscope, ShieldCheck, Award, ArrowRight, Sparkles, Zap, CheckCircle, ClipboardCheck, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button.jsx';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice';
+import { isSchedulingEnabled } from '@/lib/clinicStatus';
 
 /**
  * DryEyeCenterSection - Componente que destaca o Centro de Excelência em Olho Seco
@@ -145,17 +147,21 @@ const DryEyeCenterSection = () => {
             Diagnóstico objetivo com meibografia, documentação fotográfica e protocolos baseados nas diretrizes internacionais TFOS DEWS III.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {isSchedulingEnabled() ? (
             <Button
               asChild
               size="lg"
               className="bg-white text-cyan-700 hover:bg-cyan-50 px-8 py-4 text-base font-semibold shadow-xl"
             >
-              <Link to="/agendamento" className="gap-2">
+              <Link to="/olho-seco" className="gap-2">
                 <Calendar className="w-5 h-5" />
                 Agendar Avaliação
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </Button>
+            ) : (
+              <ClinicClosedNotice variant="card" className="text-left" />
+            )}
             <Button
               asChild
               variant="outline"

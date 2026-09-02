@@ -56,21 +56,20 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button className="group px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-semibold shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  Agendar Consulta
-                </button>
-                <button className="px-8 py-4 bg-white/10 backdrop-blur border-2 border-white/30 text-white rounded-xl font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-300 flex items-center justify-center gap-2">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  Conheça a Clínica
-                </button>
+              <div className="flex flex-col gap-4">
+                <div className="rounded-xl border border-amber-300/40 bg-amber-50/95 px-6 py-4 text-slate-900">
+                  <p className="text-xs font-bold uppercase tracking-wide text-amber-800">Clínica encerrada</p>
+                  <p className="text-lg font-semibold">Clínica encerrada / em reforma — sem agenda</p>
+                  <p className="mt-2 text-sm text-slate-700">Não há consultas presenciais, online ou por WhatsApp neste momento.</p>
+                  <a
+                    href="https://drphilipesaraiva.com.br"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-block text-sm font-medium text-slate-800 underline underline-offset-2"
+                  >
+                    Livros e textos do Dr. Philipe Saraiva
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -135,26 +134,22 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="py-20 bg-blue-600 text-white">
+      <section className="py-20 bg-slate-800 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            Agende Sua Consulta Hoje
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Clínica encerrada / em reforma
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Cuide da sua visão com quem entende do assunto
+            Sem agenda no momento. Não há consultas por telefone ou WhatsApp.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="tel:+33332211555"
-              className="px-8 py-4 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition-colors font-semibold"
-            >
-              (33) 3322-1555
-            </a>
-            <button className="px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-blue-600 transition-colors">
-              WhatsApp
-            </button>
-          </div>
+          <a
+            href="https://drphilipesaraiva.com.br"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-8 py-4 bg-white text-slate-800 rounded-lg hover:bg-gray-100 transition-colors font-semibold"
+          >
+            Livros e textos do Dr. Philipe Saraiva
+          </a>
         </div>
       </section>
     </div>

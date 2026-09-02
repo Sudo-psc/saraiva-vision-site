@@ -4,6 +4,8 @@ import { Calendar, Clock, MapPin, Phone } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { ANIMATION_CONFIG, STYLES } from '@/data/serviceConfig';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice';
+import { isSchedulingEnabled } from '@/lib/clinicStatus';
 
 const ServiceSidebar = ({ service, onScheduleClick }) => {
   const { t } = useTranslation();
@@ -49,23 +51,29 @@ const ServiceSidebar = ({ service, onScheduleClick }) => {
         className={STYLES.CARD_SIDEBAR}
       >
         <h3 className={STYLES.HEADING_LG}>{t('service.directContact', 'Contato Direto')}</h3>
-        <div className="space-y-3">
-          <a
-            href="tel:+5533998601427"
-            className="flex items-center gap-3 text-cyan-600 hover:text-cyan-700 transition-colors"
-            aria-label={t('contact.call_number_aria', { number: '+55 33 99860-1427' })}
-          >
-            <Phone className="w-5 h-5" />
-            <span className="font-medium">+55 33 99860-1427</span>
-          </a>
-        </div>
-        <Button
-          onClick={onScheduleClick}
-          className="w-full mt-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
-        >
-          <Calendar className="w-4 h-4 mr-2" />
-          {t('cta.scheduleNow', 'Agendar Agora')}
-        </Button>
+        {isSchedulingEnabled() ? (
+          <>
+            <div className="space-y-3">
+              <a
+                href="tel:+5533998601427"
+                className="flex items-center gap-3 text-cyan-600 hover:text-cyan-700 transition-colors"
+                aria-label={t('contact.call_number_aria', { number: '+55 33 99860-1427' })}
+              >
+                <Phone className="w-5 h-5" />
+                <span className="font-medium">+55 33 99860-1427</span>
+              </a>
+            </div>
+            <Button
+              onClick={onScheduleClick}
+              className="w-full mt-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
+            >
+              <Calendar className="w-4 h-4 mr-2" />
+              {t('cta.scheduleNow', 'Agendar Agora')}
+            </Button>
+          </>
+        ) : (
+          <ClinicClosedNotice variant="inline" className="mt-2" />
+        )}
       </motion.div>
     </div>
   );

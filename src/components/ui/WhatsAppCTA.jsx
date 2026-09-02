@@ -1,11 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { MessageCircle, Phone } from 'lucide-react';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice';
+import { isSchedulingEnabled } from '@/lib/clinicStatus';
 
-/**
- * Componente CTA contextual para WhatsApp
- * Pode ser usado em serviços, posts de blog e páginas
- */
 const WhatsAppCTA = ({
   variant = 'default',
   size = 'medium',
@@ -14,6 +12,10 @@ const WhatsAppCTA = ({
   className = '',
   context = 'agendamento'
 }) => {
+  if (!isSchedulingEnabled()) {
+    return <ClinicClosedNotice variant="card" className={className} />;
+  }
+
   const phoneNumber = '5533998601427';
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
   const phoneUrl = `tel:+${phoneNumber}`;
@@ -48,22 +50,18 @@ const WhatsAppCTA = ({
 
   const buttonContent = (
     <>
-      {/* Icone do WhatsApp */}
       <MessageCircle className="w-5 h-5 mr-2 flex-shrink-0" />
 
-      {/* Texto principal */}
       <span className="font-medium">
         {variant === 'minimal' ? 'Falar no WhatsApp' : 'Agendar pelo WhatsApp'}
       </span>
 
-      {/* Telefone (se mostrado) */}
       {showPhone && (
         <span className="hidden sm:inline-block ml-2 text-sm opacity-90">
           (33) 99860-1427
         </span>
       )}
 
-      {/* Efeito de brilho */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
     </>
   );
@@ -72,7 +70,7 @@ const WhatsAppCTA = ({
     return (
       <div className={`flex flex-col sm:flex-row gap-3 ${className}`}>
         <a
-          href={whatsappUrl}
+          href={`https://wa.me/${phoneNumber}?text=${encodeURIComponent(contextMessage)}`}
           target="_blank"
           rel="noopener noreferrer"
           className={`${baseClasses} ${variants[variant]} ${sizes[size]} inline-flex items-center justify-center group`}

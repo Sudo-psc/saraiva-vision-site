@@ -51,7 +51,7 @@ export const NAP_CANONICAL = {
       e164: '+5533998601427',
       display: '+55 33 99860-1427',
       href: 'https://wa.me/5533998601427',
-      defaultMessage: 'Olá! Gostaria de agendar uma consulta.',
+      defaultMessage: 'A clínica está encerrada e sem agenda.',
     },
   },
 
@@ -65,9 +65,9 @@ export const NAP_CANONICAL = {
 
   hours: {
     weekdays: {
-      display: 'Segunda a Sexta: 08:00 às 18:00',
-      opens: '08:00',
-      closes: '18:00',
+      display: 'Clínica encerrada / em reforma — sem agenda',
+      opens: null,
+      closes: null,
     },
     saturday: {
       display: 'Sábado: Fechado',
@@ -80,8 +80,8 @@ export const NAP_CANONICAL = {
       closes: null,
     },
     formatted: {
-      short: 'Seg-Sex: 08:00-18:00',
-      long: 'Segunda a Sexta: 08:00 às 18:00 | Sábado e Domingo: Fechado',
+      short: 'Clínica encerrada — sem agenda',
+      long: 'Clínica encerrada / em reforma — sem agenda',
     },
   },
 
@@ -103,9 +103,10 @@ export const NAP_CANONICAL = {
   doctor: {
     name: 'Dr. Philipe Saraiva Cruz',
     crm: 'CRM-MG 69.870',
+    rqe: 'RQE 71.903',
     specialty: 'Oftalmologia',
     title: 'Oftalmologista',
-    displayName: 'Dr. Philipe Saraiva Cruz (CRM-MG 69.870)',
+    displayName: 'Dr. Philipe Saraiva Cruz (CRM-MG 69.870 • RQE 71.903)',
   },
 
   seo: {
@@ -120,7 +121,7 @@ export const NAP_CANONICAL = {
     mediumDescription:
       'Clínica Saraiva Vision - Oftalmologia em Caratinga, MG. Consultas, exames e tratamentos com tecnologia de ponta.',
     longDescription:
-      'Clínica Saraiva Vision oferece atendimento oftalmológico completo em Caratinga, MG. Sob a liderança do Dr. Philipe Saraiva Cruz (CRM-MG 69.870), oferecemos consultas, exames diagnósticos, adaptação de lentes de contato e tratamentos personalizados com tecnologia avançada e atendimento humanizado.',
+      'Clínica Saraiva Vision, em Caratinga, MG, está encerrada / em reforma e sem agenda. Conteúdo histórico da clínica liderada pelo Dr. Philipe Saraiva Cruz (CRM-MG 69.870 • RQE 71.903).',
   },
 };
 

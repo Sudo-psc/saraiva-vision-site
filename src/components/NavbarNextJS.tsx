@@ -21,6 +21,8 @@ import {
   Headphones,
   ExternalLink
 } from 'lucide-react';
+import { isSchedulingEnabled } from '@/lib/clinicStatus';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice';
 
 // Tipos TypeScript para props
 interface NavLink {
@@ -251,15 +253,18 @@ const NavbarNextJS: React.FC<NavbarProps> = ({ className = "" }) => {
           <div className="hidden md:flex items-center gap-3">
             <LanguageSwitcherComponent />
 
-            {/* Schedule Button */}
-            <ButtonComponent
-              onClick={handleWhatsApp}
-              className="flex items-center gap-2"
-              aria-label="Agendar consulta via WhatsApp"
-            >
-              <Calendar size={18} />
-              <span>{t('navbar.schedule', 'Agendar')}</span>
-            </ButtonComponent>
+            {isSchedulingEnabled() ? (
+              <ButtonComponent
+                onClick={handleWhatsApp}
+                className="flex items-center gap-2"
+                aria-label="Agendar consulta via WhatsApp"
+              >
+                <Calendar size={18} />
+                <span>{t('navbar.schedule', 'Agendar')}</span>
+              </ButtonComponent>
+            ) : (
+              <ClinicClosedNotice variant="compact" showAuthorLink={false} />
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -318,16 +323,20 @@ const NavbarNextJS: React.FC<NavbarProps> = ({ className = "" }) => {
 
               {/* Mobile Actions */}
               <div className="pt-4 space-y-3">
-                <ButtonComponent
-                  onClick={() => {
-                    handleWhatsApp();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full justify-center gap-2"
-                >
-                  <MessageCircle size={18} />
-                  <span>{t('navbar.schedule', 'Agendar Consulta')}</span>
-                </ButtonComponent>
+                {isSchedulingEnabled() ? (
+                  <ButtonComponent
+                    onClick={() => {
+                      handleWhatsApp();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full justify-center gap-2"
+                  >
+                    <MessageCircle size={18} />
+                    <span>{t('navbar.schedule', 'Agendar Consulta')}</span>
+                  </ButtonComponent>
+                ) : (
+                  <ClinicClosedNotice variant="inline" />
+                )}
               </div>
 
             </nav>

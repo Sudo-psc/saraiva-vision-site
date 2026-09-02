@@ -35,28 +35,14 @@ export default function LocalBusinessSchema() {
       longitude: NAP_CANONICAL.address.geo.longitude,
     },
     
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: NAP_CANONICAL.hours.weekdays.opens,
-        closes: NAP_CANONICAL.hours.weekdays.closes,
-      },
-    ],
+    publicAccess: false,
+    openingHoursSpecification: [],
     
     contactPoint: [
       {
         '@type': 'ContactPoint',
         telephone: NAP_CANONICAL.phone.primary.e164,
         contactType: 'customer service',
-        areaServed: 'BR',
-        availableLanguage: ['Portuguese'],
-      },
-      {
-        '@type': 'ContactPoint',
-        telephone: NAP_CANONICAL.phone.whatsapp.e164,
-        contactType: 'reservations',
-        contactOption: 'WhatsApp',
         areaServed: 'BR',
         availableLanguage: ['Portuguese'],
       },
@@ -76,6 +62,10 @@ export default function LocalBusinessSchema() {
       medicalSpecialty: NAP_CANONICAL.doctor.specialty,
       honorificPrefix: 'Dr.',
       jobTitle: NAP_CANONICAL.doctor.title,
+      identifier: [
+        NAP_CANONICAL.doctor.crm,
+        NAP_CANONICAL.doctor.rqe,
+      ],
       worksFor: {
         '@type': 'MedicalBusiness',
         name: NAP_CANONICAL.business.legalName,
@@ -101,23 +91,7 @@ export default function LocalBusinessSchema() {
       worstRating: '1',
     },
     
-    potentialAction: [
-      {
-        '@type': 'ReserveAction',
-        target: {
-          '@type': 'EntryPoint',
-          urlTemplate: NAP_CANONICAL.phone.whatsapp.href,
-          actionPlatform: [
-            'http://schema.org/DesktopWebPlatform',
-            'http://schema.org/MobileWebPlatform',
-          ],
-        },
-        result: {
-          '@type': 'Reservation',
-          name: 'Agendamento de Consulta',
-        },
-      },
-    ],
+    potentialAction: [],
   };
 
   // Person Schema for Dr. Philipe Saraiva Cruz (enhanced visibility for LLMs)
@@ -130,7 +104,7 @@ export default function LocalBusinessSchema() {
     worksFor: {
       '@id': NAP_CANONICAL.address.geo.mapUrl,
     },
-    identifier: NAP_CANONICAL.doctor.crm,
+    identifier: [NAP_CANONICAL.doctor.crm, NAP_CANONICAL.doctor.rqe],
     description: 'Médico oftalmologista responsável técnico da Clínica Saraiva Vision em Caratinga, MG',
     sameAs: [
       NAP_CANONICAL.social.instagram.url,

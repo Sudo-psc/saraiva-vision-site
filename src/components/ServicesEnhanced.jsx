@@ -19,6 +19,8 @@ import { getServiceIcon } from '@/components/icons/ServiceIcons';
 import MedicalCard from '@/components/ui/MedicalCard';
 import InteractiveCarousel from '@/components/ui/InteractiveCarousel';
 import WhatsAppCTA from '@/components/ui/WhatsAppCTA';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice';
+import { isSchedulingEnabled } from '@/lib/clinicStatus';
 
 // Category configuration with colors
 const CATEGORIES = {
@@ -85,7 +87,8 @@ const ServicesHero = ({ t }) => (
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link to="/agendamento">
+          {isSchedulingEnabled() ? (
+          <Link to="/servicos">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -95,6 +98,9 @@ const ServicesHero = ({ t }) => (
               <ArrowRight className="w-5 h-5" />
             </motion.button>
           </Link>
+          ) : (
+            <ClinicClosedNotice variant="card" className="text-left" />
+          )}
           <a href="#services-list">
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -357,7 +363,8 @@ const FeaturedService = ({ t }) => {
                     <ArrowRight className="w-5 h-5" />
                   </motion.button>
                 </Link>
-                <Link to="/agendamento" className="flex-1 sm:flex-initial">
+                {isSchedulingEnabled() ? (
+                <Link to="/" className="flex-1 sm:flex-initial">
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
@@ -366,6 +373,9 @@ const FeaturedService = ({ t }) => {
                     Agendar Avaliação
                   </motion.button>
                 </Link>
+                ) : (
+                  <ClinicClosedNotice variant="compact" className="flex-1" />
+                )}
               </div>
             </div>
           </div>
@@ -404,9 +414,11 @@ const CTASection = ({ t }) => (
           className="inline-flex"
         />
 
+        {isSchedulingEnabled() && (
         <p className="mt-6 text-white/50 text-sm">
           Atendimento rápido • Resposta em minutos
         </p>
+        )}
       </div>
     </div>
   </motion.div>

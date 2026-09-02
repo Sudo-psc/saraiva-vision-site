@@ -10,11 +10,11 @@
     "faq": "FAQ",
     "lenses": "Lenses",
     "lens_wiki": "Lens Wiki",
-    "schedule": "Schedule",
-    "schedule_online": "Schedule Online",
+    "schedule": "Clinic closed",
+    "schedule_online": "No appointments",
     "close_menu": "Close Menu",
     "open_menu": "Open Menu",
-    "schedule_consultation": "Schedule Consultation",
+    "schedule_consultation": "No appointments",
     "primary_navigation": "Primary navigation",
     "mobile_navigation": "Mobile navigation",
     "home_link_label": "Go to homepage",
@@ -39,8 +39,9 @@
     "partner": "Official Amor e Saúde Partner",
     "title": "Caring for your <1>vision</1> with excellence in Caratinga",
     "subtitle": "Cutting-edge technology and humanized care with Dr. Philipe Saraiva (CRM-MG 69.870).",
-    "schedule_button": "Schedule Consultation",
-    "whatsapp_button": "Contact via WhatsApp",
+    "cta": "Clinic closed",
+    "schedule_button": "Clinic closed",
+    "whatsapp_button": "No appointments",
     "services_button": "Our Services",
     "trust_stats": "+5k patients • 4.9/5 rating • Amor e Saúde partner",
     "patients_served": "<0>Over 5,000 patients</0> served with satisfaction",
@@ -350,9 +351,18 @@
     "name": "Saraiva Vision Clinic",
     "location": "Caratinga/MG"
   },
+  "clinic": {
+    "closed": {
+      "badge": "Clinic closed",
+      "title": "Clinic closed / under renovation",
+      "subtitle": "No appointments at this time",
+      "description": "Saraiva Vision Clinic is not accepting appointments. There are no in-person, online, or WhatsApp consultations at this time.",
+      "authorLink": "Books and writing by Dr. Philipe Saraiva"
+    }
+  },
   "cta": {
-    "scheduleConsultation": "Schedule Consultation",
-    "scheduleNow": "Schedule Now"
+    "scheduleConsultation": "Clinic closed",
+    "scheduleNow": "No appointments"
   },
   "navigation": {
     "backToServices": "Back to Services"
@@ -548,7 +558,7 @@
       "email_title": "Email",
       "email_sub": "We respond within 24 hours",
       "hours_title": "Opening Hours",
-      "hours_details": "Mon - Fri: 8am - 6pm",
+      "hours_details": "Clinic closed / under renovation — no appointments",
       "hours_sub": "Weekends: Closed"
     },
     "map_alt": "Map showing the location of Saraiva Vision in Caratinga",

@@ -57,10 +57,10 @@ const QuickLinks = () => {
     },
     {
       icon: Calendar,
-      title: 'Agendamento',
-      description: 'Marque sua consulta',
-      href: '/agendamento',
-      color: 'from-teal-500 to-teal-600'
+      title: 'Clínica encerrada',
+      description: 'Sem agenda no momento',
+      href: '/',
+      color: 'from-slate-500 to-slate-600'
     }
   ];
 

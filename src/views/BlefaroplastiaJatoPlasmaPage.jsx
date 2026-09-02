@@ -823,13 +823,13 @@ const BlefaroplastiaJatoPlasmaPage = () => {
                 >
                   <span className="flex items-center justify-center">
                     <Calendar className="w-4 h-4 mr-2" />
-                    Agendar Avaliação
+                    Clínica encerrada
                   </span>
                 </button>
 
                 <div className="border-t border-blue-400 pt-4 mt-4 space-y-3">
                   <a
-                    href={`https://wa.me/55${clinicInfo.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Olá! Gostaria de agendar uma avaliação para blefaroplastia com jato de plasma.')}`}
+                    href="https://drphilipesaraiva.com.br"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackExternalLink('whatsapp_cta', clinicInfo.whatsapp)}

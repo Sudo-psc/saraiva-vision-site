@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { getServiceIcon } from '@/components/icons/ServiceIcons';
 import { ANIMATION_CONFIG, STYLES } from '@/data/serviceConfig';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice';
+import { isSchedulingEnabled } from '@/lib/clinicStatus';
 
 const ServiceHeader = ({ service, onScheduleClick }) => {
   const { t } = useTranslation();
@@ -34,14 +36,18 @@ const ServiceHeader = ({ service, onScheduleClick }) => {
             {...ANIMATION_CONFIG.FADE_IN_DELAYED(0.2)}
             className="text-center"
           >
-            <Button
-              onClick={onScheduleClick}
-              size="lg"
-              className={STYLES.BUTTON_PRIMARY}
-            >
-              <Calendar className="w-5 h-5 mr-2" />
-              {t('cta.scheduleConsultation', 'Agendar Consulta')}
-            </Button>
+            {isSchedulingEnabled() ? (
+              <Button
+                onClick={onScheduleClick}
+                size="lg"
+                className={STYLES.BUTTON_PRIMARY}
+              >
+                <Calendar className="w-5 h-5 mr-2" />
+                {t('cta.scheduleConsultation', 'Agendar Consulta')}
+              </Button>
+            ) : (
+              <ClinicClosedNotice variant="inline" className="mx-auto max-w-xl text-left" />
+            )}
           </motion.div>
         </div>
       </div>

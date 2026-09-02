@@ -37,12 +37,6 @@ const socialLinks = [
     alt: 'Spotify da Clínica Saraiva Vision'
   },
   {
-    name: 'WhatsApp',
-    href: 'https://wa.me/5511999999999?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta',
-    iconPath: '/icons_social/whatsapp_icon.png',
-    alt: 'WhatsApp da Clínica Saraiva Vision'
-  },
-  {
     name: 'Twitter',
     href: 'https://twitter.com/saraivavision',
     iconPath: '/icons_social/X_icon.png',

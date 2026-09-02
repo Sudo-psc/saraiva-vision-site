@@ -363,7 +363,7 @@ const PostPageTemplateRefactored = ({ slug }) => {
               )}
 
               <aside className="mt-12 bg-gradient-to-r from-teal-50 to-blue-50 border border-teal-200 rounded-xl p-6" aria-labelledby="clinic-info">
-                <h2 id="clinic-info" className="text-xl font-bold text-slate-900 mb-4">Agende sua consulta</h2>
+                <h2 id="clinic-info" className="text-xl font-bold text-slate-900 mb-4">Clínica encerrada</h2>
                 <div className="space-y-3 mb-6 text-sm text-slate-700">
                   <p className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-teal-600 flex-shrink-0" aria-hidden="true" />

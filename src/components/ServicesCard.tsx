@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ClinicClosedNotice from '@/components/ClinicClosedNotice';
+import { isSchedulingEnabled } from '@/lib/clinicStatus';
 
 interface Service {
   id: string;
@@ -70,16 +72,20 @@ const ServicesCard: React.FC<ServicesCardProps> = ({ service }) => {
               Saiba Mais
             </Link>
           </Button>
+          {isSchedulingEnabled() ? (
           <Button
             asChild
             variant="outline"
             className="flex-1 border-blue-600 text-cyan-600 hover:bg-blue-50"
           >
-            <Link to="/agendamento">
+            <Link to="/">
               <MessageCircle className="w-4 h-4 mr-2" />
               Agendar Agora
             </Link>
           </Button>
+          ) : (
+            <ClinicClosedNotice variant="compact" className="flex-1" />
+          )}
         </div>
       </div>
     </motion.div>
