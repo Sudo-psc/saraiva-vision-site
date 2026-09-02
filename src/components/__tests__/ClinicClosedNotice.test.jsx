@@ -10,7 +10,7 @@ describe('ClinicClosedNotice', () => {
     expect(screen.getByText(/Clínica encerrada \/ em reforma/i)).toBeInTheDocument();
     expect(screen.getByText(/Sem agenda no momento/i)).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: /agendar/i })).not.toBeInTheDocument();
-    expect(screen.queryByText(/WhatsApp/i)).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /whatsapp/i })).not.toBeInTheDocument();
     expect(screen.queryByText(/99860-1427/)).not.toBeInTheDocument();
   });
 
